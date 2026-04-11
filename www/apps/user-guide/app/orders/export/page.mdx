@@ -1,0 +1,57 @@
+---
+sidebar_position: 7
+sidebar_label: "Export Orders"
+tags:
+    - user guide
+    - order
+products:
+    - order
+---
+
+import { BellAlert, ArrowDownTray } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Export Orders in Medusa Admin`,
+}
+
+# {metadata.title}
+
+In this guide, you’ll learn how to export all orders in your Medusa store.
+
+<Note>
+
+Order exports are available from [Medusa v2.12.3](https://github.com/medusajs/medusa/releases/tag/v2.12.3). If you don't see the button to export orders in your Medusa Admin, request your technical team to [upgrade your Medusa application](!docs!/learn/update).
+
+</Note>
+
+## Export Orders as CSV
+
+When you export your orders, you download a CSV with the orders' details. This is useful to import into external systems, or for creating backups.
+
+---
+
+## Export Orders
+
+To export orders:
+
+1. Go to the Orders page.
+2. If you want to export a subset of orders matching filters, apply the filters first to the orders list.
+3. Click on the Export button in the main section's header.
+4. In the side window that opens, you can see any filters you've applied.
+5. Click on the Export button to start the export.
+6. To check the export's status, click the <InlineIcon Icon={BellAlert} alt="bell" /> notifications icon in the page's header. You should see your new export loading.
+7. Once the export is ready, click the <InlineIcon Icon={ArrowDownTray} alt="download" /> icon.
+
+---
+
+## Troubleshooting Export Errors
+
+If the export fails, either during creation of the CSV file or download, make sure that the [storage integration](!resources!/infrastructure-modules/file) is correctly set up in your Medusa application.
+
+You can also refer to the server logs of your Medusa application to get more information about the error.
+
+<Note title="Cloud User?">
+
+Learn more about troubleshooting in the [Logs guide](!cloud!/logs).
+
+</Note>

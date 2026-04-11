@@ -46,7 +46,7 @@
  *                 type: string
  *                 description: The promotion's type.
  *                 externalDocs:
- *                   url: https://docs.medusajs.com/v2/resources/commerce-modules/promotion/concepts#what-is-a-promotion
+ *                   url: https://docs.medusajs.com/resources/commerce-modules/promotion/concepts#what-is-a-promotion
  *                 enum:
  *                   - standard
  *                   - buyget

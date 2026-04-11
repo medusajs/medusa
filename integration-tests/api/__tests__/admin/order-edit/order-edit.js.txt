@@ -2227,7 +2227,7 @@ describe("/admin/order-edits", () => {
       )
     })
 
-    it("update an exising order edit item change of type update on multiple line item update", async () => {
+    it("update an existing order edit item change of type update on multiple line item update", async () => {
       const api = useApi()
 
       const {
@@ -2402,7 +2402,7 @@ describe("/admin/order-edits", () => {
       )
     })
 
-    it("update an exising order edit item change of type update on multiple line item update with correct totals including discounts", async () => {
+    it("update an existing order edit item change of type update on multiple line item update with correct totals including discounts", async () => {
       const api = useApi()
 
       const region = await simpleRegionFactory(dbConnection, { tax_rate: 10 })

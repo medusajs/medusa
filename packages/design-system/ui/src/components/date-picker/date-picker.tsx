@@ -10,6 +10,7 @@ import { cva } from "cva"
 import * as React from "react"
 import {
   DateValue,
+  TimeValue,
   useDatePicker,
   useInteractOutside,
   type AriaDatePickerProps as BaseDatePickerProps,
@@ -187,7 +188,7 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
             <div className="p-3">
               <TimeInput
                 value={state.timeValue}
-                onChange={state.setTimeValue}
+                onChange={(value) => state.setTimeValue(value as TimeValue)}
                 hourCycle={props.hourCycle}
               />
             </div>

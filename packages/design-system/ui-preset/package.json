@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/ui-preset",
-  "version": "2.11.2",
+  "version": "2.13.6",
   "description": "Medusa UI preset",
   "license": "MIT",
   "repository": {
@@ -19,7 +19,7 @@
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "tsup",
+    "build": "yarn run -T tsup",
     "generate": "toolbox tokens -o './src/theme'"
   },
   "dependencies": {
@@ -27,13 +27,11 @@
     "tailwindcss-animate": "^1.0.6"
   },
   "peerDependencies": {
-    "tailwindcss": ">=3.0.0"
+    "tailwindcss": "^3.4.3"
   },
   "devDependencies": {
-    "@medusajs/toolbox": "2.11.2",
-    "tailwindcss": "^3.4.1",
-    "tsup": "^7.1.0",
-    "typescript": "^5.1.6"
+    "@medusajs/toolbox": "2.13.6",
+    "tailwindcss": "^3.4.3"
   },
   "publishConfig": {
     "access": "public"

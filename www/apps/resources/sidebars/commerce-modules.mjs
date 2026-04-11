@@ -15,6 +15,7 @@ import { salesChannelSidebar } from "./sales-channel.mjs"
 import { stockLocationSidebar } from "./stock-location.mjs"
 import { storeSidebar } from "./store.mjs"
 import { taxSidebar } from "./tax.mjs"
+import { translationSidebar } from "./translation.mjs"
 import { userSidebar } from "./user.mjs"
 
 /** @type {import('types').Sidebar.SidebarItem[]} */
@@ -44,5 +45,6 @@ export const commerceModulesSidebar = [
   ...stockLocationSidebar,
   ...storeSidebar,
   ...taxSidebar,
+  ...translationSidebar,
   ...userSidebar,
 ]

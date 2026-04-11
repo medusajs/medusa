@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import React from "react"
-import { CollapsibleReturn } from "../../../../hooks"
+import { CollapsibleReturn } from "../../../../hooks/use-collapsible"
 
 export type CodeBlockCollapsibleFadeProps = {
   type: "start" | "end"
@@ -38,6 +38,7 @@ export const CodeBlockCollapsibleFade = ({
             "w-full h-[56px]",
             "bg-code-fade-bottom-to-top dark:bg-code-fade-bottom-to-top-dark"
           )}
+          data-testid="collapsible-fade-end"
         />
       )}
       {type === "start" && (
@@ -46,6 +47,7 @@ export const CodeBlockCollapsibleFade = ({
             "w-full h-[56px]",
             "bg-code-fade-top-to-bottom dark:bg-code-fade-top-to-bottom-dark"
           )}
+          data-testid="collapsible-fade-start"
         />
       )}
     </span>

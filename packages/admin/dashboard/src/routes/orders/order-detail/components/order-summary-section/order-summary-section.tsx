@@ -10,6 +10,7 @@ import {
   DocumentText,
   ExclamationCircle,
   PencilSquare,
+  ReceiptPercent,
   TriangleDownMini,
 } from "@medusajs/icons"
 import {
@@ -402,29 +403,49 @@ const Item = ({
       item.variant?.inventory_items?.some((i) => i.required_quantity > 1))
   const hasUnfulfilledItems = item.quantity - item.detail.fulfilled_quantity > 0
 
+  const appliedPromoCodes = (item.adjustments || []).map((a) => a.code)
+
   return (
     <>
       <div
         key={item.id}
         className="text-ui-fg-subtle grid grid-cols-2 items-center gap-x-4 px-6 py-4"
       >
-        <div className="flex items-start gap-x-4">
-          <Thumbnail src={item.thumbnail} />
-          <div>
-            <Text size="small" leading="compact" className="text-ui-fg-base">
-              {item.title}
-            </Text>
+        <div className=" flex justify-between gap-x-2 ">
+          <div className=" group flex items-start gap-x-4">
+            <Thumbnail src={item.thumbnail} />
+            <div>
+              <Text size="small" leading="compact" className="text-ui-fg-base">
+                {item.title}
+              </Text>
 
-            {item.variant_sku && (
-              <div className="flex items-center gap-x-1">
-                <Text size="small">{item.variant_sku}</Text>
-                <Copy content={item.variant_sku} className="text-ui-fg-muted" />
-              </div>
-            )}
-            <Text size="small">
-              {item.variant?.options?.map((o) => o.value).join(" · ")}
-            </Text>
+              {item.variant_sku && (
+                <div className="flex items-center gap-x-1">
+                  <Text size="small">{item.variant_sku}</Text>
+                  <Copy
+                    content={item.variant_sku}
+                    className="text-ui-fg-muted hidden group-hover:block"
+                  />
+                </div>
+              )}
+              <Text size="small">
+                {item.variant?.options?.map((o) => o.value).join(" · ")}
+              </Text>
+            </div>
           </div>
+          {appliedPromoCodes.length > 0 && (
+            <Tooltip
+              content={
+                <span className="text-pretty">
+                  {appliedPromoCodes.map((code) => (
+                    <div key={code}>{code}</div>
+                  ))}
+                </span>
+              }
+            >
+              <ReceiptPercent className="text-ui-fg-subtle flex-shrink self-center " />
+            </Tooltip>
+          )}
         </div>
 
         <div className="grid grid-cols-3 items-center gap-x-4">

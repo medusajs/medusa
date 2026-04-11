@@ -5,7 +5,7 @@ import {
   DividedMarkdownCode
 } from "@/layouts/DividedMarkdown/Sections"
 import Section from "@/components/Section"
-import { CodeTabs, CodeTab, H1 } from "docs-ui"
+import { CodeTabs, CodeTab, H1, Prerequisites } from "docs-ui"
 import { Feedback } from "@/components/Feedback"
 
 import ClientLibraries from "./client-libraries.mdx"
@@ -1475,6 +1475,101 @@ Refer to [this guide](!docs!/learn/customization/extend-features/extend-create-p
 />
 
 </DividedMarkdownContent>
+
+</DividedMarkdownLayout>
+
+</SectionContainer>
+
+<SectionContainer noTopPadding={true}>
+
+<DividedMarkdownLayout>
+
+<DividedMarkdownContent>
+
+## Localization
+
+<Prerequisites
+  items={[
+    {
+      text: "Translation Module Configured",
+      link: "!resources!/commerce-modules/translation#configure-translation-module",
+    }
+  ]}
+/>
+
+Medusa's Store APIs support localization of core and custom data models. Refer to the [Translation Module](!resources!/commerce-modules/translation) guide to learn about supported core data models, and how to [configure translations for custom data models](!resources!/commerce-modules/translation/custom-data-models).
+
+By default, the Store APIs returns the original data without localization.
+
+</DividedMarkdownContent>
+
+</DividedMarkdownLayout>
+
+<DividedMarkdownLayout addYSpacing>
+
+<DividedMarkdownContent>
+
+You can set the locale of a request using one of the following methods:
+
+- Use the JS SDK's `setLocale` method. The JS SDK will automatically include the locale in the `x-medusa-locale` header of subsequent requests.
+- Pass the `locale` query parameter to the relevant API route. By default, all `/store` API routes support the `locale` query parameter.
+- Set the `x-medusa-locale` header in the API request to the relevant API route. By default, all `/store` API routes support the `x-medusa-locale` header.
+
+Locales are in the [IETF BCP 47](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1) format, such as `en-US` for American English, or `fr-FR` for French.
+
+The returned data will be in the specified locale if a translation exists. Otherwise, it will fall back to the original data.
+
+Learn more in the [Storefront Localization guide](!resources!/storefront-development/localization).
+
+</DividedMarkdownContent>
+
+<DividedMarkdownCode>
+
+<CodeTabs group="request-localization-examples">
+
+<CodeTab label="Using JS SDK" value="js-sdk">
+
+```js
+sdk.setLocale("fr-FR")
+// products content will be in French
+const { products } = await sdk.store.product.list()
+```
+
+</CodeTab>
+
+<CodeTab label="Using Query Parameter" value="query-param">
+
+```bash
+curl "http://localhost:9000/store/products?locale=fr-FR" \
+-H 'x-publishable-api-key: {your_publishable_api_key}'
+```
+
+</CodeTab>
+<CodeTab label="Using Header" value="header">
+
+```bash
+curl "http://localhost:9000/store/products" \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
+-H "x-medusa-locale: fr-FR"
+```
+
+</CodeTab>
+
+</CodeTabs>
+
+
+</DividedMarkdownCode>
+
+</DividedMarkdownLayout>
+
+<DividedMarkdownLayout>
+
+<Feedback
+  extraData={{
+    section: "localization"
+  }}
+  question="Was this section helpful?"
+/>
 
 </DividedMarkdownLayout>
 

@@ -6,7 +6,7 @@
  * description: Retrieve the addresses of the logged-in customer. The addresses can be filtered by fields such as `country_code`. The addresses can also be sorted or paginated.
  * x-authenticated: true
  * externalDocs:
- *   url: https://docs.medusajs.com/v2/resources/storefront-development/customers/addresses#list-customer-addresses
+ *   url: https://docs.medusajs.com/resources/storefront-development/customers/addresses#list-customer-addresses
  *   description: "Storefront guide: How to retrieve the logged-in customer's addresses."
  * parameters:
  *   - name: x-publishable-api-key
@@ -17,6 +17,16 @@
  *       type: string
  *       externalDocs:
  *         url: https://docs.medusajs.com/api/store#publishable-api-key
+ *   - name: x-medusa-locale
+ *     in: header
+ *     description: The locale in BCP 47 format to retrieve localized content.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       example: en-US
+ *       externalDocs:
+ *         url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+ *         description: Learn more in the Serve Translations in Storefront guide.
  *   - name: city
  *     in: query
  *     description: Filter by the address's city.
@@ -118,6 +128,16 @@
  *       items:
  *         type: object
  *       title: $or
+ *   - name: locale
+ *     in: query
+ *     description: The locale in BCP 47 format to retrieve localized content.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       example: en-US
+ *       externalDocs:
+ *         url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+ *         description: Learn more in the Serve Translations in Storefront guide.
  * security:
  *   - cookie_auth: []
  *   - jwt_token: []

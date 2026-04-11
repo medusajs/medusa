@@ -422,6 +422,10 @@ export interface TaxableShippingDTO {
  */
 export interface TaxCalculationContext {
   /**
+   * The locale of the tax calculation.
+   */
+  locale?: string
+  /**
    * The customer's address
    */
   address: {

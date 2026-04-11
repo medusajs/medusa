@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import type { OpenAPI } from "types"
 import TagOperationParametersDefault from "../Default"
 import dynamic from "next/dynamic"
@@ -10,7 +11,7 @@ import { Loading, type DetailsProps } from "docs-ui"
 import { Fragment, useMemo } from "react"
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
-  async () => import("../.."),
+  async () => import("@/components/Tags/Operation/Parameters"),
   {
     loading: () => <Loading />,
   }
@@ -18,7 +19,7 @@ const TagOperationParameters = dynamic<TagOperationParametersProps>(
 
 const TagsOperationParametersNested =
   dynamic<TagsOperationParametersNestedProps>(
-    async () => import("../../Nested"),
+    async () => import("@/components/Tags/Operation/Parameters/Nested"),
     {
       loading: () => <Loading />,
     }
@@ -89,8 +90,10 @@ const TagOperationParametersObject = ({
     // sort properties to show required fields first
     const sortedProperties = Object.keys(properties).sort(
       (property1, property2) => {
-        properties[property1].isRequired = checkRequired(schema, property1)
-        properties[property2].isRequired = checkRequired(schema, property2)
+        properties[property1].isRequired =
+          properties[property1].isRequired || checkRequired(schema, property1)
+        properties[property2].isRequired =
+          properties[property2].isRequired || checkRequired(schema, property2)
 
         return properties[property1].isRequired &&
           properties[property2].isRequired

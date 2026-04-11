@@ -198,9 +198,9 @@ post:
     - name: customer.updated
       payload: |-
         ```ts
-        [{
+        {
           id, // The ID of the customer
-        }]
+        }
         ```
       description: Emitted when a customer is updated.
       deprecated: false
@@ -273,9 +273,9 @@ delete:
     - name: customer.deleted
       payload: |-
         ```ts
-        [{
+        {
           id, // The ID of the customer
-        }]
+        }
         ```
       description: Emitted when a customer is deleted.
       deprecated: false

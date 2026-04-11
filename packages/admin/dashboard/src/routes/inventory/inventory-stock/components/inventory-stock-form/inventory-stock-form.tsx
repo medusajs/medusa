@@ -32,7 +32,6 @@ export const InventoryStockForm = ({
   const { setCloseOnEscape, handleSuccess } = useRouteModal()
 
   const initialValues = useRef(getDefaultValues(items, locations))
-  console.log("initialValues", initialValues.current)
 
   const form = useForm<InventoryStockSchema>({
     defaultValues: getDefaultValues(items, locations),

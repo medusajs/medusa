@@ -1,5 +1,5 @@
+import { upperCaseFirst } from "@medusajs/utils"
 import { OpenAPIObject } from "openapi3-ts"
-import { upperFirst } from "lodash"
 
 export async function combineOAS(
   adminOAS: OpenAPIObject,
@@ -71,7 +71,9 @@ function prepareOASForCombine(
   apiType: ApiType
 ): OpenAPIObject {
   console.log(
-    `🔵 Prefixing ${apiType} tags and operationId with ${upperFirst(apiType)}`
+    `🔵 Prefixing ${apiType} tags and operationId with ${upperCaseFirst(
+      apiType
+    )}`
   )
   for (const pathKey in oas.paths) {
     for (const operationKey in oas.paths[pathKey]) {
@@ -110,9 +112,9 @@ function prepareOASForCombine(
 }
 
 function getPrefixedTagName(tagName: string, apiType: ApiType): string {
-  return `${upperFirst(apiType)} ${tagName}`
+  return `${upperCaseFirst(apiType)} ${tagName}`
 }
 
 function getPrefixedOperationId(operationId: string, apiType: ApiType): string {
-  return `${upperFirst(apiType)}${operationId}`
+  return `${upperCaseFirst(apiType)}${operationId}`
 }

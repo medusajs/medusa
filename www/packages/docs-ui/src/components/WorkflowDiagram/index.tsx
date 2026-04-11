@@ -2,7 +2,7 @@
 
 import React, { Suspense } from "react"
 import { Workflow } from "types"
-import { Loading } from "../.."
+import { Loading } from "@/components/Loading"
 import { WorkflowDiagramCanvas } from "./Canvas"
 import { WorkflowDiagramList } from "./List"
 

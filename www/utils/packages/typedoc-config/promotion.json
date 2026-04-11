@@ -7,5 +7,8 @@
   "exclude": [
     "../../../../packages/modules/promotion/dist", 
     "../../../../packages/modules/promotion/node_modules"
-  ]
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../packages/modules/promotion/src"
+  }
 }

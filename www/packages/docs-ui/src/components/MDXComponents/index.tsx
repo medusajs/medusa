@@ -1,21 +1,18 @@
 import React from "react"
 import type { MDXComponents as MDXComponentsType } from "mdx/types"
-import {
-  CodeMdx,
-  Details,
-  Kbd,
-  Note,
-  Card,
-  CardList,
-  DetailsSummary,
-  DetailsProps,
-  ZoomImg,
-  H1,
-  H2,
-  H3,
-  H4,
-  Link,
-} from "@/components"
+import { CodeMdx } from "@/components/CodeMdx"
+import { Details, DetailsProps } from "@/components/Details"
+import { DetailsSummary } from "@/components/Details/Summary"
+import { Kbd } from "@/components/Kbd"
+import { Note } from "@/components/Note"
+import { Card } from "@/components/Card"
+import { CardList } from "@/components/CardList"
+import { ZoomImg } from "@/components/ZoomImg"
+import { H1 } from "@/components/Heading/H1"
+import { H2 } from "@/components/Heading/H2"
+import { H3 } from "@/components/Heading/H3"
+import { H4 } from "@/components/Heading/H4"
+import { Link } from "@/components/Link"
 import clsx from "clsx"
 import { Text } from "@medusajs/ui"
 

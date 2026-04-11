@@ -36,6 +36,18 @@ type DataGridHelperColumnsProps<TData, TFieldValues extends FieldValues> = {
    * @default false
    */
   disableHiding?: boolean
+  /**
+   * The size of the column in pixels.
+   */
+  size?: number
+  /**
+   * The minimum size of the column in pixels.
+   */
+  minSize?: number
+  /**
+   * The maximum size of the column in pixels.
+   */
+  maxSize?: number
 } & (
   | {
       field: FieldFunction<TData, TFieldValues>
@@ -59,12 +71,18 @@ export function createDataGridHelper<
       disableHiding = false,
       field,
       type,
+      size,
+      minSize,
+      maxSize,
     }: DataGridHelperColumnsProps<TData, TFieldValues>) =>
       columnHelper.display({
         id,
         header,
         cell,
         enableHiding: !disableHiding,
+        size,
+        minSize,
+        maxSize,
         meta: {
           name,
           field,

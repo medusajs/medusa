@@ -20,6 +20,10 @@ export const promotion = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/promotion/extend"
   },
   {
+    "title": "Implement Customer Tiers",
+    "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/customer-tiers"
+  },
+  {
     "title": "Implement First-Purchase Discount",
     "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/first-purchase-discounts"
   },
@@ -34,18 +38,6 @@ export const promotion = [
   {
     "title": "getActionsToComputeFromPromotionsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getActionsToComputeFromPromotionsStep"
-  },
-  {
-    "title": "getPromotionCodesToApply",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getPromotionCodesToApply"
-  },
-  {
-    "title": "prepareAdjustmentsFromPromotionActionsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/prepareAdjustmentsFromPromotionActionsStep"
-  },
-  {
-    "title": "updateCartPromotionsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateCartPromotionsStep"
   },
   {
     "title": "addShippingMethodToCartWorkflow",
@@ -80,8 +72,116 @@ export const promotion = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateLineItemInCartWorkflow"
   },
   {
+    "title": "addDraftOrderItemsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addDraftOrderItemsWorkflow"
+  },
+  {
+    "title": "addDraftOrderPromotionWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addDraftOrderPromotionWorkflow"
+  },
+  {
+    "title": "addDraftOrderShippingMethodsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addDraftOrderShippingMethodsWorkflow"
+  },
+  {
+    "title": "computeDraftOrderAdjustmentsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/computeDraftOrderAdjustmentsWorkflow"
+  },
+  {
+    "title": "removeDraftOrderActionItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeDraftOrderActionItemWorkflow"
+  },
+  {
+    "title": "removeDraftOrderActionShippingMethodWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeDraftOrderActionShippingMethodWorkflow"
+  },
+  {
+    "title": "removeDraftOrderPromotionsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeDraftOrderPromotionsWorkflow"
+  },
+  {
+    "title": "removeDraftOrderShippingMethodWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeDraftOrderShippingMethodWorkflow"
+  },
+  {
+    "title": "updateDraftOrderActionItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateDraftOrderActionItemWorkflow"
+  },
+  {
+    "title": "updateDraftOrderActionShippingMethodWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateDraftOrderActionShippingMethodWorkflow"
+  },
+  {
+    "title": "updateDraftOrderItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateDraftOrderItemWorkflow"
+  },
+  {
+    "title": "updateDraftOrderShippingMethodWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateDraftOrderShippingMethodWorkflow"
+  },
+  {
     "title": "deleteLineItemsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteLineItemsWorkflow"
+  },
+  {
+    "title": "computeAdjustmentsForPreviewWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/computeAdjustmentsForPreviewWorkflow"
+  },
+  {
+    "title": "onCarryPromotionsFlagSet",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/onCarryPromotionsFlagSet"
+  },
+  {
+    "title": "orderClaimAddNewItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderClaimAddNewItemWorkflow"
+  },
+  {
+    "title": "orderClaimItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderClaimItemWorkflow"
+  },
+  {
+    "title": "orderClaimRequestItemReturnWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderClaimRequestItemReturnWorkflow"
+  },
+  {
+    "title": "orderEditAddNewItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderEditAddNewItemWorkflow"
+  },
+  {
+    "title": "orderEditUpdateItemQuantityWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderEditUpdateItemQuantityWorkflow"
+  },
+  {
+    "title": "orderExchangeAddNewItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderExchangeAddNewItemWorkflow"
+  },
+  {
+    "title": "orderExchangeRequestItemReturnWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderExchangeRequestItemReturnWorkflow"
+  },
+  {
+    "title": "removeItemOrderEditActionWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeItemOrderEditActionWorkflow"
+  },
+  {
+    "title": "updateClaimAddItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateClaimAddItemWorkflow"
+  },
+  {
+    "title": "updateExchangeAddItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateExchangeAddItemWorkflow"
+  },
+  {
+    "title": "updateOrderChangeWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateOrderChangeWorkflow"
+  },
+  {
+    "title": "updateOrderEditAddItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateOrderEditAddItemWorkflow"
+  },
+  {
+    "title": "updateOrderEditItemQuantityWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateOrderEditItemQuantityWorkflow"
   },
   {
     "title": "addCampaignPromotionsStep",

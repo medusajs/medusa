@@ -3,10 +3,13 @@
 import React, { useMemo } from "react"
 import clsx from "clsx"
 import Link from "next/link"
-import { useSidebar, useSiteConfig } from "../../providers"
+import { useSidebar } from "@/providers/Sidebar"
+import { useSiteConfig } from "@/providers/SiteConfig"
 import { Button } from "../Button"
 import { TriangleRightMini } from "@medusajs/icons"
 import { Sidebar } from "types"
+import { getJsonLd } from "@/utils/get-json-ld"
+import type { BreadcrumbList } from "schema-dts"
 
 type BreadcrumbItems = {
   title: string
@@ -16,7 +19,7 @@ type BreadcrumbItems = {
 export const Breadcrumbs = () => {
   const { sidebarHistory, getSidebarFirstLinkChild, getSidebar } = useSidebar()
   const {
-    config: { breadcrumbOptions },
+    config: { breadcrumbOptions, baseUrl, basePath },
   } = useSiteConfig()
 
   const getLinkPath = (item: Sidebar.SidebarItemLink): string => {
@@ -48,8 +51,31 @@ export const Breadcrumbs = () => {
       })
     })
 
-    return items
+    // make sure items are unique (no duplicate links)
+    const uniqueItems = items.filter(
+      (item, index, self) =>
+        index === self.findIndex((t) => t.link === item.link)
+    )
+    return uniqueItems
   }, [sidebarHistory, breadcrumbOptions])
+
+  const jsonLd = useMemo(() => {
+    const baseLink = `${baseUrl}${basePath}`.replace(/\/+$/, "")
+    return getJsonLd<BreadcrumbList>({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: breadcrumbItems.map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.title,
+        item: item.link.startsWith("#")
+          ? baseLink
+          : item.link.startsWith("/")
+            ? `${baseLink}${item.link}`
+            : item.link,
+      })),
+    })
+  }, [breadcrumbItems, baseUrl, basePath])
 
   return (
     <div
@@ -79,6 +105,12 @@ export const Breadcrumbs = () => {
           </Button>
         </React.Fragment>
       ))}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd,
+        }}
+      />
     </div>
   )
 }

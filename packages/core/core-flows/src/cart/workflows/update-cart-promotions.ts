@@ -18,9 +18,11 @@ import {
   prepareAdjustmentsFromPromotionActionsStep,
   removeLineItemAdjustmentsStep,
   removeShippingMethodAdjustmentsStep,
+  validateCartStep,
 } from "../steps"
 import { updateCartPromotionsStep } from "../steps/update-cart-promotions"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
+import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 
 /**
  * The details of the promotion updates on a cart.
@@ -46,6 +48,11 @@ export type UpdateCartPromotionsWorkflowInput = {
     | PromotionActions.ADD
     | PromotionActions.REMOVE
     | PromotionActions.REPLACE
+    /**
+     * Wether to force the refresh of the cart payment collection. If the caller doesn't refresh it explicitly,
+     * you should probably set this property to true.
+     */
+    force_refresh_payment_collection?: boolean
 }
 
 export const updateCartPromotionsWorkflowId = "update-cart-promotions"
@@ -96,6 +103,8 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       return input.cart ?? fetchCart
     })
 
+    validateCartStep({ cart })
+
     acquireLockStep({
       key: cart.id,
       timeout: 2,
@@ -122,7 +131,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
     })
 
     const actions = getActionsToComputeFromPromotionsStep({
-      cart,
+      computeActionContext: cart,
       promotionCodesToApply,
     })
 
@@ -149,6 +158,15 @@ export const updateCartPromotionsWorkflow = createWorkflow(
         action: PromotionActions.REPLACE,
       })
     )
+
+    when(
+      { input },
+      ({ input }) => input.force_refresh_payment_collection === true
+    ).then(() => {
+      refreshPaymentCollectionForCartWorkflow.runAsStep({
+        input: { cart },
+      })
+    })
 
     releaseLockStep({
       key: cart.id,

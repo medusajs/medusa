@@ -1,9 +1,12 @@
 import { BigNumberInput, BigNumberRawValue } from "@medusajs/types"
-import { BigNumber as BigNumberJS } from "bignumber.js"
+import { BigNumber as BigNumberConstructor } from "bignumber.js"
 import { isDefined } from "../common"
 import { BigNumber } from "./big-number"
 
+type BigNumberJS = InstanceType<typeof BigNumberConstructor>
 type BNInput = BigNumberInput | BigNumber
+const BigNumberJS = BigNumberConstructor
+
 export class MathBN {
   static convert(num: BNInput, decimalPlaces?: number): BigNumberJS {
     if (num == null) {
@@ -22,10 +25,10 @@ export class MathBN {
     }
 
     if (decimalPlaces) {
-      num_ = num_.decimalPlaces(decimalPlaces)
+      num_ = (num_ as BigNumberJS).decimalPlaces(decimalPlaces)
     }
 
-    return num_
+    return num_ as BigNumberJS
   }
 
   static add(...nums: BNInput[]): BigNumberJS {

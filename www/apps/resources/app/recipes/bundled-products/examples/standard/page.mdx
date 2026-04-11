@@ -79,7 +79,7 @@ By following this tutorial, you'll learn how to:
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -295,7 +295,7 @@ Refer to the [Migrations documentation](!docs!/learn/fundamentals/modules#5-gene
 
 Medusa's CLI tool can generate the migrations for you. To generate a migration for the Bundled Product Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate bundledProduct
 ```
 
@@ -303,7 +303,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -382,7 +382,7 @@ You define the link in the same way as the previous one, but you pass an object 
 
 Medusa creates a table in the database for each link you define. So, you must run the migrations again to create the necessary tables:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -757,12 +757,18 @@ export const bundledProductsRouteHighlights = [
   ["38", "json", "Return the created bundle in the response."]
 ]
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 ```ts title="src/api/admin/bundled-products/route.ts" highlights={bundledProductsRouteHighlights}
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { 
   AdminCreateProduct,
 } from "@medusajs/medusa/api/admin/products/validators"
@@ -1297,8 +1303,8 @@ export const createBundledProductComponentHighlights2 = [
   ["3", "currentProductPage", "The current page of products retrieved from the server."],
   ["4", "productsCount", "The total number of products."],
   ["5", "hasNextPage", "Whether there are more products to load."],
-  ["9", "useQuery", "Retrieve the products from the API route."],
-  ["23", "fetchMoreProducts", "Fetch more products when the user scrolls to the end of the list."],
+  ["10", "useQuery", "Retrieve the products from the API route."],
+  ["24", "fetchMoreProducts", "Fetch more products when the user scrolls to the end of the list."],
 ]
 
 ```tsx title="src/admin/components/create-bundled-product.tsx" highlights={createBundledProductComponentHighlights2}
@@ -1752,21 +1758,35 @@ The add-to-cart workflow for bundled products has the following steps:
         name: "prepareBundleCartDataStep",
         type: "step",
         description: "Validate and prepare the items to be added to the cart.",
-        depth: 1,
+        depth: 2,
+      },
+      {
+        name: "acquireLockStep",
+        type: "step",
+        description: "Acquire a lock on the cart to prevent concurrent modifications",
+        depth: 3,
+        link: "/references/medusa-workflows/steps/acquireLockStep"
       },
       {
         name: "addToCartWorkflow",
         type: "step",
         description: "Add the items in the bundle to the cart.",
-        depth: 1,
+        depth: 4,
         link: "/references/medusa-workflows/addToCartWorkflow"
       },
       {
         name: "useQueryGraphStep",
         type: "step",
         description: "Retrieve the details of the cart.",
-        depth: 1,
+        depth: 5,
         link: "/references/helper-steps/useQueryGraphStep"
+      },
+      {
+        name: "releaseLockStep",
+        type: "step",
+        description: "Release the lock on the cart.",
+        depth: 6,
+        link: "/references/medusa-workflows/steps/releaseLockStep"
       }
     ]
   }}
@@ -1785,7 +1805,7 @@ export const prepareBundleCartDataStepHighlights = [
   ["12", "bundle", "The bundle to add to the cart."],
   ["15", "quantity", "The quantity of the bundle to add to the cart."],
   ["16", "items", "The selected variants for each item in the bundle."],
-  ["15", "bundleItems", "Prepare the items to be added to the cart."],
+  ["25", "bundleItems", "Prepare the items to be added to the cart."],
   ["45", "variant_id", "The ID of the selected variant to add to the cart."],
   ["46", "quantity", "The quantity of the variant to add to the cart."],
   ["47", "metadata", "The metadata for the line item in the cart."],
@@ -1889,20 +1909,24 @@ You can now create the workflow with the custom add-to-cart logic.
 To create the workflow, create the file `src/workflows/add-bundle-to-cart.ts` with the following content:
 
 export const addBundleToCartWorkflowHighlights = [
-  ["28", "useQueryGraphStep", "Retrieve the bundle, its items, and their products and variants."],
-  ["44", "prepareBundleCartDataStep", "Validate and prepare the items to be added to the cart."],
-  ["50", "addToCartWorkflow", "Add the items in the bundle to the cart."],
-  ["57", "useQueryGraphStep", "Retrieve the updated cart."],
+  ["30", "useQueryGraphStep", "Retrieve the bundle, its items, and their products and variants."],
+  ["46", "prepareBundleCartDataStep", "Validate and prepare the items to be added to the cart."],
+  ["52", "acquireLockStep", "Acquire a lock on the cart to prevent concurrent modifications."],
+  ["58", "addToCartWorkflow", "Add the items in the bundle to the cart."],
+  ["65", "useQueryGraphStep", "Retrieve the updated cart."],
+  ["71", "releaseLockStep", "Release the lock on the cart."],
 ]
 
-```ts title="src/workflows/add-bundle-to-cart.ts" highlights={addBundleToCartWorkflowHighlights} collapsibleLines="1-14" expandButtonLabel="Show Imports"
+```ts title="src/workflows/add-bundle-to-cart.ts" highlights={addBundleToCartWorkflowHighlights} collapsibleLines="1-16" expandButtonLabel="Show Imports"
 import { 
   createWorkflow, 
   transform, 
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { 
-  addToCartWorkflow, 
+  acquireLockStep,
+  addToCartWorkflow,
+  releaseLockStep, 
   useQueryGraphStep,
 } from "@medusajs/medusa/core-flows"
 import { 
@@ -1945,6 +1969,12 @@ export const addBundleToCartWorkflow = createWorkflow(
       items,
     } as unknown as PrepareBundleCartDataStepInput)
 
+    acquireLockStep({
+      key: cart_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     addToCartWorkflow.runAsStep({
       input: {
         cart_id,
@@ -1958,6 +1988,10 @@ export const addBundleToCartWorkflow = createWorkflow(
       fields: ["id", "items.*"],
     }).config({ name: "refetch-cart" })
 
+    releaseLockStep({
+      key: cart_id,
+    })
+
     return new WorkflowResponse(updatedCarts[0])
   }
 )
@@ -1969,8 +2003,10 @@ In the workflow, you:
 
 - Retrieve the bundle, its items, and their products and variants using the `useQueryGraphStep`.
 - Validate and prepare the items to be added to the cart using the `prepareBundleCartDataStep`.
+- Acquire a lock on the cart using the `acquireLockStep`.
 - Add the items to the cart using the `addToCartWorkflow`.
 - Retrieve the updated cart using the `useQueryGraphStep`.
+- Release the lock on the cart using the `releaseLockStep`.
 
 Finally, you return the updated cart.
 
@@ -1980,9 +2016,15 @@ You'll now create the API route that exposes the workflow's functionalities to s
 
 To create the API route, create the file `src/api/store/carts/[id]/line-item-bundles/route.ts` with the following content:
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 ```ts title="src/api/store/carts/[id]/line-item-bundles/route.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { 
   addBundleToCartWorkflow,
 } from "../../../../../workflows/add-bundle-to-cart"
@@ -2775,19 +2817,33 @@ The workflow has the following steps:
         link: "/references/helper-steps/useQueryGraphStep"
       },
       {
+        name: "acquireLockStep",
+        type: "step",
+        description: "Acquire a lock on the cart to prevent concurrent modifications.",
+        depth: 2,
+        link: "/references/medusa-workflows/steps/acquireLockStep"
+      },
+      {
         name: "deleteLineItemsWorkflow",
         type: "workflow",
         description: "Remove the items in the bundle from the cart.",
-        depth: 1,
+        depth: 3,
         link: "/references/medusa-workflows/deleteLineItemsWorkflow"
       },
       {
         name: "useQueryGraphStep",
         type: "step",
         description: "Retrieve the updated cart.",
-        depth: 1,
+        depth: 4,
         link: "/references/helper-steps/useQueryGraphStep"
-      }
+      },
+      {
+        name: "releaseLockStep",
+        type: "step",
+        description: "Release the lock on the cart.",
+        depth: 5,
+        link: "/references/medusa-workflows/steps/releaseLockStep"
+      },
     ]
   }}
   hideLegend
@@ -2798,20 +2854,24 @@ Medusa provides all these steps and workflows in its `@medusajs/medusa/core-flow
 Create the file `src/workflows/remove-bundle-from-cart.ts` with the following content:
 
 export const removeBundleFromCartWorkflowHighlights = [
-  ["19", "useQueryGraphStep", "Retrieve the details of the cart and its items."],
-  ["33", "transform", "Prepare the IDs of the items to remove."],
-  ["42", "deleteLineItemsWorkflow", "Remove the items in the bundle from the cart."],
-  ["50", "useQueryGraphStep", "Retrieve the updated cart."],
+  ["21", "useQueryGraphStep", "Retrieve the details of the cart and its items."],
+  ["35", "transform", "Prepare the IDs of the items to remove."],
+  ["44", "acquireLockStep", "Acquire a lock on the cart to prevent concurrent modifications."],
+  ["50", "deleteLineItemsWorkflow", "Remove the items in the bundle from the cart."],
+  ["58", "useQueryGraphStep", "Retrieve the updated cart."],
+  ["69", "releaseLockStep", "Release the lock on the cart."],
 ]
 
-```ts title="src/workflows/remove-bundle-from-cart.ts" collapsibleLines="1-10" expandButtonLabel="Show Imports" highlights={removeBundleFromCartWorkflowHighlights}
+```ts title="src/workflows/remove-bundle-from-cart.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports" highlights={removeBundleFromCartWorkflowHighlights}
 import { 
   createWorkflow, 
   transform, 
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { 
+  acquireLockStep,
   deleteLineItemsWorkflow, 
+  releaseLockStep,
   useQueryGraphStep,
 } from "@medusajs/medusa/core-flows"
 
@@ -2846,6 +2906,12 @@ export const removeBundleFromCartWorkflow = createWorkflow(
       }).map((item) => item!.id)
     })
 
+    acquireLockStep({
+      key: cart_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     deleteLineItemsWorkflow.runAsStep({
       input: {
         cart_id,
@@ -2865,6 +2931,10 @@ export const removeBundleFromCartWorkflow = createWorkflow(
       },
     }).config({ name: "retrieve-cart" })
     
+    releaseLockStep({
+      key: cart_id,
+    })
+    
     return new WorkflowResponse(updatedCarts[0])
   }
 )
@@ -2876,8 +2946,10 @@ In the workflow, you:
 
 - Retrieve the cart and its items using the `useQueryGraphStep`.
 - Use `transform` to filter the items in the cart and return only the IDs of the items that belong to the bundle.
+- Acquire a lock on the cart using the `acquireLockStep` to prevent concurrent modifications.
 - Remove the items from the cart using the `deleteLineItemsWorkflow`.
 - Retrieve the updated cart using the `useQueryGraphStep`.
+- Release the lock on the cart using the `releaseLockStep`.
 
 Finally, you return the updated cart.
 

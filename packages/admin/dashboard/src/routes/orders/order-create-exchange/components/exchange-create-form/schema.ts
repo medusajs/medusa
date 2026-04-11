@@ -19,6 +19,7 @@ export const ExchangeCreateSchema = z.object({
   inbound_option_id: z.string().nullish(),
   outbound_option_id: z.string().nullish(),
   send_notification: z.boolean().optional(),
+  carry_over_promotions: z.boolean().optional(),
 })
 
 export type CreateExchangeSchemaType = z.infer<typeof ExchangeCreateSchema>

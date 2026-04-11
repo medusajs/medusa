@@ -44,20 +44,20 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
-            "title": "Architecture",
-            "path": "/learn/introduction/architecture",
+            "title": "AI Assistants and LLMs",
+            "path": "/learn/introduction/build-with-llms-ai",
             "children": [],
-            "chapterTitle": "1.3. Architecture",
+            "chapterTitle": "1.3. AI Assistants and LLMs",
             "number": "1.3."
           },
           {
             "loaded": true,
             "isPathHref": true,
             "type": "link",
-            "title": "AI Assistants and LLMs",
-            "path": "/learn/introduction/build-with-llms-ai",
+            "title": "Architecture",
+            "path": "/learn/introduction/architecture",
             "children": [],
-            "chapterTitle": "1.4. AI Assistants and LLMs",
+            "chapterTitle": "1.4. Architecture",
             "number": "1.4."
           },
           {
@@ -547,7 +547,7 @@ export const generatedSidebars = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/learn/fundamentals/data-models/index",
+                "path": "/learn/fundamentals/data-models/indexes",
                 "title": "Define Index",
                 "children": [],
                 "chapterTitle": "3.5.6. Define Index",
@@ -698,11 +698,21 @@ export const generatedSidebars = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
+                "path": "/learn/fundamentals/api-routes/localization",
+                "title": "Localization",
+                "children": [],
+                "chapterTitle": "3.6.12. Localization",
+                "number": "3.6.12."
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
                 "path": "/learn/fundamentals/api-routes/override",
                 "title": "Override API Routes",
                 "children": [],
-                "chapterTitle": "3.6.12. Override API Routes",
-                "number": "3.6.12."
+                "chapterTitle": "3.6.13. Override API Routes",
+                "number": "3.6.13."
               }
             ],
             "chapterTitle": "3.6. API Routes",
@@ -840,9 +850,9 @@ export const generatedSidebars = [
                 "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/workflows/execute-another-workflow",
-                "title": "Execute Nested Workflows",
+                "title": "Nested Workflows",
                 "children": [],
-                "chapterTitle": "3.7.13. Execute Nested Workflows",
+                "chapterTitle": "3.7.13. Nested Workflows",
                 "number": "3.7.13."
               },
               {
@@ -905,6 +915,16 @@ export const generatedSidebars = [
                 "children": [],
                 "chapterTitle": "3.8.2. Emit Event",
                 "number": "3.8.2."
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/learn/fundamentals/events-and-subscribers/event-priority",
+                "title": "Event Priority",
+                "children": [],
+                "chapterTitle": "3.8.3. Event Priority",
+                "number": "3.8.3."
               }
             ],
             "chapterTitle": "3.8. Events and Subscribers",
@@ -1115,11 +1135,21 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "title": "pnpm",
+            "path": "/learn/configurations/pnpm",
+            "children": [],
+            "chapterTitle": "6.1. pnpm",
+            "number": "6.1."
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "title": "Environment Variables",
             "path": "/learn/fundamentals/environment-variables",
             "children": [],
-            "chapterTitle": "6.1. Environment Variables",
-            "number": "6.1."
+            "chapterTitle": "6.2. Environment Variables",
+            "number": "6.2."
           },
           {
             "loaded": true,
@@ -1135,12 +1165,12 @@ export const generatedSidebars = [
                 "title": "Asymmetric Encryption",
                 "path": "/learn/configurations/medusa-config/asymmetric-encryption",
                 "children": [],
-                "chapterTitle": "6.2.1. Asymmetric Encryption",
-                "number": "6.2.1."
+                "chapterTitle": "6.3.1. Asymmetric Encryption",
+                "number": "6.3.1."
               }
             ],
-            "chapterTitle": "6.2. Medusa Configuations",
-            "number": "6.2."
+            "chapterTitle": "6.3. Medusa Configuations",
+            "number": "6.3."
           },
           {
             "loaded": true,
@@ -1149,8 +1179,8 @@ export const generatedSidebars = [
             "title": "Type Aliases",
             "path": "/learn/configurations/ts-aliases",
             "children": [],
-            "chapterTitle": "6.3. Type Aliases",
-            "number": "6.3."
+            "chapterTitle": "6.4. Type Aliases",
+            "number": "6.4."
           }
         ],
         "chapterTitle": "6. Configurations",
@@ -1294,7 +1324,37 @@ export const generatedSidebars = [
         "loaded": true,
         "isPathHref": true,
         "type": "category",
-        "title": "8. Production",
+        "title": "8. Best Practices",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/learn/best-practices/third-party-sync",
+            "title": "Third-Party Syncing",
+            "children": [],
+            "chapterTitle": "8.1. Third-Party Syncing",
+            "number": "8.1."
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "ref",
+            "path": "/learn/fundamentals/scheduled-jobs/interval",
+            "title": "Scheduled Job Intervals",
+            "children": [],
+            "chapterTitle": "8.2. Scheduled Job Intervals",
+            "number": "8.2."
+          }
+        ],
+        "chapterTitle": "8. Best Practices",
+        "number": "8."
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "category",
+        "title": "9. Production",
         "children": [
           {
             "loaded": true,
@@ -1303,8 +1363,8 @@ export const generatedSidebars = [
             "path": "/learn/build",
             "title": "Build",
             "children": [],
-            "chapterTitle": "8.1. Build",
-            "number": "8.1."
+            "chapterTitle": "9.1. Build",
+            "number": "9.1."
           },
           {
             "loaded": true,
@@ -1313,8 +1373,8 @@ export const generatedSidebars = [
             "path": "/learn/production/worker-mode",
             "title": "Worker Modes",
             "children": [],
-            "chapterTitle": "8.2. Worker Modes",
-            "number": "8.2."
+            "chapterTitle": "9.2. Worker Modes",
+            "number": "9.2."
           },
           {
             "loaded": true,
@@ -1330,22 +1390,22 @@ export const generatedSidebars = [
                 "path": "/learn/deployment/general",
                 "title": "General Deployment",
                 "children": [],
-                "chapterTitle": "8.3.1. General Deployment",
-                "number": "8.3.1."
+                "chapterTitle": "9.3.1. General Deployment",
+                "number": "9.3.1."
               }
             ],
-            "chapterTitle": "8.3. Deployment Overview",
-            "number": "8.3."
+            "chapterTitle": "9.3. Deployment Overview",
+            "number": "9.3."
           }
         ],
-        "chapterTitle": "8. Production",
-        "number": "8."
+        "chapterTitle": "9. Production",
+        "number": "9."
       },
       {
         "loaded": true,
         "isPathHref": true,
         "type": "category",
-        "title": "9. Upgrade",
+        "title": "10. Upgrade",
         "children": [
           {
             "loaded": true,
@@ -1354,8 +1414,8 @@ export const generatedSidebars = [
             "path": "/learn/update",
             "title": "Update Medusa",
             "children": [],
-            "chapterTitle": "9.1. Update Medusa",
-            "number": "9.1."
+            "chapterTitle": "10.1. Update Medusa",
+            "number": "10.1."
           },
           {
             "loaded": true,
@@ -1364,8 +1424,8 @@ export const generatedSidebars = [
             "path": "https://github.com/medusajs/medusa/releases",
             "title": "Release Notes",
             "children": [],
-            "chapterTitle": "9.2. Release Notes",
-            "number": "9.2."
+            "chapterTitle": "10.2. Release Notes",
+            "number": "10.2."
           },
           {
             "loaded": true,
@@ -1381,22 +1441,32 @@ export const generatedSidebars = [
                 "title": "Replace Imports (v2.11.0+)",
                 "path": "/learn/codemods/replace-imports",
                 "children": [],
-                "chapterTitle": "9.3.1. Replace Imports (v2.11.0+)",
-                "number": "9.3.1."
+                "chapterTitle": "10.3.1. Replace Imports (v2.11.0+)",
+                "number": "10.3.1."
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Replace Zod Imports (v2.13.0+)",
+                "path": "/learn/codemods/replace-zod-imports",
+                "children": [],
+                "chapterTitle": "10.3.2. Replace Zod Imports (v2.13.0+)",
+                "number": "10.3.2."
               }
             ],
-            "chapterTitle": "9.3. Codemods",
-            "number": "9.3."
+            "chapterTitle": "10.3. Codemods",
+            "number": "10.3."
           }
         ],
-        "chapterTitle": "9. Upgrade",
-        "number": "9."
+        "chapterTitle": "10. Upgrade",
+        "number": "10."
       },
       {
         "loaded": true,
         "isPathHref": true,
         "type": "category",
-        "title": "10. Resources",
+        "title": "11. Resources",
         "children": [
           {
             "loaded": true,
@@ -1411,8 +1481,8 @@ export const generatedSidebars = [
                 "path": "/learn/resources/contribution-guidelines/docs",
                 "title": "Docs",
                 "children": [],
-                "chapterTitle": "10.1.1. Docs",
-                "number": "10.1.1."
+                "chapterTitle": "11.1.1. Docs",
+                "number": "11.1.1."
               },
               {
                 "loaded": true,
@@ -1421,12 +1491,12 @@ export const generatedSidebars = [
                 "path": "/learn/resources/contribution-guidelines/admin-translations",
                 "title": "Admin Translations",
                 "children": [],
-                "chapterTitle": "10.1.2. Admin Translations",
-                "number": "10.1.2."
+                "chapterTitle": "11.1.2. Admin Translations",
+                "number": "11.1.2."
               }
             ],
-            "chapterTitle": "10.1. Contribution Guidelines",
-            "number": "10.1."
+            "chapterTitle": "11.1. Contribution Guidelines",
+            "number": "11.1."
           },
           {
             "loaded": true,
@@ -1435,12 +1505,12 @@ export const generatedSidebars = [
             "path": "/learn/resources/usage",
             "title": "Usage",
             "children": [],
-            "chapterTitle": "10.2. Usage",
-            "number": "10.2."
+            "chapterTitle": "11.2. Usage",
+            "number": "11.2."
           }
         ],
-        "chapterTitle": "10. Resources",
-        "number": "10."
+        "chapterTitle": "11. Resources",
+        "number": "11."
       }
     ]
   }

@@ -1,0 +1,227 @@
+---
+tags:
+  - translation
+  - storefront
+products:
+  - translation
+---
+
+import { Prerequisites, CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Storefront Localization`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to support multiple languages and locales in your storefront.
+
+<Prerequisites
+  items={[
+    {
+      text: "Translation Module Configured",
+      link: "/commerce-modules/translation#configure-translation-module",
+    }
+  ]}
+/>
+
+## Overview
+
+Medusa provides localization features through the [Translation Module](../../commerce-modules/translation/page.mdx). The Translation Module allows you to manage locales and translations for various resources in your store, such as products and categories.
+
+Admin users can [specify supported locales](!user-guide!/settings/store#manage-store-locales), and [add translations for different resources](!user-guide!/settings/translations) from the Medusa Admin. Then, you can allow customers to choose their locale and show them translated content in your storefront.
+
+Refer to the [Translation Module documentation](../../commerce-modules/translation/page.mdx) to learn more about translation concepts and features. This guide focuses on how to serve localized content in your storefront.
+
+---
+
+## Retrieve Supported Locales
+
+You can retrieve the list of locales supported by your store using the [List Locales Store API route](!api!/store#locales_getlocales). You can display this list to customers, allowing them to select their preferred language.
+
+For example:
+
+<Note title="Tip">
+
+Learn how to install and configure the JS SDK in the [JS SDK documentation](../../js-sdk/page.mdx).
+
+</Note>
+
+<CodeTabs group="store-request">
+  <CodeTab label="React" value="react">
+
+  ```tsx highlights={[["18"], ["19"], ["20"], ["21"], ["22"]]}
+  "use client" // include with Next.js 13+
+
+  import { useEffect, useState } from "react"
+  import { HttpTypes } from "@medusajs/types"
+  import { sdk } from "@/lib/sdk"
+
+  export default function Locales() {
+    const [loading, setLoading] = useState(true)
+    const [locales, setLocales] = useState<
+      HttpTypes.StoreLocale[]
+    >([])
+
+    useEffect(() => {
+      if (!loading) {
+        return 
+      }
+
+      sdk.store.locale.list()
+      .then(({ locales: dataLocales }) => {
+        setLocales(dataLocales)
+        setLoading(false)
+      })
+    }, [loading])
+
+    return (
+      <div>
+        {loading && <span>Loading...</span>}
+        {!loading && locales.length === 0 && <span>No locales found.</span>}
+        {!loading && locales.length > 0 && (
+          <ul>
+            {locales.map((locale) => (
+              <li key={locale.code}>{locale.name}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    )
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="JS SDK" value="js-sdk">
+
+  ```ts
+  sdk.store.locale.list()
+  .then(({ locales: dataLocales }) => {
+    // TODO use locales...
+    console.log(dataLocales)
+  })
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+The response has a `locales` field, which is an array of [locales](!api!/store#locales_locale_schema).
+
+Each locale has a `code` property that follows the [IETF BCP 47 standard](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1). For example, `en-US` represents American English, while `fr-FR` represents French (France).
+
+---
+
+## Retrieve Translations for Resources
+
+Currently, you can retrieve translations using the [Store API routes](!api!/store) for product-related resources, such as products, product variants, and categories. Future releases will expand translation support to additional resources.
+
+By default, Medusa serves the original content of a resource. You can override the locale for a request to get the translated content if available.
+
+### Set Locale in JS SDK
+
+The JS SDK has a `setLocale` method that you can use to set the locale for subsequent requests.
+
+The JS SDK will automatically include the `x-medusa-locale` header in API requests. Also, if your application supports `localStorage`, the method sets the locale in the `medusa_locale` key of the `localStorage`.
+
+For example, when a customer selects a locale in your storefront, you can set the locale in the JS SDK:
+
+```ts
+sdk.setLocale("fr-FR")
+// products content is fetched in French
+const { products } = await sdk.store.product.list()
+```
+
+In the above example, you set the locale to French using the `setLocale` method. It accepts the locale string in the [IETF BCP 47 standard](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1).
+
+When you fetch the products, their content, such as title and description, is in French and falls back to the original content if translations aren't available.
+
+You can also retrieve the currently set locale using the `getLocale` method:
+
+```ts
+const currentLocale = sdk.getLocale()
+console.log(currentLocale) // "fr-FR"
+```
+
+### Set Locale without JS SDK
+
+If you're sending requests to the Store API without using the JS SDK, you can set the locale using either the `locale` query parameter or the `x-medusa-locale` header.
+
+<CodeTabs group="set-locale">
+  <CodeTab label="Using Query Parameter" value="query-param">
+
+```bash
+curl "http://localhost:9000/store/products?locale=fr-FR" \
+-H 'x-publishable-api-key: {your_publishable_api_key}'
+```
+
+  </CodeTab>
+  <CodeTab label="Using Header" value="header">
+
+```bash
+curl "http://localhost:9000/store/products" \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
+-H "x-medusa-locale: fr-FR"
+```
+
+  </CodeTab>
+</CodeTabs>
+
+Learn more in the [Store API reference](!api!/store#localization).
+
+### Set Locale in Server Environments
+
+If you're making Store API requests from a server environment (such as server components or server actions in Next.js), you can use cookies to persist the selected locale across requests.
+
+When a customer selects a locale in your storefront, set a cookie (for example, `_medusa_locale`) with the selected locale value:
+
+```ts
+import { cookies } from "next/headers"
+
+export const setLocale = async (locale: string) => {
+  const cookies_ = await cookies()
+  cookies_.set("_medusa_locale", locale, {
+    maxAge: 60 * 60 * 24 * 7,
+  })
+}
+```
+
+Then, create a utility that returns the locale from the cookie as a `x-medusa-locale` header:
+
+```ts
+import { cookies } from "next/headers"
+
+export const getLocaleHeader = async () => {
+  try {
+    const cookies_ = await cookies()
+    const locale = cookies_.get("_medusa_locale")?.value
+
+    return { "x-medusa-locale": locale }
+  } catch {
+    return {}
+  }
+}
+```
+
+Finally, use the utility to set the `x-medusa-locale` header in your Store API requests:
+
+```ts
+import { getLocaleHeader } from "@/lib/locale"
+
+export async function listProducts() {
+  const headers = {
+    ...(await getLocaleHeader()),
+  }
+
+  return sdk.store.product.list({}, { headers })
+}
+```
+
+### Retrieve Translated Products
+
+When you pass the locale while fetching products, their content will be in the specified locale if translations are available. Learn more in the [List Products](../products/list/page.mdx) guide.
+
+### Set Cart's Locale
+
+When creating a cart, you should set the cart's locale to ensure that item contents are in the correct language. You can also update the cart's locale later if the customer changes their language preference.
+
+Learn more in the [Create Cart](../cart/create/page.mdx) and [Update Cart](../cart/update/page.mdx) guides.

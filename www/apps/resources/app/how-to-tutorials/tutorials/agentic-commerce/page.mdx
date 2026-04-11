@@ -84,7 +84,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 Begin by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -1187,11 +1187,25 @@ The workflow has the following steps:
             depth: 1
           },
           {
+            type: "step",
+            name: "acquireLockStep",
+            description: "Acquire lock on the cart to avoid race conditions",
+            link: "/references/medusa-workflows/steps/acquireLockStep",
+            depth: 2,
+          },
+          {
             type: "workflow",
             name: "addShippingMethodToCartWorkflow",
             description: "Add shipping method to the cart",
             link: "/references/medusa-workflows/addShippingMethodToCartWorkflow",
-            depth: 2
+            depth: 3
+          },
+          {
+            type: "step",
+            name: "releaseLockStep",
+            description: "Release the lock on the cart.",
+            link: "/references/medusa-workflows/steps/releaseLockStep",
+            depth: 4,
           }
         ],
         depth: 8
@@ -1210,7 +1224,7 @@ These steps and workflows are available in Medusa out-of-the-box. So, you can im
 
 Create the file `src/workflows/create-checkout-session.ts` with the following content:
 
-```ts title="src/workflows/create-checkout-session.ts" collapsibleLines="1-18" expandButtonLabel="Show Imports"
+```ts title="src/workflows/create-checkout-session.ts" collapsibleLines="1-20" expandButtonLabel="Show Imports"
 import { 
   createWorkflow, 
   transform, 
@@ -1218,11 +1232,13 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { 
+  acquireLockStep,
   addShippingMethodToCartWorkflow, 
   createCartWorkflow, 
   CreateCartWorkflowInput, 
   createCustomersWorkflow, 
   listShippingOptionsForCartWithPricingWorkflow, 
+  releaseLockStep, 
   useQueryGraphStep,
 } from "@medusajs/medusa/core-flows"
 import { 
@@ -1463,8 +1479,16 @@ when(input, (input) => !!input.fulfillment_address)
       }],
     }
   })
+  acquireLockStep({
+    key: createdCart.id,
+    timeout: 2,
+    ttl: 10,
+  })
   addShippingMethodToCartWorkflow.runAsStep({
     input: shippingMethodData,
+  })
+  releaseLockStep({
+    key: createdCart.id,
   })
 })
 
@@ -1475,7 +1499,9 @@ You use the `when` function to check if a fulfillment address is provided in the
 
 - Retrieve the shipping options using the [listShippingOptionsForCartWithPricingWorkflow](/references/medusa-workflows/listShippingOptionsForCartWithPricingWorkflow).
 - Create a variable with the cheapest shipping option using the `transform` function.
+- Acquire a lock on the cart to avoid race conditions.
 - Add the cheapest shipping option to the cart using the [addShippingMethodToCartWorkflow](/references/medusa-workflows/addShippingMethodToCartWorkflow).
+- Release the lock on the cart.
 
 #### Prepare Checkout Session Response
 
@@ -1510,9 +1536,15 @@ Refer to the [API routes](!docs!/learn/fundamentals/api-routes) to learn more ab
 
 So, to create an API route, create the file `src/api/checkout_sessions/route.ts` with the following content:
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 ```ts title="src/api/checkout_sessions/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { createCheckoutSessionWorkflow } from "../../workflows/create-checkout-session"
 import { MedusaError } from "@medusajs/framework/utils"
 
@@ -1896,11 +1928,18 @@ The workflow has the following steps:
         depth: 4
       },
       {
+        type: "step",
+        name: "acquireLockStep",
+        description: "Acquire a lock on the cart to avoid concurrent modifications.",
+        link: "/references/medusa-workflows/steps/acquireLockStep",
+        depth: 5,
+      },
+      {
         type: "workflow",
         name: "updateCartWorkflow",
         description: "Update the cart with the new data",
         link: "/references/medusa-workflows/updateCartWorkflow",
-        depth: 5
+        depth: 6
       },
       {
         type: "when",
@@ -1914,13 +1953,20 @@ The workflow has the following steps:
             depth: 1
           }
         ],
-        depth: 6
+        depth: 7
       },
       {
         type: "workflow",
         name: "prepareCheckoutSessionDataWorkflow",
         description: "Prepare the checkout session response",
-        depth: 7
+        depth: 8
+      },
+      {
+        type: "step",
+        name: "releaseLockStep",
+        description: "Release lock on the cart",
+        link: "/references/medusa-workflows/steps/releaseLockStep",
+        depth: 9
       }
     ]
   }}
@@ -1930,7 +1976,7 @@ These steps and workflows are available in Medusa out-of-the-box. So, you can im
 
 Create the file `src/workflows/update-checkout-session.ts` with the following content:
 
-```ts title="src/workflows/update-checkout-session.ts" collapsibleLines="1-16" expandButtonLabel="Show Imports"
+```ts title="src/workflows/update-checkout-session.ts" collapsibleLines="1-18" expandButtonLabel="Show Imports"
 import { 
   createWorkflow, 
   transform, 
@@ -1938,8 +1984,10 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { 
+  acquireLockStep,
   addShippingMethodToCartWorkflow, 
   createCustomersWorkflow, 
+  releaseLockStep, 
   updateCartWorkflow, 
   useQueryGraphStep,
 } from "@medusajs/medusa/core-flows"
@@ -2071,6 +2119,11 @@ You use the `when` function to check if items are provided in the input. If so, 
 Next, you'll update the cart based on the input. Replace the `TODO` in the workflow with the following:
 
 ```ts title="src/workflows/update-checkout-session.ts"
+acquireLockStep({
+  key: input.cart_id,
+  timeout: 2,
+  ttl: 10,
+})
 // Prepare update data
 const updateData = transform({
   input,
@@ -2106,9 +2159,11 @@ updateCartWorkflow.runAsStep({
 // TODO add shipping method if fulfillment option ID is provided
 ```
 
-You use the `transform` function to prepare the input for the `updateCartWorkflow` workflow. You map the input properties to the cart properties.
+First, you acquire a lock on the cart to avoid concurrent modifications.
 
-Then, you update the cart using the `updateCartWorkflow`. This workflow will also clear the cart's payment sessions.
+Then, you use the `transform` function to prepare the input for the `updateCartWorkflow` workflow. You map the input properties to the cart properties.
+
+After that, you update the cart using the `updateCartWorkflow`. This workflow will also clear the cart's payment sessions.
 
 #### Add Shipping Method if Fulfillment Option ID is Provided
 
@@ -2136,12 +2191,18 @@ const responseData = prepareCheckoutSessionDataWorkflow.runAsStep({
   },
 })
 
+releaseLockStep({
+  key: input.cart_id,
+})
+
 return new WorkflowResponse(responseData)
 ```
 
 You use the `when` function to check if a fulfillment option ID is provided in the input. If it is, you add it to the cart using the `addShippingMethodToCartWorkflow` workflow.
 
-Then, you prepare the checkout session response using the `prepareCheckoutSessionDataWorkflow` workflow you created earlier. You return it as the workflow's response.
+Then, you prepare the checkout session response using the `prepareCheckoutSessionDataWorkflow` workflow you created earlier.
+
+Finally, you release the lock on the cart and return the prepared response as the workflow's response.
 
 ### b. Update Checkout Session API Route
 
@@ -2152,7 +2213,7 @@ Create the file `src/api/checkout_sessions/[id]/route.ts` with the following con
 ```ts title="src/api/checkout_sessions/[id]/route.ts" collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
 import { updateCheckoutSessionWorkflow } from "../../../workflows/update-checkout-session"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { MedusaError } from "@medusajs/framework/utils"
 import { prepareCheckoutSessionDataWorkflow } from "../../../workflows/prepare-checkout-session-data"
 import { refreshPaymentCollectionForCartWorkflow } from "@medusajs/medusa/core-flows"
@@ -2349,7 +2410,7 @@ export const GET = async (
         },
       })
 
-    res.set(responseHeaders).status(201).json(result)
+    res.set(responseHeaders).status(200).json(result)
   } catch (error) {
     const medusaError = error as MedusaError
     const statusCode = medusaError.type === MedusaError.Types.NOT_FOUND ? 404 : 500
@@ -2426,6 +2487,13 @@ The workflow that completes a checkout session has the following steps:
         depth: 1,
       },
       {
+        type: "step",
+        name: "acquireLockStep",
+        description: "Acquire a lock on the cart to prevent concurrent modifications",
+        link: "/references/medusa-workflows/steps/acquireLockStep",
+        depth: 2,
+      },
+      {
         type: "when",
         condition: "!!input.payment_data.billing_address",
         steps: [
@@ -2437,7 +2505,7 @@ The workflow that completes a checkout session has the following steps:
             depth: 1
           }
         ],
-        depth: 2
+        depth: 3
       },
       {
         type: "when",
@@ -2471,7 +2539,7 @@ The workflow that completes a checkout session has the following steps:
             depth: 4
           }
         ],
-        depth: 3
+        depth: 4
       },
       {
         type: "when",
@@ -2484,7 +2552,14 @@ The workflow that completes a checkout session has the following steps:
             depth: 1
           }
         ],
-        depth: 4
+        depth: 5
+      },
+      {
+        type: "step",
+        name: "releaseLockStep",
+        description: "Release the lock on the cart",
+        link: "/references/medusa-workflows/steps/releaseLockStep",
+        depth: 6,
       }
     ]
   }}
@@ -2494,7 +2569,7 @@ These steps and workflows are available in Medusa out-of-the-box. So, you can im
 
 To create the workflow, create the file `src/workflows/complete-checkout-session.ts` with the following content:
 
-```ts title="src/workflows/complete-checkout-session.ts" collapsibleLines="1-19" expandButtonLabel="Show Imports"
+```ts title="src/workflows/complete-checkout-session.ts" collapsibleLines="1-21" expandButtonLabel="Show Imports"
 import { 
   createWorkflow, 
   transform, 
@@ -2502,10 +2577,12 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { 
+  acquireLockStep,
   completeCartWorkflow, 
   createPaymentCollectionForCartWorkflow, 
   createPaymentSessionsWorkflow, 
   refreshPaymentCollectionForCartWorkflow, 
+  releaseLockStep, 
   updateCartWorkflow, 
   useQueryGraphStep,
 } from "@medusajs/medusa/core-flows"
@@ -2556,6 +2633,11 @@ export const completeCheckoutSessionWorkflow = createWorkflow(
         throwIfKeyNotFound: true,
       },
     })
+    acquireLockStep({
+      key: input.cart_id,
+      timeout: 2,
+      ttl: 10,
+    })
 
     // TODO update cart with billing address if provided
   }
@@ -2564,7 +2646,7 @@ export const completeCheckoutSessionWorkflow = createWorkflow(
 
 The `completeCheckoutSessionWorkflow` accepts an input with the properties received from the AI agent to complete the checkout session.
 
-So far, you retrieve the cart using the `useQueryGraphStep` step.
+So far, you retrieve the cart using the `useQueryGraphStep`, and you acquire a lock on the cart using the `acquireLockStep` to prevent concurrent modifications.
 
 #### Update Cart with Billing Address
 
@@ -2744,10 +2826,16 @@ const responseData = transform({
   return data.completeCartResponse || data.invalidPaymentResponse
 })
 
+releaseLockStep({
+  key: input.cart_id,
+})
+
 return new WorkflowResponse(responseData)
 ```
 
-You use `transform` to pick either the response from completing the cart or the error response for an invalid payment provider. Then, you return the response.
+You use `transform` to pick either the response from completing the cart or the error response for an invalid payment provider.
+
+Then, you release the lock on the cart using the `releaseLockStep` step, and return the response as the workflow's response.
 
 ### b. Complete Checkout Session API Route
 
@@ -2757,7 +2845,7 @@ Create the file `src/api/checkout_sessions/[id]/complete/route.ts` with the foll
 
 ```ts title="src/api/checkout_sessions/[id]/complete/route.ts" collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { completeCheckoutSessionWorkflow } from "../../../../workflows/complete-checkout-session"
 import { MedusaError } from "@medusajs/framework/utils"
 import { refreshPaymentCollectionForCartWorkflow } from "@medusajs/medusa/core-flows"
@@ -3014,6 +3102,13 @@ The workflow that cancels a checkout session has the following steps:
       depth: 2
      },
      {
+      type: "step",
+      name: "acquireLockStep",
+      description: "Acquire a lock on the cart to prevent concurrent modifications",
+      link: "/references/medusa-workflows/steps/acquireLockStep",
+      depth: 3,
+     },
+     {
       type: "when",
       condition: "!!data.carts[0].payment_collection?.payment_sessions?.length",
       steps: [
@@ -3024,20 +3119,27 @@ The workflow that cancels a checkout session has the following steps:
           depth: 1
         }
       ],
-      depth: 3
+      depth: 4
      },
      {
       type: "workflow",
       name: "updateCartWorkflow",
       description: "Update the cart status to canceled",
       link: "/references/medusa-workflows/updateCartWorkflow",
-      depth: 4
+      depth: 5
      },
      {
       type: "workflow",
       name: "prepareCheckoutSessionDataWorkflow",
       description: "Prepare the checkout session response",
-      depth: 5
+      depth: 6
+     },
+     {
+      type: "step",
+      name: "releaseLockStep",
+      description: "Release the lock on the cart",
+      link: "/references/medusa-workflows/steps/releaseLockStep",
+      depth: 7
      }
     ]
   }}
@@ -3173,7 +3275,7 @@ Create the file `src/workflows/cancel-checkout-session.ts` with the following co
 ```ts title="src/workflows/cancel-checkout-session.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
 import { validateCartCancelationStep, ValidateCartCancelationStepInput } from "./steps/validate-cart-cancelation"
-import { updateCartWorkflow, useQueryGraphStep } from "@medusajs/medusa/core-flows"
+import { acquireLockStep, releaseLockStep, updateCartWorkflow, useQueryGraphStep } from "@medusajs/medusa/core-flows"
 import { cancelPaymentSessionsStep } from "./steps/cancel-payment-sessions"
 import { prepareCheckoutSessionDataWorkflow } from "./prepare-checkout-session-data"
 
@@ -3204,6 +3306,12 @@ export const cancelCheckoutSessionWorkflow = createWorkflow(
       cart: carts[0],
     } as unknown as ValidateCartCancelationStepInput)
 
+    acquireLockStep({
+      key: input.cart_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     // TODO cancel payment sessions if any
   }
 )
@@ -3211,7 +3319,11 @@ export const cancelCheckoutSessionWorkflow = createWorkflow(
 
 The `cancelCheckoutSessionWorkflow` accepts an input with the cart ID of the checkout session to cancel.
 
-So far, you retrieve the cart using the `useQueryGraphStep` step and validate that the cart can be canceled using the `validateCartCancelationStep`.
+So far, you:
+
+1. Retrieve the cart using the `useQueryGraphStep` step.
+2. Validate that the cart can be canceled using the `validateCartCancelationStep`.
+3. Acquire a lock on the cart using the `acquireLockStep` to prevent concurrent modifications.
 
 Next, you'll cancel the payment sessions if there are any. Replace the `TODO` in the workflow with the following:
 
@@ -3246,7 +3358,7 @@ You use the `when` function to check if the cart has any payment sessions. If so
 
 You also update the cart using the `updateCartWorkflow` workflow to add a `checkout_session_canceled` metadata field to the cart. This is useful to detect canceled checkout sessions in the future.
 
-Finally, you'll prepare and return the checkout session response. Replace the `TODO` in the workflow with the following:
+Finally, you'll prepare the checkout session response, release the lock, and return the response. Replace the `TODO` in the workflow with the following:
 
 ```ts title="src/workflows/cancel-checkout-session.ts"
 const responseData = prepareCheckoutSessionDataWorkflow.runAsStep({
@@ -3255,10 +3367,14 @@ const responseData = prepareCheckoutSessionDataWorkflow.runAsStep({
   },
 })
 
+releaseLockStep({
+  key: input.cart_id,
+})
+
 return new WorkflowResponse(responseData)
 ```
 
-You prepare the checkout session response using the `prepareCheckoutSessionDataWorkflow` workflow and return it as the workflow's response.
+You prepare the checkout session response using the `prepareCheckoutSessionDataWorkflow` workflow, then you release the lock on the cart using the `releaseLockStep`. Finally, you return the response.
 
 ### b. Cancel Checkout Session API Route
 

@@ -20,7 +20,7 @@ This workflow updates sales channels matching the specified conditions. It's use
 You can use this workflow within your customizations or your own custom workflows, allowing you to
 update sales channels within your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/96b2df170752a0d66628a84c46397a24ca9502da/packages/core/core-flows/src/sales-channel/workflows/update-sales-channels.ts#L60" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/sales-channel/workflows/update-sales-channels.ts#L60" />
 
 ## Examples
 
@@ -163,7 +163,11 @@ const myWorkflow = createWorkflow(
 
 This section lists the events that are either triggered by the `emitEventStep` in the workflow, or by another workflow executed within this workflow.
 
+:::note
+
 The `emitEventStep` only emits the event after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+
+:::
 
 You can listen to these events in a subscriber, as explained in the [Subscribers](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers) documentation.
 
@@ -194,18 +198,18 @@ Emitted when sales channels are updated.
 </Table.Cell>
       <Table.Cell>
 ```ts blockStyle="inline"
-[{
+{
   id, // The ID of the sales channel
-}]
+}
 ```
 </Table.Cell>
       <Table.Cell>
 <CopyGeneratedSnippetButton tooltipText="Copy subscriber for event" type="subscriber" options={{
         event: "sales-channel.updated",
         payload: `\`\`\`ts
-[{
+{
   id, // The ID of the sales channel
-}]
+}
 \`\`\``
         }}/>
 </Table.Cell>

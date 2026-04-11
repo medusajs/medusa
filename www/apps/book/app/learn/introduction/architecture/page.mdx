@@ -37,6 +37,8 @@ These layers of stack can be implemented within [plugins](../../fundamentals/plu
 
 The Medusa application injects into each module, including your [custom modules](../../fundamentals/modules/page.mdx), a connection to the configured PostgreSQL database. Modules use that connection to read and write data to the database.
 
+Medusa only supports PostgreSQL as the underlying database. You can also integrate other databases in a [custom module](../../fundamentals/modules/page.mdx). For example, the [Loader chapter](../../fundamentals/modules/loaders/page.mdx#example-register-custom-mongodb-connection) shows how to connect to a MongoDB database through a custom module.
+
 <Note>
 
 Modules can be implemented within [plugins](../../fundamentals/plugins/page.mdx).

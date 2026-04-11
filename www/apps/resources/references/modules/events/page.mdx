@@ -43,6 +43,7 @@ to send a reset password email to the user or customer, for example.
   entity_id, // The identifier of the user or customer. For example, an email address.
   actor_type, // The type of actor. For example, "customer", "user", or custom.
   token, // The generated token.
+  metadata, // Optional custom metadata passed from the request.
 }
 \`\`\``} />
 
@@ -56,6 +57,7 @@ to send a reset password email to the user or customer, for example.
   entity_id, // The identifier of the user or customer. For example, an email address.
   actor_type, // The type of actor. For example, "customer", "user", or custom.
   token, // The generated token.
+  metadata, // Optional custom metadata passed from the request.
 }
 ```
 
@@ -164,10 +166,12 @@ Emitted when a cart's details are updated.
 
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
+- [deleteLineItemsWorkflow](/references/medusa-workflows/deleteLineItemsWorkflow)
 - [updateLineItemInCartWorkflow](/references/medusa-workflows/updateLineItemInCartWorkflow)
 - [updateCartWorkflow](/references/medusa-workflows/updateCartWorkflow)
 - [addToCartWorkflow](/references/medusa-workflows/addToCartWorkflow)
 - [addShippingMethodToCartWorkflow](/references/medusa-workflows/addShippingMethodToCartWorkflow)
+- [updateLineItemInCartWorkflow](/references/medusa-workflows/updateLineItemInCartWorkflow)
 
 ---
 
@@ -269,9 +273,9 @@ Emitted when a customer is deleted.
 </Table>
 
 <EventHeader headerLvl="3" headerProps={{ id: "customercreated", children: (<>customer.created</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="customer.created" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the customer
-}]
+}
 \`\`\``} />
 
 Emitted when a customer is created.
@@ -279,9 +283,9 @@ Emitted when a customer is created.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the customer
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -294,9 +298,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "customerupdated", children: (<>customer.updated</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="customer.updated" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the customer
-}]
+}
 \`\`\``} />
 
 Emitted when a customer is updated.
@@ -304,9 +308,9 @@ Emitted when a customer is updated.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the customer
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -318,9 +322,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "customerdeleted", children: (<>customer.deleted</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="customer.deleted" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the customer
-}]
+}
 \`\`\``} />
 
 Emitted when a customer is deleted.
@@ -328,9 +332,9 @@ Emitted when a customer is deleted.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the customer
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -506,9 +510,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "invitecreated", children: (<>invite.created</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="invite.created" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the invite
-}]
+}
 \`\`\``} />
 
 Emitted when invites are created. You can listen to this event
@@ -517,9 +521,9 @@ to send an email to the invited users, for example.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the invite
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -531,9 +535,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "invitedeleted", children: (<>invite.deleted</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="invite.deleted" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the invite
-}]
+}
 \`\`\``} />
 
 Emitted when invites are deleted.
@@ -541,9 +545,9 @@ Emitted when invites are deleted.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the invite
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -555,9 +559,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "inviteresent", children: (<>invite.resent</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="invite.resent" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the invite
-}]
+}
 \`\`\``} />
 
 Emitted when invites should be resent because their token was
@@ -567,9 +571,9 @@ for example.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the invite
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -908,9 +912,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "ordercompleted", children: (<>order.completed</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="order.completed" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the order
-}]
+}
 \`\`\``} />
 
 Emitted when orders are completed.
@@ -918,9 +922,9 @@ Emitted when orders are completed.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the order
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -932,9 +936,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "orderarchived", children: (<>order.archived</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="order.archived" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the order
-}]
+}
 \`\`\``} />
 
 Emitted when an order is archived.
@@ -942,9 +946,9 @@ Emitted when an order is archived.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the order
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1273,9 +1277,9 @@ Emitted when product categories are deleted.
 </Table>
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-categorycreated", children: (<>product-category.created</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-category.created" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product category
-}]
+}
 \`\`\``} />
 
 Emitted when product categories are created.
@@ -1283,9 +1287,9 @@ Emitted when product categories are created.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product category
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1297,9 +1301,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-categoryupdated", children: (<>product-category.updated</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-category.updated" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product category
-}]
+}
 \`\`\``} />
 
 Emitted when product categories are updated.
@@ -1307,9 +1311,9 @@ Emitted when product categories are updated.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product category
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1321,9 +1325,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-categorydeleted", children: (<>product-category.deleted</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-category.deleted" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product category
-}]
+}
 \`\`\``} />
 
 Emitted when product categories are deleted.
@@ -1331,9 +1335,9 @@ Emitted when product categories are deleted.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product category
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1388,9 +1392,9 @@ Emitted when product collections are deleted.
 </Table>
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-collectioncreated", children: (<>product-collection.created</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-collection.created" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product collection
-}]
+}
 \`\`\``} />
 
 Emitted when product collections are created.
@@ -1398,9 +1402,9 @@ Emitted when product collections are created.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product collection
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1412,9 +1416,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-collectionupdated", children: (<>product-collection.updated</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-collection.updated" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product collection
-}]
+}
 \`\`\``} />
 
 Emitted when product collections are updated.
@@ -1422,9 +1426,9 @@ Emitted when product collections are updated.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product collection
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1436,9 +1440,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-collectiondeleted", children: (<>product-collection.deleted</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-collection.deleted" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product collection
-}]
+}
 \`\`\``} />
 
 Emitted when product collections are deleted.
@@ -1446,9 +1450,9 @@ Emitted when product collections are deleted.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product collection
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1503,9 +1507,9 @@ Emitted when product options are deleted.
 </Table>
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-optionupdated", children: (<>product-option.updated</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-option.updated" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product option
-}]
+}
 \`\`\``} />
 
 Emitted when product options are updated.
@@ -1513,9 +1517,9 @@ Emitted when product options are updated.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product option
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1527,9 +1531,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-optioncreated", children: (<>product-option.created</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-option.created" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product option
-}]
+}
 \`\`\``} />
 
 Emitted when product options are created.
@@ -1537,9 +1541,9 @@ Emitted when product options are created.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product option
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1551,9 +1555,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-optiondeleted", children: (<>product-option.deleted</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-option.deleted" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product option
-}]
+}
 \`\`\``} />
 
 Emitted when product options are deleted.
@@ -1561,9 +1565,9 @@ Emitted when product options are deleted.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product option
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1618,9 +1622,9 @@ Emitted when product tags are deleted.
 </Table>
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-tagupdated", children: (<>product-tag.updated</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-tag.updated" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product tag
-}]
+}
 \`\`\``} />
 
 Emitted when product tags are updated.
@@ -1628,9 +1632,9 @@ Emitted when product tags are updated.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product tag
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1642,9 +1646,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-tagcreated", children: (<>product-tag.created</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-tag.created" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product tag
-}]
+}
 \`\`\``} />
 
 Emitted when product tags are created.
@@ -1652,9 +1656,9 @@ Emitted when product tags are created.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product tag
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1666,9 +1670,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-tagdeleted", children: (<>product-tag.deleted</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-tag.deleted" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product tag
-}]
+}
 \`\`\``} />
 
 Emitted when product tags are deleted.
@@ -1676,9 +1680,9 @@ Emitted when product tags are deleted.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product tag
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1733,9 +1737,9 @@ Emitted when product types are deleted.
 </Table>
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-typeupdated", children: (<>product-type.updated</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-type.updated" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product type
-}]
+}
 \`\`\``} />
 
 Emitted when product types are updated.
@@ -1743,9 +1747,9 @@ Emitted when product types are updated.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product type
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1757,9 +1761,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-typecreated", children: (<>product-type.created</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-type.created" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product type
-}]
+}
 \`\`\``} />
 
 Emitted when product types are created.
@@ -1767,9 +1771,9 @@ Emitted when product types are created.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product type
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1781,9 +1785,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-typedeleted", children: (<>product-type.deleted</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-type.deleted" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product type
-}]
+}
 \`\`\``} />
 
 Emitted when product types are deleted.
@@ -1791,9 +1795,9 @@ Emitted when product types are deleted.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product type
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1848,9 +1852,9 @@ Emitted when product variants are deleted.
 </Table>
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-variantupdated", children: (<>product-variant.updated</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-variant.updated" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product variant
-}]
+}
 \`\`\``} />
 
 Emitted when product variants are updated.
@@ -1858,9 +1862,9 @@ Emitted when product variants are updated.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product variant
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1873,9 +1877,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-variantcreated", children: (<>product-variant.created</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-variant.created" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product variant
-}]
+}
 \`\`\``} />
 
 Emitted when product variants are created.
@@ -1883,9 +1887,9 @@ Emitted when product variants are created.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product variant
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1901,9 +1905,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "product-variantdeleted", children: (<>product-variant.deleted</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product-variant.deleted" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product variant
-}]
+}
 \`\`\``} />
 
 Emitted when product variants are deleted.
@@ -1911,9 +1915,9 @@ Emitted when product variants are deleted.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product variant
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1969,9 +1973,9 @@ Emitted when products are deleted.
 </Table>
 
 <EventHeader headerLvl="3" headerProps={{ id: "productupdated", children: (<>product.updated</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product.updated" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product
-}]
+}
 \`\`\``} />
 
 Emitted when products are updated.
@@ -1979,9 +1983,9 @@ Emitted when products are updated.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -1995,9 +1999,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "productcreated", children: (<>product.created</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product.created" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product
-}]
+}
 \`\`\``} />
 
 Emitted when products are created.
@@ -2005,9 +2009,9 @@ Emitted when products are created.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -2021,9 +2025,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "productdeleted", children: (<>product.deleted</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product.deleted" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the product
-}]
+}
 \`\`\``} />
 
 Emitted when products are deleted.
@@ -2031,9 +2035,9 @@ Emitted when products are deleted.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the product
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -2090,9 +2094,9 @@ Emitted when regions are deleted.
 </Table>
 
 <EventHeader headerLvl="3" headerProps={{ id: "regionupdated", children: (<>region.updated</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="region.updated" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the region
-}]
+}
 \`\`\``} />
 
 Emitted when regions are updated.
@@ -2100,9 +2104,9 @@ Emitted when regions are updated.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the region
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -2114,9 +2118,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "regioncreated", children: (<>region.created</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="region.created" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the region
-}]
+}
 \`\`\``} />
 
 Emitted when regions are created.
@@ -2124,9 +2128,9 @@ Emitted when regions are created.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the region
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -2138,9 +2142,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "regiondeleted", children: (<>region.deleted</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="region.deleted" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the region
-}]
+}
 \`\`\``} />
 
 Emitted when regions are deleted.
@@ -2148,9 +2152,9 @@ Emitted when regions are deleted.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the region
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -2205,9 +2209,9 @@ Emitted when sales channels are deleted.
 </Table>
 
 <EventHeader headerLvl="3" headerProps={{ id: "sales-channelcreated", children: (<>sales-channel.created</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="sales-channel.created" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the sales channel
-}]
+}
 \`\`\``} />
 
 Emitted when sales channels are created.
@@ -2215,9 +2219,9 @@ Emitted when sales channels are created.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the sales channel
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -2229,9 +2233,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "sales-channelupdated", children: (<>sales-channel.updated</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="sales-channel.updated" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the sales channel
-}]
+}
 \`\`\``} />
 
 Emitted when sales channels are updated.
@@ -2239,9 +2243,9 @@ Emitted when sales channels are updated.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the sales channel
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -2253,9 +2257,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "sales-channeldeleted", children: (<>sales-channel.deleted</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="sales-channel.deleted" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the sales channel
-}]
+}
 \`\`\``} />
 
 Emitted when sales channels are deleted.
@@ -2263,9 +2267,9 @@ Emitted when sales channels are deleted.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the sales channel
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -2326,9 +2330,9 @@ Emitted when shipping option types are deleted.
 <Tooltip text="This event was added in version v2.10.0">
 <Badge variant="blue">v2.10.0</Badge>
 </Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="shipping-option-type.updated" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the shipping option type
-}]
+}
 \`\`\``} />
 
 Emitted when shipping option types are updated.
@@ -2336,9 +2340,9 @@ Emitted when shipping option types are updated.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the shipping option type
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -2353,9 +2357,9 @@ The following workflows emit this event when they're executed. These workflows a
 <Tooltip text="This event was added in version v2.10.0">
 <Badge variant="blue">v2.10.0</Badge>
 </Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="shipping-option-type.created" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the shipping option type
-}]
+}
 \`\`\``} />
 
 Emitted when shipping option types are created.
@@ -2363,9 +2367,9 @@ Emitted when shipping option types are created.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the shipping option type
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -2380,9 +2384,9 @@ The following workflows emit this event when they're executed. These workflows a
 <Tooltip text="This event was added in version v2.10.0">
 <Badge variant="blue">v2.10.0</Badge>
 </Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="shipping-option-type.deleted" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the shipping option type
-}]
+}
 \`\`\``} />
 
 Emitted when shipping option types are deleted.
@@ -2390,9 +2394,9 @@ Emitted when shipping option types are deleted.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the shipping option type
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -2400,6 +2404,263 @@ Emitted when shipping option types are deleted.
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
 - [deleteShippingOptionTypesWorkflow](/references/medusa-workflows/deleteShippingOptionTypesWorkflow)
+
+---
+
+## Shipping Option Events
+
+### Summary
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+Event
+</Table.HeaderCell>
+      <Table.HeaderCell>
+Description
+</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+[shipping-option.created](#shipping-optioncreated)
+<Tooltip text="This event was added in version v2.12.4"><Badge variant="blue">v2.12.4</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when shipping options are created.
+</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+[shipping-option.updated](#shipping-optionupdated)
+<Tooltip text="This event was added in version v2.12.4"><Badge variant="blue">v2.12.4</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when shipping options are updated.
+</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+[shipping-option.deleted](#shipping-optiondeleted)
+<Tooltip text="This event was added in version v2.12.4"><Badge variant="blue">v2.12.4</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when shipping options are deleted.
+</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+<EventHeader headerLvl="3" headerProps={{ id: "shipping-optioncreated", children: (<>shipping-option.created
+<Tooltip text="This event was added in version v2.12.4">
+<Badge variant="blue">v2.12.4</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="shipping-option.created" payload={`\`\`\`ts
+{
+  id, // The ID of the shipping option
+}
+\`\`\``} />
+
+Emitted when shipping options are created.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the shipping option
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [createShippingOptionsWorkflow](/references/medusa-workflows/createShippingOptionsWorkflow)
+
+---
+
+<EventHeader headerLvl="3" headerProps={{ id: "shipping-optionupdated", children: (<>shipping-option.updated
+<Tooltip text="This event was added in version v2.12.4">
+<Badge variant="blue">v2.12.4</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="shipping-option.updated" payload={`\`\`\`ts
+{
+  id, // The ID of the shipping option
+}
+\`\`\``} />
+
+Emitted when shipping options are updated.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the shipping option
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [updateShippingOptionsWorkflow](/references/medusa-workflows/updateShippingOptionsWorkflow)
+
+---
+
+<EventHeader headerLvl="3" headerProps={{ id: "shipping-optiondeleted", children: (<>shipping-option.deleted
+<Tooltip text="This event was added in version v2.12.4">
+<Badge variant="blue">v2.12.4</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="shipping-option.deleted" payload={`\`\`\`ts
+{
+  id, // The ID of the shipping option
+}
+\`\`\``} />
+
+Emitted when shipping options are deleted.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the shipping option
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [deleteShippingOptionsWorkflow](/references/medusa-workflows/deleteShippingOptionsWorkflow)
+
+---
+
+## Translation Events
+
+### Summary
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+Event
+</Table.HeaderCell>
+      <Table.HeaderCell>
+Description
+</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+[translation.created](#translationcreated)
+<Tooltip text="This event was added in version v2.12.3"><Badge variant="blue">v2.12.3</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when translations are created.
+</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+[translation.updated](#translationupdated)
+<Tooltip text="This event was added in version v2.12.3"><Badge variant="blue">v2.12.3</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when translations are updated.
+</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+[translation.deleted](#translationdeleted)
+<Tooltip text="This event was added in version v2.12.3"><Badge variant="blue">v2.12.3</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when translations are deleted.
+</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+<EventHeader headerLvl="3" headerProps={{ id: "translationcreated", children: (<>translation.created
+<Tooltip text="This event was added in version v2.12.3">
+<Badge variant="blue">v2.12.3</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="translation.created" payload={`\`\`\`ts
+{
+  id, // The ID of the translation
+}
+\`\`\``} />
+
+Emitted when translations are created.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the translation
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [createTranslationsWorkflow](/references/medusa-workflows/createTranslationsWorkflow)
+- [batchTranslationsWorkflow](/references/medusa-workflows/batchTranslationsWorkflow)
+
+---
+
+<EventHeader headerLvl="3" headerProps={{ id: "translationupdated", children: (<>translation.updated
+<Tooltip text="This event was added in version v2.12.3">
+<Badge variant="blue">v2.12.3</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="translation.updated" payload={`\`\`\`ts
+{
+  id, // The ID of the translation
+}
+\`\`\``} />
+
+Emitted when translations are updated.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the translation
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [updateTranslationsWorkflow](/references/medusa-workflows/updateTranslationsWorkflow)
+- [batchTranslationsWorkflow](/references/medusa-workflows/batchTranslationsWorkflow)
+
+---
+
+<EventHeader headerLvl="3" headerProps={{ id: "translationdeleted", children: (<>translation.deleted
+<Tooltip text="This event was added in version v2.12.3">
+<Badge variant="blue">v2.12.3</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="translation.deleted" payload={`\`\`\`ts
+{
+  id, // The ID of the translation
+}
+\`\`\``} />
+
+Emitted when translations are deleted.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the translation
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [deleteTranslationsWorkflow](/references/medusa-workflows/deleteTranslationsWorkflow)
+- [batchTranslationsWorkflow](/references/medusa-workflows/batchTranslationsWorkflow)
 
 ---
 
@@ -2447,9 +2708,9 @@ Emitted when users are deleted.
 </Table>
 
 <EventHeader headerLvl="3" headerProps={{ id: "usercreated", children: (<>user.created</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="user.created" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the user
-}]
+}
 \`\`\``} />
 
 Emitted when users are created.
@@ -2457,9 +2718,9 @@ Emitted when users are created.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the user
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -2473,9 +2734,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "userupdated", children: (<>user.updated</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="user.updated" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the user
-}]
+}
 \`\`\``} />
 
 Emitted when users are updated.
@@ -2483,9 +2744,9 @@ Emitted when users are updated.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the user
-}]
+}
 ```
 
 #### Workflows Emitting this Event
@@ -2497,9 +2758,9 @@ The following workflows emit this event when they're executed. These workflows a
 ---
 
 <EventHeader headerLvl="3" headerProps={{ id: "userdeleted", children: (<>user.deleted</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="user.deleted" payload={`\`\`\`ts
-[{
+{
   id, // The ID of the user
-}]
+}
 \`\`\``} />
 
 Emitted when users are deleted.
@@ -2507,9 +2768,9 @@ Emitted when users are deleted.
 #### Payload
 
 ```ts
-[{
+{
   id, // The ID of the user
-}]
+}
 ```
 
 #### Workflows Emitting this Event

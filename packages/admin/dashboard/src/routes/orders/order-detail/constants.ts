@@ -5,6 +5,7 @@ const DEFAULT_PROPERTIES = [
   "canceled_at",
   "email",
   "display_id",
+  "custom_display_id",
   "currency_code",
   "metadata",
   // --- TOTALS ---

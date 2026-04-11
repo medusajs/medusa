@@ -40,42 +40,6 @@ export const pricing = [
     "path": "https://docs.medusajs.com/resources/storefront-development/products/price"
   },
   {
-    "title": "getVariantPriceSetsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getVariantPriceSetsStep"
-  },
-  {
-    "title": "addShippingMethodToCartWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addShippingMethodToCartWorkflow"
-  },
-  {
-    "title": "addToCartWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addToCartWorkflow"
-  },
-  {
-    "title": "createCartWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createCartWorkflow"
-  },
-  {
-    "title": "refreshCartItemsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartItemsWorkflow"
-  },
-  {
-    "title": "transferCartCustomerWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/transferCartCustomerWorkflow"
-  },
-  {
-    "title": "updateCartWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateCartWorkflow"
-  },
-  {
-    "title": "updateLineItemInCartWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateLineItemInCartWorkflow"
-  },
-  {
-    "title": "addDraftOrderItemsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addDraftOrderItemsWorkflow"
-  },
-  {
     "title": "createShippingOptionsPriceSetsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createShippingOptionsPriceSetsStep"
   },
@@ -90,30 +54,6 @@ export const pricing = [
   {
     "title": "updateShippingOptionsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateShippingOptionsWorkflow"
-  },
-  {
-    "title": "deleteLineItemsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteLineItemsWorkflow"
-  },
-  {
-    "title": "addOrderLineItemsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addOrderLineItemsWorkflow"
-  },
-  {
-    "title": "createOrderWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createOrderWorkflow"
-  },
-  {
-    "title": "orderClaimAddNewItemWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderClaimAddNewItemWorkflow"
-  },
-  {
-    "title": "orderEditAddNewItemWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderEditAddNewItemWorkflow"
-  },
-  {
-    "title": "orderExchangeAddNewItemWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderExchangeAddNewItemWorkflow"
   },
   {
     "title": "createPriceListPricesStep",

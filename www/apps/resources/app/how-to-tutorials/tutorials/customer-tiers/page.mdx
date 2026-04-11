@@ -1,0 +1,4143 @@
+---
+sidebar_label: "Customer Tiers"
+tags:
+    - name: customer
+      label: "Implement Customer Tiers"
+    - server
+    - tutorial
+    - nextjs
+    - name: promotion
+      label: "Implement Customer Tiers"
+products:
+  - customer
+  - promotion
+  - cart
+---
+
+import { Github, PlaySolid } from "@medusajs/icons"
+import { Prerequisites, WorkflowDiagram, CardList } from "docs-ui"
+
+export const metadata = {
+  title: `Implement Customer Tiers in Medusa`,
+}
+
+# {metadata.title}
+
+In this tutorial, you'll learn how to implement a customer tiers system in Medusa.
+
+When you install a Medusa application, you get a fully-fledged commerce platform with a Framework for customization. The Medusa application's commerce features are built around [Commerce Modules](../../../commerce-modules/page.mdx), which are available out-of-the-box. These features include customer and promotion management capabilities.
+
+A customer tiers system allows you to segment customers based on their purchase history and automatically apply promotions to their carts. Customers are assigned to tiers based on their total purchase value, and each tier can have an associated promotion that is automatically applied to their carts.
+
+## Summary
+
+By following this tutorial, you will learn how to:
+
+- Install and set up Medusa.
+- Create a Tier Module to manage customer tiers and tier rules.
+- Customize the Medusa Admin to manage tiers.
+- Automatically assign customers to tiers based on their purchase history.
+- Automatically apply tier promotions to customer carts.
+- Customize the Next.js Starter Storefront to display tier information to customers.
+
+You can follow this tutorial whether you're new to Medusa or an advanced Medusa developer.
+
+![Diagram illustrating how the customer tiers system works, starting from the customer adding a product to the cart, Medusa applying the tier promotion automatically, customer placing the order, and Medusa updating the customer's tier.](https://res.cloudinary.com/dza7lstvk/image/upload/v1764079847/Medusa%20Resources/customer-tiers_hx504i.jpg)
+
+<CardList items={[
+  {
+    href: "https://github.com/medusajs/examples/tree/main/customer-tiers",
+    title: "Customer Tiers Repository",
+    text: "Find the full code for this guide in this repository.",
+    icon: Github,
+  },
+  {
+    href: "https://res.cloudinary.com/dza7lstvk/raw/upload/v1764080003/OpenApi/openapi_bzizgg.yaml",
+    title: "OpenAPI Specs for Postman",
+    text: "Import this OpenAPI Specs file into tools like Postman.",
+    icon: PlaySolid,
+  },
+]} />
+
+---
+
+## Step 1: Install a Medusa Application
+
+<Prerequisites items={[
+  {
+    text: "Node.js v20+",
+    link: "https://nodejs.org/en/download"
+  },
+  {
+    text: "Git CLI tool",
+    link: "https://git-scm.com/downloads"
+  },
+  {
+    text: "PostgreSQL",
+    link: "https://www.postgresql.org/download/"
+  }
+]} />
+
+Start by installing the Medusa application on your machine with the following command:
+
+```bash npx2yarnExec
+npx create-medusa-app@latest
+```
+
+You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose Yes.
+
+Afterward, the installation process will start, which will install the Medusa application in a directory with your project's name, and the Next.js Starter Storefront in a separate directory with the `{project-name}-storefront` name.
+
+<Note title="Why is the storefront installed separately">
+
+The Medusa application is composed of a headless Node.js server and an admin dashboard. The storefront is installed or custom-built separately and connects to the Medusa application through its REST endpoints, called [API routes](!docs!/learn/fundamentals/api-routes). Learn more in [Medusa's Architecture documentation](!docs!/learn/introduction/architecture).
+
+</Note>
+
+Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
+
+<Note title="Ran into Errors">
+
+Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
+
+</Note>
+
+---
+
+## Step 2: Create Tier Module
+
+In Medusa, you can build custom features in a [module](!docs!/learn/fundamentals/modules). A module is a reusable package with functionalities related to a single feature or domain. Medusa integrates the module into your application without affecting your setup.
+
+In the module, you define the data models necessary for a feature and the logic to manage these data models. Later, you can build commerce flows around your module.
+
+In this step, you'll build a Tier Module that defines the necessary data models to store and manage customer tiers and tier rules.
+
+<Note>
+
+Refer to the [Modules documentation](!docs!/learn/fundamentals/modules) to learn more.
+
+</Note>
+
+### Create Module Directory
+
+Modules are created under the `src/modules` directory of your Medusa application. So, create the directory `src/modules/tier`.
+
+### Create Data Models
+
+A data model represents a table in the database. You create data models using Medusa's Data Model Language (DML), which simplifies defining a table's columns, relations, and indexes with straightforward methods and configurations.
+
+<Note>
+
+Refer to the [Data Models documentation](!docs!/learn/fundamentals/modules#1-create-data-model) to learn more.
+
+</Note>
+
+For the Tier Module, you need to define two data models:
+
+1. `Tier`: Represents a customer tier (for example, Bronze, Silver, Gold).
+2. `TierRule`: Represents the rules that determine when a customer qualifies for a tier (for example, minimum purchase value in a specific currency).
+
+So, create the file `src/modules/tier/models/tier.ts` with the following content:
+
+```ts title="src/modules/tier/models/tier.ts"
+import { model } from "@medusajs/framework/utils"
+import { TierRule } from "./tier-rule"
+
+export const Tier = model.define("tier", {
+  id: model.id().primaryKey(),
+  name: model.text(),
+  promo_id: model.text().nullable(),
+  tier_rules: model.hasMany(() => TierRule, {
+    mappedBy: "tier",
+  }),
+})
+```
+
+You define the `Tier` data model using the `model.define` method of the DML. It accepts the data model's table name as a first parameter, and the model's schema object as a second parameter.
+
+The `Tier` data model has the following properties:
+
+- `id`: A unique ID for the tier.
+- `name`: The name of the tier (for example, "Bronze", "Silver", "Gold").
+- `promo_id`: The ID of the promotion associated with this tier.
+- `tier_rules`: A one-to-many relationship with `TierRule` data model. Ignore the type error as you'll define the `TierRule` data model next.
+
+<Note>
+
+Learn more about defining data model properties in the [Property Types documentation](!docs!/learn/fundamentals/data-models/properties).
+
+</Note>
+
+Next, create the file `src/modules/tier/models/tier-rule.ts` with the following content:
+
+```ts title="src/modules/tier/models/tier-rule.ts"
+import { model } from "@medusajs/framework/utils"
+import { Tier } from "./tier"
+
+export const TierRule = model.define("tier_rule", {
+  id: model.id().primaryKey(),
+  min_purchase_value: model.number(),
+  currency_code: model.text(),
+  tier: model.belongsTo(() => Tier, {
+    mappedBy: "tier_rules",
+  }),
+})
+.indexes([
+  {
+    on: ["tier_id", "currency_code"],
+    unique: true,
+  },
+])
+```
+
+You define the `TierRule` data model with the following properties:
+
+- `id`: A unique ID for the tier rule.
+- `min_purchase_value`: The minimum purchase value required to qualify for the tier.
+- `currency_code`: The currency code for which this rule applies (for example, `usd`, `eur`).
+- `tier`: A many-to-one relationship with the `Tier` data model.
+
+You also add a unique index on `tier_id` and `currency_code` to ensure that each tier has only one rule per currency.
+
+<Note title="Tip">
+
+Alternatively, you can store the minimum purchase value for a specific currency, then integrate with real-time exchange rate services to convert values between currencies. However, for simplicity, this tutorial uses fixed amounts for each currency.
+
+</Note>
+
+### Create Module's Service
+
+You now have the necessary data models in the Tier Module, but you'll need to manage their records. You do this by creating a service in the module.
+
+A service is a TypeScript or JavaScript class that the module exports. In the service's methods, you can connect to the database to manage your data models, or connect to a third-party service, which is useful when integrating with external systems.
+
+<Note>
+
+Refer to the [Module Service documentation](!docs!/learn/fundamentals/modules#2-create-service) to learn more.
+
+</Note>
+
+To create the Tier Module's service, create the file `src/modules/tier/service.ts` with the following content:
+
+```ts title="src/modules/tier/service.ts"
+import { MedusaService } from "@medusajs/framework/utils"
+import { Tier } from "./models/tier"
+import { TierRule } from "./models/tier-rule"
+
+class TierModuleService extends MedusaService({
+  Tier,
+  TierRule,
+}) {
+}
+
+export default TierModuleService
+```
+
+The `TierModuleService` extends `MedusaService` from the Modules SDK, which generates a class with data-management methods for your module's data models. This saves you time implementing Create, Read, Update, and Delete (CRUD) methods.
+
+So, the `TierModuleService` class now has methods like `createTiers`, `retrieveTier`, `listTierRules`, and more.
+
+<Note>
+
+Find all methods generated by the `MedusaService` in [the Service Factory reference](../../../service-factory-reference/page.mdx).
+
+</Note>
+
+### Export Module Definition
+
+The final piece to a module is its definition, which you export in an `index.ts` file at its root directory. This definition tells Medusa the name of the module and its service.
+
+So, create the file `src/modules/tier/index.ts` with the following content:
+
+```ts title="src/modules/tier/index.ts"
+import TierModuleService from "./service"
+import { Module } from "@medusajs/framework/utils"
+
+export const TIER_MODULE = "tier"
+
+export default Module(TIER_MODULE, {
+  service: TierModuleService,
+})
+```
+
+You use the `Module` function from the Modules SDK to create the module's definition. It accepts two parameters:
+
+1. The module's name, which is `tier`.
+2. An object with a required property `service` indicating the module's service.
+
+You also export the module's name as `TIER_MODULE` so you can reference it later.
+
+### Add Module to Medusa's Configurations
+
+Once you finish building the module, add it to Medusa's configurations to start using it.
+
+In `medusa-config.ts`, add a `modules` property and pass an array with your custom module:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "./src/modules/tier",
+    },
+  ],
+})
+```
+
+Each object in the `modules` array has a `resolve` property, whose value is either a path to the module's directory, or an `npm` package's name.
+
+### Generate Migrations
+
+Since data models represent tables in the database, you define how to create them in the database using migrations. A migration is a TypeScript or JavaScript file that defines database changes made by a module.
+
+<Note>
+
+Refer to the [Migrations documentation](!docs!/learn/fundamentals/modules#5-generate-migrations) to learn more.
+
+</Note>
+
+Medusa's CLI tool can generate the migrations for you. To generate a migration for the Tier Module, run the following command in your Medusa application's directory:
+
+```bash npx2yarn
+npx medusa db:generate tier
+```
+
+The `db:generate` command of the Medusa CLI accepts the name of the module to generate the migration for. You'll now have a `migrations` directory under `src/modules/tier` that holds the generated migration.
+
+Then, to reflect these migrations on the database, run the following command:
+
+```bash npx2yarn
+npx medusa db:migrate
+```
+
+The tables for the `Tier` and `TierRule` data models are now created in the database.
+
+---
+
+## Step 3: Define Module Links
+
+When you defined the `Tier` data model, you added properties that store IDs of records managed by other modules. For example, the `promo_id` property stores a promotion ID, but promotions are managed by the [Promotion Module](../../../commerce-modules/promotion/page.mdx).
+
+Medusa integrates modules into your application without side effects by isolating them from one another. This means you can't directly create relationships between data models in your module and data models in other modules.
+
+Instead, Medusa provides a mechanism to define links between data models and to retrieve and manage linked records while maintaining module isolation. Links are useful for defining associations between data models in different modules or for extending a model in another module to associate custom properties with it.
+
+<Note>
+
+Refer to the [Module Isolation documentation](!docs!/learn/fundamentals/modules/isolation) to learn more.
+
+</Note>
+
+In this step, you'll define:
+
+1. A link between the Tier Module's `Tier` data model and the Customer Module's `Customer` data model.
+2. A read-only link between the Tier Module's `Tier` data model and the Promotion Module's `Promotion` data model.
+
+### Define Tier ↔ Customer Link
+
+You can define links between data models in a TypeScript or JavaScript file under the `src/links` directory. So, create the file `src/links/tier-customer.ts` with the following content:
+
+```ts title="src/links/tier-customer.ts"
+import { defineLink } from "@medusajs/framework/utils"
+import TierModule from "../modules/tier"
+import CustomerModule from "@medusajs/medusa/customer"
+
+export default defineLink(
+  {
+    linkable: TierModule.linkable.tier,
+    filterable: ["id"],
+  },
+  {
+    linkable: CustomerModule.linkable.customer,
+    isList: true,
+  }
+)
+```
+
+You define a link using the `defineLink` function from the Modules SDK. It accepts two parameters:
+
+1. An object indicating the first data model in the link. You pass the link configurations for the `Tier` data model from the Tier Module. You also specify the `id` property as filterable, allowing you to filter customers by their tier later using the [Index Module](!docs!/learn/fundamentals/module-links/index-module).
+2. An object indicating the second data model in the link. You pass the linkable configurations of the Customer Module's `Customer` data model. You set `isList` to `true` because a tier can have multiple customers.
+
+This link allows you to retrieve and manage customers associated with a tier, and vice versa.
+
+### Define Tier ↔ Promotion Link
+
+Next, create the file `src/links/tier-promotion.ts` with the following content:
+
+```ts title="src/links/tier-promotion.ts"
+import { defineLink } from "@medusajs/framework/utils"
+import TierModule from "../modules/tier"
+import PromotionModule from "@medusajs/medusa/promotion"
+
+export default defineLink(
+  {
+    linkable: TierModule.linkable.tier,
+    field: "promo_id",
+  },
+  PromotionModule.linkable.promotion,
+  {
+    readOnly: true,
+  }
+)
+```
+
+You define a link between the `Tier` data model and the `Promotion` data model. You specify that the `promo_id` field in the `Tier` data model holds the ID of the linked promotion. You also set `readOnly` to `true` because you only want to retrieve the linked promotion without managing the link itself.
+
+You can now retrieve the promotion associated with a tier, as you'll see in later steps.
+
+---
+
+## Step 4: Create Tier
+
+Now that you have the Tier Module set up, you'll add the functionality to create tiers. This requires creating:
+
+- A [workflow](!docs!/learn/fundamentals/workflows) with steps to create a tier.
+- An [API route](!docs!/learn/fundamentals/api-routes) that exposes the workflow's functionality to client applications.
+
+Later, you'll customize the Medusa Admin to allow creating tiers from the dashboard.
+
+### a. Create Tier Workflow
+
+To build custom commerce features in Medusa, you create a [workflow](!docs!/learn/fundamentals/workflows). A workflow is a series of queries and actions, called steps, that complete a task. You can track the workflow's execution progress, define rollback logic, and configure other advanced features.
+
+<Note>
+
+Learn more about workflows in the [Workflows documentation](!docs!/learn/fundamentals/workflows).
+
+</Note>
+
+The workflow to create a tier has the following steps:
+
+<WorkflowDiagram
+  workflow={{
+    name: "createTierWorkflow",
+    steps: [
+      {
+        type: "when",
+        condition: "!!data.input.promo_id",
+        steps: [
+          {
+            type: "step",
+            name: "useQueryGraphStep",
+            description: "Retrieve the promotion if specified to validate it exists.",
+            link: "/references/helper-steps/useQueryGraphStep",
+            depth: 1
+          },
+        ],
+        depth: 1,
+      },
+      {
+        type: "step",
+        name: "createTierStep",
+        description: "Create the tier.",
+        depth: 2,
+      },
+      {
+        type: "when",
+        condition: "!!data.input.tier_rules?.length",
+        steps: [
+          {
+            type: "step",
+            name: "createTierRulesStep",
+            description: "Create the tier rules.",
+            depth: 1
+          },
+        ],
+        depth: 3,
+      },
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve the created tier with its rules.",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 4,
+      },
+    ]
+  }}
+/>
+
+Medusa provides the last step out of the box. You'll create the other steps before creating the workflow.
+
+
+#### Create Tier Step
+
+First, you'll create a step that creates a tier. Create the file `src/workflows/steps/create-tier.ts` with the following content:
+
+```ts title="src/workflows/steps/create-tier.ts"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { TIER_MODULE } from "../../modules/tier"
+
+export type CreateTierStepInput = {
+  name: string
+  promo_id: string | null
+}
+
+export const createTierStep = createStep(
+  "create-tier",
+  async (input: CreateTierStepInput, { container }) => {
+    const tierModuleService = container.resolve(TIER_MODULE)
+
+    const tier = await tierModuleService.createTiers({
+      name: input.name,
+      promo_id: input.promo_id || null,
+    })
+
+    return new StepResponse(tier, tier)
+  },
+  async (tier, { container }) => {
+    if (!tier) {
+      return
+    }
+
+    const tierModuleService = container.resolve(TIER_MODULE)
+    await tierModuleService.deleteTiers(tier.id)
+  }
+)
+```
+
+You create a step with `createStep` from the Workflows SDK. It accepts three parameters:
+
+1. The step's unique name, which is `create-tier`.
+2. An async function that receives two parameters:
+   - The step's input, which is in this case an object with the tier's properties.
+   - An object that has properties including the [Medusa container](!docs!/learn/fundamentals/medusa-container), which is a registry of Framework and commerce tools that you can access in the step.
+3. An async compensation function that undoes the actions performed in the step if an error occurs during the workflow's execution.
+
+In the step function, you resolve the Tier Module's service from the Medusa container and create the tier using the `createTiers` method.
+
+A step function must return a `StepResponse` instance. The `StepResponse` constructor accepts two parameters:
+
+1. The step's output, which is the tier created.
+2. Data to pass to the step's compensation function.
+
+In the compensation function, you delete the tier if an error occurs during the workflow's execution.
+
+#### Create Tier Rules Step
+
+The `createTierRulesStep` creates tier rules for a tier.
+
+Create the file `src/workflows/steps/create-tier-rules.ts` with the following content:
+
+```ts title="src/workflows/steps/create-tier-rules.ts"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { TIER_MODULE } from "../../modules/tier"
+
+export type CreateTierRulesStepInput = {
+  tier_id: string
+  tier_rules: Array<{
+    min_purchase_value: number
+    currency_code: string
+  }>
+}
+
+export const createTierRulesStep = createStep(
+  "create-tier-rules",
+  async (input: CreateTierRulesStepInput, { container }) => {
+    const tierModuleService = container.resolve(TIER_MODULE)
+
+    const createdRules = await tierModuleService.createTierRules(
+      input.tier_rules.map((rule) => ({
+        tier_id: input.tier_id,
+        min_purchase_value: rule.min_purchase_value,
+        currency_code: rule.currency_code,
+      }))
+    )
+
+    return new StepResponse(createdRules, createdRules)
+  },
+  async (createdRules, { container }) => {
+    if (!createdRules?.length) {
+      return
+    }
+
+    const tierModuleService = container.resolve(TIER_MODULE)
+    await tierModuleService.deleteTierRules(createdRules.map((rule) => rule.id))
+  }
+)
+```
+
+This step receives the rules to create with the ID of the tier they belong to.
+
+In the step function, you create the tier rules. In the compensation function, you delete them if an error occurs during the workflow's execution.
+
+
+#### Create Tier Workflow
+
+You can now create the workflow that creates a tier.
+
+Create the file `src/workflows/create-tier.ts` with the following content:
+
+```ts title="src/workflows/create-tier.ts" collapsibleLines="1-10" expandButtonLabel="Show Imports"
+import {
+  createWorkflow,
+  WorkflowResponse,
+  transform,
+  when,
+} from "@medusajs/framework/workflows-sdk"
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+import { createTierStep } from "./steps/create-tier"
+import { createTierRulesStep } from "./steps/create-tier-rules"
+
+export type CreateTierWorkflowInput = {
+  name: string
+  promo_id?: string | null
+  tier_rules?: Array<{
+    min_purchase_value: number
+    currency_code: string
+  }>
+}
+
+export const createTierWorkflow = createWorkflow(
+  "create-tier",
+  (input: CreateTierWorkflowInput) => {
+    // Validate promotion if provided
+    when({ input }, (data) => !!data.input.promo_id)
+      .then(() => {
+        useQueryGraphStep({
+          entity: "promotion",
+          fields: ["id"],
+          filters: {
+            id: input.promo_id!,
+          },
+          options: {
+            throwIfKeyNotFound: true,
+          },
+        })
+      })
+    // Create the tier
+    const tier = createTierStep({
+      name: input.name,
+      promo_id: input.promo_id || null,
+    })
+
+    // Create tier rules if provided
+    when({ input }, (data) => {
+      return !!data.input.tier_rules?.length
+    }).then(() => {
+      return createTierRulesStep({
+        tier_id: tier.id,
+        tier_rules: input.tier_rules!,
+      })
+    })
+
+    // Retrieve the created tier with rules
+    const { data: tiers } = useQueryGraphStep({
+      entity: "tier",
+      fields: ["*", "tier_rules.*"],
+      filters: {
+        id: tier.id,
+      },
+    }).config({ name: "retrieve-tier" })
+
+    return new WorkflowResponse({
+      tier: tiers[0],
+    })
+  }
+)
+```
+
+You create a workflow using `createWorkflow` from the Workflows SDK. It accepts the workflow's unique name as a first parameter.
+
+It accepts as a second parameter a constructor function, which is the workflow's implementation. The function can accept input, which in this case is an object with the tier's details.
+
+In the workflow's constructor function, you:
+
+- Use [when-then](!docs!/learn/fundamentals/workflows/conditions) to check whether the promotion ID is provided and retrieve the promotion to validate that it exists.
+    - By specifying the `throwIfKeyNotFound` option, the `useQueryGraphStep` throws an error if the promotion isn't found, which stops the workflow's execution.
+    - This step uses [Query](!docs!/learn/fundamentals/module-links/query) under the hood to retrieve data across modules.
+- Create the tier using the `createTierStep`.
+- Use [when-then](!docs!/learn/fundamentals/workflows/conditions) to conditionally create tier rules if they're provided using the `createTierRulesStep`.
+- Retrieve the created tier with its rules using `useQueryGraphStep`.
+
+Finally, you return a `WorkflowResponse` with the created tier.
+
+<Note title="Tip">
+
+In workflows, you need `when-then` to check conditions based on execution values. Learn more in the [Conditions](!docs!/learn/fundamentals/workflows/conditions) workflow documentation.
+
+</Note>
+
+### b. Create Tier API Route
+
+Now that you have the workflow to create tiers, you'll create an API route that exposes this functionality to client applications.
+
+An API route is created in a `route.ts` file under a sub-directory of the `src/api` directory. The path of the API route is the file's path relative to `src/api`.
+
+<Note>
+
+Refer to the [API routes](!docs!/learn/fundamentals/api-routes) documentation to learn more about them.
+
+</Note>
+
+Create the file `src/api/admin/tiers/route.ts` with the following content:
+
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
+```ts title="src/api/admin/tiers/route.ts"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { z } from "@medusajs/framework/zod"
+import { createTierWorkflow } from "../../../workflows/create-tier"
+
+export const CreateTierSchema = z.object({
+  name: z.string(),
+  promo_id: z.string().nullable(),
+  tier_rules: z.array(z.object({
+    min_purchase_value: z.number(),
+    currency_code: z.string(),
+  })),
+})
+
+type CreateTierInput = z.infer<typeof CreateTierSchema>
+
+export async function POST(
+  req: MedusaRequest<CreateTierInput>,
+  res: MedusaResponse
+): Promise<void> {
+  const { name, promo_id, tier_rules } = req.validatedBody
+
+  const { result } = await createTierWorkflow(req.scope).run({
+    input: {
+      name,
+      promo_id: promo_id || null,
+      tier_rules: tier_rules || [],
+    },
+  })
+
+  res.json({ tier: result.tier })
+}
+```
+
+First, you define a Zod schema that validates the request body.
+
+Then, you export a `POST` function, which exposes a `POST` API route at `/admin/tiers`.
+
+In the route handler function, you execute the `createTierWorkflow` by invoking it, passing it the Medusa container, then executing its `run` method.
+
+You return the created tier in the response.
+
+You'll test out this API route later when you customize the Medusa Admin dashboard.
+
+### c. Apply Validation Middleware
+
+To ensure incoming request bodies are validated, you need to apply a [middleware](!docs!/learn/fundamentals/api-routes/middlewares).
+
+To apply a middleware to the API route, create the file `src/api/middlewares.ts` with the following content:
+
+```ts title="src/api/middlewares.ts"
+import {
+  defineMiddlewares,
+  validateAndTransformBody,
+} from "@medusajs/framework/http"
+import { CreateTierSchema } from "./admin/tiers/route"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/admin/tiers",
+      methods: ["POST"],
+      middlewares: [validateAndTransformBody(CreateTierSchema)],
+    },
+  ],
+})
+```
+
+You apply the `validateAndTransformBody` middleware to the `POST` route of the `/admin/tiers` path, passing it the Zod schema you created in the route file.
+
+Any request that doesn't conform to the schema will receive a `400` Bad Request response.
+
+<Note title="Tip">
+
+Refer to the [Middlewares](!docs!/learn/fundamentals/api-routes/middlewares) documentation to learn more.
+
+</Note>
+
+---
+
+## Step 5: Retrieve Tiers API Route
+
+In this step, you'll add an API route that retrieves tiers. You'll use this API route later when you customize the Medusa Admin to display tiers in the Medusa Admin.
+
+To create the API route, add the following function to the `src/api/admin/tiers/route.ts` file:
+
+```ts title="src/api/admin/tiers/route.ts"
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const query = req.scope.resolve("query")
+
+  const { data: tiers, metadata } = await query.graph({
+    entity: "tier",
+    ...req.queryConfig,
+  })
+
+  res.json({
+    tiers,
+    count: metadata?.count || 0,
+    offset: metadata?.skip || 0,
+    limit: metadata?.take || 15,
+  })
+}
+```
+
+You export a `GET` route handler function, which will expose a `GET` API route at `/admin/tiers`.
+
+In the route handler, you resolve Query from the Medusa container and use it to retrieve a list of tiers.
+
+Notice that you spread the `req.queryConfig` object into the `query.graph` method. This allows clients to pass query parameters for pagination and configure returned fields. You'll learn how to set these configurations in a bit.
+
+You return the list of tiers in the response.
+
+You'll test out this API route later when you customize the Medusa Admin dashboard.
+
+### Apply Query Configurations Middleware
+
+Next, you need to apply a middleware that validates the query parameters passed to the request, and sets the default Query configurations.
+
+In `src/api/middlewares.ts`, add the following imports at the top of the file:
+
+```ts title="src/api/middlewares.ts"
+import {
+  validateAndTransformQuery,
+} from "@medusajs/framework/http"
+import { createFindParams } from "@medusajs/medusa/api/utils/validators"
+```
+
+Then, add the following object to the `routes` array passed to `defineMiddlewares`:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/admin/tiers",
+      methods: ["GET"],
+      middlewares: [validateAndTransformQuery(createFindParams(), {
+        isList: true,
+        defaults: ["id", "name", "promotion.id", "promotion.code"],
+      })],
+    },
+  ],
+})
+```
+
+You apply the `validateAndTransformQuery` middleware to `GET` requests sent to the `/admin/tiers` route, passing it the `createFindParams` utility function to create a schema that validates common query parameters like `limit`, `offset`, `fields`, and `order`.
+
+You set the following configurations:
+
+- `isList`: Set to `true` to indicate that the API route returns a list of records.
+- `defaults`: An array of fields to return by default if the client doesn't specify any fields in the request.
+
+<Note>
+
+Refer to the [Request Query Configuration](!docs!/learn/fundamentals/module-links/query#request-query-configurations) documentation to learn more about this middleware and the query configurations.
+
+</Note>
+
+---
+
+## Step 6: Manage Customer Tiers in Medusa Admin
+
+In this step, you'll customize the Medusa Admin to display and create tiers.
+
+The Medusa Admin dashboard is customizable, allowing you to insert widgets into existing pages, or create new pages.
+
+<Note title="Tip">
+
+Refer to the [Admin Development](!docs!/learn/fundamentals/admin) documentation to learn more.
+
+</Note>
+
+### a. Initialize JS SDK
+
+To send requests to the Medusa server, you'll use the [JS SDK](../../../js-sdk/page.mdx). It's already installed in your Medusa project, but you need to initialize it before using it in your customizations.
+
+Create the file `src/admin/lib/sdk.ts` with the following content:
+
+export const sdkHighlights = [
+  ["3", "new Medusa", "Initialize the Medusa JS SDK."],
+  ["4", "baseUrl", "Backend server URL."],
+  ["5", "debug", "Enable debug mode in development."],
+  ["7", "type: \"session\"", "Use session-based authentication."]
+]
+
+```ts title="src/admin/lib/sdk.ts" highlights={sdkHighlights}
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
+  debug: process.env.NODE_ENV === "development",
+  auth: {
+    type: "session",
+  },
+})
+```
+
+Learn more about the initialization options in the [JS SDK](../../../js-sdk/page.mdx) reference.
+
+### b. Tiers UI Route
+
+Next, you'll create a UI route that displays the list of tiers in the Medusa Admin.
+
+A UI route is a React component that specifies the content to be shown in a new page in the Medusa Admin dashboard.
+
+<Note>
+
+Learn more about UI routes in the [UI Routes documentation](!docs!/learn/fundamentals/admin/ui-routes).
+
+</Note>
+
+To create the UI route, create the file `src/admin/routes/tiers/page.tsx` with the following content:
+
+```tsx title="src/admin/routes/tiers/page.tsx" collapsibleLines="1-16" expandButtonLabel="Show Imports"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+import {
+  Container,
+  Heading,
+  Button,
+  DataTable,
+  createDataTableColumnHelper,
+  useDataTable,
+  DataTablePaginationState,
+} from "@medusajs/ui"
+import { useNavigate, Link } from "react-router-dom"
+import { UserGroup } from "@medusajs/icons"
+import { useQuery } from "@tanstack/react-query"
+import { useState, useMemo } from "react"
+import { sdk } from "../../lib/sdk"
+
+export type Tier = {
+  id: string
+  name: string
+  promotion: {
+    id: string
+    code: string
+  } | null
+  tier_rules: Array<{
+    id: string
+    min_purchase_value: number
+    currency_code: string
+  }>
+}
+
+type TiersResponse = {
+  tiers: Tier[]
+  count: number
+  offset: number
+  limit: number
+}
+
+const columnHelper = createDataTableColumnHelper<Tier>()
+
+const columns = [
+  columnHelper.accessor("name", {
+    header: "Name",
+    enableSorting: true,
+  }),
+  columnHelper.accessor("promotion", {
+    header: "Promotion",
+    cell: ({ getValue }) => {
+      const promotion = getValue()
+      return promotion ? <Link to={`/promotions/${promotion.id}`}>{promotion.code}</Link> : "-"
+    },
+  }),
+]
+
+const TiersPage = () => {
+  const navigate = useNavigate()
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const limit = 15
+  const [pagination, setPagination] = useState<DataTablePaginationState>({
+    pageSize: limit,
+    pageIndex: 0,
+  })
+
+  const offset = useMemo(() => {
+    return pagination.pageIndex * limit
+  }, [pagination])
+
+  const { data, isLoading } = useQuery({
+    queryFn: () =>
+      sdk.client.fetch<TiersResponse>("/admin/tiers", {
+        method: "GET",
+        query: {
+          limit,
+          offset,
+        },
+      }),
+    queryKey: ["tiers", "list", limit, offset],
+  })
+
+  const tiers = data?.tiers || []
+
+  const table = useDataTable({
+    columns,
+    data: tiers,
+    getRowId: (tier) => tier.id,
+    rowCount: data?.count || 0,
+    isLoading,
+    pagination: {
+      state: pagination,
+      onPaginationChange: setPagination,
+    },
+    onRowClick: (_event, row) => {
+      // TODO navigate to the tier details page
+    },
+  })
+
+  return (
+    <Container className="divide-y p-0">
+      <DataTable instance={table}>
+        <DataTable.Toolbar className="flex items-center justify-between px-6 py-4">
+          <Heading level="h1">Customer Tiers</Heading>
+          <Button onClick={() => setIsCreateModalOpen(true)}>
+            Create Tier
+          </Button>
+        </DataTable.Toolbar>
+        <DataTable.Table />
+        <DataTable.Pagination />
+      </DataTable>
+      {/* TODO show create tier modal */}
+    </Container>
+  )
+}
+
+export const config = defineRouteConfig({
+  label: "Customer Tiers",
+  icon: UserGroup,
+})
+
+export default TiersPage
+```
+
+A UI route file must export a React component as the default export. This component is rendered when the user navigates to the UI route. It can also export a route configuration object that defines the UI route's label and icon in the sidebar.
+
+In the component, you:
+
+- Define state variables to configure pagination.
+- Fetch the tiers using the JS SDK and Tanstack Query. By using Tanstack Query, you can easily manage the data fetching state, handle pagination, and cache the data.
+- Create a DataTable instance from [Medusa UI](!ui!). You pass the columns, data, and pagination configurations to the hook.
+- Render the DataTable component with a toolbar and pagination controls.
+
+### c. Create Tier Modal Component
+
+Next, you'll create a component that shows a form to create a tier in a modal.
+
+Create the file `src/admin/components/create-tier-modal.tsx` with the following content:
+
+```tsx title="src/admin/components/create-tier-modal.tsx" collapsibleLines="1-9" expandButtonLabel="Show Imports"
+import { FocusModal, Heading, Label, Input, Button, Select, IconButton, toast } from "@medusajs/ui"
+import { Trash } from "@medusajs/icons"
+import { useForm, Controller, FormProvider } from "react-hook-form"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { sdk } from "../lib/sdk"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { Tier } from "../routes/tiers/page"
+
+type CreateTierFormData = {
+  name: string
+  promo_id: string | null
+  tier_rules: Array<{
+    min_purchase_value: number
+    currency_code: string
+  }>
+}
+
+type CreateTierModalProps = {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}
+
+export const CreateTierModal = ({ open, onOpenChange }: CreateTierModalProps) => {
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+  const [tierRules, setTierRules] = useState<{
+    currency_code: string
+    min_purchase_value: number
+  }[]>([])
+
+  const form = useForm<CreateTierFormData>({
+    defaultValues: {
+      name: "",
+      promo_id: null,
+      tier_rules: [],
+    },
+  })
+
+  // TODO add queries and mutations
+}
+```
+
+You define a component that receives the modal's open state and a function to close it.
+
+In the component, so far you define necessary variables and initialize the form.
+
+Next, you'll define Tanstack queries and mutations to retrieve form data and create the tier. Replace the `TODO` with the following:
+
+```tsx title="src/admin/components/create-tier-modal.tsx"
+const { data: promotionsData } = useQuery({
+  queryFn: () => sdk.admin.promotion.list(),
+  queryKey: ["promotions", "list"],
+})
+
+const { data: storeData } = useQuery({
+  queryFn: () =>
+    sdk.admin.store.list({
+      fields: "id,supported_currencies.*,supported_currencies.currency.*",
+    }),
+  queryKey: ["store"],
+})
+
+const createTierMutation = useMutation({
+  mutationFn: async (data: CreateTierFormData) => {
+    return await sdk.client.fetch<{ tier: Tier }>("/admin/tiers", {
+      method: "POST",
+      body: data,
+    })
+  },
+  onSuccess: (data: { tier: Tier }) => {
+    queryClient.invalidateQueries({ queryKey: ["tiers"] })
+    form.reset()
+    setTierRules([])
+    onOpenChange(false)
+    // TODO navigate to the new tier page
+    toast.success("Success", {
+      description: "Tier created successfully",
+      position: "top-right",
+    })
+  },
+  onError: (error) => {
+    toast.error("Error", {
+      description: error.message,
+      position: "top-right",
+    })
+  },
+})
+
+// TODO and function handlers
+```
+
+You retrieve the promotions and store data to populate the form with promotions and supported currencies for rules.
+
+You also define a mutation to create a tier using the `useMutation` hook from Tanstack Query.
+
+Next, you'll add functions to handle form submissions and other actions. Replace the `TODO` with the following:
+
+```tsx title="src/admin/components/create-tier-modal.tsx"
+const handleSubmit = form.handleSubmit((data) => {
+  createTierMutation.mutate({
+    ...data,
+    tier_rules: tierRules,
+  })
+})
+
+const promotions = promotionsData?.promotions || []
+const store = storeData?.stores?.[0]
+const supportedCurrencies = store?.supported_currencies || []
+
+const getAvailableCurrencies = () => {
+  const usedCurrencies = new Set(tierRules.map((rule) => rule.currency_code))
+  return supportedCurrencies.filter((sc) => !usedCurrencies.has(sc.currency_code))
+}
+
+const addTierRule = () => {
+  const availableCurrencies = getAvailableCurrencies()
+  if (availableCurrencies.length > 0) {
+    const firstCurrency = availableCurrencies[0].currency_code
+    setTierRules([
+      ...tierRules,
+      {
+        currency_code: firstCurrency,
+        min_purchase_value: 0,
+      },
+    ])
+  }
+}
+
+const removeTierRule = (index: number) => {
+  setTierRules(tierRules.filter((_, i) => i !== index))
+}
+
+const updateTierRule = (index: number, field: "currency_code" | "min_purchase_value", value: string | number) => {
+  const updated = [...tierRules]
+  updated[index] = {
+    ...updated[index],
+    [field]: value,
+  }
+  setTierRules(updated)
+}
+
+// TODO add return statement
+```
+
+You define the following functions:
+
+- `handleSubmit`: Handles form submissions by calling the `createTierMutation`, passing it the form data and tier rules.
+- `getAvailableCurrencies`: Returns the available currencies that haven't been used yet in the tier rules.
+- `addTierRule`: Adds a new tier rule to the form.
+- `removeTierRule`: Removes a tier rule from the form.
+- `updateTierRule`: Updates a tier rule in the form.
+
+Finally, replace the `TODO` with the following return statement to render the modal:
+
+```tsx title="src/admin/components/create-tier-modal.tsx"
+return (
+  <FocusModal open={open} onOpenChange={onOpenChange}>
+    <FocusModal.Content>
+      <FormProvider {...form}>
+        <form onSubmit={handleSubmit} className="flex h-full flex-col overflow-hidden">
+          <FocusModal.Header>
+          <div className="flex items-center justify-between">
+            <Heading level="h1">Create Tier</Heading>
+          </div>
+        </FocusModal.Header>
+        <FocusModal.Body className="flex flex-1 flex-col overflow-y-auto">
+          <div className="mx-auto flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
+            <div className="flex flex-col gap-y-4">
+              <Controller
+                control={form.control}
+                name="name"
+                rules={{ required: "Name is required" }}
+                render={({ field }) => (
+                  <div className="flex flex-col gap-y-2">
+                    <Label size="small" weight="plus">
+                      Name
+                    </Label>
+                    <Input {...field} placeholder="e.g., Bronze, Silver, Gold" />
+                  </div>
+                )}
+              />
+
+              <Controller
+                control={form.control}
+                name="promo_id"
+                render={({ field }) => (
+                  <div className="flex flex-col gap-y-2">
+                    <Label size="small" weight="plus">
+                      Promotion (Optional)
+                    </Label>
+                    <Select
+                      value={field.value || ""}
+                      onValueChange={(value) => field.onChange(value || null)}
+                    >
+                      <Select.Trigger>
+                        <Select.Value placeholder="Select a promotion" />
+                      </Select.Trigger>
+                      <Select.Content>
+                        {promotions.map((promo) => (
+                          <Select.Item key={promo.id} value={promo.id}>
+                            {promo.code}
+                          </Select.Item>
+                        ))}
+                      </Select.Content>
+                    </Select>
+                  </div>
+                )}
+              />
+
+              <div className="flex flex-col gap-y-4">
+                <div className="flex items-center justify-between">
+                  <Label size="small" weight="plus">
+                    Tier Rules
+                  </Label>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="small"
+                    onClick={addTierRule}
+                    disabled={getAvailableCurrencies().length === 0}
+                  >
+                    Add Rule
+                  </Button>
+                </div>
+
+                {tierRules.length === 0 && (
+                  <div className="text-sm text-gray-500">
+                    No tier rules added. Click "Add Rule" to add a rule for a currency.
+                  </div>
+                )}
+
+                {tierRules.map((rule, index) => (
+                  <div key={index} className="flex items-end gap-x-2 rounded-lg border p-4">
+                    <div className="flex flex-1 flex-col gap-y-2">
+                      <Label size="small">Currency</Label>
+                      <Select
+                        value={rule.currency_code}
+                        onValueChange={(value) => updateTierRule(index, "currency_code", value)}
+                      >
+                        <Select.Trigger>
+                          <Select.Value placeholder="Select currency" />
+                        </Select.Trigger>
+                        <Select.Content>
+                          {supportedCurrencies
+                            .filter((sc) => {
+                              // Allow current selection or currencies not used in other rules
+                              return (
+                                sc.currency_code === rule.currency_code ||
+                                !tierRules.some(
+                                  (r, i) => i !== index && r.currency_code === sc.currency_code
+                                )
+                              )
+                            })
+                            .map((sc) => (
+                              <Select.Item key={sc.currency_code} value={sc.currency_code}>
+                                {sc.currency.code.toUpperCase()} - {sc.currency.name}
+                              </Select.Item>
+                            ))}
+                        </Select.Content>
+                      </Select>
+                    </div>
+                    <div className="flex flex-1 flex-col gap-y-2">
+                      <Label size="small">Minimum Purchase Value</Label>
+                      <Input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={rule.min_purchase_value}
+                        onChange={(e) =>
+                          updateTierRule(index, "min_purchase_value", parseFloat(e.target.value) || 0)
+                        }
+                      />
+                    </div>
+                    <IconButton
+                      type="button"
+                      variant="transparent"
+                      size="small"
+                      onClick={() => removeTierRule(index)}
+                    >
+                      <Trash />
+                    </IconButton>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </FocusModal.Body>
+        <FocusModal.Footer>
+          <div className="flex items-center gap-x-2">
+            <FocusModal.Close asChild>
+              <Button variant="secondary" size="small">
+                Cancel
+              </Button>
+            </FocusModal.Close>
+            <Button type="submit" size="small" isLoading={createTierMutation.isPending}>
+              Create
+            </Button>
+          </div>
+        </FocusModal.Footer>
+        </form>
+      </FormProvider>
+    </FocusModal.Content>
+  </FocusModal>
+)
+```
+
+You display a `FocusModal` from Medusa UI. In the modal, you render a form with the following fields:
+
+1. **Name**: The name of the tier.
+2. **Promotion**: A select input to choose a promotion that's associated with the tier.
+3. **Tier Rules**: A list of inputs to specify the minimum purchase value required in a specific currency to qualify for the tier.
+
+### d. Show Create Tier Modal
+
+Next, you'll show the create tier modal when the user clicks the "Create Tier" button in the tiers page.
+
+First, add the following import at the top of `src/admin/routes/tiers/page.tsx`:
+
+```tsx title="src/admin/routes/tiers/page.tsx"
+import { CreateTierModal } from "../../components/create-tier-modal"
+```
+
+Next, replace the `TODO` in the `TiersPage` component's `return` statement with the following:
+
+```tsx title="src/admin/routes/tiers/page.tsx"
+<CreateTierModal open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen} />
+```
+
+You display the create tier modal when the user clicks the "Create Tier" button in the tiers page.
+
+### Test Customer Tiers in Medusa Admin
+
+To test out the customer tiers in the Medusa Admin, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, open the Medusa Admin dashboard at `http://localhost:9000/app` and log in using the credentials you set up earlier.
+
+You'll find a new sidebar item labeled "Customer Tiers." Click on it to view the list of tiers.
+
+![Customer Tiers page showing list of tiers](https://res.cloudinary.com/dza7lstvk/image/upload/v1764065196/Medusa%20Resources/CleanShot_2025-11-25_at_12.05.51_2x_u2khaj.png)
+
+Before creating a tier, you should [create a promotion](!user-guide!/promotions/create).
+
+Then, on the Customer Tiers page, click the "Create Tier" button to open the create tier modal.
+
+In the modal, enter the tier's name, select the promotion you created, and add tier rules for the currencies in your store. Once you're done, click the "Create" button to create the tier.
+
+![Create tier modal showing form to create a tier](https://res.cloudinary.com/dza7lstvk/image/upload/v1764065361/Medusa%20Resources/CleanShot_2025-11-25_at_12.08.18_2x_nid87p.png)
+
+You'll see the new tier in the list of tiers. Later, you'll add a page to view and edit a single tier's details.
+
+---
+
+## Step 7: Retrieve Tier API Route
+
+In this step, you'll add an API route that retrieves a tier.
+
+To create the API route, create the file `src/api/admin/tiers/[id]/route.ts` with the following content:
+
+```ts title="src/api/admin/tiers/[id]/route.ts"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const query = req.scope.resolve("query")
+  const { id } = req.params
+
+  const { data: tiers } = await query.graph({
+    entity: "tier",
+    filters: {
+      id,
+    },
+    ...req.queryConfig,
+  }, {
+    throwIfKeyNotFound: true,
+  })
+
+  res.json({ tier: tiers[0] })
+}
+```
+
+You export a `GET` route handler function, which will expose a `GET` API route at `/admin/tiers/:id`.
+
+In the route handler, you resolve Query from the Medusa container and use it to retrieve the tier with the given ID.
+
+You return the tier in the response.
+
+You'll test out this API route later when you customize the Medusa Admin dashboard.
+
+### Apply Query Configurations Middleware
+
+Next, you need to apply a middleware that validates the query parameters passed to the request, and sets the default Query configurations.
+
+In `src/api/middlewares.ts`, add the following object to the `routes` array passed to `defineMiddlewares`:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/admin/tiers/:id",
+      methods: ["GET"],
+      middlewares: [
+        validateAndTransformQuery(createFindParams(), {
+          isList: false,
+          defaults: ["id", "name", "promotion.id", "promotion.code", "tier_rules.*"],
+        }),
+      ],
+    },
+  ],
+})
+```
+
+Similar to before, you define the query configurations for the `GET` request to the `/admin/tiers/:id` route.
+
+---
+
+## Step 8: Update Tier
+
+In this step, you'll add the functionality to update tiers. This includes creating a workflow to update a tier and an API route that executes it.
+
+### a. Update Tier Workflow
+
+The workflow to update a tier has the following steps:
+
+<WorkflowDiagram
+  workflow={{
+    name: "updateTierWorkflow",
+    steps: [
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve the tier to update.",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 1,
+      },
+      {
+        type: "when",
+        condition: "!!data.input.promo_id",
+        steps: [
+          {
+            type: "step",
+            name: "useQueryGraphStep",
+            description: "Retrieve the promotion to validate that it exists.",
+            link: "/references/helper-steps/useQueryGraphStep",
+            depth: 1,
+          }
+        ],
+        depth: 2,
+      },
+      {
+        type: "step",
+        name: "updateTierStep",
+        description: "Update the tier.",
+        depth: 3,
+      },
+      {
+        type: "when",
+        condition: "!!data.input.tier_rules?.length",
+        steps: [
+          {
+            type: "step",
+            name: "deleteTierRulesStep",
+            description: "Delete the existing tier rules if new rules are provided.",
+            depth: 1,
+          },
+          {
+            type: "step",
+            name: "createTierRulesStep",
+            description: "Create the new tier rules if provided.",
+            depth: 2,
+          }
+        ],
+        depth: 4,
+      },
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve the updated tier with rules.",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 5,
+      }
+    ]
+  }}
+/>
+
+Medusa provides the `useQueryGraphStep` out-of-the-box, and you've implemented the `createTierRulesStep`. You'll create the other steps before creating the workflow.
+
+#### Update Tier Step
+
+The `updateTierStep` updates a tier.
+
+To create the step, create the file `src/workflows/steps/update-tier.ts` with the following content:
+
+```ts title="src/workflows/steps/update-tier.ts"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { TIER_MODULE } from "../../modules/tier"
+import TierModuleService from "../../modules/tier/service"
+
+export type UpdateTierStepInput = {
+  id: string
+  name: string
+  promo_id: string | null
+}
+
+export const updateTierStep = createStep(
+  "update-tier",
+  async (input: UpdateTierStepInput, { container }) => {
+    const tierModuleService: TierModuleService = container.resolve(TIER_MODULE)
+
+    const originalTier = await tierModuleService.retrieveTier(input.id)
+
+    const tier = await tierModuleService.updateTiers(input)
+
+    return new StepResponse(tier, originalTier)
+  },
+  async (originalInput, { container }) => {
+    if (!originalInput) {
+      return
+    }
+
+    const tierModuleService = container.resolve(TIER_MODULE)
+    
+    await tierModuleService.updateTiers({
+      id: originalInput.id,
+      name: originalInput.name,
+      promo_id: originalInput.promo_id,
+    })
+  }
+)
+```
+
+The step receives the tier's ID and the details to update.
+
+In the step function, you retrieve the original tier, then you update it. You pass the original tier details to the compensation function.
+
+In the compensation function, you restore the original tier details if an error occurs during the workflow's execution.
+
+#### Delete Tier Rules Step
+
+The `deleteTierRulesStep` deletes tier rules.
+
+To create the step, create the file `src/workflows/steps/delete-tier-rules.ts` with the following content:
+
+```ts title="src/workflows/steps/delete-tier-rules.ts"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { TIER_MODULE } from "../../modules/tier"
+import TierModuleService from "../../modules/tier/service"
+
+export type DeleteTierRulesStepInput = {
+  ids: string[]
+}
+
+export const deleteTierRulesStep = createStep(
+  "delete-tier-rules",
+  async (input: DeleteTierRulesStepInput, { container }) => {
+    const tierModuleService: TierModuleService = container.resolve(TIER_MODULE)
+
+    // Get existing rules
+    const existingRules = await tierModuleService.listTierRules({
+      id: input.ids,
+    })
+
+    // Delete all rules
+    await tierModuleService.deleteTierRules(input.ids)
+
+    return new StepResponse(void 0, existingRules)
+  },
+  async (compensationData, { container }) => {
+    if (!compensationData?.length) {
+      return
+    }
+
+    const tierModuleService: TierModuleService = container.resolve(TIER_MODULE)
+    // Restore deleted rules
+    await tierModuleService.createTierRules(
+      compensationData.map((rule) => ({
+        tier_id: rule.tier_id,
+        min_purchase_value: rule.min_purchase_value,
+        currency_code: rule.currency_code,
+      }))
+    )
+  }
+)
+```
+
+The step receives the IDs of the tier rules to delete.
+
+In the step function, you retrieve the existing rules, then you delete them. You pass the existing rules to the compensation function.
+
+In the compensation function, you restore the existing rules if an error occurs during the workflow's execution.
+
+#### Update Tier Workflow
+
+You can now create the workflow that updates a tier.
+
+Create the file `src/workflows/update-tier.ts` with the following content:
+
+```ts title="src/workflows/update-tier.ts" collapsibleLines="1-11" expandButtonLabel="Show Imports"
+import {
+  createWorkflow,
+  WorkflowResponse,
+  transform,
+  when,
+} from "@medusajs/framework/workflows-sdk"
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+import { updateTierStep } from "./steps/update-tier"
+import { deleteTierRulesStep } from "./steps/delete-tier-rules"
+import { createTierRulesStep } from "./steps/create-tier-rules"
+
+export type UpdateTierWorkflowInput = {
+  id: string
+  name: string
+  promo_id?: string | null
+  tier_rules?: Array<{
+    min_purchase_value: number
+    currency_code: string
+  }>
+}
+
+export const updateTierWorkflow = createWorkflow(
+  "update-tier",
+  (input: UpdateTierWorkflowInput) => {
+    const { data: tiers } = useQueryGraphStep({
+      entity: "tier",
+      fields: ["tier_rules.*"],
+      filters: {
+        id: input.id,
+      },
+      options: {
+        throwIfKeyNotFound: true,
+      },
+    })
+    // Validate promotion if provided
+    when({ input }, (data) => !!data.input.promo_id)
+      .then(() => {
+        useQueryGraphStep({
+          entity: "promotion",
+          fields: ["id"],
+          filters: {
+            id: input.promo_id!,
+          },
+          options: {
+            throwIfKeyNotFound: true,
+          },
+        }).config({ name: "retrieve-promotion" })
+      })
+    // Update the tier
+    updateTierStep({
+      id: input.id,
+      name: input.name,
+      promo_id: input.promo_id || null,
+    })
+
+    when({ input }, (data) => {
+      return !!data.input.tier_rules?.length
+    }).then(() => {
+      const ids = transform({
+        tiers,
+      }, (data) => {
+        return (data.tiers[0].tier_rules?.map((rule) => rule?.id) || []) as string[]
+      })
+      deleteTierRulesStep({
+        ids,
+      })
+      return createTierRulesStep({
+        tier_id: input.id,
+        tier_rules: input.tier_rules!,
+      })
+    })
+
+    // Retrieve the updated tier with rules
+    const { data: updatedTiers } = useQueryGraphStep({
+      entity: "tier",
+      fields: ["*", "tier_rules.*"],
+      filters: {
+        id: input.id,
+      },
+    }).config({ name: "updated-tier" })
+
+    return new WorkflowResponse({
+      tier: updatedTiers[0],
+    })
+  }
+)
+```
+
+The workflow receives the details to update the tier.
+
+In the workflow, you:
+
+1. Retrieve the tier to update using the `useQueryGraphStep`.
+2. Use `when-then` to check if the promotion ID is provided. If so, use `useQueryGraphStep` to validate that it exists.
+2. Update the tier using the `updateTierStep`.
+3. If new tier rules are provided, you:
+    - delete the existing tier rules using the `deleteTierRulesStep`.
+    - Create the new tier rules using the `createTierRulesStep`.
+5. Retrieve the updated tier with rules using the `useQueryGraphStep`.
+
+Finally, you return a `WorkflowResponse` with the updated tier.
+
+<Note>
+
+In workflows, you need `transform` to prepare data based on execution values. Learn more in the [Data Manipulation](!docs!/learn/fundamentals/workflows/variable-manipulation) workflow documentation.
+
+</Note>
+
+### b. Update Tier API Route
+
+Next, you'll create the API route that exposes the workflow's functionality to client applications.
+
+In `src/api/admin/tiers/[id]/route.ts`, add the following imports at the top of the file:
+
+```ts title="src/api/admin/tiers/[id]/route.ts"
+import { z } from "@medusajs/framework/zod"
+import { updateTierWorkflow } from "../../../../workflows/update-tier"
+```
+
+Then, add the following at the end of the file:
+
+```ts title="src/api/admin/tiers/[id]/route.ts"
+export const UpdateTierSchema = z.object({
+  name: z.string(),
+  promo_id: z.string().nullable(),
+  tier_rules: z.array(z.object({
+    min_purchase_value: z.number(),
+    currency_code: z.string(),
+  })),
+})
+
+type UpdateTierInput = z.infer<typeof UpdateTierSchema>
+
+export async function POST(
+  req: MedusaRequest<UpdateTierInput>,
+  res: MedusaResponse
+): Promise<void> {
+  const { id } = req.params
+  const { name, promo_id, tier_rules } = req.validatedBody
+
+  const { result } = await updateTierWorkflow(req.scope).run({
+    input: {
+      id,
+      name,
+      promo_id: promo_id !== undefined ? promo_id : null,
+      tier_rules: tier_rules || [],
+    },
+  })
+
+  res.json({ tier: result.tier })
+}
+```
+
+You define a Zod schema that validates the request body.
+
+Then, you export a `POST` function, which exposes a `POST` API route at `/admin/tiers/:id`.
+
+In the route handler, you execute the `updateTierWorkflow` and return the updated tier in the response.
+
+You'll test out the API route later when you customize the Medusa Admin dashboard.
+
+#### c. Apply Validation Middleware
+
+Next, you'll apply a validation middleware to the API route.
+
+In `src/api/middlewares.ts`, add the following import at the top of the file:
+
+```ts title="src/api/middlewares.ts"
+import { UpdateTierSchema } from "./admin/tiers/[id]/route"
+```
+
+Then, add a new route object passed to the array in `defineMiddlewares`:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/admin/tiers/:id",
+      methods: ["POST"],
+      middlewares: [validateAndTransformBody(UpdateTierSchema)],
+    },
+  ],
+})
+```
+
+You apply the `validateAndTransformBody` middleware to the `POST` route of the `/admin/tiers/:id` path, passing it the Zod schema you created in the route file.
+
+Any request that doesn't conform to the schema will receive a `400` Bad Request response.
+
+---
+
+## Step 9: Retrieve Customers in Tier API Route
+
+In this step, you'll add an API route that retrieves customers in a tier. This will be useful to show the customers in the tier's page on the Medusa Admin.
+
+### a. Retrieve Customers in Tier API Route
+
+To create the API route, create the file `src/api/admin/tiers/[id]/customers/route.ts` with the following content:
+
+```ts title="src/api/admin/tiers/[id]/customers/route.ts"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+  const { id } = req.params
+
+  // Query customers linked to this tier
+  const { data: customers, metadata } = await query.index({
+    entity: "customer",
+    filters: {
+      tier: {
+        id,
+      },
+    },
+    ...req.queryConfig,
+  })
+
+  res.json({
+    customers,
+    count: metadata?.estimate_count || 0,
+    offset: metadata?.skip || 0,
+    limit: metadata?.take || 15,
+  })
+}
+```
+
+You export a `GET` function, which exposes a `GET` API route at `/admin/tiers/:id/customers`.
+
+In the route handler, you resolve Query from the Medusa container and use it to retrieve customers linked to the tier with the given ID.
+
+Notice that you use the `query.index` method. This method is similar to `query.graph` but allows you to filter by linked records using the [Index Module](!docs!/learn/fundamentals/module-links/index-module).
+
+You return the customers in the response.
+
+You'll test out this API route later when you customize the Medusa Admin dashboard.
+
+### b. Apply Query Configurations Middleware
+
+Next, you need to apply a middleware that validates the query parameters passed to the request, and sets the default Query configurations.
+
+In `src/api/middlewares.ts`, add the following object to the `routes` array passed to `defineMiddlewares`:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/admin/tiers/:id/customers",
+      methods: ["GET"],
+      middlewares: [
+        validateAndTransformQuery(createFindParams(), {
+          isList: true,
+          defaults: ["id", "email", "first_name", "last_name"],
+        }),
+      ],
+    },
+  ],
+})
+```
+
+You apply the `validateAndTransformQuery` middleware to the `GET` route of the `/admin/tiers/:id/customers` path, passing it the `createFindParams` utility function to create a schema that validates common query parameters like `limit`, `offset`, `fields`, and `order`.
+
+You set the following configurations:
+
+- `isList`: Set to `true` to indicate that the API route returns a list of records.
+- `defaults`: An array of fields to return by default if the client doesn't specify any fields in the request.
+
+### c. Install Index Module
+
+The [Index Module](!docs!/learn/fundamentals/module-links/index-module) is a tool for performing high-performance queries across modules, such as filtering linked modules.
+
+The Index Module is currently experimental, so you need to install and configure it manually.
+
+To install the Index Module, run the following command in your Medusa application's directory:
+
+```bash npm2yarn
+npm install @medusajs/index
+```
+
+Then, add the following to your Medusa application's configuration file:
+
+```ts title="medusa-config.ts"
+export default config({
+  modules: [
+    // ...
+    {
+      resolve: "@medusajs/index",
+    },
+  ],
+})
+```
+
+Next, run the migrations to create the necessary tables for the Index Module in your database:
+
+```bash npm2yarn
+npx medusa db:migrate
+```
+
+Lastly, start the Medusa application to ingest the data into the Index Module:
+
+```bash npx2yarn
+npm run dev
+```
+
+You can now use the Index Module to filter customers by their tier. You'll test out the API route when you customize the Medusa Admin dashboard in the next step.
+
+<Note>
+
+Refer to the [Index Module](!docs!/learn/fundamentals/module-links/index-module) documentation to learn more.
+
+</Note>
+
+---
+
+## Step 10: Tier Details UI Route
+
+In this step, you'll create a UI route that displays the details of a tier.
+
+The UI route is composed of three sections:
+
+- Tier Details Section: This also includes a form to edit the tier's details.
+- Tier Rules Table
+- Tier Customers Table
+
+You'll create the components for each section first, then you'll create the UI route.
+
+### a. Edit Tier Drawer Component
+
+You'll first create a drawer component that displays a form to edit the tier's details. You'll then display the component in the Tier Details Section.
+
+To create the drawer component, create the file `src/admin/components/edit-tier-drawer.tsx` with the following content:
+
+```tsx title="src/admin/components/edit-tier-drawer.tsx"
+import { Drawer, Heading, Label, Input, Button, Select, IconButton, toast } from "@medusajs/ui"
+import { useForm, Controller, FormProvider } from "react-hook-form"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { sdk } from "../lib/sdk"
+import { useState, useEffect } from "react"
+import { Tier } from "../routes/tiers/page"
+import { Trash } from "@medusajs/icons"
+
+type EditTierFormData = {
+  name: string
+  promo_id: string | null
+  tier_rules: Array<{
+    min_purchase_value: number
+    currency_code: string
+  }>
+}
+
+type EditTierDrawerProps = {
+  tier: Tier | undefined
+}
+
+export const EditTierDrawer = ({ tier }: EditTierDrawerProps) => {
+  const queryClient = useQueryClient()
+  const [open, setOpen] = useState(false)
+  const [tierRules, setTierRules] = useState<{
+    currency_code: string
+    min_purchase_value: number
+  }[]>([])
+
+  const form = useForm<EditTierFormData>({
+    defaultValues: {
+      name: "",
+      promo_id: null,
+      tier_rules: [],
+    },
+  })
+
+  // TODO add queries and mutations
+}
+```
+
+You define a component that receives the tier to edit.
+
+In the component, you define the form and the necessary variables.
+
+Next, you'll add queries to retrieve promotions and store data, and a mutation to update the tier. Replace the `TODO` with the following:
+
+```tsx title="src/admin/components/edit-tier-drawer.tsx"
+const { data: promotionsData } = useQuery({
+  queryFn: () => sdk.admin.promotion.list(),
+  queryKey: ["promotions", "list"],
+  enabled: open,
+})
+
+const { data: storeData } = useQuery({
+  queryFn: () =>
+    sdk.admin.store.list({
+      fields: "id,supported_currencies.*,supported_currencies.currency.*",
+    }),
+  queryKey: ["store"],
+  enabled: open,
+})
+
+const updateTierMutation = useMutation({
+  mutationFn: async (data: EditTierFormData) => {
+    if (!tier) {return}
+    return await sdk.client.fetch(`/admin/tiers/${tier.id}`, {
+      method: "POST",
+      body: data,
+    })
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["tier", tier?.id] })
+    queryClient.invalidateQueries({ queryKey: ["tiers"] })
+    setOpen(false)
+    toast.success("Success", {
+      description: "Tier updated successfully",
+      position: "top-right",
+    })
+  },
+  onError: (error) => {
+    toast.error("Error", {
+      description: error.message,
+      position: "top-right",
+    })
+  },
+})
+
+// TODO initialize form on component mount
+```
+
+You retrieve the promotions and store data to populate the form with promotions and supported currencies for rules.
+
+You also define a mutation to update a tier using the `useMutation` hook from Tanstack Query.
+
+Next, you'll reset form data when the drawer is opened or closed. Replace the `TODO` with the following:
+
+```tsx title="src/admin/components/edit-tier-drawer.tsx"
+useEffect(() => {
+  if (tier && open) {
+    form.reset({
+      name: tier.name,
+      promo_id: tier.promotion?.id || null,
+      tier_rules: tier.tier_rules || [],
+    })
+    setTierRules(
+      tier.tier_rules?.map((rule) => ({
+        currency_code: rule.currency_code,
+        min_purchase_value: rule.min_purchase_value,
+      })) || []
+    )
+  }
+}, [tier, open, form])
+
+// TODO add function handlers
+```
+
+You reset the form data when the drawer is opened.
+
+Next, you'll add functions to handle form submissions and other actions. Replace the `TODO` with the following:
+
+```tsx title="src/admin/components/edit-tier-drawer.tsx"
+const handleSubmit = form.handleSubmit((data) => {
+  updateTierMutation.mutate({
+    ...data,
+    tier_rules: tierRules,
+  })
+})
+
+const promotions = promotionsData?.promotions || []
+const store = storeData?.stores?.[0]
+const supportedCurrencies = store?.supported_currencies || []
+
+const getAvailableCurrencies = () => {
+  const usedCurrencies = new Set(tierRules.map((rule) => rule.currency_code))
+  return supportedCurrencies.filter((sc) => !usedCurrencies.has(sc.currency_code))
+}
+
+const addTierRule = () => {
+  const availableCurrencies = getAvailableCurrencies()
+  if (availableCurrencies.length > 0) {
+    const firstCurrency = availableCurrencies[0].currency_code
+    setTierRules([
+      ...tierRules,
+      {
+        currency_code: firstCurrency,
+        min_purchase_value: 0,
+      },
+    ])
+  }
+}
+
+const removeTierRule = (index: number) => {
+  setTierRules(tierRules.filter((_, i) => i !== index))
+}
+
+const updateTierRule = (
+  index: number,
+  field: "currency_code" | "min_purchase_value",
+  value: string | number
+) => {
+  const updated = [...tierRules]
+  updated[index] = {
+    ...updated[index],
+    [field]: value,
+  }
+  setTierRules(updated)
+}
+
+// TODO add return statement
+```
+
+You define the following functions:
+
+- `handleSubmit`: Handles form submissions by calling the `updateTierMutation` mutation with the form data and tier rules.
+- `getAvailableCurrencies`: Returns the available currencies that haven't been used yet in the tier rules.
+- `addTierRule`: Adds a new tier rule to the form.
+- `removeTierRule`: Removes a tier rule from the form.
+- `updateTierRule`: Updates a tier rule in the form.
+
+Finally, replace the `TODO` with the following return statement to render the drawer:
+
+```tsx title="src/admin/components/edit-tier-drawer.tsx"
+return (
+  <Drawer open={open} onOpenChange={setOpen}>
+    <Drawer.Trigger asChild>
+      <Button variant="secondary" size="small">
+        Edit
+      </Button>
+    </Drawer.Trigger>
+    <Drawer.Content>
+      <FormProvider {...form}>
+        <form onSubmit={handleSubmit} className="flex flex-1 flex-col overflow-hidden">
+          <Drawer.Header>
+            <Heading level="h1">Edit Tier</Heading>
+          </Drawer.Header>
+          <Drawer.Body className="flex max-w-full flex-1 flex-col gap-y-8 overflow-y-auto">
+            <Controller
+              control={form.control}
+              name="name"
+              rules={{ required: "Name is required" }}
+              render={({ field }) => (
+                <div className="flex flex-col space-y-2">
+                  <Label size="small" weight="plus">
+                    Name
+                  </Label>
+                  <Input {...field} placeholder="e.g., Bronze, Silver, Gold" />
+                </div>
+              )}
+            />
+
+            <Controller
+              control={form.control}
+              name="promo_id"
+              render={({ field }) => (
+                <div className="flex flex-col space-y-2">
+                  <Label size="small" weight="plus">
+                    Promotion (Optional)
+                  </Label>
+                  <Select
+                    value={field.value || ""}
+                    onValueChange={(value) => field.onChange(value || null)}
+                  >
+                    <Select.Trigger>
+                      <Select.Value placeholder="Select a promotion" />
+                    </Select.Trigger>
+                    <Select.Content>
+                      {promotions.map((promo) => (
+                        <Select.Item key={promo.id} value={promo.id}>
+                          {promo.code}
+                        </Select.Item>
+                      ))}
+                    </Select.Content>
+                  </Select>
+                </div>
+              )}
+            />
+
+            <div className="flex flex-col gap-y-4">
+              <div className="flex items-center justify-between">
+                <Label size="small" weight="plus">
+                  Tier Rules
+                </Label>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="small"
+                  onClick={addTierRule}
+                  disabled={getAvailableCurrencies().length === 0}
+                >
+                  Add Rule
+                </Button>
+              </div>
+
+              {tierRules.length === 0 && (
+                <div className="text-sm text-gray-500">
+                  No tier rules added. Click "Add Rule" to add a rule for a currency.
+                </div>
+              )}
+
+              {tierRules.map((rule, index) => (
+                <div key={index} className="flex items-end gap-x-2 rounded-lg border p-4">
+                  <div className="flex flex-1 flex-col gap-y-2">
+                    <Label size="small">Currency</Label>
+                    <Select
+                      value={rule.currency_code}
+                      onValueChange={(value) => updateTierRule(index, "currency_code", value)}
+                    >
+                      <Select.Trigger>
+                        <Select.Value />
+                      </Select.Trigger>
+                      <Select.Content>
+                        {supportedCurrencies
+                          .filter((sc) => {
+                            return (
+                              sc.currency_code === rule.currency_code ||
+                              !tierRules.some(
+                                (r, i) => i !== index && r.currency_code === sc.currency_code
+                              )
+                            )
+                          })
+                          .map((sc) => (
+                            <Select.Item key={sc.currency_code} value={sc.currency_code}>
+                              {sc.currency.code.toUpperCase()} - {sc.currency.name}
+                            </Select.Item>
+                          ))}
+                      </Select.Content>
+                    </Select>
+                  </div>
+                  <div className="flex flex-1 flex-col gap-y-2">
+                    <Label size="small">Minimum Purchase Value</Label>
+                    <Input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={rule.min_purchase_value}
+                      onChange={(e) =>
+                        updateTierRule(index, "min_purchase_value", parseFloat(e.target.value) || 0)
+                      }
+                    />
+                  </div>
+                  <IconButton
+                    type="button"
+                    variant="transparent"
+                    size="small"
+                    onClick={() => removeTierRule(index)}
+                  >
+                    <Trash />
+                  </IconButton>
+                </div>
+              ))}
+            </div>
+          </Drawer.Body>
+          <Drawer.Footer>
+            <div className="flex items-center justify-end gap-x-2">
+              <Drawer.Close asChild>
+                <Button size="small" variant="secondary">
+                  Cancel
+                </Button>
+              </Drawer.Close>
+              <Button size="small" type="submit" isLoading={updateTierMutation.isPending}>
+                Save
+              </Button>
+            </div>
+          </Drawer.Footer>
+        </form>
+      </FormProvider>
+    </Drawer.Content>
+  </Drawer>
+)
+```
+
+You display a `Drawer` from Medusa UI. In the drawer, you render a form with the following fields:
+
+1. **Name**: The name of the tier.
+2. **Promotion**: A select input to choose a promotion that's associated with the tier.
+3. **Tier Rules**: A list of inputs to specify the minimum purchase value required in a specific currency to qualify for the tier.
+
+### b. Tier Details Section Component
+
+Next, you'll create a component that displays the details of a tier, with a button to open the edit tier drawer.
+
+To create the component, create the file `src/admin/components/tier-details-section.tsx` with the following content:
+
+```tsx title="src/admin/components/tier-details-section.tsx"
+import { Code, Container, Heading, Text } from "@medusajs/ui"
+import { Link } from "react-router-dom"
+import { Tier } from "../routes/tiers/page"
+import { EditTierDrawer } from "./edit-tier-drawer"
+
+type TierDetailsSectionProps = {
+  tier: Tier | undefined
+}
+
+export const TierDetailsSection = ({ tier }: TierDetailsSectionProps) => {
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h1">Tier Details</Heading>
+        <div className="flex items-center gap-x-2">
+          <EditTierDrawer tier={tier} />
+        </div>
+      </div>
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+        <Text size="small" weight="plus" leading="compact">
+          Name
+        </Text>
+
+        <Text
+          size="small"
+          leading="compact"
+          className="whitespace-pre-line text-pretty"
+        >
+          {tier?.name ?? "-"}
+        </Text>
+      </div>
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+        <Text size="small" weight="plus" leading="compact">
+          Promotion
+        </Text>
+
+        {tier?.promotion && (
+          <Link to={`/promotions/${tier.promotion.id}`}>
+            <Code>{tier.promotion.code}</Code>
+          </Link>
+        )}
+      </div>
+    </Container>
+  )
+}
+```
+
+You display the tier's name and a link to its associated promotion. You also display a button to open the edit tier drawer.
+
+### c. Tier Rules Table Component
+
+Next, you'll create a component that displays the tier rules in a table.
+
+To create the component, create the file `src/admin/components/tier-rules-table.tsx` with the following content:
+
+```tsx title="src/admin/components/tier-rules-table.tsx"
+import { Heading, DataTable, createDataTableColumnHelper, useDataTable, Container } from "@medusajs/ui"
+import { Tier } from "../routes/tiers/page"
+
+type TierRulesTableProps = {
+  tierRules: Tier["tier_rules"] | undefined
+}
+
+type TierRule = {
+  id: string
+  currency_code: string
+  min_purchase_value: number
+}
+
+const columnHelper = createDataTableColumnHelper<TierRule>()
+
+const columns = [
+  columnHelper.accessor("currency_code", {
+    header: "Currency",
+    cell: ({ getValue }) => getValue().toUpperCase(),
+  }),
+  columnHelper.accessor("min_purchase_value", {
+    header: "Minimum Purchase Value",
+  }),
+]
+
+export const TierRulesTable = ({ tierRules }: TierRulesTableProps) => {
+  const rules = tierRules || []
+
+  const table = useDataTable({
+    columns,
+    data: rules,
+    getRowId: (rule) => rule.id,
+    rowCount: rules.length,
+    isLoading: false,
+  })
+
+  return (
+    <Container className="divide-y p-0">
+      <DataTable instance={table}>
+        <DataTable.Toolbar className="flex items-center justify-between px-6 py-4">
+          <Heading level="h2">
+            Tier Rules
+          </Heading>
+        </DataTable.Toolbar>
+        <DataTable.Table />
+      </DataTable>
+    </Container>
+  )
+}
+```
+
+The component receives the tier rules to display.
+
+In the component, you display the tier rules in a `DataTable`. The table shows the currency code and the minimum purchase value required to qualify for the tier.
+
+### d. Tier Customers Table Component
+
+Next, you'll create a component that displays the customers in a tier in a table.
+
+To create the component, create the file `src/admin/components/tier-customers-table.tsx` with the following content:
+
+```tsx title="src/admin/components/tier-customers-table.tsx"
+import { Heading, DataTable, createDataTableColumnHelper, useDataTable, Container, DataTablePaginationState } from "@medusajs/ui"
+import { sdk } from "../lib/sdk"
+import { useQuery } from "@tanstack/react-query"
+import { useMemo, useState } from "react"
+
+type TierCustomersTableProps = {
+  tierId: string
+}
+
+type Customer = {
+  id: string
+  email: string
+  first_name: string | null
+  last_name: string | null
+}
+
+type CustomersResponse = {
+  customers: Customer[]
+  count: number
+  offset: number
+  limit: number
+}
+
+const columnHelper = createDataTableColumnHelper<Customer>()
+
+const columns = [
+  columnHelper.accessor("email", {
+    header: "Email",
+  }),
+  columnHelper.accessor("first_name", {
+    header: "Name",
+    cell: ({ row }) => {
+      const customer = row.original
+      return customer.first_name || customer.last_name
+        ? `${customer.first_name || ""} ${customer.last_name || ""}`.trim()
+        : "-"
+    },
+  }),
+]
+
+export const TierCustomersTable = ({ tierId }: TierCustomersTableProps) => {
+  const limit = 15
+  const [pagination, setPagination] = useState<DataTablePaginationState>({
+    pageSize: limit,
+    pageIndex: 0,
+  })
+
+  const offset = useMemo(() => {
+    return pagination.pageIndex * limit
+  }, [pagination])
+
+  const { data: customersData, isLoading: customersLoading } = useQuery({
+    queryFn: () =>
+      sdk.client.fetch<CustomersResponse>(`/admin/tiers/${tierId}/customers`, {
+        method: "GET",
+        query: {
+          limit,
+          offset,
+        },
+      }),
+    queryKey: ["tier", tierId, "customers"],
+    enabled: !!tierId,
+  })
+  const table = useDataTable({
+    columns,
+    data: customersData?.customers || [],
+    getRowId: (customer) => customer.id,
+    rowCount: customersData?.count || 0,
+    isLoading: customersLoading,
+    pagination: {
+      state: pagination,
+      onPaginationChange: setPagination,
+    },
+  })
+
+  return (
+    <Container className="divide-y p-0">
+      <DataTable instance={table}>
+        <DataTable.Toolbar className="flex items-center justify-between px-6 py-4">
+          <Heading level="h2">
+            Customers in this Tier
+          </Heading>
+        </DataTable.Toolbar>
+        <DataTable.Table />
+        <DataTable.Pagination />
+      </DataTable>
+    </Container>
+  )
+}
+```
+
+The component receives the tier ID to retrieve the customers.
+
+In the component, you fetch the customers in the tier using the API route you created in the previous step.
+
+You display the customers in a `DataTable`. The table shows the email and the name of the customers with pagination controls.
+
+### e. Tier Details UI Route
+
+Finally, you'll create the UI route that displays the details of a tier.
+
+To create the UI route, create the file `src/admin/routes/tiers/[id]/page.tsx` with the following content:
+
+```tsx title="src/admin/routes/tiers/[id]/page.tsx"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+import { useParams } from "react-router-dom"
+import { useQuery } from "@tanstack/react-query"
+import { sdk } from "../../../lib/sdk"
+import { Tier } from "../page"
+import { TierDetailsSection } from "../../../components/tier-details-section"
+import { TierRulesTable } from "../../../components/tier-rules-table"
+import { TierCustomersTable } from "../../../components/tier-customers-table"
+
+type TierResponse = {
+  tier: Tier
+}
+
+const TierDetailsPage = () => {
+  const { id } = useParams()
+
+  const { data: tierData } = useQuery({
+    queryFn: () =>
+      sdk.client.fetch<TierResponse>(`/admin/tiers/${id}`, {
+        method: "GET",
+      }),
+    queryKey: ["tier", id],
+    enabled: !!id,
+  })
+
+  const tier = tierData?.tier
+
+  return (
+    <>
+      <TierDetailsSection tier={tier} />
+      <TierRulesTable tierRules={tier?.tier_rules} />
+      {tier?.id && <TierCustomersTable tierId={tier.id} />}
+    </>
+  )
+}
+
+export const config = defineRouteConfig({
+  label: "Tier Details",
+})
+
+export default TierDetailsPage
+```
+
+The component retrieves the tier details using the API route you created in the previous step.
+
+Then, you display the components of the different sections you created earlier.
+
+### f. Navigate to Tier Details Page
+
+Next, you'll navigate to the tier details page when the admin user clicks on a row in the tiers list, and after creating a tier.
+
+In `src/admin/routes/tiers/page.tsx`, find the `onRowClick` handler and replace it with the following:
+
+```tsx title="src/admin/routes/tiers/page.tsx"
+onRowClick: (_event, row) => {
+  navigate(`/tiers/${row.id}`)
+}
+```
+
+You navigate to the tier details page when the user clicks on a tier in the tiers list.
+
+Next, you'll navigate to the tier details page after creating a tier.
+
+In `src/admin/components/create-tier-modal.tsx`, find the `TODO navigate to the new tier page` comment and replace it with the following:
+
+```tsx title="src/admin/components/create-tier-modal.tsx"
+navigate(`/tiers/${data.tier.id}`)
+```
+
+You navigate to the tier details page after creating a tier.
+
+### Test Customer Tiers in Medusa Admin
+
+To test out the customer tiers in the Medusa Admin, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, open the Medusa Admin dashboard at `http://localhost:9000/app` and log in using the credentials you set up earlier.
+
+You'll find a new sidebar item labeled "Customer Tiers." Click on it to view the list of tiers.
+
+Click on the tier you created earlier. This will open its details page where you can view the tier's details, its rules, and its customers.
+
+![Tier details page showing tier details, rules, and customers](https://res.cloudinary.com/dza7lstvk/image/upload/v1764067752/Medusa%20Resources/CleanShot_2025-11-25_at_12.48.45_2x_ahjflr.png)
+
+To edit the tier's details, click the Edit button. This will open a drawer where you can edit the tier's name, its associated promotion, and its tier rules.
+
+![Edit tier drawer showing form to edit tier details](https://res.cloudinary.com/dza7lstvk/image/upload/v1764068307/Medusa%20Resources/CleanShot_2025-11-25_at_12.58.17_2x_me8gbo.png)
+
+---
+
+## Step 11: Update Customer Tier on Order
+
+In this step, you'll add the logic to update a customer's tier when an order is placed. This requires creating:
+
+- A method in the Tier Module's service to determine the qualifying tier based on a customer's purchase history.
+- A workflow to determine a customer's tier based on their purchase history.
+- A [subscriber](!docs!/learn/fundamentals/events-and-subscribers) that listens to the order placement event and executes the workflow.
+
+### a. Determine Qualifying Tier Method
+
+To determine the qualifying tier based on the customer's purchase history, you'll add a method to the Tier Module's service.
+
+In `src/modules/tier/service.ts`, add the following method to the `TierModuleService` class:
+
+```ts title="src/modules/tier/service.ts"
+class TierModuleService extends MedusaService({
+  Tier,
+  TierRule,
+}) {
+  async calculateQualifyingTier(
+    currencyCode: string,
+    purchaseValue: number
+  ) {
+    const rules = await this.listTierRules(
+      {
+        currency_code: currencyCode,
+      }
+    )
+
+    if (!rules || rules.length === 0) {
+      return null
+    }
+
+    const sortedRules = rules.sort(
+      (a, b) => b.min_purchase_value - a.min_purchase_value
+    )
+
+    const qualifyingRule = sortedRules.find(
+      (rule) => purchaseValue >= rule.min_purchase_value
+    )
+
+    return qualifyingRule?.tier?.id || null
+  }
+}
+```
+
+The `calculateQualifyingTier` method receives the currency code and the purchase value of a customer.
+
+In the method, you:
+
+- Retrieve the tier rules for the given currency code.
+- Sort the rules by the minimum purchase value in ascending order.
+- Find the tier whose minimum purchase value is less than or equal to the purchase value.
+- Return the ID of the qualifying tier.
+
+You'll use this method in the steps of the workflow to update the customer's tier.
+
+### b. Update Customer Tier on Order Workflow
+
+The workflow to update a customer's tier on order placement has the following steps:
+
+<WorkflowDiagram
+  workflow={{
+    name: "updateCustomerTierOnOrderWorkflow",
+    steps: [
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve the details of the order with its customer and tier.",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 1,
+      },
+      {
+        type: "step",
+        name: "validateCustomerStep",
+        description: "Validate that the customer is a registered customer.",
+        depth: 2,
+      },
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve the completed orders for the customer in the same currency.",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 3,
+      },
+      {
+        type: "step",
+        name: "determineTierStep",
+        description: "Determine the appropriate tier.",
+        depth: 4,
+      },
+      {
+        type: "when",
+        condition: "!!data.orders[0].customer?.tier?.id && data.tierId !== data.orders[0].customer?.tier?.id",
+        steps: [
+          {
+            type: "step",
+            name: "dismissRemoteLinkStep",
+            description: "Dismiss the existing tier link if it exists and the customer's tier has changed.",
+            depth: 1,
+          },
+        ],
+        depth: 5,
+      },
+      {
+        type: "when",
+        condition: "!!data.tierId && data.orders[0].customer?.tier?.id !== data.tierId",
+        steps: [
+          {
+            type: "step",
+            name: "createRemoteLinkStep",
+            description: "Create a new tier link if the customer's tier has changed and a new tier ID is provided.",
+            depth: 1,
+          },
+        ],
+        depth: 6,
+      }
+    ]
+  }}
+/>
+
+You only need to create the `validateCustomerStep` and `determineTierStep` steps. Medusa provides the other steps out of the box.
+
+#### Validate Customer Step
+
+The `validateCustomerStep` validates that the customer is a registered customer.
+
+To create the step, create the file `src/workflows/steps/validate-customer.ts` with the following content:
+
+```ts title="src/workflows/steps/validate-customer.ts"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { MedusaError } from "@medusajs/framework/utils"
+
+export type ValidateCustomerStepInput = {
+  customer: any
+}
+
+export const validateCustomerStep = createStep(
+  "validate-customer",
+  async (input: ValidateCustomerStepInput, { container }) => {
+    if (!input.customer) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "Customer not found"
+      )
+    }
+
+    if (!input.customer.has_account) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Customer must be registered to be assigned a tier"
+      )
+    }
+
+    return new StepResponse(input.customer)
+  }
+)
+```
+
+The step receives the customer to validate.
+
+In the step, you validate that the customer is defined and that it's registered based on its `has_account` property. Otherwise, you throw an error.
+
+#### Determine Tier Step
+
+The `determineTierStep` determines the appropriate tier based on the customer's purchase history.
+
+To create the step, create the file `src/workflows/steps/determine-tier.ts` with the following content:
+
+```ts title="src/workflows/steps/determine-tier.ts"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { TIER_MODULE } from "../../modules/tier"
+import TierModuleService from "../../modules/tier/service"
+
+export type DetermineTierStepInput = {
+  currency_code: string
+  purchase_value: number
+}
+
+export const determineTierStep = createStep(
+  "determine-tier",
+  async (input: DetermineTierStepInput, { container }) => {
+    const tierModuleService: TierModuleService = container.resolve(TIER_MODULE)
+
+    const qualifyingTier = await tierModuleService.calculateQualifyingTier(
+      input.currency_code,
+      input.purchase_value
+    )
+
+    return new StepResponse(qualifyingTier)
+  }
+)
+```
+
+The step receives the currency code and the purchase value of a customer.
+
+In the step, you resolve the Tier Module's service from the Medusa container and call the `calculateQualifyingTier` method to determine the qualifying tier.
+
+You return the ID of the qualifying tier.
+
+#### Update Customer Tier on Order Workflow
+
+You can create the workflow that updates a customer's tier on order placement.
+
+To create the workflow, create the file `src/workflows/update-customer-tier-on-order.ts` with the following content:
+
+```ts title="src/workflows/update-customer-tier-on-order.ts" collapsibleLines="1-16" expandButtonLabel="Show Imports"
+import {
+  createWorkflow,
+  WorkflowResponse,
+  transform,
+  when,
+} from "@medusajs/framework/workflows-sdk"
+import {
+  useQueryGraphStep,
+  createRemoteLinkStep,
+  dismissRemoteLinkStep,
+} from "@medusajs/medusa/core-flows"
+import { Modules, OrderStatus } from "@medusajs/framework/utils"
+import { validateCustomerStep } from "./steps/validate-customer"
+import { determineTierStep } from "./steps/determine-tier"
+import { TIER_MODULE } from "../modules/tier"
+
+type WorkflowInput = {
+  order_id: string
+}
+
+export const updateCustomerTierOnOrderWorkflow = createWorkflow(
+  "update-customer-tier-on-order",
+  (input: WorkflowInput) => {
+    // Get order details
+    const { data: orders } = useQueryGraphStep({
+      entity: "order",
+      fields: ["id", "currency_code", "total", "customer.*", "customer.tier.*"],
+      filters: {
+        id: input.order_id,
+      },
+      options: {
+        throwIfKeyNotFound: true,
+      },
+    })
+
+    const validatedCustomer = validateCustomerStep({
+      customer: orders[0].customer,
+    })
+
+    // Query completed orders for the customer in the same currency
+    const { data: completedOrders } = useQueryGraphStep({
+      entity: "order",
+      fields: ["id", "total", "currency_code"],
+      filters: {
+        customer_id: validatedCustomer.id,
+        currency_code: orders[0].currency_code,
+        status: {
+          $nin: [
+            OrderStatus.CANCELED,
+            OrderStatus.DRAFT,
+          ],
+        },
+      },
+    }).config({ name: "completed-orders" })
+
+    // Calculate total purchase value using transform
+    const purchasedValue = transform(
+      { completedOrders },
+      (data) => {
+        return data.completedOrders.reduce(
+          (sum: number, order: any) => sum + (order.total || 0),
+          0
+        )
+      }
+    )
+
+    // Determine appropriate tier
+    const tierId = determineTierStep({
+      currency_code: orders[0].currency_code as string,
+      purchase_value: purchasedValue,
+    })
+
+    // Dismiss existing tier link if it exists
+    // and the tier id is not the same as the tier id in the determine tier step
+    when({ orders, tierId }, (data) => !!data.orders[0].customer?.tier?.id && data.tierId !== data.orders[0].customer?.tier?.id).then(
+      () => {
+        dismissRemoteLinkStep([
+          {
+            [TIER_MODULE]: { tier_id: orders[0].customer?.tier?.id as string },
+            [Modules.CUSTOMER]: { customer_id: validatedCustomer.id },
+          },
+        ])
+      }
+    )
+
+    // Create new tier link if tierId is provided
+    when({ tierId, orders }, (data) => !!data.tierId && data.orders[0].customer?.tier?.id !== data.tierId).then(() => {
+      createRemoteLinkStep([
+        {
+          [TIER_MODULE]: { tier_id: tierId },
+          [Modules.CUSTOMER]: { customer_id: validatedCustomer.id },
+        },
+      ])
+    })
+
+    return new WorkflowResponse({
+      customer_id: validatedCustomer.id,
+      tier_id: tierId,
+    })
+  }
+)
+```
+
+The workflow receives the order ID as input.
+
+In the workflow, you:
+
+- Retrieve the order details using the `useQueryGraphStep`.
+- Validate the customer using the `validateCustomerStep`. This will throw an error if the customer is not a registered customer, which will stop the workflow's execution.
+- Retrieve the customer's completed orders in the same currency using `useQueryGraphStep`.
+- Calculate the total purchase value using `transform`.
+- Determine the appropriate tier using `determineTierStep`.
+- Dismiss the existing tier link if it exists and the customer's tier has changed, using `dismissRemoteLinkStep`.
+- Create a new tier link if the customer's tier has changed and a new tier ID is provided, using `createRemoteLinkStep`.
+
+Finally, you return a `WorkflowResponse` with the customer ID and the tier ID.
+
+### c. Update Customer Tier on Order Subscriber
+
+Next, you'll create a subscriber that listens to the order placement event and executes the workflow.
+
+A subscriber is an asynchronous function that runs in the background when specific events are emitted.
+
+To create the subscriber, create the file `src/subscribers/order-placed.ts` with the following content:
+
+```ts title="src/subscribers/order-placed.ts"
+import {
+  SubscriberArgs,
+  SubscriberConfig,
+} from "@medusajs/framework"
+import { updateCustomerTierOnOrderWorkflow } from "../workflows/update-customer-tier-on-order"
+
+export default async function orderPlacedHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  const logger = container.resolve("logger")
+  try {
+    await updateCustomerTierOnOrderWorkflow(container).run({
+      input: {
+        order_id: data.id,
+      },
+    })
+  } catch (error) {
+    logger.error(error)
+  }
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+A subscriber file must export:
+
+- An asynchronous subscriber function that executes whenever the associated event is triggered.
+- A configuration object with an event property whose value is the event the subscriber is listening to, which is `order.placed` in this case.
+
+The subscriber function receives an object with the following properties:
+
+- `event`: An object holding the event's details. It has a `data` property, which is the event's data payload.
+- `container`: The Medusa container. Use it to resolve modules' main services and other registered resources.
+
+In the subscriber function, you resolve the logger from the Medusa container and execute the workflow. If an error occurs, you log it.
+
+### Test Update Customer Tier on Order
+
+To test the workflow and subscriber, you'll need to place an order using the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx) that you installed in the first step.
+
+<Note title="Reminder" forceMultiline>
+
+The Next.js Starter Storefront was installed in a separate directory from Medusa. The directory's name is `{your-project}-storefront`.
+
+So, if your Medusa application's directory is `medusa-customer-tiers`, you can find the storefront by going back to the parent directory and changing to the `medusa-customer-tiers-storefront` directory:
+
+```bash
+cd ../medusa-customer-tiers-storefront # change based on your project name
+```
+
+</Note>
+
+First, start the Medusa application by running the following command in the Medusa application's directory:
+
+```bash npm2yarn badgeLabel="Medusa Application" badgeColor="green"
+npm run dev
+```
+
+Then, start the Next.js Starter Storefront by running the following command in the storefront's directory:
+
+```bash npm2yarn badgeLabel="Next.js Starter Storefront" badgeColor="blue"
+npm run dev
+```
+
+Next:
+
+1. Open the Next.js Starter Storefront in your browser at `http://localhost:8000`.
+2. Click on "Account" in the navigation bar and create a new account.
+3. After you're logged in, add products to the cart and complete the checkout process.
+    - Make sure the order total is high enough to qualify for the next tier.
+4. After you place the order, open the Medusa Admin dashboard at `http://localhost:9000/app` and log in.
+5. Go to the Customer Tiers page and click on the tier that the customer should have been assigned to.
+6. You'll see the customer in the tier's customers list section.
+
+![Customer in tier's customers list section](https://res.cloudinary.com/dza7lstvk/image/upload/v1764070515/Medusa%20Resources/CleanShot_2025-11-25_at_13.34.32_2x_wro2yk.png)
+
+---
+
+## Step 12: Apply Tier Promotion to Customer Carts
+
+In this step, you'll apply a customer's tier promotion whenever they update their cart if it's not already applied.
+
+To build this feature, you need a workflow that applies the tier promotion to a cart and a subscriber that listens to the cart update event and executes the workflow.
+
+### a. Add Tier Promotion to Cart Workflow
+
+The workflow to add a customer's tier promotion to a cart has the following steps:
+
+<WorkflowDiagram
+  workflow={{
+    name: "addTierPromotionToCartWorkflow",
+    steps: [
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve the details of the cart with its customer and tier.",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 1,
+      },
+      {
+        type: "step",
+        name: "acquireLockStep",
+        description: "Acquire a lock on the cart to prevent concurrent modifications.",
+        link: "/references/medusa-workflows/steps/acquireLockStep",
+        depth: 2,
+      },
+      {
+        type: "when",
+        condition: "!!data.carts[0].customer",
+        steps: [
+          {
+            type: "step",
+            name: "validateTierPromotionStep",
+            description: "Validate that the customer has a tier promotion.",
+            depth: 1,
+          }
+        ],
+        depth: 3,
+      },
+      {
+        type: "when",
+        steps: [
+          {
+            type: "workflow",
+            name: "updateCartPromotionsWorkflow",
+            description: "Update the cart's promotions if the customer has a tier promotion that hasn't been applied yet.",
+            link: "/references/medusa-workflows/updateCartPromotionsWorkflow",
+            depth: 1
+          }
+        ],
+        depth: 4,
+      },
+      {
+        type: "step",
+        name: "releaseLockStep",
+        description: "Release the lock on the cart.",
+        link: "/references/medusa-workflows/steps/releaseLockStep",
+        depth: 5,
+      }
+    ]
+  }}
+/>
+
+You only need to create the `validateTierPromotionStep`. Medusa provides the other steps and workflows out-of-the-box.
+
+#### Validate Tier Promotion Step
+
+The `validateTierPromotionStep` validates that the customer is registered and has a tier promotion.
+
+To create the step, create the file `src/workflows/steps/validate-tier-promotion.ts` with the following content:
+
+```ts title="src/workflows/steps/validate-tier-promotion.ts"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+
+export type ValidateTierPromotionStepInput = {
+  customer: {
+    has_account: boolean
+    tier?: {
+      promo_id?: string | null
+      promotion?: {
+        id?: string
+        code?: string | null
+        status?: string | null
+      } | null
+    } | null
+  } | null
+}
+
+export const validateTierPromotionStep = createStep(
+  "validate-tier-promotion",
+  async (input: ValidateTierPromotionStepInput) => {
+    if (!input.customer || !input.customer.has_account) {
+      return new StepResponse(null)
+    }
+
+    const tier = input.customer.tier
+
+    if (!tier?.promo_id || !tier.promotion || tier.promotion.status !== "active") {
+      return new StepResponse({ promotion_code: null })
+    }
+
+    return new StepResponse({
+      promotion_code: tier.promotion.code || null,
+    })
+  }
+)
+```
+
+The step receives the customer to validate.
+
+In the step, you return `null` if the customer is not registered or if it doesn't have a tier promotion. Otherwise, you return the promotion code.
+
+#### Add Tier Promotion to Cart Workflow
+
+You can now create the workflow that adds a customer's tier promotion to a cart.
+
+To create the workflow, create the file `src/workflows/add-tier-promotion-to-cart.ts` with the following content:
+
+```ts title="src/workflows/add-tier-promotion-to-cart.ts" collapsibleLines="1-15" expandButtonLabel="Show Imports"
+import {
+  createWorkflow,
+  WorkflowResponse,
+  transform,
+  when,
+} from "@medusajs/framework/workflows-sdk"
+import { 
+  acquireLockStep,
+  releaseLockStep,
+  updateCartPromotionsWorkflow, 
+  useQueryGraphStep,
+} from "@medusajs/medusa/core-flows"
+import { PromotionActions } from "@medusajs/framework/utils"
+import { validateTierPromotionStep } from "./steps/validate-tier-promotion"
+
+export type AddTierPromotionToCartWorkflowInput = {
+  cart_id: string
+}
+
+export const addTierPromotionToCartWorkflow = createWorkflow(
+  "add-tier-promotion-to-cart",
+  (input: AddTierPromotionToCartWorkflowInput) => {
+    // Get cart with customer, tier, and promotions
+    const { data: carts } = useQueryGraphStep({
+      entity: "cart",
+      fields: [
+        "id",
+        "customer.id",
+        "customer.has_account",
+        "customer.tier.*",
+        "customer.tier.promotion.id",
+        "customer.tier.promotion.code",
+        "customer.tier.promotion.status",
+        "promotions.*",
+        "promotions.code",
+      ],
+      filters: {
+        id: input.cart_id,
+      },
+      options: {
+        throwIfKeyNotFound: true,
+      },
+    })
+
+    acquireLockStep({
+      key: input.cart_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
+
+    // Check if customer exists and has tier
+    const validationResult = when({ carts }, (data) => !!data.carts[0].customer).then(() => {
+      return validateTierPromotionStep({
+        customer: {
+          has_account: carts[0].customer!.has_account,
+          tier: {
+            promo_id: carts[0].customer!.tier!.promo_id || null,
+            promotion: {
+              id: carts[0].customer!.tier!.promotion!.id,
+              code: carts[0].customer!.tier!.promotion!.code || null,
+              // @ts-ignore
+              status: carts[0].customer!.tier!.promotion!.status || null,
+            },
+          },
+        },
+      })
+    })
+
+    // Add promotion to cart if valid and not already applied
+    when({ validationResult, carts }, (data) => {
+      if (!data.validationResult?.promotion_code) {
+        return false
+      }
+
+      const appliedPromotionCodes = data.carts[0].promotions?.map(
+        (promo: any) => promo.code
+      ) || []
+
+      return (
+        data.validationResult?.promotion_code !== null &&
+        !appliedPromotionCodes.includes(data.validationResult?.promotion_code!)
+      )
+    }).then(() => {
+      return updateCartPromotionsWorkflow.runAsStep({
+        input: {
+          cart_id: input.cart_id,
+          promo_codes: [validationResult?.promotion_code!],
+          action: PromotionActions.ADD,
+        },
+      })
+    })
+
+    releaseLockStep({
+      key: input.cart_id,
+    })
+
+    return new WorkflowResponse(void 0)
+  }
+)
+```
+
+The workflow receives the cart's ID as input.
+
+In the workflow, you:
+
+- Retrieve the cart details using `useQueryGraphStep`.
+- Acquire a lock on the cart using `acquireLockStep`.
+- Validate that the customer exists and has a tier promotion using `validateTierPromotionStep`.
+- Update the cart's promotions if the customer has a tier promotion that hasn't been applied yet, using `updateCartPromotionsWorkflow`.
+- Release the lock on the cart using `releaseLockStep`.
+
+### b. Cart Updated Subscriber
+
+Next, you'll create a subscriber that listens to the cart update event and executes the workflow.
+
+To create the subscriber, create the file `src/subscribers/cart-updated.ts` with the following content:
+
+```ts title="src/subscribers/cart-updated.ts"
+import {
+  SubscriberArgs,
+  SubscriberConfig,
+} from "@medusajs/framework"
+import { addTierPromotionToCartWorkflow } from "../workflows/add-tier-promotion-to-cart"
+
+export default async function cartUpdatedHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  await addTierPromotionToCartWorkflow(container).run({
+    input: {
+      cart_id: data.id,
+    },
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: "cart.updated",
+}
+```
+
+The subscriber listens to the `cart.updated` event and executes the workflow.
+
+### Test Add Tier Promotion to Cart
+
+To test the automated tier promotion, make sure both the Medusa application and the Next.js Starter Storefront are running.
+
+Then, in the Next.js Starter Storefront, log in as a customer in a tier, and add a product to the cart.
+
+You can see that the discount of the customer's tier is applied to the cart.
+
+<Note>
+
+If you don't see the promotion applied, try to refresh the page.
+
+</Note>
+
+![Cart showing the promotion of the tier applied](https://res.cloudinary.com/dza7lstvk/image/upload/v1764072761/Medusa%20Resources/CleanShot_2025-11-25_at_13.47.49_2x_xmewsm.png)
+
+---
+
+## Step 13: Validate Applied Promotion
+
+In this step, you'll validate that a cart's promotions match the customer's tier. You'll apply validation when new promotions are added to the cart, and when completing the cart.
+
+### Validate Promotion Addition
+
+When a customer adds a promotion to the cart, the storefront sends a request to the [Add Promotions API Route](!api!/store#carts_postcartsidpromotions), which executes the [updateCartPromotionsWorkflow](/references/medusa-workflows/updateCartPromotionsWorkflow).
+
+To ensure that customers don't add promotions that belong to different tiers, you can consume the `validate` [hook](!docs!/learn/fundamentals/workflows/workflow-hooks) of the `updateCartPromotionsWorkflow`. A hook is a specific point in a workflow where you can inject custom functionality.
+
+To consume the hook, create the file `src/workflows/hooks/update-cart-promotions-validate.ts` with the following content:
+
+```ts title="src/workflows/hooks/update-cart-promotions-validate.ts"
+import { updateCartPromotionsWorkflow } from "@medusajs/medusa/core-flows"
+import { MedusaError } from "@medusajs/framework/utils"
+import { PromotionActions } from "@medusajs/framework/utils"
+
+updateCartPromotionsWorkflow.hooks.validate(async ({ input, cart }, { container }) => {
+  const query = container.resolve("query")
+
+  // Only validate when adding promotions
+  if (
+    (input.action !== PromotionActions.ADD && input.action !== PromotionActions.REPLACE) || 
+    !input.promo_codes || input.promo_codes.length === 0
+  ) {
+    return
+  }
+
+  // Get customer details with tier
+  const data = cart.customer_id ? await query.graph({
+    entity: "customer",
+    fields: ["id", "tier.*"],
+    filters: {
+      id: cart.customer_id,
+    },
+  }) : null
+
+  // Get customer's tier
+  const customerTier = data?.data?.[0]?.tier
+
+  // Get promotions by codes to check if they're tier promotions
+  const { data: promotions } = await query.graph({
+    entity: "promotion",
+    fields: ["id", "code"],
+    filters: {
+      code: input.promo_codes,
+    },
+  })
+
+  // Get all tiers with their promotion IDs
+  const { data: allTiers } = await query.graph({
+    entity: "tier",
+    fields: ["id", "promo_id"],
+    filters: {
+      promo_id: promotions.map((p) => p.id),
+    },
+  })
+
+  // Validate each promotion being added
+  for (const promotion of promotions || []) {
+    const tierId = allTiers.find((t) => t.promo_id === promotion?.id)?.id
+    
+    // If this promotion belongs to a tier
+    if (tierId && customerTier?.id !== tierId) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Promotion ${promotion.code || promotion.id} can only be applied by customers in the corresponding tier.`
+        )
+    }
+  }
+})
+```
+
+You consume a hook by accessing it through the workflow's `hooks` property. The hook accepts a step function as a parameter.
+
+In the hook, you:
+
+1. Return early if the customer isn't adding a promotion.
+2. Retrieve the customer if it's set in the cart.
+3. Retrieve promotions being added to the cart.
+4. Retrieve all tiers associated with the promotions.
+5. Loop over the promotions and check if the customer belongs to the tier associated with the promotion.
+    - If not, you throw an error, which will stop the customer from adding the promotion to the cart.
+
+### Test Validate Promotion Addition
+
+To test the promotion addition validation, make sure both the Medusa application and the Next.js Starter Storefront are running.
+
+Then, in the Next.js Starter Storefront, log in as a customer in a tier, and add a product to the cart.
+
+Try to add a promotion that belongs to a different tier. You should see an error message.
+
+![Error message when trying to add a promotion of a different tier to the cart](https://res.cloudinary.com/dza7lstvk/image/upload/v1764074555/Medusa%20Resources/CleanShot_2025-11-25_at_14.42.18_2x_uxkfgk.png)
+
+### Validate Cart Completion
+
+Next, you'll add similar validation for the cart's promotions when completing the cart. You'll perform the validation by consuming the `validate` hook of the `completeCartWorkflow`.
+
+Create the file `src/workflows/hooks/complete-cart-validate.ts` with the following content:
+
+```ts title="src/workflows/hooks/complete-cart-validate.ts"
+import { completeCartWorkflow } from "@medusajs/medusa/core-flows"
+import { MedusaError } from "@medusajs/framework/utils"
+
+completeCartWorkflow.hooks.validate(async ({ cart }, { container }) => {
+  const query = container.resolve("query")
+
+  // Get cart with promotions
+  const { data: [detailedCart] } = await query.graph({
+    entity: "cart",
+    fields: ["id", "promotions.*", "customer.id", "customer.tier.*"],
+    filters: {
+      id: cart.id,
+    },
+  }, {
+    throwIfKeyNotFound: true,
+  })
+
+  if (!detailedCart?.promotions || detailedCart.promotions.length === 0) {
+    return
+  }
+
+  // Get customer's tier
+  const customerTier = detailedCart.customer?.tier
+
+  // Get all tier promotions to check
+  const { data: allTiers } = await query.graph({
+    entity: "tier",
+    fields: ["id", "promo_id"],
+    filters: {
+      promo_id: detailedCart.promotions.map((p) => p?.id).filter(Boolean) as string[],
+    },
+  })
+
+  // Validate that if a tier promotion is applied, the customer belongs to that tier
+  for (const promotion of detailedCart.promotions) {
+    const tierId = allTiers.find((t) => t.promo_id === promotion?.id)?.id
+    if (tierId && customerTier?.id !== tierId) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Promotion ${promotion?.code || promotion?.id} can only be applied by customers in the corresponding tier.`
+      )
+    }
+  }
+})
+```
+
+Similar to the previous hook, you:
+
+1. Retrieve the cart with its promotions and customer tier.
+    - If the cart doesn't have promotions, return early.
+2. Retrieve the tiers associated with the applied promotions.
+3. Loop over the promotions and check if any promotion doesn't belong to the customer's tier.
+    - If so, you throw an error, which will stop the customer from completing the cart.
+
+This validation will run every time the cart is completed and before the order is placed.
+
+---
+
+## Step 14: Show Customer Tier in Storefront
+
+In this step, you'll add an API route that retrieves a customer's current tier and their next tier. Then, you'll customize the Next.js Starter Storefront to show a tier progress indicator on the account and order confirmation pages.
+
+### a. Calculate Next Tier Method
+
+To calculate the customer's next tier, you'll add a method to the Tier Module's service. You'll then use that method in the API route to retrieve the customer's next tier.
+
+In `src/modules/tier/service.ts`, add the following method to the `TierModuleService` class:
+
+```ts title="src/modules/tier/service.ts"
+class TierModuleService extends MedusaService({
+  Tier,
+  TierRule,
+}) {
+  // ...
+  async calculateNextTierUpgrade(
+    currencyCode: string,
+    currentPurchaseValue: number
+  ) {
+    const rules = await this.listTierRules(
+      {
+        currency_code: currencyCode,
+      },
+      {
+        relations: ["tier"],
+      }
+    )
+    
+    // Sort rules by min_purchase_value in ascending orderding order
+    const sortedRules = rules.sort(
+      (a, b) => a.min_purchase_value - b.min_purchase_value
+    )
+
+    // Find the next tier the customer hasn't reached
+    const nextRule = sortedRules.find(
+      (rule) => rule.min_purchase_value > currentPurchaseValue
+    )
+
+    if (!nextRule || !nextRule.tier) {
+      return null
+    }
+
+    const requiredAmount = nextRule.min_purchase_value - currentPurchaseValue
+
+    return {
+      tier: nextRule.tier,
+      required_amount: requiredAmount,
+      current_purchase_value: currentPurchaseValue,
+      next_tier_min_purchase: nextRule.min_purchase_value,
+    }
+  }
+}
+```
+
+The `calculateNextTierUpgrade` method receives the currency code and the current purchase value of a customer.
+
+In the method, you:
+
+- Retrieve the tier rules for the given currency code.
+- Sort the rules by the minimum purchase value in ascending order.
+- Find the next tier the customer hasn't reached.
+- Return the next tier, the required amount to reach the next tier, the current purchase value, and the minimum purchase value of the next tier.
+
+### b. Next Tier API Route
+
+Next, you'll create an API route that retrieves a customer's current tier and their next tier.
+
+To create the API route, create the file `src/api/store/customers/me/next-tier/route.ts` with the following content:
+
+```ts title="src/api/store/customers/me/next-tier/route.ts"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { TIER_MODULE } from "../../../../../modules/tier"
+import { MedusaError } from "@medusajs/framework/utils"
+import { z } from "@medusajs/framework/zod"
+import { OrderStatus } from "@medusajs/framework/utils"
+
+export const NextTierSchema = z.object({
+  region_id: z.string(),
+})
+
+type NextTierInput = z.infer<typeof NextTierSchema>
+
+export async function GET(
+  req: AuthenticatedMedusaRequest<{}, NextTierInput>,
+  res: MedusaResponse
+): Promise<void> {
+  // Validate customer is authenticated
+  const customerId = req.auth_context?.actor_id
+
+  if (!customerId) {
+    throw new MedusaError(
+      MedusaError.Types.UNAUTHORIZED,
+      "Customer must be authenticated"
+    )
+  }
+
+  const query = req.scope.resolve("query")
+  const tierModuleService = req.scope.resolve(TIER_MODULE)
+
+  // Get customer details to validate they're registered
+  const { data: [customer] } = await query.graph({
+    entity: "customer",
+    fields: ["id", "has_account", "tier.*"],
+    filters: {
+      id: customerId,
+    },
+  }, {
+    throwIfKeyNotFound: true,
+  })
+
+  if (!customer.has_account) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "Customer must be registered to view tier information"
+    )
+  }
+
+  // Get currency code from cart or region context
+  // Try to get from cart first, then region
+  const regionId = req.validatedQuery.region_id
+
+  // Calculate total purchase value
+  const { data: orders } = await query.graph({
+    entity: "order",
+    fields: ["id", "total", "currency_code"],
+    filters: {
+      customer_id: customerId,
+      region_id: regionId,
+      status: {
+        $nin: [
+          OrderStatus.CANCELED,
+          OrderStatus.DRAFT,
+        ],
+      },
+    },
+  })
+
+  // Get currency code from region if no orders
+  let currencyCode: string | null = null
+  if (orders.length > 0) {
+    currencyCode = orders[0].currency_code
+  } else {
+    // Get currency from region
+    const { data: regions } = await query.graph({
+      entity: "region",
+      fields: ["id", "currency_code"],
+      filters: {
+        id: regionId,
+      },
+    })
+    
+    if (regions && regions.length > 0) {
+      currencyCode = regions[0].currency_code
+    }
+  }
+
+  const totalPurchaseValue = orders.length > 0
+    ? orders.reduce((sum: number, order: any) => sum + (order.total || 0), 0)
+    : 0
+
+  // Current tier is always the customer's assigned tier (null if not assigned)
+  const currentTier = customer.tier || null
+
+  // Determine next tier upgrade
+  const nextTierUpgrade = await tierModuleService.calculateNextTierUpgrade(
+    currencyCode as string,
+    totalPurchaseValue
+  )
+
+  res.json({
+    current_tier: currentTier,
+    current_purchase_value: totalPurchaseValue,
+    currency_code: currencyCode,
+    next_tier_upgrade: nextTierUpgrade,
+  })
+}
+```
+
+You first define a Zod schema to validate incoming requests. Requests must have a `region_id` query parameter. This determines the currency code to use for the tier calculation.
+
+Then, you export a `GET` function, which exposes a `GET` API route at `/store/customers/me/next-tier`.
+
+In the route handler, you:
+
+- Validate that the customer is authenticated.
+- Resolve Query and the Tier Module service from the Medusa container.
+- Retrieve the customer details to validate that they're registered.
+- Retrieve the currency code from the cart or region context.
+- Calculate the total purchase value of the customer.
+- Determine the customer's current tier.
+- Determine the customer's next tier upgrade.
+- Return the customer's current tier, current purchase value, currency code, and next tier upgrade in the response.
+
+### c. Apply Query Validation Middleware
+
+Next, you need to apply a middleware that validates the query parameters passed to the request, and sets the default Query configurations.
+
+In `src/api/middlewares.ts`, add the import at the top of the file:
+
+```ts title="src/api/middlewares.ts"
+import { NextTierSchema } from "./store/customers/me/next-tier/route"
+```
+
+Then, add the following object to the `routes` array passed to `defineMiddlewares`:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/customers/me/next-tier",
+      methods: ["GET"],
+      middlewares: [validateAndTransformQuery(NextTierSchema, {})],
+    },
+  ],
+})
+```
+
+You apply the `validateAndTransformQuery` middleware to the `GET` route of the `/store/customers/me/next-tier` path, passing it the `NextTierSchema` schema to validate the request parameters.
+
+### d. Show Customer Tier in Storefront
+
+Next, you'll customize the Next.js Starter Storefront to show a tier progress indicator in the account and order confirmation pages.
+
+#### Define Tier Types
+
+First, you'll define types for the tier information received from the Medusa server.
+
+Create the file `src/types/tier.ts` in the storefront with the following content:
+
+```ts title="src/types/tier.ts" badgeLabel="Storefront" badgeColor="blue"
+export type Tier = {
+  id: string
+  name: string
+  promotion_id: string
+}
+
+export type CustomerNextTier = {
+  current_tier: Tier | null
+  current_purchase_value: number
+  currency_code: string
+  next_tier_upgrade: {
+    tier: Tier | null
+    required_amount: number
+    current_purchase_value: number
+    next_tier_min_purchase: number
+  } | null
+}
+```
+
+The `Tier` type represents a tier, and the `CustomerNextTier` type represents the response received from the `/store/customers/me/next-tier` API route.
+
+#### Retrieve Customer Tier and Next Tier
+
+Next, you'll add a server function that retrieves the customer's current tier and their next tier.
+
+In `src/lib/data/customer.ts`, add the following imports at the top of the file:
+
+```ts title="src/lib/data/customer.ts" badgeLabel="Storefront" badgeColor="blue"
+import { CustomerNextTier } from "types/tier"
+import { getRegion } from "./regions"
+```
+
+Then, add the following function to the file:
+
+```ts title="src/lib/data/customer.ts" badgeLabel="Storefront" badgeColor="blue"
+export const retrieveCustomerNextTier =
+  async (countryCode: string): Promise<CustomerNextTier | null> => {
+    const authHeaders = await getAuthHeaders()
+    const region = await getRegion(countryCode)
+
+    if (!region) {return null}
+
+    if (!authHeaders) {return null}
+
+    const headers = {
+      ...authHeaders,
+    }
+
+    const next = {
+      ...(await getCacheOptions("customers")),
+    }
+
+    return await sdk.client
+      .fetch<CustomerNextTier>(`/store/customers/me/next-tier`, {
+        method: "GET",
+        headers,
+        next,
+        query: {
+          region_id: region.id,
+        },
+      })
+      .then((data) => data)
+      .catch(() => null)
+}
+```
+
+You create a function that retrieves the customer's current tier and their next tier from the `/store/customers/me/next-tier` API route.
+
+#### Add Customer Tier Component
+
+Next, you'll create a component that displays a progress indicator for the customer's tier. You'll use this component on the account and order confirmation pages.
+
+Create the file `src/modules/common/customer-tier/index.tsx` with the following content:
+
+```tsx title="src/modules/common/customer-tier/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+import { convertToLocale } from "@lib/util/money"
+import { clx } from "@medusajs/ui"
+import { CustomerNextTier } from "types/tier"
+
+type CustomerTierProps = {
+  tierData: CustomerNextTier | null
+}
+
+const CustomerTier = ({ tierData }: CustomerTierProps) => {
+  if (!tierData) {
+    return null
+  }
+
+  const { current_tier, current_purchase_value, currency_code, next_tier_upgrade } = tierData
+
+  // Calculate progress if there's a next tier
+  let progressPercentage = 100
+  let amountNeeded = 0
+  let minPurchaseValue = 0
+  let hasNextTier = false
+  let nextTierName = ""
+
+  if (next_tier_upgrade && next_tier_upgrade.tier) {
+    hasNextTier = true
+    nextTierName = next_tier_upgrade.tier.name
+    amountNeeded = next_tier_upgrade.required_amount
+    minPurchaseValue = next_tier_upgrade.next_tier_min_purchase
+    
+    // Calculate progress percentage
+    // Use the current purchase value and next tier min purchase from the API
+    const currentPurchase = next_tier_upgrade.current_purchase_value
+    const nextMin = next_tier_upgrade.next_tier_min_purchase
+    
+    // Calculate progress: current purchase value / next tier min purchase
+    if (nextMin > 0) {
+      progressPercentage = Math.min(100, Math.max(0, (currentPurchase / nextMin) * 100))
+    } else {
+      progressPercentage = 100
+    }
+  }
+
+  // If no current tier and no next tier, don't show anything
+  if (!current_tier && !hasNextTier) {
+    return null
+  }
+
+  return (
+    <div className="flex flex-col gap-y-4">
+      <h3 className="text-large-semi">Membership Tier</h3>
+      <div className="flex flex-col gap-y-3">
+        {current_tier ? (
+          <div className="flex items-center gap-x-2">
+            <span className="text-large-semi" data-testid="current-tier-name">
+              {current_tier.name}
+            </span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-x-2">
+            <span className="text-large-semi text-ui-fg-subtle" data-testid="current-tier-name">
+              No tier
+            </span>
+          </div>
+        )}
+
+        {hasNextTier && (
+          <div className="flex flex-col gap-y-2">
+            <div className="flex justify-between text-small-regular text-ui-fg-subtle">
+              <span>Progress to {nextTierName}</span>
+              {amountNeeded > 0 ? (
+                <span>
+                  {convertToLocale({
+                    amount: amountNeeded,
+                    currency_code: currency_code,
+                  })}{" "}
+                  to go
+                </span>
+              ) : (
+                <span className="text-ui-fg-interactive">Threshold reached!</span>
+              )}
+            </div>
+            <div className="flex">
+              <div
+                className={clx(
+                  `h-2 rounded-s-full transition-all duration-500 ease-in-out`,
+                  progressPercentage >= 100
+                    ? "bg-gradient-to-r from-green-400 to-green-500"
+                    : "bg-gradient-to-r from-ui-fg-interactive to-ui-fg-interactive-hover",
+                  progressPercentage === 100 && "rounded-e-full"
+                )}
+                style={{ width: `${progressPercentage}%` }}
+                data-testid="tier-progress-bar"
+              />
+              <div className={clx(
+                "bg-gray-200 h-2 rounded-e-full flex-grow",
+                progressPercentage === 0 && "rounded-s-full"
+              )} />
+            </div>
+            <div className="flex justify-between text-xs text-ui-fg-subtle">
+              <span>
+                {convertToLocale({
+                  amount: next_tier_upgrade?.current_purchase_value || current_purchase_value,
+                  currency_code: currency_code,
+                })}
+              </span>
+              {minPurchaseValue > 0 && (
+                <span>
+                  {convertToLocale({
+                    amount: minPurchaseValue,
+                    currency_code: currency_code,
+                  })}
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+
+        {!hasNextTier && current_tier && (
+          <div className="text-small-regular text-ui-fg-subtle">
+            You&apos;ve reached the highest tier!
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export default CustomerTier
+```
+
+The component receives the tier data retrieved from the Medusa server as a prop. It then calculates and displays a progress bar indicating how much the customer needs to spend to unlock the next tier.
+
+#### Show Customer Tier on Account Page
+
+Next, you'll show the customer's tier on the account page.
+
+In `src/modules/account/components/overview/index.tsx`, add the following imports at the top of the file:
+
+```tsx title="src/modules/account/components/overview/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+import CustomerTier from "@modules/common/customer-tier"
+import { CustomerNextTier } from "types/tier"
+```
+
+Then, update the `Overview` component's props to include the `tierData` prop:
+
+```tsx title="src/modules/account/components/overview/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+type OverviewProps = {
+  // ...
+  tierData: CustomerNextTier | null
+}
+
+const Overview = ({ customer, orders, tierData }: OverviewProps) => {
+  // ...
+}
+```
+
+Finally, update the `return` statement to render the `CustomerTier` component before the `div` wrapping the recent orders:
+
+```tsx title="src/modules/account/components/overview/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+return (
+  <div>
+    {/* ... */}
+    {tierData && (
+      <div className="mb-6">
+        <CustomerTier tierData={tierData} />
+      </div>
+    )}
+    {/* ... */}
+  </div>
+)
+```
+
+To pass the tier data to the `Overview` component, replace the content of `src/app/[countryCode]/(main)/account/@dashboard/page.tsx` with the following:
+
+```tsx title="src/app/[countryCode]/(main)/account/@dashboard/page.tsx" badgeLabel="Storefront" badgeColor="blue"
+import { Metadata } from "next"
+
+import Overview from "@modules/account/components/overview"
+import { notFound } from "next/navigation"
+import { retrieveCustomer, retrieveCustomerNextTier } from "@lib/data/customer"
+import { listOrders } from "@lib/data/orders"
+
+export const metadata: Metadata = {
+  title: "Account",
+  description: "Overview of your account activity.",
+}
+
+type Props = {
+  params: Promise<{ countryCode: string }>
+}
+
+export default async function OverviewTemplate(props: Props) {
+  const params = await props.params
+  const { countryCode } = params
+  const customer = await retrieveCustomer().catch(() => null)
+  const orders = (await listOrders().catch(() => null)) || null
+  const tierData = await retrieveCustomerNextTier(countryCode).catch(() => null)
+
+  if (!customer) {
+    notFound()
+  }
+
+  return <Overview customer={customer} orders={orders} tierData={tierData} />
+}
+```
+
+You make the following key changes:
+
+- Add the import for the `retrieveCustomerNextTier` function.
+- Add the `countryCode` parameter type to the `OverviewTemplate` component props.
+- Retrieve the customer's tier and next tier information using the `retrieveCustomerNextTier` function.
+- Pass the tier data to the `Overview` component.
+
+#### Test Customer Tier on Account Page
+
+To test the customer tier component on the account page, make sure both the Medusa server and the Next.js Starter Storefront are running.
+
+Then, on the storefront, click "Account" in the navigation bar. The main account page will display the customer's current tier with a progress bar showing their progress toward the next tier.
+
+![Customer tier component on account page](https://res.cloudinary.com/dza7lstvk/image/upload/v1764078181/Medusa%20Resources/CleanShot_2025-11-25_at_15.42.44_2x_hhguzm.png)
+
+#### Show Customer Tier on Order Confirmation Page
+
+Next, you'll show the customer tier component on the order confirmation page.
+
+In `src/modules/order/templates/order-completed-template.tsx`, add the following imports at the top of the file:
+
+```tsx title="src/modules/order/templates/order-completed-template.tsx" badgeLabel="Storefront" badgeColor="blue"
+import CustomerTier from "@modules/common/customer-tier"
+import { CustomerNextTier } from "types/tier"
+```
+
+Then, update the `OrderCompletedTemplate` component's props to include the `tierData` prop:
+
+```tsx title="src/modules/order/templates/order-completed-template.tsx" badgeLabel="Storefront" badgeColor="blue"
+type OrderCompletedTemplateProps = {
+  // ...
+  tierData: CustomerNextTier | null
+}
+
+export default async function OrderCompletedTemplate({
+  // ...
+  tierData,
+}: OrderCompletedTemplateProps) {
+  // ...
+}
+```
+
+Finally, update the `return` statement to render the `CustomerTier` component before the "Summary" heading:
+
+```tsx title="src/modules/order/templates/order-completed-template.tsx" badgeLabel="Storefront" badgeColor="blue"
+return (
+  <div>
+    {/* ... */}
+    {tierData && (
+      <div className="mt-6">
+        <CustomerTier tierData={tierData} />
+      </div>
+    )}
+    {/* ... */}
+  </div>
+)
+```
+
+To pass the tier data to the `OrderCompletedTemplate` component, open `src/app/[countryCode]/(main)/order/[id]/confirmed/page.tsx` and replace the content with the following:
+
+```tsx title="src/app/[countryCode]/(main)/order/[id]/confirmed/page.tsx" badgeLabel="Storefront" badgeColor="blue"
+import { retrieveOrder } from "@lib/data/orders"
+import OrderCompletedTemplate from "@modules/order/templates/order-completed-template"
+import { Metadata } from "next"
+import { notFound } from "next/navigation"
+import { retrieveCustomerNextTier } from "@lib/data/customer"
+
+type Props = {
+  params: Promise<{ id: string; countryCode: string }>
+}
+export const metadata: Metadata = {
+  title: "Order Confirmed",
+  description: "You purchase was successful",
+}
+
+export default async function OrderConfirmedPage(props: Props) {
+  const params = await props.params
+  const order = await retrieveOrder(params.id).catch(() => null)
+  const tierData = await retrieveCustomerNextTier(params.countryCode).catch(() => null)
+
+  if (!order) {
+    return notFound()
+  }
+
+  return <OrderCompletedTemplate order={order} tierData={tierData} />
+}
+```
+
+You make the following key changes:
+
+- Add the import for the `retrieveCustomerNextTier` function.
+- Add the `countryCode` parameter to the `OrderConfirmedPage` component.
+- Retrieve the customer's tier and their next tier using the `retrieveCustomerNextTier` function.
+- Pass the tier data to the `OrderCompletedTemplate` component.
+
+#### Test Customer Tier on Order Confirmation Page
+
+To test the customer tier component on the order confirmation page, make sure both the Medusa server and the Next.js Starter Storefront are running.
+
+Then, on the storefront, place an order. The order confirmation page will display the customer's tier with a progress bar showing their progress toward the next tier.
+
+![Customer tier component on order confirmation page](https://res.cloudinary.com/dza7lstvk/image/upload/v1764078663/Medusa%20Resources/CleanShot_2025-11-25_at_15.50.50_2x_liqi8r.png)
+
+---
+
+## Next Steps
+
+You've now implemented customer tiers in Medusa. You can expand on this feature to add more features like:
+
+- Automated emails to customers when they reach a new tier. Cloud users can benefit from zero-config email setup with [Medusa Emails](!cloud!/emails).
+- More complex tier rules, such as rules based on product categories or collections.
+- Other tier privileges, such as early access to new products or free shipping.
+
+
+If you're new to Medusa, check out the [main documentation](!docs!/learn) for a more in-depth understanding of the concepts you've used in this guide and more.
+
+To learn more about the commerce features Medusa provides, check out [Commerce Modules](../../../commerce-modules/page.mdx).
+
+### Troubleshooting
+
+If you encounter issues during your development, check out the [troubleshooting guides](../../../troubleshooting/page.mdx).
+
+### Getting Help
+
+If you encounter issues not covered in the troubleshooting guides:
+
+1. Visit the [Medusa GitHub repository](https://github.com/medusajs/medusa) to report issues or ask questions.
+2. Join the [Medusa Discord community](https://discord.gg/medusajs) for real-time support from community members.

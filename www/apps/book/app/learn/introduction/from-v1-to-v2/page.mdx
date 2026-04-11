@@ -406,7 +406,7 @@ You can change `medusa-v2` to any database name you prefer.
 
 Then, run the following commands to create the database and tables:
 
-```bash npm2yarn
+```bash npx2yarn
 npx medusa db:setup
 ```
 
@@ -530,7 +530,7 @@ In addition, you can build the Medusa Admin separately from the Medusa applicati
 
 ## Medusa CLI Changes
 
-The Medusa CLI for v2 is now in the `@medusajs/cli` package. However, you don't need to install it globally. You can just use `npx medusa` in your Medusa projects.
+The Medusa CLI for v2 is now in the `@medusajs/cli` package. However, you don't need to install it globally. You can just use `npx medusa`, `yarn medusa`, or `pnpm medusa` in your Medusa projects.
 
 Refer to the [Medusa CLI reference](!resources!/medusa-cli) for the full list of commands and options. The following table highlights the main changes between v1 and v2:
 
@@ -948,7 +948,7 @@ In Medusa v1, you had to write migrations manually to create or update tables in
 
 In Medusa v2, you can use the Medusa CLI to generate migrations based on MikroORM. For example:
 
-```bash npm2yarn
+```bash npx2yarn
 npx medusa db:generate brand
 ```
 
@@ -1397,7 +1397,7 @@ For example:
 
 ```ts title="src/api/middlewares.ts"
 import { defineMiddlewares } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export default defineMiddlewares({
   routes: [

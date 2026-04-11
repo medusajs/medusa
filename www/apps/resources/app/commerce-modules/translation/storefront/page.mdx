@@ -1,0 +1,114 @@
+---
+products:
+  - store
+  - product
+  - cart
+---
+
+import { Prerequisites, CodeTabs } from "docs-ui"
+
+export const metadata = {
+  title: `Serve Translations in the Storefront`,
+}
+
+# {metadata.title}
+
+In this guide, you’ll learn how to use locales and serve translated content in your storefront application in your Medusa application.
+
+<Prerequisites
+  items={[
+    {
+      text: "Translation Module Configured",
+      link: "/commerce-modules/translation#configure-translation-module",
+    },
+  ]}
+/>
+
+## Fetch Store Locales
+
+You can retrieve the list of locales available in your store using the [List Locales Store API route](!api!/store#locales_getlocales). You can display this list to customers, allowing them to select their preferred language.
+
+For example, to fetch the list of locales, send a `GET` request to the following endpoint:
+
+```bash
+curl "http://localhost:9000/store/locales" \
+-H 'x-publishable-api-key: {your_publishable_api_key}'
+```
+
+Learn more in the [Localization](../../../storefront-development/localization/page.mdx) storefront guide.
+
+<Note title="Tip">
+
+You must pass a publishable API key in the request header to store API routes. Learn more in the [Store API reference](!api!/store#publishable-api-key).
+
+</Note>
+
+---
+
+## Retrieve Translations for Resources
+
+You can retrieve translations using the [Store API routes](!api!/store) for [supported](../page.mdx#supported-module-translations) and [custom](../custom-data-models/page.mdx) data models. Future releases will expand translation support to additional resources.
+
+Medusa determines the locale for the request in the following order of priority:
+
+- The `locale` query parameter in the API request.
+- The `x-medusa-locale` header in the API request.
+
+If translations aren't available for the selected locale, or no locale is selected, the original content stored in the resource's data model is returned.
+
+For example, to retrieve products with translations in French (France):
+
+```bash
+curl "http://localhost:9000/store/products?locale=fr-FR" \
+-H 'x-publishable-api-key: {your_publishable_api_key}'
+```
+
+This returns the list of products with their French (France) translations if available:
+
+```json
+{
+  "products": [
+    {
+      "id": "prod_123",
+      "title": "Produit Exemple",
+      "description": "Ceci est une description en français.",
+      // other product fields...
+    },
+    // other products...
+  ]
+}
+```
+
+Learn more in the [List Products](../../../storefront-development/products/list/page.mdx#retrieve-translations-for-products) storefront guide.
+
+---
+
+## Set a Cart's Locale
+
+A cart can have a locale, which determines the language of the item contents. You can set the locale when creating the cart and update it if the user changes their language preference.
+
+For example, when creating a cart, set the `locale` property in the request body:
+
+```bash
+curl -X POST "http://localhost:9000/store/carts" \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
+-H "Content-Type: application/json" \
+-d '{
+  // other cart properties...
+  "locale": "fr-FR"
+}'
+```
+
+This creates a cart with the French (France) locale. When you add items to the cart, their titles and descriptions are displayed in French if translations are available.
+
+If you don't specify a locale when creating the cart, the original product content is used for the items in the cart.
+
+Learn more in the [Create Cart](../../../storefront-development/cart/create/page.mdx) and [Update Cart](../../../storefront-development/cart/update/page.mdx) storefront guides.
+
+---
+
+## Locale of Placed Order
+
+When a cart is completed and an order is placed, the locale of the cart is copied to the order. The content of items in the order is displayed in the locale that was set in the cart.
+
+This ensures that customers see order details in their preferred language.

@@ -81,6 +81,18 @@ tags:
       </Note>
     x-associatedSchema:
       $ref: "#/components/schemas/StoreGiftCard"
+  - name: Locales
+    description: >
+      A locale is a language that content is translated into for customers to view
+      in a storefront.
+      
+      Medusa installs locales by default. These API routes allow you to retrieve
+      supported locales in the store.
+    externalDocs:
+      description: Learn more about locales and translations.
+      url: https://docs.medusajs.com/resources/commerce-modules/translation/concepts
+    x-associatedSchema:
+      $ref: "#/components/schemas/StoreLocale"
   - name: Orders
     description: |
       Guest and registered customers can view orders they placed.
@@ -192,8 +204,9 @@ tags:
   - name: Store Credit Accounts
     x-associatedSchema:
       description: >
-        A store credit account is a way for customers to manage their store credit balance.
-        Customers can use their store credit to pay for orders, and view their store credit balance.
+        A store credit account is a way for customers to manage their store
+        credit balance. Customers can use their store credit to pay for orders,
+        and view their store credit balance.
 
         These API routes allow customers to view their store credit accounts.
 

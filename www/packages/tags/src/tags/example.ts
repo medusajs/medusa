@@ -6,5 +6,9 @@ export const example = [
   {
     "title": "Implement Express Checkout with Medusa",
     "path": "https://docs.medusajs.com/resources/storefront-development/guides/express-checkout"
+  },
+  {
+    "title": "Implement Mobile App with React Native, Expo, and Medusa",
+    "path": "https://docs.medusajs.com/resources/storefront-development/guides/react-native-expo"
   }
 ]

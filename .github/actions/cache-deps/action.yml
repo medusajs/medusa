@@ -3,6 +3,9 @@ description: Creates a cache with the given extension for monorepo dependencies
 inputs:
   extension:
     description: Extension for cache name
+  skip-build:
+    description: Skip build step (default false)
+    default: "false"
 runs:
   using: composite
   steps:
@@ -11,12 +14,16 @@ runs:
       with:
         path: |
           .yarn/cache
+          node_modules
+          .pnp.*
         key: ${{ runner.os }}-yarn-${{inputs.extension}}-v8-${{ hashFiles('**/yarn.lock') }}-3
         restore-keys: |
           ${{ runner.os }}-yarn-${{inputs.extension}}-v8-3
       # We want to only bootstrap and install if no cache is found.
     - run: yarn install --immutable --inline-builds
       shell: bash
+      if: steps.cache.outputs.cache-hit != 'true'
 
     - run: yarn build
       shell: bash
+      if: ${{ inputs.skip-build != 'true' }}

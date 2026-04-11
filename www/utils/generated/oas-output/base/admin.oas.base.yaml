@@ -183,10 +183,10 @@ tags:
       $ref: "#/components/schemas/AdminGiftCard"
   - name: Index
     description: >
-      The Index Module is a tool to perform high-performance queries across modules, for example, to filter linked modules.
+      The Index Module is a tool to perform high-performance queries across
+      modules, for example, to filter linked modules.
 
-      The Index Module is currently experimental and is hidden behind a feature flag. Learn more about it and how
-      to enable it in the [Index Module guide](https://docs.medusajs.com/learn/fundamentals/module-links/index-module).
+      The Index Module is currently experimental and is hidden behind a feature flag. Learn more about it and how to enable it in the [Index Module guide](https://docs.medusajs.com/learn/fundamentals/module-links/index-module).
   - name: Inventory Items
     description: |
       An inventory item is a stock-kept product whose inventory is managed.
@@ -209,6 +209,17 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/user
     x-associatedSchema:
       $ref: "#/components/schemas/AdminInvite"
+  - name: Locales
+    description: >
+      A locale is a language that content is translated into for customers to
+      view in a storefront.
+
+      Medusa installs locales by default. These API routes allow admin users to retrieve and view locales.
+    externalDocs:
+      description: Learn more about locales and translations.
+      url: https://docs.medusajs.com/resources/commerce-modules/translation/concepts
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminLocale"
   - name: Notifications
     description: >
       A notification informs an admin user of store changes or status changes of
@@ -218,6 +229,18 @@ tags:
       These API routes allow admin users to view and manage notifications.
     x-associatedSchema:
       $ref: "#/components/schemas/AdminNotification"
+  - name: Order Changes
+    description: >
+      An order change is a proposed change to an order, such as adding or
+      removing items, changing shipping methods, and more. They can be
+      associated with order edits, claims, or exchanges.
+
+      These API routes allow admin users to manage order changes.
+    externalDocs:
+      description: Learn more about order changes.
+      url: https://docs.medusajs.com/resources/commerce-modules/order/order-change
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminOrderChange"
   - name: Order Edits
     description: >
       An order edit is a change to an order's details, such as items, shipping
@@ -615,21 +638,17 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/tax/tax-region
     x-associatedSchema:
       $ref: "#/components/schemas/AdminTaxRegion"
-  - name: Transaction Groups
+  - name: Translations
     description: >
-      A transaction group is a group of transactions that belong to a store
-      credit account. It allows you to group transactions together, such as all
-      transactions related to a specific gift card.
+      A translation is a localized version of content in a specific locale. For
+      example, a product description in French.
 
-      These API routes allow admin users to list transaction groups.
-
-      <Note>
-
-      Transaction Group routes are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
-
-      </Note>
+      These API routes allow admin users to manage translations for different locales and resources.
+    externalDocs:
+      description: Learn more about the Translation Module.
+      url: https://docs.medusajs.com/resources/commerce-modules/translation
     x-associatedSchema:
-      $ref: "#/components/schemas/AdminTransactionGroup"
+      $ref: "#/components/schemas/AdminTranslation"
   - name: Uploads
     description: >
       Use these API routes to upload files to your Medusa application using the

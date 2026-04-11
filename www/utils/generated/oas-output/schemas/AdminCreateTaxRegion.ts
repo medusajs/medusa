@@ -48,7 +48,7 @@
  *         type: boolean
  *         description: Whether the tax rate should be combined with parent rates.
  *         externalDocs:
- *           url: https://docs.medusajs.com/v2/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates
+ *           url: https://docs.medusajs.com/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates
  *       metadata:
  *         type: object
  *         description: The default tax rate's metadata, used to store custom key-value pairs.

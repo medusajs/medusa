@@ -2,7 +2,7 @@ import { BaseFilterable } from "../../../dal"
 import { FindParams } from "../../common"
 
 export interface StoreGetShippingOptionList
-  extends FindParams,
+  extends Omit<FindParams, "with_deleted">,
     BaseFilterable<StoreGetShippingOptionList> {
   /**
    * The ID of the cart to retrieve the shipping options that

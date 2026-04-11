@@ -23,6 +23,9 @@ export async function getViteConfig(
 
   const backendUrl = options.backendUrl ?? ""
   const storefrontUrl = options.storefrontUrl ?? ""
+  const authType = process.env.ADMIN_AUTH_TYPE ?? undefined
+  const jwtTokenStorageKey =
+    process.env.ADMIN_JWT_TOKEN_STORAGE_KEY ?? undefined
 
   const baseConfig: InlineConfig = {
     root,
@@ -48,7 +51,10 @@ export async function getViteConfig(
     define: {
       __BASE__: JSON.stringify(options.path),
       __BACKEND_URL__: JSON.stringify(backendUrl),
+      __AUTH_TYPE__: JSON.stringify(authType),
+      __JWT_TOKEN_STORAGE_KEY__: JSON.stringify(jwtTokenStorageKey),
       __STOREFRONT_URL__: JSON.stringify(storefrontUrl),
+      __MAX_UPLOAD_FILE_SIZE__: options.maxUploadFileSize === Infinity ? "Infinity" : JSON.stringify(options.maxUploadFileSize ?? 1024 * 1024),
     },
     server: {
       fs: {
@@ -92,7 +98,11 @@ export async function getViteConfig(
 
   // Handle HMR_BIND_HOST after merge to detect conflicts
   if (process.env.HMR_BIND_HOST) {
-    if (finalConfig.server?.hmr && typeof finalConfig.server.hmr === "object" && finalConfig.server.hmr.server) {
+    if (
+      finalConfig.server?.hmr &&
+      typeof finalConfig.server.hmr === "object" &&
+      finalConfig.server.hmr.server
+    ) {
       console.warn(
         "HMR_BIND_HOST is set but a custom hmr.server is already configured. HMR_BIND_HOST will be ignored."
       )
@@ -103,7 +113,10 @@ export async function getViteConfig(
       if (!finalConfig.server) {
         finalConfig.server = {}
       }
-      if (!finalConfig.server.hmr || typeof finalConfig.server.hmr !== "object") {
+      if (
+        !finalConfig.server.hmr ||
+        typeof finalConfig.server.hmr !== "object"
+      ) {
         finalConfig.server.hmr = {}
       }
       finalConfig.server.hmr.server = hmrServer

@@ -5,6 +5,10 @@ import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
+import {
+  createStoresWorkflow,
+  updateStoresWorkflow,
+} from "@medusajs/core-flows"
 
 jest.setTimeout(90000)
 
@@ -65,20 +69,55 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/stores", () => {
+      describe("workflows", () => {
+        describe("createStoresWorkflow", () => {
+          it("should not call listPricePreferences when supported_currencies is empty", async () => {
+            const priceService = container.resolve(Modules.PRICING)
+            const listPricePreferencesSpy = jest.spyOn(
+              priceService,
+              "listPricePreferences"
+            )
+
+            const { result } = await createStoresWorkflow(container).run({
+              input: {
+                stores: [
+                  {
+                    name: "New store",
+                    supported_currencies: [],
+                  },
+                ],
+              },
+            })
+
+            expect(result).toEqual([
+              expect.objectContaining({
+                name: "New store",
+                supported_currencies: [],
+              }),
+            ])
+
+            expect(listPricePreferencesSpy).not.toHaveBeenCalled()
+            listPricePreferencesSpy.mockRestore()
+          })
+        })
+      })
+
+      describe("POST /admin/stores/:id", () => {
         it("should update store", async () => {
-          const response = await api.post(
-            `/admin/stores/${store.id}`,
-            {
-              name: "Updated store",
-              
-              supported_currencies: [
-                { currency_code: "eur", is_default: true },
-                { currency_code: "usd" },
-              ],
-            },
-            adminHeaders
-          ).catch((e) => e)
+          const response = await api
+            .post(
+              `/admin/stores/${store.id}`,
+              {
+                name: "Updated store",
+
+                supported_currencies: [
+                  { currency_code: "eur", is_default: true },
+                  { currency_code: "usd" },
+                ],
+              },
+              adminHeaders
+            )
+            .catch((e) => e)
 
           expect(response.status).toEqual(200)
           expect(response.data.store).toEqual(

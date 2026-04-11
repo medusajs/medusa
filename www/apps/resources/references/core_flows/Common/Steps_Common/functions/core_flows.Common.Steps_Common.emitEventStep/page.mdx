@@ -20,12 +20,28 @@ If the workflow fails, it won't emit the event at all.
 
 ## Example
 
+To emit a single event with a data payload:
+
 ```ts
 emitEventStep({
   eventName: "custom.created",
   data: {
     id: "123"
   }
+})
+```
+
+To emit an event multiple times with different data payloads, pass an array of objects to the `data` property:
+
+```ts
+emitEventStep({
+  eventName: "custom.created",
+  data: [
+    // emit will be emitted three times, once per each object in the array
+    { id: "123" },
+    { id: "456" },
+    { id: "789" }
+  ]
 })
 ```
 

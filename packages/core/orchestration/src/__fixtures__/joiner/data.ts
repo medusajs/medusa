@@ -186,4 +186,62 @@ export const remoteJoinerData = {
       user_id: 1,
     },
   ],
+  link: [
+    {
+      id: 1,
+      url: "https://example.com/post-1",
+      product_id: 101,
+      post_id: 501,
+      metadata: {
+        source: "blog",
+        category: "tech",
+      },
+    },
+    {
+      id: 2,
+      url: "https://example.com/post-2",
+      product_id: 102,
+      post_id: 502,
+      metadata: {
+        source: "news",
+        category: "general",
+      },
+    },
+    {
+      id: 3,
+      url: "https://example.com/post-3",
+      product_id: 103,
+      post_id: 503,
+      metadata: {
+        source: "forum",
+        category: "discussion",
+      },
+    },
+  ],
+  post: [
+    {
+      id: 501,
+      title: "First Post",
+      content: "Content of first post",
+      author: "John Doe",
+      published: true,
+      views: 1000,
+    },
+    {
+      id: 502,
+      title: "Second Post",
+      content: "Content of second post",
+      author: "Jane Smith",
+      published: true,
+      views: 2500,
+    },
+    {
+      id: 503,
+      title: "Third Post",
+      content: "Content of third post",
+      author: "Bob Johnson",
+      published: false,
+      views: 150,
+    },
+  ],
 }

@@ -136,6 +136,11 @@
  *     type: string
  *     title: thumbnail
  *     description: The variant's thumbnail.
+ *   images:
+ *     type: array
+ *     description: The variant's images.
+ *     items:
+ *       $ref: "#/components/schemas/BaseProductImage"
  * 
 */
 

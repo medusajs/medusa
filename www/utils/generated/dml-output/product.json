@@ -167,9 +167,9 @@
 			"variant": "The associated variant.\n\n@expandable",
 			"image": "The associated image.\n\n@expandable"
 		},
+		"since": "2.11.2",
 		"deprecated": {
-			"is_deprecated": false,
-			"since": "2.11.2"
+			"is_deprecated": false
 		}
 	}
 }

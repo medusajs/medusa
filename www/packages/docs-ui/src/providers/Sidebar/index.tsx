@@ -17,11 +17,10 @@ import {
   getSidebarItemWithHistory,
   isSidebarItemLink,
 } from "../../utils/sidebar-utils"
-import { useSiteConfig } from "../SiteConifg"
+import { useSiteConfig } from "../SiteConfig"
 import { useIsBrowser } from "../BrowserProvider"
-import { getScrolledTop } from "../../utils"
+import { getScrolledTop } from "../../utils/get-scrolled-top"
 import { usePathname, useRouter } from "next/navigation"
-import { SidebarItemCategory, SidebarItemSidebar } from "types/dist/sidebar"
 
 export type SidebarActionOptions = {
   sidebar_id: string
@@ -57,9 +56,12 @@ export type SidebarStyleOptions = {
 export type UpdateSidebarItemTypes =
   | Partial<Pick<Sidebar.SidebarItemLink, "path" | "title" | "additionalElms">>
   | Partial<
-      Pick<SidebarItemCategory, "title" | "loaded" | "onOpen" | "children">
+      Pick<
+        Sidebar.SidebarItemCategory,
+        "title" | "loaded" | "onOpen" | "children"
+      >
     >
-  | Partial<Pick<SidebarItemSidebar, "title" | "children">>
+  | Partial<Pick<Sidebar.SidebarItemSidebar, "title" | "children">>
 
 export type UpdateActionType = {
   sidebar_id: string

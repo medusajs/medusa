@@ -69,7 +69,10 @@
 			"application_method": "The associated application method.\n\n@expandable",
 			"rules": "The associated rules.\n\n@expandable",
 			"status": "The status of the promotion",
-			"is_tax_inclusive": "Whether the promotion is tax inclusive."
+			"is_tax_inclusive": "Whether the promotion is tax inclusive.",
+			"limit": "The limit of the promotion\n\n@since v2.12.0",
+			"used": "How much of the limit has been used.\n\n@since v2.12.0",
+			"metadata": "Holds custom data in key-value pairs.\n\n@since v2.12.0"
 		},
 		"deprecated": {
 			"is_deprecated": false

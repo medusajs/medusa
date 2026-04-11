@@ -1,0 +1,15 @@
+---
+displayed_sidebar: translationModelReference
+slug: /references/translation/models/Locale
+sidebar_label: Locale
+---
+
+import { TypeList } from "docs-ui"
+
+# Locale - Translation Module Data Models Reference
+
+This documentation provides a reference to the Locale data model. It belongs to the Translation Module.
+
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/modules/translation/src/models/locale.ts#L3" />
+
+<TypeList types={[{"name":"id","type":"PrimaryKeyModifier&#60;IdProperty&#62;","description":"The ID of the locale.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`TextProperty`","description":"The BCP 47 language tag code of the locale (e.g., \"en-US\", \"da-DK\").The code of the locale in BCP 47 format. For example, `en-US`.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`TextProperty`","description":"The human-readable name of the locale (e.g., \"English (US)\", \"Danish\").The display name of the locale","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="Locale"/>

@@ -1,4 +1,4 @@
-import { CardList } from "docs-ui"
+import { CardList, Card } from "docs-ui"
 
 export const metadata = {
   title: `Commerce Modules`,
@@ -8,7 +8,7 @@ export const metadata = {
 
 In this section of the documentation, you'll find guides and references related to Medusa's Commerce Modules.
 
-A Commerce Module provides features for a commerce domain within its service. The Medusa application exposes these features in its API routes to clients.
+A Commerce Module provides features for a commerce domain within its service. When you install the Medusa application, all Commerce Modules are available out-of-the-box. The Medusa application exposes their features in its core API routes to clients.
 
 A Commerce Module also defines data models, representing tables in the database. The Medusa Framework and tools allow you to extend these data models to add custom fields.
 
@@ -85,10 +85,20 @@ A Commerce Module also defines data models, representing tables in the database.
       href: "/commerce-modules/tax"
     },
     {
-      title: "User Module",
-      href: "/commerce-modules/user"
-    }
+      title: "Translation Module",
+      href: "/commerce-modules/translation",
+      badge: {
+        children: "Beta",
+        variant: "blue"
+      }
+    },
   ]}
+/>
+
+<Card
+  title="User Module"
+  href="/commerce-modules/user"
+  className="my-1"
 />
 
 ---
@@ -97,6 +107,6 @@ A Commerce Module also defines data models, representing tables in the database.
 
 The Commerce Modules can be used in many use cases, including:
 
-- Medusa Application: The Medusa application uses the Commerce Modules to expose commerce features through the REST APIs.
+- Medusa Application: The Medusa application comes with all Commerce Modules pre-installed and configured. Their commerce features are exposed through REST APIs.
 - Serverless Application: Use the Commerce Modules in a serverless application, such as a Next.js application, without having to manage a fully-fledged ecommerce system. You can use it by installing it in your Node.js project as an NPM package.
 - Node.js Application: Use the Commerce Modules in any Node.js application by installing it with NPM.

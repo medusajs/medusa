@@ -11,6 +11,7 @@
     "apply": "Aplicar",
     "range": "Rango",
     "search": "Buscar",
+    "original": "Original",
     "of": "de",
     "results": "resultados",
     "pages": "páginas",
@@ -23,6 +24,9 @@
     "tip": "Consejo",
     "error": "Error",
     "select": "Seleccionar",
+    "selectAll": "Seleccionar todo",
+    "unselectAll": "Desmarcar todo",
+    "fullList": "Lista completa",
     "selected": "Seleccionado",
     "enabled": "Habilitado",
     "disabled": "Deshabilitado",
@@ -33,6 +37,7 @@
     "modified": "Modificado",
     "added": "Agregado",
     "removed": "Eliminado",
+    "remaining": "Restantes",
     "admin": "Administrador",
     "store": "Tienda",
     "details": "Detalles",
@@ -120,7 +125,9 @@
   },
   "actions": {
     "save": "Guardar",
+    "saveChanges": "Guardar cambios",
     "saveAsDraft": "Guardar como borrador",
+    "saveAndClose": "Guardar y cerrar",
     "copy": "Copiar",
     "copied": "Copiado",
     "duplicate": "Duplicar",
@@ -322,6 +329,9 @@
   },
   "filters": {
     "sortLabel": "Ordenar",
+    "collapse": {
+      "all": "Colapsar todo"
+    },
     "filterLabel": "Filtrar",
     "searchLabel": "Buscar",
     "date": {
@@ -1500,6 +1510,14 @@
   },
   "draftOrders": {
     "domain": "Pedidos Borradores",
+    "list": {
+      "description": "Crea un nuevo pedido borrador para empezar.",
+      "noRecordsMessage": "No se encontraron pedidos borradores",
+      "filtered": {
+        "heading": "No se encontraron resultados",
+        "description": "No hay pedidos borradores que coincidan con los criterios de filtro."
+      }
+    },
     "deleteWarning": "Estás a punto de eliminar el pedido borrador {{id}}. Esta acción no puede deshacerse.",
     "paymentLinkLabel": "Enlace de pago",
     "cartIdLabel": "ID del carrito",
@@ -2187,6 +2205,32 @@
         }
       }
     },
+    "templates": {
+      "amount_off_products": {
+        "title": "Descuento en productos",
+        "description": "Descuenta productos específicos o colecciones de productos"
+      },
+      "amount_off_order": {
+        "title": "Descuento en pedido",
+        "description": "Descuenta el monto total del pedido"
+      },
+      "percentage_off_product": {
+        "title": "Porcentaje de descuento en producto",
+        "description": "Descuenta un porcentaje de los productos seleccionados"
+      },
+      "percentage_off_order": {
+        "title": "Porcentaje de descuento en pedido",
+        "description": "Descuenta un porcentaje del monto total del pedido"
+      },
+      "buy_get": {
+        "title": "Compra X Lleva Y",
+        "description": "Compra X producto(s), lleva Y producto(s)"
+      },
+      "shipping_discount": {
+        "title": "Envío gratis",
+        "description": "Aplica un 100% de descuento en los gastos de envío"
+      }
+    },
     "deleteWarning": "Estás a punto de eliminar la promoción {{code}}. Esta acción no puede deshacerse.",
     "createPromotionTitle": "Crear Promoción",
     "type": "Tipo de promoción",
@@ -2443,31 +2487,78 @@
     "deleteUserSuccess": "Usuario {{name}} eliminado correctamente",
     "invite": "Invitar"
   },
+  "translations": {
+    "domain": "Traducciones",
+    "list": {
+      "metrics": "{{translated}} de {{total}} traducciones"
+    },
+    "settings": {
+      "header": "Administrar entidades traducibles",
+      "successToast": "Configuraciones actualizadas exitosamente"
+    },
+    "actions": {
+      "manage": "Gestionar traducciones",
+      "manageEntities": "Gestionar entidades",
+      "manageLocales": "Gestionar idiomas"
+    },
+    "title": "Traducción de dominios",
+    "subtitle": "Gestiona las traducciones de tus datos en Medusa",
+    "bulk": {
+      "header": "Editor de Traducciones en Masa",
+      "locale": "Idioma"
+    },
+    "edit": {
+      "successToast": "Traducciones actualizadas exitosamente",
+      "unsavedChanges": {
+        "title": "Traducciones sin guardar",
+        "description": "No pierdas tu trabajo. Tienes cambios que no han sido guardados aún"
+      }
+    },
+    "activeLocales": {
+      "heading": "Idiomas",
+      "subtitle": "Traducciones activas",
+      "noLocalesTip": "Configura al menos un lenguaje para empezar a traducir tu información",
+      "noLocalesTipConfigureAction": "Configurar"
+    },
+    "completion": {
+      "heading": "Textos traducidos",
+      "translated": "Traducidos",
+      "toTranslate": "Faltantes",
+      "footer": "Idiomas"
+    }
+  },
   "store": {
     "domain": "Tienda",
     "manageYourStoresDetails": "Gestiona los detalles de tu tienda",
     "editStore": "Editar tienda",
     "defaultCurrency": "Moneda por defecto",
+    "defaultLocale": "Idioma por defecto",
     "defaultRegion": "Región por defecto",
     "defaultSalesChannel": "Canal de ventas predeterminado",
     "defaultLocation": "Ubicación predeterminada",
     "swapLinkTemplate": "Plantilla de enlace de cambio",
     "paymentLinkTemplate": "Plantilla de enlace de pago",
     "inviteLinkTemplate": "Plantilla de enlace de invitación",
+    "locales": "Idiomas",
     "currencies": "Monedas",
     "addCurrencies": "Agregar monedas",
     "enableTaxInclusivePricing": "Habilitar precios con impuestos incluidos",
     "disableTaxInclusivePricing": "Deshabilitar precios con impuestos incluidos",
     "removeCurrencyWarning_one": "Estás a punto de eliminar {{count}} moneda de tu tienda. Asegúrate de haber eliminado todos los precios que usen esta moneda antes de continuar.",
     "removeCurrencyWarning_other": "Estás a punto de eliminar {{count}} monedas de tu tienda. Asegúrate de haber eliminado todos los precios que usen estas monedas antes de continuar.",
+    "removeLocaleWarning_one": "Estás a punto de eliminar {{count}} idioma de tu tienda. Cualquier traducción que use este idioma será eliminada.",
+    "removeLocaleWarning_other": "Estás a punto de eliminar {{count}} idiomas de tu tienda. Cualquier traducción que use estos idiomas será eliminada.",
     "currencyAlreadyAdded": "La moneda ya ha sido agregada a tu tienda.",
+    "localeAlreadyAdded": "El idioma ya ha sido agregado a tu tienda.",
     "edit": {
       "header": "Editar Tienda"
     },
     "toast": {
       "update": "Tienda actualizada exitosamente",
       "currenciesUpdated": "Monedas actualizadas exitosamente",
+      "localesUpdated": "Idiomas actualizados exitosamente",
       "currenciesRemoved": "Monedas eliminadas de la tienda exitosamente",
+      "localesRemoved": "Idiomas eliminados de la tienda exitosamente",
       "updatedTaxInclusivitySuccessfully": "Precios con impuestos incluidos actualizados exitosamente"
     }
   },

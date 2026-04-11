@@ -1,6 +1,10 @@
 import { BigNumberInput } from "../totals"
 import { PaymentCollectionStatus, PaymentSessionStatus } from "./common"
-import { PaymentAccountHolderDTO, PaymentCustomerDTO, PaymentProviderContext, } from "./provider"
+import {
+  PaymentAccountHolderDTO,
+  PaymentCustomerDTO,
+  PaymentProviderContext,
+} from "./provider"
 
 /**
  * The payment collection to be created.
@@ -147,6 +151,11 @@ export interface CreateCaptureDTO {
    * a user's ID.
    */
   captured_by?: string
+
+  /**
+   * Whether the capture was automatically captured.
+   */
+  is_captured?: boolean
 }
 
 /**

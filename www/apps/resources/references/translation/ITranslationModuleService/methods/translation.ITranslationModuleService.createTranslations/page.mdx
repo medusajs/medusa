@@ -1,0 +1,80 @@
+---
+displayed_sidebar: translationReference
+slug: /references/translation/createTranslations
+sidebar_label: createTranslations
+---
+
+import { TypeList } from "docs-ui"
+
+# createTranslations - Translation Module Reference
+
+This documentation provides a reference to the `createTranslations` method. This belongs to the Translation Module.
+
+<Note>
+
+You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/medusa-workflows-reference).
+
+</Note>
+
+## createTranslations(data, sharedContext?): Promise&#60;[TranslationDTO](../../../interfaces/translation.TranslationDTO/page.mdx)&#62;
+
+This method creates a translation.
+
+### Example
+
+```ts
+const translation = await translationModuleService.createTranslations({
+  reference_id: "prod_123",
+  reference: "product",
+  locale_code: "fr-FR",
+  translations: {
+    title: "Titre du produit",
+    description: "Description du produit en français",
+  },
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[CreateTranslationDTO](../../../interfaces/translation.CreateTranslationDTO/page.mdx)","description":"The translation to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"reference_id","type":"`string`","description":"The ID of the data model being translated.","optional":false,"defaultValue":"","example":"\"prod_123\"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"The name of the table that the translation belongs to.","optional":false,"defaultValue":"","example":"\"product\"","expandable":false,"children":[]},{"name":"locale_code","type":"`string`","description":"The BCP 47 language tag code for this translation.","optional":false,"defaultValue":"","example":"\"en-US\"","expandable":false,"children":[]},{"name":"translations","type":"`Record<string, unknown>`","description":"The translated fields as key-value pairs.","optional":false,"defaultValue":"","example":"{ * \"title\": \"Product Title\", * \"description\": \"Product Description\", * }","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/translation.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"runId","type":"`string`","description":"A string indicating the ID of the current run.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/translation.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"parentStepIdempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the parent workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"preventReleaseEvents","type":"`boolean`","description":"preventReleaseEvents","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isCancelling","type":"`boolean`","description":"A boolean value indicating whether the current workflow execution is being cancelled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cancelingFromParentStep","type":"`boolean`","description":"Weither or not a sub workflow cancellation is being triggered from a parent step.\nIf true, the parent step will not be triggered by the sub workflow.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createTranslations"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[TranslationDTO](../../../interfaces/translation.TranslationDTO/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The created translation.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the translation.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string`","description":"The ID of the entity being translated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"The type of entity being translated (e.g., \"product\", \"product\\_variant\").","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"locale_code","type":"`string`","description":"The BCP 47 language tag code for this translation (e.g., \"en-US\", \"fr-FR\").","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"translations","type":"`Record<string, unknown>`","description":"The translated fields as key-value pairs.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"The date and time the translation was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"The date and time the translation was last updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string` \\| `Date`","description":"The date and time the translation was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createTranslations"/>
+
+## createTranslations(data, sharedContext?): Promise&#60;[TranslationDTO](../../../interfaces/translation.TranslationDTO/page.mdx)[]&#62;
+
+This method creates translations.
+
+### Example
+
+```ts
+const translations = await translationModuleService.createTranslations([
+  {
+    reference_id: "prod_123",
+    reference: "product",
+    locale_code: "fr-FR",
+    translations: {
+      title: "Titre du produit",
+      description: "Description du produit en français",
+    },
+  },
+  {
+    reference_id: "prod_123",
+    reference: "product",
+    locale_code: "de-DE",
+    translations: {
+      title: "Produkt Titel",
+      description: "Produktbeschreibung auf Deutsch",
+    },
+  }
+])
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[CreateTranslationDTO](../../../interfaces/translation.CreateTranslationDTO/page.mdx)[]","description":"The translations to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"reference_id","type":"`string`","description":"The ID of the data model being translated.","optional":false,"defaultValue":"","example":"\"prod_123\"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"The name of the table that the translation belongs to.","optional":false,"defaultValue":"","example":"\"product\"","expandable":false,"children":[]},{"name":"locale_code","type":"`string`","description":"The BCP 47 language tag code for this translation.","optional":false,"defaultValue":"","example":"\"en-US\"","expandable":false,"children":[]},{"name":"translations","type":"`Record<string, unknown>`","description":"The translated fields as key-value pairs.","optional":false,"defaultValue":"","example":"{ * \"title\": \"Product Title\", * \"description\": \"Product Description\", * }","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/translation.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"runId","type":"`string`","description":"A string indicating the ID of the current run.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/translation.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"parentStepIdempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the parent workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"preventReleaseEvents","type":"`boolean`","description":"preventReleaseEvents","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isCancelling","type":"`boolean`","description":"A boolean value indicating whether the current workflow execution is being cancelled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cancelingFromParentStep","type":"`boolean`","description":"Weither or not a sub workflow cancellation is being triggered from a parent step.\nIf true, the parent step will not be triggered by the sub workflow.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createTranslations"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[TranslationDTO](../../../interfaces/translation.TranslationDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The created translations.","expandable":false,"children":[{"name":"TranslationDTO[]","type":"[TranslationDTO](../../../interfaces/translation.TranslationDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the translation.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string`","description":"The ID of the entity being translated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"The type of entity being translated (e.g., \"product\", \"product\\_variant\").","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"locale_code","type":"`string`","description":"The BCP 47 language tag code for this translation (e.g., \"en-US\", \"fr-FR\").","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"translations","type":"`Record<string, unknown>`","description":"The translated fields as key-value pairs.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"The date and time the translation was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"The date and time the translation was last updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string` \\| `Date`","description":"The date and time the translation was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createTranslations"/>

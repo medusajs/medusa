@@ -22,7 +22,7 @@ Plugins are created in a separate Medusa project. This makes the development and
 
 Medusa's `create-medusa-app` CLI tool provides the option to create a plugin project. Run the following command to create a new plugin project:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app my-plugin --plugin
 ```
 
@@ -290,7 +290,7 @@ The first time you create your plugin, you need to publish the package into a lo
 
 To publish the plugin to the local registry, run the following command in your plugin project:
 
-```bash title="Plugin project"
+```bash npx2yarn title="Plugin project"
 npx medusa plugin:publish
 ```
 
@@ -312,7 +312,7 @@ npm install --save-dev yalc
 
 After that, run the following Medusa CLI command to install the plugin:
 
-```bash title="Medusa application"
+```bash npx2yarn title="Medusa application"
 npx medusa plugin:add @myorg/plugin-name
 ```
 
@@ -374,7 +374,7 @@ While developing your plugin, you can watch for changes in the plugin and automa
 
 To do that, run the following command in your plugin project:
 
-```bash title="Plugin project"
+```bash npx2yarn title="Plugin project"
 npx medusa plugin:develop
 ```
 
@@ -465,7 +465,7 @@ You can add these environment variables in a `.env` file in your plugin project.
 
 Then, run the following command in your plugin project to generate migrations for the modules in your plugin:
 
-```bash title="Plugin project"
+```bash npx2yarn title="Plugin project"
 npx medusa plugin:db:generate
 ```
 
@@ -473,7 +473,7 @@ This command generates migrations for all modules in the plugin.
 
 Finally, run these migrations on the Medusa application that the plugin is installed in using the `db:migrate` command:
 
-```bash title="Medusa application"
+```bash npx2yarn title="Medusa application"
 npx medusa db:migrate
 ```
 
@@ -581,7 +581,7 @@ Make sure to add the keywords mentioned in the [Package Keywords](#package-keywo
 
 Medusa's CLI tool provides a command that bundles your plugin to be published to npm. Once you're ready to publish your plugin publicly, run the following command in your plugin project:
 
-```bash
+```bash npx2yarn
 npx medusa plugin:build
 ```
 
@@ -629,8 +629,11 @@ Where `<type>` indicates the type of version update you’re publishing. For exa
 
 Then, re-run the same commands for publishing a plugin:
 
-```bash
+```bash npx2yarn
 npx medusa plugin:build
+```
+
+```bash npm2yarn
 npm publish
 ```
 

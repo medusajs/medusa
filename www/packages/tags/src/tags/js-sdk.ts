@@ -52,6 +52,10 @@ export const jsSdk = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/invite"
   },
   {
+    "title": "locale",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/locale"
+  },
+  {
     "title": "notification",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/notification"
   },
@@ -168,6 +172,10 @@ export const jsSdk = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/taxRegion"
   },
   {
+    "title": "translation",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/translation"
+  },
+  {
     "title": "upload",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/upload"
   },
@@ -234,6 +242,10 @@ export const jsSdk = [
   {
     "title": "fulfillment",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/store/fulfillment"
+  },
+  {
+    "title": "locale",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/locale"
   },
   {
     "title": "order",

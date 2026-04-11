@@ -56,8 +56,80 @@ export const locking = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateTaxLinesWorkflow"
   },
   {
+    "title": "addDraftOrderItemsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addDraftOrderItemsWorkflow"
+  },
+  {
+    "title": "addDraftOrderPromotionWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addDraftOrderPromotionWorkflow"
+  },
+  {
+    "title": "addDraftOrderShippingMethodsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addDraftOrderShippingMethodsWorkflow"
+  },
+  {
+    "title": "beginDraftOrderEditWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/beginDraftOrderEditWorkflow"
+  },
+  {
+    "title": "cancelDraftOrderEditWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/cancelDraftOrderEditWorkflow"
+  },
+  {
+    "title": "computeDraftOrderAdjustmentsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/computeDraftOrderAdjustmentsWorkflow"
+  },
+  {
     "title": "confirmDraftOrderEditWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/confirmDraftOrderEditWorkflow"
+  },
+  {
+    "title": "convertDraftOrderWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/convertDraftOrderWorkflow"
+  },
+  {
+    "title": "removeDraftOrderActionItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeDraftOrderActionItemWorkflow"
+  },
+  {
+    "title": "removeDraftOrderActionShippingMethodWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeDraftOrderActionShippingMethodWorkflow"
+  },
+  {
+    "title": "removeDraftOrderPromotionsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeDraftOrderPromotionsWorkflow"
+  },
+  {
+    "title": "removeDraftOrderShippingMethodWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeDraftOrderShippingMethodWorkflow"
+  },
+  {
+    "title": "requestDraftOrderEditWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/requestDraftOrderEditWorkflow"
+  },
+  {
+    "title": "updateDraftOrderActionItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateDraftOrderActionItemWorkflow"
+  },
+  {
+    "title": "updateDraftOrderActionShippingMethodWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateDraftOrderActionShippingMethodWorkflow"
+  },
+  {
+    "title": "updateDraftOrderItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateDraftOrderItemWorkflow"
+  },
+  {
+    "title": "updateDraftOrderShippingMethodWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateDraftOrderShippingMethodWorkflow"
+  },
+  {
+    "title": "updateDraftOrderWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateDraftOrderWorkflow"
+  },
+  {
+    "title": "markFulfillmentAsDeliveredWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/markFulfillmentAsDeliveredWorkflow"
   },
   {
     "title": "adjustInventoryLevelsStep",
@@ -74,6 +146,14 @@ export const locking = [
   {
     "title": "releaseLockStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/releaseLockStep"
+  },
+  {
+    "title": "beginOrderEditOrderWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/beginOrderEditOrderWorkflow"
+  },
+  {
+    "title": "cancelBeginOrderEditWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/cancelBeginOrderEditWorkflow"
   },
   {
     "title": "cancelOrderFulfillmentWorkflow",
@@ -96,8 +176,52 @@ export const locking = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/confirmReturnReceiveWorkflow"
   },
   {
+    "title": "createOrderEditShippingMethodWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createOrderEditShippingMethodWorkflow"
+  },
+  {
     "title": "createOrderFulfillmentWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createOrderFulfillmentWorkflow"
+  },
+  {
+    "title": "markOrderFulfillmentAsDeliveredWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/markOrderFulfillmentAsDeliveredWorkflow"
+  },
+  {
+    "title": "orderEditAddNewItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderEditAddNewItemWorkflow"
+  },
+  {
+    "title": "orderEditUpdateItemQuantityWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderEditUpdateItemQuantityWorkflow"
+  },
+  {
+    "title": "removeItemOrderEditActionWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeItemOrderEditActionWorkflow"
+  },
+  {
+    "title": "removeOrderEditShippingMethodWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeOrderEditShippingMethodWorkflow"
+  },
+  {
+    "title": "requestOrderEditRequestWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/requestOrderEditRequestWorkflow"
+  },
+  {
+    "title": "updateOrderEditAddItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateOrderEditAddItemWorkflow"
+  },
+  {
+    "title": "updateOrderEditItemQuantityWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateOrderEditItemQuantityWorkflow"
+  },
+  {
+    "title": "updateOrderEditShippingMethodWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateOrderEditShippingMethodWorkflow"
+  },
+  {
+    "title": "processPaymentWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/processPaymentWorkflow"
   },
   {
     "title": "createReservationsStep",

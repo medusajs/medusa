@@ -42,7 +42,8 @@
 			"amount": "The amount of the adjustment",
 			"provider_id": "The ID of the provider used to apply the adjustment.",
 			"item": "The associated item that the adjustment is applied on.\n\n@expandable",
-			"is_tax_inclusive": "Whether the order line item adjustment is tax inclusive."
+			"is_tax_inclusive": "Whether the order line item adjustment is tax inclusive.",
+			"version": "The version of the order line item adjustment"
 		},
 		"deprecated": {
 			"is_deprecated": false
@@ -365,7 +366,9 @@
 			"shipping_methods": "The associated shipping methods.\n\n@expandable",
 			"transactions": "The associated transactions, which include amounts captured and refunded.\n\n@expandable",
 			"credit_lines": "The associated credit lines, which include additional payment amounts for an order.\n\n@expandable",
-			"returns": "The associated returns.\n\n@expandable"
+			"returns": "The associated returns.\n\n@expandable",
+			"custom_display_id": "The custom display ID of the order",
+			"locale": "The locale of the order"
 		},
 		"deprecated": {
 			"is_deprecated": false
@@ -441,7 +444,8 @@
 			"canceled_by": "The ID of the user that canceled the order change",
 			"canceled_at": "The date that the change was canceled",
 			"order": "The associated order that the change applies to.\n\n@expandable",
-			"actions": "The associated actions.\n\n@expandable"
+			"actions": "The associated actions.\n\n@expandable",
+			"carry_over_promotions": "Whether the order change carries over promotions from the parent order.\n\n@since v2.12.0"
 		},
 		"deprecated": {
 			"is_deprecated": false

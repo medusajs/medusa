@@ -1,5 +1,5 @@
 import { ApiKeyType } from "@medusajs/framework/utils"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import {
   createFindParams,
   createOperatorMap,

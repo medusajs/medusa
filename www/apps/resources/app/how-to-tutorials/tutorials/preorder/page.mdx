@@ -83,7 +83,7 @@ By following this tutorial, you will learn how to:
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -334,7 +334,7 @@ Refer to the [Migrations documentation](!docs!/learn/fundamentals/modules#5-gene
 
 Medusa's CLI tool can generate the migrations for you. To generate a migration for the Preorder Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate preorder
 ```
 
@@ -342,7 +342,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -435,7 +435,7 @@ This doesn't apply to read-only links, as they don't require database changes.
 
 To sync the links to the database, run the migrations command again in the Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -538,12 +538,12 @@ If you get a type error on resolving the Preorder Module, run the Medusa applica
 </Note>
 
 export const updatePreorderVariantStepHighlights = [
-  ["16", "preorderModuleService", "Resolve the Preorder Module's service from the Medusa container."],
-  ["20", "oldData", "Retrieve existing record to undo updates if an error occurs."],
-  ["24", "preorderVariant", "Update the pre-order variant."],
-  ["28", "preorderVariant", "Return the updated pre-order variant."],
-  ["28", "oldData", "Pass the old data to the compensation function."],
-  ["39", "updatePreorderVariants", "Undo updates if an error occurs during the workflow execution."]
+  ["17", "preorderModuleService", "Resolve the Preorder Module's service from the Medusa container."],
+  ["21", "oldData", "Retrieve existing record to undo updates if an error occurs."],
+  ["25", "preorderVariant", "Update the pre-order variant."],
+  ["29", "preorderVariant", "Return the updated pre-order variant."],
+  ["29", "oldData", "Pass the old data to the compensation function."],
+  ["40", "updatePreorderVariants", "Undo updates if an error occurs during the workflow execution."]
 ]
 
 ```ts title="src/workflows/steps/update-preorder-variant.ts" highlights={updatePreorderVariantStepHighlights}
@@ -623,10 +623,10 @@ The `createPreorderVariantStep` creates a pre-order variant record.
 To create the step, create the file `src/workflows/steps/create-preorder-variant.ts` with the following content:
 
 export const createPreorderVariantStepHighlights = [
-  ["15", "preorderVariant", "Create the pre-order variant."],
-  ["19", "preorderVariant", "Return the created pre-order variant."],
-  ["19", "id", "Pass the ID to the compensation function."],
-  ["30", "deletePreorderVariants", "Delete the pre-order variant if an error occurs during the workflow execution."]
+  ["16", "preorderVariant", "Create the pre-order variant."],
+  ["20", "preorderVariant", "Return the created pre-order variant."],
+  ["20", "id", "Pass the ID to the compensation function."],
+  ["31", "deletePreorderVariants", "Delete the pre-order variant if an error occurs during the workflow execution."]
 ]
 
 ```ts title="src/workflows/steps/create-preorder-variant.ts" highlights={createPreorderVariantStepHighlights}
@@ -811,8 +811,14 @@ export const upsertPreorderVariantRouteHighlights = [
   ["10", "UpsertPreorderVariantSchema", "The schema to validate the request body."],
   ["18", "POST", "Expose a POST API route."],
   ["24", "upsertProductVariantPreorderWorkflow", "Execute the workflow to create or update pre-order variant configurations."],
-  ["32", "preorder_variant", "Return the created or updated pre-order variant in the response."],
+  ["33", "preorder_variant", "Return the created or updated pre-order variant in the response."],
 ]
+
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
 
 ```ts title="src/api/admin/variants/[id]/preorders/route.ts" highlights={upsertPreorderVariantRouteHighlights}
 import { 
@@ -822,7 +828,7 @@ import {
 import { 
   upsertProductVariantPreorderWorkflow, 
 } from "../../../../../workflows/upsert-product-variant-preorder"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const UpsertPreorderVariantSchema = z.object({
   available_date: z.string().datetime(),
@@ -944,12 +950,12 @@ The `disablePreorderVariantStep` changes the status of a pre-order variant recor
 Create the file `src/workflows/steps/disable-preorder-variant.ts` with the following content:
 
 export const disablePreorderVariantStepHighlights = [
-  ["15", "oldData", "Retrieve existing record to undo updates if an error occurs."],
-  ["17", "preorderVariant", "Update the pre-order variant."],
-  ["19", "DISABLED", "Set the pre-order variant's status to `disabled`."],
-  ["22", "preorderVariant", "Return the updated pre-order variant."],
-  ["22", "oldData", "Pass the old data to the compensation function."],
-  ["31", "updatePreorderVariants", "Undo updates if an error occurs during the workflow execution."]
+  ["16", "oldData", "Retrieve existing record to undo updates if an error occurs."],
+  ["18", "preorderVariant", "Update the pre-order variant."],
+  ["20", "DISABLED", "Set the pre-order variant's status to `disabled`."],
+  ["23", "preorderVariant", "Return the updated pre-order variant."],
+  ["23", "oldData", "Pass the old data to the compensation function."],
+  ["32", "updatePreorderVariants", "Undo updates if an error occurs during the workflow execution."]
 ]
 
 ```ts title="src/workflows/steps/disable-preorder-variant.ts" highlights={disablePreorderVariantStepHighlights}
@@ -1577,28 +1583,42 @@ The workflow that completes a cart with pre-order items has the following steps:
     name: "completeCartPreorderWorkflow",
     steps: [
       {
+        type: "step",
+        name: "acquireLockStep",
+        description: "Acquire a lock on the cart to prevent concurrent modifications.",
+        link: "/references/medusa-workflows/steps/acquireLockStep",
+        depth: 1,
+      },
+      {
         type: "workflow",
         name: "completeCartWorkflow",
         description: "Complete the cart with pre-order items.",
         link: "/references/medusa-workflows/completeCartWorkflow",
-        depth: 1,
+        depth: 2,
+      },
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve existing preorders of the order for idempotency.",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 3,
       },
       {
         type: "step",
         name: "useQueryGraphStep",
         description: "Retrieve all line items in the cart.",
         link: "/references/helper-steps/useQueryGraphStep",
-        depth: 2,
+        depth: 4,
       },
       {
         type: "step",
         name: "retrievePreorderItemIdsStep",
         description: "Retrieve the IDs of pre-order variants in the cart.",
-        depth: 3,
+        depth: 5,
       },
       {
         type: "when",
-        condition: "preorderItemIds.length > 0",
+        condition: "preorders.length === 0 && preorderItemIds.length > 0",
         steps: [
           {
             type: "step",
@@ -1607,15 +1627,22 @@ The workflow that completes a cart with pre-order items has the following steps:
             depth: 1,
           }
         ],
-        depth: 4
+        depth: 6
       },
       {
         type: "step",
         name: "useQueryGraphStep",
         description: "Retrieve the created order.",
         link: "/references/helper-steps/useQueryGraphStep",
-        depth: 5,
+        depth: 7,
       },
+      {
+        type: "step",
+        name: "releaseLockStep",
+        description: "Release the lock on the cart.",
+        link: "/references/medusa-workflows/steps/releaseLockStep",
+        depth: 8,
+      }
     ]
   }}
 />
@@ -1667,9 +1694,9 @@ The `createPreordersStep` creates a `Preorder` record for each pre-order variant
 Create the file `src/workflows/steps/create-preorders.ts` with the following content:
 
 export const createPreordersStepHighlights = [
-  ["16", "preorders", "Create pre-orders."],
-  ["23", "preorders", "Return the pre-orders."],
-  ["32", "deletePreorders", "Delete pre-orders if an error occurs during the workflow execution."],
+  ["17", "preorders", "Create pre-orders."],
+  ["24", "preorders", "Return the pre-orders."],
+  ["33", "deletePreorders", "Delete pre-orders if an error occurs during the workflow execution."],
 ]
 
 ```ts title="src/workflows/steps/create-preorders.ts" highlights={createPreordersStepHighlights}
@@ -1723,19 +1750,34 @@ You can now create the workflow that completes a cart with pre-order items.
 Create the file `src/workflows/complete-cart-preorder.ts` with the following content:
 
 export const completeCartPreorderWorkflowHighlights = [
-  ["13", "completeCartWorkflow", "Complete the cart and place the order."],
-  ["19", "useQueryGraphStep", "Retrieve all line items in the cart."],
-  ["30", "retrievePreorderItemIdsStep", "Retrieve the IDs of pre-order variants in the cart."],
-  ["34", "when", "Check if there are pre-order items in the cart."],
-  ["38", "createPreordersStep", "Create pre-ordersz for the pre-order items in the cart."],
-  ["44", "useQueryGraphStep", "Retrieve the created order."],
-  ["62", "order", "Return the created Medusa order."],
+  ["25", "acquireLockStep", "Acquire a lock on the cart to prevent concurrent modifications."],
+  ["30", "completeCartWorkflow", "Complete the cart and place the order."],
+  ["36", "useQueryGraphStep", "Retrieve existing preorders of the order for idempotency."],
+  ["46", "useQueryGraphStep", "Retrieve all line items in the cart."],
+  ["57", "retrievePreorderItemIdsStep", "Retrieve the IDs of pre-order variants in the cart."],
+  ["61", "when", "Check that there are no existing preorders and that there are pre-order items in the cart."],
+  ["66", "createPreordersStep", "Create pre-ordersz for the pre-order items in the cart."],
+  ["72", "useQueryGraphStep", "Retrieve the created order."],
+  ["89", "releaseLockStep", "Release the lock on the cart."],
+  ["94", "order", "Return the created Medusa order."],
 ]
 
-```ts title="src/workflows/complete-cart-preorder.ts" highlights={completeCartPreorderWorkflowHighlights}
-import { createWorkflow, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
-import { completeCartWorkflow, useQueryGraphStep } from "@medusajs/medusa/core-flows"
-import { retrievePreorderItemIdsStep, RetrievePreorderItemIdsStepInput } from "./steps/retrieve-preorder-items"
+```ts title="src/workflows/complete-cart-preorder.ts" highlights={completeCartPreorderWorkflowHighlights} collapsibleLines="1-17" expandButtonLabel="Show Imports"
+import { 
+  createWorkflow, 
+  when, 
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { 
+  acquireLockStep, 
+  completeCartWorkflow, 
+  useQueryGraphStep, 
+  releaseLockStep,
+} from "@medusajs/medusa/core-flows"
+import { 
+  retrievePreorderItemIdsStep, 
+  RetrievePreorderItemIdsStepInput,
+} from "./steps/retrieve-preorder-items"
 import { createPreordersStep } from "./steps/create-preorders"
 
 type WorkflowInput = {
@@ -1745,9 +1787,24 @@ type WorkflowInput = {
 export const completeCartPreorderWorkflow = createWorkflow(
   "complete-cart-preorder",
   (input: WorkflowInput) => {
+    acquireLockStep({
+      key: input.cart_id,
+      timeout: 2,
+      ttl: 10,
+    })
     const { id } = completeCartWorkflow.runAsStep({
       input: {
         id: input.cart_id,
+      },
+    })
+
+    const { data: preorders } = useQueryGraphStep({
+      entity: "preorder",
+      fields: [
+        "id",
+      ],
+      filters: {
+        order_id: id,
       },
     })
 
@@ -1760,15 +1817,16 @@ export const completeCartPreorderWorkflow = createWorkflow(
       filters: {
         cart_id: input.cart_id,
       },
-    })
+    }).config({ name: "retrieve-line-items" })
 
     const preorderItemIds = retrievePreorderItemIdsStep({
       line_items,
     } as unknown as RetrievePreorderItemIdsStepInput)
 
     when({
+      preorders,
       preorderItemIds,
-    }, (data) => data.preorderItemIds.length > 0)
+    }, (data) => data.preorders.length === 0 && data.preorderItemIds.length > 0)
     .then(() => {
       createPreordersStep({
         preorder_variant_ids: preorderItemIds,
@@ -1793,6 +1851,10 @@ export const completeCartPreorderWorkflow = createWorkflow(
       },
     }).config({ name: "retrieve-order" })
 
+    releaseLockStep({
+      key: input.cart_id,
+    })
+    
     return new WorkflowResponse({
       order: orders[0],
       
@@ -1805,13 +1867,17 @@ The workflow receives the cart ID as input.
 
 In the workflow, you:
 
-1. Complete the cart using the [completeCartWorkflow](/references/medusa-workflows/completeCartWorkflow) as a step. This is Medusa's cart completion logic.
-2. Retrieve all line items in the cart using the [useQueryGraphStep](/references/helper-steps/useQueryGraphStep).
-3. Retrieve the IDs of the pre-order variants in the cart using the `retrievePreorderItemIdsStep`.
-4. Use [when-then](!docs!/learn/fundamentals/workflows/conditions) to check if there are pre-order items in the cart.
-    - If so, you create `Preorder` records for the pre-order items using the `createPreordersStep`.
-5. Retrieve the created order using the [useQueryGraphStep](/references/helper-steps/useQueryGraphStep).
-6. Return the created Medusa order.
+1. Acquire a lock on the cart using the [acquireLockStep](/references/medusa-workflows/steps/acquireLockStep) to prevent concurrent modifications.
+2. Complete the cart using the [completeCartWorkflow](/references/medusa-workflows/completeCartWorkflow) as a step. This is Medusa's cart completion logic.
+3. Retrieve existing pre-orders of the created order using the [useQueryGraphStep](/references/helper-steps/useQueryGraphStep).
+    - This is essential for idempotency, ensuring that pre-orders are not created multiple times if the workflow is retried.
+4. Retrieve all line items in the cart using the [useQueryGraphStep](/references/helper-steps/useQueryGraphStep).
+5. Retrieve the IDs of the pre-order variants in the cart using the `retrievePreorderItemIdsStep`.
+6. Use [when-then](!docs!/learn/fundamentals/workflows/conditions) to check if there are no existing pre-orders and if there are pre-order items in the cart.
+    - If the condition is met, you create `Preorder` records for the pre-order items using the `createPreordersStep`.
+7. Retrieve the created order using the [useQueryGraphStep](/references/helper-steps/useQueryGraphStep).
+8. Release the lock on the cart using the [releaseLockStep](/references/medusa-workflows/steps/releaseLockStep).
+9. Return the created Medusa order.
 
 ### b. Create Complete Pre-order Cart API Route
 
@@ -1867,7 +1933,7 @@ export const validateCartHookHighlights = [
   ["32", "variantsToAdd", "Retrieve the pre-order variants of the new items being added to the cart."],
   ["42", "cartHasPreorderVariants", "Check if the cart has pre-order variants."],
   ["48", "newItemsHavePreorderVariants", "Check if the new items being added have pre-order variants."],
-  ["55", "throw MedusaError", "Throw an error if the cart has mixed pre-order and available items."],
+  ["55", "MedusaError", "Throw an error if the cart has mixed pre-order and available items."],
 ]
 
 ```ts title="src/workflows/hooks/validate-cart.ts" highlights={validateCartHookHighlights}
@@ -2699,12 +2765,12 @@ The `updatePreordersStep` updates the details of pre-order records.
 Create the file `src/workflows/steps/update-preorders.ts` with the following content:
 
 export const updatePreordersHighlights = [
-  ["13", "preorders", "The pre-orders to update."],
-  ["16", "oldPreorders", "The pre-orders before the update."],
-  ["20", "updatedPreorders", "Update the pre-orders."],
-  ["24", "updatedPreorders", "Return the updated pre-orders."],
-  ["24", "oldPreorders", "Pass the old pre-orders to the compensation function."],
-  ["33", "updatePreorders", "Revert the pre-order updates if an error occurs during the workflow's execution."]
+  ["14", "preorders", "The pre-orders to update."],
+  ["17", "oldPreorders", "The pre-orders before the update."],
+  ["21", "updatedPreorders", "Update the pre-orders."],
+  ["25", "updatedPreorders", "Return the updated pre-orders."],
+  ["25", "oldPreorders", "Pass the old pre-orders to the compensation function."],
+  ["34", "updatePreorders", "Revert the pre-order updates if an error occurs during the workflow's execution."]
 ]
 
 ```ts title="src/workflows/steps/update-preorders.ts" highlights={updatePreordersHighlights}
@@ -2904,14 +2970,7 @@ export const retrieveItemsToFulfillStep = createStep(
 
 Then, update the workflow to the following:
 
-export const fulfillPreorderWorkflowHighlights2 = [
-  ["22"], ["23"], ["24"], ["25"], ["37"], ["55"], ["56"], ["57"], ["58"],
-  ["59"], ["60"], ["61"],  ["62"], ["63"], ["64"], ["65"], ["66"], ["67"], 
-  ["68"], ["69"], ["70"], ["71"], ["72"], ["73"], ["74"], ["75"], ["76"], 
-  ["77"], ["78"], ["79"], ["80"],
-]
-
-```ts title="src/workflows/fulfill-preorder.ts" highlights={fulfillPreorderWorkflowHighlights2}
+```ts title="src/workflows/fulfill-preorder.ts"
 import { InferTypeOf } from "@medusajs/framework/types"
 import { PreorderVariant } from "../modules/preorder/models/preorder-variant"
 import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
@@ -3075,7 +3134,7 @@ export const fulfillPreordersJobHighlights2 = [
   ["24", "available_date", "Retrieve only the pre-order variants available today."],
   ["43", "unfulfilledPreorders", "The unfulfilled pre-orders retrieved."],
   ["44", "preorderMetadata", "The pagination details of the pre-order query."],
-  ["66", "fulfillPreorderWorkflow.run", "Fulfill a pre-order of the variant."],
+  ["66", "fulfillPreorderWorkflow", "Fulfill a pre-order of the variant."],
 ]
 
 ```ts title="src/jobs/fulfill-preorders.ts" highlights={fulfillPreordersJobHighlights2}
@@ -3438,7 +3497,7 @@ export const orderCanceledHighlights = [
   ["14", "workflowInput", "Prepare the input to pass to the workflow."],
   ["24", "preorders", "Retrieve the pre-orders of the order."],
   ["41", "push", "Add the pre-orders to the workflow input."],
-  ["46", "cancelPreordersWorkflow.run", "Execute the cancel pre-orders workflow."],
+  ["46", "cancelPreordersWorkflow", "Execute the cancel pre-orders workflow."],
 ]
 
 ```ts title="src/subscribers/order-canceled.ts" highlights={orderCanceledHighlights}
@@ -3582,10 +3641,7 @@ Create the file `src/workflows/steps/retrieve-preorder-updates.ts` with the foll
 export const retrievePreorderUpdatesStepHighlights = [
   ["20", "preordersToCancel", "The pre-orders to cancel."],
   ["24", "preordersToCreate", "The pre-orders to create."],
-  ["20", "preorder_variant", "The pre-order variant associated with the item."],
-  ["32", "", "Find the new pre-order items."],
   ["44", "push", "Add the pre-order variant to the pre-orders to create."],
-  ["50", "", "Find the pre-order items that need to be canceled."],
   ["55", "push", "Add the pre-order to the pre-orders to cancel."],
 ]
 

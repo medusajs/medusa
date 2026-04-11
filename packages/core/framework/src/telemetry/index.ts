@@ -4,7 +4,7 @@ import {
   trace,
   context,
   propagation,
-} from "@opentelemetry/api"
+} from "../deps/opentelemetry-api"
 
 /**
  * Tracer creates an instrumentation scope within the application

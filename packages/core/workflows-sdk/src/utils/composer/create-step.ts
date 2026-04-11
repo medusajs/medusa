@@ -4,7 +4,13 @@ import {
   WorkflowStepHandler,
   WorkflowStepHandlerArguments,
 } from "@medusajs/orchestration"
-import { isDefined, isString, OrchestrationUtils } from "@medusajs/utils"
+import {
+  getCallerFilePath,
+  isDefined,
+  isString,
+  OrchestrationUtils,
+  registerDevServerResource,
+} from "@medusajs/utils"
 import { ulid } from "ulid"
 import { resolveValue, StepResponse } from "./helpers"
 import { createStepHandler } from "./helpers/create-step-handler"
@@ -158,6 +164,12 @@ export function applyStep<
         "createStep must be used inside a createWorkflow definition"
       )
     }
+
+    registerDevServerResource({
+      id: stepName,
+      type: "step",
+      workflowId: this.workflowId!,
+    })
 
     const handler = createAndConfigureHandler(
       this,
@@ -489,6 +501,13 @@ export function createStep<
 
   returnFn.__type = OrchestrationUtils.SymbolWorkflowStepBind
   returnFn.__step__ = stepName
+
+  const sourcePath = getCallerFilePath() as string
+  registerDevServerResource({
+    id: stepName,
+    type: "step",
+    sourcePath,
+  })
 
   return returnFn
 }

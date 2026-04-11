@@ -38,6 +38,7 @@ describe("Base property", () => {
           searchable: true,
         },
       },
+      defaultValue: undefined,
       nullable: false,
       computed: false,
       indexes: [],

@@ -770,6 +770,11 @@ export interface CartDTO {
   currency_code: string
 
   /**
+   * The locale code of the cart.
+   */
+  locale?: string
+
+  /**
    * The associated shipping address.
    *
    * @expandable
@@ -1089,6 +1094,11 @@ export interface FilterableCartProps
    * Filter the carts by their update date.
    */
   updated_at?: OperatorMap<string>
+
+  /**
+   * Filter the carts by their completion date.
+   */
+  completed_at?: OperatorMap<string>
 }
 
 /**

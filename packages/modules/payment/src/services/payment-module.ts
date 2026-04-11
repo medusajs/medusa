@@ -50,6 +50,7 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  normalizeCurrencyCode,
   PaymentCollectionStatus,
   PaymentSessionStatus,
   promiseAll,
@@ -208,7 +209,16 @@ export default class PaymentModuleService
     data: CreatePaymentCollectionDTO[],
     @MedusaContext() sharedContext?: Context
   ): Promise<InferEntityType<typeof PaymentCollection>[]> {
-    return await this.paymentCollectionService_.create(data, sharedContext)
+    const normalizedData = data.map((d) => ({
+      ...d,
+      currency_code: d.currency_code
+        ? normalizeCurrencyCode(d.currency_code)
+        : d.currency_code,
+    }))
+    return await this.paymentCollectionService_.create(
+      normalizedData,
+      sharedContext
+    )
   }
 
   // @ts-expect-error
@@ -239,6 +249,7 @@ export default class PaymentModuleService
         {
           id: idOrSelector,
           ...data,
+          currency_code: normalizeCurrencyCode(data.currency_code ?? ""),
         },
       ]
     } else {
@@ -251,6 +262,7 @@ export default class PaymentModuleService
       updateData = collections.map((c) => ({
         id: c.id,
         ...data,
+        currency_code: normalizeCurrencyCode(data.currency_code ?? ""),
       }))
     }
 
@@ -300,12 +312,23 @@ export default class PaymentModuleService
     @MedusaContext() sharedContext?: Context
   ): Promise<InferEntityType<typeof PaymentCollection>[]> {
     const input = Array.isArray(data) ? data : [data]
-    const forUpdate = input.filter(
-      (collection): collection is UpdatePaymentCollectionDTO => !!collection.id
-    )
-    const forCreate = input.filter(
-      (collection): collection is CreatePaymentCollectionDTO => !collection.id
-    )
+    const forUpdate = input
+      .filter(
+        (collection): collection is UpdatePaymentCollectionDTO =>
+          !!collection.id
+      )
+      .map((element) => ({
+        ...element,
+        currency_code: normalizeCurrencyCode(element.currency_code ?? ""),
+      }))
+    const forCreate = input
+      .filter(
+        (collection): collection is CreatePaymentCollectionDTO => !collection.id
+      )
+      .map((element) => ({
+        ...element,
+        currency_code: normalizeCurrencyCode(element.currency_code ?? ""),
+      }))
 
     const operations: Promise<InferEntityType<typeof PaymentCollection>[]>[] =
       []
@@ -383,7 +406,7 @@ export default class PaymentModuleService
           },
           data: { ...input.data, session_id: paymentSession!.id },
           amount: input.amount,
-          currency_code: input.currency_code,
+          currency_code: normalizeCurrencyCode(input.currency_code ?? ""),
         }
       )
 
@@ -426,7 +449,7 @@ export default class PaymentModuleService
         payment_collection_id: paymentCollectionId,
         provider_id: data.provider_id,
         amount: data.amount,
-        currency_code: data.currency_code,
+        currency_code: normalizeCurrencyCode(data.currency_code ?? ""),
         context: data.context,
         data: data.data,
         metadata: data.metadata,
@@ -454,7 +477,7 @@ export default class PaymentModuleService
       {
         data: data.data,
         amount: data.amount,
-        currency_code: data.currency_code,
+        currency_code: normalizeCurrencyCode(data.currency_code ?? ""),
         context: data.context,
       }
     )
@@ -463,7 +486,7 @@ export default class PaymentModuleService
       {
         id: session.id,
         amount: data.amount,
-        currency_code: data.currency_code,
+        currency_code: normalizeCurrencyCode(data.currency_code ?? ""),
         data: providerData.data,
         // Allow the caller to explicitly set the status (eg. due to a webhook), fallback to the update response, and finally to the existing status.
         status: data.status ?? providerData.status ?? session.status,
@@ -585,10 +608,10 @@ export default class PaymentModuleService
     status: PaymentSessionStatus,
     @MedusaContext() sharedContext?: Context
   ): Promise<InferEntityType<typeof Payment>> {
-    let autoCapture = false
+    let isCaptured = false
     if (status === PaymentSessionStatus.CAPTURED) {
       status = PaymentSessionStatus.AUTHORIZED
-      autoCapture = true
+      isCaptured = true
     }
 
     await this.paymentSessionService_.update(
@@ -608,7 +631,7 @@ export default class PaymentModuleService
     const payment = await this.paymentService_.create(
       {
         amount: session.amount,
-        currency_code: session.currency_code,
+        currency_code: normalizeCurrencyCode(session.currency_code ?? ""),
         payment_session: session.id,
         payment_collection_id: session.payment_collection_id,
         provider_id: session.provider_id,
@@ -617,9 +640,13 @@ export default class PaymentModuleService
       sharedContext
     )
 
-    if (autoCapture) {
+    if (isCaptured) {
       await this.capturePayment(
-        { payment_id: payment.id, amount: session.amount as BigNumberInput },
+        {
+          payment_id: payment.id,
+          amount: session.amount as BigNumberInput,
+          is_captured: isCaptured,
+        },
         sharedContext
       )
     }
@@ -646,8 +673,9 @@ export default class PaymentModuleService
     data: CreateCaptureDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PaymentDTO> {
+    let { is_captured, ...data_ } = data
     const payment = await this.paymentService_.retrieve(
-      data.payment_id,
+      data_.payment_id,
       {
         select: [
           "id",
@@ -665,8 +693,14 @@ export default class PaymentModuleService
       sharedContext
     )
 
+    let isCaptured = is_captured
+    if (!isCaptured) {
+      const isAutoCaptured = !!payment?.captured_at
+      isCaptured = isAutoCaptured
+    }
+
     const { isFullyCaptured, capture } = await this.capturePayment_(
-      data,
+      data_,
       payment,
       sharedContext
     )
@@ -675,7 +709,7 @@ export default class PaymentModuleService
       await this.capturePaymentFromProvider_(
         payment,
         capture,
-        isFullyCaptured,
+        { isFullyCaptured, isCaptured },
         sharedContext
       )
     } catch (error) {
@@ -763,27 +797,44 @@ export default class PaymentModuleService
   protected async capturePaymentFromProvider_(
     payment: InferEntityType<typeof Payment>,
     capture: InferEntityType<typeof Capture> | undefined,
-    isFullyCaptured: boolean,
+    options: {
+      isFullyCaptured?: boolean
+      isCaptured?: boolean
+    } = {},
     @MedusaContext() sharedContext: Context = {}
   ) {
-    const paymentData = await this.paymentProviderService_.capturePayment(
-      payment.provider_id,
-      {
-        data: payment.data!,
-        context: {
-          idempotency_key: capture?.id,
-        },
-      }
-    )
+    if (!options.isCaptured) {
+      const paymentData = await this.paymentProviderService_.capturePayment(
+        payment.provider_id,
+        {
+          data: payment.data!,
+          context: {
+            idempotency_key: capture?.id,
+          },
+        }
+      )
 
-    await this.paymentService_.update(
-      {
-        id: payment.id,
-        data: paymentData.data,
-        captured_at: isFullyCaptured ? new Date() : undefined,
-      },
-      sharedContext
-    )
+      await this.paymentService_.update(
+        {
+          id: payment.id,
+          data: paymentData.data,
+          captured_at: options.isFullyCaptured ? new Date() : undefined,
+        },
+        sharedContext
+      )
+    } else if (options.isFullyCaptured && !payment.captured_at) {
+      /**
+       * In the case of auto capture, we need to update the payment to set the captured_at date
+       * only if fully captured.
+       */
+      await this.paymentService_.update(
+        {
+          id: payment.id,
+          captured_at: new Date(),
+        },
+        sharedContext
+      )
+    }
 
     return payment
   }

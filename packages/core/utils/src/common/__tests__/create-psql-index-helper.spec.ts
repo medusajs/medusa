@@ -37,7 +37,7 @@ describe("createPsqlIndexStatementHelper", function () {
     expect(indexStatement.expression).toEqual(
       `CREATE INDEX IF NOT EXISTS "${options.name}" ON "${
         options.tableName
-      }" (${options.columns.join(", ")})`
+      }" (${options.columns.map((column) => `"${column}"`).join(", ")})`
     )
   })
 
@@ -53,7 +53,9 @@ describe("createPsqlIndexStatementHelper", function () {
     expect(indexStatement.expression).toEqual(
       `CREATE INDEX IF NOT EXISTS "${options.name}" ON "${
         options.tableName
-      }" (${options.columns.join(", ")}) WHERE ${options.where}`
+      }" (${options.columns.map((column) => `"${column}"`).join(", ")}) WHERE ${
+        options.where
+      }`
     )
   })
 
@@ -70,7 +72,9 @@ describe("createPsqlIndexStatementHelper", function () {
     expect(indexStatement.toString()).toEqual(
       `CREATE INDEX IF NOT EXISTS "${options.name}" ON "${
         options.tableName
-      }" USING GIN (${options.columns.join(", ")}) WHERE ${options.where}`
+      }" USING GIN (${options.columns
+        .map((column) => `"${column}"`)
+        .join(", ")}) WHERE ${options.where}`
     )
   })
 
@@ -86,7 +90,9 @@ describe("createPsqlIndexStatementHelper", function () {
     expect(indexStatement.expression).toEqual(
       `CREATE UNIQUE INDEX IF NOT EXISTS "IDX_table_name_column_name_1_column_name_2_unique" ON "${
         options.tableName
-      }" (${options.columns.join(", ")}) WHERE ${options.where}`
+      }" (${options.columns.map((column) => `"${column}"`).join(", ")}) WHERE ${
+        options.where
+      }`
     )
   })
 

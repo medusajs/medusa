@@ -33,3 +33,10 @@ export type FulfillmentModuleOptions =
       options?: Record<string, unknown>
     }[]
   }
+
+declare module "@medusajs/types" {
+  interface ModuleOptions {
+    "@medusajs/fulfillment": FulfillmentModuleOptions
+    "@medusajs/medusa/fulfillment": FulfillmentModuleOptions
+  }
+}

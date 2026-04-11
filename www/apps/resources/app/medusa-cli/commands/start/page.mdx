@@ -13,7 +13,7 @@ export const metadata = {
 
 Start the Medusa application in production.
 
-```bash
+```bash npx2yarn
 npx medusa start
 ```
 
@@ -96,7 +96,7 @@ Medusa supports starting the Node.js server in [cluster mode](https://expressjs.
 
 Cluster mode is disabled by default. To enable it, pass the `--cluster` option when starting Medusa:
 
-```bash
+```bash npx2yarn
 npx medusa start --cluster
 ```
 
@@ -106,7 +106,7 @@ When the `--cluster` option is passed without a number or percentage value, Medu
 
 You can specify the number or percentage of CPU cores to be used by passing a number or percentage value to the `--cluster` option:
 
-```bash
+```bash npx2yarn
 npx medusa start --cluster 2       # Use 2 CPU cores
 npx medusa start --cluster 50%      # Use 50% of available CPU
 ```
@@ -115,7 +115,7 @@ npx medusa start --cluster 50%      # Use 50% of available CPU
 
 When running Medusa in cluster mode, you can specify the number or percentage of instances that are [servers or workers](!docs!/learn/production/worker-mode) by passing the `--servers` and `--workers` options:
 
-```bash
+```bash npx2yarn
 npx medusa start --cluster 4 --servers 25% --workers 75% # Use 4 CPU cores, with 25% as servers and 75% as workers
 npx medusa start --cluster 4 --servers 1 --workers 3       # Use 4 CPU cores, with 1 as server and 3 as workers
 npx medusa start --cluster 4 --servers 1 --workers 1      # Use 4 CPU cores, with 1 as server and 1 as worker (the remaining 2 will run in shared mode)

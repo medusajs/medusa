@@ -5,15 +5,14 @@ import {
   Query,
 } from "@medusajs/framework"
 import { ApiLoader } from "@medusajs/framework/http"
+import { SpanStatusCode } from "@medusajs/framework/opentelemetry/api"
+import type { NodeSDKConfiguration } from "@medusajs/framework/opentelemetry/sdk-node"
+import type { SpanExporter } from "@medusajs/framework/opentelemetry/sdk-trace-node"
 import { TransactionOrchestrator } from "@medusajs/framework/orchestration"
 import { Tracer } from "@medusajs/framework/telemetry"
-import { FeatureFlag } from "@medusajs/framework/utils"
-import { SpanStatusCode } from "@opentelemetry/api"
-import type { NodeSDKConfiguration } from "@opentelemetry/sdk-node"
-import type { SpanExporter } from "@opentelemetry/sdk-trace-node"
-import { snakeCase } from "lodash"
-import CacheModule from "../modules/caching"
 import { ICachingModuleService } from "@medusajs/framework/types"
+import { camelToSnakeCase, FeatureFlag } from "@medusajs/framework/utils"
+import CacheModule from "../modules/caching"
 
 const EXCLUDED_RESOURCES = [".vite", "virtual:"]
 
@@ -30,7 +29,6 @@ function shouldExcludeResource(resource: string) {
 export function instrumentHttpLayer() {
   const startCommand = require("../commands/start")
   const HTTPTracer = new Tracer("@medusajs/http", "2.0.0")
-  const { SpanStatusCode } = require("@opentelemetry/api")
 
   startCommand.traceRequestHandler = async (
     requestHandler,
@@ -110,7 +108,7 @@ export function instrumentHttpLayer() {
       }
 
       const traceName = `middleware: ${
-        handler.name ? snakeCase(handler.name) : `anonymous`
+        handler.name ? camelToSnakeCase(handler.name) : `anonymous`
       }`
 
       await HTTPTracer.trace(traceName, async (span) => {
@@ -135,7 +133,6 @@ export function instrumentHttpLayer() {
  */
 export function instrumentRemoteQuery() {
   const QueryTracer = new Tracer("@medusajs/query", "2.0.0")
-  const { SpanStatusCode } = require("@opentelemetry/api")
 
   Query.instrument.graphQuery(async function (queryFn, queryOptions) {
     return await QueryTracer.trace(
@@ -198,7 +195,7 @@ export function instrumentRemoteQuery() {
     options
   ) {
     return await QueryTracer.trace(
-      `${snakeCase(serviceName)}.${snakeCase(method)}`,
+      `${camelToSnakeCase(serviceName)}.${camelToSnakeCase(method)}`,
       async (span) => {
         span.setAttributes({
           "fetch.select": options.select,
@@ -235,7 +232,7 @@ export function instrumentWorkflows() {
     metadata
   ) => {
     return await WorkflowsTracer.trace(
-      `workflow:${snakeCase(metadata.model_id)}`,
+      `workflow:${camelToSnakeCase(metadata.model_id)}`,
       async function (span) {
         span.setAttribute("workflow.transaction_id", metadata.transaction_id)
 
@@ -252,7 +249,7 @@ export function instrumentWorkflows() {
 
   TransactionOrchestrator.traceStep = async (stepHandler, metadata) => {
     return await WorkflowsTracer.trace(
-      `step:${snakeCase(metadata.action)}:${metadata.type}`,
+      `step:${camelToSnakeCase(metadata.action)}:${metadata.type}`,
       async function (span) {
         Object.entries(metadata).forEach(([key, value]) => {
           span.setAttribute(`workflow.step.${key}`, value)
@@ -410,12 +407,16 @@ export function registerOtel(
   const {
     Resource,
     resourceFromAttributes,
-  } = require("@opentelemetry/resources")
-  const { NodeSDK } = require("@opentelemetry/sdk-node")
-  const { SimpleSpanProcessor } = require("@opentelemetry/sdk-trace-node")
+  } = require("@medusajs/framework/opentelemetry/resources")
+  const { NodeSDK } = require("@medusajs/framework/opentelemetry/sdk-node")
+  const {
+    SimpleSpanProcessor,
+  } = require("@medusajs/framework/opentelemetry/sdk-trace-node")
 
   if (instrument.db) {
-    const { PgInstrumentation } = require("@opentelemetry/instrumentation-pg")
+    const {
+      PgInstrumentation,
+    } = require("@medusajs/framework/opentelemetry/instrumentation-pg")
     instrumentations.push(new PgInstrumentation())
   }
   if (instrument.http) {

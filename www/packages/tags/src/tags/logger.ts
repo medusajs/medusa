@@ -32,6 +32,10 @@ export const logger = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/transferCartCustomerWorkflow"
   },
   {
+    "title": "updateCartPromotionsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateCartPromotionsWorkflow"
+  },
+  {
     "title": "updateCartWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateCartWorkflow"
   },

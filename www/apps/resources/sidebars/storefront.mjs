@@ -15,12 +15,17 @@ export const storefrontDevelopmentSidebar = [
       {
         type: "link",
         path: "/storefront-development/tips",
-        title: "Tips",
+        title: "Connect to Medusa",
       },
       {
         type: "link",
         path: "/storefront-development/publishable-api-keys",
         title: "Publishable API Key",
+      },
+      {
+        type: "link",
+        path: "/storefront-development/localization",
+        title: "Localization",
       },
       {
         type: "link",
@@ -36,14 +41,19 @@ export const storefrontDevelopmentSidebar = [
       "The following tutorials guide you to build a storefront for different kinds of use cases.",
     children: [
       {
+        type: "ref",
+        path: "/nextjs-starter/guides/storefront-returns",
+        title: "Create Returns from Storefront",
+      },
+      {
         type: "link",
         path: "/storefront-development/guides/express-checkout",
         title: "Express Checkout Storefront",
       },
       {
-        type: "ref",
-        path: "/nextjs-starter/guides/storefront-returns",
-        title: "Create Returns from Storefront",
+        type: "link",
+        path: "/storefront-development/guides/react-native-expo",
+        title: "Mobile App with React Native and Expo",
       },
     ],
   },

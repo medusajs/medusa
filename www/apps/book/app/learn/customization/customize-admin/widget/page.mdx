@@ -48,13 +48,13 @@ You initialize the SDK passing it the following options:
 - `debug`: Whether to enable logging debug messages. This should only be enabled in development.
 - `auth.type`: The authentication method used in the client application, which is `session` in the Medusa Admin dashboard.
 
-Notice that you use `import.meta.env` to access environment variables in your customizations because the Medusa Admin is built on top of Vite. Learn more in [this chapter](../../../fundamentals/admin/environment-variables/page.mdx).
+Notice that you use `import.meta.env` to access environment variables in your customizations because the Medusa Admin is built on top of Vite. Learn more in the [Admin Environment Variables](../../../fundamentals/admin/environment-variables/page.mdx) chapter.
 
 You can now use the SDK to send requests to the Medusa server.
 
 <Note>
 
-Learn more about the JS SDK and its options in [this reference](!resources!/js-sdk).
+Refer to the [JS SDK Reference](!resources!/js-sdk) to learn more about the it, its options, and how to use it to send requests to Medusa's API routes.
 
 </Note>
 
@@ -62,13 +62,7 @@ Learn more about the JS SDK and its options in [this reference](!resources!/js-s
 
 ## 2. Add Widget to Product Details Page
 
-You'll now add a widget to the product-details page. A widget is a React component that's injected into pre-defined zones in the Medusa Admin dashboard. It's created in a `.tsx` file under the `src/admin/widgets` directory.
-
-<Note>
-
-Learn more about widgets in [this documentation](../../../fundamentals/admin/widgets/page.mdx).
-
-</Note>
+You'll now add a widget to the product-details page. A [widget](../../../fundamentals/admin/widgets/page.mdx) is a React component that's injected into pre-defined zones in the Medusa Admin dashboard. It's created in a `.tsx` file under the `src/admin/widgets` directory.
 
 To create a widget that shows a product's brand in its details page, create the file `src/admin/widgets/product-brand.tsx` with the following content:
 

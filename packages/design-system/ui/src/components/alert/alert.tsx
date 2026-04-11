@@ -60,7 +60,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       <div
         ref={ref}
         className={clx(
-          "bg-ui-bg-subtle text-pretty txt-compact-small grid items-start gap-x-2 rounded-lg border p-3",
+          "bg-ui-bg-subtle txt-compact-small grid items-start gap-x-2 text-pretty rounded-lg border p-3",
           {
             "grid-cols-[20px_1fr]": !dismissible,
             "grid-cols-[20px_1fr_20px]": dismissible,
@@ -77,7 +77,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             "text-ui-tag-neutral-icon": variant === "info",
           })}
         />
-        <div>{children}</div>
+        <div className="w-full">{children}</div>
         {dismissible && (
           <IconButton
             size="2xsmall"

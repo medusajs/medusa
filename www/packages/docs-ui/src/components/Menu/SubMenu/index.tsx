@@ -21,6 +21,7 @@ export const MenuSubMenu = ({ item, itemsOnClick }: MenuSubMenuProps) => {
       className="px-docs_0.25 relative"
       onMouseOver={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
+      data-testid="sub-menu-wrapper"
     >
       <Component
         className={clsx(

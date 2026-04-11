@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { useColorMode } from "../../../../providers"
+import { useColorMode } from "../../../../providers/ColorMode"
 import clsx from "clsx"
 import { EllipseMiniSolid } from "@medusajs/icons"
 
@@ -30,9 +30,11 @@ export const MainNavThemeMenu = () => {
           )}
           tabIndex={-1}
           onClick={() => setColorMode("light")}
+          data-testid="light-option"
         >
           <EllipseMiniSolid
             className={clsx(colorMode !== "light" && "invisible")}
+            data-testid="ellipse-icon"
           />
           <span
             className={clsx(
@@ -54,9 +56,11 @@ export const MainNavThemeMenu = () => {
           )}
           tabIndex={-1}
           onClick={() => setColorMode("dark")}
+          data-testid="dark-option"
         >
           <EllipseMiniSolid
             className={clsx(colorMode !== "dark" && "invisible")}
+            data-testid="ellipse-icon"
           />
           <span
             className={clsx(

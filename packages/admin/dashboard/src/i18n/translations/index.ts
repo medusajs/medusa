@@ -10,6 +10,7 @@ import it from "./it.json"
 import ja from "./ja.json"
 import pl from "./pl.json"
 import ptBR from "./ptBR.json"
+import ptPT from "./ptPT.json"
 import th from "./th.json"
 import tr from "./tr.json"
 import uk from "./uk.json"
@@ -27,6 +28,7 @@ import ko from "./ko.json"
 import nl from "./nl.json"
 import bs from "./bs.json"
 import id from "./id.json"
+import zhTW from "./zhTW.json"
 export default {
   bs: {
     translation: bs,
@@ -66,6 +68,9 @@ export default {
   },
   ptBR: {
     translation: ptBR,
+  },
+  ptPT: {
+    translation: ptPT,
   },
   th: {
     translation: th,
@@ -114,5 +119,8 @@ export default {
   },
   id: {
     translation: id,
+  },
+  zhTW: {
+    translation: zhTW,
   },
 }

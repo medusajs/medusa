@@ -1,18 +1,26 @@
-You may get the following error while running `medusa new`:
+When installing or running Medusa, you may get errors while Medusa tries to connect to your PostgreSQL database.
+
+For example, you may get one of the following errors:
 
 ```bash
+Error: connect ECONNREFUSED ::1:5432
 Error: SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string
 ```
 
-If the error occurs while running `medusa new` and you've selected to enter your database credentials, either:
+### Error During Installation
 
-1. Make sure your database credentials are correct;
-2. Or choose the Skip option to skip entering your database credentials.
+If the connectivity error occurs while running `create-medusa-app`, it means you passed incorrect database credentials when prompted during the installation. Make sure that:
 
-If the error occurs while running integration tests, make sure the following variable is set in your system's environment variable:
+1. PostgreSQL is installed and running on your machine;
+2. Your PostgreSQL server is configured at `localhost:5432` (the default host and port); If not, you can pass the `--db-url <url>` flag to the `create-medusa-app` command to specify a custom database URL;
+3. You're passing correct username and password for your PostgreSQL database;
+4. You're using a user that has privileges to create new databases;
+5. You're passing correct database name for your PostgreSQL user. It should have the same name as your PostgreSQL user by default.
 
-```bash
-DB_HOST=<YOUR_DB_HOST>
-DB_USERNAME=<YOUR_DB_USERNAME>
-DB_PASSWORD=<YOUR_PASSWORD>
-```
+### Error During Development
+
+If the error occurs while running integration tests, make sure that:
+
+1. The `DATABASE_URL` environment variable is set correctly in your `.env` file;
+2. The [projectConfig.databaseUrl](!docs!/learn/configurations/medusa-config#databaseurl) field in your `medusa-config.js` file is set to the `DATABASE_URL` environment variable;
+3. The database URL is using correct username and password, and points to a running PostgreSQL database instance.

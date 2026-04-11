@@ -4,7 +4,7 @@
  * summary: Refresh Authentication Token
  * description: Refresh the authentication token of a customer. This is useful after authenticating a customer with a third-party service to ensure the token holds the new user's details, or when you don't want customers to re-login every day.
  * externalDocs:
- *   url: https://docs.medusajs.com/v2/storefront-development/customers/third-party-login
+ *   url: https://docs.medusajs.com/resources/storefront-development/customers/third-party-login
  *   description: "Storefront development: Implement third-party (social) login."
  * x-authenticated: true
  * x-codeSamples:

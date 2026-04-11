@@ -28,13 +28,9 @@ The Index Module solves this problem by ingesting data into a central data store
 
 ### Ingested Data Models
 
-All core data models in Medusa are ingested, including `Product`, `Price`, `SalesChannel`, and more. You can also index custom data models if they are linked to an ingested data model. You'll learn more about this in the [Ingest Custom Data Models](#how-to-ingest-custom-data-models) section.
+By default, Medusa only ingests the `Product`, `ProductVariant`, `Price`, `PriceSet`, and `SalesChannel` data models into the Index Module's data store.
 
-<Note>
-
-Prior to [Medusa v2.10.2](https://github.com/medusajs/medusa/releases/tag/v2.10.2), only the `Product`, `ProductVariant`, `Price`, and `SalesChannel` data models were ingested. Make sure to update to the latest version to ingest all core data models.
-
-</Note>
+You can also ingest custom data models into the Index Module, as explained in the [How to Ingest Custom Data Models](#how-to-ingest-custom-data-models) section. Medusa will then ingest the custom and core data models into the Index Module's data store.
 
 ---
 
@@ -62,13 +58,13 @@ module.exports = defineConfig({
 
 Finally, run the migrations to create the necessary tables for the Index Module in your database:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
 ### Ingest Data
 
-The Index Module only ingests data when you start your Medusa server. So, to ingest the [currently supported data models](#ingested-data-models), start the Medusa application:
+The Index Module only ingests data when you start your Medusa server. So, to [ingest data models](#ingested-data-models), start the Medusa application:
 
 ```bash npm2yarn
 npm run dev
@@ -177,7 +173,7 @@ The `index` method accepts an object with the same properties as the `graph` met
 
 ## How to Ingest Custom Data Models
 
-Aside from the [core data models](#ingested-data-models), you can also ingest your own custom data models into the Index Module. You can do so by defining a link between your custom data model and one of the core data models, and setting the `filterable` property in the link definition.
+You can ingest core and custom data models into the Index Module by defining a link between them and setting the `filterable` property in the link definition.
 
 <Note>
 
@@ -185,7 +181,7 @@ Read-only links are not supported by the Index Module.
 
 </Note>
 
-For example, assuming you have a Brand Module with a Brand data model (as explained in the [Customizations](../../../customization/custom-features/module/page.mdx)), you can ingest it into the Index Module using the `filterable` property in its link definition to the Product data model:
+For example, assuming you have a Brand Module with a Brand data model (as explained in the [Customizations](../../../customization/custom-features/module/page.mdx)), you can ingest it into the Index Module using the `filterable` property in its link definition to the `Product` data model:
 
 export const filterableHighlights = [
   ["12", "filterable", "Ingest Brand by setting its filterable properties."]
@@ -210,10 +206,15 @@ export default defineLink(
 
 The `filterable` property is an array of property names in the data model that can be filtered using the `index` method. When the `filterable` property is set, the Index Module will ingest into its data store the custom data model.
 
-But first, you must run the migrations to sync the link, then start the Medusa application:
+But first, you must run the migrations to sync the link:
+
+```bash npx2yarn
+npx medusa db:migrate
+```
+
+Then, start the Medusa application:
 
 ```bash npm2yarn
-npx medusa db:migrate
 npm run dev
 ```
 
@@ -840,3 +841,38 @@ export const retrieveBrandsWorkflow = createWorkflow(
 ```
 
 This will retrieve all brands that are linked to at least one product.
+
+### Retrieve Localized Data
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.12.4 or later",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.12.4"
+    },
+    {
+      text: "Translation Module Configured",
+      link: "!resources!/commerce-modules/translation#configure-translation-module",
+    },
+  ]}
+/>
+
+To retrieve localized data for data models that have translations, pass a `locale` property in the second parameter object of the `query.index` method.
+
+```ts highlights={[["7", "locale", "Pass the locale to retrieve localized data."]]}
+const { data: products } = await query.index(
+  {
+    entity: "product",
+    fields: ["id", "title", "description"],
+  },
+  {
+    locale: "fr-FR",
+  }
+)
+```
+
+The `locale` property is a string representing the locale code following the [IETF BCP 47 standard](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1).
+
+The returned products will have their `title` and `description` properties in French (`fr-FR`), if translations are available.
+
+Learn more in the [Translation Module](!resources!/commerce-modules/translation) documentation.

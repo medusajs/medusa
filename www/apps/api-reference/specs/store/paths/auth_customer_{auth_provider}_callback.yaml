@@ -16,7 +16,7 @@ post:
     in the request's Authorization header.
   externalDocs:
     url: >-
-      https://docs.medusajs.com/v2/storefront-development/customers/third-party-login
+      https://docs.medusajs.com/resources/storefront-development/customers/third-party-login
     description: 'Storefront development: Implement third-party (social) login.'
   x-authenticated: false
   parameters:

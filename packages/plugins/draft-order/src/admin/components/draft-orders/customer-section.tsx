@@ -134,7 +134,7 @@ const Contact = ({ order }: CustomerSectionProps) => {
             </Text>
 
             <div className="flex justify-end">
-              <Copy content={email} className="text-ui-fg-muted" />
+              <Copy content={phone} className="text-ui-fg-muted" />
             </div>
           </div>
         )}

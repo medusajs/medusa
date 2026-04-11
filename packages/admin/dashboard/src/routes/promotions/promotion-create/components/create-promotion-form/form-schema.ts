@@ -28,6 +28,7 @@ export const CreatePromotionSchema = z
     status: z.enum(["draft", "active", "inactive"]),
     rules: RuleSchema,
     is_tax_inclusive: z.boolean().optional(),
+    limit: z.number().int().min(1).nullable().optional(),
     application_method: z.object({
       allocation: z.enum(["each", "across", "once"]),
       value: z.number().min(0).or(z.string().min(1)),

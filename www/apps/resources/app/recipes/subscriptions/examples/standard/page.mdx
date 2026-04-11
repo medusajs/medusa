@@ -71,7 +71,7 @@ This guide provides an example of an approach to implement subscriptions. You're
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -393,7 +393,7 @@ This defines a list link to the `Order` data model since a subscription has mult
 
 To create a table for the `Subscription` data model in the database, start by generating the migrations for the Subscription Module with the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate subscriptionModuleService
 ```
 
@@ -401,7 +401,7 @@ This generates a migration in the `src/modules/subscriptions/migrations` directo
 
 Then, to reflect the migration and links in the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -722,16 +722,23 @@ The compensation function receives the subscription as a parameter. It cancels t
 Create the file `src/workflows/create-subscription/index.ts` with the following content:
 
 export const createSubscriptionWorkflowHighlights = [
-  ["26", "completeCartWorkflow", "Complete the cart and create the order."],
-  ["32", "useQueryGraphStep", "Retrieve the order's details."],
-  ["87", "createSubscriptionStep", "Create the subscription."],
-  ["94", "createRemoteLinkStep", "Create the links returned by the previous step."]
+  ["29", "acquireLockStep", "Acquire a lock on the cart to prevent race conditions."],
+  ["34", "completeCartWorkflow", "Complete the cart and create the order."],
+  ["40", "useQueryGraphStep", "Retrieve the order's details."],
+  ["95", "useQueryGraphStep", "Retrieve any existing subscription links for the order."],
+  ["101", "when", "Check if a subscription already exists for the order."],
+  ["108", "createSubscriptionStep", "Create the subscription."],
+  ["115", "createRemoteLinkStep", "Create the links returned by the previous step."],
+  ["120", "releaseLockStep", "Release the lock on the cart."]
 ]
 
 ```ts title="src/workflows/create-subscription/index.ts" highlights={createSubscriptionWorkflowHighlights} collapsibleLines="1-13" expandMoreLabel="Show Imports"
 import { 
   createWorkflow,
   WorkflowResponse,
+  useQueryGraphStep,
+  acquireLockStep,
+  releaseLockStep,
 } from "@medusajs/framework/workflows-sdk"
 import { 
   createRemoteLinkStep,
@@ -754,6 +761,11 @@ type WorkflowInput = {
 const createSubscriptionWorkflow = createWorkflow(
   "create-subscription",
   (input: WorkflowInput) => {
+    acquireLockStep({
+      key: input.cart_id,
+      timeout: 2,
+      ttl: 10,
+    })
     const { id } = completeCartWorkflow.runAsStep({
       input: {
         id: input.cart_id,
@@ -815,14 +827,34 @@ const createSubscriptionWorkflow = createWorkflow(
       },
     })
 
-    const { subscription, linkDefs } = createSubscriptionStep({
-      cart_id: input.cart_id,
-      order_id: orders[0].id,
-      customer_id: orders[0].customer_id!,
-      subscription_data: input.subscription_data,
+    const { data: existingLinks } = useQueryGraphStep({
+      entity: subscriptionOrderLink.entryPoint,
+      fields: ["subscription.id"],
+      filters: { order_id: orders[0].id },
+    }).config({ name: "retrieve-existing-links" })
+
+    const subscription = when(
+      "create-subscription-condition",
+      { existingLinks },
+      (data) => data.existingLinks.length === 0
+    )
+    .then(() => {
+
+      const { subscription, linkDefs } = createSubscriptionStep({
+        cart_id: input.cart_id,
+        order_id: orders[0].id,
+        customer_id: orders[0].customer_id!,
+        subscription_data: input.subscription_data,
+      })
+  
+      createRemoteLinkStep(linkDefs)
+
+      return subscription
     })
 
-    createRemoteLinkStep(linkDefs)
+    releaseLockStep({
+      key: input.cart_id,
+    })
 
     return new WorkflowResponse({
       subscription: subscription,
@@ -836,10 +868,14 @@ export default createSubscriptionWorkflow
 
 This workflow accepts the cart’s ID, along with the subscription details. It executes the following steps:
 
-1. `completeCartWorkflow` from `@medusajs/medusa/core-flows` that completes a cart and creates an order.
-2. `useQueryGraphStep` from `@medusajs/medusa/core-flows` to retrieve the order's details. [Query](!docs!/learn/fundamentals/module-links/query) is a tool that allows you to retrieve data across modules.
-3. `createSubscriptionStep`, which is the step you created previously.
-4. `createRemoteLinkStep` from `@medusajs/medusa/core-flows`, which accepts links to create. These links are in the `linkDefs` array returned by the previous step.
+1. [acquireLockStep](/references/medusa-workflows/steps/acquireLockStep) to acquire a lock on the cart to prevent race conditions.
+2. [completeCartWorkflow](/references/medusa-workflows/completeCartWorkflow) that completes a cart and creates an order.
+3. [useQueryGraphStep](/references/helper-steps/useQueryGraphStep) to retrieve the order's details. [Query](!docs!/learn/fundamentals/module-links/query) is a tool that allows you to retrieve data across modules.
+4. [useQueryGraphStep](/references/helper-steps/useQueryGraphStep) again to check if a subscription already exists for the order. This is necessary to ensure idempotency in case the workflow is retried.
+5. Use `when` to check if a subscription already exists for the order. If not, it executes the next steps:
+    1. `createSubscriptionStep`, which is the step you created previously.
+    2. `createRemoteLinkStep` which accepts links to create. These links are in the `linkDefs` array returned by the previous step.
+6. [releaseLockStep](/references/medusa-workflows/steps/releaseLockStep) to release the lock on the cart.
 
 The workflow returns the created subscription and order.
 
@@ -918,7 +954,7 @@ export const POST = async (
 
   res.json({
     type: "order",
-    ...result,
+    order: result.order,
   })
 }
 ```
@@ -927,7 +963,7 @@ Since the file exports a `POST` function, you're exposing a `POST` API route at 
 
 In the route handler function, you retrieve the cart to access it's `metadata` property. If the subscription details aren't stored there, you throw an error.
 
-Then, you use the `createSubscriptionWorkflow` you created to create the order, and return the created order and subscription in the response.
+Then, you use the `createSubscriptionWorkflow` you created to create the order, and return the created order in the response.
 
 In the next step, you'll customize the Next.js Starter Storefront, allowing you to test out the subscription feature.
 
@@ -965,6 +1001,7 @@ In this step, you'll customize the checkout flow in the [Next.js Starter storefr
 
 1. Add a subscription step to the checkout flow.
 2. Pass the additional data that Stripe requires to later capture the payment when the subscription renews, as explained in the [Payment Flow Overview](#intermission-payment-flow-overview).
+3. Change the complete cart action to use the custom API route you created in the previous step.
 
 ### Add Subscription Step
 
@@ -1198,6 +1235,30 @@ await initiatePaymentSession(cart, {
 If you're integrating with a custom payment provider, you can instead pass the required data for that provider in the `data` object.
 
 The payment method can now be used later to capture the payment when the subscription renews.
+
+### Change Complete Cart Action
+
+Finally, you need to change the complete cart action to use the custom API route you created in the previous step.
+
+In `src/lib/data/cart.ts`, find the `placeOrder` function and change the `await sdk.store.cart.complete` call to the following:
+
+```ts title="src/lib/data/cart.ts" badgeLabel="Storefront" badgeColor="orange"
+const cartRes = await sdk.client.fetch<{
+  type: "cart"
+  cart: HttpTypes.StoreCart
+} | {
+  type: "order"
+  order: HttpTypes.StoreOrder
+}>(
+  `/store/carts/${id}/subscribe`,
+  {
+    method: "POST",
+    headers,
+  }
+)
+```
+
+You change the request to send a `POST` request to the `/store/carts/[id]/subscribe` endpoint you created earlier. You can keep the rest of the `placeOrder` function as is.
 
 ### Test Cart Completion and Subscription Creation
 

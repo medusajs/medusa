@@ -1,10 +1,14 @@
 import type { WebhookActionResult } from "@medusajs/framework/types"
 import { PaymentActions } from "@medusajs/utils"
-import { createWorkflow, when } from "@medusajs/workflows-sdk"
+import { createWorkflow, transform, when } from "@medusajs/workflows-sdk"
 import { useQueryGraphStep } from "../../common"
 import { authorizePaymentSessionStep } from "../steps"
 import { completeCartAfterPaymentStep } from "../steps/complete-cart-after-payment"
 import { capturePaymentWorkflow } from "./capture-payment"
+import { acquireLockStep, releaseLockStep } from "../../locking"
+
+const THIRTY_SECONDS = 30
+const TWO_MINUTES = 60 * 2
 
 /**
  * The data to process a payment from a webhook action.
@@ -64,6 +68,36 @@ export const processPaymentWorkflow = createWorkflow(
       },
     }).config({
       name: "cart-payment-query",
+    })
+
+    const cartId = transform(
+      { cartPaymentCollection },
+      ({ cartPaymentCollection }) => {
+        return cartPaymentCollection.data[0]?.cart_id
+      }
+    )
+
+    const { data: order } = useQueryGraphStep({
+        entity: "order_cart",
+        fields: ["id"],
+        filters: {
+          cart_id: cartId
+        },
+        options: {
+            isList: false
+        }
+      }).config({
+        name: "cart-order-query",
+      })
+
+    when("lock-cart-when-available", { cartId }, ({ cartId }) => {
+      return !!cartId
+    }).then(() => {
+      acquireLockStep({
+        key: cartId,
+        timeout: THIRTY_SECONDS,
+        ttl: TWO_MINUTES,
+      })
     })
 
     when({ input, paymentData }, ({ input, paymentData }) => {
@@ -128,8 +162,17 @@ export const processPaymentWorkflow = createWorkflow(
       })
     })
 
-    when({ cartPaymentCollection }, ({ cartPaymentCollection }) => {
-      return !!cartPaymentCollection.data.length
+    // We release before the completion to prevent dead locks
+    when("release-lock-cart-when-available", { cartId }, ({ cartId }) => {
+      return !!cartId
+    }).then(() => {
+      releaseLockStep({
+        key: cartId,
+      })
+    })
+
+    when({ cartPaymentCollection, order }, ({ cartPaymentCollection, order }) => {
+      return !!cartPaymentCollection.data.length && !order
     }).then(() => {
       completeCartAfterPaymentStep({
         cart_id: cartPaymentCollection.data[0].cart_id,

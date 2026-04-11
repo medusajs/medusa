@@ -75,6 +75,7 @@ async function getProductsWithIndexEngine(
       cache: {
         enable: true,
       },
+      locale: req.locale,
     }
   )
 
@@ -86,6 +87,7 @@ async function getProductsWithIndexEngine(
   }
 
   await wrapProductsWithTaxPrices(req, products)
+
   res.json({
     products,
     count: metadata!.estimate_count,
@@ -130,6 +132,7 @@ async function getProducts(
       cache: {
         enable: true,
       },
+      locale: req.locale,
     }
   )
 
@@ -141,6 +144,7 @@ async function getProducts(
   }
 
   await wrapProductsWithTaxPrices(req, products)
+
   res.json({
     products,
     count: metadata!.count,

@@ -7,29 +7,18 @@ const ChevronLeft = React.forwardRef<SVGSVGElement, IconProps>(
         xmlns="http://www.w3.org/2000/svg"
         width={15}
         height={15}
+        viewBox="0 0 15 15"
         fill="none"
         ref={ref}
         {...props}
       >
-        <g clipPath="url(#a)">
-          <g clipPath="url(#b)">
-            <path
-              stroke={color}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.5}
-              d="M9.722 13.055 4.167 7.5l5.555-5.556"
-            />
-          </g>
-        </g>
-        <defs>
-          <clipPath id="a">
-            <path fill="#fff" d="M0 0h15v15H0z" />
-          </clipPath>
-          <clipPath id="b">
-            <path fill="#fff" d="M-.5-.5h16v16h-16z" />
-          </clipPath>
-        </defs>
+        <path
+          stroke={color}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M9.25 3.25 5 7.5l4.25 4.25"
+        />
       </svg>
     )
   }

@@ -67,7 +67,7 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
         expect(response.data.sales_channels).toBeTruthy()
-        expect(response.data.sales_channels.length).toBe(2)
+        expect(response.data.sales_channels.length).toBe(3) // includes the default sales channel
         expect(response.data).toEqual(
           expect.objectContaining({
             sales_channels: expect.arrayContaining([

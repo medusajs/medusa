@@ -1462,6 +1462,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: created_at
     - name: updated_at
       in: query
       description: Filter by the draft order's update date.
@@ -1731,6 +1732,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: updated_at
     - name: customer_id
       in: query
       required: false
@@ -2095,7 +2097,7 @@ post:
                           providers.
                         externalDocs:
                           url: >-
-                            https://docs.medusajs.com/v2/resources/commerce-modules/order/concepts#data-property
+                            https://docs.medusajs.com/resources/commerce-modules/order/concepts#data-property
                       amount:
                         oneOf:
                           - type: string

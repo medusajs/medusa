@@ -35,8 +35,8 @@ To enable Medusa Cache for your Medusa project deployed on Cloud, set the `cachi
 module.exports = defineConfig({
   // ...
   featureFlags: {
-    caching: true
-  }
+    caching: true,
+  },
 })
 ```
 
@@ -70,8 +70,8 @@ const { data: products } = await query.graph({
   fields: ["id", "title", "handle"],
 }, {
   cache: {
-    enable: true
-  }
+    enable: true,
+  },
 })
 ```
 

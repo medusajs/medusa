@@ -29,7 +29,7 @@ This is available starting from [Medusa v2.10.0](https://github.com/medusajs/med
 
 :::
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/96b2df170752a0d66628a84c46397a24ca9502da/packages/core/core-flows/src/shipping-options/workflows/delete-shipping-option-types.ts#L71" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/shipping-options/workflows/delete-shipping-option-types.ts#L71" />
 
 ## Examples
 
@@ -138,7 +138,7 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"deleteShippingOptionTypesWorkflow","steps":[{"type":"step","name":"deleteShippingOptionTypesStep","description":"This step deletes one or more shipping option types.","link":"../../../Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.deleteShippingOptionTypesStep/page.mdx","depth":1},{"type":"hook","name":"shippingOptionTypesDeleted","description":"This hook is executed after the types are deleted. You can consume this hook to perform custom actions on the deleted types.","link":"#shippingOptionTypesDeleted","depth":2},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record.\n\nLearn more in the [Remote Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/remote-link#cascade-delete-linked-records)","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.removeRemoteLinkStep/page.mdx","depth":3},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":3}]}} />
+<WorkflowDiagram workflow={{"name":"deleteShippingOptionTypesWorkflow","steps":[{"type":"step","name":"deleteShippingOptionTypesStep","description":"This step deletes one or more shipping option types.","link":"../../../Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.deleteShippingOptionTypesStep/page.mdx","depth":1},{"type":"hook","name":"shippingOptionTypesDeleted","description":"This hook is executed after the types are deleted. You can consume this hook to perform custom actions on the deleted types.","link":"#shippingOptionTypesDeleted","depth":2},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record if cascade deletion is enabled.\n\nLearn more in the [Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/link#cascade-delete-linked-records)","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.removeRemoteLinkStep/page.mdx","depth":3},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":3}]}} />
 
 ## Input
 
@@ -176,7 +176,11 @@ Handlers consuming this hook accept the following input.
 
 This section lists the events that are either triggered by the `emitEventStep` in the workflow, or by another workflow executed within this workflow.
 
+:::note
+
 The `emitEventStep` only emits the event after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+
+:::
 
 You can listen to these events in a subscriber, as explained in the [Subscribers](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers) documentation.
 
@@ -210,18 +214,18 @@ Emitted when shipping option types are deleted.
 </Table.Cell>
       <Table.Cell>
 ```ts blockStyle="inline"
-[{
+{
   id, // The ID of the shipping option type
-}]
+}
 ```
 </Table.Cell>
       <Table.Cell>
 <CopyGeneratedSnippetButton tooltipText="Copy subscriber for event" type="subscriber" options={{
         event: "shipping-option-type.deleted",
         payload: `\`\`\`ts
-[{
+{
   id, // The ID of the shipping option type
-}]
+}
 \`\`\``
         }}/>
 </Table.Cell>

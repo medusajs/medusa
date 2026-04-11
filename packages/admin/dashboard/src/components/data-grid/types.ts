@@ -16,6 +16,7 @@ import {
 
 export type DataGridColumnType =
   | "text"
+  | "multiline-text"
   | "number"
   | "boolean"
   | "togglable-number"

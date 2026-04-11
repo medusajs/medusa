@@ -1,12 +1,12 @@
 import React from "react"
+import { BrowserProvider } from "../../providers/BrowserProvider"
+import { ColorModeProvider } from "../../providers/ColorMode"
 import {
-  BrowserProvider,
-  ColorModeProvider,
   LayoutProvider,
-  LayoutProviderProps,
-  MobileProvider,
-  ModalProvider,
-} from "../../providers"
+  type LayoutProviderProps,
+} from "../../providers/Layout"
+import { MobileProvider } from "../../providers/Mobile"
+import { ModalProvider } from "../../providers/Modal"
 
 type RootProvidersProps = {
   children: React.ReactNode

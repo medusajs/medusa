@@ -1,0 +1,11 @@
+---
+displayed_sidebar: translationReference
+---
+
+import { TypeList } from "docs-ui"
+
+# TranslationStatisticsInput
+
+Input for getStatistics method.
+
+<TypeList types={[{"name":"locales","type":"`string`[]","description":"Locales to check translations for.","optional":false,"defaultValue":"","example":"[\"en-US\", \"fr-FR\"]","expandable":false,"children":[]},{"name":"entities","type":"`Record<string, object>`","description":"Key-value pairs of entity types and their configurations.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"count","type":"`number`","description":"Total number of records for the entity type.\nFor example, total number of products.\n\nThis is necessary to compute expected translation counts.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="TranslationStatisticsInput"/>

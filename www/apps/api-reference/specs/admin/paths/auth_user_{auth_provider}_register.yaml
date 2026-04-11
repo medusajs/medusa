@@ -7,7 +7,7 @@ post:
     user, such as the Accept Invite API route.
   externalDocs:
     url: >-
-      https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route#1-basic-authentication-flow
+      https://docs.medusajs.com/resources/commerce-modules/auth/authentication-route#1-basic-authentication-flow
     description: Learn about the basic authentication flow.
   x-authenticated: false
   parameters:

@@ -1,6 +1,6 @@
 import React from "react"
 import clsx from "clsx"
-import { ShadedBgIcon } from "../.."
+import { ShadedBgIcon } from "../Icons/ShadedBg"
 
 export type BadgeVariant =
   | "purple"
@@ -26,6 +26,7 @@ export const Badge = ({
   badgeType = "default",
   children,
   childrenWrapperClassName,
+  ...props
 }: BadgeProps) => {
   return (
     <span
@@ -52,6 +53,7 @@ export const Badge = ({
         "badge",
         className
       )}
+      {...props}
     >
       {badgeType === "shaded" && (
         <ShadedBgIcon

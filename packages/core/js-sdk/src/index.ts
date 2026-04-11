@@ -18,6 +18,14 @@ class Medusa {
     this.store = new Store(this.client)
     this.auth = new Auth(this.client, config)
   }
+
+  setLocale(locale: string) {
+    this.client.setLocale(locale)
+  }
+
+  getLocale() {
+    return this.client.locale
+  }
 }
 
 export default Medusa

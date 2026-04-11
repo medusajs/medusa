@@ -24,7 +24,7 @@ This workflow marks a payment collection for an order as paid. It's used by the
 You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
 marking a payment collection for an order as paid.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/96b2df170752a0d66628a84c46397a24ca9502da/packages/core/core-flows/src/order/workflows/mark-payment-collection-as-paid.ts#L97" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/order/workflows/mark-payment-collection-as-paid.ts#L97" />
 
 ## Examples
 
@@ -151,7 +151,11 @@ const myWorkflow = createWorkflow(
 
 This section lists the events that are either triggered by the `emitEventStep` in the workflow, or by another workflow executed within this workflow.
 
+:::note
+
 The `emitEventStep` only emits the event after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+
+:::
 
 You can listen to these events in a subscriber, as explained in the [Subscribers](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers) documentation.
 

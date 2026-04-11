@@ -16,6 +16,7 @@ export const modules = [
   "stock-location-next",
   "store",
   "tax",
+  "translation",
   "user",
 ]
 

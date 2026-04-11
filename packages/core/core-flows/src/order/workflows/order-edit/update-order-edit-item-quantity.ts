@@ -14,6 +14,7 @@ import {
   transform,
 } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../../common"
+import { acquireLockStep, releaseLockStep } from "../../../locking"
 import {
   previewOrderChangeStep,
   updateOrderChangeActionsStep,
@@ -22,6 +23,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { computeAdjustmentsForPreviewWorkflow } from "../compute-adjustments-for-preview"
 import { fieldsToRefreshOrderEdit } from "./utils/fields"
 
 /**
@@ -105,6 +107,9 @@ export const updateOrderEditItemQuantityWorkflowId =
   "update-order-edit-update-quantity"
 /**
  * This workflow updates an existing order item that was previously added to the order edit.
+ * It is different from the `orderEditUpdateItemQuantityWorkflow` workflow in that this should be used
+ * when the item to update was added as part of the order edit. The other workflow is for items
+ * that were already in the order before the edit.
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to update the quantity
  * of an existing item in an order edit in your custom flows.
@@ -130,6 +135,12 @@ export const updateOrderEditItemQuantityWorkflow = createWorkflow(
   function (
     input: WorkflowData<OrderWorkflow.UpdateOrderEditItemQuantityWorkflowInput>
   ): WorkflowResponse<OrderPreviewDTO> {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const orderResult = useQueryGraphStep({
       entity: "order",
       fields: fieldsToRefreshOrderEdit,
@@ -185,6 +196,19 @@ export const updateOrderEditItemQuantityWorkflow = createWorkflow(
 
     updateOrderChangeActionsStep([updateData])
 
-    return new WorkflowResponse(previewOrderChangeStep(order.id))
+    computeAdjustmentsForPreviewWorkflow.runAsStep({
+      input: {
+        order,
+        orderChange,
+      },
+    })
+
+    const previewOrderChange = previewOrderChangeStep(order.id) as OrderPreviewDTO
+
+    releaseLockStep({
+      key: input.order_id,
+    })
+
+    return new WorkflowResponse(previewOrderChange)
   }
 )

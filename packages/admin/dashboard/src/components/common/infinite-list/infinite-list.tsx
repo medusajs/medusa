@@ -65,6 +65,13 @@ export const InfiniteList = <
   const parentRef = useRef<HTMLDivElement>(null)
   const startObserver = useRef<IntersectionObserver>()
   const endObserver = useRef<IntersectionObserver>()
+  const fetchNextPageRef = useRef(fetchNextPage)
+  const fetchPreviousPageRef = useRef(fetchPreviousPage)
+
+  useEffect(() => {
+    fetchNextPageRef.current = fetchNextPage
+    fetchPreviousPageRef.current = fetchPreviousPage
+  }, [fetchNextPage, fetchPreviousPage])
 
   useEffect(() => {
     if (isPending) {
@@ -78,7 +85,7 @@ export const InfiniteList = <
         (entries) => {
           if (entries[0].isIntersecting && hasPreviousPage) {
             startObserver.current?.disconnect()
-            fetchPreviousPage()
+            fetchPreviousPageRef.current()
           }
         },
         {
@@ -90,7 +97,7 @@ export const InfiniteList = <
         (entries) => {
           if (entries[0].isIntersecting && hasNextPage) {
             endObserver.current?.disconnect()
-            fetchNextPage()
+            fetchNextPageRef.current()
           }
         },
         {
@@ -113,8 +120,6 @@ export const InfiniteList = <
       endObserver.current?.disconnect()
     }
   }, [
-    fetchNextPage,
-    fetchPreviousPage,
     hasNextPage,
     hasPreviousPage,
     isFetching,

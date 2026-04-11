@@ -1,0 +1,4182 @@
+---
+sidebar_label: "Integrate Strapi"
+tags:
+    - server
+    - tutorial
+    - product
+products:
+  - product
+---
+
+import { Card, Prerequisites, Details, WorkflowDiagram, H3 } from "docs-ui"
+import { Github } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Integrate Strapi (CMS) with Medusa`,
+}
+
+# {metadata.title}
+
+In this tutorial, you'll learn how to integrate [Strapi](https://strapi.io/) with Medusa.
+
+When you install a Medusa application, you get a fully-fledged commerce platform with a Framework for customization. Medusa also facilitates integrating third-party services that enrich your application with features specific to your unique business use case.
+
+By integrating Strapi, you can manage your products' content with powerful content management capabilities, including custom fields, media, localization, and more.
+
+<Note>
+
+This guide was built with Strapi v5.30.1. If you're using a different version and you run into issues, consider [opening an issue](https://github.com/medusajs/medusa/issues/new?template=docs.yml).
+
+</Note>
+
+## Summary
+
+By following this tutorial, you'll learn how to:
+
+- Install and set up Medusa.
+- Install and set up Strapi.
+- Integrate Strapi with Medusa to interact with Strapi's API.
+- Implement two-way synchronization of product data between Medusa and Strapi:
+    - Handle product events to sync data from Medusa to Strapi.
+    - Handle Strapi webhooks to sync data from Strapi to Medusa.
+- Display product data from Strapi in the Next.js Starter Storefront.
+
+You can follow this tutorial whether you're new to Medusa or an advanced Medusa developer, but you're expected to have knowledge in Strapi, as its concepts are not explained in the tutorial.
+
+![Diagram illustrating the flow of data between Medusa, Strapi, admin, and customer (storefront)](https://res.cloudinary.com/dza7lstvk/image/upload/v1763375209/Medusa%20Resources/strapi-summary_pioikw.jpg)
+
+<Card
+  title="Full Code"
+  text="Find the full code of the guide in this repository."
+  href="https://github.com/medusajs/examples/tree/main/strapi-integration"
+  icon={Github}
+/>
+
+
+---
+
+## Step 1: Install a Medusa Application
+
+<Prerequisites items={[
+  {
+    text: "Node.js v20 or v22 (Versions supported by Strapi)",
+    link: "https://nodejs.org/en/download"
+  },
+  {
+    text: "Git CLI tool",
+    link: "https://git-scm.com/downloads"
+  },
+  {
+    text: "PostgreSQL",
+    link: "https://www.postgresql.org/download/"
+  }
+]} />
+
+Start by installing the Medusa application on your machine with the following command:
+
+```bash
+npx create-medusa-app@latest
+```
+
+First, you'll be asked for the project's name. Then, when prompted about installing the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose "Yes."
+
+Afterwards, the installation process will start, which will install the Medusa application in a directory with your project's name and the Next.js Starter Storefront in a separate directory named `{project-name}-storefront`.
+
+<Note title="Why is the storefront installed separately?">
+
+The Medusa application is composed of a headless Node.js server and an admin dashboard. The storefront is installed or custom-built separately and connects to the Medusa application through its REST endpoints, called [API routes](!docs!/learn/fundamentals/api-routes). Learn more in [Medusa's Architecture documentation](!docs!/learn/introduction/architecture).
+
+</Note>
+
+Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
+
+<Note title="Ran into Errors?">
+
+Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
+
+</Note>
+
+---
+
+## Step 2: Set Up Strapi
+
+In this step, you'll install and set up Strapi to manage your product content.
+
+### a. Install Strapi
+
+In a separate directory from your Medusa application, run the following command to create a new Strapi project:
+
+```bash
+npx create-strapi@latest my-strapi-app
+```
+
+You can pick the default options during the installation process. Once the installation is complete, navigate to the newly created directory:
+
+```bash
+cd my-strapi-app
+```
+
+### b. Setup Strapi
+
+Next, you'll start Strapi and create a new admin user.
+
+Run the following command to start Strapi:
+
+```bash badgeLabel="Strapi" badgeColor="orange"
+npm run dev
+```
+
+This command starts Strapi in development mode and opens the admin panel setup page in your default browser.
+
+On this page, you can create a new admin user to log in to the Strapi admin panel. You'll return to the admin panel later to manage settings and content.
+
+### c. Define Product Content Type
+
+In this section, you'll define a content type for products in Strapi. These products will be synced from Medusa, allowing you to manage their content using Strapi's CMS features.
+
+You'll use `schema.json` files to define content types.
+
+#### Product schema.json
+
+To create the schema for the Product content type, create the file `src/api/product/content-types/product/schema.json` with the following content:
+
+```json title="src/api/product/content-types/product/schema.json" badgeLabel="Strapi" badgeColor="orange"
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "Product",
+    "description": "Products from Medusa"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "medusaId": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "handle": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "locale": {
+      "type": "string",
+      "default": "en"
+    },
+    "variants": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-variant.product-variant",
+      "mappedBy": "product"
+    },
+    "options": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-option.product-option",
+      "mappedBy": "product"
+    }
+  }
+}
+```
+
+You define the following fields for the Product content type:
+
+1. `medusaId`: A unique identifier that maps to the Medusa product ID.
+2. `title`: The product's title.
+3. `subtitle`: A subtitle for the product.
+4. `description`: A rich text field for the product's description.
+5. `handle`: A unique identifier for the product used in URLs.
+6. `images`: A media field to store multiple images of the product.
+7. `thumbnail`: A media field to store a single thumbnail image of the product.
+8. `locale`: A string field to support localization.
+9. `variants`: A one-to-many relation to the Product Variant content type, which you'll define later.
+10. `options`: A one-to-many relation to the Product Option content type, which you'll define later.
+
+#### Product Lifecycle Hooks
+
+Next, you'll handle product deletion by deleting associated product variants and options.
+
+Create the file `src/api/product/content-types/product/lifecycles.ts` with the following content:
+
+```ts title="src/api/product/content-types/product/lifecycles.ts" badgeLabel="Strapi" badgeColor="orange"
+export default {
+  async beforeDelete(event) {
+    const { where } = event.params
+    
+    // Find the product with its relations
+    const product = await strapi.db.query("api::product.product").findOne({
+      where: {
+        id: where.id,
+      },
+      populate: {
+        variants: true,
+        options: true,
+      },
+    })
+
+    if (product) {
+      // Delete all variants
+      if (product.variants && product.variants.length > 0) {
+        for (const variant of product.variants) {
+          await strapi.documents("api::product-variant.product-variant").delete({
+            documentId: variant.documentId,
+          })
+        }
+      }
+
+      // Delete all options (their values will
+      // be cascade deleted by the option lifecycle)
+      if (product.options && product.options.length > 0) {
+        for (const option of product.options) {
+          await strapi.documents("api::product-option.product-option").delete({
+            documentId: option.documentId,
+          })
+        }
+      }
+    }
+  },
+}
+```
+
+You define a `beforeDelete` lifecycle hook that deletes all associated product variants and options when a product is deleted.
+
+#### Product Controllers
+
+Next, you'll create custom controllers to handle product management.
+
+Create the file `src/api/product/controllers/product.ts` with the following content:
+
+```ts title="src/api/product/controllers/product.ts" badgeLabel="Strapi" badgeColor="orange"
+import { factories } from "@strapi/strapi"
+
+export default factories.createCoreController("api::product.product")
+```
+
+This code creates a core controller for the Product content type using Strapi's factory method.
+
+#### Product Services
+
+Next, you'll create custom services to handle product management.
+
+Create the file `src/api/product/services/product.ts` with the following content:
+
+```ts title="src/api/product/services/product.ts" badgeLabel="Strapi" badgeColor="orange"
+import { factories } from "@strapi/strapi"
+
+export default factories.createCoreService("api::product.product")
+```
+
+This code creates a core service for the Product content type using Strapi's factory method.
+
+#### Product Routes
+
+Next, you'll create custom routes to handle product management.
+
+Create the file `src/api/product/routes/product.ts` with the following content:
+
+```ts title="src/api/product/routes/product.ts" badgeLabel="Strapi" badgeColor="orange"
+import { factories } from "@strapi/strapi"
+
+export default factories.createCoreRouter("api::product.product")
+```
+
+This code creates a core router for the Product content type using Strapi's factory method.
+
+### c. Define Product Variant Content Type
+
+Next, you'll define a content type for product variants in Strapi.
+
+#### Product Variant schema.json
+
+To create the schema for the Product Variant content type, create the file `src/api/product-variant/content-types/product-variant/schema.json` with the following content:
+
+```json title="src/api/product-variant/content-types/product-variant/schema.json" badgeLabel="Strapi" badgeColor="orange"
+{
+  "kind": "collectionType",
+  "collectionName": "product_variants",
+  "info": {
+    "singularName": "product-variant",
+    "pluralName": "product-variants",
+    "displayName": "Product Variant",
+    "description": "Product variants from Medusa"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "medusaId": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "sku": {
+      "type": "string"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "locale": {
+      "type": "string",
+      "default": "en"
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "variants"
+    },
+    "option_values": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product-option-value.product-option-value",
+      "inversedBy": "variants"
+    }
+  }
+}
+```
+
+You define the following fields for the Product Variant content type:
+
+1. `medusaId`: A unique identifier that maps to the Medusa product variant ID.
+2. `title`: The variant's title.
+3. `sku`: The stock keeping unit for the variant.
+4. `images`: A media field to store multiple images of the variant.
+5. `thumbnail`: A media field to store a single thumbnail image of the variant.
+6. `locale`: A string field to support localization.
+7. `product`: A many-to-one relation to the Product content type.
+8. `option_values`: A many-to-many relation to the Product Option Value content type, which you'll define later.
+
+#### Product Variant Controllers
+
+Next, you'll create custom controllers to handle product variant management.
+
+Create the file `src/api/product-variant/controllers/product-variant.ts` with the following content:
+
+```ts title="src/api/product-variant/controllers/product-variant.ts" badgeLabel="Strapi" badgeColor="orange"
+import { factories } from "@strapi/strapi"
+
+export default factories.createCoreController("api::product-variant.product-variant")
+```
+
+This code creates a core controller for the Product Variant content type using Strapi's factory method.
+
+#### Product Variant Services
+
+Next, you'll create custom services to handle product variant management.
+
+Create the file `src/api/product-variant/services/product-variant.ts` with the following content:
+
+```ts title="src/api/product-variant/services/product-variant.ts" badgeLabel="Strapi" badgeColor="orange"
+import { factories } from "@strapi/strapi"
+
+export default factories.createCoreService("api::product-variant.product-variant")
+```
+
+This code creates a core service for the Product Variant content type using Strapi's factory method.
+
+#### Product Variant Routes
+
+Next, you'll create custom routes to handle product variant management.
+
+Create the file `src/api/product-variant/routes/product-variant.ts` with the following content:
+
+```ts title="src/api/product-variant/routes/product-variant.ts" badgeLabel="Strapi" badgeColor="orange"
+import { factories } from "@strapi/strapi"
+
+export default factories.createCoreRouter("api::product-variant.product-variant")
+```
+
+This code creates a core router for the Product Variant content type using Strapi's factory method.
+
+### d. Define Product Option Content Type
+
+Next, you'll define a content type for product options in Strapi.
+
+#### Product Option schema.json
+
+To create the schema for the Product Option content type, create the file `src/api/product-option/content-types/product-option/schema.json` with the following content:
+
+```json title="src/api/product-option/content-types/product-option/schema.json" badgeLabel="Strapi" badgeColor="orange"
+{
+  "kind": "collectionType",
+  "collectionName": "product_options",
+  "info": {
+    "singularName": "product-option",
+    "pluralName": "product-options",
+    "displayName": "Product Option",
+    "description": "Product options from Medusa"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "medusaId": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "locale": {
+      "type": "string",
+      "default": "en"
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "options"
+    },
+    "values": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-option-value.product-option-value",
+      "mappedBy": "option"
+    }
+  }
+}
+```
+
+You define the following fields for the Product Option content type:
+
+1. `medusaId`: A unique identifier that maps to the Medusa product option ID.
+2. `title`: The option's title.
+3. `locale`: A string field to support localization.
+4. `product`: A many-to-one relation to the Product content type.
+5. `values`: A one-to-many relation to the Product Option Value content type, which you'll define later.
+
+#### Product Option Lifecycle Hooks
+
+Next, you'll handle option deletion by deleting associated option values.
+
+Create the file `src/api/product-option/content-types/product-option/lifecycles.ts` with the following content:
+
+```ts title="src/api/product-option/content-types/product-option/lifecycles.ts" badgeLabel="Strapi" badgeColor="orange"
+export default {
+  async beforeDelete(event) {
+    const { where } = event.params
+    
+    // Find the option with its values
+    const option = await strapi.db.query("api::product-option.product-option").findOne({
+      where: {
+        id: where.id,
+      },
+      populate: {
+        values: true,
+      },
+    })
+
+    if (option && option.values && option.values.length > 0) {
+      // Delete all option values
+      for (const value of option.values) {
+        await strapi.documents("api::product-option-value.product-option-value").delete({
+          documentId: value.documentId,
+        })
+      }
+    }
+  },
+}
+```
+
+You define a `beforeDelete` lifecycle hook that deletes all associated option values when an option is deleted.
+
+#### Product Option Controllers
+
+Next, you'll create custom controllers to handle managing product options.
+
+Create the file `src/api/product-option/controllers/product-option.ts` with the following content:
+
+```ts title="src/api/product-option/controllers/product-option.ts" badgeLabel="Strapi" badgeColor="orange"
+import { factories } from "@strapi/strapi"
+
+export default factories.createCoreController("api::product-option.product-option")
+```
+
+This code creates a core controller for the Product Option content type using Strapi's factory method.
+
+#### Product Option Services
+
+Next, you'll create custom services to handle managing product options.
+
+Create the file `src/api/product-option/services/product-option.ts` with the following content:
+
+```ts title="src/api/product-option/services/product-option.ts" badgeLabel="Strapi" badgeColor="orange"
+import { factories } from "@strapi/strapi"
+
+export default factories.createCoreService("api::product-option.product-option")
+```
+
+This code creates a core service for the Product Option content type using Strapi's factory method.
+
+#### Product Option Routes
+
+Next, you'll create custom routes to handle managing product options.
+
+Create the file `src/api/product-option/routes/product-option.ts` with the following content:
+
+```ts title="src/api/product-option/routes/product-option.ts" badgeLabel="Strapi" badgeColor="orange"
+import { factories } from "@strapi/strapi"
+
+export default factories.createCoreRouter("api::product-option.product-option")
+```
+
+This code creates a core router for the Product Option content type using Strapi's factory method.
+
+### e. Define Product Option Value Content Type
+
+The last content type you'll define is for product option values in Strapi.
+
+#### Product Option Value schema.json
+
+To create the schema for the Product Option Value content type, create the file `src/api/product-option-value/content-types/product-option-value/schema.json` with the following content:
+
+```json title="src/api/product-option-value/content-types/product-option-value/schema.json" badgeLabel="Strapi" badgeColor="orange"
+{
+  "kind": "collectionType",
+  "collectionName": "product_option_values",
+  "info": {
+    "singularName": "product-option-value",
+    "pluralName": "product-option-values",
+    "displayName": "Product Option Value",
+    "description": "Product option values from Medusa"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "medusaId": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "value": {
+      "type": "string",
+      "required": true
+    },
+    "locale": {
+      "type": "string",
+      "default": "en"
+    },
+    "option": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product-option.product-option",
+      "inversedBy": "values"
+    },
+    "variants": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product-variant.product-variant",
+      "mappedBy": "option_values"
+    }
+  }
+}
+```
+
+You define the following fields for the Product Option Value content type:
+
+1. `medusaId`: A unique identifier that maps to the Medusa product option value ID.
+2. `value`: The option value's title.
+3. `locale`: A string field to support localization.
+4. `option`: A many-to-one relation to the Product Option content type.
+5. `variants`: A many-to-many relation to the Product Variant content type.
+
+#### Product Option Value Controllers
+
+Next, you'll create custom controllers to handle managing product option values.
+
+Create the file `src/api/product-option-value/controllers/product-option-value.ts` with the following content:
+
+```ts title="src/api/product-option-value/controllers/product-option-value.ts" badgeLabel="Strapi" badgeColor="orange"
+import { factories } from "@strapi/strapi"
+
+export default factories.createCoreController("api::product-option-value.product-option-value")
+```
+
+This code creates a core controller for the Product Option Value content type using Strapi's factory method.
+
+#### Product Option Value Services
+
+Next, you'll create custom services to handle managing product option values.
+
+Create the file `src/api/product-option-value/services/product-option-value.ts` with the following content:
+
+```ts title="src/api/product-option-value/services/product-option-value.ts" badgeLabel="Strapi" badgeColor="orange"
+import { factories } from "@strapi/strapi"
+
+export default factories.createCoreService("api::product-option-value.product-option-value")
+```
+
+This code creates a core service for the Product Option Value content type using Strapi's factory method.
+
+#### Product Option Value Routes
+
+Next, you'll create custom routes to handle managing product option values.
+
+Create the file `src/api/product-option-value/routes/product-option-value.ts` with the following content:
+
+```ts title="src/api/product-option-value/routes/product-option-value.ts" badgeLabel="Strapi" badgeColor="orange"
+import { factories } from "@strapi/strapi"
+
+export default factories.createCoreRouter("api::product-option-value.product-option-value")
+```
+
+This code creates a core router for the Product Option Value content type using Strapi's factory method.
+
+You now have all the customizations in Strapi ready. You'll return to Strapi later after you set up the integration with Medusa.
+
+---
+
+## Step 3: Integrate Strapi with Medusa
+
+In this step, you'll integrate Strapi with Medusa by creating a Strapi Module.
+
+A [module](!docs!/learn/fundamentals/modules) is a reusable package that provides functionalities related to a single feature or domain. Medusa integrates the module into your application without implications or side effects on your setup.
+
+<Note>
+
+Refer to the [Modules](!docs!/learn/fundamentals/modules) documentation to learn more about modules and their structure.
+
+</Note>
+
+### a. Install Strapi Client
+
+First, you'll install the Strapi client in your Medusa application to interact with Strapi's API.
+
+In your Medusa application directory, run the following command to install the Strapi client:
+
+```bash badgeLabel="Medusa application" badgeColor="green"
+npm install @strapi/client
+```
+
+### b. Create Module Directory
+
+A module is created under the `src/modules` directory of your Medusa application. So, create the directory `src/modules/strapi`.
+
+### c. Create Strapi Client Loader
+
+Next, you'll create the Strapi client when the Medusa server starts by creating a loader.
+
+A [loader](!docs!/learn/fundamentals/modules/loaders) is an asynchronous function that runs when the Medusa server starts. Loaders are useful for setting up connections to third-party services and reusing those connections throughout your module.
+
+To create the loader that initializes the Strapi client, create the file `src/modules/strapi/loaders/init-client.ts` with the following content:
+
+```ts title="src/modules/strapi/loaders/init-client.ts" badgeLabel="Medusa application" badgeColor="green"
+import { LoaderOptions } from "@medusajs/framework/types"
+import { asValue } from "@medusajs/framework/awilix"
+import { MedusaError } from "@medusajs/framework/utils"
+import { strapi } from "@strapi/client"
+
+export type ModuleOptions = {
+  apiUrl: string
+  apiToken: string
+  defaultLocale?: string
+}
+
+export default async function initStrapiClientLoader({
+  container,
+  options,
+}: LoaderOptions<ModuleOptions>) {
+  if (!options?.apiUrl || !options?.apiToken) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "Strapi API URL and token are required"
+    )
+  }
+
+  const logger = container.resolve("logger")
+
+  try {
+    // Create Strapi client instance
+    const strapiClient = strapi({
+      baseURL: options.apiUrl,
+      auth: options.apiToken,
+    })
+
+    // Register the client in the container
+    container.register({
+      strapiClient: asValue(strapiClient),
+    })
+
+    logger.info("Strapi client initialized successfully")
+  } catch (error) {
+    logger.error(`Failed to initialize Strapi client: ${error}`)
+    throw error
+  }
+}
+```
+
+A loader file must export an asynchronous function that receives an object with the following properties:
+
+1. `container`: The [module container](!docs!/learn/fundamentals/modules/container) that allows you to resolve and register module and Framework resources.
+2. `options`: The options passed to the module during its registration. You define the following options for the Strapi Module:
+    - `apiUrl`: The URL of the Strapi API.
+    - `apiToken`: The API token to authenticate requests to Strapi.
+    - `defaultLocale`: An optional default locale for content.
+
+In the loader function, you create a Strapi client instance using the provided API URL and token. Then, you register the client in the module container so that it can be resolved and used in the module's service.
+
+### d. Create Strapi Module Service
+
+Next, you'll create the main service of the Strapi Module.
+
+A module has a service that contains its logic. The Strapi Module's service will contain the logic to create, update, retrieve, and delete data in Strapi.
+
+Create the file `src/modules/strapi/service.ts` with the following content:
+
+```ts title="src/modules/strapi/service.ts" badgeLabel="Medusa application" badgeColor="green"
+import type { StrapiClient } from "@strapi/client"
+import { Logger } from "@medusajs/framework/types"
+import { ModuleOptions } from "./loaders/init-client"
+
+type InjectedDependencies = {
+  logger: Logger
+  strapiClient: StrapiClient
+}
+
+export default class StrapiModuleService {
+  protected readonly options_: ModuleOptions
+  protected readonly logger_: any
+  protected readonly client_: StrapiClient
+
+  constructor(
+    { logger, strapiClient }: InjectedDependencies, 
+    options: ModuleOptions
+  ) {
+    this.options_ = options
+    this.logger_ = logger
+    this.client_ = strapiClient
+  }
+
+  // TODO add methods
+}
+```
+
+The constructor of a module's service receives the following parameters:
+
+1. The module's container.
+2. The module's options.
+
+You resolve the [Logger](!docs!/learn/debugging-and-testing/logging) and the Strapi client that you registered in the loader. You also store the module options for later use.
+
+In the next sections, you'll add methods to this service to handle managing data in Strapi.
+
+#### Format Errors Method
+
+First, you'll add a helper method to format errors from Strapi.
+
+In `src/modules/strapi/service.ts`, add the following method to the `StrapiModuleService` class:
+
+```ts title="src/modules/strapi/service.ts" badgeLabel="Medusa application" badgeColor="green"
+export default class StrapiModuleService {
+  // ...
+  formatStrapiError(error: any, context: string): string {
+    // Handle Strapi client HTTP response errors
+    if (error?.response) {
+      const response = error.response
+      const parts = [context]
+      
+      if (response.status) {
+        parts.push(`HTTP ${response.status}`)
+      }
+      
+      if (response.statusText) {
+        parts.push(response.statusText)
+      }
+      
+      // Add request URL if available
+      if (response.url) {
+        parts.push(`URL: ${response.url}`)
+      }
+      
+      // Add request method if available
+      if (error.request?.method) {
+        parts.push(`Method: ${error.request.method}`)
+      }
+      
+      return parts.join(" - ")
+    }
+    
+    // If error has a response with Strapi error structure
+    if (error?.error) {
+      const strapiError = error.error
+      const parts = [context]
+      
+      if (strapiError.status) {
+        parts.push(`Status ${strapiError.status}`)
+      }
+      
+      if (strapiError.name) {
+        parts.push(`[${strapiError.name}]`)
+      }
+      
+      if (strapiError.message) {
+        parts.push(strapiError.message)
+      }
+      
+      if (strapiError.details && Object.keys(strapiError.details).length > 0) {
+        parts.push(`Details: ${JSON.stringify(strapiError.details)}`)
+      }
+      
+      return parts.join(" - ")
+    }
+    
+    // Fallback for non-Strapi errors
+    return `${context}: ${error.message || error}`
+  }
+}
+```
+
+This method takes an error object and a context string as parameters. It formats the error based on the structure of Strapi client errors, making it easier to log and debug issues related to Strapi API requests.
+
+You'll use this method in other service methods to handle errors consistently.
+
+#### Upload Images Method
+
+Next, you'll add a method to upload images to Strapi.
+
+In `src/modules/strapi/service.ts`, add the following method to the `StrapiModuleService` class:
+
+```ts title="src/modules/strapi/service.ts" badgeLabel="Medusa application" badgeColor="green"
+export default class StrapiModuleService {
+  // ...
+  async uploadImages(imageUrls: string[]): Promise<number[]> {
+    const uploadedIds: number[] = []
+
+    for (const imageUrl of imageUrls) {
+      try {
+        // Fetch the image from the URL
+        const imageResponse = await fetch(imageUrl)
+        if (!imageResponse.ok) {
+          this.logger_.warn(`Failed to fetch image: ${imageUrl}`)
+          continue
+        }
+
+        const imageBuffer = await imageResponse.arrayBuffer()
+        
+        // Extract filename from URL or generate one
+        const urlParts = imageUrl.split("/")
+        const filename = urlParts[urlParts.length - 1] || `image-${Date.now()}.jpg`
+
+        // Create a Blob from the buffer
+        const blob = new Blob([imageBuffer], {
+          type: imageResponse.headers.get("content-type") || "image/jpeg",
+        })
+
+        // Upload to Strapi using the files API
+        const result = await this.client_.files.upload(blob, {
+          fileInfo: {
+            name: filename,
+          },
+        })
+        
+        if (result && result[0] && result[0].id) {
+          uploadedIds.push(result[0].id)
+        }
+      } catch (error) {
+        this.logger_.error(this.formatStrapiError(error, `Failed to upload image ${imageUrl}`))
+      }
+    }
+
+    return uploadedIds
+  }
+}
+```
+
+This method takes an array of image URLs, fetches each image, and uploads it to Strapi using the Strapi client's files API. It returns an array of uploaded image IDs.
+
+You'll use this method later when creating or updating products and product variants in Strapi.
+
+#### Delete Images Method
+
+Next, you'll add a method to delete images from Strapi. This will be useful when reverting changes if a failure occurs.
+
+In `src/modules/strapi/service.ts`, add the following import at the top of the file:
+
+```ts title="src/modules/strapi/service.ts" badgeLabel="Medusa application" badgeColor="green"
+import { MedusaError } from "@medusajs/framework/utils"
+```
+
+Then, add the following method to the `StrapiModuleService` class:
+
+```ts title="src/modules/strapi/service.ts" badgeLabel="Medusa application" badgeColor="green"
+export default class StrapiModuleService {
+  // ...
+  async deleteImage(imageId: number): Promise<void> {
+    try {
+      await this.client_.files.delete(imageId)
+    } catch (error) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        this.formatStrapiError(error, `Failed to delete image ${imageId} from Strapi`)
+      )
+    }
+  }
+}
+```
+
+This method takes an image ID as a parameter and deletes the corresponding image from Strapi using the Strapi client's files API. If the deletion fails, it throws a `MedusaError` with a formatted error message.
+
+#### Create Document Type Method
+
+Next, you'll add a method to create a document of a content type in Strapi, such as a product or product variant.
+
+In `src/modules/strapi/service.ts`, add the following enum type before the `StrapiModuleService` class:
+
+```ts title="src/modules/strapi/service.ts" badgeLabel="Medusa application" badgeColor="green"
+export enum Collection {
+  PRODUCTS = "products",
+  PRODUCT_VARIANTS = "product-variants",
+  PRODUCT_OPTIONS = "product-options",
+  PRODUCT_OPTION_VALUES = "product-option-values",
+}
+```
+
+Then, add the following method to the `StrapiModuleService` class:
+
+```ts title="src/modules/strapi/service.ts" badgeLabel="Medusa application" badgeColor="green"
+export default class StrapiModuleService {
+  // ...
+  async create(collection: Collection, data: Record<string, unknown>) {
+    try {
+      return await this.client_.collection(collection).create(data)
+    } catch (error) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        this.formatStrapiError(error, `Failed to create ${collection} in Strapi`)
+      )
+    }
+  }
+}
+```
+
+This method takes the following parameters:
+
+1. `collection`: The collection (content type) in which to create the document. It uses the `Collection` enum.
+2. `data`: An object containing the data for the document to be created.
+
+In the method, you create the document and return it.
+
+#### Update Document Method
+
+Next, you'll add a method to update a document of a content type in Strapi. This will be useful to implement two-way synching between Medusa and Strapi.
+
+In `src/modules/strapi/service.ts`, add the following method to the `StrapiModuleService` class:
+
+```ts title="src/modules/strapi/service.ts" badgeLabel="Medusa application" badgeColor="green"
+export default class StrapiModuleService {
+  // ...
+  async update(collection: Collection, id: string, data: Record<string, unknown>) {
+    try {
+      return await this.client_.collection(collection).update(id, data)
+    } catch (error) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        this.formatStrapiError(error, `Failed to update ${collection} in Strapi`)
+      )
+    }
+  }
+}
+```
+
+This method takes the following parameters:
+
+1. `collection`: The collection (content type) in which the document exists. It uses the `Collection` enum.
+2. `id`: The ID of the document to be updated.
+3. `data`: An object containing the data to update the document with.
+
+In the method, you update the document and return it.
+
+#### Delete Document Method
+
+Next, you'll add a method to delete a document of a content type from Strapi. You'll use this method when a document is deleted in Medusa, or when reverting document creation in case of failures.
+
+In `src/modules/strapi/service.ts`, add the following method to the `StrapiModuleService` class:
+
+```ts title="src/modules/strapi/service.ts" badgeLabel="Medusa application" badgeColor="green"
+export default class StrapiModuleService {
+  // ...
+  async delete(collection: Collection, id: string) {
+    try {
+      return await this.client_.collection(collection).delete(id)
+    } catch (error) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        this.formatStrapiError(error, `Failed to delete ${collection} in Strapi`)
+      )
+    }
+  }
+}
+```
+
+This method takes the following parameters:
+
+1. `collection`: The collection (content type) in which the document exists. It uses the `Collection` enum.
+2. `id`: The ID of the document to be deleted.
+
+In the method, you delete the document.
+
+#### Retrieve Document by Medusa ID Method
+
+Next, you'll add a method to retrieve a document of a content type from Strapi by its Medusa ID. This will be useful to retrieve a document in case you need to revert changes.
+
+In `src/modules/strapi/service.ts`, add the following method to the `StrapiModuleService` class:
+
+```ts title="src/modules/strapi/service.ts" badgeLabel="Medusa application" badgeColor="green"
+export default class StrapiModuleService {
+  // ...
+  async findByMedusaId(
+    collection: Collection, 
+    medusaId: string, 
+    populate?: string[]
+  ) {
+    try {
+      const result = await this.client_.collection(collection).find({
+        filters: {
+          medusaId: {
+            $eq: medusaId,
+          },
+        },
+        populate,
+      })
+
+      return result.data[0]
+    }
+    catch (error) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        this.formatStrapiError(error, `Failed to find ${collection} in Strapi`)
+      )
+    }
+  }
+}
+```
+
+This method takes the following parameters:
+
+1. `collection`: The collection (content type) in which the document exists. It uses the `Collection` enum.
+2. `medusaId`: The Medusa ID of the document to be retrieved.
+3. `populate`: An optional array of relations to populate in the retrieved document.
+
+In the method, you retrieve the documents and return the first result.
+
+### e. Export Module Definition
+
+The final piece of a module is its definition, which you export in an `index.ts` file at the module's root directory. This definition tells Medusa the name of the module, its service, and optionally its loaders.
+
+To create the module's definition, create the file `src/modules/strapi/index.ts` with the following content:
+
+```ts title="src/modules/strapi/index.ts" badgeLabel="Medusa application" badgeColor="green"
+import { Module } from "@medusajs/framework/utils"
+import StrapiModuleService from "./service"
+import initStrapiClientLoader from "./loaders/init-client"
+
+export const STRAPI_MODULE = "strapi"
+
+export default Module(STRAPI_MODULE, {
+  service: StrapiModuleService,
+  loaders: [initStrapiClientLoader],
+})
+```
+
+You use `Module` from the Modules SDK to create the module's definition. It accepts two parameters:
+
+1. The module's name, which is `strapi`.
+2. An object with a required `service` property indicating the module's service. You also pass the loader you created to ensure it's executed when the application starts.
+
+Aside from the module definition, you export the module's name as `STRAPI_MODULE` for later reference.
+
+### f. Add Module to Medusa's Configurations
+
+Once you finish building the module, add it to Medusa's configurations to start using it.
+
+In `medusa-config.ts`, add a `modules` property and pass an array with your custom module:
+
+```ts title="medusa-config.ts" badgeLabel="Medusa application" badgeColor="green"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "./modules/strapi",
+      options: {
+        apiUrl: process.env.STRAPI_API_URL || "http://localhost:1337/api",
+        apiToken: process.env.STRAPI_API_TOKEN || "",
+        defaultLocale: process.env.STRAPI_DEFAULT_LOCALE || "en",
+      },
+    },
+  ],
+})
+```
+
+Each object in the `modules` array has a `resolve` property, whose value is either a path to the module's directory or an npm package's name.
+
+You also pass an `options` property with the module's options. You'll set the values of these options next.
+
+### g. Set Environment Variables
+
+Before you can use the Strapi Module, you need to set the environment variables it requires.
+
+One of these options is an API token that has permissions to manage the content types you created in Strapi.
+
+To retrieve the API token from Strapi, run the following command in the Strapi project directory to start the Strapi server:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then:
+
+1. Log in to the Strapi admin panel at `http://localhost:1337/admin`.
+2. Go to Settings -> API Tokens.
+3. Click on "Create new API Token".
+
+![Strapi dashboard with the API Token settings opened](https://res.cloudinary.com/dza7lstvk/image/upload/v1763136134/Medusa%20Resources/CleanShot_2025-11-14_at_18.00.44_2x_ec8lds.png)
+
+4. In the API token form:
+    - Set a name for the token, such as "Medusa".
+    - Set the type to "Custom", and:
+        - For each content type you created (products, product variants, product options, and product option values), expand its permissions section and enable all the permissions (create, read, update, delete, find).
+        - Also enable the permissions for "Upload" to allow image uploads.
+5. Click on "Save".
+
+![Strapi dashboard with the Create API Token form filled](https://res.cloudinary.com/dza7lstvk/image/upload/v1763136134/Medusa%20Resources/CleanShot_2025-11-14_at_18.01.25_2x_hdex6b.png)
+
+Then, copy the generated API token.
+
+Finally, set the following environment variables in your Medusa project's `.env` file:
+
+```env
+STRAPI_API_URL=http://localhost:1337/api
+STRAPI_API_TOKEN=your_generated_api_token
+```
+
+Make sure to replace `your_generated_api_token` with the actual API token you copied from Strapi.
+
+---
+
+## Step 4: Create Virtual Read-Only Link to Strapi Products
+
+Medusa's [Module Links](!docs!/learn/fundamentals/module-links) feature allows you to virtually link data models from external services to modules in your Medusa application. Then, when you retrieve data from Medusa, you can also retrieve the linked data from the third-party service automatically.
+
+In this step, you'll define a virtual read-only link between the product content type in Strapi and the `Product` model in Medusa. Later, you'll be able to retrieve products from Strapi when retrieving products in Medusa.
+
+### a. Define the Link
+
+To define a virtual read-only link, create the file `src/links/product-strapi.ts` with the following content:
+
+```ts title="src/links/product-strapi.ts" badgeLabel="Medusa application" badgeColor="green"
+import { defineLink } from "@medusajs/framework/utils"
+import ProductModule from "@medusajs/medusa/product"
+import { STRAPI_MODULE } from "../modules/strapi"
+
+export default defineLink(
+  {
+    linkable: ProductModule.linkable.product,
+    field: "id",
+  },
+  {
+    linkable: {
+      serviceName: STRAPI_MODULE,
+      alias: "strapi_product",
+      primaryKey: "product_id",
+    },
+  },
+  {
+    readOnly: true,
+  }
+)
+```
+
+The `defineLink` function accepts three parameters:
+
+- An object of the first data model that is part of the link. In this case, it's the `Product` model from Medusa's Product Module.
+- An object of the second data model that is part of the link. In this case, it's the product content type from the Strapi Module. You set the following properties:
+    - `serviceName`: the name of the Strapi Module, which is `strapi`.
+    - `alias`: an alias for the linked data model, which is `strapi_product`. You'll use this alias to reference the linked data model in queries.
+    - `primaryKey`: the primary key of the linked data model, which is `product_id`. Medusa will look for this field in the retrieved `Products` from Strapi to match it with the `id` field of the `Product` model.
+- An object with the `readOnly` property set to `true`, indicating that this link is read-only. This means you can only retrieve the linked data, but you don't manage the link in the database.
+
+### b. Add list Method to the Strapi Module Service
+
+When you retrieve products from Medusa with their `strapi_product` link, Medusa will call the `list` method of the Strapi Module's service to retrieve the linked products from Strapi.
+
+So, in `src/modules/strapi/service.ts`, add a `list` method to the `StrapiModuleService` class:
+
+```ts title="src/modules/strapi/service.ts" badgeLabel="Medusa application" badgeColor="green"
+export default class StrapiModuleService {
+  // ...
+  async list(filter: { product_id: string | string[] }) {
+    const ids = Array.isArray(filter.product_id) 
+      ? filter.product_id 
+      : [filter.product_id]
+    
+    const results: any[] = []
+    
+    for (const productId of ids) {
+      try {
+        // Fetch product with all relations populated
+        const result = await this.client_.collection("products").find({
+          filters: {
+            medusaId: {
+              $eq: productId,
+            },
+          },
+          populate: {
+            variants: {
+              populate: ["option_values"],
+            },
+            options: {
+              populate: ["values"],
+            },
+          },
+        })
+        
+        if (result.data && result.data.length > 0) {
+          const product = result.data[0]
+          results.push({
+            ...product,
+            id: `${product.id}`,
+            product_id: productId,
+            // Include populated relations
+            variants: (product.variants || []).map((variant) => ({
+              ...variant,
+              id: `${variant.id}`,
+              option_values: (variant.option_values || []).map((option_value) => ({
+                ...option_value,
+                id: `${option_value.id}`,
+              })),
+            })),
+            options: (product.options || []).map((option) => ({
+              ...option,
+              id: `${option.id}`,
+              values: (option.values || []).map((value) => ({
+                ...value,
+                id: `${value.id}`,
+              })),
+            })),
+          })
+        }
+      } catch (error) {
+        this.logger_.warn(this.formatStrapiError(error, `Failed to fetch product ${productId} from Strapi`))
+      }
+    }
+    
+    return results
+  }
+}
+```
+
+The `list` method receives a `filter` object with a `product_id` property, which contains the Medusa product ID(s) to retrieve their corresponding data from Strapi.
+
+In the method, you fetch each product from Strapi using the Strapi client's collection API, populating its relations (variants and options). You then format the retrieved data to match the expected structure and return an array of products.
+
+You can now retrieve product data from Strapi when retrieving products in Medusa. You'll learn how to do this in the upcoming steps.
+
+---
+
+## Step 5: Handle Product Creation
+
+In this step, you'll implement the logic to listen to product creation events in Medusa and create the corresponding product data in Strapi.
+
+To do this, you'll create:
+
+1. [Workflows](!docs!/learn/fundamentals/workflows) that implement the logic to create product data in Strapi.
+2. A [subscriber](!docs!/learn/fundamentals/events-and-subscribers) that listens to the product creation event in Medusa and triggers the workflow.
+
+### a. Create Product Options Workflow
+
+Before creating the main workflow to handle product creation, you'll create a sub-workflow to handle the creation of product options and their values in Strapi. You'll use this sub-workflow in the main product creation workflow.
+
+You create custom commerce features in [workflows](!docs!/learn/fundamentals/workflows). A workflow is a series of queries and actions, called steps, that complete a task. A workflow is similar to a function, but allows you to track execution progress, define rollback logic, and configure other advanced features.
+
+<Note>
+
+Refer to the [Workflows documentation](!docs!/learn/fundamentals/workflows) to learn more.
+
+</Note>
+
+The workflow to create product options in Strapi has the following steps:
+
+<WorkflowDiagram
+  workflow={{
+    name: "createOptionsInStrapiWorkflow",
+    steps: [
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve product option data.",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 1
+      },
+      {
+        type: "step",
+        name: "createOptionsInStrapiStep",
+        description: "Create the product option in Strapi.",
+        depth: 2
+      },
+      {
+        type: "step",
+        name: "createOptionValuesInStrapiStep",
+        description: "Create the product option value in Strapi.",
+        depth: 3
+      },
+      {
+        type: "step",
+        name: "updateProductOptionValuesMetadataStep",
+        description: "Store the Strapi ID in the product option values metadata.",
+        depth: 4
+      }
+    ]
+  }}
+  hideLegend
+/>
+
+The first step is available out-of-the-box in Medusa. You need to create the rest of the steps.
+
+#### createOptionsInStrapiStep
+
+The `createOptionsInStrapiStep` creates product options in Strapi.
+
+To create the step, create the file `src/workflows/steps/create-options-in-strapi.ts` with the following content:
+
+```ts title="src/workflows/steps/create-options-in-strapi.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { STRAPI_MODULE } from "../../modules/strapi"
+import StrapiModuleService, { Collection } from "../../modules/strapi/service"
+
+export type CreateOptionsInStrapiInput = {
+  options: {
+    id: string
+    title: string
+    strapiProductId: number
+  }[]
+}
+
+export const createOptionsInStrapiStep = createStep(
+  "create-options-in-strapi",
+  async ({ options }: CreateOptionsInStrapiInput, { container }) => {
+    const strapiService: StrapiModuleService = container.resolve(STRAPI_MODULE)
+
+    const results: Record<string, any>[] = []
+
+    try {
+      for (const option of options) {
+        // Create option in Strapi
+        const strapiOption = await strapiService.create(
+          Collection.PRODUCT_OPTIONS, 
+          {
+            medusaId: option.id,
+            title: option.title,
+            product: option.strapiProductId,
+          }
+        )
+
+        results.push(strapiOption.data)
+      }
+    } catch (error) {
+      // If error occurs during loop,
+      // pass results created so far to compensation
+      return StepResponse.permanentFailure(
+        strapiService.formatStrapiError(
+          error, 
+          "Failed to create options in Strapi"
+        ),
+        { results }
+      )
+    }
+
+    return new StepResponse(
+      results,
+      results
+    )
+  },
+  async (compensationData, { container }) => {
+    if (!compensationData) {
+      return
+    }
+
+    const strapiService: StrapiModuleService = container.resolve(STRAPI_MODULE)
+
+    // Delete all created options
+    for (const result of compensationData) {
+      await strapiService.delete(Collection.PRODUCT_OPTIONS, result.documentId)
+    }
+  }
+)
+```
+
+You create a step with the `createStep` function. It accepts three parameters:
+
+1. The step's unique name.
+2. An async function that receives two parameters:
+    - The step's input, which is an object holding the product options to create in Strapi.
+    - An object that has properties including the [Medusa container](!docs!/learn/fundamentals/medusa-container), which is a registry of Framework and commerce tools that you can access in the step.
+3. An async compensation function that undoes the actions performed by the step function. This function is only executed if an error occurs during the workflow's execution.
+
+In the step function, you resolve the Strapi Module's service from the Medusa container. Then, you loop through the product options and create them in Strapi using the service's `create` method.
+
+If an error occurs during the creation loop, you return a permanent failure response with the results created so far. This allows the compensation function to delete any options that were successfully created before the error occurred.
+
+Finally, a step must return a `StepResponse` instance, which accepts two parameters:
+
+1. The step's output, which is an array of created Strapi product options.
+2. The data to pass to the compensation function, which is also the array of created Strapi product options.
+
+In the compensation function, you delete all the created product options in Strapi if an error occurs during the workflow's execution.
+
+#### createOptionValuesInStrapiStep
+
+The `createOptionValuesInStrapiStep` creates product option values in Strapi.
+
+To create the step, create the file `src/workflows/steps/create-option-values-in-strapi.ts` with the following content:
+
+```ts title="src/workflows/steps/create-option-values-in-strapi.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { STRAPI_MODULE } from "../../modules/strapi"
+import StrapiModuleService, { Collection } from "../../modules/strapi/service"
+
+export type CreateOptionValuesInStrapiInput = {
+  optionValues: {
+    id: string
+    value: string
+    strapiOptionId: number
+  }[]
+}
+
+export const createOptionValuesInStrapiStep = createStep(
+  "create-option-values-in-strapi",
+  async ({ optionValues }: CreateOptionValuesInStrapiInput, { container }) => {
+    const strapiService: StrapiModuleService = container.resolve(STRAPI_MODULE)
+
+    const results: Record<string, any>[] = []
+
+    try {
+      for (const optionValue of optionValues) {
+        // Create option value in Strapi
+        const strapiOptionValue = await strapiService.create(
+          Collection.PRODUCT_OPTION_VALUES,
+          {
+            medusaId: optionValue.id,
+            value: optionValue.value,
+            option: optionValue.strapiOptionId,
+          }
+        )
+
+        results.push(strapiOptionValue.data)
+      }
+    } catch (error) {
+      // If error occurs during loop,
+      // pass results created so far to compensation
+      return StepResponse.permanentFailure(
+        strapiService.formatStrapiError(
+          error, 
+          "Failed to create option values in Strapi"
+        ),
+        { results }
+      )
+    }
+
+    return new StepResponse(
+      results,
+      results
+    )
+  },
+  async (compensationData, { container }) => {
+    if (!compensationData) {
+      return
+    }
+
+    const strapiService: StrapiModuleService = container.resolve(STRAPI_MODULE)
+    
+    // Delete all created option values
+    for (const result of compensationData) {
+      await strapiService.delete(
+        Collection.PRODUCT_OPTION_VALUES, 
+        result.documentId
+      )
+    }
+  }
+)
+```
+
+This step receives the option values to create in Strapi. In the step, you create each option value in Strapi using the Strapi Module's service.
+
+In the compensation function, you delete all the created option values in Strapi if an error occurs during the workflow's execution.
+
+#### updateProductOptionValuesMetadataStep
+
+The `updateProductOptionValuesMetadataStep` stores the Strapi IDs of the created product option values in the `metadata` property of the corresponding product option values in Medusa. This allows you to reference the Strapi option values later, such as when updating or deleting them.
+
+To create the step, create the file `src/workflows/steps/update-product-option-values-metadata.ts` with the following content:
+
+```ts title="src/workflows/steps/update-product-option-values-metadata.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+import { ProductOptionValueDTO } from "@medusajs/framework/types"
+
+export type UpdateProductOptionValuesMetadataInput = {
+  updates: {
+    id: string
+    strapiId: number
+    strapiDocumentId: string
+  }[]
+}
+
+export const updateProductOptionValuesMetadataStep = createStep(
+  "update-product-option-values-metadata",
+  async ({ updates }: UpdateProductOptionValuesMetadataInput, { container }) => {
+    const productModuleService = container.resolve(Modules.PRODUCT)
+
+    const updatedOptionValues: ProductOptionValueDTO[] = []
+
+    // Fetch original metadata for compensation
+    const originalOptionValues = await productModuleService.listProductOptionValues({ 
+      id: updates.map((u) => u.id),
+    })
+
+    // Update each option value's metadata
+    for (const update of updates) {
+      const optionValue = originalOptionValues.find((ov) => ov.id === update.id)
+      if (optionValue) {
+
+        const updated = await productModuleService.updateProductOptionValues(
+          update.id, 
+          {
+            metadata: {
+              ...optionValue.metadata,
+              strapi_id: update.strapiId,
+              strapi_document_id: update.strapiDocumentId,
+            },
+          }
+        )
+
+        updatedOptionValues.push(updated)
+
+      }
+    }
+
+    return new StepResponse(updatedOptionValues, originalOptionValues)
+  },
+  async (compensationData, { container }) => {
+    if (!compensationData) {
+      return
+    }
+
+    const productModuleService = container.resolve(Modules.PRODUCT)
+
+    // Restore original metadata
+    for (const original of compensationData) {
+      await productModuleService.updateProductOptionValues(original.id, {
+        metadata: original.metadata,
+      })
+    }
+  }
+)
+```
+
+This step receives an array of option values to update with their corresponding Strapi IDs.
+
+In the step, you resolve the Product Module's service and update each option value's `metadata` property with the Strapi ID and document ID.
+
+In the compensation function, you restore the original metadata of the option values if an error occurs during the workflow's execution.
+
+#### Create Product Options Workflow
+
+Now that you have created the necessary steps, you can create the workflow.
+
+To create the workflow, create the file `src/workflows/create-options-in-strapi.ts` with the following content:
+
+```ts title="src/workflows/create-options-in-strapi.ts" badgeLabel="Medusa application" badgeColor="green" collapsibleLines="1-15" expandButtonLabel="Show Imports"
+import { 
+  createWorkflow, 
+  WorkflowResponse,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
+import { createOptionsInStrapiStep } from "./steps/create-options-in-strapi"
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+import { 
+  CreateOptionValuesInStrapiInput, 
+  createOptionValuesInStrapiStep,
+} from "./steps/create-option-values-in-strapi"
+import { 
+  updateProductOptionValuesMetadataStep,
+} from "./steps/update-product-option-values-metadata"
+
+export type CreateOptionsInStrapiWorkflowInput = {
+  ids: string[]
+}
+
+export const createOptionsInStrapiWorkflow = createWorkflow(
+  "create-options-in-strapi",
+  (input: CreateOptionsInStrapiWorkflowInput) => {
+    // Fetch the option with all necessary fields
+    // including metadata and product metadata
+    const { data: options } = useQueryGraphStep({
+      entity: "product_option",
+      fields: [
+        "id",
+        "title",
+        "product_id",
+        "metadata",
+        "product.metadata",
+        "values.*",
+      ],
+      filters: {
+        id: input.ids,
+      },
+      options: {
+        throwIfKeyNotFound: true,
+      },
+    })
+
+    // @ts-ignore
+    const preparedOptions = transform({ options }, (data) => {
+      return data.options.map((option) => ({
+        id: option.id,
+        title: option.title,
+        strapiProductId: Number(option.product?.metadata?.strapi_id),
+      }))
+    })
+
+    // Pass the prepared option data to the step
+    const strapiOptions = createOptionsInStrapiStep({
+      options: preparedOptions,
+    })
+    
+    // Extract option values
+    const optionValuesData = transform({ options, strapiOptions }, (data) => {
+      return data.options.flatMap((option) => {
+        return option.values.map((value) => {
+          const strapiOption = data.strapiOptions.find(
+            (strapiOption) => strapiOption.medusaId === option.id
+          )
+          if (!strapiOption) {
+            return null
+          }
+          return {
+            id: value.id,
+            value: value.value,
+            strapiOptionId: strapiOption.id,
+          }
+        })
+      })
+    })
+    
+    const strapiOptionValues = createOptionValuesInStrapiStep({
+      optionValues: optionValuesData,
+    } as CreateOptionValuesInStrapiInput)
+
+    const optionValuesMetadataUpdate = transform({ strapiOptionValues }, (data) => {
+      return {
+        updates: [
+          ...data.strapiOptionValues.map((optionValue) => ({
+            id: optionValue.medusaId,
+            strapiId: optionValue.id,
+            strapiDocumentId: optionValue.documentId,
+          })),
+        ],
+      }
+    })
+
+    updateProductOptionValuesMetadataStep(optionValuesMetadataUpdate)
+
+    return new WorkflowResponse({
+      strapi_options: strapiOptions,
+    })
+  }
+)
+```
+
+You create a workflow using the `createWorkflow` function. It accepts the workflow's unique name as a first parameter.
+
+It accepts a second parameter: a constructor function that holds the workflow's implementation. The function accepts an input object holding the IDs of the product options to create in Strapi.
+
+In the workflow, you:
+
+1. Retrieve the product options in Medusa using the `useQueryGraphStep`.
+    - This step uses [Query](!docs!/learn/fundamentals/module-links/query) to retrieve data in Medusa across modules.
+2. Prepare the option data to create using [transform](!docs!/learn/fundamentals/workflows/variable-manipulation).
+    - This function allows you to manipulate data in workflows.
+3. Create the product options in Strapi using the `createOptionsInStrapiStep`.
+4. Prepare the option values to create using `transform`.
+5. Create the product option values in Strapi using the `createOptionValuesInStrapiStep`.
+6. Prepare the data to update the option values' metadata using `transform`.
+7. Update the option values' metadata using the `updateProductOptionValuesMetadataStep`.
+
+A workflow must return an instance of `WorkflowResponse` that accepts the data to return to the workflow's executor.
+
+You'll use this workflow when you implement the create products in Strapi workflow.
+
+<Note>
+
+In a workflow, you can't manipulate data because Medusa stores an internal representation of the workflow on application startup. Learn more in the [Data Manipulation](!docs!/learn/fundamentals/workflows/variable-manipulation) documentation.
+
+</Note>
+
+### b. Create Product Variants Workflow
+
+Next, you'll create another sub-workflow to handle the creation of product variants in Strapi. You'll use this sub-workflow in the main product creation workflow.
+
+The workflow to create product variants in Strapi has the following steps:
+
+<WorkflowDiagram
+  workflow={{
+    workflow: "createVariantsInStrapiWorkflow",
+    steps: [
+      {
+        type: "step",
+        name: "acquireLockStep",
+        description: "Acquire a lock to prevent concurrent creation",
+        link: "/references/medusa-workflows/steps/acquireLockStep",
+        depth: 1
+      },
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve product variant data.",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 2
+      },
+      {
+        type: "when",
+        steps: [
+          {
+            type: "step",
+            name: "uploadImagesToStrapiStep",
+            description: "Upload variant images to Strapi.",
+            depth: 1
+          },
+          {
+            type: "step",
+            name: "uploadImagesToStrapiStep",
+            description: "Upload variant thumbnail to Strapi.",
+            depth: 2
+          },
+          {
+            type: "step",
+            name: "createVariantsInStrapiStep",
+            description: "Create the product variant in Strapi.",
+            depth: 3
+          },
+          {
+            type: "step",
+            name: "updateProductVariantsMetadataStep",
+            description: "Store the Strapi ID in the product variants metadata.",
+            depth: 4
+          }
+        ],
+        depth: 3
+      },
+      {
+        type: "step",
+        name: "releaseLockStep",
+        description: "Release the acquired lock",
+        link: "/references/medusa-workflows/steps/releaseLockStep",
+        depth: 4
+      }
+    ]
+  }}
+  hideLegend
+/>
+
+The first, second, and last steps are available out-of-the-box in Medusa. You need to create the rest of the steps.
+
+#### uploadImagesToStrapiStep
+
+The `uploadImagesToStrapiStep` uploads images to Strapi. You'll use it to upload product and variant images.
+
+To create the step, create the file `src/workflows/steps/upload-images-to-strapi.ts` with the following content:
+
+```ts title="src/workflows/steps/upload-images-to-strapi.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { STRAPI_MODULE } from "../../modules/strapi"
+import StrapiModuleService from "../../modules/strapi/service"
+import { promiseAll } from "@medusajs/framework/utils"
+
+export type UploadImagesToStrapiInput = {
+  items: {
+    entity_id: string
+    url: string
+  }[]
+}
+
+export const uploadImagesToStrapiStep = createStep(
+  "upload-images-to-strapi",
+  async ({ items }: UploadImagesToStrapiInput, { container }) => {
+    const strapiService: StrapiModuleService = container.resolve(STRAPI_MODULE)
+
+    const uploadedImages: {
+      entity_id: string
+      image_id: number
+    }[] = []
+
+    try {
+      for (const item of items) {
+        // Upload image to Strapi
+        const uploadedImageId = await strapiService.uploadImages([item.url])
+        uploadedImages.push({
+          entity_id: item.entity_id,
+          image_id: uploadedImageId[0],
+        })
+      }
+    } catch (error) {
+      // If error occurs, pass all uploaded files to compensation
+      return StepResponse.permanentFailure(
+        strapiService.formatStrapiError(
+          error, 
+          "Failed to upload images to Strapi"
+        ),
+        { uploadedImages }
+      )
+    }
+
+    return new StepResponse(
+      uploadedImages,
+      uploadedImages
+    )
+  },
+  async (compensationData, { container }) => {
+    if (!compensationData) {
+      return
+    }
+
+    const strapiService: StrapiModuleService = container.resolve(STRAPI_MODULE)
+
+    await promiseAll(
+      compensationData.map(
+        (uploadedImage) => strapiService.deleteImage(uploadedImage.image_id)
+      )
+    )
+  }
+)
+```
+
+The step accepts an array of items, each having the ID of the item that the image is associated with, and the URL of the image to upload.
+
+In the step, you upload each image to Strapi using the Strapi Module's service.
+
+In the compensation function, you delete all the uploaded images in Strapi if an error occurs during the workflow's execution.
+
+#### createVariantsInStrapiStep
+
+The `createVariantsInStrapiStep` creates product variants in Strapi.
+
+To create the step, create the file `src/workflows/steps/create-variants-in-strapi.ts` with the following content:
+
+```ts title="src/workflows/steps/create-variants-in-strapi.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { STRAPI_MODULE } from "../../modules/strapi"
+import StrapiModuleService, { Collection } from "../../modules/strapi/service"
+
+export type CreateVariantsInStrapiInput = {
+  variants: {
+    id: string
+    title: string
+    sku?: string
+    strapiProductId: number
+    optionValueIds?: number[]
+    imageIds?: number[]
+    thumbnailId?: number
+  }[]
+}
+
+export const createVariantsInStrapiStep = createStep(
+  "create-variants-in-strapi",
+  async ({ variants }: CreateVariantsInStrapiInput, { container }) => {
+    const strapiService: StrapiModuleService = container.resolve(STRAPI_MODULE)
+
+    const results: Record<string, any>[] = []
+
+    try {
+      // Process all variants
+      for (const variant of variants) {
+        // Create variant in Strapi
+        const strapiVariant = await strapiService.create(
+          Collection.PRODUCT_VARIANTS, 
+          {
+            medusaId: variant.id,
+            title: variant.title,
+            sku: variant.sku,
+            product: variant.strapiProductId,
+            option_values: variant.optionValueIds || [],
+            images: variant.imageIds || [],
+            thumbnail: variant.thumbnailId,
+          }
+        )
+
+        results.push(strapiVariant.data)
+      }
+    } catch (error) {
+      // If error occurs during loop,
+      // pass results created so far to compensation
+      return StepResponse.permanentFailure(
+        strapiService.formatStrapiError(
+          error, 
+          "Failed to create variants in Strapi"
+        ),
+        { results }
+      )
+    }
+
+    return new StepResponse(
+      results,
+      results
+    )
+  },
+  async (compensationData, { container }) => {
+    if (!compensationData) {
+      return
+    }
+
+    const strapiService: StrapiModuleService = container.resolve(STRAPI_MODULE)
+    
+    // Delete all created variants
+    for (const result of compensationData) {
+      await strapiService.delete(Collection.PRODUCT_VARIANTS, result.documentId)
+    }
+  }
+)
+```
+
+The step receives the product variants to create in Strapi. In the step, you create each variant in Strapi using the Strapi Module's service.
+
+In the compensation function, you delete all the created variants in Strapi if an error occurs during the workflow's execution.
+
+#### updateProductVariantsMetadataStep
+
+The `updateProductVariantsMetadataStep` stores the Strapi IDs of the created product variants in the `metadata` property of the corresponding product variants in Medusa. This allows you to reference the Strapi variants later, such as when updating or deleting them.
+
+To create the step, create the file `src/workflows/steps/update-product-variants-metadata.ts` with the following content:
+
+```ts title="src/workflows/steps/update-product-variants-metadata.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+import { ProductVariantDTO } from "@medusajs/framework/types"
+
+export type UpdateProductVariantsMetadataInput = {
+  updates: {
+    variantId: string
+    strapiId: number
+    strapiDocumentId: string
+  }[]
+}
+
+export const updateProductVariantsMetadataStep = createStep(
+  "update-product-variants-metadata",
+  async ({ updates }: UpdateProductVariantsMetadataInput, { container }) => {
+    const productModuleService = container.resolve(Modules.PRODUCT)
+
+    const updatedVariants: ProductVariantDTO[] = []
+
+    // Fetch original metadata for compensation
+    const originalVariants = await productModuleService.listProductVariants({ 
+      id: updates.map((u) => u.variantId),
+    })
+
+    // Update each variant's metadata
+    for (const update of updates) {
+      const variant = originalVariants.find((v) => v.id === update.variantId)
+      if (variant) {
+
+        const updated = await productModuleService.updateProductVariants(
+          update.variantId, 
+          {
+            metadata: {
+              ...variant.metadata,
+              strapi_id: update.strapiId,
+              strapi_document_id: update.strapiDocumentId,
+            },
+          }
+        )
+
+        updatedVariants.push(updated)
+
+      }
+    }
+
+    return new StepResponse(updatedVariants, originalVariants)
+  },
+  async (compensationData, { container }) => {
+    if (!compensationData) {
+      return
+    }
+
+    const productModuleService = container.resolve(Modules.PRODUCT)
+
+    // Restore original metadata
+    for (const original of compensationData) {
+      await productModuleService.updateProductVariants(original.id, {
+        metadata: original.metadata,
+      })
+    }
+  }
+)
+```
+
+This step receives an array of variants to update with their corresponding Strapi IDs.
+
+In the step, you resolve the Product Module's service and update each variant's `metadata` property with the Strapi ID and document ID.
+
+In the compensation function, you restore the original metadata of the variants if an error occurs during the workflow's execution.
+
+#### Create Product Variants Workflow
+
+Now that you have created the necessary steps, you can create the workflow.
+
+To create the workflow, create the file `src/workflows/create-variants-in-strapi.ts` with the following content:
+
+```ts title="src/workflows/create-variants-in-strapi.ts" badgeLabel="Medusa application" badgeColor="green" collapsibleLines="1-12" expandButtonLabel="Show Imports"
+import { 
+  createWorkflow, 
+  WorkflowResponse,
+  transform,
+  when,
+} from "@medusajs/framework/workflows-sdk"
+import { acquireLockStep, releaseLockStep, useQueryGraphStep } from "@medusajs/medusa/core-flows"
+import { CreateVariantsInStrapiInput } from "./steps/create-variants-in-strapi"
+import { createVariantsInStrapiStep } from "./steps/create-variants-in-strapi"
+import { uploadImagesToStrapiStep } from "./steps/upload-images-to-strapi"
+import { updateProductVariantsMetadataStep } from "./steps/update-product-variants-metadata"
+
+export type CreateVariantsInStrapiWorkflowInput = {
+  ids: string[]
+  productId: string
+}
+
+export const createVariantsInStrapiWorkflow = createWorkflow(
+  "create-variants-in-strapi",
+  (input: CreateVariantsInStrapiWorkflowInput) => {
+    acquireLockStep({
+      key: ["strapi-product-create", input.productId],
+    })
+    // Fetch the variant with all necessary fields including option values
+    const { data: variants } = useQueryGraphStep({
+      entity: "product_variant",
+      fields: [
+        "id",
+        "title",
+        "sku",
+        "product_id",
+        "product.metadata",
+        "product.options.id",
+        "product.options.values.id",
+        "product.options.values.value",
+        "product.options.values.metadata",
+        "product.strapi_product.*",
+        "images.*",
+        "thumbnail",
+        "options.*",
+      ],
+      filters: {
+        id: input.ids,
+      },
+      options: {
+        throwIfKeyNotFound: true,
+      },
+    })
+
+    const strapiVariants = when({ 
+      variants,
+    }, (data) => !!(data.variants[0].product as any)?.strapi_product)
+      .then(() => {
+        const variantImages = transform({ 
+          variants,
+        }, (data) => {
+          return data.variants.flatMap((variant) => variant.images?.map(
+            (image) => ({
+              entity_id: variant.id,
+              url: image.url,
+            })
+          ) || [])
+        })
+        const variantThumbnail = transform({ 
+          variants,
+        }, (data) => {
+          return data.variants
+          // @ts-ignore
+          .filter((variant) => !!variant.thumbnail)
+          .flatMap((variant) => ({
+            entity_id: variant.id,
+            // @ts-ignore
+            url: variant.thumbnail!,
+          }))
+        })
+    
+        const strapiVariantImages = uploadImagesToStrapiStep({
+          items: variantImages,
+        })
+    
+        const strapiVariantThumbnail = uploadImagesToStrapiStep({
+          items: variantThumbnail,
+        }).config({ name: "upload-variant-thumbnail" })
+    
+        const variantsData = transform({ 
+          variants, 
+          strapiVariantImages, 
+          strapiVariantThumbnail,
+        }, (data) => {
+          const varData = data.variants.map((variant) => ({
+            id: variant.id,
+            title: variant.title,
+            sku: variant.sku,
+            strapiProductId: Number(variant.product?.metadata?.strapi_id),
+            strapiVariantImages: data.strapiVariantImages
+              .filter((image) => image.entity_id === variant.id)
+              .map((image) => image.image_id),
+            strapiVariantThumbnail: data.strapiVariantThumbnail
+              .find((image) => image.entity_id === variant.id)?.image_id,
+            optionValueIds: variant.options.flatMap((option) => {
+              // find the strapi option value id for the option value
+              return variant.product?.options.flatMap(
+                (productOption) => productOption.values.find(
+                  (value) => value.value === option.value
+                )?.metadata?.strapi_id).filter((value) => value !== undefined)
+            }),
+          }))
+
+          return varData
+        })
+    
+        const strapiVariants = createVariantsInStrapiStep({
+          variants: variantsData,
+        } as CreateVariantsInStrapiInput)
+    
+        const variantsMetadataUpdate = transform({ strapiVariants }, (data) => {
+          return {
+            updates: data.strapiVariants.map((strapiVariant) => ({
+              variantId: strapiVariant.medusaId,
+              strapiId: strapiVariant.id,
+              strapiDocumentId: strapiVariant.documentId,
+            })),
+          }
+        })
+    
+        updateProductVariantsMetadataStep(variantsMetadataUpdate)
+
+        return strapiVariants
+      })
+
+    releaseLockStep({
+      key: ["strapi-product-create", input.productId],
+    })
+
+    return new WorkflowResponse({
+      variants: strapiVariants,
+    })
+  }
+)
+```
+
+The workflow receives the IDs of the product variants to create in Strapi and the Medusa product ID they belong to.
+
+In the workflow, you:
+
+1. Acquire a [lock](../../../infrastructure-modules/locking/page.mdx) to prevent concurrent creation of variants for the same product. This is necessary to handle both the product and variant creation events without duplications.
+2. Retrieve the product variants in Medusa using the `useQueryGraphStep`.
+3. Check if the product has been created in Strapi using [when](!docs!/learn/fundamentals/workflows/conditions). If so, you:
+    - Prepare the variant images to upload using `transform`.
+    - Prepare the variant thumbnail to upload using `transform`.
+    - Upload the variant images to Strapi using the `uploadImagesToStrapiStep`.
+    - Upload the variant thumbnail to Strapi using the `uploadImagesToStrapiStep`.
+    - Prepare the variant data to create using `transform`.
+    - Create the product variants in Strapi using the `createVariantsInStrapiStep`.
+    - Prepare the data to update the variants' metadata using `transform`.
+    - Update the variants' metadata using the `updateProductVariantsMetadataStep`.
+4. Release the acquired lock.
+
+<Note>
+
+In a workflow, you can't perform steps based on conditions because Medusa stores an internal representation of the workflow on application startup. Learn more in the [Conditions in Workflows](!docs!/learn/fundamentals/workflows/conditions) documentation.
+
+</Note>
+
+### c. Create Product Creation Workflow
+
+Now that you have created the necessary sub-workflows, you can create the main workflow to handle product creation in Strapi.
+
+The workflow to create products in Strapi has the following steps:
+
+<WorkflowDiagram
+  workflow={{
+    name: "createProductInStrapiWorkflow",
+    steps: [
+      {
+        type: "step",
+        name: "acquireLockStep",
+        description: "Acquire a lock to prevent concurrent creation of product variants",
+        link: "/references/medusa-workflows/steps/acquireLockStep",
+        depth: 1
+      },
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve product data.",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 2
+      },
+      {
+        type: "step",
+        name: "uploadImagesToStrapiStep",
+        description: "Upload product images to Strapi.",
+        depth: 3
+      },
+      {
+        type: "when",
+        steps: [
+          {
+            type: "step",
+            name: "uploadImagesToStrapiStep",
+            description: "Upload product thumbnail to Strapi if it exists.",
+            depth: 1
+          }
+        ],
+        depth: 4
+      },
+      {
+        type: "step",
+        name: "createProductInStrapiStep",
+        description: "Create the product in Strapi.",
+        depth: 5
+      },
+      {
+        type: "workflow",
+        name: "updateProductsWorkflow",
+        description: "Update the product's `metadata` with the Strapi ID.",
+        link: "/references/medusa-workflows/updateProductsWorkflow",
+        depth: 6
+      },
+      {
+        type: "workflow",
+        name: "createOptionsInStrapiWorkflow",
+        description: "Create the product options in Strapi.",
+        depth: 7
+      },
+      {
+        type: "step",
+        name: "releaseLockStep",
+        description: "Release the acquired lock",
+        link: "/references/medusa-workflows/steps/releaseLockStep",
+        depth: 8
+      },
+      {
+        type: "workflow",
+        name: "createVariantsInStrapiWorkflow",
+        description: "Create the product variants in Strapi.",
+        depth: 9
+      }
+    ]
+  }}
+  hideLegend
+/>
+
+You only need to create the `createProductInStrapiStep` step. The rest of the steps and workflows are either available out-of-the-box in Medusa or you have already created them.
+
+#### createProductInStrapiStep
+
+The `createProductInStrapiStep` creates a product in Strapi.
+
+To create the step, create the file `src/workflows/steps/create-product-in-strapi.ts` with the following content:
+
+```ts title="src/workflows/steps/create-product-in-strapi.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { STRAPI_MODULE } from "../../modules/strapi"
+import StrapiModuleService, { Collection } from "../../modules/strapi/service"
+
+export type CreateProductInStrapiInput = {
+  product: {
+    id: string
+    title: string
+    subtitle?: string
+    description?: string
+    handle: string
+    imageIds?: number[]
+    thumbnailId?: number
+  }
+}
+
+export const createProductInStrapiStep = createStep(
+  "create-product-in-strapi",
+  async ({ product }: CreateProductInStrapiInput, { container }) => {
+    const strapiService: StrapiModuleService = container.resolve(STRAPI_MODULE)
+
+    // Create product in Strapi
+    const strapiProduct = await strapiService.create(Collection.PRODUCTS, {
+      medusaId: product.id,
+      title: product.title,
+      subtitle: product.subtitle,
+      description: product.description,
+      handle: product.handle,
+      images: product.imageIds || [],
+      thumbnail: product.thumbnailId,
+    })
+
+    return new StepResponse(
+      strapiProduct.data,
+      strapiProduct.data
+    )
+  },
+  async (compensationData, { container }) => {
+    if (!compensationData) {
+      return
+    }
+
+    const strapiService: StrapiModuleService = container.resolve(STRAPI_MODULE)
+
+    // Delete the product
+    await strapiService.delete(Collection.PRODUCTS, compensationData.documentId)
+  }
+)
+```
+
+The step receives the product to create in Strapi. In the step, you create the product in Strapi using the Strapi Module's service.
+
+In the compensation function, you delete the created product in Strapi if an error occurs during the workflow's execution.
+
+#### Create Product Workflow
+
+Now that you have created the necessary step, you can create the main workflow to handle product creation in Strapi.
+
+To create the workflow, create the file `src/workflows/create-product-in-strapi.ts` with the following content:
+
+```ts title="src/workflows/create-product-in-strapi.ts" badgeLabel="Medusa application" badgeColor="green"
+import { 
+  createWorkflow, 
+  WorkflowResponse,
+  transform,
+  when,
+} from "@medusajs/framework/workflows-sdk"
+import { 
+  CreateProductInStrapiInput, 
+  createProductInStrapiStep,
+} from "./steps/create-product-in-strapi"
+import { uploadImagesToStrapiStep } from "./steps/upload-images-to-strapi"
+import { 
+  useQueryGraphStep, 
+  updateProductsWorkflow, 
+  acquireLockStep, 
+  releaseLockStep,
+} from "@medusajs/medusa/core-flows"
+import { createOptionsInStrapiWorkflow } from "./create-options-in-strapi"
+import { createVariantsInStrapiWorkflow } from "./create-variants-in-strapi"
+
+export type CreateProductInStrapiWorkflowInput = {
+  id: string
+}
+
+export const createProductInStrapiWorkflow = createWorkflow(
+  "create-product-in-strapi",
+  (input: CreateProductInStrapiWorkflowInput) => {
+    acquireLockStep({
+      key: ["strapi-product-create", input.id],
+      timeout: 60,
+    })
+    const { data: products } = useQueryGraphStep({
+      entity: "product",
+      fields: [
+        "id",
+        "title",
+        "subtitle",
+        "description",
+        "handle",
+        "images.url",
+        "thumbnail",
+        "variants.id",
+        "options.id",
+      ],
+      filters: {
+        id: input.id,
+      },
+      options: {
+        throwIfKeyNotFound: true,
+      },
+    })
+
+    const productImages = transform({ products }, (data) => {
+      return data.products[0].images.map((image) => {
+        return {
+          entity_id: data.products[0].id,
+          url: image.url,
+        }
+      })
+    })
+
+    const strapiProductImages = uploadImagesToStrapiStep({
+      items: productImages,
+    })
+
+    const strapiProductThumbnail = when(
+      ({ products }), 
+      // @ts-ignore
+      (data) => !!data.products[0].thumbnail
+    ).then(() => {
+      return uploadImagesToStrapiStep({
+        items: [{
+          entity_id: products[0].id,
+          url: products[0].thumbnail!,
+        }],
+      }).config({ name: "upload-product-thumbnail" })
+    })
+
+    const productWithImages = transform(
+      { strapiProductImages, strapiProductThumbnail, products },
+      (data) => {
+        return {
+          id: data.products[0].id,
+          title: data.products[0].title,
+          subtitle: data.products[0].subtitle,
+          description: data.products[0].description,
+          handle: data.products[0].handle,
+          imageIds: data.strapiProductImages.map((image) => image.image_id),
+          thumbnailId: data.strapiProductThumbnail?.[0]?.image_id,
+        }
+      }
+    )
+
+    const strapiProduct = createProductInStrapiStep({
+      product: productWithImages,
+    } as CreateProductInStrapiInput)
+
+    const productMetadataUpdate = transform({ strapiProduct }, (data) => {
+      return {
+        selector: { id: data.strapiProduct.medusaId },
+        update: {
+          metadata: {
+            strapi_id: data.strapiProduct.id,
+            strapi_document_id: data.strapiProduct.documentId,
+          },
+        },
+      }
+    })
+
+    updateProductsWorkflow.runAsStep({
+      input: productMetadataUpdate,
+    })
+
+    const variantIds = transform({ 
+      products,
+    }, (data) => data.products[0].variants.map((variant) => variant.id))
+    const optionIds = transform({
+      products,
+    }, (data) => data.products[0].options.map((option) => option.id))
+
+    createOptionsInStrapiWorkflow.runAsStep({
+      input: {
+        ids: optionIds,
+      },
+    })
+
+    releaseLockStep({
+      key: ["strapi-product-create", input.id],
+    })
+
+    createVariantsInStrapiWorkflow.runAsStep({
+      input: {
+        ids: variantIds,
+        productId: input.id,
+      },
+    })
+
+    return new WorkflowResponse(strapiProduct)
+  }
+)
+```
+
+The workflow receives the ID of the product to create in Strapi.
+
+In the workflow, you:
+
+1. Acquire a [lock](../../../infrastructure-modules/locking/page.mdx) to prevent concurrent creation of variants for the same product. This is necessary to handle both the product and variant creation events. Otherwise, variants might be created multiple times.
+2. Retrieve the product in Medusa using the `useQueryGraphStep`.
+3. Prepare the product images to upload using `transform`.
+4. Upload the product images to Strapi using the `uploadImagesToStrapiStep`.
+5. Check if the product has a thumbnail using `when`. If so, you upload the thumbnail to Strapi using the `uploadImagesToStrapiStep`.
+6. Prepare the product data to create using `transform`.
+7. Create the product in Strapi using the `createProductInStrapiStep`.
+8. Prepare the data to update the product's metadata using `transform`.
+9. Update the product's metadata using the `updateProductsWorkflow`.
+10. Prepare the IDs of the product options and variants using `transform`.
+11. Create the product options in Strapi using the `createOptionsInStrapiWorkflow`.
+12. Release the acquired lock.
+13. Create the product variants in Strapi using the `createVariantsInStrapiWorkflow`.
+
+The workflow returns the created Strapi product as a response.
+
+### d. Create Product Created Subscriber
+
+Finally, you need to create a subscriber that listens to the product creation event in Medusa and triggers the `createProductInStrapiWorkflow`.
+
+A subscriber is an asynchronous function that is executed whenever its associated event is emitted.
+
+<Note>
+
+Refer to the [Subscribers documentation](!docs!/learn/fundamentals/events-and-subscribers) to learn more about subscribers.
+
+</Note>
+
+To create the subscriber, create the file `src/subscribers/product-created-strapi-sync.ts` with the following content:
+
+```ts title="src/subscribers/product-created-strapi-sync.ts" badgeLabel="Medusa application" badgeColor="green"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { createProductInStrapiWorkflow } from "../workflows/create-product-in-strapi"
+
+export default async function productCreatedStrapiSyncHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  await createProductInStrapiWorkflow(container).run({
+    input: {
+      id: data.id,
+    },
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: "product.created",
+}
+```
+
+A subscriber file must export:
+
+- An asynchronous function, which is the subscriber function that is executed when the event is emitted.
+- A configuration object that defines the event the subscriber listens to, which is `product.created` in this case.
+
+In the subscriber function, you run the `createProductInStrapiWorkflow`, passing the ID of the created product as input.
+
+### Test Product Creation
+
+Now that you have implemented the product creation workflow and subscriber, you can test the integration.
+
+First, run the following command in the Strapi application's directory to start the Strapi server:
+
+```bash npm2yarn badgeLabel="Strapi" badgeColor="orange"
+npm run develop
+```
+
+Then, run the following command in the Medusa application's directory to start the Medusa server:
+
+```bash npm2yarn
+npm run dev
+```
+
+Next, open the Medusa Admin dashboard and [create a new product](!user-guide!/products/create). Once you create the product, you'll see the following in the Medusa server logs:
+
+```bash
+info:    Processing product.created which has 1 subscribers
+```
+
+This indicates that the subscriber has been triggered.
+
+Then, open the Strapi Admin dashboard and navigate to the Products collection. You should see the newly created product in the list.
+
+---
+
+## Step 6: Handle Strapi Product Updates
+
+Next, you'll handle product updates in Strapi and synchronize the changes back to Medusa. You'll create a workflow to update the relevant product data in Medusa based on the data received from Strapi.
+
+Then, you'll create an API route webhook that Strapi can call whenever product data is updated. With this setup, you'll have two-way synchronization between Medusa and Strapi for product data.
+
+### a. Handle Strapi Webhook Workflow
+
+The workflow to handle Strapi webhooks has the following steps:
+
+<WorkflowDiagram
+  workflow={{
+    name: "handleStrapiWebhookWorkflow",
+    steps: [
+      {
+        type: "step",
+        name: "prepareStrapiUpdateDataStep",
+        description: "Prepare the product update data from the Strapi webhook payload.",
+        depth: 1
+      },
+      {
+        type: "when",
+        steps: [
+          {
+            type: "workflow",
+            name: "updateProductsWorkflow",
+            description: "If the data updated in Strapi is product data, update the product in Medusa.",
+            link: "/references/medusa-workflows/updateProductsWorkflow",
+            depth: 1
+          },
+          {
+            type: "step",
+            name: "clearProductCacheStep",
+            description: "Clear the product cache to ensure updated data is served to clients.",
+            depth: 2
+          },
+        ],
+        depth: 2
+      },
+      {
+        type: "when",
+        steps: [
+          {
+            type: "workflow",
+            name: "updateProductVariantsWorkflow",
+            description: "If the data updated in Strapi is product variant data, update the product variant in Medusa.",
+            link: "/references/medusa-workflows/updateProductVariantsWorkflow",
+            depth: 1
+          },
+          {
+            type: "step",
+            name: "clearProductCacheStep",
+            description: "Clear the product cache to ensure updated data is served to clients.",
+            depth: 2
+          }
+        ],
+        depth: 3
+      },
+      {
+        type: "when",
+        steps: [
+          {
+            type: "workflow",
+            name: "updateProductOptionsWorkflow",
+            description: "If the data updated in Strapi is product option data, update the product option in Medusa.",
+            link: "/references/medusa-workflows/updateProductOptionsWorkflow",
+            depth: 1
+          },
+          {
+            type: "step",
+            name: "clearProductCacheStep",
+            description: "Clear the product cache to ensure updated data is served to clients.",
+            depth: 2
+          }
+        ],
+        depth: 4
+      },
+      {
+        type: "when",
+        steps: [
+          {
+            type: "step",
+            name: "updateProductOptionValueStep",
+            description: "If the data updated in Strapi is product option value data, update the product option value in Medusa.",
+            depth: 1
+          },
+          {
+            type: "step",
+            name: "clearProductCacheStep",
+            description: "Clear the product cache to ensure updated data is served to clients.",
+            depth: 2
+          }
+        ]
+      }
+    ]
+  }}
+  hideLegend
+/>
+
+You only need to create the `prepareStrapiUpdateDataStep`, `clearProductCacheStep`, and `updateProductOptionValueStep` steps. The rest of the steps and workflows are available out-of-the-box in Medusa.
+
+#### prepareStrapiUpdateDataStep
+
+The `prepareStrapiUpdateDataStep` extracts the data to update from the Strapi webhook payload.
+
+To create the step, create the file `src/workflows/steps/prepare-strapi-update-data.ts` with the following content:
+
+```ts title="src/workflows/steps/prepare-strapi-update-data.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+
+export const prepareStrapiUpdateDataStep = createStep(
+  "prepare-strapi-update-data",
+  async ({ entry }: { entry: any }) => {
+    let data: Record<string, unknown> = {}
+    const model = entry.model
+
+    switch (model) {
+      case "product":
+        data = {
+          id: entry.entry.medusaId,
+          title: entry.entry.title,
+          subtitle: entry.entry.subtitle,
+          description: entry.entry.description,
+          handle: entry.entry.handle,
+        }
+        break
+      case "product-variant":
+        data = {
+          id: entry.entry.medusaId,
+          title: entry.entry.title,
+          sku: entry.entry.sku,
+        }
+        break
+      case "product-option":
+        data = {
+          selector: {
+            id: entry.entry.medusaId,
+          },
+          update: {
+            title: entry.entry.title,
+          },
+        }
+        break
+      case "product-option-value":
+        data = {
+          optionValueId: entry.entry.medusaId,
+          value: entry.entry.value,
+        }
+        break
+    }
+
+    return new StepResponse({ data, model })
+  }
+)
+```
+
+The step receives the Strapi webhook payload containing the updated entry.
+
+In the step, you extract the relevant data based on the model type (product, product variant, product option, or product option value) and return it.
+
+#### clearProductCacheStep
+
+The `clearProductCacheStep` clears the product cache in Medusa to ensure that updated data is served to clients. This is necessary as you'll enable [caching](../../../infrastructure-modules/caching/page.mdx) later, which may cause stale data to be served to the storefront.
+
+To create the step, create the file `src/workflows/steps/clear-product-cache.ts` with the following content:
+
+```ts title="src/workflows/steps/clear-product-cache.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+
+type ClearProductCacheInput = {
+  productId: string | string[]
+}
+
+export const clearProductCacheStep = createStep(
+  "clear-product-cache",
+  async ({ productId }: ClearProductCacheInput, { container }) => {
+    const cachingModuleService = container.resolve(Modules.CACHING)
+
+    const productIds = Array.isArray(productId) ? productId : [productId]
+
+    // Clear cache for all specified products
+    for (const id of productIds) {
+      if (id) {
+        await cachingModuleService.clear({
+          tags: [`Product:${id}`],
+        })
+      }
+    }
+
+    return new StepResponse({})
+  }
+)
+```
+
+The step receives the ID or IDs of the products to clear the cache for.
+
+In the step, you clear the cache for each specified product using the Caching Module's service.
+
+#### updateProductOptionValueStep
+
+The `updateProductOptionValueStep` updates product option values in Medusa based on the data received from Strapi.
+
+To create the step, create the file `src/workflows/steps/update-product-option-value.ts` with the following content:
+
+```ts title="src/workflows/steps/update-product-option-value.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+import { IProductModuleService } from "@medusajs/framework/types"
+
+type UpdateProductOptionValueInput = {
+  id: string
+  value: string
+}
+
+export const updateProductOptionValueStep = createStep(
+  "update-product-option-value",
+  async ({ id, value }: UpdateProductOptionValueInput, { container }) => {
+    const productModuleService: IProductModuleService = container.resolve(
+      Modules.PRODUCT
+    )
+
+    // Store the old value for compensation
+    const oldOptionValue = await productModuleService
+      .retrieveProductOptionValue(id)
+
+    // Update the option value
+    const updatedOptionValue = await productModuleService
+      .updateProductOptionValues(
+        id,
+        {
+          value,
+        }
+      )
+
+    return new StepResponse(updatedOptionValue, oldOptionValue)
+  },
+  async (compensateData, { container }) => {
+    if (!compensateData) {
+      return
+    }
+
+    const productModuleService: IProductModuleService = container.resolve(
+      Modules.PRODUCT
+    )
+
+    // Revert the option value to its old value
+    await productModuleService.updateProductOptionValues(
+      compensateData.id,
+      {
+        value: compensateData.value,
+      }
+    )
+  }
+)
+```
+
+The step receives the ID of the option value to update and the new value.
+
+In the step, you resolve the Product Module's service and update the option value in Medusa.
+
+In the compensation function, you revert the option value to its old value if an error occurs during the workflow's execution.
+
+#### Handle Strapi Webhook Workflow
+
+Now that you have created the necessary steps, you can create the workflow to handle Strapi webhooks.
+
+To create the workflow, create the file `src/workflows/handle-strapi-webhook.ts` with the following content:
+
+```ts title="src/workflows/handle-strapi-webhook.ts" badgeLabel="Medusa application" badgeColor="green" collapsibleLines="1-19" expandButtonLabel="Show Imports"
+import { 
+  createWorkflow, 
+  when,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+import { prepareStrapiUpdateDataStep } from "./steps/prepare-strapi-update-data"
+import { clearProductCacheStep } from "./steps/clear-product-cache"
+import { updateProductOptionValueStep } from "./steps/update-product-option-value"
+import { 
+  updateProductsWorkflow, 
+  updateProductVariantsWorkflow, 
+  updateProductOptionsWorkflow,
+} from "@medusajs/medusa/core-flows"
+import { 
+  UpsertProductDTO, 
+  UpsertProductVariantDTO,
+} from "@medusajs/framework/types"
+
+export type WorkflowInput = {
+  entry: any
+}
+
+export const handleStrapiWebhookWorkflow = createWorkflow(
+  "handle-strapi-webhook-workflow",
+  (input: WorkflowInput) => {
+    const preparedData = prepareStrapiUpdateDataStep({
+      entry: input.entry,
+    })
+
+    when(input, (input) => input.entry.model === "product")
+      .then(() => {
+        updateProductsWorkflow.runAsStep({
+          input: {
+            products: [preparedData.data as unknown as UpsertProductDTO],
+          },
+        })
+
+        // Clear the product cache after update
+        const productId = transform({ preparedData }, (data) => {
+          return (data.preparedData.data as any).id
+        })
+
+        clearProductCacheStep({ productId })
+      })
+
+    when(input, (input) => input.entry.model === "product-variant")
+      .then(() => {
+        const variants = updateProductVariantsWorkflow.runAsStep({
+          input: {
+            product_variants: [
+              preparedData.data as unknown as UpsertProductVariantDTO,
+            ],
+          },
+        })
+
+        clearProductCacheStep({ 
+          productId: variants[0].product_id!,
+        }).config({ name: "clear-product-cache-variant" })
+      })
+
+    when(input, (input) => input.entry.model === "product-option")
+      .then(() => {
+        const options = updateProductOptionsWorkflow.runAsStep({
+          input: preparedData.data as any,
+        })
+
+        clearProductCacheStep({ 
+          productId: options[0].product_id!,
+        }).config({ name: "clear-product-cache-option" })
+      })
+
+    when(input, (input) => input.entry.model === "product-option-value")
+      .then(() => {
+        // Update the option value using the Product Module
+        const optionValueData = transform({ preparedData }, (data) => ({
+          id: data.preparedData.data.optionValueId as string,
+          value: data.preparedData.data.value as string,
+        }))
+
+        updateProductOptionValueStep(optionValueData)
+
+        // Find all variants that use this option value to
+        // clear their product cache
+        const { data: variants } = useQueryGraphStep({
+          entity: "product_variant",
+          fields: [
+            "id",
+            "product_id",
+          ],
+          filters: {
+            options: {
+              id: preparedData.data.optionValueId as string,
+            },
+          },
+        }).config({ name: "get-variants-from-option-value" })
+
+        // Clear the product cache for all affected products
+        const productIds = transform({ variants }, (data) => {
+          const uniqueProductIds = [
+            ...new Set(data.variants.map((v) => v.product_id)),
+          ]
+          return uniqueProductIds as string[]
+        })
+
+        clearProductCacheStep({ 
+          productId: productIds,
+        }).config({ name: "clear-product-cache-option-value" })
+      })
+  }
+)
+```
+
+The workflow receives the Strapi webhook payload containing the updated entry.
+
+In the workflow, you:
+
+1. Prepare the update data using the `prepareStrapiUpdateDataStep`.
+2. Check if the updated model is a product using `when`. If so, you:
+    - Update the product in Medusa using the `updateProductsWorkflow`.
+    - Clear the product cache using the `clearProductCacheStep`.
+3. Check if the updated model is a product variant using `when`. If so, you
+    - Update the product variant in Medusa using the `updateProductVariantsWorkflow`.
+    - Clear the product cache using the `clearProductCacheStep`.
+4. Check if the updated model is a product option using `when`. If so, you:
+    - Update the product option in Medusa using the `updateProductOptionsWorkflow`.
+    - Clear the product cache using the `clearProductCacheStep`.
+5. Check if the updated model is a product option value using `when`. If so, you:
+    - Update the product option value in Medusa using the `updateProductOptionValueStep`.
+    - Retrieve all product variants that use the updated option value using the `useQueryGraphStep`.
+    - Clear the product cache for all affected products using the `clearProductCacheStep`.
+
+### b. Create Strapi Webhook API Route
+
+Next, you need to create an API route webhook that Strapi can call whenever product data is updated.
+
+An [API route](!docs!/learn/fundamentals/api-routes) is an endpoint that exposes business logic and commerce features to clients.
+
+An API route is created in a `route.ts` file under a sub-directory of the `src/api` directory. The path of the API route is the file's path relative to `src/api`.
+
+<Note>
+
+Refer to the [API routes](!docs!/learn/fundamentals/api-routes) to learn more about them.
+
+</Note>
+
+To create the API route, create the file `src/api/webhooks/strapi/route.ts` with the following content:
+
+```ts title="src/api/webhooks/strapi/route.ts" badgeLabel="Medusa application" badgeColor="green"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { simpleHash, Modules } from "@medusajs/framework/utils"
+import { 
+  handleStrapiWebhookWorkflow, 
+  WorkflowInput,
+} from "../../../workflows/handle-strapi-webhook"
+
+export const POST = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const body = req.body as Record<string, unknown>
+  const logger = req.scope.resolve("logger")
+  const cachingService = req.scope.resolve(Modules.CACHING)
+  
+  // Generate a hash of the webhook payload to detect duplicates
+  const payloadHash = simpleHash(JSON.stringify(body))
+  const cacheKey = `strapi-webhook:${payloadHash}`
+  
+  // Check if we've already processed this webhook
+  const alreadyProcessed = await cachingService.get({ key: cacheKey })
+  
+  if (alreadyProcessed) {
+    logger.debug(`Webhook already processed (hash: ${payloadHash}), skipping to prevent infinite loop`)
+    res.status(200).send("OK - Already processed")
+    return
+  }
+  
+  if (body.event === "entry.update") {
+    const entry = body.entry as Record<string, unknown>
+    const entityCacheKey = `strapi-update:${body.model}:${entry.medusaId}`
+    await cachingService.set({
+      key: entityCacheKey,
+      data: { status: "processing", timestamp: Date.now() },
+      ttl: 10,
+    })
+    
+    await handleStrapiWebhookWorkflow(req.scope).run({
+      input: {
+        entry: body,
+      } as WorkflowInput,
+    })
+    
+    // Cache the hash to prevent reprocessing (TTL: 60 seconds)
+    await cachingService.set({
+      key: cacheKey,
+      data: { status: "processed", timestamp: Date.now() },
+      ttl: 60,
+    })
+    logger.debug(`Webhook processed and cached (hash: ${payloadHash})`)
+  }
+
+  res.status(200).send("OK")
+}
+```
+
+Since you export `POST` function, you expose a `POST` API route at `/webhooks/strapi`.
+
+In the API route, you:
+
+1. Retrieve the webhook payload from the request body.
+2. Resolve the Caching Module's service.
+3. Generate a hash of the webhook payload to detect duplicate webhook calls. This is necessary since you've implemented two-way synchronization between Medusa and Strapi, which may lead to infinite loops of updates.
+4. If the hash exists in the cache, the webhook has already been processed, so you skip further processing and return a `200` response.
+5. If the webhook event is `entry.update`, you:
+    - Cache the entity being updated to prevent concurrent updates.
+    - Run the `handleStrapiWebhookWorkflow`, passing the webhook payload as input.
+    - Cache the hash of the webhook payload to prevent reprocessing for 60 seconds.
+
+### c. Add Webhook Validation Middleware
+
+To ensure that webhook requests are coming from your Strapi application, you'll add a [middleware](!docs!/learn/fundamentals/api-routes/middlewares) that validates the webhook requests.
+
+To add the middleware, create the file `src/api/middlewares.ts` with the following content:
+
+```ts title="src/api/middlewares.ts" badgeLabel="Medusa application" badgeColor="green"
+import { 
+  defineMiddlewares, 
+  MedusaNextFunction, 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/webhooks/strapi",
+      middlewares: [
+        async (
+          req: MedusaRequest,
+          res: MedusaResponse,
+          next: MedusaNextFunction
+        ) => {
+          const apiKeyModuleService = req.scope.resolve(
+            Modules.API_KEY
+          )
+          
+          // Extract Bearer token from Authorization header
+          const authHeader = req.headers["authorization"]
+          const apiKey = authHeader?.replace("Bearer ", "")
+          
+          if (!apiKey) {
+            return res.status(401).json({
+              message: "Unauthorized: Missing API key",
+            })
+          }
+          
+          try {
+            // Validate the API key using Medusa's API Key Module
+            const isValid = await apiKeyModuleService.authenticate(apiKey)
+            
+            if (!isValid) {
+              return res.status(401).json({
+                message: "Unauthorized: Invalid API key",
+              })
+            }
+            
+            // API key is valid, proceed to route handler
+            next()
+          } catch (error) {
+            return res.status(401).json({
+              message: "Unauthorized: API key authentication failed",
+            })
+          }
+        },
+      ],
+    },
+  ],
+})
+```
+
+The middleware file must create middlewares with the `defineMiddlewares` function.
+
+You define a middleware for the `/webhooks/strapi` route that:
+
+1. Resolves the [API Key Module](../../../commerce-modules/api-key/page.mdx)'s service.
+2. Extracts the API key from the `Authorization` header.
+3. If the API key is missing, returns a `401 Unauthorized` response.
+4. Validates the API key using the API Key Module's service.
+5. If the API key is invalid, returns a `401 Unauthorized` response.
+6. Otherwise, calls the `next` function to proceed to the route handler.
+
+### d. Enable Caching in Medusa
+
+<Prerequisites
+  items={[
+    {
+      text: "Redis installed and Redis server running",
+      link: "https://redis.io/docs/getting-started/installation/"
+    }
+  ]}
+/>
+
+The [Caching Module](../../../infrastructure-modules/caching/page.mdx) is currently guarded by a feature flag. To enable it, add the feature flag and module in your `medusa-config.ts` file:
+
+```ts title="medusa-config.ts" badgeLabel="Medusa application" badgeColor="green"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    // ...
+    {
+      resolve: "@medusajs/medusa/caching",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/caching-redis",
+            id: "caching-redis",
+            options: {
+              redisUrl: process.env.REDIS_URL,
+            },
+          },
+        ],
+      },
+    },
+  ],
+  featureFlags: {
+    caching: true,
+  },
+})
+```
+
+This configuration enables the Caching Module with Redis as the caching provider. Make sure to set the `REDIS_URL` environment variable to point to your Redis server:
+
+```bash
+REDIS_URL=redis://localhost:6379
+```
+
+You can now use the Caching Module's service in your workflows and API routes. Medusa will also cache product and cart data automatically to improve performance.
+
+### e. Webhook Handling Preparation
+
+Before you test the webhook handling, you need to create a secret API key in Medusa, then configure webhooks in Strapi.
+
+Make sure to start both the Medusa and Strapi servers if they are not already running.
+
+#### Create Secret API Key in Medusa
+
+To create the secret API key in Medusa:
+
+1. Open the Medusa Admin dashboard.
+2. Go to Settings -> Secret API Keys.
+3. Click on the "Create" button at the top right.
+4. Enter a name for the API key. For example, "Strapi".
+5. Click on the "Save" button.
+6. Copy the generated API key. You'll need it to configure the webhook in Strapi.
+
+![Medusa Admin dashboard with the Secret API Keys page showing the Strapi API key](https://res.cloudinary.com/dza7lstvk/image/upload/v1763368257/Medusa%20Resources/CleanShot_2025-11-17_at_10.20.28_2x_b6cilm.png)
+
+#### Configure Webhook in Strapi
+
+Next, you need to configure a webhook in Strapi to call the Medusa webhook API route whenever product data is updated.
+
+To configure the webhook in Strapi:
+
+1. Open the Strapi Admin dashboard.
+2. Go to Settings -> Webhooks.
+3. Click on the "Create new webhook" button at the top right.
+4. In the webhook creation form:
+   - **Name**: Enter a name for the webhook. For example, "Medusa".
+   - **URL**: Enter the URL of the Medusa webhook API route. It should be `http://localhost:9000/webhooks/strapi` if you're running Medusa locally.
+   - **Headers**: Add a new header with the key `Authorization` and the value `Bearer YOUR_SECRET_API_KEY`. Replace `YOUR_SECRET_API_KEY` with the API key you created in Medusa.
+   - **Events**: Select the "Update" event for "Entry". This ensures that the webhook is triggered whenever an entry is updated in Strapi.
+5. Click on the "Save" button to create the webhook.
+
+![Strapi Webhook Creation form](https://res.cloudinary.com/dza7lstvk/image/upload/v1763368257/Medusa%20Resources/CleanShot_2025-11-17_at_10.30.22_2x_zohl1q.png)
+
+### Test Strapi Webhook Handling
+
+To test out the webhook handling:
+
+1. Make sure both the Medusa and Strapi servers are running.
+2. On the Strapi Admin dashboard, go to Content Manager -> Products.
+3. Select an existing product to edit.
+4. Update the product's title or description.
+5. Click on the "Save" button to save the changes.
+
+Once you save the changes, Strapi will send a webhook to Medusa. You should see the following in the Medusa server logs:
+
+```bash
+http:    POST /webhooks/strapi ← - (200) - 153.264 ms
+```
+
+This indicates that the webhook was received and processed successfully.
+
+You can also check the product in the Medusa Admin dashboard to verify that the changes made in Strapi are reflected in Medusa.
+
+---
+
+## Step 7: Show Strapi Data in Storefront
+
+Now that you've integrated Strapi with Medusa, you can customize the Next.js Starter Storefront to display product content from Strapi, allowing you to show product content and assets optimized for the storefront.
+
+In this step, you'll customize the Next.js Starter Storefront to show the Strapi product data.
+
+<Note title="Reminder" forceMultiline>
+
+The Next.js Starter Storefront was installed in a separate directory from Medusa. The directory's name is `{your-project}-storefront`.
+
+So, if your Medusa application's directory is `medusa-strapi`, you can find the storefront by going back to the parent directory and changing to the `medusa-strapi-storefront` directory:
+
+```bash
+cd ../medusa-strapi-storefront # change based on your project name
+```
+
+</Note>
+
+### a. Retrieve Strapi Product Data
+
+Since you've created a [virtual read-only link](#step-4-create-virtual-read-only-link-to-strapi-products) to Strapi products in Medusa, you can retrieve Strapi product data when retrieving Medusa products.
+
+To retrieve Strapi product data, open `src/lib/data/product.ts`, and add `*strapi_product` to the `fields` query parameter passed in the `listProducts` function:
+
+```ts title="src/lib/data/product.ts" badgeLabel="Storefront" badgeColor="blue" highlights={[["16"]]}
+export const listProducts = async ({
+  // ...
+}: {
+  // ...
+}): Promise<{
+  // ...
+}> => {
+  // ...
+
+  return sdk.client
+    .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(
+      `/store/products`,
+      {
+        query: {
+          fields:
+            "*variants.calculated_price,+variants.inventory_quantity,*variants.images,+metadata,+tags,*strapi_product",
+          // ...
+        },
+        // ...
+      }
+    )
+  // ...
+}
+```
+
+The Strapi product data will now be included in the `strapi_product` property of each Medusa product.
+
+### b. Define Strapi Product Types
+
+Next, you'll define types for the Strapi product data to use in the storefront.
+
+Create the file `src/types/strapi.ts` with the following content:
+
+```ts title="src/types/strapi.ts" badgeLabel="Storefront" badgeColor="blue"
+export interface StrapiMedia {
+  id: number
+  url: string
+  alternativeText?: string
+  caption?: string
+  width?: number
+  height?: number
+  formats?: {
+    thumbnail?: { url: string; width: number; height: number }
+    small?: { url: string; width: number; height: number }
+    medium?: { url: string; width: number; height: number }
+    large?: { url: string; width: number; height: number }
+  }
+}
+
+export interface StrapiProductOptionValue {
+  id: number
+  medusaId: string
+  value: string
+  locale: string
+  option?: StrapiProductOption
+  variants?: StrapiProductVariant[]
+}
+
+export interface StrapiProductOption {
+  id: number
+  medusaId: string
+  title: string
+  locale: string
+  product?: StrapiProduct
+  values?: StrapiProductOptionValue[]
+}
+
+export interface StrapiProductVariant {
+  id: number
+  medusaId: string
+  title: string
+  sku?: string
+  locale: string
+  product?: StrapiProduct
+  option_values?: StrapiProductOptionValue[]
+  images?: StrapiMedia[]
+  thumbnail?: StrapiMedia
+}
+
+export interface StrapiProduct {
+  id: number
+  medusaId: string
+  title: string
+  subtitle?: string
+  description?: string
+  handle: string
+  images?: StrapiMedia[]
+  thumbnail?: StrapiMedia
+  locale: string
+  variants?: StrapiProductVariant[]
+  options?: StrapiProductOption[]
+}
+```
+
+You define types for Strapi media, product option values, product options, product variants, and products.
+
+### c. Add Strapi Product Utilities
+
+Next, add utilities that will allow you to easily retrieve Strapi product data from a product object.
+
+Create the file `src/lib/util/strapi.ts` with the following content:
+
+```ts title="src/lib/util/strapi.ts" badgeLabel="Storefront" badgeColor="blue"
+import { HttpTypes } from "@medusajs/types"
+import {
+  StrapiProduct,
+  StrapiMedia,
+} from "../../types/strapi"
+
+/**
+ * Get Strapi product data from a Medusa product
+ */
+export function getStrapiProduct(
+  product: HttpTypes.StoreProduct
+): StrapiProduct | undefined {
+  return (product as any).strapi_product as StrapiProduct | undefined
+}
+
+/**
+ * Get product title from Strapi, fallback to Medusa
+ */
+export function getProductTitle(
+  product: HttpTypes.StoreProduct
+): string {
+  const strapiProduct = getStrapiProduct(product)
+  return strapiProduct?.title || product.title || ""
+}
+
+/**
+ * Get product subtitle from Strapi
+ */
+export function getProductSubtitle(
+  product: HttpTypes.StoreProduct
+): string | undefined {
+  const strapiProduct = getStrapiProduct(product)
+  return strapiProduct?.subtitle
+}
+
+/**
+ * Get product description from Strapi, fallback to Medusa
+ */
+export function getProductDescription(
+  product: HttpTypes.StoreProduct
+): string | null {
+  const strapiProduct = getStrapiProduct(product)
+  if (strapiProduct?.description) {
+    // Strapi richtext is typically stored as a string or structured data
+    // For now, we'll handle it as a string. You may need to parse it based on your Strapi configuration
+    return typeof strapiProduct.description === "string"
+      ? strapiProduct.description
+      : JSON.stringify(strapiProduct.description)
+  }
+  return product.description
+}
+
+/**
+ * Get product thumbnail from Strapi, fallback to Medusa
+ */
+export function getProductThumbnail(
+  product: HttpTypes.StoreProduct
+): string | null {
+  const strapiProduct = getStrapiProduct(product)
+  
+  if (strapiProduct?.thumbnail?.url) {
+    return strapiProduct.thumbnail.url
+  }
+  
+  return product.thumbnail || null
+}
+
+/**
+ * Get product images from Strapi, fallback to Medusa
+ */
+export function getProductImages(
+  product: HttpTypes.StoreProduct
+): HttpTypes.StoreProductImage[] {
+  const strapiProduct = getStrapiProduct(product)
+  
+  if (strapiProduct?.images && strapiProduct.images.length > 0) {
+    // Convert Strapi media to Medusa product image format
+    return strapiProduct.images.map((image: StrapiMedia, index: number) => ({
+      id: image.id.toString(),
+      url: image.url,
+      metadata: {
+        alt: image.alternativeText || `Product image ${index + 1}`,
+      },
+      rank: index + 1,
+    })) as HttpTypes.StoreProductImage[]
+  }
+  
+  return product.images || []
+}
+
+/**
+ * Get variant title from Strapi, fallback to Medusa
+ */
+export function getVariantTitle(
+  variant: HttpTypes.StoreProductVariant,
+  product: HttpTypes.StoreProduct
+): string {
+  const strapiProduct = getStrapiProduct(product)
+  const strapiVariant = strapiProduct?.variants?.find(
+    (v) => v.medusaId === variant.id
+  )
+  return strapiVariant?.title || variant.title || ""
+}
+
+/**
+ * Get option title from Strapi, fallback to Medusa
+ */
+export function getOptionTitle(
+  option: HttpTypes.StoreProductOption,
+  product: HttpTypes.StoreProduct
+): string {
+  const strapiProduct = getStrapiProduct(product)
+  const strapiOption = strapiProduct?.options?.find(
+    (o) => o.medusaId === option.id
+  )
+  return strapiOption?.title || option.title || ""
+}
+
+/**
+ * Get option value text from Strapi, fallback to Medusa
+ */
+export function getOptionValueText(
+  optionValue: { id: string; option_id: string; value: string },
+  product: HttpTypes.StoreProduct
+): string {
+  const strapiProduct = getStrapiProduct(product)
+  const strapiOption = strapiProduct?.options?.find(
+    (o) => o.medusaId === optionValue.option_id
+  )
+  const strapiOptionValue = strapiOption?.values?.find(
+    (v) => v.medusaId === optionValue.id
+  )
+  return strapiOptionValue?.value || optionValue.value
+}
+
+/**
+ * Get all option values for a variant with Strapi labels
+ */
+export function getVariantOptionValues(
+  variant: HttpTypes.StoreProductVariant,
+  product: HttpTypes.StoreProduct
+): Array<{ optionTitle: string; value: string }> {
+  if (!variant.options || variant.options.length === 0) {
+    return []
+  }
+
+  return variant.options
+    .filter((opt) => opt.option_id && opt.id)
+    .map((opt) => {
+      const option = product.options?.find((o) => o.id === opt.option_id)
+      const optionTitle = option
+        ? getOptionTitle(option, product)
+        : ""
+      const value = getOptionValueText(
+        { id: opt.id, option_id: opt.option_id!, value: opt.value! },
+        product
+      )
+      return { optionTitle, value }
+    })
+    .filter((opt) => opt.optionTitle && opt.value)
+}
+
+/**
+ * Get images for a specific variant from Strapi
+ */
+export function getVariantImages(
+  variant: HttpTypes.StoreProductVariant,
+  product: HttpTypes.StoreProduct
+): HttpTypes.StoreProductImage[] {
+  const strapiProduct = getStrapiProduct(product)
+  const strapiVariant = strapiProduct?.variants?.find(
+    (v) => v.medusaId === variant.id
+  )
+  
+  // If variant has specific images in Strapi, use those
+  if (strapiVariant?.images && strapiVariant.images.length > 0) {
+    return strapiVariant.images.map((image: StrapiMedia, index: number) => ({
+      id: image.id.toString(),
+      url: image.url,
+      metadata: {
+        alt: image.alternativeText || `Variant image ${index + 1}`,
+      },
+      rank: index + 1,
+    })) as HttpTypes.StoreProductImage[]
+  }
+  
+  // Fall back to Medusa variant images
+  if ((variant as any).images && (variant as any).images.length > 0) {
+    return (variant as any).images
+  }
+  
+  // Finally, fall back to product images
+  return getProductImages(product)
+}
+```
+
+You define the following utilities:
+
+- `getStrapiProduct`: Retrieves the Strapi product data from a Medusa product.
+- `getProductTitle`: Retrieves the product title from Strapi, falling back to Medusa if not available.
+- `getProductSubtitle`: Retrieves the product subtitle from Strapi.
+- `getProductDescription`: Retrieves the product description from Strapi, falling back to Medusa if not available.
+- `getProductThumbnail`: Retrieves the product thumbnail from Strapi, falling back to Medusa if not available.
+- `getProductImages`: Retrieves the product images from Strapi, falling back to Medusa if not available.
+- `getVariantTitle`: Retrieves the variant title from Strapi, falling back to Medusa if not available.
+- `getOptionTitle`: Retrieves the option title from Strapi, falling back to Medusa if not available.
+- `getOptionValueText`: Retrieves the option value text from Strapi, falling back to Medusa if not available.
+- `getVariantOptionValues`: Retrieves all option values for a variant with Strapi labels.
+- `getVariantImages`: Retrieves images for a specific variant from Strapi, falling back to Medusa if not available.
+
+### d. Customize Product Preview
+
+Next, you'll customize the product preview component to show Strapi product data. This component is displayed on the product listing page.
+
+In `src/modules/products/components/product-preview/index.tsx`, add the following imports at the top of the file:
+
+```tsx title="src/modules/products/components/product-preview/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+import { 
+  getProductTitle, 
+  getProductImages, 
+  getProductThumbnail,
+} from "@lib/util/strapi"
+```
+
+Then, in the `ProductPreview` component, define the following variables before the `return` statement:
+
+```tsx title="src/modules/products/components/product-preview/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+const title = getProductTitle(product)
+const images = getProductImages(product)
+const thumbnail = getProductThumbnail(product) || product.thumbnail
+```
+
+Finally, replace the `return` statement with the following:
+
+```tsx title="src/modules/products/components/product-preview/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+return (
+  <LocalizedClientLink href={`/products/${product.handle}`} className="group">
+    <div data-testid="product-wrapper">
+      <Thumbnail
+        thumbnail={thumbnail}
+        images={images}
+        size="full"
+        isFeatured={isFeatured}
+      />
+      <div className="flex txt-compact-medium mt-4 justify-between">
+        <Text className="text-ui-fg-subtle" data-testid="product-title">
+          {title}
+        </Text>
+        <div className="flex items-center gap-x-2">
+          {cheapestPrice && <PreviewPrice price={cheapestPrice} />}
+        </div>
+      </div>
+    </div>
+  </LocalizedClientLink>
+)
+```
+
+You make two key changes:
+
+1. Pass the `images` and `thumbnail` variables as props to the `Thumbnail` component to show Strapi product images.
+2. Use the `title` variable to display the Strapi product title.
+
+### e. Customize Product Details Metadata
+
+Next, you'll customize the product details component to show Strapi product data.
+
+First, you'll use the Strapi product title, subtitle, and images in the page's metadata.
+
+In `src/app/[countryCode]/(main)/products/[handle]/page.tsx`, add the following imports at the top of the file:
+
+```tsx title="src/app/[countryCode]/(main)/products/[handle]/page.tsx" badgeLabel="Storefront" badgeColor="blue"
+import {
+  getProductImages,
+  getVariantImages,
+  getProductTitle,
+  getProductSubtitle,
+  getProductThumbnail,
+} from "@lib/util/strapi"
+import { StrapiMedia } from "../../../../../types/strapi"
+```
+
+Then, replace the `getImagesForVariant` function with the following:
+
+```tsx title="src/app/[countryCode]/(main)/products/[handle]/page.tsx" badgeLabel="Storefront" badgeColor="blue"
+function getImagesForVariant(
+  product: HttpTypes.StoreProduct,
+  selectedVariantId?: string
+) {
+  // Get Strapi images or fallback to Medusa images
+  const productImages = getProductImages(product)
+
+  if (!selectedVariantId || !product.variants) {
+    return productImages
+  }
+
+  const variant = product.variants!.find((v) => v.id === selectedVariantId)
+  if (!variant) {
+    return productImages
+  }
+
+  // Get variant images from Strapi or fallback to Medusa
+  const variantImages = getVariantImages(variant, product)
+  
+  // If variant has specific images, use those; otherwise use product images
+  if (
+    variantImages.length > 0 && 
+    (variant as any).images && 
+    (variant as any).images.length > 0
+  ) {
+    const imageIdsMap = new Map((variant as any)
+      .images.map((i: StrapiMedia) => [i.id, true]))
+    return productImages.filter((i) => imageIdsMap.has(i.id))
+  }
+
+  return productImages
+}
+```
+
+This function now retrieves product and variant images from Strapi using the utilities you defined earlier. These images will be shown on the product's details page.
+
+Next, in the `generateMetadata` function, replace the `return` statement with the following:
+
+```tsx title="src/app/[countryCode]/(main)/products/[handle]/page.tsx" badgeLabel="Storefront" badgeColor="blue"
+const title = getProductTitle(product)
+const subtitle = getProductSubtitle(product)
+const thumbnail = getProductThumbnail(product) || product.thumbnail
+
+return {
+  title: `${title} | Medusa Store`,
+  description: subtitle || title,
+  openGraph: {
+    title: `${title} | Medusa Store`,
+    description: subtitle || title,
+    images: thumbnail ? [thumbnail] : [],
+  },
+}
+```
+
+You use the Strapi product title, subtitle, and thumbnail in the page's metadata.
+
+### f. Customize Product Details Page
+
+Next, you'll customize the product details page to show Strapi product data.
+
+<Note>
+
+The images for the product details page were already customized in the previous section when you updated the `getImagesForVariant` function.
+
+</Note>
+
+#### Show Product Title and Description
+
+First, you'll show the Strapi product title and description on the product details page.
+
+Since the product description is in markdown format, you need to install the `react-markdown` package to render it. Run the following command in your storefront directory:
+
+```bash npm2yarn badgeLabel="Storefront" badgeColor="blue"
+npm install react-markdown
+```
+
+Then, in `src/modules/products/templates/product-info/index.tsx`, add the following imports at the top of the file:
+
+```tsx title="src/modules/products/templates/product-info/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+import {
+  getProductTitle,
+  getProductDescription,
+} from "@lib/util/strapi"
+import Markdown from "react-markdown"
+```
+
+Next, in the `ProductInfo` component, define the following variables before the `return` statement:
+
+```tsx title="src/modules/products/templates/product-info/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+const title = getProductTitle(product)
+const description = getProductDescription(product)
+```
+
+Finally, in the `return` statement, replace `{product.title}` with `{title}`:
+
+```tsx title="src/modules/products/templates/product-info/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+return (
+  <div id="product-info">
+    {/* ... */}
+    <Heading
+      // ...
+    >
+      {title}
+    </Heading>
+  </div>
+)
+```
+
+Then, find the `Text` component wrapping the `{product.description}` and replace it with the following:
+
+```tsx title="src/modules/products/templates/product-info/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+<div
+  className="text-medium text-ui-fg-subtle whitespace-pre-line"
+  data-testid="product-description"
+>
+  <Markdown 
+    allowedElements={[
+      "p", "ul", "ol", "li", "strong", "em", "blockquote", "hr", "br", "a",
+    ]}
+    unwrapDisallowed
+  >
+    {description}
+  </Markdown>
+</div>
+```
+
+#### Show Option Titles and Values
+
+Next, you'll show Strapi option titles and values on the product details page.
+
+Replace the content of `src/modules/products/components/product-actions/option-select.tsx` with the following:
+
+```tsx title="src/modules/products/components/product-actions/option-select.tsx" badgeLabel="Storefront" badgeColor="blue"
+import { HttpTypes } from "@medusajs/types"
+import { clx } from "@medusajs/ui"
+import React from "react"
+import { getOptionValueText } from "@lib/util/strapi"
+
+type OptionSelectProps = {
+  option: HttpTypes.StoreProductOption
+  current: string | undefined
+  updateOption: (title: string, value: string) => void
+  title: string
+  product: HttpTypes.StoreProduct
+  disabled: boolean
+  "data-testid"?: string
+}
+
+const OptionSelect: React.FC<OptionSelectProps> = ({
+  option,
+  current,
+  updateOption,
+  title,
+  product,
+  "data-testid": dataTestId,
+  disabled,
+}) => {
+  const filteredOptions = (option.values ?? []).map((v) => ({
+    originalValue: v.value,
+    displayValue: getOptionValueText(
+      { id: v.id, option_id: option.id, value: v.value },
+      product
+    ),
+  }))
+
+  return (
+    <div className="flex flex-col gap-y-3">
+      <span className="text-sm">Select {title}</span>
+      <div
+        className="flex flex-wrap justify-between gap-2"
+        data-testid={dataTestId}
+      >
+        {filteredOptions.map(({ originalValue, displayValue }) => {
+          return (
+            <button
+              onClick={() => updateOption(option.id, originalValue)}
+              key={originalValue}
+              className={clx(
+                "border-ui-border-base bg-ui-bg-subtle border text-small-regular h-10 rounded-rounded p-2 flex-1 ",
+                {
+                  "border-ui-border-interactive": originalValue === current,
+                  "hover:shadow-elevation-card-rest transition-shadow ease-in-out duration-150":
+                    originalValue !== current,
+                }
+              )}
+              disabled={disabled}
+              data-testid="option-button"
+            >
+              {displayValue}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+export default OptionSelect
+```
+
+You make the following key changes:
+
+- Add the `product` prop to the `OptionSelect` component.
+- Use the `getOptionValueText` utility to get the option value text from Strapi.
+- Display the Strapi option value text in the option buttons.
+
+Then, in `src/modules/products/components/product-actions/index.tsx`, add the following import at the top of the file:
+
+```tsx title="src/modules/products/components/product-actions/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+import { getOptionTitle } from "@lib/util/strapi"
+```
+
+And in the `return` statement, find the `product.options` loop and replace it with the following:
+
+```tsx title="src/modules/products/components/product-actions/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+return (
+  <>
+    {/* ... */}
+    {(product.options || []).map((option) => {
+      const optionTitle = getOptionTitle(option, product)
+      return (
+        <div key={option.id}>
+          <OptionSelect
+            option={option}
+            current={options[option.id]}
+            updateOption={setOptionValue}
+            title={optionTitle}
+            product={product}
+            data-testid="product-options"
+            disabled={!!disabled || isAdding}
+          />
+        </div>
+      )
+    })}
+    {/* ... */}
+  </>
+)
+```
+
+You use the `getOptionTitle` utility to get the option title from Strapi and pass the `product` prop to the `OptionSelect` component.
+
+You need to make similar changes in the `src/modules/products/components/product-actions/mobile-actions.tsx` component. First, add the following imports at the top of the file:
+
+```tsx title="src/modules/products/components/product-actions/mobile-actions.tsx" badgeLabel="Storefront" badgeColor="blue"
+import { getProductTitle, getOptionTitle } from "@lib/util/strapi"
+```
+
+Then, in the `return` statement, replace the `{product.title}` with the following:
+
+```tsx title="src/modules/products/components/product-actions/mobile-actions.tsx" badgeLabel="Storefront" badgeColor="blue"
+return (
+  <>
+    {/* ... */}
+    <span data-testid="mobile-title">{getProductTitle(product)}</span>
+    {/* ... */}
+  </>
+)
+```
+
+Then, find the `product.options` loop and replace it with the following:
+
+```tsx title="src/modules/products/components/product-actions/mobile-actions.tsx" badgeLabel="Storefront" badgeColor="blue"
+return (
+  <>
+    {/* ... */}
+    {(product.options || []).map((option) => {
+      const optionTitle = getOptionTitle(option, product)
+      return (
+        <div key={option.id}>
+          <OptionSelect
+            option={option}
+            current={options[option.id]}
+            updateOption={updateOptions}
+            title={optionTitle}
+            product={product}
+            disabled={optionsDisabled}
+          />
+        </div>
+      )
+    })}
+    {/* ... */}
+  </>
+)
+```
+
+You retrieve the Strapi option title and pass the `product` prop to the `OptionSelect` component.
+
+### g. Customize Line Item Options
+
+Finally, you'll customize the line item options to either show Strapi variant titles or option titles and values.
+
+Replace the content of `src/modules/common/components/line-item-options/index.tsx` with the following:
+
+```tsx title="src/modules/common/components/line-item-options/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+import { HttpTypes } from "@medusajs/types"
+import { Text } from "@medusajs/ui"
+import { getVariantTitle, getVariantOptionValues } from "@lib/util/strapi"
+
+type LineItemOptionsProps = {
+  variant: HttpTypes.StoreProductVariant | undefined
+  product?: HttpTypes.StoreProduct
+  "data-testid"?: string
+  "data-value"?: HttpTypes.StoreProductVariant
+}
+
+const LineItemOptions = ({
+  variant,
+  product,
+  "data-testid": dataTestid,
+  "data-value": dataValue,
+}: LineItemOptionsProps) => {
+  if (!variant) {
+    return null
+  }
+
+  // Get product from variant if not provided
+  const productData = product || (variant as any).product
+
+  // Get variant title from Strapi
+  const variantTitle = productData
+    ? getVariantTitle(variant, productData)
+    : variant.title
+
+  // Get option values from Strapi
+  const optionValues = productData
+    ? getVariantOptionValues(variant, productData)
+    : []
+
+  // If we have option values, show them; otherwise show variant title
+  if (optionValues.length > 0) {
+    const displayText = optionValues
+      .map((opt) => `${opt.optionTitle}: ${opt.value}`)
+      .join(" / ")
+
+    return (
+      <Text
+        data-testid={dataTestid}
+        data-value={dataValue}
+        className="inline-block txt-medium text-ui-fg-subtle w-full overflow-hidden text-ellipsis"
+      >
+        {displayText}
+      </Text>
+    )
+  }
+
+  return (
+    <Text
+      data-testid={dataTestid}
+      data-value={dataValue}
+      className="inline-block txt-medium text-ui-fg-subtle w-full overflow-hidden text-ellipsis"
+    >
+      Variant: {variantTitle}
+    </Text>
+  )
+}
+
+export default LineItemOptions
+```
+
+You make the following key changes:
+
+- Add a `product` prop to the `LineItemOptions` component.
+- Use the `getVariantTitle` utility to get the variant title from Strapi.
+- Use the `getVariantOptionValues` utility to get the option titles and values from Strapi.
+- If option values are available, display them; otherwise, display the variant title.
+
+This component is used in cart and order components to show line item details. So, you need to pass the `product` prop where the component is used.
+
+In `src/modules/cart/components/item/index.tsx`, find the `LineItemOptions` component in the `return` statement and update it as follows:
+
+```tsx title="src/modules/cart/components/item/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+return (
+  <Table.Row>
+    {/* ... */}
+    <LineItemOptions
+      variant={item.variant}
+      product={item.variant?.product!}
+      data-testid="product-variant"
+    />
+    {/* ... */}
+  </Table.Row>
+)
+```
+
+Next, in `src/modules/layout/components/cart-dropdown/index.tsx`, find the `LineItemOptions` component in the `return` statement and update it as follows:
+
+```tsx title="src/modules/layout/components/cart-dropdown/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+return (
+  <div>
+    {/* ... */}
+    <LineItemOptions
+      variant={item.variant}
+      product={item.variant?.product!}
+      data-testid="cart-item-variant"
+      data-value={item.variant}
+    />
+    {/* ... */}
+  </div>
+)
+```
+
+Finally, in `src/modules/order/components/item/index.tsx`, find the `LineItemOptions` component in the `return` statement and update it as follows:
+
+```tsx title="src/modules/order/components/item/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+return (
+  <Table.Row>
+    {/* ... */}
+    <LineItemOptions
+      variant={item.variant}
+      product={item.variant?.product!}
+      data-testid="product-variant"
+    />
+    {/* ... */}
+  </Table.Row>
+)
+```
+
+This will show Strapi variant titles or option titles and values in the cart and order line items.
+
+### Test Storefront Customizations
+
+To test the storefront customizations, make sure both the Medusa and Strapi servers are running.
+
+Then, run the following command in the Next.js Starter Storefront directory to start the storefront:
+
+```bash npm2yarn badgeLabel="Storefront" badgeColor="blue"
+npm run dev
+```
+
+You can open the storefront in your browser at `http://localhost:8000`.
+
+You'll see the Strapi product data in the following places:
+
+1. Go to Menu -> Store. On the product listing page, you'll see the Strapi product titles and images.
+2. Open a product's details page. You'll see the Strapi product title, description, images, option titles, and option values.
+3. Add the product to the cart. You'll see the Strapi variant titles or option titles and values in the cart dropdown and cart page.
+4. Place an order. You'll see the Strapi variant titles or option titles and values in the order confirmation page.
+
+---
+
+## Step 8: Handle More Product Events
+
+Your setup now supports creating products in Strapi when they're created in Medusa. However, you should also support updating and deleting products and their related models to keep data in sync between systems.
+
+For each product event, such as `product.deleted` or `product-variant.updated`, you need to:
+
+1. Create a workflow that updates or deletes the corresponding data in Strapi using the Strapi Module's service.
+2. Create a subscriber that listens for the event and triggers the workflow.
+
+You can find all workflows and subscribers for product events in the [Strapi Integration Repository](https://github.com/medusajs/examples/tree/main/strapi-integration/medusa).
+
+---
+
+## Next Steps
+
+You've successfully integrated Medusa with Strapi to manage content related to products, variants, and options. You can expand this integration by adding more features, such as:
+
+1. Managing the content of other entities, like categories or collections. The process is similar to what you've done for products:
+    1. Create a content type in Strapi for the entity.
+    2. Create Medusa workflows and subscribers to handle the creation, update, and deletion of the entity.
+    3. Display the Strapi data in your Next.js Starter Storefront.
+2. Enable [internationalization](https://docs.strapi.io/cms/features/internationalization) in Strapi to support multiple languages:
+    - You only need to manage the localized content in Strapi. Only the default locale will be synced with Medusa.
+    - You can display the localized content in your Next.js Starter Storefront based on the customer's locale.
+3. Add custom fields to the Strapi content types that are relevant to the storefront, such as SEO metadata or promotional banners.
+
+### Learn More about Medusa
+
+If you're new to Medusa, check out the [main documentation](!docs!/learn), where you'll get a more in-depth understanding of all the concepts you've used in this guide and more.
+
+To learn more about the commerce features that Medusa provides, check out Medusa's [Commerce Modules](../../../commerce-modules/page.mdx).
+
+### Troubleshooting
+
+If you encounter issues during your development, check out the [troubleshooting guides](../../../troubleshooting/page.mdx).
+
+### Getting Help
+
+If you encounter issues not covered in the troubleshooting guides:
+
+1. Visit the [Medusa GitHub repository](https://github.com/medusajs/medusa) to report issues or ask questions.
+2. Join the [Medusa Discord community](https://discord.gg/medusajs) for real-time support from community members.

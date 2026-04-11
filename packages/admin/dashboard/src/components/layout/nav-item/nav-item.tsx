@@ -17,6 +17,7 @@ type ItemType = "core" | "extension" | "setting"
 type NestedItemProps = {
   label: string
   to: string
+  translationNs?: string
 }
 
 export type INavItem = {
@@ -27,6 +28,7 @@ export type INavItem = {
   type?: ItemType
   from?: string
   nested?: string
+  translationNs?: string
 }
 
 const BASE_NAV_LINK_CLASSES =
@@ -90,9 +92,14 @@ export const NavItem = ({
   items,
   type = "core",
   from,
+  translationNs,
 }: INavItem) => {
+  const { t } = useTranslation(translationNs as any)
   const { pathname } = useLocation()
   const [open, setOpen] = useState(getIsOpen(to, items, pathname))
+
+  // Use translation if translationNs is provided, otherwise use label as-is
+  const displayLabel: string = translationNs ? t(label) : label
 
   useEffect(() => {
     setOpen(getIsOpen(to, items, pathname))
@@ -150,7 +157,7 @@ export const NavItem = ({
             </div>
           )}
           <Text size="small" weight="plus" leading="compact">
-            {label}
+            {displayLabel}
           </Text>
         </NavLink>
       </NavItemTooltip>
@@ -166,7 +173,7 @@ export const NavItem = ({
               <Icon icon={icon} type={type} />
             </div>
             <Text size="small" weight="plus" leading="compact">
-              {label}
+              {displayLabel}
             </Text>
           </RadixCollapsible.Trigger>
           <RadixCollapsible.Content>
@@ -189,12 +196,15 @@ export const NavItem = ({
                       }}
                     >
                       <Text size="small" weight="plus" leading="compact">
-                        {label}
+                        {displayLabel}
                       </Text>
                     </NavLink>
                   </NavItemTooltip>
                 </li>
                 {items.map((item) => {
+                  const { t: itemT } = useTranslation(item.translationNs as any)
+                  const itemLabel: string = item.translationNs ? itemT(item.label) : item.label
+
                   return (
                     <li key={item.to} className="flex h-7 items-center">
                       <NavItemTooltip to={item.to}>
@@ -213,7 +223,7 @@ export const NavItem = ({
                           }}
                         >
                           <Text size="small" weight="plus" leading="compact">
-                            {item.label}
+                            {itemLabel}
                           </Text>
                         </NavLink>
                       </NavItemTooltip>

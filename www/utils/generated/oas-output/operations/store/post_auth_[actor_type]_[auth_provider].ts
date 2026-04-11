@@ -9,7 +9,7 @@
  *   When used with a third-party provider, such as Google, the request returns a `location` property. You redirect to the
  *   specified URL in your storefront to continue authentication with the third-party service.
  * externalDocs:
- *   url: https://docs.medusajs.com/v2/storefront-development/customers/login#1-using-a-jwt-token
+ *   url: https://docs.medusajs.com/resources/storefront-development/customers/login#1-using-a-jwt-token
  *   description: "Storefront development: How to login as a customer"
  * x-authenticated: false
  * parameters:

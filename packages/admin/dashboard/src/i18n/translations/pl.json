@@ -1047,6 +1047,41 @@
       }
     }
   },
+  "refundReasons": {
+    "domain": "Powody zwrotu pieniędzy",
+    "subtitle": "Zarządzaj powodami zwrotu pieniędzy.",
+    "calloutHint": "Zarządzaj powodami zwrotu pieniędzy.",
+    "editReason": "Edytuj powód zwrotu pieniędzy",
+    "create": {
+      "header": "Dodaj powód zwrotu pieniędzy",
+      "subtitle": "Określ najczęstsze powody zwrotu pieniędzy.",
+      "hint": "Utwórz powody zwrotu, aby kategoryzować zwroty",
+      "successToast": "Powód zwrotu pieniędzy {{label}} został pomyślnie utworzony."
+    },
+    "edit": {
+      "header": "Edytuj powód zwrotu pieniędzy",
+      "subtitle": "Edytuj wartość powodu zwrotu pieniędzy.",
+      "successToast": "Powód zwrotu pieniędzy {{label}} został pomyślnie zaktualizowany."
+    },
+    "delete": {
+      "confirmation": "Zamierzasz usunąć powód zwrotu pieniędzy {{label}}. Tej akcji nie można cofnąć.",
+      "successToast": "Powód zwrotu pieniędzy {{label}} został pomyślnie usunięty."
+    },
+    "fields": {
+      "label": {
+        "label": "Etykieta",
+        "placeholder": "Zły rozmiar"
+      },
+      "code": {
+        "label": "Kod",
+        "placeholder": "zly_rozmiar"
+      },
+      "description": {
+        "label": "Opis",
+        "placeholder": "Klient miał złe doświadczenie zakupowe"
+      }
+    }
+  },
   "orders": {
     "giftCardsStoreCreditLines": "Karty podarunkowe i linie kredytowe",
     "creditLines": {

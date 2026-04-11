@@ -45,6 +45,8 @@ export const POST = async (
       context: {
         requestId: req.requestId,
       },
+      throwOnError: false,
+      logOnError: true,
     },
   })
 

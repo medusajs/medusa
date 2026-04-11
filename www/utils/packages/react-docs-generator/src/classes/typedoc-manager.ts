@@ -6,7 +6,7 @@ import {
   TSFunctionSignatureType,
   TypeDescriptor,
 } from "react-docgen/dist/Documentation.js"
-import { Comment, ReferenceReflection, ReferenceType } from "typedoc"
+import { Comment, ReferenceReflection } from "typedoc"
 import {
   Application,
   Context,
@@ -18,12 +18,14 @@ import {
   SomeType,
   SourceReference,
 } from "typedoc"
+import ts from "typescript"
 import {
   getFunctionType,
   getProjectChild,
   getType,
   getTypeChildren,
 } from "utils"
+import { getTypescriptTsType } from "../utils/get-typescript-ts-type.js"
 
 type MappedReflectionSignature = {
   source: SourceReference
@@ -36,7 +38,7 @@ type Options = {
   verbose?: boolean
 }
 
-type TsType = TypeDescriptor<TSFunctionSignatureType>
+export type TsType = TypeDescriptor<TSFunctionSignatureType>
 
 type ExcludeExternalOptions = {
   parentReflection: DeclarationReflection
@@ -121,17 +123,14 @@ export default class TypedocManager {
       return spec
     }
 
-    const doesReflectionHaveSignature =
-      reflection.type?.type === "reference" &&
-      reflection.type.reflection instanceof DeclarationReflection &&
-      reflection.type.reflection.signatures?.length
+    if (reflection.type?.type === "reference") {
+      reflection = reflection.type.reflection as DeclarationReflection
+    }
 
     let signature: SignatureReflection | undefined
     let props: DeclarationReflection[] = []
-    if (doesReflectionHaveSignature) {
-      signature = (
-        (reflection.type! as ReferenceType).reflection as DeclarationReflection
-      ).signatures![0]
+    if (reflection.signatures?.length) {
+      signature = reflection.signatures![0]
       props =
         signature?.parameters?.length && signature.parameters[0].type
           ? getTypeChildren({
@@ -282,7 +281,7 @@ export default class TypedocManager {
 
   // Retrieves the `tsType` stored in a spec's prop
   // The format is based on the expected format of React Docgen.
-  getTsType(reflectionType: SomeType, level = 1): TsType {
+  getTsType(reflectionType: SomeType, symbol?: ts.Symbol, level = 1): TsType {
     const rawValue = getType({
       reflectionType,
       ...this.getTypeOptions,
@@ -294,7 +293,11 @@ export default class TypedocManager {
     }
     switch (reflectionType.type) {
       case "array": {
-        const elements = this.getTsType(reflectionType.elementType, level + 1)
+        const elements = this.getTsType(
+          reflectionType.elementType,
+          symbol,
+          level + 1
+        )
         return {
           name: "Array",
           elements: [elements],
@@ -306,16 +309,27 @@ export default class TypedocManager {
           (reflectionType.reflection as DeclarationReflection) ||
           getProjectChild(this.project!, reflectionType.name)
         const elements: TsType[] = []
+        if (!referenceReflection && symbol) {
+          return (
+            getTypescriptTsType(symbol) || {
+              name: reflectionType.name,
+              raw: rawValue,
+              elements,
+            }
+          )
+        }
         if (referenceReflection?.children) {
           referenceReflection.children?.forEach((child) => {
             if (!child.type) {
               return
             }
 
-            elements.push(this.getTsType(child.type, level + 1))
+            elements.push(this.getTsType(child.type, symbol, level + 1))
           })
         } else if (referenceReflection?.type) {
-          elements.push(this.getTsType(referenceReflection.type, level + 1))
+          elements.push(
+            this.getTsType(referenceReflection.type, symbol, level + 1)
+          )
         }
         return {
           name: reflectionType.name,
@@ -344,7 +358,7 @@ export default class TypedocManager {
             typeData.signature.properties.push({
               key: property.name,
               value: property.type
-                ? this.getTsType(property.type, level + 1)
+                ? this.getTsType(property.type, symbol, level + 1)
                 : {
                     name: "unknown",
                   },
@@ -390,7 +404,7 @@ export default class TypedocManager {
     const elementData: TsType[] = []
 
     elements.forEach((element) => {
-      elementData.push(this.getTsType(element, level + 1))
+      elementData.push(this.getTsType(element, undefined, level + 1))
     })
 
     return elementData
@@ -462,10 +476,12 @@ export default class TypedocManager {
         return: undefined,
       },
     }
+    const signatureSymbol = this.getReflectionSymbol(signature)
 
     signature.parameters?.forEach((parameter) => {
+      const parameterSymbol = this.getReflectionSymbol(parameter)
       const parameterType = parameter.type
-        ? this.getTsType(parameter.type, level + 1)
+        ? this.getTsType(parameter.type, parameterSymbol, level + 1)
         : undefined
       typeData.signature.arguments.push({
         name: parameter.name,
@@ -475,14 +491,14 @@ export default class TypedocManager {
     })
 
     typeData.signature.return = signature.type
-      ? this.getTsType(signature.type, level + 1)
+      ? this.getTsType(signature.type, signatureSymbol, level + 1)
       : undefined
 
     return typeData
   }
 
   // Checks if a TsType only has a `name` field.
-  doesOnlyHaveName(obj: TsType): boolean {
+  onlyHasName(obj: TsType): boolean {
     const primitiveTypes = ["string", "number", "object", "boolean", "function"]
     const keys = Object.keys(obj)
 
@@ -491,6 +507,34 @@ export default class TypedocManager {
       keys[0] === "name" &&
       !primitiveTypes.includes(obj.name)
     )
+  }
+
+  isRawTypeEmpty(tsType: TsType): boolean {
+    if (!("raw" in tsType)) {
+      return false
+    }
+
+    if ("elements" in tsType && tsType.elements.length > 0) {
+      return false
+    }
+
+    if ("signature" in tsType && tsType.signature) {
+      if (
+        "arguments" in tsType.signature &&
+        tsType.signature.arguments.length > 0
+      ) {
+        return false
+      }
+      if (
+        "properties" in tsType.signature &&
+        tsType.signature.properties.length > 0
+      ) {
+        return false
+      }
+      return false
+    }
+
+    return true
   }
 
   // retrieves a reflection by the provided name
@@ -559,7 +603,10 @@ export default class TypedocManager {
       return null
     }
 
-    return this.getTsType(childReflection.type as SomeType)
+    return this.getTsType(
+      childReflection.type as SomeType,
+      this.getReflectionSymbol(childReflection)
+    )
   }
 
   // used to check if a reflection (typically of a prop)
@@ -685,5 +732,9 @@ export default class TypedocManager {
           computed: false,
         }
       : undefined
+  }
+
+  getReflectionSymbol(reflection: Reflection): ts.Symbol | undefined {
+    return this.project?.getSymbolFromReflection(reflection)
   }
 }

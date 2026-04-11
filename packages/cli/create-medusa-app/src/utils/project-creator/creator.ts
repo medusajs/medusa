@@ -17,10 +17,13 @@ export interface ProjectOptions {
   verbose?: boolean
   plugin?: boolean
   version?: string
+  useNpm?: boolean
+  usePnpm?: boolean
+  useYarn?: boolean
 }
 
 export interface ProjectCreator {
-  create(): Promise<void>
+  create({ verbose }: { verbose?: boolean }): Promise<void>
 }
 
 // Base class for common project functionality
@@ -42,7 +45,12 @@ export abstract class BaseProjectCreator {
   ) {
     this.spinner = ora()
     this.processManager = new ProcessManager()
-    this.packageManager = new PackageManager(this.processManager)
+    this.packageManager = new PackageManager(this.processManager, {
+      verbose: options.verbose,
+      useNpm: options.useNpm,
+      usePnpm: options.usePnpm,
+      useYarn: options.useYarn,
+    })
     this.abortController = createAbortController(this.processManager)
     this.projectName = projectName
     const basePath =

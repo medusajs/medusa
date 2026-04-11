@@ -138,9 +138,9 @@ post:
     - name: product-type.updated
       payload: |-
         ```ts
-        [{
+        {
           id, // The ID of the product type
-        }]
+        }
         ```
       description: Emitted when product types are updated.
       deprecated: false
@@ -195,9 +195,9 @@ delete:
     - name: product-type.deleted
       payload: |-
         ```ts
-        [{
+        {
           id, // The ID of the product type
-        }]
+        }
         ```
       description: Emitted when product types are deleted.
       deprecated: false

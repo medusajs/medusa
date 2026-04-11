@@ -83,9 +83,9 @@
  *   - name: sales-channel.created
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the sales channel
- *       }]
+ *       }
  *       ```
  *     description: Emitted when sales channels are created.
  *     deprecated: false

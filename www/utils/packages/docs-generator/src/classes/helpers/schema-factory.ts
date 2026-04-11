@@ -1,14 +1,21 @@
+import ts from "typescript"
 import { OpenApiSchema } from "../../types/index.js"
+
+type SchemaMap = Record<
+  string,
+  OpenApiSchema | ((type: ts.Type) => OpenApiSchema)
+>
 
 /**
  * This class has predefined OAS schemas for some types. It's used to bypass
  * the logic of creating a schema for certain types.
  */
 class SchemaFactory {
+  private checker: ts.TypeChecker
   /**
    * The pre-defined schemas.
    */
-  private schemas: Record<string, OpenApiSchema> = {
+  private schemas: SchemaMap = {
     $and: {
       type: "array",
       description:
@@ -68,7 +75,7 @@ class SchemaFactory {
   /**
    * Schemas used only for query types
    */
-  private schemasForQuery: Record<string, OpenApiSchema> = {
+  private schemasForQuery: SchemaMap = {
     expand: {
       type: "string",
       title: "expand",
@@ -118,12 +125,167 @@ class SchemaFactory {
         description: "Learn how to manage metadata",
       },
     },
+    OperatorMap: (type) => {
+      if (!("typeArguments" in type || "aliasTypeArguments" in type)) {
+        return {}
+      }
+      const typeRef = type as ts.TypeReference
+      const typeArgs = typeRef.typeArguments || typeRef.aliasTypeArguments
+      if (!typeArgs || typeArgs.length === 0) {
+        return {}
+      }
+      const typeStr = this.checker.typeToString(typeArgs[0])
+      return {
+        type: "object",
+        properties: {
+          $and: JSON.parse(JSON.stringify(this.schemas["$and"])),
+          $or: JSON.parse(JSON.stringify(this.schemas["$or"])),
+          $eq: {
+            oneOf: [
+              {
+                type: typeStr,
+                title: "$eq",
+                description: "Filter by exact value.",
+              },
+              {
+                type: "array",
+                title: "$eq",
+                description: "Filter by exact value.",
+                items: {
+                  type: typeStr,
+                },
+              },
+            ],
+          },
+          $ne: {
+            type: typeStr,
+            title: "$ne",
+            description: "Filter by not equal to the given value.",
+          },
+          $in: {
+            type: "array",
+            title: "$in",
+            description: "Filter by values included in the given array.",
+            items: {
+              type: typeStr,
+            },
+          },
+          $nin: {
+            type: "array",
+            title: "$nin",
+            description: "Filter by values not included in the given array.",
+            items: {
+              type: typeStr,
+            },
+          },
+          $not: {
+            oneOf: [
+              {
+                type: typeStr,
+                title: "$not",
+                description: "Filter by not equal to the given value.",
+              },
+              {
+                type: "object",
+                title: "$not",
+                description:
+                  "Filter by values not matching the conditions in this parameter.",
+              },
+              {
+                type: "array",
+                title: "$not",
+                description:
+                  "Filter by values not matching the conditions in this parameter.",
+                items: {
+                  type: typeStr,
+                },
+              },
+            ],
+          },
+          $gt: {
+            type: typeStr,
+            title: "$gt",
+            description: "Filter by values greater than the given value.",
+          },
+          $gte: {
+            type: typeStr,
+            title: "$gte",
+            description:
+              "Filter by values greater than or equal to the given value.",
+          },
+          $lt: {
+            type: typeStr,
+            title: "$lt",
+            description: "Filter by values less than the given value.",
+          },
+          $lte: {
+            type: typeStr,
+            title: "$lte",
+            description:
+              "Filter by values less than or equal to the given value.",
+          },
+          $like: {
+            type: typeStr,
+            title: "$like",
+            description: "Apply a `like` filter. Useful for strings only.",
+          },
+          $re: {
+            type: typeStr,
+            title: "$re",
+            description: "Apply a regex filter. Useful for strings only.",
+          },
+          $ilike: {
+            type: typeStr,
+            title: "$ilike",
+            description:
+              "Apply a case-insensitive `like` filter. Useful for strings only.",
+          },
+          $fulltext: {
+            type: typeStr,
+            title: "$fulltext",
+            description: "Filter to apply on full-text properties.",
+          },
+          $overlap: {
+            type: "array",
+            title: "$overlap",
+            description:
+              "Filter to apply on array properties to find overlapping values.",
+            items: {
+              type: typeStr,
+            },
+          },
+          $contains: {
+            type: "array",
+            title: "$contains",
+            description:
+              "Filter to apply on array properties to find contained values.",
+            items: {
+              type: typeStr,
+            },
+          },
+          $contained: {
+            type: "array",
+            title: "$contained",
+            description:
+              "Filter to apply on array properties to find contained values.",
+            items: {
+              type: typeStr,
+            },
+          },
+          $exists: {
+            type: "boolean",
+            title: "$exists",
+            description: "Filter by whether a value exists or not.",
+          },
+        },
+      } as OpenApiSchema
+    },
   }
 
   /**
    * Schemas used only for response types.
    */
-  private schemasForResponse: Record<string, OpenApiSchema> = {
+  private schemasForResponse: SchemaMap = {
     created_at: {
       type: "string",
       format: "date-time",
@@ -138,6 +300,10 @@ class SchemaFactory {
     },
   }
 
+  constructor({ checker }: { checker: ts.TypeChecker }) {
+    this.checker = checker
+  }
+
   /**
    * Try to retrieve the pre-defined schema of a type name.
    *
@@ -145,17 +311,23 @@ class SchemaFactory {
    * @param additionalData - Additional data to pass along/override in the predefined schema. For example, a description.
    * @returns The schema, if found.
    */
-  public tryGetSchema(
-    name: string,
-    additionalData?: Partial<OpenApiSchema>,
-    type: "request" | "query" | "response" | "all" = "all"
-  ): OpenApiSchema | undefined {
+  public tryGetSchema({
+    name,
+    additionalData,
+    context = "all",
+    type,
+  }: {
+    name: string
+    additionalData?: Partial<OpenApiSchema>
+    context?: "request" | "query" | "response" | "all"
+    type?: ts.Type
+  }): OpenApiSchema | undefined {
     const schemasFactory =
-      type === "response"
+      context === "response"
         ? this.mergeSchemas(this.schemasForResponse, this.schemas)
-        : type === "query"
+        : context === "query"
           ? this.mergeSchemas(this.schemasForQuery, this.schemas)
-          : this.cloneSchema(this.schemas)
+          : this.mergeSchemas(this.schemas)
     const key = Object.hasOwn(schemasFactory, name)
       ? name
       : additionalData?.title || ""
@@ -163,7 +335,17 @@ class SchemaFactory {
       return
     }
 
-    let schema = Object.assign({}, schemasFactory[key])
+    let schema: OpenApiSchema | undefined
+
+    if (typeof schemasFactory[key] === "function") {
+      if (!type) {
+        return
+      }
+
+      schema = schemasFactory[key](type)
+    } else {
+      schema = Object.assign({}, schemasFactory[key])
+    }
 
     if (additionalData) {
       schema = Object.assign(schema, {
@@ -176,17 +358,16 @@ class SchemaFactory {
     return schema
   }
 
-  private mergeSchemas(
-    main: Record<string, OpenApiSchema>,
-    other: Record<string, OpenApiSchema>
-  ): Record<string, OpenApiSchema> {
-    return Object.assign(this.cloneSchema(main), this.cloneSchema(other))
-  }
-
-  private cloneSchema(
-    schema: Record<string, OpenApiSchema>
-  ): Record<string, OpenApiSchema> {
-    return JSON.parse(JSON.stringify(schema))
+  private mergeSchemas(...schemas: SchemaMap[]): SchemaMap {
+    return schemas.reduce((merged, schema) => {
+      Object.entries(schema).forEach(([key, value]) => {
+        merged[key] =
+          typeof value === "function"
+            ? value
+            : JSON.parse(JSON.stringify(value))
+      })
+      return merged
+    }, {} as SchemaMap)
   }
 }
 

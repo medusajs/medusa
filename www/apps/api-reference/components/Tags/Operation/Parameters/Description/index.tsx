@@ -1,3 +1,4 @@
+import React from "react"
 import MDXContentClient from "@/components/MDXContent/Client"
 import type { OpenAPI } from "types"
 import clsx from "clsx"
@@ -9,7 +10,7 @@ const InlineCode = dynamic<InlineCodeProps>(
   async () => (await import("docs-ui")).InlineCode
 ) as React.FC<InlineCodeProps>
 
-type TagOperationParametersDescriptionProps = {
+export type TagOperationParametersDescriptionProps = {
   schema: OpenAPI.SchemaObject
 }
 
@@ -19,7 +20,7 @@ const TagOperationParametersDescription = ({
   return (
     <div className={clsx("pb-0.5 flex flex-col gap-0.25")}>
       {schema.default !== undefined && (
-        <span>
+        <span data-testid="default">
           Default:{" "}
           <InlineCode className="break-words">
             {JSON.stringify(schema.default)}
@@ -27,7 +28,7 @@ const TagOperationParametersDescription = ({
         </span>
       )}
       {schema.enum && (
-        <span>
+        <span data-testid="enum">
           Enum:{" "}
           {schema.enum.map((value, index) => (
             <Fragment key={index}>
@@ -38,7 +39,7 @@ const TagOperationParametersDescription = ({
         </span>
       )}
       {schema.example !== undefined && (
-        <span>
+        <span data-testid="example">
           Example:{" "}
           <InlineCode className="break-words">
             {JSON.stringify(schema.example)}
@@ -57,7 +58,7 @@ const TagOperationParametersDescription = ({
         </>
       )}
       {schema.externalDocs && (
-        <span>
+        <span data-testid="related-guide">
           Related guide:{" "}
           <Link
             href={schema.externalDocs.url}

@@ -16,8 +16,16 @@ export const file = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/uploadFilesWorkflow"
   },
   {
-    "title": "generateProductCsvStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/generateProductCsvStep"
+    "title": "exportOrdersStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/exportOrdersStep"
+  },
+  {
+    "title": "exportOrdersWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/exportOrdersWorkflow"
+  },
+  {
+    "title": "exportProductsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/exportProductsStep"
   },
   {
     "title": "processImportChunksStep",

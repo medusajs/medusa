@@ -1267,4 +1267,41 @@ describe("Total calculation", function () {
       total: 0,
     })
   })
+
+  it("should calculate refundable_total for tax inclusive items without inflating tax", function () {
+    const cartTaxInclusive = {
+      items: [
+        {
+          unit_price: 100,
+          quantity: 2,
+          is_tax_inclusive: true,
+          detail: {
+            fulfilled_quantity: 2,
+            shipped_quantity: 2,
+            return_requested_quantity: 0,
+            return_received_quantity: 0,
+            return_dismissed_quantity: 0,
+            written_off_quantity: 0,
+          },
+          tax_lines: [
+            {
+              rate: 20,
+            },
+          ],
+          adjustments: [
+            {
+              amount: 10,
+            },
+          ],
+        },
+      ],
+    }
+
+    const serializedTaxInclusive = JSON.parse(
+      JSON.stringify(decorateCartTotals(cartTaxInclusive))
+    )
+
+    expect(serializedTaxInclusive.items[0].refundable_total).toBe(188)
+    expect(serializedTaxInclusive.items[0].refundable_total_per_unit).toBe(94)
+  })
 })

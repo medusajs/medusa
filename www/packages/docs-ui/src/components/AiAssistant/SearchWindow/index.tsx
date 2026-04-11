@@ -1,13 +1,19 @@
 "use client"
 
 import React, { Fragment, useCallback, useState } from "react"
-import { Badge, Button, InputText, Kbd, Tooltip, Link } from "@/components"
-import { useAiAssistant, useSearch } from "@/providers"
+import { Badge } from "../../Badge"
+import { Button } from "../../Button"
+import { InputText } from "../../Input/Text"
+import { Kbd } from "../../Kbd"
+import { Tooltip } from "../../Tooltip"
+import { Link } from "../../Link"
+import { useAiAssistant } from "@/providers/AiAssistant"
+import { useSearch } from "@/providers/Search"
 import { ArrowUturnLeft } from "@medusajs/icons"
 import clsx from "clsx"
 import { AiAssistantThreadItem } from "../ThreadItem"
 import { AiAssistantSuggestions } from "../Suggestions"
-import { useSearchNavigation } from "../../.."
+import { useSearchNavigation } from "../../../hooks/use-search-navigation"
 import { useChat } from "@kapaai/react-sdk"
 
 export const AiAssistantSearchWindow = () => {

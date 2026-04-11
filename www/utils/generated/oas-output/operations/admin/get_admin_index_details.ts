@@ -4,7 +4,6 @@
  * summary: Get Index Details
  * description: Retrieve index metadata, including entity type, status, last synced key, and last updated timestamp.
  * x-authenticated: true
- * parameters: []
  * security:
  *   - api_token: []
  *   - cookie_auth: []

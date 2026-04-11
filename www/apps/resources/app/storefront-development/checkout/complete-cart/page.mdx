@@ -10,7 +10,7 @@ products:
   - payment
 ---
 
-import { CodeTabs, CodeTab } from "docs-ui"
+import { CodeTabs, CodeTab, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Checkout Step 5: Complete Cart`,
@@ -54,6 +54,23 @@ In the response of the request, the `type` field determines whether the cart com
 - If the `type` is `order`, it means the cart was completed and the order was placed successfully.
 
 When the cart completion is successful, it's important to unset the cart ID from the `localStorage`, as the cart is no longer usable.
+
+---
+
+## Order's Locale after Cart Completion
+
+<Prerequisites
+  items={[
+    {
+      text: "Translation Module Configured",
+      link: "/commerce-modules/translation#configure-translation-module",
+    }
+  ]}
+/>
+
+When you complete the cart, items in the order will be in the locale that was set for the cart. This ensures that the customer sees the order details in their preferred language.
+
+If no locale was set for the cart, then the order's items will be in the original product content.
 
 ---
 

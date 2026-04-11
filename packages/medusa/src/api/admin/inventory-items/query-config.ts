@@ -1,3 +1,8 @@
+export enum Entities {
+  inventory_item = "inventory_item",
+  inventory_level = "inventory_level",
+}
+
 // eslint-disable-next-line max-len
 export const defaultAdminLocationLevelFields = [
   "id",
@@ -38,19 +43,23 @@ export const defaultAdminInventoryItemFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminInventoryItemFields,
   isList: false,
+  entity: Entities.inventory_item,
 }
 
 export const retrieveLocationLevelsTransformQueryConfig = {
   defaults: defaultAdminLocationLevelFields,
   isList: false,
+  entity: Entities.inventory_level,
 }
 
 export const listLocationLevelsTransformQueryConfig = {
   ...retrieveLocationLevelsTransformQueryConfig,
   isList: true,
+  entity: Entities.inventory_level,
 }
 
 export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,
+  entity: Entities.inventory_item,
 }

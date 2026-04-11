@@ -1,19 +1,19 @@
-import type { Readable } from "stream"
 import {
   Context,
   CreateFileDTO,
-  GetUploadFileUrlDTO,
   FileDTO,
-  UploadFileUrlDTO,
   FileTypes,
   FilterableFileProps,
   FindConfig,
+  GetUploadFileUrlDTO,
   ModuleJoinerConfig,
+  UploadFileUrlDTO,
 } from "@medusajs/framework/types"
+import type { Readable, Writable } from "stream"
 
+import { MedusaError } from "@medusajs/framework/utils"
 import { joinerConfig } from "../joiner-config"
 import FileProviderService from "./file-provider-service"
-import { MedusaError } from "@medusajs/framework/utils"
 
 type InjectedDependencies = {
   fileProviderService: FileProviderService
@@ -171,5 +171,26 @@ export default class FileModuleService implements FileTypes.IFileModuleService {
    */
   getAsBuffer(id: string): Promise<Buffer> {
     return this.fileProviderService_.getAsBuffer({ fileKey: id })
+  }
+
+  /**
+   * Get a writeable stream to upload a file.
+   *
+   * @example
+   * const { writeStream, promise } = await fileModuleService.getUploadStream({
+   *   filename: "test.csv",
+   *   mimeType: "text/csv",
+   * })
+   *
+   * stream.pipe(writeStream)
+   * const result = await promise
+   */
+  getUploadStream(data: FileTypes.ProviderUploadStreamDTO): Promise<{
+    writeStream: Writable
+    promise: Promise<FileTypes.ProviderFileResultDTO>
+    url: string
+    fileKey: string
+  }> {
+    return this.fileProviderService_.getUploadStream(data)
   }
 }

@@ -100,6 +100,11 @@ export const infrastructureModulesSidebar = [
         children: [
           {
             type: "link",
+            path: "/infrastructure-modules/caching/guides/clear-cache",
+            title: "Clear Cache",
+          },
+          {
+            type: "link",
             path: "/references/caching-module-provider",
             title: "Create Caching Module Provider",
           },

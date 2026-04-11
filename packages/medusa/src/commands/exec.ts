@@ -1,5 +1,9 @@
 import { ExecArgs } from "@medusajs/framework/types"
-import { ContainerRegistrationKeys, dynamicImport, isFileSkipped, } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  dynamicImport,
+  isFileSkipped,
+} from "@medusajs/framework/utils"
 import express from "express"
 import { existsSync } from "fs"
 import path from "path"
@@ -11,6 +15,8 @@ type Options = {
 }
 
 export default async function exec({ file, args }: Options) {
+  process.env.MEDUSA_WORKER_MODE = "server"
+
   const container = await initializeContainer(process.cwd(), {
     skipDbConnection: true,
   })
@@ -36,9 +42,6 @@ export default async function exec({ file, args }: Options) {
     if (!scriptToExec || typeof scriptToExec !== "function") {
       throw new Error(`File doesn't default export a function to execute.`)
     }
-
-    // set worker mode
-    process.env.MEDUSA_WORKER_MODE = "worker"
 
     const { container } = await loaders({
       directory,

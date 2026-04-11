@@ -1,10 +1,12 @@
-import { MiddlewareRoute } from "@medusajs/framework/http"
 import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
+import { MiddlewareRoute } from "@medusajs/framework/http"
+import { PolicyOperation } from "@medusajs/framework/utils"
 import { createLinkBody } from "../../utils/validators"
 import * as QueryConfig from "./query-config"
+import { Entities } from "./query-config"
 import {
   AdminCreateCustomerGroup,
   AdminGetCustomerGroupParams,
@@ -14,6 +16,15 @@ import {
 
 export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
   {
+    matcher: "/admin/customer-groups/*",
+    policies: [
+      {
+        resource: Entities.customer_group,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/customer-groups",
     middlewares: [
@@ -21,6 +32,12 @@ export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetCustomerGroupsParams,
         QueryConfig.listTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.customer_group,
+        operation: PolicyOperation.read,
+      },
     ],
   },
   {
@@ -43,6 +60,12 @@ export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.customer_group,
+        operation: PolicyOperation.create,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -54,6 +77,12 @@ export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.customer_group,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -64,6 +93,22 @@ export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetCustomerGroupParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.customer_group,
+        operation: PolicyOperation.update,
+      },
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/customer-groups/:id",
+    policies: [
+      {
+        resource: Entities.customer_group,
+        operation: PolicyOperation.delete,
+      },
     ],
   },
 ]

@@ -14,11 +14,11 @@ export class Auth {
   /**
    * This method is used to retrieve a registration JWT token for a user, customer, or custom actor type. It sends a request to the
    * [Retrieve Registration Token API route](https://docs.medusajs.com/api/store#auth_postactor_typeauth_provider_register).
-   * 
+   *
    * Then, it stores the returned token and passes it in the header of subsequent requests. So, you can call the
    * [store.customer.create](https://docs.medusajs.com/resources/references/js-sdk/store/customer#create) method,
    * for example, after calling this method.
-   * 
+   *
    * Learn more in the [JS SDK Authentication](https://docs.medusajs.com/resources/js-sdk/auth/overview) guide.
    *
    * @param actor - The actor type. For example, `user` for admin user, or `customer` for customer.
@@ -38,7 +38,7 @@ export class Auth {
    *     password: "supersecret"
    *   }
    * )
-   * 
+   *
    * // all subsequent requests will use the token in the header
    * const { customer } = await sdk.store.customer.create({
    *   email: "customer@gmail.com",
@@ -66,32 +66,32 @@ export class Auth {
   /**
    * This method retrieves the JWT authenticated token for an admin user, customer, or custom
    * actor type. It sends a request to the [Authenticate API Route](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_provider).
-   * 
+   *
    * ### Third-Party Authentication
-   * 
+   *
    * If the API route returns a `location` property, it means that the authentication requires additional steps,
    * typically in a third-party service. The `location` property is returned so that you
    * can redirect the user to the appropriate page.
-   * 
+   *
    * :::note
-   * 
+   *
    * For an example of implementing third-party authentication, refer to the
    * [Third-Party Login in Storefront](https://docs.medusajs.com/resources/storefront-development/customers/third-party-login) guide.
-   * 
+   *
    * :::
-   * 
+   *
    * ### Session Authentication
    *
    * If the `auth.type` of the SDK is set to `session`, this method will also send a request to the
    * [Set Authentication Session API route](https://docs.medusajs.com/api/admin#auth_postsession).
-   * 
+   *
    * Learn more in the [JS SDK Authentication](https://docs.medusajs.com/resources/js-sdk/auth/overview) guide.
-   * 
+   *
    * ### Automatic Authentication
    *
    * If the authentication was successful, subsequent requests using the SDK will automatically have the necessary authentication headers / session
    * set, based on your JS SDK authentication configurations.
-   * 
+   *
    * Learn more in the [JS SDK Authentication](https://docs.medusajs.com/resources/js-sdk/auth/overview) guide.
    *
    * @param actor - The actor type. For example, `user` for admin user, or `customer` for customer.
@@ -111,14 +111,14 @@ export class Auth {
    *     password: "supersecret"
    *   }
    * )
-   * 
+   *
    * if (typeof result !== "string") {
    *   alert("Authentication requires additional steps")
    *   // replace with the redirect logic of your application
    *   window.location.href = result.location
    *   return
    * }
-   * 
+   *
    * // customer is now authenticated
    * // all subsequent requests will use the token in the header
    * const { customer } = await sdk.store.customer.retrieve()
@@ -150,11 +150,11 @@ export class Auth {
   /**
    * This method is used to validate an Oauth callback from a third-party service, such as Google, for an admin user, customer, or custom actor types.
    * It sends a request to the [Validate Authentication Callback](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_providercallback).
-   * 
+   *
    * The method stores the returned token and passes it in the header of subsequent requests. So, you can call the
    * [store.customer.create](https://docs.medusajs.com/resources/references/js-sdk/store/customer#create) or {@link refresh} methods,
    * for example, after calling this method.
-   * 
+   *
    * Learn more in the [JS SDK Authentication](https://docs.medusajs.com/resources/js-sdk/auth/overview) guide.
    *
    * @param actor - The actor type. For example, `user` for admin user, or `customer` for customer.
@@ -205,15 +205,15 @@ export class Auth {
   /**
    * This method refreshes a JWT authentication token, which is useful after validating the Oauth callback
    * with {@link callback}. It sends a request to the [Refresh Authentication Token API route](https://docs.medusajs.com/api/admin#auth_postadminauthtokenrefresh).
-   * 
+   *
    * The method stores the returned token and passes it in the header of subsequent requests. So, you can call other
    * methods that require authentication after calling this method.
-   * 
+   *
    * Learn more in the [JS SDK Authentication](https://docs.medusajs.com/resources/js-sdk/auth/overview) guide.
-   * 
+   *
    * For an example of implementing third-party authentication, refer to the
    * [Third-Party Login in Storefront](https://docs.medusajs.com/resources/storefront-development/customers/third-party-login) guide.
-   * 
+   *
    * @param headers - Headers to pass in the request
    *
    * @returns The refreshed JWT authentication token.
@@ -222,7 +222,7 @@ export class Auth {
    *
    * @example
    * const token = await sdk.auth.refresh()
-   * 
+   *
    * // all subsequent requests will use the token in the header
    * const { customer } = await sdk.store.customer.retrieve()
    */
@@ -243,19 +243,19 @@ export class Auth {
 
   /**
    * This method logs out the currently authenticated user based on your JS SDK authentication configurations.
-   * 
+   *
    * If the `auth.type` of the SDK is set to `session`, this method will also send a request to the
    * [Delete Authentication Session API route](https://docs.medusajs.com/api/admin#auth_deletesession).
-   * 
+   *
    * The method also clears any stored tokens or sessions, based on your JS SDK authentication configurations.
-   * 
+   *
    * Learn more in the [JS SDK Authentication](https://docs.medusajs.com/resources/js-sdk/auth/overview) guide.
-   * 
+   *
    * @tags auth
    *
    * @example
    * await sdk.auth.logout()
-   * 
+   *
    * // user is now logged out
    * // you can't send any requests that require authentication
    */
@@ -304,6 +304,12 @@ export class Auth {
        * this would be the user's email.
        */
       identifier: string
+      /**
+       * Optional metadata to include in the reset password request.
+       *
+       * @since 2.12.4
+       */
+      metadata?: Record<string, unknown>
     }
   ) => {
     await this.client.fetch(`/auth/${actor}/${provider}/reset-password`, {

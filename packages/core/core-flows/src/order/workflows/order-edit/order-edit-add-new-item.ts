@@ -4,24 +4,23 @@ import {
   OrderPreviewDTO,
   OrderWorkflow,
 } from "@medusajs/framework/types"
+import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
 import {
-  ChangeActionType,
-  OrderChangeStatus
-} from "@medusajs/framework/utils"
-import {
-  WorkflowData,
-  WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../../common"
+import { acquireLockStep, releaseLockStep } from "../../../locking"
 import { previewOrderChangeStep } from "../../steps/preview-order-change"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 import { addOrderLineItemsWorkflow } from "../add-line-items"
+import { computeAdjustmentsForPreviewWorkflow } from "../compute-adjustments-for-preview"
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 import { updateOrderTaxLinesWorkflow } from "../update-tax-lines"
 import { fieldsToRefreshOrderEdit } from "./utils/fields"
@@ -105,6 +104,12 @@ export const orderEditAddNewItemWorkflow = createWorkflow(
   function (
     input: WorkflowData<OrderWorkflow.OrderEditAddNewItemWorkflowInput>
   ): WorkflowResponse<OrderPreviewDTO> {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const orderResult = useQueryGraphStep({
       entity: "order",
       fields: fieldsToRefreshOrderEdit,
@@ -120,7 +125,7 @@ export const orderEditAddNewItemWorkflow = createWorkflow(
 
     const orderChangeResult = useQueryGraphStep({
       entity: "order_change",
-      fields: ["id", "status", "version", "actions.*"],
+      fields: ["id", "status", "version", "actions.*", "carry_over_promotions"],
       filters: {
         order_id: input.order_id,
         status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
@@ -158,7 +163,12 @@ export const orderEditAddNewItemWorkflow = createWorkflow(
     })
 
     const orderChangeActionInput = transform(
-      { order, orderChange, items: input.items, lineItems },
+      {
+        order,
+        orderChange,
+        items: input.items,
+        lineItems,
+      },
       ({ order, orderChange, items, lineItems }) => {
         return items.map((item, index) => ({
           order_change_id: orderChange.id,
@@ -183,6 +193,21 @@ export const orderEditAddNewItemWorkflow = createWorkflow(
       input: orderChangeActionInput,
     })
 
-    return new WorkflowResponse(previewOrderChangeStep(input.order_id))
+    computeAdjustmentsForPreviewWorkflow.runAsStep({
+      input: {
+        order,
+        orderChange,
+      },
+    })
+
+    const previewOrderChange = previewOrderChangeStep(
+      input.order_id
+    ) as OrderPreviewDTO
+
+    releaseLockStep({
+      key: input.order_id,
+    })
+
+    return new WorkflowResponse(previewOrderChange)
   }
 )

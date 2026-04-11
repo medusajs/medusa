@@ -1,3 +1,4 @@
+import React from "react"
 import clsx from "clsx"
 import SectionDivider from "../Divider"
 import { forwardRef } from "react"
@@ -23,6 +24,7 @@ const SectionContainer = forwardRef<HTMLDivElement, SectionContainerProps>(
           !noTopPadding && "pt-7",
           className
         )}
+        data-testid="section-container"
       >
         <WideSection>{children}</WideSection>
         {!noDivider && <SectionDivider />}

@@ -4,7 +4,7 @@ import { TriangleDownMini } from "@medusajs/icons"
 import clsx from "clsx"
 import React, { useRef, useState } from "react"
 import { NavigationItemDropdown } from "types"
-import { Menu } from "../../../.."
+import { Menu } from "../../../Menu"
 import { MainNavItemLink } from "../Link"
 
 type MainNavItemDropdownProps = {
@@ -35,7 +35,12 @@ export const MainNavItemDropdown = ({
           isActive={isActive}
           icon={
             <TriangleDownMini
-              className={clsx("transition-transform", isOpen && "rotate-180")}
+              className={clsx(
+                "transition-transform",
+                isOpen && "rotate-180",
+                isActive && "text-medusa-fg-base hover:text-medusa-fg-subtle",
+                !isActive && "text-medusa-fg-subtle hover:text-medusa-fg-base"
+              )}
             />
           }
           className="!flex"
@@ -47,18 +52,28 @@ export const MainNavItemDropdown = ({
       <div
         className={clsx(
           "cursor-pointer flex gap-docs_0.25 items-center py-docs_0.25",
-          isActive && "text-medusa-fg-base",
+          isActive && "text-medusa-fg-base hover:text-medusa-fg-subtle",
           !isActive && [
-            "text-medusa-fg-muted hover:text-medusa-fg-subtle",
+            "text-medusa-fg-subtle hover:text-medusa-fg-base",
             isOpen && "text-medusa-fg-subtle",
           ],
+          "hover:bg-medusa-button-transparent-hover rounded-docs_sm px-docs_0.5",
           className
         )}
         tabIndex={-1}
+        data-testid="dropdown-title-wrapper"
       >
-        <span className="text-compact-small-plus">{item.title}</span>
+        <span className="text-compact-small-plus" data-testid="dropdown-title">
+          {item.title}
+        </span>
         <TriangleDownMini
-          className={clsx("transition-transform", isOpen && "rotate-180")}
+          className={clsx(
+            "transition-transform",
+            isOpen && "rotate-180",
+            isActive && "text-medusa-fg-base hover:text-medusa-fg-subtle",
+            !isActive && "text-medusa-fg-subtle hover:text-medusa-fg-base"
+          )}
+          data-testid="triangle-icon"
         />
       </div>
     )
@@ -66,10 +81,11 @@ export const MainNavItemDropdown = ({
 
   return (
     <div
-      className={clsx("relative", wrapperClassName)}
+      className={clsx("relative z-10", wrapperClassName)}
       ref={ref}
       onMouseOver={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
+      data-testid="dropdown-wrapper"
     >
       {getItemContent()}
       <div className="absolute top-full -left-docs_0.75 pt-docs_0.25">

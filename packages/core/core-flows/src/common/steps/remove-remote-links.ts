@@ -7,9 +7,9 @@ type RemoveRemoteLinksStepInput = DeleteEntityInput | DeleteEntityInput[]
 
 export const removeRemoteLinkStepId = "remove-remote-links"
 /**
- * This step deletes linked records of a record.
+ * This step deletes linked records of a record if cascade deletion is enabled.
  *
- * Learn more in the [Remote Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/remote-link#cascade-delete-linked-records)
+ * Learn more in the [Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/link#cascade-delete-linked-records)
  *
  * @example
  * removeRemoteLinkStep([{

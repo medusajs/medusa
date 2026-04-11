@@ -139,30 +139,30 @@ export function prepareLineItemData(data: PrepareLineItemDataInput) {
 
   let lineItem: any = {
     quantity: item?.quantity,
-    title: variant?.product?.title ?? item?.title,
-    subtitle: variant?.title ?? item?.subtitle,
+    title: item?.title ?? variant?.product?.title,
+    subtitle: item?.subtitle ?? variant?.title,
     thumbnail:
-      variant?.thumbnail ?? variant?.product?.thumbnail ?? item?.thumbnail,
+      item?.thumbnail ?? variant?.thumbnail ?? variant?.product?.thumbnail,
 
     product_id: variant?.product?.id ?? item?.product_id,
-    product_title: variant?.product?.title ?? item?.product_title,
+    product_title: item?.product_title ?? variant?.product?.title,
     product_description:
-      variant?.product?.description ?? item?.product_description,
-    product_subtitle: variant?.product?.subtitle ?? item?.product_subtitle,
-    product_type: variant?.product?.type?.value ?? item?.product_type ?? null,
+      item?.product_description ?? variant?.product?.description,
+    product_subtitle: item?.product_subtitle ?? variant?.product?.subtitle,
+    product_type: item?.product_type ?? variant?.product?.type?.value ?? null,
     product_type_id:
-      variant?.product?.type?.id ?? item?.product_type_id ?? null,
+      item?.product_type_id ?? variant?.product?.type?.id ?? null,
     product_collection:
-      variant?.product?.collection?.title ?? item?.product_collection ?? null,
-    product_handle: variant?.product?.handle ?? item?.product_handle,
+      item?.product_collection ?? variant?.product?.collection?.title ?? null,
+    product_handle: item?.product_handle ?? variant?.product?.handle,
 
     variant_id: variant?.id,
-    variant_sku: variant?.sku ?? item?.variant_sku,
-    variant_barcode: variant?.barcode ?? item?.variant_barcode,
-    variant_title: variant?.title ?? item?.variant_title,
+    variant_sku: item?.variant_sku ?? variant?.sku,
+    variant_barcode: item?.variant_barcode ?? variant?.barcode,
+    variant_title: item?.variant_title ?? variant?.title,
     variant_option_values: item?.variant_option_values,
 
-    is_discountable: variant?.product?.discountable ?? item?.is_discountable,
+    is_discountable: item?.is_discountable ?? variant?.product?.discountable,
     is_giftcard: variant?.product?.is_giftcard ?? false,
     requires_shipping: requiresShipping,
 

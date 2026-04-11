@@ -2,8 +2,8 @@
 
 import React, { useState } from "react"
 import clsx from "clsx"
-import { Tooltip } from "@/components"
-import { useCopy } from "../../hooks"
+import { Tooltip } from "@/components/Tooltip"
+import { useCopy } from "../../hooks/use-copy"
 
 export type CopyButtonChildFn = (props: {
   isCopied: boolean
@@ -68,6 +68,7 @@ export const CopyButton = ({
             setTouchCount(0)
           }
         }}
+        data-testid="copy-button"
       >
         {typeof children === "function" ? children({ isCopied }) : children}
       </span>

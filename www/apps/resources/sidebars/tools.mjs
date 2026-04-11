@@ -113,6 +113,11 @@ export const toolsSidebar = [
                 path: "/nextjs-starter/guides/revalidate-cache",
                 title: "Revalidate Cache",
               },
+              {
+                type: "link",
+                path: "/nextjs-starter/guides/remove-country-code",
+                title: "Remove Country Code from URLs",
+              },
             ],
           },
           {

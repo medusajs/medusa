@@ -1,4 +1,10 @@
-import { Buildings, Component, PencilSquare, Trash } from "@medusajs/icons"
+import {
+  Buildings,
+  Component,
+  GlobeEurope,
+  PencilSquare,
+  Trash,
+} from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import {
   Badge,
@@ -26,6 +32,7 @@ import {
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 import { PRODUCT_VARIANT_IDS_KEY } from "../../../common/constants"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
+import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 
 type ProductVariantSectionProps = {
   product: HttpTypes.AdminProduct
@@ -38,6 +45,7 @@ export const ProductVariantSection = ({
   product,
 }: ProductVariantSectionProps) => {
   const { t } = useTranslation()
+  const isTranslationsEnabled = useFeatureFlag("translation")
 
   const { q, order, offset, allow_backorder, manage_inventory } =
     useQueryParams(
@@ -69,6 +77,11 @@ export const ProductVariantSection = ({
       placeholderData: keepPreviousData,
     }
   )
+
+  const translationParams = new URLSearchParams()
+  variants?.forEach((variant) => {
+    translationParams.append("reference_id", variant.id)
+  })
 
   if (isError) {
     throw error
@@ -115,6 +128,15 @@ export const ProductVariantSection = ({
                   to: `stock`,
                   icon: <Buildings />,
                 },
+                ...(isTranslationsEnabled
+                  ? [
+                      {
+                        icon: <GlobeEurope />,
+                        label: t("translations.actions.manage"),
+                        to: `/settings/translations/edit?reference=product_variant&${translationParams.toString()}`,
+                      },
+                    ]
+                  : []),
               ],
             },
           ],
@@ -222,6 +244,15 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
                   restore_params: tableSearchParams.toString(),
                 },
               }
+            )
+          },
+        },
+        {
+          icon: <GlobeEurope />,
+          label: t("translations.actions.manage"),
+          onClick: () => {
+            navigate(
+              `/settings/translations/edit?reference=product_variant&reference_id=${variant.id}`
             )
           },
         },

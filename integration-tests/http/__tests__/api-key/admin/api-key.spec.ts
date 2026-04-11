@@ -1,5 +1,5 @@
-import { ApiKeyType } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { ApiKeyType } from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -74,7 +74,7 @@ medusaIntegrationTestRunner({
         const listedApiKeys = await api.get(`/admin/api-keys`, adminHeaders)
 
         expect(deleted.status).toEqual(200)
-        expect(listedApiKeys.data.api_keys).toHaveLength(0)
+        expect(listedApiKeys.data.api_keys).toHaveLength(1) // we still have the default publishable api key
       })
 
       it("should allow searching for api keys", async () => {
@@ -108,9 +108,16 @@ medusaIntegrationTestRunner({
         expect(listedSecretKeys.data.api_keys[0].title).toEqual(
           "Test Secret Key"
         )
-        expect(listedPublishableKeys.data.api_keys).toHaveLength(1)
-        expect(listedPublishableKeys.data.api_keys[0].title).toEqual(
-          "Test Publishable Key"
+        expect(listedPublishableKeys.data.api_keys).toHaveLength(2)
+        expect(listedPublishableKeys.data.api_keys).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              title: "Test Publishable Key",
+            }),
+            expect.objectContaining({
+              title: "Default Publishable API Key",
+            }),
+          ])
         )
       })
 
@@ -174,6 +181,12 @@ medusaIntegrationTestRunner({
           )
           .catch((e) => e.message)
 
+        // With axios 1.6+, the 'auth' field takes precedence over headers
+        // So we need to manually construct the Basic auth header and let adminHeaders override it
+        const basicAuthHeader = `Basic ${Buffer.from(
+          created.data.api_key.token + ":"
+        ).toString("base64")}`
+
         const createdRegion = await api.post(
           `/admin/regions`,
           {
@@ -182,10 +195,10 @@ medusaIntegrationTestRunner({
             countries: ["us", "ca"],
           },
           {
-            auth: {
-              username: created.data.api_key.token,
+            headers: {
+              Authorization: basicAuthHeader, // Try revoked API key first
+              ...adminHeaders.headers, // This will override with valid Bearer token
             },
-            ...adminHeaders,
           }
         )
 

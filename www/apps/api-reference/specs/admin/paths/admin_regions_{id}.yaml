@@ -138,9 +138,9 @@ post:
     - name: region.updated
       payload: |-
         ```ts
-        [{
+        {
           id, // The ID of the region
-        }]
+        }
         ```
       description: Emitted when regions are updated.
       deprecated: false
@@ -214,9 +214,9 @@ delete:
     - name: region.deleted
       payload: |-
         ```ts
-        [{
+        {
           id, // The ID of the region
-        }]
+        }
         ```
       description: Emitted when regions are deleted.
       deprecated: false

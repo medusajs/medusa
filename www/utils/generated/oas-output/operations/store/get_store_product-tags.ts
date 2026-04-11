@@ -13,6 +13,16 @@
  *       type: string
  *       externalDocs:
  *         url: https://docs.medusajs.com/api/store#publishable-api-key
+ *   - name: x-medusa-locale
+ *     in: header
+ *     description: The locale in BCP 47 format to retrieve localized content.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       example: en-US
+ *       externalDocs:
+ *         url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+ *         description: Learn more in the Serve Translations in Storefront guide.
  *   - name: fields
  *     in: query
  *     description: |-
@@ -344,6 +354,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: Filter by the tag's update date.
@@ -575,6 +586,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: updated_at
  *   - name: with_deleted
  *     in: query
  *     description: Whether to include deleted records in the result.
@@ -583,6 +595,16 @@
  *       type: boolean
  *       title: with_deleted
  *       description: Whether to include deleted records in the result.
+ *   - name: locale
+ *     in: query
+ *     description: The locale in BCP 47 format to retrieve localized content.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       example: en-US
+ *       externalDocs:
+ *         url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+ *         description: Learn more in the Serve Translations in Storefront guide.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

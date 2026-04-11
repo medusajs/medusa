@@ -231,6 +231,19 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/user
     x-associatedSchema:
       $ref: ./components/schemas/AdminInvite.yaml
+  - name: Locales
+    description: >
+      A locale is a language that content is translated into for customers to
+      view in a storefront.
+
+      Medusa installs locales by default. These API routes allow admin users to
+      retrieve and view locales.
+    externalDocs:
+      description: Learn more about locales and translations.
+      url: >-
+        https://docs.medusajs.com/resources/commerce-modules/translation/concepts
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminLocale.yaml
   - name: Notifications
     description: >
       A notification informs an admin user of store changes or status changes of
@@ -240,6 +253,18 @@ tags:
       These API routes allow admin users to view and manage notifications.
     x-associatedSchema:
       $ref: ./components/schemas/AdminNotification.yaml
+  - name: Order Changes
+    description: >
+      An order change is a proposed change to an order, such as adding or
+      removing items, changing shipping methods, and more. They can be
+      associated with order edits, claims, or exchanges.
+
+      These API routes allow admin users to manage order changes.
+    externalDocs:
+      description: Learn more about order changes.
+      url: https://docs.medusajs.com/resources/commerce-modules/order/order-change
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminOrderChange.yaml
   - name: Order Edits
     description: >
       An order edit is a change to an order's details, such as items, shipping
@@ -680,22 +705,18 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/tax/tax-region
     x-associatedSchema:
       $ref: ./components/schemas/AdminTaxRegion.yaml
-  - name: Transaction Groups
+  - name: Translations
     description: >
-      A transaction group is a group of transactions that belong to a store
-      credit account. It allows you to group transactions together, such as all
-      transactions related to a specific gift card.
+      A translation is a localized version of content in a specific locale. For
+      example, a product description in French.
 
-      These API routes allow admin users to list transaction groups.
-
-      <Note>
-
-      Transaction Group routes are only available for Cloud users using the
-      [Loyalty Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
-
-      </Note>
+      These API routes allow admin users to manage translations for different
+      locales and resources.
+    externalDocs:
+      description: Learn more about the Translation Module.
+      url: https://docs.medusajs.com/resources/commerce-modules/translation
     x-associatedSchema:
-      $ref: ./components/schemas/AdminTransactionGroup.yaml
+      $ref: ./components/schemas/AdminTranslation.yaml
   - name: Uploads
     description: >
       Use these API routes to upload files to your Medusa application using the
@@ -880,8 +901,6 @@ paths:
     $ref: paths/admin_gift-cards_{id}.yaml
   /admin/gift-cards/{id}/orders:
     $ref: paths/admin_gift-cards_{id}_orders.yaml
-  /admin/gift-cards/{id}/redeem:
-    $ref: paths/admin_gift-cards_{id}_redeem.yaml
   /admin/index/details:
     $ref: paths/admin_index_details.yaml
   /admin/index/sync:
@@ -906,10 +925,16 @@ paths:
     $ref: paths/admin_invites_{id}.yaml
   /admin/invites/{id}/resend:
     $ref: paths/admin_invites_{id}_resend.yaml
+  /admin/locales:
+    $ref: paths/admin_locales.yaml
+  /admin/locales/{code}:
+    $ref: paths/admin_locales_{code}.yaml
   /admin/notifications:
     $ref: paths/admin_notifications.yaml
   /admin/notifications/{id}:
     $ref: paths/admin_notifications_{id}.yaml
+  /admin/order-changes/{id}:
+    $ref: paths/admin_order-changes_{id}.yaml
   /admin/order-edits:
     $ref: paths/admin_order-edits.yaml
   /admin/order-edits/{id}:
@@ -930,6 +955,8 @@ paths:
     $ref: paths/admin_order-edits_{id}_shipping-method_{action_id}.yaml
   /admin/orders:
     $ref: paths/admin_orders.yaml
+  /admin/orders/export:
+    $ref: paths/admin_orders_export.yaml
   /admin/orders/{id}:
     $ref: paths/admin_orders_{id}.yaml
   /admin/orders/{id}/archive:
@@ -983,6 +1010,8 @@ paths:
     $ref: paths/admin_price-lists.yaml
   /admin/price-lists/{id}:
     $ref: paths/admin_price-lists_{id}.yaml
+  /admin/price-lists/{id}/prices:
+    $ref: paths/admin_price-lists_{id}_prices.yaml
   /admin/price-lists/{id}/prices/batch:
     $ref: paths/admin_price-lists_{id}_prices_batch.yaml
   /admin/price-lists/{id}/products:
@@ -1159,8 +1188,18 @@ paths:
     $ref: paths/admin_tax-regions.yaml
   /admin/tax-regions/{id}:
     $ref: paths/admin_tax-regions_{id}.yaml
-  /admin/transaction-groups:
-    $ref: paths/admin_transaction-groups.yaml
+  /admin/translations:
+    $ref: paths/admin_translations.yaml
+  /admin/translations/batch:
+    $ref: paths/admin_translations_batch.yaml
+  /admin/translations/entities:
+    $ref: paths/admin_translations_entities.yaml
+  /admin/translations/settings:
+    $ref: paths/admin_translations_settings.yaml
+  /admin/translations/settings/batch:
+    $ref: paths/admin_translations_settings_batch.yaml
+  /admin/translations/statistics:
+    $ref: paths/admin_translations_statistics.yaml
   /admin/uploads:
     $ref: paths/admin_uploads.yaml
   /admin/uploads/presigned-urls:

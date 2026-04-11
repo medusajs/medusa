@@ -1,15 +1,19 @@
 export const metadata = {
-  title: `Errors After Upgrading`,
+  title: `Errors After Upgrading Medusa`,
 }
 
 # {metadata.title}
 
-If you run into errors after updating Medusa and its dependencies, it's highly recommended to check the Upgrade Guides if there is a specific guide for your version. These guides include steps required to perform after upgrading Medusa.
+If you run into errors after updating your Medusa application, it's highly recommended to check the [GitHub Release Notes](https://github.com/medusajs/medusa/releases) for any upgrade guides related to the version you upgraded to. These release notes may include details on breaking changes and how to resolve them before upgrading.
 
-If there's no upgrade guide for your version, make sure that you ran the `db:migrate` command in the root directory of your Medusa application:
+Also, after updating your Medusa application, make sure that you ran the `db:migrate` command in the root directory of your Medusa application:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
 This ensures your application has the latest database structure required. Then, try running your Medusa application again and check whether the same error occurs.
+
+## Additional Resources
+
+- [Updating Medusa](!docs!/learn/update)

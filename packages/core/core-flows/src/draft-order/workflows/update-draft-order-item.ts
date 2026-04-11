@@ -3,7 +3,6 @@ import {
   ChangeActionType,
   MathBN,
   OrderChangeStatus,
-  PromotionActions,
 } from "@medusajs/framework/utils"
 import {
   createWorkflow,
@@ -26,8 +25,8 @@ import {
 import { getDraftOrderPromotionContextStep } from "../steps/get-draft-order-promotion-context"
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
-import { refreshDraftOrderAdjustmentsWorkflow } from "./refresh-draft-order-adjustments"
 import { acquireLockStep, releaseLockStep } from "../../locking"
+import { computeDraftOrderAdjustmentsWorkflow } from "./compute-draft-order-adjustments"
 
 export const updateDraftOrderItemWorkflowId = "update-draft-order-item"
 
@@ -72,7 +71,7 @@ export const updateDraftOrderItemWorkflow = createWorkflow(
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
-      fields: ["id", "status"],
+      fields: ["id", "status", "version"],
       variables: {
         filters: {
           order_id: input.order_id,
@@ -108,6 +107,7 @@ export const updateDraftOrderItemWorkflow = createWorkflow(
               unit_price: item.unit_price,
               compare_at_unit_price: item.compare_at_unit_price,
               quantity_diff: quantityDiff,
+              metadata: item.metadata,
             },
           }
         })
@@ -133,11 +133,9 @@ export const updateDraftOrderItemWorkflow = createWorkflow(
       appliedPromoCodes,
       (appliedPromoCodes) => appliedPromoCodes.length > 0
     ).then(() => {
-      refreshDraftOrderAdjustmentsWorkflow.runAsStep({
+      computeDraftOrderAdjustmentsWorkflow.runAsStep({
         input: {
-          order: context,
-          promo_codes: appliedPromoCodes,
-          action: PromotionActions.REPLACE,
+          order_id: input.order_id,
         },
       })
     })

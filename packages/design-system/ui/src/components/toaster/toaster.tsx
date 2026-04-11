@@ -37,24 +37,24 @@ const Toaster = ({
   /**
    * The time in milliseconds that a toast is shown before it's
    * automatically dismissed.
-   * 
+   *
    * @defaultValue 4000
    */
   duration,
   ...props
 }: ToasterProps) => {
-  return (
-    <Primitive
-      position={position}
-      gap={gap}
-      offset={offset}
-      cn={clx}
-      toastOptions={{
-        duration,
-      }}
-      {...props}
-    />
-  )
+  const primitiveProps = {
+    ...props,
+    position,
+    gap,
+    offset,
+    cn: clx,
+    toastOptions: {
+      duration,
+    },
+  } as React.ComponentPropsWithoutRef<typeof Primitive>
+
+  return <Primitive {...primitiveProps} />
 }
 
 export { Toaster }

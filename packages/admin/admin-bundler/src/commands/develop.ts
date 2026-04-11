@@ -1,4 +1,4 @@
-import express, { RequestHandler } from "express"
+import express, { IRouter, RequestHandler } from "express"
 import fs from "fs"
 import path from "path"
 import type { InlineConfig, ViteDevServer } from "vite"
@@ -67,7 +67,7 @@ async function injectHtmlMiddleware(
   })
 }
 
-export async function develop(options: BundlerOptions) {
+export async function develop(options: BundlerOptions): Promise<IRouter> {
   const vite = await import("vite")
 
   try {

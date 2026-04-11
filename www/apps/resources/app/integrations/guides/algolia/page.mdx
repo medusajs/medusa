@@ -403,15 +403,21 @@ The workflow has the following steps:
       {
         type: "step",
         name: "syncProductsStep",
-        description: "Index products in Algolia.",
-        depth: 1
+        description: "Index published products in Algolia.",
+        depth: 2
+      },
+      {
+        type: "step",
+        name: "deleteProductsFromAlgoliaStep",
+        description: "Delete unpublished products from Algolia.",
+        depth: 3
       }
     ]
   }}
   hideLegend
 />
 
-Medusa provides the `useQueryGraphStep` in its `@medusajs/medusa/core-flows` package. So, you only need to implement the second step.
+Medusa provides the `useQueryGraphStep` in its `@medusajs/medusa/core-flows` package. So, you only need to implement the other steps.
 
 ### syncProductsStep
 
@@ -426,13 +432,27 @@ If you get a type error on resolving the Algolia Module, run the Medusa applicat
 </Note>
 
 ```ts title="src/workflows/steps/sync-products.ts"
-import { ProductDTO } from "@medusajs/framework/types"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { ALGOLIA_MODULE } from "../../modules/algolia"
 import AlgoliaModuleService from "../../modules/algolia/service"
 
 export type SyncProductsStepInput = {
-  products: ProductDTO[]
+  products: {
+    id: string
+    title: string
+    description?: string
+    handle: string
+    thumbnail?: string
+    categories: {
+      id: string
+      name: string
+      handle: string
+    }[]
+    tags: {
+      id: string
+      value: string
+    }[]
+  }[]
 }
 
 export const syncProductsStep = createStep(
@@ -519,6 +539,64 @@ The compensation function receives two parameters:
 
 In the compensation function, you resolve the Algolia Module's service from the container. Then, you delete from Algolia the products that were newly indexed, and revert the existing products to their original data.
 
+#### deleteProductsFromAlgoliaStep
+
+The `deleteProductsFromAlgoliaStep` step deletes products from Algolia by their IDs.
+
+Create the step at `src/workflows/steps/delete-products-from-algolia.ts` with the following content:
+
+```ts title="src/workflows/steps/delete-products-from-algolia.ts"
+import {
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { ALGOLIA_MODULE } from "../../modules/algolia"
+
+export type DeleteProductsFromAlgoliaWorkflow = {
+  ids: string[]
+}
+
+export const deleteProductsFromAlgoliaStep = createStep(
+  "delete-products-from-algolia-step",
+  async (
+    { ids }: DeleteProductsFromAlgoliaWorkflow,
+    { container }
+  ) => {
+    const algoliaModuleService = container.resolve(ALGOLIA_MODULE)
+    
+    const existingRecords = await algoliaModuleService.retrieveFromIndex(
+      ids, 
+      "product"
+    )
+    await algoliaModuleService.deleteFromIndex(
+      ids,
+      "product"
+    )
+
+    return new StepResponse(undefined, existingRecords)
+  },
+  async (existingRecords, { container }) => {
+    if (!existingRecords) {
+      return
+    }
+    const algoliaModuleService = container.resolve(ALGOLIA_MODULE)
+    
+    await algoliaModuleService.indexData(
+      existingRecords as unknown as Record<string, unknown>[],
+      "product"
+    )
+  }
+)
+```
+
+The step receives the IDs of the products to delete as an input.
+
+In the step, you resolve the Algolia Module's service and retrieve the existing records from Algolia. This is useful to revert the deletion if an error occurs.
+
+Then, you delete the products from Algolia and pass the existing records to the compensation function.
+
+In the compensation function, you reindex the existing records if an error occurs.
+
 ### Add Sync Products Workflow
 
 You can now create the workflow that syncs the products to Algolia.
@@ -526,9 +604,14 @@ You can now create the workflow that syncs the products to Algolia.
 To create the workflow, create the file `src/workflows/sync-products.ts` with the following content:
 
 ```ts title="src/workflows/sync-products.ts"
-import { createWorkflow, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
+import { 
+  createWorkflow, 
+  transform, 
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
 import { syncProductsStep, SyncProductsStepInput } from "./steps/sync-products"
+import { deleteProductsFromAlgoliaStep } from "./steps/delete-products-from-algolia"
 
 type SyncProductsWorkflowInput = {
   filters?: Record<string, unknown>
@@ -539,7 +622,7 @@ type SyncProductsWorkflowInput = {
 export const syncProductsWorkflow = createWorkflow(
   "sync-products",
   ({ filters, limit, offset }: SyncProductsWorkflowInput) => {
-    const { data, metadata } = useQueryGraphStep({
+    const { data: products, metadata } = useQueryGraphStep({
       entity: "product",
       fields: [
         "id", 
@@ -552,23 +635,49 @@ export const syncProductsWorkflow = createWorkflow(
         "categories.handle",
         "tags.id",
         "tags.value",
+        "status",
       ],
       pagination: {
         take: limit,
         skip: offset,
       },
-      filters: {
-        status: "published",
-        ...filters,
-      },
+      filters,
+    })
+
+    const {
+      publishedProducts,
+      unpublishedProductsToDelete,
+    } = transform({
+      products,
+    }, (data) => {
+      const publishedProducts: SyncProductsStepInput["products"] = []
+      const unpublishedProductsToDelete: string[] = []
+
+      data.products.forEach((product) => {
+        if (product.status === "published") {
+          const { status, ...rest } = product
+          publishedProducts.push(rest as SyncProductsStepInput["products"][0])
+        } else {
+          unpublishedProductsToDelete.push(product.id)
+        }
+      })
+
+      return {
+        publishedProducts,
+        unpublishedProductsToDelete,
+      }
     })
 
     syncProductsStep({
-      products: data,
-    } as SyncProductsStepInput)
+      products: publishedProducts,
+    })
+
+    deleteProductsFromAlgoliaStep({
+      ids: unpublishedProductsToDelete,
+    })
 
     return new WorkflowResponse({
-      products: data,
+      products,
       metadata,
     })
   }
@@ -582,7 +691,9 @@ It accepts as a second parameter a constructor function, which is the workflow's
 In the workflow's constructor function, you:
 
 1. Execute `useQueryGraphStep` to retrieve products from Medusa's database. This step uses Medusa's [Query](!docs!/learn/fundamentals/module-links/query) tool to retrieve data across modules. You pass it the pagination and filter parameters you received in the input.
-2. Execute `syncProductsStep` to index the products in Algolia. You pass it the products you retrieved in the previous step.
+2. Use [transform](!docs!/learn/fundamentals/workflows/variable-manipulation) to prepare two lists: one for published products to index in Algolia and another for unpublished products to delete from Algolia.
+2. Execute `syncProductsStep` to index the published products in Algolia.
+3. Execute `deleteProductsFromAlgoliaStep` to delete unpublished products from Algolia.
 
 A workflow must return an instance of `WorkflowResponse`. The `WorkflowResponse` constructor accepts the workflow's output as a parameter, which is an object holding the retrieved products and their pagination details.
 
@@ -914,67 +1025,11 @@ Then, either create a product or update an existing one using the Medusa Admin d
 
 When a product is deleted, you need to remove it from the Algolia index. As this requires a different action than creating or updating a product, you'll create a new workflow that deletes the product from Algolia, then create a subscriber that listens to the `product.deleted` event to trigger the workflow.
 
-#### Create Delete Product Step
-
-The workflow to delete a product from Algolia will have only one step that deletes products by their IDs from Algolia.
-
-So, create the step at `src/workflows/steps/delete-products-from-algolia.ts` with the following content:
-
-```ts title="src/workflows/steps/delete-products-from-algolia.ts"
-import {
-  createStep,
-  StepResponse,
-} from "@medusajs/framework/workflows-sdk"
-import { ALGOLIA_MODULE } from "../../modules/algolia"
-
-export type DeleteProductsFromAlgoliaWorkflow = {
-  ids: string[]
-}
-
-export const deleteProductsFromAlgoliaStep = createStep(
-  "delete-products-from-algolia-step",
-  async (
-    { ids }: DeleteProductsFromAlgoliaWorkflow,
-    { container }
-  ) => {
-    const algoliaModuleService = container.resolve(ALGOLIA_MODULE)
-    
-    const existingRecords = await algoliaModuleService.retrieveFromIndex(
-      ids, 
-      "product"
-    )
-    await algoliaModuleService.deleteFromIndex(
-      ids,
-      "product"
-    )
-
-    return new StepResponse(undefined, existingRecords)
-  },
-  async (existingRecords, { container }) => {
-    if (!existingRecords) {
-      return
-    }
-    const algoliaModuleService = container.resolve(ALGOLIA_MODULE)
-    
-    await algoliaModuleService.indexData(
-      existingRecords as unknown as Record<string, unknown>[],
-      "product"
-    )
-  }
-)
-```
-
-The step receives the IDs of the products to delete as an input.
-
-In the step, you resolve the Algolia Module's service and retrieve the existing records from Algolia. This is useful to revert the deletion if an error occurs.
-
-Then, you delete the products from Algolia and pass the existing records to the compensation function.
-
-In the compensation function, you reindex the existing records if an error occurs.
-
 #### Create Delete Product Workflow
 
-You can now create the workflow that deletes products from Algolia. Create the file `src/workflows/delete-products-from-algolia.ts` with the following content:
+You've already created the `deleteProductsFromAlgoliaStep` that deletes products from Algolia by their IDs. So, you can create the workflow that uses this step.
+
+Create the file `src/workflows/delete-products-from-algolia.ts` with the following content:
 
 ```ts title="src/workflows/delete-products-from-algolia.ts"
 import { createWorkflow } from "@medusajs/framework/workflows-sdk"
@@ -1047,11 +1102,17 @@ While you can implement the search functionality directly in the storefront to i
 
 To implement the API Route, create the file `src/api/store/products/search/route.ts` with the following content:
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 ```ts title="src/api/store/products/search/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { ALGOLIA_MODULE } from "../../../../modules/algolia"
 import AlgoliaModuleService from "../../../../modules/algolia/service"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const SearchSchema = z.object({
   query: z.string(),

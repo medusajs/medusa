@@ -1,4 +1,8 @@
-import type { INotificationModuleService } from "@medusajs/framework/types"
+import type {
+  Attachment,
+  INotificationModuleService,
+  NotificationContent,
+} from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
@@ -12,6 +16,11 @@ export type SendNotificationsStepInput = {
    */
   to: string
   /**
+   * The address to send the notification from, depending on
+   * the channel. For example, the email address for the email channel.
+   */
+  from?: string | null
+  /**
    * The channel to send the notification through. For example, `email`.
    */
   channel: string
@@ -19,12 +28,20 @@ export type SendNotificationsStepInput = {
    * The ID of the template to use for the notification. This template ID may be defined
    * in a third-party service used to send the notification.
    */
-  template: string
+  template?: string | null
+  /**
+   * The content that gets passed over to the provider.
+   */
+  content?: NotificationContent | null
   /**
    * The data to use in the notification template. This data may be used to personalize
    * the notification, such as the user's name or the order number.
    */
   data?: Record<string, unknown> | null
+  /**
+   * Additional data specific to the provider or channel. For example, cc and bcc for emails.
+   */
+  provider_data?: Record<string, unknown> | null
   /**
    * The type of trigger that caused the notification to be sent. For example, `order_created`.
    */
@@ -51,6 +68,10 @@ export type SendNotificationsStepInput = {
    * is sent multiple times, the key ensures that the notification is sent only once.
    */
   idempotency_key?: string | null
+  /**
+   * Optional attachments for the notification.
+   */
+  attachments?: Attachment[] | null
 }[]
 
 export const sendNotificationsStepId = "send-notifications"

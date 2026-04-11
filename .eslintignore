@@ -26,6 +26,7 @@ packages/*
 !packages/create-medusa-app
 !packages/modules/product
 !packages/modules/locking
+!packages/modules/translation
 !packages/core/orchestration
 !packages/core/workflows-sdk
 !packages/core/core-flows

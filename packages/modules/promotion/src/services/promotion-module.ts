@@ -7,7 +7,6 @@ import {
   FindConfig,
   InferEntityType,
   InternalModuleDeclaration,
-  ModuleJoinerConfig,
   ModulesSdkTypes,
   PromotionDTO,
   PromotionTypes,
@@ -62,7 +61,6 @@ import {
   validateApplicationMethodAttributes,
   validatePromotionRuleAttributes,
 } from "@utils"
-import { joinerConfig } from "../joiner-config"
 import { CreatePromotionRuleValueDTO } from "../types/promotion-rule-value"
 import { buildPromotionRuleQueryFilterFromContext } from "../utils/compute-actions/build-promotion-rule-query-filter-from-context"
 
@@ -145,10 +143,6 @@ export default class PromotionModuleService
     this.campaignService_ = campaignService
     this.campaignBudgetService_ = campaignBudgetService
     this.campaignBudgetUsageService_ = campaignBudgetUsageService
-  }
-
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
   }
 
   @InjectManager()
@@ -313,6 +307,7 @@ export default class PromotionModuleService
 
     const campaignBudgetMap = new Map<string, UpdateCampaignBudgetDTO>()
     const promotionCodeUsageMap = new Map<string, boolean>()
+    const promotionUsageMap = new Map<string, { id: string; used: number }>()
 
     const existingPromotions = await this.listActivePromotions_(
       { code: promotionCodes },
@@ -339,6 +334,22 @@ export default class PromotionModuleService
 
       if (!promotion) {
         continue
+      }
+
+      if (typeof promotion.limit === "number") {
+        const newUsedValue = (promotion.used ?? 0) + 1
+
+        if (newUsedValue > promotion.limit) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Promotion usage exceeds the limit."
+          )
+        }
+
+        promotionUsageMap.set(promotion.id, {
+          id: promotion.id,
+          used: newUsedValue,
+        })
       }
 
       const campaignBudget = promotion.campaign?.budget
@@ -436,6 +447,13 @@ export default class PromotionModuleService
       }
     }
 
+    if (promotionUsageMap.size > 0) {
+      await this.promotionService_.update(
+        Array.from(promotionUsageMap.values()),
+        sharedContext
+      )
+    }
+
     if (campaignBudgetMap.size > 0) {
       const campaignBudgetsData: UpdateCampaignBudgetDTO[] = []
       for (const [_, campaignBudgetData] of campaignBudgetMap) {
@@ -465,6 +483,7 @@ export default class PromotionModuleService
   ): Promise<void> {
     const promotionCodeUsageMap = new Map<string, boolean>()
     const campaignBudgetMap = new Map<string, UpdateCampaignBudgetDTO>()
+    const promotionUsageMap = new Map<string, { id: string; used: number }>()
 
     const existingPromotions = await this.listActivePromotions_(
       {
@@ -495,6 +514,15 @@ export default class PromotionModuleService
 
       if (!promotion) {
         continue
+      }
+
+      if (typeof promotion.limit === "number") {
+        const newUsedValue = Math.max(0, (promotion.used ?? 0) - 1)
+
+        promotionUsageMap.set(promotion.id, {
+          id: promotion.id,
+          used: newUsedValue,
+        })
       }
 
       const campaignBudget = promotion.campaign?.budget
@@ -573,6 +601,13 @@ export default class PromotionModuleService
       }
     }
 
+    if (promotionUsageMap.size > 0) {
+      await this.promotionService_.update(
+        Array.from(promotionUsageMap.values()),
+        sharedContext
+      )
+    }
+
     if (campaignBudgetMap.size > 0) {
       const campaignBudgetsData: UpdateCampaignBudgetDTO[] = []
       for (const [_, campaignBudgetData] of campaignBudgetMap) {
@@ -599,7 +634,10 @@ export default class PromotionModuleService
     options: PromotionTypes.ComputeActionOptions = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PromotionTypes.ComputeActions[]> {
-    const { prevent_auto_promotions: preventAutoPromotions } = options
+    const {
+      prevent_auto_promotions: preventAutoPromotions,
+      skip_usage_limit_checks: skipUsageLimitChecks,
+    } = options
     const computedActions: PromotionTypes.ComputeActions[] = []
     const { items = [], shipping_methods: shippingMethods = [] } =
       applicationContext
@@ -725,6 +763,7 @@ export default class PromotionModuleService
           action: ComputedActions.REMOVE_ITEM_ADJUSTMENT,
           adjustment_id: adjustment.id,
           code,
+          item_id: adjustment.item_id as string,
         })
       }
 
@@ -733,11 +772,12 @@ export default class PromotionModuleService
           action: ComputedActions.REMOVE_SHIPPING_METHOD_ADJUSTMENT,
           adjustment_id: adjustment.id,
           code,
+          shipping_method_id: adjustment.shipping_method_id as string,
         })
       }
     }
 
-    const promotionCodeSet = new Set<string>(promotionCodes)
+    const promotionCodeSet = new Set<string>(promotionCodes) // TODO: uniquePromotionCodes
     const automaticPromotionCodeSet = new Set<string>(automaticPromotionCodes)
 
     const sortedPromotionsToApply = promotions
@@ -769,6 +809,7 @@ export default class PromotionModuleService
       } = promotion
 
       if (
+        !skipUsageLimitChecks &&
         promotion.campaign?.budget?.type === CampaignBudgetType.USE_BY_ATTRIBUTE
       ) {
         const attribute = promotion.campaign?.budget?.attribute!
@@ -806,6 +847,17 @@ export default class PromotionModuleService
             computedActions.push(action)
             continue
           }
+        }
+      }
+
+      // Check promotion usage limit
+      if (!skipUsageLimitChecks && typeof promotion.limit === "number") {
+        if ((promotion.used ?? 0) >= promotion.limit) {
+          computedActions.push({
+            action: ComputedActions.PROMOTION_LIMIT_EXCEEDED,
+            code: promotion.code!,
+          })
+          continue
         }
       }
 
@@ -1245,6 +1297,17 @@ export default class PromotionModuleService
       const promotionCurrencyCode =
         existingApplicationMethod?.currency_code ||
         applicationMethodData?.currency_code
+
+      // Validate promotion limit cannot be less than current usage
+      if (isDefined(promotionData.limit) && promotionData.limit !== null) {
+        const currentUsed = existingPromotion.used ?? 0
+        if (promotionData.limit < currentUsed) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Promotion limit (${promotionData.limit}) cannot be less than current usage (${currentUsed})`
+          )
+        }
+      }
 
       if (campaignId && !existingCampaign) {
         throw new MedusaError(

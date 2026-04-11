@@ -1,4 +1,4 @@
-import { CardList, Card, Table, CodeTabs, CodeTab } from "docs-ui"
+import { CardList, Card, Table, CodeTabs, CodeTab, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Caching Module`,
@@ -7,6 +7,12 @@ export const metadata = {
 # {metadata.title}
 
 In this guide, you'll learn about the Caching Module and its providers.
+
+<Note title="Cloud user?">
+
+Refer to the [Medusa Cache Cloud](!cloud!/cache) guide for setting up the Caching Module in Cloud.
+
+</Note>
 
 <Note>
 
@@ -34,13 +40,16 @@ If you're using the Cache Module in your application, refer to the [migrate to t
 
 ## Install the Caching Module
 
+<Prerequisites
+  items={[
+    {
+      text: "Redis installed and Redis server running",
+      link: "https://redis.io/docs/getting-started/installation/"
+    }
+  ]}
+/>
+
 The Caching Module is installed by default in your application. To use it, enable the caching feature flag and register the module in your `medusa-config.ts` file.
-
-{/* <Note title="Cloud user?">
-
-Caching features are enabled by default for Cloud users. Learn more in the [Medusa Cache](!cloud!/cache) guide.
-
-</Note> */}
 
 ### 1. Enable Caching Feature Flag
 

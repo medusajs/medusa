@@ -24,7 +24,7 @@ const generatedgeneratedStorefrontDevelopmentSidebarSidebar = {
           "isPathHref": true,
           "type": "link",
           "path": "/storefront-development/tips",
-          "title": "Tips",
+          "title": "Connect to Medusa",
           "children": []
         },
         {
@@ -33,6 +33,14 @@ const generatedgeneratedStorefrontDevelopmentSidebarSidebar = {
           "type": "link",
           "path": "/storefront-development/publishable-api-keys",
           "title": "Publishable API Key",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "link",
+          "path": "/storefront-development/localization",
+          "title": "Localization",
           "children": []
         },
         {
@@ -55,6 +63,14 @@ const generatedgeneratedStorefrontDevelopmentSidebarSidebar = {
         {
           "loaded": true,
           "isPathHref": true,
+          "type": "ref",
+          "path": "/nextjs-starter/guides/storefront-returns",
+          "title": "Create Returns from Storefront",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
           "type": "link",
           "path": "/storefront-development/guides/express-checkout",
           "title": "Express Checkout Storefront",
@@ -63,9 +79,9 @@ const generatedgeneratedStorefrontDevelopmentSidebarSidebar = {
         {
           "loaded": true,
           "isPathHref": true,
-          "type": "ref",
-          "path": "/nextjs-starter/guides/storefront-returns",
-          "title": "Create Returns from Storefront",
+          "type": "link",
+          "path": "/storefront-development/guides/react-native-expo",
+          "title": "Mobile App with React Native and Expo",
           "children": []
         }
       ]

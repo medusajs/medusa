@@ -64,9 +64,9 @@
  *   - name: product-collection.deleted
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the product collection
- *       }]
+ *       }
  *       ```
  *     description: Emitted when product collections are deleted.
  *     deprecated: false

@@ -1,11 +1,9 @@
-import { Migration } from "@mikro-orm/migrations"
+import { Migration } from "@medusajs/framework/mikro-orm/migrations"
 
 export class Migration20250929124701 extends Migration {
   override async up(): Promise<void> {
     // Step 1: Add the column as nullable
-    this.addSql(
-      `alter table "refund_reason" add column "code" text;`
-    )
+    this.addSql(`alter table "refund_reason" add column "code" text;`)
 
     // Step 2: Populate the code column from label (convert to snake_case)
     this.addSql(`

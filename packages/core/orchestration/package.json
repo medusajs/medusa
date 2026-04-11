@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/orchestration",
-  "version": "2.11.2",
+  "version": "2.13.6",
   "description": "Medusa utilities to orchestrate modules",
   "main": "dist/index.js",
   "exports": {
@@ -26,24 +26,16 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "2.11.2",
-    "@swc/core": "^1.7.28",
-    "@swc/jest": "^0.2.36",
-    "jest": "^29.7.0",
-    "rimraf": "^5.0.1",
-    "typescript": "^5.6.2"
+    "@medusajs/types": "2.13.6"
   },
   "dependencies": {
-    "@medusajs/deps": "2.11.2",
-    "@medusajs/utils": "2.11.2",
+    "@medusajs/deps": "2.13.6",
+    "@medusajs/utils": "2.13.6",
     "ulid": "^2.3.0"
   },
-  "peerDependencies": {
-    "express": "^4.21.0"
-  },
   "scripts": {
-    "build": "rimraf dist && tsc --build",
-    "watch": "tsc --build --watch",
-    "test": "jest --bail --forceExit"
+    "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
+    "watch": "yarn run -T tsc --build --watch",
+    "test": "../../../node_modules/.bin/jest --bail --forceExit"
   }
 }

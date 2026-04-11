@@ -9,7 +9,10 @@ export const ProductEditOption = () => {
   const { id, option_id } = useParams()
   const { t } = useTranslation()
 
-  const { product, isPending, isFetching, isError, error } = useProduct(id!)
+  const { product, isPending, isFetching, isError, error } = useProduct(id!, {
+    // TODO: Remove exclusion once we avoid including unnecessary relations by default in the query config
+    fields: "-type,-collection,-tags,-images,-variants,-sales_channels",
+  })
 
   const option = product?.options.find((o) => o.id === option_id)
 
@@ -26,7 +29,7 @@ export const ProductEditOption = () => {
       <RouteDrawer.Header>
         <Heading>{t("products.options.edit.header")}</Heading>
       </RouteDrawer.Header>
-      {option && <CreateProductOptionForm option={option} />}
+      {option && <CreateProductOptionForm option={option} productId={id!} />}
     </RouteDrawer>
   )
 }

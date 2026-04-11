@@ -1,0 +1,67 @@
+---
+slug: /references/medusa-workflows/steps/listOrderChangeActionsByTypeStep
+sidebar_label: listOrderChangeActionsByTypeStep
+tags:
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# listOrderChangeActionsByTypeStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `listOrderChangeActionsByTypeStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step lists order change actions filtered by action type.
+
+:::note
+
+This is available starting from [Medusa v2.12.0](https://github.com/medusajs/medusa/releases/tag/v2.12.0).
+
+:::
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { listOrderChangeActionsByTypeStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = listOrderChangeActionsByTypeStep({
+      "order_change_id": "{value}",
+      "action_type": {
+        "FULFILL_ITEM": "{value}",
+        "DELIVER_ITEM": "{value}",
+        "CANCEL_ITEM_FULFILLMENT": "{value}",
+        "ITEM_ADD": "{value}",
+        "ITEM_REMOVE": "{value}",
+        "ITEM_UPDATE": "{value}",
+        "RECEIVE_DAMAGED_RETURN_ITEM": "{value}",
+        "RECEIVE_RETURN_ITEM": "{value}",
+        "RETURN_ITEM": "{value}",
+        "CANCEL_RETURN_ITEM": "{value}",
+        "SHIPPING_ADD": "{value}",
+        "SHIPPING_REMOVE": "{value}",
+        "SHIPPING_UPDATE": "{value}",
+        "SHIP_ITEM": "{value}",
+        "WRITE_OFF_ITEM": "{value}",
+        "REINSTATE_ITEM": "{value}",
+        "TRANSFER_CUSTOMER": "{value}",
+        "UPDATE_ORDER_PROPERTIES": "{value}",
+        "CREDIT_LINE_ADD": "{value}",
+        "PROMOTION_ADD": "{value}",
+        "PROMOTION_REMOVE": "{value}",
+        "ITEM_ADJUSTMENTS_REPLACE": "{value}"
+      }
+    })
+  }
+)
+```
+  
+
+## Input
+
+<TypeList types={[{"name":"order_change_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"action_type","type":"[ChangeActionType](../../../../../utils/OrderUtils/enums/utils.OrderUtils.ChangeActionType/page.mdx)","description":"The change action's type.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"FULFILL_ITEM","type":"`\"FULFILL_ITEM\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"DELIVER_ITEM","type":"`\"DELIVER_ITEM\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"CANCEL_ITEM_FULFILLMENT","type":"`\"CANCEL_ITEM_FULFILLMENT\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"ITEM_ADD","type":"`\"ITEM_ADD\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"ITEM_REMOVE","type":"`\"ITEM_REMOVE\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"ITEM_UPDATE","type":"`\"ITEM_UPDATE\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"RECEIVE_DAMAGED_RETURN_ITEM","type":"`\"RECEIVE_DAMAGED_RETURN_ITEM\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"RECEIVE_RETURN_ITEM","type":"`\"RECEIVE_RETURN_ITEM\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"RETURN_ITEM","type":"`\"RETURN_ITEM\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"CANCEL_RETURN_ITEM","type":"`\"CANCEL_RETURN_ITEM\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"SHIPPING_ADD","type":"`\"SHIPPING_ADD\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"SHIPPING_REMOVE","type":"`\"SHIPPING_REMOVE\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"SHIPPING_UPDATE","type":"`\"SHIPPING_UPDATE\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"SHIP_ITEM","type":"`\"SHIP_ITEM\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"WRITE_OFF_ITEM","type":"`\"WRITE_OFF_ITEM\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"REINSTATE_ITEM","type":"`\"REINSTATE_ITEM\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"TRANSFER_CUSTOMER","type":"`\"TRANSFER_CUSTOMER\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"UPDATE_ORDER_PROPERTIES","type":"`\"UPDATE_ORDER_PROPERTIES\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"CREDIT_LINE_ADD","type":"`\"CREDIT_LINE_ADD\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"PROMOTION_ADD","type":"`\"PROMOTION_ADD\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"PROMOTION_REMOVE","type":"`\"PROMOTION_REMOVE\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"ITEM_ADJUSTMENTS_REPLACE","type":"`\"ITEM_ADJUSTMENTS_REPLACE\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="listOrderChangeActionsByTypeStep"/>
+
+## Output
+
+<TypeList types={[{"name":"string[]","type":"`string`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="listOrderChangeActionsByTypeStep"/>

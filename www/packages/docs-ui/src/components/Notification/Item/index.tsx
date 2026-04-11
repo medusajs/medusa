@@ -20,7 +20,6 @@ export type NotificationItemProps = {
   setShow?: (value: boolean) => void
   onClose?: () => void
   closeButtonText?: string
-  passRef?: React.RefObject<HTMLDivElement>
 } & React.HTMLAttributes<HTMLDivElement>
 
 type EmptyLayoutProps = {
@@ -63,6 +62,7 @@ export const NotificationItem = ({
           className
         )}
         ref={ref}
+        data-testid="notification-item"
       >
         {layout === "default" && (
           <NotificationItemLayoutDefault {...rest} handleClose={handleClose}>

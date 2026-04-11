@@ -122,6 +122,7 @@ const main = async function ({
   directory: string
   container?: MedusaContainer
 }) {
+  process.env.MEDUSA_WORKER_MODE = "server"
   const container = await initializeContainer(directory)
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 

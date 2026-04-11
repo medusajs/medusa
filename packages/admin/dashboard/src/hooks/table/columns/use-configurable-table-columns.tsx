@@ -69,7 +69,7 @@ export function useConfigurableTableColumns<TData = any>(
           column: apiColumn, // Store column metadata for future use
         },
         enableHiding: apiColumn.hideable,
-        enableSorting: false, // Disable sorting for all columns by default
+        enableSorting: apiColumn.sortable,
         headerAlign, // Pass the header alignment to the DataTable
       } as any)
     })

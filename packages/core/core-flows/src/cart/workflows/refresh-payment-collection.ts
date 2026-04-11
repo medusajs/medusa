@@ -12,6 +12,7 @@ import { useQueryGraphStep } from "../../common"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import { updatePaymentCollectionStep } from "../../payment-collection"
 import { deletePaymentSessionsWorkflow } from "../../payment-collection/workflows/delete-payment-sessions"
+import { validateCartStep } from "../steps"
 
 /**
  * The details of the cart to refresh.
@@ -106,6 +107,8 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
     const cart = transform({ fetchCart, input }, ({ fetchCart, input }) => {
       return fetchCart ?? input.cart
     })
+
+    validateCartStep({ cart })
 
     acquireLockStep({
       key: cart.id,

@@ -1212,13 +1212,7 @@ This displays the selected seat number and show date for ticket products instead
 
 You should also remove the quantity selector for ticket products since you can't purchase multiple tickets for the same seat. Remove the following highlighted lines from the `return` statement of the `Item` component:
 
-export const removeHighlights = [
-  ["5"], ["6"], ["7"], ["8"], ["9"], ["10"], ["11"], ["12"], ["13"], ["14"], 
-  ["15"], ["16"], ["17"], ["18"], ["19"], ["20"], ["21"], ["22"], ["23"], ["24"], 
-  ["25"], ["26"], ["27"], ["29"]
-]
-
-```tsx title="src/modules/cart/components/item/index.tsx" highlights={removeHighlights}
+```tsx title="src/modules/cart/components/item/index.tsx"
 {type === "full" && (
   <Table.Cell>
     <div className="flex gap-2 items-center w-28">

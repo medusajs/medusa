@@ -51,7 +51,7 @@
  *     title: is_combinable
  *     description: Whether the tax rate should be combined with parent rates.
  *     externalDocs:
- *       url: https://docs.medusajs.com/v2/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates
+ *       url: https://docs.medusajs.com/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates
  *   is_default:
  *     type: boolean
  *     title: is_default

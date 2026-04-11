@@ -8,7 +8,7 @@ import { RouteModalProvider } from "../route-modal-provider/route-provider"
 import { StackedModalProvider } from "../stacked-modal-provider"
 
 type RouteFocusModalProps = PropsWithChildren<{
-  prev?: string | Partial<Path>
+  prev?: string | Partial<Path> | number
 }>
 
 const Root = ({ prev = "..", children }: RouteFocusModalProps) => {
@@ -16,7 +16,8 @@ const Root = ({ prev = "..", children }: RouteFocusModalProps) => {
   const [open, setOpen] = useState(false)
   const [stackedModalOpen, onStackedModalOpen] = useState(false)
 
-  const to = useStateAwareTo(prev)
+  const to: string | Partial<Path> | number =
+    typeof prev === "number" ? prev : useStateAwareTo(prev)
 
   /**
    * Open the modal when the component mounts. This
@@ -34,7 +35,11 @@ const Root = ({ prev = "..", children }: RouteFocusModalProps) => {
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       document.body.style.pointerEvents = "auto"
-      navigate(to, { replace: true })
+      if (typeof to === "number") {
+        navigate(to)
+      } else {
+        navigate(to, { replace: true })
+      }
       return
     }
 

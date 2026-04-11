@@ -33,7 +33,7 @@
  *     type: object
  *     description: The payment's data, useful for processing by the payment provider.
  *     externalDocs:
- *       url: https://docs.medusajs.com/v2/resources/commerce-modules/payment/payment#whats-a-payment
+ *       url: https://docs.medusajs.com/resources/commerce-modules/payment/payment#whats-a-payment
  *   created_at:
  *     type: string
  *     format: date-time

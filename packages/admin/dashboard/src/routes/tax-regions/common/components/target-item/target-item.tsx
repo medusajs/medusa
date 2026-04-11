@@ -17,7 +17,11 @@ export const TargetItem = ({
 }: TargetItemProps) => {
   const { product } = useProduct(
     value,
-    { fields: "id,title" },
+    {
+      // TODO: Remove exclusion once we avoid including unnecessary relations by default in the query config
+      fields:
+        "id,title,-type,-collection,-options,-tags,-images,-variants,-sales_channels",
+    },
     { enabled: !label }
   )
 

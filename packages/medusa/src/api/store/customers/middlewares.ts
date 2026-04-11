@@ -106,7 +106,7 @@ export const storeCustomerRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       validateAndTransformQuery(
         StoreGetCustomerAddressParams,
-        QueryConfig.retrieveAddressTransformQueryConfig
+        QueryConfig.retrieveTransformQueryConfig
       ),
     ],
   },

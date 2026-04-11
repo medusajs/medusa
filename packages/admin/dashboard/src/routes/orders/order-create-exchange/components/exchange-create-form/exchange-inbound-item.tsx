@@ -1,6 +1,12 @@
-import { ChatBubble, DocumentText, XCircle, XMark } from "@medusajs/icons"
+import {
+  ChatBubble,
+  DocumentText,
+  ReceiptPercent,
+  XCircle,
+  XMark,
+} from "@medusajs/icons"
 import { AdminOrderLineItem, HttpTypes } from "@medusajs/types"
-import { IconButton, Input, Text } from "@medusajs/ui"
+import { IconButton, Input, Text, Tooltip } from "@medusajs/ui"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
@@ -39,13 +45,17 @@ function ExchangeInboundItem({
   const showReturnReason = typeof formItem.reason_id === "string"
   const showNote = typeof formItem.note === "string"
 
+  const appliedPromoCodes = (previewItem.adjustments || []).map(
+    (adjustment) => adjustment.code
+  )
+
   return (
     <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl ">
-      <div className="flex flex-col items-center gap-x-2 gap-y-2 p-3 text-sm md:flex-row">
+      <div className="flex flex-col items-center gap-x-3 gap-y-2 p-3 text-sm md:flex-row">
         <div className="flex flex-1 items-center gap-x-3">
           <Thumbnail src={item.thumbnail} />
 
-          <div className="flex flex-col">
+          <div className="flex flex-grow flex-col">
             <div>
               <Text className="txt-small" as="span" weight="plus">
                 {item.title}{" "}
@@ -57,6 +67,21 @@ function ExchangeInboundItem({
               {item.product_title}
             </Text>
           </div>
+          {appliedPromoCodes.length > 0 && (
+            <div className="flex flex-shrink">
+              <Tooltip
+                content={
+                  <span className="text-pretty">
+                    {appliedPromoCodes.map((code) => (
+                      <div key={code}>{code}</div>
+                    ))}
+                  </span>
+                }
+              >
+                <ReceiptPercent className="text-ui-fg-subtle" />
+              </Tooltip>
+            </div>
+          )}
         </div>
 
         <div className="flex flex-1 justify-between">

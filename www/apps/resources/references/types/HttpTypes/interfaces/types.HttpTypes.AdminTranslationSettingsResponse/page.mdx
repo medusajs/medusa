@@ -1,0 +1,9 @@
+import { TypeList } from "docs-ui"
+
+# AdminTranslationSettingsResponse
+
+Response for translation settings endpoint.
+
+## Properties
+
+<TypeList types={[{"name":"translation_settings","type":"`Record<string, Pick&#60;[AdminTranslationSettings](../types.HttpTypes.AdminTranslationSettings/page.mdx), \"id\" \\| \"fields\" \\| \"is_active\"&#62; & object>`","description":"A mapping of entity types to their tranlsation settings.","optional":false,"defaultValue":"","example":"{ * \"product\": { * \"id\": \"trset_123\", * \"fields\": [\"title\", \"description\", \"subtitle\", \"status\"], * \"is_active\": true, * \"inactive_fields\": [] * }, * \"product_variant\": { * \"id\": \"trset_456\", * \"fields\": [\"title\", \"material\"], * \"is_active\": false, * \"inactive_fields\": [] * } * }","expandable":false,"children":[{"name":"inactive_fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="AdminTranslationSettingsResponse"/>

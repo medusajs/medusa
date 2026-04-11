@@ -3,7 +3,6 @@ import {
   isDefined,
   MedusaError,
   OrderChangeStatus,
-  PromotionActions,
   ShippingOptionPriceType,
 } from "@medusajs/framework/utils"
 import {
@@ -30,8 +29,9 @@ import { createOrderShippingMethods } from "../../order/steps/create-order-shipp
 import { prepareShippingMethod } from "../../order/utils/prepare-shipping-method"
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
-import { refreshDraftOrderAdjustmentsWorkflow } from "./refresh-draft-order-adjustments"
 import { acquireLockStep, releaseLockStep } from "../../locking"
+import { computeDraftOrderAdjustmentsWorkflow } from "./compute-draft-order-adjustments"
+import { getTranslatedShippingOptionsStep } from "../../common/steps/get-translated-shipping-option"
 
 const validateShippingOptionStep = createStep(
   "validate-shipping-option",
@@ -149,12 +149,17 @@ export const addDraftOrderShippingMethodsWorkflow = createWorkflow(
       },
     }).config({ name: "fetch-shipping-option" })
 
+    const translatedShippingOptions = getTranslatedShippingOptionsStep({
+      shippingOptions: shippingOptions,
+      locale: order.locale!,
+    })
+
     validateShippingOptionStep({ shippingOptions, input })
 
     const shippingMethodInput = transform(
       {
         relatedEntity: { order_id: order.id },
-        shippingOptions,
+        shippingOptions: translatedShippingOptions,
         customPrice: input.custom_amount as any, // Need to cast this to any otherwise the type becomes to complex.
         orderChange,
         input,
@@ -175,33 +180,6 @@ export const addDraftOrderShippingMethodsWorkflow = createWorkflow(
         order_id: order.id,
         shipping_method_ids: shippingMethodIds,
       },
-    })
-
-    const appliedPromoCodes: string[] = transform(
-      order,
-      (order) => order.promotions?.map((promotion) => promotion.code) ?? []
-    )
-
-    // If any the order has any promo codes, then we need to refresh the adjustments.
-    when(
-      appliedPromoCodes,
-      (appliedPromoCodes) => appliedPromoCodes.length > 0
-    ).then(() => {
-      const refetchedOrder = useRemoteQueryStep({
-        entry_point: "orders",
-        fields: draftOrderFieldsForRefreshSteps,
-        variables: { id: input.order_id },
-        list: false,
-        throw_if_key_not_found: true,
-      }).config({ name: "refetched-order-query" })
-
-      refreshDraftOrderAdjustmentsWorkflow.runAsStep({
-        input: {
-          order: refetchedOrder,
-          promo_codes: appliedPromoCodes,
-          action: PromotionActions.REPLACE,
-        },
-      })
     })
 
     const orderChangeActionInput = transform(
@@ -237,6 +215,23 @@ export const addDraftOrderShippingMethodsWorkflow = createWorkflow(
 
     createOrderChangeActionsWorkflow.runAsStep({
       input: [orderChangeActionInput],
+    })
+
+    const appliedPromoCodes: string[] = transform(
+      order,
+      (order) => order.promotions?.map((promotion) => promotion.code) ?? []
+    )
+
+    // If any the order has any promo codes, then we need to refresh the adjustments.
+    when(
+      appliedPromoCodes,
+      (appliedPromoCodes) => appliedPromoCodes.length > 0
+    ).then(() => {
+      computeDraftOrderAdjustmentsWorkflow.runAsStep({
+        input: {
+          order_id: input.order_id,
+        },
+      })
     })
 
     releaseLockStep({

@@ -40,7 +40,7 @@
  *         url: "#select-fields-and-relations"
  *   - name: promotion_type
  *     in: query
- *     description: The type 
+ *     description: The type
  *     required: false
  *     schema:
  *       type: string

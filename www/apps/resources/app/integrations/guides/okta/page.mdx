@@ -1,0 +1,1329 @@
+---
+sidebar_label: "Integrate Okta"
+tags:
+    - server
+    - tutorial
+    - auth
+products:
+  - auth
+---
+
+import { Card, Prerequisites, Details, WorkflowDiagram, H3 } from "docs-ui"
+import { Github } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Authenticate Admin Users with Okta`,
+}
+
+# {metadata.title}
+
+In this tutorial, you'll learn how to allow admin users to authenticate with Okta.
+
+When you install a Medusa application, you get a fully-fledged commerce platform with a Framework for customization. Medusa also facilitates integrating third-party services that enrich your application with features specific to your unique business use case.
+
+[Okta](https://www.okta.com/) is an enterprise-grade identity management service that provides secure authentication. By integrating Okta with your Medusa application, you allow users in your Okta organization to authenticate and access the Medusa Admin without needing to create separate credentials.
+
+You can follow this tutorial whether you're new to Medusa or an advanced Medusa developer.
+
+<Card
+  title="Full Code"
+  text="Find the full code of the guide in this repository."
+  href="https://github.com/medusajs/examples/tree/main/okta-integration"
+  icon={Github}
+/>
+
+---
+
+## Okta Authentication Flow Summary
+
+Before you implement the Okta integration, this section provides a high-level overview of how the Okta authentication flow works in Medusa.
+
+![Diagram of the authentication flow between the Medusa Admin, Medusa server, and Okta](https://res.cloudinary.com/dza7lstvk/image/upload/v1764663019/Medusa%20Resources/okta-auth-overview_ngbx80.jpg)
+
+The authentication flow consists of the following steps:
+
+1. An admin user clicks the "Login with Okta" button on the Medusa Admin login page. This action triggers a request to the Medusa server to initiate the authentication process.
+2. The Medusa server generates an authorization URL with the necessary parameters.
+3. Medusa Admin redirects the user to the Okta authorization URL.
+4. The user authenticates with Okta using their Okta credentials.
+5. After successful authentication, Okta redirects the user back to the Medusa Admin with an authorization code.
+6. The Medusa Admin validates the callback by sending a request to the Medusa server with the authorization code.
+7. The Medusa server exchanges the authorization code for tokens and retrieves the user's information from Okta.
+8. The Medusa server creates or updates the user's auth identity in Medusa and returns the authentication response to the Medusa Admin.
+9. If this is a new user, the Medusa Admin sends a request to create a new admin user in Medusa.
+10. The Medusa Admin refreshes the user's token and logs in the user.
+
+<Note>
+
+Refer to the [Auth Route Flows](../../../commerce-modules/auth/authentication-route/page.mdx) guide to learn more about the authentication flows in Medusa.
+
+</Note>
+
+Medusa's [Auth Module](../../../commerce-modules/auth/page.mdx) provides the interface to authenticate users. It delegates the actual authentication logic to the underlying Auth Module Provider, which in this case is Okta.
+
+So, to support the above flow, you'll create:
+
+1. An Okta Auth Module Provider that implements the logic to authenticate users with Okta and validate the callback.
+2. An admin user creation flow in the Medusa Admin that creates a new admin user in Medusa after successful authentication with Okta.
+3. An admin widget that adds the "Login with Okta" button to the Medusa Admin login page and handles the authentication flow from the frontend.
+
+---
+
+## Step 1: Install a Medusa Application
+
+<Prerequisites items={[
+  {
+    text: "Node.js v20+",
+    link: "https://nodejs.org/en/download"
+  },
+  {
+    text: "Git CLI tool",
+    link: "https://git-scm.com/downloads"
+  },
+  {
+    text: "PostgreSQL",
+    link: "https://www.postgresql.org/download/"
+  }
+]} />
+
+Start by installing the Medusa application on your machine with the following command:
+
+```bash
+npx create-medusa-app@latest
+```
+
+First, you'll be asked for the project's name. Then, when prompted about installing the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose "Yes."
+
+Afterwards, the installation process will start, which will install the Medusa application in a directory with your project's name and the Next.js Starter Storefront in a separate directory named `{project-name}-storefront`.
+
+<Note title="Why is the storefront installed separately?">
+
+The Medusa application is composed of a headless Node.js server and an admin dashboard. The storefront is installed or custom-built separately and connects to the Medusa application through its REST endpoints, called [API routes](!docs!/learn/fundamentals/api-routes). Learn more in [Medusa's Architecture documentation](!docs!/learn/introduction/architecture).
+
+</Note>
+
+Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
+
+<Note title="Ran into Errors?">
+
+Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
+
+</Note>
+
+---
+
+## Step 2: Create Okta Auth Module Provider
+
+In this step, you'll integrate Okta as an Auth Module Provider. Later, you'll allow admin users to authenticate with Okta.
+
+<Note>
+
+Learn more about modules in the [Modules](!docs!/learn/fundamentals/modules) documentation.
+
+</Note>
+
+### a. Create Module Directory
+
+A module is created under the `src/modules` directory of your Medusa application. So, create the directory `src/modules/okta`.
+
+### b. Create Service
+
+A module has a service that contains its logic. For Auth Module Providers, the service implements the logic to authenticate users.
+
+To create the service for the Okta Auth Module Provider, create the file `src/modules/okta/service.ts` with the following content:
+
+export const serviceHighlights = [
+  ["10", "Options", "The options required to configure the Okta Auth Module Provider."],
+  ["17", "AbstractAuthModuleProvider", "Auth Module Provider services must extend this class."],
+  ["18", "DISPLAY_NAME", "The display name of the Okta Auth Module Provider."],
+  ["19", "identifier", "A unique identifier used to register the Okta Auth Module Provider in Medusa."],
+]
+
+```ts title="src/modules/okta/service.ts" highlights={serviceHighlights}
+import { AbstractAuthModuleProvider } from "@medusajs/framework/utils"
+import {
+  Logger,
+} from "@medusajs/framework/types"
+
+type InjectedDependencies = {
+  logger: Logger
+}
+
+type Options = {
+  oktaDomain: string
+  clientId: string
+  clientSecret: string
+  redirectUri: string
+}
+
+class OktaAuthProviderService extends AbstractAuthModuleProvider {
+  static DISPLAY_NAME = "Okta"
+  static identifier = "okta"
+
+  // Scopes requested from Okta during authentication
+  private static readonly SCOPES = ["openid", "profile", "email"]
+
+  protected logger_: Logger
+  protected options_: Options
+
+  constructor(
+    { logger }: InjectedDependencies,
+    options: Options
+  ) {
+    // @ts-ignore
+    super(...arguments)
+
+    this.logger_ = logger
+    this.options_ = options
+  }
+
+  // TODO add methods
+}
+
+export default OktaAuthProviderService
+```
+
+An Auth Module Provider's service must extend the `AbstractAuthModuleProvider` class. You'll implement its abstract methods in a bit.
+
+#### Static Properties
+
+The service must also define the following static properties:
+
+1. `DISPLAY_NAME`: The display name of the Auth Module Provider.
+2. `identifier`: The unique identifier of the Auth Module Provider. This identifier is used to form the ID of the Auth Module Provider when registering it in Medusa.
+
+#### Constructor
+
+The constructor receives the following parameters:
+
+1. Dependencies resolved from the [module's container](!docs!/learn/fundamentals/modules/container) that contains Framework resources available to the module.
+2. Options passed to the Auth Module Provider. You expect the following options:
+   - `oktaDomain`: The Okta domain of your organization.
+   - `clientId`: The Client ID of your Okta application.
+   - `clientSecret`: The Client Secret of your Okta application.
+   - `redirectUri`: The Redirect URI of your Okta application.
+
+### c. Implement Service Methods
+
+In this section, you'll implement the methods required by the `AbstractAuthModuleProvider` class. You can refer to the [How to Create an Auth Module Provider](/references/auth/provider) guide for more details about these methods.
+
+#### validateOptions
+
+The [validateOptions](/references/auth/provider#validateOptions) method ensures that the module received the required options. Otherwise, it throws an error.
+
+Add the `validateOptions` method to the `OktaAuthProviderService` class:
+
+```ts title="src/modules/okta/service.ts"
+import { MedusaError } from "@medusajs/framework/utils"
+
+class OktaAuthProviderService extends AbstractAuthModuleProvider {
+  // ...
+  static validateOptions(options: Record<any, any>): void | never {
+    if (!options.oktaDomain) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Okta auth provider requires oktaDomain option"
+      )
+    }
+
+    if (!options.clientId) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Okta auth provider requires clientId option"
+      )
+    }
+
+    if (!options.clientSecret) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Okta auth provider requires clientSecret option"
+      )
+    }
+
+    if (!options.redirectUri) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Okta auth provider requires redirectUri option"
+      )
+    }
+  }
+}
+```
+
+The method receives the options passed to the module as a parameter.
+
+It throws an error if any of the options are missing.
+
+#### generateState
+
+The `generateState` method is not required by the `AbstractAuthModuleProvider` class, but it's necessary to generate a unique state parameter that Okta requires during authentication.
+
+Add the `generateState` method to the `OktaAuthProviderService` class:
+
+```ts title="src/modules/okta/service.ts"
+class OktaAuthProviderService extends AbstractAuthModuleProvider {
+  // ...
+  private generateState(): string {
+    return (
+      Math.random().toString(36).substring(2, 15) +
+      Math.random().toString(36).substring(2, 15)
+    )
+  }
+}
+```
+
+In the method, you generate a random string that will be used as the state parameter during authentication. You'll use this method in other methods to generate the state parameter.
+
+#### authenticate
+
+The [authenticate](/references/auth/provider#authenticate) method is called when a user tries to authenticate with the Okta Auth Module Provider. It returns the URL to redirect the user to Okta for authentication.
+
+Add the `authenticate` method to the `OktaAuthProviderService` class:
+
+```ts title="src/modules/okta/service.ts"
+import {
+  AuthIdentityProviderService,
+  AuthenticationInput,
+  AuthenticationResponse,
+} from "@medusajs/framework/types"
+
+class OktaAuthProviderService extends AbstractAuthModuleProvider {
+  // ...
+  async authenticate(
+    data: AuthenticationInput,
+    authIdentityProviderService: AuthIdentityProviderService
+  ): Promise<AuthenticationResponse> {
+    const { body } = data
+
+    // If callback_url is provided, use it; 
+    // otherwise use the default redirectUri
+    const callbackUrl = body?.callback_url || this.options_.redirectUri
+
+    // Generate state parameter for CSRF protection
+    const state = this.generateState()
+
+    await authIdentityProviderService.setState(state, {
+      callback_url: callbackUrl,
+    })
+    
+    const params = new URLSearchParams({
+      client_id: this.options_.clientId,
+      response_type: "code",
+      scope: OktaAuthProviderService.SCOPES.join(" "),
+      redirect_uri: callbackUrl,
+      state: state,
+    })
+
+    const authUrl = `${this.options_.oktaDomain}/oauth2/v1/authorize?${
+      params.toString()
+    }`
+
+    // Return the authorization URL for the frontend to redirect to
+    return {
+      success: true,
+      location: authUrl,
+    }
+  }
+}
+```
+
+The method receives the following parameters:
+
+1. `data`: The input data for the authentication request, which includes the request body, headers, and other useful information.
+2. `authIdentityProviderService`: The service to manage [auth identities](../../../commerce-modules/auth/auth-identity-and-actor-types/page.mdx).
+
+<Note>
+
+Refer to the [Auth Module Provider guide](/references/auth/provider#authenticate) for a detailed breakdown of the parameters.
+
+</Note>
+
+In the method, you:
+
+1. Extract the `callback_url` from the input data. If it's not provided, you use the `redirectUri` option passed to the module.
+2. Generate a state query parameter using the `generateState` method.
+3. Store the state parameter along with the callback URL in the cache using the `setState` method of the `authIdentityProviderService`. This is useful for validating the state parameter later during the callback.
+4. Create a URL with the required parameters to redirect the user to Okta for authentication.
+5. Return the authorization URL in the response.
+
+#### validateCallback
+
+The [validateCallback](/references/auth/provider#validateCallback) method is called when Okta redirects the user back to your application after authentication. It validates that the user authenticated successfully, creates the user's [auth identity](../../../commerce-modules/auth/auth-identity-and-actor-types/page.mdx), and returns the authentication response.
+
+Add the `validateCallback` method to the `OktaAuthProviderService` class:
+
+```ts title="src/modules/okta/service.ts"
+class OktaAuthProviderService extends AbstractAuthModuleProvider {
+  // ...
+  async validateCallback(
+    data: AuthenticationInput,
+    authIdentityProviderService: AuthIdentityProviderService
+  ): Promise<AuthenticationResponse> {
+    const { query } = data
+
+    const code = query?.code as string
+    const stateKey = query?.state as string
+
+    if (!code) {
+      return {
+        success: false,
+        error: "Authorization code is missing",
+      }
+    }
+
+    const state = await authIdentityProviderService.getState(stateKey)
+
+    if (!state) {
+      return {
+        success: false,
+        error: "No state provided, or session expired",
+      }
+    }
+
+    const callbackUrl = state.callback_url as string
+
+    try {
+      // Exchange the authorization code for tokens
+      const tokenUrl = `${this.options_.oktaDomain}/oauth2/v1/token`
+      const params = new URLSearchParams({
+        grant_type: "authorization_code",
+        code: code,
+        redirect_uri: callbackUrl,
+        client_id: this.options_.clientId,
+        client_secret: this.options_.clientSecret,
+      })
+
+      const tokenResponse = await fetch(tokenUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Accept: "application/json",
+        },
+        body: params.toString(),
+      })
+
+      if (!tokenResponse.ok) {
+        const errorText = await tokenResponse.text()
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Failed to exchange code for tokens: ${errorText}`
+        )
+      }
+
+      const tokenData = await tokenResponse.json()
+      const accessToken = tokenData.access_token as string
+      const refreshToken = tokenData.refresh_token as string | undefined
+      const idToken = tokenData.id_token as string | undefined
+      const expiresIn = tokenData.expires_in as number
+
+      // Get user info from Okta using the access token
+      const userInfoUrl = `${this.options_.oktaDomain}/oauth2/v1/userinfo`
+      const userInfoResponse = await fetch(userInfoUrl, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Accept: "application/json",
+        },
+      })
+
+      if (!userInfoResponse.ok) {
+        const errorText = await userInfoResponse.text()
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Failed to get user info: ${errorText}`
+        )
+      }
+
+      const userInfo = await userInfoResponse.json()
+
+      // Extract user identifier (email or sub)
+      const entityId = userInfo.email || userInfo.sub
+
+      if (!entityId) {
+        return {
+          success: false,
+          error: "Unable to retrieve user identifier from Okta",
+        }
+      }
+
+      // TODO create or update auth identity
+    } catch (error) {
+      this.logger_.error("Okta authentication error:", error)
+      return {
+        success: false,
+        error: error.message || "Failed to authenticate with Okta",
+      }
+    }
+  }
+}
+```
+
+The method receives the following parameters:
+
+1. `data`: The input data for the authentication request, which includes the request body, headers, and other useful information.
+2. `authIdentityProviderService`: The service to manage [auth identities](../../../commerce-modules/auth/auth-identity-and-actor-types/page.mdx).
+
+<Note>
+
+Refer to the [Auth Module Provider guide](/references/auth/provider#validateCallback) for a detailed breakdown of the parameters.
+
+</Note>
+
+In the method, so far, you:
+
+1. Extract the authorization code and state parameter from the input data.
+2. Retrieve the stored state using the `getState` method of the `authIdentityProviderService`. If the state is not found, return an error response.
+3. Extract the `callback_url` from the retrieved state.
+4. Exchange the authorization code for tokens by making a `POST` request to the Okta token endpoint.
+5. If the token exchange is successful, you retrieve the token details from the response, including the access token, refresh token, ID token, and expiration time.
+6. Use the access token to fetch the user's information from Okta.
+
+Next, you'll create or update the user's auth identity in Medusa.
+
+Replace the `// TODO create or update auth identity` comment with the following:
+
+```ts title="src/modules/okta/service.ts"
+let authIdentity
+try {
+  // Try to retrieve by entity_id
+  authIdentity = await authIdentityProviderService.retrieve({
+    entity_id: entityId,
+  })
+
+  // Update existing auth identity with latest user metadata
+  authIdentity = await authIdentityProviderService.update(entityId, {
+    user_metadata: {
+      email: userInfo.email,
+      name: userInfo.name,
+      given_name: userInfo.given_name,
+      family_name: userInfo.family_name,
+      picture: userInfo.picture,
+      updated_at: new Date().toISOString(),
+    },
+    provider_metadata: {
+      okta_sub: userInfo.sub,
+      access_token: accessToken,
+      refresh_token: refreshToken,
+      id_token: idToken,
+      expires_at: Date.now() + expiresIn * 1000,
+    },
+  })
+} catch (error) {
+  if (error.type === MedusaError.Types.NOT_FOUND) {
+    // Auth identity doesn't exist, create it
+    authIdentity = await authIdentityProviderService.create({
+      entity_id: entityId,
+      provider_metadata: {
+        okta_sub: userInfo.sub,
+        access_token: accessToken,
+        refresh_token: refreshToken,
+        id_token: idToken,
+        expires_at: Date.now() + expiresIn * 1000,
+      },
+      user_metadata: {
+        email: userInfo.email,
+        name: userInfo.name,
+        given_name: userInfo.given_name,
+        family_name: userInfo.family_name,
+        picture: userInfo.picture,
+      },
+    })
+  } else {
+    // Re-throw if it's not a NOT_FOUND error
+    throw error
+  }
+}
+
+return {
+  success: true,
+  authIdentity,
+}
+```
+
+In this part of the method, you:
+
+1. Try to retrieve the user's auth identity using the `entity_id`.
+    - If the user already has an auth identity, it means the user was previously authenticated. You update the existing auth identity with the latest user metadata and provider metadata.
+    - Otherwise, you create a new auth identity with the user metadata and provider metadata.
+2. Return a successful response with the auth identity.
+
+### d. Export Module Definition
+
+You've now finished implementing the necessary methods for the Okta Auth Module Provider.
+
+The final piece to a module is its definition, which you export in an `index.ts` file at the module's root directory. This definition tells Medusa the module's details, including its service.
+
+To create the module's definition, create the file `src/modules/okta/index.ts` with the following content:
+
+```ts title="src/modules/okta/index.ts"
+import OktaAuthProviderService from "./service"
+import { ModuleProvider, Modules } from "@medusajs/framework/utils"
+
+export default ModuleProvider(Modules.AUTH, {
+  services: [OktaAuthProviderService],
+})
+```
+
+You use `ModuleProvider` from the Modules SDK to create the module provider's definition. It accepts two parameters:
+
+1. The name of the module that this provider belongs to, which is `Modules.AUTH` in this case.
+2. An object with a required property `services` indicating the Module Provider's services.
+
+### e. Add Module Provider to Medusa's Configurations
+
+Once you finish building the module, add it to Medusa's configurations to start using it.
+
+In `medusa-config.ts`, add a `modules` property to the configurations:
+
+```ts title="medusa-config.ts"
+import { 
+  Modules, 
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+
+module.exports = defineConfig({
+  // ...
+  modules: [
+    // ...
+    {
+      resolve: "@medusajs/medusa/auth",
+      dependencies: [
+        Modules.CACHE,
+        ContainerRegistrationKeys.LOGGER,
+      ],
+      options: {
+        providers: [
+          // Default email/password provider
+          {
+            resolve: "@medusajs/medusa/auth-emailpass",
+            id: "emailpass",
+          },
+          // other providers...
+          // Okta auth provider
+          {
+            resolve: "./src/modules/okta",
+            id: "okta",
+            options: {
+              oktaDomain: process.env.OKTA_DOMAIN!,
+              clientId: process.env.OKTA_CLIENT_ID!,
+              clientSecret: process.env.OKTA_CLIENT_SECRET!,
+              redirectUri: process.env.OKTA_REDIRECT_URI!,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+To pass a Module Provider to the Auth Module, you add the `modules` property to the Medusa configuration and pass the Auth Module in its value.
+
+The Auth Module accepts a `providers` option, which is an array of Auth Module Providers to register.
+
+To register the Okta Auth Module Provider, you add an object to the `providers` array with the following properties:
+
+- `resolve`: The NPM package or path to the module provider. In this case, it's the path to the `src/modules/okta` directory.
+- `id`: The ID of the module provider. The Auth Module Provider is then registered with the ID `au_{identifier}_{id}`, where:
+    - `{identifier}`: The identifier static property defined in the Module Provider's service, which is `okta` in this case.
+    - `{id}`: The ID set in this configuration, which is also `okta` in this case.
+- `options`: The options to pass to the module provider. These are the options you defined in the `Options` type of the module provider's service.
+
+### f. Set Up Environment Variables
+
+Next, you'll set up the environment variables whose values you passed to the Okta Auth Module Provider.
+
+<Prerequisites
+  items={[
+    {
+      text: "Okta Account. You can create a free developer account as well.",
+      link: "https://developer.okta.com/signup/"
+    }
+  ]}
+/>
+
+#### Create Okta Application
+
+To authenticate users with Okta, you need to create an Okta application in your Okta organization.
+
+To create an Okta application:
+
+1. [Log in to your Okta organization](https://developer.okta.com/login/).
+2. Go to Applications -> Applications.
+3. Click on "Create App Integration."
+4. In the pop up, select "OIDC - OpenID Connect" as the Sign-in method and "Web Application" as the Application type. Click "Next."
+5. In the creation form, enter the following details:
+   - **App integration name**: A name for your application. For example, "Medusa".
+   - **Sign-in redirect URIs**: The redirect URI where Okta will redirect users after authentication. For example, set it to `http://localhost:9000/app/login`. You can replace the localhost URL with your Medusa Admin's URL if it's different.
+   - **Sign-out redirect URIs**: The redirect URI where Okta will redirect users after signing out. For example, set it to `http://localhost:9000/app/login`.
+   - **Controlled access**: Optionally, choose "Allow everyone in your organization to access" to allow all users in your Okta organization to authenticate. You can alternatively restrict access to specific groups.
+6. Click "Save" to create the application.
+
+![Okta application creation form](https://res.cloudinary.com/dza7lstvk/image/upload/v1764672257/Medusa%20Resources/CleanShot_2025-12-02_at_12.44.00_2x_nygahc.png)
+
+After creating the application, you'll be redirected to the application's settings page. Copy the client ID and client secret from this page, as you'll need them for the environment variables.
+
+![Okta application settings page](https://res.cloudinary.com/dza7lstvk/image/upload/v1764672504/Medusa%20Resources/CleanShot_2025-12-02_at_12.48.03_2x_imaqs4.png)
+
+#### Set Environment Variables
+
+Next, set the following environment variables in your Medusa application's `.env` file:
+
+```shell title=".env"
+OKTA_DOMAIN=https://integrator...
+OKTA_CLIENT_ID=your_okta_client_id
+OKTA_CLIENT_SECRET=your_okta_client_secret
+OKTA_REDIRECT_URI=http://localhost:9000/app/login
+```
+
+Where:
+
+- `OKTA_DOMAIN`: The Okta domain of your organization. You can find it by going to Security -> API -> Authorization Servers in your Okta dashboard. It's the URL before `/oauth2/default`.
+
+![Okta domain in Authorization Servers page](https://res.cloudinary.com/dza7lstvk/image/upload/v1764672662/Medusa%20Resources/CleanShot_2025-12-02_at_12.50.40_2x_exdpgj.png)
+
+- `OKTA_CLIENT_ID`: The Client ID of your Okta application.
+- `OKTA_CLIENT_SECRET`: The Client Secret of your Okta application.
+- `OKTA_REDIRECT_URI`: The URL where Okta will redirect users after authentication. It's the same URL you set in the application's Sign-in redirect URIs.
+
+The Okta integration is now ready. You'll test it out once you set up the authentication flow in the Medusa Admin.
+
+---
+
+## Step 3: Create Admin User API Route
+
+In this step, you'll create an API route that creates an admin user for a newly authenticated Okta user. This also requires creating a workflow that the API route executes to create the user.
+
+<Note title="Important" type="warning">
+
+This API route is secured by Okta authentication since only authenticated users in your Okta organization can access it. However, for other authentication providers, proceed with caution if the authentication provider allows public sign-ups, such as social login with Google. In those scenarios, anyone with a Google account could create an admin user in your Medusa application.
+
+</Note>
+
+### a. Create User Workflow
+
+A [workflow](!docs!/learn/fundamentals/workflows) is a series of actions, called steps, that complete a task with rollback and retry mechanisms. In Medusa, you build commerce features in workflows, then execute them in other customizations, such as subscribers, scheduled jobs, and API routes.
+
+The workflow to create a user has the following steps:
+
+<WorkflowDiagram
+  workflow={{
+    name: "createUserWorkflow",
+    steps: [
+      {
+        type: "workflow",
+        name: "createUsersWorkflow",
+        description: "Create an admin user in Medusa.",
+        link: "/references/medusa-workflows/createUsersWorkflow",
+        depth: 1
+      },
+      {
+        type: "step",
+        name: "setAuthAppMetadataStep",
+        description: "Associate the auth identity with the newly created user.",
+        link: "/references/medusa-workflows/steps/setAuthAppMetadataStep",
+        depth: 2
+      }
+    ]
+  }}
+/>
+
+Medusa provides the workflow and step out-of-the-box, so you can create the workflow.
+
+Create the file `src/workflows/create-user.ts` with the following content:
+
+```ts title="src/workflows/create-user.ts"
+import { createWorkflow, transform, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
+import { createUsersWorkflow, setAuthAppMetadataStep } from "@medusajs/medusa/core-flows"
+
+type WorkflowInput = {
+  email: string
+  auth_identity_id: string
+  first_name?: string
+  last_name?: string
+}
+
+export const createUserWorkflow = createWorkflow(
+  "create-user",
+  (input: WorkflowInput) => {
+    const users = createUsersWorkflow.runAsStep({
+      input: {
+        users: [
+          {
+            email: input.email,
+            first_name: input.first_name,
+            last_name: input.last_name,
+          },
+        ],
+      },
+    })
+
+    const authUserInput = transform({ input, users }, ({ input, users }) => {
+      const createdUser = users[0]
+
+      return {
+        authIdentityId: input.auth_identity_id,
+        actorType: "user",
+        value: createdUser.id,
+      }
+    })
+
+    setAuthAppMetadataStep(authUserInput)
+
+    return new WorkflowResponse({
+      user: users[0],
+    })
+  }
+)
+```
+
+You create a workflow using `createWorkflow` from the Workflows SDK. It accepts the workflow's unique name as a first parameter.
+
+`createWorkflow` accepts as a second parameter a constructor function, which is the user's details with the ID of the auth identity that Okta created during authentication.
+
+In the workflow's constructor function, you:
+
+1. Create the user using the [createUsersWorkflow](/references/medusa-workflows/createUsersWorkflow).
+2. Prepare the input for the `setAuthAppMetadataStep` step using [transform](!docs!//learn/fundamentals/workflows/variable-manipulation). You update the auth identity to associate it with the created user.
+3. Associate the created user with the auth identity (created by Okta) using the [setAuthAppMetadataStep](/references/medusa-workflows/steps/setAuthAppMetadataStep).
+
+Finally, you return an instance of `WorkflowResponse` with the created user.
+
+<Note>
+
+A workflow has some constraints that require you to define and manipulate variables using `transform`. Refer to the [Data Manipulation](!docs!/learn/fundamentals/workflows/variable-manipulation) guide to learn more.
+
+</Note>
+
+### b. Create Admin User API Route
+
+Next, you'll create the API route that executes the `createUserWorkflow` to create an admin user for a newly authenticated Okta user.
+
+An API route is created in a `route.ts` file under a sub-directory of the `src/api` directory. The path of the API route is the file's path relative to `src/api`.
+
+So, create the file `src/api/okta/users/route.ts` with the following content:
+
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
+```ts title="src/api/okta/users/route.ts"
+import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework"
+import { z } from "@medusajs/framework/zod"
+import { createUserWorkflow } from "../../../workflows/create-user"
+
+export const CreateUserSchema = z.object({
+  email: z.string(),
+  first_name: z.string().optional(),
+  last_name: z.string().optional(),
+})
+
+type CreateUserBody = z.infer<typeof CreateUserSchema>
+
+export const POST = async (
+  req: AuthenticatedMedusaRequest<CreateUserBody>, 
+  res: MedusaResponse
+) => {
+  const user = await createUserWorkflow(req.scope)
+    .run({
+      input: {
+        email: req.validatedBody.email,
+        auth_identity_id: req.auth_context!.auth_identity_id!,
+        first_name: req.validatedBody.first_name,
+        last_name: req.validatedBody.last_name,
+      },
+    })
+
+  return res.status(200).json({ user })
+}
+```
+
+You export a [Zod](https://zod.dev/) schema that you'll use to validate incoming requests to the API route.
+
+You also export a `POST` handler function which exposes a `POST` API route at `/okta/users`.
+
+In the API route, you execute the `createUserWorkflow` by invoking it, passing it the [Medusa container](!docs!/learn/fundamentals/medusa-container), then calling its `run` method with the workflow's input.
+
+Finally, you return the created user in the response.
+
+### c. Apply Authentication and Validation Middlewares
+
+Next, you'll apply middlewares to the API route to ensure that only authenticated users can access it and that the incoming requests are valid.
+
+To apply middlewares to an API route, create the file `src/api/middlewares.ts` with the following content:
+
+```ts title="src/api/middlewares.ts"
+import { authenticate, defineMiddlewares, validateAndTransformBody } from "@medusajs/framework/http"
+import { CreateUserSchema } from "./okta/users/route"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/okta/users",
+      methods: ["POST"],
+      middlewares: [
+        authenticate("user", "bearer", {
+          allowUnregistered: true,
+        }),
+        validateAndTransformBody(CreateUserSchema),
+        // TODO add Okta validation middleware
+      ],
+    },
+  ],
+})
+```
+
+You use `defineMiddlewares` to apply middlewares to API routes. You apply two middlewares to the `/okta/users` route:
+
+1. [authenticate](!docs!/learn/fundamentals/api-routes/protected-routes): This middleware ensures only admin users with an authentication token can access the route. You set the `allowUnregistered` option to `true` to allow users who don't have an associated Medusa user yet (new Okta users) to access the route.
+2. [validateAndTransformBody](!docs!/learn/fundamentals/api-routes/validation): This middleware validates and transforms the request body using the `CreateUserSchema` schema you defined earlier.
+
+You'll add another middleware to validate that the user was authenticated with Okta in the next section.
+
+### d. Add Okta Validation Middleware
+
+To ensure that only authenticated Okta users can access the user creation API route, you'll add a [middleware](!docs!/learn/fundamentals/api-routes/middlewares) that validates that the user was authenticated with Okta.
+
+To create the middleware, create the file `src/api/middlewares/validate-okta-provider.ts` with the following content:
+
+```ts title="src/api/middlewares/validate-okta-provider.ts"
+import { 
+  AuthenticatedMedusaRequest, 
+  MedusaResponse,
+  MedusaNextFunction,
+} from "@medusajs/framework/http"
+import { MedusaError } from "@medusajs/framework/utils"
+
+export default async function validateOktaProvider(
+  req: AuthenticatedMedusaRequest, 
+  res: MedusaResponse, 
+  next: MedusaNextFunction
+) {
+  if (req.auth_context.actor_id) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "User already exists"
+    )
+  }
+
+  const query = req.scope.resolve("query")
+  const { data: [authIdentity] } = await query.graph({
+    entity: "auth_identity",
+    fields: [
+      "provider_identities.provider",
+    ],
+    filters: {
+      id: req.auth_context!.auth_identity_id!,
+    },
+  }, {
+    throwIfKeyNotFound: true,
+  })
+
+  const isOkta = authIdentity.provider_identities.some((identity) => identity?.provider === "okta")
+
+  if (!isOkta) {
+    throw new MedusaError(
+      MedusaError.Types.UNAUTHORIZED,
+      "Invalid provider"
+    )
+  }
+
+  next()
+}
+```
+
+You create a middleware function that checks if:
+
+- The user already has an associated Medusa user. If so, you throw an error since the user shouldn't access the route.
+- The user's auth identity was authenticated by Okta. You use [Query](!docs!/learn/fundamentals/module-links/query) to retrieve the user's auth identity with its provider identities, then check whether Okta is one of the providers. If not, you throw an unauthorized error.
+
+If both checks pass, you call the `next` function to proceed to the next middleware or route handler.
+
+Finally, in `src/api/middlewares.ts`, add the following import at the top of the file:
+
+```ts title="src/api/middlewares.ts"
+import validateOktaProvider from "./middlewares/validate-okta-provider"
+```
+
+Then, replace the `// TODO add Okta validation middleware` comment with the new middleware:
+
+```ts title="src/api/middlewares.ts" highlights={[["8"]]}
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/okta/users",
+      methods: ["POST"],
+      middlewares: [
+        // ...
+        validateOktaProvider,
+      ],
+    },
+  ],
+})
+```
+
+The `validateOktaProvider` middleware will now run before the API route handler, ensuring only authenticated Okta users can create an admin user.
+
+You'll test out this API route after you implement the Okta authentication flow in the Medusa Admin.
+
+---
+
+## Step 4: Add Login with Okta in Medusa Admin
+
+In this step, you'll customize the Medusa Admin login form to add a "Login with Okta" button that initiates the Okta authentication flow.
+
+The Medusa Admin is customizable, allowing you to either inject custom components into existing pages or create new pages.
+
+You'll inject a custom component into the existing login page to add the "Login with Okta" button.
+
+<Note>
+
+While you can inject custom components into the login page, you can't remove the existing email/password login form. Therefore, both login methods will be available on the login page.
+
+</Note>
+
+### a. Set Admin Authentication Type
+
+By default, the Medusa Admin uses session-based authentication. However, to support third-party authentication providers like Okta, you need to switch to token-based authentication.
+
+To set the admin authentication type, add the following environment variable to your Medusa application's `.env` file:
+
+```shell title=".env"
+ADMIN_AUTH_TYPE=jwt
+```
+
+This sets the admin authentication type to JWT (JSON Web Token), which supports third-party authentication providers.
+
+### b. Configure JS SDK
+
+Next, you'll configure Medusa's [JS SDK](../../../js-sdk/page.mdx). It allows you to send requests to the Medusa server from any client application, including your Medusa Admin customizations.
+
+The JS SDK is installed by default in your Medusa application. To configure it, create the file `src/admin/lib/sdk.ts` with the following content:
+
+```ts title="src/admin/lib/sdk.ts"
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+  debug: import.meta.env.DEV,
+  auth: {
+    type: "jwt",
+  },
+})
+```
+
+You create an instance of the JS SDK using the `Medusa` class from the JS SDK. You pass it an object having the following properties:
+
+- `baseUrl`: The base URL of the Medusa server.
+- `debug`: A boolean indicating whether to log debug information into the console.
+- `auth`: An object specifying the authentication type. When using the JS SDK for admin customizations, you use the `jwt` authentication type.
+
+### c. Add Okta Icon Component
+
+Next, you'll create a React component that renders the Okta logo. You'll use this component in the "Login with Okta" button.
+
+Create the file `src/admin/components/okta-icon.tsx` with the following content:
+
+```tsx title="src/admin/components/okta-icon.tsx"
+export default function OktaIcon() {
+  return (
+    <svg 
+      width="15" 
+      height="15" 
+      viewBox="0 0 15 15" 
+      fill="none" 
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clipPath="url(#clip0_16091_86347)">
+        <path 
+          fillRule="evenodd" 
+          clipRule="evenodd" 
+          d="M8.23809 0.0952381L7.92857 3.90476C7.78571 3.88095 7.64286 3.88095 7.47619 3.88095C7.28571 3.88095 7.09524 3.90476 6.92857 3.92857L6.7619 2.09524C6.7619 2.04762 6.80952 1.97619 6.85714 1.97619H7.16667L7.02381 0.119048C7.02381 0.0714286 7.07143 0 7.11905 0H8.14286C8.21429 0 8.2619 0.047619 8.23809 0.0952381ZM5.66667 0.285714C5.64286 0.238095 5.59524 0.190476 5.54762 0.214286L4.59524 0.571429C4.52381 0.595238 4.5 0.666667 4.52381 0.714286L5.30952 2.40476L5.02381 2.52381C4.97619 2.54762 4.95238 2.59524 4.97619 2.66667L5.7619 4.33333C6.04762 4.16667 6.35714 4.04762 6.69048 3.97619L5.66667 0.285714ZM3.33333 1.35714L5.54762 4.47619C5.2619 4.66667 5.02381 4.88095 4.80952 5.11905L3.45238 3.80952C3.40476 3.7619 3.40476 3.69048 3.45238 3.66667L3.69048 3.47619L2.38095 2.14286C2.33333 2.09524 2.33333 2.02381 2.38095 2L3.16667 1.35714C3.21429 1.28571 3.28571 1.30952 3.33333 1.35714ZM1.47619 3.14286C1.42857 3.11905 1.35714 3.11905 1.33333 3.16667L0.833333 4.04762C0.809524 4.09524 0.833333 4.16667 0.880952 4.19048L2.57143 5L2.40476 5.2619C2.38095 5.30952 2.40476 5.38095 2.45238 5.40476L4.14286 6.16667C4.2619 5.85714 4.42857 5.57143 4.61905 5.30952L1.47619 3.14286ZM0.214286 5.54762C0.214286 5.5 0.285714 5.45238 0.333333 5.47619L4.02381 6.42857C3.92857 6.7381 3.88095 7.07143 3.85714 7.40476L2 7.2619C1.95238 7.2619 1.90476 7.21429 1.90476 7.14286L1.95238 6.83333L0.142857 6.66667C0.0952381 6.66667 0.047619 6.61905 0.047619 6.54762L0.214286 5.54762ZM0.0952381 8.04762C0.0238095 8.04762 0 8.09524 0 8.16667L0.190476 9.16667C0.190476 9.21429 0.261905 9.2619 0.309524 9.2381L2.11905 8.7619L2.16667 9.07143C2.16667 9.11905 2.2381 9.16667 2.28571 9.14286L4.07143 8.64286C3.97619 8.33333 3.90476 8 3.88095 7.66667L0.0952381 8.04762ZM0.690476 10.6905C0.666667 10.6429 0.690476 10.5714 0.738095 10.5476L4.19048 8.90476C4.30952 9.21429 4.5 9.5 4.71429 9.7619L3.21429 10.8333C3.16667 10.8571 3.09524 10.8571 3.07143 10.8095L2.85714 10.5476L1.30952 11.619C1.2619 11.6429 1.19048 11.6429 1.16667 11.5952L0.690476 10.6905ZM4.85714 9.97619L2.16667 12.6905C2.11905 12.7381 2.11905 12.8095 2.16667 12.8333L2.95238 13.4762C3 13.5238 3.07143 13.5 3.09524 13.4524L4.19048 11.9286L4.42857 12.1429C4.47619 12.1905 4.54762 12.1667 4.57143 12.119L5.61905 10.5952C5.33333 10.4286 5.07143 10.2143 4.85714 9.97619ZM4.33333 14.3095C4.28571 14.2857 4.2619 14.2381 4.28571 14.1667L5.85714 10.7143C6.14286 10.8571 6.47619 10.9762 6.78571 11.0476L6.30952 12.8333C6.28571 12.881 6.2381 12.9286 6.19048 12.9048L5.90476 12.7857L5.40476 14.5952C5.38095 14.6429 5.33333 14.6905 5.28571 14.6667L4.33333 14.3095ZM7.04762 11.0952L6.7381 14.9048C6.7381 14.9524 6.78571 15.0238 6.83333 15.0238H7.85714C7.90476 15.0238 7.95238 14.9762 7.95238 14.9048L7.80952 13.0476H8.11905C8.16667 13.0476 8.21429 13 8.21429 12.9286L8.04762 11.0952C7.85714 11.119 7.69048 11.1429 7.5 11.1429C7.35714 11.119 7.19048 11.119 7.04762 11.0952ZM10.7381 0.809524C10.7619 0.761905 10.7381 0.690476 10.6905 0.666667L9.7381 0.309524C9.69048 0.285714 9.61905 0.333333 9.61905 0.380952L9.11905 2.19048L8.83333 2.07143C8.78571 2.04762 8.71429 2.09524 8.71429 2.14286L8.23809 3.92857C8.57143 4 8.88095 4.11905 9.16667 4.2619L10.7381 0.809524ZM12.8333 2.30952L10.1429 5.02381C9.92857 4.78571 9.66667 4.57143 9.38095 4.40476L10.4286 2.88095C10.4524 2.83333 10.5238 2.83333 10.5714 2.85714L10.8095 3.07143L11.9048 1.54762C11.9286 1.5 12 1.5 12.0476 1.52381L12.8333 2.16667C12.8571 2.21429 12.8571 2.28571 12.8333 2.30952ZM14.2619 4.45238C14.3095 4.42857 14.3333 4.35714 14.3095 4.30952L13.8095 3.42857C13.7857 3.38095 13.7143 3.35714 13.6667 3.40476L12.119 4.47619L11.9524 4.21429C11.9286 4.16667 11.8571 4.14286 11.8095 4.19048L10.3095 5.2381C10.5238 5.5 10.6905 5.78571 10.8333 6.09524L14.2619 4.45238ZM14.8095 5.83333L14.9762 6.83333C14.9762 6.88095 14.9524 6.95238 14.881 6.95238L11.0952 7.30952C11.0714 6.97619 11 6.64286 10.9048 6.33333L12.6905 5.83333C12.7381 5.80952 12.8095 5.85714 12.8095 5.90476L12.8571 6.21429L14.6667 5.7381C14.7381 5.7381 14.7857 5.78571 14.8095 5.83333ZM14.6429 9.52381C14.6905 9.54762 14.7619 9.5 14.7619 9.45238L14.9286 8.45238C14.9286 8.40476 14.9048 8.33333 14.8333 8.33333L12.9762 8.16667L13.0238 7.85714C13.0238 7.80952 13 7.7381 12.9286 7.7381L11.0714 7.59524C11.0714 7.92857 11 8.2619 10.9048 8.57143L14.6429 9.52381ZM13.6667 11.8095C13.6429 11.8571 13.5714 11.881 13.5238 11.8333L10.381 9.66667C10.5714 9.40476 10.7381 9.11905 10.8571 8.80952L12.5476 9.57143C12.5952 9.59524 12.619 9.66667 12.5952 9.71429L12.4286 10L14.119 10.8095C14.1667 10.8333 14.1905 10.9048 14.1667 10.9524L13.6667 11.8095ZM9.45238 10.5238L11.6667 13.6429C11.6905 13.6905 11.7619 13.6905 11.8095 13.6667L12.5952 13.0238C12.6429 12.9762 12.6429 12.9286 12.5952 12.881L11.2857 11.5476L11.5238 11.3571C11.5714 11.3095 11.5714 11.2619 11.5238 11.2143L10.2143 9.90476C10 10.1429 9.7381 10.3571 9.45238 10.5238ZM9.45238 14.7619C9.40476 14.7857 9.33333 14.7381 9.33333 14.6905L8.33333 11.0238C8.66667 10.9524 8.97619 10.8333 9.26191 10.6667L10.0476 12.3333C10.0714 12.381 10.0476 12.4524 10 12.4762L9.71429 12.5952L10.5 14.2857C10.5238 14.3333 10.5 14.4048 10.4524 14.4286L9.45238 14.7619Z"
+          fill="currentColor"
+        />
+      </g>
+      <defs>
+      <clipPath id="clip0_16091_86347">
+        <rect width="15" height="15" fill="white"/>
+      </clipPath>
+      </defs>
+    </svg>
+  )
+}
+```
+
+### d. Create Login with Okta Widget
+
+A [widget](!docs!/learn/fundamentals/admin/widgets) is a React component that you can inject into predefined zones in the Medusa Admin.
+
+You'll create a widget that renders the "Login with Okta" button on the login page.
+
+To create the widget, create the file `src/admin/widgets/okta-login.tsx` with the following content:
+
+```tsx title="src/admin/widgets/okta-login.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Button, toast } from "@medusajs/ui"
+import { decodeToken } from "react-jwt"
+import { useSearchParams, useNavigate } from "react-router-dom"
+import { useMutation } from "@tanstack/react-query"
+import { sdk } from "../lib/sdk"
+import { useEffect, useMemo } from "react"
+import OktaIcon from "../components/okta-icon"
+
+const OKTA_AUTH_PROVIDER = "okta"
+
+const LoginWithOkta = () => {
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+
+  // TODO define auth functions
+}
+
+export const config = defineWidgetConfig({
+  zone: "login.after",
+})
+
+export default LoginWithOkta
+```
+
+A widget file must export:
+
+1. A React component as the default export. This component renders the widget's UI.
+2. A widget configuration object created using `defineWidgetConfig`. This configuration specifies the zone where the widget will be injected, which is `login.after` in this case.
+
+So far, in the component, you:
+
+1. Retrieve the URL search parameters. You'll use this to get the authorization code returned by Okta after authentication.
+2. Get the `navigate` function which is necessary for navigation after successful login.
+
+#### Initiate Okta Authentication
+
+Next, you'll start adding the functions necessary for the authentication flow. The first function is the button click handler that initiates the Okta authentication flow.
+
+Replace the `// TODO define auth functions` comment with the following:
+
+```tsx title="src/admin/widgets/okta-login.tsx"
+const oktaLogin = async () => {
+  const result = await sdk.auth.login("user", OKTA_AUTH_PROVIDER, {})
+
+  if (typeof result === "object" && result.location) {
+    // Redirect to okta for authentication
+    window.location.href = result.location
+    return
+  }
+  
+  if (typeof result !== "string") {
+    // Result failed, show an error
+    toast.error("Authentication failed")
+    return
+  }
+
+  // User is authenticated
+  navigate("/orders")
+}
+
+// TODO send callback function
+```
+
+The `oktaLogin` function uses the JS SDK's `auth.login` method to initiate the Okta authentication flow. This method sends a request to Medusa's `/auth/user/okta` API route, which executes the `authenticate` method of the Okta Auth Module Provider's service.
+
+If the result contains a `location` property, the user is redirected to that location, which is the Okta authentication page.
+
+If the result is not a string (the authentication token), you show an error toast notification.
+
+Otherwise, the user is authenticated and navigated to the orders page.
+
+#### Handle Okta Callback in Server
+
+Next, you'll add a function that validates the Okta authentication callback in the Medusa server.
+
+Replace the `// TODO send callback function` comment with the following:
+
+```tsx title="src/admin/widgets/okta-login.tsx"
+const sendCallback = async () => {
+  try {
+    return await sdk.auth.callback(
+      "user", 
+      OKTA_AUTH_PROVIDER, 
+      Object.fromEntries(searchParams)
+    )
+  } catch (error) {
+    toast.error("Authentication failed")
+    throw error
+  }
+}
+
+// TODO validate callback
+```
+
+The `sendCallback` function uses the JS SDK's `auth.callback` method to send the query parameters returned by Okta to Medusa's `/auth/user/okta/callback` API route.
+
+This API route executes the `validateCallback` method of the Okta Auth Module Provider's service to validate the authentication.
+
+#### Validate Callback and Create User
+
+Next, you'll add a function that validates the callback and creates an admin user if the Okta user is new.
+
+Replace the `// TODO validate callback` comment with the following:
+
+```tsx title="src/admin/widgets/okta-login.tsx"
+const validateCallback = async () => {
+  const token = await sendCallback()
+
+  const decodedToken = decodeToken(token) as { actor_id: string, user_metadata: Record<string, unknown> }
+
+  const userExists = decodedToken.actor_id !== ""
+
+  if (!userExists) {
+    // Create user
+    await sdk.client.fetch("/okta/users", {
+      method: "POST",
+      body: {
+        email: decodedToken.user_metadata?.email as string,
+        first_name: decodedToken.user_metadata?.given_name as string,
+        last_name: decodedToken.user_metadata?.family_name as string,
+      },
+    })
+
+    const newToken = await sdk.auth.refresh()
+
+    if (!newToken) {
+      toast.error("Authentication failed")
+      return
+    }
+  }
+
+  // User is authenticated
+  navigate("/orders")
+}
+
+const { mutateAsync, isPending } = useMutation({
+  mutationFn: async () => {
+    if (isPending) {
+      return
+    }
+    return await validateCallback()
+  },
+  onError: (error) => {
+    console.error("Custom authentication error:", error)
+  },
+})
+
+// TODO useEffect to trigger callback validation
+```
+
+In the `validateCallback` function, you:
+
+1. Call the `sendCallback` function to validate the Okta authentication in the Medusa server.
+2. Decode the returned authentication token to access the user's details.
+3. If the `actor_id` in the decoded token is an empty string, it means the user is new. So, you:
+    - Send a `POST` request to the `/okta/users` API route you created earlier to create an admin user for the new Okta user.
+    - Refresh the authentication token using the JS SDK's `auth.refresh` method to get a token associated with the newly created user.
+4. Finally, the user is authenticated, and you navigate them to the orders page.
+
+You also add a mutation using [Tanstack Query](https://tanstack.com/query/latest) to handle the asynchronous operation of validating the callback.
+
+#### Trigger Callback Validation
+
+Next, you'll trigger the callback validation when the search parameters contain an authorization code from Okta.
+
+Replace the `// TODO useEffect to trigger callback validation` comment with the following:
+
+```tsx title="src/admin/widgets/okta-login.tsx"
+useEffect(() => {
+  // Check for provider-specific query parameters
+  if (searchParams.get("code")) {
+    mutateAsync()
+  }
+}, [searchParams, mutateAsync])
+
+// TODO return statement
+```
+
+The `useEffect` hook runs whenever the search parameters change. If the `code` parameter is present, it calls the `mutateAsync` function to validate the callback.
+
+#### Render Login with Okta Button
+
+Finally, you'll render the "Login with Okta" button in the widget component. You'll also show a loading pop-up when the authentication is in progress.
+
+Replace the `// TODO return statement` comment with the following:
+
+```tsx title="src/admin/widgets/okta-login.tsx"
+const showLoading = useMemo(() => {
+  return isPending || !!searchParams.get("code")
+}, [isPending, searchParams])
+
+return (
+  <>
+    {showLoading && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div className="flex flex-col items-center gap-4 rounded-lg bg-ui-bg-base p-8 shadow-lg">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-ui-border-base border-t-ui-fg-interactive" />
+          <p className="text-ui-fg-subtle text-sm">Please wait...</p>
+        </div>
+      </div>
+    )}
+    <hr className="bg-ui-border-base my-4" />
+    <Button 
+      variant="secondary" 
+      onClick={oktaLogin} 
+      className="w-full"
+      isLoading={showLoading}
+    >
+      <OktaIcon />
+      Login with Okta
+    </Button>
+  </>
+)
+```
+
+You define a memoized value `showLoading` that determines whether to show the loading pop-up.
+
+Then, you render a loading pop-up if `showLoading` is `true`, and a "Login with Okta" button. The button displays the `OktaIcon` component and triggers the `oktaLogin` function when clicked.
+
+---
+
+## Test Okta Authentication Flow
+
+You can now test out the Okta integration and authentication flow you implemented.
+
+First, run the following command to start the Medusa server:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, open the Medusa Admin in your browser at `http://localhost:9000/app`. You'll see a "Login with Okta" button on the login page.
+
+![Medusa Admin login page with a "Login with Okta" button](https://res.cloudinary.com/dza7lstvk/image/upload/v1764676152/Medusa%20Resources/CleanShot_2025-12-02_at_13.48.58_2x_qjpsbk.png)
+
+Click the button to initiate the Okta authentication flow. If you're already logged in to Okta, you'll be redirected back to the Medusa Admin immediately where you'll be logged in. If not, you'll be prompted to log in to Okta first, then redirected back to the Medusa Admin.
+
+Once the authentication is successful, you can access the Medusa Admin dashboard as an authenticated user.
+
+---
+
+## Next Steps
+
+You've now set up Okta as an authentication provider for admin users in your Medusa application. This allows your Okta organization's users to log in to the Medusa Admin using their Okta credentials without needing to manage separate credentials for Medusa.
+
+You can also manage user access and permissions in Okta. For example, if you deny a user's access to the Medusa application in Okta, that user will no longer be able to log in to the Medusa Admin.
+
+### Learn More about Medusa
+
+If you're new to Medusa, check out the [main documentation](!docs!/learn), where you'll get a more in-depth understanding of all the concepts you've used in this guide and more.
+
+To learn more about the commerce features that Medusa provides, check out Medusa's [Commerce Modules](../../../commerce-modules/page.mdx).
+
+### Troubleshooting
+
+If you encounter issues during your development, check out the [troubleshooting guides](../../../troubleshooting/page.mdx).
+
+### Getting Help
+
+If you encounter issues not covered in the troubleshooting guides:
+
+1. Visit the [Medusa GitHub repository](https://github.com/medusajs/medusa) to report issues or ask questions.
+2. Join the [Medusa Discord community](https://discord.gg/medusajs) for real-time support from community members.

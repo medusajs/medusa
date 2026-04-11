@@ -1,6 +1,5 @@
 import SaslSection from '../_sections/database-errors/sasl.mdx'
 import ConnectionErrorSection from '../_sections/database-errors/connection-error.mdx'
-import PrivilegesSection from '../_sections/database-errors/privileges.mdx'
 import DockerSection from "../_sections/database-errors/docker.mdx"
 
 export const metadata = {
@@ -9,24 +8,14 @@ export const metadata = {
 
 # {metadata.title}
 
-## Can't Connect to PostgreSQL Docker Container
+This troubleshooting guide covers common database errors you may encounter when working with Medusa and how to resolve them.
 
-<DockerSection />
-
----
-
-## Error: SASL: SCRAM-SERVER-FIRST-MESSAGE: Client password must be a string
+## General Errors Connecting to Database
 
 <SaslSection />
 
 ---
 
-## Error: connect ECONNREFUSED ::1:5432
+## Can't Connect to PostgreSQL Docker Container
 
-<ConnectionErrorSection />
-
----
-
-## Database User Privileges
-
-<PrivilegesSection />
+<DockerSection />

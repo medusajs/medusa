@@ -139,6 +139,10 @@
  *     format: date-time
  *     title: updated_at
  *     description: The date the order change was updated.
+ *   carry_over_promotions:
+ *     type: boolean
+ *     title: carry_over_promotions
+ *     description: Whether promotions from the original order should be carried over to the order change (specifically, exchanges).
  * 
 */
 

@@ -1,4 +1,6 @@
 import {
+  CreateOrderLineItemAdjustmentDTO,
+  CreateOrderShippingMethodAdjustmentDTO,
   InferEntityType,
   OrderChangeActionDTO,
   OrderDTO,
@@ -25,12 +27,15 @@ export async function applyChangesToOrder(
   actionsMap: Record<string, any[]>,
   options?: {
     addActionReferenceToObject?: boolean
-    includeTaxLinesAndAdjustementsToPreview?: (...args) => void
+    includeTaxLinesAndAdjustmentsToPreview?: (...args) => void
   }
 ) {
   const itemsToUpsert: InferEntityType<typeof OrderItem>[] = []
   const creditLinesToUpsert: InferEntityType<typeof OrderCreditLine>[] = []
   const shippingMethodsToUpsert: InferEntityType<typeof OrderShippingMethod>[] =
+    []
+  const lineItemAdjustmentsToCreate: CreateOrderLineItemAdjustmentDTO[] = []
+  const shippingMethodAdjustmentsToCreate: CreateOrderShippingMethodAdjustmentDTO[] =
     []
   const summariesToUpsert: any[] = []
   const orderToUpdate: any[] = []
@@ -57,6 +62,7 @@ export async function applyChangesToOrder(
     const orderAttributes: {
       version?: number
       customer_id?: string
+      email?: string
     } = {}
 
     // Editable attributes that have changed
@@ -94,6 +100,20 @@ export async function applyChangesToOrder(
         metadata: orderItem.metadata,
       } as any
 
+      if (version > order.version) {
+        item.adjustments?.forEach((adjustment) => {
+          lineItemAdjustmentsToCreate.push({
+            item_id: itemId,
+            version,
+            amount: adjustment.amount,
+            description: adjustment.description,
+            promotion_id: adjustment.promotion_id,
+            code: adjustment.code,
+            is_tax_inclusive: adjustment.is_tax_inclusive,
+          })
+        })
+      }
+
       itemsToUpsert.push(itemToUpsert)
     }
 
@@ -105,6 +125,8 @@ export async function applyChangesToOrder(
           continue
         }
 
+        const isExisting = isDefined(creditLine_.id)
+
         const upsertCreditLine = {
           id: creditLine_.version === version ? creditLine_.id : undefined,
           order_id: order.id,
@@ -113,7 +135,9 @@ export async function applyChangesToOrder(
           reference_id: creditLine_.reference_id,
           amount: creditLine_.amount,
           raw_amount: creditLine_.raw_amount,
-          metadata: creditLine_.metadata,
+          metadata: isExisting
+            ? creditLine_.metadata
+            : { ...(creditLine_.metadata ?? {}), created_in_version: version },
         } as any
 
         creditLinesToUpsert.push(upsertCreditLine)
@@ -151,17 +175,30 @@ export async function applyChangesToOrder(
         if (!hasShippingMethod) {
           shippingMethodsToUpsert.push(sm)
         }
+
+        shippingMethod_.adjustments?.forEach((adjustment) => {
+          shippingMethodAdjustmentsToCreate.push({
+            shipping_method_id: associatedMethodId,
+            version,
+            amount: adjustment.amount,
+            description: adjustment.description,
+            promotion_id: adjustment.promotion_id,
+            code: adjustment.code,
+          })
+        })
       }
 
       orderAttributes.version = version
     }
 
     // Including tax lines and adjustments for added items and shipping methods
-    if (options?.includeTaxLinesAndAdjustementsToPreview) {
-      await options?.includeTaxLinesAndAdjustementsToPreview(
+    if (options?.includeTaxLinesAndAdjustmentsToPreview) {
+      await options?.includeTaxLinesAndAdjustmentsToPreview(
         calculated.order,
         itemsToUpsert,
-        shippingMethodsToUpsert
+        shippingMethodsToUpsert,
+        lineItemAdjustmentsToCreate,
+        shippingMethodAdjustmentsToCreate
       )
       decorateCartTotals(calculated.order)
     }
@@ -194,6 +231,8 @@ export async function applyChangesToOrder(
   }
 
   return {
+    lineItemAdjustmentsToCreate,
+    shippingMethodAdjustmentsToCreate,
     itemsToUpsert,
     creditLinesToUpsert,
     shippingMethodsToUpsert,

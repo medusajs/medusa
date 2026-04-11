@@ -14,6 +14,7 @@ import {
   composeLinkName,
   composeTableName,
   ContainerRegistrationKeys,
+  isFileSkipped,
   Modules,
   promiseAll,
   simpleHash,
@@ -33,16 +34,18 @@ export const initialize = async (
     | InternalModuleDeclaration,
   pluginLinksDefinitions?: ModuleJoinerConfig[],
   injectedDependencies?: InitializeModuleInjectableDependencies,
-  cwd?: string
+  cwd?: string,
+  migrationOnly?: boolean,
+  schemaOnly?: boolean
 ): Promise<{ [link: string]: ILinkModule }> => {
   const allLinks = {}
   const modulesLoadedKeys = MedusaModule.getLoadedModules().map(
     (mod) => Object.keys(mod)[0]
   )
 
-  const allLinksToLoad = Object.values(linkDefinitions).concat(
-    pluginLinksDefinitions ?? []
-  )
+  const allLinksToLoad = Object.values(linkDefinitions)
+    .concat(pluginLinksDefinitions ?? [])
+    .filter((linkDefinition) => !isFileSkipped(linkDefinition))
 
   await promiseAll(
     allLinksToLoad.map(async (linkDefinition) => {
@@ -169,6 +172,8 @@ export const initialize = async (
         moduleExports: moduleDefinition,
         injectedDependencies,
         cwd,
+        migrationOnly,
+        schemaOnly,
       })
 
       allLinks[serviceKey as string] = Object.values(loaded)[0]

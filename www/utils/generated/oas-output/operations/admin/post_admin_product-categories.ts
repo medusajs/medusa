@@ -107,9 +107,9 @@
  *   - name: product-category.created
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the product category
- *       }]
+ *       }
  *       ```
  *     description: Emitted when product categories are created.
  *     deprecated: false

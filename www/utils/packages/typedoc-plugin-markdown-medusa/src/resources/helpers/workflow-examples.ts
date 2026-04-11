@@ -8,8 +8,20 @@ export default function () {
     "workflowExamples",
     function (this: SignatureReflection): string {
       const workflowReflection = this.parent
-      const exampleStr: string[] = []
+      // prepare locking data
+      const workflowLockingTag = workflowReflection.comment?.blockTags.find(
+        (tag) => tag.tag === "@workflowLock"
+      )
+      const workflowLockingContentSplit =
+        workflowLockingTag?.content[0]?.text.split("---")
+      const lockingData = workflowLockingContentSplit
+        ? {
+            step: workflowLockingContentSplit[1].trim(),
+            key: workflowLockingContentSplit[0].trim(),
+          }
+        : undefined
 
+      const exampleStr: string[] = []
       const exampleTags = workflowReflection.comment?.blockTags.filter(
         (tag) => tag.tag === "@example"
       )
@@ -19,6 +31,7 @@ export default function () {
           getExecutionCodeTabs({
             exampleCode: generateWorkflowExample(workflowReflection),
             workflowName: workflowReflection.name,
+            locking: lockingData,
           })
         )
       } else {
@@ -42,6 +55,7 @@ export default function () {
               getExecutionCodeTabs({
                 exampleCode: part.text,
                 workflowName: workflowReflection.name,
+                locking: lockingData,
               })
             )
           })
@@ -58,9 +72,14 @@ export default function () {
 function getExecutionCodeTabs({
   exampleCode,
   workflowName,
+  locking,
 }: {
   exampleCode: string
   workflowName: string
+  locking?: {
+    step: string
+    key: string
+  }
 }): string {
   exampleCode = exampleCode.replace("```ts\n", "").replace("\n```", "")
 
@@ -139,12 +158,20 @@ import { ${workflowName} } from "@medusajs/medusa/core-flows"
 
 const myWorkflow = createWorkflow(
   "my-workflow",
-  () => {
+  () => {${
+    locking
+      ? `\n    // Acquire lock from nested workflow here\n    // ${locking.step}`
+      : ""
+  }
     ${exampleCode
       .replace(`{ result }`, "result")
       .replace(`await `, "")
       .replace(`(container)`, "")
-      .replace(".run(", ".runAsStep(")}
+      .replace(".run(", ".runAsStep(")}${
+      locking
+        ? `\n    // Release lock here\n    // releaseLockStep({ key: ${locking.key} })`
+        : ""
+    }
   }
 )`)}
 \`\`\`

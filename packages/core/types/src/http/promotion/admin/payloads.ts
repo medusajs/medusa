@@ -181,6 +181,10 @@ export interface AdminCreatePromotion {
    */
   application_method: AdminCreateApplicationMethod
   /**
+   * The maximum number of times this promotion can be used.
+   */
+  limit?: number | null
+  /**
    * The rules of the promotion.
    */
   rules?: AdminCreatePromotionRule[]
@@ -221,6 +225,10 @@ export interface AdminUpdatePromotion {
    * The application method of the promotion.
    */
   application_method?: AdminUpdateApplicationMethod
+  /**
+   * The maximum number of times this promotion can be used.
+   */
+  limit?: number | null
   /**
    * The rules of the promotion.
    */

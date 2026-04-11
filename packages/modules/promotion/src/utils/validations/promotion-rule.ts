@@ -118,7 +118,12 @@ export function evaluateRuleValueCondition(
     : [ruleValuesToCheck]
 
   if (!valuesToCheck.length) {
-    return false
+    switch (operator) {
+      case "ne":
+        return true
+      default:
+        return false
+    }
   }
 
   switch (operator) {

@@ -24,7 +24,7 @@ import {
   TriangleRightMini,
   TruckFast,
 } from "@medusajs/icons"
-import { isEqual } from "lodash"
+import isEqual from "lodash.isequal"
 import { Accordion } from "radix-ui"
 import { ConditionalTooltip } from "../../../../components/common/conditional-tooltip"
 import { Form } from "../../../../components/common/form"
@@ -98,7 +98,7 @@ const Shipping = () => {
           <RouteFocusModal.Header />
           <RouteFocusModal.Body className="flex flex-1 flex-col overflow-hidden">
             <div className="flex flex-1 flex-col items-center overflow-y-auto">
-              <div className="flex w-full max-w-[720px] flex-col gap-y-6 py-16 px-6">
+              <div className="flex w-full max-w-[720px] flex-col gap-y-6 px-6 py-16">
                 <RouteFocusModal.Title asChild>
                   <Heading>Shipping</Heading>
                 </RouteFocusModal.Title>
@@ -252,7 +252,7 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
       <RouteFocusModal.Header />
       <RouteFocusModal.Body className="flex flex-1 flex-col overflow-hidden">
         <div className="flex flex-1 flex-col items-center overflow-y-auto">
-          <div className="flex w-full max-w-[720px] flex-col gap-y-6 py-16 px-6">
+          <div className="flex w-full max-w-[720px] flex-col gap-y-6 px-6 py-16">
             <div>
               <RouteFocusModal.Title asChild>
                 <Heading>Shipping</Heading>
@@ -266,8 +266,8 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
             </div>
             <Divider variant="dashed" />
             <Accordion.Root type="multiple">
-              <div className="bg-ui-bg-subtle rounded-xl shadow-elevation-card-rest">
-                <div className="px-4 py-2 flex items-center justify-between">
+              <div className="bg-ui-bg-subtle shadow-elevation-card-rest rounded-xl">
+                <div className="flex items-center justify-between px-4 py-2">
                   <Text
                     size="xsmall"
                     weight="plus"
@@ -312,8 +312,8 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
                         value={profile.id}
                         className="bg-ui-bg-base shadow-elevation-card-rest rounded-lg"
                       >
-                        <div className="px-3 py-2 flex items-center justify-between gap-3">
-                          <div className="flex items-center gap-x-3 w-full overflow-hidden">
+                        <div className="flex items-center justify-between gap-3 px-3 py-2">
+                          <div className="flex w-full items-center gap-x-3 overflow-hidden">
                             <Accordion.Trigger asChild>
                               <IconButton
                                 size="2xsmall"
@@ -321,17 +321,17 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
                                 className="group/trigger"
                                 disabled={!hasItems}
                               >
-                                <TriangleRightMini className="group-data-[state=open]/trigger:rotate-90 transition-transform" />
+                                <TriangleRightMini className="transition-transform group-data-[state=open]/trigger:rotate-90" />
                               </IconButton>
                             </Accordion.Trigger>
                             {!shippingOption ? (
                               <div className="flex items-center gap-x-3">
-                                <div className="size-7 rounded-md shadow-borders-base flex items-center justify-center">
-                                  <div className="size-6 rounded bg-ui-bg-component-hover flex items-center justify-center">
+                                <div className="shadow-borders-base flex size-7 items-center justify-center rounded-md">
+                                  <div className="bg-ui-bg-component-hover flex size-6 items-center justify-center rounded">
                                     <Shopping className="text-ui-fg-subtle" />
                                   </div>
                                 </div>
-                                <div className="flex flex-col flex-1">
+                                <div className="flex flex-1 flex-col">
                                   <Text
                                     size="small"
                                     weight="plus"
@@ -350,7 +350,7 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
                                 </div>
                               </div>
                             ) : (
-                              <div className="flex items-center gap-[5px] max-sm:flex-col max-sm:items-start flex-1 w-full overflow-hidden">
+                              <div className="flex w-full flex-1 items-center gap-[5px] overflow-hidden max-sm:flex-col max-sm:items-start">
                                 <Tooltip
                                   content={
                                     <ul>
@@ -363,7 +363,7 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
                                   }
                                 >
                                   <Badge
-                                    className="flex items-center gap-x-[3px] overflow-hidden cursor-default"
+                                    className="flex cursor-default items-center gap-x-[3px] overflow-hidden"
                                     size="xsmall"
                                   >
                                     <Shopping className="shrink-0" />
@@ -384,7 +384,7 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
                                   }
                                 >
                                   <Badge
-                                    className="flex items-center gap-x-[3px] overflow-hidden cursor-default"
+                                    className="flex cursor-default items-center gap-x-[3px] overflow-hidden"
                                     size="xsmall"
                                   >
                                     <Buildings className="shrink-0" />
@@ -398,7 +398,7 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
                                 </Tooltip>
                                 <Tooltip content={shippingOption.name}>
                                   <Badge
-                                    className="flex items-center gap-x-[3px] overflow-hidden cursor-default"
+                                    className="flex cursor-default items-center gap-x-[3px] overflow-hidden"
                                     size="xsmall"
                                   >
                                     <TruckFast className="shrink-0" />
@@ -471,17 +471,17 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
                             return (
                               <div key={item.id}>
                                 <div
-                                  className="px-3 flex items-center gap-x-3"
+                                  className="flex items-center gap-x-3 px-3"
                                   key={item.id}
                                 >
-                                  <div className="w-5 h-[56px] flex flex-col justify-center items-center">
+                                  <div className="flex h-[56px] w-5 flex-col items-center justify-center">
                                     <Divider
                                       variant="dashed"
                                       orientation="vertical"
                                     />
                                   </div>
-                                  <div className="py-2 flex items-center gap-x-3">
-                                    <div className="size-7 flex items-center justify-center tabular-nums">
+                                  <div className="flex items-center gap-x-3 py-2">
+                                    <div className="flex size-7 items-center justify-center tabular-nums">
                                       <Text
                                         size="small"
                                         leading="compact"
@@ -694,7 +694,7 @@ const ShippingProfileForm = ({
           <StackedFocusModal.Header />
           <StackedFocusModal.Body className="flex flex-1 flex-col overflow-hidden">
             <div className="flex flex-1 flex-col items-center overflow-y-auto">
-              <div className="flex w-full max-w-[720px] flex-col gap-y-6 py-16 px-6">
+              <div className="flex w-full max-w-[720px] flex-col gap-y-6 px-6 py-16">
                 <div>
                   <RouteFocusModal.Title asChild>
                     <Heading>Shipping</Heading>
@@ -782,7 +782,7 @@ const ItemsPreview = ({ order, shippingProfileId }: ItemsPreviewProps) => {
         </div>
       </div>
       <div className="bg-ui-bg-subtle shadow-elevation-card-rest rounded-xl">
-        <div className="grid grid-cols-2 gap-3 px-4 py-2 text-ui-fg-muted">
+        <div className="text-ui-fg-muted grid grid-cols-2 gap-3 px-4 py-2">
           <div>
             <Text size="small" weight="plus">
               Item
@@ -799,7 +799,7 @@ const ItemsPreview = ({ order, shippingProfileId }: ItemsPreviewProps) => {
             matches?.map((item) => (
               <div
                 key={item.id}
-                className="grid grid-cols-2 gap-3 px-4 py-2 bg-ui-bg-base shadow-elevation-card-rest rounded-lg items-center"
+                className="bg-ui-bg-base shadow-elevation-card-rest grid grid-cols-2 items-center gap-3 rounded-lg px-4 py-2"
               >
                 <div className="flex items-center gap-x-3">
                   <Thumbnail
@@ -838,7 +838,7 @@ const ItemsPreview = ({ order, shippingProfileId }: ItemsPreviewProps) => {
               </div>
             ))
           ) : (
-            <div className="flex items-center justify-center gap-x-3 bg-ui-bg-base rounded-lg p-4 shadow-elevation-card-rest flex-col gap-1">
+            <div className="bg-ui-bg-base shadow-elevation-card-rest flex flex-col items-center justify-center gap-1 gap-x-3 rounded-lg p-4">
               <Text size="small" weight="plus" leading="compact">
                 No items found
               </Text>

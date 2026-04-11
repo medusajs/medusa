@@ -41,15 +41,20 @@ export const GET = async (
     context["calculated_price"] = QueryContext(req.pricingContext)
   }
 
-  const { data: variants = [] } = await query.graph({
-    entity: "variant",
-    filters: {
-      ...req.filterableFields,
-      id: req.params.id,
+  const { data: variants = [] } = await query.graph(
+    {
+      entity: "variant",
+      filters: {
+        ...req.filterableFields,
+        id: req.params.id,
+      },
+      fields: req.queryConfig.fields,
+      context,
     },
-    fields: req.queryConfig.fields,
-    context,
-  })
+    {
+      locale: req.locale,
+    }
+  )
 
   const variant = variants[0]
 

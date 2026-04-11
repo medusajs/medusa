@@ -27,13 +27,13 @@ export const sidebars = [
           },
           {
             type: "link",
-            title: "Architecture",
-            path: "/learn/introduction/architecture",
+            title: "AI Assistants and LLMs",
+            path: "/learn/introduction/build-with-llms-ai",
           },
           {
             type: "link",
-            title: "AI Assistants and LLMs",
-            path: "/learn/introduction/build-with-llms-ai",
+            title: "Architecture",
+            path: "/learn/introduction/architecture",
           },
           {
             type: "link",
@@ -291,7 +291,7 @@ export const sidebars = [
               },
               {
                 type: "link",
-                path: "/learn/fundamentals/data-models/index",
+                path: "/learn/fundamentals/data-models/indexes",
                 title: "Define Index",
               },
               {
@@ -368,6 +368,11 @@ export const sidebars = [
               },
               {
                 type: "link",
+                path: "/learn/fundamentals/api-routes/localization",
+                title: "Localization",
+              },
+              {
+                type: "link",
                 path: "/learn/fundamentals/api-routes/override",
                 title: "Override API Routes",
               },
@@ -441,7 +446,7 @@ export const sidebars = [
               {
                 type: "link",
                 path: "/learn/fundamentals/workflows/execute-another-workflow",
-                title: "Execute Nested Workflows",
+                title: "Nested Workflows",
               },
               {
                 type: "link",
@@ -474,6 +479,11 @@ export const sidebars = [
                 type: "link",
                 path: "/learn/fundamentals/events-and-subscribers/emit-event",
                 title: "Emit Event",
+              },
+              {
+                type: "link",
+                path: "/learn/fundamentals/events-and-subscribers/event-priority",
+                title: "Event Priority",
               },
             ],
           },
@@ -583,6 +593,11 @@ export const sidebars = [
         children: [
           {
             type: "link",
+            title: "pnpm",
+            path: "/learn/configurations/pnpm",
+          },
+          {
+            type: "link",
             title: "Environment Variables",
             path: "/learn/fundamentals/environment-variables",
           },
@@ -681,6 +696,22 @@ export const sidebars = [
       },
       {
         type: "category",
+        title: "Best Practices",
+        children: [
+          {
+            type: "link",
+            path: "/learn/best-practices/third-party-sync",
+            title: "Third-Party Syncing",
+          },
+          {
+            type: "ref",
+            path: "/learn/fundamentals/scheduled-jobs/interval",
+            title: "Scheduled Job Intervals",
+          },
+        ],
+      },
+      {
+        type: "category",
         title: "Production",
         children: [
           {
@@ -730,6 +761,11 @@ export const sidebars = [
                 type: "link",
                 title: "Replace Imports (v2.11.0+)",
                 path: "/learn/codemods/replace-imports",
+              },
+              {
+                type: "link",
+                title: "Replace Zod Imports (v2.13.0+)",
+                path: "/learn/codemods/replace-zod-imports",
               },
             ],
           },

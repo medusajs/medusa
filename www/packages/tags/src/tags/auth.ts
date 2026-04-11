@@ -8,8 +8,16 @@ export const auth = [
     "path": "https://docs.medusajs.com/user-guide/reset-password"
   },
   {
+    "title": "How to Add Custom Authentication in Medusa Admin",
+    "path": "https://docs.medusajs.com/resources/how-to-tutorials/how-to/admin/auth"
+  },
+  {
     "title": "Implement Phone Authentication",
     "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/phone-auth"
+  },
+  {
+    "title": "Integrate Okta",
+    "path": "https://docs.medusajs.com/resources/integrations/guides/okta"
   },
   {
     "title": "Log-out Customer in Storefront",
@@ -42,6 +50,10 @@ export const auth = [
   {
     "title": "setAuthAppMetadataStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setAuthAppMetadataStep"
+  },
+  {
+    "title": "setAuthAppMetadataWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/setAuthAppMetadataWorkflow"
   },
   {
     "title": "createCustomerAccountWorkflow",

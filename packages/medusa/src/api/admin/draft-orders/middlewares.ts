@@ -3,7 +3,9 @@ import {
   validateAndTransformQuery,
 } from "@medusajs/framework"
 import { MiddlewareRoute } from "@medusajs/framework/http"
+import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
+import { Entities } from "./query-config"
 import {
   AdminAddDraftOrderItems,
   AdminAddDraftOrderPromotions,
@@ -21,6 +23,15 @@ import {
 
 export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
+    matcher: "/admin/draft-orders/*",
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/draft-orders",
     middlewares: [
@@ -28,6 +39,12 @@ export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetDraftOrdersParams,
         QueryConfig.listTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.read,
+      },
     ],
   },
   {
@@ -50,6 +67,12 @@ export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.create,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -61,6 +84,12 @@ export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -71,36 +100,78 @@ export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/draft-orders/:id/edit/items",
     middlewares: [validateAndTransformBody(AdminAddDraftOrderItems)],
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/draft-orders/:id/edit/items/item/:item_id",
     middlewares: [validateAndTransformBody(AdminUpdateDraftOrderItem)],
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/draft-orders/:id/edit/items/:action_id",
     middlewares: [validateAndTransformBody(AdminUpdateDraftOrderActionItem)],
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/draft-orders/:id/edit/promotions",
     middlewares: [validateAndTransformBody(AdminAddDraftOrderPromotions)],
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/draft-orders/:id/edit/promotions",
     middlewares: [validateAndTransformBody(AdminRemoveDraftOrderPromotions)],
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/draft-orders/:id/edit/shipping-methods",
     middlewares: [validateAndTransformBody(AdminAddDraftOrderShippingMethod)],
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -108,12 +179,24 @@ export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       validateAndTransformBody(AdminUpdateDraftOrderShippingMethod),
     ],
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/draft-orders/:id/edit/shipping-methods/:action_id",
     middlewares: [
       validateAndTransformBody(AdminUpdateDraftOrderActionShippingMethod),
+    ],
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
     ],
   },
 ]

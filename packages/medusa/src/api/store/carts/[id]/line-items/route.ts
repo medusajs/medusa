@@ -1,9 +1,9 @@
 import { addToCartWorkflowId } from "@medusajs/core-flows"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { HttpTypes } from "@medusajs/framework/types"
+import { AdditionalData } from "@medusajs/types"
 import { Modules } from "@medusajs/utils"
 import { refetchCart } from "../../helpers"
-import { AdditionalData } from "@medusajs/types"
 
 export const POST = async (
   req: MedusaRequest<
@@ -19,7 +19,6 @@ export const POST = async (
       items: [req.validatedBody],
       additional_data: req.validatedBody.additional_data,
     },
-    transactionId: "cart-add-item-" + req.params.id,
   })
 
   const cart = await refetchCart(

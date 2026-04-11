@@ -1,3 +1,4 @@
+import React from "react"
 import { useBaseSpecs } from "@/providers/base-specs"
 import type { OpenAPI } from "types"
 import { Card } from "docs-ui"

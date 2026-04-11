@@ -5,10 +5,7 @@ import { Modules, PromotionActions } from "@medusajs/framework/utils"
 import { refetchCart } from "../../helpers"
 
 export const POST = async (
-  req: MedusaRequest<
-    HttpTypes.StoreCartAddPromotion,
-    HttpTypes.SelectParams
-  >,
+  req: MedusaRequest<HttpTypes.StoreCartAddPromotion, HttpTypes.SelectParams>,
   res: MedusaResponse<HttpTypes.StoreCartResponse>
 ) => {
   const we = req.scope.resolve(Modules.WORKFLOW_ENGINE)
@@ -22,8 +19,8 @@ export const POST = async (
         payload.promo_codes.length > 0
           ? PromotionActions.ADD
           : PromotionActions.REPLACE,
+      force_refresh_payment_collection: true,
     },
-    transactionId: "cart-update-promotions-" + req.params.id,
   })
 
   const cart = await refetchCart(
@@ -36,7 +33,10 @@ export const POST = async (
 }
 
 export const DELETE = async (
-  req: MedusaRequest<HttpTypes.StoreCartRemovePromotion, HttpTypes.SelectParams>,
+  req: MedusaRequest<
+    HttpTypes.StoreCartRemovePromotion,
+    HttpTypes.SelectParams
+  >,
   res: MedusaResponse<{
     cart: HttpTypes.StoreCart
   }>
@@ -49,8 +49,8 @@ export const DELETE = async (
       promo_codes: payload.promo_codes,
       cart_id: req.params.id,
       action: PromotionActions.REMOVE,
+      force_refresh_payment_collection: true,
     },
-    transactionId: "cart-delete-promotions-" + req.params.id,
   })
 
   const cart = await refetchCart(

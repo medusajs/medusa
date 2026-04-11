@@ -24,6 +24,12 @@ export interface AdminUser {
    */
   metadata: Record<string, unknown> | null
   /**
+   * The RBAC roles assigned to the user.
+   *
+   * @ignore
+   */
+  roles?: string[] | null
+  /**
    * The date the user was created.
    */
   created_at: string

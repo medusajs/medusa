@@ -1,3 +1,7 @@
+export enum Entities {
+  return_reason = "return_reason",
+}
+
 export const defaultAdminReturnReasonFields = [
   "id",
   "value",
@@ -25,10 +29,12 @@ export const defaultAdminRetrieveReturnReasonFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminRetrieveReturnReasonFields,
   isList: false,
+  entity: Entities.return_reason,
 }
 
 export const listTransformQueryConfig = {
   defaults: defaultAdminReturnReasonFields,
   defaultLimit: 20,
   isList: true,
+  entity: Entities.return_reason,
 }

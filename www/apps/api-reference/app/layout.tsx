@@ -4,13 +4,14 @@ import { BareboneLayout, WideLayout } from "docs-ui"
 import clsx from "clsx"
 import { Metadata } from "next"
 import { inter, robotoMono } from "./fonts"
+import { config } from "@/config"
 
 const ogImage =
   "https://res.cloudinary.com/dza7lstvk/image/upload/v1732200992/Medusa%20Resources/opengraph-image_daq6nx.jpg"
 
 export const metadata: Metadata = {
-  title: "Medusa API Reference",
-  description: "Check out Medusa's API reference",
+  title: `%s - ${config.titleSuffix}`,
+  description: config.description,
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
   ),

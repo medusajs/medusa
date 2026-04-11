@@ -13,6 +13,8 @@ import {
 import { setShippingOptionsPriceSetsStep } from "../steps/set-shipping-options-price-sets"
 import { validateFulfillmentProvidersStep } from "../steps/validate-fulfillment-providers"
 import { validateShippingOptionPricesStep } from "../steps/validate-shipping-option-prices"
+import { emitEventStep } from "../../common"
+import { ShippingOptionWorkflowEvents } from "@medusajs/framework/utils"
 
 /**
  * The data to create the shipping options.
@@ -132,6 +134,12 @@ export const createShippingOptionsWorkflow = createWorkflow(
       data.shippingOptions
     )
 
+    const eventData = transform(createdShippingOptions, (data) => {
+      return data.map((option) => {
+        return { id: option.id }
+      })
+    })
+
     const normalizedShippingOptionsPrices = transform(
       {
         shippingOptions: createdShippingOptions,
@@ -171,7 +179,13 @@ export const createShippingOptionsWorkflow = createWorkflow(
       }
     )
 
-    setShippingOptionsPriceSetsStep(normalizedLinkData)
+    parallelize(
+      setShippingOptionsPriceSetsStep(normalizedLinkData),
+      emitEventStep({
+        eventName: ShippingOptionWorkflowEvents.CREATED,
+        data: eventData,
+      })
+    )
     return new WorkflowResponse(createdShippingOptions)
   }
 )

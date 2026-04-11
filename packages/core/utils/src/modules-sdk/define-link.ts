@@ -1,5 +1,13 @@
 import { LinkModulesExtraFields, ModuleJoinerConfig } from "@medusajs/types"
-import { camelToSnakeCase, isObject, pluralize, toPascalCase } from "../common"
+import {
+  camelToSnakeCase,
+  getCallerFilePath,
+  isFileDisabled,
+  isObject,
+  MEDUSA_SKIP_FILE,
+  pluralize,
+  toPascalCase,
+} from "../common"
 import { composeLinkName } from "../link/compose-link-name"
 
 export const DefineLinkSymbol = Symbol.for("DefineLink")
@@ -193,6 +201,11 @@ export function defineLink(
   rightService: DefineLinkInputSource | DefineReadOnlyLinkInputSource,
   linkServiceOptions?: ExtraOptions | ReadOnlyExtraOptions
 ): DefineLinkExport {
+  const callerFilePath = getCallerFilePath()
+  if (isFileDisabled(callerFilePath ?? "")) {
+    return { [MEDUSA_SKIP_FILE]: true } as any
+  }
+
   const serviceAObj = prepareServiceConfig(leftService)
   const serviceBObj = prepareServiceConfig(rightService)
 
@@ -504,24 +517,45 @@ ${serviceBObj.module}: {
 }`)
     }
 
+    const extendsConfig: ModuleJoinerConfig["extends"] = [
+      {
+        serviceName: serviceAObj.module,
+        entity: serviceAObj.entity,
+        fieldAlias: buildFieldAlias(readOnlyLinkOptions?.shortcut),
+        relationship: {
+          serviceName: serviceBObj.module,
+          entity: serviceBObj.entity,
+          primaryKey: serviceBObj.primaryKey,
+          foreignKey: serviceAObj.field,
+          alias: serviceBObj.alias,
+          isList: readOnlyLinkOptions?.isList ?? serviceAObj.isList,
+        },
+      },
+    ]
+
+    if (readOnlyLinkOptions?.isList || serviceAObj.isList) {
+      extendsConfig.push({
+        serviceName: serviceAObj.module,
+        entity: serviceAObj.entity,
+        fieldAlias: buildFieldAlias(readOnlyLinkOptions?.shortcut),
+        relationship: {
+          serviceName: serviceBObj.module,
+          entity: serviceBObj.entity,
+          primaryKey: serviceBObj.primaryKey,
+          foreignKey: serviceAObj.field,
+          alias:
+            readOnlyLinkOptions?.isList ?? serviceAObj.isList
+              ? pluralize(serviceBObj.alias)
+              : serviceBObj.alias,
+          isList: readOnlyLinkOptions?.isList ?? serviceAObj.isList,
+        },
+      })
+    }
+
     return {
       isLink: true,
       isReadOnlyLink: true,
-      extends: [
-        {
-          serviceName: serviceAObj.module,
-          entity: serviceAObj.entity,
-          fieldAlias: buildFieldAlias(readOnlyLinkOptions?.shortcut),
-          relationship: {
-            serviceName: serviceBObj.module,
-            entity: serviceBObj.entity,
-            primaryKey: serviceBObj.primaryKey,
-            foreignKey: serviceAObj.field,
-            alias: serviceBObj.alias,
-            isList: readOnlyLinkOptions?.isList ?? serviceAObj.isList,
-          },
-        },
-      ],
+      extends: extendsConfig,
     }
   }
 

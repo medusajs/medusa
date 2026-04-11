@@ -6,8 +6,7 @@ on:
       - v1.x
   pull_request:
     branches:
-      - develop
-      - v1.x
+      - "**"
 
 jobs:
   setup:
@@ -39,6 +38,16 @@ jobs:
         with:
           extension: pipeline
 
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            packages/**/dist
+            integration-tests/**/dist
+            !packages/**/node_modules
+          retention-days: 1
+
   unit-tests-matrix:
     needs: setup
     name: Unit Tests - Shard ${{ matrix.shard_index }}
@@ -46,7 +55,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        shard_index: [1, 2, 3]
+        shard_index: [1, 2, 3, 4]
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
@@ -64,9 +73,16 @@ jobs:
         uses: ./.github/actions/cache-deps
         with:
           extension: pipeline
+          skip-build: "true"
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: .
 
       - name: Run unit tests
-        run: yarn test:chunk -- --shard=${{ matrix.shard_index }}/3 --maxWorkers=${{ steps.cpu-cores.outputs.count }} --passWithNoTests
+        run: yarn test -- --shard=${{ matrix.shard_index }}/4 --maxWorkers=${{ steps.cpu-cores.outputs.count }} --passWithNoTests
 
   unit-tests:
     if: ${{ always() }}
@@ -85,12 +101,13 @@ jobs:
 
   integration-tests-packages-matrix:
     needs: setup
-    name: Packages integration tests (${{ matrix.group }})
+    name: Package Integration Tests (${{ matrix.group }}) - Shard ${{ matrix.shard_index }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
         group: ["slow", "fast"]
+        shard_index: [1, 2, 3]
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
@@ -132,9 +149,16 @@ jobs:
         uses: ./.github/actions/cache-deps
         with:
           extension: pipeline
+          skip-build: "true"
 
-      - name: Run integration tests
-        run: yarn test:integration:packages:${{ matrix.group }} -- --maxWorkers=${{ steps.cpu-cores.outputs.count }}
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: .
+
+      - name: Run package integration tests
+        run: yarn test:integration:packages:${{ matrix.group }} -- --shard=${{ matrix.shard_index }}/3 --maxWorkers=${{ steps.cpu-cores.outputs.count }}
         env:
           DB_PASSWORD: postgres
           DB_USERNAME: postgres
@@ -161,7 +185,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        shard_index: [1, 2, 3]
+        shard_index: [1, 2, 3, 4]
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
@@ -203,9 +227,16 @@ jobs:
         uses: ./.github/actions/cache-deps
         with:
           extension: pipeline
+          skip-build: "true"
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: .
 
       - name: Run HTTP integration tests
-        run: yarn test:integration:http -- --shard=${{ matrix.shard_index }}/3 --maxWorkers=${{ steps.cpu-cores.outputs.count }}
+        run: yarn test:integration:http -- --shard=${{ matrix.shard_index }}/4 --maxWorkers=${{ steps.cpu-cores.outputs.count }}
         env:
           DB_USERNAME: postgres
           DB_PASSWORD: postgres
@@ -231,7 +262,7 @@ jobs:
     name: Module Integration Tests - Shard ${{ matrix.shard_index }}
     strategy:
       matrix:
-        shard_index: [1, 2, 3]
+        shard_index: [1, 2, 3, 4]
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -274,9 +305,16 @@ jobs:
         uses: ./.github/actions/cache-deps
         with:
           extension: pipeline
+          skip-build: "true"
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: .
 
       - name: Run Modules integration tests
-        run: yarn test:integration:modules -- --shard=${{ matrix.shard_index }}/3 --maxWorkers=${{ steps.cpu-cores.outputs.count }}
+        run: yarn test:integration:modules -- --shard=${{ matrix.shard_index }}/4 --maxWorkers=${{ steps.cpu-cores.outputs.count }}
         env:
           DB_USERNAME: postgres
           DB_PASSWORD: postgres

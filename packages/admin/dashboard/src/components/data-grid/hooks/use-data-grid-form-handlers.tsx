@@ -1,5 +1,3 @@
-import get from "lodash/get"
-import set from "lodash/set"
 import { useCallback } from "react"
 import { FieldValues, Path, PathValue, UseFormReturn } from "react-hook-form"
 
@@ -149,7 +147,13 @@ function setValue<
   isHistory?: boolean
 ) {
   if (type !== "togglable-number") {
-    set(currentValues, field, newValue)
+    field.split(".").reduce((curr, key, index) => {
+      if (index === field.split(".").length - 1) {
+        curr[key] = newValue
+      }
+      curr[key] ??= {}
+      return curr[key]
+    }, currentValues)
     return
   }
 
@@ -157,13 +161,15 @@ function setValue<
 }
 
 function setValueToggleableNumber(
-  currentValues: any,
+  currentValues: any = {},
   field: string,
   newValue: DataGridToggleableNumber,
   isHistory?: boolean
 ) {
-  const currentValue = get(currentValues, field)
-  const { disabledToggle } = currentValue
+  const currentValue = field
+    .split(".")
+    .reduce((obj, key) => obj?.[key], currentValues)
+  const { disabledToggle } = currentValue || {}
 
   const normalizeQuantity = (value: number | string | null | undefined) => {
     if (disabledToggle && value === "") {
@@ -186,11 +192,19 @@ function setValueToggleableNumber(
       : newValue.checked
     : determineChecked(quantity)
 
-  set(currentValues, field, {
-    ...currentValue,
-    quantity,
-    checked,
-  })
+  const fieldParts = field.split(".")
+  fieldParts.reduce((curr, key: string, index) => {
+    if (index === fieldParts.length - 1) {
+      curr[key] = {
+        ...(currentValue || {}),
+        quantity,
+        checked,
+        disabledToggle: disabledToggle ?? false,
+      }
+    }
+    curr[key] ??= {}
+    return curr[key]
+  }, currentValues)
 }
 
 export function convertArrayToPrimitive(
@@ -215,6 +229,7 @@ export function convertArrayToPrimitive(
     case "boolean":
       return values.map(convertToBoolean)
     case "text":
+    case "multiline-text":
       return values.map(covertToString)
     default:
       throw new Error(`Unsupported target type "${type}".`)

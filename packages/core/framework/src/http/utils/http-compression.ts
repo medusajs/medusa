@@ -24,7 +24,7 @@ export function shouldCompressResponse(
   }
 
   // fallback to standard filter function
-  return compression.filter(req, res)
+  return compression.filter(req as any, res as any)
 }
 
 export function compressionOptions(

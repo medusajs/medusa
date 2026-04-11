@@ -31,7 +31,7 @@ This guide was built with Payload v3.54.0. If you're using a different version a
 
 ## Summary
 
-By following this tutorial, you'll learn how to:
+By following this tutorial, you'll learn how t"o:
 
 - Install and set up Medusa.
 - Set up Payload in the Next.js Starter Storefront.
@@ -357,13 +357,13 @@ Finally, you'll add the `Product` collection, which will be synced with Medusa's
 Create the file `src/collections/Products.ts` with the following content:
 
 export const productCollectionHighlights = [
-  ["21", "update", "Only allow updating from Medusa"],
+  ["20", "update", "Only allow updating from Medusa"],
   ["144", "update", "Only allow updating from Medusa"],
-  ["173", "update", "Only allow updating from Medusa"],
-  ["190", "update", "Only allow updating from Medusa"],
-  ["203", "update", "Only allow updating from Medusa"],
-  ["224", "create", "Only allow creating from Medusa"],
-  ["225", "delete", "Only allow deleting from Medusa"]
+  ["172", "update", "Only allow updating from Medusa"],
+  ["189", "update", "Only allow updating from Medusa"],
+  ["202", "update", "Only allow updating from Medusa"],
+  ["223", "create", "Only allow creating from Medusa"],
+  ["224", "delete", "Only allow deleting from Medusa"]
 ]
 
 ```ts title="src/collections/Products.ts" badgeLabel="Storefront" badgeColor="blue" highlights={productCollectionHighlights}
@@ -785,7 +785,7 @@ export default buildConfig({
 })
 ```
 
-## i. Generate Payload Imports Map
+### i. Generate Payload Imports Map
 
 Before running the Payload admin, you need to generate the imports map that Payload uses to resolve the collections and other configurations.
 
@@ -797,7 +797,7 @@ npx payload generate:importmap
 
 This command generates the `src/app/(payload)/admin/importMap.js` file that Payload needs.
 
-## j. Run the Payload Admin
+### j. Run the Payload Admin
 
 You can now run the Payload admin in the Next.js Starter Storefront and create an admin user.
 
@@ -1977,7 +1977,7 @@ Then, create a product in Medusa using the Medusa Admin. If you check the Produc
 
 Now that you've integrated Payload with Medusa, you can customize the Next.js Starter Storefront to display product content from Payload. By doing so, you can show product content and assets that are optimized for the storefront.
 
-In this step, you'll customize the Next.js Starter Storefront to view the product title, description, images, and option values from Payload.
+In this step, you'll customize the Next.js Starter Storefront to show the product title, description, images, and option values from Payload.
 
 ### a. Fetch Payload Data with Product Data
 
@@ -3544,7 +3544,7 @@ You've successfully integrated Medusa with Payload to manage content related to 
 2. Enable [localization](https://payloadcms.com/docs/configuration/localization) in Payload to support multiple languages.
     - You only need to manage the localized content in Payload. Only the default locale will be synced with Medusa.
     - You can show the localized content in your Next.js Starter Storefront based on the customer's locale.
-3. Add custom fields to the Payload collections. For example, you can add images to product variants and display them in the Next.js Starter Storefront.
+3. Add custom fields to the Payload collections that are relevant for the storefront, such as SEO metadata or promotional banners.
 
 ### Learn More about Medusa
 

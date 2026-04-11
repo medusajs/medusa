@@ -6,6 +6,11 @@ jest.setTimeout(100000)
 
 moduleIntegrationTestRunner<IOrderModuleService>({
   moduleName: Modules.ORDER,
+  moduleOptions: {
+    generateCustomDisplayId: async (order: CreateOrderDTO): Promise<string> => {
+      return order.currency_code + "_1234567890"
+    },
+  },
   testSuite: ({ service, MikroOrmWrapper }) => {
     describe("Order Module Service", () => {
       const input = {
@@ -124,6 +129,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         id: expect.stringContaining("order_"),
         version: 1,
         display_id: 1,
+        custom_display_id: "usd_1234567890",
         summary: expect.objectContaining({
           // TODO: add all summary fields
         }),
@@ -413,6 +419,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
             "id",
             "display_id",
             "version",
+            "custom_display_id",
             "items.id",
             "summary",
             "items.quantity",

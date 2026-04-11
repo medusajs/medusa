@@ -32,7 +32,25 @@ export class CustomDBMigrator extends BaseMigrator {
       const MigrationClass = Object.values(
         migration
       )[0] as Constructor<Migration>
-      const instance = new MigrationClass($this.driver, $this.config)
+      const instance = new MigrationClass(
+        $this.driver,
+        $this.config
+      ) as Migration
+
+      const customSchema = $this.config.options.schema
+      if (customSchema) {
+        const up = instance.up
+        const down = instance.down
+        instance.up = async function (...args) {
+          this.driver.execute(`SET LOCAL search_path TO ${customSchema}`)
+          return up.bind(this)(...args)
+        }
+        instance.down = async function (...args) {
+          this.driver.execute(`SET LOCAL search_path TO ${customSchema}`)
+          return down.bind(this)(...args)
+        }
+      }
+
       await $this.runner.run(instance, method)
     }
 

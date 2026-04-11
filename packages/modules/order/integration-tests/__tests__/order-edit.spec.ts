@@ -868,6 +868,370 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           })
         )
       })
+
+      it("should create an order change, update items, and have the pending difference updated", async function () {
+        const createdOrder = await service.createOrders({
+          email: "foo@bar.com",
+          items: [
+            {
+              title: "Item 1",
+              subtitle: "Subtitle 1",
+              thumbnail: "thumbnail1.jpg",
+              quantity: new BigNumber(1),
+              product_id: "product1",
+              product_title: "Product 1",
+              product_description: "Description 1",
+              product_subtitle: "Product Subtitle 1",
+              product_type: "Type 1",
+              product_collection: "Collection 1",
+              product_handle: "handle1",
+              variant_id: "variant1",
+              variant_sku: "SKU1",
+              variant_barcode: "Barcode1",
+              variant_title: "Variant 1",
+              variant_option_values: {
+                color: "Red",
+                size: "Large",
+              },
+              requires_shipping: true,
+              is_discountable: true,
+              is_tax_inclusive: true,
+              compare_at_unit_price: 10,
+              unit_price: 10,
+              tax_lines: [],
+              adjustments: [
+                {
+                  code: "VIP_10",
+                  amount: 1,
+                  description: "VIP discount",
+                  promotion_id: "prom_123",
+                  provider_id: "coupon_kings",
+                },
+              ],
+            },
+          ],
+          sales_channel_id: "test",
+          transactions: [
+            {
+              amount: 9,
+              currency_code: "USD",
+              reference: "payment",
+              reference_id: "pay_123",
+            },
+          ],
+          currency_code: "usd",
+          customer_id: "joe",
+        } as CreateOrderDTO)
+
+        const orderChange = await service.createOrderChange({
+          order_id: createdOrder.id,
+          actions: [
+            {
+              action: ChangeActionType.ITEM_UPDATE,
+              details: {
+                reference_id: createdOrder.items![0].id,
+                quantity: 0,
+              },
+            },
+          ],
+        })
+
+        await service.confirmOrderChange({
+          id: orderChange.id,
+        })
+
+        const changedOrder = await service.retrieveOrder(createdOrder.id, {
+          select: ["total", "summary", "total"],
+          relations: ["items"],
+        })
+
+        // @ts-ignore
+        expect(changedOrder.summary?.pending_difference.numeric).toEqual(-9)
+      })
+
+      it("should create line item adjustments with version when order version increases", async () => {
+        const createdOrder = await service.createOrders(input)
+
+        expect(createdOrder.version).toBe(1)
+
+        const itemWithAdjustments = createdOrder.items?.find(
+          (item) => item.title === "Item 1"
+        )!
+
+        // Verify initial adjustments have version 1
+        const initialAdjustments = await service.listOrderLineItemAdjustments({
+          item_id: itemWithAdjustments.id,
+        })
+
+        expect(initialAdjustments).toHaveLength(1)
+        expect(initialAdjustments[0].version).toBe(1)
+        expect(initialAdjustments[0].code).toBe("VIP_10")
+        expect(initialAdjustments[0].amount).toBe(10)
+
+        // Create and confirm an order change
+        const orderChange = await service.createOrderChange({
+          order_id: createdOrder.id,
+          description: "changing the order",
+          created_by: "user_123",
+          actions: [
+            {
+              action: ChangeActionType.ITEM_ADD,
+              reference: "order_line_item",
+              reference_id: itemWithAdjustments.id,
+              amount:
+                itemWithAdjustments.unit_price * itemWithAdjustments.quantity,
+              details: {
+                reference_id: itemWithAdjustments.id,
+                quantity: 2,
+              },
+            },
+          ],
+        })
+
+        await service.confirmOrderChange({
+          id: orderChange.id,
+          confirmed_by: "cx_agent_123",
+        })
+
+        // Verify order version incremented
+        const updatedOrder = await service.retrieveOrder(createdOrder.id)
+        expect(updatedOrder.version).toBe(2)
+
+        // Verify new adjustments have version 2
+        const allAdjustments = await service.listOrderLineItemAdjustments({
+          item_id: itemWithAdjustments.id,
+        })
+
+        // Should have adjustments for both versions
+        expect(allAdjustments.length).toBeGreaterThanOrEqual(1)
+
+        const v2Adjustments = allAdjustments.filter((adj) => adj.version === 2)
+        expect(v2Adjustments.length).toBeGreaterThan(0)
+
+        // Verify version 1 adjustments still exist
+        const v1Adjustments = allAdjustments.filter((adj) => adj.version === 1)
+        expect(v1Adjustments).toHaveLength(1)
+      })
+
+      it("should create shipping method adjustments with version when order version increases", async () => {
+        const createdOrder = await service.createOrders(input)
+
+        expect(createdOrder.version).toBe(1)
+
+        // Verify initial shipping method adjustments have version 1
+        const initialAdjustments =
+          await service.listOrderShippingMethodAdjustments({
+            shipping_method_id: createdOrder.shipping_methods![0].id,
+          })
+
+        expect(initialAdjustments).toHaveLength(1)
+        expect(initialAdjustments[0].version).toBe(1)
+        expect(initialAdjustments[0].code).toBe("VIP_10")
+        expect(initialAdjustments[0].amount).toBe(1)
+
+        // Create and confirm an order change
+        const orderChange = await service.createOrderChange({
+          order_id: createdOrder.id,
+          description: "changing the order",
+          created_by: "user_123",
+          actions: [
+            {
+              action: ChangeActionType.SHIPPING_ADD,
+              reference: "shipping_method",
+              reference_id: createdOrder.shipping_methods![0].id,
+              amount: 15,
+              details: {
+                reference_id: createdOrder.shipping_methods![0].id,
+              },
+            },
+          ],
+        })
+
+        await service.confirmOrderChange({
+          id: orderChange.id,
+          confirmed_by: "cx_agent_123",
+        })
+
+        // Verify order version incremented
+        const updatedOrder = await service.retrieveOrder(createdOrder.id)
+        expect(updatedOrder.version).toBe(2)
+
+        // Verify new adjustments have version 2
+        const allAdjustments = await service.listOrderShippingMethodAdjustments(
+          {
+            shipping_method_id: createdOrder.shipping_methods![0].id,
+          }
+        )
+
+        // Should have adjustments for both versions
+        expect(allAdjustments.length).toBeGreaterThanOrEqual(1)
+
+        const v2Adjustments = allAdjustments.filter((adj) => adj.version === 2)
+        expect(v2Adjustments.length).toBeGreaterThan(0)
+
+        // Verify version 1 adjustments still exist
+        const v1Adjustments = allAdjustments.filter((adj) => adj.version === 1)
+        expect(v1Adjustments).toHaveLength(1)
+      })
+
+      it("should delete current version line item adjustments on revert", async () => {
+        const createdOrder = await service.createOrders(input)
+
+        expect(createdOrder.version).toBe(1)
+
+        const itemWithAdjustments = createdOrder.items?.find(
+          (item) => item.title === "Item 1"
+        )!
+
+        // Verify initial adjustments
+        const initialAdjustments = await service.listOrderLineItemAdjustments({
+          item_id: itemWithAdjustments.id,
+        })
+
+        expect(initialAdjustments).toHaveLength(1)
+        expect(initialAdjustments[0].version).toBe(1)
+
+        // Create and confirm an order change
+        const orderChange = await service.createOrderChange({
+          order_id: createdOrder.id,
+          description: "changing the order",
+          created_by: "user_123",
+          actions: [
+            {
+              action: ChangeActionType.ITEM_ADD,
+              reference: "order_line_item",
+              reference_id: itemWithAdjustments.id,
+              amount:
+                itemWithAdjustments.unit_price * itemWithAdjustments.quantity,
+              details: {
+                reference_id: itemWithAdjustments.id,
+                quantity: 2,
+              },
+            },
+          ],
+        })
+
+        await service.confirmOrderChange({
+          id: orderChange.id,
+          confirmed_by: "cx_agent_123",
+        })
+
+        // Verify version 2 adjustments exist
+        const v2Order = await service.retrieveOrder(createdOrder.id)
+        expect(v2Order.version).toBe(2)
+
+        const adjustmentsBeforeRevert =
+          await service.listOrderLineItemAdjustments({
+            item_id: itemWithAdjustments.id,
+          })
+
+        const v2AdjustmentsBeforeRevert = adjustmentsBeforeRevert.filter(
+          (adj) => adj.version === 2
+        )
+        expect(v2AdjustmentsBeforeRevert.length).toBeGreaterThan(0)
+
+        // Revert the order
+        await service.revertLastVersion(createdOrder.id)
+
+        // Verify order version reverted to 1
+        const revertedOrder = await service.retrieveOrder(createdOrder.id)
+        expect(revertedOrder.version).toBe(1)
+
+        // Verify version 2 adjustments are soft-deleted (not returned in list)
+        const adjustmentsAfterRevert =
+          await service.listOrderLineItemAdjustments({
+            item_id: itemWithAdjustments.id,
+          })
+
+        const v2AdjustmentsAfterRevert = adjustmentsAfterRevert.filter(
+          (adj) => adj.version === 2
+        )
+        expect(v2AdjustmentsAfterRevert).toHaveLength(0)
+
+        // Verify version 1 adjustments remain intact
+        const v1AdjustmentsAfterRevert = adjustmentsAfterRevert.filter(
+          (adj) => adj.version === 1
+        )
+        expect(v1AdjustmentsAfterRevert).toHaveLength(1)
+        expect(v1AdjustmentsAfterRevert[0].code).toBe("VIP_10")
+      })
+
+      it("should delete current version shipping method adjustments on revert", async () => {
+        const createdOrder = await service.createOrders(input)
+
+        expect(createdOrder.version).toBe(1)
+
+        // Verify initial shipping method adjustments
+        const initialAdjustments =
+          await service.listOrderShippingMethodAdjustments({
+            shipping_method_id: createdOrder.shipping_methods![0].id,
+          })
+
+        expect(initialAdjustments).toHaveLength(1)
+        expect(initialAdjustments[0].version).toBe(1)
+
+        // Create and confirm an order change
+        const orderChange = await service.createOrderChange({
+          order_id: createdOrder.id,
+          description: "changing the order",
+          created_by: "user_123",
+          actions: [
+            {
+              action: ChangeActionType.SHIPPING_ADD,
+              reference: "shipping_method",
+              reference_id: createdOrder.shipping_methods![0].id,
+              amount: 15,
+              details: {
+                reference_id: createdOrder.shipping_methods![0].id,
+              },
+            },
+          ],
+        })
+
+        await service.confirmOrderChange({
+          id: orderChange.id,
+          confirmed_by: "cx_agent_123",
+        })
+
+        // Verify version 2 adjustments exist
+        const v2Order = await service.retrieveOrder(createdOrder.id)
+        expect(v2Order.version).toBe(2)
+
+        const adjustmentsBeforeRevert =
+          await service.listOrderShippingMethodAdjustments({
+            shipping_method_id: createdOrder.shipping_methods![0].id,
+          })
+
+        const v2AdjustmentsBeforeRevert = adjustmentsBeforeRevert.filter(
+          (adj) => adj.version === 2
+        )
+        expect(v2AdjustmentsBeforeRevert.length).toBeGreaterThan(0)
+
+        // Revert the order
+        await service.revertLastVersion(createdOrder.id)
+
+        // Verify order version reverted to 1
+        const revertedOrder = await service.retrieveOrder(createdOrder.id)
+        expect(revertedOrder.version).toBe(1)
+
+        // Verify version 2 adjustments are soft-deleted (not returned in list)
+        const adjustmentsAfterRevert =
+          await service.listOrderShippingMethodAdjustments({
+            shipping_method_id: createdOrder.shipping_methods![0].id,
+          })
+
+        const v2AdjustmentsAfterRevert = adjustmentsAfterRevert.filter(
+          (adj) => adj.version === 2
+        )
+        expect(v2AdjustmentsAfterRevert).toHaveLength(0)
+
+        // Verify version 1 adjustments remain intact
+        const v1AdjustmentsAfterRevert = adjustmentsAfterRevert.filter(
+          (adj) => adj.version === 1
+        )
+        expect(v1AdjustmentsAfterRevert).toHaveLength(1)
+        expect(v1AdjustmentsAfterRevert[0].code).toBe("VIP_10")
+      })
     })
   },
 })

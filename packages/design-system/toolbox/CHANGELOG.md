@@ -1,5 +1,51 @@
 # @medusajs/toolbox
 
+## 2.13.6
+
+## 2.13.5
+
+## 2.13.4
+
+## 2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- [#14700](https://github.com/medusajs/medusa/pull/14700) [`873571a7c9471a28732ac7fad70ff66c28571a0e`](https://github.com/medusajs/medusa/commit/873571a7c9471a28732ac7fad70ff66c28571a0e) Thanks [@fPolic](https://github.com/fPolic)! - fix(icons): default viewBox
+
+## 2.13.1
+
+## 2.13.0
+
+### Minor Changes
+
+- [`a31e72c31c5235240cead2d04e39e5927688eec7`](https://github.com/medusajs/medusa/commit/a31e72c31c5235240cead2d04e39e5927688eec7) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Minor bump
+
+## 2.12.6
+
+## 2.12.5
+
+## 2.12.4
+
+## 2.12.3
+
+## 2.12.2
+
+## 2.12.1
+
+## 2.12.0
+
+## 2.11.3
+
+### Patch Changes
+
+- [#13910](https://github.com/medusajs/medusa/pull/13910) [`224ab39a81e8d3cf3d6fa3ff5eee82541f64728d`](https://github.com/medusajs/medusa/commit/224ab39a81e8d3cf3d6fa3ff5eee82541f64728d) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(): Dependencies cleanup and improvements
+
+- [#13940](https://github.com/medusajs/medusa/pull/13940) [`afb40d437b3cc4ceb015df70985b2f005f40eaff`](https://github.com/medusajs/medusa/commit/afb40d437b3cc4ceb015df70985b2f005f40eaff) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(): Cleanup and organize deps
+
+- [#13932](https://github.com/medusajs/medusa/pull/13932) [`37563987b8fe75c9acfe62957a33e8398977647a`](https://github.com/medusajs/medusa/commit/37563987b8fe75c9acfe62957a33e8398977647a) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(): Fix dependencies vulnerabilities
+
 ## 2.11.2
 
 ## 2.11.1

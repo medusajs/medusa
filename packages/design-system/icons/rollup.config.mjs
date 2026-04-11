@@ -2,7 +2,6 @@ import bundleSize from "@atomico/rollup-plugin-sizes"
 import nodeResolve from "@rollup/plugin-node-resolve"
 import replace from "@rollup/plugin-replace"
 import esbuild from "rollup-plugin-esbuild"
-import license from "rollup-plugin-license"
 import { visualizer } from "rollup-plugin-visualizer"
 import fs from "fs"
 import path from "path"
@@ -14,9 +13,6 @@ const plugins = (pkg, minify, esbuildOptions = {}) =>
     esbuild({
       minify,
       ...esbuildOptions,
-    }),
-    license({
-      banner: `${pkg.name} v${pkg.version} - ${pkg.license}`,
     }),
     bundleSize(),
     visualizer({
@@ -78,6 +74,7 @@ const configs = bundles
         external: ["react", "prop-types"],
         output: {
           name: packageName,
+          banner: `/* ${pkg.name} v${pkg.version} - ${pkg.license} */`,
           ...(preserveModules
             ? {
                 dir: `${outputDir}/${format}`,

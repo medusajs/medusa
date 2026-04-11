@@ -4,7 +4,8 @@
 
 import React, { useMemo } from "react"
 import { Sidebar } from "types"
-import { Badge, useSidebar } from "../../../.."
+import { Badge } from "@/components/Badge"
+import { useSidebar } from "@/providers/Sidebar"
 import clsx from "clsx"
 import Link from "next/link"
 
@@ -52,6 +53,7 @@ export const SidebarItemSidebar = ({
               isTitleOneWord && "truncate",
               nested && "inline-block pl-docs_1.5"
             )}
+            data-testid="sidebar-item-title"
           >
             {item.title}
           </span>

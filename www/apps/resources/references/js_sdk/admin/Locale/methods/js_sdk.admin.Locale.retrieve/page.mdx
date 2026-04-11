@@ -1,0 +1,38 @@
+import { TypeList } from "docs-ui"
+
+# retrieve
+
+This method retrieves a locale by its code. It sends a request to the
+[Get Locale](https://docs.medusajs.com/api/admin#locales\_getlocalescode) API route.
+
+## Example
+
+To retrieve a locale by its code:
+
+```ts
+sdk.admin.locale.retrieve("en-US")
+.then(({ locale }) => {
+  console.log(locale)
+})
+```
+
+To specify the fields and relations to retrieve:
+
+```ts
+sdk.admin.locale.retrieve("en-US", {
+  fields: "code,name"
+})
+.then(({ locale }) => {
+  console.log(locale)
+})
+```
+
+Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+
+## Parameters
+
+<TypeList types={[{"name":"code","type":"`string`","description":"The locale's code in BCP 47 format.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[AdminLocaleParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminLocaleParams/page.mdx)","description":"Configure the fields to retrieve in the locale.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminLocaleResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminLocaleResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The locale's details.","expandable":false,"children":[{"name":"locale","type":"[AdminLocale](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminLocale/page.mdx)","description":"The locale's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The locale's code.","optional":false,"defaultValue":"","example":"en-US","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The locale's display name.","optional":false,"defaultValue":"","example":"English (United States)","expandable":false,"children":[]},{"name":"created_at","type":"`string`","description":"The date the locale was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string`","description":"The date the locale was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string`","description":"The date the locale was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>

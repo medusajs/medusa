@@ -268,6 +268,12 @@
  *     type: number
  *     title: shipping_discount_total
  *     description: The total discount amount applied on the draft order's shipping.
+ *   custom_display_id:
+ *     type: string
+ *     title: custom_display_id
+ *     description: The custom display ID of the draft order.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/resources/commerce-modules/order/custom-display-id
  * 
 */
 

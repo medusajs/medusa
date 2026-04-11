@@ -22,7 +22,6 @@ export const POST = async (
       update: req.validatedBody,
       additional_data: req.validatedBody.additional_data,
     },
-    transactionId: "cart-update-item-" + req.params.id,
   })
 
   const updatedCart = await refetchCart(
@@ -46,7 +45,6 @@ export const DELETE = async (
       cart_id: req.params.id,
       ids: [id],
     },
-    transactionId: "cart-delete-item-" + req.params.id,
   })
 
   const cart = await refetchCart(

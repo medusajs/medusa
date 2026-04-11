@@ -1,0 +1,39 @@
+---
+slug: /references/medusa-workflows/steps/exportOrdersStep
+sidebar_label: exportOrdersStep
+tags:
+  - query
+  - file
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# exportOrdersStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `exportOrdersStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { exportOrdersStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = exportOrdersStep({
+      "select": [
+        "{value}"
+      ]
+    })
+  }
+)
+```
+  
+
+## Input
+
+<TypeList types={[{"name":"ExportOrdersStepInput","type":"[ExportOrdersStepInput](../../../../types/core_flows.ExportOrdersStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"select","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"batch_size","type":"`number` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"filter","type":"[FilterableOrderProps](../../../../../order/interfaces/order.FilterableOrderProps/page.mdx)","description":"The filters to apply on the retrieved orders.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"$and","type":"([FilterableOrderProps](../../../../../order/interfaces/order.FilterableOrderProps/page.mdx) \\| [BaseFilterable](../../../../../order/interfaces/order.BaseFilterable/page.mdx)&#60;[FilterableOrderProps](../../../../../order/interfaces/order.FilterableOrderProps/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$or","type":"([FilterableOrderProps](../../../../../order/interfaces/order.FilterableOrderProps/page.mdx) \\| [BaseFilterable](../../../../../order/interfaces/order.BaseFilterable/page.mdx)&#60;[FilterableOrderProps](../../../../../order/interfaces/order.FilterableOrderProps/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string` \\| `string`[]","description":"The IDs to filter the orders by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"sales_channel_id","type":"`string` \\| `string`[] \\| [OperatorMap](../../../../../order/types/order.OperatorMap/page.mdx)&#60;string&#62;","description":"Filter orders by their associated sales channel's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_id","type":"`string` \\| `string`[] \\| [OperatorMap](../../../../../order/types/order.OperatorMap/page.mdx)&#60;string&#62;","description":"Filter orders by their associated customer's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"region_id","type":"`string` \\| `string`[] \\| [OperatorMap](../../../../../order/types/order.OperatorMap/page.mdx)&#60;string&#62;","description":"Filter orders by their associated region's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"[OperatorMap](../../../../../order/types/order.OperatorMap/page.mdx)&#60;string&#62;","description":"Filter the orders by their creation date.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"[OperatorMap](../../../../../order/types/order.OperatorMap/page.mdx)&#60;string&#62;","description":"Filter orders by their update date.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="exportOrdersStep"/>
+
+## Output
+
+<TypeList types={[{"name":"ExportOrdersStepOutput","type":"[ExportOrdersStepOutput](../../../../types/core_flows.ExportOrdersStepOutput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"filename","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="exportOrdersStep"/>

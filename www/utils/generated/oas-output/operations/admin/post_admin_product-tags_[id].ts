@@ -87,9 +87,9 @@
  *   - name: product-tag.updated
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the product tag
- *       }]
+ *       }
  *       ```
  *     description: Emitted when product tags are updated.
  *     deprecated: false

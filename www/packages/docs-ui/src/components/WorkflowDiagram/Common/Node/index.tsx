@@ -5,9 +5,11 @@ import clsx from "clsx"
 import Link from "next/link"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { WorkflowStepUi } from "types"
-import { CodeBlock, MarkdownContent, Tooltip } from "../../.."
+import { CodeBlock } from "@/components/CodeBlock"
+import { MarkdownContent } from "@/components/MarkdownContent"
+import { Tooltip } from "@/components/Tooltip"
 import { Bolt, InformationCircle } from "@medusajs/icons"
-import { getBrowser } from "../../../../utils"
+import { getBrowser } from "@/utils/os-browser-utils"
 
 export type WorkflowDiagramNodeProps = {
   step: WorkflowStepUi
@@ -134,6 +136,7 @@ export const WorkflowDiagramStepNode = ({ step }: WorkflowDiagramNodeProps) => {
             leading="compact"
             weight="plus"
             className="select-none"
+            data-testid="step-name"
           >
             {stepId}
           </Text>

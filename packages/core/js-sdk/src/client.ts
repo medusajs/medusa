@@ -10,6 +10,7 @@ import {
 } from "./types"
 
 export const PUBLISHABLE_KEY_HEADER = "x-publishable-api-key"
+export const LOCALE_STORAGE_KEY = "medusa_locale"
 
 // We want to explicitly retrieve the base URL instead of relying on relative paths that differ in behavior between browsers.
 const getBaseUrl = (passedBaseUrl: string) => {
@@ -112,6 +113,18 @@ export class Client {
   private DEFAULT_JWT_STORAGE_KEY = "medusa_auth_token"
   private token = ""
 
+  private locale_ = ""
+
+  get locale() {
+    if (hasStorage("localStorage")) {
+      const storedLocale = window.localStorage.getItem(LOCALE_STORAGE_KEY)
+      if (storedLocale) {
+        return storedLocale
+      }
+    }
+    return this.locale_
+  }
+
   constructor(config: Config) {
     this.config = { ...config, baseUrl: getBaseUrl(config.baseUrl) }
     const logger = config.logger || {
@@ -126,7 +139,26 @@ export class Client {
       debug: config.debug ? logger.debug : () => {},
     }
 
+    if (hasStorage("localStorage")) {
+      this.locale_ = window.localStorage.getItem(LOCALE_STORAGE_KEY) || ""
+    }
+
     this.fetch_ = this.initClient()
+  }
+
+  setLocale(locale: string) {
+    if (!window) {
+      this.logger.warn(
+        "setLocale is not available in the server environment. Please set the locale directly through the 'x-medusa-locale' header."
+      )
+      return
+    }
+
+    if (hasStorage("localStorage")) {
+      window.localStorage.setItem(LOCALE_STORAGE_KEY, locale)
+    }
+
+    this.locale_ = locale
   }
 
   /**
@@ -225,11 +257,18 @@ export class Client {
     return async (input: FetchInput, init?: FetchArgs) => {
       // We always want to fetch the up-to-date JWT token before firing off a request.
       const headers = new Headers(defaultHeaders)
+
+      if (this.locale) {
+        headers.set("x-medusa-locale", this.locale)
+      }
+
       const customHeaders = {
+        "x-medusa-locale": this.locale,
         ...this.config.globalHeaders,
         ...(await this.getJwtHeader_()),
         ...init?.headers,
       }
+
       // We use `headers.set` in order to ensure headers are overwritten in a case-insensitive manner.
       Object.entries(customHeaders).forEach(([key, value]) => {
         if (value === null) {

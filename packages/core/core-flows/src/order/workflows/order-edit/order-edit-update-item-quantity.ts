@@ -11,18 +11,20 @@ import {
   OrderChangeStatus,
 } from "@medusajs/framework/utils"
 import {
-  WorkflowData,
-  WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../../common"
+import { acquireLockStep, releaseLockStep } from "../../../locking"
 import { previewOrderChangeStep } from "../../steps/preview-order-change"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { computeAdjustmentsForPreviewWorkflow } from "../compute-adjustments-for-preview"
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 import { fieldsToRefreshOrderEdit } from "./utils/fields"
 
@@ -80,6 +82,10 @@ export const orderEditUpdateItemQuantityWorkflowId =
  * This workflow updates the quantity of an existing item in an order's edit. It's used by the
  * [Update Order Item Quantity Admin API Route](https://docs.medusajs.com/api/admin#order-edits_postordereditsiditemsitemitem_id).
  *
+ * This workflow is different from the `updateOrderEditItemQuantityWorkflow` workflow in that this should be used
+ * when the item to update was part of the original order before the edit. The other workflow is for items
+ * that were added to the order as part of the edit.
+ *
  * You can also use this workflow to remove an item from an order by setting its quantity to `0`.
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to update the quantity of an existing
@@ -108,6 +114,12 @@ export const orderEditUpdateItemQuantityWorkflow = createWorkflow(
   function (
     input: WorkflowData<OrderWorkflow.OrderEditUpdateItemQuantityWorkflowInput>
   ): WorkflowResponse<OrderPreviewDTO> {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const orderResult = useQueryGraphStep({
       entity: "order",
       fields: fieldsToRefreshOrderEdit,
@@ -123,7 +135,7 @@ export const orderEditUpdateItemQuantityWorkflow = createWorkflow(
 
     const orderChangeResult = useQueryGraphStep({
       entity: "order_change",
-      fields: ["id", "status", "version", "actions.*"],
+      fields: ["id", "status", "version", "actions.*", "carry_over_promotions"],
       filters: {
         order_id: input.order_id,
         status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
@@ -143,9 +155,13 @@ export const orderEditUpdateItemQuantityWorkflow = createWorkflow(
     })
 
     const orderChangeActionInput = transform(
-      { order, orderChange, items: input.items },
+      {
+        order,
+        orderChange,
+        items: input.items,
+      },
       ({ order, orderChange, items }) => {
-        return items.map((item) => {
+        const itemsUpdates = items.map((item) => {
           const existing = order?.items?.find(
             (exItem) => exItem.id === item.id
           )!
@@ -166,9 +182,12 @@ export const orderEditUpdateItemQuantityWorkflow = createWorkflow(
               unit_price: item.unit_price,
               compare_at_unit_price: item.compare_at_unit_price,
               quantity_diff: quantityDiff,
+              metadata: item.metadata,
             },
           }
         })
+
+        return [...itemsUpdates]
       }
     )
 
@@ -176,6 +195,19 @@ export const orderEditUpdateItemQuantityWorkflow = createWorkflow(
       input: orderChangeActionInput,
     })
 
-    return new WorkflowResponse(previewOrderChangeStep(input.order_id))
+    computeAdjustmentsForPreviewWorkflow.runAsStep({
+      input: {
+        order,
+        orderChange,
+      },
+    })
+
+    const previewOrderChange = previewOrderChangeStep(input.order_id) as OrderPreviewDTO
+
+    releaseLockStep({
+      key: input.order_id,
+    })
+
+    return new WorkflowResponse(previewOrderChange)
   }
 )

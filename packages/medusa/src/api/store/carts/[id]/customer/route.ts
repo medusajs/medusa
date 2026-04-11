@@ -6,8 +6,8 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { Modules } from "@medusajs/framework/utils"
-import { refetchCart } from "../../helpers"
 import { AdditionalData } from "@medusajs/types"
+import { refetchCart } from "../../helpers"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdditionalData, HttpTypes.SelectParams>,
@@ -21,7 +21,6 @@ export const POST = async (
       customer_id: req.auth_context?.actor_id,
       additional_data: req.validatedBody.additional_data,
     },
-    transactionId: "cart-transfer-customer-" + req.params.id,
   })
 
   const cart = await refetchCart(

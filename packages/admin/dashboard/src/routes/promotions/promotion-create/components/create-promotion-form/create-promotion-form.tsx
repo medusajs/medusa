@@ -58,6 +58,7 @@ const defaultValues = {
   status: "draft" as PromotionStatusValues,
   rules: [],
   is_tax_inclusive: false,
+  limit: undefined,
   application_method: {
     allocation: "each" as ApplicationMethodAllocationValues,
     type: "fixed" as ApplicationMethodTypeValues,
@@ -274,6 +275,12 @@ export const CreatePromotionForm = () => {
       }
     }
 
+    // if switching to `across` allocation, reset call above will set the max quantity to 1 which is forbidden for this allocation type
+    // but since there wasn't change in the `application_method.allocation` field, useEffect below responsible for resetting will not be triggered
+    if (currentTemplate.defaults?.application_method?.allocation === "across") {
+      setValue("application_method.max_quantity", null)
+    }
+
     return currentTemplate
   }, [watchTemplateId, setValue, reset])
 
@@ -437,8 +444,8 @@ export const CreatePromotionForm = () => {
                                   <RadioGroup.ChoiceBox
                                     key={template.id}
                                     value={template.id}
-                                    label={template.title}
-                                    description={template.description}
+                                    label={t(template.title)}
+                                    description={t(template.description)}
                                   />
                                 )
                               })}
@@ -469,7 +476,7 @@ export const CreatePromotionForm = () => {
                         size="2xsmall"
                         rounded="full"
                       >
-                        {currentTemplate?.title}
+                        {t(currentTemplate.title)}
                       </Badge>
                     )}
                   </Heading>
@@ -901,7 +908,9 @@ export const CreatePromotionForm = () => {
                           return (
                             <Form.Item>
                               <Form.Label
-                                tooltip={t("promotions.fields.allocationTooltip")}
+                                tooltip={t(
+                                  "promotions.fields.allocationTooltip"
+                                )}
                               >
                                 {t("promotions.fields.allocation")}
                               </Form.Label>
@@ -987,6 +996,42 @@ export const CreatePromotionForm = () => {
                       />
                     </>
                   )}
+
+                  <Divider />
+                  <Form.Field
+                    control={form.control}
+                    name="limit"
+                    render={({ field: { onChange, value, ...field } }) => {
+                      return (
+                        <Form.Item className="basis-1/2">
+                          <Form.Label>
+                            {t("promotions.form.limit.title")}
+                          </Form.Label>
+                          <Form.Control>
+                            <Input
+                              {...field}
+                              type="number"
+                              min={1}
+                              value={value ?? ""}
+                              onChange={(e) => {
+                                const val = e.target.value
+                                onChange(val === "" ? null : parseInt(val, 10))
+                              }}
+                              placeholder="100"
+                            />
+                          </Form.Control>
+                          <Text
+                            size="small"
+                            leading="compact"
+                            className="text-ui-fg-subtle"
+                          >
+                            {t("promotions.form.limit.description")}
+                          </Text>
+                          <Form.ErrorMessage />
+                        </Form.Item>
+                      )
+                    }}
+                  />
                 </div>
               </div>
             </ProgressTabs.Content>

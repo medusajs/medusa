@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { Suspense, useEffect, useMemo } from "react"
 import { OpenAPI } from "types"
 import TagOperationParameters from "../../Operation/Parameters"
@@ -28,7 +29,7 @@ export type TagSectionSchemaProps = {
 }
 
 const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
-  const { setActivePath, activePath, shownSidebar, updateItems } = useSidebar()
+  const { setActivePath, activePath } = useSidebar()
   const { displayedArea } = useArea()
   const formattedName = useMemo(
     () => singular(tagName).replaceAll(" ", ""),

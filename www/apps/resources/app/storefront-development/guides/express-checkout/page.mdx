@@ -95,7 +95,7 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -132,7 +132,7 @@ Learn more about CORS configurations in [this guide](!docs!/learn/configurations
 
 You'll create the express checkout storefront using Next.js. So, to create a Next.js project, run the following command in a directory separate from the Medusa application:
 
-```bash
+```bash npx2yarnExec
 npx create-next-app@latest express-checkout
 ```
 
@@ -1350,7 +1350,7 @@ Then, replace the `TODO` in the `Product` component with the following:
 export const productHighlights4 = [
   ["1", "price", "The formatted price to show to the customer."],
   ["2", "selectedVariantPrice", "Determine the variant to show its price, which is either the selected variant or the variant with the smallest price."],
-  ["29", "formatPrice", "Return the formatted price using the utility you created."]
+  ["19", "formatPrice", "Return the formatted price using the utility you created."]
 ]
 
 ```tsx title="components/Product/index.tsx" highlights={productHighlights4}
@@ -2049,7 +2049,7 @@ export const shippingHighlights3 = [
   ["7", "filter", "Retrieve shipping options with calculated prices only."],
   ["9", "fetch", "Retrieve the calculated price from the Medusa application."],
   ["24", "Promise.allSettled", "Wait for all calculated prices to be retrieved."],
-  ["13", "setCalculatedPrices", "Set the calculated prices in the state variable."],
+  ["33", "setCalculatedPrices", "Set the calculated prices in the state variable."],
 ]
 
 ```tsx title="components/Shipping/index.tsx" highlights={shippingHighlights3}

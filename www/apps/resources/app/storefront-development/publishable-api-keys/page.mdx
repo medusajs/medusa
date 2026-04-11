@@ -70,6 +70,17 @@ Make sure to replace `apk_123` with the ID of the publishable API key, and `sc_1
 
 In your storefront, pass the `x-publishable-api-key` in the header of all your requests to the Medusa application.
 
+For example:
+
+```bash
+curl '{backend_url}/store/products' \
+-H 'x-publishable-api-key: {your_publishable_api_key}'
+```
+
+Where `{your_publishable_api_key}` is the token of your publishable API key.
+
+### Using the JS SDK
+
 When using the JS SDK, set the publishable API key as an environment variable and pass it to the JS SDK's configurations.
 
 For example:
@@ -94,6 +105,6 @@ export const sdk = new Medusa({
 })
 ```
 
-Where `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` is an environment variable that holds your publishable API key's token.
+Where `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` is an environment variable that holds your publishable API key's token. Based on your storefront framework, make sure the environment variable is accessible in the browser. For example, in Next.js, prefix the variable name with `NEXT_PUBLIC_`.
 
 The JS SDK will now take care of passing the publishable API key in the header of all requests to the Medusa application.

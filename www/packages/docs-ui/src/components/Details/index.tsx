@@ -1,10 +1,10 @@
 "use client"
 
 import React, { Suspense, cloneElement, useRef, useState } from "react"
-import { Loading } from "@/components"
+import { Loading } from "@/components/Loading"
 import clsx from "clsx"
 import { DetailsSummary, DetailsSummaryProps } from "./Summary"
-import { useCollapsible } from "../../hooks"
+import { useCollapsible } from "../../hooks/use-collapsible"
 
 export type DetailsProps = {
   openInitial?: boolean

@@ -5,15 +5,16 @@ import { PlaceholderCell } from "../../common/placeholder-cell"
 type TotalCellProps = {
   currencyCode: string
   total: number | null
+  className?: string
 }
 
-export const TotalCell = ({ currencyCode, total }: TotalCellProps) => {
+export const TotalCell = ({ currencyCode, total, className }: TotalCellProps) => {
   if (!total) {
     return <PlaceholderCell />
   }
 
   return (
-    <MoneyAmountCell currencyCode={currencyCode} amount={total} align="right" />
+    <MoneyAmountCell currencyCode={currencyCode} amount={total} className={className} align="right" />
   )
 }
 

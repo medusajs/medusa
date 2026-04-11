@@ -113,7 +113,7 @@ Learn more in the [Admin Environment Variables](../admin/environment-variables/p
 
 ## Predefined Medusa Environment Variables
 
-The Medusa application uses the following predefined environment variables that you can set:
+You can further customize the Medusa application behavior using the following predefined environment variables. You can set the environment variables in your `.env` file or in your deployment platform.
 
 <Note title="Tip">
 
@@ -304,6 +304,40 @@ You should opt for setting configurations in `medusa-config.ts` where possible. 
       </Table.Cell>
       <Table.Cell>
         \-
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `ADMIN_AUTH_TYPE` ([v2.12.0+](https://github.com/medusajs/medusa/releases/tag/v2.12.0))
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the authentication method that the JS SDK instance uses in the Medusa Admin. Possible values are `session` and `jwt`. Learn more in the [JS SDK Authentication guide](!resources!/js-sdk/auth/overview).
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `session`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `ADMIN_JWT_TOKEN_STORAGE_KEY` ([v2.12.0+](https://github.com/medusajs/medusa/releases/tag/v2.12.0))
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the key used to store the authentication JWT token in the browser's local storage. Only applicable if `ADMIN_AUTH_TYPE` is set to `jwt`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `medusa_auth_token`
+
       </Table.Cell>
     </Table.Row>
   </Table.Body>

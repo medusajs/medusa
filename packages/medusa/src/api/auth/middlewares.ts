@@ -11,7 +11,7 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/auth/session",
-    middlewares: [authenticate("*", "bearer")],
+    middlewares: [authenticate("*", "bearer", { allowUnregistered: true })],
   },
   {
     method: ["DELETE"],

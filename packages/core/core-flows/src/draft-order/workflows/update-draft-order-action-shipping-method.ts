@@ -1,4 +1,4 @@
-import { OrderChangeStatus, PromotionActions } from "@medusajs/framework/utils"
+import { OrderChangeStatus } from "@medusajs/framework/utils"
 import {
   createWorkflow,
   parallelize,
@@ -25,8 +25,8 @@ import { getDraftOrderPromotionContextStep } from "../steps/get-draft-order-prom
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { validateDraftOrderShippingMethodActionStep } from "../steps/validate-draft-order-shipping-method-action"
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
-import { refreshDraftOrderAdjustmentsWorkflow } from "./refresh-draft-order-adjustments"
 import { acquireLockStep, releaseLockStep } from "../../locking"
+import { computeDraftOrderAdjustmentsWorkflow } from "./compute-draft-order-adjustments"
 
 export const updateDraftOrderActionShippingMethodWorkflowId =
   "update-draft-order-action-shipping-method"
@@ -159,11 +159,9 @@ export const updateDraftOrderActionShippingMethodWorkflow = createWorkflow(
       appliedPromoCodes,
       (appliedPromoCodes) => appliedPromoCodes.length > 0
     ).then(() => {
-      refreshDraftOrderAdjustmentsWorkflow.runAsStep({
+      computeDraftOrderAdjustmentsWorkflow.runAsStep({
         input: {
-          order,
-          promo_codes: appliedPromoCodes,
-          action: PromotionActions.REPLACE,
+          order_id: input.order_id,
         },
       })
     })

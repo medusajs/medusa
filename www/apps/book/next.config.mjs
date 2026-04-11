@@ -9,6 +9,7 @@ import {
   crossProjectLinksPlugin,
   recmaInjectMdxDataPlugin,
   remarkAttachFrontmatterDataPlugin,
+  validateHighlightsPlugin,
 } from "remark-rehype-plugins"
 import path from "path"
 import redirects from "./utils/redirects.mjs"
@@ -25,6 +26,9 @@ const withMDX = mdx({
         brokenLinkCheckerPlugin,
         {
           crossProjects: {
+            bloom: {
+              projectPath: path.resolve("..", "bloom"),
+            },
             resources: {
               projectPath: path.resolve("..", "resources"),
               hasGeneratedSlugs: true,
@@ -50,6 +54,9 @@ const withMDX = mdx({
         {
           baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
           projectUrls: {
+            bloom: {
+              url: process.env.NEXT_PUBLIC_BLOOM_URL,
+            },
             resources: {
               url: process.env.NEXT_PUBLIC_RESOURCES_URL,
             },
@@ -78,6 +85,7 @@ const withMDX = mdx({
           tagName: "code",
         },
       ],
+      [validateHighlightsPlugin, { verbose: false }],
       [rehypeSlug],
       [
         cloudinaryImgRehypePlugin,
@@ -122,7 +130,15 @@ const nextConfig = {
           destination: "/md-content/:path*",
         },
         {
-          source: "/:path((?!resources|api|ui|user-guide|cloud).*)*",
+          source: "/:path((?!resources|api|ui|user-guide|cloud).*)index.md",
+          destination: "/md-content/:path*",
+        },
+        {
+          source: "/:path((?!resources|api|ui|user-guide|cloud).*).md",
+          destination: "/md-content/:path*",
+        },
+        {
+          source: "/:path((?!resources|api|ui|user-guide|cloud|md-content).+)/",
           has: [
             {
               type: "header",
@@ -130,7 +146,29 @@ const nextConfig = {
               value: ".*(text/markdown|text/plain).*",
             },
           ],
-          destination: "/md-content/:path*",
+          destination: "/md-content/:path",
+        },
+        {
+          source: "/",
+          has: [
+            {
+              type: "header",
+              key: "Accept",
+              value: ".*(text/markdown|text/plain).*",
+            },
+          ],
+          destination: "/md-content",
+        },
+        {
+          source: "/:path((?!resources|api|ui|user-guide|cloud|md-content).+)",
+          has: [
+            {
+              type: "header",
+              key: "Accept",
+              value: ".*(text/markdown|text/plain).*",
+            },
+          ],
+          destination: "/md-content/:path",
         },
       ],
       fallback: [
@@ -218,6 +256,19 @@ const nextConfig = {
         },
       ],
     }
+  },
+  async headers() {
+    return [
+      {
+        source: "/",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, must-revalidate",
+          },
+        ],
+      },
+    ]
   },
   redirects: async () => {
     const result = await redirects()

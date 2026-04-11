@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useCallback, useEffect } from "react"
-import { useIsBrowser } from "../.."
+import { useIsBrowser } from "../../providers/BrowserProvider"
 
 export type UseClickOutsideProps = {
   elmRef: React.RefObject<HTMLElement | null>

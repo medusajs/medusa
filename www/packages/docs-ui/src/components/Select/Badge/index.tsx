@@ -73,7 +73,10 @@ export const SelectBadge = ({
   }, [isAllSelected, options, value])
 
   return (
-    <div className={clsx("relative w-fit", className)}>
+    <div
+      className={clsx("relative w-fit", className)}
+      data-testid="select-badge"
+    >
       <div
         className={clsx(
           "border-medusa-tag-neutral-border rounded-docs_sm border border-solid",
@@ -89,6 +92,7 @@ export const SelectBadge = ({
             setOpen((prev) => !prev)
           }
         }}
+        data-testid="select-badge-dropdown"
       >
         {getSelectedText()}
         <TriangleDownMini className="text-medusa-tag-neutral-icon" />

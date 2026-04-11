@@ -1,0 +1,4455 @@
+---
+sidebar_label: "Product Rentals"
+tags:
+  - name: product
+    label: "Implement Product Rentals"
+  - server
+  - tutorial
+  - name: nextjs
+    label: "Implement Product Rentals"
+products:
+  - product
+  - cart
+  - order
+---
+
+import { Github, PlaySolid, EllipsisHorizontal } from "@medusajs/icons"
+import { Prerequisites, WorkflowDiagram, CardList, InlineIcon } from "docs-ui"
+
+export const metadata = {
+  title: `Implement Product Rentals in Medusa`,
+}
+
+# {metadata.title}
+
+In this tutorial, you'll learn how to implement product rentals in Medusa.
+
+When you install a Medusa application, you get a fully-fledged commerce platform with a Framework for customization. The Medusa application's commerce features are built around [Commerce Modules](../../../commerce-modules/page.mdx) that are available out-of-the-box.
+
+Product rentals allow customers to rent products for a specified period. This feature is particularly useful for businesses that offer items like equipment, vehicles, or formal wear.
+
+## Summary
+
+By following this tutorial, you'll learn how to:
+
+- Install and set up Medusa with the Next.js Starter Storefront.
+- Define and manage data models useful for product rentals.
+- Allow admin users to manage rental configurations of products.
+- Allow customers to rent products for specified periods through the storefront.
+- Allow admin users to manage rented items in orders.
+- Handle events like order cancellation and fulfillment for rented products.
+
+You can follow this tutorial whether you're new to Medusa or an advanced Medusa developer.
+
+![Diagram of the Rentals Module and its connection with Medusa's Product, Order, and Customer Modules](https://res.cloudinary.com/dza7lstvk/image/upload/v1761722702/Medusa%20Resources/product-rentals-summary_rhjwjn.jpg)
+
+<CardList items={[
+  {
+    href: "https://github.com/medusajs/examples/tree/main/product-rentals",
+    title: "Full Code",
+    text: "Find the full code for this tutorial in this repository.",
+    icon: Github,
+  },
+  {
+    href: "https://res.cloudinary.com/dza7lstvk/raw/upload/v1761669774/OpenApi/product-rentals_z0csl5.yaml",
+    title: "OpenApi Specs for Postman",
+    text: "Import this OpenApi Specs file into tools like Postman.",
+    icon: PlaySolid,
+  },
+]} />
+
+---
+
+## Step 1: Install a Medusa Application
+
+<Prerequisites items={[
+  {
+    text: "Node.js v20+",
+    link: "https://nodejs.org/en/download"
+  },
+  {
+    text: "Git CLI tool",
+    link: "https://git-scm.com/downloads"
+  },
+  {
+    text: "PostgreSQL",
+    link: "https://www.postgresql.org/download/"
+  }
+]} />
+
+Start by installing the Medusa application on your machine with the following command:
+
+```bash npx2yarnExec
+npx create-medusa-app@latest
+```
+
+You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose Yes.
+
+Afterward, the installation process will start, which will install the Medusa application in a directory with your project's name, and the Next.js Starter Storefront in a separate directory with the `{project-name}-storefront` name.
+
+<Note title="Why is the storefront installed separately?">
+
+The Medusa application is composed of a headless Node.js server and an admin dashboard. The storefront is installed or custom-built separately and connects to the Medusa application through its REST endpoints, called [API routes](!docs!/learn/fundamentals/api-routes). Learn more in [Medusa's Architecture documentation](!docs!/learn/introduction/architecture).
+
+</Note>
+
+Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
+
+<Note title="Ran into Errors?">
+
+Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
+
+</Note>
+
+---
+
+## Step 2: Create Rental Module
+
+In Medusa, you can build custom features in a [module](!docs!/learn/fundamentals/modules). A module is a reusable package with the data models and functionalities related to a single feature or domain. Medusa integrates the module into your application without implications or side effects on your setup.
+
+<Note>
+
+Refer to the [Modules](!docs!/learn/fundamentals/modules) documentation to learn more.
+
+</Note>
+
+In this step, you'll build a Rental Module that defines the data models and logic to manage rentals and rental configurations in the database.
+
+### a. Create Module Directory
+
+Create the directory `src/modules/rental` that will hold the Rental Module's code.
+
+### b. Create Data Models 
+
+A data model represents a table in the database. You create data models using Medusa's Data Model Language (DML). It simplifies defining a table's columns, relations, and indexes with straightforward methods and configurations.
+
+<Note>
+
+Refer to the [Data Models](!docs!/learn/fundamentals/modules#1-create-data-model) documentation to learn more.
+
+</Note>
+
+For the Rental Module, you'll create a data model to represent rental configurations for products, and another to represent individual rentals.
+
+#### RentalConfiguration Data Model
+
+The `RentalConfiguration` data model holds rental configurations for products. Products with a rental configuration can be rented.
+
+To create the data model, create the file `src/modules/rental/models/rental-configuration.ts` with the following content:
+
+```ts title="src/modules/rental/models/rental-configuration.ts"
+import { model } from "@medusajs/framework/utils"
+import { Rental } from "./rental"
+
+export const RentalConfiguration = model.define("rental_configuration", {
+  id: model.id().primaryKey(),
+  product_id: model.text(),
+  min_rental_days: model.number().default(1),
+  max_rental_days: model.number().nullable(),
+  status: model.enum(["active", "inactive"]).default("active"),
+  rentals: model.hasMany(() => Rental, {
+    mappedBy: "rental_configuration",
+  }),
+})
+```
+
+The `RentalConfiguration` data model has the following properties:
+
+- `id`: The primary key of the table.
+- `product_id`: The ID of the Medusa product associated with the rental configuration.
+- `min_rental_days`: The minimum number of days a product can be rented.
+- `max_rental_days`: The maximum number of days a product can be rented.
+- `status`: The status of the rental configuration, which can be either "active" or "inactive".
+- `rentals`: A one-to-many relation to the `Rental` data model, which you'll create next.
+
+Notice that you'll handle pricing and inventory through Medusa's existing [Product](../../../commerce-modules/product/page.mdx) and [Inventory](../../../commerce-modules/inventory/page.mdx) modules.
+
+<Note>
+
+Learn more about defining data model properties in the [Property Types documentation](!docs!/learn/fundamentals/data-models/properties).
+
+</Note>
+
+#### Rental Data Model
+
+The `Rental` data model holds individual rentals. They will be created for each rented product variant in an order.
+
+To create the data model, create the file `src/modules/rental/models/rental.ts` with the following content:
+
+```ts title="src/modules/rental/models/rental.ts"
+import { model } from "@medusajs/framework/utils"
+import { RentalConfiguration } from "./rental-configuration"
+
+export const Rental = model.define("rental", {
+  id: model.id().primaryKey(),
+  variant_id: model.text(),
+  customer_id: model.text(),
+  order_id: model.text().nullable(),
+  line_item_id: model.text().nullable(),
+  rental_start_date: model.dateTime(),
+  rental_end_date: model.dateTime(),
+  actual_return_date: model.dateTime().nullable(),
+  rental_days: model.number(),
+  status: model.enum(["pending", "active", "returned", "cancelled"]).default("pending"),
+  rental_configuration: model.belongsTo(() => RentalConfiguration, {
+    mappedBy: "rentals",
+  }),
+})
+```
+
+The `Rental` data model has the following properties:
+
+- `id`: The primary key of the table.
+- `variant_id`: The ID of the Medusa product variant being rented.
+- `customer_id`: The ID of the customer renting the product.
+- `order_id`: The ID of the Medusa order associated with the rental.
+- `line_item_id`: The ID of the Medusa line item associated with the rental.
+- `rental_start_date`: The start date of the rental period.
+- `rental_end_date`: The end date of the rental period.
+- `actual_return_date`: The actual return date of the rented product.
+- `rental_days`: The number of days the product is rented.
+- `status`: The status of the rental, which can be "pending", "active", "returned", or "cancelled".
+- `rental_configuration`: A many-to-one relation to the `RentalConfiguration` data model.
+
+### c. Create Module's Service
+
+You can manage your module's data models in a service.
+
+A service is a TypeScript class that the module exports. In the service's methods, you can connect to the database, allowing you to manage your data models, or connect to a third-party service, which is useful if you're integrating with external services.
+
+<Note>
+
+Refer to the [Module Service documentation](!docs!/learn/fundamentals/modules#2-create-service) to learn more.
+
+</Note>
+
+To create the Rental Module's service, create the file `src/modules/rental/service.ts` with the following content:
+
+```ts title="src/modules/rental/service.ts"
+import { MedusaService } from "@medusajs/framework/utils"
+import { Rental } from "./models/rental"
+import { RentalConfiguration } from "./models/rental-configuration"
+
+class RentalModuleService extends MedusaService({
+  Rental,
+  RentalConfiguration,
+}) {
+  
+}
+
+export default RentalModuleService
+```
+
+The `RentalModuleService` extends `MedusaService`, which generates a class with data-management methods for your module's data models. This saves you time on implementing Create, Read, Update, and Delete (CRUD) methods.
+
+So, the `RentalModuleService` class now has methods like `createRentals` and `retrieveRentalConfiguration`.
+
+<Note>
+
+Find all methods generated by the `MedusaService` in [the Service Factory](../../../service-factory-reference/page.mdx) reference.
+
+</Note>
+
+### d. Create the Module Definition
+
+The final piece to a module is its definition, which you export in an `index.ts` file at its root directory. This definition tells Medusa the name of the module and its service.
+
+So, create the file `src/modules/rental/index.ts` with the following content:
+
+```ts title="src/modules/rental/index.ts"
+import RentalModuleService from "./service"
+import { Module } from "@medusajs/framework/utils"
+
+export const RENTAL_MODULE = "rental"
+
+export default Module(RENTAL_MODULE, {
+  service: RentalModuleService,
+})
+```
+
+You use the `Module` function to create the module's definition. It accepts two parameters:
+
+1. The module's name, which is `rental`.
+2. An object with a required `service` property indicating the module's service.
+
+You also export the module's name as `RENTAL_MODULE` so you can reference it later.
+
+### e. Add Module to Medusa's Configurations
+
+Once you finish building the module, add it to Medusa's configurations to start using it.
+
+In `medusa-config.ts`, add a `modules` property and pass it an array with your custom module:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "./src/modules/rental",
+    },
+  ],
+})
+```
+
+Each object in the `modules` array has a `resolve` property, whose value is either a path to the module's directory, or an `npm` package’s name.
+
+### f. Generate Migrations
+
+Since data models represent tables in the database, you define how they're created in the database with migrations. A migration is a TypeScript class that defines database changes made by a module.
+
+<Note>
+
+Refer to the [Migrations documentation](!docs!/learn/fundamentals/modules#5-generate-migrations) to learn more.
+
+</Note>
+
+Medusa's CLI tool can generate the migrations for you. To generate a migration for the Rental Module, run the following command in your Medusa application's directory:
+
+```bash npx2yarn
+npx medusa db:generate rental
+```
+
+The `db:generate` command of the Medusa CLI accepts the name of the module to generate the migration for. You'll now have a `migrations` directory under `src/modules/rental` that holds the generated migration.
+
+Then, to reflect these migrations on the database, run the following command:
+
+```bash npx2yarn
+npx medusa db:migrate
+```
+
+The tables for the data models are now created in the database.
+
+---
+
+## Step 3: Define Links between Data Models
+
+Since Medusa isolates modules to integrate them into your application without side effects, you can't directly create relationships between data models of different modules.
+
+Instead, Medusa provides a mechanism to define links between data models and retrieve and manage linked records while maintaining module isolation.
+
+<Note>
+
+Refer to the [Module Links](!docs!/learn/fundamentals/module-links) documentation to learn more about defining links.
+
+</Note>
+
+In this step, you'll define links between the data models in the Rental Module and the data models in Medusa's modules:
+
+1. `RentalConfiguration` ↔ `Product`: The rental configuration of a product.
+2. `Rental` -> `Order`: The order that the rental belongs to.
+3. `Rental` -> `OrderLineItem`: The associated order line item for the rental.
+4. `Customer` -> `Rental`: The customer who made the rental.
+5. `Rental` -> `ProductVariant`: The product variant being rented.
+
+### a. RentalConfiguration ↔ Product Link
+
+To define the link between `RentalConfiguration` and `Product`, create the file `src/links/product-rental-config.ts` with the following content:
+
+```ts title="src/links/product-rental-config.ts"
+import { defineLink } from "@medusajs/framework/utils"
+import RentalModule from "../modules/rental"
+import ProductModule from "@medusajs/medusa/product"
+
+export default defineLink(
+  ProductModule.linkable.product,
+  RentalModule.linkable.rentalConfiguration
+)
+```
+
+You define a link using the `defineLink` function. It accepts two parameters:
+
+1. An object indicating the first data model part of the link. A module has a special `linkable` property that contains link configurations for its data models. You pass the linkable configurations of the Product Module's `Product` data model.
+2. An object indicating the second data model part of the link. You pass the linkable configurations of the Rental Module's `RentalConfiguration` data model.
+
+### b. Rental -> Order Link
+
+To define the link from a `Rental` to an `Order`, create the file `src/links/rental-order.ts` with the following content:
+
+```ts title="src/links/rental-order.ts"
+import { defineLink } from "@medusajs/framework/utils"
+import RentalModule from "../modules/rental"
+import OrderModule from "@medusajs/medusa/order"
+
+export default defineLink(
+  {
+    linkable: RentalModule.linkable.rental,
+    field: "order_id",
+  },
+  OrderModule.linkable.order,
+  {
+    readOnly: true,
+  }
+)
+```
+
+You define a link similar to the previous one, but with an additional configuration object as the third parameter. You enable the `readOnly` property to indicate that this link is not saved in the database. It's only used to query the order of a rental.
+
+### c. Rental -> OrderLineItem Link
+
+To define the link from a `Rental` to an `OrderLineItem`, create the file `src/links/rental-line-item.ts` with the following content:
+
+```ts title="src/links/rental-line-item.ts"
+import { defineLink } from "@medusajs/framework/utils"
+import RentalModule from "../modules/rental"
+import OrderModule from "@medusajs/medusa/order"
+
+export default defineLink(
+  {
+    linkable: RentalModule.linkable.rental,
+    field: "line_item_id",
+  },
+  OrderModule.linkable.orderLineItem,
+  {
+    readOnly: true,
+  }
+)
+```
+
+You define the link similarly to the previous one, enabling the `readOnly` property to indicate that this link is not saved in the database. It's only used to query the line item of a rental.
+
+### d. Customer -> Rental Link
+
+To define the link from a `Customer` to a `Rental`, create the file `src/links/rental-customer.ts` with the following content:
+
+```ts title="src/links/rental-customer.ts"
+import { defineLink } from "@medusajs/framework/utils"
+import RentalModule from "../modules/rental"
+import CustomerModule from "@medusajs/medusa/customer"
+
+export default defineLink(
+  {
+    linkable: CustomerModule.linkable.customer,
+    field: "id",
+  },
+  {
+    ...RentalModule.linkable.rental.id,
+    primaryKey: "customer_id",
+  },
+  {
+    readOnly: true,
+  }
+)
+```
+
+You define the link similarly to the previous ones, enabling the `readOnly` property to indicate that this link is not saved in the database. It's only used to query the customer of a rental.
+
+### e. Rental -> ProductVariant Link
+
+To define the link from a `Rental` to a `ProductVariant`, create the file `src/links/rental-variant.ts` with the following content:
+
+```ts title="src/links/rental-variant.ts"
+import { defineLink } from "@medusajs/framework/utils"
+import RentalModule from "../modules/rental"
+import ProductModule from "@medusajs/medusa/product"
+
+export default defineLink(
+  {
+    linkable: RentalModule.linkable.rental,
+    field: "variant_id",
+  },
+  ProductModule.linkable.productVariant,
+  {
+    readOnly: true,
+  }
+)
+```
+
+You define the link similarly to the previous ones, enabling the `readOnly` property to indicate that this link is not saved in the database. It's only used to query the product variant of a rental.
+
+### f. Sync Links to Database
+
+After defining links, you need to sync them to the database. This creates the necessary tables to store the link between the `RentalConfiguration` and `Product` data models.
+
+To sync the links to the database, run the migrations command again in the Medusa application's directory:
+
+```bash npx2yarn
+npx medusa db:migrate
+```
+
+This command will create the necessary table to store the link. The other links are read-only and don't require database changes.
+
+---
+
+## Step 4: Manage Rental Configurations Workflow
+
+In this step, you'll implement the logic to create or update a rental configuration for a product. Later, you'll execute this logic from an API route, and allow admin users to manage rental configurations from the Medusa Admin dashboard.
+
+You create custom functionalities in [workflows](!docs!/learn/fundamentals/workflows). A workflow is a series of queries and actions, called steps, that complete a task. A workflow is similar to a function, but it allows you to track its executions' progress, define roll-back logic, and configure other advanced features.
+
+<Note>
+
+Refer to the [Workflows](!docs!/learn/fundamentals/workflows) documentation to learn more.
+
+</Note>
+
+The workflow to manage rental configurations will have the following steps:
+
+<WorkflowDiagram
+  workflow={{
+    name: "upsertRentalConfigWorkflow",
+    steps: [
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve product's rental configuration details.",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 1
+      },
+      {
+        type: "when",
+        condition: "!product.rental_configuration",
+        steps: [
+          {
+            type: "step",
+            name: "createRentalConfigurationStep",
+            description: "Create the rental configuration if it doesn't already exist.",
+            depth: 1
+          },
+          {
+            type: "step",
+            name: "createRemoteLinkStep",
+            description: "Link the created rental configuration to the product.",
+            link: "/references/helper-steps/createRemoteLinkStep",
+            depth: 2
+          },
+        ],
+        depth: 2
+      },
+      {
+        type: "when",
+        condition: "!!product.rental_configuration",
+        steps: [
+          {
+            type: "step",
+            name: "updateRentalConfigurationStep",
+            description: "Update the rental configuration if it already exists.",
+            depth: 1,
+          }
+        ],
+        depth: 3,
+      },
+    ]
+  }}
+/>
+
+Medusa provides the `useQueryGraphStep` and `createRemoteLinkStep` out-of-the-box. So, you only need to implement the other steps.
+
+### createRentalConfigurationStep
+
+The `createRentalConfigurationStep` creates a rental configuration.
+
+To create the step, create the file `src/workflows/steps/create-rental-configuration.ts` with the following content:
+
+```ts title="src/workflows/steps/create-rental-configuration.ts"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { RENTAL_MODULE } from "../../modules/rental"
+import RentalModuleService from "../../modules/rental/service"
+
+type CreateRentalConfigurationInput = {
+  product_id: string
+  min_rental_days?: number
+  max_rental_days?: number | null
+  status?: "active" | "inactive"
+}
+
+export const createRentalConfigurationStep = createStep(
+  "create-rental-configuration",
+  async (
+    input: CreateRentalConfigurationInput,
+    { container }
+  ) => {
+    const rentalModuleService: RentalModuleService = container.resolve(
+      RENTAL_MODULE
+    )
+
+    const rentalConfig = await rentalModuleService.createRentalConfigurations(
+      input
+    )
+
+    return new StepResponse(rentalConfig, rentalConfig.id)
+  },
+  async (rentalConfigId, { container }) => {
+    if (!rentalConfigId) {return}
+
+    const rentalModuleService: RentalModuleService = container.resolve(
+      RENTAL_MODULE
+    )
+
+    // Delete the created configuration on rollback
+    await rentalModuleService.deleteRentalConfigurations(rentalConfigId)
+  }
+)
+```
+
+You create a step with the `createStep` function. It accepts three parameters:
+
+1. The step's unique name.
+2. An async function that receives two parameters:
+    - The step's input, which is an object with the rental configuration's details.
+    - An object that has properties including the [Medusa container](!docs!/learn/fundamentals/medusa-container), which is a registry of Framework and commerce tools that you can access in the step.
+3. An async compensation function that undoes the actions performed by the step function. This function is only executed if an error occurs during the workflow's execution.
+
+In the step function, you resolve the Rental Module's service from the Medusa container, and use it to create a rental configuration.
+
+A step function must return a `StepResponse` instance with the step's output as a first parameter, and the data to pass to the compensation function as a second parameter.
+
+In the compensation function, you delete the created rental configuration if an error occurs during the workflow's execution.
+
+### updateRentalConfigurationStep
+
+The `updateRentalConfigurationStep` updates a rental configuration.
+
+To create the step, create the file `src/workflows/steps/update-rental-configuration.ts` with the following content:
+
+```ts title="src/workflows/steps/update-rental-configuration.ts"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { RENTAL_MODULE } from "../../modules/rental"
+import RentalModuleService from "../../modules/rental/service"
+
+type UpdateRentalConfigurationInput = {
+  id: string
+  min_rental_days?: number
+  max_rental_days?: number | null
+  status?: "active" | "inactive"
+}
+
+export const updateRentalConfigurationStep = createStep(
+  "update-rental-configuration",
+  async (
+    input: UpdateRentalConfigurationInput,
+    { container }
+  ) => {
+    const rentalModuleService: RentalModuleService = container.resolve(
+      RENTAL_MODULE
+    )
+
+    // retrieve existing rental configuration
+    const existingRentalConfig = await rentalModuleService.retrieveRentalConfiguration(
+      input.id
+    )
+
+    const updatedRentalConfig = await rentalModuleService.updateRentalConfigurations(
+      input
+    )
+
+    return new StepResponse(updatedRentalConfig, existingRentalConfig)
+  },
+  async (existingRentalConfig, { container }) => {
+    if (!existingRentalConfig) {return}
+
+    const rentalModuleService: RentalModuleService = container.resolve(
+      RENTAL_MODULE
+    )
+
+    await rentalModuleService.updateRentalConfigurations({
+      id: existingRentalConfig.id,
+      min_rental_days: existingRentalConfig.min_rental_days,
+      max_rental_days: existingRentalConfig.max_rental_days,
+      status: existingRentalConfig.status,
+    })
+  }
+)
+```
+
+This step receives the rental configuration's ID and the details to update.
+
+In the step, you retrieve the existing rental configuration before updating it. Then, you update the rental configuration using the Rental Module's service.
+
+You return a `StepResponse` instance with the updated rental configuration as the output, and you pass the existing rental configuration to the compensation function.
+
+In the compensation function, you revert the rental configuration to its previous state if an error occurs during the workflow's execution.
+
+### Manage Rental Configuration Workflow
+
+You can now create the workflow to manage rental configurations using the steps you created.
+
+To create the workflow, create the file `src/workflows/upsert-rental-config.ts` with the following content:
+
+```ts title="src/workflows/upsert-rental-config.ts"
+import {
+  createWorkflow,
+  WorkflowResponse,
+  transform,
+  when,
+} from "@medusajs/framework/workflows-sdk"
+import { 
+  useQueryGraphStep, 
+  createRemoteLinkStep,
+} from "@medusajs/medusa/core-flows"
+import { Modules } from "@medusajs/framework/utils"
+import { 
+  createRentalConfigurationStep,
+} from "./steps/create-rental-configuration"
+import { 
+  updateRentalConfigurationStep,
+} from "./steps/update-rental-configuration"
+import { 
+  RENTAL_MODULE,
+} from "../modules/rental"
+
+type UpsertRentalConfigWorkflowInput = {
+  product_id: string
+  min_rental_days?: number
+  max_rental_days?: number | null
+  status?: "active" | "inactive"
+}
+
+export const upsertRentalConfigWorkflow = createWorkflow(
+  "upsert-rental-config",
+  (input: UpsertRentalConfigWorkflowInput) => {
+    // Retrieve product with its rental configuration
+    const { data: products } = useQueryGraphStep({
+      entity: "product",
+      fields: ["id", "rental_configuration.*"],
+      filters: { id: input.product_id },
+      options: {
+        throwIfKeyNotFound: true,
+      },
+    })
+
+    // If rental config doesn't exist, create it and link
+    const createdConfig = when({ products }, (data) => {
+      return !data.products[0]?.rental_configuration
+    }).then(() => {
+      const newConfig = createRentalConfigurationStep({
+        product_id: input.product_id,
+        min_rental_days: input.min_rental_days,
+        max_rental_days: input.max_rental_days,
+        status: input.status,
+      })
+
+      // Create link between product and rental configuration
+      const linkData = transform({ 
+        newConfig, 
+        product_id: input.product_id,
+      }, (data) => {
+        return [
+          {
+            [Modules.PRODUCT]: {
+              product_id: data.product_id,
+            },
+            [RENTAL_MODULE]: {
+              rental_configuration_id: data.newConfig.id,
+            },
+          },
+        ]
+      })
+
+      createRemoteLinkStep(linkData)
+
+      return newConfig
+    })
+
+    // If rental config exists, update it
+    // @ts-ignore
+    const updatedConfig = when({ products }, (data) => {
+      return !!data.products[0]?.rental_configuration
+    }).then(() => {
+      return updateRentalConfigurationStep({
+        id: products[0].rental_configuration!.id,
+        min_rental_days: input.min_rental_days,
+        max_rental_days: input.max_rental_days,
+        status: input.status,
+      })
+    })
+
+    // Return whichever config was created or updated
+    const rentalConfig = transform({ updatedConfig, createdConfig }, (data) => {
+      return data.updatedConfig || data.createdConfig
+    })
+
+    return new WorkflowResponse(rentalConfig)
+  }
+)
+```
+
+You create a workflow using the `createWorkflow` function. It accepts the workflow's unique name as a first parameter.
+
+It accepts as a second parameter a constructor function that holds the workflow's implementation.
+
+The function accepts an input object holding the rental configuration's details.
+
+In the workflow, you:
+
+1. Retrieve the product's details with its rental configuration using the `useQueryGraphStep`. This step uses [Query](!docs!/learn/fundamentals/module-links/query) under the hood, which retrieves data across modules.
+    - You enable the `throwIfKeyNotFound` option to throw an error if the product doesn't exist.
+2. Use [when-then](!docs!/learn/fundamentals/workflows/conditions) to check if the product doesn't have a rental configuration. If true, you:
+    - Create a rental configuration using the `createRentalConfigurationStep`.
+    - Create a link between the product and the created rental configuration using the `createRemoteLinkStep`.
+3. Use [when-then](!docs!/learn/fundamentals/workflows/conditions) to check if the product has a rental configuration. If true, you update the rental configuration using the `updateRentalConfigurationStep`.
+4. Prepare the data to return using [transform](!docs!/learn/fundamentals/workflows/variable-manipulation) to return either the created or updated rental configuration.
+
+A workflow must return a `WorkflowResponse` instance with the workflow's output. You return the created or updated rental configuration.
+
+You'll execute this workflow from an API route in the next step.
+
+<Note>
+
+In workflows, you need `transform` and `when-then` to perform operations or check conditions based on execution values. Learn more in the [Conditions](!docs!/learn/fundamentals/workflows/conditions) and [Data Manipulation](!docs!/learn/fundamentals/workflows/variable-manipulation) workflow documentation.
+
+</Note>
+
+---
+
+## Step 5: Manage Rental Configurations API Route
+
+In this step, you'll create API routes that allow you to retrieve and manage rental configurations. Later, you'll use these API routes in the Medusa Admin dashboard to allow admin users to manage rental configurations.
+
+### a. Manage Rental Configurations API Route
+
+An API route is created in a `route.ts` file under a sub-directory of the `src/api` directory. The path of the API route is the file's path relative to `src/api`.
+
+<Note>
+
+Refer to the [API routes](!docs!/learn/fundamentals/api-routes) documentation to learn more about them.
+
+</Note>
+
+To create an API route that upserts rental configurations of a product, create the file `src/api/admin/products/[id]/rental-config/route.ts` with the following content:
+
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
+```ts title="src/api/admin/products/[id]/rental-config/route.ts"
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { 
+  upsertRentalConfigWorkflow,
+} from "../../../../../workflows/upsert-rental-config"
+import { z } from "@medusajs/framework/zod"
+
+export const PostRentalConfigBodySchema = z.object({
+  min_rental_days: z.number().optional(),
+  max_rental_days: z.number().nullable().optional(),
+  status: z.enum(["active", "inactive"]).optional(),
+})
+
+export const POST = async (
+  req: MedusaRequest<z.infer<typeof PostRentalConfigBodySchema>>,
+  res: MedusaResponse
+) => {
+  const { id } = req.params
+
+  const { result } = await upsertRentalConfigWorkflow(req.scope).run({
+    input: {
+      product_id: id,
+      min_rental_days: req.validatedBody.min_rental_days,
+      max_rental_days: req.validatedBody.max_rental_days,
+      status: req.validatedBody.status,
+    },
+  })
+
+  res.json({ rental_config: result })
+}
+```
+
+You first define a [Zod](https://zod.dev/) schema to validate the request body.
+
+Then, since you export a `POST` function, you expose a `POST` API route at `/admin/products/:id/rental-config`.
+
+In the API route handler, you execute the `upsertRentalConfigWorkflow` by invoking it, passing it the Medusa container from the request's scope. Then, you call its `run` method, passing the workflow's input from the request's parameters and validated body.
+
+Finally, you return the created or updated rental configuration in the response.
+
+### b. Add Validation Middleware
+
+To validate the body parameters of requests sent to the API route, you need to apply a [middleware](!docs!/learn/fundamentals/api-routes/middlewares).
+
+To apply a middleware, create the file `src/api/middlewares.ts` with the following content:
+
+```ts title="src/api/middlewares.ts"
+import { 
+  defineMiddlewares, 
+  validateAndTransformBody,
+} from "@medusajs/framework/http"
+import { 
+  PostRentalConfigBodySchema,
+} from "./admin/products/[id]/rental-config/route"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/admin/products/:id/rental-config",
+      methods: ["POST"],
+      middlewares: [
+        validateAndTransformBody(PostRentalConfigBodySchema),
+      ],
+    },
+  ],
+})
+```
+
+You apply the `validateAndTransformBody` middleware to the `POST` route of the `/admin/products/:id/rental-config` path, passing it the Zod schema you created in the route file.
+
+Any request that doesn't conform to the schema will receive a `400` Bad Request response.
+
+<Note title="Tip">
+
+Refer to the [Middlewares](!docs!/learn/fundamentals/api-routes/middlewares) documentation to learn more.
+
+</Note>
+
+### c. Retrieve Rental Configuration API Route
+
+Next, you'll add an API route at the same path to retrieve a product's rental configuration.
+
+In `src/api/admin/products/[id]/rental-config/route.ts`, add the following at the end of the file:
+
+```ts title="src/api/admin/products/[id]/rental-config/route.ts"
+export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+  const { id } = req.params
+  const query = req.scope.resolve("query")
+
+  // Query rental configuration for the product
+  const { data: rentalConfigs } = await query.graph({
+    entity: "rental_configuration",
+    fields: ["*"],
+    filters: { product_id: id },
+  })
+
+  res.json({ rental_config: rentalConfigs[0] })
+}
+```
+
+You expose a `GET` API route at `/admin/products/:id/rental-config`. In the route handler, you resolve [Query](!docs!/learn/fundamentals/module-links/query) from the Medusa container and use it to query the rental configuration for the product.
+
+Then, you return the rental configuration in the response.
+
+In the next step, you'll consume these API routes in the Medusa Admin dashboard.
+
+---
+
+## Step 6: Manage Rental Configurations in Medusa Admin
+
+In this step, you'll customize the Medusa Admin dashboard to allow admin users to manage rental configurations for products.
+
+The Medusa Admin dashboard is customizable, allowing you to insert widgets into existing pages, or create new pages.
+
+<Note title="Tip">
+
+Refer to the [Admin Development](!docs!/learn/fundamentals/admin) documentation to learn more.
+
+</Note>
+
+In this step, you'll insert a widget into the Product Details page to allow admin users to manage rental configurations for products.
+
+### a. Initialize JS SDK
+
+To send requests to the Medusa server, you'll use the [JS SDK](../../../js-sdk/page.mdx). It's already installed in your Medusa project, but you need to initialize it before using it in your customizations.
+
+Create the file `src/admin/lib/sdk.ts` with the following content:
+
+export const sdkHighlights = [
+  ["3", "new Medusa", "Initialize the Medusa JS SDK."],
+  ["4", "baseUrl", "Backend server URL."],
+  ["5", "debug", "Enable debug mode in development."],
+  ["7", "type: \"session\"", "Use session-based authentication."]
+]
+
+```ts title="src/admin/lib/sdk.ts" highlights={sdkHighlights}
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
+  debug: process.env.NODE_ENV === "development",
+  auth: {
+    type: "session",
+  },
+})
+```
+
+Learn more about the initialization options in the [JS SDK](../../../js-sdk/page.mdx) reference.
+
+### b. Create Rental Configuration Widget
+
+Next, you'll create the widget to manage rental configurations on the Product Details page.
+
+To create the widget, create the file `src/admin/widgets/product-rental-config.tsx` with the following content:
+
+```tsx title="src/admin/widgets/product-rental-config.tsx" collapsibleLines="1-18" expandButtonLabel="Show Imports"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import {
+  Container,
+  Heading,
+  Text,
+  Button,
+  Drawer,
+  Input,
+  Label,
+  toast,
+  Badge,
+  usePrompt,
+} from "@medusajs/ui"
+import { useQuery, useMutation } from "@tanstack/react-query"
+import { sdk } from "../lib/sdk"
+import { DetailWidgetProps, AdminProduct } from "@medusajs/framework/types"
+import { useEffect, useState } from "react"
+
+type RentalConfig = {
+  id: string
+  product_id: string
+  min_rental_days: number
+  max_rental_days: number | null
+  status: "active" | "inactive"
+}
+
+type RentalConfigResponse = {
+  rental_config: RentalConfig | null
+}
+
+const ProductRentalConfigWidget = ({
+  data: product,
+}: DetailWidgetProps<AdminProduct>) => {
+  // TODO implement component
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.details.after",
+})
+
+export default ProductRentalConfigWidget
+```
+
+A widget file must export:
+
+- A default React component. This component renders the widget's UI.
+- A `config` object created with `defineWidgetConfig` from the Admin SDK. It accepts an object with the `zone` property that indicates where the widget will be rendered in the Medusa Admin dashboard.
+
+Next, you'll add the implementation of the `ProductRentalConfigWidget` component.
+
+Replace the `// TODO implement component` comment with the following code inside the `ProductRentalConfigWidget` component:
+
+```tsx title="src/admin/widgets/product-rental-config.tsx"
+const [drawerOpen, setDrawerOpen] = useState(false)
+const [minRentalDays, setMinRentalDays] = useState(1)
+const [maxRentalDays, setMaxRentalDays] = useState<number | null>(null)
+const confirm = usePrompt()
+
+const { data, isLoading, refetch } = useQuery<RentalConfigResponse>({
+  queryFn: () =>
+    sdk.client.fetch(`/admin/products/${product.id}/rental-config`),
+  queryKey: [["products", product.id, "rental-config"]],
+})
+
+const upsertMutation = useMutation({
+  mutationFn: async (config: {
+    min_rental_days: number
+    max_rental_days: number | null
+    status?: "active" | "inactive"
+  }) => {
+    return sdk.client.fetch(`/admin/products/${product.id}/rental-config`, {
+      method: "POST",
+      body: config,
+    })
+  },
+  onSuccess: () => {
+    toast.success("Rental configuration updated successfully")
+    refetch()
+    setDrawerOpen(false)
+  },
+  onError: () => {
+    toast.error("Failed to update rental configuration")
+  },
+})
+
+// TODO add useEffect + handle state changes
+```
+
+You define the following state variables and hooks:
+
+1. `drawerOpen`, `minRentalDays`, and `maxRentalDays` state variables to manage the drawer visibility and form inputs.
+2. `confirm` to show confirmation prompts using [Medusa's UI package](!ui!/components/prompt).
+3. `data`, `isLoading`, and `refetch` from a `useQuery` hook to fetch the product's rental configuration using the `GET` API route you created earlier.
+4. `upsertMutation` from a `useMutation` hook to upsert the rental configuration using the `POST` API route you created earlier.
+
+Next, you need to handle data and state changes. Replace the `// TODO add useEffect + handle state changes` comment with the following code:
+
+```tsx title="src/admin/widgets/product-rental-config.tsx"
+useEffect(() => {
+  if (data?.rental_config) {
+    setMinRentalDays(data.rental_config.min_rental_days)
+    setMaxRentalDays(data.rental_config.max_rental_days)
+  }
+}, [data?.rental_config])
+
+const handleOpenDrawer = () => {
+  setDrawerOpen(true)
+}
+
+const handleSubmit = () => {
+  upsertMutation.mutate({
+    min_rental_days: minRentalDays,
+    max_rental_days: maxRentalDays,
+  })
+}
+
+const handleToggleStatus = async () => {
+  if (!data?.rental_config) {return}
+  
+  const newStatus = 
+    data.rental_config.status === "active" ? 
+      "inactive" : "active"
+  const action = 
+    newStatus === "inactive" ? "Deactivate" : "Activate"
+  
+  if (await confirm({
+    title: `${action} rental configuration?`,
+    description: `Are you sure you want to ${action.toLowerCase()} this rental configuration?`,
+    variant: newStatus === "inactive" ? "danger" : "confirmation",
+  })) {
+    upsertMutation.mutate({
+      status: newStatus,
+    })
+  }
+}
+
+// TODO render component
+```
+
+You add a `useEffect` hook to set the form inputs when the rental configuration data is fetched.
+
+You also define the following functions:
+
+- `handleOpenDrawer`: Opens the drawer that shows the rental configuration form.
+- `handleSubmit`: Submits the form to upsert the rental configuration.
+- `handleToggleStatus`: Toggles the rental configuration's status between `active` and `inactive`, showing a confirmation prompt before proceeding.
+
+Finally, you'll implement the component's UI. Replace the `// TODO render component` comment with the following code:
+
+```tsx title="src/admin/widgets/product-rental-config.tsx"
+return (
+  <>
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">Rental Configuration</Heading>
+        {!isLoading && data?.rental_config && (
+          <Badge color={data.rental_config.status === "active" ? "green" : "grey"} size="2xsmall">
+            {data.rental_config.status === "active" ? "Active" : "Inactive"}
+          </Badge>
+        )}
+      </div>
+
+      {isLoading && (
+        <div className="px-6 py-4">
+          <Text className="text-ui-fg-subtle">Loading...</Text>
+        </div>
+      )}
+
+      {!isLoading && !data?.rental_config && (
+        <>
+          <div className="px-6 py-4">
+            <Text className="text-ui-fg-subtle">This product is not currently available for rental.</Text>
+          </div>
+          <div className="flex justify-end border-t px-6 py-4">
+            <Button size="small" onClick={handleOpenDrawer} variant="secondary">
+              Make Rentable
+            </Button>
+          </div>
+        </>
+      )}
+
+      {!isLoading && data?.rental_config && (
+        <div className="divide-y">
+          <div className="grid grid-cols-2 items-center px-6 py-4">
+            <Text size="small" weight="plus" className="mb-1">
+              Min Rental Days
+            </Text>
+            <Text className="text-ui-fg-subtle text-right">{data.rental_config.min_rental_days}</Text>
+          </div>
+          <div className="grid grid-cols-2 items-center px-6 py-4">
+            <Text size="small" weight="plus" className="mb-1">
+              Max Rental Days
+            </Text>
+            <Text className="text-ui-fg-subtle text-right">
+              {data.rental_config.max_rental_days ?? "Unlimited"}
+            </Text>
+          </div>
+          <div className="flex gap-2 px-6 py-4 justify-end">
+            <Button size="small" variant="secondary" onClick={handleOpenDrawer}>
+              Edit
+            </Button>
+            <Button
+              size="small"
+              variant={"primary"}
+              onClick={handleToggleStatus}
+              disabled={upsertMutation.isPending}
+              isLoading={upsertMutation.isPending}
+            >
+              {data.rental_config.status === "active" 
+                ? "Deactivate" 
+                : "Activate"
+              }
+            </Button>
+          </div>
+        </div>
+      )}
+    </Container>
+
+    <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+      <Drawer.Content>
+        <Drawer.Header>
+          <Drawer.Title>
+            {data?.rental_config ? "Edit" : "Add"} Rental Configuration
+          </Drawer.Title>
+        </Drawer.Header>
+        <Drawer.Body className="space-y-4">
+          <div>
+            <Label htmlFor="min_rental_days">Minimum Rental Days</Label>
+            <Input
+              id="min_rental_days"
+              type="number"
+              min="1"
+              value={minRentalDays}
+              onChange={(e) => setMinRentalDays(Number(e.target.value))}
+            />
+          </div>
+          <div>
+            <Label htmlFor="max_rental_days">
+              Maximum Rental Days (leave empty for unlimited)
+            </Label>
+            <Input
+              id="max_rental_days"
+              type="number"
+              min={minRentalDays}
+              value={maxRentalDays ?? ""}
+              onChange={(e) =>
+                setMaxRentalDays(
+                  e.target.value ? Number(e.target.value) : null
+                )
+              }
+            />
+          </div>
+        </Drawer.Body>
+        <Drawer.Footer>
+          <div className="flex gap-2">
+            <Button
+              variant="secondary"
+              onClick={() => setDrawerOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              disabled={upsertMutation.isPending}
+              isLoading={upsertMutation.isPending}
+            >
+              Save
+            </Button>
+          </div>
+        </Drawer.Footer>
+      </Drawer.Content>
+    </Drawer>
+  </>
+)
+```
+
+You show a section with the rental configuration details if they exist. You also show a drawer with a form to create or update the rental configuration.
+
+If the product has a rental configuration, you show a button to toggle its status between `active` and `inactive`.
+
+### Test Rental Configuration Widget
+
+You can now test the rental configuration widget in the Medusa Admin dashboard.
+
+Run the following command in your Medusa application's directory to start the Medusa server:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, open the Medusa Admin dashboard in your browser at `http://localhost:9000/app` and login with the user you created in the first step.
+
+Navigate to the Products page, open any product's page, and scroll down to the Rental Configuration section. Click the "Make Rentable" button to set up the product's rental configuration.
+
+![Rental Configuration Widget](https://res.cloudinary.com/dza7lstvk/image/upload/v1761650341/Medusa%20Resources/CleanShot_2025-10-28_at_13.17.54_2x_ip1stl.png)
+
+In the rental configuration form, you can set the minimum and maximum rental days. Click the "Save" button to create the rental configuration.
+
+![Rental configuration form with minimum and maximum rental days fields](https://res.cloudinary.com/dza7lstvk/image/upload/v1761650449/Medusa%20Resources/CleanShot_2025-10-28_at_13.20.02_2x_zvixfc.png)
+
+After saving, you should see the rental configuration details in the widget. You can edit the configuration or toggle its status.
+
+![Rental configuration details in the widget](https://res.cloudinary.com/dza7lstvk/image/upload/v1761650526/Medusa%20Resources/CleanShot_2025-10-28_at_13.21.43_2x_t7ktgq.png)
+
+---
+
+## Step 7: Retrieve Rental Availability API Route
+
+In this step, you'll add an API route that allows customers to check the availability of a product for rental between two dates, and retrieve the total rental price.
+
+### a. Define hasRentalOverlap Method
+
+Before you implement the API route, you'll add a method to the Rental Module's service that checks if a rental overlaps with a given date range.
+
+In `src/modules/rental/service.ts`, add the following method to the `RentalModuleService` class:
+
+```ts title="src/modules/rental/service.ts"
+class RentalModuleService extends MedusaService({
+  Rental,
+  RentalConfiguration,
+}) {
+  async hasRentalOverlap(variant_id: string, start_date: Date, end_date: Date) {
+    const [, count] = await this.listAndCountRentals({
+      variant_id,
+      status: ["active", "pending"],
+      $or: [
+        { 
+          rental_start_date: { 
+            $lte: end_date,
+          },
+          rental_end_date: {
+            $gte: start_date,
+          },
+        },
+      ],
+    })
+
+    return count > 0
+  }
+}
+```
+
+The method accepts a product variant ID, a rental start date, and a rental end date.
+
+In the method, you use the `listAndCountRentals` method of the service to count the number of rentals for the given variant that overlap with the provided date range.
+
+If the count is greater than zero, it means there is an overlapping rental, and the method returns `true`. Otherwise, it returns `false`.
+
+### b. Define validateRentalDates Utility
+
+Next, you'll create a utility function to validate rental dates.
+
+Create the file `src/utils/validate-rental-dates.ts` with the following content:
+
+```ts title="src/utils/validate-rental-dates.ts"
+import { MedusaError } from "@medusajs/framework/utils"
+
+export default function validateRentalDates(
+  rentalStartDate: string | Date,
+  rentalEndDate: string | Date,
+  rentalConfiguration: {
+    min_rental_days: number
+    max_rental_days: number | null
+  },
+  rentalDays: number | string
+) {
+  const startDate = rentalStartDate instanceof Date ? rentalStartDate : new Date(rentalStartDate)
+  const endDate = rentalEndDate instanceof Date ? rentalEndDate : new Date(rentalEndDate)
+  const days = typeof rentalDays === "number" ? rentalDays : Number(rentalDays)
+
+  // Validate rental period meets configuration requirements
+  if (days < rentalConfiguration.min_rental_days) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Rental period of ${days} days is less than the minimum of ${rentalConfiguration.min_rental_days} days`
+    )
+  }
+
+  if (
+    rentalConfiguration.max_rental_days !== null &&
+    days > rentalConfiguration.max_rental_days
+  ) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Rental period of ${days} days exceeds the maximum of ${rentalConfiguration.max_rental_days} days`
+    )
+  }
+
+  // validate that the dates aren't in the past
+  const now = new Date()
+  now.setHours(0, 0, 0, 0) // Reset to start of day
+  if (startDate < now || endDate < now) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Rental dates cannot be in the past. Received start date: ${startDate.toISOString()}, end date: ${endDate.toISOString()}`
+    )
+  }
+
+  if (endDate <= startDate) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `rentalEndDate must be after rentalStartDate`
+    )
+  }
+}
+```
+
+The function accepts the rental start and end dates, the rental configuration, and the number of rental days.
+
+In the function, you validate:
+
+1. That the rental period meets the minimum and maximum rental days defined in the configuration.
+2. That the rental dates are not in the past.
+3. That the end date is after the start date.
+
+If any validation fails, you throw a `MedusaError` with the `INVALID_DATA` type.
+
+You'll use this utility function in your customizations.
+
+### c. Rental Availability API Route
+
+Next, you'll create the API route to retrieve the rental availability of a product.
+
+To create the API route, create the file `src/api/store/products/[id]/rental-availability/route.ts` with the following content:
+
+```ts title="src/api/store/products/[id]/rental-availability/route.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
+import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { MedusaError, QueryContext } from "@medusajs/framework/utils"
+import { z } from "@medusajs/framework/zod"
+import { RENTAL_MODULE } from "../../../../../modules/rental"
+import RentalModuleService from "../../../../../modules/rental/service"
+import validateRentalDates from "../../../../../utils/validate-rental-dates"
+
+export const GetRentalAvailabilitySchema = z.object({
+  variant_id: z.string(),
+  start_date: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "start_date must be a valid date string (YYYY-MM-DD)",
+  }),
+  end_date: z
+    .string()
+    .optional()
+    .refine((val) => val === undefined || !isNaN(Date.parse(val)), {
+      message: "end_date must be a valid date string (YYYY-MM-DD)",
+    }),
+  currency_code: z.string().optional(),
+})
+
+export const GET = async (
+  req: MedusaRequest<{}, z.infer<typeof GetRentalAvailabilitySchema>>, 
+  res: MedusaResponse
+) => {
+  const { id: productId } = req.params
+ 
+  const { 
+    variant_id, 
+    start_date, 
+    end_date,
+    currency_code,
+  } = req.validatedQuery
+
+  const query = req.scope.resolve("query")
+  const rentalModuleService: RentalModuleService = req.scope.resolve(
+    RENTAL_MODULE
+  )
+
+  // Parse dates
+  const rentalStartDate = new Date(start_date)
+  const rentalEndDate = end_date ? new Date(end_date) : new Date(rentalStartDate)
+  
+  // If no end_date provided, assume single day rental (same day)
+  if (!end_date) {
+    rentalEndDate.setHours(23, 59, 59, 999)
+  }
+
+  // TODO retrieve and validate rental configuration
+}
+```
+
+You define a Zod schema to validate the query parameters of the request. You also expose a `GET` API route at `/store/products/:id/rental-availability`.
+
+In the route handler, you parse the start and end dates.
+
+Next, you'll implement the logic to retrieve and validate the rental configuration. Replace the `// TODO retrieve and validate rental configuration` comment with the following code:
+
+```ts title="src/api/store/products/[id]/rental-availability/route.ts"
+const { data: [rentalConfig] } = await query.graph({
+  entity: "rental_configuration",
+  fields: ["*"],
+  filters: { 
+    product_id: productId,
+    status: "active",
+  },
+})
+
+if (!rentalConfig) {
+  throw new MedusaError(
+    MedusaError.Types.NOT_FOUND,
+    "product is not rentable"
+  )
+}
+
+const rentalDays = Math.ceil(
+  (rentalEndDate.getTime() - rentalStartDate.getTime()) / 
+  (1000 * 60 * 60 * 24)
+) + 1 // +1 to include both start and end date
+
+validateRentalDates(
+  rentalStartDate, 
+  rentalEndDate, 
+  {
+    min_rental_days: rentalConfig.min_rental_days,
+    max_rental_days: rentalConfig.max_rental_days,
+  }, 
+  rentalDays
+)
+
+// TODO check for overlapping rentals and calculate price
+```
+
+You retrieve the active rental configuration for the product using Query. Then, you calculate the rental period in days, and you validate the rental dates using the `validateRentalDates` utility you created earlier.
+
+Next, you'll implement the logic to check for overlapping rentals and calculate the rental price. Replace the `// TODO check for overlapping rentals and calculate price` comment with the following code:
+
+```ts title="src/api/store/products/[id]/rental-availability/route.ts"
+// Check if variant is already rented during the requested period
+const isAvailable = !await rentalModuleService.hasRentalOverlap(
+  variant_id, 
+  rentalStartDate, 
+  rentalEndDate
+)
+let price = 0
+if (isAvailable && currency_code) {
+  const { data: [variant] } = await query.graph({
+    entity: "product_variant",
+    fields: ["calculated_price.*"],
+    filters: {
+      id: variant_id,
+    },
+    context: {
+      calculated_price: QueryContext({
+        currency_code: currency_code,
+      }),
+    },
+  })
+  price = ((variant as any).calculated_price?.calculated_amount || 0) *
+    rentalDays
+}
+
+res.json({
+  available: isAvailable,
+  price: {
+    amount: price,
+    currency_code: currency_code,
+  },
+})
+```
+
+You use the `hasRentalOverlap` method you defined earlier to check if there are any overlapping rentals for the specified variant and date range.
+
+If the variant is available and a currency code is provided, you retrieve the variant's calculated price using Query and calculate the total rental price based on the number of rental days.
+
+Finally, you return the availability status and the total rental price in the response.
+
+### c. Add Query Validation Middleware
+
+To validate the query parameters of requests sent to the Rental Availability API route, you'll apply a middleware.
+
+In `src/api/middlewares.ts`, add the following imports at the top of the file:
+
+```ts title="src/api/middlewares.ts"
+import { 
+  validateAndTransformQuery,
+} from "@medusajs/framework/http"
+import { 
+  GetRentalAvailabilitySchema,
+} from "./store/products/[id]/rental-availability/route"
+```
+
+Then, pass a new object to the `routes` array in `defineMiddlewares`:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/products/:id/rental-availability",
+      methods: ["GET"],
+      middlewares: [
+        validateAndTransformQuery(GetRentalAvailabilitySchema, {}),
+      ],
+    },
+  ],
+})
+```
+
+You apply the `validateAndTransformQuery` middleware to the `GET` route of the `/store/products/:id/rental-availability` path, passing it the Zod schema you created in the route file.
+
+You'll use this API route in the next step to check the rental availability of products.
+
+---
+
+## Step 8: Show Rental Options in Storefront
+
+In this step, you'll customize the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx) to show rental options on the product details page, allowing customers to choose rental dates when the product is rentable.
+
+<Note title="Reminder" forceMultiline>
+
+The Next.js Starter Storefront was installed in a separate directory from Medusa. The directory's name is `{your-project}-storefront`.
+
+So, if your Medusa application's directory is `medusa-product-rental`, you can find the storefront by going back to the parent directory and changing to the `medusa-product-rental-storefront` directory:
+
+```bash
+cd ../medusa-product-rental-storefront # change based on your project name
+```
+
+</Note>
+
+### a. Define Types
+
+First, you'll define types for the rental configuration and rental availability response.
+
+Create the file `src/types/rental.ts` in the storefront directory with the following content:
+
+```ts title="src/types/rental.ts" badgeLabel="Storefront" badgeColor="blue"
+export interface RentalConfiguration {
+  min_rental_days: number
+  max_rental_days: number | null
+  status: "active" | "inactive"
+}
+
+export interface RentalAvailabilityResponse {
+  available: boolean
+  message?: string
+  price?: {
+    amount: number
+    currency_code: string | null
+  }
+}
+```
+
+You'll use these types in the next sections.
+
+### b. Fetch Rental Configuration with Product Details
+
+Next, you'll ensure that the rental configuration is fetched when retrieving the product details. You can retrieve linked data models by passing its name in the `fields` query parameter when fetching the product.
+
+In `src/lib/data/products.ts`, find the `listProducts` function and update the `fields` parameter passed to the JS SDK function call to include the `*rental_configuration` field:
+
+```ts title="src/lib/data/products.ts" badgeLabel="Storefront" badgeColor="blue" highlights={[["16"]]}
+export const listProducts = async ({
+  // ...
+}: {
+  // ...
+}): Promise<{
+  // ...
+}> => {
+  // ...
+  return sdk.client
+    .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(
+      `/store/products`,
+      {
+        query: {
+          // ...
+          fields:
+            "*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags,*rental_configuration",
+        },
+        // ...
+      }
+    )
+  // ...
+}
+```
+
+You pass `*rental_configuration` at the end of the `fields` parameter. This will attach a `rental_configuration` object to each product returned by the API if it has one.
+
+### c. Add Rental Availability Function
+
+Next, you'll add a server function that retrieves the rental availability of a product by calling the Rental Availability API route you created earlier.
+
+Create the file `src/lib/data/rentals.ts` with the following content:
+
+```ts title="src/lib/data/rentals.ts" badgeLabel="Storefront" badgeColor="blue"
+"use server"
+
+import { sdk } from "@lib/config"
+import { getAuthHeaders, getCacheOptions } from "./cookies"
+import { RentalAvailabilityResponse } from "../../types/rental"
+
+export const getRentalAvailability = async ({
+  productId,
+  variantId,
+  startDate,
+  endDate,
+  currencyCode,
+}: {
+  productId: string
+  variantId: string
+  startDate: string
+  endDate?: string
+  currencyCode?: string
+}): Promise<RentalAvailabilityResponse> => {
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  const next = {
+    ...(await getCacheOptions("rental-availability")),
+  }
+
+  const queryParams: Record<string, any> = {
+    variant_id: variantId,
+    start_date: startDate,
+  }
+
+  if (endDate) {
+    queryParams.end_date = endDate
+  }
+
+  if (currencyCode) {
+    queryParams.currency_code = currencyCode
+  }
+
+  return sdk.client
+    .fetch<RentalAvailabilityResponse>(
+      `/store/products/${productId}/rental-availability`,
+      {
+        method: "GET",
+        query: queryParams,
+        headers,
+        next,
+        cache: "no-store", // Always fetch fresh data for availability
+      }
+    )
+    .then((data) => data)
+}
+```
+
+The `getRentalAvailability` function accepts the product ID, variant ID, rental start date, optional rental end date, and optional currency code.
+
+In the function, you send a `GET` request to the Rental Availability API route, passing the parameters as query parameters.
+
+The function returns the rental availability response.
+
+### d. Create Rental Date Picker Component
+
+Next, you'll create the component that shows start and end date pickers for selecting rental dates. You'll show this component for rentable products only.
+
+Create the file `src/modules/products/components/rental-date-picker/index.tsx` with the following content:
+
+```tsx title="src/modules/products/components/rental-date-picker/index.tsx" badgeLabel="Storefront" badgeColor="blue" collapsibleLines="1-8" expandButtonLabel="Show Imports"
+"use client"
+
+import { useState, useCallback, useMemo } from "react"
+import { DatePicker } from "@medusajs/ui"
+import { HttpTypes } from "@medusajs/types"
+import { getRentalAvailability } from "@lib/data/rentals"
+import { RentalConfiguration } from "../../../../types/rental"
+
+type RentalDatePickerProps = {
+  product: HttpTypes.StoreProduct
+  selectedVariant?: HttpTypes.StoreProductVariant
+  region: HttpTypes.StoreRegion
+  onDatesSelected: (data: {
+    startDate: string
+    endDate: string
+    days: number
+    price?: { amount: number; currency_code: string | null }
+  }) => void
+  disabled?: boolean
+}
+
+export default function RentalDatePicker({
+  product,
+  selectedVariant,
+  region,
+  onDatesSelected,
+  disabled = false,
+}: RentalDatePickerProps) {
+  const [startDate, setStartDate] = useState<Date | null>(null)
+  const [endDate, setEndDate] = useState<Date | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const rentalConfig = useMemo(() => {
+    return "rental_configuration" in product
+      ? (product.rental_configuration as RentalConfiguration | undefined)
+      : undefined
+  }, [product])
+
+  // TODO define functions
+}
+```
+
+You define the `RentalDatePicker` component that accepts the following props:
+
+1. `product`: The product object.
+2. `selectedVariant`: The product variant that the customer has selected.
+3. `region`: The region that the customer is viewing the product in.
+4. `onDatesSelected`: A callback function that is called when the customer selects valid rental dates.
+5. `disabled`: An optional boolean to disable the date picker.
+
+In the component, you define state variables to manage the selected start and end dates, loading state, and error messages. You also create a memoized variable for the rental configuration.
+
+Next, you'll add the functions to handle date selection and availability checking. Replace the `// TODO define functions` comment with the following code:
+
+```tsx title="src/modules/products/components/rental-date-picker/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+// Memoized rental days calculation for display
+const rentalDays = useCallback((start: Date, end: Date) => {
+  if (!start || !end) {return 0}
+  return Math.ceil(
+    (end.getTime() - start.getTime()) / (1000 * 3600 * 24)
+  ) + 1 // +1 to include both start and end dates
+}, [])
+
+// Helper function to check if date is in the past
+const isDateInPast = (date: Date) => {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  return date < today ? "Date cannot be in the past" : true
+}
+
+// Helper function to format date to YYYY-MM-DD string
+const formatDateToString = (date: Date): string => {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, "0")
+  const day = String(date.getDate()).padStart(2, "0")
+  return `${year}-${month}-${day}`
+}
+
+// Memoized comprehensive validation and availability checking
+const validateAndCheckAvailability = useCallback(async (start: Date, end: Date) => {
+  if (!selectedVariant?.id || !rentalConfig) {
+    return
+  }
+  setError(null)
+
+  try {
+    const startDateString = formatDateToString(start)
+    const endDateString = formatDateToString(end)
+
+    // 1. Validate date order (allow same day for single day rental)
+    if (end < start) {
+      setError("End date cannot be before start date")
+      return
+    }
+
+    const days = rentalDays(start, end)
+    
+    if (rentalConfig.min_rental_days && days < rentalConfig.min_rental_days) {
+      setError(`Minimum rental period is ${rentalConfig.min_rental_days} days`)
+      return
+    }
+    
+    if (rentalConfig.max_rental_days && days > rentalConfig.max_rental_days) {
+      setError(`Maximum rental period is ${rentalConfig.max_rental_days} days`)
+      return
+    }
+
+    setIsLoading(true)
+
+    // 3. Check availability with backend
+    const availability = await getRentalAvailability({
+      productId: product.id,
+      variantId: selectedVariant.id,
+      startDate: startDateString,
+      endDate: endDateString,
+      currencyCode: region.currency_code,
+    })
+
+    if (!availability.available) {
+      setError(availability.message || "Selected rental period is not available")
+      return
+    }
+
+    // 4. If everything is valid, call the callback with price information
+    setError(null)
+    onDatesSelected({
+      startDate: startDateString,
+      endDate: endDateString,
+      days: days,
+      price: availability.price,
+    })
+
+  } catch (err) {
+    setError("Failed to check rental availability")
+    console.error("Rental availability error:", err)
+  } finally {
+    setIsLoading(false)
+  }
+}, [selectedVariant?.id, rentalConfig, product.id, onDatesSelected, rentalDays])
+
+// Memoized date change handlers to prevent recreation on every render
+const handleStartDateChange = useCallback((date: Date | null) => {
+  setStartDate(date)
+  setError(null)
+  // Trigger comprehensive validation if both dates are now selected
+  if (date && endDate) {
+    validateAndCheckAvailability(date, endDate)
+  }
+}, [endDate, validateAndCheckAvailability])
+
+const handleEndDateChange = useCallback((date: Date | null) => {
+  setEndDate(date)
+  setError(null)
+  // Trigger comprehensive validation if both dates are now selected
+  if (date && startDate) {
+    validateAndCheckAvailability(startDate, date)
+  }
+}, [startDate, validateAndCheckAvailability])
+
+// TODO render component
+```
+
+You define the following functions:
+
+- `rentalDays`: Calculates the number of rental days between two dates.
+- `isDateInPast`: Checks if a given date is in the past.
+- `formatDateToString`: Formats a date to a `YYYY-MM-DD` string.
+- `validateAndCheckAvailability`: A comprehensive function that validates the selected dates against the rental configuration and checks availability with the backend.
+- `handleStartDateChange` and `handleEndDateChange`: Handlers for when the start and end dates are changed. They call the `validateAndCheckAvailability` function if both dates are selected.
+
+Finally, you'll add the `return` statement to render the component's UI. Replace the `// TODO render component` comment with the following code:
+
+```tsx title="src/modules/products/components/rental-date-picker/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+if (rentalConfig?.status !== "active") {
+  return null
+}
+
+return (
+  <div className="space-y-4">
+    <div className="text-sm font-medium">Rental Period</div>
+    
+    <div className="flex flex-col gap-4">
+      <div>
+        <label className="block text-sm font-medium mb-2">From</label>
+        <DatePicker
+          value={startDate}
+          onChange={handleStartDateChange}
+          isDisabled={disabled || isLoading}
+          minValue={new Date()}
+          validate={(date) => {
+            return isDateInPast(new Date(date.toString()))
+          }}
+        />
+      </div>
+      
+      <div>
+        <label className="block text-sm font-medium mb-2">Until</label>
+        <DatePicker
+          value={endDate}
+          onChange={handleEndDateChange}
+          isDisabled={disabled || isLoading || !startDate}
+          minValue={startDate || new Date()}
+          validate={(date) => {
+            return isDateInPast(new Date(date.toString()))
+          }}
+        />
+      </div>
+    </div>
+
+    {error && (
+      <div className="text-sm text-red-600">
+        {error}
+      </div>
+    )}
+
+    {isLoading && (
+      <div className="text-sm text-gray-500">
+        Checking availability...
+      </div>
+    )}
+
+    {startDate && endDate && !error && !isLoading && (
+      <div className="text-sm text-ui-fg-subtle">
+        Rental period: {rentalDays(startDate, endDate)} days
+      </div>
+    )}
+  </div>
+)
+```
+
+If the product does not have an active rental configuration, you return `null` to avoid rendering anything.
+
+Otherwise, you render two date pickers for selecting the rental start and end dates. You also show error messages, loading indicators, and the calculated rental period.
+
+### e. Customize Product Price Component
+
+Next, you'll customize the product price component to show the rental price for rental products.
+
+Replace the file content in `src/modules/products/components/product-price/index.tsx` with the following code:
+
+```tsx title="src/modules/products/components/product-price/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+import { clx } from "@medusajs/ui"
+
+import { getProductPrice } from "@lib/util/get-product-price"
+import { HttpTypes } from "@medusajs/types"
+import { convertToLocale } from "../../../../lib/util/money"
+import { RentalAvailabilityResponse } from "../../../../types/rental"
+
+export default function ProductPrice({
+  product,
+  variant,
+  rentalPrice,
+  is_rental = false,
+}: {
+  product: HttpTypes.StoreProduct
+  variant?: HttpTypes.StoreProductVariant
+  rentalPrice?: RentalAvailabilityResponse["price"] | null
+  is_rental?: boolean
+}) {
+  const { cheapestPrice, variantPrice } = getProductPrice({
+    product,
+    variantId: variant?.id,
+  })
+
+  const selectedPrice = variant ? variantPrice : cheapestPrice
+
+  // Use rental price if available, otherwise use regular price
+  const displayPrice = rentalPrice ? {
+    calculated_price: convertToLocale({
+      amount: rentalPrice.amount,
+      currency_code: rentalPrice.currency_code!,
+    }),
+    calculated_price_number: rentalPrice.amount,
+    price_type: "default" as const,
+    original_price: "",
+    original_price_number: 0,
+    percentage_diff: "",
+  } : selectedPrice
+
+  if (!displayPrice) {
+    return <div className="block w-32 h-9 bg-gray-100 animate-pulse" />
+  }
+
+  return (
+    <div className="flex flex-col text-ui-fg-base">
+      <span
+        className={clx("text-xl-semi", {
+          "text-ui-fg-interactive": displayPrice.price_type === "sale",
+        })}
+      >
+        {!variant && !rentalPrice && "From "}
+        <span
+          data-testid="product-price"
+          data-value={displayPrice.calculated_price_number}
+        >
+          {displayPrice.calculated_price}
+        </span>
+        {!rentalPrice && is_rental && <span className="text-xs text-ui-fg-muted ml-1">per day</span>}
+      </span>
+      {displayPrice.price_type === "sale" && (
+        <>
+          <p>
+            <span className="text-ui-fg-subtle">Original: </span>
+            <span
+              className="line-through"
+              data-testid="original-product-price"
+              data-value={displayPrice.original_price_number}
+            >
+              {displayPrice.original_price}
+            </span>
+          </p>
+          <span className="text-ui-fg-interactive">
+            -{displayPrice.percentage_diff}%
+          </span>
+        </>
+      )}
+    </div>
+  )
+}
+```
+
+You make the following key changes:
+
+1. Add a new optional prop `rentalPrice` to accept the rental price information.
+2. Add a new optional prop `is_rental` that indicates if the product is a rentable product.
+3. Add a `displayPrice` variable that uses the rental price if available; otherwise, it falls back to the regular product price.
+4. Update the price display to show "per day" if the product is rentable and no rental price is provided.
+
+For non-rentable products, the price is shown as usual.
+
+### f. Show Rental Options on Product Details Page
+
+Finally, you'll customize the product actions component shown on the product details page to display the rental date picker and pass the rental price to the product price component.
+
+In `src/modules/products/components/product-actions/index.tsx`, add the following imports at the top of the file:
+
+```tsx title="src/modules/products/components/product-actions/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+import RentalDatePicker from "../rental-date-picker"
+import { 
+  RentalAvailabilityResponse, 
+  RentalConfiguration,
+} from "../../../../types/rental"
+```
+
+Then, in the `ProductActions` component, destructure the `region` prop:
+
+```tsx title="src/modules/products/components/product-actions/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+export default function ProductActions({
+  // ...
+  region,
+}: ProductActionsProps) {
+  // ...
+}
+```
+
+Next, add the state variables in the `ProductActions` component:
+
+```tsx title="src/modules/products/components/product-actions/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+const [rentalStartDate, setRentalStartDate] = useState<string | null>(null)
+const [rentalEndDate, setRentalEndDate] = useState<string | null>(null)
+const [rentalDays, setRentalDays] = useState<number | null>(null)
+const [rentalPrice, setRentalPrice] = useState<RentalAvailabilityResponse["price"] | null>(null)
+
+const rentalConfig = "rental_configuration" in product ?
+  product.rental_configuration as RentalConfiguration | undefined : undefined
+const isRentable = rentalConfig?.status === "active"
+
+// Check if rental dates are required and selected
+const rentalDatesValid = useMemo(() => {
+  return !isRentable || (!!rentalStartDate && !!rentalEndDate && !!rentalDays)
+}, [isRentable, rentalStartDate, rentalEndDate, rentalDays])
+```
+
+You define the following variables:
+
+- `rentalStartDate` and `rentalEndDate`: To store the selected rental dates.
+- `rentalDays`: To store the number of rental days.
+- `rentalPrice`: To store the rental price information.
+- `rentalConfig`: Holds the rental configuration of the product.
+- `isRentable`: A boolean indicating if the product is rentable.
+- `rentalDatesValid`: A memoized value that checks if rental dates are required and have been selected.
+
+Next, add to the component a function that handles when rental dates are selected:
+
+```tsx title="src/modules/products/components/product-actions/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+const handleRentalDatesSelected = (data: {
+  startDate: string
+  endDate: string
+  days: number
+  price?: { amount: number; currency_code: string | null }
+}) => {
+  setRentalStartDate(data.startDate)
+  setRentalEndDate(data.endDate)
+  setRentalDays(data.days)
+  setRentalPrice(data.price || null)
+}
+```
+
+This function sets the state variables when rental dates are selected.
+
+Then, in the `return` statement of the `ProductActions` component, add the following before the `ProductPrice` component:
+
+```tsx title="src/modules/products/components/product-actions/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+{isRentable && (
+  <>
+    <RentalDatePicker
+      product={product}
+      selectedVariant={selectedVariant}
+      region={region}
+      onDatesSelected={handleRentalDatesSelected}
+      disabled={!!disabled || isAdding}
+    />
+
+    <Divider className="my-4" />
+  </>
+)}
+```
+
+And update the `ProductPrice` component to pass the `rentalPrice` and `is_rental` props:
+
+```tsx title="src/modules/products/components/product-actions/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+<ProductPrice 
+  product={product} 
+  variant={selectedVariant} 
+  rentalPrice={rentalPrice} 
+  is_rental={isRentable} 
+/>
+```
+
+Finally, update the "Add to Cart" button to be disabled if rental dates are required but not selected:
+
+```tsx title="src/modules/products/components/product-actions/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+<Button
+  onClick={handleAddToCart}
+  disabled={
+    !inStock ||
+    !selectedVariant ||
+    !!disabled ||
+    isAdding ||
+    !isValidVariant ||
+    !rentalDatesValid
+  }
+  variant="primary"
+  className="w-full h-10"
+  isLoading={isAdding}
+  data-testid="add-product-button"
+>
+  {!selectedVariant && !options
+    ? "Select variant"
+    : !inStock || !isValidVariant
+    ? "Out of stock"
+    : !rentalDatesValid
+    ? "Select rental dates"
+    : "Add to cart"}
+</Button>
+```
+
+### g. Test Rental Options in Storefront
+
+You can now view and select the rental options in the Next.js Starter Storefront.
+
+First, run the following command in the Medusa application's directory to start the Medusa server:
+
+```bash npm2yarn badgeLabel="Medusa Application" badgeColor="green"
+npm run dev
+```
+
+Then, in a separate terminal, navigate to the Next.js Starter Storefront directory and run the following command to start the storefront:
+
+```bash npm2yarn badgeLabel="Storefront" badgeColor="blue"
+npm run dev
+```
+
+Open the storefront in `http://localhost:8000` and go to Menu -> Store. Click on a rentable product to view its details.
+
+On the right side, you'll find the rental date picker component where you can select the rental start and end dates. This will update the rental price shown above the "Add to Cart" button.
+
+You haven't implemented the add-to-cart functionality for rentable products yet. You'll do that in the next step.
+
+![Rental options on product details page in the storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1761653559/Medusa%20Resources/CleanShot_2025-10-28_at_14.12.25_2x_g09h85.png)
+
+---
+
+## Step 9: Add Rental Products to Cart
+
+In this step, you'll implement the logic to add rentable products to the cart in the Medusa application. You'll wrap Medusa's existing add-to-cart logic to include rental-specific data and validation.
+
+You'll create a workflow with the logic to add rental products to the cart, and an API route that uses this workflow.
+
+### a. Add Products with Rental to Cart Workflow
+
+First, you'll create a workflow that contains the logic to add products to the cart, with support for rental products.
+
+The workflow will have the following steps:
+
+<WorkflowDiagram
+  workflow={{
+    name: "addToCartWithRentalWorkflow",
+    steps: [
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve cart details.",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 1
+      },
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve details of the variant to add to the cart.",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 2
+      },
+      {
+        type: "when",
+        condition: "variant.product.rental_configuration?.status === 'active'",
+        steps: [
+          {
+            type: "step",
+            name: "validateRentalCartItemStep",
+            description: "If the variant is rentable, validate and retrieve its rental data.",
+            depth: 1
+          },
+        ],
+        depth: 3
+      },
+      {
+        type: "step",
+        name: "acquireLockStep",
+        description: "Acquire a lock on the cart to prevent concurrent modifications.",
+        link: "/references/medusa-workflows/steps/acquireLockStep",
+        depth: 4,
+      },
+      {
+        type: "workflow",
+        name: "addToCartWorkflow",
+        description: "Add the product to the cart.",
+        link: "/references/medusa-workflows/addToCartWorkflow",
+        depth: 5,
+      },
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve updated cart details.",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 6
+      },
+      {
+        type: "step",
+        name: "releaseLockStep",
+        description: "Release the lock on the cart.",
+        link: "/references/medusa-workflows/steps/releaseLockStep",
+        depth: 7
+      }
+    ]
+  }}
+/>
+
+Medusa provides all the steps and workflows out-of-the-box, except for the `validateRentalCartItemStep` step, which you'll implement.
+
+#### hasCartOverlap Utility
+
+Before you implement the workflow and its steps, you'll create a utility function that checks if an item overlaps with existing rental items in the cart.
+
+Create the file `src/utils/has-cart-overlap.ts` with the following content:
+
+```ts title="src/utils/has-cart-overlap.ts" badgeLabel="Medusa Application" badgeColor="green"
+export default function hasCartOverlap(
+  item: {
+    variant_id: string
+    rental_start_date: Date
+    rental_end_date: Date
+    rental_days: number
+  },
+  cart_items: {
+    id: string
+    variant_id: string
+    metadata?: Record<string, unknown>
+  }[]
+): boolean {
+  for (const cartItem of cart_items) {
+    if (cartItem.variant_id !== item.variant_id) {
+      continue
+    }
+
+    // Check if this cart item is also a rental with metadata
+    const cartItemMetadata = cartItem.metadata || {}
+    const existingStartStr = cartItemMetadata.rental_start_date
+    const existingEndStr = cartItemMetadata.rental_end_date
+    const existingDays = cartItemMetadata.rental_days
+
+    if (!existingStartStr || !existingEndStr || !existingDays) {
+      continue
+    }
+
+    // Both are rental items, check for date overlap
+    const existingStartDate = new Date(existingStartStr as string)
+    const existingEndDate = new Date(existingEndStr as string)
+
+    // Check if dates overlap
+    const hasOverlap = item.rental_start_date <= existingEndDate && item.rental_end_date >= existingStartDate
+
+    if (hasOverlap) {return true}
+  }
+
+  return false
+}
+```
+
+The `hasCartOverlap` function accepts a rental item and a list of existing cart items.
+
+In the function, you loop through the existing cart items and check if any of them are rental items for the same variant with an overlapping rental period.
+
+The function returns `true` if an overlap is found, otherwise it returns `false`.
+
+#### validateRentalCartItemStep
+
+The `validateRentalCartItemStep` validates the rental data provided and retrieves the rental days and price.
+
+To create the step, create the file `src/workflows/steps/validate-rental-cart-item.ts` with the following content:
+
+```ts title="src/workflows/steps/validate-rental-cart-item.ts" badgeLabel="Medusa Application" badgeColor="green" collapsibleLines="1-8" expandButtonLabel="Show Imports"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { MedusaError } from "@medusajs/framework/utils"
+import { RENTAL_MODULE } from "../../modules/rental"
+import RentalModuleService from "../../modules/rental/service"
+import { InferTypeOf, ProductVariantDTO } from "@medusajs/framework/types"
+import { RentalConfiguration } from "../../modules/rental/models/rental-configuration"
+import hasCartOverlap from "../../utils/has-cart-overlap"
+import validateRentalDates from "../../utils/validate-rental-dates"
+
+export type ValidateRentalCartItemInput = {
+  variant: ProductVariantDTO
+  quantity: number
+  metadata?: Record<string, unknown>
+  rental_configuration: InferTypeOf<typeof RentalConfiguration> | null
+  existing_cart_items: {
+    id: string
+    variant_id: string
+    metadata?: Record<string, unknown>
+  }[]
+}
+
+export const validateRentalCartItemStep = createStep(
+  "validate-rental-cart-item",
+  async ({ 
+    variant, 
+    quantity, 
+    metadata, 
+    rental_configuration, 
+    existing_cart_items,
+  }: ValidateRentalCartItemInput, { container }) => {
+    const rentalModuleService: RentalModuleService = container.resolve(RENTAL_MODULE)
+
+    // Skip validation if not a rental product or if rental config is not active
+    if (rental_configuration?.status !== "active") {
+      return new StepResponse({ is_rental: false, rental_days: 0, price: 0 })
+    }
+
+    // This is a rental product - validate quantity
+    if (quantity !== 1) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Rental items must have a quantity of 1. Cannot add ${quantity} of variant ${variant.id}`
+      )
+    }
+
+    // TODO validate metadata
+  }
+)
+```
+
+The `validateRentalCartItemStep` accepts the following props:
+
+- `variant`: The product variant to add to the cart.
+- `quantity`: The quantity of the variant to add.
+- `metadata`: Optional metadata associated with the cart item. This metadata should include rental options like start and end dates.
+- `rental_configuration`: The rental configuration of the product variant.
+- `existing_cart_items`: The existing items in the cart.
+
+In the step, you first return early if the product is not a rental product or if the rental configuration is not active. You also validate that the quantity is `1`, as rental items must have a quantity of one.
+
+Next, you'll validate that the necessary rental options are provided in the item's metadata. Replace the `// TODO validate metadata` comment with the following code:
+
+```ts title="src/workflows/steps/validate-rental-cart-item.ts" badgeLabel="Medusa Application" badgeColor="green"
+// Validate metadata
+const rentalStartDate = metadata?.rental_start_date
+const rentalEndDate = metadata?.rental_end_date
+const rentalDays = metadata?.rental_days
+
+if (!rentalStartDate || !rentalEndDate || !rentalDays) {
+  throw new MedusaError(
+    MedusaError.Types.INVALID_DATA,
+    `Rental product variant ${variant.id} requires rental_start_date, rental_end_date and rental_days in metadata`
+  )
+}
+
+const startDate = new Date(rentalStartDate as string)
+const endDate = new Date(rentalEndDate as string)
+const days = typeof rentalDays === "number" ? rentalDays : Number(rentalDays)
+
+validateRentalDates(
+  startDate, 
+  endDate, 
+  {
+    min_rental_days: rental_configuration.min_rental_days,
+    max_rental_days: rental_configuration.max_rental_days,
+  }, 
+  days
+)
+
+// TODO validate that there's no overlap with cart items or existing rentals
+```
+
+You validate that the `rental_start_date`, `rental_end_date`, and `rental_days` are provided in the metadata. These are necessary to process the rental and will be stored in the line item's `metadata` property.
+
+You also validate the rental dates using the `validateRentalDates` utility function you created earlier.
+
+Next, you'll validate that the rental period does not overlap with existing rentals in the cart or existing rentals for the same variant. Replace the `// TODO validate that there's no overlap with cart items or existing rentals` comment with the following code:
+
+```ts title="src/workflows/steps/validate-rental-cart-item.ts" badgeLabel="Medusa Application" badgeColor="green"
+// Check if this rental variant is already in the cart with overlapping dates
+const hasCartOverlapResult = hasCartOverlap(
+  {
+    variant_id: variant.id,
+    rental_start_date: startDate,
+    rental_end_date: endDate,
+    rental_days: days,
+  },
+  existing_cart_items
+)
+
+if (hasCartOverlapResult) {
+  throw new MedusaError(
+    MedusaError.Types.INVALID_DATA,
+    `Rental variant ${variant.id} is already in the cart with overlapping dates (${startDate.toISOString().split("T")[0]} to ${endDate.toISOString().split("T")[0]})`
+  )
+}
+
+// Check availability for the requested period
+const hasOverlap = await rentalModuleService.hasRentalOverlap(variant.id, startDate, endDate)
+
+if (hasOverlap) {
+  throw new MedusaError(
+    MedusaError.Types.NOT_ALLOWED,
+    `Variant ${variant.id} is already rented during the requested period (${startDate.toISOString()} to ${endDate.toISOString()})`
+  )
+}
+
+return new StepResponse({ 
+  is_rental: true,
+  rental_days: days,
+  price: ((variant as any).calculated_price?.calculated_amount || 0) * days,
+})
+```
+
+You first check if the rental start and end dates are in the past, and if the end date is after the start date.
+
+Then, you check for overlaps with existing cart items using the `hasCartOverlap` utility you created earlier. If there are overlaps, you throw an error.
+
+Next, you use the `hasRentalOverlap` method from the Rental Module's service to check if there are any overlapping rentals for the specified variant and date range. If there are overlaps, you throw an error.
+
+Finally, you return a `StepResponse` indicating that the item is a rental, along with the number of rental days and the total price for the rental period.
+
+#### Add Products with Rental to Cart Workflow
+
+You can now create the `addToCartWithRentalWorkflow` that uses the `validateRentalCartItemStep` step.
+
+Create the file `src/workflows/add-to-cart-with-rental.ts` with the following content:
+
+```ts title="src/workflows/add-to-cart-with-rental.ts" badgeLabel="Medusa Application" badgeColor="green" collapsibleLines="1-18" expandButtonLabel="Show Imports"
+import { 
+  createWorkflow, 
+  WorkflowResponse, 
+  transform,
+  when, 
+} from "@medusajs/framework/workflows-sdk"
+import { 
+  acquireLockStep, 
+  addToCartWorkflow, 
+  releaseLockStep, 
+  useQueryGraphStep,
+} from "@medusajs/medusa/core-flows"
+import { QueryContext } from "@medusajs/framework/utils"
+import { 
+  ValidateRentalCartItemInput, 
+  validateRentalCartItemStep,
+} from "./steps/validate-rental-cart-item"
+
+type AddToCartWorkflowInput = {
+  cart_id: string
+  variant_id: string
+  quantity: number
+  metadata?: Record<string, unknown>
+}
+
+export const addToCartWithRentalWorkflow = createWorkflow(
+  "add-to-cart-with-rental",
+  (input: AddToCartWorkflowInput) => {
+    const { data: carts } = useQueryGraphStep({
+      entity: "cart",
+      fields: ["id", "currency_code", "region_id", "items.*"],
+      filters: { id: input.cart_id },
+      options: {
+        throwIfKeyNotFound: true,
+      },
+    })
+
+    const { data: variants } = useQueryGraphStep({
+      entity: "product_variant",
+      fields: [
+        "id",
+        "product.id",
+        "product.rental_configuration.*",
+        "calculated_price.*",
+      ],
+      filters: {
+        id: input.variant_id,
+      },
+      options: {
+        throwIfKeyNotFound: true,
+      },
+      context: {
+        calculated_price: QueryContext({
+          currency_code: carts[0].currency_code,
+          region_id: carts[0].region_id,
+        }),
+      },
+    }).config({ name: "retrieve-variant" })
+
+    const rentalData = when({ variants }, (data) => {
+      return data.variants[0].product?.rental_configuration?.status === "active"
+    }).then(() => {
+      return validateRentalCartItemStep({
+        variant: variants[0],
+        quantity: input.quantity,
+        metadata: input.metadata,
+        rental_configuration: variants[0].product?.rental_configuration || null,
+        existing_cart_items: carts[0].items,
+      } as unknown as ValidateRentalCartItemInput)
+    })
+
+    acquireLockStep({
+      key: input.cart_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
+    const itemToAdd = transform({
+      input,
+      rentalData,
+      variants,
+    }, (data) => {
+      const baseItem = {
+        variant_id: data.input.variant_id,
+        quantity: data.input.quantity,
+        metadata: data.input.metadata,
+      }
+
+      // If it's a rental product, use the calculated rental price
+      if (data.rentalData?.is_rental && data.rentalData.price) {
+        return [{
+          ...baseItem,
+          unit_price: data.rentalData.price,
+        }]
+      }
+
+      // For non-rental products, don't specify unit_price (let Medusa calculate it)
+      return [baseItem]
+    })
+
+    addToCartWorkflow.runAsStep({
+      input: {
+        cart_id: input.cart_id,
+        items: itemToAdd as any,
+      },
+    })
+
+    const { data: updatedCart } = useQueryGraphStep({
+      entity: "cart",
+      fields: ["*", "items.*"],
+      filters: {
+        id: input.cart_id,
+      },
+    }).config({ name: "refetch-cart" })
+
+    releaseLockStep({
+      key: input.cart_id,
+    })
+
+    return new WorkflowResponse({
+      cart: updatedCart[0],
+    })
+  }
+)
+```
+
+You create the `addToCartWithRentalWorkflow` workflow that accepts the cart ID, variant ID, quantity, and optional metadata.
+
+In the workflow, you:
+
+1. Retrieve the cart details using the `useQueryGraphStep`.
+2. Retrieve the product variant details using the `useQueryGraphStep`.
+3. If the product is rentable, call the `validateRentalCartItemStep` to validate and retrieve rental data.
+4. Acquire a lock on the cart using the `acquireLockStep`.
+5. Prepare the item to add to the cart.
+    - If it's a rentable product, you set the `unit_price` to the calculated rental price.
+    - For non-rentable products, you don't specify the `unit_price`; Medusa will use the variant's price.
+6. Add the item to the cart using the existing `addToCartWorkflow`.
+7. Retrieve the updated cart details.
+8. Release the lock on the cart using the `releaseLockStep`.
+
+Finally, you return the updated cart in the workflow response.
+
+### b. Add to Cart with Rental API Route
+
+Next, you'll create an API route that uses the `addToCartWithRentalWorkflow` to add products to the cart, including rental products.
+
+Create the file `src/api/store/carts/[id]/line-items/rentals/route.ts` with the following content:
+
+```ts title="src/api/store/carts/[id]/line-items/rentals/route.ts" badgeLabel="Medusa Application" badgeColor="green" collapsibleLines="1-9" expandButtonLabel="Show Imports"
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { 
+  addToCartWithRentalWorkflow,
+} from "../../../../../../workflows/add-to-cart-with-rental"
+import { z } from "@medusajs/framework/zod"
+
+export const PostCartItemsRentalsBody = z.object({
+  variant_id: z.string(),
+  quantity: z.number(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
+})
+
+export const POST = async (
+  req: MedusaRequest<z.infer<typeof PostCartItemsRentalsBody>>,
+  res: MedusaResponse
+) => {
+  const { id: cart_id } = req.params
+  const { variant_id, quantity, metadata } = req.validatedBody
+
+  const { result } = await addToCartWithRentalWorkflow(req.scope).run({
+    input: {
+      cart_id,
+      variant_id,
+      quantity,
+      metadata,
+    },
+  })
+
+  res.json({ cart: result.cart })
+}
+```
+
+You create a Zod schema to validate the request body, which includes the `variant_id`, `quantity`, and optional `metadata`.
+
+You expose a `POST` API route at `/store/carts/{id}/line-items/rentals`. In the route handler, you execute the `addToCartWithRentalWorkflow` passing it the necessary input.
+
+You return the updated cart in the response.
+
+### c. Add Validation Middleware
+
+Next, you'll add validation middleware to ensure that the request body for adding rental items to the cart is valid.
+
+In `src/api/middlewares.ts`, add the following import at the top of the file:
+
+```ts title="src/api/middlewares.ts" badgeLabel="Medusa Application" badgeColor="green"
+import { PostCartItemsRentalsBody } from "./store/carts/[id]/line-items/rentals/route"
+```
+
+Then, pass a new object to the `routes` array in `defineMiddlewares`:
+
+```ts title="src/api/middlewares.ts" badgeLabel="Medusa Application" badgeColor="green"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/store/carts/:id/line-items/rentals",
+      methods: ["POST"],
+      middlewares: [
+        validateAndTransformBody(PostCartItemsRentalsBody),
+      ],
+    },
+  ],
+})
+```
+
+You apply the `validateAndTransformBody` middleware to the rental add-to-cart route, using the `PostCartItemsRentalsBody` schema to validate incoming requests.
+
+In the next step, you'll customize the storefront to use this new API route when adding rental products to the cart.
+
+---
+
+## Step 10: Add Rental Products to Cart in Storefront
+
+In this step, you'll customize the Next.js Starter Storefront to use the new rental add-to-cart API route when adding products to the cart.
+
+### a. Update Add to Cart Function
+
+First, you'll update the `addToCart` function to use the rental add-to-cart API route when adding rental products to the cart.
+
+In `src/lib/data/cart.ts`, find the `addToCart` function and add a `metadata` property to its object parameter:
+
+```ts title="src/lib/data/cart.ts" badgeLabel="Storefront" badgeColor="blue"
+export async function addToCart({
+  variantId,
+  quantity,
+  countryCode,
+  metadata,
+}: {
+  variantId: string
+  quantity: number
+  countryCode: string
+  metadata?: Record<string, any>
+}) {
+  // ...
+}
+```
+
+Then, in the function, change the JS SDK call to the following:
+
+```ts title="src/lib/data/cart.ts" badgeLabel="Storefront" badgeColor="blue"
+await sdk.client
+.fetch(`/store/carts/${cart.id}/line-items/rentals`, {
+  method: "POST",
+  body: {
+    variant_id: variantId,
+    quantity,
+    metadata,
+  },
+  headers,
+})
+// ...
+```
+
+You send a `POST` request to `/store/carts/{id}/line-items/rentals`, passing the `variant_id`, `quantity`, and `metadata` in the request body.
+
+### b. Pass Rental Metadata when Adding to Cart
+
+Next, you'll update the product actions component to pass the rental metadata when adding rentable products to the cart.
+
+In `src/modules/products/components/product-actions/index.tsx`, find the `handleAddToCart` function in the `ProductActions` component and update it to the following:
+
+```tsx title="src/modules/products/components/product-actions/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+const handleAddToCart = async () => {
+  if (!selectedVariant?.id) {return null}
+
+  setIsAdding(true)
+
+  await addToCart({
+    variantId: selectedVariant.id,
+    quantity: 1,
+    countryCode,
+    metadata: isRentable ? {
+      rental_start_date: rentalStartDate,
+      rental_end_date: rentalEndDate,
+      rental_days: rentalDays,
+    } : undefined,
+  })
+
+  setIsAdding(false)
+}
+```
+
+If the product is rentable, you pass the `rental_start_date`, `rental_end_date`, and `rental_days` in the `metadata` property when adding the product to the cart.
+
+### c. Show Rental Info in Cart
+
+Finally, you'll customize the cart item component to show rental information for rentable products in the cart.
+
+In `src/modules/cart/components/item/index.tsx`, add the following below the `LineItemOptions` component in the `return` statement of the `Item` component:
+
+```tsx title="src/modules/cart/components/item/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+{!!item.metadata?.rental_start_date && !!item.metadata?.rental_end_date && (
+  <Text className="txt-small text-ui-fg-muted">
+    Rental: {new Date(item.metadata.rental_start_date as string).toLocaleDateString("en-US", { 
+      month: "short", 
+      day: "numeric", 
+      year: "numeric", 
+    })}
+    {item.metadata.rental_days !== 1 && ` - ${new Date(item.metadata.rental_end_date as string).toLocaleDateString("en-US", { 
+      month: "short", 
+      day: "numeric", 
+      year: "numeric", 
+    })}`}
+  </Text>
+)}
+```
+
+You show the rental start and end dates if they're available in the line item's metadata.
+
+### Test Adding Rental Products to Cart
+
+You can now test adding rentable products to the cart in the Next.js Starter Storefront.
+
+First, run both the Medusa server and the Next.js Starter Storefront.
+
+Then, in the storefront, open the product details page for a rentable product. Select the rental start and end dates, then click the "Add to cart" button.
+
+The product will be added to the cart with the rental options. You can click the cart icon at the top right to view the cart, where you'll see the rental dates displayed under the product name.
+
+![Rental product added to cart in the storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1761660048/Medusa%20Resources/CleanShot_2025-10-28_at_15.38.24_2x_yfo50v.png)
+
+---
+
+## Step 11: Create Rental Orders
+
+In this step, you'll implement the logic to create rental orders in the Medusa application. You'll wrap Medusa's existing order creation logic to handle rental-specific data and validation.
+
+You'll create a workflow with the logic to create rental orders and an API route that uses this workflow.
+
+### a. Create Rental Orders Workflow
+
+First, you'll create a workflow that contains the logic to create rental orders, with support for rental products.
+
+The workflow will have the following steps:
+
+<WorkflowDiagram
+  workflow={{
+    name: "createRentalsWorkflow",
+    steps: [
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve cart details.",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 1
+      },
+      {
+        type: "step",
+        name: "acquireLockStep",
+        description: "Acquire a lock on the cart to prevent race conditions.",
+        link: "/references/medusa-workflows/steps/acquireLockStep",
+        depth: 2
+      },
+      {
+        type: "workflow",
+        name: "completeCartWorkflow",
+        description: "Complete the cart and create the order.",
+        link: "/references/medusa-workflows/completeCartWorkflow",
+        depth: 3
+      },
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve order details.",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 4
+      },
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve existing rentals for the order to ensure idempotency.",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 5
+      },
+      {
+        type: "when",
+        condition: "rentals.length === 0 && rentalItems.length > 0",
+        steps: [
+          {
+            type: "step",
+            name: "validateRentalStep",
+            description: "Validate rental items in the cart.",
+            depth: 3
+          },
+          {
+            type: "step",
+            name: "createRentalsForOrderStep",
+            description: "Create rental records for rental items in the order.",
+            depth: 6
+          },
+        ],
+        depth: 6,
+      },
+      {
+        type: "step",
+        name: "releaseLockStep",
+        description: "Release the lock on the cart.",
+        link: "/references/medusa-workflows/steps/releaseLockStep",
+        depth: 7
+      }
+    ]
+  }}
+/>
+
+You'll implement the `validateRentalStep` and `createRentalsStep` steps used in the workflow. The rest are provided by Medusa out-of-the-box.
+
+#### validateRentalStep
+
+The `validateRentalStep` validates the rental items in the cart before creating the order. The validation logic is similar to the `validateRentalCartItemStep`.
+
+To create the step, create the file `src/workflows/steps/validate-rental.ts` with the following content:
+
+```ts title="src/workflows/steps/validate-rental.ts" badgeLabel="Medusa Application" badgeColor="green"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { MedusaError } from "@medusajs/framework/utils"
+import { RENTAL_MODULE } from "../../modules/rental"
+import RentalModuleService from "../../modules/rental/service"
+import { InferTypeOf } from "@medusajs/framework/types"
+import { RentalConfiguration } from "../../modules/rental/models/rental-configuration"
+import hasCartOverlap from "../../utils/has-cart-overlap"
+import validateRentalDates from "../../utils/validate-rental-dates"
+import { cancelOrderWorkflow } from "@medusajs/medusa/core-flows"
+
+export type ValidateRentalInput = {
+  rental_items: {
+    line_item_id: string
+    variant_id: string
+    quantity: number
+    rental_configuration: InferTypeOf<typeof RentalConfiguration>
+    rental_start_date: Date
+    rental_end_date: Date
+    rental_days: number
+    order_id: string
+  }[]
+}
+
+export const validateRentalStep = createStep(
+  "validate-rental",
+  async ({ rental_items, order_id }: ValidateRentalInput, { container }) => {
+    const rentalModuleService: RentalModuleService = container.resolve(RENTAL_MODULE)
+
+    for (let i = 0; i < rental_items.length; i++) {
+      const rentalItem = rental_items[i]
+      const { 
+        line_item_id, 
+        variant_id, 
+        quantity, 
+        rental_configuration, 
+        rental_start_date, 
+        rental_end_date, 
+        rental_days,
+      } = rentalItem
+
+      if (rental_configuration.status !== "active") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Rental configuration for variant ${variant_id} is not active`
+        )
+      }
+
+      // Validate quantity is 1 for rental items
+      if (quantity !== 1) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Rental items must have a quantity of 1. Line item ${line_item_id} has quantity ${quantity}`
+        )
+      }
+
+      // Validate metadata presence
+      if (!rental_start_date || !rental_end_date || !rental_days) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Line item ${line_item_id} is for a rentable product but is missing required metadata: rental_start_date, rental_end_date, and/or rental_days`
+        )
+      }
+
+      // Convert to Date if needed
+      const startDate = rental_start_date instanceof Date ? rental_start_date : new Date(rental_start_date)
+      const endDate = rental_end_date instanceof Date ? rental_end_date : new Date(rental_end_date)
+      
+      validateRentalDates(
+        startDate, 
+        endDate, 
+        {
+          min_rental_days: rental_configuration.min_rental_days,
+          max_rental_days: rental_configuration.max_rental_days,
+        }, 
+        rental_days
+      )
+
+      const hasCartOverlapResult = hasCartOverlap(
+        {
+          variant_id,
+          rental_start_date,
+          rental_end_date,
+          rental_days,
+        },
+        rental_items.slice(i + 1).map((item) => ({
+          id: item.line_item_id,
+          variant_id: item.variant_id,
+          metadata: {
+            rental_start_date: item.rental_start_date.toISOString(),
+            rental_end_date: item.rental_end_date.toISOString(),
+            rental_days: item.rental_days,
+          },
+        }))
+      )
+
+      if (hasCartOverlapResult) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Cannot have multiple rental items for variant ${variant_id} with overlapping dates in the cart`
+        )
+      }
+
+      if (await rentalModuleService.hasRentalOverlap(variant_id, startDate, endDate)) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Variant ${variant_id} is already rented during the requested period (${startDate.toISOString()} to ${endDate.toISOString()})`
+        )
+      }
+    }
+
+    return new StepResponse({ validated: true, order_id })
+  },
+  async (order_id, { container, context }) => {
+    if (!order_id) {return}
+
+    cancelOrderWorkflow(container).run({
+      input: {
+        order_id,
+      },
+      context,
+      container,
+    })
+  }
+)
+```
+
+The `validateRentalStep` accepts an array of rental items in the cart.
+
+In the step, you perform similar validations as in the `validateRentalCartItemStep`, but this time for all rental items in the cart.
+
+You validate that the rental configuration is active, the quantity is `1`, and the necessary rental metadata is present.
+
+You also check for overlaps between rental items in the cart and existing rentals for the same variant.
+
+If any validation fails, you throw an appropriate error. If all validations pass, you return a `StepResponse` indicating success.
+
+You also provide a compensation function that cancels the order if the validation fails after the order has been created.
+
+#### createRentalsForOrderStep
+
+The `createRentalsForOrderStep` creates rental records for rental items in the order after it has been created.
+
+To create the step, create the file `src/workflows/steps/create-rentals-for-order.ts` with the following content:
+
+```ts title="src/workflows/steps/create-rentals-for-order.ts" badgeLabel="Medusa Application" badgeColor="green"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { RENTAL_MODULE } from "../../modules/rental"
+import RentalModuleService from "../../modules/rental/service"
+import { OrderDTO } from "@medusajs/framework/types"
+
+export type CreateRentalsForOrderInput = {
+  order: OrderDTO
+}
+
+export const createRentalsForOrderStep = createStep(
+  "create-rentals-for-order",
+  async ({ order }: CreateRentalsForOrderInput, { container }) => {
+    const rentalModuleService: RentalModuleService = container.resolve(RENTAL_MODULE)
+
+    const rentalItems = (order.items || []).filter((item) => {
+      return item.metadata?.rental_start_date && 
+        item.metadata?.rental_end_date && item.metadata?.rental_days
+    })
+
+    if (rentalItems.length === 0) {
+      return new StepResponse([])
+    }
+
+    const rentals = await rentalModuleService.createRentals(
+      rentalItems.map((item) => {
+        const { 
+          variant_id,
+          metadata,
+        } = item
+        const rentalConfiguration = (item as any).variant?.product?.rental_configuration
+
+        return {
+          variant_id: variant_id!,
+          customer_id: order.customer_id,
+          order_id: order.id,
+          line_item_id: item.id,
+          rental_start_date: new Date(metadata?.rental_start_date as string),
+          rental_end_date: new Date(metadata?.rental_end_date as string),
+          rental_days: Number(metadata?.rental_days),
+          rental_configuration_id: rentalConfiguration?.id as string,
+        }
+      })
+    )
+
+    return new StepResponse(
+      rentals,
+      rentals.map((rental) => rental.id)
+    )
+  },
+  async (rentalIds, { container }) => {
+    if (!rentalIds) {return}
+
+    const rentalModuleService: RentalModuleService = container.resolve(RENTAL_MODULE)
+
+    // Delete all created rentals on rollback
+    await rentalModuleService.deleteRentals(rentalIds)
+  }
+)
+```
+
+The `createRentalsForOrderStep` accepts the order as input.
+
+In the step, you filter the order items to find rental items based on the presence of rental metadata.
+
+For each rental item, you create a rental record using the `createRentals` method from the Rental Module's service.
+
+In the compensation function, you delete the created rentals if an error occurs during the workflow's execution.
+
+#### Create Rentals Workflow
+
+You can now create the `createRentalsWorkflow` that uses the above steps.
+
+Create the file `src/workflows/create-rentals.ts` with the following content:
+
+```ts title="src/workflows/create-rentals.ts" badgeLabel="Medusa Application" badgeColor="green" collapsibleLines="1-21" expandButtonLabel="Show Imports"
+import { 
+  createWorkflow, 
+  WorkflowResponse, 
+  transform,
+  when,
+} from "@medusajs/framework/workflows-sdk"
+import { 
+  acquireLockStep,
+  completeCartWorkflow, 
+  releaseLockStep, 
+  useQueryGraphStep, 
+} from "@medusajs/medusa/core-flows"
+import { 
+  ValidateRentalInput, 
+  validateRentalStep,
+} from "./steps/validate-rental"
+import { 
+  CreateRentalsForOrderInput, 
+  createRentalsForOrderStep,
+} from "./steps/create-rentals-for-order"
+
+type CreateRentalsWorkflowInput = {
+  cart_id: string
+}
+
+export const createRentalsWorkflow = createWorkflow(
+  "create-rentals",
+  ({ cart_id }: CreateRentalsWorkflowInput) => {
+    const { data: carts } = useQueryGraphStep({
+      entity: "cart",
+      fields: [
+        "id",
+        "customer_id",
+        "items.*",
+        "items.variant_id",
+        "items.metadata",
+        "items.variant.product.rental_configuration.*",
+      ],
+      filters: { id: cart_id },
+      options: { throwIfKeyNotFound: true },
+    })
+
+    const rentalItems = transform({ carts }, ({ carts }) => {
+      const cart = carts[0]
+      const rentalItemsList: Record<string, unknown>[] = []
+
+      for (const item of cart.items || []) {
+        if (!item || !item.variant) {
+          continue
+        }
+
+        const rentalConfig = (item.variant as any)?.product?.rental_configuration
+
+        // Only include items that have an active rental configuration
+        if (rentalConfig && rentalConfig.status === "active") {
+          const metadata = item.metadata || {}
+
+          rentalItemsList.push({
+            line_item_id: item.id,
+            variant_id: item.variant_id,
+            quantity: item.quantity,
+            rental_configuration: rentalConfig,
+            rental_start_date: metadata.rental_start_date,
+            rental_end_date: metadata.rental_end_date,
+            rental_days: metadata.rental_days,
+          })
+        }
+      }
+
+      return rentalItemsList
+    })
+
+    acquireLockStep({
+      key: cart_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
+    const order = completeCartWorkflow.runAsStep({
+      input: { id: cart_id },
+    })
+
+    const { data: orders } = useQueryGraphStep({
+      entity: "order",
+      fields: [
+        "id", 
+        "items.*", 
+        "customer_id", 
+        "shipping_address.*", 
+        "billing_address.*",
+        "items.variant.product.rental_configuration.*",
+      ],
+      filters: { id: order.id },
+      options: { throwIfKeyNotFound: true },
+    }).config({ name: "retrieve-order" })
+
+    const { data: rentals } = useQueryGraphStep({
+      entity: "rental",
+      fields: [
+        "id",
+      ],
+      filters: { order_id: order.id },
+    }).config({ name: "retrieve-rentals" })
+
+    when(
+      { rentals, rentalItems }, 
+      (data) => data.rentals.length === 0 && data.rentalItems.length > 0
+    )
+    .then(() => {
+      validateRentalStep({ 
+        rental_items: rentalItems,
+        order_id: order.id,
+      } as unknown as ValidateRentalInput)
+      createRentalsForOrderStep({
+        order: orders[0],
+      } as unknown as CreateRentalsForOrderInput)
+    })
+
+    releaseLockStep({
+      key: cart_id,
+    })
+
+    // @ts-ignore
+    return new WorkflowResponse({
+      order: orders[0],
+    })
+  }
+)
+```
+
+You create the `createRentalsWorkflow` workflow that accepts the cart ID as input.
+
+In the workflow, you:
+
+1. Retrieve the cart details using the `useQueryGraphStep`.
+2. Extract the rental items from the cart.
+3. Acquire a lock on the cart to prevent race conditions.
+4. Complete the cart and create the order using the existing `completeCartWorkflow`.
+5. Retrieve the created order details using the `useQueryGraphStep`.
+6. Retrieve existing rentals for the order to ensure idempotency.
+    - This is essential to avoid creating duplicate rentals if the workflow is retried.
+7. Perform a condition with `when` to check that there are no existing rentals for the order and there are rental items in the cart. If the condition is met, you:
+    1. Validate the rental items in the cart using the `validateRentalStep`.
+    2. Create rental records for the rental items in the order using the `createRentalsForOrderStep`.
+8. Release the lock on the cart.
+9. Return the created order in the workflow response.
+
+### b. Create Rental Orders API Route
+
+Next, you'll create an API route that uses the `createRentalsWorkflow` to create rental orders.
+
+Create the file `src/api/store/rentals/[cart_id]/route.ts` with the following content:
+
+```ts title="src/api/store/rentals/[cart_id]/route.ts" badgeLabel="Medusa Application" badgeColor="green"
+import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { createRentalsWorkflow } from "../../../../workflows/create-rentals"
+
+export const POST = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const { cart_id } = req.params
+
+  const { result } = await createRentalsWorkflow(req.scope).run({
+    input: {
+      cart_id,
+    },
+  })
+
+  res.json({
+    type: "order",
+    order: result.order,
+  })
+}
+```
+
+You expose a `POST` API route at `/store/rentals/{cart_id}`. In the route handler, you execute the `createRentalsWorkflow`, passing it the cart ID from the request parameters.
+
+You return the created order in the response.
+
+You'll use this API route in the storefront to create rental orders.
+
+---
+
+## Step 12: Create Rental Orders in Storefront
+
+In this step, you'll customize the Next.js Starter Storefront to use the new rental order creation API route when placing an order.
+
+### a. Update Place Order Function
+
+First, you'll update the `placeOrder` function to use the rental order creation API route when placing an order.
+
+In `src/lib/data/cart.ts`, find the `placeOrder` function and update the JS SDK call to the following:
+
+```ts title="src/lib/data/cart.ts" badgeLabel="Storefront" badgeColor="blue"
+const cartRes = await sdk.client
+  .fetch<{ type: "order"; order: HttpTypes.StoreOrder }>(
+    `/store/rentals/${id}`,
+    {
+      method: "POST",
+      headers,
+    }
+  )
+// ...
+```
+
+You send a `POST` request to `/store/rentals/{cart_id}` to create the rental order.
+
+Also, in the same function, remove the return statement that returns `cartRes.cart` to avoid TypeScript errors:
+
+```ts title="src/lib/data/cart.ts" badgeLabel="Storefront" badgeColor="blue" highlights={[["5"]]}
+export async function placeOrder(cartId?: string) {
+  // ...
+  
+  // Remove this return statement
+  // return cartRes.cart
+}
+```
+
+### b. Show Rental Info in Order Confirmation
+
+Next, you'll customize the order confirmation component to show rental information for rentable items in the order.
+
+In `src/modules/order/components/item/index.tsx`, add the following below the `LineItemOptions` component in the `return` statement of the `Item` component:
+
+```tsx title="src/modules/order/components/item/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+{!!item.metadata?.rental_start_date && !!item.metadata?.rental_end_date && (
+  <Text className="txt-small text-ui-fg-muted">
+    Rental: {new Date(item.metadata.rental_start_date as string).toLocaleDateString("en-US", { 
+      month: "short", 
+      day: "numeric", 
+      year: "numeric", 
+    })}
+    {item.metadata.rental_days !== 1 && ` - ${new Date(item.metadata.rental_end_date as string).toLocaleDateString("en-US", { 
+      month: "short", 
+      day: "numeric", 
+      year: "numeric", 
+    })}`}
+  </Text>
+)}
+```
+
+You show the rental start and end dates if they're available in the line item's metadata.
+
+### Test Creating Rental Orders
+
+You can now test creating rental orders in the Next.js Starter Storefront.
+
+First, run both the Medusa server and the Next.js Starter Storefront.
+
+Then, in the storefront, open the cart that contains rental products. Proceed to checkout and complete the order.
+
+After placing the order, you'll be redirected to the order confirmation page, where you'll see the rental dates displayed under the product name and options.
+
+![Rental order confirmation in the storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1761661870/Medusa%20Resources/CleanShot_2025-10-28_at_16.30.14_2x_v8wbb7.png)
+
+---
+
+## Step 13: Manage Rentals in Admin
+
+In this step, you'll allow admin users to manage rentals in the Medusa Admin Dashboard. You will:
+
+1. Create an API route to retrieve rentals of an order.
+2. Create a workflow to update a rental's status.
+3. Create an API route to update a rental's status.
+4. Inject an admin widget to view and manage rentals of an order.
+
+### a. Retrieve Order Rentals API Route
+
+First, you'll create an API route to retrieve the rentals associated with a specific order.
+
+Create the file `src/api/admin/orders/[id]/rentals/route.ts` with the following content:
+
+```ts title="src/api/admin/orders/[id]/rentals/route.ts" badgeLabel="Medusa Application" badgeColor="green"
+import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+
+export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+  const { id } = req.params
+  const query = req.scope.resolve("query")
+
+  const { data: rentals } = await query.graph({
+    entity: "rental",
+    fields: [
+      "*",
+      "product_variant.id",
+      "product_variant.title",
+      "product_variant.product.id",
+      "product_variant.product.title",
+      "product_variant.product.thumbnail",
+    ],
+    filters: {
+      order_id: id,
+    },
+  })
+
+  res.json({ rentals })
+}
+```
+
+You expose a `GET` API route at `/admin/orders/{id}/rentals`. In the route handler, you use Query to retrieve the rentals associated with the specified order ID.
+
+### b. Update Rental Workflow
+
+Next, you'll create a workflow to update a rental's status.
+
+The workflow has a single step that updates the rental's status.
+
+#### updateRentalStep
+
+The `updateRentalStep` updates the rental's status with validation.
+
+To create the step, create the file `src/workflows/steps/update-rental.ts` with the following content:
+
+```ts title="src/workflows/steps/update-rental.ts" badgeLabel="Medusa Application" badgeColor="green"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { RENTAL_MODULE } from "../../modules/rental"
+import RentalModuleService from "../../modules/rental/service"
+import { MedusaError } from "@medusajs/framework/utils"
+
+type UpdateRentalInput = {
+  rental_id: string
+  status: "active" | "returned" | "cancelled"
+}
+
+export const updateRentalStep = createStep(
+  "update-rental",
+  async ({ rental_id, status }: UpdateRentalInput, { container }) => {
+    const rentalModuleService: RentalModuleService = container.resolve(RENTAL_MODULE)
+
+    const existingRental = await rentalModuleService.retrieveRental(rental_id)
+    const actualReturnDate = status === "returned" ? new Date() : null
+
+    if (status === "active" && existingRental.status !== "pending") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA, 
+        "Can't activate a rental that is not in a pending state."
+      )
+    }
+
+    if (status === "returned" && existingRental.status !== "active") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Can't return a rental that is not in an active state."
+      )
+    }
+    
+    if (status === "cancelled" && !["active", "pending"].includes(existingRental.status)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Can't cancel a rental that is not in an active or pending state."
+      )
+    }
+    
+    const updatedRental = await rentalModuleService.updateRentals({
+      id: rental_id,
+      status,
+      actual_return_date: actualReturnDate,
+    })
+
+    return new StepResponse(updatedRental, existingRental)
+  },
+  async (existingRental, { container }) => {
+    if (!existingRental) {return}
+
+    const rentalModuleService: RentalModuleService = container.resolve(RENTAL_MODULE)
+
+    await rentalModuleService.updateRentals({
+      id: existingRental.id,
+      status: existingRental.status,
+      actual_return_date: existingRental.actual_return_date,
+    })
+  }
+)
+```
+
+The `updateRentalStep` accepts the rental ID and the new status as input.
+
+In the step, you retrieve the existing rental and validate that the status change is allowed based on the current status.
+
+You then update the rental's status using the `updateRentals` method from the Rental Module's service.
+
+In the compensation function, you revert the rental to its previous status if an error occurs during the workflow's execution.
+
+#### Update Rental Workflow
+
+Next, you'll create the `updateRentalWorkflow` that uses the above step.
+
+Create the file `src/workflows/update-rental.ts` with the following content:
+
+```ts title="src/workflows/update-rental.ts" badgeLabel="Medusa Application" badgeColor="green"
+import { createWorkflow, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
+import { updateRentalStep } from "./steps/update-rental"
+
+type UpdateRentalWorkflowInput = {
+  rental_id: string
+  status: "active" | "returned" | "cancelled"
+}
+
+export const updateRentalWorkflow = createWorkflow(
+  "update-rental",
+  ({ rental_id, status }: UpdateRentalWorkflowInput) => {
+    // Update rental status
+    const updatedRental = updateRentalStep({
+      rental_id,
+      status,
+    })
+
+    return new WorkflowResponse(updatedRental)
+  }
+)
+```
+
+You create the `updateRentalWorkflow` workflow that accepts the rental ID and the new status as input.
+
+In the workflow, you update the rental's status using the `updateRentalStep` and return the updated rental in the workflow response.
+
+### c. Update Rental API Route
+
+Next, you'll create an API route that uses the `updateRentalWorkflow` to update a rental's status.
+
+Create the file `src/api/admin/rentals/[id]/route.ts` with the following content:
+
+```ts title="src/api/admin/rentals/[id]/route.ts" badgeLabel="Medusa Application" badgeColor="green"
+import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { updateRentalWorkflow } from "../../../../workflows/update-rental"
+import { z } from "@medusajs/framework/zod"
+
+export const PostRentalStatusBodySchema = z.object({
+  status: z.enum(["active", "returned", "cancelled"]),
+})
+
+export const POST = async (
+  req: MedusaRequest<z.infer<typeof PostRentalStatusBodySchema>>,
+  res: MedusaResponse
+) => {
+  const { id } = req.params
+  const { status } = req.validatedBody
+
+  const { result } = await updateRentalWorkflow(req.scope).run({
+    input: {
+      rental_id: id,
+      status,
+    },
+  })
+
+  res.json({ rental: result })
+}
+```
+
+You create a Zod schema to validate the request body, which includes the new rental status.
+
+You also expose a `POST` API route at `/admin/rentals/{id}`. In the route handler, you execute the `updateRentalWorkflow`, and return the updated rental in the response.
+
+### d. Apply Validation Middleware
+
+Next, you'll add validation middleware to ensure that the request body for updating a rental's status is valid.
+
+In `src/api/middlewares.ts`, add the following import at the top of the file:
+
+```ts title="src/api/middlewares.ts" badgeLabel="Medusa Application" badgeColor="green"
+import { PostRentalStatusBodySchema } from "./admin/rentals/[id]/route"
+```
+
+Then, pass a new object to the `routes` array in `defineMiddlewares`:
+
+```ts title="src/api/middlewares.ts" badgeLabel="Medusa Application" badgeColor="green"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/admin/rentals/:id",
+      methods: ["POST"],
+      middlewares: [
+        validateAndTransformBody(PostRentalStatusBodySchema),
+      ],
+    },
+  ],
+})
+```
+
+You apply the `validateAndTransformBody` middleware to the rental update route, using the `PostRentalStatusBodySchema` schema to validate incoming requests.
+
+### e. Inject Admin Widget
+
+Finally, you'll inject an admin widget into the order details page to view and manage rentals associated with the order.
+
+Create the file `src/admin/widgets/order-rental-items.tsx` with the following content:
+
+```tsx title="src/admin/widgets/order-rental-items.tsx" badgeLabel="Medusa Application" badgeColor="green" collapsibleLines="1-18" expandButtonLabel="Show Imports"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import {
+  Container,
+  Heading,
+  Text,
+  Button,
+  Drawer,
+  Label,
+  Select,
+  toast,
+  Badge,
+  Table,
+} from "@medusajs/ui"
+import { useQuery, useMutation } from "@tanstack/react-query"
+import { sdk } from "../lib/sdk"
+import { DetailWidgetProps, AdminOrder } from "@medusajs/framework/types"
+import { useEffect, useState } from "react"
+
+type Rental = {
+  id: string
+  variant_id: string
+  customer_id: string
+  order_id: string
+  line_item_id: string
+  rental_start_date: string
+  rental_end_date: string
+  actual_return_date: string | null
+  rental_days: number
+  status: "pending" | "active" | "returned" | "cancelled"
+  product_variant?: {
+    id: string
+    title: string
+    product?: {
+      id: string
+      title: string
+      thumbnail: string
+    }
+  }
+}
+
+type RentalsResponse = {
+  rentals: Rental[]
+}
+
+const OrderRentalItemsWidget = ({
+  data: order,
+}: DetailWidgetProps<AdminOrder>) => {
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [selectedRental, setSelectedRental] = useState<Rental | null>(null)
+  const [newStatus, setNewStatus] = useState("")
+
+  const { data, refetch } = useQuery<RentalsResponse>({
+    queryFn: () =>
+      sdk.client.fetch(
+        `/admin/orders/${order.id}/rentals`
+      ),
+    queryKey: [["orders", order.id, "rentals"]],
+  })
+
+  useEffect(() => {
+    if (data?.rentals.length) {
+      setSelectedRental(data.rentals[0])
+      setNewStatus(data.rentals[0].status)
+    }
+  }, [data?.rentals])
+
+  // TODO add mutation
+}
+
+export const config = defineWidgetConfig({
+  zone: "order.details.after",
+})
+
+export default OrderRentalItemsWidget
+```
+
+You create the `OrderRentalItemsWidget` component that will be injected into the order details page in the admin dashboard.
+
+In the component, you define the following state variables:
+
+- `drawerOpen`: Controls the visibility of the rental management drawer.
+- `selectedRental`: Holds the currently selected rental for management.
+- `newStatus`: Holds the new status selected for the rental being managed.
+
+You also retrieve the rentals associated with the order, and set the initial selected rental and status when the data is loaded.
+
+Next, you'll add a mutation for updating a rental's status. Replace the `// TODO add mutation` comment with the following code:
+
+```tsx title="src/admin/widgets/order-rental-items.tsx" badgeLabel="Medusa Application" badgeColor="green"
+const updateMutation = useMutation({
+  mutationFn: async (params: { rentalId: string; status: string }) => {
+    return sdk.client.fetch(`/admin/rentals/${params.rentalId}`, {
+      method: "POST",
+      body: { status: params.status },
+    })
+  },
+  onSuccess: () => {
+    toast.success("Rental status updated successfully")
+    refetch()
+    setDrawerOpen(false)
+    setSelectedRental(null)
+  },
+  onError: (error) => {
+    toast.error(`Failed to update rental status: ${error.message}`)
+  },
+})
+
+// TODO add helper functions
+```
+
+The mutation sends a `POST` request to the rental update API route with the new status.
+
+Next, you'll add helper functions to handle events and formatting. Replace the `// TODO add helper functions` comment with the following code:
+
+```tsx title="src/admin/widgets/order-rental-items.tsx" badgeLabel="Medusa Application" badgeColor="green"
+const handleOpenDrawer = (rental: Rental) => {
+  setSelectedRental(rental)
+  setNewStatus(rental.status)
+  setDrawerOpen(true)
+}
+
+const handleSubmit = () => {
+  if (!selectedRental) {
+    return
+  }
+
+  updateMutation.mutate({
+    rentalId: selectedRental.id,
+    status: newStatus,
+  })
+}
+
+const getStatusBadgeColor = (status: string) => {
+  switch (status) {
+    case "active":
+      return "green"
+    case "returned":
+      return "blue"
+    case "cancelled":
+      return "red"
+    case "pending":
+      return "orange"
+    default:
+      return "grey"
+  }
+}
+
+const formatStatus = (status: string) => {
+  return status.charAt(0).toUpperCase() + status.slice(1)
+}
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString()
+}
+
+// TODO add return statement
+```
+
+You define the following functions:
+
+- `handleOpenDrawer`: Opens the rental management drawer for the selected rental.
+- `handleSubmit`: Submits the rental status update.
+- `getStatusBadgeColor`: Returns the badge color based on the rental status.
+- `formatStatus`: Formats the rental status string.
+- `formatDate`: Formats a date string into a readable format.
+
+Finally, you'll add the return statement to render the component UI. Replace the `// TODO add return statement` comment with the following code:
+
+```tsx title="src/admin/widgets/order-rental-items.tsx" badgeLabel="Medusa Application" badgeColor="green"
+if (!data?.rentals.length) {
+  return null
+}
+
+return (
+  <>
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">Rental Items</Heading>
+      </div>
+      <Table>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>Product</Table.HeaderCell>
+            <Table.HeaderCell>Start Date</Table.HeaderCell>
+            <Table.HeaderCell>End Date</Table.HeaderCell>
+            <Table.HeaderCell>Status</Table.HeaderCell>
+            <Table.HeaderCell>Actions</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {data.rentals.map((rental) => (
+            <Table.Row key={rental.id}>
+              <Table.Cell className="py-4">
+                <div className="flex items-start gap-4">
+                  {rental.product_variant?.product?.thumbnail && (
+                    <img
+                      src={rental.product_variant?.product?.thumbnail || ""}
+                      alt={rental.product_variant?.product?.title || ""}
+                      className="w-6 h-8 object-cover rounded border border-ui-border-base"
+                    />
+                  )}
+                  <div>
+                    <Text weight="plus" size="small" className="text-ui-fg-base">
+                      {rental.product_variant?.product?.title || "N/A"}
+                    </Text>
+                    <Text size="xsmall" className="text-ui-fg-subtle">
+                      {rental.product_variant?.title || "N/A"}
+                    </Text>
+                  </div>
+                </div>
+              </Table.Cell>
+              <Table.Cell>
+                {formatDate(rental.rental_start_date)}
+              </Table.Cell>
+              <Table.Cell>
+                {formatDate(rental.rental_end_date)}
+              </Table.Cell>
+              <Table.Cell>
+                <Badge color={getStatusBadgeColor(rental.status)} size="2xsmall">
+                  {formatStatus(rental.status)}
+                </Badge>
+              </Table.Cell>
+              <Table.Cell>
+                <Button
+                  size="small"
+                  variant="transparent"
+                  onClick={() => handleOpenDrawer(rental)}
+                  className="p-0 text-ui-fg-subtle"
+                >
+                  Update Status
+                </Button>
+              </Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    </Container>
+
+    <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+      <Drawer.Content>
+        <Drawer.Header>
+          <Drawer.Title>Update Rental Status</Drawer.Title>
+        </Drawer.Header>
+        <Drawer.Body className="space-y-4">
+          {selectedRental && (
+            <>
+              <div>
+                <Text weight="plus" className="mb-2">
+                  Rental Details
+                </Text>
+                <div className="space-y-1">
+                  <Text size="small">
+                    Product:{" "}
+                    {selectedRental.product_variant?.product?.title || "N/A"}
+                  </Text>
+                  <Text size="small">
+                    Variant: {selectedRental.product_variant?.title || "N/A"}
+                  </Text>
+                  <Text size="small">
+                    Rental Period: {formatDate(selectedRental.rental_start_date)} to{" "}
+                    {formatDate(selectedRental.rental_end_date)} ({selectedRental.rental_days}{" "}
+                    days)
+                  </Text>
+                </div>
+              </div>
+              <hr />
+              <div className="space-y-1">
+                <Label htmlFor="status" className="txt-compact-small font-medium">Status</Label>
+                <Select value={newStatus} onValueChange={setNewStatus}>
+                  <Select.Trigger id="status">
+                    <Select.Value />
+                  </Select.Trigger>
+                  <Select.Content>
+                    <Select.Item value="pending" disabled className="text-ui-fg-disabled">Pending</Select.Item>
+                    <Select.Item value="active">Active</Select.Item>
+                    <Select.Item value="returned">Returned</Select.Item>
+                    <Select.Item value="cancelled">Cancelled</Select.Item>
+                  </Select.Content>
+                </Select>
+              </div>
+            </>
+          )}
+        </Drawer.Body>
+        <Drawer.Footer>
+          <div className="flex gap-2">
+            <Button
+              variant="secondary"
+              onClick={() => setDrawerOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              disabled={updateMutation.isPending || newStatus === selectedRental?.status}
+              isLoading={updateMutation.isPending}
+            >
+              Save
+            </Button>
+          </div>
+        </Drawer.Footer>
+      </Drawer.Content>
+    </Drawer>
+  </>
+)
+```
+
+If there are no rentals, you return `null` to avoid rendering the widget.
+
+Otherwise, you show a table of rental items associated with the order, along with a button to update the status of each rental.
+
+When the "Update Status" button is clicked, a drawer opens, allowing the admin user to change the rental's status.
+
+### Test Managing Rentals in Admin
+
+You can now test managing rentals in the Medusa Admin Dashboard.
+
+First, start the Medusa application and log in.
+
+Then, go to Orders and click on an order that contains rental items.
+
+In the order details page, you'll see a new "Rental Items" section with a table listing the rental items associated with the order.
+
+![Rental items in admin order details page](https://res.cloudinary.com/dza7lstvk/image/upload/v1761662993/Medusa%20Resources/CleanShot_2025-10-28_at_16.49.29_2x_usufnn.png)
+
+You can click the "Update Status" button for a rental item to open the drawer and edit its status.
+
+![Update rental status drawer in admin](https://res.cloudinary.com/dza7lstvk/image/upload/v1761663069/Medusa%20Resources/CleanShot_2025-10-28_at_16.50.35_2x_bzmaoq.png)
+
+You can change the rental status and save the changes. The rental status will be updated accordingly.
+
+---
+
+## Step 14: Handle Order Cancellation
+
+Medusa Admin users can cancel orders. So, in this step, you'll customize the order cancellation flow to validate that rental items in the order can be cancelled based on their rental status. You'll also update the rental statuses when an order is cancelled.
+
+### a. Validate Rental Items on Order Cancellation
+
+To add custom validation when cancelling an order, you'll consume the `orderCanceled` hook of the `cancelOrderWorkflow`. A [workflow hook](!docs!/learn/fundamentals/workflows/workflow-hooks) allows you to run custom steps at specific points in a workflow.
+
+To consume the `orderCanceled` hook, create the file `src/workflows/hooks/validate-order-cancel.ts` with the following content:
+
+```ts title="src/workflows/hooks/validate-order-cancel.ts" badgeLabel="Medusa Application" badgeColor="green"
+import { cancelOrderWorkflow } from "@medusajs/medusa/core-flows"
+import { MedusaError, ContainerRegistrationKeys } from "@medusajs/framework/utils"
+
+cancelOrderWorkflow.hooks.orderCanceled(
+  async ({ order }, { container }) => {
+    const query = container.resolve(ContainerRegistrationKeys.QUERY)
+
+    // Retrieve all rentals associated with this order
+    const { data: rentals } = await query.graph({
+      entity: "rental",
+      fields: ["id", "status", "variant_id"],
+      filters: {
+        order_id: order.id,
+      },
+    })
+
+    // Validate that all rentals are in a cancelable state
+    // Only pending, active, or already cancelled rentals can be part of a canceled order
+    const nonCancelableRentals = rentals.filter(
+      (rental: any) => !["pending", "active", "cancelled"].includes(rental.status)
+    )
+
+    if (nonCancelableRentals.length > 0) {
+      const problematicRentals = nonCancelableRentals
+        .map((r: any) => `${r.id} (${r.status})`)
+        .join(", ")
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `Cannot cancel order. Some rentals cannot be canceled: ${problematicRentals}. Only rentals with status "pending", "active", or "cancelled" can be canceled with the order.`
+      )
+    }
+  }
+)
+```
+
+You consume the `orderCanceled` hook of the `cancelOrderWorkflow`, passing it a step function.
+
+In the subscriber function, you retrieve all rentals associated with the order being cancelled. If a rental's status is `returned`, you throw an error. This will roll back the changes made by the `cancelOrderWorkflow`, preventing the order from being cancelled.
+
+#### Test Order Cancellation Validation
+
+To test the order cancellation validation, try to cancel an order from the Medusa Admin that has rental items with `returned` status. The order cancellation should fail.
+
+### b. Update Rental Statuses on Order Cancellation
+
+Next, you'll update the rental statuses when an order is cancelled.
+
+When an order is cancelled, Medusa emits an `order.canceled` event. You can handle this event in a [subscriber](!docs!/learn/fundamentals/events-and-subscribers).
+
+A subscriber is an asynchronous function that executes actions in the background when specific events are emitted.
+
+To create the subscriber, create the file `src/subscribers/order-canceled.ts` with the following content:
+
+```ts title="src/subscribers/order-canceled.ts" badgeLabel="Medusa Application" badgeColor="green"
+import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
+import { updateRentalWorkflow } from "../workflows/update-rental"
+
+export default async function orderCanceledHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  const logger = container.resolve("logger")
+  const query = container.resolve("query")
+
+  logger.info(`Processing rental cancellations for order ${data.id}`)
+
+  try {
+    // Retrieve all rentals associated with the canceled order
+    const { data: rentals } = await query.graph({
+      entity: "rental",
+      fields: ["id", "status"],
+      filters: {
+        order_id: data.id,
+        status: {
+          $ne: "cancelled",
+        },
+      },
+    })
+
+    if (!rentals || rentals.length === 0) {
+      logger.info(`No rentals found for order ${data.id}`)
+      return
+    }
+
+    logger.info(`Found ${rentals.length} rental(s) to cancel for order ${data.id}`)
+
+    // Update each rental's status to cancelled
+    let successCount = 0
+    let errorCount = 0
+
+    for (const rental of rentals) {
+      try {
+        await updateRentalWorkflow(container).run({
+          input: {
+            rental_id: (rental as any).id,
+            status: "cancelled",
+          },
+        })
+        successCount++
+        logger.info(`Cancelled rental ${(rental as any).id}`)
+      } catch (error) {
+        errorCount++
+        logger.error(
+          `Failed to cancel rental ${(rental as any).id}: ${error.message}`
+        )
+      }
+    }
+
+    logger.info(
+      `Rental cancellation complete for order ${data.id}: ${successCount} succeeded, ${errorCount} failed`
+    )
+  } catch (error) {
+    logger.error(`Error in orderCanceledHandler: ${error.message}`)
+  }
+}
+
+export const config: SubscriberConfig = {
+  event: "order.canceled",
+}
+```
+
+A subscriber file must export:
+
+- An asynchronous function that is executed when its associated event is emitted.
+- An object that indicates the event that the subscriber is listening to.
+
+In the subscriber function, you retrieve all rentals associated with the cancelled order that are not already cancelled.
+
+Then, you iterate over the rentals and update their status to `cancelled` using the `updateRentalWorkflow`.
+
+#### Test Rental Status Update on Order Cancellation
+
+To test the rental status update on order cancellation, cancel an order from the Medusa Admin that has rental items with `pending` or `active` status.
+
+Then, refresh the page. You'll see that the rental items' statuses have been updated to `cancelled`.
+
+![Cancelled rentals in admin](https://res.cloudinary.com/dza7lstvk/image/upload/v1761665415/Medusa%20Resources/CleanShot_2025-10-28_at_17.29.55_2x_apkc5n.png)
+
+---
+
+## Optional: Automate Rental Status Updates
+
+In realistic scenarios, you might want to automate rental status updates based on specific events, rental periods, or external triggers.
+
+In this optional step, you'll explore two approaches to automate rental status updates:
+
+1. Using a [scheduled job](!docs!/learn/fundamentals/scheduled-jobs) to periodically check and update rental statuses.
+2. Handling events like `shipment.created` to update rental statuses when shipments are created.
+
+You can also implement other approaches based on your use case.
+
+### a. Scheduled Job for Rental Status Updates
+
+A scheduled job is an asynchronous function that runs tasks at specific intervals while the Medusa application is running. You can use scheduled jobs to change a rental's status based on the rental period.
+
+For example, to automatically mark rentals as `active` when their rental start date is reached, create a scheduled job at `src/jobs/activate-rentals.ts` with the following content:
+
+```ts title="src/jobs/activate-rentals.ts" badgeLabel="Medusa Application" badgeColor="green"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import { updateRentalWorkflow } from "../workflows/update-rental"
+
+export default async function activateRentalsJob(container: MedusaContainer) {
+  const logger = container.resolve("logger")
+  const query = container.resolve(ContainerRegistrationKeys.QUERY)
+
+  // Get current date at start of day for comparison
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  // Get tomorrow at start of day
+  const tomorrow = new Date(today)
+  tomorrow.setDate(tomorrow.getDate() + 1)
+
+  try {
+    // Find all pending rentals whose start date is today
+    const { data: rentalsToActivate } = await query.graph({
+      entity: "rental",
+      fields: ["id", "rental_start_date", "status"],
+      filters: {
+        status: ["pending"],
+        rental_start_date: {
+          $gte: today,
+          $lt: tomorrow,
+        },
+      },
+    })
+
+    if (rentalsToActivate.length === 0) {
+      logger.info("No pending rentals to activate today")
+      return
+    }
+
+    logger.info(`Found ${rentalsToActivate.length} rentals to activate today`)
+
+    // Activate each rental using the workflow
+    let successCount = 0
+    let errorCount = 0
+
+    for (const rental of rentalsToActivate) {
+      try {
+        await updateRentalWorkflow(container).run({
+          input: {
+            rental_id: rental.id,
+            status: "active",
+          },
+        })
+        successCount++
+        logger.info(`Activated rental ${rental.id}`)
+      } catch (error) {
+        errorCount++
+        logger.error(`Failed to activate rental ${rental.id}: ${error.message}`)
+      }
+    }
+
+    logger.info(
+      `Rental activation complete: ${successCount} succeeded, ${errorCount} failed`
+    )
+  } catch (error) {
+    logger.error(`Error in rental activation job: ${error.message}`)
+  }
+}
+
+export const config = {
+  name: "activate-rentals",
+  schedule: "0 0 * * *", // Every day at midnight
+}
+```
+
+A scheduled job file must export:
+
+- An asynchronous function that is executed at the specified interval in the configuration object.
+- A configuration object that specifies when to execute the scheduled job. The schedule is defined as a cron pattern.
+
+This scheduled job runs every day at midnight. In the job function, you retrieve all rentals with `pending` status whose rental start date is the current date.
+
+Then, you update their status to `active` using the `updateRentalWorkflow`.
+
+#### Test Scheduled Job
+
+To test the scheduled job, you can change its `schedule` property to run every minute:
+
+```ts title="src/jobs/activate-rentals.ts" badgeLabel="Medusa Application" badgeColor="green"
+export const config = {
+  name: "activate-rentals",
+  schedule: "*/1 * * * *", // Every minute
+}
+```
+
+Then, start the Medusa application and wait for a minute. You should see log messages indicating that the job is running and has activated any pending rentals whose start date is today.
+
+### b. Event-Driven Rental Status Updates
+
+You can also update rental statuses based on specific [events](/references/events) in Medusa.
+
+For example, you might want to mark rentals as `active` when their associated shipments are created. You can do this by creating a subscriber that listens to the `shipment.created` event:
+
+```ts title="src/subscribers/shipment-created.ts" badgeLabel="Medusa Application" badgeColor="green"
+import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import { updateRentalWorkflow } from "../workflows/update-rental"
+
+export default async function shipmentCreatedHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string; no_notification?: boolean }>) {
+  const logger = container.resolve("logger")
+  const query = container.resolve(ContainerRegistrationKeys.QUERY)
+
+  logger.info(`Processing rental activations for shipment ${data.id}`)
+
+  try {
+    // Retrieve the fulfillment with its items
+    const { data: fulfillments } = await query.graph({
+      entity: "fulfillment",
+      fields: ["id", "items.*", "items.line_item_id"],
+      filters: {
+        id: data.id,
+      },
+    })
+
+    if (!fulfillments || fulfillments.length === 0) {
+      logger.warn(`Fulfillment ${data.id} not found`)
+      return
+    }
+
+    const fulfillment = fulfillments[0]
+    const lineItemIds = (fulfillment as any).items?.map((item: any) => item.line_item_id) || []
+
+    if (lineItemIds.length === 0) {
+      logger.info(`No items found in fulfillment ${data.id}`)
+      return
+    }
+
+    logger.info(`Found ${lineItemIds.length} item(s) in fulfillment ${data.id}`)
+
+    // Retrieve all rentals associated with these line items
+    const { data: rentals } = await query.graph({
+      entity: "rental",
+      fields: ["id", "status", "line_item_id", "variant_id"],
+      filters: {
+        line_item_id: lineItemIds,
+        status: "pending",
+      },
+    })
+
+    if (!rentals || rentals.length === 0) {
+      logger.info(`No rentals found for fulfillment ${data.id}`)
+      return
+    }
+
+    logger.info(`Found ${rentals.length} rental(s) to activate for fulfillment ${data.id}`)
+
+    // Update each rental's status to active
+    let successCount = 0
+    let errorCount = 0
+
+    for (const rental of rentals) {      
+      try {
+        await updateRentalWorkflow(container).run({
+          input: {
+            rental_id: rental.id,
+            status: "active",
+          },
+        })
+        successCount++
+        logger.info(`Activated rental ${rental.id} (variant: ${rental.variant_id})`)
+      } catch (error) {
+        errorCount++
+        logger.error(
+          `Failed to activate rental ${rental.id}: ${error.message}`
+        )
+      }
+    }
+
+    logger.info(
+      `Rental activation complete for shipment ${data.id}: ${successCount} activated, ${errorCount} failed`
+    )
+  } catch (error) {
+    logger.error(`Error in shipmentCreatedHandler: ${error.message}`)
+  }
+}
+
+export const config: SubscriberConfig = {
+  event: "shipment.created",
+}
+```
+
+You create a subscriber that listens to the `shipment.created` event. In the subscriber function, you:
+
+1. Retrieve the fulfillment associated with the shipment.
+2. Extract the line item IDs from the fulfillment.
+3. Retrieve all rentals associated with those line items that are in `pending` status.
+4. Update their status to `active` using the `updateRentalWorkflow`.
+
+#### Test Event-Driven Rental Status Update
+
+To test the event-driven rental status update, create a fulfillment for an order that has rental items with `pending` status from the Medusa Admin. Then, mark the fulfillment as shipped.
+
+If you refresh the order details page, you should see that the rental items' statuses have been updated to `active`.
+
+![Activated rentals after shipment creation in admin](https://res.cloudinary.com/dza7lstvk/image/upload/v1761665929/Medusa%20Resources/CleanShot_2025-10-28_at_17.38.04_2x_xgwwan.png)
+
+---
+
+## Optional: Remove Shipping for Rental Items
+
+In some scenarios, a rentable item might not require shipping. For example, if the rental item is digital.
+
+You can remove the shipping requirement for rentable items by:
+
+1. Removing the associated shipping profile of the product. You can do this from the Medusa Admin.
+2. Customizing the checkout flow in the storefront to remove the delivery step for orders that only contain rentable items.
+
+Learn more about customizing shipping requirements for products in the [Selling Products](../../../commerce-modules/product/selling-products/page.mdx) guide.
+
+---
+
+## Optional: Handling Inventory for Rental Items
+
+Medusa provides optional [inventory management for product variants](../../../commerce-modules/product/variant-inventory/page.mdx). If enabled, Medusa will increment and decrement inventory levels for product variants when orders are placed, fulfilled, or returned.
+
+Handling inventory for rental products depends on your specific use case:
+
+1. No inventory management: If inventory of rental products is not a concern, you can disable inventory management for rental product variants. The product variants will always be considered in-stock, and only the rental logic will govern their availability.
+2. Standard inventory management: If you want to manage inventory for rental products, you can enable inventory management for rental product variants. In this case, you'll need to ensure that inventory levels are adjusted appropriately based on rental status changes.
+
+For example, in the `updateRentalWorkflow`, you might want to increment inventory when the rental is marked as `returned`:
+
+<Note title="Tip">
+
+Medusa creates a reservation for the inventory of a product variant when an order is placed, and decrements the inventory when the order is fulfilled. So, you don't need to manually adjust inventory when a rental is created or activated.
+
+</Note>
+
+```ts title="src/workflows/update-rental.ts" badgeLabel="Medusa Application" badgeColor="green"
+import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
+import { updateRentalStep } from "./steps/update-rental"
+import { adjustInventoryLevelsStep, useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+type UpdateRentalWorkflowInput = {
+  rental_id: string
+  status: "active" | "returned" | "cancelled"
+}
+
+export const updateRentalWorkflow = createWorkflow(
+  "update-rental",
+  ({ rental_id, status }: UpdateRentalWorkflowInput) => {
+    // Update rental status
+    const updatedRental = updateRentalStep({
+      rental_id,
+      status,
+    })
+    
+    when({ updatedRental }, (data) => data.updatedRental.status === "returned" )
+      .then(() => {
+        // Retrieve variant inventory details
+        const { data: variants } = useQueryGraphStep({
+          entity: "variant",
+          fields: [
+            "inventory.*",
+            "inventory.location_levels.*",
+          ],
+          filters: {
+            id: updatedRental.variant_id,
+          },
+        })
+
+        // Prepare inventory adjustment
+        const stockUpdate = transform({
+          variants,
+        }, (data) => {
+          const inventoryUpdates: {
+            inventory_item_id: string
+            location_id: string
+            adjustment: number
+          }[] = []
+
+          data.variants[0].inventory?.map((inv) => {
+            inv?.location_levels?.map((locLevel) => {
+              inventoryUpdates.push({
+                inventory_item_id: inv!.id,
+                location_id: locLevel!.location_id,
+                adjustment: 1,
+              })
+            })
+          })
+
+          return inventoryUpdates
+        })
+
+        // Adjust inventory levels
+        adjustInventoryLevelsStep(stockUpdate)
+      })
+
+    return new WorkflowResponse(updatedRental)
+  }
+)
+```
+
+---
+
+## Next Steps
+
+You have now implemented product rentals in your Medusa application. You can expand on this foundation by adding more features, such as allowing customers to view and manage their rentals from the storefront.
+
+### Learn More about Medusa
+
+If you're new to Medusa, check out the [main documentation](!docs!/learn), where you'll get a more in-depth understanding of all the concepts you've used in this guide and more.
+
+To learn more about the commerce features that Medusa provides, check out Medusa's [Commerce Modules](../../../commerce-modules/page.mdx).
+
+### Troubleshooting
+
+If you encounter issues during your development, check out the [troubleshooting guides](../../../troubleshooting/page.mdx).
+
+### Getting Help
+
+If you encounter issues not covered in the troubleshooting guides:
+
+1. Visit the [Medusa GitHub repository](https://github.com/medusajs/medusa) to report issues or ask questions.
+2. Join the [Medusa Discord community](https://discord.gg/medusajs) for real-time support from community members.

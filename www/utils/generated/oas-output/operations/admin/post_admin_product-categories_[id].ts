@@ -112,9 +112,9 @@
  *   - name: product-category.updated
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the product category
- *       }]
+ *       }
  *       ```
  *     description: Emitted when product categories are updated.
  *     deprecated: false

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/icons",
-  "version": "2.11.2",
+  "version": "2.13.6",
   "description": "Medusa UI React icon library",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "license": "MIT",
@@ -21,41 +21,18 @@
   "scripts": {
     "build": "yarn build:bundles && yarn build:types",
     "build:bundles": "rollup -c ./rollup.config.mjs",
-    "build:types": "tsc --emitDeclarationOnly",
-    "test": "vitest --run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest --run --coverage",
-    "generate": "rimraf ./src/components && toolbox icons -o './src/components'"
+    "build:types": "yarn run -T tsc --emitDeclarationOnly",
+    "test": "../../../node_modules/.bin/vitest --run",
+    "test:watch": "../../../node_modules/.bin/vitest",
+    "test:coverage": "../../../node_modules/.bin/vitest --run --coverage",
+    "generate": "yarn run -T rimraf ./src/components && toolbox icons -o './src/components'"
   },
   "devDependencies": {
-    "@atomico/rollup-plugin-sizes": "^1.1.4",
-    "@medusajs/toolbox": "2.11.2",
-    "@rollup/plugin-node-resolve": "^15.1.0",
-    "@rollup/plugin-replace": "^5.0.2",
-    "@testing-library/dom": "^9.3.1",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^14.0.0",
-    "@types/jsdom": "^21.1.1",
-    "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.6",
-    "esbuild": "^0.18.11",
-    "eslint": "^7.32.0",
-    "jsdom": "^22.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "resize-observer-polyfill": "^1.5.1",
-    "rimraf": "^5.0.1",
-    "rollup": "^3.26.0",
-    "rollup-plugin-esbuild": "^5.0.0",
-    "rollup-plugin-license": "^3.0.1",
-    "rollup-plugin-ts": "^3.2.0",
-    "rollup-plugin-visualizer": "^5.9.2",
-    "typescript": "^5.1.6",
-    "vite": "^5.4.14",
-    "vitest": "^3.0.5"
+    "@medusajs/toolbox": "2.13.6",
+    "react": "^18.3.1"
   },
   "peerDependencies": {
-    "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc"
+    "react": "^18.3.1"
   },
   "packageManager": "yarn@3.2.1",
   "publishConfig": {

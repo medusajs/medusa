@@ -29,7 +29,10 @@ export const SplitList = ({ items, listsNum = 2 }: SplitListProps) => {
   }, [items, listsNum])
 
   return (
-    <div className="flex flex-col md:flex-row gap-docs_0.5 w-full">
+    <div
+      className="flex flex-col md:flex-row gap-docs_0.5 w-full"
+      data-testid="split-list-container"
+    >
       {lists.map((list, index) => (
         <ul key={index} className="flex-1">
           {list.map((item) => (
@@ -37,7 +40,13 @@ export const SplitList = ({ items, listsNum = 2 }: SplitListProps) => {
               <Link href={item.link}>{item.title}</Link>
               {item.description && (
                 <>
-                  : <p className="text-docs_3">{item.description}</p>
+                  :{" "}
+                  <p
+                    className="text-docs_3"
+                    data-testid="split-list-description"
+                  >
+                    {item.description}
+                  </p>
                 </>
               )}
             </li>

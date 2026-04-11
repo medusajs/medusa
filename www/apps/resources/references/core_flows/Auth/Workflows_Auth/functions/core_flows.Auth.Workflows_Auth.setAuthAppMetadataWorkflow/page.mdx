@@ -1,0 +1,258 @@
+---
+slug: /references/medusa-workflows/setAuthAppMetadataWorkflow
+sidebar_label: setAuthAppMetadataWorkflow
+sidebar_description: ""
+tags:
+  - auth
+  - workflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# setAuthAppMetadataWorkflow - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `setAuthAppMetadataWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow sets the `app_metadata` property of an auth identity. This is useful to
+associate a user (whether it's an admin user or customer) with an auth identity
+that allows them to authenticate into Medusa.
+
+You can learn more about auth identites in
+[this documentation](https://docs.medusajs.com/resources/commerce-modules/auth/auth-identity-and-actor-types).
+
+To use this for a custom actor type, check out [this guide](https://docs.medusajs.com/resources/commerce-modules/auth/create-actor-type)
+that explains how to create a custom `manager` actor type and manage its users.
+
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/auth/workflows/set-auth-app-metadata.ts#L47" />
+
+## Examples
+
+To associate an auth identity with an actor type (user, customer, or other actor types):
+
+<CodeTabs group="workflow-exection">
+    <CodeTab label="API Route" value="api-route">
+    
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { setAuthAppMetadataWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await setAuthAppMetadataWorkflow(req.scope).run({
+    input: {
+      authIdentityId: "au_1234",
+      actorType: "user", // or `customer`, or custom type
+      value: "user_123"
+    }
+  })
+
+  res.send(result)
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Subscriber" value="subscriber">
+    
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { setAuthAppMetadataWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await setAuthAppMetadataWorkflow(container).run({
+    input: {
+      authIdentityId: "au_1234",
+      actorType: "user", // or `customer`, or custom type
+      value: "user_123"
+    }
+  })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Scheduled Job" value="scheduled-job">
+    
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { setAuthAppMetadataWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await setAuthAppMetadataWorkflow(container).run({
+    input: {
+      authIdentityId: "au_1234",
+      actorType: "user", // or `customer`, or custom type
+      value: "user_123"
+    }
+  })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Another Workflow" value="another-workflow">
+    
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { setAuthAppMetadataWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = setAuthAppMetadataWorkflow.runAsStep({
+      input: {
+        authIdentityId: "au_1234",
+        actorType: "user", // or `customer`, or custom type
+        value: "user_123"
+      }
+    })
+  }
+)
+```
+
+    </CodeTab>
+  </CodeTabs>
+
+To remove the association with an actor type, such as when deleting the user:
+
+<CodeTabs group="workflow-exection">
+    <CodeTab label="API Route" value="api-route">
+    
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { setAuthAppMetadataWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await setAuthAppMetadataWorkflow(req.scope).run({
+    input: {
+      authIdentityId: "au_1234",
+      actorType: "user", // or `customer`, or custom type
+      value: null
+    }
+  })
+
+  res.send(result)
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Subscriber" value="subscriber">
+    
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { setAuthAppMetadataWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await setAuthAppMetadataWorkflow(container).run({
+    input: {
+      authIdentityId: "au_1234",
+      actorType: "user", // or `customer`, or custom type
+      value: null
+    }
+  })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Scheduled Job" value="scheduled-job">
+    
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { setAuthAppMetadataWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await setAuthAppMetadataWorkflow(container).run({
+    input: {
+      authIdentityId: "au_1234",
+      actorType: "user", // or `customer`, or custom type
+      value: null
+    }
+  })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Another Workflow" value="another-workflow">
+    
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { setAuthAppMetadataWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = setAuthAppMetadataWorkflow.runAsStep({
+      input: {
+        authIdentityId: "au_1234",
+        actorType: "user", // or `customer`, or custom type
+        value: null
+      }
+    })
+  }
+)
+```
+
+    </CodeTab>
+  </CodeTabs>
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"setAuthAppMetadataWorkflow","steps":[{"type":"step","name":"setAuthAppMetadataStep","description":"This step sets the `app_metadata` property of an auth identity. This is useful to\nassociate a user (whether it's an admin user or customer) with an auth identity\nthat allows them to authenticate into Medusa.\n\nYou can learn more about auth identites in\n[this documentation](https://docs.medusajs.com/resources/commerce-modules/auth/auth-identity-and-actor-types).\n\nTo use this for a custom actor type, check out [this guide](https://docs.medusajs.com/resources/commerce-modules/auth/create-actor-type)\nthat explains how to create a custom `manager` actor type and manage its users.","link":"../../../Steps_Auth/functions/core_flows.Auth.Steps_Auth.setAuthAppMetadataStep/page.mdx","depth":1}]}} />
+
+## Input
+
+<TypeList types={[{"name":"SetAuthAppMetadataStepInput","type":"[SetAuthAppMetadataStepInput](../../../../types/core_flows.SetAuthAppMetadataStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"authIdentityId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actorType","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`string` \\| `null`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="setAuthAppMetadataWorkflow"/>
+
+## Output
+
+<TypeList types={[{"name":"AuthIdentityDTO","type":"[AuthIdentityDTO](../../../../../auth/interfaces/auth.AuthIdentityDTO/page.mdx)","optional":false,"defaultValue":"","description":"The auth identity details.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the auth identity.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_identities","type":"[ProviderIdentityDTO](../../../../../auth/interfaces/auth.ProviderIdentityDTO/page.mdx)[]","description":"The list of provider identities linked to the auth identity.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the provider identity.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_id","type":"`string`","description":"The user's identifier. For example, when using the `emailpass`\nprovider, the `entity_id` would be the user's email.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity_id","type":"`string`","description":"The ID of the auth identity linked to the provider identity.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity","type":"[AuthIdentityDTO](../../../../../auth/interfaces/auth.AuthIdentityDTO/page.mdx)","description":"The auth identity linked to the provider identity.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the auth identity.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_identities","type":"[ProviderIdentityDTO](../../../../../auth/interfaces/auth.ProviderIdentityDTO/page.mdx)[]","description":"The list of provider identities linked to the auth identity.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"app_metadata","type":"`Record<string, unknown>`","description":"Holds information related to the actor IDs tied to the auth identity.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"provider_metadata","type":"`Record<string, unknown>`","description":"Holds custom data related to the provider in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"user_metadata","type":"`Record<string, unknown>`","description":"Holds custom data related to the user in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"app_metadata","type":"`Record<string, unknown>`","description":"Holds information related to the actor IDs tied to the auth identity.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="setAuthAppMetadataWorkflow"/>

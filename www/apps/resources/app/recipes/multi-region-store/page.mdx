@@ -145,21 +145,27 @@ A multi-regional setup lets merchants manage their inventory through Medusa acro
 
 ## Multi-Lingual Setup
 
-By integrating a third-party Content Management Systems (CMS), you benefit from rich content features including managing your content in multiple languages. This allows you to cater to customers’ different languages in the regions you serve.
+Medusa's [Translation Module](../../commerce-modules/translation/page.mdx) allows merchants to manage translations for product-related resources through Medusa's Store API routes.
 
-To integrate a third-party system, create a custom module whose main service connects to that third-party service. You can also follow the [Contentful integration guide](../../integrations/guides/contentful/page.mdx) to learn how to integrate Contentful and benefit from localization features.
+This enables merchants to provide a localized experience for customers in different regions by serving translated content in their storefront applications.
+
+<Note>
+
+Future versions of the Translation Module will expand translation support to additional resources beyond product-related ones.
+
+</Note>
 
 <CardList items={[
   {
-    href: "!docs!/learn/fundamentals/modules",
-    title: "Create a Module",
-    text: "Learn how to create a module in Medusa.",
-    icon: AcademicCapSolid,
+    href: "!user-guide!/settings/translations",
+    title: "Manage Translations",
+    text: "Learn how to manage translations in the Medusa Admin.",
+    icon: UsersSolid,
   },
   {
-    href: "/integrations/guides/contentful",
-    title: "Integrate Contentful",
-    text: "Integrate Contentful with Localization Features.",
+    href: "/storefront-development/localization",
+    title: "Localizing Storefronts",
+    text: "Learn how to localize your storefront applications.",
     icon: AcademicCapSolid,
   },
 ]} />

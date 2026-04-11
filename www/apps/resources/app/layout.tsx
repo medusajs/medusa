@@ -15,8 +15,7 @@ export const metadata: Metadata = {
     template: `%s - ${config.titleSuffix}`,
     default: config.titleSuffix || "",
   },
-  description:
-    "Explore Medusa's recipes, API references, configurations, storefront guides, and more.",
+  description: config.description,
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
   ),
@@ -39,6 +38,11 @@ export const metadata: Metadata = {
         width: "2400",
       },
     ],
+  },
+  alternates: {
+    types: {
+      "text/plain": "/llms.txt",
+    },
   },
 }
 

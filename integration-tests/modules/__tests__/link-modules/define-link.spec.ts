@@ -627,6 +627,67 @@ medusaIntegrationTestRunner({
           ],
         })
       })
+
+      it("should generate a read-only link definition with pluralized alias when isList is true", async () => {
+        const currencyLinks = CurrencyModule.linkable
+        const regionLinks = RegionModule.linkable
+
+        defineLink(
+          {
+            linkable: currencyLinks.currency,
+            field: "region_id",
+          },
+          {
+            linkable: regionLinks.region,
+          },
+          {
+            readOnly: true,
+            isList: true,
+          }
+        )
+
+        const linkDefinition = MedusaModule.getCustomLinks()
+          .map((linkDefinition: any) => {
+            const definition = linkDefinition(
+              MedusaModule.getAllJoinerConfigs()
+            )
+            return definition.isReadOnlyLink && definition
+          })
+          .filter(Boolean)[0]
+
+        expect(linkDefinition).toEqual({
+          isLink: true,
+          isReadOnlyLink: true,
+          extends: [
+            {
+              serviceName: "currency",
+              entity: "Currency",
+              fieldAlias: undefined,
+              relationship: {
+                serviceName: "region",
+                entity: "Region",
+                primaryKey: "id",
+                foreignKey: "region_id",
+                alias: "region",
+                isList: true,
+              },
+            },
+            {
+              serviceName: "currency",
+              entity: "Currency",
+              fieldAlias: undefined,
+              relationship: {
+                serviceName: "region",
+                entity: "Region",
+                primaryKey: "id",
+                foreignKey: "region_id",
+                alias: "regions",
+                isList: true,
+              },
+            },
+          ],
+        })
+      })
     })
   },
 })

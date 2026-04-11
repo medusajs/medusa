@@ -2,8 +2,10 @@
 
 import clsx from "clsx"
 import React from "react"
-import { CopyButton, Link } from "@/components"
-import { useHeadingUrl, useLayout } from "../../.."
+import { CopyButton } from "@/components/CopyButton"
+import { Link } from "@/components/Link"
+import { useHeadingUrl } from "../../../hooks/use-heading-url"
+import { useLayout } from "../../../providers/Layout"
 
 export type H3Props = React.HTMLAttributes<HTMLHeadingElement> & {
   id?: string
@@ -15,7 +17,7 @@ export const H3 = ({ className, children, ...props }: H3Props) => {
   return (
     <h3
       className={clsx(
-        "text-h3 [&_code]:!text-h3 [&_code]:!font-mono my-docs_1 text-medusa-fg-base",
+        "text-h3 [&>code]:!text-h3 [&>code]:!font-mono my-docs_1 text-medusa-fg-base",
         props.id && [
           "group/h3",
           showCollapsedNavbar && "scroll-m-docs_7",

@@ -2,9 +2,9 @@ import { INotificationModuleService } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   Modules,
+  pickValueFromObject,
   promiseAll,
 } from "@medusajs/framework/utils"
-import { get } from "lodash"
 import { SubscriberArgs, SubscriberConfig } from "../types/subscribers"
 
 type HandlerConfig = {
@@ -60,11 +60,11 @@ export default async function configurableNotifications({
       const notificationData = {
         template: handler.template,
         channel: handler.channel,
-        to: get(payload, handler.to),
+        to: pickValueFromObject(handler.to, payload),
         trigger_type: handler.event,
-        resource_id: get(payload, handler.resource_id),
+        resource_id: pickValueFromObject(handler.resource_id, payload),
         data: Object.entries(handler.data).reduce((acc, [key, value]) => {
-          acc[key] = get(payload, value)
+          acc[key] = pickValueFromObject(value, payload)
           return acc
         }, {}),
       }

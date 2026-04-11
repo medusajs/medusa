@@ -20,7 +20,13 @@ This workflow cancels a draft order edit. It's used by the
 You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
 cancelling a draft order edit.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/96b2df170752a0d66628a84c46397a24ca9502da/packages/core/core-flows/src/draft-order/workflows/cancel-draft-order-edit.ts#L53" />
+:::note
+
+If you use this workflow in another, you must acquire a lock before running it and release the lock after. Learn more in the [Locking Operations in Workflows](https://docs.medusajs.com/learn/fundamentals/workflows/locks#locks-in-nested-workflows) guide.
+
+:::
+
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/draft-order/workflows/cancel-draft-order-edit.ts#L53" />
 
 ## Examples
 
@@ -114,12 +120,16 @@ import { cancelDraftOrderEditWorkflow } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
+    // Acquire lock from nested workflow here
+    // acquireLockStep({  key: input.order_id,  timeout: 2,  ttl: 10,  })
     const result = cancelDraftOrderEditWorkflow
       .runAsStep({
         input: {
           order_id: "order_123",
         }
       })
+    // Release lock here
+    // releaseLockStep({ key: input.order_id })
   }
 )
 ```

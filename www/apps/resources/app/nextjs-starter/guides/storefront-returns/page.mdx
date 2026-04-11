@@ -56,7 +56,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -657,13 +657,13 @@ The component will display the available shipping options for returns, along wit
 To create the component, create the file `src/modules/account/components/return-shipping-selector/index.tsx` with the following content:
 
 export const returnShippingSelectorHighlights = [
-  ["13", "shippingOptions", "The available shipping options for returns."],
-  ["14", "selectedOption", "The currently selected shipping option ID."],
-  ["15", "onOptionSelect", "Callback function when a shipping option is selected."],
-  ["16", "cartId", "The ID of the cart associated with the order being returned."],
-  ["17", "currencyCode", "The currency code for displaying prices."],
-  ["32", "useEffect", "Fetches calculated prices for shipping options with price type 'calculated'."],
-  ["58", "", "Renders a message if no shipping options are available."],
+  ["16", "shippingOptions", "The available shipping options for returns."],
+  ["17", "selectedOption", "The currently selected shipping option ID."],
+  ["18", "onOptionSelect", "Callback function when a shipping option is selected."],
+  ["19", "cartId", "The ID of the cart associated with the order being returned."],
+  ["20", "currencyCode", "The currency code for displaying prices."],
+  ["35", "useEffect", "Fetches calculated prices for shipping options with price type 'calculated'."],
+  ["61", "", "Renders a message if no shipping options are available."],
 ]
 
 ```tsx title="src/modules/account/components/return-shipping-selector/index.tsx" highlights={returnShippingSelectorHighlights} collapsibleLines="1-11" expandButtonLabel="Show Imports"

@@ -234,6 +234,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: created_at
     - name: updated_at
       in: query
       description: Filter by the invite's update date.
@@ -373,6 +374,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: updated_at
     - name: deleted_at
       in: query
       description: Filter by the invite's deletion date.
@@ -512,6 +514,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: deleted_at
     - name: $and
       in: query
       required: false
@@ -646,6 +649,14 @@ post:
             metadata:
               type: object
               description: The invite's metadata. Can be custom data in key-value pairs.
+            roles:
+              type: array
+              description: The invited user's roles.
+              x-featureFlag: rbac
+              items:
+                type: string
+                title: roles
+                description: The invited user's role.
   x-codeSamples:
     - lang: JavaScript
       label: JS SDK
@@ -685,9 +696,9 @@ post:
     - name: invite.created
       payload: |-
         ```ts
-        [{
+        {
           id, // The ID of the invite
-        }]
+        }
         ```
       description: |-
         Emitted when invites are created. You can listen to this event

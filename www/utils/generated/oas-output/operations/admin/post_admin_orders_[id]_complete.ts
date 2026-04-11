@@ -90,9 +90,9 @@
  *   - name: order.completed
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the order
- *       }]
+ *       }
  *       ```
  *     description: Emitted when orders are completed.
  *     deprecated: false

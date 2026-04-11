@@ -1,6 +1,11 @@
-import { ArrowUturnLeft, DocumentSeries, XCircle } from "@medusajs/icons"
+import {
+  ArrowUturnLeft,
+  DocumentSeries,
+  ReceiptPercent,
+  XCircle,
+} from "@medusajs/icons"
 import { AdminOrderLineItem } from "@medusajs/types"
-import { Badge, Input, Text, toast } from "@medusajs/ui"
+import { Badge, Input, Text, toast, Tooltip } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
@@ -43,6 +48,10 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
     // To be removed item needs to have updated quantity
     const updateAction = item.actions?.find((a) => a.action === "ITEM_UPDATE")
     return !!updateAction && item.quantity === item.detail.fulfilled_quantity
+  }, [item])
+
+  const appliedPromoCodes = useMemo(() => {
+    return (item.adjustments || []).map((adjustment) => adjustment.code)
   }, [item])
 
   /**
@@ -166,11 +175,12 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
           )}
         </div>
 
-        <div className="flex flex-1 justify-between">
+        <div className="flex flex-1 items-center justify-between">
           <div className="flex flex-grow items-center gap-2">
             <Input
               className="bg-ui-bg-base txt-small w-[67px] rounded-lg [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               type="number"
+              step="any"
               disabled={item.detail.fulfilled_quantity === item.quantity}
               min={item.detail.fulfilled_quantity}
               defaultValue={item.quantity}
@@ -186,6 +196,22 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
             <Text className="txt-small text-ui-fg-subtle">
               {t("fields.qty")}
             </Text>
+
+            {appliedPromoCodes.length > 0 && (
+              <div className="flex flex-shrink pt-[2px]">
+                <Tooltip
+                  content={
+                    <span className="text-pretty">
+                      {appliedPromoCodes.map((code) => (
+                        <div key={code}>{code}</div>
+                      ))}
+                    </span>
+                  }
+                >
+                  <ReceiptPercent className="text-ui-fg-subtle font-normal" />
+                </Tooltip>
+              </div>
+            )}
           </div>
 
           <div className="text-ui-fg-subtle txt-small mr-2 flex flex-shrink-0">

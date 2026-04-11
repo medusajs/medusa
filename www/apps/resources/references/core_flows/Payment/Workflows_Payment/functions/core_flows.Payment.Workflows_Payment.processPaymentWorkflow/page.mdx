@@ -3,6 +3,7 @@ slug: /references/medusa-workflows/processPaymentWorkflow
 sidebar_label: processPaymentWorkflow
 sidebar_description: Process a payment based on a webhook event.
 tags:
+  - locking
   - workflow
 ---
 
@@ -19,7 +20,13 @@ capture the payment, or authorize the payment session. It's used when a
 You can use this workflow within your own customizations or custom workflows, allowing you
 to process a payment in your custom flows based on a webhook action.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/96b2df170752a0d66628a84c46397a24ca9502da/packages/core/core-flows/src/payment/workflows/process-payment.ts#L39" />
+:::note
+
+If you use this workflow in another, you must acquire a lock before running it and release the lock after. Learn more in the [Locking Operations in Workflows](https://docs.medusajs.com/learn/fundamentals/workflows/locks#locks-in-nested-workflows) guide.
+
+:::
+
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/payment/workflows/process-payment.ts#L43" />
 
 ## Examples
 
@@ -125,6 +132,8 @@ import { processPaymentWorkflow } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
+    // Acquire lock from nested workflow here
+    // acquireLockStep({  key: cartId,  timeout: THIRTY_SECONDS,  ttl: TWO_MINUTES,  })
     const result = processPaymentWorkflow
       .runAsStep({
         input: {
@@ -135,12 +144,18 @@ const myWorkflow = createWorkflow(
           }
         }
       })
+    // Release lock here
+    // releaseLockStep({ key: cartId })
   }
 )
 ```
 
     </CodeTab>
   </CodeTabs>
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"processPaymentWorkflow","steps":[{"type":"when","condition":"{\n      return !!cartId\n    }","depth":"1","steps":[{"type":"step","name":"acquireLockStep","description":"This step acquires a lock for a given key. Learn more about locks in the [Locking Module](https://docs.medusajs.com/resources/infrastructure-modules/locking)\nguide.","link":"../../../../Locking/Steps_Locking/functions/core_flows.Locking.Steps_Locking.acquireLockStep/page.mdx","depth":1}]},{"type":"when","condition":"{\n      return !!cartId\n    }","depth":"5","steps":[{"type":"step","name":"releaseLockStep","description":"This step releases a lock for a given key. Learn more about locks in the [Locking Module](https://docs.medusajs.com/resources/infrastructure-modules/locking)\nguide.","link":"../../../../Locking/Steps_Locking/functions/core_flows.Locking.Steps_Locking.releaseLockStep/page.mdx","depth":5}]}]}} />
 
 ## Input
 
@@ -150,7 +165,11 @@ const myWorkflow = createWorkflow(
 
 This section lists the events that are either triggered by the `emitEventStep` in the workflow, or by another workflow executed within this workflow.
 
+:::note
+
 The `emitEventStep` only emits the event after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+
+:::
 
 You can listen to these events in a subscriber, as explained in the [Subscribers](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers) documentation.
 

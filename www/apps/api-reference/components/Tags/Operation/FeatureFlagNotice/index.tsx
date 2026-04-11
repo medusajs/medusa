@@ -1,3 +1,4 @@
+import React from "react"
 import { Badge, Link, Tooltip } from "docs-ui"
 
 export type TagsOperationFeatureFlagNoticeProps = {
@@ -16,9 +17,8 @@ const TagsOperationFeatureFlagNotice = ({
   return (
     <Tooltip
       tooltipChildren={
-        <span className={tooltipTextClassName}>
-          To use this {type}, make sure to
-          <br />
+        <span className={tooltipTextClassName} data-testid="tooltip-text">
+          To use this {type}, make sure to <br />
           <Link
             href="https://docs.medusajs.com/development/feature-flags/toggle"
             target="__blank"

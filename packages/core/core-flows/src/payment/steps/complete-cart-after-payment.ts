@@ -25,7 +25,6 @@ export const completeCartAfterPaymentStep = createStep(
       input: {
         id: input.cart_id,
       },
-      transactionId: input.cart_id,
     })
   }
 )

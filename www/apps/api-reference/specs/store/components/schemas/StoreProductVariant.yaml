@@ -102,7 +102,7 @@ properties:
       is always considered in stock.
     externalDocs:
       url: >-
-        https://docs.medusajs.com/v2/resources/storefront-development/products/inventory
+        https://docs.medusajs.com/resources/storefront-development/products/inventory
       description: 'Storefront guide: How to retrieve a product variant''s inventory details.'
   inventory_quantity:
     type: number
@@ -112,7 +112,7 @@ properties:
       pass `+variants.inventory_quantity` in the `fields` query parameter.
     externalDocs:
       url: >-
-        https://docs.medusajs.com/v2/resources/storefront-development/products/inventory
+        https://docs.medusajs.com/resources/storefront-development/products/inventory
       description: 'Storefront guide: How to retrieve a product variant''s inventory details.'
   variant_rank:
     type: number
@@ -124,10 +124,15 @@ properties:
     type: string
     title: thumbnail
     description: The variant's thumbnail.
+  images:
+    type: array
+    description: The variant's images.
+    items:
+      $ref: ./BaseProductImage.yaml
 required:
   - options
-  - length
   - title
+  - length
   - id
   - created_at
   - updated_at

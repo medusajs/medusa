@@ -1,0 +1,59 @@
+import { TypeList } from "docs-ui"
+
+# settings
+
+This method retrieves the settings for the translations for a given entity type or all entity types if no entity type is provided.
+It sends a request to the
+[Get Translation Settings](https://docs.medusajs.com/api/admin#translations\_gettranslationssettings) API route.
+
+## Example
+
+To retrieve the settings for the translations for a given entity type:
+
+```ts
+sdk.admin.translation.settings({
+  entity_type: "product"
+})
+.then(({ translation_settings }) => {
+  console.log(translation_settings)
+})
+```
+
+To retrieve the settings for all entity types:
+
+```ts
+sdk.admin.translation.settings()
+.then(({ translation_settings }) => {
+  console.log(translation_settings)
+})
+```
+
+To retrieve the settings for active entities only:
+
+```ts
+sdk.admin.translation.settings({
+  is_active: true
+})
+.then(({ translation_settings }) => {
+  console.log(translation_settings)
+})
+```
+
+To retrieve the settings for inactive entities only:
+
+```ts
+sdk.admin.translation.settings({
+  is_active: false
+})
+.then(({ translation_settings }) => {
+  console.log(translation_settings)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"query","type":"[AdminTranslationSettingsParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationSettingsParams/page.mdx)","description":"The query parameters which can optionally include the entity type to get the settings for and whether to get the settings for active/inactive entities only.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"entity_type","type":"`string`","description":"The entity type to get the settings for (e.g., \"product\").","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"is_active","type":"`boolean`","description":"Whether to get the settings for active/inactive entities only.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="settings"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminTranslationSettingsResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationSettingsResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The translation settings.","expandable":false,"children":[{"name":"translation_settings","type":"`Record<string, Pick&#60;[AdminTranslationSettings](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationSettings/page.mdx), \"id\" \\| \"fields\" \\| \"is_active\"&#62; & object>`","description":"A mapping of entity types to their tranlsation settings.","optional":false,"defaultValue":"","example":"{ * \"product\": { * \"id\": \"trset_123\", * \"fields\": [\"title\", \"description\", \"subtitle\", \"status\"], * \"is_active\": true, * \"inactive_fields\": [] * }, * \"product_variant\": { * \"id\": \"trset_456\", * \"fields\": [\"title\", \"material\"], * \"is_active\": false, * \"inactive_fields\": [] * } * }","expandable":false,"children":[{"name":"inactive_fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="settings"/>

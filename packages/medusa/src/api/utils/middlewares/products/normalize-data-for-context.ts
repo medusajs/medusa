@@ -77,7 +77,7 @@ export function normalizeDataForContext(options: PricingContextOptions = {}) {
 
     // Finally, try to get it from the store defaults if not available
     if (!regionId) {
-      const stores = await refetchEntities({
+      const { data: stores } = await refetchEntities({
         entity: "store",
         scope: req.scope,
         fields: ["id", "default_region_id"],

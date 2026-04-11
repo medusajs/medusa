@@ -228,6 +228,14 @@ ___
 
 <TypeList types={[{"name":"messages","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
 
+## locale
+
+### Returns
+
+<TypeList types={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="locale"/>
+
+___
+
 ## constructor
 
 ### Parameters
@@ -235,6 +243,10 @@ ___
 <TypeList types={[{"name":"config","type":"[Config](../../../types/js_sdk.admin.Config/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"baseUrl","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"globalHeaders","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"publishableKey","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"apiKey","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"auth","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"type","type":"`\"jwt\"` \\| `\"session\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"jwtTokenStorageKey","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"jwtTokenStorageMethod","type":"`\"local\"` \\| `\"session\"` \\| `\"memory\"` \\| `\"custom\"` \\| `\"nostore\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fetchCredentials","type":"`\"include\"` \\| `\"omit\"` \\| `\"same-origin\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"storage","type":"[CustomStorage](../../../interfaces/js_sdk.admin.CustomStorage/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"logger","type":"[Logger](../../../types/js_sdk.admin.Logger/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"error","type":"(...`messages`: `string`[]) => `void`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"warn","type":"(...`messages`: `string`[]) => `void`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"info","type":"(...`messages`: `string`[]) => `void`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"debug","type":"(...`messages`: `string`[]) => `void`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"debug","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="Client"/>
 
 ___
+
+## Parameters
+
+<TypeList types={[{"name":"locale","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="setLocale"/>
 
 `fetch` closely follows (and uses under the hood) the native `fetch` API. There are, however, few key differences:
 - Non 2xx statuses throw a `FetchError` with the status code as the `status` property, rather than resolving the promise

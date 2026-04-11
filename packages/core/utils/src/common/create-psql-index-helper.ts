@@ -60,7 +60,9 @@ export function createPsqlIndexStatementHelper({
     tableReference = `"${tableName}"`
   }
 
-  columns = Array.isArray(columns) ? columns.join(", ") : columns
+  columns = Array.isArray(columns)
+    ? columns.map((column) => `"${column}"`).join(", ")
+    : columns
   name = name || `IDX_${tableName}_${columnsName}${unique ? "_unique" : ""}`
 
   const typeStr = type ? ` USING ${type}` : ""
