@@ -377,12 +377,17 @@ Then, in the test, you pass an object as the last parameter to `api.get` with a 
 
 If your custom route is accessible by authenticated users only, such as routes prefixed by `/admin` or `/store/customers/me`, you can create a test customer or user, generate a JWT token for them, and pass the token in the request's Authorization header.
 
-For example:
+First, install the `jsonwebtoken` package to generate JWT tokens:
+
+```bash npm2yarn
+npm install jsonwebtoken
+```
+
+Then, use it in your test to create a user or customer, generate a JWT token for them, and pass the token in the request's headers:
 
 <Note title="Tips">
 
-- The `jsonwebtoken` is available in your application by default.
-- For custom actor types, you only need to change the `actorType` value in the `jwt.sign` method.
+For custom actor types, you only need to change the `actorType` value in the `jwt.sign` method.
 
 </Note>
 
@@ -572,15 +577,15 @@ You also create and pass a publishable API key in the header for the customer as
 
 ## Upload Files in Test Requests
 
-If your API route requires uploading a file, create a `FormData` object imported from the `form-data` object, then pass the form data headers in the request.
+If your API route requires uploading a file, you can use the `form-data` library to create a `FormData` object, then pass the form data headers in the request.
 
-For example:
+First, run the following command to install the `form-data` package:
 
-<Note title="Tip">
+```bash npm2yarn
+npm install form-data
+```
 
-The `form-data` package is available by default.
-
-</Note>
+Then, use it in your test to upload files:
 
 ```ts title="integration-tests/http/custom-routes.spec.ts"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"

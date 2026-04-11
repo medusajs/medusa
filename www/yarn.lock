@@ -1951,41 +1951,42 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/icons@npm:2.12.5":
-  version: 2.12.5
-  resolution: "@medusajs/icons@npm:2.12.5"
+"@medusajs/icons@npm:2.13.6":
+  version: 2.13.6
+  resolution: "@medusajs/icons@npm:2.13.6"
   peerDependencies:
     react: ^18.3.1
-  checksum: ca7e038b2021f5723310d656e4d65f468bc20528704f8dd58312a33987a5ca8ceb74b35d3f2f58e23e00e7ae4aae2c1aa5da2b0e0cf7758bce42cbd6ce5bffd7
+  checksum: fa960fec03d75a1c8788d46bf3205661158b117049ce7bb03dbc8172307a2de3bac72456a3a20d24a99a57038b942c3670d9da9af15311997be499fa0a034530
   languageName: node
   linkType: hard
 
-"@medusajs/ui-preset@npm:2.12.5":
-  version: 2.12.5
-  resolution: "@medusajs/ui-preset@npm:2.12.5"
+"@medusajs/ui-preset@npm:2.13.6":
+  version: 2.13.6
+  resolution: "@medusajs/ui-preset@npm:2.13.6"
   dependencies:
     "@tailwindcss/forms": ^0.5.3
     tailwindcss-animate: ^1.0.6
   peerDependencies:
     tailwindcss: ^3.4.3
-  checksum: 18edb922ccd6d798d7b39b7740cc36951cd6a08207c947a1dd94fc956ddf378d28736472a420a66a141bc30d05137c3ab60daef4b2b237722af92ba7d6f3e741
+  checksum: 542f1e1a20f7b615411f1475011fbca927e9d31a613ddf01822dca2aab42875bf5c424c5cff3b8589a762d2f7f6096edd681d39830473f2d44c187e93334e8d9
   languageName: node
   linkType: hard
 
-"@medusajs/ui@npm:4.0.33":
-  version: 4.0.33
-  resolution: "@medusajs/ui@npm:4.0.33"
+"@medusajs/ui@npm:4.1.6":
+  version: 4.1.6
+  resolution: "@medusajs/ui@npm:4.1.6"
   dependencies:
     "@dnd-kit/core": ^6.1.0
     "@dnd-kit/sortable": ^8.0.0
     "@dnd-kit/utilities": ^3.2.2
-    "@medusajs/icons": 2.12.5
+    "@medusajs/icons": 2.13.6
     "@radix-ui/react-dialog": 1.1.4
     "@radix-ui/react-dismissable-layer": 1.1.4
     "@tanstack/react-table": 8.20.5
     clsx: ^1.2.1
     copy-to-clipboard: ^3.3.3
     cva: 1.0.0-beta.1
+    lodash.isequal: ^4.5.0
     prism-react-renderer: ^2.0.6
     prismjs: ^1.30.0
     radix-ui: 1.1.2
@@ -1997,32 +1998,30 @@ __metadata:
   peerDependencies:
     react: ^18.3.1
     react-dom: ^18.3.1
-  checksum: 921f23b1bba2b2aaf8005330d9a727f21edf8591a451e230ffe1c33ef962b7917159141d49edb416d1a0cfd126c6797c46aabf7154aff3a765a3fb8cc899e022
+  checksum: 0bc124925cd655adda4f77d1c61ce919185e6c28abcaece0313641f91855c4278febf61521afcd2ec619b1cc0fbf00b8f145d639a068df5be45c9f9ee14f2436
   languageName: node
   linkType: hard
 
-"@next/bundle-analyzer@npm:15.3.8":
-  version: 15.3.8
-  resolution: "@next/bundle-analyzer@npm:15.3.8"
+"@mixmark-io/domino@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@mixmark-io/domino@npm:2.2.0"
+  checksum: aa468a15f9217d425220fe6a4b3f9416cbe8e566ee14efc191c6d5cc04fe39338b16a90bbac190f28d44e69465db5f2cf95f479c621ce38060ca6b2a3d346e9d
+  languageName: node
+  linkType: hard
+
+"@next/bundle-analyzer@npm:15.3.9":
+  version: 15.3.9
+  resolution: "@next/bundle-analyzer@npm:15.3.9"
   dependencies:
     webpack-bundle-analyzer: 4.10.1
-  checksum: 09f57c12c1844d454c1a90a8ae2b44d1a37b035a0005ee8cbbd793bfff6d215ca837284822479fb9ce936f6d5c6b43aafc0193856024edd600e8af56dcf234fe
+  checksum: 4717abea978b9e0c32f10dc7a806d77606655b8a2b729f76b7545a3db80e06c563812f64b09902868c7261408e1f0a668167c2c36e109c1c7fb41a8cc2024e55
   languageName: node
   linkType: hard
 
-"@next/bundle-analyzer@npm:^15.3.8":
-  version: 15.5.9
-  resolution: "@next/bundle-analyzer@npm:15.5.9"
-  dependencies:
-    webpack-bundle-analyzer: 4.10.1
-  checksum: 74a6e3766d5fed3141505210d40cf6220a52346e1ce47385ac6c78f27bfb66fd61cb8fb0141a9e69f841afad2c34caba06bd507310bc1723b2bca9cddbe1a81c
-  languageName: node
-  linkType: hard
-
-"@next/env@npm:15.3.8":
-  version: 15.3.8
-  resolution: "@next/env@npm:15.3.8"
-  checksum: c617c345f24eddccb13d64c077f799e512557c8f8b2c604616b0dfa288e8f263daaff3c9553a43f54ef56dab738c2c32f5211762eb93d6596443c3acfcbd813e
+"@next/env@npm:15.3.9":
+  version: 15.3.9
+  resolution: "@next/env@npm:15.3.9"
+  checksum: 8ae01f6b8b7bb9210ddac461eb6d59a41a048deaabed1a5e45850b7d0506e751e5d3d15c113a73963e134b846b4002c98562d119d0793fd162129f003f448d5f
   languageName: node
   linkType: hard
 
@@ -2035,9 +2034,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/mdx@npm:15.3.8":
-  version: 15.3.8
-  resolution: "@next/mdx@npm:15.3.8"
+"@next/mdx@npm:15.3.9":
+  version: 15.3.9
+  resolution: "@next/mdx@npm:15.3.9"
   dependencies:
     source-map: ^0.7.0
   peerDependencies:
@@ -2048,7 +2047,7 @@ __metadata:
       optional: true
     "@mdx-js/react":
       optional: true
-  checksum: 5af743c062df13e3bbbdda032294110dc5d053235773d2dd57a01bc9e300d32ca87743b5953edcfd57df518c1581a7914f29880c78062fdf0de8d744a586d8e6
+  checksum: 2bd3ad465d2f12ac77c5e017f9ea359532b319ac6635539fe3a2be266b87c3150a4641ece72813c9ff3b0ab8712c817920bd18706e5ea6449b6c3cec4a43ac88
   languageName: node
   linkType: hard
 
@@ -2108,15 +2107,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/third-parties@npm:15.3.8":
-  version: 15.3.8
-  resolution: "@next/third-parties@npm:15.3.8"
+"@next/third-parties@npm:15.3.9":
+  version: 15.3.9
+  resolution: "@next/third-parties@npm:15.3.9"
   dependencies:
     third-party-capital: 1.0.20
   peerDependencies:
     next: ^13.0.0 || ^14.0.0 || ^15.0.0
     react: ^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0
-  checksum: 89e5675595e868f3dceb96b78acee0245f3295964f9ffc2db9cb2623d6e8a84ac4bba6d0c9857dc5553d7b52777f3f6a5d0ff3cf94345fb9f4d3c0375ef1e95d
+  checksum: 493c07567626d163d27bfb1e576b1b61178d985e04d4015b26e0db0d32101e80cc1efcdbe34acfbadb74ab6b86494a3632ed276f3483d0c242ae72a9165eab7d
   languageName: node
   linkType: hard
 
@@ -2196,6 +2195,13 @@ __metadata:
   version: 1.0.0-next.24
   resolution: "@polka/url@npm:1.0.0-next.24"
   checksum: 97d98fa911857158514457bedad8c36084c1f608302458f580ab300a25c3abf456d1d54fcf2ea7927464bee0858baf5e8e5b374b95c3375b9eb3784d81411ebd
+  languageName: node
+  linkType: hard
+
+"@posthog/core@npm:1.25.0":
+  version: 1.25.0
+  resolution: "@posthog/core@npm:1.25.0"
+  checksum: 6b94306fa07f54d60584218cf0a0ea3cb5cc288aff52e603016686801eec1288129e1d115e1d77b17d345835a4b3b7272e547b7604a44fd281f911479c633b72
   languageName: node
   linkType: hard
 
@@ -5812,12 +5818,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:19.2.3":
-  version: 19.2.3
-  resolution: "@types/react@npm:19.2.3"
+"@types/react@npm:19.2.9":
+  version: 19.2.9
+  resolution: "@types/react@npm:19.2.9"
   dependencies:
-    csstype: ^3.0.2
-  checksum: 12db8df36b9a0c8f7a602d0684e53731a43da4519f963fa3d1f4d4cac10b3bd31f2c838be74fe111174fff631e80b8e3d645fdfed477eb0632ab972241d05d67
+    csstype: ^3.2.2
+  checksum: 91c6839edd10ebdab4cd686d2a744e6ae078ed5831a36d48284ae92df0463c89bda1084ffdd2e6445f0716236c2c6ae0828b82f70720727632331695f4581d2a
   languageName: node
   linkType: hard
 
@@ -6127,6 +6133,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"afdocs@npm:latest":
+  version: 0.9.2
+  resolution: "afdocs@npm:0.9.2"
+  dependencies:
+    chalk: ^5.4.1
+    commander: ^13.1.0
+    node-html-parser: ^7.1.0
+    turndown: ^7.2.2
+    yaml: ^2.7.0
+  bin:
+    afdocs: bin/afdocs.mjs
+  checksum: a6516a21e5400249e9ae05d94de022d1eccc4fcbb76ba5dab0ed2aae0ee73ae783c56556f7cfd652e467aa76527b30a5a19590e924d2dddf4d066ed95c65661d
+  languageName: node
+  linkType: hard
+
 "agent-base@npm:^7.0.2, agent-base@npm:^7.1.0":
   version: 7.1.0
   resolution: "agent-base@npm:7.1.0"
@@ -6318,10 +6339,10 @@ __metadata:
   dependencies:
     "@mdx-js/loader": ^3.1.0
     "@mdx-js/react": ^3.1.0
-    "@medusajs/icons": 2.12.5
-    "@medusajs/ui": 4.0.33
-    "@next/bundle-analyzer": 15.3.8
-    "@next/mdx": 15.3.8
+    "@medusajs/icons": 2.13.6
+    "@medusajs/ui": 4.1.6
+    "@next/bundle-analyzer": 15.3.9
+    "@next/mdx": 15.3.9
     "@react-hook/resize-observer": ^2.0.2
     "@readme/openapi-parser": ^2.5.0
     "@types/jsdom": ^27.0.0
@@ -6329,7 +6350,7 @@ __metadata:
     "@types/mdx": ^2.0.13
     "@types/node": 20.4.5
     "@types/pluralize": ^0.0.33
-    "@types/react": 19.2.3
+    "@types/react": 19.2.9
     "@types/react-dom": 19.2.3
     algoliasearch: 4
     autoprefixer: 10.4.14
@@ -6343,15 +6364,15 @@ __metadata:
     jsdom: ^27.1.0
     json-schema: ^0.4.0
     json-stringify-pretty-compact: ^4.0.0
-    next: 15.3.8
+    next: 15.3.9
     next-mdx-remote: 5.0.0
     openapi-sampler: ^1.3.1
     pluralize: ^8.0.0
     postcss: 8.4.27
     posthog-js: ^1.298.1
     prism-react-renderer: 2.4.0
-    react: 19.2.3
-    react-dom: 19.2.3
+    react: 19.2.5
+    react-dom: 19.2.5
     react-intersection-observer: ^9.13.1
     react-tooltip: ^5.28.0
     react-transition-group: ^4.4.5
@@ -6722,19 +6743,60 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bloom@workspace:apps/bloom":
+  version: 0.0.0-use.local
+  resolution: "bloom@workspace:apps/bloom"
+  dependencies:
+    "@mdx-js/loader": ^3.1.0
+    "@mdx-js/react": ^3.1.0
+    "@medusajs/icons": 2.13.6
+    "@next/mdx": 15.3.9
+    "@stefanprobst/rehype-extract-toc": ^3.0.0
+    "@types/mdx": ^2.0.13
+    "@types/node": ^20
+    "@types/react": 19.2.9
+    "@types/react-dom": 19.2.3
+    autoprefixer: ^10.0.1
+    build-scripts: "*"
+    clsx: ^2.1.0
+    docs-ui: "*"
+    eslint: ^9.13.0
+    eslint-plugin-prettier: ^5.2.1
+    eslint-plugin-react-hooks: ^5.0.0
+    next: 15.3.9
+    postcss: ^8
+    posthog-js: ^1.298.1
+    posthog-node: ^5.29.0
+    react: 19.2.5
+    react-dom: 19.2.5
+    rehype-mdx-code-props: ^2.0.0
+    rehype-slug: ^6.0.0
+    remark-directive: ^3.0.0
+    remark-frontmatter: ^5.0.0
+    remark-rehype-plugins: "*"
+    slugify: ^1.6.6
+    tailwind: "*"
+    tailwindcss: ^3.3.0
+    tsconfig: "*"
+    types: "*"
+    typescript: ^5
+  languageName: unknown
+  linkType: soft
+
 "book@workspace:apps/book":
   version: 0.0.0-use.local
   resolution: "book@workspace:apps/book"
   dependencies:
     "@mdx-js/loader": ^3.1.0
     "@mdx-js/react": ^3.1.0
-    "@medusajs/icons": 2.12.5
-    "@next/mdx": 15.3.8
+    "@medusajs/icons": 2.13.6
+    "@next/mdx": 15.3.9
     "@stefanprobst/rehype-extract-toc": ^3.0.0
     "@types/mdx": ^2.0.13
     "@types/node": ^20
-    "@types/react": 19.2.3
+    "@types/react": 19.2.9
     "@types/react-dom": 19.2.3
+    afdocs: latest
     autoprefixer: ^10.0.1
     build-scripts: "*"
     clsx: ^2.1.0
@@ -6743,11 +6805,13 @@ __metadata:
     eslint: ^9.13.0
     eslint-plugin-prettier: ^5.2.1
     eslint-plugin-react-hooks: ^5.0.0
-    next: 15.3.8
+    loops: ^6.0.1
+    next: 15.3.9
     postcss: ^8
     posthog-js: ^1.298.1
-    react: 19.2.3
-    react-dom: 19.2.3
+    posthog-node: ^5.29.0
+    react: 19.2.5
+    react-dom: 19.2.5
     rehype-mdx-code-props: ^2.0.0
     rehype-slug: ^6.0.0
     remark-frontmatter: ^5.0.0
@@ -6760,6 +6824,13 @@ __metadata:
     typescript: ^5
   languageName: unknown
   linkType: soft
+
+"boolbase@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "boolbase@npm:1.0.0"
+  checksum: e4b53deb4f2b85c52be0e21a273f2045c7b6a6ea002b0e139c744cb6f95e9ec044439a52883b0d74dedd1ff3da55ed140cfdddfed7fb0cccbed373de5dce1bcf
+  languageName: node
+  linkType: hard
 
 "brace-expansion@npm:^1.1.7":
   version: 1.1.11
@@ -6826,7 +6897,7 @@ __metadata:
     "@types/node": ^20.11.20
     docs-utils: "*"
     fdir: ^6.4.3
-    next: 15.3.8
+    next: 15.3.9
     pluralize: ^8.0.0
     rimraf: ^5.0.5
     slugify: ^1.6.6
@@ -7008,6 +7079,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chalk@npm:^5.4.1":
+  version: 5.6.2
+  resolution: "chalk@npm:5.6.2"
+  checksum: 99a4b0f0e7991796b1e7e3f52dceb9137cae2a9dfc8fc0784a550dc4c558e15ab32ed70b14b21b52beb2679b4892b41a0aa44249bcb996f01e125d58477c6976
+  languageName: node
+  linkType: hard
+
 "character-entities-html4@npm:^2.0.0":
   version: 2.1.0
   resolution: "character-entities-html4@npm:2.1.0"
@@ -7126,13 +7204,13 @@ __metadata:
   dependencies:
     "@mdx-js/loader": ^3.1.0
     "@mdx-js/react": ^3.1.0
-    "@medusajs/icons": 2.12.5
-    "@next/mdx": 15.3.8
+    "@medusajs/icons": 2.13.6
+    "@next/mdx": 15.3.9
     "@sanity/client": ^7.11.0
     "@stefanprobst/rehype-extract-toc": ^3.0.0
     "@types/mdx": ^2.0.13
     "@types/node": ^20
-    "@types/react": 19.2.3
+    "@types/react": 19.2.9
     "@types/react-dom": 19.2.3
     autoprefixer: ^10.0.1
     build-scripts: "*"
@@ -7141,11 +7219,12 @@ __metadata:
     eslint: ^9.13.0
     eslint-plugin-prettier: ^5.2.1
     eslint-plugin-react-hooks: ^5.0.0
-    next: 15.3.8
+    next: 15.3.9
     postcss: ^8
     posthog-js: ^1.298.1
-    react: 19.2.3
-    react-dom: 19.2.3
+    posthog-node: ^5.29.0
+    react: 19.2.5
+    react-dom: 19.2.5
     rehype-mdx-code-props: ^2.0.0
     rehype-slug: ^6.0.0
     remark-directive: ^3.0.0
@@ -7267,6 +7346,13 @@ __metadata:
   version: 7.2.0
   resolution: "commander@npm:7.2.0"
   checksum: 8d690ff13b0356df7e0ebbe6c59b4712f754f4b724d4f473d3cc5b3fdcf978e3a5dc3078717858a2ceb50b0f84d0660a7f22a96cdc50fb877d0c9bb31593d23a
+  languageName: node
+  linkType: hard
+
+"commander@npm:^13.1.0":
+  version: 13.1.0
+  resolution: "commander@npm:13.1.0"
+  checksum: 7b8c5544bba704fbe84b7cab2e043df8586d5c114a4c5b607f83ae5060708940ed0b5bd5838cf8ce27539cde265c1cbd59ce3c8c6b017ed3eec8943e3a415164
   languageName: node
   linkType: hard
 
@@ -7398,6 +7484,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"css-select@npm:^5.1.0":
+  version: 5.2.2
+  resolution: "css-select@npm:5.2.2"
+  dependencies:
+    boolbase: ^1.0.0
+    css-what: ^6.1.0
+    domhandler: ^5.0.2
+    domutils: ^3.0.1
+    nth-check: ^2.0.1
+  checksum: d79fffa97106007f2802589f3ed17b8c903f1c961c0fc28aa8a051eee0cbad394d8446223862efd4c1b40445a6034f626bb639cf2035b0bfc468544177593c99
+  languageName: node
+  linkType: hard
+
 "css-tree@npm:^3.1.0":
   version: 3.1.0
   resolution: "css-tree@npm:3.1.0"
@@ -7405,6 +7504,13 @@ __metadata:
     mdn-data: 2.12.2
     source-map-js: ^1.0.1
   checksum: b5715852c2f397c715ca00d56ec53fc83ea596295ae112eb1ba6a1bda3b31086380e596b1d8c4b980fe6da09e7d0fc99c64d5bb7313030dd0fba9c1415f30979
+  languageName: node
+  linkType: hard
+
+"css-what@npm:^6.1.0":
+  version: 6.2.2
+  resolution: "css-what@npm:6.2.2"
+  checksum: 91e24c26fb977b4ccef30d7007d2668c1c10ac0154cc3f42f7304410e9594fb772aea4f30c832d2993b132ca8d99338050866476210316345ec2e7d47b248a56
   languageName: node
   linkType: hard
 
@@ -7449,6 +7555,13 @@ __metadata:
   version: 3.1.3
   resolution: "csstype@npm:3.1.3"
   checksum: 80c089d6f7e0c5b2bd83cf0539ab41474198579584fa10d86d0cafe0642202343cbc119e076a0b1aece191989477081415d66c9fefbf3c957fc2fc4b7009f248
+  languageName: node
+  linkType: hard
+
+"csstype@npm:^3.2.2":
+  version: 3.2.3
+  resolution: "csstype@npm:3.2.3"
+  checksum: cd29c51e70fa822f1cecd8641a1445bed7063697469d35633b516e60fe8c1bde04b08f6c5b6022136bb669b64c63d4173af54864510fbb4ee23281801841a3ce
   languageName: node
   linkType: hard
 
@@ -8171,12 +8284,12 @@ __metadata:
   dependencies:
     "@emotion/is-prop-valid": ^1.3.1
     "@kapaai/react-sdk": ^0.9.0
-    "@medusajs/icons": 2.12.5
-    "@medusajs/ui": 4.0.33
-    "@next/third-parties": 15.3.8
+    "@medusajs/icons": 2.13.6
+    "@medusajs/ui": 4.1.6
+    "@next/third-parties": 15.3.9
     "@react-hook/resize-observer": ^1.2.6
     "@segment/analytics-next": ^1.75.0
-    "@types/react": 19.2.3
+    "@types/react": 19.2.9
     "@types/react-dom": 19.2.3
     "@uidotdev/usehooks": ^2.4.1
     algoliasearch: ^5.2.1
@@ -8186,11 +8299,12 @@ __metadata:
     framer-motion: ^11.11.9
     mermaid: ^10.9.0
     minisearch: ^7.1.1
-    next: 15.3.8
+    motion: ^12.29.2
+    next: 15.3.9
     npm-to-yarn: ^2.1.0
     prism-react-renderer: 2.4.0
-    react: 19.2.3
-    react-dom: 19.2.3
+    react: 19.2.5
+    react-dom: 19.2.5
     react-instantsearch: ^7.13.6
     react-markdown: ^9.0.1
     react-medium-image-zoom: ^5.2.10
@@ -8285,10 +8399,48 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dom-serializer@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "dom-serializer@npm:2.0.0"
+  dependencies:
+    domelementtype: ^2.3.0
+    domhandler: ^5.0.2
+    entities: ^4.2.0
+  checksum: d5ae2b7110ca3746b3643d3ef60ef823f5f078667baf530cec096433f1627ec4b6fa8c072f09d079d7cda915fd2c7bc1b7b935681e9b09e591e1e15f4040b8e2
+  languageName: node
+  linkType: hard
+
+"domelementtype@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "domelementtype@npm:2.3.0"
+  checksum: 686f5a9ef0fff078c1412c05db73a0dce096190036f33e400a07e2a4518e9f56b1e324f5c576a0a747ef0e75b5d985c040b0d51945ce780c0dd3c625a18cd8c9
+  languageName: node
+  linkType: hard
+
+"domhandler@npm:^5.0.2, domhandler@npm:^5.0.3":
+  version: 5.0.3
+  resolution: "domhandler@npm:5.0.3"
+  dependencies:
+    domelementtype: ^2.3.0
+  checksum: bba1e5932b3e196ad6862286d76adc89a0dbf0c773e5ced1eb01f9af930c50093a084eff14b8de5ea60b895c56a04d5de8bbc4930c5543d029091916770b2d2a
+  languageName: node
+  linkType: hard
+
 "dompurify@npm:^3.0.5":
   version: 3.0.9
   resolution: "dompurify@npm:3.0.9"
   checksum: 4da4b86e4010822d01392e25f0686367a4f1e1048a4681178c725de9a817410c5650c17b326c08a018f79437b3177a4bdc7faf4c37b0cf2547bc280aa2038a16
+  languageName: node
+  linkType: hard
+
+"domutils@npm:^3.0.1":
+  version: 3.2.2
+  resolution: "domutils@npm:3.2.2"
+  dependencies:
+    dom-serializer: ^2.0.0
+    domelementtype: ^2.3.0
+    domhandler: ^5.0.3
+  checksum: 47938f473b987ea71cd59e59626eb8666d3aa8feba5266e45527f3b636c7883cca7e582d901531961f742c519d7514636b7973353b648762b2e3bedbf235fada
   languageName: node
   linkType: hard
 
@@ -8385,7 +8537,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"entities@npm:^4.4.0":
+"entities@npm:^4.2.0, entities@npm:^4.4.0":
   version: 4.5.0
   resolution: "entities@npm:4.5.0"
   checksum: 5b039739f7621f5d1ad996715e53d964035f75ad3b9a4d38c6b3804bb226e282ffeae2443624d8fdd9c47d8e926ae9ac009c54671243f0c3294c26af7cc85250
@@ -9844,6 +9996,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"framer-motion@npm:^12.29.2":
+  version: 12.29.2
+  resolution: "framer-motion@npm:12.29.2"
+  dependencies:
+    motion-dom: ^12.29.2
+    motion-utils: ^12.29.2
+    tslib: ^2.4.0
+  peerDependencies:
+    "@emotion/is-prop-valid": "*"
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: a753e2a74a4e847df60b2f28cfaafec5ec8037774503834bbb80f6433df80b03d00e8d1030be117a70b6ad49b2e457a206d04fbf4d0f8ba783ea5ba6468e603e
+  languageName: node
+  linkType: hard
+
 "fs-minipass@npm:^2.0.0":
   version: 2.1.0
   resolution: "fs-minipass@npm:2.1.0"
@@ -10364,6 +10538,15 @@ __metadata:
   dependencies:
     "@types/hast": ^3.0.0
   checksum: b898bc9fe27884b272580d15260b6bbdabe239973a147e97fa98c45fa0ffec967a481aaa42291ec34fb56530dc2d484d473d7e2bae79f39c83f3762307edfea8
+  languageName: node
+  linkType: hard
+
+"he@npm:1.2.0":
+  version: 1.2.0
+  resolution: "he@npm:1.2.0"
+  bin:
+    he: bin/he
+  checksum: a27d478befe3c8192f006cdd0639a66798979dfa6e2125c6ac582a19a5ebfec62ad83e8382e6036170d873f46e4536a7e795bf8b95bf7c247f4cc0825ccc8c17
   languageName: node
   linkType: hard
 
@@ -11585,6 +11768,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.isequal@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "lodash.isequal@npm:4.5.0"
+  checksum: dfdb2356db19631a4b445d5f37868a095e2402292d59539a987f134a8778c62a2810c2452d11ae9e6dcac71fc9de40a6fedcb20e2952a15b431ad8b29e50e28f
+  languageName: node
+  linkType: hard
+
 "lodash.merge@npm:^4.6.2":
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
@@ -11610,6 +11800,13 @@ __metadata:
   version: 3.1.0
   resolution: "longest-streak@npm:3.1.0"
   checksum: 7c2f02d0454b52834d1bcedef79c557bd295ee71fdabb02d041ff3aa9da48a90b5df7c0409156dedbc4df9b65da18742652aaea4759d6ece01f08971af6a7eaa
+  languageName: node
+  linkType: hard
+
+"loops@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "loops@npm:6.0.1"
+  checksum: ae1231a9fa210eacaac562f573c69ea13225f89be8cb59231e3eb962a5cc6f6bf4875992fea940a762c40e56cf852675949fc590b940743ba6be413a663b3710
   languageName: node
   linkType: hard
 
@@ -12811,6 +13008,43 @@ __metadata:
   languageName: node
   linkType: hard
 
+"motion-dom@npm:^12.29.2":
+  version: 12.29.2
+  resolution: "motion-dom@npm:12.29.2"
+  dependencies:
+    motion-utils: ^12.29.2
+  checksum: a8c51e016ecb109a8b63dd762d98d15075f62816f56e34a2b2faf05fae36fcd8174732f2c442fdffe059d6cb570eb8dae54da16b3aaa16456b0ae83f2873ebce
+  languageName: node
+  linkType: hard
+
+"motion-utils@npm:^12.29.2":
+  version: 12.29.2
+  resolution: "motion-utils@npm:12.29.2"
+  checksum: 8058fbb3467602e8263a8a6df0e5d318d00d30d7148415d2ebc13c78a3c7a1b0cbec0808bb62e82c34714979ecbed15b9fffb91bde654dbf3602c84b7d66a5b6
+  languageName: node
+  linkType: hard
+
+"motion@npm:^12.29.2":
+  version: 12.29.2
+  resolution: "motion@npm:12.29.2"
+  dependencies:
+    framer-motion: ^12.29.2
+    tslib: ^2.4.0
+  peerDependencies:
+    "@emotion/is-prop-valid": "*"
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 7d719793ef21d505e48b6c8ff9764c8b00843b211d7f87be2c4adf6b77f1c1e6b8b6e34a1ed11c36178f1f4ea329319fb9e26abaf2d0f09695490a04c407da6a
+  languageName: node
+  linkType: hard
+
 "mri@npm:^1.1.0":
   version: 1.2.0
   resolution: "mri@npm:1.2.0"
@@ -12939,11 +13173,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:15.3.8":
-  version: 15.3.8
-  resolution: "next@npm:15.3.8"
+"next@npm:15.3.9":
+  version: 15.3.9
+  resolution: "next@npm:15.3.9"
   dependencies:
-    "@next/env": 15.3.8
+    "@next/env": 15.3.9
     "@next/swc-darwin-arm64": 15.3.5
     "@next/swc-darwin-x64": 15.3.5
     "@next/swc-linux-arm64-gnu": 15.3.5
@@ -12996,7 +13230,7 @@ __metadata:
       optional: true
   bin:
     next: dist/bin/next
-  checksum: a99fc0e5452d2b6f69e9a7353a445d46e85a533a3128b4a499e921cf372f5302e40ff32fd292dd543739f8fad42b0f6d21d133f6d6de037f9c01784e613d212d
+  checksum: 64a1e62c43cd792c60133b9297ea37f8a619fc48d21ca9a5a02801864e7765b016a95db7db1f97ec8208ddf995cae47858ec24ba3ebb13861b02fb1902316cdf
   languageName: node
   linkType: hard
 
@@ -13031,6 +13265,16 @@ __metadata:
   bin:
     node-gyp: bin/node-gyp.js
   checksum: abddfff7d873312e4ed4a5fb75ce893a5c4fb69e7fcb1dfa71c28a6b92a7f1ef6b62790dffb39181b5a82728ba8f2f32d229cf8cbe66769fe02cea7db4a555aa
+  languageName: node
+  linkType: hard
+
+"node-html-parser@npm:^7.1.0":
+  version: 7.1.0
+  resolution: "node-html-parser@npm:7.1.0"
+  dependencies:
+    css-select: ^5.1.0
+    he: 1.2.0
+  checksum: 8bee2616de374bb6f43b62cc8523f6d923cd199b2b7a42c6cf2ca503f1e89c32fb44195bd5af17d6fde1b992ad62c24465b29437213ae25f7770261fc9819173
   languageName: node
   linkType: hard
 
@@ -13104,6 +13348,15 @@ __metadata:
   version: 2.2.1
   resolution: "npm-to-yarn@npm:2.2.1"
   checksum: 65c696a3e595facad802b6b13c04e504806ea88fd4f87ab758f8042c19f65b4c4822815a47095df944b0809a95e574c27323c33cca5533f8454515eaa6e14fac
+  languageName: node
+  linkType: hard
+
+"nth-check@npm:^2.0.1":
+  version: 2.1.1
+  resolution: "nth-check@npm:2.1.1"
+  dependencies:
+    boolbase: ^1.0.0
+  checksum: 5fee7ff309727763689cfad844d979aedd2204a817fbaaf0e1603794a7c20db28548d7b024692f953557df6ce4a0ee4ae46cd8ebd9b36cfb300b9226b567c479
   languageName: node
   linkType: hard
 
@@ -13722,6 +13975,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"posthog-node@npm:^5.29.0":
+  version: 5.29.0
+  resolution: "posthog-node@npm:5.29.0"
+  dependencies:
+    "@posthog/core": 1.25.0
+  peerDependencies:
+    rxjs: ^7.0.0
+  peerDependenciesMeta:
+    rxjs:
+      optional: true
+  checksum: eb08ceb0a7ce8b3d10593500f41e49115618fd377437c45ed6ce6035b8d6140f2bd2939e040b1df1e9f401df296616e9e5f8e8063e48b9d46ab3ecbb3e36c3d1
+  languageName: node
+  linkType: hard
+
 "preact@npm:^10.10.0":
   version: 10.19.6
   resolution: "preact@npm:10.19.6"
@@ -14010,14 +14277,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:19.2.3":
-  version: 19.2.3
-  resolution: "react-dom@npm:19.2.3"
+"react-dom@npm:19.2.5":
+  version: 19.2.5
+  resolution: "react-dom@npm:19.2.5"
   dependencies:
     scheduler: ^0.27.0
   peerDependencies:
-    react: ^19.2.3
-  checksum: dc43f7ede06f46f3acc16ee83107c925530de9b91d1d0b3824583814746ff4c498ea64fd65cd83aba363205268adff52e2827c582634ae7b15069deaeabc4892
+    react: ^19.2.5
+  checksum: 8067606e9f58e4c2e8cb5f09570217dbc71c4843ebcaa20ae2085912d3e3a351f17d8f7c1713313cdda7f272840c8c34ff6c860fcb840862071bceea218e0c63
   languageName: node
   linkType: hard
 
@@ -14256,10 +14523,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:19.2.3":
-  version: 19.2.3
-  resolution: "react@npm:19.2.3"
-  checksum: 094220b3ba3a76c1b668f972ace1dd15509b157aead1b40391d1c8e657e720c201d9719537375eff08f5e0514748c0319063392a6f000e31303aafc4471f1436
+"react@npm:19.2.5":
+  version: 19.2.5
+  resolution: "react@npm:19.2.5"
+  checksum: 4b5f231dbef92886f602533c9ce3bde04d99f0e71dfb5d794c43e02726efaad0421c08688f75fc98a6d6e1dc017372e1af7abbfecdc86a79968f461675931a7a
   languageName: node
   linkType: hard
 
@@ -14672,13 +14939,13 @@ __metadata:
   dependencies:
     "@mdx-js/loader": ^3.1.0
     "@mdx-js/react": ^3.1.0
-    "@medusajs/icons": 2.12.5
-    "@next/bundle-analyzer": ^15.3.8
-    "@next/mdx": 15.3.8
+    "@medusajs/icons": 2.13.6
+    "@next/bundle-analyzer": 15.3.9
+    "@next/mdx": 15.3.9
     "@stefanprobst/rehype-extract-toc": ^3.0.0
     "@types/mdx": ^2.0.13
     "@types/node": ^20
-    "@types/react": 19.2.3
+    "@types/react": 19.2.9
     "@types/react-dom": 19.2.3
     autoprefixer: ^10.0.1
     build-scripts: "*"
@@ -14688,12 +14955,13 @@ __metadata:
     eslint: ^9.13.0
     eslint-plugin-prettier: ^5.2.1
     eslint-plugin-react-hooks: ^5.0.0
-    next: 15.3.8
+    next: 15.3.9
     next-mdx-remote-client: 2
     postcss: ^8
     posthog-js: ^1.298.1
-    react: 19.2.3
-    react-dom: 19.2.3
+    posthog-node: ^5.29.0
+    react: 19.2.5
+    react-dom: 19.2.5
     rehype-mdx-code-props: ^2.0.0
     remark-directive: ^3.0.0
     remark-frontmatter: ^5.0.0
@@ -15853,7 +16121,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tailwind@workspace:packages/tailwind"
   dependencies:
-    "@medusajs/ui-preset": 2.12.5
+    "@medusajs/ui-preset": 2.13.6
     tailwindcss-animate: ^1.0.7
   peerDependencies:
     docs-ui: "*"
@@ -16446,6 +16714,15 @@ turbo@latest:
   languageName: node
   linkType: hard
 
+"turndown@npm:^7.2.2":
+  version: 7.2.4
+  resolution: "turndown@npm:7.2.4"
+  dependencies:
+    "@mixmark-io/domino": ^2.2.0
+  checksum: 8e66e24bc9d9cdcf720f0ee2655a61d9b9e60ebe2763e97a7a8c3f689e9154717bbea7ed48cc5e355651f34182da698c6bc5fef3028e5600c1cadb7e117376d5
+  languageName: node
+  linkType: hard
+
 "type-check@npm:^0.4.0, type-check@npm:~0.4.0":
   version: 0.4.0
   resolution: "type-check@npm:0.4.0"
@@ -16585,7 +16862,7 @@ turbo@latest:
   version: 0.0.0-use.local
   resolution: "types@workspace:packages/types"
   dependencies:
-    "@medusajs/icons": 2.12.5
+    "@medusajs/icons": 2.13.6
     "@types/node": ^20.11.20
     openapi-types: ^12.1.3
     rimraf: ^5.0.5
@@ -16674,14 +16951,14 @@ turbo@latest:
   dependencies:
     "@mdx-js/loader": ^3.1.0
     "@mdx-js/react": ^3.1.0
-    "@medusajs/icons": 2.12.5
-    "@medusajs/ui": 4.0.33
-    "@medusajs/ui-preset": 2.12.5
-    "@next/mdx": 15.3.8
+    "@medusajs/icons": 2.13.6
+    "@medusajs/ui": 4.1.6
+    "@medusajs/ui-preset": 2.13.6
+    "@next/mdx": 15.3.9
     "@stefanprobst/rehype-extract-toc": ^3.0.0
     "@types/mdx": ^2.0.13
     "@types/node": ^20
-    "@types/react": 19.2.3
+    "@types/react": 19.2.9
     "@types/react-dom": 19.2.3
     autoprefixer: ^10.0.1
     build-scripts: "*"
@@ -16690,11 +16967,12 @@ turbo@latest:
     eslint: ^9.13.0
     eslint-plugin-prettier: ^5.2.1
     eslint-plugin-react-hooks: ^5.0.0
-    next: 15.3.8
+    next: 15.3.9
     postcss: ^8
     posthog-js: ^1.298.1
-    react: 19.2.3
-    react-dom: 19.2.3
+    posthog-node: ^5.29.0
+    react: 19.2.5
+    react-dom: 19.2.5
     rehype-mdx-code-props: ^2.0.0
     rehype-slug: ^6.0.0
     remark-directive: ^3.0.0
@@ -17040,12 +17318,12 @@ turbo@latest:
   dependencies:
     "@mdx-js/loader": ^3.1.0
     "@mdx-js/react": ^3.1.0
-    "@medusajs/icons": 2.12.5
-    "@next/mdx": 15.3.8
+    "@medusajs/icons": 2.13.6
+    "@next/mdx": 15.3.9
     "@stefanprobst/rehype-extract-toc": ^3.0.0
     "@types/mdx": ^2.0.13
     "@types/node": ^20
-    "@types/react": 19.2.3
+    "@types/react": 19.2.9
     "@types/react-dom": 19.2.3
     autoprefixer: ^10.0.1
     build-scripts: "*"
@@ -17054,11 +17332,12 @@ turbo@latest:
     eslint: ^9.13.0
     eslint-plugin-prettier: ^5.2.1
     eslint-plugin-react-hooks: ^5.0.0
-    next: 15.3.8
+    next: 15.3.9
     postcss: ^8
     posthog-js: ^1.298.1
-    react: 19.2.3
-    react-dom: 19.2.3
+    posthog-node: ^5.29.0
+    react: 19.2.5
+    react-dom: 19.2.5
     rehype-mdx-code-props: ^2.0.0
     rehype-slug: ^6.0.0
     remark-directive: ^3.0.0

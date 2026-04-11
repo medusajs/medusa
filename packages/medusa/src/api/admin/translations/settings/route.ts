@@ -2,7 +2,11 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { HttpTypes, ITranslationModuleService } from "@medusajs/framework/types"
+import {
+  AdminTranslationSettings,
+  HttpTypes,
+  ITranslationModuleService,
+} from "@medusajs/framework/types"
 import {
   defineFileConfig,
   FeatureFlag,
@@ -28,9 +32,41 @@ export const GET = async (
   const translatableFields = await translationService.getTranslatableFields(
     req.validatedQuery.entity_type
   )
+  const inactiveTranslatableFields =
+    await translationService.getInactiveTranslatableFields(
+      req.validatedQuery.entity_type
+    )
+
+  const settings = await translationService.listTranslationSettings(
+    req.filterableFields
+  )
+  const settingsMap = new Map(
+    settings.map((setting) => [setting.entity_type, setting])
+  )
 
   res.json({
-    translatable_fields: translatableFields,
+    translation_settings: Object.entries(translatableFields).reduce(
+      (acc, [entityType, fields]) => {
+        const setting = settingsMap.get(entityType)!
+        if (!setting) {
+          return acc
+        }
+
+        acc[entityType] = {
+          id: setting.id,
+          fields: fields,
+          inactive_fields: inactiveTranslatableFields[entityType],
+          is_active: setting.is_active,
+        }
+        return acc
+      },
+      {} as Record<
+        string,
+        Pick<AdminTranslationSettings, "id" | "fields" | "is_active"> & {
+          inactive_fields: string[]
+        }
+      >
+    ),
   })
 }
 

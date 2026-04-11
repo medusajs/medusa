@@ -210,7 +210,7 @@ Add the following method to the `PayPalPaymentProviderService` class:
 
 ```ts title="src/modules/paypal/service.ts"
 import { 
-  MedusaError
+  MedusaError,
 } from "@medusajs/framework/utils"
 
 class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
@@ -317,7 +317,7 @@ class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
           status: order.status,
           approval_url: approvalUrl,
           session_id: input.data?.session_id,
-          currency_code
+          currency_code,
         },
       }
     } catch (error: any) {
@@ -570,7 +570,7 @@ class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
           currencyCode: (input.data?.currency_code as string | undefined)
             ?.toUpperCase() || "",
           value: new BigNumber(input.amount).numeric.toString(),
-        }
+        },
       }
 
       const response = await this.paymentsController_.refundCapturedPayment({
@@ -659,8 +659,8 @@ class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
             op: PatchOp.Replace,
             path: "/purchase_units/@reference_id=='default'/amount/value",
             value: new BigNumber(input.amount).numeric.toString(),
-          }
-        ]
+          },
+        ],
       })
 
       return {
@@ -1151,7 +1151,7 @@ class PayPalPaymentProviderService extends AbstractPaymentProvider<Options> {
 
       // Extract order ID and amount from webhook payload
       const resource = (data as any)?.resource
-      let sessionId: string | undefined = (data as any)?.resource?.custom_id
+      const sessionId: string | undefined = (data as any)?.resource?.custom_id
 
       if (!sessionId) {
         this.logger_.warn("Session ID not found in PayPal webhook resource")

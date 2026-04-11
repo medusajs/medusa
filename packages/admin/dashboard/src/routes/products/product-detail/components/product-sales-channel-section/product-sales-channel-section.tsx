@@ -16,11 +16,15 @@ export const ProductSalesChannelSection = ({
   const { count } = useSalesChannels()
   const { t } = useTranslation()
 
+  // Filter out null/undefined entries that can occur when a sales channel
+  // is deleted but the product association is not cleaned up
   const availableInSalesChannels =
-    product.sales_channels?.map((sc) => ({
-      id: sc.id,
-      name: sc.name,
-    })) ?? []
+    product.sales_channels
+      ?.filter((sc) => sc != null)
+      .map((sc) => ({
+        id: sc.id,
+        name: sc.name,
+      })) ?? []
 
   const firstChannels = availableInSalesChannels.slice(0, 3)
   const restChannels = availableInSalesChannels.slice(3)

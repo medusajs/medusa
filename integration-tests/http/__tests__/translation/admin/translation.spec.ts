@@ -22,6 +22,9 @@ medusaIntegrationTestRunner({
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, getContainer())
 
+        const translationModule = appContainer.resolve(Modules.TRANSLATION)
+        await translationModule.__hooks?.onApplicationStart?.().catch(() => {})
+
         const storeModule = appContainer.resolve(Modules.STORE)
         const [defaultStore] = await storeModule.listStores(
           {},

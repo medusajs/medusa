@@ -1,6 +1,6 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { AdminShippingOption } from "@medusajs/types"
-import { ModuleRegistrationName, ProductStatus } from "@medusajs/utils"
+import { ModuleRegistrationName, Modules, ProductStatus } from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -10,6 +10,15 @@ import {
 import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 import { createOrderSeeder } from "../../fixtures/order"
 import { createShippingOptionSeeder } from "../../fixtures/shipping"
+import {
+  updateOrderChangeActionsWorkflow,
+  updateOrderChangesWorkflow,
+  updateOrderShippingMethodsStep,
+} from "@medusajs/core-flows"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 
 jest.setTimeout(300000)
 
@@ -20,10 +29,11 @@ medusaIntegrationTestRunner({
       inventoryItemOverride3,
       productOverride3,
       shippingProfile,
-      productOverride4
+      productOverride4,
+      container
 
     beforeEach(async () => {
-      const container = getContainer()
+      container = getContainer()
 
       await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
       await createAdminUser(dbConnection, adminHeaders, container)
@@ -117,6 +127,183 @@ medusaIntegrationTestRunner({
         expect(response.data.orders).toEqual([])
       })
 
+      describe("with matching list vs detail order totals with varying request fields", () => {
+        const getDetailTotal = async (query?: string) => {
+          const detailResponse = await api.get(
+            `/admin/orders/${order.id}${query ? `?${query}` : ""}`,
+            adminHeaders
+          )
+
+          return detailResponse.data.order.total
+        }
+
+        const getListTotal = async (query: string) => {
+          const listResponse = await api.get(
+            `/admin/orders?${query}`,
+            adminHeaders
+          )
+
+          const listedOrder = listResponse.data.orders.find(
+            (listed) => listed.id === order.id
+          )
+
+          expect(listedOrder).toBeTruthy()
+          return listedOrder!.total
+        }
+
+        it("should match totals across key fields with default list and detail responses", async () => {
+          const detailResponse = await api.get(
+            `/admin/orders/${order.id}`,
+            adminHeaders
+          )
+          const listResponse = await api.get(`/admin/orders`, adminHeaders)
+
+          const listedOrder = listResponse.data.orders.find(
+            (listed) => listed.id === order.id
+          ) as any
+
+          expect(listedOrder).toBeTruthy()
+
+          const detailOrder = detailResponse.data.order as any
+          const fieldsToCompare = [
+            // default admin order list endpoint only has total
+            "total",
+            // admin order detail endpoint has more fields
+            // "original_total",
+            // "discount_total",
+            // "discount_subtotal",
+            // "shipping_total",
+            // "tax_total",
+          ]
+
+          for (const field of fieldsToCompare) {
+            expect(listedOrder).toHaveProperty(field)
+            expect(listedOrder[field]).toBeDefined()
+            expect(listedOrder[field]).toBe(detailOrder[field])
+          }
+        })
+
+        it("should return the same total using default list fields", async () => {
+          const expectedTotal = await getDetailTotal()
+          const listTotal = await getListTotal(
+            // fields we use on the admin list page
+            `fields=${encodeURIComponent(
+              "id,status,created_at,email,display_id,custom_display_id,payment_status,fulfillment_status,total,currency_code,*customer,*sales_channel,*payment_collections"
+            )}`
+          )
+
+          expect(listTotal).toBe(expectedTotal)
+        })
+
+        it("should return the same total using minimal list fields", async () => {
+          const expectedTotal = await getDetailTotal()
+          const listTotal = await getListTotal("fields=id,total")
+
+          expect(listTotal).toBe(expectedTotal)
+        })
+
+        it("should return the same total when requesting item fields", async () => {
+          const expectedTotal = await getDetailTotal()
+          const listTotal = await getListTotal(
+            `fields=${encodeURIComponent("id,total,*items,+items.detail")}`
+          )
+
+          expect(listTotal).toBe(expectedTotal)
+        })
+
+        it("should return the same total when requesting shipping fields", async () => {
+          const expectedTotal = await getDetailTotal()
+          const listTotal = await getListTotal(
+            `fields=${encodeURIComponent(
+              "id,total,*shipping_methods,+shipping_methods.tax_lines"
+            )}`
+          )
+
+          expect(listTotal).toBe(expectedTotal)
+        })
+
+        it("should return the same total when using mixed list fields", async () => {
+          const expectedTotal = await getDetailTotal()
+          const listTotal = await getListTotal(
+            `fields=${encodeURIComponent(
+              "id,status,total,currency_code,*items,+items.detail,*shipping_methods,+shipping_methods.tax_lines"
+            )}`
+          )
+
+          expect(listTotal).toBe(expectedTotal)
+        })
+
+        it("should return the same total when using + / - field modifiers", async () => {
+          const expectedTotal = await getDetailTotal()
+          const listTotal = await getListTotal(
+            `fields=${encodeURIComponent("+total,-email")}`
+          )
+
+          expect(listTotal).toBe(expectedTotal)
+        })
+
+        it("should return the same total when ordering results", async () => {
+          const expectedTotal = await getDetailTotal()
+          const listTotal = await getListTotal(
+            "fields=id,total&order=-created_at"
+          )
+
+          expect(listTotal).toBe(expectedTotal)
+        })
+
+        it("should return the same total when requesting minimal detail fields", async () => {
+          const listTotal = await getListTotal(
+            `fields=${encodeURIComponent(
+              "id,status,created_at,email,display_id,custom_display_id,payment_status,fulfillment_status,total,currency_code,*customer,*sales_channel,*payment_collections"
+            )}`
+          )
+          const detailTotal = await getDetailTotal("fields=id,total")
+
+          expect(detailTotal).toBe(listTotal)
+        })
+
+        it("should return the same total when requesting item detail fields", async () => {
+          const listTotal = await getListTotal(
+            `fields=${encodeURIComponent(
+              "id,status,created_at,email,display_id,custom_display_id,payment_status,fulfillment_status,total,currency_code,*customer,*sales_channel,*payment_collections"
+            )}`
+          )
+          const detailTotal = await getDetailTotal(
+            `fields=${encodeURIComponent("id,total,*items,+items.detail")}`
+          )
+
+          expect(detailTotal).toBe(listTotal)
+        })
+
+        it("should return the same total when requesting shipping detail fields", async () => {
+          const listTotal = await getListTotal(
+            `fields=${encodeURIComponent(
+              "id,status,created_at,email,display_id,custom_display_id,payment_status,fulfillment_status,total,currency_code,*customer,*sales_channel,*payment_collections"
+            )}`
+          )
+          const detailTotal = await getDetailTotal(
+            `fields=${encodeURIComponent(
+              "id,total,*shipping_methods,+shipping_methods.tax_lines"
+            )}`
+          )
+
+          expect(detailTotal).toBe(listTotal)
+        })
+
+        it("should return the same total when using + / - field modifiers on detail", async () => {
+          const listTotal = await getListTotal(
+            `fields=${encodeURIComponent(
+              "id,status,created_at,email,display_id,custom_display_id,payment_status,fulfillment_status,total,currency_code,*customer,*sales_channel,*payment_collections"
+            )}`
+          )
+          const detailTotal = await getDetailTotal(
+            `fields=${encodeURIComponent("+total,-email")}`
+          )
+
+          expect(detailTotal).toBe(listTotal)
+        })
+      })
+
       it("should search orders by billing address", async () => {
         let response = await api.get(
           `/admin/orders?fields=+billing_address.address_1,+billing_address.address_2`,
@@ -153,6 +340,143 @@ medusaIntegrationTestRunner({
             id: order.id,
           }),
         ])
+      })
+
+      describe("filter by total using operators", () => {
+        it.each([
+          {
+            operator: "$eq",
+            matchType: "matching",
+            getValue: (orderTotal: number) => orderTotal,
+            expectedLength: 1,
+            shouldMatchOrder: true,
+          },
+          {
+            operator: "$eq",
+            matchType: "non-matching",
+            getValue: (orderTotal: number) => orderTotal + 1000,
+            expectedLength: 0,
+            shouldMatchOrder: false,
+          },
+          {
+            operator: "$gte",
+            matchType: "matching",
+            getValue: (orderTotal: number) => orderTotal - 100,
+            expectedLength: 1,
+            shouldMatchOrder: true,
+          },
+          {
+            operator: "$gte",
+            matchType: "non-matching",
+            getValue: (orderTotal: number) => orderTotal + 1000,
+            expectedLength: 0,
+            shouldMatchOrder: false,
+          },
+          {
+            operator: "$lte",
+            matchType: "matching",
+            getValue: (orderTotal: number) => orderTotal + 100,
+            expectedLength: 1,
+            shouldMatchOrder: true,
+          },
+          {
+            operator: "$lte",
+            matchType: "non-matching",
+            getValue: (_orderTotal: number) => 0,
+            expectedLength: 0,
+            shouldMatchOrder: false,
+          },
+        ])(
+          "should filter orders by total using $operator operator - $matchType value",
+          async ({ operator, getValue, expectedLength, shouldMatchOrder }) => {
+            let filterValue: number
+
+            const orderResponse = await api.get(
+              `/admin/orders/${order.id}?fields=+summary`,
+              adminHeaders
+            )
+            const orderTotal =
+              orderResponse.data.order.summary.current_order_total
+            filterValue = getValue(orderTotal)
+
+            const queryParams = `total[${operator}]=${filterValue}`
+
+            const response = await api.get(
+              `/admin/orders?${queryParams}`,
+              adminHeaders
+            )
+
+            expect(response.data.orders).toHaveLength(expectedLength)
+            if (shouldMatchOrder) {
+              expect(response.data.orders).toEqual([
+                expect.objectContaining({
+                  id: order.id,
+                }),
+              ])
+            } else {
+              expect(response.data.orders).toEqual([])
+            }
+          }
+        )
+      })
+
+      it("should return shipping_address when pagination included", async () => {
+        const response = await api.get(
+          `/admin/orders?fields=*shipping_address&offset=0`,
+          adminHeaders
+        )
+
+        expect(response.data.orders).toHaveLength(1)
+        expect(response.data.orders[0].id).toEqual(order.id)
+        expect(response.data.orders[0].shipping_address).toBeDefined()
+        expect(response.data.orders[0].shipping_address.address_1).toEqual(
+          order.shipping_address.address_1
+        )
+        expect(response.data.orders[0].shipping_address.city).toEqual(
+          order.shipping_address.city
+        )
+      })
+
+      it("should return billing_address when pagination included", async () => {
+        const response = await api.get(
+          `/admin/orders?fields=*billing_address&offset=0`,
+          adminHeaders
+        )
+
+        expect(response.data.orders).toHaveLength(1)
+        expect(response.data.orders[0].id).toEqual(order.id)
+        expect(response.data.orders[0].billing_address).toBeDefined()
+        expect(response.data.orders[0].billing_address.address_1).toEqual(
+          order.billing_address.address_1
+        )
+        expect(response.data.orders[0].billing_address.city).toEqual(
+          order.billing_address.city
+        )
+      })
+
+      it("should return specific address fields when pagination included", async () => {
+        const response = await api.get(
+          `/admin/orders?fields=+shipping_address.address_1,+shipping_address.city,+billing_address.address_1,+billing_address.city&offset=0`,
+          adminHeaders
+        )
+
+        expect(response.data.orders).toHaveLength(1)
+        const responseOrder = response.data.orders[0]
+        expect(responseOrder.id).toEqual(order.id)
+        expect(responseOrder.shipping_address).toBeDefined()
+        expect(responseOrder.shipping_address.address_1).toEqual(
+          order.shipping_address.address_1
+        )
+        expect(responseOrder.shipping_address.city).toEqual(
+          order.shipping_address.city
+        )
+        expect(responseOrder.billing_address).toBeDefined()
+        expect(responseOrder.billing_address.address_1).toEqual(
+          order.billing_address.address_1
+        )
+        expect(responseOrder.billing_address.city).toEqual(
+          order.billing_address.city
+        )
       })
     })
 
@@ -727,8 +1051,8 @@ medusaIntegrationTestRunner({
             status: "canceled",
 
             summary: expect.objectContaining({
-              current_order_total: 0,
-              accounting_total: 0,
+              current_order_total: 106,
+              accounting_total: 106,
             }),
 
             payment_collections: [
@@ -856,8 +1180,8 @@ medusaIntegrationTestRunner({
             status: "canceled",
 
             summary: expect.objectContaining({
-              current_order_total: 0,
-              accounting_total: 0,
+              current_order_total: 56,
+              accounting_total: 56,
             }),
 
             payment_collections: [
@@ -887,6 +1211,113 @@ medusaIntegrationTestRunner({
             ],
           })
         )
+      })
+
+      it("should only create credit lines for successfully refunded payments when some refunds fail", async () => {
+        const paymentModule = container.resolve(Modules.PAYMENT)
+        const payment = order.payment_collections[0].payments[0]
+        const paymentCollectionId = order.payment_collections[0].id
+
+        // Capture the original payment for 50
+        await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          { amount: 50 },
+          adminHeaders
+        )
+
+        // Create a second payment session, authorize it, and capture it for 30
+        const session2 = await paymentModule.createPaymentSession(
+          paymentCollectionId,
+          {
+            provider_id: "pp_system_default",
+            amount: 100,
+            currency_code: "usd",
+            data: {},
+          }
+        )
+        const payment2 = await paymentModule.authorizePaymentSession(
+          session2.id,
+          {}
+        )
+        await paymentModule.capturePayment({
+          payment_id: payment2.id,
+          amount: 30,
+        })
+
+        // Verify both payments are captured before canceling
+        const orderBeforeCancel = (
+          await api.get(
+            `/admin/orders/${order.id}?fields=*payment_collections.payments.amount,*payment_collections.payments.captures.amount`,
+            adminHeaders
+          )
+        ).data.order
+
+        const capturedPayments =
+          orderBeforeCancel.payment_collections[0].payments.filter(
+            (p) => p.captures.length > 0
+          )
+        expect(capturedPayments).toHaveLength(2)
+
+        // Mock refundPayment to fail for the second payment
+        const originalRefundPayment =
+          paymentModule.refundPayment.bind(paymentModule)
+        jest
+          .spyOn(paymentModule, "refundPayment")
+          .mockImplementation(async (data: any, sharedContext?: any) => {
+            if (data.payment_id === payment2.id) {
+              throw new Error("Refund failed at payment provider")
+            }
+            return originalRefundPayment(data, sharedContext)
+          })
+
+        // Cancel the order
+        const cancelResponse = await api.post(
+          `/admin/orders/${order.id}/cancel`,
+          {},
+          adminHeaders
+        )
+
+        expect(cancelResponse.status).toBe(200)
+
+        // Restore the mock
+        jest.restoreAllMocks()
+
+        // Get the canceled order with credit lines and summary
+        const canceledOrder = (
+          await api.get(
+            `/admin/orders/${order.id}?fields=*credit_lines.amount,*payment_collections.payments.amount,*payment_collections.payments.captures.amount,*payment_collections.payments.refunds.amount`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(canceledOrder.status).toBe("canceled")
+
+        // Only the first payment (50) was successfully refunded
+        // The second payment (30) refund failed, so it should NOT be in credit lines
+        const totalCreditLineAmount = canceledOrder.credit_lines.reduce(
+          (sum, cl) => sum + cl.amount,
+          0
+        )
+
+        // Credit line should only reflect the successful refund (50), not both (50 + 30)
+        expect(totalCreditLineAmount).toBe(50)
+        expect(canceledOrder.summary.credit_line_total).toBe(50)
+
+        // Verify only the first payment has a refund record
+        const originalPaymentAfter =
+          canceledOrder.payment_collections[0].payments.find(
+            (p) => p.id === payment.id
+          )
+        const payment2After =
+          canceledOrder.payment_collections[0].payments.find(
+            (p) => p.id === payment2.id
+          )
+
+        expect(originalPaymentAfter.refunds).toHaveLength(1)
+        expect(originalPaymentAfter.refunds[0].amount).toBe(50)
+
+        // The failed payment should have no refund records
+        expect(payment2After.refunds).toHaveLength(0)
       })
     })
 
@@ -3582,6 +4013,60 @@ medusaIntegrationTestRunner({
         expect(response3.response.data.message).toBe(
           "Can only create credit lines if the order has a positive or negative pending difference"
         )
+      })
+    })
+
+    describe("workflows", () => {
+      it("updateOrderChangeActionsWorkflow - should not call listOrderChangeActions when orderChangeActions is empty", async () => {
+        const orderService = container.resolve(Modules.ORDER)
+        const listOrderChangeActionsSpy = jest.spyOn(
+          orderService,
+          "listOrderChangeActions"
+        )
+
+        const { result } = await updateOrderChangeActionsWorkflow(
+          container
+        ).run({
+          input: [],
+        })
+
+        expect(result).toEqual([])
+
+        expect(listOrderChangeActionsSpy).not.toHaveBeenCalled()
+        listOrderChangeActionsSpy.mockRestore()
+      })
+
+      it("updateOrderChangesWorkflow - should not call listOrderChanges when orderChanges is empty", async () => {
+        const orderService = container.resolve(Modules.ORDER)
+        const listOrderChangesSpy = jest.spyOn(orderService, "listOrderChanges")
+
+        const { result } = await updateOrderChangesWorkflow(container).run({
+          input: [],
+        })
+
+        expect(result).toEqual([])
+
+        expect(listOrderChangesSpy).not.toHaveBeenCalled()
+        listOrderChangesSpy.mockRestore()
+      })
+
+      it("updateOrderShippingMethodsStep - should not call listOrderShippingMethods when shipping methods is empty", async () => {
+        const orderService = container.resolve(Modules.ORDER)
+        const listOrderShippingMethodsSpy = jest.spyOn(
+          orderService,
+          "listOrderShippingMethods"
+        )
+
+        const workflow = createWorkflow("test-workflow", () => {
+          return new WorkflowResponse(updateOrderShippingMethodsStep([]))
+        })
+
+        const { result } = await workflow(container).run()
+
+        expect(result).toEqual([])
+
+        expect(listOrderShippingMethodsSpy).not.toHaveBeenCalled()
+        listOrderShippingMethodsSpy.mockRestore()
       })
     })
   },

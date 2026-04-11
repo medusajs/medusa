@@ -231,6 +231,18 @@ export interface ComputeActionItemLine extends Record<string, unknown> {
    */
   product?: {
     id: string
+
+    collection_id?: string
+
+    tags?: {
+      id: string
+    }[]
+
+    categories?: {
+      id: string
+    }[]
+
+    type_id?: string
   }
 }
 
@@ -257,6 +269,16 @@ export interface ComputeActionShippingLine extends Record<string, unknown> {
    * The adjustments applied before on the shipping method.
    */
   adjustments?: ComputeActionAdjustmentLine[]
+
+  /**
+   * The shipping option type associated with the shipping method.
+   */
+  shipping_option?: {
+    /**
+     * The ID of the shipping option type associated with the shipping method.
+     */
+    shipping_option_type_id?: string
+  }
 }
 
 /**
@@ -267,6 +289,35 @@ export interface ComputeActionContext extends Record<string, unknown> {
    * The cart's currency
    */
   currency_code: string
+
+  /**
+   * The customer associated with the cart.
+   */
+  customer?: {
+    id: string
+
+    /**
+     * The customer groups the customer belongs to.
+     */
+    groups?: {
+      id: string
+    }[]
+  }
+
+  /**
+   * The region associated with the cart.
+   */
+  region?: {
+    id: string
+  }
+  /**
+   * The shipping address associated with the cart.
+   */
+  shipping_address?: {
+    country_code: string
+  }
+
+  sales_channel_id?: string
 
   /**
    * The cart's email

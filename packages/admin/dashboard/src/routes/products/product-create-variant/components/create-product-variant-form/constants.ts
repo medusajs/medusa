@@ -8,7 +8,7 @@ export const CreateProductVariantSchema = z.object({
   manage_inventory: z.boolean().optional(),
   allow_backorder: z.boolean().optional(),
   inventory_kit: z.boolean().optional(),
-  options: z.record(z.string()),
+  options: z.record(z.string(), z.string()),
   prices: zod
     .record(zod.string(), zod.string().or(zod.number()).optional())
     .optional(),

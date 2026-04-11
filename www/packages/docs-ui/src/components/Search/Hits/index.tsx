@@ -58,8 +58,10 @@ export const SearchHitsWrapper = ({
   const { status } = useInstantSearch()
   const { selectedIndex, indices } = useSearch()
   const [hasNoResults, setHasNoResults] = useState<IndexResults>({
-    [indices[0].value]: false,
-    [indices[1].value]: false,
+    ...indices.reduce((acc, index) => {
+      acc[index.value] = false
+      return acc
+    }, {} as IndexResults),
   })
   const setNoResults = (index: string, value: boolean) => {
     setHasNoResults((prev) => ({

@@ -30,6 +30,11 @@ export const updateTaxRegionsStep = createStep(
   updateTaxRegionsStepId,
   async (data: UpdateTaxRegionDTO[], { container }) => {
     const service = container.resolve<ITaxModuleService>(Modules.TAX)
+
+    if (!data.length) {
+      return new StepResponse([], [])
+    }
+
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data)
 
     const prevData = await service.listTaxRegions(

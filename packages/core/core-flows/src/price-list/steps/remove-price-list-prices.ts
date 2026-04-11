@@ -3,13 +3,13 @@ import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 /**
- * The IDs of price lists to remove their prices.
+ * The IDs of prices to remove.
  */
 export type RemovePriceListPricesStepInput = string[]
 
 export const removePriceListPricesStepId = "remove-price-list-prices"
 /**
- * This step removes prices from a price list.
+ * This step removes prices.
  */
 export const removePriceListPricesStep = createStep(
   removePriceListPricesStepId,

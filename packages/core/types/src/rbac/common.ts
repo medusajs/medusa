@@ -4,6 +4,7 @@ export type RbacRoleDTO = {
   description?: string | null
   metadata?: Record<string, unknown> | null
   policies?: RbacPolicyDTO[]
+  deleted_at?: Date | string | null
 }
 
 export type FilterableRbacRoleProps = {
@@ -36,6 +37,7 @@ export type RbacRolePolicyDTO = {
   role_id: string
   policy_id: string
   metadata?: Record<string, unknown> | null
+  deleted_at?: Date | string | null
 }
 
 export type FilterableRbacRolePolicyProps = {

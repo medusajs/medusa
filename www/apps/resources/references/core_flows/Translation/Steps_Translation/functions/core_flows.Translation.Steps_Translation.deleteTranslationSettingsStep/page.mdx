@@ -1,0 +1,35 @@
+---
+slug: /references/medusa-workflows/steps/deleteTranslationSettingsStep
+sidebar_label: deleteTranslationSettingsStep
+tags:
+  - translation
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# deleteTranslationSettingsStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `deleteTranslationSettingsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step deletes translation settings based on the provided IDs.
+It compensates by restoring the deleted translation settings in case of failure.
+
+:::note
+
+This is available starting from [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0).
+
+:::
+
+## Example
+
+```ts
+const result = deleteTranslationSettingsStep([
+  "ts_123",
+  "ts_456"
+])
+```
+
+## Input
+
+<TypeList types={[{"name":"DeleteTranslationSettingsStepInput","type":"[DeleteTranslationSettingsStepInput](../../../../types/core_flows.DeleteTranslationSettingsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The IDs of the translation settings to be deleted.","expandable":false,"children":[{"name":"DeleteTranslationSettingsStepInput","type":"`string`[]","description":"The IDs of the translation settings to be deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteTranslationSettingsStep"/>

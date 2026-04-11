@@ -1094,6 +1094,11 @@ export interface FilterableCartProps
    * Filter the carts by their update date.
    */
   updated_at?: OperatorMap<string>
+
+  /**
+   * Filter the carts by their completion date.
+   */
+  completed_at?: OperatorMap<string>
 }
 
 /**

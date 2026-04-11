@@ -1,3 +1,9 @@
+export enum Entities {
+  payment = "payment",
+  capture = "capture",
+  refund = "refund",
+}
+
 export const defaultAdminPaymentFields = [
   "id",
   "currency_code",
@@ -18,11 +24,13 @@ export const defaultAdminPaymentFields = [
 export const listTransformQueryConfig = {
   defaults: defaultAdminPaymentFields,
   isList: true,
+  entity: Entities.payment,
 }
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminPaymentFields,
   isList: false,
+  entity: Entities.payment,
 }
 
 export const defaultAdminPaymentPaymentProviderFields = ["id", "is_enabled"]

@@ -119,6 +119,22 @@ export interface AdminOptions {
    * @privateRemarks TODO Add example
    */
   vite?: (config: InlineConfig) => InlineConfig
+
+  /**
+   * The maximum file size for media uploads in bytes. The default value is `1048576` (1MB).
+   * Set to `Infinity` to disable the file size limit.
+   *
+   * @example
+   * ```js title="medusa-config.ts"
+   * module.exports = defineConfig({
+   *   admin: {
+   *     maxUploadFileSize: 10 * 1024 * 1024, // 10MB
+   *   },
+   *   // ...
+   * })
+   * ```
+   */
+  maxUploadFileSize?: number
 }
 
 /**
@@ -887,7 +903,7 @@ export type ProjectConfigOptions = {
      * This configuration specifies the supported authentication providers per actor type (such as `user`, `customer`, or any custom actors).
      * For example, you only want to allow SSO logins for `users`, while you want to allow email/password logins for `customers` to the storefront.
      *
-     * `authMethodsPerActor` is a a map where the actor type (eg. 'user') is the key, and the value is an array of supported auth provider IDs.
+     * `authMethodsPerActor` is a map where the actor type (eg. 'user') is the key, and the value is an array of supported auth provider IDs.
      *
      * @example
      * Some example values of common use cases:
@@ -1139,32 +1155,30 @@ type ExternalModuleDeclarationOverride = ExternalModuleDeclaration & {
   disable?: boolean
 }
 
-/**
- * Generates a union of typed module configs for all known modules in the ModuleOptions registry.
- * This enables automatic type inference when using registered module resolve strings.
- */
-type KnownModuleConfigs = {
-  [K in keyof ModuleOptions]: Partial<
-    Omit<InternalModuleDeclaration, "options"> & {
+type ModuleConfigForResolve<R extends string> = R extends keyof ModuleOptions
+  ? {
+      resolve: R
       key?: string
       disable?: boolean
-      resolve: K
-      options?: ModuleOptions[K]
-    }
-  >
-}[keyof ModuleOptions]
+      options?: ModuleOptions[R]
+    } & Partial<Omit<InternalModuleDeclaration, "options" | "resolve">>
+  : {
+      resolve?: string
+      key?: string
+      disable?: boolean
+      options?: object
+    } & Partial<Omit<InternalModuleDeclaration, "options" | "resolve">>
+
+/**
+ * Generates a union of typed module configs for all known modules in the ModuleOptions registry.
+ * This distributes over all keys in ModuleOptions to create specific config types for each.
+ */
+type KnownModuleConfigs = ModuleConfigForResolve<keyof ModuleOptions & string>
 
 /**
  * Generic module config for modules not registered in ModuleOptions.
  */
-type GenericModuleConfig = Partial<
-  Omit<InternalModuleDeclaration, "options"> & {
-    key?: string
-    disable?: boolean
-    resolve?: string
-    options?: Record<string, unknown>
-  }
->
+type GenericModuleConfig = ModuleConfigForResolve<string & {}>
 
 /**
  * Modules accepted by the defineConfig function.
@@ -1177,19 +1191,35 @@ export type InputConfigModules = (
 )[]
 
 /**
- * The configuration accepted by the "defineConfig" helper
+ * Base configuration type without modules
  */
-export type InputConfig = Partial<
+type InputConfigBase = Partial<
   Omit<ConfigModule, "admin" | "modules"> & {
     admin?: Partial<ConfigModule["admin"]>
-    modules:
-      | InputConfigModules
-      /**
-       * @deprecated use the array instead
-       */
-      | ConfigModule["modules"]
   }
 >
+
+/**
+ * Configuration with array-based modules (recommended)
+ */
+export type InputConfigWithArrayModules = InputConfigBase & {
+  modules?: InputConfigModules
+}
+
+/**
+ * Configuration with object-based modules (deprecated)
+ * @deprecated Use array-based modules instead
+ */
+export type InputConfigWithObjectModules = InputConfigBase & {
+  modules?: ConfigModule["modules"]
+}
+
+/**
+ * The configuration accepted by the "defineConfig" helper
+ */
+export type InputConfig =
+  | InputConfigWithArrayModules
+  | InputConfigWithObjectModules
 
 type PluginAdminDetails = {
   type: "local" | "package"

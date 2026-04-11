@@ -64,30 +64,30 @@ describe("render", () => {
       "[data-testid='code-tab']"
     )
     expect(codeTabsChildren).toHaveLength(3)
-    expect(codeTabsChildren![0]).toHaveAttribute("data-label", "npm")
-    expect(codeTabsChildren![0]).toHaveAttribute("data-value", "npm")
-    const npmCodeBlock = codeTabsChildren![0].querySelector(
-      "[data-testid='code-block']"
-    )
-    expect(npmCodeBlock).toBeInTheDocument()
-    expect(npmCodeBlock).toHaveAttribute("data-lang", "bash")
-    expect(npmCodeBlock).toHaveTextContent("npm install @medusajs/medusa")
-    expect(codeTabsChildren![1]).toHaveAttribute("data-label", "yarn")
-    expect(codeTabsChildren![1]).toHaveAttribute("data-value", "yarn")
-    const yarnCodeBlock = codeTabsChildren![1].querySelector(
+    expect(codeTabsChildren![0]).toHaveAttribute("data-label", "yarn")
+    expect(codeTabsChildren![0]).toHaveAttribute("data-value", "yarn")
+    const yarnCodeBlock = codeTabsChildren![0].querySelector(
       "[data-testid='code-block']"
     )
     expect(yarnCodeBlock).toBeInTheDocument()
     expect(yarnCodeBlock).toHaveAttribute("data-lang", "bash")
     expect(yarnCodeBlock).toHaveTextContent("yarn add @medusajs/medusa")
-    expect(codeTabsChildren![2]).toHaveAttribute("data-label", "pnpm")
-    expect(codeTabsChildren![2]).toHaveAttribute("data-value", "pnpm")
-    const pnpmCodeBlock = codeTabsChildren![2].querySelector(
+    expect(codeTabsChildren![1]).toHaveAttribute("data-label", "pnpm")
+    expect(codeTabsChildren![1]).toHaveAttribute("data-value", "pnpm")
+    const pnpmCodeBlock = codeTabsChildren![1].querySelector(
       "[data-testid='code-block']"
     )
     expect(pnpmCodeBlock).toBeInTheDocument()
     expect(pnpmCodeBlock).toHaveAttribute("data-lang", "bash")
     expect(pnpmCodeBlock).toHaveTextContent("pnpm add @medusajs/medusa")
+    expect(codeTabsChildren![2]).toHaveAttribute("data-label", "npm")
+    expect(codeTabsChildren![2]).toHaveAttribute("data-value", "npm")
+    const npmCodeBlock = codeTabsChildren![2].querySelector(
+      "[data-testid='code-block']"
+    )
+    expect(npmCodeBlock).toBeInTheDocument()
+    expect(npmCodeBlock).toHaveAttribute("data-lang", "bash")
+    expect(npmCodeBlock).toHaveTextContent("npm install @medusajs/medusa")
   })
 
   test("renders npm2yarn code with custom code options", () => {

@@ -61,8 +61,8 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.INDEX]: "@medusajs/medusa/index-module",
   [Modules.LOCKING]: "@medusajs/medusa/locking",
   [Modules.SETTINGS]: "@medusajs/medusa/settings",
-  [Modules.CACHING]: "@medusajs/caching",
-  [Modules.TRANSLATION]: "@medusajs/translation",
+  [Modules.CACHING]: "@medusajs/medusa/caching",
+  [Modules.TRANSLATION]: "@medusajs/medusa/translation",
   [Modules.RBAC]: "@medusajs/medusa/rbac",
 }
 

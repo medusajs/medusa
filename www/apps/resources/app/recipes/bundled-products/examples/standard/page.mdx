@@ -79,7 +79,7 @@ By following this tutorial, you'll learn how to:
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -295,7 +295,7 @@ Refer to the [Migrations documentation](!docs!/learn/fundamentals/modules#5-gene
 
 Medusa's CLI tool can generate the migrations for you. To generate a migration for the Bundled Product Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate bundledProduct
 ```
 
@@ -303,7 +303,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -382,7 +382,7 @@ You define the link in the same way as the previous one, but you pass an object 
 
 Medusa creates a table in the database for each link you define. So, you must run the migrations again to create the necessary tables:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -757,12 +757,18 @@ export const bundledProductsRouteHighlights = [
   ["38", "json", "Return the created bundle in the response."]
 ]
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 ```ts title="src/api/admin/bundled-products/route.ts" highlights={bundledProductsRouteHighlights}
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { 
   AdminCreateProduct,
 } from "@medusajs/medusa/api/admin/products/validators"
@@ -2010,9 +2016,15 @@ You'll now create the API route that exposes the workflow's functionalities to s
 
 To create the API route, create the file `src/api/store/carts/[id]/line-item-bundles/route.ts` with the following content:
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 ```ts title="src/api/store/carts/[id]/line-item-bundles/route.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { 
   addBundleToCartWorkflow,
 } from "../../../../../workflows/add-bundle-to-cart"

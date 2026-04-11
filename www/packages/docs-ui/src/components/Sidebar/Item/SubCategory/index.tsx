@@ -64,7 +64,7 @@ export const SidebarItemSubCategory = ({
       {hasChildren && (
         <ul
           className={clsx(
-            "ease-ease overflow-hidden",
+            "ease-ease",
             "flex flex-col gap-docs_0.125",
             "pb-docs_0.5 pt-docs_0.125"
           )}

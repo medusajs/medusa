@@ -1,0 +1,21 @@
+type: object
+description: The translation settings to create, update, or delete in batch.
+x-schemaName: AdminBatchTranslationSettings
+properties:
+  create:
+    type: array
+    description: The translation settings to create.
+    items:
+      $ref: ./AdminCreateTranslationSettings.yaml
+  update:
+    type: array
+    description: The translation settings to update.
+    items:
+      $ref: ./AdminUpdateTranslationSettings.yaml
+  delete:
+    type: array
+    description: The translation settings to delete.
+    items:
+      type: string
+      title: delete
+      description: The IDs of the translation settings to delete.

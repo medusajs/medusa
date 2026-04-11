@@ -52,10 +52,10 @@ export const CreateTaxRegion = z.object({
       code: z.string(),
       name: z.string(),
       is_combinable: z.boolean().optional(),
-      metadata: z.record(z.unknown()).nullish(),
+      metadata: z.record(z.string(), z.unknown()).nullish(),
     })
     .optional(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 
 export const AdminCreateTaxRegion = WithAdditionalData(
@@ -72,5 +72,5 @@ export type AdminUpdateTaxRegionType = z.infer<typeof AdminUpdateTaxRegion>
 export const AdminUpdateTaxRegion = z.object({
   province_code: z.string().nullish(),
   provider_id: z.string().optional(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })

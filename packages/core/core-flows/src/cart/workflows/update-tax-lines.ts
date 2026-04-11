@@ -1,6 +1,8 @@
 import {
   CartLineItemDTO,
   CartShippingMethodDTO,
+  ItemTaxLineDTO,
+  ShippingTaxLineDTO,
 } from "@medusajs/framework/types"
 import {
   WorkflowData,
@@ -12,11 +14,13 @@ import { useQueryGraphStep } from "../../common"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import { getItemTaxLinesStep } from "../../tax/steps/get-item-tax-lines"
 import { setTaxLinesForItemsStep, validateCartStep } from "../steps"
+import { getTranslatedTaxLinesStep } from "../../common/steps/get-translated-tax-lines"
 
 const cartFields = [
   "id",
   "currency_code",
   "email",
+  "locale",
   "region.id",
   "region.automatic_taxes",
   "items.id",
@@ -161,10 +165,17 @@ export const updateTaxLinesWorkflow = createWorkflow(
       }))
     )
 
+    const translatedTaxLines = getTranslatedTaxLinesStep({
+      itemTaxLines: taxLineItems.lineItemTaxLines,
+      shippingTaxLines: taxLineItems.shippingMethodsTaxLines,
+      locale: cart.locale,
+    })
+
     setTaxLinesForItemsStep({
       cart,
-      item_tax_lines: taxLineItems.lineItemTaxLines,
-      shipping_tax_lines: taxLineItems.shippingMethodsTaxLines,
+      item_tax_lines: translatedTaxLines.itemTaxLines as ItemTaxLineDTO[],
+      shipping_tax_lines:
+        translatedTaxLines.shippingTaxLines as ShippingTaxLineDTO[],
     })
 
     releaseLockStep({

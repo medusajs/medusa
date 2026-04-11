@@ -64,6 +64,18 @@ export const eventBus = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateDraftOrderWorkflow"
   },
   {
+    "title": "createShippingOptionsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createShippingOptionsWorkflow"
+  },
+  {
+    "title": "deleteShippingOptionsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteShippingOptionsWorkflow"
+  },
+  {
+    "title": "updateShippingOptionsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateShippingOptionsWorkflow"
+  },
+  {
     "title": "acceptInviteWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/acceptInviteWorkflow"
   },
@@ -78,6 +90,10 @@ export const eventBus = [
   {
     "title": "refreshInviteTokensWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshInviteTokensWorkflow"
+  },
+  {
+    "title": "deleteLineItemsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteLineItemsWorkflow"
   },
   {
     "title": "archiveOrderWorkflow",

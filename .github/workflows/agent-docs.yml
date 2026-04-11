@@ -1,0 +1,62 @@
+name: Agent-Friendly Docs
+
+on:
+  pull_request:
+    branches: [develop]
+    paths:
+      - www/apps/book/**
+
+jobs:
+  agent-docs-check:
+    if: ${{ startsWith(github.head_ref, 'docs/') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "yarn"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: docs
+
+      - name: Install www dependencies
+        working-directory: www
+        run: yarn install
+
+      - name: Build book app
+        working-directory: www
+        run: yarn build:docs
+        env:
+          NEXT_PUBLIC_BASE_URL: "http://localhost:3000"
+          NEXT_PUBLIC_DOCS_URL: "http://localhost:3000"
+          NEXT_PUBLIC_RESOURCES_URL: "http://localhost:3000"
+          NEXT_PUBLIC_USER_GUIDE_URL: "http://localhost:3000"
+          NEXT_PUBLIC_ENV: CI
+          NODE_ENV: production
+
+      - name: Start book app
+        working-directory: www/apps/book
+        run: yarn start &
+        env:
+          NEXT_PUBLIC_BASE_URL: "http://localhost:3000"
+
+      - name: Wait for server
+        run: npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: Run agent-friendly docs checks
+        working-directory: www/apps/book
+        run: yarn test:agent-docs
+        timeout-minutes: 5

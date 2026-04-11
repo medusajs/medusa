@@ -1,0 +1,54 @@
+import { InlineIcon, getOsShortcut, Kbd, InProductAction } from "docs-ui"
+import { Plus } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Preview Tabs`,
+}
+
+# {metadata.title}
+
+Your Bloom store preview has tabs to view different parts of your store while building. See your store, admin dashboard, {/* emails, */} and more without switching windows.
+
+{/* TODO: Add screenshot of preview tabs bar showing multiple tabs */}
+
+## What are Preview Tabs?
+
+Your Bloom store preview has multiple tabs to help you view different parts of your store while building.
+
+Each tab shows a different view of your store, so you can preview and make changes from within the project interface.
+
+---
+
+## Default Tabs
+
+By default, you'll have the following tabs in your store preview:
+
+1. <InProductAction product={"bloom"} type={"MEDUSA_AI_OPEN_PANE"} data={{ pane: "store" }}>Store</InProductAction>: Preview of your store, where customers shop and place orders.
+2. <InProductAction product={"bloom"} type={"MEDUSA_AI_OPEN_PANE"} data={{ pane: "admin" }}>Admin</InProductAction>: Your dashboard for managing products, orders, customers, and more.
+
+You can open a tab by clicking on it at the top of the preview. The active tab is highlighted, and its content is shown in the main area below.
+
+{/* TODO: Add screenshot of default tab bar with Store and Admin tabs */}
+
+---
+
+## Open Additional Tabs
+
+Bloom has other tabs to view different parts of your store. To open more tabs, you can either:
+
+- Click the <InlineIcon Icon={Plus} alt="plus" /> button on the right of the tab bar;
+- Or press the <Kbd>{getOsShortcut()}</Kbd> + <Kbd>k</Kbd> keyboard shortcut.
+
+Both approaches open the tab switcher, where you can select which tabs to open. Use the search input to find specific tabs, or use the arrow keys to navigate the list.
+
+Bloom has the following additional tabs you can open:
+
+- {/* <InProductAction product={"bloom"} type={"MEDUSA_AI_OPEN_PANE"} data={{ pane: "emails" }}>Emails</InProductAction>: Preview your store's transactional emails, like order confirmations and password resets. */}
+- <InProductAction product={"bloom"} type={"MEDUSA_AI_OPEN_PANE"} data={{ pane: "developer" }}>Code</InProductAction>: View and edit your store's code.
+- <InProductAction product={"bloom"} type={"MEDUSA_AI_OPEN_PANE"} data={{ pane: "github" }}>Sync with GitHub</InProductAction>: Sync your project with GitHub and view sync status.
+
+---
+
+## Keep Your Tabs Open
+
+Bloom remembers which tabs you had open. When you close your project and return later, your tabs will still be there. You can pick up right where you left off without having to reopen your tabs.

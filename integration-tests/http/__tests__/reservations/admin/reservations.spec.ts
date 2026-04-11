@@ -3,6 +3,8 @@ import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
+import { Modules } from "@medusajs/utils"
+import { updateReservationsWorkflow } from "@medusajs/core-flows"
 
 jest.setTimeout(50000)
 
@@ -12,9 +14,14 @@ medusaIntegrationTestRunner({
     let inventoryItem2
     let stockLocation1
     let stockLocation2
+    let appContainer
+
+    beforeAll(async () => {
+      appContainer = getContainer()
+    })
 
     beforeEach(async () => {
-      await createAdminUser(dbConnection, adminHeaders, getContainer())
+      await createAdminUser(dbConnection, adminHeaders, appContainer)
 
       stockLocation1 = (
         await api.post(`/admin/stock-locations`, { name: "loc1" }, adminHeaders)
@@ -551,6 +558,26 @@ medusaIntegrationTestRunner({
           expect(reservationsRes.data.reservations.length).toBe(1)
           expect(reservationsRes.data.reservations[0].id).toBe(reservation2.id)
         })
+      })
+    })
+
+    describe("workflows", () => {
+      it("updateReservationsWorklow - should not call listReservations when data is empty", async () => {
+        const reservationService = appContainer.resolve(Modules.INVENTORY)
+
+        const listReservationItemsSpy = jest.spyOn(
+          reservationService,
+          "listReservationItems"
+        )
+
+        const { result } = await updateReservationsWorkflow(appContainer).run({
+          input: { updates: [] },
+        })
+
+        expect(result).toEqual([])
+        expect(listReservationItemsSpy).not.toHaveBeenCalled()
+
+        listReservationItemsSpy.mockRestore()
       })
     })
   },

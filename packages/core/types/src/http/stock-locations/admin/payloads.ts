@@ -13,7 +13,7 @@ interface AdminUpsertStockLocationAddress {
   company?: string
   /**
    * The country code of the address.
-   * 
+   *
    * @example
    * "us"
    */
@@ -34,6 +34,11 @@ interface AdminUpsertStockLocationAddress {
    * The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state of the address.
    */
   province?: string
+
+  /**
+   * Custom key-value pairs that can be added to the address.
+   */
+  metadata?: Record<string, unknown>
 }
 
 export interface AdminCreateStockLocation {
@@ -77,9 +82,12 @@ export interface AdminUpdateStockLocation {
   /**
    * Custom key-value pairs that can be added to the stock location.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
+/**
+ * Sales channels to associate or disassociate from a stock location.
+ */
 export interface AdminUpdateStockLocationSalesChannels {
   /**
    * The IDs of the sales channels to add to the stock location.
@@ -91,6 +99,9 @@ export interface AdminUpdateStockLocationSalesChannels {
   remove?: string[]
 }
 
+/**
+ * Data for creating a fulfillment set for a stock location.
+ */
 export interface AdminCreateStockLocationFulfillmentSet {
   /**
    * The name of the fulfillment set.

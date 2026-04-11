@@ -134,11 +134,18 @@ export async function initializeContainer(
   rootDirectory: string,
   options?: {
     skipDbConnection?: boolean
+    throwOnError?: boolean
   }
 ): Promise<MedusaContainer> {
   await featureFlagsLoader(rootDirectory)
-  const configDir = await configLoader(rootDirectory, "medusa-config")
+  const configDir = await configLoader(rootDirectory, "medusa-config", {
+    throwOnError: options?.throwOnError,
+  })
   await featureFlagsLoader(join(__dirname, ".."))
+
+  // Load policies from core medusa package and project root
+  await policiesLoader(join(__dirname, ".."))
+  await policiesLoader(rootDirectory)
 
   const customLogger = configDir.logger ?? defaultLogger
   container.register({
@@ -182,8 +189,7 @@ export default async ({
   )
   await new LinkLoader(linksSourcePaths, logger).load()
 
-  // Load policies from project root and all plugins
-  await policiesLoader(rootDirectory)
+  // Load policies from all plugins (rootDirectory already loaded in initializeContainer)
   for (const plugin of plugins) {
     await policiesLoader(plugin.resolve)
   }

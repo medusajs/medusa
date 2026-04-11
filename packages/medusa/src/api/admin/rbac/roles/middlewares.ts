@@ -5,12 +5,17 @@ import {
   validateAndTransformQuery,
 } from "@medusajs/framework"
 import { MiddlewareRoute } from "@medusajs/framework/http"
+import { PolicyOperation } from "@medusajs/framework/utils"
 
+import { Entities } from "./query-config"
 import {
   AdminAddRolePoliciesType,
+  AdminAssignRoleUsers,
   AdminCreateRbacRole,
   AdminGetRbacRoleParams,
   AdminGetRbacRolesParams,
+  AdminGetRoleUsersParams,
+  AdminRemoveRoleUsers,
   AdminUpdateRbacRole,
 } from "./validators"
 
@@ -24,6 +29,12 @@ export const adminRbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.rbac_role,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],
@@ -33,6 +44,12 @@ export const adminRbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetRbacRoleParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.rbac_role,
+        operation: PolicyOperation.read,
+      },
     ],
   },
   {
@@ -56,6 +73,12 @@ export const adminRbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.rbac_role,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["GET"],
@@ -65,6 +88,12 @@ export const adminRbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetRbacRoleParams,
         QueryConfig.retrieveRolePoliciesTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.rbac_role,
+        operation: PolicyOperation.read,
+      },
     ],
   },
   {
@@ -77,15 +106,79 @@ export const adminRbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveRolePoliciesTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.rbac_role,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/rbac/roles/:id/policies/:policy_id",
     middlewares: [],
+    policies: [
+      {
+        resource: Entities.rbac_role,
+        operation: PolicyOperation.update,
+      },
+    ],
+  },
+  {
+    method: ["GET"],
+    matcher: "/admin/rbac/roles/:id/users",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetRoleUsersParams,
+        QueryConfig.listRoleUsersTransformQueryConfig
+      ),
+    ],
+    policies: [
+      {
+        resource: Entities.user,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/rbac/roles/:id/users",
+    middlewares: [validateAndTransformBody(AdminAssignRoleUsers)],
+    policies: [
+      {
+        resource: Entities.user,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.rbac_role,
+        operation: PolicyOperation.update,
+      },
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/rbac/roles/:id/users",
+    middlewares: [validateAndTransformBody(AdminRemoveRoleUsers)],
+    policies: [
+      {
+        resource: Entities.user,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.rbac_role,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/rbac/roles/:id",
     middlewares: [],
+    policies: [
+      {
+        resource: Entities.rbac_role,
+        operation: PolicyOperation.delete,
+      },
+    ],
   },
 ]

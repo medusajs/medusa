@@ -1,8 +1,8 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
 import { refreshInviteTokensWorkflow } from "@medusajs/core-flows"
-import { refetchInvite } from "../../helpers"
 import { HttpTypes } from "@medusajs/framework/types"
+import { refetchInvite } from "../../helpers"
 
 export const POST = async (
   req: MedusaRequest<{}, HttpTypes.SelectParams>,
@@ -23,5 +23,3 @@ export const POST = async (
 
   res.status(200).json({ invite })
 }
-
-export const AUTHENTICATE = false

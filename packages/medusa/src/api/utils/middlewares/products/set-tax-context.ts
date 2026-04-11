@@ -76,6 +76,7 @@ const getTaxLinesContext = async (req: MedusaRequest) => {
       country_code: req.filterableFields.country_code as string,
       province_code: req.filterableFields.province as string,
     },
+    locale: req.locale,
   } as TaxCalculationContext
 
   return taxContext

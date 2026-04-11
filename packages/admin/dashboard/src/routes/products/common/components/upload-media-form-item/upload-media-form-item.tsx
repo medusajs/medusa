@@ -8,6 +8,7 @@ import {
   RejectedFile,
 } from "../../../../../components/common/file-upload"
 import { Form } from "../../../../../components/common/form"
+import { formatFileSize } from "../../../../../lib/format-file-size"
 import { MediaSchema } from "../../../product-create/constants"
 import {
   EditProductMediaSchemaType,
@@ -75,7 +76,7 @@ export const UploadMediaFormItem = ({
           type: "file_too_large",
           message: t("products.media.fileTooLarge", {
             name: fileNames,
-            size: "1MB",
+            size: formatFileSize(__MAX_UPLOAD_FILE_SIZE__ ?? 1024 * 1024),
           }),
         })
 

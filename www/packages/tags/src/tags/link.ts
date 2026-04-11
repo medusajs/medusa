@@ -88,6 +88,10 @@ export const link = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateLinksWorkflow"
   },
   {
+    "title": "createDefaultsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createDefaultsWorkflow"
+  },
+  {
     "title": "deleteDraftOrdersWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteDraftOrdersWorkflow"
   },
@@ -102,6 +106,14 @@ export const link = [
   {
     "title": "deleteInventoryItemWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteInventoryItemWorkflow"
+  },
+  {
+    "title": "acceptInviteWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/acceptInviteWorkflow"
+  },
+  {
+    "title": "createInvitesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createInvitesWorkflow"
   },
   {
     "title": "deleteLineItemsWorkflow",
@@ -144,6 +156,10 @@ export const link = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createVariantPricingLinkStep"
   },
   {
+    "title": "dismissProductVariantsInventoryStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/dismissProductVariantsInventoryStep"
+  },
+  {
     "title": "batchProductVariantsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchProductVariantsWorkflow"
   },
@@ -174,6 +190,10 @@ export const link = [
   {
     "title": "deleteProductsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteProductsWorkflow"
+  },
+  {
+    "title": "updateProductVariantsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductVariantsWorkflow"
   },
   {
     "title": "updateProductsWorkflow",
@@ -250,6 +270,14 @@ export const link = [
   {
     "title": "deleteStoresWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteStoresWorkflow"
+  },
+  {
+    "title": "createUserAccountWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createUserAccountWorkflow"
+  },
+  {
+    "title": "createUsersWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createUsersWorkflow"
   },
   {
     "title": "deleteUsersWorkflow",

@@ -21,7 +21,6 @@
   },
   "devDependencies": {
     "@atomico/rollup-plugin-sizes": "^1.1.4",
-    "@aws-sdk/client-dynamodb": "^3.218.0",
     "@faker-js/faker": "^9.2.0",
     "@rollup/plugin-node-resolve": "^15.1.0",
     "@rollup/plugin-replace": "^5.0.2",
@@ -77,7 +76,6 @@
     "axios-mock-adapter": "^1.19.0",
     "chromatic": "^6.20.0",
     "configstore": "^5.0.1",
-    "connect-dynamodb": "^3.0.5",
     "cross-env": "^5.2.1",
     "esbuild": "^0.25.0",
     "eslint": "^8.40.0",
@@ -93,7 +91,7 @@
     "express": "^4.21.0",
     "faker": "^5.5.3",
     "get-port": "^5.1.1",
-    "glob": "^11.0.0",
+    "glob": "13.0.6",
     "import-from": "^3.0.0",
     "ioredis": "^5.4.1",
     "jest": "^29.7.0",
@@ -111,7 +109,7 @@
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "6.20.1",
+    "react-router-dom": "6.30.3",
     "resize-observer-polyfill": "^1.5.1",
     "resolve-cwd": "^3.0.0",
     "rimraf": "^5.0.1",
@@ -134,7 +132,8 @@
     "vite-plugin-turbosnap": "^1.0.2",
     "vitest": "^3.0.5",
     "yalc": "^1.0.0-pre.53",
-    "zod": "3.25.76"
+    "zod": "4.2.0",
+    "zod-validation-error": "5.0.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "yarn run lint",
@@ -154,6 +153,8 @@
     "test:integration:api": "turbo run test:integration:chunk --no-daemon --no-cache --force --filter=integration-tests-api",
     "test:integration:http": "turbo run test:integration:chunk --no-daemon --no-cache --force --filter=integration-tests-http",
     "test:integration:modules": "turbo run test:integration:chunk --no-daemon --no-cache --force --filter=integration-tests-modules",
+    "generate:http-types": "yarn workspace @medusajs/http-types-generator generate:http-types",
+    "validate:http-types": "yarn workspace @medusajs/http-types-generator validate:http-types",
     "openapi:generate": "yarn ./packages/cli/oas/oas-github-ci run ci --with-full-file",
     "medusa-oas": "yarn ./packages/cli/oas/medusa-oas-cli run medusa-oas",
     "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot",

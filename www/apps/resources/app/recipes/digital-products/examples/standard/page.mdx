@@ -69,7 +69,7 @@ This guide provides an example of an approach to implement digital products. You
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
@@ -327,7 +327,7 @@ This defines a link between `DigitalProductOrder` and the Order Module’s `Orde
 
 To create tables for the digital product data models in the database, start by generating the migrations for the Digital Product Module with the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate digitalProductModuleService
 ```
 
@@ -335,7 +335,7 @@ This generates a migration in the `src/modules/digital-product/migrations` direc
 
 Then, reflect the migrations and links in the database with the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -360,11 +360,6 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const { 
-    fields, 
-    limit = 20, 
-    offset = 0,
-  } = req.validatedQuery || {}
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { 
@@ -372,16 +367,7 @@ export const GET = async (
     metadata: { count, take, skip } = {},
   } = await query.graph({
     entity: "digital_product",
-    fields: [
-      "*",
-      "medias.*",
-      "product_variant.*",
-      ...(fields || []),
-    ],
-    pagination: {
-      skip: offset,
-      take: limit,
-    },
+    ...req.queryConfig,
   })
 
   res.json({
@@ -396,6 +382,45 @@ export const GET = async (
 This adds a `GET` API route at `/admin/digital-products`.
 
 In the route handler, you use Query to retrieve the list of digital products and their relations. The route handler also supports pagination.
+
+Then, create the file `src/api/middlewares.ts` with the following content:
+
+```ts title="src/api/middlewares.ts"
+import { validateAndTransformQuery } from "@medusajs/framework/http"
+import { createFindParams } from "@medusajs/medusa/api/utils/validators"
+
+const GetDigitalProductsSchema = createFindParams()
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/admin/digital-products",
+      method: "GET",
+      middlewares: [
+        validateAndTransformQuery(
+          GetDigitalProductsSchema,
+          {
+            defaults: [
+              "id",
+              "name",
+              "created_at",
+              "updated_at",
+              "deleted_at",
+              "medias.*",
+              "product_variant.*",
+            ],
+            isList: true,
+          }
+        ),
+      ],
+    },
+  ],
+})
+```
+
+### Further Read
+
+- [How to Create a Middleware](!docs!/learn/fundamentals/api-routes/middlewares)
 
 ### Test API Route
 
@@ -583,10 +608,10 @@ In the compensation function, you delete the digital product medias.
 Finally, create the file `src/workflows/create-digital-product/index.ts` with the following content:
 
 export const createDpWorkflowHighlights = [
-  ["36", "createProductsWorkflow", "Create the Medusa product."],
-  ["42", "createDigitalProductStep", "Create the digital product."],
-  ["46", "createDigitalProductMediasStep", "Create the digital product's medias."],
-  ["60", "createRemoteLinkStep", "Link the digital product to the first variant of the product."],
+  ["34", "createProductsWorkflow", "Create the Medusa product."],
+  ["47", "createDigitalProductStep", "Create the digital product."],
+  ["51", "createDigitalProductMediasStep", "Create the digital product's medias."],
+  ["65", "createRemoteLinkStep", "Link the digital product to the first variant of the product."],
 ]
 
 ```ts title="src/workflows/create-digital-product/index.ts" highlights={createDpWorkflowHighlights} collapsibleLines="1-23" expandMoreLabel="Show Imports"
@@ -623,13 +648,18 @@ type CreateDigitalProductWorkflowInput = {
 const createDigitalProductWorkflow = createWorkflow(
   "create-digital-product",
   (input: CreateDigitalProductWorkflowInput) => {
-    const { medias, ...digitalProductData } = input.digital_product
-
     const product = createProductsWorkflow.runAsStep({
       input: {
         products: [input.product],
       },
     })
+
+    const digitalProductData = transform(
+      input,
+      (data) => ({
+        name: data.digital_product.name,
+      })
+    )
 
     const { digital_product } = createDigitalProductStep(
       digitalProductData
@@ -638,10 +668,10 @@ const createDigitalProductWorkflow = createWorkflow(
     const { digital_product_medias } = createDigitalProductMediasStep(
       transform({
         digital_product,
-        medias,
+        input,
       },
       (data) => ({
-        medias: data.medias.map((media) => ({
+        medias: data.input.digital_product.medias.map((media) => ({
           ...media,
           digital_product_id: data.digital_product.id,
         })),
@@ -658,12 +688,20 @@ const createDigitalProductWorkflow = createWorkflow(
       },
     }])
 
-    return new WorkflowResponse({
-      digital_product: {
-        ...digital_product,
-        medias: digital_product_medias,
+    const returnData = transform(
+      {
+        digital_product,
+        digital_product_medias,
       },
-    })
+      (data) => ({
+        digital_product: {
+          ...data.digital_product,
+          medias: data.digital_product_medias,
+        },
+      })
+    )
+
+    return new WorkflowResponse(returnData)
   }
 )
 
@@ -695,9 +733,15 @@ In this step, you’ll add the API route to create a digital product using the `
 
 In the file `src/api/admin/digital-products/route.ts` add a new route handler:
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 ```ts title="src/api/admin/digital-products/route.ts"
 // other imports...
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import createDigitalProductWorkflow from "../../../workflows/create-digital-product"
 import { CreateDigitalProductMediaInput } from "../../../workflows/create-digital-product/steps/create-digital-product-medias"
 import { createDigitalProductsSchema } from "../../validation-schemas"
@@ -727,7 +771,7 @@ export const POST = async (
         medias: req.validatedBody.medias.map((media) => ({
           fileId: media.file_id,
           mimeType: media.mime_type,
-          ...media,
+          type: media.type,
         })) as Omit<CreateDigitalProductMediaInput, "digital_product_id">[],
       },
       product: {
@@ -753,7 +797,7 @@ The route handler imports a validation schema from a `validation-schema` file. S
 import { 
   AdminCreateProduct,
 } from "@medusajs/medusa/api/admin/products/validators"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { MediaType } from "../modules/digital-product/types"
 
 export const createDigitalProductsSchema = z.object({
@@ -769,7 +813,7 @@ export const createDigitalProductsSchema = z.object({
 
 This defines the expected request body schema.
 
-Finally, create the file `src/api/middlewares.ts` with the following content:
+Finally, add to the file `src/api/middlewares.ts` the following content:
 
 ```ts title="src/api/middlewares.ts"
 import { 
@@ -851,7 +895,7 @@ export const POST = async (
       files: input?.map((f) => ({
         filename: f.originalname,
         mimeType: f.mimetype,
-        content: f.buffer.toString("binary"),
+        content: f.buffer.toString("base64"),
         access,
       })),
     },

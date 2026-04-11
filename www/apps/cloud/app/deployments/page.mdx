@@ -1,4 +1,4 @@
-import { Table, InlineIcon } from "docs-ui"
+import { Table, InlineIcon, getOsShortcut, Kbd } from "docs-ui"
 import { EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
@@ -88,6 +88,12 @@ Do not expose sensitive files in your deployments, especially in the `.medusa/se
 You can find the deployments for a project in its dashboard.
 
 To find the deployments for a project:
+
+<Note title="Tip">
+
+You can also navigate to a project's deployments from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, select **Deployments**, then choose a project.
+
+</Note>
 
 1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
 2. Click on the project you want to view its deployments.
