@@ -95,6 +95,44 @@ export class PaymentCollection {
    *   console.log(payment_collection)
    * })
    */
+  /**
+   * This method authorizes a payment session that is in `pending_authorization` status.
+   * It sends a request to the
+   * [Authorize Payment Session](https://docs.medusajs.com/api/admin#payment-collections_postpaymentcollectionsidpaymentsessionssessionidauthorize)
+   * API route.
+   *
+   * This is used for payment methods where authorization happens asynchronously
+   * (e.g., bank transfers, payment links). The method triggers a re-check with
+   * the payment provider to see if the payment has been completed.
+   *
+   * @param id - The payment collection's ID.
+   * @param sessionId - The payment session's ID.
+   * @param query - Configure the fields to retrieve in the payment collection.
+   * @param headers - Headers to pass in the request.
+   * @returns The payment collection's details.
+   *
+   * @example
+   * sdk.admin.paymentCollection.authorizePaymentSession("paycol_123", "payses_123")
+   * .then(({ payment_collection }) => {
+   *   console.log(payment_collection)
+   * })
+   */
+  async authorizePaymentSession(
+    id: string,
+    sessionId: string,
+    query?: SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminPaymentCollectionResponse>(
+      `/admin/payment-collections/${id}/payment-sessions/${sessionId}/authorize`,
+      {
+        method: "POST",
+        headers,
+        query,
+      }
+    )
+  }
+
   async markAsPaid(
     id: string,
     body: HttpTypes.AdminMarkPaymentCollectionAsPaid,

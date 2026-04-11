@@ -30,7 +30,7 @@ export enum PaymentSessionStatus {
   CANCELED = "canceled",
   /**
    * The payment authorization is pending and expected to be completed asynchronously
-   * (e.g., bank transfers, payment links, vouchers like OXXO/boleto).
+   * (e.g., bank transfers, payment links, vouchers, etc.).
    */
   PENDING_AUTHORIZATION = "pending_authorization",
 }

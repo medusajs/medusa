@@ -71,6 +71,41 @@ export const useMarkPaymentCollectionAsPaid = (
   })
 }
 
+export const useAuthorizePaymentSession = (
+  orderId: string,
+  paymentCollectionId: string,
+  sessionId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminPaymentCollectionResponse,
+    FetchError,
+    void
+  >
+) => {
+  return useMutation({
+    mutationFn: () =>
+      sdk.admin.paymentCollection.authorizePaymentSession(
+        paymentCollectionId,
+        sessionId
+      ),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.detail(orderId),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: paymentCollectionQueryKeys.all,
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useDeletePaymentCollection = (
   orderId: string,
   options?: Omit<

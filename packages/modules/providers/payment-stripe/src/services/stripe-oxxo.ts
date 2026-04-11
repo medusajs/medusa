@@ -8,6 +8,10 @@ class OxxoProviderService extends StripeBase {
     super(_, options)
   }
 
+  protected get isAsyncPaymentMethod(): boolean {
+    return true
+  }
+
   get paymentIntentOptions(): PaymentIntentOptions {
     return {
       payment_method_types: ["oxxo"],

@@ -16,7 +16,10 @@ import { format } from "date-fns"
 import { Trans, useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import DisplayId from "../../../../../components/common/display-id/display-id"
-import { useCapturePayment } from "../../../../../hooks/api"
+import {
+  useCapturePayment,
+  useAuthorizePaymentSession,
+} from "../../../../../hooks/api"
 import { formatCurrency } from "../../../../../lib/format-currency"
 import {
   getLocaleAmount,
@@ -345,6 +348,61 @@ const CreditLine = ({
   )
 }
 
+const PendingAuthorizationBanner = ({
+  order,
+  paymentCollectionId,
+  sessionId,
+  currencyCode,
+}: {
+  order: HttpTypes.AdminOrder
+  paymentCollectionId: string
+  sessionId: string
+  currencyCode: string
+}) => {
+  const { t } = useTranslation()
+  const { mutateAsync, isPending } = useAuthorizePaymentSession(
+    order.id,
+    paymentCollectionId,
+    sessionId
+  )
+
+  const handleCheckStatus = async () => {
+    await mutateAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("orders.payment.checkStatusSuccess"))
+      },
+      onError: (error) => {
+        if (error.message?.includes("not in pending_authorization")) {
+          toast.info(t("orders.payment.stillPending"))
+        } else {
+          toast.error(error.message)
+        }
+      },
+    })
+  }
+
+  return (
+    <div className="bg-ui-bg-subtle flex items-center justify-between px-6 py-4">
+      <div className="flex items-center gap-x-2">
+        <ArrowDownRightMini className="text-ui-fg-muted shrink-0" />
+        <Text size="small" leading="compact">
+          {t("orders.payment.pendingAuthorization")}
+        </Text>
+      </div>
+
+      <Button
+        className="shrink-0"
+        size="small"
+        variant="secondary"
+        onClick={handleCheckStatus}
+        disabled={isPending}
+      >
+        {t("orders.payment.checkStatus")}
+      </Button>
+    </div>
+  )
+}
+
 const PaymentBreakdown = ({
   order,
   payments,
@@ -358,6 +416,16 @@ const PaymentBreakdown = ({
   currencyCode: string
   plugins: HttpTypes.AdminPlugin[]
 }) => {
+  const pendingAuthSessions = (order.payment_collections ?? []).flatMap(
+    (pc) =>
+      ((pc as any).payment_sessions ?? [])
+        .filter((s: any) => s.status === "pending_authorization")
+        .map((s: any) => ({
+          session_id: s.id,
+          payment_collection_id: pc.id,
+        }))
+  )
+
   /**
    * Refunds that are not associated with a payment.
    */
@@ -393,6 +461,15 @@ const PaymentBreakdown = ({
 
   return (
     <div className="flex flex-col divide-y divide-dashed">
+      {pendingAuthSessions.map(({ session_id, payment_collection_id }) => (
+        <PendingAuthorizationBanner
+          key={session_id}
+          order={order}
+          paymentCollectionId={payment_collection_id}
+          sessionId={session_id}
+          currencyCode={currencyCode}
+        />
+      ))}
       {entries.map(({ type, event }) => {
         switch (type) {
           case "payment":

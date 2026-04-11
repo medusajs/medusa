@@ -85,6 +85,18 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
 
   abstract get paymentIntentOptions(): PaymentIntentOptions
 
+  /**
+   * Whether this payment method is asynchronous by nature (e.g., bank transfers,
+   * vouchers like OXXO/boleto, payment links). When true, the `getStatus` method
+   * will return `PENDING_AUTHORIZATION` instead of `PENDING` for processing states,
+   * allowing cart completion to proceed without immediate authorization.
+   *
+   * Override this in subclasses that handle async payment methods.
+   */
+  protected get isAsyncPaymentMethod(): boolean {
+    return false
+  }
+
   get options(): StripeOptions {
     return this.options_
   }
@@ -602,15 +614,19 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     data: Stripe.PaymentIntent
     status: PaymentSessionStatus
   } {
+    const pendingStatus = this.isAsyncPaymentMethod
+      ? PaymentSessionStatus.PENDING_AUTHORIZATION
+      : PaymentSessionStatus.PENDING
+
     switch (paymentIntent.status) {
       case "requires_payment_method":
         if (paymentIntent.last_payment_error) {
           return { status: PaymentSessionStatus.ERROR, data: paymentIntent }
         }
-        return { status: PaymentSessionStatus.PENDING, data: paymentIntent }
+        return { status: pendingStatus, data: paymentIntent }
       case "requires_confirmation":
       case "processing":
-        return { status: PaymentSessionStatus.PENDING, data: paymentIntent }
+        return { status: pendingStatus, data: paymentIntent }
       case "requires_action":
         return {
           status: PaymentSessionStatus.REQUIRES_MORE,
@@ -623,7 +639,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
       case "succeeded":
         return { status: PaymentSessionStatus.CAPTURED, data: paymentIntent }
       default:
-        return { status: PaymentSessionStatus.PENDING, data: paymentIntent }
+        return { status: pendingStatus, data: paymentIntent }
     }
   }
 
@@ -639,7 +655,9 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
       case "payment_intent.created":
       case "payment_intent.processing":
         return {
-          action: PaymentActions.PENDING,
+          action: this.isAsyncPaymentMethod
+            ? PaymentActions.PENDING_AUTHORIZATION
+            : PaymentActions.PENDING,
           data: {
             session_id: intent.metadata.session_id,
             amount: getAmountFromSmallestUnit(intent.amount, currency),

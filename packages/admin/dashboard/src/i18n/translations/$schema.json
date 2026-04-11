@@ -4369,6 +4369,18 @@
             },
             "selectPaymentToRefund": {
               "type": "string"
+            },
+            "pendingAuthorization": {
+              "type": "string"
+            },
+            "checkStatus": {
+              "type": "string"
+            },
+            "checkStatusSuccess": {
+              "type": "string"
+            },
+            "stillPending": {
+              "type": "string"
             }
           },
           "required": [
@@ -4392,7 +4404,11 @@
             "createRefundWrongQuantity",
             "refundAmount",
             "paymentLink",
-            "selectPaymentToRefund"
+            "selectPaymentToRefund",
+            "pendingAuthorization",
+            "checkStatus",
+            "checkStatusSuccess",
+            "stillPending"
           ],
           "additionalProperties": false
         },
