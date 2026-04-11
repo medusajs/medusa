@@ -34,4 +34,9 @@ export enum PaymentActions {
    * Received an event that is not processable.
    */
   NOT_SUPPORTED = "not_supported",
+  /**
+   * Payment authorization is pending and expected to complete asynchronously
+   * (e.g., bank transfers, payment links, vouchers).
+   */
+  PENDING_AUTHORIZATION = "pending_authorization",
 }

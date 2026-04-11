@@ -23,6 +23,7 @@ export type BasePaymentSessionStatus =
   | "requires_more"
   | "error"
   | "canceled"
+  | "pending_authorization"
 
 export interface BasePaymentProvider {
   /**
