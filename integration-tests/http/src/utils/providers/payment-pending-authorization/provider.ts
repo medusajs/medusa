@@ -106,7 +106,7 @@ export class PendingAuthorizationPaymentProvider extends AbstractPaymentProvider
   async updatePayment(
     input: UpdatePaymentInput
   ): Promise<UpdatePaymentOutput> {
-    return { data: {} }
+    return { data: input.data ?? {} }
   }
 
   async getWebhookActionAndData(

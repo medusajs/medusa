@@ -314,6 +314,8 @@ medusaIntegrationTestRunner({
         const paymentModule = appContainer.resolve(Modules.PAYMENT)
         await paymentModule.updatePaymentSession({
           id: sessionId,
+          currency_code: "usd",
+          amount: orderBefore.payment_collections[0].amount,
           data: { payment_received: true },
         })
 
@@ -481,6 +483,8 @@ medusaIntegrationTestRunner({
         const paymentModule = appContainer.resolve(Modules.PAYMENT)
         await paymentModule.updatePaymentSession({
           id: sessionId,
+          currency_code: "usd",
+          amount: orderBefore.payment_collections[0].amount,
           data: { payment_received: true },
         })
 
@@ -554,6 +558,8 @@ medusaIntegrationTestRunner({
         const paymentModule = appContainer.resolve(Modules.PAYMENT)
         await paymentModule.updatePaymentSession({
           id: sessionId,
+          currency_code: "usd",
+          amount: orderBefore.payment_collections[0].amount,
           data: { payment_received: true },
         })
 
