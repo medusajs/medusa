@@ -4,7 +4,11 @@ import {
 } from "@medusajs/framework/http"
 import { AdminUpdateViewConfigurationType } from "../validators"
 import { HttpTypes } from "@medusajs/framework/types"
-import { MedusaError, Modules } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+  Modules,
+} from "@medusajs/framework/utils"
 import { updateViewConfigurationWorkflow } from "@medusajs/core-flows"
 
 /**
@@ -15,12 +19,22 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminGetViewConfigurationParams>,
   res: MedusaResponse<HttpTypes.AdminViewConfigurationResponse>
 ) => {
-  const settingsService = req.scope.resolve(Modules.SETTINGS)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const viewConfiguration = await settingsService.retrieveViewConfiguration(
-    req.params.id,
-    req.queryConfig
-  )
+  const {
+    data: [viewConfiguration],
+  } = await query.graph({
+    entity: "view_configuration",
+    fields: req.queryConfig.fields,
+    filters: { id: req.params.id },
+  })
+
+  if (!viewConfiguration) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `View configuration with id: ${req.params.id} not found`
+    )
+  }
 
   if (
     viewConfiguration.user_id &&
@@ -44,13 +58,23 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateViewConfigurationType>,
   res: MedusaResponse<HttpTypes.AdminViewConfigurationResponse>
 ) => {
-  const settingsService = req.scope.resolve(Modules.SETTINGS)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  // Single retrieval for permission check
-  const existing = await settingsService.retrieveViewConfiguration(
-    req.params.id,
-    { select: ["id", "user_id", "is_system_default"] }
-  )
+  // Fetch existing for permission check
+  const {
+    data: [existing],
+  } = await query.graph({
+    entity: "view_configuration",
+    fields: ["id", "user_id", "is_system_default"],
+    filters: { id: req.params.id },
+  })
+
+  if (!existing) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `View configuration with id: ${req.params.id} not found`
+    )
+  }
 
   if (existing.user_id && existing.user_id !== req.auth_context.actor_id) {
     throw new MedusaError(
@@ -64,11 +88,19 @@ export const POST = async (
     ...req.validatedBody,
   }
 
-  const { result } = await updateViewConfigurationWorkflow(req.scope).run({
+  await updateViewConfigurationWorkflow(req.scope).run({
     input,
   })
 
-  res.json({ view_configuration: result })
+  const {
+    data: [viewConfiguration],
+  } = await query.graph({
+    entity: "view_configuration",
+    fields: req.queryConfig.fields,
+    filters: { id: req.params.id },
+  })
+
+  res.json({ view_configuration: viewConfiguration })
 }
 
 /**
@@ -79,13 +111,24 @@ export const DELETE = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<HttpTypes.AdminViewConfigurationDeleteResponse>
 ) => {
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const settingsService = req.scope.resolve(Modules.SETTINGS)
 
-  // Retrieve existing to check permissions
-  const existing = await settingsService.retrieveViewConfiguration(
-    req.params.id,
-    { select: ["id", "user_id", "is_system_default", "entity", "name"] }
-  )
+  // Fetch existing to check permissions
+  const {
+    data: [existing],
+  } = await query.graph({
+    entity: "view_configuration",
+    fields: ["id", "user_id", "is_system_default", "entity", "name"],
+    filters: { id: req.params.id },
+  })
+
+  if (!existing) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `View configuration with id: ${req.params.id} not found`
+    )
+  }
 
   if (existing.user_id && existing.user_id !== req.auth_context.actor_id) {
     throw new MedusaError(

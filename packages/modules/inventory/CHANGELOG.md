@@ -1,5 +1,26 @@
 # @medusajs/inventory-next
 
+## 2.13.6
+
+### Patch Changes
+
+- Updated dependencies [[`2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d`](https://github.com/medusajs/medusa/commit/2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d)]:
+  - @medusajs/framework@2.13.6
+
+## 2.13.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.13.5
+
+## 2.13.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.13.4
+
 ## 2.13.3
 
 ### Patch Changes

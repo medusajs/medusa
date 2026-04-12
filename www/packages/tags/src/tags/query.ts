@@ -172,6 +172,18 @@ export const query = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/onCarryPromotionsFlagSet"
   },
   {
+    "title": "orderClaimAddNewItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderClaimAddNewItemWorkflow"
+  },
+  {
+    "title": "orderClaimItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderClaimItemWorkflow"
+  },
+  {
+    "title": "orderClaimRequestItemReturnWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderClaimRequestItemReturnWorkflow"
+  },
+  {
     "title": "orderEditAddNewItemWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderEditAddNewItemWorkflow"
   },
@@ -190,6 +202,10 @@ export const query = [
   {
     "title": "removeItemOrderEditActionWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeItemOrderEditActionWorkflow"
+  },
+  {
+    "title": "updateClaimAddItemWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateClaimAddItemWorkflow"
   },
   {
     "title": "updateExchangeAddItemWorkflow",

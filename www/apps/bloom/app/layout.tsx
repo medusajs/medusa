@@ -39,6 +39,11 @@ export const metadata: Metadata = {
       },
     ],
   },
+  alternates: {
+    types: {
+      "text/plain": "/llms.txt",
+    },
+  },
   other: {
     "algolia-site-verification":
       process.env.NEXT_PUBLIC_ALGOLIA_SITE_VERIFICATION || "",
