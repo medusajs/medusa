@@ -638,21 +638,6 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/tax/tax-region
     x-associatedSchema:
       $ref: "#/components/schemas/AdminTaxRegion"
-  - name: Transaction Groups
-    description: >
-      A transaction group is a group of transactions that belong to a store
-      credit account. It allows you to group transactions together, such as all
-      transactions related to a specific gift card.
-
-      These API routes allow admin users to list transaction groups.
-
-      <Note>
-
-      Transaction Group routes are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
-
-      </Note>
-    x-associatedSchema:
-      $ref: "#/components/schemas/AdminTransactionGroup"
   - name: Translations
     description: >
       A translation is a localized version of content in a specific locale. For

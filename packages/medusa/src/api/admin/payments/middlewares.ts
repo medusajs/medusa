@@ -33,6 +33,12 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
         queryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.payment,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

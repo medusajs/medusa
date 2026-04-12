@@ -13,7 +13,7 @@ export const AiAssistantChatWindowFooter = () => {
         "py-docs_0.75 px-docs_1"
       )}
     >
-      <Tooltip text="Powered by Kapa.ai">
+      <Tooltip text="The docs AI assistant is powered by Kapa.ai">
         <a href="https://kapa.ai" target="_blank" rel="noreferrer">
           <KapaIcon className="text-medusa-fg-disabled hover:text-medusa-fg-muted transition-colors" />
         </a>

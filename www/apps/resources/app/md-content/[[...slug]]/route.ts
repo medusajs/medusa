@@ -1,4 +1,4 @@
-import { getCleanMd } from "docs-utils"
+import { getCleanMd, PLAINTEXT_DOC_MESSAGE } from "docs-utils"
 import { existsSync } from "fs"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
@@ -12,6 +12,7 @@ import {
 import type { Plugin } from "unified"
 import { filesMap } from "../../../generated/files-map.mjs"
 import { slugChanges } from "../../../generated/slug-changes.mjs"
+import { PostHog } from "posthog-node"
 
 type Params = {
   params: Promise<{ slug: string[] }>
@@ -70,9 +71,31 @@ export async function GET(req: NextRequest, { params }: Params) {
     ] as unknown as Plugin[],
   })
 
-  return new NextResponse(cleanMdContent, {
+  const acceptHeader = req.headers.get("accept") || ""
+  if (
+    acceptHeader.includes("text/plain") ||
+    acceptHeader.includes("text/markdown")
+  ) {
+    const client = new PostHog(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+      host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    })
+
+    client.capture({
+      distinctId: "anonymous",
+      event: "md_content_requested_agents",
+      properties: {
+        $current_url: req.url,
+        $raw_user_agent: req.headers.get("user-agent") || undefined,
+      },
+    })
+
+    await client.shutdown()
+  }
+
+  return new NextResponse(cleanMdContent + PLAINTEXT_DOC_MESSAGE, {
     headers: {
       "Content-Type": "text/markdown",
+      "Cache-Control": "public, max-age=3600, must-revalidate",
     },
     status: 200,
   })

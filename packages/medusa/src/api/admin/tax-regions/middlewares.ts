@@ -68,6 +68,12 @@ export const adminTaxRegionRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.tax_region,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: "GET",

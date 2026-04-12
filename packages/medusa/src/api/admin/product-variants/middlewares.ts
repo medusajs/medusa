@@ -24,5 +24,11 @@ export const adminProductVariantRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listProductVariantQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.product_variant,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
 ]

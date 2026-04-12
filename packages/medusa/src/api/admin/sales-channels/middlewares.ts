@@ -43,6 +43,12 @@ export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
         filterableField: "publishable_key_id",
       }),
     ],
+    policies: [
+      {
+        resource: Entities.sales_channel,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

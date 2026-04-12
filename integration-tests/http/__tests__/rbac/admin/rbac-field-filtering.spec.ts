@@ -247,8 +247,10 @@ medusaIntegrationTestRunner({
           headers: { "x-medusa-access-token": "test_token" },
         }
 
+        // Create user with empty roles array to prevent super admin assignment
         await createAdminUser(dbConnection, unauthorizedHeaders, container, {
           email: "unauthorized@medusa.js",
+          roles: [],
         })
 
         // Login the user to get a JWT token (but without roles since none were assigned)
@@ -267,23 +269,14 @@ medusaIntegrationTestRunner({
           .get(`/admin/products/${baseProduct.id}`, copyAdminHeaders)
           .catch((error) => error.response)
 
-        expect(response.status).toEqual(401)
-        expect(response.data.message).toContain("Unauthorized")
+        expect(response.status).toEqual(403)
+        expect(response.data.message).toContain("Forbidden")
       })
 
       it("should filter out fields not allowed - product with no tags and no prices", async () => {
         const unauthorizedHeaders = {
           headers: { "x-medusa-access-token": "test_token" },
         }
-
-        const newUser = await createAdminUser(
-          dbConnection,
-          unauthorizedHeaders,
-          container,
-          {
-            email: "unauthorized@medusa.js",
-          }
-        )
 
         const rbacModule = container.resolve(Modules.RBAC)
 
@@ -303,14 +296,10 @@ medusaIntegrationTestRunner({
           },
         ])
 
-        const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
-        await remoteLink.create({
-          [Modules.USER]: {
-            user_id: newUser.user.id,
-          },
-          [Modules.RBAC]: {
-            rbac_role_id: limitedRole[0].id,
-          },
+        // Create user with the limited role (not super admin)
+        await createAdminUser(dbConnection, unauthorizedHeaders, container, {
+          email: "unauthorized@medusa.js",
+          roles: [limitedRole[0].id],
         })
 
         const loginResponse = await api.post("/auth/user/emailpass", {
@@ -353,21 +342,12 @@ medusaIntegrationTestRunner({
           headers: { "x-medusa-access-token": "test_token" },
         }
 
-        const newUser = await createAdminUser(
-          dbConnection,
-          unauthorizedHeaders,
-          container,
-          {
-            email: "unauthorized@medusa.js",
-          }
-        )
-
         const rbacModule = container.resolve(Modules.RBAC)
 
         // Create a limited role with only read permissions
         const limitedRole = await rbacModule.createRbacRoles([
           {
-            name: "Product Reader",
+            name: "Product Reader With Tags",
             description: "Can only read products and prices",
           },
         ])
@@ -392,14 +372,10 @@ medusaIntegrationTestRunner({
           },
         ])
 
-        const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
-        await remoteLink.create({
-          [Modules.USER]: {
-            user_id: newUser.user.id,
-          },
-          [Modules.RBAC]: {
-            rbac_role_id: limitedRole[0].id,
-          },
+        // Create user with the limited role (not super admin)
+        await createAdminUser(dbConnection, unauthorizedHeaders, container, {
+          email: "unauthorized@medusa.js",
+          roles: [limitedRole[0].id],
         })
 
         const loginResponse = await api.post("/auth/user/emailpass", {
@@ -439,55 +415,14 @@ medusaIntegrationTestRunner({
       })
 
       it("should allow super admin with wildcard permissions to perform all product operations", async () => {
-        const unauthorizedHeaders = {
+        const superAdminHeaders = {
           headers: { "x-medusa-access-token": "test_token" },
         }
 
-        const superAdminUser = await createAdminUser(
-          dbConnection,
-          unauthorizedHeaders,
-          container,
-          {
-            email: "superadmin@medusa.js",
-          }
-        )
-
-        const rbacModule = container.resolve(Modules.RBAC)
-
-        // Create super admin role with wildcard permissions
-        const superAdminRole = await rbacModule.createRbacRoles([
-          {
-            name: "Super Admin",
-            description:
-              "Super admin role with full access to all resources and operations",
-          },
-        ])
-
-        // Create wildcard policy for all resources and operations
-        const wildcardPolicy = await rbacModule.createRbacPolicies([
-          {
-            key: "*:*",
-            resource: "*",
-            operation: "*",
-            description:
-              "Wildcard policy for super admin access to all resources and operations",
-          },
-        ])
-
-        // Assign wildcard policy to super admin role
-        await rbacModule.createRbacRolePolicies([
-          { role_id: superAdminRole[0].id, policy_id: wildcardPolicy[0].id },
-        ])
-
-        // Link super admin role to user
-        const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
-        await remoteLink.create({
-          [Modules.USER]: {
-            user_id: superAdminUser.user.id,
-          },
-          [Modules.RBAC]: {
-            rbac_role_id: superAdminRole[0].id,
-          },
+        // Use the super admin role created by the module loader
+        // createAdminUser will automatically assign the super admin role
+        await createAdminUser(dbConnection, superAdminHeaders, container, {
+          email: "superadmin@medusa.js",
         })
 
         // Login the super admin user
@@ -496,7 +431,6 @@ medusaIntegrationTestRunner({
           password: "somepassword",
         })
 
-        const superAdminHeaders = { ...adminHeaders }
         superAdminHeaders.headers[
           "authorization"
         ] = `Bearer ${loginResponse.data.token}`

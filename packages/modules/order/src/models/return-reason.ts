@@ -4,8 +4,8 @@ const _ReturnReason = model
   .define("ReturnReason", {
     id: model.id({ prefix: "rr" }).primaryKey(),
     value: model.text().searchable(),
-    label: model.text().searchable(),
-    description: model.text().nullable(),
+    label: model.text().searchable().translatable(),
+    description: model.text().translatable().nullable(),
     metadata: model.json().nullable(),
     parent_return_reason: model
       .belongsTo<() => typeof _ReturnReason>(() => _ReturnReason, {

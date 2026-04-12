@@ -34,6 +34,12 @@ export const adminWorkflowsExecutionsMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.workflow_execution,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

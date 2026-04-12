@@ -33,6 +33,12 @@ export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.campaign,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["POST"],

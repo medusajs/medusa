@@ -190,7 +190,7 @@ The default Redis URL in a local environment is `redis://localhost:6379`.
       </Table.Cell>
       <Table.Cell>
       
-      `5`
+      `20` (changed from `5` in v2.13.6+)
       
       </Table.Cell>
     </Table.Row>
@@ -212,7 +212,29 @@ The default Redis URL in a local environment is `redis://localhost:6379`.
       </Table.Cell>
       <Table.Cell>
       
-      `200`
+      `1000` (changed from `200` in v2.13.6+)
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `backoffFactor` (v2.13.6+)
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A number indicating the multiplier used for exponential backoff when retrying to acquire a lock. Each retry will wait longer than the previous one by this factor.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `2`
       
       </Table.Cell>
     </Table.Row>

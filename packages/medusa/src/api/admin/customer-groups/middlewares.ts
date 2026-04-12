@@ -33,6 +33,12 @@ export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.customer_group,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

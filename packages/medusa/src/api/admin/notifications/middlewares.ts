@@ -27,6 +27,12 @@ export const adminNotificationRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.notification,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

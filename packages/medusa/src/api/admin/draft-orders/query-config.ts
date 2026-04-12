@@ -1,6 +1,5 @@
 export enum Entities {
   order = "order",
-  customer = "customer",
 }
 
 export const defaultAdminListOrderFields = [

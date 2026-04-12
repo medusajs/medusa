@@ -56,6 +56,12 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
         filterableField: "sales_channel_id",
       }),
     ],
+    policies: [
+      {
+        resource: Entities.stock_location,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["POST"],

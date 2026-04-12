@@ -79,6 +79,12 @@ export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.tax_rate,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: "POST",

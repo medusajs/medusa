@@ -33,6 +33,12 @@ export const adminReservationRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.reservation_item,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

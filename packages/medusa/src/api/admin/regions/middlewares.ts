@@ -32,6 +32,12 @@ export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.region,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

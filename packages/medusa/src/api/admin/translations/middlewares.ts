@@ -35,6 +35,12 @@ export const adminTranslationsRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.translation,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["POST"],

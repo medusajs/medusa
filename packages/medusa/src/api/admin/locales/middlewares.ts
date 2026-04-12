@@ -24,6 +24,12 @@ export const adminLocalesRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.store_locale,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

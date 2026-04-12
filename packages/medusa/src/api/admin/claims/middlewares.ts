@@ -39,6 +39,12 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

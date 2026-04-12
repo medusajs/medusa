@@ -42,8 +42,8 @@ export const templates = [
   {
     id: "amount_off_products",
     type: "standard",
-    title: "Amount off products",
-    description: "Discount specific products or collection of products",
+    title: "promotions.templates.amount_off_products.title",
+    description: "promotions.templates.amount_off_products.description",
     hiddenFields: amountOfProductHiddenFields,
     defaults: {
       is_automatic: "false",
@@ -58,8 +58,8 @@ export const templates = [
   {
     id: "amount_off_order",
     type: "standard",
-    title: "Amount off order",
-    description: "Discounts the total order amount",
+    title: "promotions.templates.amount_off_order.title",
+    description: "promotions.templates.amount_off_order.description",
     hiddenFields: amountOfOrderHiddenFields,
     defaults: {
       is_automatic: "false",
@@ -74,8 +74,8 @@ export const templates = [
   {
     id: "percentage_off_product",
     type: "standard",
-    title: "Percentage off product",
-    description: "Discounts a percentage off selected products",
+    title: "promotions.templates.percentage_off_product.title",
+    description: "promotions.templates.percentage_off_product.description",
     hiddenFields: percentageOfProductHiddenFields,
     defaults: {
       is_automatic: "false",
@@ -90,8 +90,8 @@ export const templates = [
   {
     id: "percentage_off_order",
     type: "standard",
-    title: "Percentage off order",
-    description: "Discounts a percentage of the total order amount",
+    title: "promotions.templates.percentage_off_order.title",
+    description: "promotions.templates.percentage_off_order.description",
     hiddenFields: percentageOfOrderHiddenFields,
     defaults: {
       is_automatic: "false",
@@ -106,8 +106,8 @@ export const templates = [
   {
     id: "buy_get",
     type: "buy_get",
-    title: "Buy X Get Y",
-    description: "Buy X product(s), get Y product(s)",
+    title: "promotions.templates.buy_get.title",
+    description: "promotions.templates.buy_get.description",
     hiddenFields: buyGetHiddenFields,
     defaults: {
       is_automatic: "false",
@@ -123,8 +123,8 @@ export const templates = [
   {
     id: "shipping_discount",
     type: "standard",
-    title: "Free shipping",
-    description: "Applies a 100% discount to shipping fees",
+    title: "promotions.templates.shipping_discount.title",
+    description: "promotions.templates.shipping_discount.description",
     hiddenFields: freeShippingHiddenFields,
     defaults: {
       is_automatic: "false",

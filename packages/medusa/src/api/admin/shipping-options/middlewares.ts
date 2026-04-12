@@ -47,6 +47,12 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
         filterByField: "service_zone.fulfillment_set_id",
       }),
     ],
+    policies: [
+      {
+        resource: Entities.shipping_option,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

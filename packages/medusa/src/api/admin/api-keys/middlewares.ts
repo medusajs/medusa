@@ -35,6 +35,12 @@ export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.api_key,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

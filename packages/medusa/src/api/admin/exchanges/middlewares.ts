@@ -40,6 +40,12 @@ export const adminExchangeRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order_exchange,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

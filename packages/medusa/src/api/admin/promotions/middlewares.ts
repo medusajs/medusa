@@ -39,6 +39,12 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.promotion,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["POST"],

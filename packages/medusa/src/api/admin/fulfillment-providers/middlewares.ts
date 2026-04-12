@@ -29,6 +29,12 @@ export const adminFulfillmentProvidersRoutesMiddlewares: MiddlewareRoute[] = [
         filterableField: "stock_location_id",
       }),
     ],
+    policies: [
+      {
+        resource: Entities.fulfillment_provider,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

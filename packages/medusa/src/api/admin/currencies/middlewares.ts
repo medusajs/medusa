@@ -24,6 +24,12 @@ export const adminCurrencyRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.currency,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

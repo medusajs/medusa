@@ -31,7 +31,7 @@ async function checkPermissions(
   const roleIds = (authContext?.app_metadata?.roles as string[]) || []
 
   if (!roleIds.length) {
-    throw new MedusaError(MedusaError.Types.UNAUTHORIZED, "Unauthorized")
+    throw new MedusaError(MedusaError.Types.FORBIDDEN, "Forbidden")
   }
 
   const hasAccess = await hasPermission({
@@ -46,7 +46,7 @@ async function checkPermissions(
       .join(", ")
 
     throw new MedusaError(
-      MedusaError.Types.UNAUTHORIZED,
+      MedusaError.Types.FORBIDDEN,
       `Insufficient permissions. Required policies: ${policyKeys}`
     )
   }

@@ -32,6 +32,12 @@ export const adminShippingOptionTypeRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listShippingOptionTypesTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.shipping_option_type,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

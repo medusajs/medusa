@@ -32,6 +32,12 @@ export const adminPricePreferencesRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listPricePreferenceQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.price_preference,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

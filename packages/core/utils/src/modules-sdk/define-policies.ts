@@ -106,8 +106,10 @@ export function definePolicies(
   }
 
   for (const policy of policiesArray) {
-    const resourceKey = toSnakeCase(policy.resource)
-    const operationKey = toSnakeCase(policy.operation)
+    const resourceKey =
+      policy.resource === "*" ? "*" : toSnakeCase(policy.resource)
+    const operationKey =
+      policy.operation === "*" ? "*" : toSnakeCase(policy.operation)
 
     policy.resource = resourceKey
     policy.operation = operationKey

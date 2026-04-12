@@ -108,6 +108,14 @@ export const link = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteInventoryItemWorkflow"
   },
   {
+    "title": "acceptInviteWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/acceptInviteWorkflow"
+  },
+  {
+    "title": "createInvitesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createInvitesWorkflow"
+  },
+  {
     "title": "deleteLineItemsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteLineItemsWorkflow"
   },
@@ -262,6 +270,14 @@ export const link = [
   {
     "title": "deleteStoresWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteStoresWorkflow"
+  },
+  {
+    "title": "createUserAccountWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createUserAccountWorkflow"
+  },
+  {
+    "title": "createUsersWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createUsersWorkflow"
   },
   {
     "title": "deleteUsersWorkflow",

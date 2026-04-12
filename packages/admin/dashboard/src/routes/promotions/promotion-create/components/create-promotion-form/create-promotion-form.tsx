@@ -444,8 +444,8 @@ export const CreatePromotionForm = () => {
                                   <RadioGroup.ChoiceBox
                                     key={template.id}
                                     value={template.id}
-                                    label={template.title}
-                                    description={template.description}
+                                    label={t(template.title)}
+                                    description={t(template.description)}
                                   />
                                 )
                               })}
@@ -476,7 +476,7 @@ export const CreatePromotionForm = () => {
                         size="2xsmall"
                         rounded="full"
                       >
-                        {currentTemplate?.title}
+                        {t(currentTemplate.title)}
                       </Badge>
                     )}
                   </Heading>

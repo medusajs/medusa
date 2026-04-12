@@ -32,6 +32,12 @@ export const adminRefundReasonsRoutesMiddlewares: MiddlewareRoute[] = [
         queryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.refund_reason,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["POST"],

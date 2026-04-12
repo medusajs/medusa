@@ -1,0 +1,188 @@
+import { InlineIcon } from "docs-ui"
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Projects`,
+}
+
+# {metadata.title}
+
+Learn how to manage your Bloom projects, including renaming, accessing your store and admin, inviting team members to your project's admin dashboard, and deleting projects.
+
+## View Your Projects
+
+You can view and manage all your Bloom projects from the account page.
+
+To view your projects:
+
+1. Open the [Bloom homepage](https://bloom.chat/) while you're logged in.
+2. Find all projects under the "All projects" section.
+
+Click on any project card to open the project interface and start customizing your store.
+
+{/* TODO: Add image: All projects page showing project cards */}
+
+Each project card shows a preview of your store and when it was last edited.
+
+---
+
+## Create a New Project
+
+<Note title="New user?">
+
+Refer to the [Build Your First Bloom](../first-store/page.mdx) guide for a complete walkthrough of creating your first store project with Bloom.
+
+</Note>
+
+To create a new project as a logged-in user:
+
+1. Open the [Bloom homepage](https://bloom.chat/).
+2. Click the "New Project" button.
+
+On the project-creation page, you can either create a project by entering a custom prompt or by selecting a [starter](../starters/page.mdx).
+
+Both options build a store for you to customize, but starters provide a pre-designed store with specific features, while custom prompts let you describe your ideal store from scratch.
+
+---
+
+## Rename a Project
+
+By default, Bloom generates a store name based on your starter or prompt. Rename your project to better organize and identify your stores.
+
+To rename a project:
+
+1. Open the [Bloom homepage](https://bloom.chat/) while you're logged in.
+2. Hover over the project to rename.
+3. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> at the bottom right of the project.
+4. Choose "Rename" from the menu.
+5. In the pop-up, enter the new project name and click "Save".
+
+{/* TODO: Add image: Account page with dropdown opened for a project showing Rename option */}
+
+The new project name displays throughout Bloom, including the project menu and account page.
+
+---
+
+## Access Project Store and Admin
+
+You can access a project's store and admin dashboard in both preview and published instances. Preview instances let you test changes before publishing, while published instances can be browsed by customers and managed by merchants.
+
+### Access Preview Store and Admin
+
+To access the preview store and admin dashboard while building your store:
+
+1. In the project interface, look at the toolbar at the bottom of the preview panel.
+2. Click "Store" to view your store as customers see it.
+3. Click "Admin" to access the admin dashboard for managing products, orders, and settings.
+
+{/* TODO: Add image: Preview toolbar showing Store and Admin tabs */}
+
+### Access Published Store and Admin
+
+After publishing your store, access the live store and admin dashboard that customers and team members use.
+
+To access a project's published store and admin dashboard:
+
+1. Open your project in Bloom.
+2. Look for the "Publish" button in the top-right corner.
+3. If you've already published your store, you'll see buttons for:
+    - **Visit store:** Opens your live store where customers browse and shop.
+    - **Open admin:** Opens the admin dashboard of your published store where you and your team manage the business.
+
+{/* TODO: Add image: Published store page showing Open admin and Visit store buttons */}
+
+---
+
+## Invite Admin Users to Published Store
+
+You can invite team members to access the admin dashboard of your published store. They can manage products, orders, customers, and other aspects of the business.
+
+<Note title="Tip">
+
+There are no limits on how many users you can add to your project's admin dashboard.
+
+</Note>
+
+To invite users to access your published project's admin dashboard:
+
+1. [Open your published project's admin dashboard](#access-published-store-and-admin).
+2. Go to Settings → Users.
+3. Click the Invite button.
+4. Enter the user’s email.
+5. Once done, click on the "Send invite" button.
+
+The invited user will receive an email with instructions to access the admin dashboard.
+
+<Note title="Tip">
+
+For detailed instructions on managing users and invites, see the [Medusa Admin User Guide](!user-guide!/settings/users/invites).
+
+</Note>
+
+---
+
+## Deploy New Changes
+
+After [publishing your store](../going-live/page.mdx), you can continue making website and design changes to your store with Bloom. These changes will only be visible in the preview store until you publish the changes.
+
+To publish new changes:
+
+1. Open your project in Bloom.
+2. Click the **Publish** button in the top-right corner of the project interface
+3. Click on the **Deploy changes** button to deploy your latest changes to your live store.
+
+This re-deploys your store with the latest changes you've made in Bloom. Publish as many times as needed to keep improving your store over time.
+
+{/* TODO: Add image: Bloom deploy new changes page */}
+
+---
+
+## Delete a Project
+
+<Note type="warning">
+
+Deleting a project is permanent and can't be undone. This deletes your preview store, published store (if available), and all data and code. Consider [exporting your code](../developers/export-to-github/page.mdx) first.
+
+</Note>
+
+You can permanently remove a project and all its data from Bloom.
+
+To delete a project:
+
+1. Open the [Bloom homepage](https://bloom.chat/) while you're logged in.
+2. Hover over the project to delete.
+3. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> at the bottom right of the project.
+4. Choose "Delete" from the menu.
+
+{/* TODO: Add image: Account page with dropdown opened for a project showing Delete option */}
+
+---
+
+## Other Project Settings
+
+Explore additional settings to customize and configure your Bloom project.
+
+<CardList items={[
+  {
+    href: "/going-live",
+    title: "Going Live",
+    text: "Publish your store and make it available to customers."
+  },
+  {
+    href: "../custom-domains/page.mdx",
+    title: "Custom Domains",
+    text: "Connect your domain name to your store."
+  },
+  // {
+  //   href: "#",
+  //   title: "Email Configuration",
+  //   text: "Set up transactional emails for your store."
+  // },
+  {
+    href: "/developers/environment-variables",
+    title: "Environment Variables",
+    text: "Configure environment variables for integrations."
+  }
+]} />
+
+{/* TODO: Update links once these guides are created */}

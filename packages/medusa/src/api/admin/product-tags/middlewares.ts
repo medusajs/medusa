@@ -32,6 +32,12 @@ export const adminProductTagRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listProductTagsTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.product_tag,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

@@ -2,11 +2,11 @@ import {
   removeUserAccountWorkflow,
   updateUsersWorkflow,
 } from "@medusajs/core-flows"
-import { HttpTypes, UpdateUserDTO } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { HttpTypes, UpdateUserDTO } from "@medusajs/framework/types"
 
 import {
   ContainerRegistrationKeys,
@@ -97,5 +97,3 @@ export const DELETE = async (
     deleted: true,
   })
 }
-
-export const AUTHENTICATE = false

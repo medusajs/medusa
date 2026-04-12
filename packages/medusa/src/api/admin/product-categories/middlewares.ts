@@ -33,6 +33,12 @@ export const adminProductCategoryRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listProductCategoryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.product_category,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

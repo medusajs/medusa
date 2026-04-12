@@ -138,6 +138,7 @@ export const cancelOrderWorkflow = createWorkflow(
         "payment_collections.payments.refunds.amount",
         "payment_collections.payments.captures.id",
         "payment_collections.payments.captures.amount",
+        "payment_collections.payments.captures.raw_amount",
       ],
       filters: { id: input.order_id },
       options: { throwIfKeyNotFound: true },
@@ -164,40 +165,52 @@ export const cancelOrderWorkflow = createWorkflow(
       return uncapturedPayments.map((payment) => payment.id)
     })
 
-    const creditLineAmount = transform({ order }, ({ order }) => {
-      const payments = deepFlatMap(
-        order,
-        "payment_collections.payments",
-        ({ payments }) => payments
-      )
-
-      return payments.reduce(
-        (acc, payment) => MathBN.sum(acc, payment.amount),
-        MathBN.convert(0)
-      )
-    })
-
     const lineItemIds = transform({ order }, ({ order }) => {
       return order.items?.map((i) => i.id)
     })
 
-    parallelize(
-      createOrderRefundCreditLinesWorkflow.runAsStep({
-        input: {
-          order_id: order.id,
-          amount: creditLineAmount,
-        },
-      }),
-      deleteReservationsByLineItemsStep(lineItemIds),
-      cancelPaymentStep({ paymentIds: uncapturedPaymentIds }),
+    const [refundedPayments] = parallelize(
       refundCapturedPaymentsWorkflow.runAsStep({
         input: { order_id: order.id, created_by: input.canceled_by },
       }),
+      deleteReservationsByLineItemsStep(lineItemIds),
+      cancelPaymentStep({ paymentIds: uncapturedPaymentIds }),
       emitEventStep({
         eventName: OrderWorkflowEvents.CANCELED,
         data: { id: order.id },
       })
     )
+
+    const refundedPaymentIds = transform(
+      { refundedPayments },
+      ({ refundedPayments }) => {
+        return refundedPayments.map((payment) => payment.id)
+      }
+    )
+
+    const refundedCapturesQuery = useQueryGraphStep({
+      entity: "captures",
+      fields: ["raw_amount"],
+      filters: { payment_id: refundedPaymentIds },
+    }).config({ name: "get-refunded-captures" })
+
+    const creditLineAmount = transform(
+      { refundedCapturesQuery },
+      ({ refundedCapturesQuery }) => {
+        const captures = refundedCapturesQuery.data
+        return captures.reduce(
+          (acc, capture) => MathBN.sum(acc, capture.raw_amount),
+          MathBN.convert(0)
+        )
+      }
+    )
+
+    createOrderRefundCreditLinesWorkflow.runAsStep({
+      input: {
+        order_id: order.id,
+        amount: creditLineAmount,
+      },
+    })
 
     const paymentCollectionids = transform({ order }, ({ order }) =>
       order.payment_collections?.map((pc) => pc.id)

@@ -40,6 +40,12 @@ export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],
@@ -64,10 +70,6 @@ export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.order,
-        operation: PolicyOperation.create,
-      },
-      {
-        resource: Entities.customer,
         operation: PolicyOperation.create,
       },
     ],

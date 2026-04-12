@@ -33,6 +33,12 @@ export const adminCollectionRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.product_collection,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["GET"],

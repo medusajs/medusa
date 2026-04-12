@@ -4,7 +4,6 @@ import * as path from "path"
 import { existsSync, mkdirSync, rmSync, writeFileSync } from "fs"
 import registerWorkflows from "../utils/register-workflows.js"
 import DiagramBuilder from "../classes/diagram-builder.js"
-// @ts-expect-error mermaid typing issue
 import { run as runMermaid } from "@mermaid-js/mermaid-cli"
 
 type Options = {
@@ -71,7 +70,12 @@ export default async function (workflowPath: string, options: Options) {
         writeFileSync(tempFilePath, diagram)
         await runMermaid(
           tempFilePath,
-          path.join(options.output, `${name}.${options.type}`),
+          path.join(options.output, `${name}.${options.type}`) as
+            | `${string}.markdown`
+            | `${string}.svg`
+            | `${string}.png`
+            | `${string}.pdf`
+            | `${string}.md`,
           {
             quiet: true,
           }

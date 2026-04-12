@@ -52,6 +52,12 @@ export const adminShippingProfilesMiddlewares: MiddlewareRoute[] = [
         listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.shipping_profile,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["POST"],

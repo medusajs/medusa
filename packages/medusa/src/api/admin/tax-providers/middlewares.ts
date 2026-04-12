@@ -26,5 +26,11 @@ export const adminTaxProviderRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.tax_provider,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
 ]
