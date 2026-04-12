@@ -88,11 +88,14 @@ export const useComboboxData = <
     })
   }
 
+  const count = data?.pages[0]?.count ?? 0
+
   return {
     options,
     searchValue,
     onSearchValueChange,
     disabled,
+    count,
     ...rest,
   }
 }
