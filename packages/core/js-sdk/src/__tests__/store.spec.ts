@@ -3,7 +3,6 @@ import { setupServer } from "msw/node"
 import { describe, afterEach, it, beforeEach } from "node:test"
 import { Client } from "../client"
 import { Store } from "../store"
-import { StoreCartResponse } from "@medusajs/types"
 
 const baseUrl = "https://someurl.com"
 const cartId = "cart-id"
