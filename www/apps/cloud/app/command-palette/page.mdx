@@ -1,0 +1,106 @@
+import { getOsShortcut, Kbd, InlineIcon } from "docs-ui"
+import { ChevronRight } from "@medusajs/icons" 
+
+export const metadata = {
+  title: `Command Palette`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to use the command palette in Cloud to quickly perform actions and navigate to pages.
+
+## Open the Command Palette
+
+Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> to open the command palette from anywhere in the Cloud dashboard.
+
+To close the palette, press <Kbd>Esc</Kbd> or click anywhere outside it.
+
+---
+
+## Navigate the Palette
+
+Aside from clicking items with your mouse, you can navigate the command palette using your keyboard:
+
+- <Kbd>↑</Kbd> / <Kbd>↓</Kbd>: Move between items.
+- <Kbd>↵</Kbd> (Enter): Select the highlighted item.
+- <Kbd>Esc</Kbd>: Close the palette.
+
+---
+
+## Available Commands
+
+The command palette organizes its commands into three types: **Actions**, **Navigation**, and **Settings**.
+
+### Actions
+
+Actions let you perform tasks directly without navigating to a specific page first:
+
+- [Upgrade Plan](../billing/plans/page.mdx#change-plan): Open the upgrade plan page to change your Cloud subscription.
+- [Create Project](../projects/page.mdx): Open the project creation flow.
+- [Add Sender Domain](../emails/page.mdx#add-email-sender-domain-to-cloud): Add a sender domain for outbound emails.
+- [Add Backend Custom Domain](../environments/custom-domains/page.mdx#backend-custom-domains): Add a custom domain for a project's backend.
+- [Add Storefront Custom Domain](../environments/custom-domains/page.mdx#storefront-custom-domains): Add a custom domain for a project's storefront.
+- [Edit Variables](../environments/environment-variables/page.mdx): Edit environment variables for a project.
+- [View Logs](../logs/page.mdx): View runtime logs for a project's environment.
+- [Create Environment](../environments/long-lived/page.mdx#create-a-long-lived-environment-on-cloud): Create a new environment for a project.
+- **Log Out**: Sign out of your Cloud account.
+
+For the commands that perform actions on a specific project, such as **Edit Variables** or **View Logs**, you'll need to [select a project](#select-a-specific-project) after choosing the command.
+
+### Navigation
+
+Navigation items take you directly to a specific page in the Cloud dashboard:
+
+- [Projects](../projects/page.mdx): Go to your organization's projects list.
+- [Project Overview](../projects/page.mdx): Go to a specific project's dashboard.
+- [Logs](../logs/page.mdx): Go to the runtime logs page for a specific project.
+- [Deployments](../deployments/page.mdx): Go to the deployments page for a specific project.
+- [Environment Overview](../environments/page.mdx): Go to the environment overview for a specific project.
+- [Custom Domains](../environments/custom-domains/page.mdx): Go to the custom domains settings for a specific project.
+- [Environment Variables](../environments/environment-variables/page.mdx): Go to the environment variables settings for a specific project.
+- [Storage](../s3/page.mdx): Go to [database](../database/page.mdx) and storage settings for a specific project.
+- [Project Settings](../projects/page.mdx): Go to the settings page for a specific project.
+- [Environment Settings](../environments/long-lived/page.mdx): Go to the settings page of a specific environment.
+
+For the commands that navigate to a specific project, such as **Project Overview** or **Logs**, you'll need to [select a project](#select-a-specific-project) after choosing the command.
+
+### Settings
+
+Settings items take you to specific settings pages in the Cloud dashboard:
+
+- [Organization Settings](../organizations/page.mdx): Go to your organization's settings page.
+- [Team Members](../organizations/page.mdx#invite-members-to-organization): Go to the team members settings of your organization.
+- [Usage](../usage/page.mdx): Go to the usage page for your organization to view your current usage and limits.
+- [Email Activity](../emails/page.mdx#monitor-email-sending-activity-on-cloud): Go to the email activity page to monitor your outbound email sending activity.
+- [Sender Domains](../emails/page.mdx#add-email-sender-domain-to-cloud): Go to the sender domains settings to manage your email sender domains.
+
+---
+
+## Select a Specific Project
+
+Some commands require you to choose a project before continuing. These commands display a <InlineIcon Icon={ChevronRight} alt="arrow" /> icon on the right side.
+
+When you select one of these commands, the palette switches to a project-picker view:
+
+1. Open the command palette with <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>.
+2. Select a command that shows a <InlineIcon Icon={ChevronRight} alt="arrow" /> icon, such as **Project Overview**.
+3. The palette displays a **"Select a project..."** search field and a list of your projects.
+4. Select a project from the list. You can search for a project by typing its name, and use <Kbd>↑</Kbd> / <Kbd>↓</Kbd> to move between projects.
+
+The selected project's page opens immediately.
+
+To go back to the main command list without selecting a project, click the badge (for example, the **Project Overview** badge) at the top of the palette.
+
+---
+
+## Search for a Project
+
+You can type in the command palette's search bar to filter both commands and project names.
+
+To search for a project and navigate to its dashboard:
+
+1. Open the command palette with <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>.
+2. Type the name of the project in the search bar.
+3. Select the matching project from the results.
+
+This takes you directly to that project's dashboard.

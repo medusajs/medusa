@@ -1,0 +1,43 @@
+import { EllipsisHorizontal } from "@medusajs/icons"
+import { InlineIcon } from "docs-ui"
+
+export const metadata = {
+  title: `Rename Project's Repository or Branch`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to handle renaming your Cloud project's Git repository or its main branch, and how it affects your Cloud project.
+
+## Renaming Repository of a Cloud Project
+
+If you rename the Git repository of your Cloud project, Medusa will automatically update the repository URL in your Cloud project settings to reflect the new repository name.
+
+However, you need to ensure that your GitHub connection is configured to give Medusa access to the renamed repository. This is necessary for Medusa to continue fetching your code and deploying your environments on Cloud.
+
+To reconfigure your GitHub connection after renaming your repository:
+
+1. On GitHub, click on your avatar at the top right and choose "Settings" from the dropdown.
+2. In the left sidebar, click on "Applications".
+3. Click on the "Configure" button of the "Medusa" application.
+4. In the "Repository access" section, ensure that either "All repositories" is selected, or if "Only select repositories" is selected, ensure that the renamed repository is included in the list.
+
+If your repository is an organization repository, ensure that the GitHub organization also has the renamed repository in its list of repositories that Medusa can access.
+
+---
+
+## Renaming Branch of a Cloud Project's Repository
+
+If you rename the branch associated with an environment of your Cloud project, you need to update the deployment rules of that environment to use the new branch name.
+
+To rename the branch associated with an environment of your Cloud project:
+
+1. From the [organization's dashboard](../../organizations/page.mdx), click on the environment's project.
+2. In the project's dashboard, click on the name of the environment. For example, "Production".
+3. In the environment's dashboard, click on the "Settings" tab.
+4. Choose the "Deployment rules" tab from the sidebar.
+5. You'll find a `branch` rule. You can edit it by clicking the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon and choosing "Edit" from the dropdown.
+6. In the side window that opens, you can change the branch that the environment is connected to. For example, you can change it from `main` to `staging` to create a new deployment every time you push a commit to the `staging` branch.
+7. Click "Save" to apply the changes.
+
+The deployment rules will take effect for next deployments. So, the next time you push a commit to the renamed branch, it will trigger a new deployment of the environment.

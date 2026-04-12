@@ -9104,6 +9104,20 @@ paths:
             externalDocs:
               url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
               description: Learn more in the Serve Translations in Storefront guide.
+        - name: external_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: external_id
+                description: Filter by a product's external ID.
+              - type: array
+                description: Filter by external IDs.
+                items:
+                  type: string
+                  title: external_id
+                  description: The external ID.
       x-codeSamples:
         - lang: JavaScript
           label: JS SDK
@@ -14445,21 +14459,6 @@ components:
           type: string
           title: transaction_id
           description: The ID of the workflow execution's transaction.
-    AdminCreditStoreCreditAccountParams:
-      type: object
-      description: The details of the credits to add to the store credit account.
-      x-schemaName: AdminCreditStoreCreditAccountParams
-      required:
-        - amount
-      properties:
-        amount:
-          type: number
-          title: amount
-          description: The credits to add to the store credit account.
-        note:
-          type: string
-          title: note
-          description: An internal note with more details on the credit addition.
     AdminCurrency:
       type: object
       description: The currency's currencies.
@@ -18692,6 +18691,8 @@ components:
         - shipping_option_id
         - metadata
         - created_at
+        - created_by
+        - marked_shipped_by
         - updated_at
       properties:
         id:
@@ -18755,6 +18756,14 @@ components:
           type: boolean
           title: requires_shipping
           description: Whether the fulfillment requires shipping.
+        created_by:
+          type: string
+          title: created_by
+          description: The ID of the user that created the fulfillment.
+        marked_shipped_by:
+          type: string
+          title: marked_shipped_by
+          description: The ID of the user that marked the fulfillment as shipped.
     AdminOrderItem:
       type: object
       description: The order item's details.
@@ -22507,6 +22516,7 @@ components:
         - display_id
         - received_at
         - created_at
+        - created_by
         - canceled_at
       properties:
         id:
@@ -22572,6 +22582,10 @@ components:
           type: string
           title: received_at
           description: The date the return was received.
+        created_by:
+          type: string
+          title: created_by
+          description: The ID of the user that created the return.
     AdminReturnItem:
       type: object
       description: The return item's details.
@@ -28150,6 +28164,8 @@ components:
         - shipping_option_id
         - metadata
         - created_at
+        - created_by
+        - marked_shipped_by
         - updated_at
       properties:
         id:
@@ -28213,6 +28229,14 @@ components:
           type: boolean
           title: requires_shipping
           description: Whether the fulfillment requires shipping.
+        created_by:
+          type: string
+          title: created_by
+          description: The ID of the user that created the fulfillment.
+        marked_shipped_by:
+          type: string
+          title: marked_shipped_by
+          description: The ID of the user that marked the fulfillment as shipped.
     BaseOrderItemDetail:
       type: object
       description: The item's detail.
@@ -33824,26 +33848,6 @@ components:
           type: boolean
           title: insufficient_inventory
           description: Whether the shipping option's location doesn't have sufficient quantity for any of the cart's items.
-    StoreClaimStoreCreditAccountParams:
-      type: object
-      description: The details of claiming the credit.
-      x-schemaName: StoreClaimStoreCreditAccountParams
-      required:
-        - code
-      properties:
-        code:
-          type: string
-          title: code
-          description: The code of the store credit account to claim.
-    StoreClaimStoreCreditAccountResponse:
-      type: object
-      description: The claimed store credit account's details.
-      x-schemaName: StoreClaimStoreCreditAccountResponse
-      required:
-        - store_credit_account
-      properties:
-        store_credit_account:
-          $ref: '#/components/schemas/StoreStoreCreditAccount'
     StoreCollection:
       type: object
       description: The collection's details.
@@ -34941,6 +34945,8 @@ components:
         - shipping_option_id
         - metadata
         - created_at
+        - created_by
+        - marked_shipped_by
         - updated_at
       properties:
         id:
@@ -35004,6 +35010,14 @@ components:
           type: boolean
           title: requires_shipping
           description: The fulfillment's requires shipping.
+        created_by:
+          type: string
+          title: created_by
+          description: The ID of the user that created the fulfillment.
+        marked_shipped_by:
+          type: string
+          title: marked_shipped_by
+          description: The ID of the user that marked the fulfillment as shipped.
     StoreOrderLineItem:
       type: object
       description: The item's details.
@@ -41937,6 +41951,7 @@ components:
         - created_at
         - order_id
         - canceled_at
+        - created_by
         - received_at
       properties:
         items:
@@ -41994,6 +42009,10 @@ components:
           type: string
           title: received_at
           description: The date the return items were received.
+        created_by:
+          type: string
+          title: created_by
+          description: The ID of the user that created the return.
     StoreReturnItem:
       type: object
       description: The return item's details.

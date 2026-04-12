@@ -39,7 +39,7 @@ export const AdminCreateRbacRole = z
     name: z.string(),
     parent_id: z.string().nullish(),
     description: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 
@@ -49,7 +49,7 @@ export const AdminUpdateRbacRole = z
     name: z.string().optional(),
     parent_id: z.string().nullish(),
     description: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 

@@ -62,10 +62,10 @@ const CreateCampaignBudget = z
         CampaignBudgetType.USE_BY_ATTRIBUTE,
         CampaignBudgetType.SPEND_BY_ATTRIBUTE,
       ].includes(data.type),
-    (data) => ({
+    {
       path: ["attribute"],
-      message: `campaign budget attribute is required when budget type is ${data.type}`,
-    })
+      message: `campaign budget attribute is required when budget type is USE_BY_ATTRIBUTE or SPEND_BY_ATTRIBUTE`,
+    }
   )
 
 export const UpdateCampaignBudget = z

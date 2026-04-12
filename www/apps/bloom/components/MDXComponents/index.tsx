@@ -4,6 +4,7 @@ import {
   InlineThemeImage,
   InlineIcon,
   CodeMdx,
+  H1,
 } from "docs-ui"
 
 const MDXComponents: MDXComponentsType = {
@@ -21,6 +22,7 @@ const MDXComponents: MDXComponentsType = {
       }}
     />
   ),
+  h1: (props) => <H1 variant="content" {...props} />,
 }
 
 export default MDXComponents

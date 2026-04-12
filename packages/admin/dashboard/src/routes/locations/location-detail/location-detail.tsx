@@ -49,6 +49,7 @@ export const LocationDetail = () => {
         sideBefore: getWidgets("location.details.side.before"),
       }}
       data={location}
+      showMetadata
       showJSON
       hasOutlet
     >
