@@ -1435,7 +1435,9 @@
       },
       "trackingLabel": "Tracking",
       "shippingFromLabel": "Shipping from",
-      "itemsLabel": "Items"
+      "itemsLabel": "Items",
+      "locationDeleted": "Location deleted",
+      "locationUnavailable": "Location unavailable"
     },
     "refund": {
       "title": "Create Refund",

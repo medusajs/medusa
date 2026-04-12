@@ -1,3 +1,4 @@
+import { FetchError } from "@medusajs/js-sdk"
 import { Buildings, XCircle } from "@medusajs/icons"
 import {
   AdminOrder,
@@ -218,13 +219,15 @@ const Fulfillment = ({
     fulfillment.shipping_option?.service_zone.fulfillment_set.type ===
     FulfillmentSetType.Pickup
 
-  const { stock_location, isError, error, isLoading } = useStockLocation(
+  const { stock_location, isError, error } = useStockLocation(
     fulfillment.location_id!,
     undefined,
     {
       enabled: showLocation,
     }
   )
+
+  const isLocationDeleted = isError && (error as FetchError)?.status === 404
 
   let statusText = fulfillment.requires_shipping
     ? isPickUpFulfillment
@@ -384,9 +387,13 @@ const Fulfillment = ({
                 {stock_location.name}
               </Text>
             </Link>
+          ) : isLocationDeleted ? (
+            <Text size="small" leading="compact" className="text-ui-fg-muted italic">
+              {t("orders.fulfillment.locationDeleted")}
+            </Text>
           ) : isError ? (
             <Text size="small" leading="compact" className="text-ui-fg-muted italic">
-              Location deleted
+              {t("orders.fulfillment.locationUnavailable")}
             </Text>
           ) : (
             <Skeleton className="w-16" />
