@@ -44,6 +44,8 @@ export interface StoreProductParams
    *
    * @example
    * "en-US"
+   * 
+   * @http-validation-ignore
    */
   locale?: string
 }
@@ -61,10 +63,32 @@ export interface StoreProductListParams
   /**
    * Filter by the product's variants.
    */
-  variants?: Pick<
-    StoreProductVariantParams,
-    "options" | "sku" | "ean" | "upc" | "barcode"
-  >
+  variants?: StoreProductVariantParams & {
+    /**
+     * Filter by variant sku(s).
+     *
+     * @since 2.13.7
+     */
+    sku?: string | string[]
+    /**
+     * Filter by variant ean(s).
+     *
+     * @since 2.13.7
+     */
+    ean?: string | string[]
+    /**
+     * Filter by variant upc(s).
+     *
+     * @since 2.13.7
+     */
+    upc?: string | string[]
+    /**
+     * Filter by variant barcode(s).
+     *
+     * @since 2.13.7
+     */
+    barcode?: string | string[]
+  }
   /**
    * The locale code in BCP 47 format. Information of the
    * product and related entities will be localized based on the provided locale.

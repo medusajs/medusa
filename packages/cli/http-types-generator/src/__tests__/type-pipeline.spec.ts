@@ -255,16 +255,16 @@ describe("WithAdditionalData schemas", () => {
 })
 
 // ---------------------------------------------------------------------------
-// Transform schemas (ZodEffects)
+// Transform schemas (ZodPipe — Zod v4)
 // ---------------------------------------------------------------------------
 
-describe("ZodEffects (transform) schemas", () => {
+describe("ZodPipe (transform) schemas", () => {
   it("uses _input type rather than _output type for transforms", () => {
     const [result] = runPipeline(`
-      interface ZodEffects<O, I> { _output: O; _input: I }
-      export declare const AdminCreateOrder: ZodEffects<
-        { id: string },
-        { raw_title: string; quantity: number }
+      interface ZodPipe<A, B> { _output: B; _input: A }
+      export declare const AdminCreateOrder: ZodPipe<
+        { raw_title: string; quantity: number },
+        { id: string }
       >
     `)
     expect(result.code).toContain("raw_title: string")

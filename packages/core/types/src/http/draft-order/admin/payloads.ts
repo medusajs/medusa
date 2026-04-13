@@ -161,6 +161,10 @@ export interface AdminUpdateDraftOrderItem {
    * The item's internal note.
    */
   internal_note?: string | null
+  /**
+   * The item's metadata.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminAddDraftOrderItem {

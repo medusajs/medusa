@@ -495,36 +495,12 @@ export interface BaseProductVariantParams
     /**
      * Filter by option value.
      */
-    value: string
+    value?: string
     /**
      * Filter by option ID.
      */
-    option_id: string
+    option_id?: string
   }
-  /**
-   * Filter by variant sku(s).
-   *
-   * @since 2.13.7
-   */
-  sku?: string | string[]
-  /**
-   * Filter by variant ean(s).
-   *
-   * @since 2.13.7
-   */
-  ean?: string | string[]
-  /**
-   * Filter by variant upc(s).
-   *
-   * @since 2.13.7
-   */
-  upc?: string | string[]
-  /**
-   * Filter by variant barcode(s).
-   *
-   * @since 2.13.7
-   */
-  barcode?: string | string[]
   /**
    * Apply filters on the variant's creation date.
    */
