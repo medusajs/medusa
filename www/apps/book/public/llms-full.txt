@@ -35240,9 +35240,9 @@ const { result } = await createGiftCardsWorkflow(container).run({
     currency_code: "usd",
     metadata: {
       campaign: "welcome-bonus",
-      created_by: "admin_user_123"
-    }
-  }
+      created_by: "admin_user_123",
+    },
+  },
 })
 
 // Create multiple gift cards
@@ -35259,8 +35259,8 @@ const { result } = await createGiftCardsWorkflow(container).run({
     {
       amount: 10000, // $100.00
       currency_code: "usd",
-    }
-  ]
+    },
+  ],
 })
 ```
 
@@ -35291,7 +35291,7 @@ const { result } = await createGiftCardsWorkflow(container).run({
     amount: 10000, // $100.00
     currency_code: "usd",
     // No code specified - will be auto-generated
-  }
+  },
 })
 
 console.log(result.giftCards[0].code) // e.g., "GC-2024-AB3F8H9K"
@@ -35331,10 +35331,10 @@ const { result } = await updateGiftCardsWorkflow(container).run({
     update: {
       metadata: {
         updated_by: "admin_user_456",
-        notes: "Customer service adjustment"
-      }
-    }
-  }
+        notes: "Customer service adjustment",
+      },
+    },
+  },
 })
 ```
 
@@ -35366,8 +35366,8 @@ const { result } = await redeemGiftCardWorkflow(container).run({
     amount: 2500, // Redeem $25.00
     currency_code: "usd",
     reference: "manual_redemption",
-    reference_id: "admin_action_789"
-  }
+    reference_id: "admin_action_789",
+  },
 })
 ```
 
@@ -35380,7 +35380,7 @@ import { retrieveGiftCardBalanceStep } from "@medusajs/loyalty-plugin/workflows"
 
 // In a custom workflow step
 const balance = await retrieveGiftCardBalanceStep({
-  code: "WELCOME50"
+  code: "WELCOME50",
 })
 
 console.log(`Available balance: ${balance.amount}`)
@@ -35412,16 +35412,16 @@ const giftCardData = Array.from({ length: 100 }, (_, i) => ({
   metadata: {
     campaign: "holiday-2024",
     batch: "001",
-    sequence: i + 1
-  }
+    sequence: i + 1,
+  },
 }))
 
 const { result } = await createGiftCardsWorkflow(container).run({
-  input: giftCardData
+  input: giftCardData,
 })
 
 // Export codes for distribution
-const codes = result.giftCards.map(gc => gc.code)
+const codes = result.giftCards.map((gc) => gc.code)
 console.log("Generated codes:", codes)
 ```
 
@@ -35437,16 +35437,16 @@ const { result } = await updateGiftCardsWorkflow(container).run({
   input: {
     selector: { 
       metadata: { 
-        campaign: "spring-sale" 
-      } 
+        campaign: "spring-sale", 
+      }, 
     },
     update: {
       metadata: {
         status: "expired",
-        expired_at: new Date().toISOString()
-      }
-    }
-  }
+        expired_at: new Date().toISOString(),
+      },
+    },
+  },
 })
 ```
 
@@ -35462,10 +35462,10 @@ When customers use gift cards during checkout, you can track their usage:
 
 // You can access gift card usage in order data
 const order = await orderService.retrieveOrder("order_123", {
-  relations: ["gift_card_transactions"]
+  relations: ["gift_card_transactions"],
 })
 
-order.gift_card_transactions.forEach(transaction => {
+order.gift_card_transactions.forEach((transaction) => {
   console.log(`Gift card ${transaction.code} used for ${transaction.amount}`)
 })
 ```
@@ -35482,11 +35482,11 @@ export default async function handleOrderCompleted({
 }: SubscriberArgs<{ id: string }>) {
   const orderService = container.resolve("orderService")
   const order = await orderService.retrieveOrder(data.id, {
-    relations: ["items", "gift_card_transactions"]
+    relations: ["items", "gift_card_transactions"],
   })
 
   // Check if order contains gift card products
-  const giftCardItems = order.items.filter(item => 
+  const giftCardItems = order.items.filter((item) => 
     item.variant?.product?.type === "gift-card"
   )
 
@@ -35500,9 +35500,9 @@ export default async function handleOrderCompleted({
           metadata: {
             order_id: order.id,
             item_id: item.id,
-            recipient_email: item.metadata?.recipient_email
-          }
-        }
+            recipient_email: item.metadata?.recipient_email,
+          },
+        },
       })
     }
   }
@@ -35517,8 +35517,8 @@ Generate reports on gift card usage:
 
 ```ts title="Gift card reporting"
 // Get all gift cards with their current balances
-const giftCards = await fetch('/admin/gift-cards?expand=balance')
-  .then(res => res.json())
+const giftCards = await fetch("/admin/gift-cards?expand=balance")
+  .then((res) => res.json())
 
 // Calculate total outstanding liability
 const totalLiability = giftCards.gift_cards.reduce((sum, gc) => 
@@ -35526,7 +35526,7 @@ const totalLiability = giftCards.gift_cards.reduce((sum, gc) =>
 )
 
 // Get usage statistics
-const usedGiftCards = giftCards.gift_cards.filter(gc => 
+const usedGiftCards = giftCards.gift_cards.filter((gc) => 
   gc.balance < gc.original_amount
 )
 
@@ -35534,7 +35534,7 @@ const statistics = {
   total_issued: giftCards.gift_cards.length,
   total_used: usedGiftCards.length,
   usage_rate: (usedGiftCards.length / giftCards.gift_cards.length) * 100,
-  outstanding_liability: totalLiability
+  outstanding_liability: totalLiability,
 }
 ```
 
@@ -35545,20 +35545,20 @@ Track performance of gift card campaigns:
 ```ts title="Campaign performance tracking"
 // Get gift cards from specific campaign
 const campaignGiftCards = await fetch(
-  '/admin/gift-cards?metadata[campaign]=holiday-2024'
-).then(res => res.json())
+  "/admin/gift-cards?metadata[campaign]=holiday-2024"
+).then((res) => res.json())
 
 const performance = {
   total_issued: campaignGiftCards.gift_cards.length,
   total_value: campaignGiftCards.gift_cards.reduce((sum, gc) => 
     sum + gc.amount, 0
   ),
-  redeemed_count: campaignGiftCards.gift_cards.filter(gc => 
+  redeemed_count: campaignGiftCards.gift_cards.filter((gc) => 
     gc.balance < gc.amount
   ).length,
   remaining_liability: campaignGiftCards.gift_cards.reduce((sum, gc) => 
     sum + gc.balance, 0
-  )
+  ),
 }
 ```
 
@@ -35745,7 +35745,7 @@ const getGiftCardInfo = async (code: string) => {
     const response = await fetch(`/store/gift-cards/${code}`)
     
     if (!response.ok) {
-      throw new Error('Gift card not found')
+      throw new Error("Gift card not found")
     }
     
     const { gift_card } = await response.json()
@@ -35754,16 +35754,16 @@ const getGiftCardInfo = async (code: string) => {
       code: gift_card.code,
       balance: gift_card.balance,
       currency_code: gift_card.currency_code,
-      is_disabled: gift_card.is_disabled
+      is_disabled: gift_card.is_disabled,
     }
   } catch (error) {
-    console.error('Error fetching gift card:', error)
+    console.error("Error fetching gift card:", error)
     throw error
   }
 }
 
 // Usage
-const giftCard = await getGiftCardInfo('WELCOME50')
+const giftCard = await getGiftCardInfo("WELCOME50")
 console.log(`Available balance: $${giftCard.balance / 100}`)
 ```
 
@@ -35778,25 +35778,25 @@ const validateGiftCard = async (code: string, requiredCurrency?: string) => {
     
     // Check if gift card is active
     if (giftCard.is_disabled) {
-      return { valid: false, error: 'Gift card is inactive' }
+      return { valid: false, error: "Gift card is inactive" }
     }
     
     // Check if has balance
     if (giftCard.balance <= 0) {
-      return { valid: false, error: 'Gift card has no remaining balance' }
+      return { valid: false, error: "Gift card has no remaining balance" }
     }
     
     // Check currency compatibility (optional)
     if (requiredCurrency && giftCard.currency_code !== requiredCurrency) {
       return { 
         valid: false, 
-        error: `Gift card currency (${giftCard.currency_code}) does not match cart currency (${requiredCurrency})` 
+        error: `Gift card currency (${giftCard.currency_code}) does not match cart currency (${requiredCurrency})`, 
       }
     }
     
     return { valid: true, giftCard }
   } catch (error) {
-    return { valid: false, error: 'Gift card not found' }
+    return { valid: false, error: "Gift card not found" }
   }
 }
 ```
@@ -35812,24 +35812,24 @@ Add gift cards to customer carts:
 const applyGiftCardToCart = async (cartId: string, giftCardCode: string) => {
   try {
     const response = await fetch(`/store/carts/${cartId}/gift-cards`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        code: giftCardCode
-      })
+        code: giftCardCode,
+      }),
     })
     
     if (!response.ok) {
       const error = await response.json()
-      throw new Error(error.message || 'Failed to apply gift card')
+      throw new Error(error.message || "Failed to apply gift card")
     }
     
     const { cart } = await response.json()
     return cart
   } catch (error) {
-    console.error('Error applying gift card:', error)
+    console.error("Error applying gift card:", error)
     throw error
   }
 }
@@ -35848,8 +35848,8 @@ const handleApplyGiftCard = async (code: string) => {
     // Apply to cart
     const updatedCart = await applyGiftCardToCart(cart.id, code)
     setCart(updatedCart)
-    setGiftCardCode('')
-    setError('')
+    setGiftCardCode("")
+    setError("")
   } catch (error) {
     setError(error.message)
   }
@@ -35865,17 +35865,17 @@ Remove gift cards if customers change their mind:
 const removeGiftCardFromCart = async (cartId: string, giftCardCode: string) => {
   try {
     const response = await fetch(`/store/carts/${cartId}/gift-cards/${giftCardCode}`, {
-      method: 'DELETE'
+      method: "DELETE",
     })
     
     if (!response.ok) {
-      throw new Error('Failed to remove gift card')
+      throw new Error("Failed to remove gift card")
     }
     
     const { cart } = await response.json()
     return cart
   } catch (error) {
-    console.error('Error removing gift card:', error)
+    console.error("Error removing gift card:", error)
     throw error
   }
 }
@@ -35888,7 +35888,7 @@ const removeGiftCardFromCart = async (cartId: string, giftCardCode: string) => {
 Create a reusable gift card input component:
 
 ```tsx title="components/GiftCardInput.tsx"
-import { useState } from 'react'
+import { useState } from "react"
 
 interface GiftCardInputProps {
   onApply: (code: string) => Promise<void>
@@ -35897,26 +35897,26 @@ interface GiftCardInputProps {
 
 export const GiftCardInput: React.FC<GiftCardInputProps> = ({ 
   onApply, 
-  disabled = false 
+  disabled = false, 
 }) => {
-  const [code, setCode] = useState('')
+  const [code, setCode] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState("")
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
     if (!code.trim()) {
-      setError('Please enter a gift card code')
+      setError("Please enter a gift card code")
       return
     }
     
     setIsLoading(true)
-    setError('')
+    setError("")
     
     try {
       await onApply(code.trim())
-      setCode('')
+      setCode("")
     } catch (err) {
       setError(err.message)
     } finally {
@@ -35940,7 +35940,7 @@ export const GiftCardInput: React.FC<GiftCardInputProps> = ({
           disabled={disabled || isLoading || !code.trim()}
           className="apply-button"
         >
-          {isLoading ? 'Applying...' : 'Apply'}
+          {isLoading ? "Applying..." : "Apply"}
         </button>
       </div>
       {error && (
@@ -35968,14 +35968,14 @@ interface AppliedGiftCardsProps {
 
 export const AppliedGiftCards: React.FC<AppliedGiftCardsProps> = ({ 
   giftCards, 
-  onRemove 
+  onRemove, 
 }) => {
-  if (giftCards.length === 0) return null
+  if (giftCards.length === 0) {return null}
 
   const formatAmount = (amount: number, currency: string) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency.toUpperCase()
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: currency.toUpperCase(),
     }).format(amount / 100)
   }
 
@@ -36011,9 +36011,9 @@ export const AppliedGiftCards: React.FC<AppliedGiftCardsProps> = ({
 Integrate gift cards into your checkout flow:
 
 ```tsx title="components/CheckoutPayment.tsx"
-import { useState, useEffect } from 'react'
-import { GiftCardInput } from './GiftCardInput'
-import { AppliedGiftCards } from './AppliedGiftCards'
+import { useState, useEffect } from "react"
+import { GiftCardInput } from "./GiftCardInput"
+import { AppliedGiftCards } from "./AppliedGiftCards"
 
 interface CheckoutPaymentProps {
   cart: Cart
@@ -36022,7 +36022,7 @@ interface CheckoutPaymentProps {
 
 export const CheckoutPayment: React.FC<CheckoutPaymentProps> = ({ 
   cart, 
-  onCartUpdate 
+  onCartUpdate, 
 }) => {
   const [appliedGiftCards, setAppliedGiftCards] = useState([])
 
@@ -36080,31 +36080,31 @@ export const CheckoutPayment: React.FC<CheckoutPaymentProps> = ({
 Create a standalone page for customers to check gift card balances:
 
 ```tsx title="pages/gift-card-balance.tsx"
-import { useState } from 'react'
+import { useState } from "react"
 
 export default function GiftCardBalancePage() {
-  const [code, setCode] = useState('')
+  const [code, setCode] = useState("")
   const [giftCard, setGiftCard] = useState(null)
-  const [error, setError] = useState('')
+  const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
   const handleCheck = async (e: React.FormEvent) => {
     e.preventDefault()
     
     if (!code.trim()) {
-      setError('Please enter a gift card code')
+      setError("Please enter a gift card code")
       return
     }
 
     setIsLoading(true)
-    setError('')
+    setError("")
     setGiftCard(null)
 
     try {
       const giftCardInfo = await getGiftCardInfo(code.trim())
       setGiftCard(giftCardInfo)
     } catch (err) {
-      setError('Gift card not found or invalid')
+      setError("Gift card not found or invalid")
     } finally {
       setIsLoading(false)
     }
@@ -36128,7 +36128,7 @@ export default function GiftCardBalancePage() {
         </div>
         
         <button type="submit" disabled={isLoading || !code.trim()}>
-          {isLoading ? 'Checking...' : 'Check Balance'}
+          {isLoading ? "Checking..." : "Check Balance"}
         </button>
       </form>
 
@@ -36142,13 +36142,13 @@ export default function GiftCardBalancePage() {
           <div className="gift-card-details">
             <p><strong>Code:</strong> {giftCard.code}</p>
             <p><strong>Balance:</strong> {
-              new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: giftCard.currency_code.toUpperCase()
+              new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: giftCard.currency_code.toUpperCase(),
               }).format(giftCard.balance / 100)
             }</p>
             <p><strong>Status:</strong> {
-              giftCard.is_disabled ? 'Inactive' : 'Active'
+              giftCard.is_disabled ? "Inactive" : "Active"
             }</p>
           </div>
         </div>
@@ -36167,23 +36167,23 @@ Handle common gift card errors gracefully:
 ```ts title="Gift card error handling"
 const handleGiftCardError = (error: any) => {
   switch (error.code) {
-    case 'GIFT_CARD_NOT_FOUND':
-      return 'Gift card not found. Please check the code and try again.'
+    case "GIFT_CARD_NOT_FOUND":
+      return "Gift card not found. Please check the code and try again."
     
-    case 'GIFT_CARD_DISABLED':
-      return 'This gift card is no longer active.'
+    case "GIFT_CARD_DISABLED":
+      return "This gift card is no longer active."
     
-    case 'GIFT_CARD_NO_BALANCE':
-      return 'This gift card has no remaining balance.'
+    case "GIFT_CARD_NO_BALANCE":
+      return "This gift card has no remaining balance."
     
-    case 'GIFT_CARD_CURRENCY_MISMATCH':
-      return 'Gift card currency does not match your cart currency.'
+    case "GIFT_CARD_CURRENCY_MISMATCH":
+      return "Gift card currency does not match your cart currency."
     
-    case 'GIFT_CARD_ALREADY_APPLIED':
-      return 'This gift card has already been applied to your cart.'
+    case "GIFT_CARD_ALREADY_APPLIED":
+      return "This gift card has already been applied to your cart."
     
     default:
-      return error.message || 'An unexpected error occurred.'
+      return error.message || "An unexpected error occurred."
   }
 }
 ```
@@ -36446,9 +36446,9 @@ const { result } = await createStoreCreditAccountsWorkflow(container).run({
     currency_code: "usd",
     metadata: {
       created_by: "admin_user_123",
-      reason: "welcome_bonus"
-    }
-  }
+      reason: "welcome_bonus",
+    },
+  },
 })
 
 // Create multiple accounts
@@ -36456,13 +36456,13 @@ const { result } = await createStoreCreditAccountsWorkflow(container).run({
   input: [
     {
       customer_id: "cust_123456789",
-      currency_code: "usd"
+      currency_code: "usd",
     },
     {
       customer_id: "cust_987654321", 
-      currency_code: "eur"
-    }
-  ]
+      currency_code: "eur",
+    },
+  ],
 })
 ```
 
@@ -36518,8 +36518,8 @@ const { result } = await creditStoreCreditAccountWorkflow(container).run({
     amount: 5000, // $50.00 in cents
     reference: "refund",
     reference_id: "return_456",
-    note: "Refund for returned item"
-  }
+    note: "Refund for returned item",
+  },
 })
 ```
 
@@ -36535,16 +36535,16 @@ const { result } = await creditAccountsWorkflow(container).run({
       amount: 2500, // $25.00
       reference: "promotion",
       reference_id: "spring_campaign",
-      note: "Spring promotion bonus"
+      note: "Spring promotion bonus",
     },
     {
       account_id: "sca_987654321",
       amount: 1000, // $10.00
       reference: "referral", 
       reference_id: "ref_bonus_001",
-      note: "Referral bonus"
-    }
-  ]
+      note: "Referral bonus",
+    },
+  ],
 })
 ```
 
@@ -36577,9 +36577,9 @@ const { result } = await debitAccountsWorkflow(container).run({
       amount: 1500, // $15.00
       reference: "order",
       reference_id: "order_456", 
-      note: "Payment for order #456"
-    }
-  ]
+      note: "Payment for order #456",
+    },
+  ],
 })
 ```
 
@@ -36627,8 +36627,8 @@ Account balances are automatically calculated from transaction history:
 
 ```ts title="Get account balance"
 // Balance is included in account retrieval
-const account = await fetch('/admin/store-credit-accounts/sca_123456789')
-  .then(res => res.json())
+const account = await fetch("/admin/store-credit-accounts/sca_123456789")
+  .then((res) => res.json())
 
 console.log(`Available balance: ${account.balance}`)
 console.log(`Total credits: ${account.credits}`)  
@@ -36642,7 +36642,7 @@ Before debiting, validate sufficient balance:
 ```ts title="Balance validation example"
 const validateBalance = async (accountId: string, debitAmount: number) => {
   const account = await fetch(`/admin/store-credit-accounts/${accountId}`)
-    .then(res => res.json())
+    .then((res) => res.json())
   
   if (account.balance < debitAmount) {
     throw new Error(`Insufficient balance. Available: ${account.balance}, Required: ${debitAmount}`)
@@ -36676,8 +36676,8 @@ export const processOrderWithStoreCreditStep = createStep(
         amount: store_credit_amount,
         reference: "order",
         reference_id: order_id,
-        note: `Payment for order ${order_id}`
-      }]
+        note: `Payment for order ${order_id}`,
+      }],
     })
     
     return new StepResponse({ success: true })
@@ -36697,7 +36697,7 @@ export default async function handleReturnCompleted({
 }: SubscriberArgs<{ id: string }>) {
   const returnService = container.resolve("returnService")
   const returnOrder = await returnService.retrieve(data.id, {
-    relations: ["order", "order.customer"]
+    relations: ["order", "order.customer"],
   })
 
   // Credit customer's store credit account
@@ -36707,8 +36707,8 @@ export default async function handleReturnCompleted({
       amount: returnOrder.refund_amount,
       reference: "return",
       reference_id: data.id,
-      note: `Refund for return ${data.id}`
-    }
+      note: `Refund for return ${data.id}`,
+    },
   })
 }
 
@@ -36727,22 +36727,22 @@ Create multiple accounts for customer segments:
 import { createStoreCreditAccountsWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 // Get VIP customers
-const vipCustomers = await fetch('/admin/customers?groups[]=vip')
-  .then(res => res.json())
+const vipCustomers = await fetch("/admin/customers?groups[]=vip")
+  .then((res) => res.json())
 
 // Create store credit accounts for all VIP customers
-const accountData = vipCustomers.customers.map(customer => ({
+const accountData = vipCustomers.customers.map((customer) => ({
   customer_id: customer.id,
   currency_code: customer.default_currency || "usd",
   metadata: {
     tier: "vip",
     created_by: "bulk_operation",
-    campaign: "vip_welcome"
-  }
+    campaign: "vip_welcome",
+  },
 }))
 
 const { result } = await createStoreCreditAccountsWorkflow(container).run({
-  input: accountData
+  input: accountData,
 })
 ```
 
@@ -36754,19 +36754,19 @@ Distribute credits to multiple accounts:
 import { creditAccountsWorkflow } from "@medusajs/loyalty-plugin/workflows"
 
 // Loyalty program rewards
-const loyaltyMembers = await fetch('/admin/store-credit-accounts?metadata[tier]=gold')
-  .then(res => res.json())
+const loyaltyMembers = await fetch("/admin/store-credit-accounts?metadata[tier]=gold")
+  .then((res) => res.json())
 
-const creditData = loyaltyMembers.accounts.map(account => ({
+const creditData = loyaltyMembers.accounts.map((account) => ({
   account_id: account.id,
   amount: 2000, // $20.00 reward
   reference: "loyalty_reward",
   reference_id: "monthly_bonus_202401",
-  note: "Monthly loyalty bonus - Gold tier"
+  note: "Monthly loyalty bonus - Gold tier",
 }))
 
 const { result } = await creditAccountsWorkflow(container).run({
-  input: creditData
+  input: creditData,
 })
 ```
 
@@ -36778,8 +36778,8 @@ Generate reports on store credit liability:
 
 ```ts title="Store credit reporting"
 // Get all accounts with balances
-const accounts = await fetch('/admin/store-credit-accounts')
-  .then(res => res.json())
+const accounts = await fetch("/admin/store-credit-accounts")
+  .then((res) => res.json())
 
 // Calculate total liability and statistics
 const report = {
@@ -36787,12 +36787,12 @@ const report = {
   total_liability: accounts.store_credit_accounts.reduce((sum, acc) => 
     sum + acc.balance, 0
   ),
-  active_accounts: accounts.store_credit_accounts.filter(acc => 
+  active_accounts: accounts.store_credit_accounts.filter((acc) => 
     acc.balance > 0
   ).length,
   average_balance: accounts.store_credit_accounts.reduce((sum, acc) => 
     sum + acc.balance, 0
-  ) / accounts.store_credit_accounts.length
+  ) / accounts.store_credit_accounts.length,
 }
 
 console.log("Store Credit Report:", report)
@@ -36805,24 +36805,24 @@ Analyze store credit usage patterns:
 ```ts title="Transaction analysis"
 // Get all transactions for analysis
 const allTransactions = await Promise.all(
-  accounts.store_credit_accounts.map(account =>
+  accounts.store_credit_accounts.map((account) =>
     fetch(`/admin/store-credit-accounts/${account.id}/transactions`)
-      .then(res => res.json())
+      .then((res) => res.json())
   )
 )
 
-const flatTransactions = allTransactions.flatMap(t => t.transactions)
+const flatTransactions = allTransactions.flatMap((t) => t.transactions)
 
 const analysis = {
   total_transactions: flatTransactions.length,
-  credit_transactions: flatTransactions.filter(t => t.type === 'credit').length,
-  debit_transactions: flatTransactions.filter(t => t.type === 'debit').length,
+  credit_transactions: flatTransactions.filter((t) => t.type === "credit").length,
+  debit_transactions: flatTransactions.filter((t) => t.type === "debit").length,
   top_references: Object.entries(
     flatTransactions.reduce((acc, t) => {
       acc[t.reference] = (acc[t.reference] || 0) + 1
       return acc
     }, {})
-  ).sort(([,a], [,b]) => b - a).slice(0, 5)
+  ).sort(([,a], [,b]) => b - a).slice(0, 5),
 }
 ```
 
@@ -37074,28 +37074,28 @@ Get the authenticated customer's store credit accounts:
 // GET /store/store-credit-accounts
 const getCustomerStoreCredit = async (customerId: string) => {
   try {
-    const response = await fetch('/store/store-credit-accounts', {
+    const response = await fetch("/store/store-credit-accounts", {
       headers: {
-        'Authorization': `Bearer ${customerToken}`,
-        'Content-Type': 'application/json'
-      }
+        "Authorization": `Bearer ${customerToken}`,
+        "Content-Type": "application/json",
+      },
     })
     
     if (!response.ok) {
-      throw new Error('Failed to fetch store credit accounts')
+      throw new Error("Failed to fetch store credit accounts")
     }
     
     const { store_credit_accounts } = await response.json()
     
-    return store_credit_accounts.map(account => ({
+    return store_credit_accounts.map((account) => ({
       id: account.id,
       balance: account.balance,
       currency_code: account.currency_code,
       credits: account.credits,
-      debits: account.debits
+      debits: account.debits,
     }))
   } catch (error) {
-    console.error('Error fetching store credit:', error)
+    console.error("Error fetching store credit:", error)
     return []
   }
 }
@@ -37111,18 +37111,18 @@ const getStoreCreditAccountDetails = async (accountId: string) => {
   try {
     const response = await fetch(`/store/store-credit-accounts/${accountId}`, {
       headers: {
-        'Authorization': `Bearer ${customerToken}`
-      }
+        "Authorization": `Bearer ${customerToken}`,
+      },
     })
     
     if (!response.ok) {
-      throw new Error('Account not found')
+      throw new Error("Account not found")
     }
     
     const { store_credit_account } = await response.json()
     return store_credit_account
   } catch (error) {
-    console.error('Error fetching account details:', error)
+    console.error("Error fetching account details:", error)
     throw error
   }
 }
@@ -37146,23 +37146,23 @@ const applyStoreCreditToCart = async (cartId: string, accountId: string, amount?
     }
     
     const response = await fetch(`/store/carts/${cartId}/store-credits`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${customerToken}`,
-        'Content-Type': 'application/json'
+        "Authorization": `Bearer ${customerToken}`,
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     })
     
     if (!response.ok) {
       const error = await response.json()
-      throw new Error(error.message || 'Failed to apply store credit')
+      throw new Error(error.message || "Failed to apply store credit")
     }
     
     const { cart } = await response.json()
     return cart
   } catch (error) {
-    console.error('Error applying store credit:', error)
+    console.error("Error applying store credit:", error)
     throw error
   }
 }
@@ -37176,14 +37176,14 @@ Validate store credit before applying:
 const validateStoreCredit = (account: any, cartTotal: number, requestedAmount?: number) => {
   // Check if account has balance
   if (account.balance <= 0) {
-    return { valid: false, error: 'No store credit balance available' }
+    return { valid: false, error: "No store credit balance available" }
   }
   
   // Check currency compatibility
   if (account.currency_code !== cart.currency_code) {
     return { 
       valid: false, 
-      error: `Store credit currency (${account.currency_code}) does not match cart currency (${cart.currency_code})` 
+      error: `Store credit currency (${account.currency_code}) does not match cart currency (${cart.currency_code})`, 
     }
   }
   
@@ -37192,14 +37192,14 @@ const validateStoreCredit = (account: any, cartTotal: number, requestedAmount?: 
     if (requestedAmount > account.balance) {
       return { 
         valid: false, 
-        error: `Requested amount exceeds available balance of $${account.balance / 100}` 
+        error: `Requested amount exceeds available balance of $${account.balance / 100}`, 
       }
     }
     
     if (requestedAmount > cartTotal) {
       return { 
         valid: false, 
-        error: 'Requested amount exceeds cart total' 
+        error: "Requested amount exceeds cart total", 
       }
     }
   }
@@ -37215,7 +37215,7 @@ const validateStoreCredit = (account: any, cartTotal: number, requestedAmount?: 
 Show customer's available store credit:
 
 ```tsx title="components/StoreCreditBalance.tsx"
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react"
 
 interface StoreCreditBalanceProps {
   customerId: string
@@ -37224,7 +37224,7 @@ interface StoreCreditBalanceProps {
 
 export const StoreCreditBalance: React.FC<StoreCreditBalanceProps> = ({ 
   customerId, 
-  onAccountSelect 
+  onAccountSelect, 
 }) => {
   const [accounts, setAccounts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -37235,7 +37235,7 @@ export const StoreCreditBalance: React.FC<StoreCreditBalanceProps> = ({
         const storeCreditAccounts = await getCustomerStoreCredit(customerId)
         setAccounts(storeCreditAccounts)
       } catch (error) {
-        console.error('Failed to load store credit:', error)
+        console.error("Failed to load store credit:", error)
       } finally {
         setIsLoading(false)
       }
@@ -37245,9 +37245,9 @@ export const StoreCreditBalance: React.FC<StoreCreditBalanceProps> = ({
   }, [customerId])
 
   const formatAmount = (amount: number, currency: string) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency.toUpperCase()
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: currency.toUpperCase(),
     }).format(amount / 100)
   }
 
@@ -37290,7 +37290,7 @@ export const StoreCreditBalance: React.FC<StoreCreditBalanceProps> = ({
 Allow customers to apply store credit with amount control:
 
 ```tsx title="components/StoreCreditApplication.tsx"
-import { useState } from 'react'
+import { useState } from "react"
 
 interface StoreCreditApplicationProps {
   account: any
@@ -37303,7 +37303,7 @@ export const StoreCreditApplication: React.FC<StoreCreditApplicationProps> = ({
   account,
   cartTotal,
   onApply,
-  onCancel
+  onCancel,
 }) => {
   const [amount, setAmount] = useState(Math.min(account.balance, cartTotal))
   const [useFullBalance, setUseFullBalance] = useState(true)
@@ -37317,16 +37317,16 @@ export const StoreCreditApplication: React.FC<StoreCreditApplicationProps> = ({
       const applyAmount = useFullBalance ? maxAmount : amount
       await onApply(account.id, applyAmount)
     } catch (error) {
-      console.error('Failed to apply store credit:', error)
+      console.error("Failed to apply store credit:", error)
     } finally {
       setIsLoading(false)
     }
   }
 
   const formatAmount = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: account.currency_code.toUpperCase()
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: account.currency_code.toUpperCase(),
     }).format(value / 100)
   }
 
@@ -37379,7 +37379,7 @@ export const StoreCreditApplication: React.FC<StoreCreditApplicationProps> = ({
           onClick={handleApply}
           disabled={isLoading || (!useFullBalance && (amount < 1 || amount > maxAmount))}
         >
-          {isLoading ? 'Applying...' : `Apply ${formatAmount(useFullBalance ? maxAmount : amount)}`}
+          {isLoading ? "Applying..." : `Apply ${formatAmount(useFullBalance ? maxAmount : amount)}`}
         </button>
         <button onClick={onCancel} disabled={isLoading}>
           Cancel
@@ -37407,14 +37407,14 @@ interface AppliedStoreCreditProps {
 
 export const AppliedStoreCredits: React.FC<AppliedStoreCreditProps> = ({ 
   storeCredits, 
-  onRemove 
+  onRemove, 
 }) => {
-  if (storeCredits.length === 0) return null
+  if (storeCredits.length === 0) {return null}
 
   const formatAmount = (amount: number, currency: string) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency.toUpperCase()
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: currency.toUpperCase(),
     }).format(amount / 100)
   }
 
@@ -37452,7 +37452,7 @@ export const AppliedStoreCredits: React.FC<AppliedStoreCreditProps> = ({
 Display store credit transaction history:
 
 ```tsx title="components/StoreCreditHistory.tsx"
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react"
 
 interface StoreCreditHistoryProps {
   accountId: string
@@ -37467,14 +37467,14 @@ export const StoreCreditHistory: React.FC<StoreCreditHistoryProps> = ({ accountI
       try {
         const response = await fetch(`/store/store-credit-accounts/${accountId}/transactions`, {
           headers: {
-            'Authorization': `Bearer ${customerToken}`
-          }
+            "Authorization": `Bearer ${customerToken}`,
+          },
         })
         
         const { transactions } = await response.json()
         setTransactions(transactions)
       } catch (error) {
-        console.error('Failed to load transaction history:', error)
+        console.error("Failed to load transaction history:", error)
       } finally {
         setIsLoading(false)
       }
@@ -37484,21 +37484,21 @@ export const StoreCreditHistory: React.FC<StoreCreditHistoryProps> = ({ accountI
   }, [accountId])
 
   const formatAmount = (amount: number, type: string, currency: string) => {
-    const formatted = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency.toUpperCase()
+    const formatted = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: currency.toUpperCase(),
     }).format(amount / 100)
     
-    return type === 'credit' ? `+${formatted}` : `-${formatted}`
+    return type === "credit" ? `+${formatted}` : `-${formatted}`
   }
 
   const formatDate = (dateString: string) => {
-    return new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     }).format(new Date(dateString))
   }
 
@@ -37543,10 +37543,10 @@ export const StoreCreditHistory: React.FC<StoreCreditHistoryProps> = ({ accountI
 Allow customers to claim store credit using codes or links:
 
 ```tsx title="components/StoreCreditClaim.tsx"
-import { useState } from 'react'
+import { useState } from "react"
 
 export const StoreCreditClaim: React.FC = () => {
-  const [claimCode, setClaimCode] = useState('')
+  const [claimCode, setClaimCode] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [result, setResult] = useState<{ success: boolean; message: string } | null>(null)
 
@@ -37554,7 +37554,7 @@ export const StoreCreditClaim: React.FC = () => {
     e.preventDefault()
     
     if (!claimCode.trim()) {
-      setResult({ success: false, message: 'Please enter a claim code' })
+      setResult({ success: false, message: "Please enter a claim code" })
       return
     }
 
@@ -37562,32 +37562,32 @@ export const StoreCreditClaim: React.FC = () => {
     setResult(null)
 
     try {
-      const response = await fetch('/store/store-credit-accounts/claim', {
-        method: 'POST',
+      const response = await fetch("/store/store-credit-accounts/claim", {
+        method: "POST",
         headers: {
-          'Authorization': `Bearer ${customerToken}`,
-          'Content-Type': 'application/json'
+          "Authorization": `Bearer ${customerToken}`,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          code: claimCode.trim()
-        })
+          code: claimCode.trim(),
+        }),
       })
 
       if (!response.ok) {
         const error = await response.json()
-        throw new Error(error.message || 'Failed to claim store credit')
+        throw new Error(error.message || "Failed to claim store credit")
       }
 
       const { store_credit_account } = await response.json()
       setResult({
         success: true,
-        message: `Successfully claimed $${store_credit_account.balance / 100} in store credit!`
+        message: `Successfully claimed $${store_credit_account.balance / 100} in store credit!`,
       })
-      setClaimCode('')
+      setClaimCode("")
     } catch (error) {
       setResult({
         success: false,
-        message: error.message
+        message: error.message,
       })
     } finally {
       setIsLoading(false)
@@ -37612,12 +37612,12 @@ export const StoreCreditClaim: React.FC = () => {
         </div>
         
         <button type="submit" disabled={isLoading || !claimCode.trim()}>
-          {isLoading ? 'Claiming...' : 'Claim Store Credit'}
+          {isLoading ? "Claiming..." : "Claim Store Credit"}
         </button>
       </form>
 
       {result && (
-        <div className={`result ${result.success ? 'success' : 'error'}`}>
+        <div className={`result ${result.success ? "success" : "error"}`}>
           {result.message}
         </div>
       )}
@@ -37633,10 +37633,10 @@ export const StoreCreditClaim: React.FC = () => {
 Integrate store credit into the checkout flow:
 
 ```tsx title="components/CheckoutStoreCreditSection.tsx"
-import { useState } from 'react'
-import { StoreCreditBalance } from './StoreCreditBalance'
-import { StoreCreditApplication } from './StoreCreditApplication'
-import { AppliedStoreCredits } from './AppliedStoreCredits'
+import { useState } from "react"
+import { StoreCreditBalance } from "./StoreCreditBalance"
+import { StoreCreditApplication } from "./StoreCreditApplication"
+import { AppliedStoreCredits } from "./AppliedStoreCredits"
 
 interface CheckoutStoreCreditSectionProps {
   cart: any
@@ -37647,7 +37647,7 @@ interface CheckoutStoreCreditSectionProps {
 export const CheckoutStoreCreditSection: React.FC<CheckoutStoreCreditSectionProps> = ({
   cart,
   customerId,
-  onCartUpdate
+  onCartUpdate,
 }) => {
   const [selectedAccount, setSelectedAccount] = useState(null)
   const [appliedCredits, setAppliedCredits] = useState(cart.store_credit_transactions || [])
@@ -37658,23 +37658,23 @@ export const CheckoutStoreCreditSection: React.FC<CheckoutStoreCreditSectionProp
       onCartUpdate(updatedCart)
       setSelectedAccount(null)
     } catch (error) {
-      console.error('Failed to apply store credit:', error)
+      console.error("Failed to apply store credit:", error)
     }
   }
 
   const handleRemoveStoreCredit = async (accountId: string) => {
     try {
       const response = await fetch(`/store/carts/${cart.id}/store-credits/${accountId}`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Authorization': `Bearer ${customerToken}`
-        }
+          "Authorization": `Bearer ${customerToken}`,
+        },
       })
       
       const { cart: updatedCart } = await response.json()
       onCartUpdate(updatedCart)
     } catch (error) {
-      console.error('Failed to remove store credit:', error)
+      console.error("Failed to remove store credit:", error)
     }
   }
 
