@@ -77,7 +77,7 @@
     "react-i18next": "13.5.0",
     "react-jwt": "^1.2.0",
     "react-router-dom": "6.30.3",
-    "zod": "3.25.76"
+    "zod": "4.2.0"
   },
   "devDependencies": {
     "@medusajs/admin-shared": "2.13.6",

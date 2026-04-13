@@ -29,6 +29,10 @@ export const StoreGetProductVariantsParamsFields = z.object({
   q: z.string().optional(),
   id: z.union([z.string(), z.array(z.string())]).optional(),
   sku: z.union([z.string(), z.array(z.string())]).optional(),
+  ean: z.union([z.string(), z.array(z.string())]).optional(),
+  upc: z.union([z.string(), z.array(z.string())]).optional(),
+  barcode: z.union([z.string(), z.array(z.string())]).optional(),
+    
   options: z
     .object({ value: z.string().optional(), option_id: z.string().optional() })
     .optional(),

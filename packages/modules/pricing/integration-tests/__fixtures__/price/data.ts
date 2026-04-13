@@ -1,7 +1,7 @@
 export const defaultPricesData = [
   {
     id: "price-set-money-amount-USD",
-    currency_code: "USD",
+    currency_code: "usd",
     amount: 500,
     title: "price set money amount USD",
     price_set_id: "price-set-1",
@@ -9,7 +9,7 @@ export const defaultPricesData = [
   },
   {
     id: "price-set-money-amount-EUR",
-    currency_code: "EUR",
+    currency_code: "eur",
     amount: 400,
     title: "price set money amount EUR",
     price_set_id: "price-set-2",
@@ -17,7 +17,7 @@ export const defaultPricesData = [
   },
   {
     id: "price-set-money-amount-CAD",
-    currency_code: "CAD",
+    currency_code: "cad",
     amount: 600,
     title: "price set money amount CAD",
     price_set_id: "price-set-3",

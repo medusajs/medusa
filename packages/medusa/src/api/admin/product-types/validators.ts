@@ -36,7 +36,7 @@ export type AdminCreateProductTypeType = z.infer<typeof AdminCreateProductType>
 export const AdminCreateProductType = z
   .object({
     value: z.string(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 
@@ -44,6 +44,6 @@ export type AdminUpdateProductTypeType = z.infer<typeof AdminUpdateProductType>
 export const AdminUpdateProductType = z
   .object({
     value: z.string().optional(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()

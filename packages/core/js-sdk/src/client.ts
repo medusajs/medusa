@@ -7,7 +7,7 @@ import {
   FetchInput,
   FetchStreamResponse,
   Logger,
-} from "./types"
+} from "./types.js"
 
 export const PUBLISHABLE_KEY_HEADER = "x-publishable-api-key"
 export const LOCALE_STORAGE_KEY = "medusa_locale"

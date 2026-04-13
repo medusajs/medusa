@@ -1,3 +1,4 @@
+import { z } from "@medusajs/framework/zod"
 import {
   applyAndAndOrOperators,
   booleanString,
@@ -6,7 +7,6 @@ import {
   createBatchBody,
   createFindParams,
 } from "../../utils/validators"
-import { z } from "@medusajs/framework/zod"
 
 export const AdminGetTranslationParamsFields = z.object({
   q: z.string().optional(),
@@ -31,7 +31,7 @@ export const AdminCreateTranslation = z.object({
   reference_id: z.string(),
   reference: z.string(),
   locale_code: z.string(),
-  translations: z.record(z.string()),
+  translations: z.record(z.string(), z.string()),
 })
 
 export type AdminUpdateTranslationType = z.infer<typeof AdminUpdateTranslation>
@@ -40,7 +40,7 @@ export const AdminUpdateTranslation = z.object({
   reference_id: z.string().optional(),
   reference: z.string().optional(),
   locale_code: z.string().optional(),
-  translations: z.record(z.string()).optional(),
+  translations: z.record(z.string(), z.string()).optional(),
 })
 
 export type AdminBatchTranslationsType = z.infer<typeof AdminBatchTranslations>

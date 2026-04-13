@@ -5,6 +5,9 @@ import {
   BaseProductVariantParams,
 } from "../common"
 
+/**
+ * The product option's details.
+ */
 export interface StoreProductOptionParams extends BaseProductOptionParams {}
 export interface StoreProductVariantParams extends BaseProductVariantParams {
   sku?: string | string[]
@@ -30,13 +33,15 @@ export interface StoreProductPricingContext {
    */
   cart_id?: string
 }
-export interface StoreProductParams extends SelectParams, StoreProductPricingContext {
+export interface StoreProductParams
+  extends SelectParams,
+    StoreProductPricingContext {
   /**
    * The locale code in BCP 47 format. Information of the
    * product and related entities will be localized based on the provided locale.
-   * 
+   *
    * Learn more in the [Serve Translations in Storefront](https://docs.medusajs.com/resources/commerce-modules/translations/storefront) guide.
-   * 
+   *
    * @example
    * "en-US"
    */
@@ -56,7 +61,10 @@ export interface StoreProductListParams
   /**
    * Filter by the product's variants.
    */
-  variants?: Pick<StoreProductVariantParams, "options">
+  variants?: Pick<
+    StoreProductVariantParams,
+    "options" | "sku" | "ean" | "upc" | "barcode"
+  >
   /**
    * The locale code in BCP 47 format. Information of the
    * product and related entities will be localized based on the provided locale.
