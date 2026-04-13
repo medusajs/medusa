@@ -41,16 +41,36 @@ export const exportProductsStep = createStep(
     let hasHeader = false
 
     const fields = deduplicate(["id", "handle", ...input.select])
+    const { sales_channel_id, ..._filters } = input.filter ?? {}
 
     while (true) {
+      if (!!sales_channel_id) {
+        const { data: salesChannelProducts } = await query.graph({
+          entity: "product_sales_channel",
+          filters: {
+            sales_channel_id,
+          },
+          fields: ["product_id"],
+          pagination: {
+            skip: page * pageSize,
+            take: pageSize,
+          },
+        })
+
+        _filters.id = salesChannelProducts.map((product) => product.product_id)
+      }
+
       const { data: products } = await query.graph({
         entity: "product",
         fields,
-        filters: input.filter,
-        pagination: {
-          skip: page * pageSize,
-          take: pageSize,
-        },
+        filters: _filters,
+        // If sales channel is specified, we already paginated
+        pagination: sales_channel_id
+          ? undefined
+          : {
+              skip: page * pageSize,
+              take: pageSize,
+            },
       })
 
       if (products.length === 0) {
