@@ -3707,9 +3707,9 @@ __metadata:
   resolution: "@medusajs/icons@workspace:packages/design-system/icons"
   dependencies:
     "@medusajs/toolbox": 2.13.6
-    react: ^18.3.1
+    react: ^19.2.5
   peerDependencies:
-    react: ^18.3.1
+    react: ^19.2.5
   languageName: unknown
   linkType: soft
 
@@ -24212,6 +24212,13 @@ __metadata:
   dependencies:
     loose-envify: ^1.1.0
   checksum: 283e8c5efcf37802c9d1ce767f302dd569dd97a70d9bb8c7be79a789b9902451e0d16334b05d73299b20f048cbc3c7d288bbbde10b701fa194e2089c237dbea3
+  languageName: node
+  linkType: hard
+
+"react@npm:^19.2.5":
+  version: 19.2.5
+  resolution: "react@npm:19.2.5"
+  checksum: 4b5f231dbef92886f602533c9ce3bde04d99f0e71dfb5d794c43e02726efaad0421c08688f75fc98a6d6e1dc017372e1af7abbfecdc86a79968f461675931a7a
   languageName: node
   linkType: hard
 
