@@ -1,7 +1,9 @@
 import {
   ChangeActionType,
+  isDefined,
   MathBN,
   MedusaError,
+  mergeMetadata,
 } from "@medusajs/framework/utils"
 import { OrderChangeProcessing } from "../calculate-order-change"
 import { setActionReference } from "../set-action-reference"
@@ -26,6 +28,24 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_UPDATE, {
 
     existing.quantity = currentQuantity
     existing.detail.quantity = currentQuantity
+
+    if (isDefined(action.details.metadata)) {
+      const isUnset = action.details.metadata === null
+
+      if (isUnset) {
+        existing.detail.metadata = null
+        existing.metadata = null
+      } else {
+        existing.detail.metadata = mergeMetadata(
+          existing.detail.metadata ?? existing.metadata ?? {},
+          action.details.metadata
+        )
+        existing.metadata = mergeMetadata(
+          existing.metadata ?? {},
+          action.details.metadata
+        )
+      }
+    }
 
     if (action.details.adjustments) {
       existing.adjustments = action.details.adjustments

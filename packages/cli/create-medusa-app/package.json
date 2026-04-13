@@ -30,7 +30,8 @@
     "uuid": "^9.0.0",
     "validator": "^13.15.22",
     "wait-on": "^9.0.1",
-    "winston": "^3.9.0"
+    "winston": "^3.9.0",
+    "yaml": "^2.8.3"
   },
   "engines": {
     "node": ">=14.16"
