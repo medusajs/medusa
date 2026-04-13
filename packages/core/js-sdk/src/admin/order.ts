@@ -7,8 +7,8 @@ import {
   SelectParams,
 } from "@medusajs/types"
 
-import { Client } from "../client"
-import { ClientHeaders } from "../types"
+import { Client } from "../client.js"
+import { ClientHeaders } from "../types.js"
 
 export class Order {
   /**
