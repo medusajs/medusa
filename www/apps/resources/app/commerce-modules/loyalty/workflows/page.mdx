@@ -1,0 +1,530 @@
+export const metadata = {
+  title: `Loyalty Plugin Workflows`,
+}
+
+# {metadata.title}
+
+In this document, you'll find a reference for all workflows provided by the Loyalty Plugin.
+
+The Loyalty Plugin provides comprehensive workflows for managing gift cards, store credit accounts, and cart integration. These workflows ensure data consistency and provide reliable rollback mechanisms for all loyalty operations.
+
+## Gift Card Workflows
+
+### createGiftCardsWorkflow
+
+Creates one or more gift cards.
+
+**Module**: `@medusajs/loyalty-plugin/workflows`
+
+```ts title="Import"
+import { createGiftCardsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+```
+
+**Input Type**:
+```ts title="Input Type"
+type CreateGiftCardsWorkflowInput = {
+  code?: string // Optional unique code, auto-generated if not provided
+  amount: number // Amount in smallest currency unit (e.g., cents)
+  currency_code: string // Three-letter currency code
+  metadata?: Record<string, any> // Optional metadata
+} | CreateGiftCardsWorkflowInput[]
+```
+
+**Example**:
+```ts title="Usage Example"
+// Create single gift card
+const { result } = await createGiftCardsWorkflow(container).run({
+  input: {
+    code: "WELCOME50",
+    amount: 5000, // $50.00
+    currency_code: "usd",
+    metadata: { campaign: "welcome-bonus" },
+  },
+})
+
+// Create multiple gift cards
+const { result } = await createGiftCardsWorkflow(container).run({
+  input: [
+    { amount: 2500, currency_code: "usd" },
+    { amount: 5000, currency_code: "usd" },
+    { amount: 10000, currency_code: "usd" },
+  ],
+})
+```
+
+---
+
+### updateGiftCardsWorkflow
+
+Updates existing gift cards based on selection criteria.
+
+**Module**: `@medusajs/loyalty-plugin/workflows`
+
+```ts title="Import"
+import { updateGiftCardsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+```
+
+**Input Type**:
+```ts title="Input Type"
+type UpdateGiftCardsWorkflowInput = {
+  selector: {
+    id?: string
+    code?: string
+    metadata?: Record<string, any>
+  }
+  update: {
+    metadata?: Record<string, any>
+    // Other updatable fields
+  }
+}
+```
+
+**Example**:
+```ts title="Usage Example"
+const { result } = await updateGiftCardsWorkflow(container).run({
+  input: {
+    selector: { id: "gc_123456789" },
+    update: {
+      metadata: {
+        status: "active",
+        updated_by: "admin_user_456",
+      },
+    },
+  },
+})
+```
+
+---
+
+### deleteGiftCardWorkflow
+
+Soft deletes a gift card by ID.
+
+**Module**: `@medusajs/loyalty-plugin/workflows`
+
+```ts title="Import"
+import { deleteGiftCardWorkflow } from "@medusajs/loyalty-plugin/workflows"
+```
+
+**Input Type**:
+```ts title="Input Type"
+type DeleteGiftCardWorkflowInput = {
+  id: string // Gift card ID to delete
+}
+```
+
+**Example**:
+```ts title="Usage Example"
+const { result } = await deleteGiftCardWorkflow(container).run({
+  input: {
+    id: "gc_123456789",
+  },
+})
+```
+
+---
+
+### redeemGiftCardWorkflow
+
+Redeems a specified amount from a gift card.
+
+**Module**: `@medusajs/loyalty-plugin/workflows`
+
+```ts title="Import"
+import { redeemGiftCardWorkflow } from "@medusajs/loyalty-plugin/workflows"
+```
+
+**Input Type**:
+```ts title="Input Type"
+type RedeemGiftCardWorkflowInput = {
+  code: string // Gift card code
+  amount: number // Amount to redeem in smallest currency unit
+  currency_code: string // Currency code
+  reference?: string // Reference type (e.g., "order", "manual")
+  reference_id?: string // Reference ID
+}
+```
+
+**Example**:
+```ts title="Usage Example"
+const { result } = await redeemGiftCardWorkflow(container).run({
+  input: {
+    code: "WELCOME50",
+    amount: 2500, // Redeem $25.00
+    currency_code: "usd",
+    reference: "order",
+    reference_id: "order_123456",
+  },
+})
+```
+
+---
+
+### claimGiftCardWorkflow
+
+Claims a gift card by code, typically for customer acquisition.
+
+**Module**: `@medusajs/loyalty-plugin/workflows`
+
+```ts title="Import"
+import { claimGiftCardWorkflow } from "@medusajs/loyalty-plugin/workflows"
+```
+
+**Input Type**:
+```ts title="Input Type"
+type ClaimGiftCardWorkflowInput = {
+  code: string // Gift card code to claim
+  customer_id?: string // Optional customer ID to associate
+}
+```
+
+**Example**:
+```ts title="Usage Example"
+const { result } = await claimGiftCardWorkflow(container).run({
+  input: {
+    code: "PROMO2024",
+    customer_id: "cust_123456789",
+  },
+})
+```
+
+## Store Credit Workflows
+
+### createStoreCreditAccountsWorkflow
+
+Creates store credit accounts for customers.
+
+**Module**: `@medusajs/loyalty-plugin/workflows`
+
+```ts title="Import"
+import { createStoreCreditAccountsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+```
+
+**Input Type**:
+```ts title="Input Type"
+type CreateStoreCreditAccountsWorkflowInput = {
+  customer_id: string // Customer ID to create account for
+  currency_code: string // Account currency
+  metadata?: Record<string, any> // Optional metadata
+} | CreateStoreCreditAccountsWorkflowInput[]
+```
+
+**Example**:
+```ts title="Usage Example"
+// Create single account
+const { result } = await createStoreCreditAccountsWorkflow(container).run({
+  input: {
+    customer_id: "cust_123456789",
+    currency_code: "usd",
+    metadata: { tier: "gold" },
+  },
+})
+
+// Create multiple accounts
+const { result } = await createStoreCreditAccountsWorkflow(container).run({
+  input: [
+    { customer_id: "cust_123", currency_code: "usd" },
+    { customer_id: "cust_456", currency_code: "eur" },
+  ],
+})
+```
+
+---
+
+### creditStoreCreditAccountWorkflow
+
+Adds credit to a store credit account.
+
+**Module**: `@medusajs/loyalty-plugin/workflows`
+
+```ts title="Import"
+import { creditStoreCreditAccountWorkflow } from "@medusajs/loyalty-plugin/workflows"
+```
+
+**Input Type**:
+```ts title="Input Type"
+type CreditStoreCreditAccountWorkflowInput = {
+  account_id: string // Store credit account ID
+  amount: number // Amount to credit in smallest currency unit
+  reference?: string // Reference type (e.g., "refund", "promotion")
+  reference_id?: string // Reference ID
+  note?: string // Optional description
+}
+```
+
+**Example**:
+```ts title="Usage Example"
+const { result } = await creditStoreCreditAccountWorkflow(container).run({
+  input: {
+    account_id: "sca_123456789",
+    amount: 5000, // Credit $50.00
+    reference: "refund",
+    reference_id: "return_456",
+    note: "Refund for returned item",
+  },
+})
+```
+
+---
+
+### debitAccountsWorkflow
+
+Debits (spends) credit from store credit accounts.
+
+**Module**: `@medusajs/loyalty-plugin/workflows`
+
+```ts title="Import"
+import { debitAccountsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+```
+
+**Input Type**:
+```ts title="Input Type"
+type DebitAccountsWorkflowInput = {
+  account_id: string // Store credit account ID
+  amount: number // Amount to debit
+  reference?: string // Reference type (e.g., "order", "fee")
+  reference_id?: string // Reference ID
+  note?: string // Optional description
+}[]
+```
+
+**Example**:
+```ts title="Usage Example"
+const { result } = await debitAccountsWorkflow(container).run({
+  input: [
+    {
+      account_id: "sca_123456789",
+      amount: 1500, // Debit $15.00
+      reference: "order",
+      reference_id: "order_456",
+      note: "Payment for order #456",
+    },
+  ],
+})
+```
+
+<Note type="warning">
+
+Debit operations automatically validate sufficient account balance. The workflow will fail if insufficient funds are available.
+
+</Note>
+
+---
+
+### claimStoreCreditAccountWorkflow
+
+Claims store credit using a claim code or token.
+
+**Module**: `@medusajs/loyalty-plugin/workflows`
+
+```ts title="Import"
+import { claimStoreCreditAccountWorkflow } from "@medusajs/loyalty-plugin/workflows"
+```
+
+**Input Type**:
+```ts title="Input Type"
+type ClaimStoreCreditAccountWorkflowInput = {
+  code: string // Claim code
+  customer_id: string // Customer ID to associate account with
+}
+```
+
+**Example**:
+```ts title="Usage Example"
+const { result } = await claimStoreCreditAccountWorkflow(container).run({
+  input: {
+    code: "WELCOME100",
+    customer_id: "cust_123456789",
+  },
+})
+```
+
+## Cart Integration Workflows
+
+### addGiftCardToCartWorkflow
+
+Applies a gift card to a customer's cart.
+
+**Module**: `@medusajs/loyalty-plugin/workflows`
+
+```ts title="Import"
+import { addGiftCardToCartWorkflow } from "@medusajs/loyalty-plugin/workflows"
+```
+
+**Input Type**:
+```ts title="Input Type"
+type AddGiftCardToCartWorkflowInput = {
+  cart_id: string // Cart ID
+  code: string // Gift card code
+}
+```
+
+**Example**:
+```ts title="Usage Example"
+const { result } = await addGiftCardToCartWorkflow(container).run({
+  input: {
+    cart_id: "cart_123456789",
+    code: "WELCOME50",
+  },
+})
+```
+
+---
+
+### addStoreCreditToCartWorkflow
+
+Applies store credit to a customer's cart.
+
+**Module**: `@medusajs/loyalty-plugin/workflows`
+
+```ts title="Import"
+import { addStoreCreditToCartWorkflow } from "@medusajs/loyalty-plugin/workflows"
+```
+
+**Input Type**:
+```ts title="Input Type"
+type AddStoreCreditToCartWorkflowInput = {
+  cart_id: string // Cart ID
+  account_id: string // Store credit account ID
+  amount?: number // Optional specific amount, uses maximum available if not specified
+}
+```
+
+**Example**:
+```ts title="Usage Example"
+// Apply maximum available store credit
+const { result } = await addStoreCreditToCartWorkflow(container).run({
+  input: {
+    cart_id: "cart_123456789",
+    account_id: "sca_123456789",
+  },
+})
+
+// Apply specific amount
+const { result } = await addStoreCreditToCartWorkflow(container).run({
+  input: {
+    cart_id: "cart_123456789",
+    account_id: "sca_123456789",
+    amount: 2500, // Apply $25.00
+  },
+})
+```
+
+---
+
+### confirmCartCreditLinesWorkflow
+
+Confirms and processes gift card and store credit usage during checkout completion.
+
+**Module**: `@medusajs/loyalty-plugin/workflows`
+
+```ts title="Import"
+import { confirmCartCreditLinesWorkflow } from "@medusajs/loyalty-plugin/workflows"
+```
+
+**Input Type**:
+```ts title="Input Type"
+type ConfirmCartCreditLinesWorkflowInput = {
+  cart_id: string // Cart ID to confirm credits for
+}
+```
+
+**Example**:
+```ts title="Usage Example"
+// Typically called during order completion
+const { result } = await confirmCartCreditLinesWorkflow(container).run({
+  input: {
+    cart_id: "cart_123456789",
+  },
+})
+```
+
+## Workflow Steps
+
+The Loyalty Plugin also exports individual workflow steps that can be used in custom workflows:
+
+### Gift Card Steps
+
+- `createGiftCardsStep` - Creates gift cards
+- `updateGiftCardsStep` - Updates gift cards  
+- `deleteGiftCardsStep` - Deletes gift cards
+- `retrieveGiftCardBalanceStep` - Gets gift card balance
+
+### Store Credit Steps
+
+- `createStoreCreditAccountsStep` - Creates store credit accounts
+- `creditAccountStep` - Credits store credit accounts
+- `debitAccountStep` - Debits store credit accounts
+
+### Cart Steps
+
+- `validateGiftCardBalancesStep` - Validates gift card balances for cart application
+
+**Example of using individual steps**:
+```ts title="Custom workflow with steps"
+import { 
+  createWorkflow, 
+  createStep,
+  StepResponse, 
+} from "@medusajs/framework/workflows-sdk"
+import { 
+  createGiftCardsStep,
+  retrieveGiftCardBalanceStep, 
+} from "@medusajs/loyalty-plugin/workflows"
+
+const customGiftCardWorkflow = createWorkflow(
+  "custom-gift-card-workflow",
+  (input: { amount: number; currency_code: string }) => {
+    // Create gift card
+    const { giftCards } = createGiftCardsStep({
+      amount: input.amount,
+      currency_code: input.currency_code,
+    })
+    
+    // Get the balance (for verification)
+    const balance = retrieveGiftCardBalanceStep({
+      code: giftCards[0].code,
+    })
+    
+    return new WorkflowResponse({
+      giftCard: giftCards[0],
+      balance: balance,
+    })
+  }
+)
+```
+
+## Error Handling
+
+All workflows include proper error handling and rollback mechanisms. Common error scenarios include:
+
+- **Insufficient Balance**: When trying to redeem/debit more than available
+- **Invalid Codes**: When gift card or claim codes don't exist
+- **Currency Mismatch**: When currencies don't match between cards/accounts and carts
+- **Disabled Accounts**: When trying to use inactive gift cards or store credit accounts
+
+**Example error handling**:
+```ts title="Error handling example"
+try {
+  const { result } = await redeemGiftCardWorkflow(container).run({
+    input: {
+      code: "INVALID123",
+      amount: 5000,
+      currency_code: "usd",
+    },
+  })
+} catch (error) {
+  if (error.message.includes("Gift card not found")) {
+    // Handle invalid gift card code
+  } else if (error.message.includes("Insufficient balance")) {
+    // Handle insufficient balance
+  }
+  // Handle other errors
+}
+```
+
+## Next Steps
+
+- Learn how to [create custom workflows](!docs!/learn/fundamentals/workflows) that use these steps
+- Explore [gift card admin management](!resources!/commerce-modules/loyalty/gift-cards/admin-guide)
+- Review [store credit admin management](!resources!/commerce-modules/loyalty/store-credit/admin-guide)

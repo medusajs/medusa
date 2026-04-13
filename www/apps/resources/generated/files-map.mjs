@@ -276,6 +276,38 @@ export const filesMap = [
     "pathname": "/commerce-modules/inventory/workflows"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/gift-cards/admin-guide/page.mdx",
+    "pathname": "/commerce-modules/loyalty/gift-cards/admin-guide"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/gift-cards/concepts/page.mdx",
+    "pathname": "/commerce-modules/loyalty/gift-cards/concepts"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/gift-cards/storefront-guide/page.mdx",
+    "pathname": "/commerce-modules/loyalty/gift-cards/storefront-guide"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/page.mdx",
+    "pathname": "/commerce-modules/loyalty"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/store-credit/admin-guide/page.mdx",
+    "pathname": "/commerce-modules/loyalty/store-credit/admin-guide"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/store-credit/concepts/page.mdx",
+    "pathname": "/commerce-modules/loyalty/store-credit/concepts"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/store-credit/storefront-guide/page.mdx",
+    "pathname": "/commerce-modules/loyalty/store-credit/storefront-guide"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/workflows/page.mdx",
+    "pathname": "/commerce-modules/loyalty/workflows"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/order/admin-widget-zones/page.mdx",
     "pathname": "/commerce-modules/order/admin-widget-zones"
   },

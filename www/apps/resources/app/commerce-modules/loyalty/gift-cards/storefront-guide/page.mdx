@@ -1,0 +1,496 @@
+export const metadata = {
+  title: `Gift Cards Storefront Guide`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn how to integrate gift card functionality into your storefront using the Loyalty Plugin.
+
+## Prerequisites
+
+Before integrating gift cards into your storefront, ensure you have:
+- Installed and configured the Loyalty Plugin
+- Access to Store API routes
+- A Medusa storefront application (Next.js, React, etc.)
+
+## Gift Card Discovery
+
+### Retrieving Gift Card Information
+
+Customers can look up gift card information using the gift card code:
+
+```ts title="Gift card lookup"
+// GET /store/gift-cards/{code}
+const getGiftCardInfo = async (code: string) => {
+  try {
+    const response = await fetch(`/store/gift-cards/${code}`)
+    
+    if (!response.ok) {
+      throw new Error("Gift card not found")
+    }
+    
+    const { gift_card } = await response.json()
+    
+    return {
+      code: gift_card.code,
+      balance: gift_card.balance,
+      currency_code: gift_card.currency_code,
+      is_disabled: gift_card.is_disabled,
+    }
+  } catch (error) {
+    console.error("Error fetching gift card:", error)
+    throw error
+  }
+}
+
+// Usage
+const giftCard = await getGiftCardInfo("WELCOME50")
+console.log(`Available balance: $${giftCard.balance / 100}`)
+```
+
+### Gift Card Validation
+
+Validate gift cards before applying them to carts:
+
+```ts title="Gift card validation"
+const validateGiftCard = async (code: string, requiredCurrency?: string) => {
+  try {
+    const giftCard = await getGiftCardInfo(code)
+    
+    // Check if gift card is active
+    if (giftCard.is_disabled) {
+      return { valid: false, error: "Gift card is inactive" }
+    }
+    
+    // Check if has balance
+    if (giftCard.balance <= 0) {
+      return { valid: false, error: "Gift card has no remaining balance" }
+    }
+    
+    // Check currency compatibility (optional)
+    if (requiredCurrency && giftCard.currency_code !== requiredCurrency) {
+      return { 
+        valid: false, 
+        error: `Gift card currency (${giftCard.currency_code}) does not match cart currency (${requiredCurrency})`, 
+      }
+    }
+    
+    return { valid: true, giftCard }
+  } catch (error) {
+    return { valid: false, error: "Gift card not found" }
+  }
+}
+```
+
+## Cart Integration
+
+### Applying Gift Cards to Cart
+
+Add gift cards to customer carts:
+
+```ts title="Apply gift card to cart"
+// POST /store/carts/{cart_id}/gift-cards
+const applyGiftCardToCart = async (cartId: string, giftCardCode: string) => {
+  try {
+    const response = await fetch(`/store/carts/${cartId}/gift-cards`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        code: giftCardCode,
+      }),
+    })
+    
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.message || "Failed to apply gift card")
+    }
+    
+    const { cart } = await response.json()
+    return cart
+  } catch (error) {
+    console.error("Error applying gift card:", error)
+    throw error
+  }
+}
+
+// Usage in checkout flow
+const handleApplyGiftCard = async (code: string) => {
+  try {
+    // Validate first
+    const validation = await validateGiftCard(code, cart.currency_code)
+    
+    if (!validation.valid) {
+      setError(validation.error)
+      return
+    }
+    
+    // Apply to cart
+    const updatedCart = await applyGiftCardToCart(cart.id, code)
+    setCart(updatedCart)
+    setGiftCardCode("")
+    setError("")
+  } catch (error) {
+    setError(error.message)
+  }
+}
+```
+
+### Removing Gift Cards from Cart
+
+Remove gift cards if customers change their mind:
+
+```ts title="Remove gift card from cart"
+// DELETE /store/carts/{cart_id}/gift-cards/{code}
+const removeGiftCardFromCart = async (cartId: string, giftCardCode: string) => {
+  try {
+    const response = await fetch(`/store/carts/${cartId}/gift-cards/${giftCardCode}`, {
+      method: "DELETE",
+    })
+    
+    if (!response.ok) {
+      throw new Error("Failed to remove gift card")
+    }
+    
+    const { cart } = await response.json()
+    return cart
+  } catch (error) {
+    console.error("Error removing gift card:", error)
+    throw error
+  }
+}
+```
+
+## Gift Card UI Components
+
+### Gift Card Input Component
+
+Create a reusable gift card input component:
+
+```tsx title="components/GiftCardInput.tsx"
+import { useState } from "react"
+
+interface GiftCardInputProps {
+  onApply: (code: string) => Promise<void>
+  disabled?: boolean
+}
+
+export const GiftCardInput: React.FC<GiftCardInputProps> = ({ 
+  onApply, 
+  disabled = false, 
+}) => {
+  const [code, setCode] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState("")
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!code.trim()) {
+      setError("Please enter a gift card code")
+      return
+    }
+    
+    setIsLoading(true)
+    setError("")
+    
+    try {
+      await onApply(code.trim())
+      setCode("")
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="gift-card-form">
+      <div className="input-group">
+        <input
+          type="text"
+          value={code}
+          onChange={(e) => setCode(e.target.value.toUpperCase())}
+          placeholder="Enter gift card code"
+          disabled={disabled || isLoading}
+          className="gift-card-input"
+        />
+        <button
+          type="submit"
+          disabled={disabled || isLoading || !code.trim()}
+          className="apply-button"
+        >
+          {isLoading ? "Applying..." : "Apply"}
+        </button>
+      </div>
+      {error && (
+        <div className="error-message">{error}</div>
+      )}
+    </form>
+  )
+}
+```
+
+### Applied Gift Cards Display
+
+Show applied gift cards in the cart summary:
+
+```tsx title="components/AppliedGiftCards.tsx"
+interface AppliedGiftCardsProps {
+  giftCards: Array<{
+    code: string
+    amount_applied: number
+    balance_remaining: number
+    currency_code: string
+  }>
+  onRemove: (code: string) => Promise<void>
+}
+
+export const AppliedGiftCards: React.FC<AppliedGiftCardsProps> = ({ 
+  giftCards, 
+  onRemove, 
+}) => {
+  if (giftCards.length === 0) {return null}
+
+  const formatAmount = (amount: number, currency: string) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: currency.toUpperCase(),
+    }).format(amount / 100)
+  }
+
+  return (
+    <div className="applied-gift-cards">
+      <h3>Applied Gift Cards</h3>
+      {giftCards.map((giftCard) => (
+        <div key={giftCard.code} className="gift-card-item">
+          <div className="gift-card-info">
+            <span className="code">{giftCard.code}</span>
+            <span className="amount">
+              -{formatAmount(giftCard.amount_applied, giftCard.currency_code)}
+            </span>
+          </div>
+          <button
+            onClick={() => onRemove(giftCard.code)}
+            className="remove-button"
+            title="Remove gift card"
+          >
+            ×
+          </button>
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+## Checkout Integration
+
+### Gift Card Payment Processing
+
+Integrate gift cards into your checkout flow:
+
+```tsx title="components/CheckoutPayment.tsx"
+import { useState, useEffect } from "react"
+import { GiftCardInput } from "./GiftCardInput"
+import { AppliedGiftCards } from "./AppliedGiftCards"
+
+interface CheckoutPaymentProps {
+  cart: Cart
+  onCartUpdate: (cart: Cart) => void
+}
+
+export const CheckoutPayment: React.FC<CheckoutPaymentProps> = ({ 
+  cart, 
+  onCartUpdate, 
+}) => {
+  const [appliedGiftCards, setAppliedGiftCards] = useState([])
+
+  useEffect(() => {
+    // Extract gift card information from cart
+    const giftCards = cart.gift_card_transactions || []
+    setAppliedGiftCards(giftCards)
+  }, [cart])
+
+  const handleApplyGiftCard = async (code: string) => {
+    const updatedCart = await applyGiftCardToCart(cart.id, code)
+    onCartUpdate(updatedCart)
+  }
+
+  const handleRemoveGiftCard = async (code: string) => {
+    const updatedCart = await removeGiftCardFromCart(cart.id, code)
+    onCartUpdate(updatedCart)
+  }
+
+  const remainingTotal = cart.total - appliedGiftCards.reduce(
+    (sum, gc) => sum + gc.amount_applied, 0
+  )
+
+  return (
+    <div className="checkout-payment">
+      <div className="payment-section">
+        <h2>Payment</h2>
+        
+        <div className="gift-cards-section">
+          <GiftCardInput onApply={handleApplyGiftCard} />
+          <AppliedGiftCards
+            giftCards={appliedGiftCards}
+            onRemove={handleRemoveGiftCard}
+          />
+        </div>
+
+        {remainingTotal > 0 ? (
+          <div className="additional-payment">
+            <p>Remaining balance: ${remainingTotal / 100}</p>
+            {/* Other payment methods */}
+          </div>
+        ) : (
+          <div className="fully-paid">
+            <p>Order fully paid with gift cards!</p>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+```
+
+## Gift Card Balance Check Page
+
+Create a standalone page for customers to check gift card balances:
+
+```tsx title="pages/gift-card-balance.tsx"
+import { useState } from "react"
+
+export default function GiftCardBalancePage() {
+  const [code, setCode] = useState("")
+  const [giftCard, setGiftCard] = useState(null)
+  const [error, setError] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleCheck = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!code.trim()) {
+      setError("Please enter a gift card code")
+      return
+    }
+
+    setIsLoading(true)
+    setError("")
+    setGiftCard(null)
+
+    try {
+      const giftCardInfo = await getGiftCardInfo(code.trim())
+      setGiftCard(giftCardInfo)
+    } catch (err) {
+      setError("Gift card not found or invalid")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <div className="gift-card-balance-page">
+      <h1>Check Gift Card Balance</h1>
+      
+      <form onSubmit={handleCheck}>
+        <div className="form-group">
+          <label htmlFor="gift-card-code">Gift Card Code</label>
+          <input
+            id="gift-card-code"
+            type="text"
+            value={code}
+            onChange={(e) => setCode(e.target.value.toUpperCase())}
+            placeholder="Enter your gift card code"
+            disabled={isLoading}
+          />
+        </div>
+        
+        <button type="submit" disabled={isLoading || !code.trim()}>
+          {isLoading ? "Checking..." : "Check Balance"}
+        </button>
+      </form>
+
+      {error && (
+        <div className="error-message">{error}</div>
+      )}
+
+      {giftCard && (
+        <div className="gift-card-result">
+          <h2>Gift Card Information</h2>
+          <div className="gift-card-details">
+            <p><strong>Code:</strong> {giftCard.code}</p>
+            <p><strong>Balance:</strong> {
+              new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: giftCard.currency_code.toUpperCase(),
+              }).format(giftCard.balance / 100)
+            }</p>
+            <p><strong>Status:</strong> {
+              giftCard.is_disabled ? "Inactive" : "Active"
+            }</p>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+```
+
+## Error Handling
+
+### Common Error Scenarios
+
+Handle common gift card errors gracefully:
+
+```ts title="Gift card error handling"
+const handleGiftCardError = (error: any) => {
+  switch (error.code) {
+    case "GIFT_CARD_NOT_FOUND":
+      return "Gift card not found. Please check the code and try again."
+    
+    case "GIFT_CARD_DISABLED":
+      return "This gift card is no longer active."
+    
+    case "GIFT_CARD_NO_BALANCE":
+      return "This gift card has no remaining balance."
+    
+    case "GIFT_CARD_CURRENCY_MISMATCH":
+      return "Gift card currency does not match your cart currency."
+    
+    case "GIFT_CARD_ALREADY_APPLIED":
+      return "This gift card has already been applied to your cart."
+    
+    default:
+      return error.message || "An unexpected error occurred."
+  }
+}
+```
+
+## Best Practices
+
+### User Experience
+- Provide clear feedback when applying/removing gift cards
+- Show remaining gift card balance after application
+- Allow easy removal of applied gift cards
+- Display total savings from gift cards
+
+### Validation
+- Validate gift card codes client-side for immediate feedback
+- Handle network errors gracefully
+- Provide clear error messages for different scenarios
+- Implement proper loading states
+
+### Security
+- Never expose sensitive gift card information
+- Validate gift card operations on the server side
+- Use HTTPS for all gift card-related API calls
+- Log gift card usage for audit purposes
+
+## Next Steps
+
+- Learn about [store credit storefront integration](!resources!/commerce-modules/loyalty/store-credit/storefront-guide)
+- Explore [gift card admin management](!resources!/commerce-modules/loyalty/gift-cards/admin-guide)
+- Review [loyalty workflows reference](!resources!/commerce-modules/loyalty/workflows)

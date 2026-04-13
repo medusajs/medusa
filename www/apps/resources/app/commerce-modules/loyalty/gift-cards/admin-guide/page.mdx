@@ -1,0 +1,384 @@
+export const metadata = {
+  title: `Gift Cards Admin Guide`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn how to manage gift cards using admin APIs and workflows in the Loyalty Plugin.
+
+## Prerequisites
+
+Before using gift card functionality, ensure you have:
+- Installed and configured the Loyalty Plugin
+- Admin API access to your Medusa application
+- Understanding of [Medusa workflows](!docs!/learn/fundamentals/workflows)
+
+## Creating Gift Cards
+
+### Using Workflows
+
+The most reliable way to create gift cards is using the built-in workflow:
+
+```ts title="src/workflows/create-gift-cards.ts"
+import { createGiftCardsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+// Create a single gift card
+const { result } = await createGiftCardsWorkflow(container).run({
+  input: {
+    code: "WELCOME50",
+    amount: 5000, // $50.00 in cents
+    currency_code: "usd",
+    metadata: {
+      campaign: "welcome-bonus",
+      created_by: "admin_user_123",
+    },
+  },
+})
+
+// Create multiple gift cards
+const { result } = await createGiftCardsWorkflow(container).run({
+  input: [
+    {
+      amount: 2500, // $25.00
+      currency_code: "usd",
+    },
+    {
+      amount: 5000, // $50.00
+      currency_code: "usd",
+    },
+    {
+      amount: 10000, // $100.00
+      currency_code: "usd",
+    },
+  ],
+})
+```
+
+### Using Admin API Routes
+
+You can also create gift cards directly through the Admin API:
+
+```http title="POST /admin/gift-cards"
+Content-Type: application/json
+
+{
+  "code": "PROMO2024",
+  "amount": 5000,
+  "currency_code": "usd",
+  "metadata": {
+    "promotion": "spring-sale"
+  }
+}
+```
+
+### Auto-Generated Codes
+
+If you don't specify a code, the system will generate a unique code automatically:
+
+```ts title="Auto-generated gift card"
+const { result } = await createGiftCardsWorkflow(container).run({
+  input: {
+    amount: 10000, // $100.00
+    currency_code: "usd",
+    // No code specified - will be auto-generated
+  },
+})
+
+console.log(result.giftCards[0].code) // e.g., "GC-2024-AB3F8H9K"
+```
+
+## Managing Existing Gift Cards
+
+### Retrieving Gift Cards
+
+Fetch gift cards using the Admin API:
+
+```http title="GET /admin/gift-cards"
+GET /admin/gift-cards?limit=20&offset=0
+
+# Filter by specific criteria
+GET /admin/gift-cards?currency_code=usd&balance[gte]=1000
+```
+
+### Get Specific Gift Card
+
+Retrieve a specific gift card by ID:
+
+```http title="GET /admin/gift-cards/{id}"
+GET /admin/gift-cards/gc_123456789
+```
+
+### Updating Gift Cards
+
+Use the update workflow to modify gift cards:
+
+```ts title="src/workflows/update-gift-cards.ts"
+import { updateGiftCardsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+const { result } = await updateGiftCardsWorkflow(container).run({
+  input: {
+    selector: { id: "gc_123456789" },
+    update: {
+      metadata: {
+        updated_by: "admin_user_456",
+        notes: "Customer service adjustment",
+      },
+    },
+  },
+})
+```
+
+Or use the Admin API:
+
+```http title="PUT /admin/gift-cards/{id}"
+Content-Type: application/json
+
+{
+  "metadata": {
+    "status": "active",
+    "campaign": "holiday-2024"
+  }
+}
+```
+
+## Gift Card Operations
+
+### Manual Redemption
+
+Redeem a gift card manually through workflows:
+
+```ts title="Manual gift card redemption"
+import { redeemGiftCardWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+const { result } = await redeemGiftCardWorkflow(container).run({
+  input: {
+    code: "WELCOME50",
+    amount: 2500, // Redeem $25.00
+    currency_code: "usd",
+    reference: "manual_redemption",
+    reference_id: "admin_action_789",
+  },
+})
+```
+
+### Check Gift Card Balance
+
+Retrieve the current balance of a gift card:
+
+```ts title="Check gift card balance"
+import { retrieveGiftCardBalanceStep } from "@medusajs/loyalty-plugin/workflows"
+
+// In a custom workflow step
+const balance = await retrieveGiftCardBalanceStep({
+  code: "WELCOME50",
+})
+
+console.log(`Available balance: ${balance.amount}`)
+```
+
+### Gift Card Transactions
+
+View all transactions for a specific gift card:
+
+```http title="GET /admin/gift-cards/{id}/orders"
+GET /admin/gift-cards/gc_123456789/orders
+```
+
+This returns all orders where the gift card was used.
+
+## Bulk Operations
+
+### Bulk Gift Card Creation
+
+Create many gift cards at once for campaigns:
+
+```ts title="Bulk gift card creation"
+import { createGiftCardsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+// Create 100 gift cards for a campaign
+const giftCardData = Array.from({ length: 100 }, (_, i) => ({
+  amount: 5000, // $50.00 each
+  currency_code: "usd",
+  metadata: {
+    campaign: "holiday-2024",
+    batch: "001",
+    sequence: i + 1,
+  },
+}))
+
+const { result } = await createGiftCardsWorkflow(container).run({
+  input: giftCardData,
+})
+
+// Export codes for distribution
+const codes = result.giftCards.map((gc) => gc.code)
+console.log("Generated codes:", codes)
+```
+
+### Bulk Updates
+
+Update multiple gift cards based on criteria:
+
+```ts title="Bulk gift card updates"
+import { updateGiftCardsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+// Update all gift cards from a specific campaign
+const { result } = await updateGiftCardsWorkflow(container).run({
+  input: {
+    selector: { 
+      metadata: { 
+        campaign: "spring-sale", 
+      }, 
+    },
+    update: {
+      metadata: {
+        status: "expired",
+        expired_at: new Date().toISOString(),
+      },
+    },
+  },
+})
+```
+
+## Integration with Orders
+
+### Gift Cards in Order Processing
+
+When customers use gift cards during checkout, you can track their usage:
+
+```ts title="Processing orders with gift cards"
+// This happens automatically during order completion
+// Gift cards are applied as payment methods
+
+// You can access gift card usage in order data
+const order = await orderService.retrieveOrder("order_123", {
+  relations: ["gift_card_transactions"],
+})
+
+order.gift_card_transactions.forEach((transaction) => {
+  console.log(`Gift card ${transaction.code} used for ${transaction.amount}`)
+})
+```
+
+### Post-Order Gift Card Management
+
+Handle gift cards after order completion:
+
+```ts title="Order completion gift card handling"
+// In a subscriber that runs after order completion
+export default async function handleOrderCompleted({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  const orderService = container.resolve("orderService")
+  const order = await orderService.retrieveOrder(data.id, {
+    relations: ["items", "gift_card_transactions"],
+  })
+
+  // Check if order contains gift card products
+  const giftCardItems = order.items.filter((item) => 
+    item.variant?.product?.type === "gift-card"
+  )
+
+  if (giftCardItems.length > 0) {
+    // Create gift cards for purchased gift card products
+    for (const item of giftCardItems) {
+      await createGiftCardsWorkflow(container).run({
+        input: {
+          amount: item.unit_price,
+          currency_code: order.currency_code,
+          metadata: {
+            order_id: order.id,
+            item_id: item.id,
+            recipient_email: item.metadata?.recipient_email,
+          },
+        },
+      })
+    }
+  }
+}
+```
+
+## Reporting and Analytics
+
+### Gift Card Reports
+
+Generate reports on gift card usage:
+
+```ts title="Gift card reporting"
+// Get all gift cards with their current balances
+const giftCards = await fetch("/admin/gift-cards?expand=balance")
+  .then((res) => res.json())
+
+// Calculate total outstanding liability
+const totalLiability = giftCards.gift_cards.reduce((sum, gc) => 
+  sum + gc.balance, 0
+)
+
+// Get usage statistics
+const usedGiftCards = giftCards.gift_cards.filter((gc) => 
+  gc.balance < gc.original_amount
+)
+
+const statistics = {
+  total_issued: giftCards.gift_cards.length,
+  total_used: usedGiftCards.length,
+  usage_rate: (usedGiftCards.length / giftCards.gift_cards.length) * 100,
+  outstanding_liability: totalLiability,
+}
+```
+
+### Campaign Performance
+
+Track performance of gift card campaigns:
+
+```ts title="Campaign performance tracking"
+// Get gift cards from specific campaign
+const campaignGiftCards = await fetch(
+  "/admin/gift-cards?metadata[campaign]=holiday-2024"
+).then((res) => res.json())
+
+const performance = {
+  total_issued: campaignGiftCards.gift_cards.length,
+  total_value: campaignGiftCards.gift_cards.reduce((sum, gc) => 
+    sum + gc.amount, 0
+  ),
+  redeemed_count: campaignGiftCards.gift_cards.filter((gc) => 
+    gc.balance < gc.amount
+  ).length,
+  remaining_liability: campaignGiftCards.gift_cards.reduce((sum, gc) => 
+    sum + gc.balance, 0
+  ),
+}
+```
+
+## Best Practices
+
+### Code Generation
+- Use meaningful prefixes for different gift card types
+- Ensure codes are sufficiently random for security
+- Consider using check digits for validation
+
+### Metadata Usage
+- Store campaign information for tracking
+- Include creation source (admin, API, automatic)
+- Add expiration dates if applicable
+- Track gift card batch information
+
+### Error Handling
+- Validate gift card codes before processing
+- Handle insufficient balance scenarios gracefully
+- Provide clear error messages for failed redemptions
+- Log all gift card operations for auditing
+
+### Security Considerations
+- Limit who can create high-value gift cards
+- Monitor for unusual redemption patterns
+- Implement rate limiting on gift card operations
+- Use secure methods to distribute gift card codes
+
+## Next Steps
+
+- Learn about [gift card storefront integration](!resources!/commerce-modules/loyalty/gift-cards/storefront-guide)
+- Explore [gift card workflow references](!resources!/commerce-modules/loyalty/workflows)
+- Review [store credit functionality](!resources!/commerce-modules/loyalty/store-credit/concepts)

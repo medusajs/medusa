@@ -35211,6 +35211,2552 @@ Learn more about workflows in [this documentation](undefined/docs/learn/fundamen
 ***
 
 
+# Gift Cards Admin Guide
+
+In this document, you'll learn how to manage gift cards using admin APIs and workflows in the Loyalty Plugin.
+
+## Prerequisites
+
+Before using gift card functionality, ensure you have:
+
+- Installed and configured the Loyalty Plugin
+- Admin API access to your Medusa application
+- Understanding of [Medusa workflows](undefined/docs/learn/fundamentals/workflows)
+
+## Creating Gift Cards
+
+### Using Workflows
+
+The most reliable way to create gift cards is using the built-in workflow:
+
+```ts title="src/workflows/create-gift-cards.ts"
+import { createGiftCardsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+// Create a single gift card
+const { result } = await createGiftCardsWorkflow(container).run({
+  input: {
+    code: "WELCOME50",
+    amount: 5000, // $50.00 in cents
+    currency_code: "usd",
+    metadata: {
+      campaign: "welcome-bonus",
+      created_by: "admin_user_123"
+    }
+  }
+})
+
+// Create multiple gift cards
+const { result } = await createGiftCardsWorkflow(container).run({
+  input: [
+    {
+      amount: 2500, // $25.00
+      currency_code: "usd",
+    },
+    {
+      amount: 5000, // $50.00
+      currency_code: "usd",
+    },
+    {
+      amount: 10000, // $100.00
+      currency_code: "usd",
+    }
+  ]
+})
+```
+
+### Using Admin API Routes
+
+You can also create gift cards directly through the Admin API:
+
+```http title="POST /admin/gift-cards"
+Content-Type: application/json
+
+{
+  "code": "PROMO2024",
+  "amount": 5000,
+  "currency_code": "usd",
+  "metadata": {
+    "promotion": "spring-sale"
+  }
+}
+```
+
+### Auto-Generated Codes
+
+If you don't specify a code, the system will generate a unique code automatically:
+
+```ts title="Auto-generated gift card"
+const { result } = await createGiftCardsWorkflow(container).run({
+  input: {
+    amount: 10000, // $100.00
+    currency_code: "usd",
+    // No code specified - will be auto-generated
+  }
+})
+
+console.log(result.giftCards[0].code) // e.g., "GC-2024-AB3F8H9K"
+```
+
+## Managing Existing Gift Cards
+
+### Retrieving Gift Cards
+
+Fetch gift cards using the Admin API:
+
+```http title="GET /admin/gift-cards"
+GET /admin/gift-cards?limit=20&offset=0
+
+# Filter by specific criteria
+GET /admin/gift-cards?currency_code=usd&balance[gte]=1000
+```
+
+### Get Specific Gift Card
+
+Retrieve a specific gift card by ID:
+
+```http title="GET /admin/gift-cards/{id}"
+GET /admin/gift-cards/gc_123456789
+```
+
+### Updating Gift Cards
+
+Use the update workflow to modify gift cards:
+
+```ts title="src/workflows/update-gift-cards.ts"
+import { updateGiftCardsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+const { result } = await updateGiftCardsWorkflow(container).run({
+  input: {
+    selector: { id: "gc_123456789" },
+    update: {
+      metadata: {
+        updated_by: "admin_user_456",
+        notes: "Customer service adjustment"
+      }
+    }
+  }
+})
+```
+
+Or use the Admin API:
+
+```http title="PUT /admin/gift-cards/{id}"
+Content-Type: application/json
+
+{
+  "metadata": {
+    "status": "active",
+    "campaign": "holiday-2024"
+  }
+}
+```
+
+## Gift Card Operations
+
+### Manual Redemption
+
+Redeem a gift card manually through workflows:
+
+```ts title="Manual gift card redemption"
+import { redeemGiftCardWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+const { result } = await redeemGiftCardWorkflow(container).run({
+  input: {
+    code: "WELCOME50",
+    amount: 2500, // Redeem $25.00
+    currency_code: "usd",
+    reference: "manual_redemption",
+    reference_id: "admin_action_789"
+  }
+})
+```
+
+### Check Gift Card Balance
+
+Retrieve the current balance of a gift card:
+
+```ts title="Check gift card balance"
+import { retrieveGiftCardBalanceStep } from "@medusajs/loyalty-plugin/workflows"
+
+// In a custom workflow step
+const balance = await retrieveGiftCardBalanceStep({
+  code: "WELCOME50"
+})
+
+console.log(`Available balance: ${balance.amount}`)
+```
+
+### Gift Card Transactions
+
+View all transactions for a specific gift card:
+
+```http title="GET /admin/gift-cards/{id}/orders"
+GET /admin/gift-cards/gc_123456789/orders
+```
+
+This returns all orders where the gift card was used.
+
+## Bulk Operations
+
+### Bulk Gift Card Creation
+
+Create many gift cards at once for campaigns:
+
+```ts title="Bulk gift card creation"
+import { createGiftCardsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+// Create 100 gift cards for a campaign
+const giftCardData = Array.from({ length: 100 }, (_, i) => ({
+  amount: 5000, // $50.00 each
+  currency_code: "usd",
+  metadata: {
+    campaign: "holiday-2024",
+    batch: "001",
+    sequence: i + 1
+  }
+}))
+
+const { result } = await createGiftCardsWorkflow(container).run({
+  input: giftCardData
+})
+
+// Export codes for distribution
+const codes = result.giftCards.map(gc => gc.code)
+console.log("Generated codes:", codes)
+```
+
+### Bulk Updates
+
+Update multiple gift cards based on criteria:
+
+```ts title="Bulk gift card updates"
+import { updateGiftCardsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+// Update all gift cards from a specific campaign
+const { result } = await updateGiftCardsWorkflow(container).run({
+  input: {
+    selector: { 
+      metadata: { 
+        campaign: "spring-sale" 
+      } 
+    },
+    update: {
+      metadata: {
+        status: "expired",
+        expired_at: new Date().toISOString()
+      }
+    }
+  }
+})
+```
+
+## Integration with Orders
+
+### Gift Cards in Order Processing
+
+When customers use gift cards during checkout, you can track their usage:
+
+```ts title="Processing orders with gift cards"
+// This happens automatically during order completion
+// Gift cards are applied as payment methods
+
+// You can access gift card usage in order data
+const order = await orderService.retrieveOrder("order_123", {
+  relations: ["gift_card_transactions"]
+})
+
+order.gift_card_transactions.forEach(transaction => {
+  console.log(`Gift card ${transaction.code} used for ${transaction.amount}`)
+})
+```
+
+### Post-Order Gift Card Management
+
+Handle gift cards after order completion:
+
+```ts title="Order completion gift card handling"
+// In a subscriber that runs after order completion
+export default async function handleOrderCompleted({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  const orderService = container.resolve("orderService")
+  const order = await orderService.retrieveOrder(data.id, {
+    relations: ["items", "gift_card_transactions"]
+  })
+
+  // Check if order contains gift card products
+  const giftCardItems = order.items.filter(item => 
+    item.variant?.product?.type === "gift-card"
+  )
+
+  if (giftCardItems.length > 0) {
+    // Create gift cards for purchased gift card products
+    for (const item of giftCardItems) {
+      await createGiftCardsWorkflow(container).run({
+        input: {
+          amount: item.unit_price,
+          currency_code: order.currency_code,
+          metadata: {
+            order_id: order.id,
+            item_id: item.id,
+            recipient_email: item.metadata?.recipient_email
+          }
+        }
+      })
+    }
+  }
+}
+```
+
+## Reporting and Analytics
+
+### Gift Card Reports
+
+Generate reports on gift card usage:
+
+```ts title="Gift card reporting"
+// Get all gift cards with their current balances
+const giftCards = await fetch('/admin/gift-cards?expand=balance')
+  .then(res => res.json())
+
+// Calculate total outstanding liability
+const totalLiability = giftCards.gift_cards.reduce((sum, gc) => 
+  sum + gc.balance, 0
+)
+
+// Get usage statistics
+const usedGiftCards = giftCards.gift_cards.filter(gc => 
+  gc.balance < gc.original_amount
+)
+
+const statistics = {
+  total_issued: giftCards.gift_cards.length,
+  total_used: usedGiftCards.length,
+  usage_rate: (usedGiftCards.length / giftCards.gift_cards.length) * 100,
+  outstanding_liability: totalLiability
+}
+```
+
+### Campaign Performance
+
+Track performance of gift card campaigns:
+
+```ts title="Campaign performance tracking"
+// Get gift cards from specific campaign
+const campaignGiftCards = await fetch(
+  '/admin/gift-cards?metadata[campaign]=holiday-2024'
+).then(res => res.json())
+
+const performance = {
+  total_issued: campaignGiftCards.gift_cards.length,
+  total_value: campaignGiftCards.gift_cards.reduce((sum, gc) => 
+    sum + gc.amount, 0
+  ),
+  redeemed_count: campaignGiftCards.gift_cards.filter(gc => 
+    gc.balance < gc.amount
+  ).length,
+  remaining_liability: campaignGiftCards.gift_cards.reduce((sum, gc) => 
+    sum + gc.balance, 0
+  )
+}
+```
+
+## Best Practices
+
+### Code Generation
+
+- Use meaningful prefixes for different gift card types
+- Ensure codes are sufficiently random for security
+- Consider using check digits for validation
+
+### Metadata Usage
+
+- Store campaign information for tracking
+- Include creation source (admin, API, automatic)
+- Add expiration dates if applicable
+- Track gift card batch information
+
+### Error Handling
+
+- Validate gift card codes before processing
+- Handle insufficient balance scenarios gracefully
+- Provide clear error messages for failed redemptions
+- Log all gift card operations for auditing
+
+### Security Considerations
+
+- Limit who can create high-value gift cards
+- Monitor for unusual redemption patterns
+- Implement rate limiting on gift card operations
+- Use secure methods to distribute gift card codes
+
+## Next Steps
+
+- Learn about [gift card storefront integration](undefined/resources/commerce-modules/loyalty/gift-cards/storefront-guide)
+- Explore [gift card workflow references](undefined/resources/commerce-modules/loyalty/workflows)
+- Review [store credit functionality](undefined/resources/commerce-modules/loyalty/store-credit/concepts)
+
+
+# Gift Cards Concepts
+
+In this document, you'll learn about gift cards and how they work in the Loyalty Plugin.
+
+## Overview
+
+Gift cards in the Loyalty Plugin provide a flexible way for customers to purchase and redeem credits in your store. Gift cards can be physical products that customers purchase, or they can be issued by admins for promotions, refunds, or customer service purposes.
+
+## Key Concepts
+
+### Gift Card Entity
+
+A gift card represents a stored value that can be redeemed during checkout. Each gift card has:
+
+- **Unique Code**: A unique identifier used to redeem the gift card
+- **Amount**: The monetary value of the gift card in the smallest currency unit (e.g., cents)
+- **Balance**: The remaining value that can be used (decreases with each redemption)
+- **Currency**: The currency code for the gift card value
+- **Status**: Active, inactive, or expired
+- **Metadata**: Custom fields for additional information
+
+### Gift Card Products
+
+Gift cards can be sold as products in your store. When a customer purchases a gift card product:
+
+1. A gift card entity is automatically created during order fulfillment
+2. The gift card code is generated and can be sent to the recipient
+3. The gift card becomes available for redemption
+
+### Gift Card Lifecycle
+
+#### 1. Creation
+
+Gift cards can be created in several ways:
+
+- **Product Purchase**: Automatically created when a gift card product is ordered
+- **Admin Creation**: Manually created by admins for promotions or customer service
+- **API Creation**: Programmatically created through workflows
+
+#### 2. Activation
+
+Once created, gift cards are typically active by default and ready for redemption.
+
+#### 3. Redemption
+
+During checkout, customers can:
+
+- Enter gift card codes to apply them to their cart
+- Use multiple gift cards on a single order
+- Use gift cards in combination with other payment methods
+
+#### 4. Balance Tracking
+
+- Each redemption reduces the gift card balance
+- Gift cards with zero balance cannot be used further
+- Partial redemptions are supported
+
+### Gift Card Integration with Orders
+
+When gift cards are redeemed during checkout:
+
+1. **Cart Application**: Gift cards are applied to the cart, reducing the total amount due
+2. **Payment Processing**: Gift card redemptions are processed as payment transactions
+3. **Order Completion**: Gift card usage is recorded in the order history
+4. **Balance Updates**: Gift card balances are automatically updated
+
+### Gift Card Administration
+
+Admins can manage gift cards through:
+
+- **Dashboard Interface**: View, create, and manage gift cards through the admin UI
+- **API Endpoints**: Programmatic management through REST APIs
+- **Bulk Operations**: Create multiple gift cards at once for campaigns
+- **Transaction History**: View all redemption history for each gift card
+
+## Use Cases
+
+### Customer Gifts
+
+Customers can purchase gift cards to give to friends and family, expanding your customer base through referrals.
+
+### Promotions and Marketing
+
+- Issue gift cards as promotional rewards
+- Create gift card campaigns for special events
+- Offer gift cards as compensation for service issues
+
+### Refunds and Returns
+
+Use gift cards as an alternative to cash refunds, encouraging customers to make future purchases.
+
+### Corporate Sales
+
+Sell gift cards in bulk to businesses for employee rewards or promotional giveaways.
+
+## Best Practices
+
+### Security
+
+- Gift card codes should be sufficiently random to prevent guessing
+- Consider implementing usage limits or expiration dates
+- Monitor for suspicious redemption patterns
+
+### Customer Experience
+
+- Provide clear instructions on how to redeem gift cards
+- Send gift card codes through secure channels (email, SMS)
+- Allow customers to check their gift card balance
+
+### Business Operations
+
+- Track gift card liability for accounting purposes
+- Set clear terms and conditions for gift card usage
+- Consider implementing expiration policies based on local regulations
+
+## Next Steps
+
+- Learn how to [create and manage gift cards in the admin](undefined/resources/commerce-modules/loyalty/gift-cards/admin-guide)
+- Explore [gift card integration in your storefront](undefined/resources/commerce-modules/loyalty/gift-cards/storefront-guide)
+- Review the [gift card workflows reference](undefined/resources/commerce-modules/loyalty/workflows)
+
+
+# Gift Cards Storefront Guide
+
+In this document, you'll learn how to integrate gift card functionality into your storefront using the Loyalty Plugin.
+
+## Prerequisites
+
+Before integrating gift cards into your storefront, ensure you have:
+
+- Installed and configured the Loyalty Plugin
+- Access to Store API routes
+- A Medusa storefront application (Next.js, React, etc.)
+
+## Gift Card Discovery
+
+### Retrieving Gift Card Information
+
+Customers can look up gift card information using the gift card code:
+
+```ts title="Gift card lookup"
+// GET /store/gift-cards/{code}
+const getGiftCardInfo = async (code: string) => {
+  try {
+    const response = await fetch(`/store/gift-cards/${code}`)
+    
+    if (!response.ok) {
+      throw new Error('Gift card not found')
+    }
+    
+    const { gift_card } = await response.json()
+    
+    return {
+      code: gift_card.code,
+      balance: gift_card.balance,
+      currency_code: gift_card.currency_code,
+      is_disabled: gift_card.is_disabled
+    }
+  } catch (error) {
+    console.error('Error fetching gift card:', error)
+    throw error
+  }
+}
+
+// Usage
+const giftCard = await getGiftCardInfo('WELCOME50')
+console.log(`Available balance: $${giftCard.balance / 100}`)
+```
+
+### Gift Card Validation
+
+Validate gift cards before applying them to carts:
+
+```ts title="Gift card validation"
+const validateGiftCard = async (code: string, requiredCurrency?: string) => {
+  try {
+    const giftCard = await getGiftCardInfo(code)
+    
+    // Check if gift card is active
+    if (giftCard.is_disabled) {
+      return { valid: false, error: 'Gift card is inactive' }
+    }
+    
+    // Check if has balance
+    if (giftCard.balance <= 0) {
+      return { valid: false, error: 'Gift card has no remaining balance' }
+    }
+    
+    // Check currency compatibility (optional)
+    if (requiredCurrency && giftCard.currency_code !== requiredCurrency) {
+      return { 
+        valid: false, 
+        error: `Gift card currency (${giftCard.currency_code}) does not match cart currency (${requiredCurrency})` 
+      }
+    }
+    
+    return { valid: true, giftCard }
+  } catch (error) {
+    return { valid: false, error: 'Gift card not found' }
+  }
+}
+```
+
+## Cart Integration
+
+### Applying Gift Cards to Cart
+
+Add gift cards to customer carts:
+
+```ts title="Apply gift card to cart"
+// POST /store/carts/{cart_id}/gift-cards
+const applyGiftCardToCart = async (cartId: string, giftCardCode: string) => {
+  try {
+    const response = await fetch(`/store/carts/${cartId}/gift-cards`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        code: giftCardCode
+      })
+    })
+    
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.message || 'Failed to apply gift card')
+    }
+    
+    const { cart } = await response.json()
+    return cart
+  } catch (error) {
+    console.error('Error applying gift card:', error)
+    throw error
+  }
+}
+
+// Usage in checkout flow
+const handleApplyGiftCard = async (code: string) => {
+  try {
+    // Validate first
+    const validation = await validateGiftCard(code, cart.currency_code)
+    
+    if (!validation.valid) {
+      setError(validation.error)
+      return
+    }
+    
+    // Apply to cart
+    const updatedCart = await applyGiftCardToCart(cart.id, code)
+    setCart(updatedCart)
+    setGiftCardCode('')
+    setError('')
+  } catch (error) {
+    setError(error.message)
+  }
+}
+```
+
+### Removing Gift Cards from Cart
+
+Remove gift cards if customers change their mind:
+
+```ts title="Remove gift card from cart"
+// DELETE /store/carts/{cart_id}/gift-cards/{code}
+const removeGiftCardFromCart = async (cartId: string, giftCardCode: string) => {
+  try {
+    const response = await fetch(`/store/carts/${cartId}/gift-cards/${giftCardCode}`, {
+      method: 'DELETE'
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to remove gift card')
+    }
+    
+    const { cart } = await response.json()
+    return cart
+  } catch (error) {
+    console.error('Error removing gift card:', error)
+    throw error
+  }
+}
+```
+
+## Gift Card UI Components
+
+### Gift Card Input Component
+
+Create a reusable gift card input component:
+
+```tsx title="components/GiftCardInput.tsx"
+import { useState } from 'react'
+
+interface GiftCardInputProps {
+  onApply: (code: string) => Promise<void>
+  disabled?: boolean
+}
+
+export const GiftCardInput: React.FC<GiftCardInputProps> = ({ 
+  onApply, 
+  disabled = false 
+}) => {
+  const [code, setCode] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!code.trim()) {
+      setError('Please enter a gift card code')
+      return
+    }
+    
+    setIsLoading(true)
+    setError('')
+    
+    try {
+      await onApply(code.trim())
+      setCode('')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="gift-card-form">
+      <div className="input-group">
+        <input
+          type="text"
+          value={code}
+          onChange={(e) => setCode(e.target.value.toUpperCase())}
+          placeholder="Enter gift card code"
+          disabled={disabled || isLoading}
+          className="gift-card-input"
+        />
+        <button
+          type="submit"
+          disabled={disabled || isLoading || !code.trim()}
+          className="apply-button"
+        >
+          {isLoading ? 'Applying...' : 'Apply'}
+        </button>
+      </div>
+      {error && (
+        <div className="error-message">{error}</div>
+      )}
+    </form>
+  )
+}
+```
+
+### Applied Gift Cards Display
+
+Show applied gift cards in the cart summary:
+
+```tsx title="components/AppliedGiftCards.tsx"
+interface AppliedGiftCardsProps {
+  giftCards: Array<{
+    code: string
+    amount_applied: number
+    balance_remaining: number
+    currency_code: string
+  }>
+  onRemove: (code: string) => Promise<void>
+}
+
+export const AppliedGiftCards: React.FC<AppliedGiftCardsProps> = ({ 
+  giftCards, 
+  onRemove 
+}) => {
+  if (giftCards.length === 0) return null
+
+  const formatAmount = (amount: number, currency: string) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency.toUpperCase()
+    }).format(amount / 100)
+  }
+
+  return (
+    <div className="applied-gift-cards">
+      <h3>Applied Gift Cards</h3>
+      {giftCards.map((giftCard) => (
+        <div key={giftCard.code} className="gift-card-item">
+          <div className="gift-card-info">
+            <span className="code">{giftCard.code}</span>
+            <span className="amount">
+              -{formatAmount(giftCard.amount_applied, giftCard.currency_code)}
+            </span>
+          </div>
+          <button
+            onClick={() => onRemove(giftCard.code)}
+            className="remove-button"
+            title="Remove gift card"
+          >
+            ×
+          </button>
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+## Checkout Integration
+
+### Gift Card Payment Processing
+
+Integrate gift cards into your checkout flow:
+
+```tsx title="components/CheckoutPayment.tsx"
+import { useState, useEffect } from 'react'
+import { GiftCardInput } from './GiftCardInput'
+import { AppliedGiftCards } from './AppliedGiftCards'
+
+interface CheckoutPaymentProps {
+  cart: Cart
+  onCartUpdate: (cart: Cart) => void
+}
+
+export const CheckoutPayment: React.FC<CheckoutPaymentProps> = ({ 
+  cart, 
+  onCartUpdate 
+}) => {
+  const [appliedGiftCards, setAppliedGiftCards] = useState([])
+
+  useEffect(() => {
+    // Extract gift card information from cart
+    const giftCards = cart.gift_card_transactions || []
+    setAppliedGiftCards(giftCards)
+  }, [cart])
+
+  const handleApplyGiftCard = async (code: string) => {
+    const updatedCart = await applyGiftCardToCart(cart.id, code)
+    onCartUpdate(updatedCart)
+  }
+
+  const handleRemoveGiftCard = async (code: string) => {
+    const updatedCart = await removeGiftCardFromCart(cart.id, code)
+    onCartUpdate(updatedCart)
+  }
+
+  const remainingTotal = cart.total - appliedGiftCards.reduce(
+    (sum, gc) => sum + gc.amount_applied, 0
+  )
+
+  return (
+    <div className="checkout-payment">
+      <div className="payment-section">
+        <h2>Payment</h2>
+        
+        <div className="gift-cards-section">
+          <GiftCardInput onApply={handleApplyGiftCard} />
+          <AppliedGiftCards
+            giftCards={appliedGiftCards}
+            onRemove={handleRemoveGiftCard}
+          />
+        </div>
+
+        {remainingTotal > 0 ? (
+          <div className="additional-payment">
+            <p>Remaining balance: ${remainingTotal / 100}</p>
+            {/* Other payment methods */}
+          </div>
+        ) : (
+          <div className="fully-paid">
+            <p>Order fully paid with gift cards!</p>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+```
+
+## Gift Card Balance Check Page
+
+Create a standalone page for customers to check gift card balances:
+
+```tsx title="pages/gift-card-balance.tsx"
+import { useState } from 'react'
+
+export default function GiftCardBalancePage() {
+  const [code, setCode] = useState('')
+  const [giftCard, setGiftCard] = useState(null)
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleCheck = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!code.trim()) {
+      setError('Please enter a gift card code')
+      return
+    }
+
+    setIsLoading(true)
+    setError('')
+    setGiftCard(null)
+
+    try {
+      const giftCardInfo = await getGiftCardInfo(code.trim())
+      setGiftCard(giftCardInfo)
+    } catch (err) {
+      setError('Gift card not found or invalid')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <div className="gift-card-balance-page">
+      <h1>Check Gift Card Balance</h1>
+      
+      <form onSubmit={handleCheck}>
+        <div className="form-group">
+          <label htmlFor="gift-card-code">Gift Card Code</label>
+          <input
+            id="gift-card-code"
+            type="text"
+            value={code}
+            onChange={(e) => setCode(e.target.value.toUpperCase())}
+            placeholder="Enter your gift card code"
+            disabled={isLoading}
+          />
+        </div>
+        
+        <button type="submit" disabled={isLoading || !code.trim()}>
+          {isLoading ? 'Checking...' : 'Check Balance'}
+        </button>
+      </form>
+
+      {error && (
+        <div className="error-message">{error}</div>
+      )}
+
+      {giftCard && (
+        <div className="gift-card-result">
+          <h2>Gift Card Information</h2>
+          <div className="gift-card-details">
+            <p><strong>Code:</strong> {giftCard.code}</p>
+            <p><strong>Balance:</strong> {
+              new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: giftCard.currency_code.toUpperCase()
+              }).format(giftCard.balance / 100)
+            }</p>
+            <p><strong>Status:</strong> {
+              giftCard.is_disabled ? 'Inactive' : 'Active'
+            }</p>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+```
+
+## Error Handling
+
+### Common Error Scenarios
+
+Handle common gift card errors gracefully:
+
+```ts title="Gift card error handling"
+const handleGiftCardError = (error: any) => {
+  switch (error.code) {
+    case 'GIFT_CARD_NOT_FOUND':
+      return 'Gift card not found. Please check the code and try again.'
+    
+    case 'GIFT_CARD_DISABLED':
+      return 'This gift card is no longer active.'
+    
+    case 'GIFT_CARD_NO_BALANCE':
+      return 'This gift card has no remaining balance.'
+    
+    case 'GIFT_CARD_CURRENCY_MISMATCH':
+      return 'Gift card currency does not match your cart currency.'
+    
+    case 'GIFT_CARD_ALREADY_APPLIED':
+      return 'This gift card has already been applied to your cart.'
+    
+    default:
+      return error.message || 'An unexpected error occurred.'
+  }
+}
+```
+
+## Best Practices
+
+### User Experience
+
+- Provide clear feedback when applying/removing gift cards
+- Show remaining gift card balance after application
+- Allow easy removal of applied gift cards
+- Display total savings from gift cards
+
+### Validation
+
+- Validate gift card codes client-side for immediate feedback
+- Handle network errors gracefully
+- Provide clear error messages for different scenarios
+- Implement proper loading states
+
+### Security
+
+- Never expose sensitive gift card information
+- Validate gift card operations on the server side
+- Use HTTPS for all gift card-related API calls
+- Log gift card usage for audit purposes
+
+## Next Steps
+
+- Learn about [store credit storefront integration](undefined/resources/commerce-modules/loyalty/store-credit/storefront-guide)
+- Explore [gift card admin management](undefined/resources/commerce-modules/loyalty/gift-cards/admin-guide)
+- Review [loyalty workflows reference](undefined/resources/commerce-modules/loyalty/workflows)
+
+
+# Loyalty Plugin
+
+This plugin is open source as part of the Medusa v2.13.6+ release.
+
+In this section of the documentation, you will find resources to learn more about the Loyalty Plugin and how to use it in your application.
+
+Refer to the [Medusa Admin User Guide](undefined/user-guide/loyalty) to learn how to manage gift cards and store credit using the dashboard.
+
+The Loyalty Plugin provides gift card and store credit functionality for your Medusa application. It includes two main modules that work together to provide comprehensive loyalty and retention features for your ecommerce store.
+
+Learn more about why modules are isolated in [this documentation](undefined/docs/learn/fundamentals/modules/isolation).
+
+## Loyalty Features
+
+### Gift Cards
+
+- **Gift Card Products**: Create physical or digital gift cards as products that customers can purchase
+- **Gift Card Management**: Issue, redeem, and track gift cards with unique codes
+- **Cart Integration**: Apply gift cards as payment during checkout
+- **Admin Interface**: Complete admin UI for managing gift cards and their lifecycle
+
+### Store Credit
+
+- **Store Credit Accounts**: Create and manage customer store credit accounts
+- **Credit Transactions**: Credit and debit operations with full transaction history
+- **Balance Tracking**: Real-time balance calculation and reporting
+- **Cart Integration**: Apply store credits as payment during checkout
+
+***
+
+## How to Use the Loyalty Plugin
+
+The Loyalty Plugin is built using Medusa's modular architecture. You interact with it through [Workflows](undefined/docs/learn/fundamentals/workflows), which are special functions composed of a series of steps that guarantee data consistency and reliable roll-back mechanisms.
+
+### Install the Plugin
+
+First, install the loyalty plugin:
+
+```bash npm2yarn
+npm install @medusajs/loyalty-plugin
+```
+
+Then, add it to your `medusa-config.js`:
+
+```js title="medusa-config.js"
+module.exports = defineConfig({
+  // ... other configurations
+  plugins: [
+    {
+      resolve: `@medusajs/loyalty-plugin`,
+    },
+    // ... other plugins
+  ],
+})
+```
+
+### Example: Creating a Gift Card
+
+You can use the built-in workflows to manage gift cards:
+
+```ts title="src/workflows/create-custom-gift-card.ts" highlights={highlights}
+import { 
+  createWorkflow, 
+  WorkflowResponse,
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { createGiftCardsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+export const createCustomGiftCardWorkflow = createWorkflow(
+  "create-custom-gift-card",
+  () => {
+    const { giftCards } = createGiftCardsWorkflow()
+
+    return new WorkflowResponse({
+      giftCards,
+    })
+  }
+)
+```
+
+You can then execute the workflow in your custom API routes, scheduled jobs, or subscribers:
+
+### API Route
+
+```ts title="src/api/workflow/route.ts" highlights={[["11"], ["12"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { createCustomGiftCardWorkflow } from "../../workflows/create-custom-gift-card"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await createCustomGiftCardWorkflow(req.scope)
+    .run({
+      input: {
+        code: "GIFT2024",
+        amount: 5000, // $50.00 in cents
+        currency_code: "usd",
+      },
+    })
+
+  res.send(result)
+}
+```
+
+### Subscriber
+
+```ts title="src/subscribers/order-completed.ts" highlights={[["11"], ["12"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { createGiftCardsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+export default async function handleOrderCompleted({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  // Create a $10 gift card for orders over $100
+  const { result } = await createGiftCardsWorkflow(container)
+    .run({
+      input: {
+        amount: 1000, // $10.00 in cents
+        currency_code: "usd",
+      },
+    })
+
+  console.log("Gift card created:", result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.completed",
+}
+```
+
+Learn more about workflows in [this documentation](undefined/docs/learn/fundamentals/workflows).
+
+***
+
+## Built-in Loyalty Workflows
+
+The Loyalty Plugin provides built-in workflows for both gift cards and store credit management:
+
+### Gift Card Workflows
+
+- `createGiftCardsWorkflow` - Create new gift cards
+- `updateGiftCardsWorkflow` - Update existing gift cards
+- `deleteGiftCardWorkflow` - Delete gift cards
+- `redeemGiftCardWorkflow` - Redeem gift cards for payment
+- `claimGiftCardWorkflow` - Claim gift cards by code
+
+### Store Credit Workflows
+
+- `createStoreCreditAccountsWorkflow` - Create new store credit accounts
+- `creditStoreCreditAccountWorkflow` - Add credit to accounts
+- `debitAccountsWorkflow` - Debit from accounts
+- `claimStoreCreditAccountWorkflow` - Claim store credit by code
+
+### Cart Integration Workflows
+
+- `addGiftCardToCartWorkflow` - Apply gift cards to carts
+- `addStoreCreditToCartWorkflow` - Apply store credit to carts
+- `confirmCartCreditLinesWorkflow` - Confirm credit lines during checkout
+
+For detailed workflow references, see the [Loyalty Workflows Reference](undefined/resources/commerce-modules/loyalty/workflows).
+
+***
+
+## API Routes
+
+The Loyalty Plugin provides comprehensive API routes for both admin and storefront use:
+
+### Admin API Routes
+
+- `/admin/gift-cards` - Manage gift cards
+- `/admin/store-credit-accounts` - Manage store credit accounts
+- `/admin/store-credit-accounts/{id}/credit` - Credit operations
+- `/admin/store-credit-accounts/{id}/transactions` - Transaction history
+
+### Store API Routes
+
+- `/store/gift-cards/{code}` - Retrieve gift card by code
+- `/store/store-credit-accounts` - Customer store credit accounts
+- `/store/carts/{id}/gift-cards` - Apply gift cards to cart
+- `/store/carts/{id}/store-credits` - Apply store credits to cart
+
+***
+
+## What's Next?
+
+- Learn about [Gift Card Concepts](undefined/resources/commerce-modules/loyalty/gift-cards/concepts)
+- Learn about [Store Credit Concepts](undefined/resources/commerce-modules/loyalty/store-credit/concepts)
+- Explore [Loyalty Plugin Workflows](undefined/resources/commerce-modules/loyalty/workflows)
+- View the [Admin Widget Zones](undefined/resources/commerce-modules/loyalty/admin-widget-zones)
+
+
+# Store Credit Admin Guide
+
+In this document, you'll learn how to manage store credit accounts using admin APIs and workflows in the Loyalty Plugin.
+
+## Prerequisites
+
+Before using store credit functionality, ensure you have:
+
+- Installed and configured the Loyalty Plugin
+- Admin API access to your Medusa application
+- Understanding of [Medusa workflows](undefined/docs/learn/fundamentals/workflows)
+
+## Managing Store Credit Accounts
+
+### Creating Store Credit Accounts
+
+Use the built-in workflow to create store credit accounts:
+
+```ts title="src/workflows/create-store-credit-accounts.ts"
+import { createStoreCreditAccountsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+// Create an account for a specific customer
+const { result } = await createStoreCreditAccountsWorkflow(container).run({
+  input: {
+    customer_id: "cust_123456789",
+    currency_code: "usd",
+    metadata: {
+      created_by: "admin_user_123",
+      reason: "welcome_bonus"
+    }
+  }
+})
+
+// Create multiple accounts
+const { result } = await createStoreCreditAccountsWorkflow(container).run({
+  input: [
+    {
+      customer_id: "cust_123456789",
+      currency_code: "usd"
+    },
+    {
+      customer_id: "cust_987654321", 
+      currency_code: "eur"
+    }
+  ]
+})
+```
+
+### Using Admin API Routes
+
+Create store credit accounts through the Admin API:
+
+```http title="POST /admin/store-credit-accounts"
+Content-Type: application/json
+
+{
+  "customer_id": "cust_123456789",
+  "currency_code": "usd",
+  "metadata": {
+    "program": "loyalty_rewards",
+    "tier": "gold"
+  }
+}
+```
+
+### Retrieving Store Credit Accounts
+
+Get all store credit accounts:
+
+```http title="GET /admin/store-credit-accounts"
+GET /admin/store-credit-accounts?limit=20&offset=0
+
+# Filter by customer
+GET /admin/store-credit-accounts?customer_id=cust_123456789
+
+# Filter by currency
+GET /admin/store-credit-accounts?currency_code=usd
+```
+
+Get a specific account:
+
+```http title="GET /admin/store-credit-accounts/{id}"
+GET /admin/store-credit-accounts/sca_123456789
+```
+
+## Credit Operations
+
+### Adding Credit to Accounts
+
+Use the credit workflow to add funds to store credit accounts:
+
+```ts title="Credit store credit account"
+import { creditStoreCreditAccountWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+const { result } = await creditStoreCreditAccountWorkflow(container).run({
+  input: {
+    account_id: "sca_123456789",
+    amount: 5000, // $50.00 in cents
+    reference: "refund",
+    reference_id: "return_456",
+    note: "Refund for returned item"
+  }
+})
+```
+
+Multiple accounts can be credited at once:
+
+```ts title="Credit multiple accounts"
+import { creditAccountsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+const { result } = await creditAccountsWorkflow(container).run({
+  input: [
+    {
+      account_id: "sca_123456789",
+      amount: 2500, // $25.00
+      reference: "promotion",
+      reference_id: "spring_campaign",
+      note: "Spring promotion bonus"
+    },
+    {
+      account_id: "sca_987654321",
+      amount: 1000, // $10.00
+      reference: "referral", 
+      reference_id: "ref_bonus_001",
+      note: "Referral bonus"
+    }
+  ]
+})
+```
+
+### Using Admin API for Credits
+
+Add credit through the API:
+
+```http title="POST /admin/store-credit-accounts/{id}/credit"
+Content-Type: application/json
+
+{
+  "amount": 5000,
+  "reference": "customer_service",
+  "reference_id": "ticket_789",
+  "note": "Compensation for shipping delay"
+}
+```
+
+### Debiting Accounts
+
+Debit funds from store credit accounts:
+
+```ts title="Debit store credit accounts"
+import { debitAccountsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+const { result } = await debitAccountsWorkflow(container).run({
+  input: [
+    {
+      account_id: "sca_123456789",
+      amount: 1500, // $15.00
+      reference: "order",
+      reference_id: "order_456", 
+      note: "Payment for order #456"
+    }
+  ]
+})
+```
+
+Debit operations will fail if the account doesn't have sufficient balance. The workflow automatically validates available balance before processing.
+
+## Transaction Management
+
+### Viewing Transaction History
+
+Get all transactions for an account:
+
+```http title="GET /admin/store-credit-accounts/{id}/transactions"
+GET /admin/store-credit-accounts/sca_123456789/transactions?limit=50&offset=0
+
+# Filter by transaction type
+GET /admin/store-credit-accounts/sca_123456789/transactions?type=credit
+
+# Filter by reference
+GET /admin/store-credit-accounts/sca_123456789/transactions?reference=refund
+```
+
+### Transaction Details
+
+Each transaction includes:
+
+```json title="Transaction object"
+{
+  "id": "scat_123456789",
+  "account_id": "sca_123456789",
+  "type": "credit",
+  "amount": 5000,
+  "reference": "refund",
+  "reference_id": "return_456",
+  "note": "Refund for returned item",
+  "created_at": "2024-01-15T10:30:00Z",
+  "metadata": {}
+}
+```
+
+## Balance Management
+
+### Checking Account Balances
+
+Account balances are automatically calculated from transaction history:
+
+```ts title="Get account balance"
+// Balance is included in account retrieval
+const account = await fetch('/admin/store-credit-accounts/sca_123456789')
+  .then(res => res.json())
+
+console.log(`Available balance: ${account.balance}`)
+console.log(`Total credits: ${account.credits}`)  
+console.log(`Total debits: ${account.debits}`)
+```
+
+### Balance Validation
+
+Before debiting, validate sufficient balance:
+
+```ts title="Balance validation example"
+const validateBalance = async (accountId: string, debitAmount: number) => {
+  const account = await fetch(`/admin/store-credit-accounts/${accountId}`)
+    .then(res => res.json())
+  
+  if (account.balance < debitAmount) {
+    throw new Error(`Insufficient balance. Available: ${account.balance}, Required: ${debitAmount}`)
+  }
+  
+  return true
+}
+
+// Use before debit operations
+await validateBalance("sca_123456789", 2500)
+```
+
+## Integration with Orders and Returns
+
+### Order Integration
+
+Store credit can be applied during order processing:
+
+```ts title="Apply store credit to orders"
+// This typically happens automatically during checkout
+// when customers select store credit as payment
+
+// In order processing workflow
+export const processOrderWithStoreCreditStep = createStep(
+  "process-order-with-store-credit",
+  async ({ order_id, store_credit_amount }, { container }) => {
+    // Debit store credit account
+    await debitAccountsWorkflow(container).run({
+      input: [{
+        account_id: order.customer.store_credit_account_id,
+        amount: store_credit_amount,
+        reference: "order",
+        reference_id: order_id,
+        note: `Payment for order ${order_id}`
+      }]
+    })
+    
+    return new StepResponse({ success: true })
+  }
+)
+```
+
+### Return and Refund Integration
+
+Credit accounts when processing returns:
+
+```ts title="Refund to store credit"
+// In return processing subscriber
+export default async function handleReturnCompleted({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  const returnService = container.resolve("returnService")
+  const returnOrder = await returnService.retrieve(data.id, {
+    relations: ["order", "order.customer"]
+  })
+
+  // Credit customer's store credit account
+  await creditStoreCreditAccountWorkflow(container).run({
+    input: {
+      account_id: returnOrder.order.customer.store_credit_account_id,
+      amount: returnOrder.refund_amount,
+      reference: "return",
+      reference_id: data.id,
+      note: `Refund for return ${data.id}`
+    }
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: "return.completed",
+}
+```
+
+## Bulk Operations
+
+### Bulk Account Creation
+
+Create multiple accounts for customer segments:
+
+```ts title="Bulk account creation"
+import { createStoreCreditAccountsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+// Get VIP customers
+const vipCustomers = await fetch('/admin/customers?groups[]=vip')
+  .then(res => res.json())
+
+// Create store credit accounts for all VIP customers
+const accountData = vipCustomers.customers.map(customer => ({
+  customer_id: customer.id,
+  currency_code: customer.default_currency || "usd",
+  metadata: {
+    tier: "vip",
+    created_by: "bulk_operation",
+    campaign: "vip_welcome"
+  }
+}))
+
+const { result } = await createStoreCreditAccountsWorkflow(container).run({
+  input: accountData
+})
+```
+
+### Bulk Credit Distribution
+
+Distribute credits to multiple accounts:
+
+```ts title="Bulk credit distribution"
+import { creditAccountsWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+// Loyalty program rewards
+const loyaltyMembers = await fetch('/admin/store-credit-accounts?metadata[tier]=gold')
+  .then(res => res.json())
+
+const creditData = loyaltyMembers.accounts.map(account => ({
+  account_id: account.id,
+  amount: 2000, // $20.00 reward
+  reference: "loyalty_reward",
+  reference_id: "monthly_bonus_202401",
+  note: "Monthly loyalty bonus - Gold tier"
+}))
+
+const { result } = await creditAccountsWorkflow(container).run({
+  input: creditData
+})
+```
+
+## Reporting and Analytics
+
+### Account Balance Reports
+
+Generate reports on store credit liability:
+
+```ts title="Store credit reporting"
+// Get all accounts with balances
+const accounts = await fetch('/admin/store-credit-accounts')
+  .then(res => res.json())
+
+// Calculate total liability and statistics
+const report = {
+  total_accounts: accounts.store_credit_accounts.length,
+  total_liability: accounts.store_credit_accounts.reduce((sum, acc) => 
+    sum + acc.balance, 0
+  ),
+  active_accounts: accounts.store_credit_accounts.filter(acc => 
+    acc.balance > 0
+  ).length,
+  average_balance: accounts.store_credit_accounts.reduce((sum, acc) => 
+    sum + acc.balance, 0
+  ) / accounts.store_credit_accounts.length
+}
+
+console.log("Store Credit Report:", report)
+```
+
+### Transaction Analysis
+
+Analyze store credit usage patterns:
+
+```ts title="Transaction analysis"
+// Get all transactions for analysis
+const allTransactions = await Promise.all(
+  accounts.store_credit_accounts.map(account =>
+    fetch(`/admin/store-credit-accounts/${account.id}/transactions`)
+      .then(res => res.json())
+  )
+)
+
+const flatTransactions = allTransactions.flatMap(t => t.transactions)
+
+const analysis = {
+  total_transactions: flatTransactions.length,
+  credit_transactions: flatTransactions.filter(t => t.type === 'credit').length,
+  debit_transactions: flatTransactions.filter(t => t.type === 'debit').length,
+  top_references: Object.entries(
+    flatTransactions.reduce((acc, t) => {
+      acc[t.reference] = (acc[t.reference] || 0) + 1
+      return acc
+    }, {})
+  ).sort(([,a], [,b]) => b - a).slice(0, 5)
+}
+```
+
+## Best Practices
+
+### Account Management
+
+- Create accounts automatically when customers first receive credit
+- Use meaningful metadata to track account purposes and sources
+- Implement account status management for suspended or closed accounts
+- Regular reconciliation of calculated balances
+
+### Transaction Recording
+
+- Always include reference and reference\_id for audit trails
+- Use descriptive notes for transaction clarity
+- Implement proper error handling for failed debit operations
+- Log all administrative actions for compliance
+
+### Security and Validation
+
+- Validate customer ownership before account operations
+- Implement proper authorization for credit/debit operations
+- Monitor for unusual account activity patterns
+- Set reasonable limits on single transaction amounts
+
+### Performance Considerations
+
+- Index frequently queried fields (customer\_id, currency\_code)
+- Use pagination for large transaction histories
+- Consider caching frequently accessed account balances
+- Optimize bulk operations for large customer segments
+
+## Next Steps
+
+- Learn about [store credit storefront integration](undefined/resources/commerce-modules/loyalty/store-credit/storefront-guide)
+- Explore [store credit workflow references](undefined/resources/commerce-modules/loyalty/workflows)
+- Review [gift card functionality](undefined/resources/commerce-modules/loyalty/gift-cards/concepts)
+
+
+# Store Credit Concepts
+
+In this document, you'll learn about store credit accounts and how they work in the Loyalty Plugin.
+
+## Overview
+
+Store credit provides a way to give customers account-based credit that can be used for future purchases. Unlike gift cards, store credit is tied to specific customer accounts and provides a running balance that can be credited and debited over time.
+
+## Key Concepts
+
+### Store Credit Account
+
+A store credit account represents a customer's credit balance. Each account has:
+
+- **Customer Association**: Linked to a specific customer account
+- **Currency**: The currency for the account balance
+- **Balance**: Current available credit amount (calculated from transaction history)
+- **Status**: Active, inactive, or suspended
+- **Metadata**: Custom fields for additional tracking
+
+### Account Transactions
+
+All store credit activity is tracked through transactions that record:
+
+- **Type**: Credit (adding funds) or Debit (spending funds)
+- **Amount**: The transaction amount in the smallest currency unit
+- **Reference**: What triggered the transaction (order, refund, promotion, etc.)
+- **Reference ID**: The ID of the related entity (order ID, return ID, etc.)
+- **Note**: Optional description of the transaction
+- **Timestamp**: When the transaction occurred
+
+### Balance Calculation
+
+Account balances are calculated in real-time by:
+
+1. Summing all credit transactions
+2. Subtracting all debit transactions
+3. The result is the current available balance
+
+This approach provides:
+
+- **Accurate Balances**: Always up-to-date with the latest transactions
+- **Transaction History**: Complete audit trail of all account activity
+- **Reliability**: Prevents balance inconsistencies
+
+## Store Credit Lifecycle
+
+### 1. Account Creation
+
+Store credit accounts can be created:
+
+- **Automatically**: When a customer first receives store credit
+- **Manually**: By admins through the dashboard
+- **Programmatically**: Through API calls or workflows
+
+### 2. Crediting Accounts
+
+Store credit can be added through:
+
+- **Refunds**: When orders are returned or cancelled
+- **Promotions**: Marketing campaigns or loyalty rewards
+- **Customer Service**: Compensation for service issues
+- **Admin Actions**: Manual credits added by store administrators
+
+### 3. Debiting Accounts
+
+Store credit is spent when:
+
+- **Checkout**: Applied as payment during order completion
+- **Adjustments**: Manual debits for corrections or fees
+- **Expiration**: If store credit expires (implementation dependent)
+
+### 4. Account Management
+
+Ongoing management includes:
+
+- **Balance Monitoring**: Tracking available credit
+- **Transaction History**: Reviewing all account activity
+- **Status Changes**: Activating, deactivating, or suspending accounts
+
+## Integration with Orders
+
+Store credit integrates with the order process:
+
+### During Checkout
+
+1. **Application**: Customers can apply available store credit to their cart
+2. **Validation**: System verifies sufficient balance is available
+3. **Reservation**: Credit is temporarily reserved during payment processing
+4. **Confirmation**: Credit is debited when the order is confirmed
+
+### After Order Changes
+
+- **Refunds**: Cancelled or returned orders can credit the account
+- **Adjustments**: Order modifications may trigger credit/debit transactions
+- **Partial Usage**: Unused store credit remains available for future orders
+
+## Transaction Types and References
+
+### Credit Transactions
+
+- **Refund**: `reference: "refund", reference_id: "return_123"`
+- **Promotion**: `reference: "promotion", reference_id: "campaign_abc"`
+- **Adjustment**: `reference: "adjustment", reference_id: "admin_correction"`
+
+### Debit Transactions
+
+- **Order Payment**: `reference: "order", reference_id: "order_456"`
+- **Fee**: `reference: "fee", reference_id: "processing_fee"`
+- **Correction**: `reference: "correction", reference_id: "error_fix"`
+
+## Use Cases
+
+### Customer Retention
+
+- Provide store credit instead of cash refunds
+- Reward loyal customers with account credits
+- Offer credits for referrals or reviews
+
+### Promotional Campaigns
+
+- Issue store credit for marketing campaigns
+- Provide credits for first-time customers
+- Create loyalty program rewards
+
+### Customer Service
+
+- Compensate customers for service issues
+- Provide credits for shipping delays or damaged products
+- Resolve disputes with account credits
+
+### Business Operations
+
+- Manage returns and refunds efficiently
+- Reduce cash refund processing costs
+- Increase customer lifetime value through retained funds
+
+## Administrative Features
+
+### Account Management
+
+- **Create Accounts**: Set up new store credit accounts
+- **View Balances**: Check current credit availability
+- **Transaction History**: Review all account activity
+- **Account Status**: Activate, deactivate, or suspend accounts
+
+### Bulk Operations
+
+- **Mass Credits**: Add credit to multiple accounts
+- **Campaign Distribution**: Distribute credits for promotional campaigns
+- **Import/Export**: Manage accounts through data imports
+
+### Reporting and Analytics
+
+- **Balance Reports**: Track total store credit liability
+- **Usage Patterns**: Analyze how customers use store credit
+- **Transaction Analysis**: Monitor credit and debit activity
+
+## Best Practices
+
+### Security and Fraud Prevention
+
+- **Access Controls**: Limit who can credit/debit accounts
+- **Transaction Limits**: Set maximum transaction amounts
+- **Audit Trails**: Maintain complete transaction histories
+- **Monitoring**: Watch for unusual account activity
+
+### Customer Experience
+
+- **Balance Visibility**: Show customers their current balance
+- **Transaction History**: Let customers review their account activity
+- **Clear Communication**: Explain how store credit works
+- **Easy Application**: Make it simple to use credit during checkout
+
+### Business Management
+
+- **Regular Reconciliation**: Verify transaction accuracy
+- **Liability Tracking**: Monitor total outstanding credit
+- **Expiration Policies**: Consider credit expiration rules
+- **Integration Testing**: Ensure proper order integration
+
+## Next Steps
+
+- Learn how to [manage store credit in the admin](undefined/resources/commerce-modules/loyalty/store-credit/admin-guide)
+- Explore [store credit integration in your storefront](undefined/resources/commerce-modules/loyalty/store-credit/storefront-guide)
+- Review the [store credit workflows reference](undefined/resources/commerce-modules/loyalty/workflows)
+
+
+# Store Credit Storefront Guide
+
+In this document, you'll learn how to integrate store credit functionality into your storefront using the Loyalty Plugin.
+
+## Prerequisites
+
+Before integrating store credit into your storefront, ensure you have:
+
+- Installed and configured the Loyalty Plugin
+- Access to Store API routes
+- A Medusa storefront application with customer authentication
+- Understanding of customer session management
+
+## Store Credit Account Management
+
+### Retrieving Customer Store Credit
+
+Get the authenticated customer's store credit accounts:
+
+```ts title="Get customer store credit"
+// GET /store/store-credit-accounts
+const getCustomerStoreCredit = async (customerId: string) => {
+  try {
+    const response = await fetch('/store/store-credit-accounts', {
+      headers: {
+        'Authorization': `Bearer ${customerToken}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch store credit accounts')
+    }
+    
+    const { store_credit_accounts } = await response.json()
+    
+    return store_credit_accounts.map(account => ({
+      id: account.id,
+      balance: account.balance,
+      currency_code: account.currency_code,
+      credits: account.credits,
+      debits: account.debits
+    }))
+  } catch (error) {
+    console.error('Error fetching store credit:', error)
+    return []
+  }
+}
+```
+
+### Store Credit Account Details
+
+Get detailed information about a specific account:
+
+```ts title="Get account details"
+// GET /store/store-credit-accounts/{id}
+const getStoreCreditAccountDetails = async (accountId: string) => {
+  try {
+    const response = await fetch(`/store/store-credit-accounts/${accountId}`, {
+      headers: {
+        'Authorization': `Bearer ${customerToken}`
+      }
+    })
+    
+    if (!response.ok) {
+      throw new Error('Account not found')
+    }
+    
+    const { store_credit_account } = await response.json()
+    return store_credit_account
+  } catch (error) {
+    console.error('Error fetching account details:', error)
+    throw error
+  }
+}
+```
+
+## Cart Integration
+
+### Applying Store Credit to Cart
+
+Add store credit as payment to customer carts:
+
+```ts title="Apply store credit to cart"
+// POST /store/carts/{cart_id}/store-credits
+const applyStoreCreditToCart = async (cartId: string, accountId: string, amount?: number) => {
+  try {
+    const body: any = { account_id: accountId }
+    
+    // If amount specified, use partial credit
+    if (amount) {
+      body.amount = amount
+    }
+    
+    const response = await fetch(`/store/carts/${cartId}/store-credits`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${customerToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    })
+    
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.message || 'Failed to apply store credit')
+    }
+    
+    const { cart } = await response.json()
+    return cart
+  } catch (error) {
+    console.error('Error applying store credit:', error)
+    throw error
+  }
+}
+```
+
+### Store Credit Validation
+
+Validate store credit before applying:
+
+```ts title="Store credit validation"
+const validateStoreCredit = (account: any, cartTotal: number, requestedAmount?: number) => {
+  // Check if account has balance
+  if (account.balance <= 0) {
+    return { valid: false, error: 'No store credit balance available' }
+  }
+  
+  // Check currency compatibility
+  if (account.currency_code !== cart.currency_code) {
+    return { 
+      valid: false, 
+      error: `Store credit currency (${account.currency_code}) does not match cart currency (${cart.currency_code})` 
+    }
+  }
+  
+  // Validate requested amount
+  if (requestedAmount) {
+    if (requestedAmount > account.balance) {
+      return { 
+        valid: false, 
+        error: `Requested amount exceeds available balance of $${account.balance / 100}` 
+      }
+    }
+    
+    if (requestedAmount > cartTotal) {
+      return { 
+        valid: false, 
+        error: 'Requested amount exceeds cart total' 
+      }
+    }
+  }
+  
+  return { valid: true }
+}
+```
+
+## Store Credit UI Components
+
+### Store Credit Balance Display
+
+Show customer's available store credit:
+
+```tsx title="components/StoreCreditBalance.tsx"
+import { useState, useEffect } from 'react'
+
+interface StoreCreditBalanceProps {
+  customerId: string
+  onAccountSelect?: (account: any) => void
+}
+
+export const StoreCreditBalance: React.FC<StoreCreditBalanceProps> = ({ 
+  customerId, 
+  onAccountSelect 
+}) => {
+  const [accounts, setAccounts] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        const storeCreditAccounts = await getCustomerStoreCredit(customerId)
+        setAccounts(storeCreditAccounts)
+      } catch (error) {
+        console.error('Failed to load store credit:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchAccounts()
+  }, [customerId])
+
+  const formatAmount = (amount: number, currency: string) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency.toUpperCase()
+    }).format(amount / 100)
+  }
+
+  if (isLoading) {
+    return <div>Loading store credit...</div>
+  }
+
+  if (accounts.length === 0) {
+    return <div>No store credit available</div>
+  }
+
+  return (
+    <div className="store-credit-balance">
+      <h3>Available Store Credit</h3>
+      {accounts.map((account) => (
+        <div key={account.id} className="store-credit-account">
+          <div className="account-info">
+            <span className="balance">
+              {formatAmount(account.balance, account.currency_code)}
+            </span>
+            <span className="currency">{account.currency_code.toUpperCase()}</span>
+          </div>
+          {onAccountSelect && account.balance > 0 && (
+            <button
+              onClick={() => onAccountSelect(account)}
+              className="use-credit-button"
+            >
+              Use Credit
+            </button>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+### Store Credit Application Component
+
+Allow customers to apply store credit with amount control:
+
+```tsx title="components/StoreCreditApplication.tsx"
+import { useState } from 'react'
+
+interface StoreCreditApplicationProps {
+  account: any
+  cartTotal: number
+  onApply: (accountId: string, amount: number) => Promise<void>
+  onCancel: () => void
+}
+
+export const StoreCreditApplication: React.FC<StoreCreditApplicationProps> = ({
+  account,
+  cartTotal,
+  onApply,
+  onCancel
+}) => {
+  const [amount, setAmount] = useState(Math.min(account.balance, cartTotal))
+  const [useFullBalance, setUseFullBalance] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const maxAmount = Math.min(account.balance, cartTotal)
+
+  const handleApply = async () => {
+    setIsLoading(true)
+    try {
+      const applyAmount = useFullBalance ? maxAmount : amount
+      await onApply(account.id, applyAmount)
+    } catch (error) {
+      console.error('Failed to apply store credit:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const formatAmount = (value: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: account.currency_code.toUpperCase()
+    }).format(value / 100)
+  }
+
+  return (
+    <div className="store-credit-application">
+      <h4>Apply Store Credit</h4>
+      
+      <div className="account-summary">
+        <p>Available Balance: {formatAmount(account.balance)}</p>
+        <p>Cart Total: {formatAmount(cartTotal)}</p>
+        <p>Maximum Applicable: {formatAmount(maxAmount)}</p>
+      </div>
+
+      <div className="amount-selection">
+        <label>
+          <input
+            type="radio"
+            checked={useFullBalance}
+            onChange={() => setUseFullBalance(true)}
+          />
+          Use maximum amount ({formatAmount(maxAmount)})
+        </label>
+        
+        <label>
+          <input
+            type="radio"
+            checked={!useFullBalance}
+            onChange={() => setUseFullBalance(false)}
+          />
+          Use custom amount
+        </label>
+        
+        {!useFullBalance && (
+          <div className="custom-amount">
+            <input
+              type="number"
+              min={1}
+              max={maxAmount}
+              value={amount}
+              onChange={(e) => setAmount(parseInt(e.target.value) || 0)}
+              step={1}
+            />
+            <span>cents</span>
+          </div>
+        )}
+      </div>
+
+      <div className="actions">
+        <button
+          onClick={handleApply}
+          disabled={isLoading || (!useFullBalance && (amount < 1 || amount > maxAmount))}
+        >
+          {isLoading ? 'Applying...' : `Apply ${formatAmount(useFullBalance ? maxAmount : amount)}`}
+        </button>
+        <button onClick={onCancel} disabled={isLoading}>
+          Cancel
+        </button>
+      </div>
+    </div>
+  )
+}
+```
+
+### Applied Store Credit Display
+
+Show applied store credits in cart summary:
+
+```tsx title="components/AppliedStoreCredits.tsx"
+interface AppliedStoreCreditProps {
+  storeCredits: Array<{
+    account_id: string
+    amount_applied: number
+    balance_remaining: number
+    currency_code: string
+  }>
+  onRemove: (accountId: string) => Promise<void>
+}
+
+export const AppliedStoreCredits: React.FC<AppliedStoreCreditProps> = ({ 
+  storeCredits, 
+  onRemove 
+}) => {
+  if (storeCredits.length === 0) return null
+
+  const formatAmount = (amount: number, currency: string) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency.toUpperCase()
+    }).format(amount / 100)
+  }
+
+  return (
+    <div className="applied-store-credits">
+      <h3>Applied Store Credit</h3>
+      {storeCredits.map((credit, index) => (
+        <div key={`${credit.account_id}-${index}`} className="store-credit-item">
+          <div className="credit-info">
+            <span className="amount">
+              -{formatAmount(credit.amount_applied, credit.currency_code)}
+            </span>
+            <span className="remaining">
+              (${formatAmount(credit.balance_remaining, credit.currency_code)} remaining)
+            </span>
+          </div>
+          <button
+            onClick={() => onRemove(credit.account_id)}
+            className="remove-button"
+            title="Remove store credit"
+          >
+            ×
+          </button>
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+## Account Activity and History
+
+### Transaction History Component
+
+Display store credit transaction history:
+
+```tsx title="components/StoreCreditHistory.tsx"
+import { useState, useEffect } from 'react'
+
+interface StoreCreditHistoryProps {
+  accountId: string
+}
+
+export const StoreCreditHistory: React.FC<StoreCreditHistoryProps> = ({ accountId }) => {
+  const [transactions, setTransactions] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        const response = await fetch(`/store/store-credit-accounts/${accountId}/transactions`, {
+          headers: {
+            'Authorization': `Bearer ${customerToken}`
+          }
+        })
+        
+        const { transactions } = await response.json()
+        setTransactions(transactions)
+      } catch (error) {
+        console.error('Failed to load transaction history:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchTransactions()
+  }, [accountId])
+
+  const formatAmount = (amount: number, type: string, currency: string) => {
+    const formatted = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency.toUpperCase()
+    }).format(amount / 100)
+    
+    return type === 'credit' ? `+${formatted}` : `-${formatted}`
+  }
+
+  const formatDate = (dateString: string) => {
+    return new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(new Date(dateString))
+  }
+
+  if (isLoading) {
+    return <div>Loading transaction history...</div>
+  }
+
+  return (
+    <div className="store-credit-history">
+      <h3>Transaction History</h3>
+      {transactions.length === 0 ? (
+        <p>No transactions found</p>
+      ) : (
+        <div className="transactions">
+          {transactions.map((transaction) => (
+            <div key={transaction.id} className={`transaction ${transaction.type}`}>
+              <div className="transaction-details">
+                <div className="amount">
+                  {formatAmount(transaction.amount, transaction.type, transaction.currency_code)}
+                </div>
+                <div className="info">
+                  <div className="reference">{transaction.reference}</div>
+                  {transaction.note && (
+                    <div className="note">{transaction.note}</div>
+                  )}
+                  <div className="date">{formatDate(transaction.created_at)}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+```
+
+## Claiming Store Credit
+
+### Store Credit Claim Component
+
+Allow customers to claim store credit using codes or links:
+
+```tsx title="components/StoreCreditClaim.tsx"
+import { useState } from 'react'
+
+export const StoreCreditClaim: React.FC = () => {
+  const [claimCode, setClaimCode] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [result, setResult] = useState<{ success: boolean; message: string } | null>(null)
+
+  const handleClaim = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!claimCode.trim()) {
+      setResult({ success: false, message: 'Please enter a claim code' })
+      return
+    }
+
+    setIsLoading(true)
+    setResult(null)
+
+    try {
+      const response = await fetch('/store/store-credit-accounts/claim', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${customerToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          code: claimCode.trim()
+        })
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.message || 'Failed to claim store credit')
+      }
+
+      const { store_credit_account } = await response.json()
+      setResult({
+        success: true,
+        message: `Successfully claimed $${store_credit_account.balance / 100} in store credit!`
+      })
+      setClaimCode('')
+    } catch (error) {
+      setResult({
+        success: false,
+        message: error.message
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <div className="store-credit-claim">
+      <h3>Claim Store Credit</h3>
+      
+      <form onSubmit={handleClaim}>
+        <div className="form-group">
+          <label htmlFor="claim-code">Claim Code</label>
+          <input
+            id="claim-code"
+            type="text"
+            value={claimCode}
+            onChange={(e) => setClaimCode(e.target.value)}
+            placeholder="Enter your claim code"
+            disabled={isLoading}
+          />
+        </div>
+        
+        <button type="submit" disabled={isLoading || !claimCode.trim()}>
+          {isLoading ? 'Claiming...' : 'Claim Store Credit'}
+        </button>
+      </form>
+
+      {result && (
+        <div className={`result ${result.success ? 'success' : 'error'}`}>
+          {result.message}
+        </div>
+      )}
+    </div>
+  )
+}
+```
+
+## Checkout Integration
+
+### Complete Checkout with Store Credit
+
+Integrate store credit into the checkout flow:
+
+```tsx title="components/CheckoutStoreCreditSection.tsx"
+import { useState } from 'react'
+import { StoreCreditBalance } from './StoreCreditBalance'
+import { StoreCreditApplication } from './StoreCreditApplication'
+import { AppliedStoreCredits } from './AppliedStoreCredits'
+
+interface CheckoutStoreCreditSectionProps {
+  cart: any
+  customerId: string
+  onCartUpdate: (cart: any) => void
+}
+
+export const CheckoutStoreCreditSection: React.FC<CheckoutStoreCreditSectionProps> = ({
+  cart,
+  customerId,
+  onCartUpdate
+}) => {
+  const [selectedAccount, setSelectedAccount] = useState(null)
+  const [appliedCredits, setAppliedCredits] = useState(cart.store_credit_transactions || [])
+
+  const handleApplyStoreCredit = async (accountId: string, amount: number) => {
+    try {
+      const updatedCart = await applyStoreCreditToCart(cart.id, accountId, amount)
+      onCartUpdate(updatedCart)
+      setSelectedAccount(null)
+    } catch (error) {
+      console.error('Failed to apply store credit:', error)
+    }
+  }
+
+  const handleRemoveStoreCredit = async (accountId: string) => {
+    try {
+      const response = await fetch(`/store/carts/${cart.id}/store-credits/${accountId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${customerToken}`
+        }
+      })
+      
+      const { cart: updatedCart } = await response.json()
+      onCartUpdate(updatedCart)
+    } catch (error) {
+      console.error('Failed to remove store credit:', error)
+    }
+  }
+
+  const totalStoreCreditApplied = appliedCredits.reduce(
+    (sum, credit) => sum + credit.amount_applied, 
+    0
+  )
+
+  const remainingTotal = cart.total - totalStoreCreditApplied
+
+  return (
+    <div className="checkout-store-credit">
+      <h3>Store Credit</h3>
+      
+      <AppliedStoreCredits
+        storeCredits={appliedCredits}
+        onRemove={handleRemoveStoreCredit}
+      />
+
+      {!selectedAccount && remainingTotal > 0 && (
+        <StoreCreditBalance
+          customerId={customerId}
+          onAccountSelect={setSelectedAccount}
+        />
+      )}
+
+      {selectedAccount && (
+        <StoreCreditApplication
+          account={selectedAccount}
+          cartTotal={remainingTotal}
+          onApply={handleApplyStoreCredit}
+          onCancel={() => setSelectedAccount(null)}
+        />
+      )}
+
+      {remainingTotal <= 0 && (
+        <div className="fully-covered">
+          <p>Order fully covered by store credit!</p>
+        </div>
+      )}
+    </div>
+  )
+}
+```
+
+## Best Practices
+
+### User Experience
+
+- Clearly display available store credit balances
+- Allow partial application of store credit
+- Show remaining balance after application
+- Provide transaction history for transparency
+
+### Security
+
+- Always authenticate users before showing store credit
+- Validate all operations server-side
+- Use secure token-based authentication
+- Log all store credit operations
+
+### Error Handling
+
+- Handle network errors gracefully
+- Provide clear error messages
+- Implement retry mechanisms for failed operations
+- Validate user inputs client-side
+
+### Performance
+
+- Cache store credit balances appropriately
+- Implement loading states for async operations
+- Use pagination for transaction history
+- Optimize API calls to reduce latency
+
+## Next Steps
+
+- Learn about [gift card storefront integration](undefined/resources/commerce-modules/loyalty/gift-cards/storefront-guide)
+- Explore [store credit admin management](undefined/resources/commerce-modules/loyalty/store-credit/admin-guide)
+- Review [loyalty workflows reference](undefined/resources/commerce-modules/loyalty/workflows)
+
+
 # Order Claim
 
 In this guide, you'll learn about order claims.
@@ -41036,8 +43582,8 @@ import { exportProductsWorkflow } from "@medusajs/medusa/core-flows"
 const { result } = await exportProductsWorkflow(container)
   .run({
     input: {
-      select: ["id", "title", "handle"]
-    }
+      select: ["id", "title", "handle"],
+    },
   })
 
 // Export products from a specific sales channel
@@ -41046,9 +43592,9 @@ const { result } = await exportProductsWorkflow(container)
     input: {
       select: ["id", "title", "handle"],
       filter: {
-        sales_channel_id: "sc_123"
-      }
-    }
+        sales_channel_id: "sc_123",
+      },
+    },
   })
 ```
 

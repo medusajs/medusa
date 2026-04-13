@@ -7009,5 +7009,13 @@ export const generatedEditDates = {
   "references/core_flows/Order/functions/core_flows.Order.getLastPaymentStatus/page.mdx": "2026-03-26T12:40:37.927Z",
   "references/core_flows/types/core_flows.RemovePriceListPricesStepInput/page.mdx": "2026-04-08T09:17:46.392Z",
   "references/core_flows/types/core_flows.RemovePriceListPricesWorkflowInput/page.mdx": "2026-04-08T09:17:46.410Z",
-  "references/js_sdk/admin/Translation/methods/js_sdk.admin.Translation.batchSettings/page.mdx": "2026-04-08T09:18:03.127Z"
+  "references/js_sdk/admin/Translation/methods/js_sdk.admin.Translation.batchSettings/page.mdx": "2026-04-08T09:18:03.127Z",
+  "app/commerce-modules/loyalty/gift-cards/admin-guide/page.mdx": "2026-04-13T08:03:57.354Z",
+  "app/commerce-modules/loyalty/gift-cards/concepts/page.mdx": "2026-04-13T08:02:45.143Z",
+  "app/commerce-modules/loyalty/gift-cards/storefront-guide/page.mdx": "2026-04-13T08:05:26.263Z",
+  "app/commerce-modules/loyalty/page.mdx": "2026-04-13T08:01:45.522Z",
+  "app/commerce-modules/loyalty/store-credit/admin-guide/page.mdx": "2026-04-13T08:04:40.659Z",
+  "app/commerce-modules/loyalty/store-credit/concepts/page.mdx": "2026-04-13T08:03:13.100Z",
+  "app/commerce-modules/loyalty/store-credit/storefront-guide/page.mdx": "2026-04-13T08:06:25.569Z",
+  "app/commerce-modules/loyalty/workflows/page.mdx": "2026-04-13T08:07:20.544Z"
 }

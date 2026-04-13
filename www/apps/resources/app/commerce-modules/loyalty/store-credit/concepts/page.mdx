@@ -1,0 +1,166 @@
+export const metadata = {
+  title: `Store Credit Concepts`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn about store credit accounts and how they work in the Loyalty Plugin.
+
+## Overview
+
+Store credit provides a way to give customers account-based credit that can be used for future purchases. Unlike gift cards, store credit is tied to specific customer accounts and provides a running balance that can be credited and debited over time.
+
+## Key Concepts
+
+### Store Credit Account
+
+A store credit account represents a customer's credit balance. Each account has:
+
+- **Customer Association**: Linked to a specific customer account
+- **Currency**: The currency for the account balance
+- **Balance**: Current available credit amount (calculated from transaction history)
+- **Status**: Active, inactive, or suspended
+- **Metadata**: Custom fields for additional tracking
+
+### Account Transactions
+
+All store credit activity is tracked through transactions that record:
+
+- **Type**: Credit (adding funds) or Debit (spending funds)
+- **Amount**: The transaction amount in the smallest currency unit
+- **Reference**: What triggered the transaction (order, refund, promotion, etc.)
+- **Reference ID**: The ID of the related entity (order ID, return ID, etc.)
+- **Note**: Optional description of the transaction
+- **Timestamp**: When the transaction occurred
+
+### Balance Calculation
+
+Account balances are calculated in real-time by:
+1. Summing all credit transactions
+2. Subtracting all debit transactions
+3. The result is the current available balance
+
+This approach provides:
+- **Accurate Balances**: Always up-to-date with the latest transactions
+- **Transaction History**: Complete audit trail of all account activity
+- **Reliability**: Prevents balance inconsistencies
+
+## Store Credit Lifecycle
+
+### 1. Account Creation
+Store credit accounts can be created:
+- **Automatically**: When a customer first receives store credit
+- **Manually**: By admins through the dashboard
+- **Programmatically**: Through API calls or workflows
+
+### 2. Crediting Accounts
+Store credit can be added through:
+- **Refunds**: When orders are returned or cancelled
+- **Promotions**: Marketing campaigns or loyalty rewards
+- **Customer Service**: Compensation for service issues
+- **Admin Actions**: Manual credits added by store administrators
+
+### 3. Debiting Accounts
+Store credit is spent when:
+- **Checkout**: Applied as payment during order completion
+- **Adjustments**: Manual debits for corrections or fees
+- **Expiration**: If store credit expires (implementation dependent)
+
+### 4. Account Management
+Ongoing management includes:
+- **Balance Monitoring**: Tracking available credit
+- **Transaction History**: Reviewing all account activity
+- **Status Changes**: Activating, deactivating, or suspending accounts
+
+## Integration with Orders
+
+Store credit integrates with the order process:
+
+### During Checkout
+1. **Application**: Customers can apply available store credit to their cart
+2. **Validation**: System verifies sufficient balance is available
+3. **Reservation**: Credit is temporarily reserved during payment processing
+4. **Confirmation**: Credit is debited when the order is confirmed
+
+### After Order Changes
+- **Refunds**: Cancelled or returned orders can credit the account
+- **Adjustments**: Order modifications may trigger credit/debit transactions
+- **Partial Usage**: Unused store credit remains available for future orders
+
+## Transaction Types and References
+
+### Credit Transactions
+- **Refund**: `reference: "refund", reference_id: "return_123"`
+- **Promotion**: `reference: "promotion", reference_id: "campaign_abc"`
+- **Adjustment**: `reference: "adjustment", reference_id: "admin_correction"`
+
+### Debit Transactions
+- **Order Payment**: `reference: "order", reference_id: "order_456"`
+- **Fee**: `reference: "fee", reference_id: "processing_fee"`
+- **Correction**: `reference: "correction", reference_id: "error_fix"`
+
+## Use Cases
+
+### Customer Retention
+- Provide store credit instead of cash refunds
+- Reward loyal customers with account credits
+- Offer credits for referrals or reviews
+
+### Promotional Campaigns
+- Issue store credit for marketing campaigns
+- Provide credits for first-time customers
+- Create loyalty program rewards
+
+### Customer Service
+- Compensate customers for service issues
+- Provide credits for shipping delays or damaged products
+- Resolve disputes with account credits
+
+### Business Operations
+- Manage returns and refunds efficiently
+- Reduce cash refund processing costs
+- Increase customer lifetime value through retained funds
+
+## Administrative Features
+
+### Account Management
+- **Create Accounts**: Set up new store credit accounts
+- **View Balances**: Check current credit availability
+- **Transaction History**: Review all account activity
+- **Account Status**: Activate, deactivate, or suspend accounts
+
+### Bulk Operations
+- **Mass Credits**: Add credit to multiple accounts
+- **Campaign Distribution**: Distribute credits for promotional campaigns
+- **Import/Export**: Manage accounts through data imports
+
+### Reporting and Analytics
+- **Balance Reports**: Track total store credit liability
+- **Usage Patterns**: Analyze how customers use store credit
+- **Transaction Analysis**: Monitor credit and debit activity
+
+## Best Practices
+
+### Security and Fraud Prevention
+- **Access Controls**: Limit who can credit/debit accounts
+- **Transaction Limits**: Set maximum transaction amounts
+- **Audit Trails**: Maintain complete transaction histories
+- **Monitoring**: Watch for unusual account activity
+
+### Customer Experience
+- **Balance Visibility**: Show customers their current balance
+- **Transaction History**: Let customers review their account activity
+- **Clear Communication**: Explain how store credit works
+- **Easy Application**: Make it simple to use credit during checkout
+
+### Business Management
+- **Regular Reconciliation**: Verify transaction accuracy
+- **Liability Tracking**: Monitor total outstanding credit
+- **Expiration Policies**: Consider credit expiration rules
+- **Integration Testing**: Ensure proper order integration
+
+## Next Steps
+
+- Learn how to [manage store credit in the admin](!resources!/commerce-modules/loyalty/store-credit/admin-guide)
+- Explore [store credit integration in your storefront](!resources!/commerce-modules/loyalty/store-credit/storefront-guide)
+- Review the [store credit workflows reference](!resources!/commerce-modules/loyalty/workflows)

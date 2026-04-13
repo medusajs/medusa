@@ -5,6 +5,7 @@ import { currencySidebar } from "./currency.mjs"
 import { customerSidebar } from "./customer.mjs"
 import { fulfillmentSidebar } from "./fulfillment.mjs"
 import { inventorySidebar } from "./inventory.mjs"
+import { loyaltySidebar } from "./loyalty.mjs"
 import { orderSidebar } from "./order-module.mjs"
 import { paymentSidebar } from "./payment.mjs"
 import { pricingSidebar } from "./pricing.mjs"
@@ -35,6 +36,7 @@ export const commerceModulesSidebar = [
   ...customerSidebar,
   ...fulfillmentSidebar,
   ...inventorySidebar,
+  ...loyaltySidebar,
   ...orderSidebar,
   ...paymentSidebar,
   ...pricingSidebar,
