@@ -54,7 +54,7 @@ const getFilterableFields = <T extends RequestQueryFields>(obj: T): T => {
 }
 
 export function validateAndTransformQuery<TEntity extends BaseEntity>(
-  zodSchema: z.ZodObject<any, any> | z.ZodEffects<any, any>,
+  zodSchema: z.ZodObject<any, any> | z.ZodType<any, any, any>,
   queryConfig: QueryConfig<TEntity>
 ): (
   req: MedusaRequest,

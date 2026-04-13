@@ -37,6 +37,7 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  normalizeCurrencyCode,
   OrderChangeStatus,
   OrderStatus,
   promiseAll,
@@ -793,6 +794,10 @@ export default class OrderModuleService
         totals: calculated.summary,
       }
 
+      if (ord.currency_code) {
+        ord.currency_code = normalizeCurrencyCode(ord.currency_code)
+      }
+      
       ord.custom_display_id = await this.generateCustomDisplayId_.bind(this)(
         data_,
         sharedContext
@@ -1152,6 +1157,7 @@ export default class OrderModuleService
           version: toCreate.version ?? 1,
           item_id: item.id,
           quantity: toCreate.quantity,
+          metadata: toCreate.metadata,
         })
       }
     }
@@ -3765,8 +3771,13 @@ export default class OrderModuleService
       }
     }
 
+    const normalizedData = data.map((d) => ({
+      ...d,
+      currency_code: normalizeCurrencyCode(d.currency_code ?? ""),
+    }))
+
     const created = (await this.orderTransactionService_.create(
-      data,
+      normalizedData,
       sharedContext
     )) as (InferEntityType<typeof OrderTransaction> & { order_id: string })[]
 
