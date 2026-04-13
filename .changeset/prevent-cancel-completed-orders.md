@@ -1,5 +1,5 @@
 ---
-"@medusajs/core-flows": minor
+"@medusajs/core-flows": patch
 ---
 
 feat(order): prevent canceling completed orders
