@@ -8,6 +8,7 @@ import {
   deepFlatMap,
   MathBN,
   MedusaError,
+  OrderStatus,
   OrderWorkflowEvents,
   PaymentCollectionStatus,
 } from "@medusajs/framework/utils"
@@ -75,6 +76,13 @@ export const cancelValidateOrder = createStep(
     }
 
     throwIfOrderIsCancelled({ order })
+
+    if (order.status === OrderStatus.COMPLETED) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `Cannot cancel a completed order. Please use the return process to handle refunds or exchanges.`
+      )
+    }
 
     const throwErrorIf = (
       arr: unknown[],
