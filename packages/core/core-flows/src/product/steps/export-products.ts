@@ -10,6 +10,8 @@ import { json2csv } from "json-2-csv"
 
 /**
  * The step ID for exporting products.
+ * 
+ * @since 2.13.7
  */
 export const exportProductsStepId = "export-products"
 
@@ -38,6 +40,8 @@ const DEFAULT_BATCH_SIZE = 50
  *   }
  * })
  * ```
+ * 
+ * @since 2.13.7
  */
 export const exportProductsStep = createStep(
   exportProductsStepId,
