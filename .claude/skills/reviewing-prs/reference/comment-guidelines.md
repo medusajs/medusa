@@ -13,7 +13,7 @@
 Use when the PR passes the review. The team still needs to do a final review before merging.
 
 ```
-Thank you for your contribution! 🎉
+Thank you for your contribution, @<author>! 🎉
 
 After an initial review, this PR looks good to us. Here's a summary:
 
@@ -35,7 +35,7 @@ If there are **minor notes** that aren't blocking (style suggestions, optional i
 Use when the PR needs changes. Be explicit about what is required.
 
 ```
-Thank you for your contribution!
+Thank you for your contribution, @<author>!
 
 After reviewing this PR, we need a few things addressed before we can move forward:
 
