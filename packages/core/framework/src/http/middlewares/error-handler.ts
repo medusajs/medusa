@@ -32,6 +32,19 @@ export function errorHandler() {
 
     err = formatException(err)
 
+    // 🔥 FIX: Handle malformed JSON
+    if (
+      err instanceof SyntaxError &&
+      "body" in err &&
+      (err as any).type === "entity.parse.failed"
+    ) {
+      return res.status(400).json({
+        code: INVALID_REQUEST_ERROR,
+        message: "Invalid JSON in request body",
+        type: INVALID_REQUEST_ERROR,
+      })
+    }
+
     const errorType = err.type || err.name
     const errObj = {
       code: err.code,
@@ -91,7 +104,9 @@ export function errorHandler() {
     }
 
     if ("issues" in err && Array.isArray(err.issues)) {
-      const messages = err.issues.map((issue) => fromZodIssue(issue).toString())
+      const messages = err.issues.map((issue) =>
+        fromZodIssue(issue).toString()
+      )
       res.status(statusCode).json({
         type: MedusaError.Types.INVALID_DATA,
         message: messages.join("\n"),
@@ -102,22 +117,3 @@ export function errorHandler() {
     res.status(statusCode).json(errObj)
   } as unknown as ErrorRequestHandler
 }
-
-/**
- * @schema Error
- * title: "Response Error"
- * type: object
- * properties:
- *  code:
- *    type: string
- *    description: A slug code to indicate the type of the error.
- *    enum: [invalid_state_error, invalid_request_error, api_error, unknown_error]
- *  message:
- *    type: string
- *    description: Description of the error that occurred.
- *    example: "first_name must be a string"
- *  type:
- *    type: string
- *    description: A slug indicating the type of the error.
- *    enum: [QueryRunnerAlreadyReleasedError, TransactionAlreadyStartedError, TransactionNotStartedError, conflict, unauthorized, payment_authorization_error, duplicate_error, not_allowed, invalid_data, not_found, database_error, unexpected_state, invalid_argument, unknown_error]
- */
