@@ -25,7 +25,7 @@ medusaIntegrationTestRunner({
       baseCollection = (
         await api.post(
           "/admin/collections",
-          { title: "test-collection" },
+          { title: "test-collection", external_id: "ext-collection-01" },
           adminHeaders
         )
       ).data.collection
@@ -86,6 +86,7 @@ medusaIntegrationTestRunner({
           {
             title: "New collection",
             handle: "test-new-collection",
+            external_id: "ext-collection-new",
           },
           adminHeaders
         )
@@ -96,6 +97,7 @@ medusaIntegrationTestRunner({
             id: expect.stringMatching(/^pcol_*/),
             title: "New collection",
             handle: "test-new-collection",
+            external_id: "ext-collection-new",
             created_at: expect.any(String),
             updated_at: expect.any(String),
             metadata: null,
@@ -115,6 +117,7 @@ medusaIntegrationTestRunner({
               {
                 id: baseCollection.id,
                 created_at: expect.any(String),
+                external_id: "ext-collection-01",
                 updated_at: expect.any(String),
                 handle: "test-collection",
                 metadata: null,
@@ -123,6 +126,7 @@ medusaIntegrationTestRunner({
               {
                 id: baseCollection1.id,
                 created_at: expect.any(String),
+                external_id: null,
                 updated_at: expect.any(String),
                 handle: "test-collection1",
                 metadata: null,
@@ -131,6 +135,7 @@ medusaIntegrationTestRunner({
               {
                 id: baseCollection2.id,
                 created_at: expect.any(String),
+                external_id: null,
                 updated_at: expect.any(String),
                 handle: "test-collection2",
                 metadata: null,
@@ -154,6 +159,7 @@ medusaIntegrationTestRunner({
               {
                 id: baseCollection.id,
                 created_at: expect.any(String),
+                external_id: "ext-collection-01",
                 updated_at: expect.any(String),
                 handle: "test-collection",
                 metadata: null,
@@ -164,6 +170,29 @@ medusaIntegrationTestRunner({
         )
       })
 
+      it('filters collection by external_id', async () => {
+        const response = await api.get(
+          "/admin/collections?external_id=ext-collection-01",
+          adminHeaders
+        )
+
+        expect(response.data).toEqual(
+          expect.objectContaining({
+            count: 1,
+            collections: expect.arrayContaining([
+              {
+                id: baseCollection.id,
+                created_at: expect.any(String),
+                external_id: "ext-collection-01",
+                updated_at: expect.any(String),
+                handle: "test-collection",
+                metadata: null,
+                title: "test-collection",
+              },
+            ]),
+          })
+        )
+      });
       // BREAKING: There is no longer discount condition ID filtering for collections (test case: "returns a list of collections filtered by discount condition id")
     })
 
@@ -185,6 +214,7 @@ medusaIntegrationTestRunner({
               id: expect.stringMatching(/^pcol_*/),
               title: "test collection creation",
               handle: "test-handle-creation",
+              external_id: "ext-collection-01",
               created_at: expect.any(String),
               updated_at: expect.any(String),
               metadata: null,

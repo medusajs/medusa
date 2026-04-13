@@ -23,6 +23,10 @@ export interface BaseProductType {
    */
   deleted_at?: string | null
   /**
+   * An external ID for the product type.
+   */
+  external_id?: string | null
+  /**
    * Key-value pairs of custom data.
    */
   metadata?: Record<string, unknown> | null
@@ -41,6 +45,10 @@ export interface BaseProductTypeListParams extends FindParams {
    * Filter by value(s).
    */
   value?: string | string[]
+  /**
+   * Filter by external ID(s).
+   */
+  external_id?: string | string[]
   /**
    * Apply filters on the creation date.
    */

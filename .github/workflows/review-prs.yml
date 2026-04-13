@@ -55,10 +55,10 @@ jobs:
       MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
-  # Runs on pull_request and issue_comment (@medusajs-bot review) events: determines PR number
+  # Runs on pull_request_target and issue_comment (@medusajs-bot review) events: determines PR number
   prepare:
     if: |
-      (github.event_name == 'pull_request' &&
+      (github.event_name == 'pull_request_target' &&
        github.event.pull_request.draft == false &&
        github.event.pull_request.user.login != 'github-actions[bot]') ||
       (github.event_name == 'issue_comment' &&
@@ -102,7 +102,7 @@ jobs:
             fi
           fi
 
-  # Runs on pull_request and issue_comment: calls the reusable review workflow
+  # Runs on pull_request_target and issue_comment: calls the reusable review workflow
   review:
     needs: prepare
     if: needs.prepare.result == 'success' && needs.prepare.outputs.should_review == 'true'
