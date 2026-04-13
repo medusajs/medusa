@@ -93,7 +93,7 @@ If any section is missing or contains only the placeholder (*"Please provide ans
 
 **Comment template — incomplete template:**
 ```
-Thank you for your contribution!
+Thank you for your contribution, @<author>!
 
 Could you please fill in the PR description following our [pull request template](https://github.com/medusajs/medusa/blob/develop/.github/pull_request_template.md)? We need the **What**, **Why**, **How**, and **Testing** sections completed so we can review your PR efficiently.
 
@@ -136,9 +136,13 @@ For mixed PRs, apply all relevant types.
 
 Load `reference/conventions.md` and verify the changed files follow Medusa's conventions. Focus on the areas most relevant to the contribution type (e.g., API conventions for code changes, MDX structure for docs changes).
 
+> **CRITICAL — Read full file context:** For every file you intend to flag an issue in, read the **entire file** (not just the diff lines) before raising a concern. A pattern that looks wrong in isolation may be handled correctly later in the file, overridden by a wrapper, or follow an established project convention. Only flag an issue after confirming it is not resolved elsewhere in the file.
+
+> **CRITICAL — Only flag new code:** The diff contains both removed lines (prefixed `-`) and added lines (prefixed `+`). **Only raise issues about added/new lines.** Never request changes to lines that were already modified as part of this PR — the new version of those lines is what matters, not the old one.
+
 ### Step 8 — Security Analysis (ALL PRs)
 
-> **CRITICAL:** This step applies to **all PRs**, including team members. Read the actual diff — do not rely only on file path inspection.
+> **CRITICAL:** This step applies to **all PRs**, including team members. Read the actual diff — do not rely only on file path inspection. Before flagging any issue, read the full file to confirm the concern is not already handled elsewhere. Only flag issues present in the new (added) lines of the diff, not in lines that were removed or already changed by this PR.
 
 Check for the following security issues:
 
@@ -183,7 +187,7 @@ Security issues are always **blocking** — apply `requires-more` even if everyt
 
 ### Step 9 — Performance Analysis (ALL PRs)
 
-> **CRITICAL:** This step applies to **all PRs**. Only flag issues that would plausibly cause measurable degradation in production — not theoretical micro-optimizations.
+> **CRITICAL:** This step applies to **all PRs**. Only flag issues that would plausibly cause measurable degradation in production — not theoretical micro-optimizations. Before flagging, read the full file to confirm the issue is not already handled elsewhere. Only flag issues in the new (added) lines of the diff.
 
 Check for:
 
@@ -215,6 +219,10 @@ Performance issues severity:
 ### Step 10 — Bug Detection (ALL PRs)
 
 > **CRITICAL:** This step applies to **all PRs** including team members. Any potential bug — confirmed or suspected — is a **required change** and must result in `requires-more`. Do not leave bugs as notes.
+
+> **CRITICAL — Read full file before flagging:** For every file where you intend to flag a bug, read the entire file first. A bug in the diff may be handled by a guard, a wrapper, or a caller further in the file. Only flag a bug after confirming it is not already handled in the full file context.
+
+> **CRITICAL — Only flag new code:** Only raise bugs against lines that were **added** in this PR (diff lines prefixed `+`). Do not flag lines that were removed (`-`) or lines that are unchanged context. Do not request changes to code that was already changed by this PR.
 
 Read the actual code diff carefully. Flag anything that would plausibly cause incorrect runtime behaviour. Focus on:
 
@@ -280,6 +288,10 @@ bash scripts/labels.sh <pr_number> add <label>
 - [ ] Applying `initial-approval` when a confirmed security or blocking performance issue was found
 - [ ] Flagging style/code smell as bugs — only flag correctness/runtime issues in the Potential Bugs section
 - [ ] Omitting the code snippet when flagging a bug, security issue, or performance issue — always quote the relevant code
+- [ ] Flagging issues without reading the full file — always read the entire file before raising a concern to ensure it isn't already handled elsewhere
+- [ ] Flagging issues in removed (`-`) or unchanged context lines — only flag issues in the new added (`+`) lines of the diff
+- [ ] Requesting a change that the PR already makes — verify the current state of the code, not the old state
+- [ ] Not mentioning the PR author in the review comment — always `@mention` the author
 
 ## Reference Files
 
