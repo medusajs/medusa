@@ -287,3 +287,29 @@ If you don't have the URL, leave a placeholder comment:
 ```
 
 Never invent a Cloudinary URL.
+
+## Keyboard Shortcuts
+
+### Keys to press — `Kbd` component
+
+Wrap any key name the user must press in the `Kbd` component from `docs-ui`:
+
+```mdx
+import { Kbd } from "docs-ui"
+
+Press <Kbd>Enter</Kbd> to confirm, or <Kbd>Escape</Kbd> to cancel.
+```
+
+### OS-dependent shortcuts (CMD vs CTRL) — `getOsShortcut`
+
+When a shortcut differs between macOS (⌘ Cmd) and Windows/Linux (Ctrl), use the `getOsShortcut` utility from `docs-ui` so the correct key is shown automatically based on the user's OS:
+
+```mdx
+import { Kbd, getOsShortcut } from "docs-ui"
+
+Press <Kbd>{getOsShortcut()}</Kbd>+<Kbd>S</Kbd> to save.
+```
+
+`getOsShortcut()` returns `"Cmd"` on macOS and `"Ctrl"` on other platforms.
+
+> **Rule:** Never hard-code `Cmd` or `Ctrl` alone. If the shortcut uses the primary modifier key, always use `getOsShortcut()` so both platforms are covered.

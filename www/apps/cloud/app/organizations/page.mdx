@@ -1,4 +1,4 @@
-import { InlineIcon } from "docs-ui"
+import { InlineIcon, getOsShortcut, Kbd } from "docs-ui"
 import { Plus, EllipsisHorizontal, ChevronUpDown } from "@medusajs/icons"
 
 export const metadata = {
@@ -59,6 +59,12 @@ This will change the view to the selected organization, and you'll see its proje
 
 To view an organization's settings:
 
+<Note title="Tip">
+
+You can also navigate to an organization's settings from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> and select **Organization Settings**.
+
+</Note>
+
 1. If you're in a different organization, [switch to the organization](#switch-organization) whose settings you want to view.
 2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](#switch-organization) at the top left of the Cloud dashboard.
 3. Choose "Organization Settings" from the dropdown.
@@ -72,6 +78,12 @@ This will open a new window where you can view and manage an organization's sett
 ## Edit Organization Details
 
 To edit an organization's general details:
+
+<Note title="Tip">
+
+You can also navigate to an organization's settings from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> and select **Organization Settings**.
+
+</Note>
 
 1. [Open the organization's settings](#view-organization-settings).
 2. In the General tab, you can edit the organization's name, billing email address, and Tax ID.
@@ -91,6 +103,12 @@ Leaving an organization will remove you from it, and you'll no longer have acces
 
 To leave an organization:
 
+<Note title="Tip">
+
+You can also navigate to an organization's settings from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> and select **Organization Settings**.
+
+</Note>
+
 1. [Open the organization's settings](#view-organization-settings).
 2. In the General tab, find the "Leave organization" section.
 3. Click the "Leave organization" button.
@@ -108,6 +126,12 @@ Deleting an organization will remove all its projects, resources, and settings. 
 </Note>
 
 To delete an organization:
+
+<Note title="Tip">
+
+You can also navigate to an organization's settings from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> and select **Organization Settings**.
+
+</Note>
 
 1. [Open the organization's settings](#view-organization-settings).
 2. In the General tab, find the "Delete organization" section.
@@ -146,6 +170,12 @@ Make sure you have [enough available seats](#view-available-seats) in your organ
 
 To invite members to your organization:
 
+<Note title="Tip">
+
+You can also navigate to an organization's team member settings from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> and select **Team Members**.
+
+</Note>
+
 1. [Open the organization's settings](#view-organization-settings).
 2. Click on the "Team" tab.
 3. In the "Invite members" section, enter the email addresses of the users you want to invite. You can enter multiple email addresses separated by commas.
@@ -159,6 +189,12 @@ These users will receive an email invitation to join your organization. They can
 You may need to resend an invitation if a user has lost the invitation email or if the invitation has expired.
 
 To resend an invitation:
+
+<Note title="Tip">
+
+You can also navigate to an organization's team member settings from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> and select **Team Members**.
+
+</Note>
 
 1. [Open the organization's settings](#view-organization-settings).
 2. Click on the "Team" tab.
@@ -174,6 +210,12 @@ You can revoke an invitation to a user if you no longer want them to join your o
 
 To revoke an invitation:
 
+<Note title="Tip">
+
+You can also navigate to an organization's team member settings from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> and select **Team Members**.
+
+</Note>
+
 1. [Open the organization's settings](#view-organization-settings).
 2. Click on the "Team" tab.
 3. In the "Invited members" section, find the user whose invitation you want to revoke.
@@ -187,6 +229,12 @@ To revoke an invitation:
 Owner and admin users can remove any members from the organization that aren't owners.
 
 To remove a member from your organization:
+
+<Note title="Tip">
+
+You can also navigate to an organization's team member settings from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> and select **Team Members**.
+
+</Note>
 
 1. [Open the organization's settings](#view-organization-settings).
 2. Click on the "Team" tab.

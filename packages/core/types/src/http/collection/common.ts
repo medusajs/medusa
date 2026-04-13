@@ -32,6 +32,10 @@ export interface BaseCollection {
    */
   products?: BaseProduct[]
   /**
+   * An external ID for the collection.
+   */
+  external_id?: string | null
+  /**
    * Key-value pairs of custom data.
    */
   metadata: Record<string, unknown> | null
@@ -58,6 +62,10 @@ export interface BaseCollectionListParams
    * Filter by collection title(s).
    */
   title?: string | string[]
+  /**
+   * Filter by external ID(s).
+   */
+  external_id?: string | string[]
   /**
    * Apply filters on collection creation dates.
    */

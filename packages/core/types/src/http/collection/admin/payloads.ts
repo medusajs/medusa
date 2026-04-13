@@ -8,6 +8,10 @@ export interface AdminCreateCollection {
    */
   handle?: string
   /**
+   * An external ID for the collection.
+   */
+  external_id?: string | null
+  /**
    * Key-value pairs of custom data.
    */
   metadata?: Record<string, any>
@@ -22,6 +26,10 @@ export interface AdminUpdateCollection {
    * The collection's handle.
    */
   handle?: string
+  /**
+   * An external ID for the collection.
+   */
+  external_id?: string | null
   /**
    * Key-value pairs of custom data.
    */

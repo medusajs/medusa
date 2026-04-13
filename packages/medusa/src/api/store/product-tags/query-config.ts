@@ -1,6 +1,7 @@
 export const defaults = [
   "id",
   "value",
+  "external_id",
   "created_at",
   "updated_at",
   "metadata",
