@@ -1427,7 +1427,10 @@
         "partiallyReturned": "Partially returned",
         "returned": "Returned",
         "canceled": "Cancelled",
-        "requiresAction": "Requires action"
+        "requiresAction": "Requires action",
+        "awaitingPickup": "Awaiting pickup",
+        "awaitingShipping": "Awaiting shipping",
+        "awaitingDelivery": "Awaiting delivery"
       },
       "toast": {
         "created": "Fulfilment created successfully",
