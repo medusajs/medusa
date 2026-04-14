@@ -120,14 +120,25 @@ export const getLineItemActionsStep = createStep(
           item.quantity ?? 1
         )
 
-        itemsToUpdate.push({
-          id: existingItem.id,
-          quantity: quantity,
-          variant_id: item.variant_id!,
-          unit_price: item.unit_price ?? existingItem.unit_price,
-          compare_at_unit_price:
-            item.compare_at_unit_price ?? existingItem.compare_at_unit_price,
-        })
+        // In case of multiple items with the same variant_id, metadata and custom price, we accumulate the quantity.
+        existingItem.quantity = quantity
+
+        const existingUpdate = itemsToUpdate.find(
+          (u) => u.id === existingItem.id
+        )
+
+        if (existingUpdate) {
+          existingUpdate.quantity = quantity
+        } else {
+          itemsToUpdate.push({
+            id: existingItem.id,
+            quantity: quantity,
+            variant_id: item.variant_id!,
+            unit_price: item.unit_price ?? existingItem.unit_price,
+            compare_at_unit_price:
+              item.compare_at_unit_price ?? existingItem.compare_at_unit_price,
+          })
+        }
       } else {
         itemsToCreate.push(item)
       }

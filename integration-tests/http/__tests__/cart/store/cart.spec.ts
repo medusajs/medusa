@@ -1717,7 +1717,7 @@ medusaIntegrationTestRunner({
           // Should have 2 items: original + custom price with metadata
           expect(response.data.cart.items).toHaveLength(2)
 
-          // Add same variant with same metadata and same custom price
+          // Add same variant with same metadata and same custom price at the same time
           // Should accumulate quantity on the existing line item, not create a duplicate
           await addToCartWorkflow(appContainer).run({
             input: {
@@ -1726,6 +1726,12 @@ medusaIntegrationTestRunner({
                 {
                   variant_id: variantId,
                   quantity: 2,
+                  unit_price: 999,
+                  metadata,
+                },
+                {
+                  variant_id: variantId,
+                  quantity: 1,
                   unit_price: 999,
                   metadata,
                 },
@@ -1742,7 +1748,7 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 variant_id: variantId,
                 unit_price: 999,
-                quantity: 3,
+                quantity: 4,
                 metadata: { note: "gift" },
               }),
             ])
