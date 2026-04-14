@@ -1,5 +1,3 @@
-import { TransactionHandlerType } from "@medusajs/framework/utils"
-
 export interface AdminCreateWorkflowsRun {
   transaction_id?: string | undefined
   input?: any
@@ -10,5 +8,5 @@ export interface AdminCreateWorkflowsAsyncResponse {
   step_id: string
   response?: any
   compensate_input?: any
-  action?: TransactionHandlerType | undefined
+  action?: "invoke" | "compensate" | undefined
 }
