@@ -1,4 +1,4 @@
-import type { TransactionHandlerType } from "@medusajs/framework/utils"
+import { TransactionHandlerType } from "@medusajs/framework/utils"
 
 export interface AdminCreateWorkflowsRun {
   transaction_id?: string | undefined
