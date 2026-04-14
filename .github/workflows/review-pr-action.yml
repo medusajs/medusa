@@ -74,6 +74,7 @@ jobs:
             --allowedTools
             "Bash(bash scripts/get_pr.sh:*),
             Bash(bash scripts/get_pr_files.sh:*),
+            Bash(bash scripts/get_pr_diff.sh:*),
             Bash(bash scripts/get_linked_issues.sh:*),
             Bash(bash scripts/get_comments.sh:*),
             Bash(bash scripts/add_comment.sh:*),

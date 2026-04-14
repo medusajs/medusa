@@ -2,6 +2,9 @@ import { BaseFilterable, OperatorMap } from "../../dal"
 import { FindParams, SelectParams } from "../common"
 import { BaseProduct } from "../product/common"
 
+/**
+ * A collection. It can be used to organize products for easier browsing and filtering.
+ */
 export interface BaseCollection {
   /**
    * The collection's ID.
@@ -29,10 +32,14 @@ export interface BaseCollection {
   deleted_at: string | null
   /**
    * The collection's products.
+   *
+   * @expandable
    */
   products?: BaseProduct[]
   /**
    * An external ID for the collection.
+   *
+   * @since 2.13.7
    */
   external_id?: string | null
   /**
@@ -41,8 +48,14 @@ export interface BaseCollection {
   metadata: Record<string, unknown> | null
 }
 
+/**
+ * The filters to apply on collections when retrieving them.
+ */
 export interface BaseCollectionParams extends SelectParams {}
 
+/**
+ * The filters to apply when retrieving a list of collections.
+ */
 export interface BaseCollectionListParams
   extends FindParams,
     BaseFilterable<BaseCollectionListParams> {
@@ -64,6 +77,8 @@ export interface BaseCollectionListParams
   title?: string | string[]
   /**
    * Filter by external ID(s).
+   *
+   * @since 2.13.7
    */
   external_id?: string | string[]
   /**

@@ -37,7 +37,8 @@ bash scripts/get_pr.sh <pr_number>
 
 ```bash
 bash scripts/get_pr.sh <pr_number>                       # Fetch PR details (title, body, author, diff stats)
-bash scripts/get_pr_files.sh <pr_number>                 # List files changed in the PR as JSON
+bash scripts/get_pr_files.sh <pr_number>                 # List files changed in the PR as JSON (metadata only)
+bash scripts/get_pr_diff.sh <pr_number>                  # Fetch the full unified diff of the PR (required for code review)
 bash scripts/get_linked_issues.sh <pr_number>            # Fetch issues linked with closing keywords
 bash scripts/get_comments.sh <pr_number>                 # Fetch all existing comments on the PR
 bash scripts/get_labels.sh <pr_number>                   # Fetch current labels on the PR
@@ -56,10 +57,11 @@ If title/author were not passed as arguments:
 bash scripts/get_pr.sh <pr_number>
 ```
 
-Always fetch current labels, changed files, and prior comments:
+Always fetch current labels, changed files, the full diff, and prior comments:
 ```bash
 bash scripts/get_labels.sh <pr_number>
 bash scripts/get_pr_files.sh <pr_number>
+bash scripts/get_pr_diff.sh <pr_number>
 bash scripts/get_comments.sh <pr_number>
 ```
 
