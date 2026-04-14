@@ -85,6 +85,11 @@ export const sidebar = [
               },
               {
                 type: "link",
+                title: "Subdomains",
+                path: "/environments/subdomains",
+              },
+              {
+                type: "link",
                 title: "Custom Domains",
                 path: "/environments/custom-domains",
               },
@@ -225,6 +230,18 @@ export const sidebar = [
             type: "link",
             title: "Usage",
             path: "/usage",
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Networking",
+        initialOpen: true,
+        children: [
+          {
+            type: "link",
+            title: "IP Addresses",
+            path: "/ip-addresses",
           },
         ],
       },

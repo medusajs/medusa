@@ -14,9 +14,9 @@ export const generatedEditDates = {
   "app/update-medusa/page.mdx": "2026-01-08T08:54:50.149Z",
   "app/connect-storefront/page.mdx": "2026-01-08T08:50:31.830Z",
   "app/environments/environment-variables/page.mdx": "2026-04-10T08:10:51.404Z",
-  "app/environments/long-lived/page.mdx": "2026-04-10T08:11:35.311Z",
-  "app/environments/preview/page.mdx": "2026-02-05T15:06:26.801Z",
-  "app/faq/page.mdx": "2026-01-08T08:43:23.224Z",
+  "app/environments/long-lived/page.mdx": "2026-04-14T10:56:35.349Z",
+  "app/environments/preview/page.mdx": "2026-04-14T10:56:27.775Z",
+  "app/faq/page.mdx": "2026-04-14T10:44:08.191Z",
   "app/billing/page.mdx": "2025-12-17T12:39:37.397Z",
   "app/usage/page.mdx": "2026-04-10T10:22:15.211Z",
   "app/billing/manage/page.mdx": "2025-10-08T14:40:23.629Z",
@@ -33,6 +33,8 @@ export const generatedEditDates = {
   "app/projects/prerequisites/page.mdx": "2026-02-09T14:40:20.415Z",
   "app/storefront/page.mdx": "2026-04-08T16:19:50.391Z",
   "app/projects/rename-repo-branch/page.mdx": "2026-03-18T09:23:58.584Z",
-  "app/environments/custom-domains/page.mdx": "2026-04-10T11:39:40.713Z",
-  "app/command-palette/page.mdx": "2026-04-10T10:20:57.642Z"
+  "app/environments/custom-domains/page.mdx": "2026-04-14T10:51:20.317Z",
+  "app/command-palette/page.mdx": "2026-04-10T10:20:57.642Z",
+  "app/environments/subdomains/page.mdx": "2026-04-14T10:50:18.756Z",
+  "app/ip-addresses/page.mdx": "2026-04-14T10:43:16.892Z"
 }
