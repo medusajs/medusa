@@ -1,61 +1,12 @@
+import { SelectParams } from "../../common"
+
 export interface StoreCreateCart {
   /**
    * The ID of the region that the cart is created in.
    * If not provided, the default region of the store is used.
    * If the store doesn't have a default region, an error is thrown.
    */
-  region_id?: string
-  /**
-   * The cart's shipping address.
-   */
-  shipping_address?: StoreAddAddress
-  /**
-   * The cart's billing address.
-   */
-  billing_address?: StoreAddAddress
-  /**
-   * The email of the customer associated with the cart.
-   */
-  email?: string
-  /**
-   * The cart's currency code. If not provided, the region's currency
-   * code is used.
-   */
-  currency_code?: string
-  /**
-   * The cart's items.
-   */
-  items?: StoreAddCartLineItem[]
-  /**
-   * The ID of the associated sales channel. Only products in the same sales channel
-   * can be added to the cart.
-   */
-  sales_channel_id?: string
-  /**
-   * The promotion codes to apply on the cart.
-   */
-  promo_codes?: string[]
-  /**
-   * Key-value pairs of custom data.
-   */
-  metadata?: Record<string, unknown>
-
-  /**
-   * The BCP 47 language tag code of the locale.
-   * 
-   * @since 2.12.3
-   * 
-   * @example
-   * "en-US"
-   */
-  locale?: string
-}
-
-export interface StoreUpdateCart {
-  /**
-   * The ID of the region that the cart is in.
-   */
-  region_id?: string
+  region_id?: string | null
   /**
    * The cart's shipping address.
    */
@@ -67,29 +18,80 @@ export interface StoreUpdateCart {
   /**
    * The email of the customer associated with the cart.
    */
-  email?: string
+  email?: string | null
+  /**
+   * The cart's currency code. If not provided, the region's currency
+   * code is used.
+   */
+  currency_code?: string | null
+  /**
+   * The cart's items.
+   */
+  items?: StoreAddCartLineItem[]
   /**
    * The ID of the associated sales channel. Only products in the same sales channel
    * can be added to the cart.
    */
-  sales_channel_id?: string
+  sales_channel_id?: string | null
+  /**
+   * The promotion codes to apply on the cart.
+   */
+  promo_codes?: string[]
   /**
    * Key-value pairs of custom data.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
+
+  /**
+   * The BCP 47 language tag code of the locale.
+   *
+   * @since 2.12.3
+   *
+   * @example
+   * "en-US"
+   */
+  locale?: string | null
+}
+
+export interface StoreUpdateCart {
+  /**
+   * The ID of the region that the cart is in.
+   */
+  region_id?: string | null
+  /**
+   * The cart's shipping address.
+   */
+  shipping_address?: (StoreAddAddress & { id?: string }) | string
+  /**
+   * The cart's billing address.
+   */
+  billing_address?: (StoreAddAddress & { id?: string }) | string
+  /**
+   * The email of the customer associated with the cart.
+   */
+  email?: string | null
+  /**
+   * The ID of the associated sales channel. Only products in the same sales channel
+   * can be added to the cart.
+   */
+  sales_channel_id?: string | null
+  /**
+   * Key-value pairs of custom data.
+   */
+  metadata?: Record<string, unknown> | null
   /**
    * The promotion codes to apply on the cart.
    */
   promo_codes?: string[]
   /**
    * The BCP 47 language tag code of the locale.
-   * 
+   *
    * @since 2.12.3
-   * 
+   *
    * @example
    * "en-US"
    */
-  locale?: string
+  locale?: string | null
 }
 
 export interface StoreUpdateCartCustomer {}
@@ -106,7 +108,7 @@ export interface StoreAddCartLineItem {
   /**
    * Key-value pairs of custom data.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface StoreUpdateCartLineItem {
@@ -117,7 +119,7 @@ export interface StoreUpdateCartLineItem {
   /**
    * Key-value pairs of custom data.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface StoreAddCartShippingMethods {
@@ -141,52 +143,52 @@ export interface StoreAddAddress {
   /**
    * The first name of the address.
    */
-  first_name?: string
+  first_name?: string | null
 
   /**
    * The last name of the address.
    */
-  last_name?: string
+  last_name?: string | null
 
   /**
    * The phone number of the address.
    */
-  phone?: string
+  phone?: string | null
 
   /**
    * The company of the address.
    */
-  company?: string
+  company?: string | null
 
   /**
    * The first address line of the address.
    */
-  address_1?: string
+  address_1?: string | null
 
   /**
    * The second address line of the address.
    */
-  address_2?: string
+  address_2?: string | null
 
   /**
    * The city of the address.
    */
-  city?: string
+  city?: string | null
 
   /**
    * The country code of the address.
    */
-  country_code?: string
+  country_code?: string | null
 
   /**
    * The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province/state of the address.
    */
-  province?: string
+  province?: string | null
 
   /**
    * The postal code of the address.
    */
-  postal_code?: string
+  postal_code?: string | null
 
   /**
    * Holds custom data in key-value pairs.
@@ -207,3 +209,5 @@ export interface StoreCartAddPromotion {
    */
   promo_codes: string[]
 }
+
+export interface StoreCalculateCartTaxes extends SelectParams {}

@@ -1,5 +1,5 @@
 import { BaseFilterable, OperatorMap } from "../../../dal"
-import { FindParams } from "../../common"
+import { FindParams, SelectParams } from "../../common"
 import { BaseProductListParams, BaseProductOptionParams } from "../common"
 
 /**
@@ -134,3 +134,5 @@ export interface AdminProductExportParams extends Omit<AdminProductListParams, "
     }
   }
 }
+
+export interface AdminGetProductParams extends SelectParams {}

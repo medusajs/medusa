@@ -143,12 +143,6 @@ export const AdminOrderChangesParams = createSelectParams().merge(
 
 export type AdminOrderChangesType = z.infer<typeof AdminOrderChangesParams>
 
-export type AdminMarkOrderFulfillmentDeliveredType = z.infer<
-  typeof AdminMarkOrderFulfillmentDelivered
->
-
-export const AdminMarkOrderFulfillmentDelivered = z.object({})
-
 export type AdminTransferOrderType = z.infer<typeof AdminTransferOrder>
 export const AdminTransferOrder = z.object({
   customer_id: z.string(),
@@ -156,11 +150,6 @@ export const AdminTransferOrder = z.object({
   internal_note: z.string().optional(),
   update_order_email: z.boolean().optional(),
 })
-
-export type AdminCancelOrderTransferRequestType = z.infer<
-  typeof AdminCancelOrderTransferRequest
->
-export const AdminCancelOrderTransferRequest = z.object({})
 
 export type AdminUpdateOrderType = z.infer<typeof AdminUpdateOrder>
 export const AdminUpdateOrder = z.object({

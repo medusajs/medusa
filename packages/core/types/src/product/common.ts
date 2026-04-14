@@ -1336,19 +1336,19 @@ export interface CreateProductVariantDTO {
   /**
    * The SKU of the product variant.
    */
-  sku?: string
+  sku?: string | null
   /**
    * The barcode of the product variant.
    */
-  barcode?: string
+  barcode?: string | null
   /**
    * The EAN of the product variant.
    */
-  ean?: string
+  ean?: string | null
   /**
    * The UPC of the product variant.
    */
-  upc?: string
+  upc?: string | null
   /**
    * Whether the product variant can be ordered when it's out of stock.
    */
@@ -1365,35 +1365,35 @@ export interface CreateProductVariantDTO {
   /**
    * The HS Code of the product variant.
    */
-  hs_code?: string
+  hs_code?: string | null
   /**
    * The origin country of the product variant.
    */
-  origin_country?: string
+  origin_country?: string | null
   /**
    * The MID Code of the product variant.
    */
-  mid_code?: string
+  mid_code?: string | null
   /**
    * The material of the product variant.
    */
-  material?: string
+  material?: string | null
   /**
    * The weight of the product variant.
    */
-  weight?: number
+  weight?: number | null
   /**
    * The length of the product variant.
    */
-  length?: number
+  length?: number | null
   /**
    * The height of the product variant.
    */
-  height?: number
+  height?: number | null
   /**
    * The width of the product variant.
    */
-  width?: number
+  width?: number | null
   /**
    * The options of the variant. Each key is an option's title, and value
    * is an option's value. If an option with the specified title doesn't exist,
@@ -1522,11 +1522,11 @@ export interface CreateProductDTO {
   /**
    * The subttle of the product.
    */
-  subtitle?: string
+  subtitle?: string | null
   /**
    * The description of the product.
    */
-  description?: string
+  description?: string | null
   /**
    * Whether the product is a gift card.
    */
@@ -1538,12 +1538,12 @@ export interface CreateProductDTO {
   /**
    * The URL of the product's thumbnail.
    */
-  thumbnail?: string
+  thumbnail?: string | null
   /**
    * The handle of the product. The handle can be used to create slug URL paths.
    * If not supplied, the value of the `handle` attribute of the product is set to the slug version of the `title` attribute.
    */
-  handle?: string
+  handle?: string | null
   /**
    * The status of the product.
    */
@@ -1555,15 +1555,15 @@ export interface CreateProductDTO {
   /**
    * The id of the product in an external system
    */
-  external_id?: string
+  external_id?: string | null
   /**
    * The product type id to associate with the product.
    */
-  type_id?: string
+  type_id?: string | null
   /**
    * The product collection to associate with the product.
    */
-  collection_id?: string
+  collection_id?: string | null
   /**
    * The tags to be associated with the product.
    */
@@ -1583,35 +1583,35 @@ export interface CreateProductDTO {
   /**
    * The width of the product.
    */
-  width?: number
+  width?: number | null
   /**
    * The height of the product.
    */
-  height?: number
+  height?: number | null
   /**
    * The length of the product.
    */
-  length?: number
+  length?: number | null
   /**
    * The weight of the product.
    */
-  weight?: number
+  weight?: number | null
   /**
    * The origin country of the product.
    */
-  origin_country?: string
+  origin_country?: string | null
   /**
    * The HS Code of the product.
    */
-  hs_code?: string
+  hs_code?: string | null
   /**
    * The material of the product.
    */
-  material?: string
+  material?: string | null
   /**
    * The MID Code of the product.
    */
-  mid_code?: string
+  mid_code?: string | null
   /**
    * Holds custom data in key-value pairs.
    */

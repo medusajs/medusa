@@ -43,7 +43,7 @@ export interface AdminCreateOrderFulfillment {
    * The ID of the stock location
    * to fulfill the items from.
    */
-  location_id?: string
+  location_id?: string | null
   /**
    * The ID of the shipping option to use for the fulfillment.
    * Overrides the shipping option selected by the customer.
@@ -56,7 +56,7 @@ export interface AdminCreateOrderFulfillment {
   /**
    * Key-value pairs of custom data.
    */
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminCreateOrderShipment {
@@ -97,7 +97,7 @@ export interface AdminCreateOrderShipment {
   /**
    * Key-value pairs of custom data.
    */
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminCancelOrderFulfillment {
@@ -132,52 +132,52 @@ export interface OrderAddress {
   /**
    * The first name of the address.
    */
-  first_name?: string
+  first_name?: string | null
 
   /**
    * The last name of the address.
    */
-  last_name?: string
+  last_name?: string | null
 
   /**
    * The phone number of the address.
    */
-  phone?: string
+  phone?: string | null
 
   /**
    * The company of the address.
    */
-  company?: string
+  company?: string | null
 
   /**
    * The first address line of the address.
    */
-  address_1?: string
+  address_1?: string | null
 
   /**
    * The second address line of the address.
    */
-  address_2?: string
+  address_2?: string | null
 
   /**
    * The city of the address.
    */
-  city?: string
+  city?: string | null
 
   /**
    * The country code of the address.
    */
-  country_code?: string
+  country_code?: string | null
 
   /**
    * The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province/state of the address.
    */
-  province?: string
+  province?: string | null
 
   /**
    * The postal code of the address.
    */
-  postal_code?: string
+  postal_code?: string | null
 
   /**
    * Holds custom data in key-value pairs.

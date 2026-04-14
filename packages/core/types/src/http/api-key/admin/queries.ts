@@ -1,6 +1,6 @@
 import { ApiKeyType } from "../../../api-key"
 import { BaseFilterable, OperatorMap } from "../../../dal"
-import { FindParams } from "../../common"
+import { FindParams, SelectParams } from "../../common"
 
 export interface AdminGetApiKeysParams
   extends FindParams,
@@ -42,3 +42,5 @@ export interface AdminGetApiKeysParams
    */
   revoked_at?: OperatorMap<string>
 }
+
+export interface AdminGetApiKeyParams extends SelectParams {}

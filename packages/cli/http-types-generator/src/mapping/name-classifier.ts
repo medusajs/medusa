@@ -21,6 +21,8 @@ export class NameClassifier {
     /Filters?$/,
     /ListParams$/,
     /FilterFields$/,
+    /^StoreGet/,
+    /^AdminGet/,
   ]
 
   /**
@@ -56,6 +58,9 @@ export class NameClassifier {
    * @returns The target file category. Returns "skip" if no type should be generated for this schema.
    */
   static classify(name: string): FileTarget {
+    if (name === "skip") {
+      return "skip"
+    }
     // Must have one of the configured public prefixes to be an HTTP type
     const prefixes = Config.get().publicPrefixes
     if (!prefixes.some((prefix) => name.startsWith(prefix))) {

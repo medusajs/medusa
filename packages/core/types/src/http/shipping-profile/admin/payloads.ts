@@ -10,7 +10,7 @@ export interface AdminCreateShippingProfile {
   /**
    * Custom key-value pairs that can be added to the shipping profile.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminUpdateShippingProfile {
