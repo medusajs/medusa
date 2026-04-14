@@ -127,6 +127,14 @@ export const generatedSidebars = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
+                "title": "Subdomains",
+                "path": "/environments/subdomains",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
                 "title": "Custom Domains",
                 "path": "/environments/custom-domains",
                 "children": []
@@ -333,6 +341,23 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Usage",
             "path": "/usage",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "category",
+        "title": "Networking",
+        "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "IP Addresses",
+            "path": "/ip-addresses",
             "children": []
           }
         ]
