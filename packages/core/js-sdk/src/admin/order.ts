@@ -491,6 +491,7 @@ export class Order {
   async markAsDelivered(
     id: string,
     fulfillmentId: string,
+    body?: HttpTypes.AdminMarkOrderFulfillmentAsDelivered,
     query?: SelectParams,
     headers?: ClientHeaders
   ) {
@@ -499,6 +500,7 @@ export class Order {
       {
         method: "POST",
         headers,
+        body,
         query,
       }
     )
