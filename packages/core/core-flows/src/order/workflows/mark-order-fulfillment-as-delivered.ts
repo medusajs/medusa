@@ -169,8 +169,7 @@ function prepareRegisterDeliveryData({
         const iitem = iitems.find(
           (i) => i.inventory.id === fitem.inventory_item_id
         )
-        if(iitem)
-          quantity = MathBN.div(quantity, iitem.required_quantity)
+        if (iitem) quantity = MathBN.div(quantity, iitem.required_quantity)
       }
 
       return {
@@ -193,6 +192,10 @@ export type MarkOrderFulfillmentAsDeliveredWorkflowInput = {
    * The ID of the fulfillment to mark as delivered.
    */
   fulfillmentId: string
+  /**
+   * Whether to notify the customer about the delivery.
+   */
+  no_notification?: boolean
 }
 
 export const markOrderFulfillmentAsDeliveredWorkflowId =
@@ -277,7 +280,10 @@ export const markOrderFulfillmentAsDeliveredWorkflow = createWorkflow(
 
     emitEventStep({
       eventName: FulfillmentWorkflowEvents.DELIVERY_CREATED,
-      data: { id: deliveredFulfillment.id },
+      data: {
+        id: deliveredFulfillment.id,
+        no_notification: input.no_notification,
+      },
     })
 
     return new WorkflowResponse(void 0)
