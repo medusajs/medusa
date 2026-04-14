@@ -36,20 +36,20 @@ export interface AdminTranslationsListParams
  */
 export interface AdminTranslationStatisticsParams {
   /**
-   * The locales to check translations for.
+   * The locales to check translations for. Can be a single locale or an array of locales.
    *
    * @example
    * ["en-US", "fr-FR"]
    */
-  locales: string[]
+  locales: string | string[]
 
   /**
-   * The entity types to get statistics for.
+   * The entity types to get statistics for. Can be a single entity type or an array.
    *
    * @example
    * ["product", "product_variant"]
    */
-  entity_types: string[]
+  entity_types: string | string[]
 }
 
 /**

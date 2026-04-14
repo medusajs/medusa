@@ -54,8 +54,8 @@ export type AdminTranslationStatisticsType = z.infer<
 >
 export const AdminTranslationStatisticsParams = z
   .object({
-    locales: z.array(z.string()),
-    entity_types: z.array(z.string()),
+    locales: z.union([z.string(), z.array(z.string())]),
+    entity_types: z.union([z.string(), z.array(z.string())]),
   })
   .transform((data) => ({
     // Normalize to arrays for consistent handling
