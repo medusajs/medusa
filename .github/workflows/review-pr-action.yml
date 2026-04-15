@@ -6,6 +6,10 @@ on:
       pr_number:
         required: true
         type: string
+      trigger_reason:
+        required: false
+        type: string
+        default: ''
     secrets:
       MEDUSA_APP_ID:
         required: true
@@ -67,10 +71,13 @@ jobs:
             PR NUMBER: ${{ inputs.pr_number }}
             PR TITLE: ${{ steps.pr-info.outputs.title }}
             PR AUTHOR: ${{ steps.pr-info.outputs.author }}
+            TRIGGER REASON: ${{ inputs.trigger_reason }}
 
             Note: all scripts are located in the root `scripts/` directory and should be run as `bash scripts/<script>.sh`.
 
             /reviewing-prs ${{ inputs.pr_number }} "${{ steps.pr-info.outputs.title }}" "${{ steps.pr-info.outputs.author }}"
+
+            At the very end of your comment, add a small note in italics: "_Triggered by: ${{ inputs.trigger_reason }}_"
 
           claude_args: >-
             --allowedTools
