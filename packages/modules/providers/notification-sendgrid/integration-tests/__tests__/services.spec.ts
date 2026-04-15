@@ -40,7 +40,7 @@ describe("SendgridNotificationService - customArgs", () => {
     )
   })
 
-  it("includes customArgs in personalizations when provider_data.custom_args contains string values", async () => {
+  it("includes customArgs in personalizations and omits top-level to when provider_data.custom_args contains string values", async () => {
     await service.send({
       to: "recipient@example.com",
       channel: "email",
@@ -55,13 +55,14 @@ describe("SendgridNotificationService - customArgs", () => {
 
     expect(mockSend).toHaveBeenCalledTimes(1)
     const message = mockSend.mock.calls[0][0] as any
+    expect(message).not.toHaveProperty("to")
     expect(message.personalizations[0].customArgs).toEqual({
       campaign_id: "abc123",
       source: "welcome-flow",
     })
   })
 
-  it("omits customArgs from personalizations when provider_data.custom_args is absent", async () => {
+  it("omits personalizations entirely when provider_data.custom_args is absent", async () => {
     await service.send({
       to: "recipient@example.com",
       channel: "email",
@@ -70,7 +71,7 @@ describe("SendgridNotificationService - customArgs", () => {
 
     expect(mockSend).toHaveBeenCalledTimes(1)
     const message = mockSend.mock.calls[0][0] as any
-    expect(message.personalizations[0]).not.toHaveProperty("customArgs")
+    expect(message).not.toHaveProperty("personalizations")
   })
 
   it("filters out non-string values from custom_args", async () => {
@@ -93,6 +94,24 @@ describe("SendgridNotificationService - customArgs", () => {
     expect(message.personalizations[0].customArgs).toEqual({
       valid_key: "valid-string",
     })
+  })
+
+  it("omits personalizations when all custom_args values are non-strings", async () => {
+    await service.send({
+      to: "recipient@example.com",
+      channel: "email",
+      template: "some-template",
+      provider_data: {
+        custom_args: {
+          number_key: 42,
+          object_key: { nested: true },
+        } as Record<string, unknown>,
+      },
+    })
+
+    expect(mockSend).toHaveBeenCalledTimes(1)
+    const message = mockSend.mock.calls[0][0] as any
+    expect(message).not.toHaveProperty("personalizations")
   })
 })
 

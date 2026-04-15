@@ -82,29 +82,33 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
 
     const rawCustomArgs = notification.provider_data?.custom_args as
       | Record<string, unknown>
-      | undefined;
-    const customArgs = rawCustomArgs
-      ? Object.fromEntries(
-          Object.entries(rawCustomArgs).filter(([, v]) => isString(v)) as [
-            string,
-            string,
-          ][]
-        )
+      | undefined
+    const filteredCustomArgs = rawCustomArgs
+      ? (Object.fromEntries(
+          Object.entries(rawCustomArgs).filter(([, v]) => isString(v))
+        ) as Record<string, string>)
       : undefined
+    const customArgs =
+      filteredCustomArgs && Object.keys(filteredCustomArgs).length > 0
+        ? filteredCustomArgs
+        : undefined
 
     const message: sendgrid.MailDataRequired = {
-      to: notification.to,
       from: from,
       dynamicTemplateData: notification.data as
         | { [key: string]: any }
         | undefined,
       attachments: attachments,
-      personalizations: [
-        {
-          to: [{ email: notification.to as string }],
-          ...(customArgs && { customArgs }),
-        },
-      ],
+      ...(customArgs
+        ? {
+            personalizations: [
+              {
+                to: [{ email: notification.to as string }],
+                customArgs,
+              },
+            ],
+          }
+        : { to: notification.to }),
       ...mailContent,
     }
 
