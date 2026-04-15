@@ -86,7 +86,7 @@ export async function runMigrationScripts({
 async function loadResources(
   plugins: any,
   logger: Logger,
-  container?: MedusaContainer
+  container: MedusaContainer
 ): Promise<{
   onApplicationPrepareShutdown: () => Promise<void>
   onApplicationShutdown: () => Promise<void>
