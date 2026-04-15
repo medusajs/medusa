@@ -5,7 +5,6 @@ import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
   ContainerRegistrationKeys,
   getResolvedPlugins,
-  mergePluginModules,
 } from "@medusajs/framework/utils"
 import { MedusaContainer } from "@medusajs/types"
 import { runMigrationScripts } from "../db/run-scripts"
@@ -140,11 +139,6 @@ describe("runMigrationScripts", () => {
         container,
         logger: mockLogger as any,
       })
-
-      // Simulate what a migration script would do: resolve `query` from the container
-      const resolvedQuery = (container.resolve as jest.Mock).mock.calls.find(
-        ([key]) => key === ContainerRegistrationKeys.QUERY
-      )
 
       // The container should be capable of resolving `query` without throwing
       expect(() =>
