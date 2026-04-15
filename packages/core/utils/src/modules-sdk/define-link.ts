@@ -228,12 +228,76 @@ export function defineLink(
     ) as unknown as DefineLinkExport
   }
 
-  const output = {
-    [DefineLinkSymbol]: true,
-    serviceName: "",
-    entity: "",
-    entryPoint: "",
-  }
+  // The `register` callback below mutates this object's properties during
+  // `MedusaModule.bootstrapAll()`. Callers who capture the primitive value
+  // of one of these properties at import time (e.g.
+  // `const entryPoint = MyLink.entryPoint`) would previously get an empty
+  // string with no error, and later hit an opaque `Service "undefined" was
+  // not found` at runtime. To surface that mistake at the point it happens,
+  // the three lazily-populated properties are exposed through getters that
+  // throw a descriptive error when read before registration. The `register`
+  // callback writes to them through the corresponding setters, which flip
+  // `_registered` so subsequent reads return the actual value.
+  const defineLinkOutput = (() => {
+    let _serviceName = ""
+    let _entity = ""
+    let _entryPoint = ""
+    let _registered = false
+
+    const notRegisteredError = (prop: string) =>
+      new Error(
+        `defineLink: "${prop}" is not available until the app bootstraps. ` +
+          `This happens when you capture the primitive value at import time, e.g.\n` +
+          `  const entryPoint = MyLink.entryPoint // "" — frozen at import time\n` +
+          `Instead, pass the link object and read the property at runtime:\n` +
+          `  function handler() { const entryPoint = MyLink.entryPoint /* populated */ }`
+      )
+
+    return Object.defineProperties(
+      { [DefineLinkSymbol]: true } as DefineLinkExport & {
+        [DefineLinkSymbol]: boolean
+      },
+      {
+        serviceName: {
+          enumerable: true,
+          configurable: true,
+          get() {
+            if (!_registered) throw notRegisteredError("serviceName")
+            return _serviceName
+          },
+          set(v: string) {
+            _serviceName = v
+            _registered = true
+          },
+        },
+        entity: {
+          enumerable: true,
+          configurable: true,
+          get() {
+            if (!_registered) throw notRegisteredError("entity")
+            return _entity
+          },
+          set(v: string) {
+            _entity = v
+            _registered = true
+          },
+        },
+        entryPoint: {
+          enumerable: true,
+          configurable: true,
+          get() {
+            if (!_registered) throw notRegisteredError("entryPoint")
+            return _entryPoint
+          },
+          set(v: string) {
+            _entryPoint = v
+            _registered = true
+          },
+        },
+      }
+    )
+  })()
+  const output = defineLinkOutput
 
   const register = function (
     modules: ModuleJoinerConfig[]
