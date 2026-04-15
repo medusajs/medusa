@@ -1,5 +1,100 @@
+import sendgrid from "@sendgrid/mail"
 import { SendgridNotificationService } from "../../src/services/sendgrid"
+
+jest.mock("@sendgrid/mail", () => ({
+  __esModule: true,
+  default: {
+    setApiKey: jest.fn(),
+    send: jest.fn().mockResolvedValue([{ statusCode: 202 }, {}]),
+  },
+}))
+
+jest.mock("@medusajs/framework/utils", () => ({
+  AbstractNotificationProviderService: class {},
+  MedusaError: class MedusaError extends Error {
+    static Types = {
+      INVALID_DATA: "invalid_data",
+      UNEXPECTED_STATE: "unexpected_state",
+    }
+    type: string
+    constructor(type: string, message: string) {
+      super(message)
+      this.type = type
+    }
+  },
+  isString: (v: unknown): v is string => typeof v === "string",
+}), { virtual: true })
+
+const mockSend = sendgrid.send as jest.MockedFunction<typeof sendgrid.send>
+
 jest.setTimeout(100000)
+
+describe("SendgridNotificationService - customArgs", () => {
+  let service: SendgridNotificationService
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+    service = new SendgridNotificationService(
+      { logger: console as any },
+      { api_key: "test-api-key", from: "sender@example.com" }
+    )
+  })
+
+  it("includes customArgs in personalizations when provider_data.custom_args contains string values", async () => {
+    await service.send({
+      to: "recipient@example.com",
+      channel: "email",
+      template: "some-template",
+      provider_data: {
+        custom_args: {
+          campaign_id: "abc123",
+          source: "welcome-flow",
+        },
+      },
+    })
+
+    expect(mockSend).toHaveBeenCalledTimes(1)
+    const message = mockSend.mock.calls[0][0] as any
+    expect(message.personalizations[0].customArgs).toEqual({
+      campaign_id: "abc123",
+      source: "welcome-flow",
+    })
+  })
+
+  it("omits customArgs from personalizations when provider_data.custom_args is absent", async () => {
+    await service.send({
+      to: "recipient@example.com",
+      channel: "email",
+      template: "some-template",
+    })
+
+    expect(mockSend).toHaveBeenCalledTimes(1)
+    const message = mockSend.mock.calls[0][0] as any
+    expect(message.personalizations[0]).not.toHaveProperty("customArgs")
+  })
+
+  it("filters out non-string values from custom_args", async () => {
+    await service.send({
+      to: "recipient@example.com",
+      channel: "email",
+      template: "some-template",
+      provider_data: {
+        custom_args: {
+          valid_key: "valid-string",
+          number_key: 42,
+          object_key: { nested: true },
+          null_key: null,
+        } as Record<string, unknown>,
+      },
+    })
+
+    expect(mockSend).toHaveBeenCalledTimes(1)
+    const message = mockSend.mock.calls[0][0] as any
+    expect(message.personalizations[0].customArgs).toEqual({
+      valid_key: "valid-string",
+    })
+  })
+})
 
 // Note: This test hits the sendgrid service, and it is mainly meant to be run manually after setting all the envvars below.
 // We could also setup a sink email service to test this automatically, but it is not necessary for the time being.

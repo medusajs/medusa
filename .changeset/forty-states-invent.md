@@ -1,5 +1,5 @@
 ---
-"@medusajs/notification-sendgrid": minor
+"@medusajs/notification-sendgrid": patch
 ---
 
-Add support for custom_args to sendgrid
+feat(notification-sendgrid): add support for custom_args

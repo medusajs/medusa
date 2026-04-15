@@ -6,6 +6,7 @@ import {
 import {
   AbstractNotificationProviderService,
   MedusaError,
+  isString,
 } from "@medusajs/framework/utils"
 import sendgrid from "@sendgrid/mail"
 
@@ -84,9 +85,10 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
       | undefined;
     const customArgs = rawCustomArgs
       ? Object.fromEntries(
-          Object.entries(rawCustomArgs)
-            .filter(([, v]) => v != null)
-            .map(([k, v]) => [k, String(v)]),
+          Object.entries(rawCustomArgs).filter(([, v]) => isString(v)) as [
+            string,
+            string,
+          ][]
         )
       : undefined
 
