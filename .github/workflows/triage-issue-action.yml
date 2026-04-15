@@ -1,9 +1,9 @@
-name: Review PR (Reusable)
+name: Triage Issue (Reusable)
 
 on:
   workflow_call:
     inputs:
-      pr_number:
+      issue_number:
         required: true
         type: string
     secrets:
@@ -15,12 +15,12 @@ on:
         required: true
 
 jobs:
-  review:
+  triage:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write
       issues: write
+      discussions: write
       id-token: write
     steps:
       - name: Checkout repository
@@ -28,18 +28,18 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Get PR info
-        id: pr-info
+      - name: Get issue info
+        id: issue-info
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          pr_data=$(gh pr view ${{ inputs.pr_number }} --json title,author \
+          issue_data=$(gh issue view ${{ inputs.issue_number }} --json title,author \
             --jq '{title: .title, author: .author.login}')
           {
             echo "title<<EOF"
-            echo "$pr_data" | jq -r '.title'
+            echo "$issue_data" | jq -r '.title'
             echo "EOF"
-            echo "author=$(echo "$pr_data" | jq -r '.author')"
+            echo "author=$(echo "$issue_data" | jq -r '.author')"
           } >> $GITHUB_OUTPUT
 
       - name: Generate GitHub App token
@@ -49,14 +49,13 @@ jobs:
           app-id: ${{ secrets.MEDUSA_APP_ID }}
           private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
 
-      - name: Review PR
+      - name: Triage issue
         uses: anthropics/claude-code-action@v1
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ steps.app-token.outputs.token }}
-          allowed_bots: "*"
           allowed_non_write_users: "*"
           base_branch: develop
           show_full_output: true
@@ -64,24 +63,22 @@ jobs:
           plugins: "medusa-dev@medusa"
 
           prompt: |
-            PR NUMBER: ${{ inputs.pr_number }}
-            PR TITLE: ${{ steps.pr-info.outputs.title }}
-            PR AUTHOR: ${{ steps.pr-info.outputs.author }}
+            ISSUE NUMBER: ${{ inputs.issue_number }}
+            ISSUE TITLE: ${{ steps.issue-info.outputs.title }}
+            ISSUE AUTHOR: ${{ steps.issue-info.outputs.author }}
 
             Note: all scripts are located in the root `scripts/` directory and should be run as `bash scripts/<script>.sh`.
 
-            /reviewing-prs ${{ inputs.pr_number }} "${{ steps.pr-info.outputs.title }}" "${{ steps.pr-info.outputs.author }}"
+            /triaging-issues ${{ inputs.issue_number }} "${{ steps.issue-info.outputs.title }}" "${{ steps.issue-info.outputs.author }}"
 
           claude_args: >-
             --allowedTools
-            "Bash(bash scripts/get_pr.sh:*),
-            Bash(bash scripts/get_pr_files.sh:*),
-            Bash(bash scripts/get_pr_diff.sh:*),
-            Bash(bash scripts/get_linked_issues.sh:*),
+            "Bash(bash scripts/get_issue.sh:*),
             Bash(bash scripts/get_comments.sh:*),
+            Bash(bash scripts/get_labels.sh:*),
             Bash(bash scripts/add_comment.sh:*),
             Bash(bash scripts/labels.sh:*),
-            Bash(bash scripts/get_labels.sh:*),
-            Bash(bash scripts/get_issue.sh:*),
             Bash(bash scripts/close_issue.sh:*),
-            Read"
+            Bash(bash scripts/convert_to_discussion.sh:*),
+            Bash(bash scripts/search_issues.sh:*),
+            Bash(gh search issues:*)"
