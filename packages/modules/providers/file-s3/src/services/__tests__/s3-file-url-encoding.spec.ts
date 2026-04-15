@@ -1,34 +1,111 @@
-describe("S3 URL encoding", () => {
-  function encodeFileKey(fileKey: string): string {
-    return fileKey
-      .split("/")
-      .map((segment) => encodeURIComponent(segment))
-      .join("/")
+/**
+ * URL encoding for S3 object keys is implemented in S3FileService (upload / streams).
+ * These tests exercise the real service with a mocked S3 client `send` implementation.
+ */
+
+/* eslint-disable @typescript-eslint/no-var-requires */
+var mockS3Send: jest.Mock
+
+jest.mock("@aws-sdk/client-s3", () => {
+  const actual = jest.requireActual("@aws-sdk/client-s3") as typeof import("@aws-sdk/client-s3")
+  mockS3Send = jest.fn().mockResolvedValue({})
+  return {
+    ...actual,
+    S3Client: jest.fn().mockImplementation(() => ({
+      send: (...args: unknown[]) => mockS3Send(...args),
+    })),
+  }
+})
+
+jest.mock("@aws-sdk/s3-request-presigner", () => ({
+  getSignedUrl: jest.fn().mockResolvedValue("https://bucket.s3.amazonaws.com/signed"),
+}))
+
+import { PutObjectCommand } from "@aws-sdk/client-s3"
+import { S3FileService } from "../s3-file"
+
+describe("S3FileService URL encoding", () => {
+  const logger = {
+    error: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    debug: jest.fn(),
   }
 
-  it("should preserve path separators in fileKey", () => {
-    const result = encodeFileKey("public/image.jpg")
-    expect(result).toBe("public/image.jpg")
-    expect(result).not.toContain("%2F")
+  const baseOptions = {
+    file_url: "https://mybucket.s3.amazonaws.com",
+    region: "us-east-1",
+    bucket: "test-bucket",
+    access_key_id: "test-key",
+    secret_access_key: "test-secret",
+  }
+
+  beforeEach(() => {
+    mockS3Send.mockClear()
+    mockS3Send.mockResolvedValue({})
   })
 
-  it("should encode special characters within segments", () => {
-    const result = encodeFileKey("public/image file.jpg")
-    expect(result).toBe("public/image%20file.jpg")
+  it("preserves path separators in upload() URLs (no %2F between prefix segments)", async () => {
+    const service = new S3FileService({ logger } as any, {
+      ...baseOptions,
+      prefix: "public/",
+    })
+
+    const result = await service.upload({
+      filename: "image.jpg",
+      mimeType: "image/jpeg",
+      content: Buffer.from("test").toString("base64"),
+      access: "public",
+    })
+
+    expect(result.url).not.toContain("%2F")
+    expect(result.url).toMatch(/public\/image-[^/]+\.jpg$/)
+
+    expect(mockS3Send).toHaveBeenCalledTimes(1)
+    const command = mockS3Send.mock.calls[0][0] as InstanceType<typeof PutObjectCommand>
+    expect(command.input.Key).toMatch(/^public\/image-/)
+    expect(command.input.Key).toContain("/")
   })
 
-  it("should handle deeply nested paths", () => {
-    const result = encodeFileKey("uploads/2024/03/my document.pdf")
-    expect(result).toBe("uploads/2024/03/my%20document.pdf")
+  it("encodes special characters inside a path segment (e.g. spaces) while keeping slashes", async () => {
+    const service = new S3FileService({ logger } as any, {
+      ...baseOptions,
+      prefix: "uploads/2024/",
+    })
+
+    const result = await service.upload({
+      filename: "my document.jpg",
+      mimeType: "image/jpeg",
+      content: Buffer.from("x").toString("base64"),
+      access: "public",
+    })
+
+    expect(result.url).not.toContain("%2F")
+    expect(result.url).toContain("uploads/2024/")
+    expect(result.url).toMatch(/my%20document-[^/]+\.jpg$/)
+
+    const command = mockS3Send.mock.calls[0][0] as InstanceType<typeof PutObjectCommand>
+    expect(command.input.Key).toMatch(/^uploads\/2024\/my document-/)
   })
 
-  it("should handle fileKey with no separators", () => {
-    const result = encodeFileKey("simple-file.jpg")
-    expect(result).toBe("simple-file.jpg")
-  })
+  it("encodes characters such as & within a segment", async () => {
+    const service = new S3FileService({ logger } as any, {
+      ...baseOptions,
+      prefix: "docs/",
+    })
 
-  it("should handle special characters like ampersand", () => {
-    const result = encodeFileKey("docs/Q&A file.pdf")
-    expect(result).toBe("docs/Q%26A%20file.pdf")
+    const result = await service.upload({
+      filename: "Q&A file.pdf",
+      mimeType: "application/pdf",
+      content: Buffer.from("pdf").toString("base64"),
+      access: "public",
+    })
+
+    expect(result.url).not.toContain("%2F")
+    expect(result.url).toContain("docs/")
+    expect(result.url).toMatch(/Q%26A%20file-[^/]+\.pdf$/)
+
+    const command = mockS3Send.mock.calls[0][0] as InstanceType<typeof PutObjectCommand>
+    expect(command.input.Key).toMatch(/^docs\/Q&A file-/)
   })
 })
