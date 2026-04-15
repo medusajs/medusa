@@ -1,0 +1,104 @@
+export const metadata = {
+  title: `Worker Monitoring`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to monitor your worker performance using the Workers monitoring dashboard.
+
+<Note>
+
+Worker monitoring is currently in preview and may not be available for all users. The feature is gradually being rolled out to all organizations.
+
+</Note>
+
+## Worker Metrics Overview
+
+The Workers monitoring page provides detailed insights into your background worker performance through four key metric cards:
+
+## Metric Cards
+
+### Total CPU
+
+Displays an area chart showing your workers' CPU allocation and usage:
+
+- **Allocated CPU**: The total CPU resources allocated to your worker instances
+- **Used CPU**: The actual CPU resources being consumed by worker processes
+- **Visualization**: Area chart with time-based data showing worker CPU trends
+
+### Per Instance CPU
+
+Shows a line chart tracking CPU performance across individual worker instances:
+
+- **Minimum CPU**: The lowest CPU percentage used across worker instances
+- **Maximum CPU**: The highest CPU percentage used across worker instances  
+- **Average CPU**: The mean CPU usage across all worker instances
+- **Visualization**: Multi-line chart showing CPU performance variation between workers
+
+### Per Instance Memory
+
+Displays memory utilization patterns across worker instances:
+
+- **Minimum Memory**: The lowest memory percentage used across worker instances
+- **Maximum Memory**: The highest memory percentage used across worker instances
+- **Average Memory**: The mean memory usage across all worker instances
+- **Visualization**: Multi-line chart showing memory consumption patterns for workers
+
+### Restarts
+
+Tracks worker restart frequency and patterns:
+
+- **Restart Count**: Number of worker restarts within the selected time range
+- **Restart Timing**: When worker restarts occurred
+- **Visualization**: Bar chart showing worker restart frequency over time
+
+## Accessing Worker Monitoring
+
+To access worker monitoring:
+
+1. Go to your project's dashboard in Cloud.
+2. Click on the environment card you want to monitor.
+3. Click the **Monitoring** tab.
+4. Select **Workers** from the monitoring sidebar.
+
+## Interpreting Worker Metrics
+
+### Worker CPU Usage
+
+- **Efficient processing**: Workers should show CPU spikes during job processing, then return to low usage
+- **Sustained high usage**: May indicate bottlenecks in worker job processing
+- **Low usage**: Could suggest insufficient worker load or potential configuration issues
+
+### Worker Memory Patterns
+
+- **Memory per job**: Memory should increase during job processing and release afterwards
+- **Memory accumulation**: Gradual memory increases may indicate memory leaks in worker code
+- **Memory spikes**: Large spikes may suggest jobs that require optimization
+
+### Worker Restart Analysis
+
+- **Planned restarts**: Expected during deployments and configuration updates
+- **Job-related restarts**: May occur after processing certain types of jobs
+- **Error-induced restarts**: Frequent unexpected restarts may indicate worker code issues
+
+## Worker Performance Best Practices
+
+### Monitoring Worker Health
+
+- **Resource allocation**: Ensure workers have sufficient CPU and memory for peak job loads
+- **Job queuing**: Monitor for job queue buildup that might overwhelm workers
+- **Error rates**: Track restart patterns to identify and resolve worker issues
+
+### Scaling Considerations
+
+- **Load patterns**: Use metrics to determine optimal worker instance counts
+- **Resource utilization**: Scale up when workers consistently hit resource limits
+- **Cost optimization**: Scale down during low-activity periods to reduce costs
+
+## Time Range and Data Refresh
+
+Use the monitoring controls in the top right to:
+
+- Select appropriate time ranges based on your subscription plan limits
+- Refresh data to get the latest worker performance metrics
+- Zoom into specific time periods to analyze worker behavior during incidents

@@ -138,6 +138,47 @@ export const generatedSidebars = [
                 "title": "Custom Domains",
                 "path": "/environments/custom-domains",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Monitoring",
+                "path": "/environments/monitoring",
+                "children": [
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "title": "Servers",
+                    "path": "/environments/monitoring/servers",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "title": "Workers",
+                    "path": "/environments/monitoring/workers",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "title": "Database",
+                    "path": "/environments/monitoring/database",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "title": "HTTP",
+                    "path": "/environments/monitoring/http",
+                    "children": []
+                  }
+                ]
               }
             ]
           },

@@ -21,7 +21,7 @@ export const generatedEditDates = {
   "app/usage/page.mdx": "2026-04-10T10:22:15.211Z",
   "app/billing/manage/page.mdx": "2025-10-08T14:40:23.629Z",
   "app/pricing/page.mdx": "2025-09-05T10:31:59.059Z",
-  "app/sign-up/page.mdx": "2026-03-27T09:49:44.526Z",
+  "app/sign-up/page.mdx": "2026-04-15T12:15:33.670Z",
   "app/comparison/page.mdx": "2026-01-08T09:11:35.592Z",
   "app/billing/plans/page.mdx": "2026-04-10T08:03:51.842Z",
   "app/cache/page.mdx": "2025-11-12T14:37:24.809Z",
@@ -33,8 +33,13 @@ export const generatedEditDates = {
   "app/projects/prerequisites/page.mdx": "2026-02-09T14:40:20.415Z",
   "app/storefront/page.mdx": "2026-04-08T16:19:50.391Z",
   "app/projects/rename-repo-branch/page.mdx": "2026-03-18T09:23:58.584Z",
-  "app/environments/custom-domains/page.mdx": "2026-04-14T10:51:20.317Z",
+  "app/environments/custom-domains/page.mdx": "2026-04-15T12:16:51.795Z",
   "app/command-palette/page.mdx": "2026-04-10T10:20:57.642Z",
   "app/environments/subdomains/page.mdx": "2026-04-14T10:50:18.756Z",
-  "app/ip-addresses/page.mdx": "2026-04-14T10:43:16.892Z"
+  "app/ip-addresses/page.mdx": "2026-04-14T10:43:16.892Z",
+  "app/environments/monitoring/database/page.mdx": "2026-04-15T12:16:28.208Z",
+  "app/environments/monitoring/http/page.mdx": "2026-04-15T12:16:32.920Z",
+  "app/environments/monitoring/page.mdx": "2026-04-15T12:15:55.619Z",
+  "app/environments/monitoring/servers/page.mdx": "2026-04-15T12:16:07.910Z",
+  "app/environments/monitoring/workers/page.mdx": "2026-04-15T12:16:21.305Z"
 }
