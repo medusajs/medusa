@@ -130,6 +130,16 @@ export const AdminOrderCancelFulfillment = WithAdditionalData(
   OrderCancelFulfillment
 )
 
+export type AdminOrderMarkAsDeliveredType = z.infer<
+  typeof OrderMarkAsDelivered
+>
+export const OrderMarkAsDelivered = z.object({
+  no_notification: z.boolean().optional(),
+})
+export const AdminOrderMarkAsDelivered = WithAdditionalData(
+  OrderMarkAsDelivered
+)
+
 export const AdminOrderChangesParams = createSelectParams().merge(
   z.object({
     id: z.union([z.string(), z.array(z.string())]).optional(),

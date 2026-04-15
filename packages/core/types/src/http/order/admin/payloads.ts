@@ -107,6 +107,13 @@ export interface AdminCancelOrderFulfillment {
   no_notification?: boolean
 }
 
+export interface AdminMarkOrderFulfillmentAsDelivered {
+  /**
+   * Whether to notify the customer about this change.
+   */
+  no_notification?: boolean
+}
+
 export interface AdminRequestOrderTransfer {
   /**
    * The ID of the customer to transfer the order to.
