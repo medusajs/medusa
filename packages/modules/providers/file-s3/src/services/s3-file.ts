@@ -163,7 +163,7 @@ export class S3FileService extends AbstractFileProviderService {
     }
 
     return {
-      url: `${this.config_.fileUrl}/${encodeURIComponent(fileKey)}`,
+      url: `${this.config_.fileUrl}/${fileKey.split("/").map(encodeURIComponent).join("/")}`,
       key: fileKey,
     }
   }
