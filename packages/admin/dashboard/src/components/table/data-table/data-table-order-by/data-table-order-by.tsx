@@ -106,7 +106,10 @@ export const DataTableOrderBy = <TData,>({
           <DescendingSorting />
         </IconButton>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content className="z-[1]" align="end">
+      <DropdownMenu.Content
+        className="z-[1] max-h-[var(--radix-popper-available-height)] overflow-y-auto"
+        align="end"
+      >
         <DropdownMenu.RadioGroup
           value={state.key}
           onValueChange={handleKeyChange}
