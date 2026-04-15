@@ -123,6 +123,7 @@ Load the reference file for the assigned category and follow the detailed flow:
 | Label | When to apply |
 |-------|---------------|
 | `type: bug` | Bug is confirmed — always apply when closing the triage on a valid bug report |
+| `type: docs` | Issue is caused by a documentation gap — apply even when the issue was originally reported as a bug |
 | `requires-more` | Issue lacks details needed to validate or reproduce |
 | `requires-team` | Critical/high priority, or needs team expertise; cannot be resolved without team review |
 | `good-first-issue` | Bug is confirmed, fix is straightforward — encourages community contribution |
@@ -164,6 +165,8 @@ Whenever linking to Medusa docs in a comment, load `reference/doc-links.md` to c
 - [ ] Missing the Cloud platform exception in support issues
 - [ ] Linking to documentation using raw file paths instead of following `reference/doc-links.md`
 - [ ] Not fetching issue details when they weren't passed as arguments
+- [ ] Closing an issue that was reported as a bug but is actually a documentation gap — keep it open, add `type: docs`, and route to the docs flow
+- [ ] Forgetting to add `type: docs` when the root cause is a documentation gap, even if the issue was filed as a bug
 
 ## Reference Files
 

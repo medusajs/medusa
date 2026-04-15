@@ -72,7 +72,29 @@ Search the Medusa codebase to confirm whether the reported behavior is actually 
 
 **Outcomes:**
 
-### Bug NOT confirmed
+### Bug NOT confirmed — documentation gap
+
+If the code behaves correctly but the documentation is missing, unclear, or misleading in a way that caused the user to believe it was a bug:
+
+1. Add a comment explaining that the code is working as intended and that the confusion stems from a documentation gap
+2. Add label: `type: docs`
+3. Load `reference/docs.md` and continue the docs triage flow for the gap identified
+4. **Do NOT close the issue** — it remains open as a documentation task
+
+**Comment template — documentation gap:**
+```
+After investigating this, the code is actually working as intended — the behavior you're seeing is expected.
+
+However, I agree this isn't well documented, and it's understandable why it looked like a bug. We'll track this as a documentation improvement to make [X] clearer.
+
+[Optional: briefly explain the correct behavior or link to any existing docs that partially cover it]
+```
+
+```bash
+bash scripts/labels.sh <issue_number> add "type: docs"
+```
+
+### Bug NOT confirmed — expected behavior
 
 Add a comment explaining why the behavior is expected or what was found, then close the issue.
 
