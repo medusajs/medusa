@@ -50,6 +50,7 @@ jobs:
     uses: ./.github/workflows/review-pr-action.yml
     with:
       pr_number: '${{ matrix.pr.number }}'
+      trigger_reason: 'manual workflow dispatch'
     secrets:
       MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
       MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
@@ -68,6 +69,7 @@ jobs:
     outputs:
       pr_number: ${{ steps.set.outputs.pr_number }}
       should_review: ${{ steps.set.outputs.should_review }}
+      trigger_reason: ${{ steps.set.outputs.trigger_reason }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -82,8 +84,15 @@ jobs:
           if [ "${{ github.event_name }}" == "issue_comment" ]; then
             echo "pr_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
             echo "should_review=true" >> $GITHUB_OUTPUT
+            echo "trigger_reason=manual review request via comment" >> $GITHUB_OUTPUT
           else
             echo "pr_number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+
+            # Skip PR description edits made by bots (e.g. Cursor)
+            if [ "${{ github.event.action }}" == "edited" ] && [ "${{ github.event.sender.type }}" == "Bot" ]; then
+              echo "should_review=false" >> $GITHUB_OUTPUT
+              exit 0
+            fi
 
             # Skip merge commits (e.g. merging base branch into the PR branch)
             if [ "${{ github.event.action }}" == "synchronize" ]; then
@@ -93,6 +102,15 @@ jobs:
                 exit 0
               fi
             fi
+
+            # Determine trigger reason
+            case "${{ github.event.action }}" in
+              opened)    echo "trigger_reason=new PR opened" >> $GITHUB_OUTPUT ;;
+              reopened)  echo "trigger_reason=PR reopened" >> $GITHUB_OUTPUT ;;
+              synchronize) echo "trigger_reason=new commit pushed" >> $GITHUB_OUTPUT ;;
+              edited)    echo "trigger_reason=PR description updated" >> $GITHUB_OUTPUT ;;
+              *)         echo "trigger_reason=${{ github.event.action }}" >> $GITHUB_OUTPUT ;;
+            esac
 
             AUTHOR="${{ github.event.pull_request.user.login }}"
             if grep -qF "\"@${AUTHOR}\"" ./.github/teams.yml; then
@@ -109,6 +127,7 @@ jobs:
     uses: ./.github/workflows/review-pr-action.yml
     with:
       pr_number: ${{ needs.prepare.outputs.pr_number }}
+      trigger_reason: ${{ needs.prepare.outputs.trigger_reason }}
     secrets:
       MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
       MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
