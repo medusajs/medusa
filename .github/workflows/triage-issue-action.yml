@@ -76,6 +76,7 @@ jobs:
             "Bash(bash scripts/get_issue.sh:*),
             Bash(bash scripts/get_comments.sh:*),
             Bash(bash scripts/get_labels.sh:*),
+            Bash(bash scripts/get_linked_prs.sh:*),
             Bash(bash scripts/add_comment.sh:*),
             Bash(bash scripts/labels.sh:*),
             Bash(bash scripts/close_issue.sh:*),
