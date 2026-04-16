@@ -34,11 +34,11 @@ export default async ({ app, container, plugins }: Options) => {
   const sourcePaths: string[] = []
 
   /**
-   * Always load plugin routes before the Medusa core routes, since it
-   * will allow the plugin to define routes with higher priority
-   * than Medusa. Here are couple of examples.
+   * Always load project and plugin routes before the Medusa core routes, since it
+   * will allow them to define routes and middlewares with higher priority
+   * than Medusa. Here are a couple of examples:
    *
-   * - Plugin registers a route called "/products/active"
+   * - A project registers a custom middleware or route on "/products/active"
    * - Medusa registers a route called "/products/:id"
    *
    * Now, if Medusa routes gets registered first, then the "/products/active"
