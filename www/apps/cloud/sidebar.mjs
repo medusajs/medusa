@@ -117,6 +117,11 @@ export const sidebar = [
             title: "Account",
             path: "/user",
           },
+          {
+            type: "link",
+            title: "Access Keys",
+            path: "/access-keys",
+          },
         ],
       },
       {

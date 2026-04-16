@@ -173,6 +173,14 @@ export const generatedSidebars = [
             "title": "Account",
             "path": "/user",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Access Keys",
+            "path": "/access-keys",
+            "children": []
           }
         ]
       },
