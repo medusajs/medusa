@@ -54180,12 +54180,6 @@ const StreamTestPage = () => {
     
     const { stream, abort } = await sdk.client.fetchStream("/admin/stream")
 
-    if (!stream) {
-      console.error("Failed to start stream")
-      setIsStreaming(false)
-      return
-    }
-
     // Store the abort function for the abort button
     setAbortStream(() => abort)
 
@@ -54199,6 +54193,10 @@ const StreamTestPage = () => {
       // Don't log abort errors as they're expected when user clicks abort
       if (error instanceof Error && error.name !== "AbortError") {
         console.error("Stream error:", error)
+
+        if (error.name === "HttpError") {
+          abort()
+        }
       }
     } finally {
       setIsStreaming(false)
@@ -133535,7 +133533,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [POST /admin/workflows-executions/{workflow_id}/steps/success](undefined/api/admin#workflows-executions_postworkflowsexecutionsworkflow_idstepssuccess)
 - [GET /admin/workflows-executions/{workflow_id}/subscribe](undefined/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idsubscribe)
 - [GET /admin/workflows-executions/{workflow_id}/{transaction_id}](undefined/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idtransaction_id)
-- [GET /admin/workflows-executions/{workflow_id}/{transaction_id}/{step_id}/subscribe](undefined/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idtransaction_idstep_idsubscribe)
+- [GET /admin/workflows-executions/{workflow_id}/{transaction_id}/subscribe](undefined/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idtransaction_idsubscribe)
 - [POST /auth/session](undefined/api/admin#auth_postsession)
 - [DELETE /auth/session](undefined/api/admin#auth_deletesession)
 - [POST /auth/token/refresh](undefined/api/admin#auth_postadminauthtokenrefresh)
