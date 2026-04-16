@@ -64,7 +64,6 @@ describe("S3FileService URL encoding", () => {
     expect(mockS3Send).toHaveBeenCalledTimes(1)
     const command = mockS3Send.mock.calls[0][0] as InstanceType<typeof PutObjectCommand>
     expect(command.input.Key).toMatch(/^public\/image-/)
-    expect(command.input.Key).toContain("/")
   })
 
   it("encodes special characters inside a path segment (e.g. spaces) while keeping slashes", async () => {
