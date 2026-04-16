@@ -1144,6 +1144,10 @@ export const filesMap = [
     "pathname": "/medusa-container-resources"
   },
   {
+    "filePath": "/www/apps/resources/app/medusa-oas-cli/page.mdx",
+    "pathname": "/medusa-oas-cli"
+  },
+  {
     "filePath": "/www/apps/resources/app/medusa-workflows-reference/page.mdx",
     "pathname": "/medusa-workflows-reference"
   },

@@ -1,0 +1,194 @@
+---
+sidebar_label: "medusa-oas-cli"
+sidebar_position: 2
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `medusa-oas-cli Reference`,
+}
+
+# {metadata.title}
+
+The `medusa-oas-cli` is a command-line tool for generating and processing OpenAPI specifications from Medusa applications. It helps you create API documentation by scanning your Medusa backend and generating comprehensive OpenAPI (OAS) YAML files.
+
+## Installation
+
+The CLI is available as part of the `@medusajs/oas` package:
+
+```bash
+npm install @medusajs/oas
+```
+
+## Usage
+
+```bash
+medusa-oas-cli [options]
+```
+
+## Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--src-file <srcFile>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The path to the source OpenAPI file to process.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Required
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--out-dir <outDir>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The output directory where processed files will be saved.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Required
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--config <config>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Path to a custom configuration file.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      -
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--dry-run`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Run the command without generating files. Useful for testing configuration.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--main-file-name <mainFileName>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The name of the main YAML file.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      `openapi.yaml`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--archive-out-file <archiveOutFile>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Path to copy the full bundled YAML to (e.g., for versioned storage). Creates intermediate directories as needed.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      -
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Examples
+
+### Basic Usage
+
+Generate OpenAPI documentation from a source file:
+
+```bash
+medusa-oas-cli --src-file ./openapi.yaml --out-dir ./docs/api
+```
+
+### With Custom Configuration
+
+Use a custom configuration file:
+
+```bash
+medusa-oas-cli --src-file ./openapi.yaml --out-dir ./docs/api --config ./oas.config.js
+```
+
+### Dry Run
+
+Test your configuration without generating files:
+
+```bash
+medusa-oas-cli --src-file ./openapi.yaml --out-dir ./docs/api --dry-run
+```
+
+### Archive to Versioned Storage
+
+Generate documentation and archive the bundled YAML file:
+
+```bash
+medusa-oas-cli \
+  --src-file ./openapi.yaml \
+  --out-dir ./docs/api \
+  --archive-out-file ./archive/v1.0.0/openapi.yaml
+```
+
+## Features
+
+- **OpenAPI Processing**: Processes and sanitizes OpenAPI specifications
+- **Circular Reference Fixing**: Automatically resolves circular references in your API schema
+- **Custom Configuration**: Support for custom configuration files
+- **Dry Run Mode**: Test your setup without generating files
+- **Versioned Archiving**: Archive generated specifications for versioning with `--archive-out-file`
+
+## Related
+
+- [OpenAPI Specification](https://swagger.io/specification/)
+- [Medusa CLI Reference](/medusa-cli)

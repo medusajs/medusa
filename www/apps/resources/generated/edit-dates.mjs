@@ -7017,5 +7017,6 @@ export const generatedEditDates = {
   "app/commerce-modules/loyalty/store-credit/admin-guide/page.mdx": "2026-04-13T08:04:40.659Z",
   "app/commerce-modules/loyalty/store-credit/concepts/page.mdx": "2026-04-13T08:03:13.100Z",
   "app/commerce-modules/loyalty/store-credit/storefront-guide/page.mdx": "2026-04-13T08:06:25.569Z",
-  "app/commerce-modules/loyalty/workflows/page.mdx": "2026-04-13T08:07:20.544Z"
+  "app/commerce-modules/loyalty/workflows/page.mdx": "2026-04-13T08:07:20.544Z",
+  "app/medusa-oas-cli/page.mdx": "2026-04-16T12:03:07.119Z"
 }
