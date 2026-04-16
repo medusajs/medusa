@@ -72,7 +72,29 @@ Search the Medusa codebase to confirm whether the reported behavior is actually 
 
 **Outcomes:**
 
-### Bug NOT confirmed
+### Bug NOT confirmed — documentation gap
+
+If the code behaves correctly but the documentation is missing, unclear, or misleading in a way that caused the user to believe it was a bug:
+
+1. Add a comment explaining that the code is working as intended and that the confusion stems from a documentation gap
+2. Add label: `type: docs`
+3. Load `reference/docs.md` and continue the docs triage flow for the gap identified
+4. **Do NOT close the issue** — it remains open as a documentation task
+
+**Comment template — documentation gap:**
+```
+After investigating this, the code is actually working as intended — the behavior you're seeing is expected.
+
+However, I agree this isn't well documented, and it's understandable why it looked like a bug. We'll track this as a documentation improvement to make [X] clearer.
+
+[Optional: briefly explain the correct behavior or link to any existing docs that partially cover it]
+```
+
+```bash
+bash scripts/labels.sh <issue_number> add "type: docs"
+```
+
+### Bug NOT confirmed — expected behavior
 
 Add a comment explaining why the behavior is expected or what was found, then close the issue.
 
@@ -117,6 +139,18 @@ I was able to reproduce/confirm this issue. [Brief explanation of what's happeni
 We'll track this for a fix. Thank you for the detailed report!
 ```
 
+**Comment template — bug confirmed, PR already linked:**
+
+> Use this when Step 0.5 detected a linked open PR. Do NOT add `good-first-issue` or `help-wanted`.
+
+```
+I was able to confirm this issue. [Brief explanation of what's happening and why.]
+
+[Optional: point to the relevant code location if found]
+
+It looks like #[pr_number] is already addressing this — we'll track progress there. Thank you for the report!
+```
+
 **Comment template — bug confirmed with `good-first-issue`:**
 ```
 I was able to reproduce/confirm this issue. [Brief explanation of what's happening and why.]
@@ -143,8 +177,9 @@ The fix may be a bit involved, but we'd welcome community contributions on this 
 | Priority is `critical` or `high` | `requires-team` |
 | Claude couldn't clearly identify root cause despite sufficient details | `requires-team` |
 | Issue is WWW-related (plugin not featured, etc.) | `requires-team` |
-| Bug confirmed, fix appears straightforward | `good-first-issue` |
-| Bug confirmed, fix appears complex | `help-wanted` |
+| Bug confirmed, fix appears straightforward, **no linked PR** | `good-first-issue` |
+| Bug confirmed, fix appears complex, **no linked PR** | `help-wanted` |
+| Bug confirmed, **open PR already linked** | Do NOT add `good-first-issue` or `help-wanted` |
 | Report lacks details (from Step 1) | `requires-more` |
 
 ```bash

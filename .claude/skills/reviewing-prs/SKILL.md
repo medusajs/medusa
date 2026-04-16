@@ -271,11 +271,20 @@ Decide the outcome:
 
 > **CRITICAL:** Any security issue, any potential bug, or any blocking performance issue (N+1, unbounded query) **must** result in `requires-more`, even if all other checks pass. Do not apply `initial-approval` with bugs or security issues as notes — they are always required changes.
 
-Post the comment then apply the label:
+Post the comment, apply the label, and remove the opposite label:
 ```bash
 bash scripts/add_comment.sh <pr_number> "<body>"
-bash scripts/labels.sh <pr_number> add <label>
+bash scripts/labels.sh <pr_number> add initial-approval
+bash scripts/labels.sh <pr_number> remove requires-more
 ```
+or
+```bash
+bash scripts/add_comment.sh <pr_number> "<body>"
+bash scripts/labels.sh <pr_number> add requires-more
+bash scripts/labels.sh <pr_number> remove initial-approval
+```
+
+> **CRITICAL:** A PR must never have both `initial-approval` and `requires-more` at the same time. Whenever you add one, always remove the other — even if the other label wasn't set by you.
 
 ## Common Mistakes
 
@@ -294,6 +303,7 @@ bash scripts/labels.sh <pr_number> add <label>
 - [ ] Flagging issues in removed (`-`) or unchanged context lines — only flag issues in the new added (`+`) lines of the diff
 - [ ] Requesting a change that the PR already makes — verify the current state of the code, not the old state
 - [ ] Not mentioning the PR author in the review comment — always `@mention` the author
+- [ ] Leaving both `initial-approval` and `requires-more` on a PR — always remove the opposite label when adding one
 
 ## Reference Files
 
