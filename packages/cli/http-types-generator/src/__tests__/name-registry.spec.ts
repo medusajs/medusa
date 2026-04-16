@@ -7,18 +7,24 @@ import {
 describe("NameRegistry.resolveHttpTypeName", () => {
   describe("global registry lookups", () => {
     it("maps known validator names to their HTTP type names", () => {
-      expect(NameRegistry.resolveHttpTypeName("AdminGetProductsParams")).toBe(
-        "AdminProductListParams"
-      )
       expect(NameRegistry.resolveHttpTypeName("AdminCustomersParams")).toBe(
         "AdminCustomerFilters"
       )
       expect(NameRegistry.resolveHttpTypeName("AdminGetOrdersParams")).toBe(
         "AdminOrderFilters"
       )
-      expect(NameRegistry.resolveHttpTypeName("StoreGetProductsParams")).toBe(
-        "StoreProductListParams"
+      expect(NameRegistry.resolveHttpTypeName("AdminGetProductOptionsParams")).toBe(
+        "AdminProductOptionParams"
       )
+      expect(NameRegistry.resolveHttpTypeName("StoreGetCollectionsParams")).toBe(
+        "StoreCollectionListParams"
+      )
+    })
+
+    it("returns 'skip' for validators mapped to skip in the global registry", () => {
+      expect(NameRegistry.resolveHttpTypeName("AdminGetProductsParams")).toBe("skip")
+      expect(NameRegistry.resolveHttpTypeName("StoreGetProductsParams")).toBe("skip")
+      expect(NameRegistry.resolveHttpTypeName("AdminGetProductVariantParams")).toBe("skip")
     })
 
     it("falls back to the export name when no mapping exists", () => {
@@ -71,10 +77,10 @@ describe("NameRegistry.resolveHttpTypeName", () => {
   })
 
   describe("claim domain overrides", () => {
-    it("maps AdminGetOrdersOrderParams to AdminClaimActionsParams in claim domain", () => {
+    it("maps AdminGetOrdersOrderParams to AdminClaimParams in claim domain", () => {
       expect(
         NameRegistry.resolveHttpTypeName("AdminGetOrdersOrderParams", "claim")
-      ).toBe("AdminClaimActionsParams")
+      ).toBe("AdminClaimParams")
     })
 
     it("maps AdminGetOrdersParams to AdminClaimListParams in claim domain", () => {
@@ -87,14 +93,21 @@ describe("NameRegistry.resolveHttpTypeName", () => {
 
 describe("NameRegistry.resolveValidatorName", () => {
   it("reverse-maps known HTTP type names back to validator names", () => {
-    expect(NameRegistry.resolveValidatorName("AdminProductListParams")).toBe(
-      "AdminGetProductsParams"
+    expect(NameRegistry.resolveValidatorName("AdminProductOptionParams")).toBe(
+      "AdminGetProductOptionsParams"
     )
     expect(NameRegistry.resolveValidatorName("AdminCustomerFilters")).toBe(
       "AdminCustomersParams"
     )
     expect(NameRegistry.resolveValidatorName("AdminOrderFilters")).toBe(
       "AdminGetOrdersParams"
+    )
+  })
+
+  it("falls back to HTTP type name for validators mapped to skip (excluded from reverse map)", () => {
+    // AdminGetProductsParams maps to "skip", so "AdminProductListParams" has no reverse entry
+    expect(NameRegistry.resolveValidatorName("AdminProductListParams")).toBe(
+      "AdminProductListParams"
     )
   })
 

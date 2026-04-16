@@ -1,4 +1,4 @@
-import { Prerequisites, InlineIcon } from "docs-ui"
+import { Prerequisites, InlineIcon, getOsShortcut, Kbd } from "docs-ui"
 import { ChevronUpDown } from "@medusajs/icons"
 
 export const metadata = {
@@ -34,6 +34,12 @@ If you've reached the limit of projects allowed in your organization's plan, you
 In this section, you'll learn how to create a project in Cloud to deploy your Medusa application.
 
 To create a project:
+
+<Note title="Tip">
+
+You can also start the project creation flow from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, then select **Create Project**.
+
+</Note>
 
 1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
 2. Click on the **Create Project** button in your organization's dashboard.
@@ -142,7 +148,7 @@ When you choose a subdomain for your project, it must be at least five character
 - `development`
 - `proxy`
 
-If you also deployed a storefront with your Medusa application, its URL will be a subdomain of `medusajs.site`. For example, if your backend's subdomain is `my-store`, your storefront's URL will be `my-store.medusajs.site`. You can also add a custom domain, as explained in the [Storefront Custom Domain](../storefront/page.mdx#storefront-custom-domain) guide.
+If you also deployed a storefront with your Medusa application, its URL will be a subdomain of `medusajs.site`. For example, if your backend's subdomain is `my-store`, your storefront's URL will be `my-store.medusajs.site`. You can also add a custom domain, as explained in the [Custom Domains](../environments/custom-domains/page.mdx) guide.
 
 ---
 
@@ -195,6 +201,7 @@ On the project's dashboard, you can view the following details:
     - Previews environments are created whenever you create a pull request in the linked GitHub repository. They allow you to preview changes before merging them into the main branch.
     - Learn more in the [Preview Environments](../environments/preview/page.mdx) guide.
 4. **Production URL**: The URL of the project's production deployment. You'll find the backend and storefront URLs (if deployed) under their respective titles in the Production environment card.
+   - If no backend custom domain is configured for the production environment, you'll see a **Setup Custom Domain** link that allows you to configure a custom domain directly from the environment card.
 5. **Repository**: The GitHub repository linked to the project. You'll find it as a "Repository" button at the top right of the project's dashboard. Clicking it will open the repository in a new tab.
 6. **Production Deployment Status**: The deployment status of the project for the backend and storefront. If it's "Live", then the deployment was successful. Learn more in the [Deployments](../deployments/page.mdx#deployment-statuses-and-lifecycle) guide.
 
@@ -243,7 +250,7 @@ Then, to add a storefront to an existing project:
 
 Cloud will then deploy the storefront along with the Medusa application. Once the deployment is complete, you'll be able to access the storefront from the Production environment card in the project's dashboard.
 
-You can also set a custom domain for the storefront, as explained in the [Storefront](../storefront/page.mdx#storefront-custom-domain) guide.
+You can also set a custom domain for the storefront, as explained in the [Custom Domains](../environments/custom-domains/page.mdx) guide.
 
 ---
 

@@ -14,8 +14,8 @@ export const VariantMediaSection = ({ variant }: VariantMediaSectionProps) => {
 
   // show only variant scoped images
   const media = (variant.images || []).filter((image) =>
-    image.variants?.some((variant) => variant.id === variant.id)
-  )
+  image.variants?.some((imageVariant) => imageVariant.id === variant.id)
+)
 
   return (
     <Container className="divide-y p-0">

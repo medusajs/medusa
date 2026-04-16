@@ -29,6 +29,11 @@ export const sidebar = [
             path: "/comparison",
             title: "Cloud vs Self Hosting",
           },
+          {
+            type: "link",
+            title: "Command Palette",
+            path: "/command-palette",
+          },
         ],
       },
       {
@@ -77,6 +82,16 @@ export const sidebar = [
                 type: "link",
                 title: "Environment Variables",
                 path: "/environments/environment-variables",
+              },
+              {
+                type: "link",
+                title: "Subdomains",
+                path: "/environments/subdomains",
+              },
+              {
+                type: "link",
+                title: "Custom Domains",
+                path: "/environments/custom-domains",
               },
             ],
           },
@@ -215,6 +230,18 @@ export const sidebar = [
             type: "link",
             title: "Usage",
             path: "/usage",
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Networking",
+        initialOpen: true,
+        children: [
+          {
+            type: "link",
+            title: "IP Addresses",
+            path: "/ip-addresses",
           },
         ],
       },

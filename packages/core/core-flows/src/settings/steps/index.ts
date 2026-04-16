@@ -1,3 +1,6 @@
 export * from "./create-view-configuration"
 export * from "./update-view-configuration"
 export * from "./set-active-view-configuration"
+export * from "./create-property-label"
+export * from "./update-property-label"
+export * from "./delete-property-labels"

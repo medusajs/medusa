@@ -6003,6 +6003,269 @@ moduleIntegrationTestRunner({
           expect(JSON.parse(JSON.stringify(result))).toEqual([])
         })
 
+        it("should compute fixed amount discount for buyget promotion", async () => {
+          const context = {
+            currency_code: "usd",
+            customer: {
+              customer_group: {
+                id: "VIP",
+              },
+            },
+            items: [
+              {
+                id: "item_cotton_tshirt",
+                quantity: 1,
+                subtotal: 500,
+                original_total: 500,
+                is_discountable: true,
+                product_category: {
+                  id: "catg_tshirt",
+                },
+                product: {
+                  id: "prod_tshirt_1",
+                },
+              },
+              {
+                id: "item_cotton_sweater",
+                quantity: 2,
+                subtotal: 1000,
+                original_total: 1000,
+                is_discountable: true,
+                product_category: {
+                  id: "catg_sweater",
+                },
+                product: {
+                  id: "prod_sweater_1",
+                },
+              },
+            ],
+          }
+
+          await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            rules: [
+              {
+                attribute: "customer.customer_group.id",
+                operator: "in",
+                values: ["VIP", "top100"],
+              },
+            ],
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              value: 200,
+              allocation: "each",
+              max_quantity: 1,
+              apply_to_quantity: 1,
+              buy_rules_min_quantity: 1,
+              target_rules: [
+                {
+                  attribute: "items.product_category.id",
+                  operator: "eq",
+                  values: ["catg_tshirt"],
+                },
+              ],
+              buy_rules: [
+                {
+                  attribute: "items.product_category.id",
+                  operator: "eq",
+                  values: ["catg_sweater"],
+                },
+              ],
+            } as any,
+          })
+
+          const result = await service.computeActions(
+            ["PROMOTION_TEST"],
+            context
+          )
+
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
+            {
+              action: "addItemAdjustment",
+              item_id: "item_cotton_tshirt",
+              amount: 200,
+              code: "PROMOTION_TEST",
+            },
+          ])
+        })
+
+        it("should cap fixed discount at item price when value exceeds item price", async () => {
+          const context = {
+            currency_code: "usd",
+            customer: {
+              customer_group: {
+                id: "VIP",
+              },
+            },
+            items: [
+              {
+                id: "item_cotton_tshirt",
+                quantity: 1,
+                subtotal: 500,
+                original_total: 500,
+                is_discountable: true,
+                product_category: {
+                  id: "catg_tshirt",
+                },
+                product: {
+                  id: "prod_tshirt_1",
+                },
+              },
+              {
+                id: "item_cotton_sweater",
+                quantity: 2,
+                subtotal: 1000,
+                original_total: 1000,
+                is_discountable: true,
+                product_category: {
+                  id: "catg_sweater",
+                },
+                product: {
+                  id: "prod_sweater_1",
+                },
+              },
+            ],
+          }
+
+          await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            rules: [
+              {
+                attribute: "customer.customer_group.id",
+                operator: "in",
+                values: ["VIP", "top100"],
+              },
+            ],
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              value: 1000,
+              allocation: "each",
+              max_quantity: 1,
+              apply_to_quantity: 1,
+              buy_rules_min_quantity: 1,
+              target_rules: [
+                {
+                  attribute: "items.product_category.id",
+                  operator: "eq",
+                  values: ["catg_tshirt"],
+                },
+              ],
+              buy_rules: [
+                {
+                  attribute: "items.product_category.id",
+                  operator: "eq",
+                  values: ["catg_sweater"],
+                },
+              ],
+            } as any,
+          })
+
+          const result = await service.computeActions(
+            ["PROMOTION_TEST"],
+            context
+          )
+
+          // Fixed value 1000 exceeds item price 500, should be capped at 500
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
+            {
+              action: "addItemAdjustment",
+              item_id: "item_cotton_tshirt",
+              amount: 500,
+              code: "PROMOTION_TEST",
+            },
+          ])
+        })
+
+        it("should apply fixed discount per unit when apply_to_quantity > 1", async () => {
+          const context = {
+            currency_code: "usd",
+            customer: {
+              customer_group: {
+                id: "VIP",
+              },
+            },
+            items: [
+              {
+                id: "item_cotton_tshirt",
+                quantity: 3,
+                subtotal: 3000,
+                original_total: 3000,
+                is_discountable: true,
+                product_category: {
+                  id: "catg_tshirt",
+                },
+                product: {
+                  id: "prod_tshirt_1",
+                },
+              },
+              {
+                id: "item_cotton_sweater",
+                quantity: 2,
+                subtotal: 1000,
+                original_total: 1000,
+                is_discountable: true,
+                product_category: {
+                  id: "catg_sweater",
+                },
+                product: {
+                  id: "prod_sweater_1",
+                },
+              },
+            ],
+          }
+
+          await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            rules: [
+              {
+                attribute: "customer.customer_group.id",
+                operator: "in",
+                values: ["VIP", "top100"],
+              },
+            ],
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              value: 200,
+              allocation: "each",
+              max_quantity: 2,
+              apply_to_quantity: 2,
+              buy_rules_min_quantity: 1,
+              target_rules: [
+                {
+                  attribute: "items.product_category.id",
+                  operator: "eq",
+                  values: ["catg_tshirt"],
+                },
+              ],
+              buy_rules: [
+                {
+                  attribute: "items.product_category.id",
+                  operator: "eq",
+                  values: ["catg_sweater"],
+                },
+              ],
+            } as any,
+          })
+
+          const result = await service.computeActions(
+            ["PROMOTION_TEST"],
+            context
+          )
+
+          // Fixed value 200 per unit * 2 units = 400 total
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
+            {
+              action: "addItemAdjustment",
+              item_id: "item_cotton_tshirt",
+              amount: 400,
+              code: "PROMOTION_TEST",
+            },
+          ])
+        })
+
         it("should compute actions for multiple items when conditions for target qty exceed one item", async () => {
           const context = {
             currency_code: "usd",

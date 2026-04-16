@@ -121,11 +121,11 @@ export const handlePaymentWorkflow = createWorkflow(
     emitEventStep({
       eventName: "payment.processed",
       data: {
-        id: input.paymentId
+        id: input.paymentId,
       },
       options: {
-        priority: EventPriority.CRITICAL
-      }
+        priority: EventPriority.CRITICAL,
+      },
     })
 
     return new WorkflowResponse({ success: true })

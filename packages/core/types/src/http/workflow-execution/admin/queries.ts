@@ -1,5 +1,5 @@
 import { OperatorMap } from "../../.."
-import { FindParams } from "../../common"
+import { FindParams, SelectParams } from "../../common"
 
 export interface AdminGetWorkflowExecutionsParams extends FindParams {
   /**
@@ -23,3 +23,5 @@ export interface AdminGetWorkflowExecutionsParams extends FindParams {
    */
   created_at?: OperatorMap<string>
 }
+
+export interface AdminGetWorkflowExecutionDetailsParams extends SelectParams {}

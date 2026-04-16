@@ -134,7 +134,7 @@ export const MainContentLayout = ({
         {showContentMenu && (
           <>
             {sidebarCollapser(
-              desktopSidebarOpen ? "right-[225px]" : "right-docs_0.25"
+              desktopSidebarOpen ? "right-[242px]" : "right-docs_0.25"
             )}
             {desktopSidebarOpen && <ContentMenu />}
           </>
