@@ -915,14 +915,14 @@ function processEntity(
           servicesEntityMap: servicesEntityMap,
         })?.isArray
 
-        const parentAlreadyExists = currentObjectRepresentationRef.parents.some(
+        const existingParent = currentObjectRepresentationRef.parents.find(
           (existingParent) =>
             existingParent.ref?.entity ===
               currentParentIntermediateRef.entity &&
             existingParent.targetProp === entityTargetPropertyNameInParent
         )
 
-        if (!parentAlreadyExists) {
+        if (!existingParent) {
           currentObjectRepresentationRef.parents.push({
             ref: currentParentIntermediateRef,
             inSchemaRef: parentObjectRepresentationRef,
@@ -930,6 +930,8 @@ function processEntity(
             inverseSideProp: parentPropertyNameWithinCurrentEntity?.name!,
             isList: entityTargetPropertyIsListInParent,
           })
+        } else if (!existingParent.inSchemaRef) {
+          existingParent.inSchemaRef = parentObjectRepresentationRef
         }
       }
     }
