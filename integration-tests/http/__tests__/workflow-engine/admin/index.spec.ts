@@ -394,23 +394,12 @@ medusaIntegrationTestRunner({
                 const event = JSON.parse(data)
                 console.log("event", event)
                 if (event.event_type === "onFinish") {
-                  onWorkflowFinishSpy()
+                  onWorkflow2FinishSpy()
                   resolve()
                 }
               }
             }
           }
-
-          void workflowOrcModule.subscribe({
-            workflowId: workflow2Id,
-            subscriber: (event) => {
-              console.log("event", event)
-              if (event.eventType === "onFinish") {
-                onWorkflow2FinishSpy()
-                resolve()
-              }
-            },
-          })
         })
 
         workflowOrcModule.run(workflowId, {
