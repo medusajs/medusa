@@ -3081,34 +3081,36 @@ medusaIntegrationTestRunner({
 
             await eventBus.subscribe(OrderWorkflowEvents.PLACED, subscriber)
 
-            const paymentCollection = (
+            try {
+              const paymentCollection = (
+                await api.post(
+                  `/store/payment-collections`,
+                  { cart_id: cart.id },
+                  storeHeaders
+                )
+              ).data.payment_collection
+
               await api.post(
-                `/store/payment-collections`,
-                { cart_id: cart.id },
+                `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+                { provider_id: "pp_system_default" },
                 storeHeaders
               )
-            ).data.payment_collection
 
-            await api.post(
-              `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
-              { provider_id: "pp_system_default" },
-              storeHeaders
-            )
+              const response = await api.post(
+                `/store/carts/${cart.id}/complete`,
+                {},
+                storeHeaders
+              )
 
-            const response = await api.post(
-              `/store/carts/${cart.id}/complete`,
-              {},
-              storeHeaders
-            )
+              expect(response.status).toEqual(200)
+              expect(response.data.order.id).toBeDefined()
 
-            expect(response.status).toEqual(200)
-            expect(response.data.order.id).toBeDefined()
-
-            // After successful cart completion, the event MUST have fired exactly once
-            expect(emittedEvents).toHaveLength(1)
-            expect(emittedEvents[0]).toEqual(OrderWorkflowEvents.PLACED)
-
-            await eventBus.unsubscribe(OrderWorkflowEvents.PLACED, subscriber)
+              // After successful cart completion, the event MUST have fired exactly once
+              expect(emittedEvents).toHaveLength(1)
+              expect(emittedEvents[0]).toEqual(OrderWorkflowEvents.PLACED)
+            } finally {
+              await eventBus.unsubscribe(OrderWorkflowEvents.PLACED, subscriber)
+            }
           })
         })
 
