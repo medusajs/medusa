@@ -1013,7 +1013,7 @@
     "list": {
       "empty": {
         "heading": "Müşteri grubu bulunamadı",
-        "description": "Bir kullanıcı davet edildiğinde, burada görünecektir."
+        "description": "Gösterilecek müşteri grubu bulunmuyor."
       },
       "filtered": {
         "heading": "Sonuç yok",
