@@ -100,6 +100,13 @@ export interface AdminCreateOrderShipment {
   metadata?: Record<string, unknown> | null
 }
 
+export interface AdminMarkOrderFulfillmentAsDelivered {
+  /**
+   * Whether to notify the customer about the delivery.
+   */
+  no_notification?: boolean
+}
+
 export interface AdminCancelOrderFulfillment {
   /**
    * Whether to notify the customer about this change.
