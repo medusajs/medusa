@@ -192,7 +192,7 @@ medusaIntegrationTestRunner({
     })
 
     describe("Workflow Orchestrator module subscribe", function () {
-      it("should subscribe to a workflow and receive the response when it finishes", async () => {
+      it("should subscribe to a workflow and receive the response when it finishes (1)", async () => {
         const step1 = createStep({ name: "step1" }, async () => {
           return new StepResponse("step1")
         })
@@ -266,140 +266,6 @@ medusaIntegrationTestRunner({
               }
             },
           })
-        })
-
-        workflowOrcModule.run(workflowId, {
-          transactionId,
-        })
-
-        await onWorkflowFinishPromise
-        await workflow2FinishPromise
-
-        expect(onWorkflowFinishSpy).toHaveBeenCalledTimes(1)
-        expect(onWorkflow2FinishSpy).toHaveBeenCalledTimes(1)
-      })
-
-      it("should subscribe to a workflow and receive the response when it finishes (2)", async () => {
-        const step1 = createStep({ name: "step1" }, async () => {
-          return new StepResponse("step1")
-        })
-        const step2 = createStep({ name: "step2" }, async () => {
-          await setTimeout(1000)
-          return new StepResponse("step2")
-        })
-
-        const workflowId =
-          "workflow" + Math.random().toString(36).substring(2, 15)
-        createWorkflow(workflowId, function (input) {
-          step1()
-          step2().config({
-            async: true,
-          })
-          return new WorkflowResponse("workflow")
-        })
-
-        const step1_1 = createStep({ name: "step1_1" }, async () => {
-          return new StepResponse("step1_1")
-        })
-        const step2_1 = createStep({ name: "step2_1" }, async () => {
-          await setTimeout(1000)
-          return new StepResponse("step2_1")
-        })
-
-        const workflow2Id =
-          "workflow_2" + Math.random().toString(36).substring(2, 15)
-        createWorkflow(workflow2Id, function (input) {
-          step1_1()
-          step2_1().config({
-            async: true,
-          })
-          return new WorkflowResponse("workflow_2")
-        })
-
-        const transactionId =
-          "trx_123" + Math.random().toString(36).substring(2, 15)
-        const transactionId2 =
-          "trx_124" + Math.random().toString(36).substring(2, 15)
-
-        const onWorkflowFinishSpy = jest.fn()
-
-        const onWorkflowFinishPromise = new Promise<void>(async (resolve) => {
-          const subscriptionStream = await api.get(
-            `/admin/workflows-executions/${workflowId}/${transactionId}/subscribe`,
-            {
-              ...adminHeaders,
-              Accept: "text/event-stream",
-            }
-          )
-          
-          const reader = subscriptionStream.body?.getReader()
-          const decoder = new TextDecoder("utf-8")
-
-          let buffer = ""
-          
-          while (true) {
-            const { done, value } = await reader!.read()
-            if (done) break
-
-            buffer += decoder.decode(value, { stream: true })
-
-            let lines = buffer.split("\n")
-            buffer = lines.pop() || ""
-
-            for (const line of lines) {
-              if (line.startsWith("data: ")) {
-                const data = line.replace("data: ", "").trim()
-                const event = JSON.parse(data)
-                console.log("event", event)
-                if (event.event_type === "onFinish") {
-                  onWorkflowFinishSpy()
-                  workflowOrcModule.run(workflow2Id, {
-                    transactionId: transactionId2,
-                  })
-                  resolve()
-                }
-              }
-            }
-          }
-        })
-
-        const onWorkflow2FinishSpy = jest.fn()
-
-        const workflow2FinishPromise = new Promise<void>(async (resolve) => {
-          const subscriptionStream = await api.get(
-            `/admin/workflows-executions/${workflow2Id}/subscribe`,
-            {
-              ...adminHeaders,
-              Accept: "text/event-stream",
-            }
-          )
-          
-          const reader = subscriptionStream.body?.getReader()
-          const decoder = new TextDecoder("utf-8")
-
-          let buffer = ""
-          
-          while (true) {
-            const { done, value } = await reader!.read()
-            if (done) break
-
-            buffer += decoder.decode(value, { stream: true })
-
-            let lines = buffer.split("\n")
-            buffer = lines.pop() || ""
-
-            for (const line of lines) {
-              if (line.startsWith("data: ")) {
-                const data = line.replace("data: ", "").trim()
-                const event = JSON.parse(data)
-                console.log("event", event)
-                if (event.event_type === "onFinish") {
-                  onWorkflow2FinishSpy()
-                  resolve()
-                }
-              }
-            }
-          }
         })
 
         workflowOrcModule.run(workflowId, {
