@@ -6,6 +6,7 @@ import {
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   Modules,
+  OrderWorkflowEvents,
   PaymentSessionStatus,
   PriceListStatus,
   PriceListType,
@@ -3062,6 +3063,52 @@ medusaIntegrationTestRunner({
                 ])
               )
             })
+          })
+
+          it("should emit the order.placed event only after payment is authorized (not before)", async () => {
+            // Regression test for https://github.com/medusajs/medusa/issues/15122
+            // The order.placed event was previously emitted inside a parallelize() block
+            // alongside (and before) the payment authorization step. This meant the event
+            // could fire even if payment authorization failed and the order was rolled back.
+            // The fix moves emitEventStep to after authorizePaymentSessionStep and
+            // addOrderTransactionStep so the event only fires on a fully completed order.
+            const emittedEvents: string[] = []
+
+            const eventBus = appContainer.resolve(Modules.EVENT_BUS)
+            const subscriber = async ({ data }: { data: any }) => {
+              emittedEvents.push(OrderWorkflowEvents.PLACED)
+            }
+
+            await eventBus.subscribe(OrderWorkflowEvents.PLACED, subscriber)
+
+            const paymentCollection = (
+              await api.post(
+                `/store/payment-collections`,
+                { cart_id: cart.id },
+                storeHeaders
+              )
+            ).data.payment_collection
+
+            await api.post(
+              `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+              { provider_id: "pp_system_default" },
+              storeHeaders
+            )
+
+            const response = await api.post(
+              `/store/carts/${cart.id}/complete`,
+              {},
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.order.id).toBeDefined()
+
+            // After successful cart completion, the event MUST have fired exactly once
+            expect(emittedEvents).toHaveLength(1)
+            expect(emittedEvents[0]).toEqual(OrderWorkflowEvents.PLACED)
+
+            await eventBus.unsubscribe(OrderWorkflowEvents.PLACED, subscriber)
           })
         })
 

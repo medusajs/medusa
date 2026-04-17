@@ -595,14 +595,7 @@ export const completeCartWorkflow = createWorkflow(
         createRemoteLinkStep(linksToCreate),
         updateCartsStep([updateCompletedAt]),
         reserveInventoryStep(formatedInventoryItems),
-        registerUsageStep(promotionUsage),
-        emitEventStep({
-          eventName: OrderWorkflowEvents.PLACED,
-          data: { id: createdOrder.id },
-          options: {
-            priority: EventPriority.CRITICAL,
-          },
-        })
+        registerUsageStep(promotionUsage)
       )
 
       /**
@@ -642,6 +635,19 @@ export const completeCartWorkflow = createWorkflow(
       )
 
       addOrderTransactionStep(orderTransactions)
+
+      // Emit the order.placed event AFTER payment is authorized and transaction is recorded.
+      // Previously this was inside the parallelize block above, which meant the event could
+      // fire before payment authorization — causing listeners (e.g. sending confirmation emails,
+      // syncing to external systems) to act on an order that could still be rolled back.
+      // See: https://github.com/medusajs/medusa/issues/15122
+      emitEventStep({
+        eventName: OrderWorkflowEvents.PLACED,
+        data: { id: createdOrder.id },
+        options: {
+          priority: EventPriority.CRITICAL,
+        },
+      })
 
       /**
        * @ignore
