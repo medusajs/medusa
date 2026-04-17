@@ -570,5 +570,56 @@ medusaIntegrationTestRunner({
       const refreshDecoded = jwt.decode(refresh.data.token) as any
       expect(refreshDecoded.auth_provider).toEqual("emailpass")
     })
+
+    it("should preserve user_metadata from the provider identity on token refresh", async () => {
+      // Register via emailpass to get an auth identity with a provider identity
+      const signup = await api.post("/auth/user/emailpass/register", {
+        email: "user-meta@medusa.js",
+        password: "secret_password",
+      })
+      expect(signup.status).toEqual(200)
+
+      // Seed user_metadata directly on the provider identity (simulates what an
+      // OIDC/Auth0 provider would set in validateCallback)
+      const authModule: IAuthModuleService = container.resolve(Modules.AUTH)
+      const { auth_identity_id } = jwt.decode(signup.data.token) as any
+      const authIdentity = await authModule.retrieveAuthIdentity(
+        auth_identity_id,
+        { relations: ["provider_identities"] }
+      )
+      const providerIdentityId = authIdentity.provider_identities![0].id
+      await authModule.updateProviderIdentities({
+        id: providerIdentityId,
+        user_metadata: { email: "user-meta@medusa.js", roles: ["editor"] },
+      })
+
+      // Login to get a fresh token that includes the user_metadata
+      const login = await api.post("/auth/user/emailpass", {
+        email: "user-meta@medusa.js",
+        password: "secret_password",
+      })
+      expect(login.status).toEqual(200)
+
+      const loginDecoded = jwt.decode(login.data.token) as any
+      expect(loginDecoded.user_metadata).toEqual({
+        email: "user-meta@medusa.js",
+        roles: ["editor"],
+      })
+
+      // Refresh — user_metadata must survive because provider_identities is
+      // now eagerly loaded and auth_provider is forwarded from the JWT claim
+      const refresh = await api.post(
+        "/auth/token/refresh",
+        {},
+        { headers: { authorization: `Bearer ${login.data.token}` } }
+      )
+      expect(refresh.status).toEqual(200)
+
+      const refreshDecoded = jwt.decode(refresh.data.token) as any
+      expect(refreshDecoded.user_metadata).toEqual({
+        email: "user-meta@medusa.js",
+        roles: ["editor"],
+      })
+    })
   },
 })
