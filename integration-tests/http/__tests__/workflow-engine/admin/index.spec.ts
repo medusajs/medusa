@@ -95,7 +95,7 @@ medusaIntegrationTestRunner({
       })
     })
 
-    describe("POST /admin/workflow-execution/[workflow_id]/steps/failure", function () {
+    describe("POST /admin/workflows-executions/[workflow_id]/steps/failure", function () {
         it("should set step as failed", async () => {
             const stepId = 'test-step'
             const step = createStep({
@@ -138,6 +138,54 @@ medusaIntegrationTestRunner({
             expect(workflowDetail).toEqual(
                 expect.objectContaining({
                     state: TransactionState.REVERTED,
+                })
+            )
+        })
+    })
+
+    describe("POST /admin/workflows-executions/[workflow_id]/steps/success", function () {
+        it("should set step as successful", async () => {
+            const stepId = 'test-step'
+            const step = createStep({
+                name: stepId,
+                async: true,
+            }, () => { })
+
+            const workflowId = 'test-workflow'
+            createWorkflow({
+                name: workflowId,
+                retentionTime: 60,
+            }, () => {
+                step()
+                return new WorkflowResponse(void 0)
+            })
+
+            const transactionId = "test-transaction"
+            const engine = container.resolve(Modules.WORKFLOW_ENGINE) as IWorkflowEngineService
+            await engine.run(workflowId, {
+                transactionId
+            })
+            let workflowDetail = (await api.get(`/admin/workflows-executions/${workflowId}/${transactionId}`, adminHeaders)).data.workflow_execution
+
+            expect(workflowDetail.state).toBe(TransactionState.INVOKING)
+
+            const setSuccessResponse = await api.post(`/admin/workflows-executions/${workflowId}/steps/success`, {
+                transaction_id: transactionId,
+                step_id: stepId
+            }, adminHeaders)
+
+            expect(setSuccessResponse.status).toBe(200)
+            expect(setSuccessResponse.data).toEqual(
+                expect.objectContaining({
+                    success: true,
+                })
+            )
+
+            workflowDetail = (await api.get(`/admin/workflows-executions/${workflowId}/${transactionId}`, adminHeaders)).data.workflow_execution
+            
+            expect(workflowDetail).toEqual(
+                expect.objectContaining({
+                    state: TransactionState.DONE,
                 })
             )
         })
@@ -275,26 +323,84 @@ medusaIntegrationTestRunner({
 
         const onWorkflowFinishSpy = jest.fn()
 
-        const onWorkflowFinishPromise = new Promise<void>((resolve) => {
-          void workflowOrcModule.subscribe({
-            workflowId: workflowId,
-            transactionId,
-            subscriber: (event) => {
-              console.log("event", event)
-              if (event.eventType === "onFinish") {
-                onWorkflowFinishSpy()
-                workflowOrcModule.run(workflow2Id, {
-                  transactionId: transactionId2,
-                })
-                resolve()
+        const onWorkflowFinishPromise = new Promise<void>(async (resolve) => {
+          const subscriptionStream = await api.get(
+            `/admin/workflows-executions/${workflowId}/${transactionId}/subscribe`,
+            {
+              ...adminHeaders,
+              Accept: "text/event-stream",
+            }
+          )
+          
+          const reader = subscriptionStream.body?.getReader()
+          const decoder = new TextDecoder("utf-8")
+
+          let buffer = ""
+          
+          while (true) {
+            const { done, value } = await reader!.read()
+            if (done) break
+
+            buffer += decoder.decode(value, { stream: true })
+
+            let lines = buffer.split("\n")
+            buffer = lines.pop() || ""
+
+            for (const line of lines) {
+              if (line.startsWith("data: ")) {
+                const data = line.replace("data: ", "").trim()
+                const event = JSON.parse(data)
+                console.log("event", event)
+                if (event.event_type === "onFinish") {
+                  onWorkflowFinishSpy()
+                  workflowOrcModule.run(workflow2Id, {
+                    transactionId: transactionId2,
+                  })
+                  resolve()
+                }
               }
-            },
-          })
+            }
+          }
         })
 
         const onWorkflow2FinishSpy = jest.fn()
 
-        const workflow2FinishPromise = new Promise<void>((resolve) => {
+        const workflow2FinishPromise = new Promise<void>(async (resolve) => {
+          const subscriptionStream = await api.get(
+            `/admin/workflows-executions/${workflow2Id}/subscribe`,
+            {
+              ...adminHeaders,
+              Accept: "text/event-stream",
+            }
+          )
+          
+          const reader = subscriptionStream.body?.getReader()
+          const decoder = new TextDecoder("utf-8")
+
+          let buffer = ""
+          
+          while (true) {
+            const { done, value } = await reader!.read()
+            if (done) break
+
+            buffer += decoder.decode(value, { stream: true })
+
+            let lines = buffer.split("\n")
+            buffer = lines.pop() || ""
+
+            for (const line of lines) {
+              if (line.startsWith("data: ")) {
+                const data = line.replace("data: ", "").trim()
+                const event = JSON.parse(data)
+                console.log("event", event)
+                if (event.event_type === "onFinish") {
+                  onWorkflowFinishSpy()
+                  resolve()
+                }
+              }
+            }
+          }
+
           void workflowOrcModule.subscribe({
             workflowId: workflow2Id,
             subscriber: (event) => {
