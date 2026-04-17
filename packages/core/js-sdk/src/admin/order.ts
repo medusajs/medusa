@@ -488,8 +488,6 @@ export class Order {
    * .then(({ order }) => {
    *   console.log(order)
    * })
-   *
-   * @tags orders
    */
   async markAsDelivered(
     id: string,
