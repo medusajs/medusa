@@ -89,7 +89,7 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
         | { [key: string]: any }
         | undefined,
       attachments: attachments,
-      ...(personalizations ? { personalizations } : { to: notification.to }),
+      ...(personalizations?.length ? { personalizations } : { to: notification.to }),
       ...mailContent,
     }
 

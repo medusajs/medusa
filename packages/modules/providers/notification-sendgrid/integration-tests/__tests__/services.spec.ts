@@ -77,6 +77,22 @@ describe("SendgridNotificationService - personalizations", () => {
     expect(message.to).toEqual("recipient@example.com")
     expect(message).not.toHaveProperty("personalizations")
   })
+
+  it("falls back to top-level to when provider_data.personalizations is an empty array", async () => {
+    await service.send({
+      to: "recipient@example.com",
+      channel: "email",
+      template: "some-template",
+      provider_data: {
+        personalizations: [],
+      },
+    })
+
+    expect(mockSend).toHaveBeenCalledTimes(1)
+    const message = mockSend.mock.calls[0][0] as any
+    expect(message.to).toEqual("recipient@example.com")
+    expect(message).not.toHaveProperty("personalizations")
+  })
 })
 
 // Note: This test hits the sendgrid service, and it is mainly meant to be run manually after setting all the envvars below.
