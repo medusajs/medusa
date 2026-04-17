@@ -103,7 +103,8 @@ medusaIntegrationTestRunner({
                 async: true,
             }, () => { })
 
-            const workflowId = 'test-workflow'
+            const workflowId =
+              "workflow-f" + Math.random().toString(36).substring(2, 15)
             createWorkflow({
                 name: workflowId,
                 retentionTime: 60,
@@ -112,7 +113,8 @@ medusaIntegrationTestRunner({
                 return new WorkflowResponse(void 0)
             })
 
-            const transactionId = "test-transaction"
+            const transactionId =
+              "trx_123_f" + Math.random().toString(36).substring(2, 15)
             const engine = container.resolve(Modules.WORKFLOW_ENGINE) as IWorkflowEngineService
             await engine.run(workflowId, {
                 transactionId
@@ -151,7 +153,8 @@ medusaIntegrationTestRunner({
                 async: true,
             }, () => { })
 
-            const workflowId = 'test-workflow'
+            const workflowId =
+              "workflow_s" + Math.random().toString(36).substring(2, 15)
             createWorkflow({
                 name: workflowId,
                 retentionTime: 60,
@@ -160,7 +163,8 @@ medusaIntegrationTestRunner({
                 return new WorkflowResponse(void 0)
             })
 
-            const transactionId = "test-transaction"
+            const transactionId =
+              "trx_123_s" + Math.random().toString(36).substring(2, 15)
             const engine = container.resolve(Modules.WORKFLOW_ENGINE) as IWorkflowEngineService
             await engine.run(workflowId, {
                 transactionId
