@@ -12,7 +12,7 @@ export const metadata = {
 
 <Note type="success" title="Open Source">
 
-This plugin is open source as part of the Medusa v2.13.6+ release.
+This plugin is open source as part of the Medusa v2.14.0+ release.
 
 </Note>
 
@@ -35,12 +35,14 @@ Learn more about why modules are isolated in [this documentation](!docs!/learn/f
 ## Loyalty Features
 
 ### Gift Cards
+
 - **Gift Card Products**: Create physical or digital gift cards as products that customers can purchase
 - **Gift Card Management**: Issue, redeem, and track gift cards with unique codes
 - **Cart Integration**: Apply gift cards as payment during checkout
 - **Admin Interface**: Complete admin UI for managing gift cards and their lifecycle
 
 ### Store Credit
+
 - **Store Credit Accounts**: Create and manage customer store credit accounts
 - **Credit Transactions**: Credit and debit operations with full transaction history
 - **Balance Tracking**: Real-time balance calculation and reporting
@@ -68,6 +70,7 @@ module.exports = defineConfig({
   plugins: [
     {
       resolve: `@medusajs/loyalty-plugin`,
+      options: {}
     },
     // ... other plugins
   ],
@@ -79,7 +82,7 @@ module.exports = defineConfig({
 You can use the built-in workflows to manage gift cards:
 
 export const highlights = [
-  ["9", "createGiftCardsWorkflow", "Import the built-in workflow."]
+  ["7", "createGiftCardsWorkflow", "Import the built-in workflow."]
 ]
 
 ```ts title="src/workflows/create-custom-gift-card.ts" highlights={highlights}
@@ -94,7 +97,17 @@ import { createGiftCardsWorkflow } from "@medusajs/loyalty-plugin/workflows"
 export const createCustomGiftCardWorkflow = createWorkflow(
   "create-custom-gift-card",
   () => {
-    const { giftCards } = createGiftCardsWorkflow()
+    const giftCards = createGiftCardsWorkflow.runAsStep({
+      code: "GIFT2024",
+      value: 50, // 50.00
+      currency_code: "usd",
+      expires_at: null,
+      reference: "order",
+      reference_id: "order_123",
+      line_item_id: "litem_123", // ID of the gift card line item in the order
+      customer_id: "customer_123",
+      metadata: {}
+    })
 
     return new WorkflowResponse({
       giftCards,
@@ -120,13 +133,7 @@ export async function POST(
   res: MedusaResponse
 ) {
   const { result } = await createCustomGiftCardWorkflow(req.scope)
-    .run({
-      input: {
-        code: "GIFT2024",
-        amount: 5000, // $50.00 in cents
-        currency_code: "usd",
-      },
-    })
+    .run({})
 
   res.send(result)
 }
@@ -148,12 +155,7 @@ export default async function handleOrderCompleted({
 }: SubscriberArgs<{ id: string }>) {
   // Create a $10 gift card for orders over $100
   const { result } = await createGiftCardsWorkflow(container)
-    .run({
-      input: {
-        amount: 1000, // $10.00 in cents
-        currency_code: "usd",
-      },
-    })
+    .run({})
 
   console.log("Gift card created:", result)
 }
@@ -170,56 +172,4 @@ Learn more about workflows in [this documentation](!docs!/learn/fundamentals/wor
 
 ---
 
-## Built-in Loyalty Workflows
-
-The Loyalty Plugin provides built-in workflows for both gift cards and store credit management:
-
-### Gift Card Workflows
-
-- `createGiftCardsWorkflow` - Create new gift cards
-- `updateGiftCardsWorkflow` - Update existing gift cards
-- `deleteGiftCardWorkflow` - Delete gift cards
-- `redeemGiftCardWorkflow` - Redeem gift cards for payment
-- `claimGiftCardWorkflow` - Claim gift cards by code
-
-### Store Credit Workflows
-
-- `createStoreCreditAccountsWorkflow` - Create new store credit accounts
-- `creditStoreCreditAccountWorkflow` - Add credit to accounts
-- `debitAccountsWorkflow` - Debit from accounts
-- `claimStoreCreditAccountWorkflow` - Claim store credit by code
-
-### Cart Integration Workflows
-
-- `addGiftCardToCartWorkflow` - Apply gift cards to carts
-- `addStoreCreditToCartWorkflow` - Apply store credit to carts
-- `confirmCartCreditLinesWorkflow` - Confirm credit lines during checkout
-
-For detailed workflow references, see the [Loyalty Workflows Reference](!resources!/commerce-modules/loyalty/workflows).
-
----
-
-## API Routes
-
-The Loyalty Plugin provides comprehensive API routes for both admin and storefront use:
-
-### Admin API Routes
-- `/admin/gift-cards` - Manage gift cards
-- `/admin/store-credit-accounts` - Manage store credit accounts
-- `/admin/store-credit-accounts/{id}/credit` - Credit operations
-- `/admin/store-credit-accounts/{id}/transactions` - Transaction history
-
-### Store API Routes
-- `/store/gift-cards/{code}` - Retrieve gift card by code
-- `/store/store-credit-accounts` - Customer store credit accounts
-- `/store/carts/{id}/gift-cards` - Apply gift cards to cart
-- `/store/carts/{id}/store-credits` - Apply store credits to cart
-
----
-
-## What's Next?
-
-- Learn about [Gift Card Concepts](!resources!/commerce-modules/loyalty/gift-cards/concepts)
-- Learn about [Store Credit Concepts](!resources!/commerce-modules/loyalty/store-credit/concepts)
-- Explore [Loyalty Plugin Workflows](!resources!/commerce-modules/loyalty/workflows)
-- View the [Admin Widget Zones](!resources!/commerce-modules/loyalty/admin-widget-zones)
+<CommerceModuleSections />
