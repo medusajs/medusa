@@ -94,32 +94,10 @@ export const sidebar = [
                 path: "/environments/custom-domains",
               },
               {
-                type: "link",
+                type: "ref",
                 title: "Monitoring",
-                path: "/environments/monitoring",
-                children: [
-                  {
-                    type: "link",
-                    title: "Servers",
-                    path: "/environments/monitoring/servers",
-                  },
-                  {
-                    type: "link",
-                    title: "Workers",
-                    path: "/environments/monitoring/workers",
-                  },
-                  {
-                    type: "link",
-                    title: "Database",
-                    path: "/environments/monitoring/database",
-                  },
-                  {
-                    type: "link",
-                    title: "HTTP",
-                    path: "/environments/monitoring/http",
-                  },
-                ],
-              },
+                path: "/monitoring",
+              }
             ],
           },
           {
@@ -257,6 +235,28 @@ export const sidebar = [
             type: "link",
             title: "Usage",
             path: "/usage",
+          },
+          {
+            type: "link",
+            title: "Performance",
+            path: "/monitoring",
+            children: [
+              {
+                type: "link",
+                title: "Servers",
+                path: "/monitoring/servers",
+              },
+              {
+                type: "link",
+                title: "Workers",
+                path: "/monitoring/workers",
+              },
+              {
+                type: "link",
+                title: "HTTP",
+                path: "/monitoring/http",
+              },
+            ],
           },
         ],
       },

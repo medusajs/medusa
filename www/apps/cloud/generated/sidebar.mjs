@@ -142,43 +142,10 @@ export const generatedSidebars = [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "type": "link",
+                "type": "ref",
                 "title": "Monitoring",
-                "path": "/environments/monitoring",
-                "children": [
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "type": "link",
-                    "title": "Servers",
-                    "path": "/environments/monitoring/servers",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "type": "link",
-                    "title": "Workers",
-                    "path": "/environments/monitoring/workers",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "type": "link",
-                    "title": "Database",
-                    "path": "/environments/monitoring/database",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "type": "link",
-                    "title": "HTTP",
-                    "path": "/environments/monitoring/http",
-                    "children": []
-                  }
-                ]
+                "path": "/monitoring",
+                "children": []
               }
             ]
           },
@@ -383,6 +350,39 @@ export const generatedSidebars = [
             "title": "Usage",
             "path": "/usage",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Performance",
+            "path": "/monitoring",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Servers",
+                "path": "/monitoring/servers",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Workers",
+                "path": "/monitoring/workers",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "HTTP",
+                "path": "/monitoring/http",
+                "children": []
+              }
+            ]
           }
         ]
       },
