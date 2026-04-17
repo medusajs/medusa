@@ -22,14 +22,13 @@ jest.mock("@medusajs/framework/utils", () => ({
       this.type = type
     }
   },
-  isString: (v: unknown): v is string => typeof v === "string",
 }), { virtual: true })
 
 const mockSend = sendgrid.send as jest.MockedFunction<typeof sendgrid.send>
 
 jest.setTimeout(100000)
 
-describe("SendgridNotificationService - customArgs", () => {
+describe("SendgridNotificationService - personalizations", () => {
   let service: SendgridNotificationService
 
   beforeEach(() => {
@@ -40,77 +39,42 @@ describe("SendgridNotificationService - customArgs", () => {
     )
   })
 
-  it("includes customArgs in personalizations and omits top-level to when provider_data.custom_args contains string values", async () => {
+  it("passes provider_data.personalizations directly to sendgrid and omits top-level to", async () => {
     await service.send({
       to: "recipient@example.com",
       channel: "email",
       template: "some-template",
       provider_data: {
-        custom_args: {
-          campaign_id: "abc123",
-          source: "welcome-flow",
-        },
+        personalizations: [
+          {
+            to: [{ email: "recipient@example.com" }],
+            customArgs: { campaign_id: "abc123", source: "welcome-flow" },
+          },
+        ],
       },
     })
 
     expect(mockSend).toHaveBeenCalledTimes(1)
     const message = mockSend.mock.calls[0][0] as any
     expect(message).not.toHaveProperty("to")
-    expect(message.personalizations[0].customArgs).toEqual({
-      campaign_id: "abc123",
-      source: "welcome-flow",
-    })
-  })
-
-  it("omits personalizations entirely when provider_data.custom_args is absent", async () => {
-    await service.send({
-      to: "recipient@example.com",
-      channel: "email",
-      template: "some-template",
-    })
-
-    expect(mockSend).toHaveBeenCalledTimes(1)
-    const message = mockSend.mock.calls[0][0] as any
-    expect(message).not.toHaveProperty("personalizations")
-  })
-
-  it("filters out non-string values from custom_args", async () => {
-    await service.send({
-      to: "recipient@example.com",
-      channel: "email",
-      template: "some-template",
-      provider_data: {
-        custom_args: {
-          valid_key: "valid-string",
-          number_key: 42,
-          object_key: { nested: true },
-          null_key: null,
-        } as Record<string, unknown>,
+    expect(message.personalizations).toEqual([
+      {
+        to: [{ email: "recipient@example.com" }],
+        customArgs: { campaign_id: "abc123", source: "welcome-flow" },
       },
-    })
-
-    expect(mockSend).toHaveBeenCalledTimes(1)
-    const message = mockSend.mock.calls[0][0] as any
-    expect(message.personalizations[0].customArgs).toEqual({
-      valid_key: "valid-string",
-    })
+    ])
   })
 
-  it("omits personalizations when all custom_args values are non-strings", async () => {
+  it("uses top-level to and omits personalizations when provider_data.personalizations is absent", async () => {
     await service.send({
       to: "recipient@example.com",
       channel: "email",
       template: "some-template",
-      provider_data: {
-        custom_args: {
-          number_key: 42,
-          object_key: { nested: true },
-        } as Record<string, unknown>,
-      },
     })
 
     expect(mockSend).toHaveBeenCalledTimes(1)
     const message = mockSend.mock.calls[0][0] as any
+    expect(message.to).toEqual("recipient@example.com")
     expect(message).not.toHaveProperty("personalizations")
   })
 })

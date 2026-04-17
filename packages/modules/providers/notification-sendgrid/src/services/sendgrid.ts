@@ -6,7 +6,6 @@ import {
 import {
   AbstractNotificationProviderService,
   MedusaError,
-  isString,
 } from "@medusajs/framework/utils"
 import sendgrid from "@sendgrid/mail"
 
@@ -80,18 +79,9 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
       }
     }
 
-    const rawCustomArgs = notification.provider_data?.custom_args as
-      | Record<string, unknown>
+    const personalizations = notification.provider_data?.personalizations as
+      | sendgrid.MailDataRequired["personalizations"]
       | undefined
-    const filteredCustomArgs = rawCustomArgs
-      ? (Object.fromEntries(
-          Object.entries(rawCustomArgs).filter(([, v]) => isString(v))
-        ) as Record<string, string>)
-      : undefined
-    const customArgs =
-      filteredCustomArgs && Object.keys(filteredCustomArgs).length > 0
-        ? filteredCustomArgs
-        : undefined
 
     const message: sendgrid.MailDataRequired = {
       from: from,
@@ -99,16 +89,7 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
         | { [key: string]: any }
         | undefined,
       attachments: attachments,
-      ...(customArgs
-        ? {
-            personalizations: [
-              {
-                to: [{ email: notification.to as string }],
-                customArgs,
-              },
-            ],
-          }
-        : { to: notification.to }),
+      ...(personalizations ? { personalizations } : { to: notification.to }),
       ...mailContent,
     }
 
