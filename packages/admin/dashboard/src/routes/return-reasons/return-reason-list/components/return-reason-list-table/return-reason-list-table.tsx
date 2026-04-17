@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { DataTable } from "../../../../../components/data-table"
 import {
-  useDeleteReturnReasonLazy,
+  useDeleteReturnReason,
   useReturnReasons,
 } from "../../../../../hooks/api/return-reasons"
 import { useReturnReasonTableColumns } from "../../../../../hooks/table/columns"
@@ -79,7 +79,7 @@ const useColumns = () => {
   const navigate = useNavigate()
   const base = useReturnReasonTableColumns()
 
-  const { mutateAsync } = useDeleteReturnReasonLazy()
+  const { mutateAsync } = useDeleteReturnReason()
 
   const handleDelete = useCallback(
     async (returnReason: HttpTypes.AdminReturnReason) => {
@@ -98,7 +98,11 @@ const useColumns = () => {
 
       await mutateAsync(returnReason.id, {
         onSuccess: () => {
-          toast.success(t("returnReasons.delete.successToast", { label: returnReason.label }))
+          toast.success(
+            t("returnReasons.delete.successToast", {
+              label: returnReason.label,
+            })
+          )
         },
         onError: (e) => {
           toast.error(e.message)
