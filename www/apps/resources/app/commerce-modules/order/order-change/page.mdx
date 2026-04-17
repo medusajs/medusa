@@ -404,7 +404,14 @@ The following table lists the possible `action` values that Medusa uses and the 
       </Table.Cell>
       <Table.Cell>
       
-      `details` is an object containing the new adjustment data.
+      `details` is an object containing the new adjustment data:
+
+      - `reference_id`: the ID of the item.
+      - `adjustments`: an array of adjustments to apply to the item. Each adjustment is an object having the following properties:
+        - `code`: the promotion code that generated the adjustment, if applicable.
+        - `amount`: the adjustment amount.
+        - `item_id`: the ID of the item to apply the adjustment to.
+        - `promotion_id`: the ID of the promotion that generated the adjustment, if applicable.
 
       </Table.Cell>
     </Table.Row>
@@ -421,7 +428,14 @@ The following table lists the possible `action` values that Medusa uses and the 
       </Table.Cell>
       <Table.Cell>
       
-      `details` is an object containing the new adjustment data.
+      `details` is an object containing the new adjustment data:
+
+      - `reference_id`: the ID of the shipping method.
+      - `adjustments`: an array of adjustments to apply to the shipping method. Each adjustment is an object having the following properties:
+        - `code`: the promotion code that generated the adjustment, if applicable.
+        - `amount`: the adjustment amount.
+        - `shipping_method_id`: the ID of the shipping method to apply the adjustment to.
+        - `promotion_id`: the ID of the promotion that generated the adjustment, if applicable.
 
       </Table.Cell>
     </Table.Row>
