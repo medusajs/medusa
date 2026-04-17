@@ -6156,7 +6156,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
       "isPathHref": true,
       "type": "sidebar",
       "sidebar_id": "loyalty",
-      "title": "Loyalty Plugin",
+      "title": "Loyalty Module",
       "children": [
         {
           "loaded": true,
@@ -6173,62 +6173,22 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
           "loaded": true,
           "isPathHref": true,
           "type": "category",
-          "title": "Gift Cards",
+          "title": "Concepts",
           "children": [
             {
               "loaded": true,
               "isPathHref": true,
               "type": "link",
-              "path": "/commerce-modules/loyalty/gift-cards/concepts",
-              "title": "Concepts",
+              "path": "/commerce-modules/loyalty/gift-cards",
+              "title": "Gift Cards",
               "children": []
             },
             {
               "loaded": true,
               "isPathHref": true,
               "type": "link",
-              "path": "/commerce-modules/loyalty/gift-cards/admin-guide",
-              "title": "Admin Guide",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "link",
-              "path": "/commerce-modules/loyalty/gift-cards/storefront-guide",
-              "title": "Storefront Guide",
-              "children": []
-            }
-          ]
-        },
-        {
-          "loaded": true,
-          "isPathHref": true,
-          "type": "category",
-          "title": "Store Credit",
-          "children": [
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "link",
-              "path": "/commerce-modules/loyalty/store-credit/concepts",
-              "title": "Concepts",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "link",
-              "path": "/commerce-modules/loyalty/store-credit/admin-guide",
-              "title": "Admin Guide",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "link",
-              "path": "/commerce-modules/loyalty/store-credit/storefront-guide",
-              "title": "Storefront Guide",
+              "path": "/commerce-modules/loyalty/links-to-other-modules",
+              "title": "Link to Modules",
               "children": []
             }
           ]
@@ -6238,7 +6198,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
           "isPathHref": true,
           "type": "category",
           "title": "References",
-          "description": "Find references for tools and resources related to the Loyalty Plugin, such as workflows, API routes, and more.",
+          "description": "Find references for tools and resources related to the Loyalty Module, such as data models, methods, and more. These are useful for your customizations.",
           "children": [
             {
               "loaded": true,
@@ -6247,135 +6207,68 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "path": "/commerce-modules/loyalty/workflows",
               "title": "Workflows",
               "hideChildren": true,
-              "children": [
-                {
-                  "loaded": true,
-                  "isPathHref": true,
-                  "type": "category",
-                  "title": "Gift Card Workflows",
-                  "children": [
-                    {
-                      "loaded": true,
-                      "isPathHref": true,
-                      "type": "link",
-                      "path": "/commerce-modules/loyalty/workflows/create-gift-cards",
-                      "title": "createGiftCardsWorkflow",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "isPathHref": true,
-                      "type": "link",
-                      "path": "/commerce-modules/loyalty/workflows/update-gift-cards",
-                      "title": "updateGiftCardsWorkflow",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "isPathHref": true,
-                      "type": "link",
-                      "path": "/commerce-modules/loyalty/workflows/delete-gift-card",
-                      "title": "deleteGiftCardWorkflow",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "isPathHref": true,
-                      "type": "link",
-                      "path": "/commerce-modules/loyalty/workflows/redeem-gift-card",
-                      "title": "redeemGiftCardWorkflow",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "isPathHref": true,
-                      "type": "link",
-                      "path": "/commerce-modules/loyalty/workflows/claim-gift-card",
-                      "title": "claimGiftCardWorkflow",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "loaded": true,
-                  "isPathHref": true,
-                  "type": "category",
-                  "title": "Store Credit Workflows",
-                  "children": [
-                    {
-                      "loaded": true,
-                      "isPathHref": true,
-                      "type": "link",
-                      "path": "/commerce-modules/loyalty/workflows/create-store-credit-accounts",
-                      "title": "createStoreCreditAccountsWorkflow",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "isPathHref": true,
-                      "type": "link",
-                      "path": "/commerce-modules/loyalty/workflows/credit-store-credit-account",
-                      "title": "creditStoreCreditAccountWorkflow",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "isPathHref": true,
-                      "type": "link",
-                      "path": "/commerce-modules/loyalty/workflows/debit-accounts",
-                      "title": "debitAccountsWorkflow",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "isPathHref": true,
-                      "type": "link",
-                      "path": "/commerce-modules/loyalty/workflows/claim-store-credit-account",
-                      "title": "claimStoreCreditAccountWorkflow",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "loaded": true,
-                  "isPathHref": true,
-                  "type": "category",
-                  "title": "Cart Integration Workflows",
-                  "children": [
-                    {
-                      "loaded": true,
-                      "isPathHref": true,
-                      "type": "link",
-                      "path": "/commerce-modules/loyalty/workflows/add-gift-card-to-cart",
-                      "title": "addGiftCardToCartWorkflow",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "isPathHref": true,
-                      "type": "link",
-                      "path": "/commerce-modules/loyalty/workflows/add-store-credits-to-cart",
-                      "title": "addStoreCreditToCartWorkflow",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "isPathHref": true,
-                      "type": "link",
-                      "path": "/commerce-modules/loyalty/workflows/confirm-cart-credit-lines",
-                      "title": "confirmCartCreditLinesWorkflow",
-                      "children": []
-                    }
-                  ]
-                }
-              ]
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "loaded": true,
+      "isPathHref": true,
+      "type": "sidebar",
+      "sidebar_id": "store-credit",
+      "title": "Store Credit Module",
+      "children": [
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "link",
+          "path": "/commerce-modules/store-credit",
+          "title": "Overview",
+          "children": []
+        },
+        {
+          "type": "separator"
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "category",
+          "title": "Concepts",
+          "children": [
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/store-credit/concepts",
+              "title": "Concepts",
+              "children": []
             },
             {
               "loaded": true,
               "isPathHref": true,
               "type": "link",
-              "path": "/commerce-modules/loyalty/admin-widget-zones",
-              "title": "Admin Widget Zones",
+              "path": "/commerce-modules/store-credit/links-to-other-modules",
+              "title": "Link to Modules",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "category",
+          "title": "References",
+          "description": "Find references for tools and resources related to the Store Credit Module, such as data models, methods, and more. These are useful for your customizations.",
+          "children": [
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/store-credit/workflows",
+              "title": "Workflows",
+              "hideChildren": true,
               "children": []
             }
           ]

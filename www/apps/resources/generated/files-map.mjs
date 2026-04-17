@@ -276,32 +276,16 @@ export const filesMap = [
     "pathname": "/commerce-modules/inventory/workflows"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/gift-cards/admin-guide/page.mdx",
-    "pathname": "/commerce-modules/loyalty/gift-cards/admin-guide"
+    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/gift-cards/page.mdx",
+    "pathname": "/commerce-modules/loyalty/gift-cards"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/gift-cards/concepts/page.mdx",
-    "pathname": "/commerce-modules/loyalty/gift-cards/concepts"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/gift-cards/storefront-guide/page.mdx",
-    "pathname": "/commerce-modules/loyalty/gift-cards/storefront-guide"
+    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/links-to-other-modules/page.mdx",
+    "pathname": "/commerce-modules/loyalty/links-to-other-modules"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/loyalty/page.mdx",
     "pathname": "/commerce-modules/loyalty"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/store-credit/admin-guide/page.mdx",
-    "pathname": "/commerce-modules/loyalty/store-credit/admin-guide"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/store-credit/concepts/page.mdx",
-    "pathname": "/commerce-modules/loyalty/store-credit/concepts"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/store-credit/storefront-guide/page.mdx",
-    "pathname": "/commerce-modules/loyalty/store-credit/storefront-guide"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/loyalty/workflows/page.mdx",
@@ -654,6 +638,22 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/store/workflows/page.mdx",
     "pathname": "/commerce-modules/store/workflows"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/store-credit/concepts/page.mdx",
+    "pathname": "/commerce-modules/store-credit/concepts"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/store-credit/links-to-other-modules/page.mdx",
+    "pathname": "/commerce-modules/store-credit/links-to-other-modules"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/store-credit/page.mdx",
+    "pathname": "/commerce-modules/store-credit"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/store-credit/workflows/page.mdx",
+    "pathname": "/commerce-modules/store-credit/workflows"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/tax/admin-widget-zones/page.mdx",
@@ -1142,10 +1142,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/medusa-container-resources/page.mdx",
     "pathname": "/medusa-container-resources"
-  },
-  {
-    "filePath": "/www/apps/resources/app/medusa-oas-cli/page.mdx",
-    "pathname": "/medusa-oas-cli"
   },
   {
     "filePath": "/www/apps/resources/app/medusa-workflows-reference/page.mdx",

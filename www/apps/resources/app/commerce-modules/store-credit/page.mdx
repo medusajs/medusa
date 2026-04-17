@@ -5,16 +5,16 @@ generate_toc: true
 import { CodeTabs, CodeTab } from "docs-ui"
 
 export const metadata = {
-  title: `Loyalty Module`,
+  title: `Store Credit Module`,
 }
 
 # {metadata.title}
 
-In this section of the documentation, you will find resources to learn more about the Loyalty Module and how to use it in your application.
+In this section of the documentation, you will find resources to learn more about the Store Credit Module and how to use it in your application.
 
 <Note>
 
-The Loyalty Module is part of the Loyalty Plugin. It's compatible with Medusa v2.14.0+.
+The Store Credit Module is part of the Loyalty Plugin. It's compatible with Medusa v2.14.0+.
 
 </Note>
 
@@ -24,7 +24,7 @@ Refer to the [Medusa Admin User Guide](!user-guide!/loyalty) to learn how to man
 
 </Note>
 
-Medusa has loyalty related features available through the Loyalty Module. A [module](!docs!/learn/fundamentals/modules) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Loyalty Module.
+Medusa has store-credit related features available through the Store Credit Module. A [module](!docs!/learn/fundamentals/modules) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Store Credit Module.
 
 <Note>
 
@@ -34,18 +34,18 @@ Learn more about why modules are isolated in [this documentation](!docs!/learn/f
 
 ## Features
 
-- **Gift Card Products**: Create physical or digital gift cards as products that customers can purchase
-- **Gift Card Management**: Issue, redeem, and track gift cards with unique codes
-- **Cart Integration**: Apply gift cards as payment during checkout
-- **Admin Interface**: Complete admin UI for managing gift cards and their lifecycle
+- [Store Credit Accounts](./concepts/page.mdx#store-credit-account): Create and manage customer store credit accounts
+- [Credit Transactions](./concepts/page.mdx#store-credit-account): Credit and debit operations with full transaction history
+- [Balance Tracking](./concepts/page.mdx#store-credit-balance-calculation): Real-time balance calculation and reporting
+- [Cart Integration](./concepts/page.mdx#during-checkout): Apply store credits as payment during checkout
 
 ---
 
-## How to Use the Loyalty Module
+## How to Use the Store Credit Module
 
 ### 1. Install the Loyalty Plugin
 
-The Loyalty Module is part of the Loyalty Plugin. So, install the loyalty plugin:
+The Store Credit Module is part of the Loyalty Plugin. So, install the loyalty plugin:
 
 ```bash npm2yarn
 npm install @medusajs/loyalty-plugin
@@ -66,7 +66,7 @@ module.exports = defineConfig({
 })
 ```
 
-### 2. Use Loyalty Features in Your Application
+### 2. Use Store Credit Features in Your Application
 
 In your Medusa application, you build flows around Commerce Modules. A flow is built as a [Workflow](!docs!/learn/fundamentals/workflows), which is a special function composed of a series of steps that guarantees data consistency and reliable roll-back mechanism. 
 
@@ -75,10 +75,10 @@ You can build custom workflows and steps. You can also re-use the Loyalty Plugin
 For example:
 
 export const highlights = [
-  ["11", "loyalty", "Resolve the module in a step."]
+  ["11", "store_credit", "Resolve the module in a step."]
 ]
 
-```ts title="src/workflows/create-gift-card.ts" highlights={highlights}
+```ts title="src/workflows/create-store-credit.ts" highlights={highlights}
 import { 
   createWorkflow, 
   WorkflowResponse,
@@ -86,38 +86,33 @@ import {
   StepResponse,
 } from "@medusajs/framework/workflows-sdk"
 
-const createGiftCardStep = createStep(
-  "create-gift-card",
+const createStoreCreditStep = createStep(
+  "create-store-credit-account",
   async ({}, { container }) => {
-    const loyaltyModuleService = container.resolve("loyalty")
+    const storeCreditModuleService = container.resolve("store_credit")
 
-    const giftCard = await loyaltyModuleService.createGiftCards({
+    const storeCreditAccount = await storeCreditModuleService.createStoreCreditAccounts({
       code: "test-code",
-      value: 50,
-      currency_code: "usd",
-      expires_at: null,
-      reference_id: "order_123",
-      reference: "order",
-      line_item_id: "litem_123",
       customer_id: "customer_123",
+      currency_code: "usd"
     })
 
-    return new StepResponse({ giftCard }, giftCard.id)
+    return new StepResponse({ storeCreditAccount }, storeCreditAccount.id)
   },
-  async (giftCardId, { container }) => {
-    const loyaltyModuleService = container.resolve("loyalty")
+  async (storeCreditAccountId, { container }) => {
+    const storeCreditModuleService = container.resolve("store_credit")
 
-    await loyaltyModuleService.deleteGiftCards([giftCardId])
+    await storeCreditModuleService.deleteStoreCreditAccounts([storeCreditAccountId])
   }
 )
 
-export const createGiftCardWorkflow = createWorkflow(
-  "create-gift-card",
+export const createStoreCreditWorkflow = createWorkflow(
+  "create-store-credit-account",
   () => {
-    const { giftCard } = createGiftCardStep()
+    const { storeCreditAccount } = createStoreCreditStep()
 
     return new WorkflowResponse({
-      giftCard,
+      storeCreditAccount,
     })
   }
 )
@@ -133,13 +128,13 @@ import type {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { createGiftCardWorkflow } from "../../workflows/create-gift-card"
+import { createStoreCreditWorkflow } from "../../workflows/create-store-credit"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ) {
-  const { result } = await createGiftCardWorkflow(req.scope)
+  const { result } = await createStoreCreditWorkflow(req.scope)
     .run()
 
   res.send(result)
@@ -149,25 +144,25 @@ export async function GET(
   </CodeTab>
   <CodeTab label="Subscriber" value="subscriber">
     
-```ts title="src/subscribers/order-created.ts" highlights={[["11"], ["12"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+```ts title="src/subscribers/customer-created.ts" highlights={[["11"], ["12"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import {
   type SubscriberConfig,
   type SubscriberArgs,
 } from "@medusajs/framework"
-import { createGiftCardWorkflow } from "../workflows/create-gift-card"
+import { createStoreCreditWorkflow } from "../workflows/create-store-credit"
 
-export default async function handleOrderCreated({
+export default async function handleCustomerCreated({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const { result } = await createGiftCardWorkflow(container)
+  const { result } = await createStoreCreditWorkflow(container)
     .run()
 
   console.log(result)
 }
 
 export const config: SubscriberConfig = {
-  event: "order.created",
+  event: "customer.created",
 }
 ```
 
@@ -176,12 +171,12 @@ export const config: SubscriberConfig = {
     
 ```ts title="src/jobs/run-daily.ts" highlights={[["7"], ["8"]]}
 import { MedusaContainer } from "@medusajs/framework/types"
-import { createGiftCardWorkflow } from "../workflows/create-gift-card"
+import { createStoreCreditWorkflow } from "../workflows/create-store-credit"
 
 export default async function myCustomJob(
   container: MedusaContainer
 ) {
-  const { result } = await createGiftCardWorkflow(container)
+  const { result } = await createStoreCreditWorkflow(container)
     .run()
 
   console.log(result)

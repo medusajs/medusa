@@ -1,13 +1,13 @@
 /** @type {import('types').Sidebar.SidebarItem[]} */
-export const loyaltySidebar = [
+export const storeCreditSidebar = [
   {
     type: "sidebar",
-    sidebar_id: "loyalty",
-    title: "Loyalty Module",
+    sidebar_id: "store-credit",
+    title: "Store Credit Module",
     children: [
       {
         type: "link",
-        path: "/commerce-modules/loyalty",
+        path: "/commerce-modules/store-credit",
         title: "Overview",
       },
       {
@@ -19,12 +19,12 @@ export const loyaltySidebar = [
         children: [
           {
             type: "link",
-            path: "/commerce-modules/loyalty/gift-cards",
-            title: "Gift Cards",
+            path: "/commerce-modules/store-credit/concepts",
+            title: "Concepts",
           },
           {
             type: "link",
-            path: "/commerce-modules/loyalty/links-to-other-modules",
+            path: "/commerce-modules/store-credit/links-to-other-modules",
             title: "Link to Modules",
           },
         ],
@@ -32,62 +32,62 @@ export const loyaltySidebar = [
       {
         type: "category",
         title: "Server Guides",
-        autogenerate_tags: "server+loyalty",
+        autogenerate_tags: "server+storeCredit",
         autogenerate_as_ref: true,
         sort_sidebar: "alphabetize",
         description:
-          "Learn how to use the Loyalty Module in your customizations on the Medusa application server.",
+          "Learn how to use the Store Credit Module in your customizations on the Medusa application server.",
       },
       {
         type: "category",
         title: "Storefront Guides",
-        autogenerate_tags: "storefront+loyalty,-jsSdk",
+        autogenerate_tags: "storefront+storeCredit,-jsSdk",
         autogenerate_as_ref: true,
         sort_sidebar: "alphabetize",
         description:
-          "Learn how to integrate the Loyalty Module's features into your storefront.",
+          "Learn how to integrate the Store Credit Module's features into your storefront.",
       },
       {
         type: "category",
         title: "Admin Guides",
-        autogenerate_tags: "admin+loyalty,-jsSdk",
+        autogenerate_tags: "admin+storeCredit,-jsSdk",
         autogenerate_as_ref: true,
         sort_sidebar: "alphabetize",
         description:
-          "Learn how to utilize administrative features of the Loyalty Module.",
+          "Learn how to utilize administrative features of the Store Credit Module.",
       },
       {
         type: "category",
         title: "Admin User Guides",
-        autogenerate_tags: "userGuide+loyalty",
+        autogenerate_tags: "userGuide+storeCredit",
         autogenerate_as_ref: true,
         sort_sidebar: "alphabetize",
         description:
-          "Learn how to utilize and manage Loyalty features in the Medusa Admin dashboard.",
+          "Learn how to utilize and manage Store Credit features in the Medusa Admin dashboard.",
       },
       {
         type: "category",
         title: "References",
         description:
-          "Find references for tools and resources related to the Loyalty Module, such as data models, methods, and more. These are useful for your customizations.",
+          "Find references for tools and resources related to the Store Credit Module, such as data models, methods, and more. These are useful for your customizations.",
         children: [
           {
             type: "link",
-            path: "/commerce-modules/loyalty/workflows",
+            path: "/commerce-modules/store-credit/workflows",
             title: "Workflows",
             hideChildren: true,
             children: [
               {
                 type: "category",
                 title: "Workflows",
-                autogenerate_tags: "workflow+loyalty",
+                autogenerate_tags: "workflow+storeCredit",
                 autogenerate_as_ref: true,
                 sort_sidebar: "alphabetize",
               },
               {
                 type: "category",
                 title: "Steps",
-                autogenerate_tags: "step+loyalty",
+                autogenerate_tags: "step+storeCredit",
                 autogenerate_as_ref: true,
                 sort_sidebar: "alphabetize",
               },
@@ -95,13 +95,13 @@ export const loyaltySidebar = [
           },
           // {
           //   type: "sidebar",
-          //   sidebar_id: "loyalty-service-reference",
+          //   sidebar_id: "store-credit-service-reference",
           //   title: "Main Service Reference",
-          //   childSidebarTitle: "Loyalty Module's Main Service Reference",
+          //   childSidebarTitle: "Store Credit Module's Main Service Reference",
           //   children: [
           //     {
           //       type: "link",
-          //       path: "/references/loyalty",
+          //       path: "/references/store_credit",
           //       title: "Reference Overview",
           //     },
           //     {
@@ -112,19 +112,19 @@ export const loyaltySidebar = [
           //       title: "Methods",
           //       hasTitleStyling: true,
           //       autogenerate_path:
-          //         "/references/loyalty/ILoyaltyModuleService/methods",
+          //         "/references/store_credit/IStoreCreditModuleService/methods",
           //     },
           //   ],
           // },
           // {
           //   type: "sidebar",
-          //   sidebar_id: "loyalty-models-reference",
+          //   sidebar_id: "store-credit-models-reference",
           //   title: "Data Models Reference",
-          //   childSidebarTitle: "Loyalty Module Data Models Reference",
+          //   childSidebarTitle: "Store Credit Module Data Models Reference",
           //   children: [
           //     {
           //       type: "link",
-          //       path: "/references/loyalty/models",
+          //       path: "/references/store_credit/models",
           //       title: "Reference Overview",
           //     },
           //     {
@@ -134,7 +134,7 @@ export const loyaltySidebar = [
           //       type: "category",
           //       title: "Data Models",
           //       hasTitleStyling: true,
-          //       autogenerate_path: "/references/loyalty_models/variables",
+          //       autogenerate_path: "/references/store_credit_models/variables",
           //     },
           //   ],
           // },
