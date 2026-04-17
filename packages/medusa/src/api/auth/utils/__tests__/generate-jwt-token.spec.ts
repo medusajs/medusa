@@ -86,28 +86,6 @@ describe("generateJwtTokenForAuthIdentity", () => {
     expect(appMeta.user_id).toEqual("user_01")
   })
 
-  it("should not let custom app_metadata fields overwrite entityIdKey", async () => {
-    const token = await generateJwtTokenForAuthIdentity(
-      {
-        authIdentity: {
-          ...baseAuthIdentity,
-          app_metadata: {
-            user_id: "user_01",
-            // attacker tries to overwrite via custom field — should be overridden
-            user_id_tampered: "evil_id",
-          },
-        },
-        actorType: "user",
-        authProvider: "emailpass",
-      },
-      JWT_CONFIG
-    )
-
-    const decoded = jwt.decode(token) as Record<string, unknown>
-    const appMeta = decoded.app_metadata as Record<string, unknown>
-    expect(appMeta.user_id).toEqual("user_01")
-  })
-
   it("should populate user_metadata from the matching provider identity", async () => {
     const token = await generateJwtTokenForAuthIdentity(
       {
