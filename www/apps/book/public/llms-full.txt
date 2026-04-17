@@ -150948,6 +150948,7 @@ export const fulfillDigitalOrderWorkflow = createWorkflow(
           input: {
             orderId: digitalProductOrders[0].order!.id,
             fulfillmentId: digitalProductOrders[0].order!.fulfillments![0]!.id,
+            no_notification: true,
           },
         })
       })
@@ -150963,7 +150964,7 @@ In the workflow, you:
 
 1. Retrieve the digital product order's details using `useQueryGraphStep` from Medusa's core workflows.
 2. Send a notification to the customer with the digital product download links using the `sendDigitalOrderNotificationStep`.
-3. Check whether the Medusa order has fulfillments. If so, mark the order's fulfillment as delivered using `markOrderFulfillmentAsDeliveredWorkflow` from Medusa's core workflows.
+3. Check whether the Medusa order has fulfillments. If so, mark the order's fulfillment as delivered using `markOrderFulfillmentAsDeliveredWorkflow` from Medusa's core workflows. The `no_notification` parameter is set to `true` to prevent duplicate notifications since the customer already received the digital products via the custom notification step.
 
 `when` allows you to perform steps based on a condition during execution. Learn more in the [Conditions in Workflows](undefined/docs/learn/fundamentals/workflows/conditions) documentation.
 
