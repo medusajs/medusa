@@ -475,7 +475,7 @@ export class Order {
    *
    * @param id - The order's ID.
    * @param fulfillmentId - The fulfillment's ID.
-   * @param body - The delivery options. @since 2.13.7
+   * @param body - The delivery options.
    * @param query - Configure the fields to retrieve in the order.
    * @param headers - Headers to pass in the request
    * @returns The order's details.
