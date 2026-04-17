@@ -194,6 +194,8 @@ export type MarkOrderFulfillmentAsDeliveredWorkflowInput = {
   fulfillmentId: string
   /**
    * Whether to notify the customer about the delivery.
+   *
+   * @since 2.13.7
    */
   no_notification?: boolean
 }
