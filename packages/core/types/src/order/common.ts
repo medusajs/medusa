@@ -63,7 +63,6 @@ export type OrderSummaryDTO = {
   credit_line_total: BigNumberValue
   accounting_total: BigNumberValue
 
-  // Cost breakdown fields (issue #15125)
   subtotal: BigNumberValue
   tax_total: BigNumberValue
   original_tax_total: BigNumberValue
@@ -81,7 +80,6 @@ export type OrderSummaryDTO = {
   raw_credit_line_total: BigNumberRawValue
   raw_accounting_total: BigNumberRawValue
 
-  // Raw cost breakdown fields (issue #15125)
   raw_subtotal: BigNumberRawValue
   raw_tax_total: BigNumberRawValue
   raw_original_tax_total: BigNumberRawValue

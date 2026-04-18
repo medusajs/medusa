@@ -2290,9 +2290,7 @@ medusaIntegrationTestRunner({
             )
           })
 
-          // Reproduction test for https://github.com/medusajs/medusa/issues/15125
-          // The order_summary.totals JSONB column is missing shipping_total, tax_total,
-          // and subtotal breakdowns. This test will FAIL until the bug is fixed.
+          // Verifies that cost breakdown fields are persisted correctly
           it("should include shipping_total, tax_total, and subtotal in order summary totals", async () => {
             const paymentCollection = (
               await api.post(
@@ -2318,28 +2316,14 @@ medusaIntegrationTestRunner({
 
             const order = response.data.order
 
-            // Confirm the order itself reports a non-zero shipping total
-            // (shipping option price was set to 1000 in beforeEach)
             expect(order.shipping_total).toBeGreaterThan(0)
-
-            // --- Bug #15125 verification ---
-            // These fields exist on the computed `order` object at runtime,
-            // but are NOT persisted into order_summary.totals today.
-            // All three assertions below will FAIL on an unpatched Medusa v2.
             expect(order.summary).toEqual(
               expect.objectContaining({
-                // shipping breakdown
                 shipping_total: order.shipping_total,
                 original_shipping_total: order.original_shipping_total,
-
-                // tax breakdown
                 tax_total: order.tax_total,
                 original_tax_total: order.original_tax_total,
-
-                // subtotal (items before tax/shipping)
                 subtotal: order.subtotal,
-
-                // payment-related fields — these already persist correctly
                 current_order_total: order.total,
                 paid_total: expect.any(Number),
               })

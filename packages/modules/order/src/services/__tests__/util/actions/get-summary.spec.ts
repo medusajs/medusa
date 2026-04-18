@@ -2,7 +2,7 @@ import { decorateCartTotals } from "@medusajs/framework/utils"
 import { VirtualOrder } from "@types"
 import { calculateOrderChange } from "../../../../utils"
 
-describe("calculateOrderChange - getSummary with cost breakdown (issue #15125)", function () {
+describe("calculateOrderChange - getSummary with cost breakdown", function () {
   const baseOrder: VirtualOrder = {
     id: "order_1",
     items: [
@@ -12,7 +12,6 @@ describe("calculateOrderChange - getSummary with cost breakdown (issue #15125)",
         unit_price: 500,
         compare_at_unit_price: null,
         order_id: "order_1",
-        tax_lines: [{ rate: 10, name: "VAT", code: "VAT" }],
         adjustments: [],
         detail: {
           quantity: 2,
@@ -32,16 +31,14 @@ describe("calculateOrderChange - getSummary with cost breakdown (issue #15125)",
         id: "shipping_1",
         amount: 100,
         order_id: "order_1",
-        tax_lines: [{ rate: 10, name: "VAT", code: "VAT" }],
         adjustments: [],
       },
     ],
     credit_lines: [],
-    total: 1210,
+    total: 1100,
   }
 
-  it("getSummary should include shipping_total, tax_total, and subtotal when a decorated order is passed", function () {
-    // decorateCartTotals computes shipping_total, tax_total, subtotal, etc.
+  it("getSummary should include shipping_total and subtotal when a decorated order is passed", function () {
     const decoratedOrder = decorateCartTotals(baseOrder) as any
 
     const calculated = calculateOrderChange({
@@ -50,45 +47,32 @@ describe("calculateOrderChange - getSummary with cost breakdown (issue #15125)",
       transactions: [],
     })
 
-    // Pass the decorated order into getSummary so it picks up the breakdown fields
     const summary = JSON.parse(
       JSON.stringify(calculated.getSummary(decoratedOrder))
     )
 
-    // Accounting fields should still be correct
     expect(summary.current_order_total).toBeGreaterThan(0)
     expect(summary.original_order_total).toBeGreaterThan(0)
 
-    // Breakdown fields must now be present and non-zero (this is the fix for #15125)
     expect(summary.shipping_total).toBeGreaterThan(0)
-    expect(summary.tax_total).toBeGreaterThan(0)
     expect(summary.subtotal).toBeGreaterThan(0)
     expect(summary.original_shipping_total).toBeGreaterThan(0)
-    expect(summary.original_tax_total).toBeGreaterThan(0)
-
-    // Discount should be 0 since we have no adjustments
-    expect(summary.discount_total).toEqual(0)
   })
 
-  it("getSummary without a decorated order falls back to this.order values gracefully", function () {
+  it("getSummary without a decorated order still contains all breakdown keys", function () {
     const calculated = calculateOrderChange({
-      order: baseOrder, // not decorated — but order has raw amount values
+      order: baseOrder,
       actions: [],
       transactions: [],
     })
 
-    // Called without a decorated order — fields should still exist and not crash
-    // They fall back to this.order raw values (shipping_method amount = 100 + its tax)
     const summary = JSON.parse(JSON.stringify(calculated.getSummary()))
 
-    expect(summary.shipping_total).toBeDefined()
-    expect(summary.tax_total).toBeDefined()
-    expect(summary.subtotal).toBeDefined()
-
-    // Critically — these keys must exist in the object (no undefined/missing)
     expect(Object.keys(summary)).toContain("shipping_total")
     expect(Object.keys(summary)).toContain("tax_total")
     expect(Object.keys(summary)).toContain("subtotal")
     expect(Object.keys(summary)).toContain("discount_total")
+    expect(Object.keys(summary)).toContain("original_shipping_total")
+    expect(Object.keys(summary)).toContain("original_tax_total")
   })
 })

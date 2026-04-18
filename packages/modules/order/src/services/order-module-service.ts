@@ -788,11 +788,11 @@ export default class OrderModuleService
         transactions: order.transactions,
       })
 
-      createRawPropertiesFromBigNumber(calculated)
-
       ord.summary = {
         totals: calculated.getSummary(orderWithTotals),
       }
+
+      createRawPropertiesFromBigNumber(ord.summary)
 
       if (ord.currency_code) {
         ord.currency_code = normalizeCurrencyCode(ord.currency_code)

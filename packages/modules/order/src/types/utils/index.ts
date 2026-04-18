@@ -104,7 +104,6 @@ export interface OrderSummaryCalculated {
   credit_line_total: BigNumberInput
   accounting_total: BigNumberInput
 
-  // Cost breakdown fields (issue #15125)
   subtotal?: BigNumberInput
   tax_total?: BigNumberInput
   original_tax_total?: BigNumberInput

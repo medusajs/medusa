@@ -82,6 +82,13 @@ describe("Action: Credit Line Add", function () {
       refunded_total: 0,
       credit_line_total: 0,
       accounting_total: 30,
+      shipping_total: 0,
+      original_shipping_total: 0,
+      tax_total: 0,
+      original_tax_total: 0,
+      subtotal: 0,
+      discount_total: 0,
+      discount_tax_total: 0,
     })
 
     const actions = [
@@ -109,6 +116,13 @@ describe("Action: Credit Line Add", function () {
       refunded_total: 0,
       credit_line_total: 30,
       accounting_total: 0,
+      shipping_total: 0,
+      original_shipping_total: 0,
+      tax_total: 0,
+      original_tax_total: 0,
+      subtotal: 0,
+      discount_total: 0,
+      discount_tax_total: 0,
     })
 
     originalOrder.credit_lines.push({
@@ -147,6 +161,13 @@ describe("Action: Credit Line Add", function () {
       refunded_total: 0,
       credit_line_total: 30,
       accounting_total: -10,
+      shipping_total: 20,
+      original_shipping_total: 20,
+      tax_total: 0,
+      original_tax_total: 0,
+      subtotal: 30,
+      discount_total: 0,
+      discount_tax_total: 0,
     })
   })
 })
