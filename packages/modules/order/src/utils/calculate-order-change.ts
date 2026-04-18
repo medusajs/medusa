@@ -209,8 +209,9 @@ export class OrderChangeProcessing {
   /**
    * Only used for order creation.
    */
-  public getSummary(): OrderSummaryDTO {
+  public getSummary(order?: Record<string, any>): OrderSummaryDTO {
     const summary = this.summary
+    const ord = order ?? (this.order as any)
     const orderSummary = {
       transaction_total: new BigNumber(summary.transaction_total),
       original_order_total: new BigNumber(summary.original_order_total),
@@ -220,6 +221,14 @@ export class OrderChangeProcessing {
       refunded_total: new BigNumber(summary.refunded_total),
       credit_line_total: new BigNumber(summary.credit_line_total),
       accounting_total: new BigNumber(summary.accounting_total),
+      // Cost breakdown fields (issue #15125)
+      subtotal: new BigNumber(ord.subtotal ?? 0),
+      tax_total: new BigNumber(ord.tax_total ?? 0),
+      original_tax_total: new BigNumber(ord.original_tax_total ?? 0),
+      shipping_total: new BigNumber(ord.shipping_total ?? 0),
+      original_shipping_total: new BigNumber(ord.original_shipping_total ?? 0),
+      discount_total: new BigNumber(ord.discount_total ?? 0),
+      discount_tax_total: new BigNumber(ord.discount_tax_total ?? 0),
     } as unknown as OrderSummaryDTO
 
     return orderSummary
@@ -240,6 +249,14 @@ export class OrderChangeProcessing {
       refunded_total: new BigNumber(summary_.refunded_total),
       credit_line_total: new BigNumber(summary_.credit_line_total),
       accounting_total: new BigNumber(summary_.accounting_total),
+      // Cost breakdown fields (issue #15125)
+      subtotal: new BigNumber((order as any).subtotal ?? 0),
+      tax_total: new BigNumber((order as any).tax_total ?? 0),
+      original_tax_total: new BigNumber((order as any).original_tax_total ?? 0),
+      shipping_total: new BigNumber((order as any).shipping_total ?? 0),
+      original_shipping_total: new BigNumber((order as any).original_shipping_total ?? 0),
+      discount_total: new BigNumber((order as any).discount_total ?? 0),
+      discount_tax_total: new BigNumber((order as any).discount_tax_total ?? 0),
     } as any
 
     orderSummary.accounting_total = orderSummary.current_order_total
@@ -274,6 +291,7 @@ export function calculateOrderChange({
   return {
     instance: calc,
     summary: calc.getSummary(), // used for order creation, in other flows we call `getSummaryFromOrder` to get values from calculated totals
+    getSummary: (decoratedOrder?: Record<string, any>) => calc.getSummary(decoratedOrder),
     getSummaryFromOrder: (order: OrderDTO) => calc.getSummaryFromOrder(order),
     order: calc.getCurrentOrder(),
   }

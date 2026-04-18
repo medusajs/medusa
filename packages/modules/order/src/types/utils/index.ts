@@ -103,6 +103,15 @@ export interface OrderSummaryCalculated {
   refunded_total: BigNumberInput
   credit_line_total: BigNumberInput
   accounting_total: BigNumberInput
+
+  // Cost breakdown fields (issue #15125)
+  subtotal?: BigNumberInput
+  tax_total?: BigNumberInput
+  original_tax_total?: BigNumberInput
+  shipping_total?: BigNumberInput
+  original_shipping_total?: BigNumberInput
+  discount_total?: BigNumberInput
+  discount_tax_total?: BigNumberInput
 }
 
 export interface OrderTransaction {

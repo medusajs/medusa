@@ -63,6 +63,15 @@ export type OrderSummaryDTO = {
   credit_line_total: BigNumberValue
   accounting_total: BigNumberValue
 
+  // Cost breakdown fields (issue #15125)
+  subtotal: BigNumberValue
+  tax_total: BigNumberValue
+  original_tax_total: BigNumberValue
+  shipping_total: BigNumberValue
+  original_shipping_total: BigNumberValue
+  discount_total: BigNumberValue
+  discount_tax_total: BigNumberValue
+
   raw_pending_difference: BigNumberRawValue
   raw_current_order_total: BigNumberRawValue
   raw_original_order_total: BigNumberRawValue
@@ -71,6 +80,15 @@ export type OrderSummaryDTO = {
   raw_refunded_total: BigNumberRawValue
   raw_credit_line_total: BigNumberRawValue
   raw_accounting_total: BigNumberRawValue
+
+  // Raw cost breakdown fields (issue #15125)
+  raw_subtotal: BigNumberRawValue
+  raw_tax_total: BigNumberRawValue
+  raw_original_tax_total: BigNumberRawValue
+  raw_shipping_total: BigNumberRawValue
+  raw_original_shipping_total: BigNumberRawValue
+  raw_discount_total: BigNumberRawValue
+  raw_discount_tax_total: BigNumberRawValue
 }
 
 /**

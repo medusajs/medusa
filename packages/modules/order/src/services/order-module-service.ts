@@ -791,7 +791,7 @@ export default class OrderModuleService
       createRawPropertiesFromBigNumber(calculated)
 
       ord.summary = {
-        totals: calculated.summary,
+        totals: calculated.getSummary(orderWithTotals),
       }
 
       if (ord.currency_code) {
