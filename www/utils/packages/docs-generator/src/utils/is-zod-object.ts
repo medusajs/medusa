@@ -11,5 +11,9 @@ export default function isZodObject(itemType: ts.Type): boolean {
     return false
   }
 
-  return (parent.typeName as ts.Identifier).getText().includes("Prettify")
+  // `Prettify` for Zod v4 and `identity` for Zod v3
+  return (
+    (parent.typeName as ts.Identifier).getText().includes("Prettify") ||
+    (parent.typeName as ts.Identifier).getText().includes("identity")
+  )
 }
