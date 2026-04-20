@@ -21,17 +21,49 @@ import { createStoreCreditAccountsStep } from "../../store-credit/steps/create-s
 import { creditAccountsWorkflow } from "../../store-credit/workflows/credit-accounts";
 import { updateGiftCardsWorkflow } from "./update-gift-cards";
 
+/**
+ * Input to validate that a gift card is eligible for redemption.
+ */
+export interface ValidateGiftCardRedeemStepInput {
+  /**
+   * The gift card to validate.
+   */
+  giftCard: ModuleGiftCard
+  /**
+   * The store credit account already linked to the gift card, if any.
+   */
+  giftCardStoreCreditAccount: ModuleStoreCreditAccount
+  /**
+   * The original workflow input containing the gift card ID.
+   */
+  input: RedeemGiftCardWorkflowInput
+}
+
+/**
+ * This step validates that a gift card can be redeemed. It throws an error if the
+ * gift card is already redeemed or already has an associated store credit account.
+ *
+ * @example
+ * const data = validateGiftCardRedeemStep({
+ *   giftCard: {
+ *     id: "gc_123",
+ *     status: GiftCardStatus.ACTIVE,
+ *     // other gift card properties...
+ *   },
+ *   giftCardStoreCreditAccount: {
+ *     id: "sca_123",
+ *     balance: 100,
+ *     // other store credit account properties...
+ *   },
+ *   input: { gift_card_id: "gc_123" },
+ * })
+ */
 export const validateGiftCardRedeemStep = createStep(
   "validate-gift-card-redeem",
   async function ({
     giftCardStoreCreditAccount,
     giftCard,
-    input,
-  }: {
-    giftCardStoreCreditAccount: ModuleStoreCreditAccount;
-    giftCard: ModuleGiftCard;
-    input: RedeemGiftCardWorkflowInput;
-  }) {
+  }: ValidateGiftCardRedeemStepInput) {
     if (giftCard.status === GiftCardStatus.REDEEMED) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -49,10 +81,25 @@ export const validateGiftCardRedeemStep = createStep(
 );
 
 /**
- * A workflow that creates an anonymous store credit account for a gift card
+ * This workflow redeems a gift card by creating an anonymous store credit account,
+ * crediting it with the gift card's value, and marking the gift card as redeemed.
+ * It throws an error if the gift card is already redeemed or already has an
+ * associated store credit account.
  *
- * @param input - The input for the workflow
- * @returns The workflow response
+ * You can use this workflow within your own customizations or custom workflows,
+ * allowing you to wrap custom logic around gift card redemption.
+ *
+ * @example
+ * const { result } = await redeemGiftCardWorkflow(container)
+ *   .run({
+ *     input: {
+ *       gift_card_id: "gc_123",
+ *     },
+ *   })
+ *
+ * @summary
+ *
+ * Redeem a gift card and create a backing store credit account.
  */
 export const redeemGiftCardWorkflow = createWorkflow(
   "redeem-gift-card",

@@ -20,6 +20,8 @@ export const baseOptions: Partial<TypeDocOptions> = {
     invalidLink: true,
     notDocumented: false,
   },
+  // TODO: remove once we update to latest TypeDoc as it supports TypeScript 5.9
+  skipErrorChecking: true,
   // Uncomment this when debugging
   // logLevel: "Error",
   // showConfig: true,
