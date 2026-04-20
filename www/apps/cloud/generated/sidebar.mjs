@@ -138,6 +138,14 @@ export const generatedSidebars = [
                 "title": "Custom Domains",
                 "path": "/environments/custom-domains",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Monitoring",
+                "path": "/environments/monitoring",
+                "children": []
               }
             ]
           },

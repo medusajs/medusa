@@ -93,6 +93,11 @@ export const sidebar = [
                 title: "Custom Domains",
                 path: "/environments/custom-domains",
               },
+              {
+                type: "link",
+                title: "Monitoring",
+                path: "/environments/monitoring",
+              },
             ],
           },
           {

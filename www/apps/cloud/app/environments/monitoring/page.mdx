@@ -1,0 +1,156 @@
+import { getOsShortcut, Kbd } from "docs-ui"
+
+export const metadata = {
+  title: `Environment Monitoring`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to monitor your Cloud environment's performance, including HTTP request metrics, server performance, and worker activity.
+
+## Monitoring Overview
+
+Environment monitoring provides real-time insights into your Cloud environment's performance and health. You can track various metrics including HTTP requests, server resources, and worker processes to identify issues and optimize your application's performance.
+
+The monitoring dashboard includes several sections:
+
+- **HTTP monitoring**: Track request rates, errors, timeouts, bandwidth, and latency
+- **Server monitoring**: Monitor server resource usage and performance
+- **Worker monitoring**: Track background worker processes and jobs
+
+---
+
+## Access Environment Monitoring
+
+To access monitoring for an environment:
+
+<Note title="Tip">
+
+You can also navigate to environment monitoring from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> and select **Environment Monitoring**.
+
+</Note>
+
+1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
+2. Click on the project that contains the environment you want to monitor.
+3. Click on the environment you want to monitor, such as "Production".
+4. Click the "Monitoring" tab at the top of the environment's dashboard.
+5. Navigate to the specific monitoring section using the tabs: HTTP, Servers, or Workers.
+
+---
+
+## HTTP Monitoring
+
+The HTTP monitoring section provides comprehensive insights into your application's API performance and request handling.
+
+### Request Rate Charts
+
+The request rate charts display:
+
+- **Successful requests**: Number of requests that completed successfully over time
+- **Error rate percentage**: Percentage of requests that resulted in errors
+- **Timeout rate percentage**: Percentage of requests that timed out
+
+These charts help you understand your application's request volume and identify periods of high error rates or timeouts.
+
+### Bandwidth Monitoring
+
+Bandwidth charts track data transfer for your environment:
+
+- **Bytes sent**: Amount of data sent from your application to clients
+- **Bytes received**: Amount of data received by your application from clients
+
+The bandwidth charts include interactive legend controls that allow you to toggle the visibility of different data series by clicking on them.
+
+### Latency Analysis
+
+Latency charts display response time metrics:
+
+- **90th percentile response times**: Shows how long it takes for 90% of requests to complete
+
+This metric helps you understand your application's performance from the user's perspective and identify slow endpoints or performance degradations.
+
+### Endpoint-Specific Data
+
+The HTTP monitoring section includes detailed tables showing metrics broken down by API endpoint:
+
+- **Requests**: Total number of requests per endpoint
+- **Errors**: Number of failed requests per endpoint  
+- **Timeouts**: Number of requests that timed out per endpoint
+- **Data transfer**: Bytes sent and received per endpoint
+- **Median latency**: Typical response time for each endpoint
+
+The endpoint data tables support:
+
+- **Sorting**: Click column headers to sort by different metrics
+- **Pagination**: Navigate through large datasets using pagination controls
+- **Search**: Find specific endpoints quickly
+
+### Interactive Chart Features
+
+All HTTP monitoring charts include enhanced functionality:
+
+- **Expandable modal views**: Click on any chart to view it in a larger modal for detailed analysis
+- **Interactive legends**: Click legend items to show or hide specific data series
+- **Loading states**: Charts display animated loading indicators while data is being fetched
+- **Empty states**: When insufficient data is available, charts show "Not enough data" messages
+- **Improved tooltips**: Hover over data points to see detailed information with properly formatted units (percentages, bytes, milliseconds)
+- **Adaptive time formatting**: Time axes automatically adjust formatting based on the selected time range
+
+### Time Range Selection
+
+You can adjust the time range for all monitoring charts to focus on specific periods:
+
+- Use the time range selector to choose predefined ranges (last hour, last day, last week)
+- Select custom time ranges for detailed analysis
+- Time range selections are preserved when navigating between different monitoring tabs
+
+---
+
+## Chart Navigation and Features
+
+All monitoring charts share consistent functionality:
+
+### Expanding Charts
+
+Click the expand button on any chart to view it in a larger modal window. This provides:
+
+- Better visibility for detailed analysis
+- Larger chart area for examining trends
+- Same interactive features as the dashboard view
+
+### Data Series Control
+
+Use interactive legends to customize chart displays:
+
+- Click legend items to toggle data series visibility
+- Focus on specific metrics by hiding irrelevant data
+- Combine different data series for correlation analysis
+
+### Loading and Error States
+
+Charts provide clear feedback about data availability:
+
+- **Loading states**: Animated loading grids appear while data is being fetched
+- **Empty states**: "Not enough data" messages display when metrics are unavailable
+- **Error handling**: Clear error messages if data cannot be loaded
+
+### Time Axis Formatting
+
+Chart time axes automatically adapt based on your selected time range:
+
+- **Short ranges**: Display time only (e.g., "14:30")
+- **Long ranges**: Include dates (e.g., "Jan 15, 14:30")
+- **Consistent formatting**: Easy to read regardless of the time span
+
+---
+
+## Mobile Navigation
+
+The monitoring interface is optimized for mobile devices:
+
+- Responsive chart layouts that adapt to smaller screens
+- Touch-friendly navigation between monitoring tabs
+- Condensed data tables with horizontal scrolling for detailed information
+- Preserved functionality across all device sizes
+
+The mobile navigation maintains the same tab structure and time range persistence as the desktop interface.

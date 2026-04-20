@@ -36,5 +36,6 @@ export const generatedEditDates = {
   "app/environments/custom-domains/page.mdx": "2026-04-14T10:51:20.317Z",
   "app/command-palette/page.mdx": "2026-04-10T10:20:57.642Z",
   "app/environments/subdomains/page.mdx": "2026-04-14T10:50:18.756Z",
-  "app/ip-addresses/page.mdx": "2026-04-14T10:43:16.892Z"
+  "app/ip-addresses/page.mdx": "2026-04-14T10:43:16.892Z",
+  "app/environments/monitoring/page.mdx": "2026-04-20T11:16:36.031Z"
 }
