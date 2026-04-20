@@ -122,16 +122,6 @@ export const confirmCartCreditLinesWorkflow = createWorkflow(
       return cart.gift_cards.map((gc) => gc.id);
     });
 
-    const giftCardQuery = useQueryGraphStep({
-      entity: "gift_card",
-      filters: { id: giftCardIds },
-      fields: ["id", "code", "status", "currency_code"],
-    }).config({ name: "get-gift-card-query" });
-
-    const giftCards = transform({ giftCardQuery }, ({ giftCardQuery }) => {
-      return giftCardQuery.data;
-    });
-
     const storeCreditAccountsQuery = useQueryGraphStep({
       entity: "gift_card_store_credit_account",
       filters: { gift_card_id: giftCardIds },

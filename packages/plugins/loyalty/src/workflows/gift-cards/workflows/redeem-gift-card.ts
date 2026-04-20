@@ -7,7 +7,6 @@ import {
   createStep,
   createWorkflow,
   transform,
-  when,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk";
 import {

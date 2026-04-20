@@ -88,7 +88,7 @@ const GiftCardGeneralSection = ({ giftCard }: { giftCard: AdminGiftCard }) => {
                     icon: <Trash />,
                     label: "Delete",
                     onClick: handleDelete,
-                    disabled: isDeleting || true,
+                    disabled: isDeleting,
                   },
                 ],
               },

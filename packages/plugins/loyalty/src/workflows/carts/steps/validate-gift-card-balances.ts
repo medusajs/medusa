@@ -1,6 +1,6 @@
 import { MathBN, MedusaError } from "@medusajs/framework/utils";
 import { createStep } from "@medusajs/framework/workflows-sdk";
-import { ModuleAccountStats, ModuleGiftCard } from "src/types";
+import { ModuleAccountStats, ModuleGiftCard } from "../../../types";
 
 /**
  * Input to validate that all gift cards in a collection have a positive balance.
