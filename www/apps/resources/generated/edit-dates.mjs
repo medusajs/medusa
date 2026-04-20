@@ -7011,12 +7011,12 @@ export const generatedEditDates = {
   "references/core_flows/types/core_flows.RemovePriceListPricesWorkflowInput/page.mdx": "2026-04-08T09:17:46.410Z",
   "references/js_sdk/admin/Translation/methods/js_sdk.admin.Translation.batchSettings/page.mdx": "2026-04-08T09:18:03.127Z",
   "app/commerce-modules/loyalty/page.mdx": "2026-04-20T08:40:52.610Z",
-  "app/commerce-modules/loyalty/workflows/page.mdx": "2026-04-17T13:09:07.700Z",
+  "app/commerce-modules/loyalty/workflows/page.mdx": "2026-04-20T12:51:29.891Z",
   "app/medusa-oas-cli/page.mdx": "2026-04-16T12:03:07.119Z",
   "app/commerce-modules/loyalty/gift-cards/page.mdx": "2026-04-17T15:07:00.932Z",
   "app/commerce-modules/loyalty/links-to-other-modules/page.mdx": "2026-04-17T14:52:05.864Z",
   "app/commerce-modules/store-credit/concepts/page.mdx": "2026-04-17T14:57:21.360Z",
   "app/commerce-modules/store-credit/links-to-other-modules/page.mdx": "2026-04-17T14:51:34.764Z",
-  "app/commerce-modules/store-credit/workflows/page.mdx": "2026-04-17T13:09:39.873Z",
+  "app/commerce-modules/store-credit/workflows/page.mdx": "2026-04-20T12:51:52.790Z",
   "app/commerce-modules/store-credit/page.mdx": "2026-04-20T08:41:01.437Z"
 }
