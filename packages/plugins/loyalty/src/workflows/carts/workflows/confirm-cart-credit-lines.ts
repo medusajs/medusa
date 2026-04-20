@@ -66,6 +66,16 @@ export const validateStoreCreditAccountStep = createStep(
 );
 
 /**
+ * Input to confirm and debit the credit lines on a cart.
+ */
+export interface ConfirmCartCreditLinesWorkflowInput {
+  /**
+   * The ID of the cart whose credit lines should be confirmed and debited.
+   */
+  cart_id: string
+}
+
+/**
  * This workflow confirms the credit lines of a cart by debiting the associated
  * store credit and gift card accounts for the credit line amounts. It is typically
  * called before payment authorization to lock in the store credit usage.
@@ -85,16 +95,6 @@ export const validateStoreCreditAccountStep = createStep(
  *
  * Confirm and debit the credit lines on a cart.
  */
-/**
- * Input to confirm and debit the credit lines on a cart.
- */
-export interface ConfirmCartCreditLinesWorkflowInput {
-  /**
-   * The ID of the cart whose credit lines should be confirmed and debited.
-   */
-  cart_id: string
-}
-
 export const confirmCartCreditLinesWorkflow = createWorkflow(
   "confirm-cart-credit-lines",
   function (input: ConfirmCartCreditLinesWorkflowInput) {

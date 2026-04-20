@@ -132,7 +132,15 @@ export interface ValidateCartGiftCardStepInput {
  *
  * @example
  * const data = validateCartGiftCardStep({
- *   cart: { ...cart, gift_cards: [] },
+ *   cart: {
+ *     id: "cart_123",
+ *     gift_cards: [
+ *       { code: "GC-XXXX-XXXX" },
+ *       // other gift cards applied to the cart...
+ *     ],
+ *     currency_code: "usd",
+ *     // other cart properties... 
+ *   },
  *   giftCards: [...],
  * })
  */
@@ -165,6 +173,20 @@ export const validateCartGiftCardStep = createStep(
 );
 
 /**
+ * Input to apply a gift card to a cart.
+ */
+export interface AddGiftCardToCartWorkflowInput {
+  /**
+   * The code of the gift card to apply.
+   */
+  code: string
+  /**
+   * The ID of the cart to apply the gift card to.
+   */
+  cart_id: string
+}
+
+/**
  * This workflow applies a gift card to a cart by creating a credit line for the
  * gift card's balance and linking the gift card to the cart. It validates that
  * the gift card exists, has sufficient balance, and can be applied to the cart.
@@ -185,20 +207,6 @@ export const validateCartGiftCardStep = createStep(
  *
  * Apply a gift card to a cart.
  */
-/**
- * Input to apply a gift card to a cart.
- */
-export interface AddGiftCardToCartWorkflowInput {
-  /**
-   * The code of the gift card to apply.
-   */
-  code: string
-  /**
-   * The ID of the cart to apply the gift card to.
-   */
-  cart_id: string
-}
-
 export const addGiftCardToCartWorkflow = createWorkflow(
   "add-gift-card-to-cart",
   function (input: AddGiftCardToCartWorkflowInput) {

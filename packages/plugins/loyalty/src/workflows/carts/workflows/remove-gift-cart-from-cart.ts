@@ -119,6 +119,20 @@ export const validateGiftCardStep = createStep(
 );
 
 /**
+ * Input to remove a gift card from a cart.
+ */
+export interface RemoveGiftCardFromCartWorkflowInput {
+  /**
+   * The code of the gift card to remove.
+   */
+  code: string
+  /**
+   * The ID of the cart to remove the gift card from.
+   */
+  cart_id: string
+}
+
+/**
  * This workflow removes a gift card from a cart by deleting its associated credit
  * lines, dismissing the links between the cart and the gift card, and refreshing
  * the cart items.
@@ -139,20 +153,6 @@ export const validateGiftCardStep = createStep(
  *
  * Remove a gift card from a cart.
  */
-/**
- * Input to remove a gift card from a cart.
- */
-export interface RemoveGiftCardFromCartWorkflowInput {
-  /**
-   * The code of the gift card to remove.
-   */
-  code: string
-  /**
-   * The ID of the cart to remove the gift card from.
-   */
-  cart_id: string
-}
-
 export const removeGiftCardFromCartWorkflow = createWorkflow(
   "remove-gift-card-from-cart",
   function (input: RemoveGiftCardFromCartWorkflowInput) {

@@ -130,6 +130,20 @@ export const creditAccountTransactionsStep = createStep(
 )
 
 /**
+ * Input to refund negative order credit lines to a customer's store credit account.
+ */
+export interface RefundCreditLinesWorkflowInput {
+  /**
+   * The ID of the order whose credit lines should be refunded.
+   */
+  order_id: string
+  /**
+   * The credit lines to process for refund.
+   */
+  credit_lines: OrderCreditLineDTO[]
+}
+
+/**
  * This workflow refunds negative order credit lines by crediting the customer's
  * store credit account. Guest customers cannot receive store credit refunds — only
  * registered customers are eligible.
@@ -150,20 +164,6 @@ export const creditAccountTransactionsStep = createStep(
  *
  * Refund negative order credit lines to a customer's store credit account.
  */
-/**
- * Input to refund negative order credit lines to a customer's store credit account.
- */
-export interface RefundCreditLinesWorkflowInput {
-  /**
-   * The ID of the order whose credit lines should be refunded.
-   */
-  order_id: string
-  /**
-   * The credit lines to process for refund.
-   */
-  credit_lines: OrderCreditLineDTO[]
-}
-
 export const refundCreditLinesWorkflow = createWorkflow(
   "refund-credit-lines",
   function (input: RefundCreditLinesWorkflowInput) {

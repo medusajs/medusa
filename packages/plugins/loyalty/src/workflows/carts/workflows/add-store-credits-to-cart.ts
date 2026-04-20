@@ -115,6 +115,20 @@ export const validateCartStep = createStep(
 );
 
 /**
+ * Input to apply store credits to a cart.
+ */
+export interface AddStoreCreditsToCartWorkflowInput {
+  /**
+   * The ID of the cart to apply store credits to.
+   */
+  cart_id: string
+  /**
+   * The amount of store credits to apply. If not provided, the full balance is applied.
+   */
+  amount?: number
+}
+
+/**
  * This workflow applies store credits to a cart. It removes any existing store-credit
  * lines and creates a new credit line for the specified amount, or for the full store
  * credit balance if no amount is specified. The customer must be set on the cart and
@@ -136,20 +150,6 @@ export const validateCartStep = createStep(
  *
  * Apply store credits to a cart.
  */
-/**
- * Input to apply store credits to a cart.
- */
-export interface AddStoreCreditsToCartWorkflowInput {
-  /**
-   * The ID of the cart to apply store credits to.
-   */
-  cart_id: string
-  /**
-   * The amount of store credits to apply. If not provided, the full balance is applied.
-   */
-  amount?: number
-}
-
 export const addStoreCreditsToCartWorkflow = createWorkflow(
   "add-store-credits-to-cart",
   function (input: AddStoreCreditsToCartWorkflowInput) {
