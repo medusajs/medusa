@@ -597,6 +597,76 @@ export class Store {
       )
     },
     /**
+     * This method adds promotion codes to a cart. It sends a request to the
+     * [Add Promotion Codes](https://docs.medusajs.com/api/store#carts_postcartsidpromotions)
+     * API route.
+     *
+     * @param cartId - The cart's ID.
+     * @param body - The promotion codes to add.
+     * @param query - Configure the fields to retrieve in the cart.
+     * @param headers - Headers to pass in the request.
+     * @returns The cart's details.
+     *
+     * @example
+     * sdk.store.cart.addPromotions("cart_123", {
+     *   promo_codes: ["PROMO_10"]
+     * })
+     * .then(({ cart }) => {
+     *   console.log(cart)
+     * })
+     */
+    addPromotions: async (
+      cartId: string,
+      body: HttpTypes.StoreCartAddPromotion,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.StoreCartResponse>(
+        `/store/carts/${cartId}/promotions`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
+    },
+    /**
+     * This method removes promotion codes from a cart. It sends a request to the
+     * [Remove Promotion Codes](https://docs.medusajs.com/api/store#carts_deletecartsidpromotions)
+     * API route.
+     *
+     * @param cartId - The cart's ID.
+     * @param body - The promotion codes to remove.
+     * @param query - Configure the fields to retrieve in the cart.
+     * @param headers - Headers to pass in the request.
+     * @returns The cart's details.
+     *
+     * @example
+     * sdk.store.cart.removePromotions("cart_123", {
+     *   promo_codes: ["PROMO_10"]
+     * })
+     * .then(({ cart }) => {
+     *   console.log(cart)
+     * })
+     */
+    removePromotions: async (
+      cartId: string,
+      body: HttpTypes.StoreCartRemovePromotion,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.StoreCartResponse>(
+        `/store/carts/${cartId}/promotions`,
+        {
+          method: "DELETE",
+          headers,
+          body,
+          query,
+        }
+      )
+    },
+    /**
      * This methods adds a product variant to the cart as a line item. It sends a request to the
      * [Add Line Item](https://docs.medusajs.com/api/store#carts_postcartsidlineitems) API route.
      *
