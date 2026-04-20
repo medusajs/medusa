@@ -1,3 +1,5 @@
+import { getOsShortcut, Kbd } from "docs-ui"
+
 export const metadata = {
   title: `Database`,
 }
@@ -40,6 +42,12 @@ Medusa gives you read access to your Cloud project's database, which is useful w
 
 To get the read-only connection string for an environment's database:
 
+<Note title="Tip">
+
+You can access the database settings from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, then select **Storage**.
+
+</Note>
+
 1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
 2. In the project's dashboard, click on the name of the environment. For example, "Production".
 3. In the environment's dashboard, click on the "Settings" tab.
@@ -63,6 +71,12 @@ After connecting to the database, you can run SQL queries to interact with your 
 Medusa allows you to export and import database dumps for any environment on Cloud. This is useful for seeding the database with initial data, migrating from other hosting platforms, or debugging issues locally.
 
 To import or export a database dump for an environment:
+
+<Note title="Tip">
+
+You can access the database settings from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, then select **Storage**.
+
+</Note>
 
 1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
 2. In the project's dashboard, click on the name of the environment. For example, "Production".

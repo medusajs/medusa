@@ -99,7 +99,7 @@ export const OrderCreateFulfillment = z.object({
   location_id: z.string().nullish(),
   shipping_option_id: z.string().optional(),
   no_notification: z.boolean().optional(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 export const AdminOrderCreateFulfillment = WithAdditionalData(
   OrderCreateFulfillment
@@ -116,9 +116,13 @@ export const OrderCreateShipment = z.object({
   items: z.array(Item),
   labels: z.array(Label).optional(),
   no_notification: z.boolean().optional(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 export const AdminOrderCreateShipment = WithAdditionalData(OrderCreateShipment)
+
+export const AdminMarkOrderFulfillmentAsDelivered = z.object({
+  no_notification: z.boolean().optional(),
+})
 
 export type AdminOrderCancelFulfillmentType = z.infer<
   typeof OrderCancelFulfillment
@@ -143,23 +147,13 @@ export const AdminOrderChangesParams = createSelectParams().merge(
 
 export type AdminOrderChangesType = z.infer<typeof AdminOrderChangesParams>
 
-export type AdminMarkOrderFulfillmentDeliveredType = z.infer<
-  typeof AdminMarkOrderFulfillmentDelivered
->
-
-export const AdminMarkOrderFulfillmentDelivered = z.object({})
-
 export type AdminTransferOrderType = z.infer<typeof AdminTransferOrder>
 export const AdminTransferOrder = z.object({
   customer_id: z.string(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
+  update_order_email: z.boolean().optional(),
 })
-
-export type AdminCancelOrderTransferRequestType = z.infer<
-  typeof AdminCancelOrderTransferRequest
->
-export const AdminCancelOrderTransferRequest = z.object({})
 
 export type AdminUpdateOrderType = z.infer<typeof AdminUpdateOrder>
 export const AdminUpdateOrder = z.object({
@@ -167,7 +161,7 @@ export const AdminUpdateOrder = z.object({
   shipping_address: AddressPayload.optional(),
   billing_address: AddressPayload.optional(),
   locale: z.string().nullish(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 
 export type AdminCreateOrderCreditLinesType = z.infer<
@@ -177,5 +171,5 @@ export const AdminCreateOrderCreditLines = z.object({
   amount: z.number(),
   reference: z.string(),
   reference_id: z.string(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })

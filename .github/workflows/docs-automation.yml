@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   docs-automation:
-    if: ${{ github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, 'Version Packages') }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.head_commit.author.name != 'github-actions[bot]' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write

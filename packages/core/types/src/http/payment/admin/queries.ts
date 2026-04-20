@@ -1,11 +1,11 @@
 import { BaseFilterable, OperatorMap } from "../../../dal"
-import { FindParams } from "../../common"
+import { FindParams, SelectParams } from "../../common"
+import { AdminRefundReason } from "../../refund-reason"
 import {
   BasePaymentCollectionFilters,
   BasePaymentFilters,
   BasePaymentSessionFilters,
 } from "../common"
-import { AdminRefundReason } from "../../refund-reason"
 
 export interface AdminPaymentProviderFilters
   extends FindParams,
@@ -65,3 +65,7 @@ export interface AdminGetPaymentProvidersParams
    */
   is_enabled?: boolean
 }
+
+export interface AdminGetPaymentParams extends SelectParams {}
+
+export interface AdminGetPaymentCollectionParams extends SelectParams {}

@@ -11,6 +11,7 @@ const ProductCategory = model
     is_active: model.boolean().default(false),
     is_internal: model.boolean().default(false),
     rank: model.number().default(0),
+    external_id: model.text().nullable(),
     metadata: model.json().nullable(),
     parent_category: model
       .belongsTo(() => ProductCategory, {

@@ -22,16 +22,73 @@ Exceptions: `US` (United States) is allowed.
 
 ## Passive Voice
 
-Vale warns on passive voice. Rewrite as active:
+Vale warns on passive voice. Rewrite as active. Pay special attention to "can be + past participle" constructions — rewrite as "you can + verb":
 
 ```
 ❌ The workflow is created by calling createWorkflow.
 ❌ Products are fetched from the database.
 ❌ The configuration has been updated.
+❌ Custom domains can be configured in the settings.
 
 ✅ Call createWorkflow to create a workflow.
 ✅ The service fetches products from the database.
 ✅ Update the configuration.
+✅ You can configure custom domains in the settings.
+```
+
+## Backend vs API Terminology
+
+**Rule:** Use "backend" when referring to the Medusa server/application. Never use "API" as a synonym for the Medusa backend.
+
+```
+❌ Serve your Medusa API.
+❌ Connect the storefront to the Medusa API.
+❌ The Medusa API handles the requests.
+
+✅ Serve your Medusa backend.
+✅ Connect the storefront to the Medusa backend.
+✅ The Medusa backend handles the requests.
+```
+
+Note: "API" is still correct when referring to specific API routes or endpoints (for example, "call the Products API", "the Admin API").
+
+## Medusa Cloud Naming
+
+**Rule:** Never write "Medusa Cloud" — use the shortened form depending on context.
+
+- When referring to the product/platform as a noun, use **"Medusa"**
+- When referring to the platform as a location or service (e.g., deploying to it), use **"Cloud"**
+
+```
+❌ Medusa Cloud allows you to deploy your application.
+✅ Medusa allows you to deploy your application.
+
+❌ Deploy your project to Medusa Cloud.
+✅ Deploy your project to Cloud.
+
+❌ The Medusa Cloud dashboard shows your deployments.
+✅ The Cloud dashboard shows your deployments.
+```
+
+## Latin Abbreviations
+
+**Rule:** Never use `e.g.,` — write `for example` instead.
+
+```
+❌ Use a workflow step, e.g., to call an external API.
+✅ Use a workflow step, for example, to call an external API.
+```
+
+## Em Dashes
+
+**Rule:** Never use em dashes (`—`). Rewrite the sentence to avoid them.
+
+```
+❌ The workflow runs the steps — in order — and compensates on failure.
+✅ The workflow runs the steps in order and compensates on failure.
+
+❌ Use createStep — not direct service calls — for mutations.
+✅ Use createStep, not direct service calls, for mutations.
 ```
 
 ## Problematic Words
@@ -103,8 +160,12 @@ Keep sentences concise. Vale suggests sentences under ~30 words. Split complex s
 
 Before writing prose, check:
 - [ ] Any "we", "us", "let's", "our" → replace with "you" or imperative
-- [ ] Any passive voice constructions → rewrite active
+- [ ] Any passive voice constructions (including "can be configured", "is created", etc.) → rewrite active ("you can configure", "call X to create")
 - [ ] Any "simply", "just", "easy", etc. → remove
 - [ ] Code lines over 64 characters → break them
 - [ ] Bare URLs → wrap in `[label](url)`
 - [ ] `tsx` language tag for non-JSX TypeScript → change to `ts`
+- [ ] "Medusa API" used to mean the backend → replace with "Medusa backend"
+- [ ] "Medusa Cloud" anywhere → replace with "Medusa" (noun form) or "Cloud" (location/service)
+- [ ] `e.g.,` anywhere → replace with `for example`
+- [ ] Em dashes (`—`) anywhere → rewrite sentence to remove them

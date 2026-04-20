@@ -41,6 +41,14 @@ export const generatedSidebars = [
             "path": "/comparison",
             "title": "Cloud vs Self Hosting",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Command Palette",
+            "path": "/command-palette",
+            "children": []
           }
         ]
       },
@@ -113,6 +121,22 @@ export const generatedSidebars = [
                 "type": "link",
                 "title": "Environment Variables",
                 "path": "/environments/environment-variables",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Subdomains",
+                "path": "/environments/subdomains",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Custom Domains",
+                "path": "/environments/custom-domains",
                 "children": []
               }
             ]
@@ -317,6 +341,23 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Usage",
             "path": "/usage",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "category",
+        "title": "Networking",
+        "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "IP Addresses",
+            "path": "/ip-addresses",
             "children": []
           }
         ]

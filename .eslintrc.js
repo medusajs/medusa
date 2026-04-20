@@ -1,4 +1,4 @@
-const path = require("path");
+const path = require("path")
 
 module.exports = {
   root: true,
@@ -84,13 +84,22 @@ module.exports = {
           path.join(__dirname, "./packages/admin/admin-bundler/tsconfig.json"),
           path.join(__dirname, "./packages/admin/admin-sdk/tsconfig.json"),
           path.join(__dirname, "./packages/admin/admin-shared/tsconfig.json"),
-          path.join(__dirname, "./packages/admin/admin-vite-plugin/tsconfig.json"),
+          path.join(
+            __dirname,
+            "./packages/admin/admin-vite-plugin/tsconfig.json"
+          ),
           path.join(__dirname, "./packages/admin/dashboard/tsconfig.json"),
 
-          path.join(__dirname, "./packages/cli/create-medusa-app/tsconfig.json"),
+          path.join(
+            __dirname,
+            "./packages/cli/create-medusa-app/tsconfig.json"
+          ),
           path.join(__dirname, "./packages/cli/medusa-cli/tsconfig.json"),
           path.join(__dirname, "./packages/cli/medusa-dev-cli/tsconfig.json"),
-          path.join(__dirname, "./packages/cli/oas/medusa-oas-cli/tsconfig.json"),
+          path.join(
+            __dirname,
+            "./packages/cli/oas/medusa-oas-cli/tsconfig.json"
+          ),
 
           path.join(__dirname, "./packages/core/core-flows/tsconfig.json"),
           path.join(__dirname, "./packages/core/framework/tsconfig.json"),
@@ -104,9 +113,15 @@ module.exports = {
           path.join(__dirname, "./packages/deps/tsconfig.json"),
 
           path.join(__dirname, "./packages/design-system/icons/tsconfig.json"),
-          path.join(__dirname, "./packages/design-system/toolbox/tsconfig.json"),
+          path.join(
+            __dirname,
+            "./packages/design-system/toolbox/tsconfig.json"
+          ),
           path.join(__dirname, "./packages/design-system/ui/tsconfig.json"),
-          path.join(__dirname, "./packages/design-system/ui-preset/tsconfig.json"),
+          path.join(
+            __dirname,
+            "./packages/design-system/ui-preset/tsconfig.json"
+          ),
 
           path.join(__dirname, "./packages/medusa/tsconfig.json"),
 
@@ -116,14 +131,23 @@ module.exports = {
           path.join(__dirname, "./packages/modules/analytics/tsconfig.json"),
           path.join(__dirname, "./packages/modules/api-key/tsconfig.json"),
           path.join(__dirname, "./packages/modules/auth/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/cache-inmemory/tsconfig.json"),
+          path.join(
+            __dirname,
+            "./packages/modules/cache-inmemory/tsconfig.json"
+          ),
           path.join(__dirname, "./packages/modules/cache-redis/tsconfig.json"),
           path.join(__dirname, "./packages/modules/caching/tsconfig.json"),
           path.join(__dirname, "./packages/modules/cart/tsconfig.json"),
           path.join(__dirname, "./packages/modules/currency/tsconfig.json"),
           path.join(__dirname, "./packages/modules/customer/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/event-bus-local/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/event-bus-redis/tsconfig.json"),
+          path.join(
+            __dirname,
+            "./packages/modules/event-bus-local/tsconfig.json"
+          ),
+          path.join(
+            __dirname,
+            "./packages/modules/event-bus-redis/tsconfig.json"
+          ),
           path.join(__dirname, "./packages/modules/file/tsconfig.json"),
           path.join(__dirname, "./packages/modules/fulfillment/tsconfig.json"),
           path.join(__dirname, "./packages/modules/index/tsconfig.json"),
@@ -137,32 +161,87 @@ module.exports = {
           path.join(__dirname, "./packages/modules/product/tsconfig.json"),
           path.join(__dirname, "./packages/modules/promotion/tsconfig.json"),
           path.join(__dirname, "./packages/modules/region/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/sales-channel/tsconfig.json"),
+          path.join(
+            __dirname,
+            "./packages/modules/sales-channel/tsconfig.json"
+          ),
           path.join(__dirname, "./packages/modules/settings/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/stock-location/tsconfig.json"),
+          path.join(
+            __dirname,
+            "./packages/modules/stock-location/tsconfig.json"
+          ),
           path.join(__dirname, "./packages/modules/store/tsconfig.json"),
           path.join(__dirname, "./packages/modules/tax/tsconfig.json"),
           path.join(__dirname, "./packages/modules/translation/tsconfig.json"),
           path.join(__dirname, "./packages/modules/user/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/workflow-engine-inmemory/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/workflow-engine-redis/tsconfig.json"),
+          path.join(
+            __dirname,
+            "./packages/modules/workflow-engine-inmemory/tsconfig.json"
+          ),
+          path.join(
+            __dirname,
+            "./packages/modules/workflow-engine-redis/tsconfig.json"
+          ),
 
-          path.join(__dirname, "./packages/modules/providers/analytics-local/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/providers/analytics-posthog/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/providers/auth-emailpass/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/providers/auth-github/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/providers/auth-google/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/providers/caching-redis/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/providers/file-local/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/providers/file-s3/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/providers/fulfillment-manual/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/providers/locking-postgres/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/providers/locking-redis/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/providers/notification-local/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/providers/notification-sendgrid/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/providers/payment-stripe/tsconfig.json"),
+          path.join(
+            __dirname,
+            "./packages/modules/providers/analytics-local/tsconfig.json"
+          ),
+          path.join(
+            __dirname,
+            "./packages/modules/providers/analytics-posthog/tsconfig.json"
+          ),
+          path.join(
+            __dirname,
+            "./packages/modules/providers/auth-emailpass/tsconfig.json"
+          ),
+          path.join(
+            __dirname,
+            "./packages/modules/providers/auth-github/tsconfig.json"
+          ),
+          path.join(
+            __dirname,
+            "./packages/modules/providers/auth-google/tsconfig.json"
+          ),
+          path.join(
+            __dirname,
+            "./packages/modules/providers/caching-redis/tsconfig.json"
+          ),
+          path.join(
+            __dirname,
+            "./packages/modules/providers/file-local/tsconfig.json"
+          ),
+          path.join(
+            __dirname,
+            "./packages/modules/providers/file-s3/tsconfig.json"
+          ),
+          path.join(
+            __dirname,
+            "./packages/modules/providers/fulfillment-manual/tsconfig.json"
+          ),
+          path.join(
+            __dirname,
+            "./packages/modules/providers/locking-postgres/tsconfig.json"
+          ),
+          path.join(
+            __dirname,
+            "./packages/modules/providers/locking-redis/tsconfig.json"
+          ),
+          path.join(
+            __dirname,
+            "./packages/modules/providers/notification-local/tsconfig.json"
+          ),
+          path.join(
+            __dirname,
+            "./packages/modules/providers/notification-sendgrid/tsconfig.json"
+          ),
+          path.join(
+            __dirname,
+            "./packages/modules/providers/payment-stripe/tsconfig.json"
+          ),
 
           path.join(__dirname, "./packages/plugins/draft-order/tsconfig.json"),
+          path.join(__dirname, "./packages/plugins/loyalty/tsconfig.json"),
         ],
       },
       rules: {

@@ -27,3 +27,14 @@ runs:
     - run: yarn build
       shell: bash
       if: ${{ inputs.skip-build != 'true' }}
+
+    - name: Build plugins
+      run: |
+        for plugin_dir in packages/plugins/*/; do
+          if [ -f "${plugin_dir}package.json" ]; then
+            name=$(node -p "require('./${plugin_dir}package.json').name")
+            yarn workspace "$name" run build
+          fi
+        done
+      shell: bash
+      if: ${{ inputs.skip-build != 'true' }}

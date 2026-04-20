@@ -3,12 +3,17 @@
   "extends": [
     "../../../../packages/core/core-flows/tsconfig.json"
   ],
-  "include": ["../../../../packages/core/core-flows/src"],
+  "include": [
+    "../../../../packages/core/core-flows/src",
+    "../../../../packages/plugins/loyalty/src/workflows"
+  ],
   "exclude": [
     "../../../../packages/core/core-flows/dist", 
-    "../../../../packages/core/core-flows/node_modules"
+    "../../../../packages/core/core-flows/node_modules",
+    "../../../../packages/plugins/loyalty/dist",
+    "../../../../packages/plugins/loyalty/node_modules"
   ],
   "compilerOptions": {
-    "rootDir": "../../../../packages/core/core-flows/src"
+    "rootDir": "../../../../packages"
   }
 }

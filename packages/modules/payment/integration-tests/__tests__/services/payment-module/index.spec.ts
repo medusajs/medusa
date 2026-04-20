@@ -313,7 +313,7 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
                 payment_providers: [],
                 payment_sessions: [],
                 payments: [],
-                currency_code: "USD",
+                currency_code: "usd",
                 amount: 200,
               })
             )
@@ -407,6 +407,24 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               expect.objectContaining({
                 id: "pay-col-id-2",
                 currency_code: "eur",
+              })
+            )
+          })
+
+          it("should not reset currency_code to empty string when updating other fields", async () => {
+            await service.updatePaymentCollections("pay-col-id-2", {
+              amount: 9,
+            })
+
+            const collection = await service.retrievePaymentCollection(
+              "pay-col-id-2"
+            )
+
+            expect(collection).toEqual(
+              expect.objectContaining({
+                id: "pay-col-id-2",
+                amount: 9,
+                currency_code: "usd",
               })
             )
           })
