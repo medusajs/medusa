@@ -29,9 +29,9 @@ export const generatedEditDates = {
   "app/customers/page.mdx": "2025-05-30T13:27:11.744Z",
   "app/orders/edit/page.mdx": "2025-05-30T13:27:51.495Z",
   "app/products/collections/page.mdx": "2025-12-16T13:02:30.067Z",
-  "app/customers/manage/page.mdx": "2025-07-31T14:28:07.889Z",
+  "app/customers/manage/page.mdx": "2026-04-20T08:55:15.023Z",
   "app/discounts/create/page.mdx": "2024-05-03T17:36:38+03:00",
-  "app/orders/payments/page.mdx": "2025-10-09T07:31:59.781Z",
+  "app/orders/payments/page.mdx": "2026-04-20T10:33:51.360Z",
   "app/discounts/page.mdx": "2024-05-03T17:36:38+03:00",
   "app/orders/exchanges/page.mdx": "2025-12-01T09:27:18.971Z",
   "app/products/create/page.mdx": "2025-05-30T13:29:24.876Z",
@@ -62,5 +62,12 @@ export const generatedEditDates = {
   "app/settings/locations-and-shipping/shipping-option-types/page.mdx": "2025-08-28T14:03:13.999Z",
   "app/settings/refund-reasons/page.mdx": "2025-10-09T07:29:52.837Z",
   "app/settings/translations/page.mdx": "2026-01-20T10:27:20.421Z",
-  "app/orders/export/page.mdx": "2025-12-18T11:43:04.911Z"
+  "app/orders/export/page.mdx": "2025-12-18T11:43:04.911Z",
+  "app/loyalty/gift-card-products/manage/page.mdx": "2026-04-20T08:51:57.184Z",
+  "app/loyalty/gift-card-products/page.mdx": "2026-04-20T08:49:27.068Z",
+  "app/loyalty/gift-cards/manage/page.mdx": "2026-04-20T10:36:09.994Z",
+  "app/loyalty/gift-cards/page.mdx": "2026-04-20T08:45:05.777Z",
+  "app/loyalty/page.mdx": "2026-04-20T08:43:37.383Z",
+  "app/loyalty/store-credits/manage/page.mdx": "2026-04-20T10:38:06.046Z",
+  "app/loyalty/store-credits/page.mdx": "2026-04-20T08:52:31.091Z"
 }

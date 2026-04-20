@@ -1,0 +1,42 @@
+---
+sidebar_autogenerate_exclude: true
+sidebar_label: "Gift Cards Overview"
+tags:
+  - user guide
+  - loyalty
+products:
+  - loyalty
+---
+
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Gift Cards in Medusa Admin`,
+}
+
+# {metadata.title}
+
+<Prerequisites
+  items={[
+    {
+      text: "Loyalty plugin installed",
+      link: "!resources!/commerce-modules/loyalty#1-install-the-loyalty-plugin",
+    },
+  ]}
+/>
+
+Gift cards are unique codes you issue directly to customers. Each gift card has a currency, an initial value, and an optional expiration date.
+
+Customers can apply the gift card's code at checkout to deduct the gift card's balance from their order total.
+
+<Note>
+
+Gift cards are different from gift card products. A gift card is a code you issue directly. A gift card product is a storefront item that customers can purchase, which then generates a gift card for them. See the [Gift Card Products](../gift-card-products/page.mdx) guide to learn more.
+
+</Note>
+
+---
+
+## Sections
+
+- [Manage Gift Cards](./manage/page.mdx)

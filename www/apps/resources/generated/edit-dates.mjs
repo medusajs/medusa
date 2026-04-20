@@ -98,7 +98,7 @@ export const generatedEditDates = {
   "app/commerce-modules/user/module-options/page.mdx": "2025-10-31T10:08:14.831Z",
   "app/commerce-modules/user/user-creation-flows/page.mdx": "2025-02-26T11:35:54.685Z",
   "app/commerce-modules/user/page.mdx": "2025-04-17T08:48:17.980Z",
-  "app/commerce-modules/page.mdx": "2025-12-10T15:30:40.173Z",
+  "app/commerce-modules/page.mdx": "2026-04-20T10:41:32.836Z",
   "app/create-medusa-app/page.mdx": "2026-04-09T12:47:25.602Z",
   "app/deployment/admin/vercel/page.mdx": "2024-10-16T08:10:29.377Z",
   "app/deployment/storefront/vercel/page.mdx": "2026-01-08T09:19:27.493Z",
@@ -7010,7 +7010,7 @@ export const generatedEditDates = {
   "references/core_flows/types/core_flows.RemovePriceListPricesStepInput/page.mdx": "2026-04-08T09:17:46.392Z",
   "references/core_flows/types/core_flows.RemovePriceListPricesWorkflowInput/page.mdx": "2026-04-08T09:17:46.410Z",
   "references/js_sdk/admin/Translation/methods/js_sdk.admin.Translation.batchSettings/page.mdx": "2026-04-08T09:18:03.127Z",
-  "app/commerce-modules/loyalty/page.mdx": "2026-04-17T13:07:24.007Z",
+  "app/commerce-modules/loyalty/page.mdx": "2026-04-20T08:40:52.610Z",
   "app/commerce-modules/loyalty/workflows/page.mdx": "2026-04-17T13:09:07.700Z",
   "app/medusa-oas-cli/page.mdx": "2026-04-16T12:03:07.119Z",
   "app/commerce-modules/loyalty/gift-cards/page.mdx": "2026-04-17T15:07:00.932Z",
@@ -7018,5 +7018,5 @@ export const generatedEditDates = {
   "app/commerce-modules/store-credit/concepts/page.mdx": "2026-04-17T14:57:21.360Z",
   "app/commerce-modules/store-credit/links-to-other-modules/page.mdx": "2026-04-17T14:51:34.764Z",
   "app/commerce-modules/store-credit/workflows/page.mdx": "2026-04-17T13:09:39.873Z",
-  "app/commerce-modules/store-credit/page.mdx": "2026-04-17T13:03:42.526Z"
+  "app/commerce-modules/store-credit/page.mdx": "2026-04-20T08:41:01.437Z"
 }

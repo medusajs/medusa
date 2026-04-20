@@ -20,7 +20,7 @@ The Loyalty Module is part of the Loyalty Plugin. It's compatible with Medusa v2
 
 <Note title="Looking for no-code docs?">
 
-Refer to the [Medusa Admin User Guide](!user-guide!/loyalty) to learn how to manage gift cards and store credit using the dashboard.
+Refer to the [Medusa Admin User Guide](!user-guide!/loyalty) to learn how to manage gift cards using the dashboard.
 
 </Note>
 
@@ -66,7 +66,15 @@ module.exports = defineConfig({
 })
 ```
 
-### 2. Use Loyalty Features in Your Application
+### 2. Run Migrations
+
+After installing the plugin, run the migrations to create the necessary tables in the database:
+
+```bash npx2yarn
+npx medusa db:migrate
+```
+
+### 3. Use Loyalty Features in Your Application
 
 In your Medusa application, you build flows around Commerce Modules. A flow is built as a [Workflow](!docs!/learn/fundamentals/workflows), which is a special function composed of a series of steps that guarantees data consistency and reliable roll-back mechanism. 
 
