@@ -59,7 +59,7 @@ module.exports = defineConfig({
   plugins: [
     {
       resolve: `@medusajs/loyalty-plugin`,
-      options: {}
+      options: {},
     },
     // ... other plugins
   ],
@@ -102,7 +102,7 @@ const createStoreCreditStep = createStep(
     const storeCreditAccount = await storeCreditModuleService.createStoreCreditAccounts({
       code: "test-code",
       customer_id: "customer_123",
-      currency_code: "usd"
+      currency_code: "usd",
     })
 
     return new StepResponse({ storeCreditAccount }, storeCreditAccount.id)
