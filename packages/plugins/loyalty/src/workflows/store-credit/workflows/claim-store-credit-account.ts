@@ -16,17 +16,51 @@ import { debitAccountStep } from "../steps/debit-account";
 import { creditAccountStep } from "../steps/credit-account";
 import { createStoreCreditAccountsStep } from "../steps/create-store-credit-accounts";
 
-type ClaimStoreCreditAccountInput = {
-  code: string;
-  customer_id: string;
-};
+/**
+ * Input to claim an anonymous store credit account for a customer.
+ */
+export type ClaimStoreCreditAccountWorkflowInput = {
+  /**
+   * The code of the anonymous store credit account to claim.
+   */
+  code: string
+  /**
+   * The ID of the customer claiming the store credit account.
+   */
+  customer_id: string
+}
 
+/**
+ * Input to validate that a store credit account claim request is valid.
+ */
+export interface ValidateClaimStoreCreditAccountInputStepInput {
+  /**
+   * The claim request to validate.
+   */
+  input: ClaimStoreCreditAccountWorkflowInput
+  /**
+   * The customer attempting to claim the store credit account.
+   */
+  customer: CustomerDTO
+}
+
+/**
+ * This step validates the input for claiming a store credit account. It throws an
+ * error if the code or customer ID is missing, or if the customer does not have a
+ * registered account.
+ *
+ * @example
+ * const data = validateClaimStoreCreditAccountInputStep({
+ *   input: { code: "SC-XXXX", customer_id: "cust_123" },
+ *   customer: {
+ *     has_account: true
+ *     // other customer properties...
+ *   },
+ * })
+ */
 export const validateClaimStoreCreditAccountInputStep = createStep(
   "validate-claim-store-credit-account-input",
-  async function (args: {
-    input: ClaimStoreCreditAccountInput;
-    customer: CustomerDTO;
-  }) {
+  async function (args: ValidateClaimStoreCreditAccountInputStepInput) {
     const { input, customer } = args;
 
     if (!isPresent(input.code)) {
@@ -82,13 +116,31 @@ const validateSourceStoreCreditAccountsStep = createStep(
     }
   }
 );
-/*
-  A workflow that claims a store credit account for a customer.
-  The account with `code` is debited and customer account is credited.
-*/
+/**
+ * This workflow claims an anonymous store credit account for a customer. It transfers
+ * the balance from the source account (identified by code) to the customer's store credit
+ * account in the same currency. If the customer does not have an account in that currency,
+ * a new one is created. The customer must have a registered account to claim.
+ *
+ * You can use this workflow within your own customizations or custom workflows,
+ * allowing you to wrap custom logic around claiming store credit accounts.
+ *
+ * @example
+ * await claimStoreCreditAccountWorkflow(container)
+ *   .run({
+ *     input: {
+ *       code: "SC-XXXX-XXXX",
+ *       customer_id: "cust_123",
+ *     },
+ *   })
+ *
+ * @summary
+ *
+ * Claim an anonymous store credit account for a customer.
+ */
 export const claimStoreCreditAccountWorkflow = createWorkflow(
   "claim-store-credit-account",
-  function (input: ClaimStoreCreditAccountInput) {
+  function (input: ClaimStoreCreditAccountWorkflowInput) {
     const sourceStoreCreditAccountData = useQueryGraphStep({
       entity: "store_credit_account",
       fields: ["id", "code", "customer_id", "currency_code", "balance"],

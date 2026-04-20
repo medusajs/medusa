@@ -10,15 +10,48 @@ import { ModuleGiftCard } from "../../../types/loyalty";
 import { ModuleAccountStats } from "../../../types/store-credit";
 import { debitAccountsWorkflow } from "../../store-credit/workflows/debit-accounts";
 
+/**
+ * Input to validate that all gift cards on a cart have a positive balance.
+ */
+export interface ValidateStoreCreditAccountStepInput {
+  /**
+   * The gift cards to validate.
+   */
+  giftCards: ModuleGiftCard[]
+  /**
+   * A map of gift card codes to their current account statistics.
+   */
+  giftCardsBalanceMap: Record<string, ModuleAccountStats>
+}
+
+/**
+ * This step validates that all gift cards on the cart have a positive balance.
+ * It throws an error for any gift card with zero or negative balance.
+ *
+ * @example
+ * const data = validateStoreCreditAccountStep({
+ *   giftCards: [
+ *     {
+ *       id: "gc_123",
+ *       code: "GC-XXXX",
+ *       // other gift card properties...
+ *     }
+ *   ],
+ *   giftCardsBalanceMap: {
+ *     "GC-XXXX": {
+ *       balance: 100,
+ *       credit: 150,
+ *       debit: 50,
+ *     }
+ *   },
+ * })
+ */
 export const validateStoreCreditAccountStep = createStep(
   "validate-store-credit-account",
   async function ({
     giftCards,
     giftCardsBalanceMap,
-  }: {
-    giftCards: ModuleGiftCard[];
-    giftCardsBalanceMap: Record<string, ModuleAccountStats>;
-  }) {
+  }: ValidateStoreCreditAccountStepInput) {
     for (const giftCard of giftCards) {
       const stats = giftCardsBalanceMap[giftCard.code];
 
@@ -32,12 +65,39 @@ export const validateStoreCreditAccountStep = createStep(
   }
 );
 
-/*
-  A workflow that confirms the credit lines of a cart
-*/
+/**
+ * Input to confirm and debit the credit lines on a cart.
+ */
+export interface ConfirmCartCreditLinesWorkflowInput {
+  /**
+   * The ID of the cart whose credit lines should be confirmed and debited.
+   */
+  cart_id: string
+}
+
+/**
+ * This workflow confirms the credit lines of a cart by debiting the associated
+ * store credit and gift card accounts for the credit line amounts. It is typically
+ * called before payment authorization to lock in the store credit usage.
+ *
+ * You can use this workflow within your own customizations or custom workflows,
+ * allowing you to wrap custom logic around confirming cart credit lines.
+ *
+ * @example
+ * const { result } = await confirmCartCreditLinesWorkflow(container)
+ *   .run({
+ *     input: {
+ *       cart_id: "cart_123",
+ *     },
+ *   })
+ *
+ * @summary
+ *
+ * Confirm and debit the credit lines on a cart.
+ */
 export const confirmCartCreditLinesWorkflow = createWorkflow(
   "confirm-cart-credit-lines",
-  function (input: { cart_id: string }) {
+  function (input: ConfirmCartCreditLinesWorkflowInput) {
     const cartQuery = useQueryGraphStep({
       entity: "cart",
       filters: { id: input.cart_id },

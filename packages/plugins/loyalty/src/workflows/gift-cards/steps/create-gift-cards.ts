@@ -7,9 +7,28 @@ import {
 } from "../../../types";
 import { generateCode } from "../../../utils/code-generator";
 
+/**
+ * Data for creating one or more gift cards in the Loyalty module.
+ */
+export type CreateGiftCardsStepInput = ModuleCreateGiftCard[]
+
+/**
+ * This step creates gift cards. If no code is provided for
+ * a gift card, a unique code is automatically generated. The step supports rollback
+ * by deleting the created gift cards.
+ *
+ * @example
+ * const data = createGiftCardsStep([
+ *   {
+ *     value: 100,
+ *     currency_code: "usd",
+ *     // other gift card properties...
+ *   },
+ * ])
+ */
 export const createGiftCardsStep = createStep(
   "create-gift-cards",
-  async (input: ModuleCreateGiftCard[], { container }) => {
+  async (input: CreateGiftCardsStepInput, { container }) => {
     const module = container.resolve<ILoyaltyModuleService>(
       PluginModule.LOYALTY
     );

@@ -10,15 +10,46 @@ import { PluginModule } from "../../../types";
 import { PluginCartDTO } from "../../../types/cart";
 import { ModuleGiftCard } from "../../../types/loyalty";
 
+/**
+ * Input to validate that a specific gift card is applied to a cart.
+ */
+export interface ValidateGiftCardInCartStepInput {
+  /**
+   * The cart to check, including its applied gift cards.
+   */
+  cart: PluginCartDTO
+  /**
+   * The gift card to look for in the cart.
+   */
+  giftCard: ModuleGiftCard
+}
+
+/**
+ * This step validates that a gift card is present in a cart. It throws an error
+ * if the gift card is not found in the cart's gift cards.
+ *
+ * @example
+ * const data = validateGiftCardInCartStep({
+ *   cart: {
+ *     id: "cart_123",
+ *     gift_cards: [
+ *       {
+ *         id: "gc_123",
+ *         code: "GC-XXXX",
+ *         // other gift card properties...
+ *       }
+ *     ],
+ *     // other cart properties...
+ *   },
+ *   giftCard: { code: "GC-XXXX" },
+ * })
+ */
 export const validateGiftCardInCartStep = createStep(
   "validate-gift-card-in-cart",
   async function ({
     cart,
     giftCard,
-  }: {
-    cart: PluginCartDTO;
-    giftCard: ModuleGiftCard;
-  }) {
+  }: ValidateGiftCardInCartStepInput) {
     const cartGiftCard = cart.gift_cards.find((gc) =>
       gc.code.includes(giftCard.code)
     );
@@ -32,17 +63,43 @@ export const validateGiftCardInCartStep = createStep(
   }
 );
 
+/**
+ * Input to validate that a gift card code exists in a cart and that the gift card record is found.
+ */
+export interface ValidateGiftCardStepInput {
+  /**
+   * The cart to validate against, including its applied gift cards.
+   */
+  cart: PluginCartDTO
+  /**
+   * The gift card record, or undefined if not found.
+   */
+  giftCard: ModuleGiftCard
+  /**
+   * The lookup input containing the gift card code.
+   */
+  input: { code: string }
+}
+
+/**
+ * This step validates that a gift card code exists in the cart and that the gift card
+ * itself exists. It throws an error if the gift card code is not in the cart or if
+ * the gift card record is not found.
+ *
+ * @example
+ * const data = validateGiftCardStep({
+ *   cart: { ...cart, gift_cards: [{ code: "GC-XXXX" }] },
+ *   giftCard: { code: "GC-XXXX" },
+ *   input: { code: "GC-XXXX" },
+ * })
+ */
 export const validateGiftCardStep = createStep(
   "validate-gift-card",
   async function ({
     cart,
     giftCard,
     input,
-  }: {
-    cart: PluginCartDTO;
-    giftCard: ModuleGiftCard;
-    input: { code: string };
-  }) {
+  }: ValidateGiftCardStepInput) {
     const cartGiftCards = cart.gift_cards || [];
 
     if (!cartGiftCards.find((gc) => gc.code === input.code)) {
@@ -61,12 +118,44 @@ export const validateGiftCardStep = createStep(
   }
 );
 
-/*
-  A workflow that removes gift card from a cart
-*/
+/**
+ * Input to remove a gift card from a cart.
+ */
+export interface RemoveGiftCardFromCartWorkflowInput {
+  /**
+   * The code of the gift card to remove.
+   */
+  code: string
+  /**
+   * The ID of the cart to remove the gift card from.
+   */
+  cart_id: string
+}
+
+/**
+ * This workflow removes a gift card from a cart by deleting its associated credit
+ * lines, dismissing the links between the cart and the gift card, and refreshing
+ * the cart items.
+ *
+ * You can use this workflow within your own customizations or custom workflows,
+ * allowing you to wrap custom logic around removing gift cards from carts.
+ *
+ * @example
+ * await removeGiftCardFromCartWorkflow(container)
+ *   .run({
+ *     input: {
+ *       code: "GC-XXXX-XXXX",
+ *       cart_id: "cart_123",
+ *     },
+ *   })
+ *
+ * @summary
+ *
+ * Remove a gift card from a cart.
+ */
 export const removeGiftCardFromCartWorkflow = createWorkflow(
   "remove-gift-card-from-cart",
-  function (input: { code: string; cart_id: string }) {
+  function (input: RemoveGiftCardFromCartWorkflowInput) {
     const cartQuery = useQueryGraphStep({
       entity: "cart",
       filters: { id: input.cart_id },
