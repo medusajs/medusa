@@ -13,6 +13,7 @@ import {
   AdminGetOrdersOrderItemsParams,
   AdminGetOrdersOrderParams,
   AdminGetOrdersParams,
+  AdminMarkOrderFulfillmentAsDelivered,
   AdminOrderCancelFulfillment,
   AdminOrderChangesParams,
   AdminOrderCreateFulfillment,
@@ -256,6 +257,7 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+      validateAndTransformBody(AdminMarkOrderFulfillmentAsDelivered),
     ],
     policies: [
       {

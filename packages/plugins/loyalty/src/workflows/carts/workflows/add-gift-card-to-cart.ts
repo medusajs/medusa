@@ -23,16 +23,45 @@ import {
 } from "../../../types/store-credit";
 import { validateGiftCardBalancesStep } from "../steps/validate-gift-card-balances";
 
+/**
+ * Input to retrieve the balance of a single gift card from its associated store credit account.
+ */
+export interface RetrieveGiftCardBalanceStepInput {
+  /**
+   * The store credit account linked to the gift card.
+   */
+  storeCreditAccount: ModuleStoreCreditAccount
+  /**
+   * The gift card whose balance should be retrieved.
+   */
+  giftCard: ModuleGiftCard
+}
+
+/**
+ * This step retrieves the balance of a single gift card from its associated store
+ * credit account. Returns a map of the gift card code to its account stats.
+ *
+ * @example
+ * const data = retrieveGiftCardBalanceStep({
+ *   storeCreditAccount: {
+ *     id: "sca_123",
+ *     balance: 100,
+ *     // other store credit account properties...
+ *   },
+ *   giftCard: {
+ *     id: "gc_123",
+ *     code: "GC-XXXX",
+ *     // other gift card properties...
+ *   },
+ * })
+ */
 export const retrieveGiftCardBalanceStep = createStep(
   "retrieve-gift-cards-balance",
   async function (
     {
       storeCreditAccount,
       giftCard,
-    }: {
-      storeCreditAccount: ModuleStoreCreditAccount;
-      giftCard: ModuleGiftCard;
-    },
+    }: RetrieveGiftCardBalanceStepInput,
     { container }
   ) {
     const accountBalanceMap: Record<string, ModuleAccountStats> = {};
@@ -51,6 +80,20 @@ export const retrieveGiftCardBalanceStep = createStep(
 );
 
 /**
+ * Input to validate that a gift card exists.
+ */
+export interface ValidateGiftCardExistsStepInput {
+  /**
+   * The gift card to validate, or undefined if not found.
+   */
+  giftCard: ModuleGiftCard
+  /**
+   * The lookup input containing the gift card code.
+   */
+  input: { code: string }
+}
+
+/**
  * Validate if the gift card exists.
  */
 const validateGiftCardStep = createStep(
@@ -58,10 +101,7 @@ const validateGiftCardStep = createStep(
   async function ({
     giftCard,
     input,
-  }: {
-    giftCard: ModuleGiftCard;
-    input: { code: string };
-  }) {
+  }: ValidateGiftCardExistsStepInput) {
     if (!giftCard) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -72,17 +112,44 @@ const validateGiftCardStep = createStep(
 );
 
 /**
- * Validate if the gift card can be added to the cart
+ * Input to validate that gift cards can be added to a cart.
+ */
+export interface ValidateCartGiftCardStepInput {
+  /**
+   * The cart to validate against, including its currently applied gift cards.
+   */
+  cart: PluginCartDTO
+  /**
+   * The gift cards to apply to the cart.
+   */
+  giftCards: ModuleGiftCard[]
+}
+
+/**
+ * This step validates that gift cards can be added to a cart. It throws an error
+ * if a gift card is already applied to the cart or if the gift card currency does
+ * not match the cart's currency.
+ *
+ * @example
+ * const data = validateCartGiftCardStep({
+ *   cart: {
+ *     id: "cart_123",
+ *     gift_cards: [
+ *       { code: "GC-XXXX-XXXX" },
+ *       // other gift cards applied to the cart...
+ *     ],
+ *     currency_code: "usd",
+ *     // other cart properties... 
+ *   },
+ *   giftCards: [...],
+ * })
  */
 export const validateCartGiftCardStep = createStep(
   "validate-cart-gift-card",
   async function ({
     cart,
     giftCards,
-  }: {
-    cart: PluginCartDTO;
-    giftCards: ModuleGiftCard[];
-  }) {
+  }: ValidateCartGiftCardStepInput) {
     for (const giftCard of giftCards) {
       const cartGiftCard = cart.gift_cards.find((gc) =>
         gc.code.includes(giftCard.code)
@@ -105,12 +172,44 @@ export const validateCartGiftCardStep = createStep(
   }
 );
 
-/*
-  A workflow that adds gift card to a cart
-*/
+/**
+ * Input to apply a gift card to a cart.
+ */
+export interface AddGiftCardToCartWorkflowInput {
+  /**
+   * The code of the gift card to apply.
+   */
+  code: string
+  /**
+   * The ID of the cart to apply the gift card to.
+   */
+  cart_id: string
+}
+
+/**
+ * This workflow applies a gift card to a cart by creating a credit line for the
+ * gift card's balance and linking the gift card to the cart. It validates that
+ * the gift card exists, has sufficient balance, and can be applied to the cart.
+ *
+ * You can use this workflow within your own customizations or custom workflows,
+ * allowing you to wrap custom logic around adding gift cards to carts.
+ *
+ * @example
+ * const { result } = await addGiftCardToCartWorkflow(container)
+ *   .run({
+ *     input: {
+ *       code: "GC-XXXX-XXXX",
+ *       cart_id: "cart_123",
+ *     },
+ *   })
+ *
+ * @summary
+ *
+ * Apply a gift card to a cart.
+ */
 export const addGiftCardToCartWorkflow = createWorkflow(
   "add-gift-card-to-cart",
-  function (input: { code: string; cart_id: string }) {
+  function (input: AddGiftCardToCartWorkflowInput) {
     const cartQuery = useQueryGraphStep({
       entity: "cart",
       filters: { id: input.cart_id },

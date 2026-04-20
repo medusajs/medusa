@@ -11,11 +11,7 @@ const GiftCardProductsSection = () => {
     is_giftcard: true,
   });
 
-  if (!giftCardProducts?.length) {
-    return;
-  }
-
-  const slicedProducts = giftCardProducts.slice(0, 3);
+  const slicedProducts = giftCardProducts?.slice(0, 3) ?? [];
 
   return (
     <Container className="p-0">

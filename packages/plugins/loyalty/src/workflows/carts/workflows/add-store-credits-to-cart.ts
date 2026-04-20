@@ -16,13 +16,34 @@ import {
 import { PluginCartDTO } from "src/types/cart";
 import { ModuleStoreCreditAccount } from "../../../types/store-credit";
 
+/**
+ * Input to validate that a customer's store credit account exists and has a positive balance.
+ */
+export interface ValidateCustomerStoreCreditAccountStepInput {
+  /**
+   * The customer's store credit account to validate.
+   */
+  storeCreditAccount: ModuleStoreCreditAccount
+}
+
+/**
+ * This step validates that a customer's store credit account exists and has a positive
+ * balance. It throws an error if the account is not found or has no balance.
+ *
+ * @example
+ * const data = validateCustomerStoreCreditAccountStep({
+ *   storeCreditAccount: {
+ *     id: "sca_123",
+ *     balance: 100,
+ *     // other store credit account properties...
+ *   },
+ * })
+ */
 export const validateCustomerStoreCreditAccountStep = createStep(
   "validate-customer-store-credit-account",
   async function ({
     storeCreditAccount,
-  }: {
-    storeCreditAccount: ModuleStoreCreditAccount;
-  }) {
+  }: ValidateCustomerStoreCreditAccountStepInput) {
     if (!storeCreditAccount) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -39,15 +60,37 @@ export const validateCustomerStoreCreditAccountStep = createStep(
   }
 );
 
+/**
+ * Input to validate that a cart is eligible for store credit usage.
+ */
+export interface ValidateCartStepInput {
+  /**
+   * The cart to validate.
+   */
+  cart: PluginCartDTO
+  /**
+   * The workflow input containing the cart ID used in error messages.
+   */
+  input: { cart_id: string }
+}
+
+/**
+ * This step validates that a cart is eligible for store credit usage. It throws an
+ * error if the cart is not found, does not have a customer, or does not have a
+ * currency set.
+ *
+ * @example
+ * const data = validateCartStep({
+ *   cart: { ...cart, customer_id: "cust_123", currency_code: "usd" },
+ *   input: { cart_id: "cart_123" },
+ * })
+ */
 export const validateCartStep = createStep(
   "validate-cart",
   async function ({
     cart,
     input,
-  }: {
-    cart: PluginCartDTO;
-    input: { cart_id: string };
-  }) {
+  }: ValidateCartStepInput) {
     if (!cart) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -71,12 +114,45 @@ export const validateCartStep = createStep(
   }
 );
 
-/*
-  A workflow that adds store credits to a cart
-*/
+/**
+ * Input to apply store credits to a cart.
+ */
+export interface AddStoreCreditsToCartWorkflowInput {
+  /**
+   * The ID of the cart to apply store credits to.
+   */
+  cart_id: string
+  /**
+   * The amount of store credits to apply. If not provided, the full balance is applied.
+   */
+  amount?: number
+}
+
+/**
+ * This workflow applies store credits to a cart. It removes any existing store-credit
+ * lines and creates a new credit line for the specified amount, or for the full store
+ * credit balance if no amount is specified. The customer must be set on the cart and
+ * have a store credit account in the cart's currency.
+ *
+ * You can use this workflow within your own customizations or custom workflows,
+ * allowing you to wrap custom logic around applying store credits to carts.
+ *
+ * @example
+ * const { result } = await addStoreCreditsToCartWorkflow(container)
+ *   .run({
+ *     input: {
+ *       cart_id: "cart_123",
+ *       amount: 50,
+ *     },
+ *   })
+ *
+ * @summary
+ *
+ * Apply store credits to a cart.
+ */
 export const addStoreCreditsToCartWorkflow = createWorkflow(
   "add-store-credits-to-cart",
-  function (input: { amount?: number; cart_id: string }) {
+  function (input: AddStoreCreditsToCartWorkflowInput) {
     const cartQuery = useQueryGraphStep({
       entity: "cart",
       filters: { id: input.cart_id },

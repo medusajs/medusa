@@ -6,6 +6,11 @@ import { createStep, createWorkflow, transform } from "@medusajs/framework/workf
 import { ModuleCreditStoreCreditAccount } from "src/types/store-credit";
 import { creditAccountStep } from "../steps/credit-account";
 
+/**
+ * Input to credit a specific store credit account with an amount.
+ */
+export type CreditStoreCreditAccountWorkflowInput = ModuleCreditStoreCreditAccount
+
 const validateStoreCreditAccountInputStep = createStep(
   "validate-store-credit-account-input",
   async function (input: ModuleCreditStoreCreditAccount) {
@@ -18,9 +23,32 @@ const validateStoreCreditAccountInputStep = createStep(
   }
 );
 
+/**
+ * This workflow credits a specific store credit account with an amount. It validates
+ * that the amount is greater than zero and that the account exists before crediting.
+ *
+ * You can use this workflow within your own customizations or custom workflows,
+ * allowing you to wrap custom logic around crediting a store credit account.
+ *
+ * @example
+ * await creditStoreCreditAccountWorkflow(container)
+ *   .run({
+ *     input: {
+ *       account_id: "sca_123",
+ *       amount: 100,
+ *       note: "Loyalty reward",
+ *       reference: "order",
+ *       reference_id: "order_123",
+ *     },
+ *   })
+ *
+ * @summary
+ *
+ * Credit a store credit account.
+ */
 export const creditStoreCreditAccountWorkflow = createWorkflow(
   "credit-store-credit-account",
-  function (input: ModuleCreditStoreCreditAccount) {
+  function (input: CreditStoreCreditAccountWorkflowInput) {
     validateStoreCreditAccountInputStep(input);
 
     const storeCreditAccountData = useQueryGraphStep({

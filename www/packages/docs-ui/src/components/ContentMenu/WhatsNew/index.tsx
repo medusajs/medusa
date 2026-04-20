@@ -27,10 +27,11 @@ export const ContentMenuWhatsNew = () => {
 
     const versionAnnouncement: CloudAnnouncement = {
       id: `version-${version.number}`,
+      type: "version",
       title: `v${version.number} is live`,
       subtitle: `See new features and improvements`,
-      published_at: new Date(version.releaseDate),
-      created_at: new Date(version.releaseDate),
+      published_at: version.releaseDate,
+      created_at: version.releaseDate,
       link_url: version.releaseUrl,
     }
 
@@ -40,8 +41,8 @@ export const ContentMenuWhatsNew = () => {
 
     return [versionAnnouncement, ...announcements]
       .sort((a, b) => {
-        const dateA = (a.published_at || a.created_at).getTime()
-        const dateB = (b.published_at || b.created_at).getTime()
+        const dateA = new Date(a.published_at || a.created_at).getTime()
+        const dateB = new Date(b.published_at || b.created_at).getTime()
         return dateB - dateA
       })
       .slice(0, 3)
