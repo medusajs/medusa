@@ -1,6 +1,5 @@
 import { http, HttpResponse } from "msw"
 import { setupServer } from "msw/node"
-import { describe, afterEach, it, beforeEach } from "node:test"
 import { Client } from "../client"
 import { Store } from "../store"
 
@@ -31,17 +30,18 @@ const server = setupServer(
 describe("Store", () => {
   let client: Client
   let store: Store
-  beforeEach(() => {
+
+  beforeAll(() => {
     client = new Client({
       baseUrl,
     })
     store = new Store(client)
+
     server.listen()
   })
-  afterEach(() => { 
-    server.resetHandlers();
-    server.close();
-  })
+  afterEach(() => server.resetHandlers())
+  afterAll(() => server.close())
+
 
   describe("cart", () => {
     it("should expose a function to add a promtion to a cart", async () => {
