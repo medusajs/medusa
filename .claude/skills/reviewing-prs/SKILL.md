@@ -65,7 +65,26 @@ bash scripts/get_pr_diff.sh <pr_number>
 bash scripts/get_comments.sh <pr_number>
 ```
 
-### Step 2 — Review Prior Comments
+### Step 2 — Check for Duplicate PRs
+
+If the PR body links an issue (from Step 1's PR details), search for other open PRs that reference the same issue:
+
+```bash
+gh pr list --repo medusajs/medusa --state open --search "issue-number" --json number,title,author
+```
+
+If another open PR is found that links the same issue:
+1. Include a **Heads up** note at the top of your review comment (before any other feedback):
+   ```
+   **Heads up for the team:** PR #<other_number> also references issue #<issue_number>. Please coordinate to avoid duplicated work.
+   ```
+2. This note is **informational only** — it does not change the label outcome. Continue the rest of the review as normal.
+
+If the PR doesn't link an issue, skip this step.
+
+> **CRITICAL:** Do not block or close the PR solely because a duplicate was found. Only flag it so the team or author can decide how to proceed.
+
+### Step 3 — Review Prior Comments
 
 Read the existing comments fetched in Step 1. Identify any previous bot review comments (comments from this automation) that raised issues or made requests.
 
@@ -78,11 +97,11 @@ For each previously raised issue or remark, determine whether it has been addres
 
 > **CRITICAL:** Do not repeat the full explanation for issues already raised in a previous comment. Keep follow-up reviews concise — assume the contributor has read the prior feedback.
 
-### Step 3 — Check Team Membership
+### Step 4 — Check Team Membership
 
-Read `.github/teams.yml`. If the PR author's login appears in the list, they are a **team member** — **skip steps 3 and 4** entirely and proceed directly to step 5.
+Read `.github/teams.yml`. If the PR author's login appears in the list, they are a **team member** — **skip steps 4 and 5** entirely and proceed directly to step 6.
 
-### Step 3 — Template Compliance (non-team members only)
+### Step 5 — Template Compliance (non-team members only)
 
 The PR body must follow `.github/pull_request_template.md`. It requires these sections to be filled in (not left as placeholder text):
 
@@ -104,7 +123,7 @@ Once you've updated the description, another review will be triggered automatica
 Thanks!
 ```
 
-### Step 4 — Non-Member Checks (skip if team member)
+### Step 6 — Non-Member Checks (skip if team member)
 
 **4a. Massive changes:**
 
@@ -114,7 +133,7 @@ bash scripts/get_linked_issues.sh <pr_number>
 ```
 Check whether any linked issue carries a `help-wanted` label. If not, apply `requires-more` and comment explaining that large contributions should be scoped and pre-approved via an issue first (reference `CONTRIBUTING.md`).
 
-### Step 5 — Fetch Linked Issues
+### Step 7 — Fetch Linked Issues
 
 ```bash
 bash scripts/get_linked_issues.sh <pr_number>
@@ -122,7 +141,7 @@ bash scripts/get_linked_issues.sh <pr_number>
 
 Look for closing keywords (`closes`, `fixes`, `resolves` + `#<number>`) in the PR body. Note whether a verified, open issue is linked.
 
-### Step 6 — Determine Contribution Type
+### Step 8 — Determine Contribution Type
 
 Inspect the changed file paths and load the relevant reference section:
 
@@ -134,7 +153,7 @@ Inspect the changed file paths and load the relevant reference section:
 
 For mixed PRs, apply all relevant types.
 
-### Step 7 — Check Conventions
+### Step 9 — Check Conventions
 
 Load `reference/conventions.md` and verify the changed files follow Medusa's conventions. Focus on the areas most relevant to the contribution type (e.g., API conventions for code changes, MDX structure for docs changes).
 
@@ -142,7 +161,7 @@ Load `reference/conventions.md` and verify the changed files follow Medusa's con
 
 > **CRITICAL — Only flag new code:** The diff contains both removed lines (prefixed `-`) and added lines (prefixed `+`). **Only raise issues about added/new lines.** Never request changes to lines that were already modified as part of this PR — the new version of those lines is what matters, not the old one.
 
-### Step 8 — Security Analysis (ALL PRs)
+### Step 10 — Security Analysis (ALL PRs)
 
 > **CRITICAL:** This step applies to **all PRs**, including team members. Read the actual diff — do not rely only on file path inspection. Before flagging any issue, read the full file to confirm the concern is not already handled elsewhere. Only flag issues present in the new (added) lines of the diff, not in lines that were removed or already changed by this PR.
 
@@ -187,7 +206,7 @@ For each confirmed or suspected security issue:
 
 Security issues are always **blocking** — apply `requires-more` even if everything else looks good. Load `reference/comment-guidelines.md` for the Security Issues comment format.
 
-### Step 9 — Performance Analysis (ALL PRs)
+### Step 11 — Performance Analysis (ALL PRs)
 
 > **CRITICAL:** This step applies to **all PRs**. Only flag issues that would plausibly cause measurable degradation in production — not theoretical micro-optimizations. Before flagging, read the full file to confirm the issue is not already handled elsewhere. Only flag issues in the new (added) lines of the diff.
 
@@ -218,7 +237,7 @@ Performance issues severity:
 - **Blocking (requires-more):** N+1 queries, unbounded queries on large tables, missing pagination on list endpoints
 - **Non-blocking (note only):** Suggestions that are improvements but don't introduce clear production risk
 
-### Step 10 — Bug Detection (ALL PRs)
+### Step 12 — Bug Detection (ALL PRs)
 
 > **CRITICAL:** This step applies to **all PRs** including team members. Any potential bug — confirmed or suspected — is a **required change** and must result in `requires-more`. Do not leave bugs as notes.
 
@@ -247,7 +266,7 @@ For each potential bug found:
 
 > Do NOT flag style issues, code smell, or naming preferences here. Only flag things that would plausibly cause incorrect behaviour at runtime. If you're uncertain, phrase it as a question but still add it to **Required changes** — it is the author's responsibility to confirm or disprove it.
 
-### Step 11 — Contextual Assessment
+### Step 13 — Contextual Assessment
 
 Before writing the review, assess whether the changes make sense in the broader context of the PR. Load `reference/comment-guidelines.md` (Contextual Assessment section) for the full checklist. Key questions:
 
@@ -258,7 +277,7 @@ Before writing the review, assess whether the changes make sense in the broader 
 
 Note any concerns to include in the review comment.
 
-### Step 12 — Compose and Post Review
+### Step 14 — Compose and Post Review
 
 Load `reference/comment-guidelines.md` for comment templates and tone guidance.
 
@@ -304,6 +323,8 @@ bash scripts/labels.sh <pr_number> remove initial-approval
 - [ ] Requesting a change that the PR already makes — verify the current state of the code, not the old state
 - [ ] Not mentioning the PR author in the review comment — always `@mention` the author
 - [ ] Leaving both `initial-approval` and `requires-more` on a PR — always remove the opposite label when adding one
+- [ ] Skipping the duplicate PR check — always check for other open PRs linked to the same issue
+- [ ] Blocking or closing a PR solely because a duplicate was found — flag it as an informational note only
 
 ## Reference Files
 
