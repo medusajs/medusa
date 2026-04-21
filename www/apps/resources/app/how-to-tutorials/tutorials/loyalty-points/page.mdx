@@ -29,9 +29,9 @@ export const metadata = {
 
 In this tutorial, you'll learn how to implement a loyalty points system in Medusa.
 
-<Note title="Looking for a straightforward implementation?">
+<Note title="New: Loyalty Plugin">
 
-Cloud provides a beta Loyalty Plugin feature that facilitates building a loyalty point system. Refer to the [Cloud Loyalty Plugin](!cloud!/loyalty-plugin) documentation to learn more.
+This guide was written before the release of the [Loyalty Plugin](../../../commerce-modules/loyalty/page.mdx), which adds features like gift cards and store credit. You can follow the approach of this guide, or use the [Store Credit Module](../../../commerce-modules/store-credit/page.mdx) from the Loyalty Plugin to implement a loyalty points system.
 
 </Note>
 
@@ -95,19 +95,19 @@ npx create-medusa-app@latest
 
 You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose Yes.
 
-Afterward, the installation process will start, which will install the Medusa application in a directory with your project's name, and the Next.js Starter Storefront in a separate directory with the `{project-name}-storefront` name.
-
-<Note title="Why is the storefront installed separately">
-
-The Medusa application is composed of a headless Node.js server and an admin dashboard. The storefront is installed or custom-built separately and connects to the Medusa application through its REST endpoints, called [API routes](!docs!/learn/fundamentals/api-routes). Learn more in [Medusa's Architecture documentation](!docs!/learn/introduction/architecture).
-
-</Note>
+Afterward, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
 
 Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
 
 <Note title="Ran into Errors">
 
 Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
+
+</Note>
+
+<Note>
+
+In this guide, all file paths of backend customizations are relative to the `apps/backend` directory of your Medusa project.
 
 </Note>
 
@@ -394,7 +394,7 @@ Refer to the [Migrations documentation](!docs!/learn/fundamentals/modules#5-gene
 
 </Note>
 
-Medusa's CLI tool can generate the migrations for you. To generate a migration for the Loyalty Module, run the following command in your Medusa application's directory:
+Medusa's CLI tool can generate the migrations for you. To generate a migration for the Loyalty Module, run the following command in the `apps/backend` directory:
 
 ```bash npx2yarn
 npx medusa db:generate loyalty
@@ -1012,9 +1012,9 @@ Whenever an order is placed now, the subscriber will be executed, which in turn 
 
 ### Test it Out
 
-To test out the loyalty points flow, you'll use the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx) that you installed in the first step. As mentioned in that step, the storefront will be installed in a separate directory from the Medusa application, and its name is `{project-name}-storefront`, where `{project-name}` is the name of your Medusa application's directory.
+To test out the loyalty points flow, you'll use the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx) that you installed in the first step. The storefront is available in the `apps/storefront` directory of your project.
 
-So, run the following command in the Medusa application's directory to start the Medusa server:
+So, run the following command in the `apps/backend` directory to start the Medusa server:
 
 ```bash npm2yarn badgeLabel="Medusa Application" badgeColor="green"
 npm run dev
