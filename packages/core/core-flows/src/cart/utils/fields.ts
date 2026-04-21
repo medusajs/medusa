@@ -198,6 +198,7 @@ export const cartFieldsForCalculateShippingOptionsPrices = [
   "items.*",
   "items.variant.id",
   "items.variant.product.id",
+  "items.variant.product.shipping_profile.id",
   "items.variant.weight",
   "items.variant.length",
   "items.variant.height",
