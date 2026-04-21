@@ -9,7 +9,6 @@ export const generatedEditDates = {
   "app/database/page.mdx": "2026-04-10T08:08:09.643Z",
   "app/redis/page.mdx": "2025-10-15T15:22:34.997Z",
   "app/s3/page.mdx": "2026-04-10T10:23:43.523Z",
-  "app/loyalty-plugin/page.mdx": "2025-10-15T15:27:40.303Z",
   "app/logs/page.mdx": "2026-04-10T08:04:30.515Z",
   "app/update-medusa/page.mdx": "2026-01-08T08:54:50.149Z",
   "app/connect-storefront/page.mdx": "2026-01-08T08:50:31.830Z",

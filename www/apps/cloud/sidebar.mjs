@@ -171,7 +171,11 @@ export const sidebar = [
           {
             type: "link",
             title: "Loyalty",
-            path: "/loyalty-plugin",
+            path: "https://docs.medusajs.com/resources/commerce-modules/loyalty",
+            badge: {
+              text: "Published",
+              variant: "blue",
+            },
           },
           {
             type: "link",
