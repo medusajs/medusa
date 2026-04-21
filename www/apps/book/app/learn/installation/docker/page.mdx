@@ -1,7 +1,7 @@
 import {
   Prerequisites,
   CodeTabs,
-  CodeTab
+  CodeTab,
 } from "docs-ui"
 import Feedback from "@/components/Feedback"
 
@@ -33,23 +33,54 @@ You can follow this guide on any operating system that supports Docker, includin
     },
   ]} />
 
-## 1. Clone Medusa Starter Repository
+## 1. Clone the DTC Starter Repository
 
-To get started, clone the Medusa Starter repository that a Medusa application is based on:
+To get started, clone the DTC Starter repository:
 
 ```bash
-git clone https://github.com/medusajs/medusa-starter-default.git --depth=1 my-medusa-store
+git clone https://github.com/medusajs/dtc-starter.git --depth=1 my-medusa-store
+cd my-medusa-store
 ```
 
 This command clones the repository into a directory named `my-medusa-store`.
 
-Make sure to change into the newly created directory:
+The rest of the steps are performed inside this directory.
 
-```bash
-cd my-medusa-store
+### Change Package Manager
+
+The project uses pnpm as the package manager, as declared in `package.json`.
+
+To use a different package manager:
+
+1. Change the `packageManager` field in `package.json` to your preferred package manager, such as `npm@{version}` or `yarn@{version}`, where `{version}` is the version of the package manager you have installed.
+2. Add a `workspaces` field in `package.json` with the following content:
+
+```json title="package.json"
+{
+  "workspaces": [
+    "apps/*"
+  ]
+}
 ```
 
-The rest of the steps will be performed inside this directory.
+3. Remove the `node_modules` directory and `pnpm-lock.yaml` and `pnpm-workspace.yaml` files.
+4. If you're using `yarn`, add a `.yarnrc.yml` file with the following content:
+
+```yaml title=".yarnrc.yml"
+nodeLinker: node-modules
+```
+
+5. If you're using `npm`, add an `overrides` field in `package.json`:
+
+```json title="package.json"
+{
+  "overrides": {
+    "ajv": "^8.0.0"
+  }
+}
+```
+
+6. Install dependencies with your preferred package manager to generate the appropriate lock file (`package-lock.json` for npm or `yarn.lock` for Yarn).
 
 ---
 
@@ -103,10 +134,35 @@ services:
       - DATABASE_URL=postgres://postgres:postgres@postgres:5432/medusa-store
       - REDIS_URL=redis://redis:6379
     env_file:
-      - .env
+      - apps/backend/.env
     volumes:
       - .:/server
       - /server/node_modules
+      - /server/apps/backend/node_modules
+    networks:
+      - medusa_network
+
+  # Storefront
+  # This service runs the Next.js storefront.
+  storefront:
+    build: .
+    container_name: medusa_storefront
+    restart: unless-stopped
+    depends_on:
+      - medusa
+    ports:
+      - "8000:8000"
+    environment:
+      - NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://medusa:9000
+    env_file:
+      - apps/storefront/.env
+    volumes:
+      - .:/server
+      - /server/node_modules
+      - /server/apps/backend/node_modules
+      - /server/apps/storefront/node_modules
+      - /server/apps/storefront/.next
+    entrypoint: ["./start-storefront.sh"]
     networks:
       - medusa_network
 
@@ -118,20 +174,24 @@ networks:
     driver: bridge
 ```
 
-You define three services in this file:
+You define four services in this file:
 
 - `postgres`: The PostgreSQL database service that stores your Medusa application's data.
 - `redis`: The Redis service that stores session data.
 - `medusa`: The Medusa service that runs the server and the admin dashboard. It connects to the PostgreSQL and Redis services.
+- `storefront`: The Next.js storefront service. It connects to the Medusa service.
+    - If you don't want to use the storefront, you can remove the `apps/storefront` directory and the `storefront` service from the `docker-compose.yml` file.
 
-You can add environment variables either in the `environment` section of the `medusa` service or in a separate `.env` file.
+The `env_file` paths are relative to the project root: `apps/backend/.env` for the backend and `apps/storefront/.env` for the storefront.
+
+The anonymous volumes for `node_modules` directories are required because pnpm workspaces create per-package `node_modules` directories with symlinks. Without these volumes, the Docker bind mount overwrites the installed dependencies.
 
 ### Recommendations for Multiple Local Projects
 
 If this isn't the first Medusa project you're setting up with Docker on your machine, make sure to:
 
 - Change the `container_name` for each service to avoid conflicts.
-    - For example, use `medusa_postgres_myproject`, `medusa_redis_myproject`, and `medusa_backend_myproject` instead of the current names.
+    - For example, use `medusa_postgres_myproject`, `medusa_redis_myproject`, `medusa_backend_myproject`, and `medusa_storefront_myproject` instead of the current names.
 - Change the volume names to avoid conflicts.
     - For example, use `postgres_data_myproject` instead of `postgres_data`.
 - Change the network name to avoid conflicts.
@@ -141,13 +201,14 @@ If this isn't the first Medusa project you're setting up with Docker on your mac
     - Use `"6380:6379"` for Redis.
     - Use `"9001:9000"` for the Medusa server.
     - Use `"5174:5173"` for the Medusa Admin dashboard.
+    - Use `"8001:8000"` for the storefront.
 - Update the `DATABASE_URL` and `REDIS_URL` environment variables accordingly.
 
 ---
 
 ## 3. Create `start.sh`
 
-Next, you need to create a script file that [runs database migrations](../../fundamentals/data-models/write-migration/page.mdx) and starts the Medusa development server.
+Create a script file that [runs database migrations](../../fundamentals/data-models/write-migration/page.mdx) and starts the Medusa development server.
 
 Create the file `start.sh` with the following content:
 
@@ -157,28 +218,12 @@ Ensure that the `start.sh` file uses LF line endings instead of CRLF. Git on Win
 
 </Note>
 
-<CodeTabs group="npm2yarn" defaultValue="yarn">
-  <CodeTab value="yarn" label="Yarn">
-```shell title="start.sh"
-#!/bin/sh
-
-# Run migrations and start server
-echo "Running database migrations..."
-yarn medusa db:migrate
-
-echo "Seeding database..."
-yarn seed || echo "Seeding failed, continuing..."
-
-echo "Starting Medusa development server..."
-yarn dev
-```
-
-  </CodeTab>
+<CodeTabs group="npm2yarn" defaultValue="pnpm">
   <CodeTab value="pnpm" label="pnpm">
 ```shell title="start.sh"
 #!/bin/sh
+cd /server/apps/backend
 
-# Run migrations and start server
 echo "Running database migrations..."
 pnpm medusa db:migrate
 
@@ -188,13 +233,27 @@ pnpm seed || echo "Seeding failed, continuing..."
 echo "Starting Medusa development server..."
 pnpm dev
 ```
-
   </CodeTab>
-  <CodeTab value="npm" label="NPM">
+  <CodeTab value="yarn" label="yarn">
 ```shell title="start.sh"
 #!/bin/sh
+cd /server/apps/backend
 
-# Run migrations and start server
+echo "Running database migrations..."
+yarn medusa db:migrate
+
+echo "Seeding database..."
+yarn seed || echo "Seeding failed, continuing..."
+
+echo "Starting Medusa development server..."
+yarn dev
+```
+  </CodeTab>
+  <CodeTab value="npm" label="npm">
+```shell title="start.sh"
+#!/bin/sh
+cd /server/apps/backend
+
 echo "Running database migrations..."
 npx medusa db:migrate
 
@@ -207,7 +266,49 @@ npm run dev
   </CodeTab>
 </CodeTabs>
 
-Make sure to give the script executable permissions:
+---
+
+## 4. Create `start-storefront.sh`
+
+Create a separate script for the storefront service:
+
+<Note title="Windows Users">
+
+Apply the same LF line endings requirement mentioned in the previous step to this file as well.
+
+</Note>
+
+<CodeTabs group="npm2yarn" defaultValue="pnpm">
+  <CodeTab value="pnpm" label="pnpm">
+```shell title="start-storefront.sh"
+#!/bin/sh
+cd /server/apps/storefront
+
+echo "Starting Next.js storefront development server..."
+pnpm dev
+```
+  </CodeTab>
+  <CodeTab value="yarn" label="yarn">
+```shell title="start-storefront.sh"
+#!/bin/sh
+cd /server/apps/storefront
+
+echo "Starting Next.js storefront development server..."
+yarn dev
+```
+  </CodeTab>
+  <CodeTab value="npm" label="npm">
+```shell title="start-storefront.sh"
+#!/bin/sh
+cd /server/apps/storefront
+
+echo "Starting Next.js storefront development server..."
+npm run dev
+```
+  </CodeTab>
+</CodeTabs>
+
+Make sure to give both scripts executable permissions:
 
 <Note>
 
@@ -216,93 +317,75 @@ Setting permissions isn't necessary on Windows, but it's recommended to run this
 </Note>
 
 ```bash
-chmod +x start.sh
+chmod +x start.sh start-storefront.sh
 ```
 
 ---
 
-## 4. Create `Dockerfile`
+## 5. Create `Dockerfile`
 
-The `Dockerfile` defines how the Medusa service is built.
+The `Dockerfile` defines how the Docker image is built. Both the `medusa` and `storefront` services reuse the same image — the storefront overrides the entrypoint in `docker-compose.yml`.
 
 Create a file named `Dockerfile` with the following content:
 
-<CodeTabs group="npm2yarn" defaultValue="yarn">
-  <CodeTab value="yarn" label="Yarn">
-
-```dockerfile title="Dockerfile"
-# Development Dockerfile for Medusa
-FROM node:20-alpine
-
-# Set working directory
-WORKDIR /server
-
-# Copy package files and yarn config
-COPY package.json yarn.lock .yarnrc.yml ./
-COPY .yarn/releases .yarn/releases
-
-# Install all dependencies using yarn
-RUN yarn install
-
-# Copy source code
-COPY . .
-
-# Expose the port Medusa runs on
-EXPOSE 9000 5173
-
-# Start with migrations and then the development server
-CMD ["./start.sh"]
-```
-  </CodeTab>
+<CodeTabs group="npm2yarn" defaultValue="pnpm">
   <CodeTab value="pnpm" label="pnpm">
 ```dockerfile title="Dockerfile"
-# Development Dockerfile for Medusa
 FROM node:20-alpine
 
-# Set working directory
 WORKDIR /server
 
-# Install pnpm globally
-RUN npm install pnpm -g
+RUN npm install -g pnpm@10.11.1
 
-# Copy package files and yarn config
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json .npmrc ./
+COPY apps/backend/package.json ./apps/backend/
+COPY apps/storefront/package.json ./apps/storefront/
 
-# Install dependencies using pnpm
 RUN pnpm install --frozen-lockfile
 
-# Copy source code
 COPY . .
 
-# Expose the port Medusa runs on
-EXPOSE 9000 5173
+EXPOSE 9000 5173 8000
 
-# Start with migrations and then the development server
 ENTRYPOINT ["./start.sh"]
 ```
   </CodeTab>
-  <CodeTab value="npm" label="NPM">
-
+  <CodeTab value="yarn" label="yarn">
 ```dockerfile title="Dockerfile"
-# Development Dockerfile for Medusa
 FROM node:20-alpine
 
-# Set working directory
 WORKDIR /server
 
-# Copy package files and npm config
-COPY package.json package-lock.json ./
+COPY package.json yarn.lock .yarnrc.yml turbo.json ./
+COPY .yarn/releases .yarn/releases
+COPY apps/backend/package.json ./apps/backend/
+COPY apps/storefront/package.json ./apps/storefront/
 
-# Install all dependencies using npm
-RUN npm install --legacy-peer-deps
+RUN yarn install
 
-# Copy source code
 COPY . .
 
-# Expose the port Medusa runs on
-EXPOSE 9000 5173
+EXPOSE 9000 5173 8000
 
-# Start with migrations and then the development server
+ENTRYPOINT ["./start.sh"]
+```
+  </CodeTab>
+  <CodeTab value="npm" label="npm">
+```dockerfile title="Dockerfile"
+FROM node:20-alpine
+
+WORKDIR /server
+
+COPY package.json package-lock.json turbo.json ./
+COPY apps/backend/package.json ./apps/backend/
+COPY apps/storefront/package.json ./apps/storefront/
+
+RUN npm install --legacy-peer-deps
+
+COPY . .
+
+EXPOSE 9000 5173 8000
+
 ENTRYPOINT ["./start.sh"]
 ```
   </CodeTab>
@@ -310,7 +393,7 @@ ENTRYPOINT ["./start.sh"]
 
 In the `Dockerfile`, you use the `node:20-alpine` image as the base since Medusa requires Node.js v20 or later.
 
-Then, you set the working directory to `/server`, copy the necessary files, install dependencies, expose the `9000` port that Medusa uses, and run the `start.sh` script to start the server.
+The workspace configuration files and all apps' `package.json` files are copied before installing dependencies so that the workspace dependency graph is resolved correctly. After installing dependencies, the rest of the source code is copied.
 
 <Note>
 
@@ -320,47 +403,11 @@ While it's more common to use `/app` as the working directory, it's highly recom
 
 ---
 
-## 5. Install Dependencies
-
-The Medusa Starter repository has a `yarn.lock` file that was generated by installing dependencies with Yarn v1.22.19.
-
-If you're using a different Yarn version, or you're using NPM, you need to install the dependencies again to ensure compatibility with the Docker setup.
-
-To install the dependencies, run the following command:
-
-<CodeTabs group="npm2yarn">
-  <CodeTab value="npm" label="npm">
-
-```bash
-npm install --legacy-peer-deps
-```
-
-  </CodeTab>
-  <CodeTab value="yarn" label="yarn">
-
-```bash
-yarn install
-```
-
-  </CodeTab>
-  <CodeTab value="pnpm" label="pnpm">
-
-```bash
-pnpm install
-```
-
-  </CodeTab>
-</CodeTabs>
-
-This will update `yarn.lock` or generate a `package-lock.json` or `pnpm-lock.yaml` files, depending on your package manager.
-
----
-
 ## 6. Update Scripts in `package.json`
 
-Next, you need to update the `scripts` section in your `package.json` file to start the development server using Docker.
+Update the `scripts` section in the root `package.json` file to start and stop the Docker services.
 
-Add the following scripts in `package.json`:
+Add the following scripts:
 
 ```json title="package.json"
 {
@@ -385,9 +432,9 @@ Where:
 
 If you try to run the Medusa application now with Docker, you'll encounter an SSL error as the server tries to connect to the PostgreSQL database.
 
-To resolve the error, add the following configurations in `medusa-config.ts`:
+To resolve the error, add the following configurations in `apps/backend/medusa-config.ts`:
 
-```ts title="medusa-config.ts"
+```ts title="apps/backend/medusa-config.ts"
 import { loadEnv, defineConfig } from "@medusajs/framework/utils"
 
 loadEnv(process.env.NODE_ENV || "development", process.cwd())
@@ -407,9 +454,9 @@ You add the [projectConfig.databaseDriverOptions](../../configurations/medusa-co
 
 ### Add Vite Configuration for Medusa Admin
 
-To ensure that the Medusa Admin dashboard works correctly when running inside Docker, connects to the Medusa server, and reloads properly with Hot Module Replacement (HMR), add the following Vite configuration in `medusa-config.ts`:
+To ensure that the Medusa Admin dashboard works correctly when running inside Docker, connects to the Medusa server, and reloads properly with Hot Module Replacement (HMR), add the following Vite configuration in `apps/backend/medusa-config.ts`:
 
-```ts title="medusa-config.ts"
+```ts title="apps/backend/medusa-config.ts"
 module.exports = defineConfig({
   // ...
   admin: {
@@ -447,6 +494,10 @@ To ensure only the necessary files are copied into the Docker image, create a `.
 
 ```dockerignore title=".dockerignore"
 node_modules
+apps/backend/node_modules
+apps/storefront/node_modules
+apps/backend/.medusa
+apps/storefront/.next
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -464,27 +515,37 @@ build
 
 ---
 
-## 9. Create `.env` File
+## 9. Create `.env` Files
 
-You can add environment variables either in the `environment` section of the `medusa` service in `docker-compose.yml` or in a separate `.env` file.
+Create environment files for both the backend and storefront by copying from their templates.
 
-If you don't want to use a `.env` file, you can remove the `env_file` section from the `medusa` service in `docker-compose.yml`.
+Copy the backend template:
 
-Otherwise, copy the `.env.template` file to `.env` and update the values as needed.
+```bash
+cp apps/backend/.env.template apps/backend/.env
+```
+
+Copy the storefront template:
+
+```bash
+cp apps/storefront/.env.template apps/storefront/.env
+```
+
+Update the values in each file as needed.
 
 ---
 
 ## 10. Start the Medusa Application with Docker
 
-All configurations are now ready. You can start the Medusa application using Docker by running the following command:
+All configurations are now ready. Start the Medusa application using Docker by running the following command:
 
 ```bash npm2yarn
 npm run docker:up
 ```
 
-Docker will pull the necessary images, start the PostgreSQL and Redis services, build the Medusa service, and run the development server in a Docker container.
+Docker pulls the necessary images, starts the PostgreSQL and Redis services, builds the Medusa and storefront services, and runs them in Docker containers.
 
-You can check the logs to ensure everything is running smoothly with the following command:
+Check the logs to ensure everything is running smoothly:
 
 ```bash
 docker compose logs -f
@@ -509,37 +570,57 @@ You can now access the Medusa server at `http://localhost:9000` and the Medusa A
 
 ---
 
-## Create Admin User
+## Create Admin User and Configure Storefront
+
+### Create Admin User
 
 To create an admin user, run the following command:
 
-<CodeTabs group="npm2yarn">
-  <CodeTab value="yarn" label="yarn">
-
-```bash
-docker compose run --rm medusa yarn medusa user -e admin@example.com -p supersecret
-```
-
-  </CodeTab>
+<CodeTabs group="npm2yarn" defaultValue="pnpm">
   <CodeTab value="pnpm" label="pnpm">
-
 ```bash
-docker compose run --rm medusa pnpm medusa user -e admin@example.com -p supersecret
+docker compose exec medusa sh -c "cd /server/apps/backend && pnpm medusa user -e admin@example.com -p supersecret"
 ```
-
+  </CodeTab>
+  <CodeTab value="yarn" label="yarn">
+```bash
+docker compose exec medusa sh -c "cd /server/apps/backend && yarn medusa user -e admin@example.com -p supersecret"
+```
   </CodeTab>
   <CodeTab value="npm" label="npm">
-
 ```bash
-docker compose exec medusa npx medusa user -e admin@example.com -p supersecret
+docker compose exec medusa sh -c "cd /server/apps/backend && npx medusa user -e admin@example.com -p supersecret"
 ```
-
   </CodeTab>
 </CodeTabs>
 
-Make sure to replace `admin@example.com` and `supersecret` with your desired email and password.
+Replace `admin@example.com` and `supersecret` with your desired email and password.
 
-You can now log in to the Medusa Admin dashboard at `http://localhost:9000/app` using the email and password you just created.
+You can now log in to the Medusa Admin dashboard at `http://localhost:9000/app`.
+
+### Set Publishable API Key for the Storefront
+
+The storefront requires a publishable API key to connect to the Medusa backend:
+
+1. Log in to the admin dashboard at `http://localhost:9000/app`.
+2. Go to **Settings** > **API Key Management** and create a new Publishable API Key.
+3. Add the key to `apps/storefront/.env`:
+
+```bash
+NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_...
+```
+
+4. Restart the storefront service:
+
+```bash
+docker compose up storefront -d
+```
+
+<Note>
+
+The storefront requires this key at startup and exits with an error if it's missing.
+
+</Note>
 
 ---
 
@@ -553,19 +634,23 @@ npm run docker:down
 
 This command stops and removes the Docker containers created by the `docker-compose.yml` file.
 
-This doesn't delete any data in your application or its database. You can start the server again using the `docker:up` command.
+This doesn't delete any data in your application or its database. Start the server again using the `docker:up` command.
 
 ---
 
 ## Check Logs
 
-You can check the logs of the Medusa application running in Docker using the following command:
+Check the logs of the Medusa backend running in Docker:
 
 ```bash
 docker compose logs -f medusa
 ```
 
-This command shows the logs of the `medusa` service, allowing you to see any errors or messages from the Medusa application.
+Check the logs of the storefront:
+
+```bash
+docker compose logs -f storefront
+```
 
 ---
 
