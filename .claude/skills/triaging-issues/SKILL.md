@@ -178,6 +178,7 @@ Whenever linking to Medusa docs in a comment, load `reference/doc-links.md` to c
 
 - [ ] Triaging a comment that is just an ongoing user conversation — exit early instead
 - [ ] Categorizing based on comments instead of the original issue body
+- [ ] Confirming a bug without first checking the documentation — always check if the behavior is documented as intentional before treating it as a bug
 - [ ] Closing an issue without leaving a comment explaining why
 - [ ] Adding `good-first-issue` or `help-wanted` before confirming the bug in the codebase
 - [ ] Skipping the docs/codebase check for feature requests

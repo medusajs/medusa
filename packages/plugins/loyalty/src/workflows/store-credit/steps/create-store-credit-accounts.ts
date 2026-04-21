@@ -1,4 +1,4 @@
-import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
+import { createStep, StepResponse, WorkflowData } from "@medusajs/framework/workflows-sdk";
 import {
   IStoreCreditModuleService,
   ModuleCreateStoreCreditAccount,
@@ -46,7 +46,7 @@ export const createStoreCreditAccountsStep = createStep(
       accounts.map((gc) => gc.id)
     );
   },
-  async (ids: string[], { container }) => {
+  async (ids, { container }) => {
     if (!ids?.length) {
       return;
     }
