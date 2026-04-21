@@ -21,6 +21,7 @@ export default async function generate(
 
   if (references.includes("core-flows")) {
     await import("@medusajs/core-flows")
+    await import("@medusajs/loyalty-plugin/workflows")
   }
 
   for (const referenceName of references) {

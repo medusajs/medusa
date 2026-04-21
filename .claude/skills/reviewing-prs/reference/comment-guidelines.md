@@ -84,6 +84,7 @@ Before composing the review, assess whether the changes make sense in the broade
 
 **Ask yourself:**
 
+- **Is the behavior being changed intentional and documented?** If the PR modifies existing behavior, check whether that behavior is described as by design in the official Medusa documentation (`www/apps/book/app/learn/`). If the docs explicitly describe the current behavior as intentional, the PR is changing intended behavior and must be flagged as `requires-more`. Explain that the behavior is by design and reference the documentation section. This is a **blocking** concern — do not apply `initial-approval`.
 - **Does it make sense?** Does the implementation actually solve the problem described in the PR or linked issue? Is the approach reasonable, or is there a simpler/safer way?
 - **Are there unintended side effects?** Could the change break or alter behaviour in other areas of the codebase? For example: shared utilities, middleware, event handlers, or widely-used types.
 - **Is the scope right?** Does the PR do more or less than what the linked issue asks for? Extra unrelated changes are a flag.

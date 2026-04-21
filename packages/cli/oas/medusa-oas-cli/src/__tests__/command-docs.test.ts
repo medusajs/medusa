@@ -288,6 +288,108 @@ describe("command docs", () => {
     })
   })
 
+  describe("--archive-out-file", () => {
+    let srcFile: string
+
+    beforeAll(async () => {
+      openApi = getBaseOpenApi()
+      openApi.components = {
+        schemas: {
+          Product: {
+            type: "object",
+          },
+        },
+      }
+      const outDir = path.resolve(tmpDir, uid())
+      await mkdir(outDir, { recursive: true })
+      srcFile = path.resolve(outDir, "admin.oas.json")
+      await writeJson(srcFile, openApi)
+    })
+
+    it("should copy the bundled YAML to the specified archive path", async () => {
+      const outDir = path.resolve(tmpDir, uid())
+      const archiveOutFile = path.resolve(tmpDir, uid(), "versions", "2.0.0", "admin", "openapi.full.yaml")
+      await runCLI("docs", [
+        "--src-file",
+        srcFile,
+        "--out-dir",
+        outDir,
+        "--archive-out-file",
+        archiveOutFile,
+      ])
+      const archiveExists = await exists(archiveOutFile)
+      expect(archiveExists).toBeTruthy()
+    })
+
+    it("should create intermediate directories for the archive path", async () => {
+      const outDir = path.resolve(tmpDir, uid())
+      const archiveOutFile = path.resolve(tmpDir, uid(), "versions", "1.0.0", "store", "openapi.full.yaml")
+      await runCLI("docs", [
+        "--src-file",
+        srcFile,
+        "--out-dir",
+        outDir,
+        "--archive-out-file",
+        archiveOutFile,
+      ])
+      const archiveExists = await exists(archiveOutFile)
+      expect(archiveExists).toBeTruthy()
+    })
+
+    it("should write valid YAML to the archive file", async () => {
+      const outDir = path.resolve(tmpDir, uid())
+      const archiveOutFile = path.resolve(tmpDir, uid(), "versions", "2.0.0", "admin", "openapi.full.yaml")
+      await runCLI("docs", [
+        "--src-file",
+        srcFile,
+        "--out-dir",
+        outDir,
+        "--archive-out-file",
+        archiveOutFile,
+      ])
+      const oas = (await readYaml(archiveOutFile)) as OpenAPIObject
+      expect(oas.openapi).toBeDefined()
+      expect(oas.components?.schemas?.Product).toBeDefined()
+    })
+
+    it("should write the same content to the archive as the main output file", async () => {
+      const outDir = path.resolve(tmpDir, uid())
+      const mainFileName = "openapi.full.yaml"
+      const archiveOutFile = path.resolve(tmpDir, uid(), "versions", "2.0.0", "admin", "openapi.full.yaml")
+      await runCLI("docs", [
+        "--src-file",
+        srcFile,
+        "--out-dir",
+        outDir,
+        "--main-file-name",
+        mainFileName,
+        "--archive-out-file",
+        archiveOutFile,
+      ])
+      const mainOas = (await readYaml(
+        path.resolve(outDir, mainFileName)
+      )) as OpenAPIObject
+      const archiveOas = (await readYaml(archiveOutFile)) as OpenAPIObject
+      expect(JSON.stringify(archiveOas)).toEqual(JSON.stringify(mainOas))
+    })
+
+    it("should not create the archive file when --dry-run is set", async () => {
+      const outDir = path.resolve(tmpDir, uid())
+      const archiveOutFile = path.resolve(tmpDir, uid(), "versions", "2.0.0", "admin", "openapi.full.yaml")
+      await runCLI("docs", [
+        "--src-file",
+        srcFile,
+        "--out-dir",
+        outDir,
+        "--dry-run",
+        "--archive-out-file",
+        archiveOutFile,
+      ])
+      const archiveExists = await exists(archiveOutFile)
+      expect(archiveExists).toBeFalsy()
+    })
+  })
+
   describe("circular references", () => {
     let srcFile: string
 

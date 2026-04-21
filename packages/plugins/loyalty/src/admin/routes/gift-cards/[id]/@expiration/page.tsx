@@ -68,12 +68,22 @@ const GiftCardExpirationForm = ({ giftCard }: GiftCardExpirationFormProps) => {
   )
 
   const onSubmit = form.handleSubmit(async (data) => {
+    if (isSettingExpiration && !data.expires_at) {
+      form.setError("expires_at", {
+        message: "Please select an expiration date and time",
+      })
+      return
+    }
+
     await mutateAsync(
       {
-        expires_at: isSettingExpiration ? data.expires_at?.toISOString() : null,
+        expires_at: isSettingExpiration
+          ? data.expires_at!.toISOString()
+          : null,
       },
       {
         onSuccess: () => {
+          toast.success("Expiration date updated successfully")
           handleSuccess()
         },
         onError: (error) => {

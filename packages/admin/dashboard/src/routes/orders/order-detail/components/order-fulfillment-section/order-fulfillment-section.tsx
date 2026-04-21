@@ -11,13 +11,17 @@ import {
   Container,
   Copy,
   Heading,
+  Label,
+  Prompt,
   StatusBadge,
+  Switch,
   Text,
   Tooltip,
   toast,
   usePrompt,
 } from "@medusajs/ui"
 import { format } from "date-fns"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
@@ -264,17 +268,24 @@ const Fulfillment = ({
   const showDeliveryButton =
     !fulfillment.canceled_at && !fulfillment.delivered_at
 
-  const handleMarkAsDelivered = async () => {
-    const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("orders.fulfillment.markAsDeliveredWarning"),
-      confirmText: t("actions.continue"),
-      cancelText: t("actions.cancel"),
-      variant: "confirmation",
-    })
+  const [sendNotification, setSendNotification] = useState(
+    !order.no_notification
+  )
+  const [showDeliveredPrompt, setShowDeliveredPrompt] = useState(false)
 
-    if (res) {
-      await markAsDelivered(undefined, {
+  const handleMarkAsDelivered = () => {
+    setShowDeliveredPrompt(true)
+  }
+
+  const handleCancelDeliveredPrompt = () => {
+    setShowDeliveredPrompt(false)
+  }
+
+  const handleConfirmDelivered = async () => {
+    setShowDeliveredPrompt(false)
+    await markAsDelivered(
+      { no_notification: !sendNotification },
+      {
         onSuccess: () => {
           toast.success(
             t(
@@ -287,8 +298,8 @@ const Fulfillment = ({
         onError: (e) => {
           toast.error(e.message)
         },
-      })
-    }
+      }
+    )
   }
 
   const handleCancel = async () => {
@@ -484,6 +495,40 @@ const Fulfillment = ({
           )}
         </div>
       )}
+
+      <Prompt open={showDeliveredPrompt} variant="confirmation">
+        <Prompt.Content>
+          <Prompt.Header>
+            <Prompt.Title>{t("general.areYouSure")}</Prompt.Title>
+            <Prompt.Description>
+              {t("orders.fulfillment.markAsDeliveredWarning")}
+            </Prompt.Description>
+          </Prompt.Header>
+          <div className="border-ui-border-base mt-6 flex items-center justify-between border-y border-dotted p-6">
+            <Label
+              htmlFor={`send-notification-${fulfillment.id}`}
+              className="txt-compact-small text-ui-fg-subtle"
+            >
+              {t("orders.returns.sendNotification")}
+            </Label>
+            <Switch
+              id={`send-notification-${fulfillment.id}`}
+              dir="ltr"
+              className="rtl:rotate-180"
+              checked={sendNotification}
+              onCheckedChange={setSendNotification}
+            />
+          </div>
+          <Prompt.Footer>
+            <Prompt.Cancel onClick={handleCancelDeliveredPrompt}>
+              {t("actions.cancel")}
+            </Prompt.Cancel>
+            <Prompt.Action onClick={handleConfirmDelivered}>
+              {t("actions.continue")}
+            </Prompt.Action>
+          </Prompt.Footer>
+        </Prompt.Content>
+      </Prompt>
     </Container>
   )
 }

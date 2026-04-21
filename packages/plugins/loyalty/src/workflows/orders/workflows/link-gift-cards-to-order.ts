@@ -10,12 +10,43 @@ import {
 } from "@medusajs/framework/workflows-sdk";
 import { PluginModule } from "../../../types";
 
-/*
-  A workflow that clones gift cards from a cart to an order
-*/
+/**
+ * Input to clone gift card links from a cart to a newly created order.
+ */
+export interface CloneCartGiftCardsToOrderWorkflowInput {
+  /**
+   * The ID of the order to link the gift cards to.
+   */
+  order_id: string
+  /**
+   * The ID of the cart that the order was created from.
+   */
+  cart_id: string
+}
+
+/**
+ * This workflow clones gift cards from a cart to an order by creating links between
+ * the order and the gift cards that were applied to the cart.
+ *
+ * You can use this workflow within your own customizations or custom workflows,
+ * allowing you to wrap custom logic around linking gift cards to an order.
+ *
+ * @example
+ * const { result } = await cloneCartGiftCardsToOrderWorkflow(container)
+ *   .run({
+ *     input: {
+ *       order_id: "order_123",
+ *       cart_id: "cart_123",
+ *     },
+ *   })
+ *
+ * @summary
+ *
+ * Clone gift card links from a cart to an order.
+ */
 export const cloneCartGiftCardsToOrderWorkflow = createWorkflow(
   "clone-cart-gift-cards-to-order",
-  function (input: { order_id: string; cart_id: string }) {
+  function (input: CloneCartGiftCardsToOrderWorkflowInput) {
     const orderQuery = useQueryGraphStep({
       entity: "order",
       filters: { id: input.order_id },

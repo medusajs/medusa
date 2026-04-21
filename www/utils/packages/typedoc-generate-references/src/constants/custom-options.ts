@@ -28,7 +28,10 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     name: "caching",
   }),
   "core-flows": getOptions({
-    entryPointPath: "packages/core/core-flows/src/index.ts",
+    entryPointPath: [
+      "packages/core/core-flows/src/index.ts",
+      "packages/plugins/loyalty/src/workflows/index.ts"
+    ],
     tsConfigName: "core-flows.json",
     name: "core-flows",
     plugin: ["typedoc-plugin-workflows"],
