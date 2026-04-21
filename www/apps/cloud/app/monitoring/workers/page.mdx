@@ -143,21 +143,17 @@ If your environment's background jobs are slow or not executing, check if the Us
 
 ---
 
-## Monitor Per-Worker CPU
+## Monitor Summary of CPU Usage Across Workers
 
-The Per-Worker CPU usage of your environment shows CPU usage patterns across individual worker instances. 
+The Summary of CPU usage across Workers of your environment shows CPU usage patterns across individual worker instances. 
 
 In the [Workers monitoring dashboard](#view-worker-metrics), the Per-Worker CPU chart shows:
 
-- **Minimum CPU**: The lowest CPU percentage used across instances at a given time.
-- **Maximum CPU**: The highest CPU percentage used across instances at a given time.
-- **Average CPU**: The mean CPU usage across all instances at a given time.
+- **Minimum CPU**: The lowest CPU percentage used by a worker instance at a given time.
+- **Maximum CPU**: The highest CPU percentage used by a worker instance at a given time.
+- **Average CPU**: The mean CPU usage across all worker instances at a given time.
 
-This breakdown helps you identify if specific worker instances are under heavy load or if CPU usage is evenly distributed across your infrastructure.
-
-### Per-Worker CPU vs Total CPU Usage
-
-When you need to analyze CPU performance, start with the Total CPU chart to understand overall resource consumption. Then, use the Per-Worker CPU chart to identify if specific worker instances are under heavy load or if CPU usage is evenly distributed across your infrastructure.
+This breakdown helps you identify peaks in CPU usage across your worker instances and determine if specific instances are under heavy load or if CPU usage is evenly distributed across your infrastructure.
 
 ---
 
