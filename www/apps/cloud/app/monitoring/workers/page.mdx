@@ -1,4 +1,4 @@
-import { InlineIcon } from "docs-ui"
+import { InlineIcon, Table } from "docs-ui"
 import { ArrowPath } from "@medusajs/icons"
 
 export const metadata = {
@@ -22,6 +22,85 @@ For your [long-lived environments](../../environments/long-lived/page.mdx), Medu
 The Workers monitoring dashboard provides insights into the performance of your worker instances, allowing you to track key metrics such as CPU usage, memory usage, and restarts.
 
 By monitoring these metrics, you ensure that your workers are performing optimally or identify potential issues in your background jobs' implementation.
+
+---
+
+## Troubleshooting Common Worker Issues
+
+The following table outlines common worker performance issues, their potential causes, and the specific metrics you can monitor to identify and troubleshoot these issues effectively.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Issue
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Potential Cause
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Metric to Check
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Background jobs slow or not executing
+      </Table.Cell>
+      <Table.Cell>
+        High CPU usage in worker instances due to inefficient background job implementation.
+      </Table.Cell>
+      <Table.Cell>
+        [Total CPU](#monitor-total-cpu) and [Per-Worker CPU](#monitor-per-worker-cpu)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Background jobs failing intermittently
+      </Table.Cell>
+      <Table.Cell>
+        Memory leaks or insufficient memory causing workers to become unstable.
+      </Table.Cell>
+      <Table.Cell>
+        [Per-Worker Memory](#monitor-per-worker-memory)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Frequent worker restarts
+      </Table.Cell>
+      <Table.Cell>
+        Crashes caused by unhandled exceptions or out-of-memory conditions in background jobs.
+      </Table.Cell>
+      <Table.Cell>
+        [Worker Restarts](#monitor-worker-restarts) and [Per-Worker Memory](#monitor-per-worker-memory)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Uneven load distribution across worker instances
+      </Table.Cell>
+      <Table.Cell>
+        Specific worker instances handling more jobs than others.
+      </Table.Cell>
+      <Table.Cell>
+        [Per-Worker CPU](#monitor-per-worker-cpu) and [Per-Worker Memory](#monitor-per-worker-memory)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        High [Flex Usage](../../usage/page.mdx#what-is-flex-usage)
+      </Table.Cell>
+      <Table.Cell>
+        Excessive CPU or memory consumption in worker instances due to inefficient background job code.
+      </Table.Cell>
+      <Table.Cell>
+        [Total CPU](#monitor-total-cpu) and [Per-Worker Memory](#monitor-per-worker-memory)
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
 
 ---
 

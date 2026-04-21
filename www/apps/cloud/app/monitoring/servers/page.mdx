@@ -1,4 +1,4 @@
-import { InlineIcon } from "docs-ui"
+import { InlineIcon, Table } from "docs-ui"
 import { ArrowPath } from "@medusajs/icons"
 
 export const metadata = {
@@ -26,6 +26,85 @@ You can monitor key metrics such as:
 - **CPU Usage**: Track how much of your allocated CPU resources are being used.
 - **Memory Usage**: Monitor memory consumption patterns across your server instances.
 - **Restarts**: Keep an eye on server restart frequency and patterns.
+
+---
+
+## Troubleshooting Common Server Issues
+
+The following table outlines common server performance issues, their potential causes, and the specific metrics you can monitor to identify and troubleshoot these issues effectively.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Issue
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Potential Cause
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Metric to Check
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Slow response times
+      </Table.Cell>
+      <Table.Cell>
+        CPU usage consistently near or exceeding allocation due to inefficient code.
+      </Table.Cell>
+      <Table.Cell>
+        [Total CPU](#monitor-total-cpu) and [Per-Server CPU](#monitor-per-server-cpu)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Application crashes or unexpected behavior
+      </Table.Cell>
+      <Table.Cell>
+        Insufficient memory allocation or memory leaks in your application code.
+      </Table.Cell>
+      <Table.Cell>
+        [Per-Server Memory](#monitor-per-server-memory)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Frequent server restarts
+      </Table.Cell>
+      <Table.Cell>
+        Crashes caused by unhandled exceptions or out-of-memory conditions.
+      </Table.Cell>
+      <Table.Cell>
+        [Server Restarts](#monitor-server-restarts) and [Per-Server Memory](#monitor-per-server-memory)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Uneven load distribution across instances
+      </Table.Cell>
+      <Table.Cell>
+        Specific server instances handling disproportionately more traffic than others.
+      </Table.Cell>
+      <Table.Cell>
+        [Per-Server CPU](#monitor-per-server-cpu) and [Per-Server Memory](#monitor-per-server-memory)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        High [Flex Usage](../../usage/page.mdx#what-is-flex-usage)
+      </Table.Cell>
+      <Table.Cell>
+        Excessive CPU or memory consumption in server instances due to inefficient code.
+      </Table.Cell>
+      <Table.Cell>
+        [Total CPU](#monitor-total-cpu) and [Per-Server Memory](#monitor-per-server-memory)
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
 
 ---
 
