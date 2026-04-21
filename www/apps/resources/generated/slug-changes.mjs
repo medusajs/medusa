@@ -1060,16 +1060,6 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Customer_Group/Workflows_Customer_Group/functions/core_flows.Customer_Group.Workflows_Customer_Group.updateCustomerGroupsWorkflow/page.mdx"
   },
   {
-    "origSlug": "/references/core_flows/Defaults/Steps_Defaults/functions/core_flows.Defaults.Steps_Defaults.createDefaultStoreStep",
-    "newSlug": "/references/medusa-workflows/steps/createDefaultStoreStep",
-    "filePath": "/www/apps/resources/references/core_flows/Defaults/Steps_Defaults/functions/core_flows.Defaults.Steps_Defaults.createDefaultStoreStep/page.mdx"
-  },
-  {
-    "origSlug": "/references/core_flows/Defaults/Workflows_Defaults/functions/core_flows.Defaults.Workflows_Defaults.createDefaultsWorkflow",
-    "newSlug": "/references/medusa-workflows/createDefaultsWorkflow",
-    "filePath": "/www/apps/resources/references/core_flows/Defaults/Workflows_Defaults/functions/core_flows.Defaults.Workflows_Defaults.createDefaultsWorkflow/page.mdx"
-  },
-  {
     "origSlug": "/references/core_flows/Draft_Order/Steps_Draft_Order/functions/core_flows.Draft_Order.Steps_Draft_Order.deleteDraftOrdersStep",
     "newSlug": "/references/medusa-workflows/steps/deleteDraftOrdersStep",
     "filePath": "/www/apps/resources/references/core_flows/Draft_Order/Steps_Draft_Order/functions/core_flows.Draft_Order.Steps_Draft_Order.deleteDraftOrdersStep/page.mdx"
@@ -3515,66 +3505,6 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Sales_Channel/Workflows_Sales_Channel/functions/core_flows.Sales_Channel.Workflows_Sales_Channel.updateSalesChannelsWorkflow/page.mdx"
   },
   {
-    "origSlug": "/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.createViewConfigurationStep",
-    "newSlug": "/references/medusa-workflows/steps/createViewConfigurationStep",
-    "filePath": "/www/apps/resources/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.createViewConfigurationStep/page.mdx"
-  },
-  {
-    "origSlug": "/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.setActiveViewConfigurationStep",
-    "newSlug": "/references/medusa-workflows/steps/setActiveViewConfigurationStep",
-    "filePath": "/www/apps/resources/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.setActiveViewConfigurationStep/page.mdx"
-  },
-  {
-    "origSlug": "/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.updateViewConfigurationStep",
-    "newSlug": "/references/medusa-workflows/steps/updateViewConfigurationStep",
-    "filePath": "/www/apps/resources/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.updateViewConfigurationStep/page.mdx"
-  },
-  {
-    "origSlug": "/references/core_flows/Settings/Workflows_Settings/functions/core_flows.Settings.Workflows_Settings.createViewConfigurationWorkflow",
-    "newSlug": "/references/medusa-workflows/createViewConfigurationWorkflow",
-    "filePath": "/www/apps/resources/references/core_flows/Settings/Workflows_Settings/functions/core_flows.Settings.Workflows_Settings.createViewConfigurationWorkflow/page.mdx"
-  },
-  {
-    "origSlug": "/references/core_flows/Settings/Workflows_Settings/functions/core_flows.Settings.Workflows_Settings.updateViewConfigurationWorkflow",
-    "newSlug": "/references/medusa-workflows/updateViewConfigurationWorkflow",
-    "filePath": "/www/apps/resources/references/core_flows/Settings/Workflows_Settings/functions/core_flows.Settings.Workflows_Settings.updateViewConfigurationWorkflow/page.mdx"
-  },
-  {
-    "origSlug": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.createShippingOptionTypesStep",
-    "newSlug": "/references/medusa-workflows/steps/createShippingOptionTypesStep",
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.createShippingOptionTypesStep/page.mdx"
-  },
-  {
-    "origSlug": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.deleteShippingOptionTypesStep",
-    "newSlug": "/references/medusa-workflows/steps/deleteShippingOptionTypesStep",
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.deleteShippingOptionTypesStep/page.mdx"
-  },
-  {
-    "origSlug": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.listShippingOptionsForContextStep",
-    "newSlug": "/references/medusa-workflows/steps/listShippingOptionsForContextStep",
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.listShippingOptionsForContextStep/page.mdx"
-  },
-  {
-    "origSlug": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.updateShippingOptionTypesStep",
-    "newSlug": "/references/medusa-workflows/steps/updateShippingOptionTypesStep",
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.updateShippingOptionTypesStep/page.mdx"
-  },
-  {
-    "origSlug": "/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.createShippingOptionTypesWorkflow",
-    "newSlug": "/references/medusa-workflows/createShippingOptionTypesWorkflow",
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.createShippingOptionTypesWorkflow/page.mdx"
-  },
-  {
-    "origSlug": "/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.deleteShippingOptionTypesWorkflow",
-    "newSlug": "/references/medusa-workflows/deleteShippingOptionTypesWorkflow",
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.deleteShippingOptionTypesWorkflow/page.mdx"
-  },
-  {
-    "origSlug": "/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.updateShippingOptionTypesWorkflow",
-    "newSlug": "/references/medusa-workflows/updateShippingOptionTypesWorkflow",
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.updateShippingOptionTypesWorkflow/page.mdx"
-  },
-  {
     "origSlug": "/references/core_flows/Shipping_Profile/Steps_Shipping_Profile/functions/core_flows.Shipping_Profile.Steps_Shipping_Profile.deleteShippingProfilesStep",
     "newSlug": "/references/medusa-workflows/steps/deleteShippingProfilesStep",
     "filePath": "/www/apps/resources/references/core_flows/Shipping_Profile/Steps_Shipping_Profile/functions/core_flows.Shipping_Profile.Steps_Shipping_Profile.deleteShippingProfilesStep/page.mdx"
@@ -5240,6 +5170,41 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/locking/interfaces/locking.ILockingProvider/page.mdx"
   },
   {
+    "origSlug": "/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.createGiftCards",
+    "newSlug": "/references/loyalty/createGiftCards",
+    "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.createGiftCards/page.mdx"
+  },
+  {
+    "origSlug": "/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.deleteGiftCards",
+    "newSlug": "/references/loyalty/deleteGiftCards",
+    "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.deleteGiftCards/page.mdx"
+  },
+  {
+    "origSlug": "/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.listGiftCards",
+    "newSlug": "/references/loyalty/listGiftCards",
+    "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.listGiftCards/page.mdx"
+  },
+  {
+    "origSlug": "/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.retrieveGiftCard",
+    "newSlug": "/references/loyalty/retrieveGiftCard",
+    "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.retrieveGiftCard/page.mdx"
+  },
+  {
+    "origSlug": "/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.updateGiftCards",
+    "newSlug": "/references/loyalty/updateGiftCards",
+    "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.updateGiftCards/page.mdx"
+  },
+  {
+    "origSlug": "/references/loyalty/interfaces/loyalty.ILoyaltyModuleService",
+    "newSlug": "/references/loyalty",
+    "filePath": "/www/apps/resources/references/loyalty/interfaces/loyalty.ILoyaltyModuleService/page.mdx"
+  },
+  {
+    "origSlug": "/references/loyalty_models/variables/loyalty_models.GiftCard",
+    "newSlug": "/references/loyalty/models/GiftCard",
+    "filePath": "/www/apps/resources/references/loyalty_models/variables/loyalty_models.GiftCard/page.mdx"
+  },
+  {
     "origSlug": "/references/module_events/module_events.Auth",
     "newSlug": "/references/auth/events",
     "filePath": "/www/apps/resources/references/module_events/module_events.Auth/page.mdx"
@@ -5345,6 +5310,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/modules/inventory_next_models/page.mdx"
   },
   {
+    "origSlug": "/references/modules/loyalty_models",
+    "newSlug": "/references/loyalty/models",
+    "filePath": "/www/apps/resources/references/modules/loyalty_models/page.mdx"
+  },
+  {
     "origSlug": "/references/modules/order_models",
     "newSlug": "/references/order/models",
     "filePath": "/www/apps/resources/references/modules/order_models/page.mdx"
@@ -5383,6 +5353,11 @@ export const slugChanges = [
     "origSlug": "/references/modules/stock_location_next_models",
     "newSlug": "/references/stock-location-next/models",
     "filePath": "/www/apps/resources/references/modules/stock_location_next_models/page.mdx"
+  },
+  {
+    "origSlug": "/references/modules/store_credit_models",
+    "newSlug": "/references/store-credit/models",
+    "filePath": "/www/apps/resources/references/modules/store_credit_models/page.mdx"
   },
   {
     "origSlug": "/references/modules/store_models",
@@ -7588,6 +7563,81 @@ export const slugChanges = [
     "origSlug": "/references/store/interfaces/store.IStoreModuleService",
     "newSlug": "/references/store",
     "filePath": "/www/apps/resources/references/store/interfaces/store.IStoreModuleService/page.mdx"
+  },
+  {
+    "origSlug": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.createStoreCreditAccounts",
+    "newSlug": "/references/store-credit/createStoreCreditAccounts",
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.createStoreCreditAccounts/page.mdx"
+  },
+  {
+    "origSlug": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.creditAccounts",
+    "newSlug": "/references/store-credit/creditAccounts",
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.creditAccounts/page.mdx"
+  },
+  {
+    "origSlug": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.debitAccounts",
+    "newSlug": "/references/store-credit/debitAccounts",
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.debitAccounts/page.mdx"
+  },
+  {
+    "origSlug": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.deleteStoreCreditAccounts",
+    "newSlug": "/references/store-credit/deleteStoreCreditAccounts",
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.deleteStoreCreditAccounts/page.mdx"
+  },
+  {
+    "origSlug": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.deleteTransactions",
+    "newSlug": "/references/store-credit/deleteTransactions",
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.deleteTransactions/page.mdx"
+  },
+  {
+    "origSlug": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.listAccountTransactions",
+    "newSlug": "/references/store-credit/listAccountTransactions",
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.listAccountTransactions/page.mdx"
+  },
+  {
+    "origSlug": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.listStoreCreditAccounts",
+    "newSlug": "/references/store-credit/listStoreCreditAccounts",
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.listStoreCreditAccounts/page.mdx"
+  },
+  {
+    "origSlug": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.restoreStoreCreditAccounts",
+    "newSlug": "/references/store-credit/restoreStoreCreditAccounts",
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.restoreStoreCreditAccounts/page.mdx"
+  },
+  {
+    "origSlug": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.retrieveAccountStats",
+    "newSlug": "/references/store-credit/retrieveAccountStats",
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.retrieveAccountStats/page.mdx"
+  },
+  {
+    "origSlug": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.retrieveStoreCreditAccount",
+    "newSlug": "/references/store-credit/retrieveStoreCreditAccount",
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.retrieveStoreCreditAccount/page.mdx"
+  },
+  {
+    "origSlug": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.softDeleteStoreCreditAccounts",
+    "newSlug": "/references/store-credit/softDeleteStoreCreditAccounts",
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.softDeleteStoreCreditAccounts/page.mdx"
+  },
+  {
+    "origSlug": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.updateStoreCreditAccounts",
+    "newSlug": "/references/store-credit/updateStoreCreditAccounts",
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.updateStoreCreditAccounts/page.mdx"
+  },
+  {
+    "origSlug": "/references/store_credit/interfaces/store_credit.IStoreCreditModuleService",
+    "newSlug": "/references/store-credit",
+    "filePath": "/www/apps/resources/references/store_credit/interfaces/store_credit.IStoreCreditModuleService/page.mdx"
+  },
+  {
+    "origSlug": "/references/store_credit_models/variables/store_credit_models.AccountTransaction",
+    "newSlug": "/references/store-credit/models/AccountTransaction",
+    "filePath": "/www/apps/resources/references/store_credit_models/variables/store_credit_models.AccountTransaction/page.mdx"
+  },
+  {
+    "origSlug": "/references/store_credit_models/variables/store_credit_models.StoreCreditAccount",
+    "newSlug": "/references/store-credit/models/StoreCreditAccount",
+    "filePath": "/www/apps/resources/references/store_credit_models/variables/store_credit_models.StoreCreditAccount/page.mdx"
   },
   {
     "origSlug": "/references/store_models/variables/store_models.Store",

@@ -93,51 +93,51 @@ export const storeCreditSidebar = [
               },
             ],
           },
-          // {
-          //   type: "sidebar",
-          //   sidebar_id: "store-credit-service-reference",
-          //   title: "Main Service Reference",
-          //   childSidebarTitle: "Store Credit Module's Main Service Reference",
-          //   children: [
-          //     {
-          //       type: "link",
-          //       path: "/references/store_credit",
-          //       title: "Reference Overview",
-          //     },
-          //     {
-          //       type: "separator",
-          //     },
-          //     {
-          //       type: "category",
-          //       title: "Methods",
-          //       hasTitleStyling: true,
-          //       autogenerate_path:
-          //         "/references/store_credit/IStoreCreditModuleService/methods",
-          //     },
-          //   ],
-          // },
-          // {
-          //   type: "sidebar",
-          //   sidebar_id: "store-credit-models-reference",
-          //   title: "Data Models Reference",
-          //   childSidebarTitle: "Store Credit Module Data Models Reference",
-          //   children: [
-          //     {
-          //       type: "link",
-          //       path: "/references/store_credit/models",
-          //       title: "Reference Overview",
-          //     },
-          //     {
-          //       type: "separator",
-          //     },
-          //     {
-          //       type: "category",
-          //       title: "Data Models",
-          //       hasTitleStyling: true,
-          //       autogenerate_path: "/references/store_credit_models/variables",
-          //     },
-          //   ],
-          // },
+          {
+            type: "sidebar",
+            sidebar_id: "store-credit-service-reference",
+            title: "Main Service Reference",
+            childSidebarTitle: "Store Credit Module's Main Service Reference",
+            children: [
+              {
+                type: "link",
+                path: "/references/store-credit",
+                title: "Reference Overview",
+              },
+              {
+                type: "separator",
+              },
+              {
+                type: "category",
+                title: "Methods",
+                hasTitleStyling: true,
+                autogenerate_path:
+                  "/references/store_credit/IStoreCreditModuleService/methods",
+              },
+            ],
+          },
+          {
+            type: "sidebar",
+            sidebar_id: "store-credit-models-reference",
+            title: "Data Models Reference",
+            childSidebarTitle: "Store Credit Module Data Models Reference",
+            children: [
+              {
+                type: "link",
+                path: "/references/store-credit/models",
+                title: "Reference Overview",
+              },
+              {
+                type: "separator",
+              },
+              {
+                type: "category",
+                title: "Data Models",
+                hasTitleStyling: true,
+                autogenerate_path: "/references/store_credit_models/variables",
+              },
+            ],
+          },
         ],
       },
     ],

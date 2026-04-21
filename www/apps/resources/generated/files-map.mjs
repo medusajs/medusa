@@ -3628,22 +3628,6 @@ export const filesMap = [
     "pathname": "/references/core_flows/Customer_Group/core_flows.Customer_Group.Workflows_Customer_Group"
   },
   {
-    "filePath": "/www/apps/resources/references/core_flows/Defaults/Steps_Defaults/functions/core_flows.Defaults.Steps_Defaults.createDefaultStoreStep/page.mdx",
-    "pathname": "/references/core_flows/Defaults/Steps_Defaults/functions/core_flows.Defaults.Steps_Defaults.createDefaultStoreStep"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Defaults/Steps_Defaults/variables/core_flows.Defaults.Steps_Defaults.createDefaultStoreStepId/page.mdx",
-    "pathname": "/references/core_flows/Defaults/Steps_Defaults/variables/core_flows.Defaults.Steps_Defaults.createDefaultStoreStepId"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Defaults/Workflows_Defaults/functions/core_flows.Defaults.Workflows_Defaults.createDefaultsWorkflow/page.mdx",
-    "pathname": "/references/core_flows/Defaults/Workflows_Defaults/functions/core_flows.Defaults.Workflows_Defaults.createDefaultsWorkflow"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Defaults/Workflows_Defaults/variables/core_flows.Defaults.Workflows_Defaults.createDefaultsWorkflowID/page.mdx",
-    "pathname": "/references/core_flows/Defaults/Workflows_Defaults/variables/core_flows.Defaults.Workflows_Defaults.createDefaultsWorkflowID"
-  },
-  {
     "filePath": "/www/apps/resources/references/core_flows/Defaults/core_flows.Defaults.Steps_Defaults/page.mdx",
     "pathname": "/references/core_flows/Defaults/core_flows.Defaults.Steps_Defaults"
   },
@@ -7384,108 +7368,12 @@ export const filesMap = [
     "pathname": "/references/core_flows/Sales_Channel/core_flows.Sales_Channel.Workflows_Sales_Channel"
   },
   {
-    "filePath": "/www/apps/resources/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.createViewConfigurationStep/page.mdx",
-    "pathname": "/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.createViewConfigurationStep"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.setActiveViewConfigurationStep/page.mdx",
-    "pathname": "/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.setActiveViewConfigurationStep"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.updateViewConfigurationStep/page.mdx",
-    "pathname": "/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.updateViewConfigurationStep"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Settings/Steps_Settings/variables/core_flows.Settings.Steps_Settings.createViewConfigurationStepId/page.mdx",
-    "pathname": "/references/core_flows/Settings/Steps_Settings/variables/core_flows.Settings.Steps_Settings.createViewConfigurationStepId"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Settings/Steps_Settings/variables/core_flows.Settings.Steps_Settings.setActiveViewConfigurationStepId/page.mdx",
-    "pathname": "/references/core_flows/Settings/Steps_Settings/variables/core_flows.Settings.Steps_Settings.setActiveViewConfigurationStepId"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Settings/Steps_Settings/variables/core_flows.Settings.Steps_Settings.updateViewConfigurationStepId/page.mdx",
-    "pathname": "/references/core_flows/Settings/Steps_Settings/variables/core_flows.Settings.Steps_Settings.updateViewConfigurationStepId"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Settings/Workflows_Settings/functions/core_flows.Settings.Workflows_Settings.createViewConfigurationWorkflow/page.mdx",
-    "pathname": "/references/core_flows/Settings/Workflows_Settings/functions/core_flows.Settings.Workflows_Settings.createViewConfigurationWorkflow"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Settings/Workflows_Settings/functions/core_flows.Settings.Workflows_Settings.updateViewConfigurationWorkflow/page.mdx",
-    "pathname": "/references/core_flows/Settings/Workflows_Settings/functions/core_flows.Settings.Workflows_Settings.updateViewConfigurationWorkflow"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Settings/Workflows_Settings/variables/core_flows.Settings.Workflows_Settings.createViewConfigurationWorkflowId/page.mdx",
-    "pathname": "/references/core_flows/Settings/Workflows_Settings/variables/core_flows.Settings.Workflows_Settings.createViewConfigurationWorkflowId"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Settings/Workflows_Settings/variables/core_flows.Settings.Workflows_Settings.updateViewConfigurationWorkflowId/page.mdx",
-    "pathname": "/references/core_flows/Settings/Workflows_Settings/variables/core_flows.Settings.Workflows_Settings.updateViewConfigurationWorkflowId"
-  },
-  {
     "filePath": "/www/apps/resources/references/core_flows/Settings/core_flows.Settings.Steps_Settings/page.mdx",
     "pathname": "/references/core_flows/Settings/core_flows.Settings.Steps_Settings"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Settings/core_flows.Settings.Workflows_Settings/page.mdx",
     "pathname": "/references/core_flows/Settings/core_flows.Settings.Workflows_Settings"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.createShippingOptionTypesStep/page.mdx",
-    "pathname": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.createShippingOptionTypesStep"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.deleteShippingOptionTypesStep/page.mdx",
-    "pathname": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.deleteShippingOptionTypesStep"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.listShippingOptionsForContextStep/page.mdx",
-    "pathname": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.listShippingOptionsForContextStep"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.updateShippingOptionTypesStep/page.mdx",
-    "pathname": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.updateShippingOptionTypesStep"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/variables/core_flows.Shipping_Options.Steps_Shipping_Options.createShippingOptionTypesStepId/page.mdx",
-    "pathname": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/variables/core_flows.Shipping_Options.Steps_Shipping_Options.createShippingOptionTypesStepId"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/variables/core_flows.Shipping_Options.Steps_Shipping_Options.deleteShippingOptionTypesStepId/page.mdx",
-    "pathname": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/variables/core_flows.Shipping_Options.Steps_Shipping_Options.deleteShippingOptionTypesStepId"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/variables/core_flows.Shipping_Options.Steps_Shipping_Options.listShippingOptionsForContextStepId/page.mdx",
-    "pathname": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/variables/core_flows.Shipping_Options.Steps_Shipping_Options.listShippingOptionsForContextStepId"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/variables/core_flows.Shipping_Options.Steps_Shipping_Options.updateShippingOptionTypesStepId/page.mdx",
-    "pathname": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/variables/core_flows.Shipping_Options.Steps_Shipping_Options.updateShippingOptionTypesStepId"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.createShippingOptionTypesWorkflow/page.mdx",
-    "pathname": "/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.createShippingOptionTypesWorkflow"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.deleteShippingOptionTypesWorkflow/page.mdx",
-    "pathname": "/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.deleteShippingOptionTypesWorkflow"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.updateShippingOptionTypesWorkflow/page.mdx",
-    "pathname": "/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.updateShippingOptionTypesWorkflow"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Workflows_Shipping_Options/variables/core_flows.Shipping_Options.Workflows_Shipping_Options.createShippingOptionTypesWorkflowId/page.mdx",
-    "pathname": "/references/core_flows/Shipping_Options/Workflows_Shipping_Options/variables/core_flows.Shipping_Options.Workflows_Shipping_Options.createShippingOptionTypesWorkflowId"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Workflows_Shipping_Options/variables/core_flows.Shipping_Options.Workflows_Shipping_Options.deleteShippingOptionTypesWorkflowId/page.mdx",
-    "pathname": "/references/core_flows/Shipping_Options/Workflows_Shipping_Options/variables/core_flows.Shipping_Options.Workflows_Shipping_Options.deleteShippingOptionTypesWorkflowId"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Workflows_Shipping_Options/variables/core_flows.Shipping_Options.Workflows_Shipping_Options.updateShippingOptionTypesWorkflowId/page.mdx",
-    "pathname": "/references/core_flows/Shipping_Options/Workflows_Shipping_Options/variables/core_flows.Shipping_Options.Workflows_Shipping_Options.updateShippingOptionTypesWorkflowId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/core_flows.Shipping_Options.Steps_Shipping_Options/page.mdx",
@@ -14708,6 +14596,150 @@ export const filesMap = [
     "pathname": "/references/locking/interfaces/locking.ILockingProvider"
   },
   {
+    "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.createGiftCards/page.mdx",
+    "pathname": "/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.createGiftCards"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.deleteGiftCards/page.mdx",
+    "pathname": "/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.deleteGiftCards"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.listGiftCards/page.mdx",
+    "pathname": "/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.listGiftCards"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.retrieveGiftCard/page.mdx",
+    "pathname": "/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.retrieveGiftCard"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.updateGiftCards/page.mdx",
+    "pathname": "/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.updateGiftCards"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/IMessageAggregator/methods/loyalty.IMessageAggregator.clearMessages/page.mdx",
+    "pathname": "/references/loyalty/IMessageAggregator/methods/loyalty.IMessageAggregator.clearMessages"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/IMessageAggregator/methods/loyalty.IMessageAggregator.getMessages/page.mdx",
+    "pathname": "/references/loyalty/IMessageAggregator/methods/loyalty.IMessageAggregator.getMessages"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/IMessageAggregator/methods/loyalty.IMessageAggregator.save/page.mdx",
+    "pathname": "/references/loyalty/IMessageAggregator/methods/loyalty.IMessageAggregator.save"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/IMessageAggregator/methods/loyalty.IMessageAggregator.saveRawMessageData/page.mdx",
+    "pathname": "/references/loyalty/IMessageAggregator/methods/loyalty.IMessageAggregator.saveRawMessageData"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/IModuleService/methods/loyalty.IModuleService.__joinerConfig/page.mdx",
+    "pathname": "/references/loyalty/IModuleService/methods/loyalty.IModuleService.__joinerConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/enums/loyalty.GiftCardStatus/page.mdx",
+    "pathname": "/references/loyalty/enums/loyalty.GiftCardStatus"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/interfaces/loyalty.BaseFilterable/page.mdx",
+    "pathname": "/references/loyalty/interfaces/loyalty.BaseFilterable"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/interfaces/loyalty.Context/page.mdx",
+    "pathname": "/references/loyalty/interfaces/loyalty.Context"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/interfaces/loyalty.CustomerAddressDTO/page.mdx",
+    "pathname": "/references/loyalty/interfaces/loyalty.CustomerAddressDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/interfaces/loyalty.CustomerDTO/page.mdx",
+    "pathname": "/references/loyalty/interfaces/loyalty.CustomerDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/interfaces/loyalty.FindConfig/page.mdx",
+    "pathname": "/references/loyalty/interfaces/loyalty.FindConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/interfaces/loyalty.ILoyaltyModuleService/page.mdx",
+    "pathname": "/references/loyalty/interfaces/loyalty.ILoyaltyModuleService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/interfaces/loyalty.IMessageAggregator/page.mdx",
+    "pathname": "/references/loyalty/interfaces/loyalty.IMessageAggregator"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/interfaces/loyalty.IModuleService/page.mdx",
+    "pathname": "/references/loyalty/interfaces/loyalty.IModuleService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/interfaces/loyalty.JoinerServiceConfig/page.mdx",
+    "pathname": "/references/loyalty/interfaces/loyalty.JoinerServiceConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/interfaces/loyalty.JoinerServiceConfigAlias/page.mdx",
+    "pathname": "/references/loyalty/interfaces/loyalty.JoinerServiceConfigAlias"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/interfaces/loyalty.MessageAggregatorFormat/page.mdx",
+    "pathname": "/references/loyalty/interfaces/loyalty.MessageAggregatorFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/interfaces/loyalty.ModuleGiftCardFilters/page.mdx",
+    "pathname": "/references/loyalty/interfaces/loyalty.ModuleGiftCardFilters"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.Event/page.mdx",
+    "pathname": "/references/loyalty/types/loyalty.Event"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.EventMetadata/page.mdx",
+    "pathname": "/references/loyalty/types/loyalty.EventMetadata"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.FindConfigOrder/page.mdx",
+    "pathname": "/references/loyalty/types/loyalty.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.JoinerRelationship/page.mdx",
+    "pathname": "/references/loyalty/types/loyalty.JoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/loyalty/types/loyalty.LinkModulesExtraFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.Message/page.mdx",
+    "pathname": "/references/loyalty/types/loyalty.Message"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.ModuleCreateGiftCard/page.mdx",
+    "pathname": "/references/loyalty/types/loyalty.ModuleCreateGiftCard"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.ModuleGiftCard/page.mdx",
+    "pathname": "/references/loyalty/types/loyalty.ModuleGiftCard"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.ModuleJoinerConfig/page.mdx",
+    "pathname": "/references/loyalty/types/loyalty.ModuleJoinerConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.ModuleJoinerRelationship/page.mdx",
+    "pathname": "/references/loyalty/types/loyalty.ModuleJoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.ModuleUpdateGiftCard/page.mdx",
+    "pathname": "/references/loyalty/types/loyalty.ModuleUpdateGiftCard"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.RawMessageFormat/page.mdx",
+    "pathname": "/references/loyalty/types/loyalty.RawMessageFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty_models/variables/loyalty_models.GiftCard/page.mdx",
+    "pathname": "/references/loyalty_models/variables/loyalty_models.GiftCard"
+  },
+  {
     "filePath": "/www/apps/resources/references/medusa/classes/medusa.RestrictedFields/page.mdx",
     "pathname": "/references/medusa/classes/medusa.RestrictedFields"
   },
@@ -14988,6 +15020,14 @@ export const filesMap = [
     "pathname": "/references/modules/locking"
   },
   {
+    "filePath": "/www/apps/resources/references/modules/loyalty/page.mdx",
+    "pathname": "/references/modules/loyalty"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/loyalty_models/page.mdx",
+    "pathname": "/references/modules/loyalty_models"
+  },
+  {
     "filePath": "/www/apps/resources/references/modules/medusa/page.mdx",
     "pathname": "/references/modules/medusa"
   },
@@ -15078,6 +15118,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/modules/store/page.mdx",
     "pathname": "/references/modules/store"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/store_credit/page.mdx",
+    "pathname": "/references/modules/store_credit"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/store_credit_models/page.mdx",
+    "pathname": "/references/modules/store_credit_models"
   },
   {
     "filePath": "/www/apps/resources/references/modules/store_models/page.mdx",
@@ -19590,6 +19638,222 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/store/types/store.Scalar/page.mdx",
     "pathname": "/references/store/types/store.Scalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IBigNumber/methods/store_credit.IBigNumber.toJSON/page.mdx",
+    "pathname": "/references/store_credit/IBigNumber/methods/store_credit.IBigNumber.toJSON"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IBigNumber/methods/store_credit.IBigNumber.valueOf/page.mdx",
+    "pathname": "/references/store_credit/IBigNumber/methods/store_credit.IBigNumber.valueOf"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IMessageAggregator/methods/store_credit.IMessageAggregator.clearMessages/page.mdx",
+    "pathname": "/references/store_credit/IMessageAggregator/methods/store_credit.IMessageAggregator.clearMessages"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IMessageAggregator/methods/store_credit.IMessageAggregator.getMessages/page.mdx",
+    "pathname": "/references/store_credit/IMessageAggregator/methods/store_credit.IMessageAggregator.getMessages"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IMessageAggregator/methods/store_credit.IMessageAggregator.save/page.mdx",
+    "pathname": "/references/store_credit/IMessageAggregator/methods/store_credit.IMessageAggregator.save"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IMessageAggregator/methods/store_credit.IMessageAggregator.saveRawMessageData/page.mdx",
+    "pathname": "/references/store_credit/IMessageAggregator/methods/store_credit.IMessageAggregator.saveRawMessageData"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IModuleService/methods/store_credit.IModuleService.__joinerConfig/page.mdx",
+    "pathname": "/references/store_credit/IModuleService/methods/store_credit.IModuleService.__joinerConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.createStoreCreditAccounts/page.mdx",
+    "pathname": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.createStoreCreditAccounts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.creditAccounts/page.mdx",
+    "pathname": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.creditAccounts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.debitAccounts/page.mdx",
+    "pathname": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.debitAccounts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.deleteStoreCreditAccounts/page.mdx",
+    "pathname": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.deleteStoreCreditAccounts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.deleteTransactions/page.mdx",
+    "pathname": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.deleteTransactions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.listAccountTransactions/page.mdx",
+    "pathname": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.listAccountTransactions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.listStoreCreditAccounts/page.mdx",
+    "pathname": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.listStoreCreditAccounts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.restoreStoreCreditAccounts/page.mdx",
+    "pathname": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.restoreStoreCreditAccounts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.retrieveAccountStats/page.mdx",
+    "pathname": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.retrieveAccountStats"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.retrieveStoreCreditAccount/page.mdx",
+    "pathname": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.retrieveStoreCreditAccount"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.softDeleteStoreCreditAccounts/page.mdx",
+    "pathname": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.softDeleteStoreCreditAccounts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.updateStoreCreditAccounts/page.mdx",
+    "pathname": "/references/store_credit/IStoreCreditModuleService/methods/store_credit.IStoreCreditModuleService.updateStoreCreditAccounts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/interfaces/store_credit.BaseFilterable/page.mdx",
+    "pathname": "/references/store_credit/interfaces/store_credit.BaseFilterable"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/interfaces/store_credit.Context/page.mdx",
+    "pathname": "/references/store_credit/interfaces/store_credit.Context"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/interfaces/store_credit.FindConfig/page.mdx",
+    "pathname": "/references/store_credit/interfaces/store_credit.FindConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/interfaces/store_credit.IBigNumber/page.mdx",
+    "pathname": "/references/store_credit/interfaces/store_credit.IBigNumber"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/interfaces/store_credit.IMessageAggregator/page.mdx",
+    "pathname": "/references/store_credit/interfaces/store_credit.IMessageAggregator"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/interfaces/store_credit.IModuleService/page.mdx",
+    "pathname": "/references/store_credit/interfaces/store_credit.IModuleService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/interfaces/store_credit.IStoreCreditModuleService/page.mdx",
+    "pathname": "/references/store_credit/interfaces/store_credit.IStoreCreditModuleService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/interfaces/store_credit.JoinerServiceConfig/page.mdx",
+    "pathname": "/references/store_credit/interfaces/store_credit.JoinerServiceConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/interfaces/store_credit.JoinerServiceConfigAlias/page.mdx",
+    "pathname": "/references/store_credit/interfaces/store_credit.JoinerServiceConfigAlias"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/interfaces/store_credit.MessageAggregatorFormat/page.mdx",
+    "pathname": "/references/store_credit/interfaces/store_credit.MessageAggregatorFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/interfaces/store_credit.ModuleListAccountTransactions/page.mdx",
+    "pathname": "/references/store_credit/interfaces/store_credit.ModuleListAccountTransactions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/interfaces/store_credit.ModuleStoreCreditAccountFilters/page.mdx",
+    "pathname": "/references/store_credit/interfaces/store_credit.ModuleStoreCreditAccountFilters"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/interfaces/store_credit.RestoreReturn/page.mdx",
+    "pathname": "/references/store_credit/interfaces/store_credit.RestoreReturn"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.BigNumberRawValue/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.BigNumberRawValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.BigNumberValue/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.BigNumberValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.Event/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.Event"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.EventMetadata/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.EventMetadata"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.FindConfigOrder/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.JoinerRelationship/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.JoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.LinkModulesExtraFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.Message/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.Message"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.ModuleAccountStats/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.ModuleAccountStats"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.ModuleAccountTransaction/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.ModuleAccountTransaction"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.ModuleCreateStoreCreditAccount/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.ModuleCreateStoreCreditAccount"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.ModuleCreditAccount/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.ModuleCreditAccount"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.ModuleDebitAccount/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.ModuleDebitAccount"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.ModuleJoinerConfig/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.ModuleJoinerConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.ModuleJoinerRelationship/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.ModuleJoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.ModuleRetrieveAccountStats/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.ModuleRetrieveAccountStats"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.ModuleStoreCreditAccount/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.ModuleStoreCreditAccount"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.ModuleUpdateStoreCreditAccount/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.ModuleUpdateStoreCreditAccount"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.RawMessageFormat/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.RawMessageFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.TransactionTypeValues/page.mdx",
+    "pathname": "/references/store_credit/types/store_credit.TransactionTypeValues"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit_models/variables/store_credit_models.AccountTransaction/page.mdx",
+    "pathname": "/references/store_credit_models/variables/store_credit_models.AccountTransaction"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit_models/variables/store_credit_models.StoreCreditAccount/page.mdx",
+    "pathname": "/references/store_credit_models/variables/store_credit_models.StoreCreditAccount"
   },
   {
     "filePath": "/www/apps/resources/references/store_models/variables/store_models.Store/page.mdx",

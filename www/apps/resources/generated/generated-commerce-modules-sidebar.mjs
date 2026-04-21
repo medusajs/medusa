@@ -6197,6 +6197,58 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
           "loaded": true,
           "isPathHref": true,
           "type": "category",
+          "title": "Admin User Guides",
+          "autogenerate_tags": "userGuide+loyalty",
+          "autogenerate_as_ref": true,
+          "sort_sidebar": "alphabetize",
+          "description": "Learn how to utilize and manage Loyalty features in the Medusa Admin dashboard.",
+          "children": [
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Gift Card Products Overview",
+              "path": "https://docs.medusajs.com/user-guide/loyalty/gift-card-products",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Gift Cards Overview",
+              "path": "https://docs.medusajs.com/user-guide/loyalty/gift-cards",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Loyalty Features in Medusa Admin",
+              "path": "https://docs.medusajs.com/user-guide/loyalty",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Manage Gift Card Products",
+              "path": "https://docs.medusajs.com/user-guide/loyalty/gift-card-products/manage",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Manage Gift Cards",
+              "path": "https://docs.medusajs.com/user-guide/loyalty/gift-cards/manage",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "category",
           "title": "References",
           "description": "Find references for tools and resources related to the Loyalty Module, such as data models, methods, and more. These are useful for your customizations.",
           "children": [
@@ -6208,68 +6260,122 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "title": "Workflows",
               "hideChildren": true,
               "children": []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "loaded": true,
-      "isPathHref": true,
-      "type": "sidebar",
-      "sidebar_id": "store-credit",
-      "title": "Store Credit Module",
-      "children": [
-        {
-          "loaded": true,
-          "isPathHref": true,
-          "type": "link",
-          "path": "/commerce-modules/store-credit",
-          "title": "Overview",
-          "children": []
-        },
-        {
-          "type": "separator"
-        },
-        {
-          "loaded": true,
-          "isPathHref": true,
-          "type": "category",
-          "title": "Concepts",
-          "children": [
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "link",
-              "path": "/commerce-modules/store-credit/concepts",
-              "title": "Concepts",
-              "children": []
             },
             {
               "loaded": true,
               "isPathHref": true,
-              "type": "link",
-              "path": "/commerce-modules/store-credit/links-to-other-modules",
-              "title": "Link to Modules",
-              "children": []
-            }
-          ]
-        },
-        {
-          "loaded": true,
-          "isPathHref": true,
-          "type": "category",
-          "title": "References",
-          "description": "Find references for tools and resources related to the Store Credit Module, such as data models, methods, and more. These are useful for your customizations.",
-          "children": [
+              "type": "sidebar",
+              "sidebar_id": "loyalty-service-reference",
+              "title": "Main Service Reference",
+              "childSidebarTitle": "Loyalty Module's Main Service Reference",
+              "children": [
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/loyalty",
+                  "title": "Reference Overview",
+                  "children": []
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "category",
+                  "title": "Methods",
+                  "hasTitleStyling": true,
+                  "autogenerate_path": "/references/loyalty/ILoyaltyModuleService/methods",
+                  "children": [
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/loyalty/createGiftCards",
+                      "title": "createGiftCards",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/loyalty/deleteGiftCards",
+                      "title": "deleteGiftCards",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/loyalty/listGiftCards",
+                      "title": "listGiftCards",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/loyalty/retrieveGiftCard",
+                      "title": "retrieveGiftCard",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/loyalty/updateGiftCards",
+                      "title": "updateGiftCards",
+                      "description": "",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
             {
               "loaded": true,
               "isPathHref": true,
-              "type": "link",
-              "path": "/commerce-modules/store-credit/workflows",
-              "title": "Workflows",
-              "hideChildren": true,
-              "children": []
+              "type": "sidebar",
+              "sidebar_id": "loyalty-models-reference",
+              "title": "Data Models Reference",
+              "childSidebarTitle": "Loyalty Module Data Models Reference",
+              "children": [
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/loyalty/models",
+                  "title": "Reference Overview",
+                  "children": []
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "category",
+                  "title": "Data Models",
+                  "hasTitleStyling": true,
+                  "autogenerate_path": "/references/loyalty_models/variables",
+                  "children": [
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/loyalty/models/GiftCard",
+                      "title": "GiftCard",
+                      "description": "",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
@@ -16522,6 +16628,284 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/store/models/StoreLocale",
                       "title": "StoreLocale",
+                      "description": "",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "loaded": true,
+      "isPathHref": true,
+      "type": "sidebar",
+      "sidebar_id": "store-credit",
+      "title": "Store Credit Module",
+      "children": [
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "link",
+          "path": "/commerce-modules/store-credit",
+          "title": "Overview",
+          "children": []
+        },
+        {
+          "type": "separator"
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "category",
+          "title": "Concepts",
+          "children": [
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/store-credit/concepts",
+              "title": "Concepts",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/store-credit/links-to-other-modules",
+              "title": "Link to Modules",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "category",
+          "title": "Admin User Guides",
+          "autogenerate_tags": "userGuide+storeCredit",
+          "autogenerate_as_ref": true,
+          "sort_sidebar": "alphabetize",
+          "description": "Learn how to utilize and manage Store Credit features in the Medusa Admin dashboard.",
+          "children": [
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Manage Store Credits",
+              "path": "https://docs.medusajs.com/user-guide/loyalty/store-credits/manage",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Store Credits Overview",
+              "path": "https://docs.medusajs.com/user-guide/loyalty/store-credits",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "category",
+          "title": "References",
+          "description": "Find references for tools and resources related to the Store Credit Module, such as data models, methods, and more. These are useful for your customizations.",
+          "children": [
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/store-credit/workflows",
+              "title": "Workflows",
+              "hideChildren": true,
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "sidebar",
+              "sidebar_id": "store-credit-service-reference",
+              "title": "Main Service Reference",
+              "childSidebarTitle": "Store Credit Module's Main Service Reference",
+              "children": [
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/store-credit",
+                  "title": "Reference Overview",
+                  "children": []
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "category",
+                  "title": "Methods",
+                  "hasTitleStyling": true,
+                  "autogenerate_path": "/references/store_credit/IStoreCreditModuleService/methods",
+                  "children": [
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/store-credit/createStoreCreditAccounts",
+                      "title": "createStoreCreditAccounts",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/store-credit/creditAccounts",
+                      "title": "creditAccounts",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/store-credit/debitAccounts",
+                      "title": "debitAccounts",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/store-credit/deleteStoreCreditAccounts",
+                      "title": "deleteStoreCreditAccounts",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/store-credit/deleteTransactions",
+                      "title": "deleteTransactions",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/store-credit/listAccountTransactions",
+                      "title": "listAccountTransactions",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/store-credit/listStoreCreditAccounts",
+                      "title": "listStoreCreditAccounts",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/store-credit/restoreStoreCreditAccounts",
+                      "title": "restoreStoreCreditAccounts",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/store-credit/retrieveAccountStats",
+                      "title": "retrieveAccountStats",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/store-credit/retrieveStoreCreditAccount",
+                      "title": "retrieveStoreCreditAccount",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/store-credit/softDeleteStoreCreditAccounts",
+                      "title": "softDeleteStoreCreditAccounts",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/store-credit/updateStoreCreditAccounts",
+                      "title": "updateStoreCreditAccounts",
+                      "description": "",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "sidebar",
+              "sidebar_id": "store-credit-models-reference",
+              "title": "Data Models Reference",
+              "childSidebarTitle": "Store Credit Module Data Models Reference",
+              "children": [
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/store-credit/models",
+                  "title": "Reference Overview",
+                  "children": []
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "category",
+                  "title": "Data Models",
+                  "hasTitleStyling": true,
+                  "autogenerate_path": "/references/store_credit_models/variables",
+                  "children": [
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/store-credit/models/AccountTransaction",
+                      "title": "AccountTransaction",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/store-credit/models/StoreCreditAccount",
+                      "title": "StoreCreditAccount",
                       "description": "",
                       "children": []
                     }

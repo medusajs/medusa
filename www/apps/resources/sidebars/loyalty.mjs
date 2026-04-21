@@ -93,51 +93,51 @@ export const loyaltySidebar = [
               },
             ],
           },
-          // {
-          //   type: "sidebar",
-          //   sidebar_id: "loyalty-service-reference",
-          //   title: "Main Service Reference",
-          //   childSidebarTitle: "Loyalty Module's Main Service Reference",
-          //   children: [
-          //     {
-          //       type: "link",
-          //       path: "/references/loyalty",
-          //       title: "Reference Overview",
-          //     },
-          //     {
-          //       type: "separator",
-          //     },
-          //     {
-          //       type: "category",
-          //       title: "Methods",
-          //       hasTitleStyling: true,
-          //       autogenerate_path:
-          //         "/references/loyalty/ILoyaltyModuleService/methods",
-          //     },
-          //   ],
-          // },
-          // {
-          //   type: "sidebar",
-          //   sidebar_id: "loyalty-models-reference",
-          //   title: "Data Models Reference",
-          //   childSidebarTitle: "Loyalty Module Data Models Reference",
-          //   children: [
-          //     {
-          //       type: "link",
-          //       path: "/references/loyalty/models",
-          //       title: "Reference Overview",
-          //     },
-          //     {
-          //       type: "separator",
-          //     },
-          //     {
-          //       type: "category",
-          //       title: "Data Models",
-          //       hasTitleStyling: true,
-          //       autogenerate_path: "/references/loyalty_models/variables",
-          //     },
-          //   ],
-          // },
+          {
+            type: "sidebar",
+            sidebar_id: "loyalty-service-reference",
+            title: "Main Service Reference",
+            childSidebarTitle: "Loyalty Module's Main Service Reference",
+            children: [
+              {
+                type: "link",
+                path: "/references/loyalty",
+                title: "Reference Overview",
+              },
+              {
+                type: "separator",
+              },
+              {
+                type: "category",
+                title: "Methods",
+                hasTitleStyling: true,
+                autogenerate_path:
+                  "/references/loyalty/ILoyaltyModuleService/methods",
+              },
+            ],
+          },
+          {
+            type: "sidebar",
+            sidebar_id: "loyalty-models-reference",
+            title: "Data Models Reference",
+            childSidebarTitle: "Loyalty Module Data Models Reference",
+            children: [
+              {
+                type: "link",
+                path: "/references/loyalty/models",
+                title: "Reference Overview",
+              },
+              {
+                type: "separator",
+              },
+              {
+                type: "category",
+                title: "Data Models",
+                hasTitleStyling: true,
+                autogenerate_path: "/references/loyalty_models/variables",
+              },
+            ],
+          },
         ],
       },
     ],
