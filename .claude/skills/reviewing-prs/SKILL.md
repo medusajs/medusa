@@ -309,6 +309,7 @@ bash scripts/labels.sh <pr_number> remove initial-approval
 
 - [ ] Checking template compliance for team members — skip for team members
 - [ ] Being vague about required changes — always list exactly what needs to change and why
+- [ ] Approving a PR that changes behavior documented as intentional — always check the docs when a PR modifies existing behavior; if the docs describe it as by design, flag it as `requires-more`
 - [ ] Closing a PR without a clear explanation
 - [ ] Forgetting the docs-ui test requirement for `www/packages/docs-ui/` changes
 - [ ] Skipping the integration test check for API route changes in `packages/medusa/src/api/`
