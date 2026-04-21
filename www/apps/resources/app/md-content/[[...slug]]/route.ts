@@ -80,11 +80,14 @@ export async function GET(req: NextRequest, { params }: Params) {
       host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     })
 
+    const urlObj = new URL(req.url)
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL || ""}${process.env.NEXT_PUBLIC_BASE_PATH || ""}${urlObj.pathname}`
+
     client.capture({
       distinctId: "anonymous",
       event: "md_content_requested_agents",
       properties: {
-        $current_url: req.url,
+        $current_url: url,
         $raw_user_agent: req.headers.get("user-agent") || undefined,
       },
     })
