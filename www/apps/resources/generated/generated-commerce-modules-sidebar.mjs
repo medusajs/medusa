@@ -6197,58 +6197,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
           "loaded": true,
           "isPathHref": true,
           "type": "category",
-          "title": "Admin User Guides",
-          "autogenerate_tags": "userGuide+loyalty",
-          "autogenerate_as_ref": true,
-          "sort_sidebar": "alphabetize",
-          "description": "Learn how to utilize and manage Loyalty features in the Medusa Admin dashboard.",
-          "children": [
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "ref",
-              "title": "Gift Card Products Overview",
-              "path": "https://docs.medusajs.com/user-guide/loyalty/gift-card-products",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "ref",
-              "title": "Gift Cards Overview",
-              "path": "https://docs.medusajs.com/user-guide/loyalty/gift-cards",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "ref",
-              "title": "Loyalty Features in Medusa Admin",
-              "path": "https://docs.medusajs.com/user-guide/loyalty",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "ref",
-              "title": "Manage Gift Card Products",
-              "path": "https://docs.medusajs.com/user-guide/loyalty/gift-card-products/manage",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "ref",
-              "title": "Manage Gift Cards",
-              "path": "https://docs.medusajs.com/user-guide/loyalty/gift-cards/manage",
-              "children": []
-            }
-          ]
-        },
-        {
-          "loaded": true,
-          "isPathHref": true,
-          "type": "category",
           "title": "References",
           "description": "Find references for tools and resources related to the Loyalty Module, such as data models, methods, and more. These are useful for your customizations.",
           "children": [
@@ -16677,34 +16625,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "link",
               "path": "/commerce-modules/store-credit/links-to-other-modules",
               "title": "Link to Modules",
-              "children": []
-            }
-          ]
-        },
-        {
-          "loaded": true,
-          "isPathHref": true,
-          "type": "category",
-          "title": "Admin User Guides",
-          "autogenerate_tags": "userGuide+storeCredit",
-          "autogenerate_as_ref": true,
-          "sort_sidebar": "alphabetize",
-          "description": "Learn how to utilize and manage Store Credit features in the Medusa Admin dashboard.",
-          "children": [
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "ref",
-              "title": "Manage Store Credits",
-              "path": "https://docs.medusajs.com/user-guide/loyalty/store-credits/manage",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "ref",
-              "title": "Store Credits Overview",
-              "path": "https://docs.medusajs.com/user-guide/loyalty/store-credits",
               "children": []
             }
           ]

@@ -3628,6 +3628,22 @@ export const filesMap = [
     "pathname": "/references/core_flows/Customer_Group/core_flows.Customer_Group.Workflows_Customer_Group"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Defaults/Steps_Defaults/functions/core_flows.Defaults.Steps_Defaults.createDefaultStoreStep/page.mdx",
+    "pathname": "/references/core_flows/Defaults/Steps_Defaults/functions/core_flows.Defaults.Steps_Defaults.createDefaultStoreStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Defaults/Steps_Defaults/variables/core_flows.Defaults.Steps_Defaults.createDefaultStoreStepId/page.mdx",
+    "pathname": "/references/core_flows/Defaults/Steps_Defaults/variables/core_flows.Defaults.Steps_Defaults.createDefaultStoreStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Defaults/Workflows_Defaults/functions/core_flows.Defaults.Workflows_Defaults.createDefaultsWorkflow/page.mdx",
+    "pathname": "/references/core_flows/Defaults/Workflows_Defaults/functions/core_flows.Defaults.Workflows_Defaults.createDefaultsWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Defaults/Workflows_Defaults/variables/core_flows.Defaults.Workflows_Defaults.createDefaultsWorkflowID/page.mdx",
+    "pathname": "/references/core_flows/Defaults/Workflows_Defaults/variables/core_flows.Defaults.Workflows_Defaults.createDefaultsWorkflowID"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Defaults/core_flows.Defaults.Steps_Defaults/page.mdx",
     "pathname": "/references/core_flows/Defaults/core_flows.Defaults.Steps_Defaults"
   },
@@ -7368,12 +7384,108 @@ export const filesMap = [
     "pathname": "/references/core_flows/Sales_Channel/core_flows.Sales_Channel.Workflows_Sales_Channel"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.createViewConfigurationStep/page.mdx",
+    "pathname": "/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.createViewConfigurationStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.setActiveViewConfigurationStep/page.mdx",
+    "pathname": "/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.setActiveViewConfigurationStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.updateViewConfigurationStep/page.mdx",
+    "pathname": "/references/core_flows/Settings/Steps_Settings/functions/core_flows.Settings.Steps_Settings.updateViewConfigurationStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Settings/Steps_Settings/variables/core_flows.Settings.Steps_Settings.createViewConfigurationStepId/page.mdx",
+    "pathname": "/references/core_flows/Settings/Steps_Settings/variables/core_flows.Settings.Steps_Settings.createViewConfigurationStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Settings/Steps_Settings/variables/core_flows.Settings.Steps_Settings.setActiveViewConfigurationStepId/page.mdx",
+    "pathname": "/references/core_flows/Settings/Steps_Settings/variables/core_flows.Settings.Steps_Settings.setActiveViewConfigurationStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Settings/Steps_Settings/variables/core_flows.Settings.Steps_Settings.updateViewConfigurationStepId/page.mdx",
+    "pathname": "/references/core_flows/Settings/Steps_Settings/variables/core_flows.Settings.Steps_Settings.updateViewConfigurationStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Settings/Workflows_Settings/functions/core_flows.Settings.Workflows_Settings.createViewConfigurationWorkflow/page.mdx",
+    "pathname": "/references/core_flows/Settings/Workflows_Settings/functions/core_flows.Settings.Workflows_Settings.createViewConfigurationWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Settings/Workflows_Settings/functions/core_flows.Settings.Workflows_Settings.updateViewConfigurationWorkflow/page.mdx",
+    "pathname": "/references/core_flows/Settings/Workflows_Settings/functions/core_flows.Settings.Workflows_Settings.updateViewConfigurationWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Settings/Workflows_Settings/variables/core_flows.Settings.Workflows_Settings.createViewConfigurationWorkflowId/page.mdx",
+    "pathname": "/references/core_flows/Settings/Workflows_Settings/variables/core_flows.Settings.Workflows_Settings.createViewConfigurationWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Settings/Workflows_Settings/variables/core_flows.Settings.Workflows_Settings.updateViewConfigurationWorkflowId/page.mdx",
+    "pathname": "/references/core_flows/Settings/Workflows_Settings/variables/core_flows.Settings.Workflows_Settings.updateViewConfigurationWorkflowId"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Settings/core_flows.Settings.Steps_Settings/page.mdx",
     "pathname": "/references/core_flows/Settings/core_flows.Settings.Steps_Settings"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Settings/core_flows.Settings.Workflows_Settings/page.mdx",
     "pathname": "/references/core_flows/Settings/core_flows.Settings.Workflows_Settings"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.createShippingOptionTypesStep/page.mdx",
+    "pathname": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.createShippingOptionTypesStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.deleteShippingOptionTypesStep/page.mdx",
+    "pathname": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.deleteShippingOptionTypesStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.listShippingOptionsForContextStep/page.mdx",
+    "pathname": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.listShippingOptionsForContextStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.updateShippingOptionTypesStep/page.mdx",
+    "pathname": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/functions/core_flows.Shipping_Options.Steps_Shipping_Options.updateShippingOptionTypesStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/variables/core_flows.Shipping_Options.Steps_Shipping_Options.createShippingOptionTypesStepId/page.mdx",
+    "pathname": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/variables/core_flows.Shipping_Options.Steps_Shipping_Options.createShippingOptionTypesStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/variables/core_flows.Shipping_Options.Steps_Shipping_Options.deleteShippingOptionTypesStepId/page.mdx",
+    "pathname": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/variables/core_flows.Shipping_Options.Steps_Shipping_Options.deleteShippingOptionTypesStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/variables/core_flows.Shipping_Options.Steps_Shipping_Options.listShippingOptionsForContextStepId/page.mdx",
+    "pathname": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/variables/core_flows.Shipping_Options.Steps_Shipping_Options.listShippingOptionsForContextStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Steps_Shipping_Options/variables/core_flows.Shipping_Options.Steps_Shipping_Options.updateShippingOptionTypesStepId/page.mdx",
+    "pathname": "/references/core_flows/Shipping_Options/Steps_Shipping_Options/variables/core_flows.Shipping_Options.Steps_Shipping_Options.updateShippingOptionTypesStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.createShippingOptionTypesWorkflow/page.mdx",
+    "pathname": "/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.createShippingOptionTypesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.deleteShippingOptionTypesWorkflow/page.mdx",
+    "pathname": "/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.deleteShippingOptionTypesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.updateShippingOptionTypesWorkflow/page.mdx",
+    "pathname": "/references/core_flows/Shipping_Options/Workflows_Shipping_Options/functions/core_flows.Shipping_Options.Workflows_Shipping_Options.updateShippingOptionTypesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Workflows_Shipping_Options/variables/core_flows.Shipping_Options.Workflows_Shipping_Options.createShippingOptionTypesWorkflowId/page.mdx",
+    "pathname": "/references/core_flows/Shipping_Options/Workflows_Shipping_Options/variables/core_flows.Shipping_Options.Workflows_Shipping_Options.createShippingOptionTypesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Workflows_Shipping_Options/variables/core_flows.Shipping_Options.Workflows_Shipping_Options.deleteShippingOptionTypesWorkflowId/page.mdx",
+    "pathname": "/references/core_flows/Shipping_Options/Workflows_Shipping_Options/variables/core_flows.Shipping_Options.Workflows_Shipping_Options.deleteShippingOptionTypesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/Workflows_Shipping_Options/variables/core_flows.Shipping_Options.Workflows_Shipping_Options.updateShippingOptionTypesWorkflowId/page.mdx",
+    "pathname": "/references/core_flows/Shipping_Options/Workflows_Shipping_Options/variables/core_flows.Shipping_Options.Workflows_Shipping_Options.updateShippingOptionTypesWorkflowId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Shipping_Options/core_flows.Shipping_Options.Steps_Shipping_Options/page.mdx",
