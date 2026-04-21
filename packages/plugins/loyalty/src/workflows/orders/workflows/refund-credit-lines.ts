@@ -12,7 +12,6 @@ import {
   transform,
   when,
 } from "@medusajs/framework/workflows-sdk"
-import crypto from "crypto"
 import {
   IStoreCreditModuleService,
   ModuleStoreCreditAccount,
