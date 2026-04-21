@@ -27,12 +27,21 @@ export default async function migrateNormalizeCurrencyCodes({
         })
     }
 
-    await trx.raw(`
-      UPDATE index_data
-      SET data = jsonb_set(data, '{currency_code}', to_jsonb(LOWER(data->>'currency_code')))
-      WHERE name = 'Price'
-        AND data->>'currency_code' IS NOT NULL
-        AND data->>'currency_code' <> LOWER(data->>'currency_code')
+    const indexDataTableExists = await trx.raw(`
+      SELECT EXISTS (
+        SELECT FROM information_schema.tables
+        WHERE table_name = 'index_data'
+      )
     `)
+
+    if (indexDataTableExists.rows[0]?.exists) {
+      await trx.raw(`
+        UPDATE index_data
+        SET data = jsonb_set(data, '{currency_code}', to_jsonb(LOWER(data->>'currency_code')))
+        WHERE name = 'Price'
+          AND data->>'currency_code' IS NOT NULL
+          AND data->>'currency_code' <> LOWER(data->>'currency_code')
+      `)
+    }
   })
 }
