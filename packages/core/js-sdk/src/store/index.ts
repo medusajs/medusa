@@ -753,9 +753,17 @@ export class Store {
 
 
     /**
-     * This method adds a promotion code to the current cart
-     * The method sends a request to the [Add Promotion Code](https://docs.medusajs.com/api/store#carts_postcartsidpromotions) API route.
-     * 
+     * This method adds promotion codes to a cart. It sends a request to the
+     * [Add Promotion Code](https://docs.medusajs.com/api/store#carts_postcartsidpromotions) API route.
+     *
+     * Related guide: [How to apply promotions to cart in the storefront](https://docs.medusajs.com/resources/storefront-development/cart/manage-items).
+     *
+     * @param cartId - The cart's ID.
+     * @param body - The details of the promotion codes to add.
+     * @param query - Configure the fields to retrieve in the cart.
+     * @param headers - Headers to pass in the request.
+     * @returns The cart's details.
+     *
      * @example
      * sdk.store.cart.addPromotions("cart_123", {
      *   promo_codes: ["20OFF"]
@@ -763,6 +771,8 @@ export class Store {
      * .then(({ cart }) => {
      *   console.log(cart)
      * })
+     *
+     * @since 2.13.7
      */
     addPromotions: async (
       cartId: string,
@@ -782,9 +792,17 @@ export class Store {
     },
 
     /**
-     * This method removes promotion codes from the current cart
-     * The method sends a request to the [Remove Promotion Code](https://docs.medusajs.com/api/store#carts_deletecartsidpromotions) API route.
-     * 
+     * This method removes promotion codes from a cart. It sends a request to the
+     * [Remove Promotion Code](https://docs.medusajs.com/api/store#carts_deletecartsidpromotions) API route.
+     *
+     * Related guide: [How to apply promotions to cart in the storefront](https://docs.medusajs.com/resources/storefront-development/cart/manage-items).
+     *
+     * @param cartId - The cart's ID.
+     * @param body - The details of the promotion codes to remove.
+     * @param query - Configure the fields to retrieve in the cart.
+     * @param headers - Headers to pass in the request.
+     * @returns The cart's details.
+     *
      * @example
      * sdk.store.cart.removePromotions("cart_123", {
      *   promo_codes: ["20OFF"]
@@ -792,6 +810,8 @@ export class Store {
      * .then(({ cart }) => {
      *   console.log(cart)
      * })
+     *
+     * @since 2.13.7
      */
     removePromotions: async (
       cartId: string,
