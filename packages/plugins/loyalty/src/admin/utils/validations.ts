@@ -24,7 +24,7 @@ export const optionalInt = z
       return Number.isInteger(castNumber(value));
     },
     {
-      message: i18next.t("validation.mustBeInt"),
+      error: i18next.t("validation.mustBeInt"),
     }
   )
   .refine(
@@ -36,7 +36,7 @@ export const optionalInt = z
       return castNumber(value) >= 0;
     },
     {
-      message: i18next.t("validation.mustBePositive"),
+      error: i18next.t("validation.mustBePositive"),
     }
   );
 
@@ -55,7 +55,7 @@ export const optionalFloat = z
       return castNumber(value) >= 0;
     },
     {
-      message: i18next.t("validation.mustBePositive"),
+      error: i18next.t("validation.mustBePositive"),
     }
   );
 
@@ -93,10 +93,10 @@ export function partialFormValidation<TForm extends FieldValues>(
   const validationResult = schema.safeParse(values);
 
   if (!validationResult.success) {
-    validationResult.error.errors.forEach(({ path, message, code }) => {
-      form.setError(path.join(".") as any, {
-        type: code,
-        message,
+    validationResult.error.issues.forEach((issue) => {
+      form.setError(issue.path.join(".") as any, {
+        type: issue.code,
+        message: issue.message,
       });
     });
 

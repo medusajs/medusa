@@ -153,6 +153,7 @@ These are absolute rules. Violating them will cause the workflow to fail:
 3. **Never modify \`www/apps/api-reference/\`** — this is managed by a separate process entirely
 4. **Only write files within the listed writable directories** for each project
 5. **Do not run \`yarn prep\` or \`yarn lint:content\`** — these will run automatically after your session ends
-6. **Do not invent Cloudinary screenshot URLs** in user-guide files. Images will be added manually if needed.`
+6. **Do not invent Cloudinary screenshot URLs** in user-guide files. Images will be added manually if needed.
+7. **Only update \`www/apps/user-guide\` if there are actual changes in \`packages/admin/dashboard/src\`** — backend or API changes alone do not imply dashboard UI changes. Do not assume a backend change includes a corresponding admin dashboard change.`
   }
 }

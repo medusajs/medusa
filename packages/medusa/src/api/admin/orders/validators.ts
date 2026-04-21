@@ -120,6 +120,10 @@ export const OrderCreateShipment = z.object({
 })
 export const AdminOrderCreateShipment = WithAdditionalData(OrderCreateShipment)
 
+export const AdminMarkOrderFulfillmentAsDelivered = z.object({
+  no_notification: z.boolean().optional(),
+})
+
 export type AdminOrderCancelFulfillmentType = z.infer<
   typeof OrderCancelFulfillment
 >

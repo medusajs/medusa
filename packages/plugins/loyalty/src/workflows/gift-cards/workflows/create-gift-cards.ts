@@ -15,12 +15,44 @@ import {
 import { creditAccountsWorkflow } from "../../store-credit/workflows/credit-accounts";
 import { updateGiftCardsWorkflow } from "./update-gift-cards";
 
-/*
-  A workflow that creates gift cards 
-*/
+/**
+ * Data for creating one or more gift cards with backing store credit accounts.
+ */
+export type CreateGiftCardsWorkflowInput = ModuleCreateGiftCard[]
+
+/**
+ * This workflow creates gift cards and automatically sets up their backing store credit accounts.
+ * It creates the gift cards, generates anonymous store credit accounts linked to each gift card,
+ * credits the accounts with the gift card values, and marks the gift cards as redeemed.
+ *
+ * You can use this workflow within your own customizations or custom workflows,
+ * allowing you to wrap custom logic around gift card creation.
+ *
+ * @example
+ * const { result } = await createGiftCardsWorkflow(container)
+ *   .run({
+ *     input: [
+ *       {
+ *         code: "GC-XXXX-XXXX",
+ *         value: 100,
+ *         currency_code: "usd",
+ *         expires_at: null,
+ *         reference: "order",
+ *         reference_id: "order_123",
+ *         line_item_id: "li_123",
+ *         customer_id: "cust_123",
+ *         metadata: { custom_key: "custom_value" },
+ *       },
+ *     ],
+ *   })
+ *
+ * @summary
+ *
+ * Create gift cards with backing store credit accounts.
+ */
 export const createGiftCardsWorkflow = createWorkflow(
   "create-gift-cards",
-  function (input: ModuleCreateGiftCard[]) {
+  function (input: CreateGiftCardsWorkflowInput) {
     const giftCards = createGiftCardsStep(input);
 
     /**

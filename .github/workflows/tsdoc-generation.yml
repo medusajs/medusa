@@ -14,6 +14,8 @@ on:
       - "packages/core/utils/src/**"
       - "packages/core/workflows-sdk/src/utils/composer/**"
       - "packages/core/core-flows/src/**"
+      - "packages/plugins/loyalty/src/workflows/**"
+      - "packages/plugins/loyalty/src/types/**"
 
 jobs:
   generate-tsdocs:

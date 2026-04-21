@@ -19,15 +19,12 @@ export const StoreClaimStoreCreditAccountParams = z.object({
 export type StoreGetStoreCreditAccountsParamsType = z.infer<
   typeof StoreGetStoreCreditAccountsParams
 >;
-export const StoreGetStoreCreditAccountsParams = createFindParams({
-  limit: 15,
-  offset: 0,
-})
-  .merge(
-    z.object({
-      currency_code: z.string(),
-      created_at: createOperatorMap().optional(),
-      updated_at: createOperatorMap().optional(),
-    })
-  )
-  .strict();
+export const StoreGetStoreCreditAccountsParams = z.strictObject({
+  ...createFindParams({
+    limit: 15,
+    offset: 0,
+  }).shape,
+  currency_code: z.string(),
+  created_at: createOperatorMap().optional(),
+  updated_at: createOperatorMap().optional(),
+});
