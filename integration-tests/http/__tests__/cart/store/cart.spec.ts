@@ -2290,7 +2290,6 @@ medusaIntegrationTestRunner({
             )
           })
 
-          // Verifies that cost breakdown fields are persisted correctly
           it("should include shipping_total, tax_total, and subtotal in order summary totals", async () => {
             const paymentCollection = (
               await api.post(
