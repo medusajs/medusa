@@ -56,7 +56,7 @@ The following table outlines common server performance issues, their potential c
         CPU usage consistently near or exceeding allocation due to inefficient code.
       </Table.Cell>
       <Table.Cell>
-        [Total CPU](#monitor-total-cpu) and [Per-Server CPU](#monitor-per-server-cpu)
+        [Total CPU](#monitor-total-cpu) and [Summary of CPU Usage Across Servers](#monitor-summary-of-cpu-usage-across-servers)
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -67,7 +67,7 @@ The following table outlines common server performance issues, their potential c
         Insufficient memory allocation or memory leaks in your application code.
       </Table.Cell>
       <Table.Cell>
-        [Per-Server Memory](#monitor-per-server-memory)
+        [Summary of Memory Usage Across Servers](#monitor-summary-of-memory-usage-across-servers)
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -78,7 +78,7 @@ The following table outlines common server performance issues, their potential c
         Crashes caused by unhandled exceptions or out-of-memory conditions.
       </Table.Cell>
       <Table.Cell>
-        [Server Restarts](#monitor-server-restarts) and [Per-Server Memory](#monitor-per-server-memory)
+        [Server Restarts](#monitor-server-restarts) and [Summary of Memory Usage Across Servers](#monitor-summary-of-memory-usage-across-servers)
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -89,7 +89,7 @@ The following table outlines common server performance issues, their potential c
         Specific server instances handling disproportionately more traffic than others.
       </Table.Cell>
       <Table.Cell>
-        [Per-Server CPU](#monitor-per-server-cpu) and [Per-Server Memory](#monitor-per-server-memory)
+        [Summary of CPU Usage Across Servers](#monitor-summary-of-cpu-usage-across-servers) and [Summary of Memory Usage Across Servers](#monitor-summary-of-memory-usage-across-servers)
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -100,7 +100,7 @@ The following table outlines common server performance issues, their potential c
         Excessive CPU or memory consumption in server instances due to inefficient code.
       </Table.Cell>
       <Table.Cell>
-        [Total CPU](#monitor-total-cpu) and [Per-Server Memory](#monitor-per-server-memory)
+        [Total CPU](#monitor-total-cpu) and [Summary of Memory Usage Across Servers](#monitor-summary-of-memory-usage-across-servers)
       </Table.Cell>
     </Table.Row>
   </Table.Body>
@@ -161,11 +161,11 @@ This breakdown helps you identify peaks in CPU usage across your server instance
 
 ---
 
-## Monitor Per-Server Memory
+## Monitor Summary of Memory Usage Across Servers
 
-The Per-Server Memory usage of your environment shows memory consumption patterns across individual server instances.
+The Summary of Memory usage across servers of your environment shows memory consumption patterns across individual server instances.
 
-In the [Servers monitoring dashboard](#view-server-metrics), the Per-Server Memory chart shows:
+In the [Servers monitoring dashboard](#view-server-metrics), the Summary of Memory chart shows:
 
 - **Minimum Memory**: The lowest memory percentage used across instances at a given time.
 - **Maximum Memory**: The highest memory percentage used across instances at a given time.

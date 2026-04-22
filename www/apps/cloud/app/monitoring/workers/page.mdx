@@ -52,7 +52,7 @@ The following table outlines common worker performance issues, their potential c
         High CPU usage in worker instances due to inefficient background job implementation.
       </Table.Cell>
       <Table.Cell>
-        [Total CPU](#monitor-total-cpu) and [Per-Worker CPU](#monitor-per-worker-cpu)
+        [Total CPU](#monitor-total-cpu) and [Summary of CPU Usage Across Workers](#monitor-summary-of-cpu-usage-across-workers)
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -63,7 +63,7 @@ The following table outlines common worker performance issues, their potential c
         Memory leaks or insufficient memory causing workers to become unstable.
       </Table.Cell>
       <Table.Cell>
-        [Per-Worker Memory](#monitor-per-worker-memory)
+        [Summary of Memory Usage Across Workers](#monitor-summary-of-memory-usage-across-workers)
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -74,7 +74,7 @@ The following table outlines common worker performance issues, their potential c
         Crashes caused by unhandled exceptions or out-of-memory conditions in background jobs.
       </Table.Cell>
       <Table.Cell>
-        [Worker Restarts](#monitor-worker-restarts) and [Per-Worker Memory](#monitor-per-worker-memory)
+        [Worker Restarts](#monitor-worker-restarts) and [Summary of Memory Usage Across Workers](#monitor-summary-of-memory-usage-across-workers)
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -85,7 +85,7 @@ The following table outlines common worker performance issues, their potential c
         Specific worker instances handling more jobs than others.
       </Table.Cell>
       <Table.Cell>
-        [Per-Worker CPU](#monitor-per-worker-cpu) and [Per-Worker Memory](#monitor-per-worker-memory)
+        [Summary of CPU Usage Across Workers](#monitor-summary-of-cpu-usage-across-workers) and [Summary of Memory Usage Across Workers](#monitor-summary-of-memory-usage-across-workers)
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -96,7 +96,7 @@ The following table outlines common worker performance issues, their potential c
         Excessive CPU or memory consumption in worker instances due to inefficient background job code.
       </Table.Cell>
       <Table.Cell>
-        [Total CPU](#monitor-total-cpu) and [Per-Worker Memory](#monitor-per-worker-memory)
+        [Total CPU](#monitor-total-cpu) and [Summary of Memory Usage Across Workers](#monitor-summary-of-memory-usage-across-workers)
       </Table.Cell>
     </Table.Row>
   </Table.Body>
@@ -147,7 +147,7 @@ If your environment's background jobs are slow or not executing, check if the Us
 
 The Summary of CPU usage across Workers of your environment shows CPU usage patterns across individual worker instances. 
 
-In the [Workers monitoring dashboard](#view-worker-metrics), the Per-Worker CPU chart shows:
+In the [Workers monitoring dashboard](#view-worker-metrics), the Summary of CPU chart shows:
 
 - **Minimum CPU**: The lowest CPU percentage used by a worker instance at a given time.
 - **Maximum CPU**: The highest CPU percentage used by a worker instance at a given time.
@@ -157,11 +157,11 @@ This breakdown helps you identify peaks in CPU usage across your worker instance
 
 ---
 
-## Monitor Per-Worker Memory
+## Monitor Summary of Memory Usage Across Workers
 
-The Per-Worker Memory usage of your environment shows memory consumption patterns across individual worker instances.
+The Summary of Memory usage across Workers of your environment shows memory consumption patterns across individual worker instances.
 
-In the [Workers monitoring dashboard](#view-worker-metrics), the Per-Worker Memory chart shows:
+In the [Workers monitoring dashboard](#view-worker-metrics), the Summary of Memory chart shows:
 
 - **Minimum Memory**: The lowest memory percentage used across instances at a given time.
 - **Maximum Memory**: The highest memory percentage used across instances at a given time.
