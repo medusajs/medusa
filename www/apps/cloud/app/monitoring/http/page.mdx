@@ -155,7 +155,7 @@ By monitoring these metrics, you can ensure that your environment is efficiently
 
 ## Monitor Latency over Time
 
-The Latency over Time chart shows the average latency of HTTP requests to your environment over time.
+The Latency over Time chart shows the latency percentiles of HTTP requests to your environment over time.
 
 <Note title="What is Latency?">
 
@@ -165,9 +165,15 @@ Latency refers to the time it takes for an HTTP request to be processed by your 
 
 This chart helps you track the responsiveness of your environment to HTTP requests, identify trends in latency, and correlate latency patterns with traffic trends or performance issues.
 
-In the [HTTP monitoring dashboard](#view-http-metrics), the Latency over Time chart shows the average latency of HTTP requests in milliseconds (ms) over time.
+In the [HTTP monitoring dashboard](#view-http-metrics), the Latency over Time chart shows:
 
-By monitoring this metric, you can ensure that your environment is responding to HTTP requests in a timely manner and identify potential issues in your application's request handling that may be causing increased latency.
+- **P50** (green): The 50th percentile latency, meaning 50% of requests complete faster than this time.
+- **P90** (orange): The 90th percentile latency, meaning 90% of requests complete faster than this time.
+- **P99** (blue): The 99th percentile latency, meaning 99% of requests complete faster than this time.
+
+You can click on any legend item to toggle that percentile line on or off, allowing you to focus on specific latency metrics.
+
+By monitoring these percentiles, you can get detailed insights into your environment's response times and identify potential issues in your application's request handling that may be causing increased latency.
 
 ---
 
@@ -213,8 +219,10 @@ This breakdown helps you understand bandwidth consumption across your applicatio
 
 ## Monitor Latency by Endpoint
 
-The Latency by Endpoint section breaks down the average latency of HTTP requests by endpoint, allowing you to identify which parts of your application are experiencing the most latency.
+The Latency by Endpoint section breaks down the P90 latency of HTTP requests by endpoint, allowing you to identify which parts of your application are experiencing the most latency.
 
-In the [HTTP monitoring dashboard](#view-http-metrics), the Latency by Endpoint section shows a list of your application's endpoints, along with the average latency of HTTP requests they receive in the selected time range. Latency is measured in milliseconds (ms). The endpoints are listed in descending order, with the endpoints experiencing the highest latency at the top.
+In the [HTTP monitoring dashboard](#view-http-metrics), the Latency by Endpoint section shows a list of your application's endpoints, along with the P90 latency of HTTP requests they receive in the selected time range.
+
+P90 latency represents the 90th percentile, meaning 90% of requests to each endpoint complete faster than the displayed time. Latency is measured in milliseconds (ms). The endpoints are listed in descending order, with the endpoints experiencing the highest latency at the top.
 
 This breakdown helps you identify endpoints with high latency, understand performance bottlenecks, and optimize your application's responsiveness.

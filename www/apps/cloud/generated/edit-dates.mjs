@@ -6,7 +6,7 @@ export const generatedEditDates = {
   "app/deployments/page.mdx": "2026-04-10T08:03:45.605Z",
   "app/organizations/page.mdx": "2026-04-17T09:45:47.063Z",
   "app/notifications/page.mdx": "2025-10-15T15:25:33.672Z",
-  "app/database/page.mdx": "2026-04-10T08:08:09.643Z",
+  "app/database/page.mdx": "2026-04-22T14:42:47.052Z",
   "app/redis/page.mdx": "2026-04-17T09:45:49.836Z",
   "app/s3/page.mdx": "2026-04-10T10:23:43.523Z",
   "app/loyalty-plugin/page.mdx": "2025-10-15T15:27:40.303Z",
@@ -37,7 +37,7 @@ export const generatedEditDates = {
   "app/command-palette/page.mdx": "2026-04-10T10:20:57.642Z",
   "app/environments/subdomains/page.mdx": "2026-04-14T10:50:18.756Z",
   "app/ip-addresses/page.mdx": "2026-04-14T10:43:16.892Z",
-  "app/monitoring/http/page.mdx": "2026-04-17T09:53:02.828Z",
+  "app/monitoring/http/page.mdx": "2026-04-22T14:42:22.622Z",
   "app/monitoring/page.mdx": "2026-04-17T09:53:24.133Z",
   "app/monitoring/servers/page.mdx": "2026-04-17T09:52:51.174Z",
   "app/monitoring/workers/page.mdx": "2026-04-17T09:52:32.919Z"
