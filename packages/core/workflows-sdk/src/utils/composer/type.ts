@@ -88,9 +88,7 @@ export type WorkflowDataProperties<T = unknown> = {
 export type WorkflowData<T = unknown> = (T extends Array<infer Item>
   ? Array<Item | WorkflowData<Item>>
   : T extends object
-  ? {
-      [Key in keyof T]: T[Key] | WorkflowData<T[Key]>
-    }
+  ? T
   : T & WorkflowDataProperties<T>) &
   T &
   WorkflowDataProperties<T> & {
