@@ -1,0 +1,184 @@
+import { InlineIcon, Table } from "docs-ui"
+import { ArrowPath } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Server Monitoring`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to monitor your environment's server performance in Cloud.
+
+<Note>
+
+The Servers monitoring page covers the CPU and memory usage of your environment's server instances, as well as their restart patterns. To monitor background job performance, check the [Workers monitoring page](../workers/page.mdx).
+
+</Note>
+
+## Server Metrics Overview
+
+The Servers monitoring page provides real-time insights into your servers' performance.
+
+By monitoring these metrics, you can ensure that your environment is running smoothly, identify potential performance bottlenecks, and troubleshoot issues effectively.
+
+You can monitor key metrics such as:
+
+- **CPU Usage**: Track how much of your allocated CPU resources are being used.
+- **Memory Usage**: Monitor memory consumption patterns across your server instances.
+- **Restarts**: Keep an eye on server restart frequency and patterns.
+
+---
+
+## Troubleshooting Common Server Issues
+
+The following table outlines common server performance issues, their potential causes, and the specific metrics you can monitor to identify and troubleshoot these issues effectively.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Issue
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Potential Cause
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Metric to Check
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Slow response times
+      </Table.Cell>
+      <Table.Cell>
+        CPU usage consistently near or exceeding allocation due to inefficient code.
+      </Table.Cell>
+      <Table.Cell>
+        [Total CPU](#monitor-total-cpu) and [Per-Server CPU](#monitor-per-server-cpu)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Application crashes or unexpected behavior
+      </Table.Cell>
+      <Table.Cell>
+        Insufficient memory allocation or memory leaks in your application code.
+      </Table.Cell>
+      <Table.Cell>
+        [Per-Server Memory](#monitor-per-server-memory)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Frequent server restarts
+      </Table.Cell>
+      <Table.Cell>
+        Crashes caused by unhandled exceptions or out-of-memory conditions.
+      </Table.Cell>
+      <Table.Cell>
+        [Server Restarts](#monitor-server-restarts) and [Per-Server Memory](#monitor-per-server-memory)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Uneven load distribution across instances
+      </Table.Cell>
+      <Table.Cell>
+        Specific server instances handling disproportionately more traffic than others.
+      </Table.Cell>
+      <Table.Cell>
+        [Per-Server CPU](#monitor-per-server-cpu) and [Per-Server Memory](#monitor-per-server-memory)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        High [Flex Usage](../../usage/page.mdx#what-is-flex-usage)
+      </Table.Cell>
+      <Table.Cell>
+        Excessive CPU or memory consumption in server instances due to inefficient code.
+      </Table.Cell>
+      <Table.Cell>
+        [Total CPU](#monitor-total-cpu) and [Per-Server Memory](#monitor-per-server-memory)
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## View Server Metrics
+
+To view your project environment's server performance:
+
+1. In the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard), click on the "Monitoring" tab.
+2. Select "Servers" from the sidebar.
+
+This opens the Servers monitoring dashboard, where you can analyze your environment's server performance across any time range.
+
+### Change Time Range
+
+By default, the dashboard shows metrics for the last hour. To change the time range:
+
+1. Click on the time range selector at the top right of the dashboard.
+2. Either choose a preset time range (for example, last 24 hours) or set a custom time range.
+
+The charts will update to show metrics for the selected time range, allowing you to analyze performance trends and patterns over different periods.
+
+### Refresh Metrics
+
+To refresh the metrics displayed on the dashboard, click the <InlineIcon Icon={ArrowPath} alt="refresh" /> button.
+
+The metrics will refresh to show the most up-to-date performance data for your environment's servers in the selected time range.
+
+---
+
+## Monitor Total CPU
+
+The Total CPU usage of your environment shows combined CPU allocation and usage across all server replicas of your environment. It's useful to understand your overall CPU resource consumption and identify trends or spikes in usage.
+
+In the [Servers monitoring dashboard](#view-server-metrics), the Total CPU chart shows:
+
+- **Allocated CPU** (blue): The total CPU resources allocated to your servers.
+- **Used CPU** (green): The actual CPU resources being consumed by your application.
+
+If your environment is slow or unresponsive, check if the Used CPU is consistently close to or exceeding the Allocated CPU, which may indicate the need for performance improvements in your application.
+
+---
+
+## Monitor Summary of CPU Usage Across Servers
+
+The Summary of CPU usage across servers of your environment shows CPU usage patterns across individual server instances. 
+
+In the [Servers monitoring dashboard](#view-server-metrics), the Per-Server CPU chart shows:
+
+- **Minimum CPU**: The lowest CPU percentage used by a server instance at a given time.
+- **Maximum CPU**: The highest CPU percentage used by a server instance at a given time.
+- **Average CPU**: The mean CPU usage across all server instances at a given time.
+
+This breakdown helps you identify peaks in CPU usage across your server instances and determine if specific instances are under heavy load or if CPU usage is evenly distributed across your infrastructure.
+
+---
+
+## Monitor Per-Server Memory
+
+The Per-Server Memory usage of your environment shows memory consumption patterns across individual server instances.
+
+In the [Servers monitoring dashboard](#view-server-metrics), the Per-Server Memory chart shows:
+
+- **Minimum Memory**: The lowest memory percentage used across instances at a given time.
+- **Maximum Memory**: The highest memory percentage used across instances at a given time.
+- **Average Memory**: The mean memory usage across all instances at a given time.
+
+This breakdown helps you identify if specific server instances are consuming excessive memory or if memory usage is consistent across your infrastructure.
+
+---
+
+## Monitor Server Restarts
+
+The Server Restarts section helps you track the frequency and patterns of unexpected server restarts in your environment. Frequent or unexpected restarts can indicate underlying issues with your application, such as crashes and memory leaks.
+
+In the [Servers monitoring dashboard](#view-server-metrics), the Server Restarts chart shows the number of restarts across your server instances over time.
+
+You can also correlate restart patterns with CPU and memory usage to identify potential causes of instability in your environment.
