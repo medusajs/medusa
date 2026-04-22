@@ -9,15 +9,27 @@ import {
   PluginModule,
 } from "../../../types";
 
-/*
-  A step to update gift cards.
-  
-  The first function attempts to update gift cards, while the second function attempts to revert the update.
-  The first function is also in charge of preparing the data to be reverted in the second function.
-*/
+/**
+ * Data for updating one or more gift cards in the Loyalty module.
+ */
+export type UpdateGiftCardsStepInput = ModuleUpdateGiftCard[]
+
+/**
+ * This step updates gift cards. It stores the previous state of the gift cards
+ * before the update to enable rollback.
+ *
+ * @example
+ * const data = updateGiftCardsStep([
+ *   {
+ *     id: "gc_123",
+ *     status: GiftCardStatus.REDEEMED,
+ *     // other updatable gift card properties...
+ *   },
+ * ])
+ */
 export const updateGiftCardsStep = createStep(
   "update-gift-cards",
-  async (data: ModuleUpdateGiftCard[], { container }) => {
+  async (data: UpdateGiftCardsStepInput, { container }) => {
     const loyaltyModule = container.resolve<ILoyaltyModuleService>(
       PluginModule.LOYALTY
     );
