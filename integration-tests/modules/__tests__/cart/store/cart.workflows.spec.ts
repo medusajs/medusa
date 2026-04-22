@@ -1320,8 +1320,16 @@ medusaIntegrationTestRunner({
           ])
 
           cart = await cartModuleService.retrieveCart(cart.id, {
-            select: ["id", "region_id", "currency_code", "sales_channel_id"],
+            select: [
+              "id",
+              "region_id",
+              "currency_code",
+              "sales_channel_id",
+              "updated_at",
+            ],
           })
+
+          const previousUpdatedAt = cart.updated_at
 
           const wfInput = {
             items: [
@@ -1420,6 +1428,10 @@ medusaIntegrationTestRunner({
           cart = await cartModuleService.retrieveCart(cart.id, {
             relations: ["items"],
           })
+
+          expect(new Date(cart.updated_at).getTime()).toBeGreaterThan(
+            new Date(previousUpdatedAt).getTime()
+          )
 
           expect(cart).toEqual(
             expect.objectContaining({
@@ -2976,9 +2988,11 @@ medusaIntegrationTestRunner({
           })
 
           cart = await cartModuleService.retrieveCart(cart.id, {
-            select: ["id", "region_id", "currency_code"],
+            select: ["id", "region_id", "currency_code", "updated_at"],
             relations: ["items", "items.variant_id", "items.metadata"],
           })
+
+          const previousUpdatedAt = cart.updated_at
 
           const item = cart.items?.[0]!
 
@@ -2997,6 +3011,14 @@ medusaIntegrationTestRunner({
           })
 
           const updatedItem = await cartModuleService.retrieveLineItem(item.id)
+
+          cart = await cartModuleService.retrieveCart(cart.id, {
+            select: ["id", "updated_at"],
+          })
+
+          expect(new Date(cart.updated_at).getTime()).toBeGreaterThan(
+            new Date(previousUpdatedAt).getTime()
+          )
 
           expect(updatedItem).toEqual(
             expect.objectContaining({
@@ -4181,6 +4203,8 @@ medusaIntegrationTestRunner({
         })
 
         it("should add shipping method to cart", async () => {
+          const previousUpdatedAt = cart.updated_at
+
           const shippingOption = (
             await api.post(
               `/admin/shipping-options`,
@@ -4222,6 +4246,10 @@ medusaIntegrationTestRunner({
 
           cart = (await api.get(`/store/carts/${cart.id}`, storeHeaders)).data
             .cart
+
+          expect(new Date(cart.updated_at).getTime()).toBeGreaterThan(
+            new Date(previousUpdatedAt).getTime()
+          )
 
           expect(cart).toEqual(
             expect.objectContaining({
