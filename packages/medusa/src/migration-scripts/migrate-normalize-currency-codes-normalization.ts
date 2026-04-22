@@ -55,18 +55,22 @@ const updateIndexDataStep = createStep(
     let prevData: any[] | undefined = undefined
 
     if (indexDataTableExists.rows[0]?.exists) {
-      prevData = await knex("index_data")
-        .where("name", "Price")
-        .whereRaw("data->>'currency_code' IS NOT NULL")
-        .whereRaw("data->>'currency_code' <> LOWER(data->>'currency_code')")
-        .select("id", "data")
-      await knex.raw(`
-        UPDATE index_data
-        SET data = jsonb_set(data, '{currency_code}', to_jsonb(LOWER(data->>'currency_code')))
-        WHERE name = 'Price'
-          AND data->>'currency_code' IS NOT NULL
-          AND data->>'currency_code' <> LOWER(data->>'currency_code')
+      const result = await knex.raw(`
+        WITH prev AS (
+          SELECT id, data FROM index_data
+          WHERE name = 'Price'
+            AND data->>'currency_code' IS NOT NULL
+            AND data->>'currency_code' <> LOWER(data->>'currency_code')
+        ),
+        updated AS (
+          UPDATE index_data
+          SET data = jsonb_set(data, '{currency_code}', to_jsonb(LOWER(data->>'currency_code')))
+          WHERE id IN (SELECT id FROM prev)
+          RETURNING id
+        )
+        SELECT id, data FROM prev
       `)
+      prevData = result.rows
     }
 
     return new StepResponse(void 0, prevData)
