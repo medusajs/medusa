@@ -40,6 +40,8 @@ In some cases, you may need to access your Cloud project's database directly, su
 
 Medusa gives you read access to your Cloud project's database, which is useful when you need to export data, perform analytics, or troubleshoot issues.
 
+### Get Read-Only Connection String
+
 To get the read-only connection string for an environment's database:
 
 <Note title="Tip">
@@ -62,11 +64,9 @@ psql "postgresql://..."
 
 After connecting to the database, you can run SQL queries to interact with your data.
 
----
+### Get Write Connection String
 
-## Enable Database Write Access
-
-By default, the database connection string provided for your Cloud environments has read-only access. This is a security measure to prevent accidental modifications to your database.
+All environments have a read-only connection string by default. This allows you to connect to the database and query data, but it doesn't allow you to modify the data or database schema. This is a security measure to prevent accidental changes to your database.
 
 For advanced use cases where you need write access to your environment's database, such as importing data or performing maintenance tasks, Medusa allows organization owners to enable database write access.
 
