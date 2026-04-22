@@ -4,6 +4,19 @@ import bundleAnalyzer from "@next/bundle-analyzer"
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v1/api",
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow",
+          },
+        ],
+      },
+    ]
+  },
   async rewrites() {
     const rewriteFallbacks = [
       {

@@ -19,6 +19,18 @@ const config = {
   favicon: "img/favicon.ico",
   organizationName: "medusajs",
   projectName: "medusajs/www",
+  metadata: [
+    { name: "robots", content: "noindex, nofollow" },
+  ],
+  headTags: [
+    {
+      tagName: "link",
+      attributes: {
+        rel: "canonical",
+        href: "https://docs.medusajs.com",
+      },
+    },
+  ],
   markdown: {
     mdx1Compat: {
       comments: true,

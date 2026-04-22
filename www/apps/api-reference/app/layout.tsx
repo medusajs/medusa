@@ -8,6 +8,13 @@ import { NavbarWithBanner } from "../components/Navbar/WithBanner"
 export const metadata = {
   title: "Medusa API Reference",
   description: "Check out Medusa's API reference",
+  robots: {
+    index: false,
+    follow: false,
+  },
+  alternates: {
+    canonical: "https://docs.medusajs.com",
+  },
 }
 
 const inter = Inter({
