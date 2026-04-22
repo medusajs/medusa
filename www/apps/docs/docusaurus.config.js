@@ -19,9 +19,6 @@ const config = {
   favicon: "img/favicon.ico",
   organizationName: "medusajs",
   projectName: "medusajs/www",
-  metadata: [
-    { name: "robots", content: "noindex, nofollow" },
-  ],
   headTags: [
     {
       tagName: "link",
@@ -94,6 +91,9 @@ const config = {
   ],
   themes: ["@docusaurus/theme-mermaid"],
   themeConfig: {
+    metadata: [
+      { name: "robots", content: "noindex, nofollow" },
+    ],
     mermaid: {
       theme: {
         light: "base",
