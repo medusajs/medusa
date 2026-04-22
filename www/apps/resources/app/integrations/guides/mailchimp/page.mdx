@@ -443,8 +443,8 @@ class MailchimpNotificationProviderService extends AbstractNotificationProviderS
         settings: {
           subject_line: 
             this.options.templates?.new_products?.subject_line || "New Products",
-          from_name: list.campaign_defaults.from_name,
-          reply_to: list.campaign_defaults.from_email,
+          from_name: list.campaign_defaults?.from_name,
+          reply_to: list.campaign_defaults?.from_email,
         },
       }) as mailchimpMarketingApi.campaigns.Campaigns
 
