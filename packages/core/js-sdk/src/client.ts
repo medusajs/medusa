@@ -194,7 +194,7 @@ export class Client {
     const abortController = new AbortController()
     const abortFunc = abortController.abort.bind(abortController)
 
-    const fetchPromise = await this.fetch_(input, {
+    const fetchPromise = this.fetch_(input, {
       ...init,
       signal: abortController.signal,
       headers: { ...init?.headers, accept: "text/event-stream" },
