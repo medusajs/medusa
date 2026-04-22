@@ -452,6 +452,12 @@ const StreamTestPage = () => {
     
     const { stream, abort } = await sdk.client.fetchStream("/admin/stream")
 
+    if (!stream) {
+      console.error("Failed to start stream")
+      setIsStreaming(false)
+      return
+    }
+
     // Store the abort function for the abort button
     setAbortStream(() => abort)
 
@@ -465,10 +471,6 @@ const StreamTestPage = () => {
       // Don't log abort errors as they're expected when user clicks abort
       if (error instanceof Error && error.name !== "AbortError") {
         console.error("Stream error:", error)
-
-        if (error.name === "HttpError") {
-          abort()
-        }
       }
     } finally {
       setIsStreaming(false)

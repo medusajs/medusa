@@ -1,10 +1,10 @@
 /**
- * @oas [get] /admin/workflows-executions/{workflow_id}/{transaction_id}/subscribe
- * operationId: GetWorkflowsExecutionsWorkflow_idTransaction_idSubscribe
- * summary: Subscribe to a single Workflow Execution
- * x-sidebar-summary: Subscribe to single Workflow
+ * @oas [get] /admin/workflows-executions/{workflow_id}/{transaction_id}/{step_id}/subscribe
+ * operationId: GetWorkflowsExecutionsWorkflow_idTransaction_idStep_idSubscribe
+ * summary: Subscribe to Step of a Workflow's Execution
+ * x-sidebar-summary: Subscribe to Step
  * description: |
- *   Subscribe to a single workflow execution to receive real-time information about its status and data.
+ *   Subscribe to a step in a workflow's execution to receive real-time information about its status and data.
  *   This route returns an event stream that you can consume using the [EventSource API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource).
  * x-authenticated: true
  * parameters:
@@ -20,6 +20,12 @@
  *     required: true
  *     schema:
  *       type: string
+ *   - name: step_id
+ *     in: path
+ *     description: The workflows execution's step id.
+ *     required: true
+ *     schema:
+ *       type: string
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -28,7 +34,7 @@
  *   - lang: Shell
  *     label: cURL
  *     source: |-
- *       curl '{backend_url}/admin/workflows-executions/{workflow_id}/{transaction_id}/subscribe' \
+ *       curl '{backend_url}/admin/workflows-executions/{workflow_id}/{transaction_id}/{step_id}/subscribe' \
  *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Workflows Executions
