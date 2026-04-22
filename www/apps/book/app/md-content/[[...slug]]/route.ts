@@ -1,4 +1,4 @@
-import { getCleanMd, PLAINTEXT_DOC_MESSAGE } from "docs-utils"
+import { getCleanMd, addExtraToMd } from "docs-utils"
 import { existsSync, readFileSync } from "fs"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
@@ -25,13 +25,18 @@ export async function GET(req: NextRequest, { params }: Params) {
       "utf-8"
     )
 
-    return new NextResponse(homepageFile + PLAINTEXT_DOC_MESSAGE, {
-      headers: {
-        "content-type": "text/markdown",
-        "cache-control": "public, max-age=3600, must-revalidate",
-      },
-      status: 200,
-    })
+    return new NextResponse(
+      addExtraToMd(homepageFile, {
+        baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "",
+      }),
+      {
+        headers: {
+          "content-type": "text/markdown",
+          "cache-control": "public, max-age=3600, must-revalidate",
+        },
+        status: 200,
+      }
+    )
   }
 
   // keep this so that Vercel keeps the files in deployment
@@ -98,13 +103,18 @@ export async function GET(req: NextRequest, { params }: Params) {
     await client.shutdown()
   }
 
-  return new NextResponse(cleanMdContent + PLAINTEXT_DOC_MESSAGE, {
-    headers: {
-      "content-type": "text/markdown",
-      "cache-control": "public, max-age=3600, must-revalidate",
-    },
-    status: 200,
-  })
+  return new NextResponse(
+    addExtraToMd(cleanMdContent, {
+      baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "",
+    }),
+    {
+      headers: {
+        "content-type": "text/markdown",
+        "cache-control": "public, max-age=3600, must-revalidate",
+      },
+      status: 200,
+    }
+  )
 }
 
 const getCleanMd_ = unstable_cache(
