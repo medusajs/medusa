@@ -35928,20 +35928,6 @@ An order holds information about:
   - This is stored and handled by the [Customer Module](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/customer).
 - Payment and shipping information
 
-## Order Locale
-
-Order locale is available starting [Medusa v2.12.3](https://github.com/medusajs/medusa/releases/tag/v2.12.3).
-
-The `Order` data model has a `locale` property that indicates the locale of the order. This locale is in the [IETF BCP 47 standard](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1) format, such as `en-US` for American English or `fr-FR` for French (France).
-
-When an order is created from a cart or a draft order, the order inherits their locale. This ensures that all item details in the order, such as product titles and descriptions, are presented in the correct language if translations are available.
-
-When order items are changed through an edit, claim, or exchange, the new items added to the order will also have their details in the order's locale if translations are available.
-
-You can also edit an order's locale using the [Update Order](undefined/api/admin#orders_postordersid) API route.
-
-***
-
 ## Order Items
 
 The items purchased in an order are represented by the [OrderItem data model](undefined/references/order/models/OrderItem). An order can have multiple items.
@@ -36160,10 +36146,9 @@ To learn how to use the draft order features in the Medusa Admin, refer to the [
 
 ## How Draft Orders Work
 
-A draft order is stored in the database as a regular order. It is represented by the [Order data model](undefined/references/order/models/Order) with the following properties:
+A draft order is stored in the database as a regular order. It is represented by the [Order data model](undefined/references/order/models/Order) with the following property:
 
 - `status`: Set to `draft` to indicate that the order is a draft.
-- `is_draft_order`: Set to `true` to indicate that the order is a draft order.
 
 So, the same [order concepts](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/order/concepts) apply to draft orders as well.
 
@@ -36173,18 +36158,9 @@ Similar to regular orders, draft orders can be [edited](undefined/home/runner/wo
 
 When the order edit is confirmed on the draft order, the changes are applied directly to the draft order and its [version](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/order/order-versioning) is incremented.
 
-### Draft Order Locale
-
-A draft order's `locale` can be set and updated before converting it to a regular order. All item details in the draft order, such as product titles and descriptions, will be presented in the correct language if translations are available.
-
-When the draft order is converted to a regular order, it retains its `locale` property. The details of the order items will remain in the specified locale.
-
 ### Converting Draft Orders to Regular Orders
 
-Once a draft order is finalized and ready for processing, it can be converted to a regular order. This involves:
-
-- Changing its `status` property to `pending`.
-- Changing its `is_draft_order` property to `false`.
+Once a draft order is finalized and ready for processing, it can be converted to a regular order by changing its `status` property to `pending`.
 
 Admin users can then manage the order like any other regular order, including processing payments and fulfilling items.
 
@@ -56107,7 +56083,7 @@ type AddCustomToCartWorkflowInput = {
   item: {
     variant_id: string
     quantity: number
-    metadata?: Record<string, unknown>
+    metadata?: Record<string, unknown> | null
   }
 }
 
@@ -57057,7 +57033,6 @@ Next, you want to create the draft order for the quote. Replace the `TODO` in th
 ```ts title="src/workflows/create-request-for-quote.ts"
 const orderInput = transform({ carts, customers }, ({ carts, customers }) => {
   return {
-    is_draft_order: true,
     status: OrderStatus.DRAFT,
     sales_channel_id: carts[0].sales_channel_id || undefined,
     email: customers[0].email || undefined,
@@ -59707,7 +59682,6 @@ export const customerAcceptQuoteWorkflow = createWorkflow(
         id: quotes[0].draft_order_id,
         // @ts-ignore
         status: OrderStatus.PENDING,
-        is_draft_order: false,
       },
     })
   }
@@ -106128,7 +106102,7 @@ const {
     })
 
     if (productData.id) {
-      productsToUpdate.set(existingProduct.id, productData)
+      productsToUpdate.set(existingProduct.id, productData as UpsertProductDTO)
     } else {
       productsToCreate.set(productData.external_id!, productData)
     }
@@ -106673,8 +106647,8 @@ class MailchimpNotificationProviderService extends AbstractNotificationProviderS
         settings: {
           subject_line: 
             this.options.templates?.new_products?.subject_line || "New Products",
-          from_name: list.campaign_defaults.from_name,
-          reply_to: list.campaign_defaults.from_email,
+          from_name: list.campaign_defaults?.from_name,
+          reply_to: list.campaign_defaults?.from_email,
         },
       }) as mailchimpMarketingApi.campaigns.Campaigns
 
@@ -147797,6 +147771,7 @@ As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0),
 
 ```ts title="src/api/admin/digital-products/route.ts"
 // other imports...
+import type { CreateProductWorkflowInputDTO } from "@medusajs/types"
 import { z } from "@medusajs/framework/zod"
 import createDigitalProductWorkflow from "../../../workflows/create-digital-product"
 import { CreateDigitalProductMediaInput } from "../../../workflows/create-digital-product/steps/create-digital-product-medias"
@@ -147831,7 +147806,7 @@ export const POST = async (
         })) as Omit<CreateDigitalProductMediaInput, "digital_product_id">[],
       },
       product: {
-        ...req.validatedBody.product,
+        ...(req.validatedBody.product as unknown as CreateProductWorkflowInputDTO),
         shipping_profile_id: shippingProfile.id,
       },
     },
