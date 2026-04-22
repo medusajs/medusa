@@ -85,22 +85,26 @@ export type WorkflowDataProperties<T = unknown> = {
  *
  * @typeParam T - The type of a step's input or result.
  */
-export type WorkflowData<T = unknown> = (T extends Array<infer Item>
-  ? Array<Item | WorkflowData<Item>>
-  : T extends object
-  ? {
-      [Key in keyof T]: T[Key] | WorkflowData<T[Key]>
-    }
-  : T & WorkflowDataProperties<T>) &
-  T &
-  WorkflowDataProperties<T> & {
-    config(
-      config: { name?: string } & Omit<
-        TransactionStepsDefinition,
-        "next" | "uuid" | "action"
-      >
-    ): WorkflowData<T>
-  }
+type Prev = [never, 0, 1, 2, 3, 4, 5, 6]
+export type WorkflowData<T = unknown, Depth extends number = 6> = [
+  Depth
+] extends [never]
+  ? T & WorkflowDataProperties<T>
+  : (T extends Array<infer Item>
+      ? Array<Item | WorkflowData<Item, Prev[Depth]>>
+      : T extends object
+      ? {
+          [Key in keyof T]: T[Key] | WorkflowData<T[Key], Prev[Depth]>
+        }
+      : T & WorkflowDataProperties<T>) &
+      T &
+      WorkflowDataProperties<T> & {
+        config(
+          config: {
+            name?: string
+          } & Omit<TransactionStepsDefinition, "next" | "uuid" | "action">
+        ): WorkflowData<T, Depth>
+      }
 
 export type CreateWorkflowComposerContext = {
   __type: string
