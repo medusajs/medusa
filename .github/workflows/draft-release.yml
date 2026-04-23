@@ -49,9 +49,19 @@ jobs:
           fi
 
           TAG="v$VERSION"
+
+          # If the tag doesn't exist yet (draft created before publishing), use HEAD as range end
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            RANGE_END="$TAG"
+          else
+            RANGE_END="HEAD"
+            echo "Tag $TAG not found — using HEAD as range end"
+          fi
+
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-          echo "Resolved release tag: $TAG"
+          echo "range_end=$RANGE_END" >> "$GITHUB_OUTPUT"
+          echo "Resolved release tag: $TAG (range end: $RANGE_END)"
 
       - name: Find previous release tag
         id: previous
@@ -65,18 +75,18 @@ jobs:
         id: commits
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          TAG: ${{ steps.version.outputs.tag }}
+          RANGE_END: ${{ steps.version.outputs.range_end }}
           PREVIOUS_TAG: ${{ steps.previous.outputs.tag }}
           REPO: ${{ github.repository }}
         run: |
-          echo "Collecting commits between $PREVIOUS_TAG and $TAG..."
+          echo "Collecting commits between $PREVIOUS_TAG and $RANGE_END..."
 
           # Build JSON array of commits with PR metadata
           node --input-type=module << 'EOF'
           import { execSync } from "child_process"
           import { writeFileSync } from "fs"
 
-          const tag = process.env.TAG
+          const tag = process.env.RANGE_END
           const previousTag = process.env.PREVIOUS_TAG
           const repo = process.env.REPO
 
@@ -131,14 +141,14 @@ jobs:
       - name: Check for changeset minor bumps (breaking changes)
         id: changesets
         run: |
-          TAG="${{ steps.version.outputs.tag }}"
+          RANGE_END="${{ steps.version.outputs.range_end }}"
           PREVIOUS_TAG="${{ steps.previous.outputs.tag }}"
 
           # Find changeset files added between the two tags and read them from
           # the commit that introduced them (they are deleted by the release PR).
           # A minor bump line looks like: "@medusajs/package-name": minor
           MINOR_CHANGESETS=$(
-            git log "${PREVIOUS_TAG}..${TAG}" --diff-filter=A --format="%H" -- ".changeset/*.md" \
+            git log "${PREVIOUS_TAG}..${RANGE_END}" --diff-filter=A --format="%H" -- ".changeset/*.md" \
               | while read -r hash; do
                   git diff-tree --no-commit-id -r --name-only --diff-filter=A "$hash" -- ".changeset/*.md" \
                     | while read -r file; do
