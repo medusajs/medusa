@@ -21,25 +21,7 @@ import { throwUnlessStatusIsNotPaid } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = throwUnlessStatusIsNotPaid({
-      "paymentCollection": {
-        "id": "id_f0cUFSAYwRo",
-        "currency_code": "zwl",
-        "amount": {
-          "numeric": 18
-        },
-        "status": "not_paid",
-        "payment_providers": [{
-          "id": "id_i8ozQPqH6bTL",
-          "is_enabled": false
-        }]
-      }
-    })
+    const data = throwUnlessStatusIsNotPaid({})
   }
 )
 ```
-  
-
-## Input
-
-<TypeList types={[{"name":"paymentCollection","type":"[PaymentCollectionDTO](../../../../../payment/interfaces/payment.PaymentCollectionDTO/page.mdx)","description":"The payment collection details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the payment collection.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"The ISO 3 character currency code of the payment sessions and payments associated with payment collection.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberValue](../../../../../payment/types/payment.BigNumberValue/page.mdx)","description":"The total amount to be authorized and captured.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[PaymentCollectionStatus](../../../../../payment/types/payment.PaymentCollectionStatus/page.mdx)","description":"The status of the payment collection.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_providers","type":"[PaymentProviderDTO](../../../../../payment/interfaces/payment.PaymentProviderDTO/page.mdx)[]","description":"The payment provider used to process the associated payment sessions and payments.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"authorized_amount","type":"[BigNumberValue](../../../../../payment/types/payment.BigNumberValue/page.mdx)","description":"The amount authorized within the associated payment sessions.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"refunded_amount","type":"[BigNumberValue](../../../../../payment/types/payment.BigNumberValue/page.mdx)","description":"The amount refunded within the associated payments.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"captured_amount","type":"[BigNumberValue](../../../../../payment/types/payment.BigNumberValue/page.mdx)","description":"The amount captured within the associated payments.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"completed_at","type":"`string` \\| `Date`","description":"When the payment collection was completed.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"When the payment collection was created.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"When the payment collection was updated.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_sessions","type":"[PaymentSessionDTO](../../../../../payment/interfaces/payment.PaymentSessionDTO/page.mdx)[]","description":"The associated payment sessions.","optional":true,"defaultValue":"","expandable":true,"children":[]},{"name":"payments","type":"[PaymentDTO](../../../../../payment/interfaces/payment.PaymentDTO/page.mdx)[]","description":"The associated payments.","optional":true,"defaultValue":"","expandable":true,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="throwUnlessStatusIsNotPaid"/>

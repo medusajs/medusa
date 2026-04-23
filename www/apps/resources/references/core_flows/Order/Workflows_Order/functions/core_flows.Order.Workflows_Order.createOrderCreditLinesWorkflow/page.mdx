@@ -13,7 +13,7 @@ import { TypeList, WorkflowDiagram } from "docs-ui"
 
 This documentation provides a reference to the `createOrderCreditLinesWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/order/workflows/create-order-credit-lines.ts#L86" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/order/workflows/create-order-credit-lines.ts#L86" />
 
 ## Examples
 
@@ -33,12 +33,7 @@ export async function POST(
 ) {
   const { result } = await createOrderCreditLinesWorkflow(req.scope)
     .run({
-      input: {
-        "id": "id_UqsjQ3DRt6",
-        "credit_lines": [
-          "{value}"
-        ]
-      }
+      input: {}
     })
 
   res.send(result)
@@ -61,12 +56,7 @@ export default async function handleOrderPlaced({
 }: SubscriberArgs < { id: string } > ) {
   const { result } = await createOrderCreditLinesWorkflow(container)
     .run({
-      input: {
-        "id": "id_UqsjQ3DRt6",
-        "credit_lines": [
-          "{value}"
-        ]
-      }
+      input: {}
     })
 
   console.log(result)
@@ -89,12 +79,7 @@ export default async function myCustomJob(
 ) {
   const { result } = await createOrderCreditLinesWorkflow(container)
     .run({
-      input: {
-        "id": "id_UqsjQ3DRt6",
-        "credit_lines": [
-          "{value}"
-        ]
-      }
+      input: {}
     })
 
   console.log(result)
@@ -118,12 +103,7 @@ const myWorkflow = createWorkflow(
   () => {
     const result = createOrderCreditLinesWorkflow
       .runAsStep({
-        input: {
-          "id": "id_UqsjQ3DRt6",
-          "credit_lines": [
-            "{value}"
-          ]
-        }
+        input: {}
       })
   }
 )
@@ -135,10 +115,6 @@ const myWorkflow = createWorkflow(
 ## Steps
 
 <WorkflowDiagram workflow={{"name":"createOrderCreditLinesWorkflow","steps":[{"type":"step","name":"validateOrderCreditLinesStep","description":"","link":"../core_flows.Order.Workflows_Order.validateOrderCreditLinesStep/page.mdx","depth":1},{"type":"step","name":"createOrderChangeStep","description":"This step creates an order change.","link":"../../../Steps_Order/functions/core_flows.Order.Steps_Order.createOrderChangeStep/page.mdx","depth":2},{"type":"workflow","name":"createOrderChangeActionsWorkflow","description":"Create an order change action.","link":"../core_flows.Order.Workflows_Order.createOrderChangeActionsWorkflow/page.mdx","depth":3},{"type":"hook","name":"creditLinesCreated","description":"This step is a hook that you can inject custom functionality into.","link":"#creditLinesCreated","depth":4}]}} />
-
-## Input
-
-<TypeList types={[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"credit_lines","type":"Omit&#60;[CreateOrderCreditLineDTO](../../../../../order/interfaces/order.CreateOrderCreditLineDTO/page.mdx), \"order_id\"&#62;[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createOrderCreditLinesWorkflow"/>
 
 ## Output
 

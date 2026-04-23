@@ -21,11 +21,7 @@ import { removeShippingMethodAdjustmentsStep } from "@medusajs/medusa/core-flows
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = removeShippingMethodAdjustmentsStep({
-      "shippingMethodAdjustmentIdsToRemove": [
-        "{value}"
-      ]
-    })
+    const data = removeShippingMethodAdjustmentsStep({})
   }
 )
 ```
@@ -33,4 +29,4 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"RemoveShippingMethodAdjustmentsStepInput","type":"[RemoveShippingMethodAdjustmentsStepInput](../../../../interfaces/core_flows.RemoveShippingMethodAdjustmentsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of the shipping method adjustments to remove.","expandable":false,"children":[{"name":"shippingMethodAdjustmentIdsToRemove","type":"`string`[]","description":"The IDs of the shipping method adjustments to remove.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="removeShippingMethodAdjustmentsStep"/>
+<TypeList types={[{"name":"RemoveShippingMethodAdjustmentsStepInput","type":"[RemoveShippingMethodAdjustmentsStepInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.RemoveShippingMethodAdjustmentsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"RemoveShippingMethodAdjustmentsStepInput","type":"`object`","description":"The details of the shipping method adjustments to remove.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="removeShippingMethodAdjustmentsStep"/>

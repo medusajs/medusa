@@ -23,7 +23,7 @@ you can delete custom records linked to the product colleciton.
 
 You can also use this workflow within your own custom workflows, allowing you to wrap custom logic around product-option deletion.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/product/workflows/delete-product-options.ts#L48" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/product/workflows/delete-product-options.ts#L48" />
 
 ## Examples
 
@@ -136,7 +136,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"DeleteProductOptionsWorkflowInput","type":"[DeleteProductOptionsWorkflowInput](../../../../types/core_flows.DeleteProductOptionsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to delete one or more product options.","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"The IDs of the options to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteProductOptionsWorkflow"/>
+<TypeList types={[{"name":"DeleteProductOptionsWorkflowInput","type":"[DeleteProductOptionsWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.DeleteProductOptionsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeleteProductOptionsWorkflowInput","type":"`object`","description":"The data to delete one or more product options.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteProductOptionsWorkflow"/>
 
 ## Hooks
 
@@ -154,7 +154,7 @@ This hook is executed after the options are deleted. You can consume this hook t
 import { deleteProductOptionsWorkflow } from "@medusajs/medusa/core-flows"
 
 deleteProductOptionsWorkflow.hooks.productOptionsDeleted(
-  (async ({ ids }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -164,7 +164,7 @@ deleteProductOptionsWorkflow.hooks.productOptionsDeleted(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Product.Workflows_Product/page.mdx#__type-16)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="productOptionsDeleted"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Product.Workflows_Product/page.mdx#__type-16)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="productOptionsDeleted"/>
 
 ## Emitted Events
 
