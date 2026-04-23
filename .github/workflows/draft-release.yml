@@ -1,0 +1,237 @@
+name: Draft Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (e.g. 2.14.0) — omit to auto-detect from latest published tag"
+        required: false
+        type: string
+      additional_instructions:
+        description: "Additional instructions for Claude (e.g. 'Make sure to highlight the new Subscriptions module' or 'The cart breaking change is the most important one')"
+        required: false
+        type: string
+concurrency:
+  group: draft-release
+  cancel-in-progress: false
+
+jobs:
+  draft-release:
+    name: Generate draft release with Claude
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
+      - name: Determine release version and tag
+        id: version
+        run: |
+          git fetch --tags
+
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            # Auto-detect: use the latest stable tag
+            VERSION=$(git tag --sort=-version:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1 | sed 's/^v//')
+          fi
+
+          TAG="v$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "Resolved release tag: $TAG"
+
+      - name: Find previous release tag
+        id: previous
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          PREVIOUS_TAG=$(git tag --sort=-version:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | grep -v "^${TAG}$" | head -1)
+          echo "tag=$PREVIOUS_TAG" >> "$GITHUB_OUTPUT"
+          echo "Previous release tag: $PREVIOUS_TAG"
+
+      - name: Gather commit and PR metadata
+        id: commits
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          PREVIOUS_TAG: ${{ steps.previous.outputs.tag }}
+          REPO: ${{ github.repository }}
+        run: |
+          echo "Collecting commits between $PREVIOUS_TAG and $TAG..."
+
+          # Build JSON array of commits with PR metadata
+          node --input-type=module << 'EOF'
+          import { execSync } from "child_process"
+          import { writeFileSync } from "fs"
+
+          const tag = process.env.TAG
+          const previousTag = process.env.PREVIOUS_TAG
+          const repo = process.env.REPO
+
+          // Get raw commit log
+          const logOutput = execSync(
+            `git log "${previousTag}..${tag}" --pretty=format:'%H|||%s|||%an|||%ae'`,
+            { encoding: "utf8", maxBuffer: 10 * 1024 * 1024 }
+          ).trim()
+
+          if (!logOutput) {
+            writeFileSync("/tmp/commits.json", JSON.stringify([]))
+            process.exit(0)
+          }
+
+          const commits = logOutput.split("\n").map((line) => {
+            const [hash, subject, author, email] = line.split("|||")
+            const prMatch = subject.match(/\(#(\d+)\)/)
+            return {
+              hash: hash?.trim(),
+              subject: subject?.trim(),
+              author: author?.trim(),
+              email: email?.trim(),
+              pr_number: prMatch ? prMatch[1] : null,
+              pr_title: null,
+              pr_author_login: null,
+              pr_labels: [],
+            }
+          }).filter(c => c.hash)
+
+          // Enrich with PR metadata for commits that reference a PR
+          for (const commit of commits) {
+            if (!commit.pr_number) continue
+            try {
+              const prData = JSON.parse(
+                execSync(
+                  `gh pr view ${commit.pr_number} --repo ${repo} --json number,title,author,labels`,
+                  { encoding: "utf8" }
+                )
+              )
+              commit.pr_title = prData.title
+              commit.pr_author_login = prData.author?.login ?? null
+              commit.pr_labels = (prData.labels ?? []).map((l) => l.name)
+            } catch {
+              // PR lookup failed — use commit metadata as fallback
+            }
+          }
+
+          writeFileSync("/tmp/commits.json", JSON.stringify(commits, null, 2))
+          console.log(`Collected ${commits.length} commits`)
+          EOF
+
+      - name: Check for changeset minor bumps (breaking changes)
+        id: changesets
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          PREVIOUS_TAG="${{ steps.previous.outputs.tag }}"
+
+          # Find changeset files added between the two tags and read them from
+          # the commit that introduced them (they are deleted by the release PR).
+          # A minor bump line looks like: "@medusajs/package-name": minor
+          MINOR_CHANGESETS=$(
+            git log "${PREVIOUS_TAG}..${TAG}" --diff-filter=A --format="%H" -- ".changeset/*.md" \
+              | while read -r hash; do
+                  git diff-tree --no-commit-id -r --name-only --diff-filter=A "$hash" -- ".changeset/*.md" \
+                    | while read -r file; do
+                        git show "${hash}:${file}" 2>/dev/null
+                      done
+                done \
+              | grep -c '": minor' || true
+          )
+
+          echo "minor_changesets=$MINOR_CHANGESETS" >> "$GITHUB_OUTPUT"
+          echo "Minor changeset count: $MINOR_CHANGESETS"
+
+      - name: Build Claude prompt
+        id: prompt
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          PREVIOUS_TAG="${{ steps.previous.outputs.tag }}"
+          REPO="${{ github.repository }}"
+          MINOR_CHANGESETS="${{ steps.changesets.outputs.minor_changesets }}"
+          ADDITIONAL_INSTRUCTIONS="${{ github.event.inputs.additional_instructions }}"
+          COMMITS=$(cat /tmp/commits.json)
+
+          DELIMITER="CLAUDE_PROMPT_EOF"
+          {
+            echo "CLAUDE_PROMPT<<${DELIMITER}"
+            cat << PROMPT
+          IMPORTANT: Only write files using the Write tool. Do not use git commands. Do not create any files other than /tmp/release-notes.md.
+
+          IMPORTANT: To load the writing-releases skill, use the Skill tool directly with skill='writing-releases'. Do NOT spawn a sub-agent or use the Task tool to load it.
+
+          Use the Skill tool to load the writing-releases skill, then write GitHub release notes for Medusa ${TAG}.
+
+          Context:
+          - Repository: ${REPO}
+          - Previous release: ${PREVIOUS_TAG}
+          - Current release: ${TAG}
+          - Number of commits with minor changesets (breaking changes): ${MINOR_CHANGESETS}
+
+          The commit and PR metadata is provided below as JSON. Each entry has:
+          - hash: commit hash
+          - subject: commit message subject
+          - author: git author name
+          - pr_number: PR number (if any)
+          - pr_title: PR title from GitHub (if available)
+          - pr_author_login: GitHub username of PR author (if available)
+          - pr_labels: labels on the PR
+
+          Commits JSON:
+          ${COMMITS}
+          PROMPT
+
+            if [ -n "$ADDITIONAL_INSTRUCTIONS" ]; then
+              cat << EXTRA
+
+          Additional instructions from the release author (follow these carefully, they take priority):
+          ${ADDITIONAL_INSTRUCTIONS}
+          EXTRA
+            fi
+
+            cat << PROMPT
+
+          Write the complete release notes markdown to /tmp/release-notes.md.
+          PROMPT
+            echo "${DELIMITER}"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Generate release notes with Claude
+        uses: anthropics/claude-code-base-action@beta
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: ${{ steps.prompt.outputs.CLAUDE_PROMPT }}
+          allowed_tools: "Skill,Read,Write,Bash(cat /tmp/commits.json,git show:*)"
+          max_turns: 25
+
+      - name: Create draft GitHub release
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          PREVIOUS_TAG="${{ steps.previous.outputs.tag }}"
+
+          if [ ! -f /tmp/release-notes.md ]; then
+            echo "ERROR: /tmp/release-notes.md was not created by Claude"
+            exit 1
+          fi
+
+          ARGS=(
+            "$TAG"
+            --title "$TAG"
+            --notes-file /tmp/release-notes.md
+            --draft
+            --target "${{ github.sha }}"
+          )
+
+          gh release create "${ARGS[@]}"
+          echo "Draft release created for $TAG"
