@@ -68,7 +68,7 @@ To serve it at the root (`/`) instead, set `admin.path` in `medusa-config.ts`:
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
   admin: {
-    path: "/" as `/${string}`,
+    path: "/",
     backendUrl: process.env.MEDUSA_BACKEND_URL,
   },
   // ...
