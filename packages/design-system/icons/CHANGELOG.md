@@ -1,5 +1,11 @@
 # @medusajs/icons
 
+## 2.14.0
+
+### Patch Changes
+
+- [#14791](https://github.com/medusajs/medusa/pull/14791) [`9757a6a8d19b3e819c43ae5a29f35c65fdce9c34`](https://github.com/medusajs/medusa/commit/9757a6a8d19b3e819c43ae5a29f35c65fdce9c34) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(icons): upgrade React to v19
+
 ## 2.13.6
 
 ## 2.13.5

@@ -1,5 +1,11 @@
 # @medusajs/http-types-generator
 
+## 2.14.0
+
+### Patch Changes
+
+- [#15017](https://github.com/medusajs/medusa/pull/15017) [`15085e1adb9c50743ca07d2da94f23cc09b6852a`](https://github.com/medusajs/medusa/commit/15085e1adb9c50743ca07d2da94f23cc09b6852a) Thanks [@shahednasser](https://github.com/shahednasser)! - fix: fix http types not matching validators
+
 ## 2.13.6
 
 ### Patch Changes
