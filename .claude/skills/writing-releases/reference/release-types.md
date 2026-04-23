@@ -20,12 +20,12 @@
 
 ## Identifying Breaking Changes
 
-Medusa uses **minor changesets** to mark breaking changes. A breaking change is any PR that includes a changeset file under `.changeset/` with `package-name: minor` (as opposed to `patch`).
+A PR is a breaking change if **either** of the following is true:
 
-**How to detect:**
-- For each PR in the commit range, check whether any file in `.changeset/` references that PR's package with a `minor` bump
-- Alternatively, look for changeset files added in the commit: `git show <hash> -- .changeset/*.md`
-- A changeset with `minor` bump = breaking change, regardless of whether the commit message says "breaking"
+1. **Minor changeset** — the PR includes a changeset file under `.changeset/` with `"package-name": minor` (as opposed to `patch`). Look for changeset files added in the commit: `git show <hash> -- .changeset/*.md`
+2. **`breaking-change` label** — the PR's `pr_labels` array in the commit JSON contains `"breaking-change"`
+
+Either signal alone is sufficient. The workflow pre-counts both and passes the total as `minor_changesets` in the prompt context.
 
 **What to do with a breaking change:**
 - It **must** appear in the Highlights section

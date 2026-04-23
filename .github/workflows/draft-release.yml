@@ -138,15 +138,14 @@ jobs:
           console.log(`Collected ${commits.length} commits`)
           EOF
 
-      - name: Check for changeset minor bumps (breaking changes)
+      - name: Detect breaking changes
         id: changesets
         run: |
           RANGE_END="${{ steps.version.outputs.range_end }}"
           PREVIOUS_TAG="${{ steps.previous.outputs.tag }}"
 
-          # Find changeset files added between the two tags and read them from
-          # the commit that introduced them (they are deleted by the release PR).
-          # A minor bump line looks like: "@medusajs/package-name": minor
+          # Method 1: changeset files with a minor bump
+          # ("@medusajs/package-name": minor)
           MINOR_CHANGESETS=$(
             git log "${PREVIOUS_TAG}..${RANGE_END}" --diff-filter=A --format="%H" -- ".changeset/*.md" \
               | while read -r hash; do
@@ -158,8 +157,19 @@ jobs:
               | grep -c '": minor' || true
           )
 
-          echo "minor_changesets=$MINOR_CHANGESETS" >> "$GITHUB_OUTPUT"
-          echo "Minor changeset count: $MINOR_CHANGESETS"
+          # Method 2: PRs labelled "breaking-change" in the commit range
+          LABEL_BREAKING=$(node --input-type=module << 'EOF'
+          import { readFileSync } from "fs"
+          const commits = JSON.parse(readFileSync("/tmp/commits.json", "utf8"))
+          const count = commits.filter(c => c.pr_labels?.includes("breaking-change")).length
+          process.stdout.write(String(count))
+          EOF
+          )
+
+          BREAKING_CHANGES=$((MINOR_CHANGESETS + LABEL_BREAKING))
+
+          echo "minor_changesets=$BREAKING_CHANGES" >> "$GITHUB_OUTPUT"
+          echo "Breaking changes detected — minor changesets: $MINOR_CHANGESETS, breaking-change label: $LABEL_BREAKING, total: $BREAKING_CHANGES"
 
       - name: Build Claude prompt
         id: prompt
