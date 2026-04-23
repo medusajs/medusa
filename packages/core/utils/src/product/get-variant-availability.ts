@@ -170,7 +170,10 @@ const getDataForComputation = async (
     },
     {
       cache: {
-        enable: true,
+        tags: [
+          ...data.variant_ids.map((id) => `ProductVariant:${id}`),
+          "InventoryItem:list:*",
+        ],
       },
     }
   )
