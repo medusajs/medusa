@@ -33,7 +33,7 @@ type AddCurrenciesFormProps = {
 
 const AddCurrenciesSchema = zod.object({
   currencies: zod.array(zod.string()).min(1),
-  pricePreferences: zod.record(zod.boolean()),
+  pricePreferences: zod.record(zod.string(), zod.boolean()),
 })
 
 const PAGE_SIZE = 50
