@@ -21,7 +21,7 @@ allows you to update custom data models linked to the orders.
 
 You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around order completion.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/order/workflows/complete-orders.ts#L49" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/order/workflows/complete-orders.ts#L49" />
 
 ## Examples
 
@@ -146,7 +146,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"CompleteOrdersWorkflowInput","type":"[CompleteOrdersWorkflowInput](../../../../types/core_flows.CompleteOrdersWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The orders to complete, along with custom data that's passed to the workflow's hooks.","expandable":false,"children":[{"name":"orderIds","type":"`string`[]","description":"The IDs of the orders to complete.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"additional_data","type":"`Record<string, unknown>`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\n\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="completeOrderWorkflow"/>
+<TypeList types={[{"name":"CompleteOrdersWorkflowInput","type":"[CompleteOrdersWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.CompleteOrdersWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"additional_data","type":"`Record<string, unknown>`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\n\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="completeOrderWorkflow"/>
 
 ## Output
 
@@ -168,7 +168,7 @@ This hook is executed after the orders are completed. You can consume this hook 
 import { completeOrderWorkflow } from "@medusajs/medusa/core-flows"
 
 completeOrderWorkflow.hooks.ordersCompleted(
-  (async ({ orders, additional_data }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -178,7 +178,7 @@ completeOrderWorkflow.hooks.ordersCompleted(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Order.Workflows_Order/page.mdx#__type-4)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"orders","type":"[OrderDTO](../../../../../fulfillment/interfaces/fulfillment.OrderDTO/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"additional_data","type":"`Record<string, unknown> | undefined`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="ordersCompleted"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Order.Workflows_Order/page.mdx#__type-4)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="ordersCompleted"/>
 
 ## Emitted Events
 

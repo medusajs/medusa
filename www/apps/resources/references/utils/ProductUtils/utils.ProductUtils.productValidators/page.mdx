@@ -25,13 +25,13 @@ import { TypeList } from "docs-ui"
 
 #### Returns
 
-<TypeList types={[{"name":"ZodEffects","type":"ZodEffects&#60;ZodEffects&#60;ZodUnion&#60;[ZodBoolean, ZodString]&#62;, string \\| boolean, string \\| boolean&#62;, boolean, string \\| boolean&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ZodEffects","type":"ZodEffects&#60;ZodUnion&#60;[ZodBoolean, ZodString]&#62;, string \\| boolean, string \\| boolean&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ZodUnion","type":"ZodUnion&#60;[ZodBoolean, ZodString]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"string \\| boolean","type":"`string` \\| `boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"string \\| boolean","type":"`string` \\| `boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]},{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"string \\| boolean","type":"`string` \\| `boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="booleanString"/>
+<TypeList types={[{"name":"ZodPipe","type":"ZodPipe&#60;ZodUnion&#60;readonly [ZodBoolean, ZodString]&#62;, ZodTransform&#60;boolean, string \\| boolean&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ZodUnion","type":"ZodUnion&#60;readonly [ZodBoolean, ZodString]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"readonly [ZodBoolean, ZodString]","type":"readonly [`ZodBoolean`, `ZodString`]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]},{"name":"ZodTransform","type":"ZodTransform&#60;boolean, string \\| boolean&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"string \\| boolean","type":"`string` \\| `boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="booleanString"/>
 
 ### numericString
 
 #### Returns
 
-<TypeList types={[{"name":"ZodEffects","type":"ZodEffects&#60;ZodNumber, string, number&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ZodNumber","type":"`ZodNumber`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="numericString"/>
+<TypeList types={[{"name":"ZodPipe","type":"ZodPipe&#60;ZodNumber, ZodTransform&#60;string, number&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ZodNumber","type":"`ZodNumber`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"ZodTransform","type":"ZodTransform&#60;string, number&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="numericString"/>
 
 ___
 
@@ -39,36 +39,36 @@ ___
 
 ### CreateProduct
 
- `Const` **CreateProduct**: ZodObject&#60;object, "strict", ZodTypeAny, object, object&#62;
+ `Const` **CreateProduct**: ZodObject&#60;object, $strict&#62;
 
 ### CreateProductOption
 
- `Const` **CreateProductOption**: ZodObject&#60;object, "strip", ZodTypeAny, object, object&#62;
+ `Const` **CreateProductOption**: ZodObject&#60;object, $strip&#62;
 
 ### CreateProductVariant
 
- `Const` **CreateProductVariant**: ZodObject&#60;object, "strict", ZodTypeAny, object, object&#62;
+ `Const` **CreateProductVariant**: ZodObject&#60;object, $strict&#62;
 
 ### CreateVariantPrice
 
- `Const` **CreateVariantPrice**: ZodObject&#60;object, "strip", ZodTypeAny, object, object&#62;
+ `Const` **CreateVariantPrice**: ZodObject&#60;object, $strip&#62;
 
 ### IdAssociation
 
- `Const` **IdAssociation**: ZodObject&#60;object, "strip", ZodTypeAny, object, object&#62;
+ `Const` **IdAssociation**: ZodObject&#60;object, $strip&#62;
 
 ### UpdateProduct
 
- `Const` **UpdateProduct**: ZodObject&#60;object, "strict", ZodTypeAny, object, object&#62;
+ `Const` **UpdateProduct**: ZodObject&#60;object, $strict&#62;
 
 ### UpdateProductOption
 
- `Const` **UpdateProductOption**: ZodObject&#60;object, "strip", ZodTypeAny, object, object&#62;
+ `Const` **UpdateProductOption**: ZodObject&#60;object, $strip&#62;
 
 ### UpdateProductVariant
 
- `Const` **UpdateProductVariant**: ZodObject&#60;object, "strict", ZodTypeAny, object, object&#62;
+ `Const` **UpdateProductVariant**: ZodObject&#60;object, $strict&#62;
 
 ### UpdateVariantPrice
 
- `Const` **UpdateVariantPrice**: ZodObject&#60;object, "strip", ZodTypeAny, object, object&#62;
+ `Const` **UpdateVariantPrice**: ZodObject&#60;object, $strip&#62;

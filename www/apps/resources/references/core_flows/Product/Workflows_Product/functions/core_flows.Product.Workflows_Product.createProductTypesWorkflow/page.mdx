@@ -22,7 +22,7 @@ allows you to create custom data models linked to the product types.
 
 You can also use this workflow within your own custom workflows, allowing you to wrap custom logic around product-type creation.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/product/workflows/create-product-types.ts#L54" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/product/workflows/create-product-types.ts#L54" />
 
 ## Examples
 
@@ -155,7 +155,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"CreateProductTypesWorkflowInput","type":"[CreateProductTypesWorkflowInput](../../../../types/core_flows.CreateProductTypesWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to create one or more product types, along with custom data that's passed to the workflow's hooks.","expandable":false,"children":[{"name":"product_types","type":"[CreateProductTypeDTO](../../../../../product/interfaces/product.CreateProductTypeDTO/page.mdx)[]","description":"The product types to create.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string`","description":"The product type's value.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"[MetadataType](../../../../../product/types/product.MetadataType/page.mdx)","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"additional_data","type":"`Record<string, unknown>`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\n\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createProductTypesWorkflow"/>
+<TypeList types={[{"name":"CreateProductTypesWorkflowInput","type":"[CreateProductTypesWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.CreateProductTypesWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"additional_data","type":"`Record<string, unknown>`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\n\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createProductTypesWorkflow"/>
 
 ## Output
 
@@ -177,7 +177,7 @@ This hook is executed after the product types are created. You can consume this 
 import { createProductTypesWorkflow } from "@medusajs/medusa/core-flows"
 
 createProductTypesWorkflow.hooks.productTypesCreated(
-  (async ({ product_types, additional_data }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -187,7 +187,7 @@ createProductTypesWorkflow.hooks.productTypesCreated(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Product.Workflows_Product/page.mdx#__type-3)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"product_types","type":"[ProductTypeDTO](../../../../../product/interfaces/product.ProductTypeDTO/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the product type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`string`","description":"The value of the product type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"When the product type was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"When the product type was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"[MetadataType](../../../../../product/types/product.MetadataType/page.mdx)","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`string` \\| `Date`","description":"When the product type was deleted.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"additional_data","type":"`Record<string, unknown> | undefined`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="productTypesCreated"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Product.Workflows_Product/page.mdx#__type-3)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="productTypesCreated"/>
 
 ## Emitted Events
 

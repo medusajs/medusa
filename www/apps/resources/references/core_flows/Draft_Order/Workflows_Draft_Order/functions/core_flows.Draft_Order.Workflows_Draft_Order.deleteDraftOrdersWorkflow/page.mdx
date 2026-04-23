@@ -18,7 +18,7 @@ This workflow deletes draft orders. It's used by the [Delete Draft Order API rou
 
 You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around deleting a draft order.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/draft-order/workflows/delete-draft-order.ts#L59" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/draft-order/workflows/delete-draft-order.ts#L59" />
 
 ## Examples
 
@@ -131,4 +131,4 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"DeleteDraftOrderStepInput","type":"[DeleteDraftOrderStepInput](../../../../types/core_flows.DeleteDraftOrderStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to validate the order's cancelation.","expandable":false,"children":[{"name":"order_ids","type":"`string`[]","description":"The order ids to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteDraftOrdersWorkflow"/>
+<TypeList types={[{"name":"DeleteDraftOrderStepInput","type":"[DeleteDraftOrderStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.DeleteDraftOrderStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeleteDraftOrderStepInput","type":"`object`","description":"The data to validate the order's cancelation.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteDraftOrdersWorkflow"/>

@@ -16,7 +16,7 @@ This documentation provides a reference to the `deletePaymentSessionsStep`. It b
 This step deletes one or more payment sessions.
 
 Note: This step should not be used alone as it doesn't consider a revert
-Use deletePaymentSessionsWorkflow instead, which uses this step.
+Use [deletePaymentSessionsWorkflow](../../../Workflows_Payment_Collection/functions/core_flows.Payment_Collection.Workflows_Payment_Collection.deletePaymentSessionsWorkflow/page.mdx) instead, which uses this step.
 
 ```ts title="src/workflows/my-workflow.ts"
 import { createWorkflow } from "@medusajs/framework/workflows-sdk"
@@ -25,11 +25,7 @@ import { deletePaymentSessionsStep } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = deletePaymentSessionsStep({
-      "ids": [
-        "id_RHb1m6zHg8v4Iyu0Ms"
-      ]
-    })
+    const data = deletePaymentSessionsStep({})
   }
 )
 ```
@@ -37,7 +33,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"DeletePaymentSessionStepInput","type":"[DeletePaymentSessionStepInput](../../../../interfaces/core_flows.DeletePaymentSessionStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to delete payment sessions.","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"The IDs of the payment sessions to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deletePaymentSessionsStep"/>
+<TypeList types={[{"name":"DeletePaymentSessionStepInput","type":"[DeletePaymentSessionStepInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.DeletePaymentSessionStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeletePaymentSessionStepInput","type":"`object`","description":"The data to delete payment sessions.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deletePaymentSessionsStep"/>
 
 ## Output
 
