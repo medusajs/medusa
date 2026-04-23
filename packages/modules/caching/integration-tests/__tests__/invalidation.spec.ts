@@ -50,6 +50,20 @@ jest.spyOn(MedusaModule, "getAllJoinerConfigs").mockReturnValue([
     title: String
     handle: String
   }
+
+  type InventoryItem {
+    id: ID
+    sku: String
+    title: String
+    requires_shipping: Boolean
+  }
+
+  type ProductVariantInventoryItem {
+    id: ID
+    variant_id: String
+    inventory_item_id: String
+    required_quantity: Int
+  }
 `,
   },
 ])
@@ -428,6 +442,74 @@ moduleIntegrationTestRunner<ICachingModuleService>({
 
           const cachedAfterUpdate = await service.get({ key: queryKey })
           expect(cachedAfterUpdate).toBeNull()
+        })
+      })
+
+      describe("Variant Availability Cache Invalidation (issue #15178)", () => {
+        it("should invalidate cached variant inventory items list when an inventory item is created", async () => {
+          const variantInventoryQuery = {
+            entity: "product_variant_inventory_items",
+            filters: { variant_id: ["var_1"] },
+            fields: ["variant_id", "required_quantity"],
+          }
+
+          const queryKey = await service.computeKey(variantInventoryQuery)
+
+          await service.set({
+            key: queryKey,
+            data: { result: [] },
+            tags: [`ProductVariant:var_1`, "InventoryItem:list:*"],
+          })
+
+          const beforeInvalidation = await service.get({ key: queryKey })
+          expect(beforeInvalidation).toEqual({ result: [] })
+
+          await mockEventBus.emit(
+            [
+              {
+                name: "inventory_item.created",
+                data: {
+                  id: "iitem_1",
+                  sku: "SKU-001",
+                  title: "New Inventory Item",
+                  requires_shipping: true,
+                },
+              },
+            ],
+            {}
+          )
+
+          const afterInvalidation = await service.get({ key: queryKey })
+          expect(afterInvalidation).toBeNull()
+        })
+
+        it("should invalidate cached variant inventory items list when the variant is updated", async () => {
+          const variantInventoryQuery = {
+            entity: "product_variant_inventory_items",
+            filters: { variant_id: ["var_1"] },
+            fields: ["variant_id", "required_quantity"],
+          }
+
+          const queryKey = await service.computeKey(variantInventoryQuery)
+
+          await service.set({
+            key: queryKey,
+            data: { result: [] },
+            tags: [`ProductVariant:var_1`, "InventoryItem:list:*"],
+          })
+
+          await mockEventBus.emit(
+            [
+              {
+                name: "product_variant.updated",
+                data: { id: "var_1", product_id: "prod_1" },
+              },
+            ],
+            {}
+          )
+
+          const result = await service.get({ key: queryKey })
+          expect(result).toBeNull()
         })
       })
     })
