@@ -53,6 +53,7 @@
   },
   "dependencies": {
     "@inquirer/checkbox": "^2.3.11",
+    "@inquirer/confirm": "^2.0.17",
     "@inquirer/input": "^2.2.9",
     "@medusajs/admin-bundler": "2.13.6",
     "@medusajs/analytics": "2.13.6",
