@@ -38,6 +38,9 @@
  *           type: string
  *           title: description
  *           description: The item's description.
+ *         metadata:
+ *           type: object
+ *           description: Key-value pairs of custom data.
  * 
 */
 

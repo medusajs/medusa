@@ -32,7 +32,7 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/AdminUpdateDraftOrderItem.yaml
+          $ref: ../components/schemas/AdminUpdateDraftOrderActionItem.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS SDK
