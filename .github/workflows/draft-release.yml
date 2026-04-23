@@ -185,11 +185,11 @@ jobs:
           {
             echo "CLAUDE_PROMPT<<${DELIMITER}"
             cat << PROMPT
+          /writing-releases
+
           IMPORTANT: Only write files using the Write tool. Do not use git commands. Do not create any files other than /tmp/release-notes.md.
 
-          IMPORTANT: To load the writing-releases skill, use the Skill tool directly with skill='writing-releases'. Do NOT spawn a sub-agent or use the Task tool to load it.
-
-          Use the Skill tool to load the writing-releases skill, then write GitHub release notes for Medusa ${TAG}.
+          Write GitHub release notes for Medusa ${TAG} following the writing-releases skill.
 
           Context:
           - Repository: ${REPO}
