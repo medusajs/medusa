@@ -106,6 +106,10 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
       (extra?.setup_future_usage as "off_session" | "on_session" | undefined) ??
       this.paymentIntentOptions.setup_future_usage
 
+    res.payment_method_configuration =
+      (extra?.payment_method_configuration as string | undefined) ??
+      this.options_?.paymentMethodConfiguration
+
     res.payment_method_types =
       (extra?.payment_method_types as string[]) ??
       (this.paymentIntentOptions.payment_method_types as string[])

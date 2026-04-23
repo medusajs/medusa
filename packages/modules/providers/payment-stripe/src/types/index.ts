@@ -16,6 +16,13 @@ export interface StripeOptions {
    */
   automaticPaymentMethods?: boolean
   /**
+   * Set `payment_method_configuration` to a PMC ID to apply a Dashboard-managed set of
+   * payment methods to the intent
+   *
+   * @see https://docs.stripe.com/payments/payment-method-configurations
+   */
+  paymentMethodConfiguration?: string
+  /**
    * Set a default description on the intent if the context does not provide one
    */
   paymentDescription?: string
