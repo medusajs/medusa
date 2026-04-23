@@ -13,6 +13,8 @@ Generates GitHub release notes from commit/PR data in the established Medusa sty
 - **No top-level Breaking Changes section** — breaking changes are embedded inside their Highlight subsection with `🚧 Breaking change`, never in a separate `## Breaking Changes` heading
 - **Bullet format is strict** — every entry in Features/Bugs/Chores/etc. must include author link and PR link (see `reference/format.md`)
 - **Highlights are not a summary of all PRs** — only significant changes qualify; routine additions go in Features/Bugs bullets only (see `reference/release-types.md`)
+- **No emojis** — the only permitted emoji is `🚧` on breaking change highlights; use none anywhere else
+- **Code block required for actionable steps** — if a highlight requires the developer to install a package, run a command, or update config, include a fenced code block with the exact command(s)
 
 ## Load Reference Files When Needed
 
@@ -50,12 +52,15 @@ Generates GitHub release notes from commit/PR data in the established Medusa sty
 
 ## Common Mistakes
 
+- [ ] Adding a title or `# Heading` at the top — release notes have no title, start directly with the first section
 - [ ] Adding a `## Breaking Changes` top-level section — embed inside the Highlight instead
 - [ ] Putting a routine bug fix or small feature addition in Highlights
 - [ ] Missing the Full Changelog link at the end
 - [ ] Bullet missing author link or PR link
 - [ ] Using PR title verbatim as a Highlight heading — write a descriptive outcome-focused title
 - [ ] Treating every `feat:` commit as a Highlight candidate
+- [ ] Using emojis anywhere except `🚧` on breaking change highlights
+- [ ] Writing a Highlight that requires a developer action (install, run, config change) without a fenced code block
 
 ## Reference Files
 

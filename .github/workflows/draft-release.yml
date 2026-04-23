@@ -49,9 +49,19 @@ jobs:
           fi
 
           TAG="v$VERSION"
+
+          # If the tag doesn't exist yet (draft created before publishing), use HEAD as range end
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            RANGE_END="$TAG"
+          else
+            RANGE_END="HEAD"
+            echo "Tag $TAG not found — using HEAD as range end"
+          fi
+
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-          echo "Resolved release tag: $TAG"
+          echo "range_end=$RANGE_END" >> "$GITHUB_OUTPUT"
+          echo "Resolved release tag: $TAG (range end: $RANGE_END)"
 
       - name: Find previous release tag
         id: previous
@@ -65,18 +75,18 @@ jobs:
         id: commits
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          TAG: ${{ steps.version.outputs.tag }}
+          RANGE_END: ${{ steps.version.outputs.range_end }}
           PREVIOUS_TAG: ${{ steps.previous.outputs.tag }}
           REPO: ${{ github.repository }}
         run: |
-          echo "Collecting commits between $PREVIOUS_TAG and $TAG..."
+          echo "Collecting commits between $PREVIOUS_TAG and $RANGE_END..."
 
           # Build JSON array of commits with PR metadata
           node --input-type=module << 'EOF'
           import { execSync } from "child_process"
           import { writeFileSync } from "fs"
 
-          const tag = process.env.TAG
+          const tag = process.env.RANGE_END
           const previousTag = process.env.PREVIOUS_TAG
           const repo = process.env.REPO
 
@@ -128,17 +138,16 @@ jobs:
           console.log(`Collected ${commits.length} commits`)
           EOF
 
-      - name: Check for changeset minor bumps (breaking changes)
+      - name: Detect breaking changes
         id: changesets
         run: |
-          TAG="${{ steps.version.outputs.tag }}"
+          RANGE_END="${{ steps.version.outputs.range_end }}"
           PREVIOUS_TAG="${{ steps.previous.outputs.tag }}"
 
-          # Find changeset files added between the two tags and read them from
-          # the commit that introduced them (they are deleted by the release PR).
-          # A minor bump line looks like: "@medusajs/package-name": minor
+          # Method 1: changeset files with a minor bump
+          # ("@medusajs/package-name": minor)
           MINOR_CHANGESETS=$(
-            git log "${PREVIOUS_TAG}..${TAG}" --diff-filter=A --format="%H" -- ".changeset/*.md" \
+            git log "${PREVIOUS_TAG}..${RANGE_END}" --diff-filter=A --format="%H" -- ".changeset/*.md" \
               | while read -r hash; do
                   git diff-tree --no-commit-id -r --name-only --diff-filter=A "$hash" -- ".changeset/*.md" \
                     | while read -r file; do
@@ -148,8 +157,19 @@ jobs:
               | grep -c '": minor' || true
           )
 
-          echo "minor_changesets=$MINOR_CHANGESETS" >> "$GITHUB_OUTPUT"
-          echo "Minor changeset count: $MINOR_CHANGESETS"
+          # Method 2: PRs labelled "breaking-change" in the commit range
+          LABEL_BREAKING=$(node --input-type=module << 'EOF'
+          import { readFileSync } from "fs"
+          const commits = JSON.parse(readFileSync("/tmp/commits.json", "utf8"))
+          const count = commits.filter(c => c.pr_labels?.includes("breaking-change")).length
+          process.stdout.write(String(count))
+          EOF
+          )
+
+          BREAKING_CHANGES=$((MINOR_CHANGESETS + LABEL_BREAKING))
+
+          echo "minor_changesets=$BREAKING_CHANGES" >> "$GITHUB_OUTPUT"
+          echo "Breaking changes detected — minor changesets: $MINOR_CHANGESETS, breaking-change label: $LABEL_BREAKING, total: $BREAKING_CHANGES"
 
       - name: Build Claude prompt
         id: prompt
@@ -165,11 +185,13 @@ jobs:
           {
             echo "CLAUDE_PROMPT<<${DELIMITER}"
             cat << PROMPT
-          IMPORTANT: Only write files using the Write tool. Do not use git commands. Do not create any files other than /tmp/release-notes.md.
+          IMPORTANT: Before doing anything else, you MUST read all four skill files below using the Read tool. Do not write a single word of release notes until you have read all of them.
 
-          IMPORTANT: To load the writing-releases skill, use the Skill tool directly with skill='writing-releases'. Do NOT spawn a sub-agent or use the Task tool to load it.
+          Step 1 — You MUST load the /writing-releases skill and read all its files, especially the SKILL.md which defines the rules, format, structure, and constraints for writing release notes. Then read the reference files that it links to.
 
-          Use the Skill tool to load the writing-releases skill, then write GitHub release notes for Medusa ${TAG}.
+          Step 2 — Write GitHub release notes for Medusa ${TAG} by strictly following every rule in those files.
+
+          IMPORTANT: Only create /tmp/release-notes.md using the Write tool. Do not use git commands. Do not create any other files.
 
           Context:
           - Repository: ${REPO}
@@ -193,7 +215,7 @@ jobs:
             if [ -n "$ADDITIONAL_INSTRUCTIONS" ]; then
               cat << EXTRA
 
-          Additional instructions from the release author (follow these carefully, they take priority):
+          Additional instructions from the release author (apply these when writing, but you MUST still read and follow the skill files from Step 1 — they define the format, structure, and constraints that cannot be overridden):
           ${ADDITIONAL_INSTRUCTIONS}
           EXTRA
             fi
