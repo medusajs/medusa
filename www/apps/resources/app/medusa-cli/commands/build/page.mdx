@@ -58,3 +58,23 @@ Refer to the [Build Medusa Application](!docs!/learn/build) guide for next steps
 By default, the Medusa Admin is built to the `.medusa/server/public/admin` directory.
 
 If you want a separate build to host the admin as a standalone application, such as on Vercel, pass the `--admin-only` option as explained in the [Options](#options) section. This outputs the admin to the `.medusa/admin` directory instead.
+
+:::note
+
+When deploying the admin as a standalone application on a separate domain using `--admin-only`,
+it will be served at the path set in `admin.path` (default: `/app`).
+To serve it at the root (`/`) instead, set `admin.path` in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  admin: {
+    path: "/" as `/${string}`,
+    backendUrl: process.env.MEDUSA_BACKEND_URL,
+  },
+  // ...
+})
+```
+
+`/` is a valid value for `admin.path` — it is not a reserved path.
+
+:::
