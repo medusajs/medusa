@@ -52,6 +52,7 @@ Generates GitHub release notes from commit/PR data in the established Medusa sty
 
 ## Common Mistakes
 
+- [ ] Adding a title or `# Heading` at the top — release notes have no title, start directly with the first section
 - [ ] Adding a `## Breaking Changes` top-level section — embed inside the Highlight instead
 - [ ] Putting a routine bug fix or small feature addition in Highlights
 - [ ] Missing the Full Changelog link at the end

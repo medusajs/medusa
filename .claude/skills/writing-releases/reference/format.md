@@ -2,7 +2,7 @@
 
 ## Section Order
 
-Only include sections that have entries. Maintain this order:
+Do NOT add a title or heading at the top. The release notes start directly with the first section. Maintain this order:
 
 ```markdown
 ## Highlights
