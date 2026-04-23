@@ -89,9 +89,10 @@ To learn how to use the draft order features in the Medusa Admin, refer to the [
 
 ## How Draft Orders Work
 
-A draft order is stored in the database as a regular order. It is represented by the [Order data model](/references/order/models/Order) with the following property:
+A draft order is stored in the database as a regular order. It is represented by the [Order data model](/references/order/models/Order) with the following properties:
 
 - `status`: Set to `draft` to indicate that the order is a draft.
+- `is_draft_order`: Set to `true` to indicate that the order is a draft order.
 
 So, the same [order concepts](../concepts/page.mdx) apply to draft orders as well.
 
@@ -101,8 +102,17 @@ Similar to regular orders, draft orders can be [edited](../edit/page.mdx), allow
 
 When the order edit is confirmed on the draft order, the changes are applied directly to the draft order and its [version](../order-versioning/page.mdx) is incremented.
 
+### Draft Order Locale
+
+A draft order's `locale` can be set and updated before converting it to a regular order. All item details in the draft order, such as product titles and descriptions, will be presented in the correct language if translations are available.
+
+When the draft order is converted to a regular order, it retains its `locale` property. The details of the order items will remain in the specified locale.
+
 ### Converting Draft Orders to Regular Orders
 
-Once a draft order is finalized and ready for processing, it can be converted to a regular order by changing its `status` property to `pending`.
+Once a draft order is finalized and ready for processing, it can be converted to a regular order. This involves:
+
+- Changing its `status` property to `pending`.
+- Changing its `is_draft_order` property to `false`.
 
 Admin users can then manage the order like any other regular order, including processing payments and fulfilling items.

@@ -715,6 +715,7 @@ Next, you want to create the draft order for the quote. Replace the `TODO` in th
 ```ts title="src/workflows/create-request-for-quote.ts"
 const orderInput = transform({ carts, customers }, ({ carts, customers }) => {
   return {
+    is_draft_order: true,
     status: OrderStatus.DRAFT,
     sales_channel_id: carts[0].sales_channel_id || undefined,
     email: customers[0].email || undefined,
@@ -3567,6 +3568,7 @@ export const customerAcceptQuoteWorkflow = createWorkflow(
         id: quotes[0].draft_order_id,
         // @ts-ignore
         status: OrderStatus.PENDING,
+        is_draft_order: false,
       },
     })
   }
