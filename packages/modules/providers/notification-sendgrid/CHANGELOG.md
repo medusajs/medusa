@@ -1,5 +1,14 @@
 # @medusajs/notification-sendgrid
 
+## 2.14.0
+
+### Patch Changes
+
+- [#14879](https://github.com/medusajs/medusa/pull/14879) [`6a958d2374b9e109dfd2f0662e69791fd513cbff`](https://github.com/medusajs/medusa/commit/6a958d2374b9e109dfd2f0662e69791fd513cbff) Thanks [@420coupe](https://github.com/420coupe)! - feat(notification-sendgrid): add support for personalizations via provider_data
+
+- Updated dependencies [[`0929b8d192833e10b6b91795f1ffc478938c3fb7`](https://github.com/medusajs/medusa/commit/0929b8d192833e10b6b91795f1ffc478938c3fb7), [`843dbfe7c8f27b732486c7a8da7b6d63f2fdf967`](https://github.com/medusajs/medusa/commit/843dbfe7c8f27b732486c7a8da7b6d63f2fdf967)]:
+  - @medusajs/framework@2.14.0
+
 ## 2.13.6
 
 ### Patch Changes

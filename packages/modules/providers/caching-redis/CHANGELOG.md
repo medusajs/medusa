@@ -1,5 +1,14 @@
 # @medusajs/caching-redis
 
+## 2.14.0
+
+### Patch Changes
+
+- [#14869](https://github.com/medusajs/medusa/pull/14869) [`e4ecbfaea3a374f812b77890d203a81e6aab238d`](https://github.com/medusajs/medusa/commit/e4ecbfaea3a374f812b77890d203a81e6aab238d) Thanks [@flatplanetpl](https://github.com/flatplanetpl)! - fix(caching-redis): avoid blocking Redis with KEYS during tag clears
+
+- Updated dependencies [[`0929b8d192833e10b6b91795f1ffc478938c3fb7`](https://github.com/medusajs/medusa/commit/0929b8d192833e10b6b91795f1ffc478938c3fb7), [`843dbfe7c8f27b732486c7a8da7b6d63f2fdf967`](https://github.com/medusajs/medusa/commit/843dbfe7c8f27b732486c7a8da7b6d63f2fdf967)]:
+  - @medusajs/framework@2.14.0
+
 ## 2.13.6
 
 ### Patch Changes

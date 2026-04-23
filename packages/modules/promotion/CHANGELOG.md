@@ -1,5 +1,14 @@
 # @medusajs/promotion
 
+## 2.14.0
+
+### Patch Changes
+
+- [#14939](https://github.com/medusajs/medusa/pull/14939) [`834553b311aa66b2f2f85131398badb0d6b55b13`](https://github.com/medusajs/medusa/commit/834553b311aa66b2f2f85131398badb0d6b55b13) Thanks [@pitzegluck](https://github.com/pitzegluck)! - fix(promotion): support fixed amount discount type in buy-get promotions
+
+- Updated dependencies [[`0929b8d192833e10b6b91795f1ffc478938c3fb7`](https://github.com/medusajs/medusa/commit/0929b8d192833e10b6b91795f1ffc478938c3fb7), [`843dbfe7c8f27b732486c7a8da7b6d63f2fdf967`](https://github.com/medusajs/medusa/commit/843dbfe7c8f27b732486c7a8da7b6d63f2fdf967)]:
+  - @medusajs/framework@2.14.0
+
 ## 2.13.6
 
 ### Patch Changes

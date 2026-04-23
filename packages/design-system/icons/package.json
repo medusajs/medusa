@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/icons",
-  "version": "2.13.6",
+  "version": "2.14.0",
   "description": "Medusa UI React icon library",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "license": "MIT",
@@ -28,7 +28,7 @@
     "generate": "yarn run -T rimraf ./src/components && toolbox icons -o './src/components'"
   },
   "devDependencies": {
-    "@medusajs/toolbox": "2.13.6",
+    "@medusajs/toolbox": "2.14.0",
     "react": "^19.2.5"
   },
   "peerDependencies": {

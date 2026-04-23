@@ -1,5 +1,25 @@
 # @medusajs/dashboard
 
+## 2.14.0
+
+### Patch Changes
+
+- [#14309](https://github.com/medusajs/medusa/pull/14309) [`843dbfe7c8f27b732486c7a8da7b6d63f2fdf967`](https://github.com/medusajs/medusa/commit/843dbfe7c8f27b732486c7a8da7b6d63f2fdf967) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(): upgrade zod to latest
+
+- [`22077f13bd4f0161697e8e9cc4b54004387778a7`](undefined) - fix(admin): handle null sales channel references in product list and detail views
+
+- [`bfe70fe540b8f3756e9e78e479b637a86d097a45`](undefined) - fix(dashboard): migrate return reasons list to new DataTable component
+
+- [`e5ad0c2302f644ee8edfadeae1c6e604ba3f437c`](undefined) - fix(dashboard): fix shadowed variable in variant media filters
+
+- [#15025](https://github.com/medusajs/medusa/pull/15025) [`2ae3978edb454efb0b647889071bd2b8349299f0`](https://github.com/medusajs/medusa/commit/2ae3978edb454efb0b647889071bd2b8349299f0) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,types): add metadata form to Stock Location
+
+- Updated dependencies [[`8d4724c4a1ea2e3e731d47a941600d41ab45816f`](https://github.com/medusajs/medusa/commit/8d4724c4a1ea2e3e731d47a941600d41ab45816f), [`6b5b045dcf8963c978767ec5ce7e03b82d59e105`](https://github.com/medusajs/medusa/commit/6b5b045dcf8963c978767ec5ce7e03b82d59e105), [`9757a6a8d19b3e819c43ae5a29f35c65fdce9c34`](https://github.com/medusajs/medusa/commit/9757a6a8d19b3e819c43ae5a29f35c65fdce9c34)]:
+  - @medusajs/js-sdk@2.14.0
+  - @medusajs/icons@2.14.0
+  - @medusajs/ui@4.1.7
+  - @medusajs/admin-shared@2.14.0
+
 ## 2.13.6
 
 ### Patch Changes

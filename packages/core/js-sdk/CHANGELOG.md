@@ -1,5 +1,13 @@
 # @medusajs/js-sdk
 
+## 2.14.0
+
+### Patch Changes
+
+- [#15037](https://github.com/medusajs/medusa/pull/15037) [`8d4724c4a1ea2e3e731d47a941600d41ab45816f`](https://github.com/medusajs/medusa/commit/8d4724c4a1ea2e3e731d47a941600d41ab45816f) Thanks [@pevey](https://github.com/pevey)! - fix(js-sdk): add explicit .js extensions to relative imports for ESM compliance
+
+- [#14850](https://github.com/medusajs/medusa/pull/14850) [`6b5b045dcf8963c978767ec5ce7e03b82d59e105`](https://github.com/medusajs/medusa/commit/6b5b045dcf8963c978767ec5ce7e03b82d59e105) Thanks [@asgerjensen](https://github.com/asgerjensen)! - chore(js-sdk): add methods to manage promotion codes
+
 ## 2.13.6
 
 ## 2.13.5
