@@ -24,7 +24,7 @@ Learn more about basic authentication flows in [this documentation](https://docs
 You can use this workflow within your customizations or your own custom workflows, allowing you to
 register or create user accounts within your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/user/workflows/create-user-account.ts#L52" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/user/workflows/create-user-account.ts#L52" />
 
 ## Examples
 
@@ -157,7 +157,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"CreateUserAccountWorkflowInput","type":"[CreateUserAccountWorkflowInput](../../../../types/core_flows.CreateUserAccountWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of the user account to create.","expandable":false,"children":[{"name":"authIdentityId","type":"`string`","description":"The ID of the auth identity to attach the user to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"userData","type":"[CreateUserDTO](../../../../../user/interfaces/user.CreateUserDTO/page.mdx)","description":"The details of the user to create.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"email","type":"`string`","description":"The email of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"The first name of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"The last name of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"The avatar URL of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createUserAccountWorkflow"/>
+<TypeList types={[{"name":"CreateUserAccountWorkflowInput","type":"[CreateUserAccountWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.CreateUserAccountWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CreateUserAccountWorkflowInput","type":"`object`","description":"The details of the user account to create.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createUserAccountWorkflow"/>
 
 ## Output
 

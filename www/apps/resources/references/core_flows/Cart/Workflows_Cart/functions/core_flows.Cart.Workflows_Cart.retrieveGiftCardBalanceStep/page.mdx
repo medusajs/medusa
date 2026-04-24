@@ -1,0 +1,41 @@
+---
+slug: /references/medusa-workflows/retrieveGiftCardBalanceStep
+sidebar_label: retrieveGiftCardBalanceStep
+sidebar_description: ""
+tags:
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# retrieveGiftCardBalanceStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `retrieveGiftCardBalanceStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step retrieves the balance of a single gift card from its associated store
+credit account. Returns a map of the gift card code to its account stats.
+
+## Example
+
+```ts
+const data = retrieveGiftCardBalanceStep({
+  storeCreditAccount: {
+    id: "sca_123",
+    balance: 100,
+    // other store credit account properties...
+  },
+  giftCard: {
+    id: "gc_123",
+    code: "GC-XXXX",
+    // other gift card properties...
+  },
+})
+```
+
+## Input
+
+<TypeList types={[{"name":"RetrieveGiftCardBalanceStepInput","type":"[RetrieveGiftCardBalanceStepInput](../../../../plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.RetrieveGiftCardBalanceStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"RetrieveGiftCardBalanceStepInput","type":"`object`","description":"Input to retrieve the balance of a single gift card from its associated store credit account.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="retrieveGiftCardBalanceStep"/>
+
+## Output
+
+<TypeList types={[{"name":"Record","type":"`Record<string, ModuleAccountStats>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"ModuleAccountStats","type":"`ModuleAccountStats`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="retrieveGiftCardBalanceStep"/>

@@ -23,7 +23,7 @@ you can delete custom records linked to the product colleciton.
 
 You can also use this workflow within your own custom workflows, allowing you to wrap custom logic around product-collection deletion.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/product/workflows/delete-collections.ts#L50" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/product/workflows/delete-collections.ts#L50" />
 
 ## Examples
 
@@ -136,7 +136,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"DeleteCollectionsWorkflowInput","type":"[DeleteCollectionsWorkflowInput](../../../../types/core_flows.DeleteCollectionsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to delete one or more product collections.","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"The IDs of the collections to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteCollectionsWorkflow"/>
+<TypeList types={[{"name":"DeleteCollectionsWorkflowInput","type":"[DeleteCollectionsWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.DeleteCollectionsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeleteCollectionsWorkflowInput","type":"`object`","description":"The data to delete one or more product collections.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteCollectionsWorkflow"/>
 
 ## Hooks
 
@@ -154,7 +154,7 @@ This hook is executed after the collections are deleted. You can consume this ho
 import { deleteCollectionsWorkflow } from "@medusajs/medusa/core-flows"
 
 deleteCollectionsWorkflow.hooks.collectionsDeleted(
-  (async ({ ids }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -164,7 +164,7 @@ deleteCollectionsWorkflow.hooks.collectionsDeleted(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Product.Workflows_Product/page.mdx#__type-15)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="collectionsDeleted"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Product.Workflows_Product/page.mdx#__type-15)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="collectionsDeleted"/>
 
 ## Emitted Events
 

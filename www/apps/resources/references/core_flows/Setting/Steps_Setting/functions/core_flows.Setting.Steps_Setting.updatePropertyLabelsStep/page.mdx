@@ -1,0 +1,48 @@
+---
+slug: /references/medusa-workflows/steps/updatePropertyLabelsStep
+sidebar_label: updatePropertyLabelsStep
+tags:
+  - settings
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# updatePropertyLabelsStep - Medusa Core Workflows Reference
+
+:::note
+
+To use this resource, make sure to [enable its feature flag: view_configurations](https://docs.medusajs.com/development/feature-flags/toggle)
+
+:::
+
+This documentation provides a reference to the `updatePropertyLabelsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+Workflow step to update property labels.
+
+:::note
+
+This is available starting from [Medusa v2.13.7](https://github.com/medusajs/medusa/releases/tag/v2.13.7).
+
+:::
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { updatePropertyLabelsStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = updatePropertyLabelsStep({})
+  }
+)
+```
+  
+
+## Input
+
+<TypeList types={[{"name":"UpdatePropertyLabelsStepInput","type":"[UpdatePropertyLabelsStepInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.UpdatePropertyLabelsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"UpdatePropertyLabelsStepInput","type":"`object`","description":"Input data for updating property labels step.","optional":false,"defaultValue":"","expandable":false,"children":[],"since":"2.13.7"}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="updatePropertyLabelsStep"/>
+
+## Output
+
+<TypeList types={[{"name":"PropertyLabelDTO[]","type":"[PropertyLabelDTO](../../../../../types/SettingsTypes/interfaces/types.SettingsTypes.PropertyLabelDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the property label.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity","type":"`string`","description":"The entity this label applies to (e.g., \"Order\", \"Product\").","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"property","type":"`string`","description":"The property path (e.g., \"display\\_id\", \"customer.email\").","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"label","type":"`string`","description":"Custom display name for the property.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"Optional description providing context about the property.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"The date the label was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"The date the label was last updated.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="updatePropertyLabelsStep"/>
