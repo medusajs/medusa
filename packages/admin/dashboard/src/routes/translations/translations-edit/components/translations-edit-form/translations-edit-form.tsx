@@ -20,12 +20,12 @@ import { useBatchTranslations } from "../../../../../hooks/api/translations"
 
 const EntityTranslationsSchema = z.object({
   id: z.string().nullish(),
-  fields: z.record(z.string().optional()),
+  fields: z.record(z.string(), z.string().optional()),
 })
 export type EntityTranslationsSchema = z.infer<typeof EntityTranslationsSchema>
 
 export const TranslationsFormSchema = z.object({
-  entities: z.record(EntityTranslationsSchema),
+  entities: z.record(z.string(), EntityTranslationsSchema),
 })
 export type TranslationsFormSchema = z.infer<typeof TranslationsFormSchema>
 
