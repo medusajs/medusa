@@ -62,6 +62,11 @@ export const RuleValueFormField = ({
 
   const { store, isLoading: isStoreLoading } = useStore()
 
+  const selectedValue =
+    typeof fieldRule.values === "string" && fieldRule.values
+      ? fieldRule.values
+      : undefined
+
   const comboboxData = useComboboxData({
     queryFn: async (params) => {
       return await sdk.admin.promotion.listRuleValues(
@@ -80,6 +85,7 @@ export const RuleValueFormField = ({
       !isStoreLoading,
     getOptions: (data) => data.values,
     queryKey: ["rule-value-options", ruleType, attribute?.id],
+    selectedValue,
   })
 
   const watchOperator = useWatch({
