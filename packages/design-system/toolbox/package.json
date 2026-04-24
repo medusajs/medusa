@@ -1,7 +1,7 @@
 {
   "name": "@medusajs/toolbox",
   "private": true,
-  "version": "2.14.0",
+  "version": "2.14.1",
   "description": "CLI tool for importing Figma designs for Medusa UI",
   "license": "MIT",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
