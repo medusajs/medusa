@@ -53,15 +53,11 @@ Refer to the [Build Medusa Application](!docs!/learn/build) guide for next steps
 
 ---
 
-## Build Medusa Admin
+### Change Admin Base Path
 
-By default, the Medusa Admin is built to the `.medusa/server/public/admin` directory.
+By default, the Medusa Admin dashboard is hosted at the `/app` path. You can change it with the `admin.path` configuration in `medusa-config.ts`.
 
-If you want a separate build to host the admin as a standalone application, such as on Vercel, pass the `--admin-only` option as explained in the [Options](#options) section. This outputs the admin to the `.medusa/admin` directory instead.
-
-<Note>
-
-When deploying the admin as a standalone application on a separate domain, it will be served at the path set in `admin.path` (default: `/app`). To serve it at the root instead, set `admin.path` to `/` in `medusa-config.ts`:
+For example, to serve it from the root path `/`:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
@@ -73,6 +69,4 @@ module.exports = defineConfig({
 })
 ```
 
-`/` is a valid value for `admin.path` — it is not a reserved path.
-
-</Note>
+The admin will now run at `/` of your application. For example, at `acme.com`.
