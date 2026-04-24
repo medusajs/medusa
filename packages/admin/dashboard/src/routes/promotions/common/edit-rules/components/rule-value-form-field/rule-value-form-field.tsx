@@ -62,10 +62,9 @@ export const RuleValueFormField = ({
 
   const { store, isLoading: isStoreLoading } = useStore()
 
-  const selectedValue =
-    typeof fieldRule.values === "string" && fieldRule.values
-      ? fieldRule.values
-      : undefined
+  const selectedValue = !Array.isArray(fieldRule.values)
+    ? fieldRule.values
+    : undefined
 
   const comboboxData = useComboboxData({
     queryFn: async (params) => {
