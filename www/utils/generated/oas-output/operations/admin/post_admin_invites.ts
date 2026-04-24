@@ -37,7 +37,6 @@
  *           roles:
  *             type: array
  *             description: The invited user's roles.
- *             x-featureFlag: rbac
  *             items:
  *               type: string
  *               title: roles

@@ -1431,6 +1431,20 @@
  *       type: boolean
  *       title: with_deleted
  *       description: Whether to include deleted records in the result.
+ *   - name: name
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: name
+ *           description: The draft order's name.
+ *         - type: array
+ *           description: The draft order's name.
+ *           items:
+ *             type: string
+ *             title: name
+ *             description: The name's details.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

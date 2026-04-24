@@ -613,6 +613,20 @@
  *       type: boolean
  *       title: with_deleted
  *       description: Whether to include deleted records in the result.
+ *   - name: name
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: name
+ *           description: The return's name.
+ *         - type: array
+ *           description: The return's name.
+ *           items:
+ *             type: string
+ *             title: name
+ *             description: The name's details.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
