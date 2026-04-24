@@ -23,6 +23,7 @@ import { acquireLockStep, releaseLockStep } from "../../locking"
 import {
   createLineItemsStep,
   getLineItemActionsStep,
+  updateCartsStep,
   updateLineItemsStep,
 } from "../steps"
 import { validateCartStep } from "../steps/validate-cart"
@@ -342,6 +343,8 @@ export const addToCartWorkflow = createWorkflow(
         additional_data: input.additional_data,
       },
     })
+
+    updateCartsStep([{ id: cart.id }])
 
     parallelize(
       emitEventStep({

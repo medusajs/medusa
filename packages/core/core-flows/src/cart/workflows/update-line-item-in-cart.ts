@@ -28,6 +28,7 @@ import { emitEventStep } from "../../common/steps/emit-event"
 import { deleteLineItemsWorkflow } from "../../line-item"
 import { updateLineItemsStepWithSelector } from "../../line-item/steps"
 import { acquireLockStep, releaseLockStep } from "../../locking"
+import { updateCartsStep } from "../steps"
 import { validateCartStep } from "../steps/validate-cart"
 import { validateVariantPricesStep } from "../steps/validate-variant-prices"
 import {
@@ -309,6 +310,8 @@ export const updateLineItemInCartWorkflow = createWorkflow(
         },
       })
     })
+
+    updateCartsStep([{ id: input.cart_id }])
 
     parallelize(
       releaseLockStep({
