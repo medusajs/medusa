@@ -75,19 +75,19 @@ npx create-medusa-app@latest
 
 You'll first be asked for the project's name. You can also optionally choose to install the [Next.js Starter Storefront](../../../../nextjs-starter/page.mdx).
 
-Afterwards, the installation process will start, which will install the Medusa application in a directory with your project's name. If you chose to install the Next.js starter, it'll be installed in a separate directory with the `{project-name}-storefront` name.
-
-<Note title="Why is the storefront installed separately?">
-
-The Medusa application is composed of a headless Node.js server and an admin dashboard. The storefront is installed or custom-built separately and connects to the Medusa application through its REST endpoints, called [API routes](!docs!/learn/fundamentals/api-routes). Learn more about Medusa's architecture in [this documentation](!docs!/learn/introduction/architecture).
-
-</Note>
+the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory. If you chose to install the Next.js Starter Storefront, it'll be in the `apps/storefront` directory.
 
 Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can login with the new user and explore the dashboard.
 
-<Note title="Ran to Errors?">
+<Note title="Ran into Errors?">
 
 Check out the [troubleshooting guides](../../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
+
+</Note>
+
+<Note>
+
+In this guide, all file paths of backend customizations are relative to the `apps/backend` directory of your Medusa project.
 
 </Note>
 
@@ -726,16 +726,16 @@ import createVendorWorkflow, {
   CreateVendorWorkflowInput,
 } from "../../workflows/marketplace/create-vendor"
 
-export const PostVendorCreateSchema = z.object({
+export const PostVendorCreateSchema = z.strictObject({
   name: z.string(),
   handle: z.string().optional(),
   logo: z.string().optional(),
-  admin: z.object({
+  admin: z.strictObject({
     email: z.string(),
     first_name: z.string().optional(),
     last_name: z.string().optional(),
-  }).strict(),
-}).strict()
+  }),
+})
 
 type RequestBody = z.infer<typeof PostVendorCreateSchema>
 

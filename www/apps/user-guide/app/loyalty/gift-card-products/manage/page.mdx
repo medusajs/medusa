@@ -1,0 +1,178 @@
+---
+sidebar_position: 1
+sidebar_label: "Manage Gift Card Products"
+tags:
+  - user guide
+  - loyalty
+products:
+  - loyalty
+---
+
+import { Prerequisites, InlineIcon, Kbd } from "docs-ui"
+import { EllipsisHorizontal, XMark } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Gift Card Products in Medusa Admin`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to create and manage gift card products in the Medusa Admin.
+
+<Prerequisites
+  items={[
+    {
+      text: "Loyalty plugin installed",
+      link: "!resources!/commerce-modules/loyalty#1-install-the-loyalty-plugin",
+    },
+  ]}
+/>
+
+## View Gift Card Products
+
+To view all gift card products in your store, go to **Gift Cards** > **Gift Card Products** from the sidebar.
+
+The list shows each product's name, thumbnail, sales channels, number of variants, and status.
+
+---
+
+## Create a Gift Card Product
+
+To create a new gift card product:
+
+1. Go to **Gift Cards** > **Gift Card Products** from the sidebar.
+2. Click the **Create** button at the top end of the table section.
+
+The form that opens has two steps: [Details](#1-gift-card-product-details) and [Prices](#2-gift-card-product-prices).
+
+### 1. Gift Card Product Details
+
+In the first step, fill in the gift card product's details:
+
+1. **Title:** Enter the product's name. Customers will see this name on the storefront.
+2. **Subtitle:** Optionally enter a short description that appears below the title on the storefront.
+3. **Handle**: Optionally enter a handle for the product. A handle is a URL-friendly identifier useful for SEO. If you don't enter a handle, one will be generated from the title.
+4. **Description**: Optionally enter a detailed description for the product. Customers will see this description on the storefront.
+5. **Media:** Upload images for the product.
+    - To make an image the thumbnail that represents the product, Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon on the image and choose **Make thumbnail**.
+    - To remove an image, click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon on the image and choose **Delete**.
+6. **Sales Channel(s)**: Click the **Edit** button to choose which [sales channels](../../../settings/sales-channels/page.mdx) the product is available in. By default, it's available in all sales channels.
+7. **Denominations**: Specify the preset gift card amounts that customers can choose from when purchasing. The gift card must have at least one denomination.
+    - To add a denomination, click the **Add denomination** button and enter the denomination's value.
+    - To remove a denomination, click the <InlineIcon Icon={XMark} alt="x" /> icon next to the denomination you want to remove.
+
+Once you're done, click the **Continue** button to proceed to the next step. You can also click the **Save as draft** button to save the product without publishing it. This allows you to come back and finish setting it up later.
+
+### 2. Gift Card Product Prices
+
+In the second step, you can set the price for each gift card denomination for every currency and region in your store using the [Bulk Editor](../../../tips/bulk-editor/page.mdx).
+
+Once you're done, click the **Create** button to create the product. You'll be taken to the new product's details page where you can view and manage its details.
+
+---
+
+## View Gift Card Product Details
+
+To view the details of a gift card product:
+
+1. Go to **Gift Cards** > **Gift Card Products** from the sidebar.
+2. Click on the product you want to view.
+
+The details page shows the product's details, denominations, sales channels, and media.
+
+---
+
+## Edit Product Details
+
+To edit a gift card product's general information:
+
+1. Go to **Gift Cards** > **Gift Card Products** from the sidebar.
+2. Click on the product you want to edit.
+3. In the first section, click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top end of the section.
+4. Choose **Edit** from the dropdown.
+5. In the side window that opens, you can update the product's status, title, subtitle, handle, and description.
+6. Once you're done, click the **Save** button.
+
+---
+
+## Edit Denominations
+
+To edit the available denominations for a gift card product:
+
+1. Go to the gift card product's details page.
+2. In the **Denominations** section, click the **Edit denominations** button.
+3. In the side window that opens, you can add, edit, or remove denominations:
+    - To add a denomination, click the **Add denomination** button and enter the denomination's value.
+    - To edit a denomination, update the value in the input field.
+    - To remove a denomination, click the <InlineIcon Icon={XMark} alt="x" /> icon next to the denomination you want to remove.
+4. Once you're done, click the **Save** button.
+
+---
+
+## Edit Denomination Pricing
+
+To edit the pricing for a gift card product's denominations:
+
+1. Go to the gift card product's details page.
+2. In the **Denominations** section, click the **Edit prices** button.
+
+This opens the Bulk Editor where you can set the price for each denomination for every currency and region in your store.
+
+Once you're done, click the **Save** button to save your changes.
+
+---
+
+## Manage Product Media
+
+To manage the images for a gift card product:
+
+1. Go to the gift card product's details page.
+2. In the **Media** section, click the **Edit** button.
+3. In the media form that opens:
+    - To add an image, drag and drop an image or click the upload area to select an image from your files.
+    - To make an image the thumbnail that represents the product:
+        - Hover over the image.
+        - Check the checkbox that appears on the top end of the image.
+        - Press <Kbd>T</Kbd> on your keyboard or click the **Make thumbnail** button at the bottom middle of the page.
+    - To remove an image:
+        - Hover over the image.
+        - Check the checkbox that appears on the top end of the image.
+        - Press <Kbd>D</Kbd> on your keyboard or click the **Delete** button at the bottom middle of the page.
+    - To re-arrange images, drag and drop them in the desired order.
+4. Once you're done, click the **Save** button.
+
+You can also delete an image directly from the media section by:
+
+- Hovering over the image.
+- Checking the checkbox that appears on the top end of the image.
+- Pressing <Kbd>D</Kbd> on your keyboard or clicking the **Delete** button at the bottom middle of the page.
+
+---
+
+## Manage Sales Channels
+
+To control which sales channels a gift card product is available in:
+
+1. Go to the gift card product's details page.
+2. In the **Sales Channels** section, click the **Edit** button.
+3. In the list that opens:
+    - Check the sales channels you want the product to be available in.
+    - Uncheck the sales channels you don't want the product to be available in.
+4. Once you're done, click the **Save** button.
+
+---
+
+## Delete a Gift Card Product
+
+<Note type="warning">
+
+Deleting a gift card product is permanent and cannot be undone. All associated gift cards will also be deleted.
+
+</Note>
+
+To delete a gift card product:
+
+1. Go to the gift card product's details page.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top end of the first section.
+3. Choose **Delete** from the dropdown.
+4. In the confirmation pop-up, click the **Delete** button to confirm.

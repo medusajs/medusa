@@ -20,7 +20,7 @@ such as [createOrderPaymentCollectionWorkflow](../core_flows.Order.Workflows_Ord
 You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
 creating or updating payment collections for an order.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/order/workflows/create-or-update-order-payment-collection.ts#L58" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/order/workflows/create-or-update-order-payment-collection.ts#L58" />
 
 ## Examples
 
@@ -137,10 +137,6 @@ const myWorkflow = createWorkflow(
 ## Steps
 
 <WorkflowDiagram workflow={{"name":"createOrUpdateOrderPaymentCollectionWorkflow","steps":[{"type":"step","name":"useQueryGraphStep","description":"This step fetches data across modules using the Query.\n\nLearn more in the [Query documentation](https://docs.medusajs.com/learn/fundamentals/module-links/query).","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.useQueryGraphStep/page.mdx","depth":1},{"type":"step","name":"useQueryGraphStep","description":"This step fetches data across modules using the Query.\n\nLearn more in the [Query documentation](https://docs.medusajs.com/learn/fundamentals/module-links/query).","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.useQueryGraphStep/page.mdx","depth":2},{"type":"step","name":"useQueryGraphStep","description":"This step fetches data across modules using the Query.\n\nLearn more in the [Query documentation](https://docs.medusajs.com/learn/fundamentals/module-links/query).","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.useQueryGraphStep/page.mdx","depth":3},{"type":"when","condition":"{\n        return (\n          !!existingPaymentCollection?.id &&\n          !shouldRecreate &&\n          MathBN.gte(amountPending, 0)\n        )\n      }","depth":"4","steps":[{"type":"step","name":"updatePaymentCollectionStep","description":"This step updates payment collections matching the specified filters.","link":"../../../../Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.updatePaymentCollectionStep/page.mdx","depth":4}]},{"type":"when","condition":"{\n        return (\n          (!existingPaymentCollection?.id || shouldRecreate) &&\n          MathBN.gt(amountPending, 0)\n        )\n      }","depth":"5","steps":[{"type":"workflow","name":"createOrderPaymentCollectionWorkflow","description":"Create a payment collection for an order.","link":"../core_flows.Order.Workflows_Order.createOrderPaymentCollectionWorkflow/page.mdx","depth":5}]}]}} />
-
-## Input
-
-<TypeList types={[{"name":"order_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createOrUpdateOrderPaymentCollectionWorkflow"/>
 
 ## Output
 

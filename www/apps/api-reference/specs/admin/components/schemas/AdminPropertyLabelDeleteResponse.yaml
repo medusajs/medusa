@@ -1,0 +1,20 @@
+type: object
+description: The details of deleting a property label.
+x-schemaName: AdminPropertyLabelDeleteResponse
+required:
+  - id
+  - object
+  - deleted
+properties:
+  id:
+    type: string
+    title: id
+    description: The ID of the deleted property label.
+  object:
+    type: string
+    title: object
+    description: The type of the deleted object, which is `property_label`.
+  deleted:
+    type: boolean
+    title: deleted
+    description: Whether the property label was successfully deleted.

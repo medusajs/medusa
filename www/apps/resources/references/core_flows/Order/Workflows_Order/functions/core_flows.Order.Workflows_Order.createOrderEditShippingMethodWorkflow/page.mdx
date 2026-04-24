@@ -27,7 +27,7 @@ If you use this workflow in another, you must acquire a lock before running it a
 
 :::
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/order/workflows/order-edit/create-order-edit-shipping-method.ts#L154" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/order/workflows/order-edit/create-order-edit-shipping-method.ts#L154" />
 
 ## Examples
 
@@ -148,7 +148,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"CreateOrderEditShippingMethodWorkflowInput & AdditionalData","type":"[CreateOrderEditShippingMethodWorkflowInput](../../../../types/core_flows.CreateOrderEditShippingMethodWorkflowInput/page.mdx) & [AdditionalData](../../../../../types/HttpTypes/types/types.HttpTypes.AdditionalData/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CreateOrderEditShippingMethodWorkflowInput","type":"`object`","description":"The data to create a shipping method for an order edit.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"AdditionalData","type":"`object`","description":"Additional data, passed through the `additional_data` property accepted in HTTP\nrequests, that allows passing custom data and handle them in hooks.\n\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createOrderEditShippingMethodWorkflow"/>
+<TypeList types={[{"name":"CreateOrderEditShippingMethodWorkflowInput & AdditionalData","type":"[CreateOrderEditShippingMethodWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.CreateOrderEditShippingMethodWorkflowInput/page.mdx) & [AdditionalData](../../../../../types/HttpTypes/types/types.HttpTypes.AdditionalData/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CreateOrderEditShippingMethodWorkflowInput","type":"`object`","description":"The data to create a shipping method for an order edit.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"AdditionalData","type":"`object`","description":"Additional data, passed through the `additional_data` property accepted in HTTP\nrequests, that allows passing custom data and handle them in hooks.\n\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createOrderEditShippingMethodWorkflow"/>
 
 ## Output
 
@@ -203,7 +203,7 @@ Learn more about prices calculation context in the [Prices Calculation](https://
 import { createOrderEditShippingMethodWorkflow } from "@medusajs/medusa/core-flows"
 
 createOrderEditShippingMethodWorkflow.hooks.setPricingContext(
-  (async ({ order, shipping_option_id, additional_data }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -213,4 +213,4 @@ createOrderEditShippingMethodWorkflow.hooks.setPricingContext(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Order.Workflows_Order/page.mdx#__type-12)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"order","type":"[OrderDTO](../../../../../fulfillment/interfaces/fulfillment.OrderDTO/page.mdx)","description":"The order details.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_option_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"additional_data","type":"`Record<string, unknown> | undefined`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="setPricingContext"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Order.Workflows_Order/page.mdx#__type-12)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="setPricingContext"/>

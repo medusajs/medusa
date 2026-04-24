@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/orchestration",
-  "version": "2.14.0",
+  "version": "2.14.1",
   "description": "Medusa utilities to orchestrate modules",
   "main": "dist/index.js",
   "exports": {
@@ -26,11 +26,11 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "2.14.0"
+    "@medusajs/types": "2.14.1"
   },
   "dependencies": {
-    "@medusajs/deps": "2.14.0",
-    "@medusajs/utils": "2.14.0",
+    "@medusajs/deps": "2.14.1",
+    "@medusajs/utils": "2.14.1",
     "ulid": "^2.3.0"
   },
   "scripts": {

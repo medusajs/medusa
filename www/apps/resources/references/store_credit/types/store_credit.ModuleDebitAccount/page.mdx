@@ -1,0 +1,13 @@
+---
+displayed_sidebar: storeCreditReference
+---
+
+import { TypeList } from "docs-ui"
+
+# ModuleDebitAccount
+
+ **ModuleDebitAccount**: `Object`
+
+The data required to debit a store credit account.
+
+<TypeList types={[{"name":"account_id","type":"`string`","description":"The ID of the store credit account to debit.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberValue](../store_credit.BigNumberValue/page.mdx)","description":"The amount to debit.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../store_credit.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"reference","type":"`string`","description":"The resource type this debit references (for example, \"cart\", \"order\").","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string`","description":"The ID of the referenced resource.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"note","type":"`string`","description":"An optional note describing the debit.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="ModuleDebitAccount"/>

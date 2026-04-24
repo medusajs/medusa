@@ -1,5 +1,7 @@
 # @medusajs/http-types-generator
 
+## 2.14.1
+
 ## 2.14.0
 
 ### Patch Changes

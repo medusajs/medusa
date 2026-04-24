@@ -1,5 +1,17 @@
 # @medusajs/dashboard
 
+## 2.14.1
+
+### Patch Changes
+
+- [#15194](https://github.com/medusajs/medusa/pull/15194) [`8797afff772b7bf8d86a1e689ef1285e51a92576`](https://github.com/medusajs/medusa/commit/8797afff772b7bf8d86a1e689ef1285e51a92576) Thanks [@ornakash](https://github.com/ornakash)! - fix(dashboard): use two-arg z.record in add-currencies and translations forms for Zod v4 compatibility
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.14.1
+  - @medusajs/js-sdk@2.14.1
+  - @medusajs/icons@2.14.1
+  - @medusajs/ui@4.1.8
+
 ## 2.14.0
 
 ### Patch Changes

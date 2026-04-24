@@ -1,5 +1,12 @@
 # @medusajs/notification-local
 
+## 2.14.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.14.1
+
 ## 2.14.0
 
 ### Patch Changes

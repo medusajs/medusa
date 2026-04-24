@@ -195,8 +195,8 @@ tags:
 
       <Note>
 
-      Gift Card routes are only available for Cloud users using the [Loyalty
-      Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
+      Gift Card routes are only available through the [Loyalty
+      Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
 
       </Note>
     x-associatedSchema:
@@ -479,6 +479,9 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/promotion/concepts
     x-associatedSchema:
       $ref: ./components/schemas/AdminPromotion.yaml
+  - name: Property Labels
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminPropertyLabel.yaml
   - name: Refund Reasons
     description: >
       A refund reason is a possible reason used when issuing a refund to the
@@ -1090,6 +1093,12 @@ paths:
     $ref: paths/admin_promotions_{id}_target-rules_batch.yaml
   /admin/promotions/{id}/{rule_type}:
     $ref: paths/admin_promotions_{id}_{rule_type}.yaml
+  /admin/property-labels:
+    $ref: paths/admin_property-labels.yaml
+  /admin/property-labels/batch:
+    $ref: paths/admin_property-labels_batch.yaml
+  /admin/property-labels/{id}:
+    $ref: paths/admin_property-labels_{id}.yaml
   /admin/refund-reasons:
     $ref: paths/admin_refund-reasons.yaml
   /admin/refund-reasons/{id}:
@@ -1168,6 +1177,8 @@ paths:
     $ref: paths/admin_store-credit-accounts.yaml
   /admin/store-credit-accounts/{id}:
     $ref: paths/admin_store-credit-accounts_{id}.yaml
+  /admin/store-credit-accounts/{id}/credit:
+    $ref: paths/admin_store-credit-accounts_{id}_credit.yaml
   /admin/store-credit-accounts/{id}/transactions:
     $ref: paths/admin_store-credit-accounts_{id}_transactions.yaml
   /admin/stores:
@@ -1212,6 +1223,8 @@ paths:
     $ref: paths/admin_users_me.yaml
   /admin/users/{id}:
     $ref: paths/admin_users_{id}.yaml
+  /admin/views/entities:
+    $ref: paths/admin_views_entities.yaml
   /admin/views/{entity}/columns:
     $ref: paths/admin_views_{entity}_columns.yaml
   /admin/views/{entity}/configurations:

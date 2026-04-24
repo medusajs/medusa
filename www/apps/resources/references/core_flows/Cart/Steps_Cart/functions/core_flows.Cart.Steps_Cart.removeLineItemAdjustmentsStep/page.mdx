@@ -21,11 +21,7 @@ import { removeLineItemAdjustmentsStep } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = removeLineItemAdjustmentsStep({
-      "lineItemAdjustmentIdsToRemove": [
-        "{value}"
-      ]
-    })
+    const data = removeLineItemAdjustmentsStep({})
   }
 )
 ```
@@ -33,4 +29,4 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"RemoveLineItemAdjustmentsStepInput","type":"[RemoveLineItemAdjustmentsStepInput](../../../../interfaces/core_flows.RemoveLineItemAdjustmentsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of the line item adjustments to remove.","expandable":false,"children":[{"name":"lineItemAdjustmentIdsToRemove","type":"`string`[]","description":"The IDs of the line item adjustments to remove.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="removeLineItemAdjustmentsStep"/>
+<TypeList types={[{"name":"RemoveLineItemAdjustmentsStepInput","type":"[RemoveLineItemAdjustmentsStepInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.RemoveLineItemAdjustmentsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"RemoveLineItemAdjustmentsStepInput","type":"`object`","description":"The details of the line item adjustments to remove.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="removeLineItemAdjustmentsStep"/>

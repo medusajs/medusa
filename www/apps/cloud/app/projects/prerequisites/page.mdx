@@ -88,7 +88,7 @@ The Caching Module was introduced in [Medusa v2.11.0](https://github.com/medusaj
 
 This section covers the prerequisites for deploying your Medusa application (server and admin dashboard) along with a storefront to Cloud.
 
-Make sure to follow these steps in addition to the ones mentioned in the [previous section](#prerequisites-for-medusa-application-only).
+Make sure to follow these steps in addition to the ones mentioned in the [previous section](#prerequisites-for-medusa-application).
 
 <Note type="soon">
 
@@ -98,9 +98,9 @@ Storefront deployment is an experimental feature, and our team is actively worki
 
 ### Monorepo Setup
 
-To deploy your Medusa application along with a storefront, both projects must be set up in a monorepo structure.
+To deploy your Medusa application along with a storefront, both projects must be set up in a monorepo structure. If you've created your Medusa application after v2.14.0, it's already set up in a monorepo structure.
 
-To create a monorepo, you need:
+To create a monorepo for projects prior to v2.14.0, you need:
 
 1. Package manager: Cloud supports `npm`, `yarn` (v1, v3, and v4), and `pnpm` as package managers.
 2. Monorepo tool: You can use [turbo](https://turborepo.com/) or [nx](https://nx.dev/) to manage your monorepo.
