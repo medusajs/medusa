@@ -46,7 +46,7 @@ export const createGiftCardsStep = createStep(
       giftCards.map((gc) => gc.id)
     );
   },
-  async (ids: string[], { container }) => {
+  async (ids, { container }) => {
     if (!ids?.length) {
       return;
     }

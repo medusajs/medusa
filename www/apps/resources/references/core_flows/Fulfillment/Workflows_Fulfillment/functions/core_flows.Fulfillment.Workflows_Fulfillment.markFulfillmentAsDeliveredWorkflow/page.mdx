@@ -15,7 +15,7 @@ import { TypeList, WorkflowDiagram } from "docs-ui"
 
 This documentation provides a reference to the `markFulfillmentAsDeliveredWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
 
-This workflow marks a fulfillment as delivered. It's used by the markOrderFulfillmentAsDeliveredWorkflow.
+This workflow marks a fulfillment as delivered. It's used by the [markOrderFulfillmentAsDeliveredWorkflow](../../../../Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.markOrderFulfillmentAsDeliveredWorkflow/page.mdx).
 
 You can use this workflow within your customizations or your own custom workflows, allowing you
 to mark a fulfillment as delivered in your custom flows.
@@ -26,7 +26,7 @@ If you use this workflow in another, you must acquire a lock before running it a
 
 :::
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/fulfillment/workflows/mark-fulfillment-as-delivered.ts#L85" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/fulfillment/workflows/mark-fulfillment-as-delivered.ts#L85" />
 
 ## Examples
 
@@ -143,7 +143,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"MarkFulfillmentAsDeliveredInput","type":"[MarkFulfillmentAsDeliveredInput](../../../../types/core_flows.MarkFulfillmentAsDeliveredInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to mark a fulfillment as delivered.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The fulfillment's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="markFulfillmentAsDeliveredWorkflow"/>
+<TypeList types={[{"name":"MarkFulfillmentAsDeliveredInput","type":"[MarkFulfillmentAsDeliveredInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.MarkFulfillmentAsDeliveredInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"MarkFulfillmentAsDeliveredInput","type":"`object`","description":"The data to mark a fulfillment as delivered.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="markFulfillmentAsDeliveredWorkflow"/>
 
 ## Output
 

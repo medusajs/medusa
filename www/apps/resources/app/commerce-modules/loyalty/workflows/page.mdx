@@ -1,0 +1,189 @@
+import { ChildDocs, CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Loyalty Module Workflows`,
+}
+
+# {metadata.title}
+
+[Workflows](!docs!/learn/fundamentals/workflows) are a series of queries and actions, called steps, that complete a task. By using workflows, you benefit from features like data consistency and a reliable roll-back mechanism.
+
+The Loyalty Module provides workflows and steps to manage gift cards and their usage in carts. These are provided by the `@medusajs/loyalty-plugin` package.
+
+## Gift Card Management Workflows
+
+### Create Gift Cards Workflow
+
+Create new gift cards for customers or orders:
+
+```ts
+import { createGiftCardsWorkflow } from "@medusajs/loyalty-plugin"
+
+const { result } = await createGiftCardsWorkflow(container)
+  .run({
+    input: {
+      code: "GC-XXXX",
+      value: 100,
+      currency_code: "usd",
+      customer_id: "cust_123",
+      line_item_id: "litem_123",
+      expires_at: null,
+    },
+  })
+```
+
+### Update Gift Cards Workflow
+
+Update existing gift cards:
+
+```ts
+import { updateGiftCardsWorkflow } from "@medusajs/loyalty-plugin"
+
+const { result } = await updateGiftCardsWorkflow(container)
+  .run({
+    input: {
+      id: "gc_123",
+      value: 150,
+      status: "pending",
+    },
+  })
+```
+
+### Delete Gift Card Workflow
+
+Delete a gift card:
+
+```ts
+import { deleteGiftCardWorkflow } from "@medusajs/loyalty-plugin"
+
+await deleteGiftCardWorkflow(container)
+  .run({
+    input: {
+      id: "gc_123",
+    },
+  })
+```
+
+## Cart Integration Workflows
+
+### Add Gift Card to Cart
+
+Apply a gift card to a cart as a credit line:
+
+```ts
+import { addGiftCardToCartWorkflow } from "@medusajs/loyalty-plugin"
+
+await addGiftCardToCartWorkflow(container)
+  .run({
+    input: {
+      code: "GC-XXXX-XXXX",
+      cart_id: "cart_123",
+    },
+  })
+```
+
+### Remove Gift Card from Cart
+
+Remove a gift card from a cart:
+
+```ts
+import { removeGiftCardFromCartWorkflow } from "@medusajs/loyalty-plugin"
+
+await removeGiftCardFromCartWorkflow(container)
+  .run({
+    input: {
+      code: "GC-XXXX-XXXX",
+      cart_id: "cart_123",
+    },
+  })
+```
+
+### Refresh Cart Gift Cards
+
+Refresh gift card credit lines on a cart to account for balance or cart total changes:
+
+```ts
+import { refreshCartGiftCardsWorkflow } from "@medusajs/loyalty-plugin"
+
+await refreshCartGiftCardsWorkflow(container)
+  .run({
+    input: {
+      cart_id: "cart_123",
+    },
+  })
+```
+
+### Confirm Cart Credit Lines
+
+Confirm and debit gift card balances during checkout:
+
+```ts
+import { confirmCartCreditLinesWorkflow } from "@medusajs/loyalty-plugin"
+
+await confirmCartCreditLinesWorkflow(container)
+  .run({
+    input: {
+      cart_id: "cart_123",
+    },
+  })
+```
+
+## Order Integration Workflows
+
+### Link Gift Cards to Order
+
+Link gift cards to an order after purchase:
+
+```ts
+import { linkGiftCardsToOrderWorkflow } from "@medusajs/loyalty-plugin"
+
+await linkGiftCardsToOrderWorkflow(container)
+  .run({
+    input: {
+      order_id: "order_123",
+      gift_card_codes: ["GC-XXXX", "GC-YYYY"],
+    },
+  })
+```
+
+### Claim Gift Card
+
+Claim a gift card for a customer:
+
+```ts
+import { claimGiftCardWorkflow } from "@medusajs/loyalty-plugin"
+
+const { result } = await claimGiftCardWorkflow(container)
+  .run({
+    input: {
+      code: "GC-XXXX",
+      customer_id: "cust_123",
+    },
+  })
+```
+
+### Redeem Gift Card
+
+Redeem a gift card by debiting its balance:
+
+```ts
+import { redeemGiftCardWorkflow } from "@medusajs/loyalty-plugin"
+
+const { result } = await redeemGiftCardWorkflow(container)
+  .run({
+    input: {
+      code: "GC-XXXX",
+      amount: 50,
+      reference: "cart",
+      reference_id: "cart_123",
+    },
+  })
+```
+
+---
+
+## Reference Documentation
+
+For complete API references and additional workflows, refer to the [Medusa Core Workflows reference](/medusa-workflows-reference).
+
+<ChildDocs type="item" defaultItemsPerRow={2} />

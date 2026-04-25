@@ -22,10 +22,9 @@ import { refundPaymentsStep } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = refundPaymentsStep({
-      "payment_id": "{value}",
-      "amount": 22
-    })
+    const data = refundPaymentsStep([
+      {}
+    ])
   }
 )
 ```
@@ -33,7 +32,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"RefundPaymentsStepInput","type":"[RefundPaymentsStepInput](../../../../types/core_flows.RefundPaymentsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to refund one or more payments.","expandable":false,"children":[{"name":"payment_id","type":"`string`","description":"The ID of the payment to refund.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberInput](../../../../../types/types/types.BigNumberInput/page.mdx)","description":"The amount to refund.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"created_by","type":"`string`","description":"The ID of the user that refunded the payment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"note","type":"`string`","description":"The note to attach to the refund.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="refundPaymentsStep"/>
+<TypeList types={[{"name":"RefundPaymentsStepInput","type":"[RefundPaymentsStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.RefundPaymentsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"RefundPaymentsStepInput","type":"`object`[]","description":"The data to refund one or more payments.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="refundPaymentsStep"/>
 
 ## Output
 

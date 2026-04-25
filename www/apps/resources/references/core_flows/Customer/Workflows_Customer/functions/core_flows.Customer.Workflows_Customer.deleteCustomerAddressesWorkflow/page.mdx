@@ -28,7 +28,7 @@ relevant to that module.
 You can use this workflow within your customizations or your own custom workflows, allowing you to 
 delete customer addresses in your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/customer/workflows/delete-addresses.ts#L52" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/customer/workflows/delete-addresses.ts#L52" />
 
 ## Examples
 
@@ -149,7 +149,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"DeleteCustomerAddressesWorkflowInput","type":"[DeleteCustomerAddressesWorkflowInput](../../../../types/core_flows.DeleteCustomerAddressesWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of the addresses to delete.","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"The IDs of the addresses to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteCustomerAddressesWorkflow"/>
+<TypeList types={[{"name":"DeleteCustomerAddressesWorkflowInput","type":"[DeleteCustomerAddressesWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.DeleteCustomerAddressesWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeleteCustomerAddressesWorkflowInput","type":"`object`","description":"The details of the addresses to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteCustomerAddressesWorkflow"/>
 
 ## Hooks
 
@@ -167,7 +167,7 @@ This hook is executed after the addresses are deleted. You can consume this hook
 import { deleteCustomerAddressesWorkflow } from "@medusajs/medusa/core-flows"
 
 deleteCustomerAddressesWorkflow.hooks.addressesDeleted(
-  (async ({ ids }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -177,4 +177,4 @@ deleteCustomerAddressesWorkflow.hooks.addressesDeleted(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Customer.Workflows_Customer/page.mdx#__type-2)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="addressesDeleted"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Customer.Workflows_Customer/page.mdx#__type-2)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="addressesDeleted"/>

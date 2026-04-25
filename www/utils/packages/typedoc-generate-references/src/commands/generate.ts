@@ -19,9 +19,16 @@ export default async function generate(
 ) {
   const references = names.includes("all") ? allReferences : names
 
-  if (references.includes("core-flows")) {
-    await import("@medusajs/core-flows")
-    await import("@medusajs/loyalty-plugin/workflows")
+  try {
+    if (references.includes("core-flows")) {
+      await import("@medusajs/core-flows")
+      await import("@medusajs/loyalty-plugin/workflows")
+    }
+  } catch (e) {
+    console.warn(
+      chalk.bgYellow("Warning: ") +
+        "Couldn't load @medusajs/core-flows or @medusajs/loyalty-plugin. Make sure to have them installed if you want to generate references for core flows or loyalty workflows."
+    )
   }
 
   for (const referenceName of references) {

@@ -9,9 +9,8 @@
  *   - options
  *   - images
  *   - title
- *   - status
- *   - length
  *   - id
+ *   - status
  *   - created_at
  *   - updated_at
  *   - subtitle
@@ -21,6 +20,7 @@
  *   - is_giftcard
  *   - width
  *   - weight
+ *   - length
  *   - height
  *   - origin_country
  *   - hs_code

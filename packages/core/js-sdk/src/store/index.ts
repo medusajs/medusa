@@ -750,6 +750,86 @@ export class Store {
         }
       )
     },
+
+
+    /**
+     * This method adds promotion codes to a cart. It sends a request to the
+     * [Add Promotion Code](https://docs.medusajs.com/api/store#carts_postcartsidpromotions) API route.
+     *
+     * Related guide: [How to apply promotions to cart in the storefront](https://docs.medusajs.com/resources/storefront-development/cart/manage-items).
+     *
+     * @param cartId - The cart's ID.
+     * @param body - The details of the promotion codes to add.
+     * @param query - Configure the fields to retrieve in the cart.
+     * @param headers - Headers to pass in the request.
+     * @returns The cart's details.
+     *
+     * @example
+     * sdk.store.cart.addPromotions("cart_123", {
+     *   promo_codes: ["20OFF"]
+     * })
+     * .then(({ cart }) => {
+     *   console.log(cart)
+     * })
+     *
+     * @since 2.13.7
+     */
+    addPromotions: async (
+      cartId: string,
+      body: HttpTypes.StoreCartAddPromotion,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.StoreCartResponse>(
+        `/store/carts/${cartId}/promotions`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
+    },
+
+    /**
+     * This method removes promotion codes from a cart. It sends a request to the
+     * [Remove Promotion Code](https://docs.medusajs.com/api/store#carts_deletecartsidpromotions) API route.
+     *
+     * Related guide: [How to apply promotions to cart in the storefront](https://docs.medusajs.com/resources/storefront-development/cart/manage-items).
+     *
+     * @param cartId - The cart's ID.
+     * @param body - The details of the promotion codes to remove.
+     * @param query - Configure the fields to retrieve in the cart.
+     * @param headers - Headers to pass in the request.
+     * @returns The cart's details.
+     *
+     * @example
+     * sdk.store.cart.removePromotions("cart_123", {
+     *   promo_codes: ["20OFF"]
+     * })
+     * .then(({ cart }) => {
+     *   console.log(cart)
+     * })
+     *
+     * @since 2.13.7
+     */
+    removePromotions: async (
+      cartId: string,
+      body: HttpTypes.StoreCartRemovePromotion,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.StoreCartResponse>(
+        `/store/carts/${cartId}/promotions`,
+        {
+          method: "DELETE",
+          headers,
+          body,
+          query,
+        }
+      )
+    },
+    
     /**
      * This method completes a cart and places the order. It's the last step of the checkout flow.
      * The method sends a request to the [Complete Cart](https://docs.medusajs.com/api/store#carts_postcartsidcomplete)
