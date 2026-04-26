@@ -34,7 +34,7 @@ If you use this workflow in another, you must acquire a lock before running it a
 
 :::
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/cart/workflows/add-shipping-method-to-cart.ts#L83" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/cart/workflows/add-shipping-method-to-cart.ts#L83" />
 
 ## Examples
 
@@ -191,7 +191,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"AddShippingMethodToCartWorkflowInput & AdditionalData","type":"[AddShippingMethodToCartWorkflowInput](../../../../interfaces/core_flows.AddShippingMethodToCartWorkflowInput/page.mdx) & [AdditionalData](../../../../../types/HttpTypes/types/types.HttpTypes.AdditionalData/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AddShippingMethodToCartWorkflowInput","type":"[AddShippingMethodToCartWorkflowInput](../../../../interfaces/core_flows.AddShippingMethodToCartWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to add a shipping method to a cart.","expandable":false,"children":[{"name":"cart_id","type":"`string`","description":"The ID of the cart to add the shipping method to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`object`[]","description":"The shipping options to create the shipping methods from and add to the cart.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the shipping option.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"Custom data useful for the fulfillment provider processing the shipping option or method.\n\nLearn more in [this documentation](https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property).","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"AdditionalData","type":"[AdditionalData](../../../../../types/HttpTypes/types/types.HttpTypes.AdditionalData/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"additional_data","type":"`Record<string, unknown>`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\n\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="addShippingMethodToCartWorkflow"/>
+<TypeList types={[{"name":"AddShippingMethodToCartWorkflowInput & AdditionalData","type":"[AddShippingMethodToCartWorkflowInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.AddShippingMethodToCartWorkflowInput/page.mdx) & [AdditionalData](../../../../../types/HttpTypes/types/types.HttpTypes.AdditionalData/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AddShippingMethodToCartWorkflowInput","type":"[AddShippingMethodToCartWorkflowInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.AddShippingMethodToCartWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AddShippingMethodToCartWorkflowInput","type":"`object`","description":"The data to add a shipping method to a cart.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"AdditionalData","type":"[AdditionalData](../../../../../types/HttpTypes/types/types.HttpTypes.AdditionalData/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"additional_data","type":"`Record<string, unknown>`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\n\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="addShippingMethodToCartWorkflow"/>
 
 ## Hooks
 
@@ -209,7 +209,7 @@ This hook is executed before all operations. You can consume this hook to perfor
 import { addShippingMethodToCartWorkflow } from "@medusajs/medusa/core-flows"
 
 addShippingMethodToCartWorkflow.hooks.validate(
-  (async ({ input, cart }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -219,7 +219,7 @@ addShippingMethodToCartWorkflow.hooks.validate(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Cart.Workflows_Cart/page.mdx#__type)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"input","type":"[AddShippingMethodToCartWorkflowInput](../../../../interfaces/core_flows.AddShippingMethodToCartWorkflowInput/page.mdx) & [AdditionalData](../../../../../types/HttpTypes/types/types.HttpTypes.AdditionalData/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"cart_id","type":"`string`","description":"The ID of the cart to add the shipping method to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`object`[]","description":"The shipping options to create the shipping methods from and add to the cart.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"additional_data","type":"`Record<string, unknown>`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\n\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"cart","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validate"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Cart.Workflows_Cart/page.mdx#__type)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validate"/>
 
 ## Emitted Events
 

@@ -16,10 +16,10 @@ import { TypeList, WorkflowDiagram } from "docs-ui"
 This documentation provides a reference to the `createUsersWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
 
 This workflow creates one or more users. It's used by other workflows, such
-as acceptInviteWorkflow to create a user for an invite.
+as [acceptInviteWorkflow](../../../../Invite/Workflows_Invite/functions/core_flows.Invite.Workflows_Invite.acceptInviteWorkflow/page.mdx) to create a user for an invite.
 
 You can attach an auth identity to each user to allow the user to log in using the
-setAuthAppMetadataStep. Learn more about auth identities in
+[setAuthAppMetadataStep](../../../../Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.setAuthAppMetadataStep/page.mdx). Learn more about auth identities in
 [this documentation](https://docs.medusajs.com/resources/commerce-modules/auth/auth-identity-and-actor-types).
 
 You can provide roles to be assigned to each user during creation.
@@ -27,7 +27,7 @@ You can provide roles to be assigned to each user during creation.
 You can use this workflow within your customizations or your own custom workflows, allowing you to
 create users within your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/user/workflows/create-users.ts#L45" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/user/workflows/create-users.ts#L45" />
 
 ## Examples
 
@@ -156,7 +156,7 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"createUsersWorkflow","steps":[{"type":"step","name":"createUsersStep","description":"This step creates one or more users. To allow these users to log in,\nyou must attach an auth identity to each user using the setAuthAppMetadataStep.","link":"../../../Steps_User/functions/core_flows.User.Steps_User.createUsersStep/page.mdx","depth":1},{"type":"step","name":"createRemoteLinkStep","description":"This step creates links between two records of linked data models.\n\nLearn more in the [Link documentation.](https://docs.medusajs.com/learn/fundamentals/module-links/link#create-link).","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.createRemoteLinkStep/page.mdx","depth":2},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":3}]}} />
+<WorkflowDiagram workflow={{"name":"createUsersWorkflow","steps":[{"type":"step","name":"createUsersStep","description":"This step creates one or more users. To allow these users to log in,\nyou must attach an auth identity to each user using the [setAuthAppMetadataStep](../../../../Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.setAuthAppMetadataStep/page.mdx).","link":"../../../Steps_User/functions/core_flows.User.Steps_User.createUsersStep/page.mdx","depth":1},{"type":"step","name":"createRemoteLinkStep","description":"This step creates links between two records of linked data models.\n\nLearn more in the [Link documentation.](https://docs.medusajs.com/learn/fundamentals/module-links/link#create-link).","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.createRemoteLinkStep/page.mdx","depth":2},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":3}]}} />
 
 ## Input
 

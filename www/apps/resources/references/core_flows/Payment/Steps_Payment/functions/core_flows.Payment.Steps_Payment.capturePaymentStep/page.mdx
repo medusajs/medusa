@@ -21,9 +21,7 @@ import { capturePaymentStep } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = capturePaymentStep({
-      "payment_id": "{value}"
-    })
+    const data = capturePaymentStep({})
   }
 )
 ```
@@ -31,7 +29,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"CapturePaymentStepInput","type":"[CapturePaymentStepInput](../../../../types/core_flows.CapturePaymentStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to capture a payment.","expandable":false,"children":[{"name":"payment_id","type":"`string`","description":"The ID of the payment to capture.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"captured_by","type":"`string`","description":"The ID of the user that captured the payment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberInput](../../../../../types/types/types.BigNumberInput/page.mdx)","description":"The amount to capture. If not provided, the full payment amount will be captured.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="capturePaymentStep"/>
+<TypeList types={[{"name":"CapturePaymentStepInput","type":"[CapturePaymentStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.CapturePaymentStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CapturePaymentStepInput","type":"`object`","description":"The data to capture a payment.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="capturePaymentStep"/>
 
 ## Output
 

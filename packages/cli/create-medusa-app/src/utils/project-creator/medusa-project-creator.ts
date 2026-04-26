@@ -7,6 +7,7 @@ import open from "open"
 import { EOL } from "os"
 import slugifyType from "slugify"
 import waitOn from "wait-on"
+import { promptClaudeCodePlugin } from "../claude-code-plugin.js"
 import { runCloneRepo } from "../clone-repo.js"
 import { isAbortError } from "../create-abort-controller.js"
 import { getDbClientAndCredentials, runCreateDb } from "../create-db.js"
@@ -63,6 +64,7 @@ export class MedusaProjectCreator
   private async initializeProject(): Promise<void> {
     const installNextjs =
       this.options.withNextjsStarter || (await askForNextjsStarter())
+    await promptClaudeCodePlugin()
 
     if (!this.options.skipDb) {
       await this.setupDatabase()

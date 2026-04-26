@@ -20,7 +20,7 @@ This workflow updates the shipping method of a return. It's used by the
 You can use this workflow within your customizations or your own custom workflows, allowing you
 to update the shipping method of a return in your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/order/workflows/return/update-return-shipping-method.ts#L169" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/order/workflows/return/update-return-shipping-method.ts#L169" />
 
 ## Examples
 
@@ -204,7 +204,7 @@ Learn more about prices calculation context in the [Prices Calculation](https://
 import { updateReturnShippingMethodWorkflow } from "@medusajs/medusa/core-flows"
 
 updateReturnShippingMethodWorkflow.hooks.setPricingContext(
-  (async ({ order_return, order_change, additional_data }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -214,4 +214,4 @@ updateReturnShippingMethodWorkflow.hooks.setPricingContext(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Order.Workflows_Order/page.mdx#__type-15)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"order_return","type":"[ReturnDTO](../../../../../fulfillment/interfaces/fulfillment.ReturnDTO/page.mdx)","description":"The return details.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"order_change","type":"[OrderChangeDTO](../../../../../fulfillment/interfaces/fulfillment.OrderChangeDTO/page.mdx)","description":"The order change details.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"additional_data","type":"`Record<string, unknown> | undefined`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="setPricingContext"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Order.Workflows_Order/page.mdx#__type-15)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="setPricingContext"/>

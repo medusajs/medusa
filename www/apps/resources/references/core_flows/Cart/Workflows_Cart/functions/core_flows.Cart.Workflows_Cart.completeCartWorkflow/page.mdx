@@ -240,7 +240,7 @@ If you use this workflow in another, you must acquire a lock before running it a
 
 :::
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/cart/workflows/complete-cart.ts#L302" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/cart/workflows/complete-cart.ts#L302" />
 
 ## Examples
 
@@ -357,11 +357,11 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"CompleteCartWorkflowInput","type":"[CompleteCartWorkflowInput](../../../../types/core_flows.CompleteCartWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to complete a cart and place an order.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the cart to complete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="completeCartWorkflow"/>
+<TypeList types={[{"name":"CompleteCartWorkflowInput","type":"[CompleteCartWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.CompleteCartWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CompleteCartWorkflowInput","type":"`object`","description":"The data to complete a cart and place an order.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="completeCartWorkflow"/>
 
 ## Output
 
-<TypeList types={[{"name":"CompleteCartWorkflowOutput","type":"[CompleteCartWorkflowOutput](../../../../types/core_flows.CompleteCartWorkflowOutput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the order that was created.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="completeCartWorkflow"/>
+<TypeList types={[{"name":"CompleteCartWorkflowOutput","type":"[CompleteCartWorkflowOutput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.CompleteCartWorkflowOutput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CompleteCartWorkflowOutput","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="completeCartWorkflow"/>
 
 ## Hooks
 
@@ -379,7 +379,7 @@ This hook is executed before all operations. You can consume this hook to perfor
 import { completeCartWorkflow } from "@medusajs/medusa/core-flows"
 
 completeCartWorkflow.hooks.validate(
-  (async ({ input, cart }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -389,7 +389,7 @@ completeCartWorkflow.hooks.validate(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Cart.Workflows_Cart/page.mdx#__type-3)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"input","type":"[CompleteCartWorkflowInput](../../../../types/core_flows.CompleteCartWorkflowInput/page.mdx)","description":"The data to complete a cart and place an order.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the cart to complete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"cart","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validate"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Cart.Workflows_Cart/page.mdx#__type-3)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validate"/>
 
 ## Emitted Events
 

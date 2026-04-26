@@ -21,11 +21,7 @@ import { deleteOrderShippingMethods } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = deleteOrderShippingMethods({
-      "ids": [
-        "id_Yp7H0CMFBFCifPUv"
-      ]
-    })
+    const data = deleteOrderShippingMethods({})
   }
 )
 ```
@@ -33,7 +29,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"DeleteOrderShippingMethodsStepInput","type":"[DeleteOrderShippingMethodsStepInput](../../../../interfaces/core_flows.DeleteOrderShippingMethodsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of deleting order shipping methods.","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"The IDs of the order shipping methods to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteOrderShippingMethods"/>
+<TypeList types={[{"name":"DeleteOrderShippingMethodsStepInput","type":"[DeleteOrderShippingMethodsStepInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.DeleteOrderShippingMethodsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeleteOrderShippingMethodsStepInput","type":"`object`","description":"The details of deleting order shipping methods.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteOrderShippingMethods"/>
 
 ## Output
 

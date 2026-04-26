@@ -21,9 +21,7 @@ import { convertDraftOrderStep } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = convertDraftOrderStep({
-      "id": "id_vb8fRZvwC6Ag03JQV6"
-    })
+    const data = convertDraftOrderStep({})
   }
 )
 ```
@@ -31,7 +29,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"ConvertDraftOrderStepInput","type":"[ConvertDraftOrderStepInput](../../../../interfaces/core_flows.ConvertDraftOrderStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of the draft order to convert to an order.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the draft order to convert to an order.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="convertDraftOrderStep"/>
+<TypeList types={[{"name":"ConvertDraftOrderStepInput","type":"[ConvertDraftOrderStepInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.ConvertDraftOrderStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ConvertDraftOrderStepInput","type":"`object`","description":"The details of the draft order to convert to an order.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="convertDraftOrderStep"/>
 
 ## Output
 
