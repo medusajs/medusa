@@ -21,7 +21,14 @@ jest.mock("@aws-sdk/s3-request-presigner", () => ({
   getSignedUrl: jest.fn().mockResolvedValue("https://bucket.s3.amazonaws.com/signed"),
 }))
 
+jest.mock("@aws-sdk/lib-storage", () => ({
+  Upload: jest.fn().mockImplementation(() => ({
+    done: jest.fn().mockResolvedValue(undefined),
+  })),
+}))
+
 import { PutObjectCommand } from "@aws-sdk/client-s3"
+import { Upload } from "@aws-sdk/lib-storage"
 import { S3FileService } from "../s3-file"
 
 describe("S3FileService URL encoding", () => {
@@ -43,6 +50,7 @@ describe("S3FileService URL encoding", () => {
   beforeEach(() => {
     mockS3Send.mockClear()
     mockS3Send.mockResolvedValue({})
+    ;(Upload as jest.Mock).mockClear()
   })
 
   it("preserves path separators in upload() URLs (no %2F between prefix segments)", async () => {
@@ -106,5 +114,30 @@ describe("S3FileService URL encoding", () => {
 
     const command = mockS3Send.mock.calls[0][0] as InstanceType<typeof PutObjectCommand>
     expect(command.input.Key).toMatch(/^docs\/Q&A file-/)
+  })
+
+  it("preserves path separators in getUploadStream() URLs (no %2F) and encodes special characters in segments", async () => {
+    const service = new S3FileService({ logger } as any, {
+      ...baseOptions,
+      prefix: "uploads/2024/",
+    })
+
+    const { writeStream, promise, url } = await service.getUploadStream({
+      filename: "my document.jpg",
+      mimeType: "image/jpeg",
+      access: "public",
+    })
+
+    writeStream.end()
+    const result = await promise
+
+    expect(result.url).toBe(url)
+    expect(result.url).not.toContain("%2F")
+    expect(result.url).toContain("uploads/2024/")
+    expect(result.url).toMatch(/my%20document-[^/]+\.jpg$/)
+
+    expect(Upload).toHaveBeenCalledTimes(1)
+    const uploadArgs = (Upload as jest.Mock).mock.calls[0][0] as { params: { Key: string } }
+    expect(uploadArgs.params.Key).toMatch(/^uploads\/2024\/my document-/)
   })
 })
