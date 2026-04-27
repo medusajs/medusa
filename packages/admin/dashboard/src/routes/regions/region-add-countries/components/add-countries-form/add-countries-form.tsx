@@ -137,7 +137,7 @@ export const AddCountriesForm = ({ region }: AddCountriesFormProps) => {
         <RouteFocusModal.Body className="overflow-hidden">
           <_DataTable
             table={table}
-            columns={columns as any}
+            columns={columns}
             pageSize={PAGE_SIZE}
             count={count}
             search="autofocus"
