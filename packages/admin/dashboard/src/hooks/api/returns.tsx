@@ -330,14 +330,14 @@ export const useUpdateReturnShipping = (
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
     FetchError,
-    HttpTypes.AdminAddReturnShipping
+    HttpTypes.AdminUpdateReturnShipping
   >
 ) => {
   return useMutation({
     mutationFn: ({
       actionId,
       ...payload
-    }: HttpTypes.AdminAddReturnShipping & { actionId: string }) =>
+    }: HttpTypes.AdminUpdateReturnShipping & { actionId: string }) =>
       sdk.admin.return.updateReturnShipping(id, actionId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({

@@ -1,5 +1,5 @@
-import { OrderLineItemDTO } from "@medusajs/types"
+import { AdminOrderLineItem } from "@medusajs/types"
 
-export const getFulfillableQuantity = (item: OrderLineItemDTO) => {
+export const getFulfillableQuantity = (item: AdminOrderLineItem) => {
   return item.quantity - item.detail.fulfilled_quantity
 }

@@ -21,7 +21,9 @@ export const useFeatureFlag = (flag: keyof FeatureFlags): boolean => {
 export const useFeatureFlagContext = () => {
   const context = useContext(FeatureFlagContext)
   if (!context) {
-    throw new Error("useFeatureFlagContext must be used within FeatureFlagProvider")
+    throw new Error(
+      "useFeatureFlagContext must be used within FeatureFlagProvider"
+    )
   }
   return context
 }
@@ -30,8 +32,10 @@ interface FeatureFlagProviderProps {
   children: React.ReactNode
 }
 
-export const FeatureFlagProvider: React.FC<FeatureFlagProviderProps> = ({ children }) => {
-  const { data: flags = {}, isLoading, error } = useFeatureFlags()
+export const FeatureFlagProvider: React.FC<FeatureFlagProviderProps> = ({
+  children,
+}) => {
+  const { data: flags = {}, isLoading } = useFeatureFlags()
 
   const isFeatureEnabled = (flag: keyof FeatureFlags): boolean => {
     const enabled = flags[flag] === true
