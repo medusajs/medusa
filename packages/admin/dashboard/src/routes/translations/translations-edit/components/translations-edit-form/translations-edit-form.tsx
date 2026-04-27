@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminStoreLocale, HttpTypes } from "@medusajs/types"
-import { Button, Prompt, Select, toast, Text } from "@medusajs/ui"
+import { Button, Prompt, Select, toast, Text, Copy } from "@medusajs/ui"
 import { ColumnDef } from "@tanstack/react-table"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -278,11 +278,18 @@ function useTranslationsGridColumns({
             return null
           }
 
+          const content = entity[row.field_name]
+
           return (
             <DataGrid.ReadonlyCell color="normal" context={context} isMultiLine>
-              <Text className="text-ui-fg-subtle" weight="plus" size="small">
-                {entity[row.field_name]}
-              </Text>
+              <div className="flex w-full items-start justify-between gap-x-2">
+                <Text className="text-ui-fg-subtle" weight="plus" size="small">
+                  {content}
+                </Text>
+                {content && (
+                  <Copy content={content} className="text-ui-fg-muted" />
+                )}
+              </div>
             </DataGrid.ReadonlyCell>
           )
         },
