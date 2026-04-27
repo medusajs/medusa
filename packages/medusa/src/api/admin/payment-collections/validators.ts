@@ -28,9 +28,7 @@ export const AdminMarkPaymentCollectionPaid = z
 export type AdminInitializePaymentSessionType = z.infer<
   typeof AdminInitializePaymentSession
 >
-export const AdminInitializePaymentSession = z
-  .object({
-    provider_id: z.string(),
-    data: z.record(z.string(), z.unknown()).optional(),
-  })
-  .strict()
+export const AdminInitializePaymentSession = z.strictObject({
+  provider_id: z.string(),
+  data: z.record(z.string(), z.unknown()).optional(),
+})

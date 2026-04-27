@@ -34,7 +34,7 @@ medusaIntegrationTestRunner({
       }
     })
 
-    describe("POST /admin/payment-collections/:id/payment-sessions", () => {
+    describe("POST /store/payment-collections/:id/payment-sessions", () => {
       let region
       let product
       let cart

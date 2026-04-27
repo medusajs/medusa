@@ -14,7 +14,7 @@ export const POST = async (
   res: MedusaResponse<HttpTypes.AdminPaymentCollectionResponse>
 ) => {
   const { id } = req.params
-  const { provider_id, data } = req.body
+  const { provider_id, data } = req.validatedBody
 
   await createPaymentSessionsWorkflow(req.scope).run({
     input: {
