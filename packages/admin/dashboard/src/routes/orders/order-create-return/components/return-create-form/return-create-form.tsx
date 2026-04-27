@@ -363,7 +363,7 @@ export const ReturnCreateForm = ({
           items.map(async (_i) => {
             const item = itemsMap.get(_i.item_id)
 
-            if (!item?.variant_id || !item.product_id) {
+            if (!item?.variant_id || !item?.product_id) {
               return undefined
             }
             return (await sdk.admin.product.retrieveVariant(
