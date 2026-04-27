@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/analytics-local",
-  "version": "2.14.0",
+  "version": "2.14.1",
   "description": "Local analytics provider for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -25,10 +25,10 @@
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.14.0"
+    "@medusajs/framework": "2.14.1"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.14.0"
+    "@medusajs/framework": "2.14.1"
   },
   "keywords": [
     "medusa-plugin",
