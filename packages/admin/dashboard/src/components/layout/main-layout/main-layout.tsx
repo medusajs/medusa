@@ -107,8 +107,7 @@ const Header = () => {
 
   return (
     <div className="w-full p-3">
-    <DropdownMenu
-          dir={direction}>
+      <DropdownMenu dir={direction}>
         <DropdownMenu.Trigger
           disabled={!isLoaded}
           className={clx(
