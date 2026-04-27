@@ -18,9 +18,10 @@ import {
   getOrderFulfillmentStatus,
   getOrderPaymentStatus,
 } from "../../../../../lib/order-helpers"
+import { ExtendedOrder } from "../../constants"
 
 type OrderGeneralSectionProps = {
-  order: HttpTypes.AdminOrder
+  order: ExtendedOrder
 }
 
 export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
@@ -34,7 +35,7 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
     const res = await prompt({
       title: t("general.areYouSure"),
       description: t("orders.cancelWarning", {
-        id: `#${order.display_id}`,
+        id: `#${order.display_id}` as string,
       }),
       confirmText: t("actions.continue"),
       cancelText: t("actions.cancel"),
