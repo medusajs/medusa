@@ -11,9 +11,11 @@ import slugify from "slugify"
 import {
   CodePullRequest,
   CurrencyDollar,
+  EnvelopeContent,
   ServerStack,
   Shopping,
   Users,
+  Window,
   WIP,
 } from "@medusajs/icons"
 import { config } from "../../../config"
@@ -43,7 +45,7 @@ const featureLinks: Record<string, string> = {
   "environment variables": "/cloud/environments/environment-variables",
   "data import/export": "/cloud/database#importexport-database-dumps",
   logs: "/cloud/logs",
-  "multiple long-lived environments": "/cloud/environments/long-lived",
+  "unlimited long-lived environments": "/cloud/environments/long-lived",
   "long-lived environments (lle)": "/cloud/environments/long-lived",
   "preview environments (pe)": "/cloud/environments/preview",
   "cloud seats": "/cloud/organizations#view-organization-members",
@@ -60,15 +62,21 @@ const featureLinks: Record<string, string> = {
   "performance tuning": "/cloud/comparison#performance",
   "sla-backed uptime": "/cloud/comparison#high-availability",
   support: "/cloud/comparison#support",
+  "medusa cache": "/cloud/cache",
+  "hosting of monorepos": "/cloud/projects/prerequisites#monorepo-setup",
+  "custom domains": "/cloud/storefront#storefront-custom-domain",
+  "storefront previews": "/cloud/environments/preview",
 }
 
 const featureIcons: Record<string, React.FC> = {
   "Commerce features": Shopping,
   "Development Platform": CodePullRequest,
-  "Hosting & Deployment": ServerStack,
+  "Build & Deploy": ServerStack,
   "Compute & Resources": WIP,
   "Organization & Billing": CurrencyDollar,
-  "Medusa Support": Users,
+  "Enterprise Support": Users,
+  "Medusa Emails": EnvelopeContent,
+  Storefronts: Window,
 }
 
 // Helper function to render Block content (Sanity rich text)

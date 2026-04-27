@@ -1,5 +1,4 @@
 import { OrchestrationUtils } from "@medusajs/utils"
-import { type ZodSchema } from "@medusajs/deps/zod"
 import {
   CompensateFn,
   createStep,
@@ -9,6 +8,10 @@ import {
 import { StepResponse } from "./helpers"
 import { createStepHandler } from "./helpers/create-step-handler"
 import type { CreateWorkflowComposerContext } from "./type"
+
+type ZodLike<T = any> = {
+  parse(data: unknown): T
+}
 
 const NOOP_RESULT = Symbol.for("NOOP")
 
@@ -73,7 +76,7 @@ export function createHook<Name extends string, TInvokeInput, TInvokeOutput>(
   name: Name,
   hookInput: TInvokeInput,
   options: {
-    resultValidator?: ZodSchema<TInvokeOutput>
+    resultValidator?: ZodLike<TInvokeOutput>
   } = {}
 ): Hook<Name, TInvokeInput, TInvokeOutput> {
   const context = global[

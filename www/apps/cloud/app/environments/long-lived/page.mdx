@@ -1,4 +1,4 @@
-import { InlineIcon } from "docs-ui"
+import { InlineIcon, getOsShortcut, Kbd } from "docs-ui"
 import { EllipsisHorizontal, ChevronUpDown } from "@medusajs/icons"
 
 export const metadata = {
@@ -49,6 +49,12 @@ git push origin staging # push branch to remote
 ### Steps to Create a Long-Lived Environment
 
 To create a long-lived environment:
+
+<Note title="Tip">
+
+You can also navigate to the environment creation form from the [command palette](../../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, select **Create Environment**, then choose a project.
+
+</Note>
 
 1. In the [project's dashboard](../../projects/page.mdx#open-project-dashboard), click on the "Add environment" button at the top right.
 2. In the side window that opens:
@@ -186,11 +192,30 @@ Learn more in the [Logs guide](../../logs/page.mdx).
 
 ---
 
+## Monitor Environment Performance
+
+You can monitor the performance of your environment in the "Monitoring" section of the environment's dashboard. This includes monitoring HTTP requests, background jobs, and more.
+
+Learn more in the [Monitoring guide](../../monitoring/page.mdx).
+
+---
+
 ## Manage Environment Variables
 
 In the environment's "Settings" tab, you can manage the environment variables for the environment's Medusa application and storefront. Environment variables are key-value pairs that store sensitive information, such as API keys, or configurations that your application needs to run.
 
 Learn how to manage environment variables in the [Environment Variables](../environment-variables/page.mdx) guide.
+
+---
+
+## Manage Domains
+
+Your long-lived environment has two types of domains:
+
+- **Medusa-provided subdomains**: The default `medusajs.app` (backend) and `medusajs.site` (storefront) subdomains assigned to the environment. For example, `acme.medusajs.app` and `acme.medusajs.site`.
+- **Custom domains**: Your own domain names to serve the backend and storefront instead of the Medusa-provided subdomains. For example, `acme.com`.
+
+To update these domains, see the [Subdomains](../subdomains/page.mdx) and [Custom Domains](../custom-domains/page.mdx) guides.
 
 ---
 

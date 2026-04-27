@@ -4,7 +4,6 @@
  * summary: List Transactions
  * description: Retrieve a list of transactions in a store credit account. The transactions can be filtered by fields like FILTER FIELDS. The transactions can also be paginated.
  * x-authenticated: true
- * x-ignoreCleanup: true
  * parameters:
  *   - name: id
  *     in: path
@@ -350,6 +349,14 @@
  *       type: string
  *       title: q
  *       description: Search query to filter the transactions by their searchable fields.
+ *   - name: with_deleted
+ *     in: query
+ *     description: Whether to include deleted records in the result.
+ *     required: false
+ *     schema:
+ *       type: boolean
+ *       title: with_deleted
+ *       description: Whether to include deleted records in the result.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -382,9 +389,9 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-badges:
- *   - text: Cloud
+ *   - text: Loyalty Plugin
  *     description: |
- *       This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+ *       This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/store-credit).
  * 
 */
 

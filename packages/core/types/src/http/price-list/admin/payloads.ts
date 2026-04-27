@@ -3,7 +3,7 @@ import { PriceListStatus, PriceListType } from "../../../pricing"
 export interface AdminCreatePriceListPrice {
   /**
    * The price's currency code.
-   * 
+   *
    * @example
    * usd
    */
@@ -72,7 +72,7 @@ export interface AdminUpdatePriceListPrice {
   id: string
   /**
    * The price's currency code.
-   * 
+   *
    * @example
    * usd
    */

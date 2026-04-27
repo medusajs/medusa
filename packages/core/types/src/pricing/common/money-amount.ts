@@ -111,6 +111,34 @@ export interface UpdateMoneyAmountDTO {
 /**
  * @interface
  *
+ * The money amount to create or update.
+ */
+export interface UpsertMoneyAmountDTO {
+  /**
+   * The ID of the money amount.
+   */
+  id?: string
+  /**
+   * The currency code of this money amount.
+   */
+  currency_code?: string
+  /**
+   * The amount of this money amount.
+   */
+  amount?: BigNumberInput
+  /**
+   * The minimum quantity required to be purchased for this money amount to be applied.
+   */
+  min_quantity?: BigNumberInput | null
+  /**
+   * The maximum quantity required to be purchased for this money amount to be applied.
+   */
+  max_quantity?: BigNumberInput | null
+}
+
+/**
+ * @interface
+ *
  * Filters to apply on a money amount.
  */
 export interface FilterableMoneyAmountProps

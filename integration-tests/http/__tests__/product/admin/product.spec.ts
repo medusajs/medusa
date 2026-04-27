@@ -984,6 +984,71 @@ medusaIntegrationTestRunner({
 
 
 
+        it("returns a list of products filtered by variants[sku]", async () => {
+          const productWithSku = await api.post(
+            "/admin/products",
+            getProductFixture({
+              title: "Product with SKU",
+              shipping_profile_id: shippingProfile.id,
+              variants: [
+                {
+                  title: "Test variant",
+                  sku: "SKU1234567890123",
+                  prices: [{ currency_code: "usd", amount: 100 }],
+                  options: {
+                    size: "large",
+                    color: "green",
+                  },
+                },
+              ],
+            }),
+            adminHeaders
+          )
+
+          await api.post(
+            "/admin/products",
+            getProductFixture({
+              title: "Product with different SKU",
+              shipping_profile_id: shippingProfile.id,
+              variants: [
+                {
+                  title: "Test variant 2",
+                  sku: "SKU9876543210987",
+                  prices: [{ currency_code: "usd", amount: 150 }],
+                  options: {
+                    size: "large",
+                    color: "green",
+                  },
+                },
+              ],
+            }),
+            adminHeaders
+          )
+
+          const response = await api
+            .get("/admin/products?variants[sku]=SKU1234567890123", adminHeaders)
+            .catch((err) => {
+              console.log(err)
+            })
+
+          expect(response.status).toEqual(200)
+          expect(response.data.products).toHaveLength(1)
+          expect(response.data.products).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: productWithSku.data.product.id,
+                title: "Product with SKU",
+                variants: expect.arrayContaining([
+                  expect.objectContaining({
+                    sku: "SKU1234567890123",
+                  }),
+                ]),
+              }),
+            ])
+          )
+        })
+
+
         it("returns a list of products filtered by variants[ean]", async () => {
           const productWithEan = await api.post(
             "/admin/products",
@@ -1414,6 +1479,47 @@ medusaIntegrationTestRunner({
             }),
           ])
         })
+
+        it('should get product variants filtered by sku', async () => {
+          const payload = {
+            title: "Test product - 1",
+            handle: "test-1",
+            options: [{ title: "size", values: ["x", "l"] }],
+            shipping_profile_id: shippingProfile.id,
+            variants: [
+              {
+                title: "Custom inventory 1",
+                prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "x" },
+                sku: "sku-123",
+              },
+              {
+                title: "Custom inventory 2",
+                prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "l" },
+                sku: "sku-456",
+              },
+            ],
+          }
+
+          const product = (
+            await api.post(`/admin/products`, payload, adminHeaders)
+          ).data.product
+
+          const variants = (
+            await api.get(
+              `/admin/products/${product.id}/variants?sku=sku-123`,
+              adminHeaders
+            )
+          ).data.variants
+
+          expect(variants).toEqual([
+            expect.objectContaining({
+              title: "Custom inventory 1",
+              product_id: product.id,
+            }),
+          ])
+        });
 
         it("should get product variants filtered by manage_inventory", async () => {
           const payload = {

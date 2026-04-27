@@ -1,0 +1,12 @@
+type: object
+description: The details to update in a property label.
+x-schemaName: AdminUpdatePropertyLabel
+properties:
+  label:
+    type: string
+    title: label
+    description: The label of the property.
+  description:
+    type: string
+    title: description
+    description: The property label's description.

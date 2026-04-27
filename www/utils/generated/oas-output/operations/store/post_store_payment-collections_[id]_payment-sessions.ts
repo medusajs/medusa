@@ -7,11 +7,14 @@
  *   Initialize and add a payment session to a payment collection. This is used during checkout, where you create a payment collection for the cart, then initialize a payment session for the payment
  *   provider that the customer chooses.
  * 
- *   It's highly recommended to have an amount greater than `0` in the payment collection, as some payment providers, such as Stripe, require a non-zero amount to create a payment session. Otherwise, an error will be thrown on the payment provider's side.
+ *   It's highly recommended to have an amount greater than `0` in the payment collection, as some payment providers, such as Stripe, require a non-zero amount to create a payment session. Otherwise, an
+ *   error will be thrown on the payment provider's side.
  * 
- *   In cases where you want to create a payment session for a payment collection with an amount of `0`, you can use the Manual System Payment Provider instead of third-party payment providers. The Manual System Payment Provider is built into Medusa and allows you to create payment sessions without interacting with an external payment provider.
+ *   In cases where you want to create a payment session for a payment collection with an amount of `0`, you can use the Manual System Payment Provider instead of third-party payment providers. The
+ *   Manual System Payment Provider is built into Medusa and allows you to create payment sessions without interacting with an external payment provider.
  * 
- *   Make sure to configure the Manual System Payment Provider in your store's region. Learn more in the [Manage Region](https://docs.medusajs.com/user-guide/settings/regions#edit-region-details) user guide.
+ *   Make sure to configure the Manual System Payment Provider in your store's region. Learn more in the [Manage Region](https://docs.medusajs.com/user-guide/settings/regions#edit-region-details) user
+ *   guide.
  * externalDocs:
  *   url: https://docs.medusajs.com/resources/storefront-development/checkout/payment
  *   description: "Storefront guide: How to implement payment during checkout."
