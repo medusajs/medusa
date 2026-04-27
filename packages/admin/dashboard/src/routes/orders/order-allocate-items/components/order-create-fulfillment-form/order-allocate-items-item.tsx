@@ -264,7 +264,7 @@ export function OrderAllocateItemsItem({
                   <span className="text-ui-fg-subtle">{i.title}</span>
                   <span className="text-ui-fg-muted">
                     {t("orders.allocateItems.requires", {
-                      num: variant.inventory_items?.[ind].required_quantity,
+                      num: variant.inventory_items?.[ind]?.required_quantity,
                     })}
                   </span>
                 </div>
@@ -345,7 +345,7 @@ export function OrderAllocateItemsItem({
                     />
                     /{" "}
                     {item.quantity *
-                      (variant.inventory_items?.[ind].required_quantity ??
+                      (variant.inventory_items?.[ind]?.required_quantity ??
                         0)}{" "}
                     {t("fields.qty")}
                   </div>
