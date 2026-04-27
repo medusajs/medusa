@@ -1219,6 +1219,17 @@ get:
             type: boolean
             title: with_deleted
             description: Whether to include deleted variants.
+          sku:
+            oneOf:
+              - type: string
+                title: sku
+                description: Filter by an SKU.
+              - type: array
+                description: Filter by multiple SKUs.
+                items:
+                  type: string
+                  title: sku
+                  description: An SKU.
     - name: with_deleted
       in: query
       description: Whether to include deleted products.

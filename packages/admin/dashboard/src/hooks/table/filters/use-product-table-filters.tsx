@@ -53,7 +53,7 @@ export const useProductTableFilters = (
     }
   )
 
-  const isCategoryExcluded = exclude?.includes("categories")
+  // const isCategoryExcluded = exclude?.includes("categories")
 
   // const { product_categories } = useAdminProductCategories({
   //   limit: 1000,
@@ -64,7 +64,7 @@ export const useProductTableFilters = (
   //  enabled: !isCategoryExcluded,
   // })
 
-  const isCollectionExcluded = exclude?.includes("collections")
+  // const isCollectionExcluded = exclude?.includes("collections")
 
   // const { collections } = useAdminCollections(
   //   {

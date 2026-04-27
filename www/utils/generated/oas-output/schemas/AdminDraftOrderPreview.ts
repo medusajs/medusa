@@ -6,7 +6,6 @@
  * required:
  *   - return_requested_total
  *   - order_change
- *   - status
  *   - id
  *   - version
  *   - region_id
@@ -14,6 +13,7 @@
  *   - sales_channel_id
  *   - email
  *   - currency_code
+ *   - status
  *   - payment_collections
  *   - payment_status
  *   - fulfillment_status

@@ -45,7 +45,12 @@ export const useOrder = (
   id: string,
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<any, FetchError, any, QueryKey>,
+    UseQueryOptions<
+      HttpTypes.AdminOrderResponse,
+      FetchError,
+      HttpTypes.AdminOrderResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {

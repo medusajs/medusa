@@ -18,11 +18,7 @@ import { getExistingPriceListsPriceIdsStep } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = getExistingPriceListsPriceIdsStep({
-      "price_list_ids": [
-        "{value}"
-      ]
-    })
+    const data = getExistingPriceListsPriceIdsStep({})
   }
 )
 ```
@@ -30,8 +26,8 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"GetExistingPriceListsPriceIdsStepInput","type":"[GetExistingPriceListsPriceIdsStepInput](../../../../types/core_flows.GetExistingPriceListsPriceIdsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to retrieve the prices of price lists.","expandable":false,"children":[{"name":"price_list_ids","type":"`string`[]","description":"The IDs of the price lists to retrieve the prices for.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="getExistingPriceListsPriceIdsStep"/>
+<TypeList types={[{"name":"GetExistingPriceListsPriceIdsStepInput","type":"[GetExistingPriceListsPriceIdsStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.GetExistingPriceListsPriceIdsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"GetExistingPriceListsPriceIdsStepInput","type":"`object`","description":"The data to retrieve the prices of price lists.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="getExistingPriceListsPriceIdsStep"/>
 
 ## Output
 
-<TypeList types={[{"name":"GetExistingPriceListsPriceIdsStepOutput","type":"[GetExistingPriceListsPriceIdsStepOutput](../../../../types/core_flows.GetExistingPriceListsPriceIdsStepOutput/page.mdx)","optional":false,"defaultValue":"","description":"An object whose keys are price list IDs and values are arrays of its price IDs.","expandable":false,"children":[{"name":"GetExistingPriceListsPriceIdsStepOutput","type":"`Record<string, string[]>`","description":"An object whose keys are price list IDs and values are arrays of its price IDs.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="getExistingPriceListsPriceIdsStep"/>
+<TypeList types={[{"name":"GetExistingPriceListsPriceIdsStepOutput","type":"[GetExistingPriceListsPriceIdsStepOutput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.GetExistingPriceListsPriceIdsStepOutput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"GetExistingPriceListsPriceIdsStepOutput","type":"`Record<string, string[]>`","description":"An object whose keys are price list IDs and values are arrays of its price IDs.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="getExistingPriceListsPriceIdsStep"/>

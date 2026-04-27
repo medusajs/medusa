@@ -22,7 +22,7 @@ const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
     const data = createServiceZonesStep({
-      "name": "Thalia",
+      "name": "Zachery",
       "fulfillment_set_id": "{value}"
     })
   }
@@ -32,7 +32,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"CreateServiceZonesStepInput","type":"[CreateServiceZonesStepInput](../../../../types/core_flows.CreateServiceZonesStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The service zones to create.","expandable":false,"children":[{"name":"name","type":"`string`","description":"The name of the service zone.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillment_set_id","type":"`string`","description":"The associated fulfillment set's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"geo_zones","type":"(Omit&#60;[CreateCountryGeoZoneDTO](../../../../../fulfillment/interfaces/fulfillment.CreateCountryGeoZoneDTO/page.mdx), \"service_zone_id\"&#62; \\| Omit&#60;[CreateProvinceGeoZoneDTO](../../../../../fulfillment/interfaces/fulfillment.CreateProvinceGeoZoneDTO/page.mdx), \"service_zone_id\"&#62; \\| Omit&#60;[CreateCityGeoZoneDTO](../../../../../fulfillment/interfaces/fulfillment.CreateCityGeoZoneDTO/page.mdx), \"service_zone_id\"&#62; \\| Omit&#60;[CreateZipGeoZoneDTO](../../../../../fulfillment/interfaces/fulfillment.CreateZipGeoZoneDTO/page.mdx), \"service_zone_id\"&#62;)[]","description":"The geo zones associated with the service zone.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createServiceZonesStep"/>
+<TypeList types={[{"name":"CreateServiceZonesStepInput","type":"[CreateServiceZonesStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.CreateServiceZonesStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"name","type":"`string`","description":"The name of the service zone.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillment_set_id","type":"`string`","description":"The associated fulfillment set's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"geo_zones","type":"(Omit&#60;[CreateCountryGeoZoneDTO](../../../../../fulfillment/interfaces/fulfillment.CreateCountryGeoZoneDTO/page.mdx), \"service_zone_id\"&#62; \\| Omit&#60;[CreateProvinceGeoZoneDTO](../../../../../fulfillment/interfaces/fulfillment.CreateProvinceGeoZoneDTO/page.mdx), \"service_zone_id\"&#62; \\| Omit&#60;[CreateCityGeoZoneDTO](../../../../../fulfillment/interfaces/fulfillment.CreateCityGeoZoneDTO/page.mdx), \"service_zone_id\"&#62; \\| Omit&#60;[CreateZipGeoZoneDTO](../../../../../fulfillment/interfaces/fulfillment.CreateZipGeoZoneDTO/page.mdx), \"service_zone_id\"&#62;)[]","description":"The geo zones associated with the service zone.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createServiceZonesStep"/>
 
 ## Output
 

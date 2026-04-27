@@ -113,19 +113,19 @@ npx create-medusa-app@latest
 
 You'll first be asked for the project's name. You can also optionally choose to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx).
 
-Afterwards, the installation process will start, which will install the Medusa application in a directory with your project's name. If you chose to install the Next.js starter, it'll be installed in a separate directory with the `{project-name}-storefront` name.
-
-<Note title="Why is the storefront installed separately">
-
-The Medusa application is composed of a headless Node.js server and an admin dashboard. The storefront is installed or custom-built separately and connects to the Medusa application through its REST endpoints, called [API routes](!docs!/learn/fundamentals/api-routes). Learn more about Medusa's architecture in [this documentation](!docs!/learn/introduction/architecture).
-
-</Note>
+Afterwards, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory. If you chose to install the Next.js Starter Storefront, it'll be in the `apps/storefront` directory.
 
 Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
 
 <Note title="Ran into Errors">
 
 Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
+
+</Note>
+
+<Note>
+
+In this guide, all file paths of backend customizations are relative to the `apps/backend` directory of your Medusa project.
 
 </Note>
 
@@ -315,7 +315,7 @@ Learn more about migrations in [this documentation](!docs!/learn/fundamentals/mo
 
 </Note>
 
-Medusa's CLI tool generates the migrations for you. To generate a migration for the Quote Module, run the following command in your Medusa application's directory:
+Medusa's CLI tool generates the migrations for you. To generate a migration for the Quote Module, run the following command in your `apps/backend` directory:
 
 ```bash npx2yarn
 npx medusa db:generate quote
@@ -902,11 +902,9 @@ As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0),
 import { z } from "@medusajs/framework/zod"
 
 export type CreateQuoteType = z.infer<typeof CreateQuote>;
-export const CreateQuote = z
-  .object({
-    cart_id: z.string().min(1),
-  })
-  .strict()
+export const CreateQuote = z.strictObject({
+  cart_id: z.string().min(1),
+})
 ```
 
 You define a `CreateQuote` schema using Zod that specifies the `cart_id` parameter as a required string.
@@ -1421,7 +1419,6 @@ export const AdminGetQuoteParams = createFindParams({
   limit: 15,
   offset: 0,
 })
-  .strict()
 ```
 
 You define the `AdminGetQuoteParams` schema using the `createFindParams` utility from Medusa. The schema allows clients to specify query parameters such as:
