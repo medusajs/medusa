@@ -1,0 +1,480 @@
+import { Table, Note, CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `projects Command - Medusa Cloud CLI Reference`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to manage your Cloud projects using the CLI.
+
+## projects list
+
+List all projects in an organization.
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud projects list --organization org_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="With Environment Variables" value="env">
+
+  ```bash
+  # MC_ORGANIZATION_ID=org_123
+
+  mcloud projects list
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) to list projects from.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the `MC_ORGANIZATION_ID` environment variable, if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## projects get
+
+Retrieve a single project by its ID or handle. This is useful if you want to get more details about the project, such as its status or region.
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud projects get <project> --organization org_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="With Environment Variables" value="env">
+
+  ```bash
+  # MC_ORGANIZATION_ID=org_123
+
+  mcloud projects get <project>
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+Returns the following information:
+
+```bash
+ID:            <project-id>
+Name:          My Store
+Handle:        <project-handle>
+Status:        ready
+Region:        us-east-1
+Repository:    myuser/my-repo
+Root path:     /apps/backend
+Organization:  <organization-id>
+Created at:    2026-04-01T09:44:35.065Z
+```
+
+### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `project`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The ID or handle of the project to retrieve.
+
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) to get the project from.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the `MC_ORGANIZATION_ID` environment variable, if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## projects delete
+
+Delete a project by its ID or handle.
+
+<Note type="warning">
+
+Deleting a project is irreversible and removes all associated environments,
+deployments, and resources.
+
+</Note>
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud projects delete <project> --organization org_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="With Environment Variables" value="env">
+
+  ```bash
+  # MC_ORGANIZATION_ID=org_123
+
+  mcloud projects delete <project>
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `project`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The ID or handle of the project to delete.
+
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) to get the project from.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the `MC_ORGANIZATION_ID` environment variable, if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-y`, `--yes`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip the confirmation prompt. Use this in scripts and pipelines where
+      interactive input is not possible.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Find Project IDs and Handles
+
+Commands that operate on projects and environments require a project ID or handle. Use `projects list --json` to get machine-readable project data. Pipe the
+output to `jq` to extract IDs or handles for use in subsequent commands.
+
+To get the ID of the first project in the list:
+
+<CodeTabs group="os">
+  <CodeTab label="macOS / Linux" value="unix">
+
+  ```bash
+  export MC_PROJECT_HANDLE=$(
+    mcloud projects list --json \
+      | jq -r '.[0].id'
+  )
+  ```
+
+  </CodeTab>
+  <CodeTab label="Windows (PowerShell)" value="powershell">
+
+  ```powershell
+  $MC_PROJECT_HANDLE = (
+    mcloud projects list --json |
+    jq -r '.[0].id'
+  )
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+To get the handle of a project by name:
+
+<CodeTabs group="os">
+  <CodeTab label="macOS / Linux" value="unix">
+
+  ```bash
+  export MC_PROJECT_HANDLE=$(
+    mcloud projects list --json \
+      | jq -r '.[] | select(.name == "My Store") | .handle'
+  )
+  ```
+
+  </CodeTab>
+  <CodeTab label="Windows (PowerShell)" value="powershell">
+
+  ```powershell
+  $MC_PROJECT_HANDLE = (
+    mcloud projects list --json |
+    jq -r '.[] | select(.name == "My Store") | .handle'
+  )
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+Once set, you can omit the `--project` flag from all subsequent commands.
+
+---
+
+## Delete a Project Without Confirmation
+
+In automated cleanup scripts, use `--yes` to skip the interactive
+confirmation prompt:
+
+<Note type="warning">
+
+Deleting a project is irreversible and removes all associated environments,
+deployments, and resources.
+
+</Note>
+
+```bash
+mcloud projects delete old-project --yes
+```

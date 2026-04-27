@@ -188,6 +188,80 @@ export const generatedSidebars = [
         "loaded": true,
         "isPathHref": true,
         "type": "category",
+        "title": "CLI",
+        "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Installation",
+            "path": "/cli",
+            "hideFromChildItems": true,
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "login",
+            "path": "/cli/commands/login",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "signup",
+            "path": "/cli/commands/signup",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "organizations",
+            "path": "/cli/commands/organizations",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "projects",
+            "path": "/cli/commands/projects",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "environments",
+            "path": "/cli/commands/environments",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "logs",
+            "path": "/cli/commands/logs",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "logout",
+            "path": "/cli/commands/logout",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "category",
         "title": "Resources",
         "initialOpen": true,
         "children": [

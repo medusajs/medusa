@@ -1,0 +1,142 @@
+import { Table, Note } from "docs-ui"
+
+export const metadata = {
+  title: `login Command - Medusa Cloud CLI Reference`,
+}
+
+# {metadata.title}
+
+Authenticate with Cloud and store your credentials on disk. This is essential before running other Cloud CLI commands.
+
+```bash
+mcloud login
+```
+
+Running the command without options opens a browser window where you complete
+the login flow. After a successful login, your credentials are stored on your
+machine and reused automatically by subsequent CLI commands.
+
+{/* TODO check if this information will be updated */}
+
+When the `MC_TOKEN` environment variable is set, `mcloud login` cannot be
+called. The CLI rejects it because the environment variable takes
+precedence. Use `mcloud login` only when `MC_TOKEN` is not set.
+
+## Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-t <key>`, `--token <key>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A Cloud access key. Stores the key to disk without opening a browser.
+      Use this on developer machines or headless servers where you want
+      stored credentials. Either use this option or `MC_TOKEN` for 
+      non-interactive authentication.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text. Defaults to `false`.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Authenticate Locally
+
+After installing the CLI, run `mcloud login` without setting `MC_TOKEN`. A browser will open to login with your Cloud account. After you complete the login flow, your credentials are stored locally and used automatically by subsequent commands.
+
+```bash
+mcloud login
+```
+
+To log out, run [mcloud logout](../logout/page.mdx) to clear your credentials from disk.
+
+---
+
+## Non-Interactive Authentication
+
+If you don't have access to a browser, you prefer non-interactive authentication, or you're using the CLI in CI/CD pipelines and other automated environments, set the `MC_TOKEN`
+environment variable to your access key. The CLI reads it directly on every
+command invocation, and you do not need to call `mcloud login` at all.
+
+{/* TODO add link to access key documentation */}
+
+Cloud supports two types of access keys for non-interactive authentication.
+The type you use determines whether you need to pass `--organization` on
+commands that scope to an organization.
+
+- **Personal access key:** Generated from your account settings in the
+  Cloud dashboard. Grants access to every organization you belong to, so
+  you must specify which organization to target by passing `--organization`
+  (or setting `MC_ORGANIZATION_ID`) on every command that requires it.
+- **Organization access key:** Generated from an organization's settings
+  in the Cloud dashboard. Scoped to that specific organization, so
+  `--organization` is never required.
+
+```bash
+# Set once in your CI platform as a secret
+export MC_TOKEN=sk_123ABC
+# Then run commands as normal without passing --token or --organization (if using an organization access key)
+mcloud environments list --project my-store
+mcloud logs --project my-store --environment production --follow
+```
+
+### With a Personal Access Key
+
+Personal access keys require an organization ID. You can either set the `MC_ORGANIZATION_ID` environment variable or pass `--organization` on each command. Setting the environment variable is more convenient in CI/CD pipelines:
+
+```bash
+# Both personal access key and organization ID set as secrets in your CI platform
+export MC_TOKEN=sk_123ABC
+export MC_ORGANIZATION_ID=org_01ABC123
+
+mcloud environments list --project my-store
+mcloud logs --project my-store --environment production --follow
+
+# Change organization
+export MC_ORGANIZATION_ID=org_01DEF456
+mcloud environments list --project my-store
+```
+
+### With an Organization Access Key
+
+Organization access keys are already scoped to one organization, so you don't need to set `MC_ORGANIZATION_ID` or pass `--organization` on commands:
+
+```bash
+# Set organization access key as a secret in your CI platform
+export MC_TOKEN=sk_123ABC
+
+mcloud environments list --project my-store
+mcloud logs --project my-store --environment production --follow
+```
+
+### Logging Out of Non-Interactive Authentication
+
+To log out when using `MC_TOKEN`, unset the environment variable:
+
+```bash
+unset MC_TOKEN
+```
+
+Subsequent commands will fail until you either set `MC_TOKEN` again or run `mcloud login` to authenticate with a browser and store credentials on disk.

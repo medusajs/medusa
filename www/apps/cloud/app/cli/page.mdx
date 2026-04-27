@@ -1,0 +1,187 @@
+---
+generate_toc: true
+---
+
+import { Prerequisites, ChildDocs, Table, Note } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa Cloud CLI`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about the Medusa Cloud CLI, how to install it, and how to use it to manage your Cloud resources from the terminal.
+
+## What is the Medusa Cloud CLI?
+
+The Medusa Cloud CLI (`mcloud`) is a command-line tool for managing your Cloud resources (organizations, projects, environments, and logs) directly from your terminal. It provides the same capabilities as the Cloud dashboard but in a scriptable, AI-friendly form.
+
+Use the CLI when you want to:
+
+- Debug and manage your Cloud resources with AI-agents like Claude Code.
+- Automate tasks in CI/CD pipelines, such as fetching logs or managing environments.
+- Integrate Cloud management into your existing terminal workflows.
+
+---
+
+## Prerequisites
+
+<Prerequisites items={[
+  {
+    text: "Node.js v22+",
+    link: "https://nodejs.org/en/download"
+  }
+]} />
+
+---
+
+## Install
+
+Install the CLI globally using npm or your preferred package manager:
+
+```bash npm2yarn
+npm install @medusajs/mc -g
+```
+
+After installation, verify it is available by checking its version:
+
+```bash
+mcloud --version
+```
+
+---
+
+## Authenticate
+
+Before running any command that accesses Cloud resources, authenticate with your Cloud account:
+
+```bash
+mcloud login
+```
+
+This opens a browser window where you complete the login flow. Your credentials are stored locally and reused on subsequent commands.
+
+### Non-Interactive Authentication
+
+For CI/CD pipelines and automated environments where a browser is not available, either set the `MC_TOKEN` environment variable to your access key or pass the key directly to `mcloud login`:
+
+```bash
+# Method 1: Set environment variable
+export MC_TOKEN=sk_123ABC
+
+# Method 2: pass directly to login command
+mcloud login --token sk_123ABC
+```
+
+See the [login command](./commands/login/page.mdx) for more details on access keys and non-interactive authentication.
+
+---
+
+## Environment Variables
+
+The Cloud CLI supports environment variables for common flags to simplify usage in interactive and automated contexts. For example, you can set the `MC_ORGANIZATION_ID` environment variable to avoid passing `--organization` on every command that requires it.
+
+When you run a command that accepts these flags, the CLI checks for the corresponding environment variable and uses it if set. This allows you to configure your environment once and have it apply to all relevant commands.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Variable
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Flag Equivalent
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `MC_TOKEN`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Access key for non-interactive authentication.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `--token` on `mcloud login`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `MC_ORGANIZATION_ID`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The ID of the organization to use when running commands.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `-o`, `--organization`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `MC_PROJECT_HANDLE`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The ID or handle of the project to use.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `-p`, `--project`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `MC_ENVIRONMENT_HANDLE`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The ID or handle of the environment to use.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `-e`, `--environment`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## JSON Output
+
+Most commands accept a `--json` flag that prints the result as machine-readable
+JSON instead of formatted text. Use this when piping output to other tools:
+
+```bash
+mcloud organizations list --json
+```
+
+---
+
+## Commands
+
+<ChildDocs showItems={["CLI"]} hideTitle itemsPerRow={2} />

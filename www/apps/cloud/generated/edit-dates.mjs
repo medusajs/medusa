@@ -39,5 +39,13 @@ export const generatedEditDates = {
   "app/monitoring/http/page.mdx": "2026-04-22T14:42:22.622Z",
   "app/monitoring/page.mdx": "2026-04-17T09:53:24.133Z",
   "app/monitoring/servers/page.mdx": "2026-04-17T09:52:51.174Z",
-  "app/monitoring/workers/page.mdx": "2026-04-17T09:52:32.919Z"
+  "app/monitoring/workers/page.mdx": "2026-04-17T09:52:32.919Z",
+  "app/cli/commands/environments/page.mdx": "2026-04-24T07:12:43.372Z",
+  "app/cli/commands/login/page.mdx": "2026-04-23T11:41:16.199Z",
+  "app/cli/commands/logout/page.mdx": "2026-04-23T11:41:28.947Z",
+  "app/cli/commands/logs/page.mdx": "2026-04-24T07:14:04.264Z",
+  "app/cli/commands/organizations/page.mdx": "2026-04-23T13:24:42.520Z",
+  "app/cli/commands/projects/page.mdx": "2026-04-24T07:02:46.961Z",
+  "app/cli/commands/signup/page.mdx": "2026-04-24T07:15:31.040Z",
+  "app/cli/page.mdx": "2026-04-24T08:08:27.292Z"
 }

@@ -1,0 +1,117 @@
+import { Table, Note, CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `organizations Command - Medusa Cloud CLI Reference`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to manage your Cloud organizations using the CLI.
+
+## organizations list
+
+List all organizations your account has access to.
+
+<Note>
+
+If you're authenticated with an access key, you must be using
+a personal access key to use this command. Organization access keys do not have
+permissions to list organizations for a user.
+
+</Note>
+
+```bash
+mcloud organizations list
+```
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Find Organization ID
+
+Commands that operate on projects and environments require an organization ID
+when using a personal access key. To retrieve an organization ID, use `organizations list` with `--json`
+to extract the ID and set it as an environment variable for the rest of your
+session.
+
+For example, to set the `MC_ORGANIZATION_ID` environment variable to the ID of the first organization in the list:
+
+<CodeTabs group="os">
+  <CodeTab label="macOS / Linux" value="unix">
+
+  ```bash
+  export MC_ORGANIZATION_ID=$(
+    mcloud organizations list --json \
+      | jq -r '.[0].id'
+  )
+  ```
+
+  </CodeTab>
+  <CodeTab label="Windows (PowerShell)" value="powershell">
+
+  ```powershell
+  $env:MC_ORGANIZATION_ID = (
+    mcloud organizations list --json |
+    jq -r '.[0].id'
+  )
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+To set `MC_ORGANIZATION_ID` to the ID of an organization by its name:
+
+<CodeTabs group="os">
+  <CodeTab label="macOS / Linux" value="unix">
+
+  ```bash
+  export MC_ORGANIZATION_ID=$(
+    mcloud organizations list --json \
+      | jq -r '.[] | select(.name == "My Organization") | .id'
+  )
+  ```
+
+  </CodeTab>
+  <CodeTab label="Windows (PowerShell)" value="powershell">
+
+  ```powershell
+  $env:MC_ORGANIZATION_ID = (
+    mcloud organizations list --json |
+    jq -r '.[] | select(.name == "My Organization") | .id'
+  )
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+Once set, you can omit the `--organization` flag from all subsequent commands.
