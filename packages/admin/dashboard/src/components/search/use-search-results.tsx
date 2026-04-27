@@ -426,7 +426,13 @@ const useDynamicSearchResults = (
       .map(([key, response]) => {
         const area = key as SearchArea
         if (isAreaEnabled(currentArea, area) || currentArea === "all") {
-          return transformDynamicSearchResults(area, limit, t, response)
+          return transformDynamicSearchResults(
+            area,
+            limit,
+            t,
+            // Type assertion is valid since all requests pass pagination parameters and return a response with a count property
+            response as { count: number } | undefined
+          )
         }
         return null
       })
