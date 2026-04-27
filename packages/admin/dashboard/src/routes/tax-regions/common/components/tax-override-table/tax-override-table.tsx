@@ -66,7 +66,9 @@ export const TaxOverrideTable = ({
                 <DataTableSearch prefix={prefix} />
               </div>
               <DataTableOrderBy
-                keys={["name", "rate", "code", "updated_at", "created_at"]}
+                keys={
+                  ["name", "rate", "code", "updated_at", "created_at"] as any
+                }
                 prefix={prefix}
               />
             </div>
