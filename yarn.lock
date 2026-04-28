@@ -3509,10 +3509,12 @@ __metadata:
     "@tanstack/react-query": 5.64.2
     "@tanstack/react-table": 8.20.5
     "@tanstack/react-virtual": ^3.8.3
+    "@typescript/native-preview": ^7.0.0-dev.20260423.1
     "@uiw/react-json-view": ^2.0.0-alpha.17
     cmdk: ^0.2.0
     copy-to-clipboard: ^3.3.3
     date-fns: ^3.6.0
+    eslint: 8
     i18next: 23.7.11
     i18next-browser-languagedetector: 7.2.0
     i18next-http-backend: 2.4.2
@@ -3531,6 +3533,7 @@ __metadata:
     react-i18next: 13.5.0
     react-jwt: ^1.2.0
     react-router-dom: 6.30.3
+    typescript: 5.9.3
     zod: 4.2.0
   languageName: unknown
   linkType: soft
@@ -12513,6 +12516,87 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript/native-preview-darwin-arm64@npm:7.0.0-dev.20260423.1":
+  version: 7.0.0-dev.20260423.1
+  resolution: "@typescript/native-preview-darwin-arm64@npm:7.0.0-dev.20260423.1"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@typescript/native-preview-darwin-x64@npm:7.0.0-dev.20260423.1":
+  version: 7.0.0-dev.20260423.1
+  resolution: "@typescript/native-preview-darwin-x64@npm:7.0.0-dev.20260423.1"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@typescript/native-preview-linux-arm64@npm:7.0.0-dev.20260423.1":
+  version: 7.0.0-dev.20260423.1
+  resolution: "@typescript/native-preview-linux-arm64@npm:7.0.0-dev.20260423.1"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@typescript/native-preview-linux-arm@npm:7.0.0-dev.20260423.1":
+  version: 7.0.0-dev.20260423.1
+  resolution: "@typescript/native-preview-linux-arm@npm:7.0.0-dev.20260423.1"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@typescript/native-preview-linux-x64@npm:7.0.0-dev.20260423.1":
+  version: 7.0.0-dev.20260423.1
+  resolution: "@typescript/native-preview-linux-x64@npm:7.0.0-dev.20260423.1"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@typescript/native-preview-win32-arm64@npm:7.0.0-dev.20260423.1":
+  version: 7.0.0-dev.20260423.1
+  resolution: "@typescript/native-preview-win32-arm64@npm:7.0.0-dev.20260423.1"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@typescript/native-preview-win32-x64@npm:7.0.0-dev.20260423.1":
+  version: 7.0.0-dev.20260423.1
+  resolution: "@typescript/native-preview-win32-x64@npm:7.0.0-dev.20260423.1"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@typescript/native-preview@npm:^7.0.0-dev.20260423.1":
+  version: 7.0.0-dev.20260423.1
+  resolution: "@typescript/native-preview@npm:7.0.0-dev.20260423.1"
+  dependencies:
+    "@typescript/native-preview-darwin-arm64": 7.0.0-dev.20260423.1
+    "@typescript/native-preview-darwin-x64": 7.0.0-dev.20260423.1
+    "@typescript/native-preview-linux-arm": 7.0.0-dev.20260423.1
+    "@typescript/native-preview-linux-arm64": 7.0.0-dev.20260423.1
+    "@typescript/native-preview-linux-x64": 7.0.0-dev.20260423.1
+    "@typescript/native-preview-win32-arm64": 7.0.0-dev.20260423.1
+    "@typescript/native-preview-win32-x64": 7.0.0-dev.20260423.1
+  dependenciesMeta:
+    "@typescript/native-preview-darwin-arm64":
+      optional: true
+    "@typescript/native-preview-darwin-x64":
+      optional: true
+    "@typescript/native-preview-linux-arm":
+      optional: true
+    "@typescript/native-preview-linux-arm64":
+      optional: true
+    "@typescript/native-preview-linux-x64":
+      optional: true
+    "@typescript/native-preview-win32-arm64":
+      optional: true
+    "@typescript/native-preview-win32-x64":
+      optional: true
+  bin:
+    tsgo: bin/tsgo.js
+  checksum: f4624d9a4ad03c6d622eb32c1995c610816c811a7e2ea23e36ae743c733dea9900d5117d41a5fc40b0c5c24fbb2072a33e97803bc4d0069187f620126cc21c83
+  languageName: node
+  linkType: hard
+
 "@uiw/react-json-view@npm:^2.0.0-alpha.17":
   version: 2.0.0-alpha.39
   resolution: "@uiw/react-json-view@npm:2.0.0-alpha.39"
@@ -16845,7 +16929,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.40.0":
+"eslint@npm:8, eslint@npm:^8.40.0":
   version: 8.57.1
   resolution: "eslint@npm:8.57.1"
   dependencies:
@@ -27546,7 +27630,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.6.2, typescript@npm:^5.7.3":
+"typescript@npm:5.9.3, typescript@npm:^5.6.2, typescript@npm:^5.7.3":
   version: 5.9.3
   resolution: "typescript@npm:5.9.3"
   bin:
@@ -27556,7 +27640,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^5.6.2#~builtin<compat/typescript>, typescript@patch:typescript@^5.7.3#~builtin<compat/typescript>":
+"typescript@patch:typescript@5.9.3#~builtin<compat/typescript>, typescript@patch:typescript@^5.6.2#~builtin<compat/typescript>, typescript@patch:typescript@^5.7.3#~builtin<compat/typescript>":
   version: 5.9.3
   resolution: "typescript@patch:typescript@npm%3A5.9.3#~builtin<compat/typescript>::version=5.9.3&hash=7ad353"
   bin:
