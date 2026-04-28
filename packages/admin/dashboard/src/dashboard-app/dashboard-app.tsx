@@ -48,7 +48,7 @@ type DashboardAppProps = {
  * Example: /path/to/:id?
  * Such paths can be added to the menu items without the optional segment.
  */
-const OPTIONAL_LAST_SEGMENT_MATCH = /\/([^\/])+\?$/
+const OPTIONAL_LAST_SEGMENT_MATCH = /\/([^/])+\?$/
 
 export class DashboardApp {
   private widgets: WidgetMap
@@ -400,9 +400,7 @@ export class DashboardApp {
     return displays
   }
 
-  private populateI18n(
-    plugins: DashboardPlugin[]
-  ): I18nExtension {
+  private populateI18n(plugins: DashboardPlugin[]): I18nExtension {
     let resources: I18nExtension = { ...coreTranslations }
 
     for (const plugin of plugins) {

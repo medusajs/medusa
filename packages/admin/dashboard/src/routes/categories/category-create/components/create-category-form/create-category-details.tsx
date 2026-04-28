@@ -81,11 +81,7 @@ export const CreateCategoryDetails = ({ form }: CreateCategoryDetailsProps) => {
                 <Form.Item>
                   <Form.Label>{t("categories.fields.status.label")}</Form.Label>
                   <Form.Control>
-                    <Select
-                      dir={direction}
-                      {...field}
-                      onValueChange={onChange}
-                    >
+                    <Select dir={direction} {...field} onValueChange={onChange}>
                       <Select.Trigger ref={ref}>
                         <Select.Value />
                       </Select.Trigger>
@@ -114,11 +110,7 @@ export const CreateCategoryDetails = ({ form }: CreateCategoryDetailsProps) => {
                     {t("categories.fields.visibility.label")}
                   </Form.Label>
                   <Form.Control>
-                    <Select
-                      dir={direction}
-                      {...field}
-                      onValueChange={onChange}
-                    >
+                    <Select dir={direction} {...field} onValueChange={onChange}>
                       <Select.Trigger ref={ref}>
                         <Select.Value />
                       </Select.Trigger>

@@ -54,7 +54,7 @@ export const SalesChannelsCell = ({
   const channels = validChannels.map((sc) => sc.name).join(", ")
 
   return (
-    <div className="flex h-full w-full items-center overflow-hidden max-w-[250px]">
+    <div className="flex h-full w-full max-w-[250px] items-center overflow-hidden">
       <span title={channels} className="truncate">
         {channels}
       </span>
