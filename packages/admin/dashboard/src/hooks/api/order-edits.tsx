@@ -113,7 +113,7 @@ export const useConfirmOrderEdit = (
 
 export const useCancelOrderEdit = (
   orderId: string,
-  options?: UseMutationOptions<any, FetchError, any>
+  options?: UseMutationOptions<any, FetchError, void>
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.orderEdit.cancelRequest(orderId),

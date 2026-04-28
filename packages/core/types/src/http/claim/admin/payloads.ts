@@ -130,7 +130,15 @@ export interface AdminUpdateClaimItem
 export interface AdminAddClaimInboundItems extends AdminClaimAddItems {}
 export interface AdminUpdateClaimInboundItem extends AdminClaimUpdateItem {}
 
-export interface AdminAddClaimOutboundItems extends AdminClaimAddItems {}
+export interface AdminAddClaimOutboundItems {
+  items: {
+    variant_id: string
+    quantity: number
+    unit_price?: number
+    internal_note?: string
+    metadata?: Record<string, unknown> | null
+  }[]
+}
 export interface AdminUpdateClaimOutboundItem
   extends Omit<AdminClaimUpdateItem, "description"> {}
 
