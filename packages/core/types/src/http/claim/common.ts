@@ -2,6 +2,7 @@ import { OperatorMap } from "../../dal"
 import { ClaimReason, OrderClaimType } from "../../order"
 import { BigNumberRawValue } from "../../totals"
 import { FindParams } from "../common"
+import { AdminOrderLineItem } from "../order"
 import {
   BaseOrder,
   BaseOrderShippingMethod,
@@ -20,6 +21,7 @@ export interface BaseClaimItem {
   metadata?: Record<string, unknown> | null
   created_at?: Date | string
   updated_at?: Date | string
+  item?: AdminOrderLineItem
 }
 
 export interface BaseClaim {

@@ -1,12 +1,11 @@
 import { useMemo, useState } from "react"
 import { HeartBroken } from "@medusajs/icons"
-import { UseFormReturn } from "react-hook-form"
+import type { FieldValues, Control } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-import { AdminOrderLineItem } from "@medusajs/types"
+import { AdminOrderLinePreview } from "@medusajs/types"
 import { Button, Input, Popover, toast } from "@medusajs/ui"
 
-import { ReceiveReturnSchema } from "./constants"
 import { Form } from "../../../../../components/common/form"
 import {
   useAddDismissItems,
@@ -14,12 +13,25 @@ import {
   useUpdateDismissItem,
 } from "../../../../../hooks/api/returns"
 
+// Simpler type of `UseFormReturn` as it causes type check slowness
+export type DismissedQuantityForm = {
+  control: Control<FieldValues>
+  setValue: (
+    name: `items.${number}.dismissed_quantity`,
+    value: number | null | undefined,
+    options?: {
+      shouldTouch?: boolean
+      shouldDirty?: boolean
+    }
+  ) => void
+}
+
 type DismissedQuantityProps = {
   returnId: string
   orderId: string
   index: number
-  item: AdminOrderLineItem
-  form: UseFormReturn<typeof ReceiveReturnSchema>
+  item: AdminOrderLinePreview
+  form: DismissedQuantityForm
 }
 
 function DismissedQuantity({
@@ -48,15 +60,12 @@ function DismissedQuantity({
   )
 
   // quantities only for this return
-  const [receivedQuantity, dismissedQuantity] = useMemo(() => {
-    const receivedAction = item.actions?.find(
-      (a) => a.action === "RECEIVE_RETURN_ITEM"
-    )
+  const [dismissedQuantity] = useMemo(() => {
     const dismissedAction = item.actions?.find(
       (a) => a.action === "RECEIVE_DAMAGED_RETURN_ITEM"
     )
 
-    return [receivedAction?.details.quantity, dismissedAction?.details.quantity]
+    return [dismissedAction?.details?.quantity as number]
   }, [item])
 
   const onDismissedQuantityChanged = async (value: number | null) => {
@@ -107,7 +116,9 @@ function DismissedQuantity({
         }
       }
     } catch (e) {
-      toast.error(e.message)
+      toast.error(
+        e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+      )
     }
   }
 

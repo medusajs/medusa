@@ -22,11 +22,14 @@ const EntityTranslationsSchema = z.object({
   id: z.string().nullish(),
   fields: z.record(z.string(), z.string().optional()),
 })
-export type EntityTranslationsSchema = z.infer<typeof EntityTranslationsSchema>
+export type EntityTranslationsSchemaType = z.infer<
+  typeof EntityTranslationsSchema
+>
 
 export const TranslationsFormSchema = z.object({
   entities: z.record(z.string(), EntityTranslationsSchema),
 })
+// eslint-disable-next-line no-redeclare
 export type TranslationsFormSchema = z.infer<typeof TranslationsFormSchema>
 
 export type TranslationRow = EntityRow | FieldRow
@@ -53,7 +56,7 @@ export function isFieldRow(row: TranslationRow): row is FieldRow {
 
 type LocaleSnapshot = {
   localeCode: string
-  entities: Record<string, EntityTranslationsSchema>
+  entities: Record<string, EntityTranslationsSchemaType>
 }
 
 function buildLocaleSnapshot(
@@ -69,7 +72,7 @@ function buildLocaleSnapshot(
     }
   }
 
-  const entities: Record<string, EntityTranslationsSchema> = {}
+  const entities: Record<string, EntityTranslationsSchemaType> = {}
   for (const ref of references) {
     const existing = referenceTranslations.get(ref.id)
     const fields: Record<string, string> = {}
@@ -145,7 +148,8 @@ function computeChanges(
     delete: [],
   }
 
-  for (const [entityId, entityData] of Object.entries(currentState.entities)) {
+  for (const [entityId, _entityData] of Object.entries(currentState.entities)) {
+    const entityData = _entityData as EntityTranslationsSchemaType
     const baseline = snapshot.entities[entityId]
     if (!baseline) {
       continue
@@ -165,12 +169,12 @@ function computeChanges(
         reference_id: entityId,
         reference: entityType,
         locale_code: localeCode,
-        translations: entityData.fields,
+        translations: entityData.fields as Record<string, string>,
       })
     } else if (entityData.id && hasContent && hasChanged) {
       payload.update.push({
         id: entityData.id,
-        translations: entityData.fields,
+        translations: entityData.fields as Record<string, string>,
       })
     } else if (entityData.id && !hasContent && hadContent) {
       payload.delete.push(entityData.id)

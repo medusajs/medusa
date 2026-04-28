@@ -1,2 +1,1 @@
-export { ReservationCreate as Component } from "./reservation-create";
-
+export { ReservationCreate as Component } from "./reservation-create"
