@@ -78,7 +78,7 @@ export const OrderDetail = () => {
       hasOutlet
     >
       <TwoColumnPage.Main>
-        <OrderActiveEditSection order={order} quantity={0} />
+        <OrderActiveEditSection order={order} />
         <ActiveOrderClaimSection orderPreview={orderPreview!} />
         <ActiveOrderExchangeSection orderPreview={orderPreview!} />
         <ActiveOrderReturnSection orderPreview={orderPreview!} />

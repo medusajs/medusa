@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom"
 
 type OrderActiveEditSectionProps = {
   order: HttpTypes.AdminOrder
-  quantity: number
 }
 
 function EditItem({
