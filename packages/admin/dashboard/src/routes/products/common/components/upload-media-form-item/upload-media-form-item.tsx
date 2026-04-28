@@ -54,7 +54,7 @@ export const UploadMediaFormItem = ({
         (f) => !SUPPORTED_FORMATS.includes(f?.file?.type)
       )
 
-      let hasInvalidFile = false;
+      let hasInvalidFile = false
 
       if (invalidFile) {
         form.setError("media", {
@@ -65,13 +65,20 @@ export const UploadMediaFormItem = ({
           }),
         })
 
-        hasInvalidFile = true;
+        hasInvalidFile = true
       }
 
-      const fileSizeRejections = rejectedFiles.filter((f) => f?.reason === "size")
+      const fileSizeRejections = rejectedFiles.filter(
+        (f) => f?.reason === "size"
+      )
 
       if (fileSizeRejections.length) {
-        const fileNames = "\n" + fileSizeRejections.slice(0, 5).map((f) => f.file.name).join("\n")
+        const fileNames =
+          "\n" +
+          fileSizeRejections
+            .slice(0, 5)
+            .map((f) => f.file.name)
+            .join("\n")
         form.setError("media", {
           type: "file_too_large",
           message: t("products.media.fileTooLarge", {
@@ -80,10 +87,10 @@ export const UploadMediaFormItem = ({
           }),
         })
 
-        hasInvalidFile = true;
+        hasInvalidFile = true
       }
 
-      return hasInvalidFile;
+      return hasInvalidFile
     },
     [form, t]
   )
