@@ -1,5 +1,4 @@
 import { Component, GlobeEurope, PencilSquare, Trash } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
 import { Badge, Container, Heading, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
@@ -8,9 +7,10 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteVariant } from "../../../../../hooks/api/products"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
+import { ExtendedVariant } from "../../constants"
 
 type VariantGeneralSectionProps = {
-  variant: HttpTypes.AdminProductVariant
+  variant: ExtendedVariant
 }
 
 export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
@@ -19,7 +19,7 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
   const navigate = useNavigate()
   const isTranslationsEnabled = useFeatureFlag("translation")
 
-  const hasInventoryKit = variant.inventory?.length > 1
+  const hasInventoryKit = (variant.inventory?.length ?? 0) > 1
 
   const { mutateAsync } = useDeleteVariant(variant.product_id!, variant.id)
 
