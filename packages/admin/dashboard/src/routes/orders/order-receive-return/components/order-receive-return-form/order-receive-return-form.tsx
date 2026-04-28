@@ -160,7 +160,7 @@ export function OrderReceiveReturnForm({
     if (typeof value === "number" && value < 0) {
       form.setValue(
         `items.${index}.quantity`,
-        item?.detail.return_received_quantity,
+        item?.detail?.return_received_quantity,
         { shouldTouch: true, shouldDirty: true }
       )
 
@@ -174,7 +174,7 @@ export function OrderReceiveReturnForm({
 
       form.setValue(
         `items.${index}.quantity`,
-        item?.detail.return_received_quantity,
+        item.detail?.return_received_quantity,
         { shouldTouch: true, shouldDirty: true }
       )
 

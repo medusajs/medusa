@@ -109,7 +109,7 @@ export const OrderActiveEditSection = ({
 
   const onCancelOrderEdit = async () => {
     try {
-      await cancelOrderEdit(undefined)
+      await cancelOrderEdit()
 
       toast.success(t("orders.edits.toast.canceledSuccessfully"))
     } catch (e) {
