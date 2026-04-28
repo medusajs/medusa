@@ -42,6 +42,9 @@ export interface BaseExchangeItem {
    * The date the exchange item was updated.
    */
   updated_at: string | null
+  /**
+   * The associated order line item.
+   */
   item?: AdminOrderLineItem
 }
 

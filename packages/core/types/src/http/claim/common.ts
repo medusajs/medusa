@@ -10,17 +10,53 @@ import {
 } from "../order/common"
 import { BaseReturn } from "../return/common"
 
+/**
+ * The base claim item details.
+ */
 export interface BaseClaimItem {
+  /**
+   * The claim item's ID.
+   */
   id: string
+  /**
+   * The ID of the claim this item belongs to.
+   */
   claim_id: string
+  /**
+   * The ID of the order this claim item belongs to.
+   */
   order_id: string
+  /**
+   * The ID of the associated order item.
+   */
   item_id: string
+  /**
+   * The quantity of this item to be claimed.
+   */
   quantity: number
+  /**
+   * The reason for claiming this item.
+   */
   reason: ClaimReason
+  /**
+   * The raw quantity value.
+   */
   raw_quantity: BigNumberRawValue
+  /**
+   * Key-value pairs of custom data.
+   */
   metadata?: Record<string, unknown> | null
+  /**
+   * The date the claim item was created.
+   */
   created_at?: Date | string
+  /**
+   * The date the claim item was updated.
+   */
   updated_at?: Date | string
+  /**
+   * The associated order line item.
+   */
   item?: AdminOrderLineItem
 }
 
@@ -107,6 +143,9 @@ export interface BaseClaim {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The filters to apply when listing claims.
+ */
 export interface BaseClaimListParams extends FindParams {
   /**
    * Filter by ID(s).
