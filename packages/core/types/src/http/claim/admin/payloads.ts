@@ -1,3 +1,6 @@
+/**
+ * The reasons for creating a claim.
+ */
 enum ClaimReason {
   MISSING_ITEM = "missing_item",
   WRONG_ITEM = "wrong_item",
@@ -123,39 +126,101 @@ export interface AdminCreateClaim {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The details to add new items to a claim.
+ */
 export interface AdminAddClaimItems extends AdminClaimAddItems {}
+
+/**
+ * The details to update a claim item.
+ */
 export interface AdminUpdateClaimItem
   extends Omit<AdminClaimUpdateItem, "description"> {}
 
+/**
+ * The details to add inbound items to a claim.
+ */
 export interface AdminAddClaimInboundItems extends AdminClaimAddItems {}
+
+/**
+ * The details to update a claim inbound item.
+ */
 export interface AdminUpdateClaimInboundItem extends AdminClaimUpdateItem {}
 
+/**
+ * The details to add outbound items to a claim.
+ */
 export interface AdminAddClaimOutboundItems {
+  /**
+   * The outbound items to add to the claim.
+   */
   items: {
+    /**
+     * The ID of the product variant.
+     */
     variant_id: string
+    /**
+     * The quantity of the item.
+     */
     quantity: number
+    /**
+     * The item's unit price.
+     */
     unit_price?: number
+    /**
+     * An internal note viewed by admin users only.
+     */
     internal_note?: string
+    /**
+     * Key-value pairs of custom data.
+     */
     metadata?: Record<string, unknown> | null
   }[]
 }
+
+/**
+ * The details to update a claim outbound item.
+ */
 export interface AdminUpdateClaimOutboundItem
   extends Omit<AdminClaimUpdateItem, "description"> {}
 
+/**
+ * The details to add inbound shipping to a claim.
+ */
 export interface AdminClaimAddInboundShipping
   extends AdminClaimAddShippingMethod {}
+
+/**
+ * The details to update claim inbound shipping.
+ */
 export interface AdminClaimUpdateInboundShipping
   extends AdminClaimUpdateShippingMethod {}
 
+/**
+ * The details to add outbound shipping to a claim.
+ */
 export interface AdminClaimAddOutboundShipping
   extends AdminClaimAddShippingMethod {}
+
+/**
+ * The details to update claim outbound shipping.
+ */
 export interface AdminClaimUpdateOutboundShipping
   extends AdminClaimUpdateShippingMethod {}
 
+/**
+ * The details to request a claim.
+ */
 export interface AdminRequestClaim {
   // no_notification?: boolean // TODO: add in the API
 }
 
+/**
+ * The details to cancel a claim.
+ */
 export interface AdminCancelClaim {
+  /**
+   * Whether to send a notification to the customer when the claim is cancelled.
+   */
   no_notification?: boolean
 }
