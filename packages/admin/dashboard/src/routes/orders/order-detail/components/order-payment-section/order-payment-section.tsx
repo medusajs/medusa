@@ -1,4 +1,4 @@
-import { OrderCreditLineDTO } from "@medusajs/framework/types"
+import { OrderCreditLineDTO } from "@medusajs/types"
 import { ArrowDownRightMini, DocumentText, XCircle } from "@medusajs/icons"
 import { AdminOrder, AdminPayment, HttpTypes } from "@medusajs/types"
 import {
