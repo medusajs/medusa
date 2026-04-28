@@ -42,12 +42,8 @@ export const useDataGridClipboardEvents = <
         return
       }
 
-      if (e.defaultPrevented) {
-        return
-      }
-
       const container = containerRef.current
-      if (!container) {
+      if (e.defaultPrevented || !container) {
         return
       }
 
