@@ -107,6 +107,8 @@ const sidebarMappings: {
       "/references/tax",
       "/references/translation",
       "/references/user",
+      "/references/loyalty",
+      "/references/store-credit",
     ],
   },
   {

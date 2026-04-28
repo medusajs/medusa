@@ -21,11 +21,7 @@ import { archiveOrdersStep } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = archiveOrdersStep({
-      "orderIds": [
-        "{value}"
-      ]
-    })
+    const data = archiveOrdersStep({})
   }
 )
 ```
@@ -33,7 +29,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"ArchiveOrdersStepInput","type":"[ArchiveOrdersStepInput](../../../../types/core_flows.ArchiveOrdersStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of archiving the orders.","expandable":false,"children":[{"name":"orderIds","type":"`string`[]","description":"The IDs of the orders to archive.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="archiveOrdersStep"/>
+<TypeList types={[{"name":"ArchiveOrdersStepInput","type":"[ArchiveOrdersStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.ArchiveOrdersStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ArchiveOrdersStepInput","type":"`object`","description":"The details of archiving the orders.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="archiveOrdersStep"/>
 
 ## Output
 

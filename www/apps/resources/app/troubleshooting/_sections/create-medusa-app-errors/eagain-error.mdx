@@ -1,6 +1,14 @@
 When using the `create-medusa-app` npx command, you might run into an NPM `EAGAIN` error. This error can randomly occur due to conflicting processes.
 
-The easiest solution is to start the command over. Alternatively, if your setup crossed the "create database" point, you can manually perform the following steps in the directory of your created project. You can skip any steps that you're sure have been performed by `create-medusa-app`:
+The easiest solution is to start the command over. Alternatively, if your setup crossed the "create database" point, you can manually perform the following steps. You can skip any steps that you're sure have been performed by `create-medusa-app`.
+
+For monorepo projects (latest `create-medusa-app`), navigate to the backend directory first:
+
+```bash
+cd my-project/apps/backend
+```
+
+Then perform the following steps:
 
 1. Install dependencies:
 
@@ -33,6 +41,15 @@ npx medusa seed -f ./data/seed.json
 ```
 
 6. Start project:
+
+For monorepo projects (created with `create-medusa-app` starting from v2.14.0), navigate back to the root directory and run:
+
+```bash npm2yarn
+cd ../..
+npm run dev
+```
+
+For older single-application projects:
 
 ```bash npx2yarn
 npx medusa develop

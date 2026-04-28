@@ -600,6 +600,20 @@ get:
               type: string
               title: barcode
               description: The barcode's details.
+    - name: sku
+      in: query
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: sku
+            description: Filter by an SKU.
+          - type: array
+            description: Filter by multiple SKUs.
+            items:
+              type: string
+              title: sku
+              description: An SKU.
   security:
     - api_token: []
     - cookie_auth: []

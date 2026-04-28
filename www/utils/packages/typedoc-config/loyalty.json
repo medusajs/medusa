@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "extends": [
+    "../../../../packages/plugins/loyalty/tsconfig.json"
+  ],
+  "include": ["../../../../packages/plugins/loyalty/src"],
+  "exclude": [
+    "../../../../packages/plugins/loyalty/dist", 
+    "../../../../packages/plugins/loyalty/node_modules"
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../packages/plugins/loyalty/src"
+  }
+}

@@ -7,7 +7,6 @@
  *   - payment_collections
  *   - items
  *   - shipping_methods
- *   - status
  *   - id
  *   - version
  *   - region_id
@@ -15,6 +14,7 @@
  *   - sales_channel_id
  *   - email
  *   - currency_code
+ *   - status
  *   - payment_status
  *   - fulfillment_status
  *   - summary

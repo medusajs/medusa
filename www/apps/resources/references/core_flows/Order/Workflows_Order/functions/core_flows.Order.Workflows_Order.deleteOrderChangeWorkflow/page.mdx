@@ -18,7 +18,7 @@ This workflow deletes one or more order changes.
 You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
 deleting an order change.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/order/workflows/delete-order-change.ts#L25" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/order/workflows/delete-order-change.ts#L25" />
 
 ## Examples
 
@@ -38,11 +38,7 @@ export async function POST(
 ) {
   const { result } = await deleteOrderChangeWorkflow(req.scope)
     .run({
-      input: {
-        "ids": [
-          "id_zfHHNEz2iMc1Vh6Z1w"
-        ]
-      }
+      input: {}
     })
 
   res.send(result)
@@ -65,11 +61,7 @@ export default async function handleOrderPlaced({
 }: SubscriberArgs < { id: string } > ) {
   const { result } = await deleteOrderChangeWorkflow(container)
     .run({
-      input: {
-        "ids": [
-          "id_zfHHNEz2iMc1Vh6Z1w"
-        ]
-      }
+      input: {}
     })
 
   console.log(result)
@@ -92,11 +84,7 @@ export default async function myCustomJob(
 ) {
   const { result } = await deleteOrderChangeWorkflow(container)
     .run({
-      input: {
-        "ids": [
-          "id_zfHHNEz2iMc1Vh6Z1w"
-        ]
-      }
+      input: {}
     })
 
   console.log(result)
@@ -120,11 +108,7 @@ const myWorkflow = createWorkflow(
   () => {
     const result = deleteOrderChangeWorkflow
       .runAsStep({
-        input: {
-          "ids": [
-            "id_zfHHNEz2iMc1Vh6Z1w"
-          ]
-        }
+        input: {}
       })
   }
 )
@@ -139,4 +123,4 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"DeleteOrderChangeWorkflowInput","type":"[DeleteOrderChangeWorkflowInput](../../../../types/core_flows.DeleteOrderChangeWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of the order changes to delete.","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"The IDs of the order changes to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteOrderChangeWorkflow"/>
+<TypeList types={[{"name":"DeleteOrderChangeWorkflowInput","type":"[DeleteOrderChangeWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.DeleteOrderChangeWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeleteOrderChangeWorkflowInput","type":"`object`","description":"The details of the order changes to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteOrderChangeWorkflow"/>

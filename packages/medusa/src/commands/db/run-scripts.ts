@@ -45,7 +45,7 @@ export async function runMigrationScripts({
 
     mergePluginModules(configModule, plugins)
 
-    const resources = await loadResources(plugins, logger)
+    const resources = await loadResources(plugins, logger, container)
     onApplicationPrepareShutdown = resources.onApplicationPrepareShutdown
     onApplicationShutdown = resources.onApplicationShutdown
 
@@ -85,7 +85,8 @@ export async function runMigrationScripts({
 
 async function loadResources(
   plugins: any,
-  logger: Logger
+  logger: Logger,
+  container: MedusaContainer
 ): Promise<{
   onApplicationPrepareShutdown: () => Promise<void>
   onApplicationShutdown: () => Promise<void>
@@ -104,7 +105,11 @@ async function loadResources(
   )
   await new LinkLoader(linksSourcePaths, logger).load()
 
-  const medusaAppResources = await new MedusaAppLoader().load()
+  // Pass the existing container so that registrations (e.g. ContainerRegistrationKeys.QUERY)
+  // are made on the same container that migration scripts will resolve from.
+  // Without this, `useQueryGraphStep` fails with AwilixResolutionError because
+  // `query` is registered in a separate MedusaAppLoader container instance.
+  const medusaAppResources = await new MedusaAppLoader({ container }).load()
   const onApplicationPrepareShutdown =
     medusaAppResources.onApplicationPrepareShutdown
   const onApplicationShutdown = medusaAppResources.onApplicationShutdown

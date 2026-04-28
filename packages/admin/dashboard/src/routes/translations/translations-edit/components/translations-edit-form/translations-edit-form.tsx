@@ -20,14 +20,17 @@ import { useBatchTranslations } from "../../../../../hooks/api/translations"
 
 const EntityTranslationsSchema = z.object({
   id: z.string().nullish(),
-  fields: z.record(z.string().optional()),
+  fields: z.record(z.string(), z.string().optional()),
 })
-export type EntityTranslations = z.infer<typeof EntityTranslationsSchema>
+export type EntityTranslationsSchemaType = z.infer<
+  typeof EntityTranslationsSchema
+>
 
 export const TranslationsFormSchema = z.object({
-  entities: z.record(EntityTranslationsSchema),
+  entities: z.record(z.string(), EntityTranslationsSchema),
 })
-export type TranslationsForm = z.infer<typeof TranslationsFormSchema>
+// eslint-disable-next-line no-redeclare
+export type TranslationsFormSchema = z.infer<typeof TranslationsFormSchema>
 
 export type TranslationRow = EntityRow | FieldRow
 
@@ -53,7 +56,7 @@ export function isFieldRow(row: TranslationRow): row is FieldRow {
 
 type LocaleSnapshot = {
   localeCode: string
-  entities: Record<string, EntityTranslations>
+  entities: Record<string, EntityTranslationsSchemaType>
 }
 
 type TranslationReference = {
@@ -74,7 +77,7 @@ function buildLocaleSnapshot(
     }
   }
 
-  const entities: Record<string, EntityTranslations> = {}
+  const entities: Record<string, EntityTranslationsSchemaType> = {}
   for (const ref of references) {
     const existing = referenceTranslations.get(ref.id)
     const fields: Record<string, string> = {}
@@ -127,7 +130,7 @@ function extendSnapshot(
   return { ...snapshot, entities: extendedEntities }
 }
 
-function snapshotToFormValues(snapshot: LocaleSnapshot): TranslationsForm {
+function snapshotToFormValues(snapshot: LocaleSnapshot): TranslationsFormSchema {
   return { entities: snapshot.entities }
 }
 
@@ -137,7 +140,7 @@ type ChangeDetectionResult = {
 }
 
 function computeChanges(
-  currentState: TranslationsForm,
+  currentState: TranslationsFormSchema,
   snapshot: LocaleSnapshot,
   entityType: string,
   localeCode: string
@@ -148,7 +151,8 @@ function computeChanges(
     delete: [],
   }
 
-  for (const [entityId, entityData] of Object.entries(currentState.entities)) {
+  for (const [entityId, _entityData] of Object.entries(currentState.entities)) {
+    const entityData = _entityData as EntityTranslationsSchemaType
     const baseline = snapshot.entities[entityId]
     if (!baseline) {
       continue
@@ -168,12 +172,12 @@ function computeChanges(
         reference_id: entityId,
         reference: entityType,
         locale_code: localeCode,
-        translations: entityData.fields,
+        translations: entityData.fields as Record<string, string>,
       })
     } else if (entityData.id && hasContent && hasChanged) {
       payload.update.push({
         id: entityData.id,
-        translations: entityData.fields,
+        translations: entityData.fields as Record<string, string>,
       })
     } else if (entityData.id && !hasContent && hadContent) {
       payload.delete.push(entityData.id)
@@ -188,7 +192,7 @@ function computeChanges(
   return { hasChanges, payload }
 }
 
-const columnHelper = createDataGridHelper<TranslationRow, TranslationsForm>()
+const columnHelper = createDataGridHelper<TranslationRow, TranslationsFormSchema>()
 
 const FIELD_COLUMN_WIDTH = 350
 
@@ -414,7 +418,7 @@ export const TranslationsEditForm = ({
     latestPropsRef.current = { translations, references }
   }, [translations, references])
 
-  const form = useForm<TranslationsForm>({
+  const form = useForm<TranslationsFormSchema>({
     resolver: zodResolver(TranslationsFormSchema),
     defaultValues: snapshotToFormValues(snapshotRef.current),
   })
@@ -438,7 +442,7 @@ export const TranslationsEditForm = ({
     )
 
     const currentValues = form.getValues()
-    const newFormValues: TranslationsForm = {
+    const newFormValues: TranslationsFormSchema = {
       entities: { ...currentValues.entities },
     }
 

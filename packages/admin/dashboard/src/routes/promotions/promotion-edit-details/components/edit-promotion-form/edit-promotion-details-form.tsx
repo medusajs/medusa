@@ -71,7 +71,7 @@ export const EditPromotionDetailsForm = ({
   const { mutateAsync, isPending } = useUpdatePromotion(promotion.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    const value = parseFloat(data.value)
+    const value = parseFloat(String(data.value))
 
     if (isNaN(value) || value < 0) {
       form.setError("value", { message: t("promotions.form.value.invalid") })
@@ -85,7 +85,7 @@ export const EditPromotionDetailsForm = ({
         status: data.status,
         is_tax_inclusive: data.is_tax_inclusive,
         application_method: {
-          value: parseFloat(data.value),
+          value: parseFloat(String(data.value)),
           type: data.value_type as any,
           allocation: data.allocation as any,
           max_quantity: data.max_quantity,
@@ -398,7 +398,7 @@ export const EditPromotionDetailsForm = ({
                   <Form.Field
                     control={form.control}
                     name="max_quantity"
-                    render={({ field }) => {
+                    render={() => {
                       return (
                         <Form.Item>
                           <Form.Label>

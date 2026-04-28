@@ -10,7 +10,7 @@ import { ProductOptionSection } from "./components/product-option-section"
 import { ProductOrganizationSection } from "./components/product-organization-section"
 import { ProductSalesChannelSection } from "./components/product-sales-channel-section"
 import { ProductVariantSection } from "./components/product-variant-section"
-import { PRODUCT_DETAIL_FIELDS } from "./constants"
+import { ExtendedProduct, PRODUCT_DETAIL_FIELDS } from "./constants"
 import { productLoader } from "./loader"
 
 import { useExtension } from "../../../providers/extension-provider"
@@ -72,7 +72,7 @@ export const ProductDetail = () => {
       </TwoColumnPage.Main>
       <TwoColumnPage.Sidebar>
         <ProductSalesChannelSection product={product} />
-        <ProductShippingProfileSection product={product} />
+        <ProductShippingProfileSection product={product as ExtendedProduct} />
         <ProductOrganizationSection product={product} />
         <ProductAttributeSection product={product} />
       </TwoColumnPage.Sidebar>

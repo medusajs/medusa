@@ -145,7 +145,7 @@ tags:
       Gift cards can be purchased by customers, or created by admin users. When a gift card is redeemed, its amount is added to the customer's store credit account, which can then be used to pay for items during checkout.
       These API routes allow admin users to manage gift cards, transfer gift cards between customers, and more.
       <Note>
-      Gift Card routes are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
+      Gift Card routes are only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
       </Note>
     x-associatedSchema:
       $ref: '#/components/schemas/AdminGiftCard'
@@ -358,6 +358,9 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/promotion/concepts
     x-associatedSchema:
       $ref: '#/components/schemas/AdminPromotion'
+  - name: Property Labels
+    x-associatedSchema:
+      $ref: '#/components/schemas/AdminPropertyLabel'
   - name: Refund Reasons
     description: |
       A refund reason is a possible reason used when issuing a refund to the customer, such as when returning an item and refunding the customer.
@@ -3155,14 +3158,6 @@ paths:
                 title: $exists
                 description: Filter by whether a value for this parameter exists (not `null`).
             title: deleted_at
-        - name: q
-          in: query
-          description: The claim's q.
-          required: false
-          schema:
-            type: string
-            title: q
-            description: The claim's q.
         - name: id
           in: query
           required: false
@@ -9726,6 +9721,20 @@ paths:
             type: boolean
             title: with_deleted
             description: Whether to include deleted records in the result.
+        - name: external_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: external_id
+                description: Filter by an external ID.
+              - type: array
+                description: Filter by multiple external IDs.
+                items:
+                  type: string
+                  title: external_id
+                  description: An external ID.
       security:
         - api_token: []
         - cookie_auth: []
@@ -19003,7 +19012,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AdminUpdateDraftOrderItem'
+              $ref: '#/components/schemas/AdminUpdateDraftOrderActionItem'
       x-codeSamples:
         - lang: JavaScript
           label: JS SDK
@@ -22893,7 +22902,6 @@ paths:
       summary: List Gift Cards
       description: Retrieve a list of gift cards. The gift cards can be filtered by fields such as `id`. The gift cards can also be sorted or paginated.
       x-authenticated: true
-      x-ignoreCleanup: true
       parameters:
         - name: id
           in: query
@@ -23223,6 +23231,14 @@ paths:
             items:
               type: object
             title: $or
+        - name: with_deleted
+          in: query
+          description: The gift card's with deleted.
+          required: false
+          schema:
+            type: boolean
+            title: with_deleted
+            description: The gift card's with deleted.
       security:
         - api_token: []
         - cookie_auth: []
@@ -23255,9 +23271,9 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-badges:
-        - text: Cloud
+        - text: Loyalty Plugin
           description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
     post:
       operationId: PostGiftCards
       summary: Create Gift Card
@@ -23322,7 +23338,6 @@ paths:
       summary: Get a Gift Card
       description: Retrieve a gift card by its ID. You can expand the gift card's relations or select the fields that should be returned.
       x-authenticated: true
-      x-ignoreCleanup: true
       parameters:
         - name: id
           in: path
@@ -23362,9 +23377,9 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-badges:
-        - text: Cloud
+        - text: Loyalty Plugin
           description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
     post:
       operationId: PostGiftCardsId
       summary: Update a Gift Card
@@ -23425,7 +23440,6 @@ paths:
       x-sidebar-summary: List Orders
       description: Retrieve the list of orders that a gift card was used in.
       x-authenticated: true
-      x-ignoreCleanup: true
       parameters:
         - name: id
           in: path
@@ -23461,9 +23475,9 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-badges:
-        - text: Cloud
+        - text: Loyalty Plugin
           description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
   /admin/index/details:
     get:
       operationId: GetIndexDetails
@@ -23907,8 +23921,6 @@ paths:
                       type: string
                       title: location_id
                       description: A location's ID.
-            required:
-              - location_id
         - name: $and
           in: query
           required: false
@@ -24675,7 +24687,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AdminBatchInventoryItemLocationsLevel'
+              $ref: '#/components/schemas/AdminBatchInventoryItemLocationLevels'
       x-codeSamples:
         - lang: JavaScript
           label: JS SDK
@@ -25586,7 +25598,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AdminInviteAccept'
+              $ref: '#/components/schemas/AdminGetInviteAcceptParams'
       x-codeSamples:
         - lang: JavaScript
           label: JS SDK
@@ -29449,6 +29461,14 @@ paths:
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
             externalDocs:
               url: '#select-fields-and-relations'
+        - name: version
+          in: query
+          description: The order's version.
+          required: false
+          schema:
+            type: number
+            title: version
+            description: The order's version.
       security:
         - api_token: []
         - cookie_auth: []
@@ -29543,6 +29563,14 @@ paths:
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
             externalDocs:
               url: '#select-fields-and-relations'
+        - name: version
+          in: query
+          description: The order's version.
+          required: false
+          schema:
+            type: number
+            title: version
+            description: The order's version.
       security:
         - api_token: []
         - cookie_auth: []
@@ -30507,6 +30535,14 @@ paths:
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
             externalDocs:
               url: '#select-fields-and-relations'
+        - name: version
+          in: query
+          description: The order's version.
+          required: false
+          schema:
+            type: number
+            title: version
+            description: The order's version.
       security:
         - api_token: []
         - cookie_auth: []
@@ -30607,6 +30643,14 @@ paths:
             description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
             externalDocs:
               url: '#select-fields-and-relations'
+        - name: version
+          in: query
+          description: The order's version.
+          required: false
+          schema:
+            type: number
+            title: version
+            description: The order's version.
       security:
         - api_token: []
         - cookie_auth: []
@@ -30699,6 +30743,14 @@ paths:
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
             externalDocs:
               url: '#select-fields-and-relations'
+        - name: version
+          in: query
+          description: The order's version.
+          required: false
+          schema:
+            type: number
+            title: version
+            description: The order's version.
       security:
         - api_token: []
         - cookie_auth: []
@@ -30962,6 +31014,14 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: version
+          in: query
+          description: The order's version.
+          required: false
+          schema:
+            type: number
+            title: version
+            description: The order's version.
       security:
         - api_token: []
         - cookie_auth: []
@@ -31024,6 +31084,11 @@ paths:
             ```
           description: Emitted when a fulfillment is marked as delivered.
           deprecated: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminMarkOrderFulfillmentAsDelivered'
   /admin/orders/{id}/fulfillments/{fulfillment_id}/shipments:
     post:
       operationId: PostOrdersIdFulfillmentsFulfillment_idShipments
@@ -31054,6 +31119,14 @@ paths:
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
             externalDocs:
               url: '#select-fields-and-relations'
+        - name: version
+          in: query
+          description: The order's version.
+          required: false
+          schema:
+            type: number
+            title: version
+            description: The order's version.
       security:
         - api_token: []
         - cookie_auth: []
@@ -31488,6 +31561,14 @@ paths:
             description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
             externalDocs:
               url: '#select-fields-and-relations'
+        - name: version
+          in: query
+          description: The order's version.
+          required: false
+          schema:
+            type: number
+            title: version
+            description: The order's version.
       security:
         - api_token: []
         - cookie_auth: []
@@ -31589,6 +31670,14 @@ paths:
             description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
             externalDocs:
               url: '#select-fields-and-relations'
+        - name: version
+          in: query
+          description: The order's version.
+          required: false
+          schema:
+            type: number
+            title: version
+            description: The order's version.
       security:
         - api_token: []
         - cookie_auth: []
@@ -34035,6 +34124,16 @@ paths:
           required: true
           schema:
             type: string
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+            externalDocs:
+              url: '#select-fields-and-relations'
       security:
         - api_token: []
         - cookie_auth: []
@@ -34054,8 +34153,8 @@ paths:
                     description: A price's details.
                     required:
                       - currency_code
-                      - variant_id
                       - amount
+                      - variant_id
                     properties:
                       currency_code:
                         type: string
@@ -35246,20 +35345,6 @@ paths:
             items:
               type: object
             title: $or
-        - name: name
-          in: query
-          required: false
-          schema:
-            oneOf:
-              - type: string
-                title: name
-                description: The product category's name.
-              - type: array
-                description: The product category's name.
-                items:
-                  type: string
-                  title: name
-                  description: The name's details.
         - name: with_deleted
           in: query
           description: Whether to include deleted records in the result.
@@ -35268,6 +35353,20 @@ paths:
             type: boolean
             title: with_deleted
             description: Whether to include deleted records in the result.
+        - name: external_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: external_id
+                description: Filter by an external ID.
+              - type: array
+                description: Filter by multiple external IDs.
+                items:
+                  type: string
+                  title: external_id
+                  description: An external ID.
       security:
         - api_token: []
         - cookie_auth: []
@@ -35497,20 +35596,6 @@ paths:
                   type: string
                   title: id
                   description: A product category ID.
-        - name: name
-          in: query
-          required: false
-          schema:
-            oneOf:
-              - type: string
-                title: name
-                description: Filter by the product category's name.
-              - type: array
-                description: Filter by product category names.
-                items:
-                  type: string
-                  title: name
-                  description: A product category name.
         - name: description
           in: query
           required: false
@@ -36307,6 +36392,20 @@ paths:
             items:
               type: object
             title: $or
+        - name: external_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: external_id
+                description: Filter by an external ID.
+              - type: array
+                description: Filter by multiple external IDs.
+                items:
+                  type: string
+                  title: external_id
+                  description: An external ID.
       security:
         - api_token: []
         - cookie_auth: []
@@ -37100,6 +37199,20 @@ paths:
             type: boolean
             title: with_deleted
             description: Whether to include deleted records in the result.
+        - name: external_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: external_id
+                description: Filter by an external ID.
+              - type: array
+                description: Filter by multiple external IDs.
+                items:
+                  type: string
+                  title: external_id
+                  description: An external ID.
       security:
         - api_token: []
         - cookie_auth: []
@@ -37936,6 +38049,20 @@ paths:
             type: boolean
             title: with_deleted
             description: Whether to include deleted records in the result.
+        - name: external_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: external_id
+                description: Filter by an external ID.
+              - type: array
+                description: Filter by multiple external IDs.
+                items:
+                  type: string
+                  title: external_id
+                  description: An external ID.
       security:
         - api_token: []
         - cookie_auth: []
@@ -38818,6 +38945,20 @@ paths:
                   type: string
                   title: barcode
                   description: The barcode's details.
+        - name: sku
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: sku
+                description: Filter by an SKU.
+              - type: array
+                description: Filter by multiple SKUs.
+                items:
+                  type: string
+                  title: sku
+                  description: An SKU.
       security:
         - api_token: []
         - cookie_auth: []
@@ -39915,6 +40056,17 @@ paths:
                 type: boolean
                 title: with_deleted
                 description: Whether to include deleted variants.
+              sku:
+                oneOf:
+                  - type: string
+                    title: sku
+                    description: Filter by an SKU.
+                  - type: array
+                    description: Filter by multiple SKUs.
+                    items:
+                      type: string
+                      title: sku
+                      description: An SKU.
         - name: with_deleted
           in: query
           description: Whether to include deleted products.
@@ -40333,6 +40485,478 @@ paths:
                   option:
                     type: object
                     description: The option's details.
+              sku:
+                oneOf:
+                  - type: string
+                    title: sku
+                    description: Filter by a variant's SKU.
+                  - type: array
+                    description: Filter by variant SKUs.
+                    items:
+                      type: string
+                      title: sku
+                      description: An SKU.
+                  - type: object
+                    properties:
+                      $and:
+                        type: array
+                        description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                        items:
+                          type: object
+                      $or:
+                        type: array
+                        description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                        items:
+                          type: object
+                      $eq:
+                        oneOf:
+                          - type: string
+                            title: $eq
+                            description: Filter by exact value.
+                          - type: array
+                            title: $eq
+                            description: Filter by exact value.
+                            items:
+                              type: string
+                      $ne:
+                        type: string
+                        title: $ne
+                        description: Filter by not equal to the given value.
+                      $in:
+                        type: array
+                        title: $in
+                        description: Filter by values included in the given array.
+                        items:
+                          type: string
+                      $nin:
+                        type: array
+                        title: $nin
+                        description: Filter by values not included in the given array.
+                        items:
+                          type: string
+                      $not:
+                        oneOf:
+                          - type: string
+                            title: $not
+                            description: Filter by not equal to the given value.
+                          - type: object
+                            title: $not
+                            description: Filter by values not matching the conditions in this parameter.
+                          - type: array
+                            title: $not
+                            description: Filter by values not matching the conditions in this parameter.
+                            items:
+                              type: string
+                      $gt:
+                        type: string
+                        title: $gt
+                        description: Filter by values greater than the given value.
+                      $gte:
+                        type: string
+                        title: $gte
+                        description: Filter by values greater than or equal to the given value.
+                      $lt:
+                        type: string
+                        title: $lt
+                        description: Filter by values less than the given value.
+                      $lte:
+                        type: string
+                        title: $lte
+                        description: Filter by values less than or equal to the given value.
+                      $like:
+                        type: string
+                        title: $like
+                        description: Apply a `like` filter. Useful for strings only.
+                      $re:
+                        type: string
+                        title: $re
+                        description: Apply a regex filter. Useful for strings only.
+                      $ilike:
+                        type: string
+                        title: $ilike
+                        description: Apply a case-insensitive `like` filter. Useful for strings only.
+                      $fulltext:
+                        type: string
+                        title: $fulltext
+                        description: Filter to apply on full-text properties.
+                      $overlap:
+                        type: array
+                        title: $overlap
+                        description: Filter to apply on array properties to find overlapping values.
+                        items:
+                          type: string
+                      $contains:
+                        type: array
+                        title: $contains
+                        description: Filter to apply on array properties to find contained values.
+                        items:
+                          type: string
+                      $contained:
+                        type: array
+                        title: $contained
+                        description: Filter to apply on array properties to find contained values.
+                        items:
+                          type: string
+                      $exists:
+                        type: boolean
+                        title: $exists
+                        description: Filter by whether a value exists or not.
+                    title: sku
+                    description: Filter by variant SKU.
+              ean:
+                oneOf:
+                  - type: string
+                    title: ean
+                    description: The variant's EAN.
+                  - type: array
+                    description: The variant's EANs.
+                    items:
+                      type: string
+                      title: ean
+                      description: An EAN.
+                  - type: object
+                    properties:
+                      $and:
+                        type: array
+                        description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                        items:
+                          type: object
+                      $or:
+                        type: array
+                        description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                        items:
+                          type: object
+                      $eq:
+                        oneOf:
+                          - type: string
+                            title: $eq
+                            description: Filter by exact value.
+                          - type: array
+                            title: $eq
+                            description: Filter by exact value.
+                            items:
+                              type: string
+                      $ne:
+                        type: string
+                        title: $ne
+                        description: Filter by not equal to the given value.
+                      $in:
+                        type: array
+                        title: $in
+                        description: Filter by values included in the given array.
+                        items:
+                          type: string
+                      $nin:
+                        type: array
+                        title: $nin
+                        description: Filter by values not included in the given array.
+                        items:
+                          type: string
+                      $not:
+                        oneOf:
+                          - type: string
+                            title: $not
+                            description: Filter by not equal to the given value.
+                          - type: object
+                            title: $not
+                            description: Filter by values not matching the conditions in this parameter.
+                          - type: array
+                            title: $not
+                            description: Filter by values not matching the conditions in this parameter.
+                            items:
+                              type: string
+                      $gt:
+                        type: string
+                        title: $gt
+                        description: Filter by values greater than the given value.
+                      $gte:
+                        type: string
+                        title: $gte
+                        description: Filter by values greater than or equal to the given value.
+                      $lt:
+                        type: string
+                        title: $lt
+                        description: Filter by values less than the given value.
+                      $lte:
+                        type: string
+                        title: $lte
+                        description: Filter by values less than or equal to the given value.
+                      $like:
+                        type: string
+                        title: $like
+                        description: Apply a `like` filter. Useful for strings only.
+                      $re:
+                        type: string
+                        title: $re
+                        description: Apply a regex filter. Useful for strings only.
+                      $ilike:
+                        type: string
+                        title: $ilike
+                        description: Apply a case-insensitive `like` filter. Useful for strings only.
+                      $fulltext:
+                        type: string
+                        title: $fulltext
+                        description: Filter to apply on full-text properties.
+                      $overlap:
+                        type: array
+                        title: $overlap
+                        description: Filter to apply on array properties to find overlapping values.
+                        items:
+                          type: string
+                      $contains:
+                        type: array
+                        title: $contains
+                        description: Filter to apply on array properties to find contained values.
+                        items:
+                          type: string
+                      $contained:
+                        type: array
+                        title: $contained
+                        description: Filter to apply on array properties to find contained values.
+                        items:
+                          type: string
+                      $exists:
+                        type: boolean
+                        title: $exists
+                        description: Filter by whether a value exists or not.
+                    title: ean
+                    description: Filter by variant EAN.
+              upc:
+                oneOf:
+                  - type: string
+                    title: upc
+                    description: The variant's UPC.
+                  - type: array
+                    description: The variant's UPCs.
+                    items:
+                      type: string
+                      title: upc
+                      description: A UPC.
+                  - type: object
+                    properties:
+                      $and:
+                        type: array
+                        description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                        items:
+                          type: object
+                      $or:
+                        type: array
+                        description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                        items:
+                          type: object
+                      $eq:
+                        oneOf:
+                          - type: string
+                            title: $eq
+                            description: Filter by exact value.
+                          - type: array
+                            title: $eq
+                            description: Filter by exact value.
+                            items:
+                              type: string
+                      $ne:
+                        type: string
+                        title: $ne
+                        description: Filter by not equal to the given value.
+                      $in:
+                        type: array
+                        title: $in
+                        description: Filter by values included in the given array.
+                        items:
+                          type: string
+                      $nin:
+                        type: array
+                        title: $nin
+                        description: Filter by values not included in the given array.
+                        items:
+                          type: string
+                      $not:
+                        oneOf:
+                          - type: string
+                            title: $not
+                            description: Filter by not equal to the given value.
+                          - type: object
+                            title: $not
+                            description: Filter by values not matching the conditions in this parameter.
+                          - type: array
+                            title: $not
+                            description: Filter by values not matching the conditions in this parameter.
+                            items:
+                              type: string
+                      $gt:
+                        type: string
+                        title: $gt
+                        description: Filter by values greater than the given value.
+                      $gte:
+                        type: string
+                        title: $gte
+                        description: Filter by values greater than or equal to the given value.
+                      $lt:
+                        type: string
+                        title: $lt
+                        description: Filter by values less than the given value.
+                      $lte:
+                        type: string
+                        title: $lte
+                        description: Filter by values less than or equal to the given value.
+                      $like:
+                        type: string
+                        title: $like
+                        description: Apply a `like` filter. Useful for strings only.
+                      $re:
+                        type: string
+                        title: $re
+                        description: Apply a regex filter. Useful for strings only.
+                      $ilike:
+                        type: string
+                        title: $ilike
+                        description: Apply a case-insensitive `like` filter. Useful for strings only.
+                      $fulltext:
+                        type: string
+                        title: $fulltext
+                        description: Filter to apply on full-text properties.
+                      $overlap:
+                        type: array
+                        title: $overlap
+                        description: Filter to apply on array properties to find overlapping values.
+                        items:
+                          type: string
+                      $contains:
+                        type: array
+                        title: $contains
+                        description: Filter to apply on array properties to find contained values.
+                        items:
+                          type: string
+                      $contained:
+                        type: array
+                        title: $contained
+                        description: Filter to apply on array properties to find contained values.
+                        items:
+                          type: string
+                      $exists:
+                        type: boolean
+                        title: $exists
+                        description: Filter by whether a value exists or not.
+                    title: upc
+                    description: Filter by variant UPC.
+              barcode:
+                oneOf:
+                  - type: string
+                    title: barcode
+                    description: Filter by a variant's barcode.
+                  - type: array
+                    description: Filter by variant barcodes.
+                    items:
+                      type: string
+                      title: barcode
+                      description: A barcode.
+                  - type: object
+                    properties:
+                      $and:
+                        type: array
+                        description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                        items:
+                          type: object
+                      $or:
+                        type: array
+                        description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                        items:
+                          type: object
+                      $eq:
+                        oneOf:
+                          - type: string
+                            title: $eq
+                            description: Filter by exact value.
+                          - type: array
+                            title: $eq
+                            description: Filter by exact value.
+                            items:
+                              type: string
+                      $ne:
+                        type: string
+                        title: $ne
+                        description: Filter by not equal to the given value.
+                      $in:
+                        type: array
+                        title: $in
+                        description: Filter by values included in the given array.
+                        items:
+                          type: string
+                      $nin:
+                        type: array
+                        title: $nin
+                        description: Filter by values not included in the given array.
+                        items:
+                          type: string
+                      $not:
+                        oneOf:
+                          - type: string
+                            title: $not
+                            description: Filter by not equal to the given value.
+                          - type: object
+                            title: $not
+                            description: Filter by values not matching the conditions in this parameter.
+                          - type: array
+                            title: $not
+                            description: Filter by values not matching the conditions in this parameter.
+                            items:
+                              type: string
+                      $gt:
+                        type: string
+                        title: $gt
+                        description: Filter by values greater than the given value.
+                      $gte:
+                        type: string
+                        title: $gte
+                        description: Filter by values greater than or equal to the given value.
+                      $lt:
+                        type: string
+                        title: $lt
+                        description: Filter by values less than the given value.
+                      $lte:
+                        type: string
+                        title: $lte
+                        description: Filter by values less than or equal to the given value.
+                      $like:
+                        type: string
+                        title: $like
+                        description: Apply a `like` filter. Useful for strings only.
+                      $re:
+                        type: string
+                        title: $re
+                        description: Apply a regex filter. Useful for strings only.
+                      $ilike:
+                        type: string
+                        title: $ilike
+                        description: Apply a case-insensitive `like` filter. Useful for strings only.
+                      $fulltext:
+                        type: string
+                        title: $fulltext
+                        description: Filter to apply on full-text properties.
+                      $overlap:
+                        type: array
+                        title: $overlap
+                        description: Filter to apply on array properties to find overlapping values.
+                        items:
+                          type: string
+                      $contains:
+                        type: array
+                        title: $contains
+                        description: Filter to apply on array properties to find contained values.
+                        items:
+                          type: string
+                      $contained:
+                        type: array
+                        title: $contained
+                        description: Filter to apply on array properties to find contained values.
+                        items:
+                          type: string
+                      $exists:
+                        type: boolean
+                        title: $exists
+                        description: Filter by whether a value exists or not.
+                    title: barcode
+                    description: Filter by variant barcodes.
         - name: title
           in: query
           required: false
@@ -42677,6 +43301,20 @@ paths:
                   type: string
                   title: barcode
                   description: The barcode's details.
+        - name: sku
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: sku
+                description: Filter by an SKU.
+              - type: array
+                description: Filter by multiple SKUs.
+                items:
+                  type: string
+                  title: sku
+                  description: An SKU.
       security:
         - api_token: []
         - cookie_auth: []
@@ -43010,73 +43648,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              description: The product variant inventories to manage.
-              properties:
-                create:
-                  type: array
-                  description: The associations to create between product variants and inventory items.
-                  items:
-                    type: object
-                    description: The associations to create between a product variant and an inventory item.
-                    required:
-                      - variant_id
-                      - required_quantity
-                      - inventory_item_id
-                    properties:
-                      required_quantity:
-                        type: number
-                        title: required_quantity
-                        description: The number of units a single quantity is equivalent to. For example, if a customer orders one quantity of the variant, Medusa checks the availability of the quantity multiplied by the value set for `required_quantity`. When the customer orders the quantity, Medusa reserves the ordered quantity multiplied by the value set for `required_quantity`.
-                      inventory_item_id:
-                        type: string
-                        title: inventory_item_id
-                        description: The ID of the inventory item to associate the variant with.
-                      variant_id:
-                        type: string
-                        title: variant_id
-                        description: The ID of the variant.
-                update:
-                  type: array
-                  description: The product variants to update their association with inventory items.
-                  items:
-                    type: object
-                    description: Update a product variant's association with an inventory item.
-                    required:
-                      - variant_id
-                      - required_quantity
-                      - inventory_item_id
-                    properties:
-                      required_quantity:
-                        type: number
-                        title: required_quantity
-                        description: The number of units a single quantity is equivalent to. For example, if a customer orders one quantity of the variant, Medusa checks the availability of the quantity multiplied by the value set for `required_quantity`. When the customer orders the quantity, Medusa reserves the ordered quantity multiplied by the value set for `required_quantity`.
-                      inventory_item_id:
-                        type: string
-                        title: inventory_item_id
-                        description: The ID of the inventory item the variant is associated with.
-                      variant_id:
-                        type: string
-                        title: variant_id
-                        description: The ID of the variant.
-                delete:
-                  type: array
-                  description: The product variants to delete their association with inventory items.
-                  items:
-                    type: object
-                    description: Delete a product variant's association with an inventory item.
-                    required:
-                      - variant_id
-                      - inventory_item_id
-                    properties:
-                      inventory_item_id:
-                        type: string
-                        title: inventory_item_id
-                        description: The ID of the inventory item associated with the variant.
-                      variant_id:
-                        type: string
-                        title: variant_id
-                        description: The ID of the variant.
+              $ref: '#/components/schemas/AdminBatchVariantInventoryItems'
       x-codeSamples:
         - lang: JavaScript
           label: JS SDK
@@ -44203,34 +44775,6 @@ paths:
             items:
               type: object
             title: $or
-        - name: currency_code
-          in: query
-          required: false
-          schema:
-            oneOf:
-              - type: string
-                title: currency_code
-                description: Filter by a currency code. The promotions are filtered based on their application method's currency code.
-              - type: array
-                description: Filter by currency codes. The promotions are filtered based on their application method's currency code.
-                items:
-                  type: string
-                  title: currency_code
-                  description: A currency code.
-        - name: application_method_type
-          in: query
-          required: false
-          schema:
-            oneOf:
-              - type: string
-                title: application_method_type
-                description: Filter by an application method type. The promotions are filtered based on their application method's type.
-              - type: array
-                description: Filter by application method types. The promotions are filtered based on their application method's type.
-                items:
-                  type: string
-                  title: application_method_type
-                  description: An application method type.
         - name: with_deleted
           in: query
           description: Whether to include deleted records in the result.
@@ -45992,6 +46536,362 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /admin/property-labels:
+    get:
+      operationId: GetPropertyLabels
+      summary: List Property Labels
+      description: Retrieve a list of property labels. The property labels can be filtered by fields such as `id`. The property labels can also be sorted or paginated.
+      x-authenticated: true
+      parameters:
+        - name: entity
+          in: query
+          description: The property label's entity.
+          required: false
+          schema:
+            type: string
+            title: entity
+            description: The property label's entity.
+        - name: property
+          in: query
+          description: The property label's property.
+          required: false
+          schema:
+            type: string
+            title: property
+            description: The property label's property.
+        - name: q
+          in: query
+          description: The property label's q.
+          required: false
+          schema:
+            type: string
+            title: q
+            description: The property label's q.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+            externalDocs:
+              url: '#pagination'
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+            externalDocs:
+              url: '#pagination'
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            externalDocs:
+              url: '#pagination'
+        - name: with_deleted
+          in: query
+          description: The property label's with deleted.
+          required: false
+          schema:
+            type: boolean
+            title: with_deleted
+            description: The property label's with deleted.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+            externalDocs:
+              url: '#select-fields-and-relations'
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl '{backend_url}/admin/property-labels' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Property Labels
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminPropertyLabelListResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-since: 2.10.3
+      x-featureFlag: view_configurations
+    post:
+      operationId: PostPropertyLabels
+      summary: Create Property Label
+      description: Create a property label.
+      x-authenticated: true
+      parameters: []
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminCreatePropertyLabel'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/property-labels' \
+            -H 'Authorization: Bearer {access_token}' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "entity": "{value}",
+              "property": "{value}",
+              "label": "{value}"
+            }'
+      tags:
+        - Property Labels
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminPropertyLabelResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: createPropertyLabelsWorkflow
+      x-events: []
+      x-since: 2.10.3
+      x-featureFlag: view_configurations
+  /admin/property-labels/batch:
+    post:
+      operationId: PostPropertyLabelsBatch
+      summary: Create Property Label
+      description: Create a property label.
+      x-authenticated: true
+      parameters: []
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminBatchPropertyLabels'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/property-labels/batch' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Property Labels
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminBatchPropertyLabelResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: batchPropertyLabelsWorkflow
+      x-events: []
+      x-since: 2.10.3
+      x-featureFlag: view_configurations
+  /admin/property-labels/{id}:
+    get:
+      operationId: GetPropertyLabelsId
+      summary: Get a Property Label
+      description: Retrieve a property label by its ID.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The property label's ID.
+          required: true
+          schema:
+            type: string
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl '{backend_url}/admin/property-labels/{id}' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Property Labels
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminPropertyLabelResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-since: 2.10.3
+      x-featureFlag: view_configurations
+    post:
+      operationId: PostPropertyLabelsId
+      summary: Update a Property Label
+      description: Update a property label's details.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The property label's ID.
+          required: true
+          schema:
+            type: string
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUpdatePropertyLabel'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/property-labels/{id}' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Property Labels
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminPropertyLabelResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: updatePropertyLabelsWorkflow
+      x-events: []
+      x-since: 2.10.3
+      x-featureFlag: view_configurations
+    delete:
+      operationId: DeletePropertyLabelsId
+      summary: Delete a Property Label
+      description: Delete a property label.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The property label's ID.
+          required: true
+          schema:
+            type: string
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/property-labels/{id}' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Property Labels
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminPropertyLabelDeleteResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: deletePropertyLabelsWorkflow
+      x-events: []
+      x-since: 2.10.3
+      x-featureFlag: view_configurations
   /admin/refund-reasons:
     get:
       operationId: GetRefundReasons
@@ -55901,6 +56801,20 @@ paths:
             items:
               type: object
             title: $or
+        - name: description
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: description
+                description: Filter by a shipping option type's description.
+              - type: array
+                description: Filter by shipping option type descriptions.
+                items:
+                  type: string
+                  title: description
+                  description: A description.
       security:
         - api_token: []
         - cookie_auth: []
@@ -59667,6 +60581,14 @@ paths:
                   type: string
                   title: code
                   description: A store credit account code.
+        - name: with_deleted
+          in: query
+          description: Whether to include deleted records in the result.
+          required: false
+          schema:
+            type: boolean
+            title: with_deleted
+            description: Whether to include deleted records in the result.
       security:
         - api_token: []
         - cookie_auth: []
@@ -59699,9 +60621,9 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-badges:
-        - text: Cloud
+        - text: Loyalty Plugin
           description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/store-credit).
     post:
       operationId: PostStoreCreditAccounts
       summary: Create Store Credit Account
@@ -59759,7 +60681,6 @@ paths:
       summary: Get a Store Credit Account
       description: Retrieve a store credit account by its ID. You can expand the store credit account's relations or select the fields that should be returned.
       x-authenticated: true
-      x-ignoreCleanup: true
       parameters:
         - name: id
           in: path
@@ -60134,6 +61055,14 @@ paths:
                   type: string
                   title: code
                   description: A store credit account code.
+        - name: with_deleted
+          in: query
+          description: Whether to include deleted records in the result.
+          required: false
+          schema:
+            type: boolean
+            title: with_deleted
+            description: Whether to include deleted records in the result.
       security:
         - api_token: []
         - cookie_auth: []
@@ -60166,16 +61095,72 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-badges:
-        - text: Cloud
+        - text: Loyalty Plugin
           description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/store-credit).
+  /admin/store-credit-accounts/{id}/credit:
+    post:
+      operationId: PostStoreCreditAccountsIdCredit
+      summary: Add Credit to Store Credit Account
+      description: Add credit to a store credit account
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The store credit account's ID.
+          required: true
+          schema:
+            type: string
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminCreditStoreCreditAccountParams'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/store-credit-accounts/{id}/credit' \
+            -H 'Authorization: Bearer {access_token}' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "amount": 39
+            }'
+      tags:
+        - Store Credit Accounts
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminStoreCreditAccountResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-badges:
+        - text: Loyalty Plugin
+          description: |
+            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/store-credit).
   /admin/store-credit-accounts/{id}/transactions:
     get:
       operationId: GetStoreCreditAccountsIdTransactions
       summary: List Transactions
       description: Retrieve a list of transactions in a store credit account. The transactions can be filtered by fields like FILTER FIELDS. The transactions can also be paginated.
       x-authenticated: true
-      x-ignoreCleanup: true
       parameters:
         - name: id
           in: path
@@ -60519,6 +61504,14 @@ paths:
             type: string
             title: q
             description: Search query to filter the transactions by their searchable fields.
+        - name: with_deleted
+          in: query
+          description: Whether to include deleted records in the result.
+          required: false
+          schema:
+            type: boolean
+            title: with_deleted
+            description: Whether to include deleted records in the result.
       security:
         - api_token: []
         - cookie_auth: []
@@ -60551,9 +61544,9 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-badges:
-        - text: Cloud
+        - text: Loyalty Plugin
           description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/store-credit).
   /admin/stores:
     get:
       operationId: GetStores
@@ -61549,38 +62542,6 @@ paths:
             items:
               type: object
             title: $or
-        - name: service_zone_id
-          in: query
-          description: Filter by a service zone's ID to retrieve its associated tax rates.
-          required: false
-          schema:
-            type: string
-            title: service_zone_id
-            description: Filter by a service zone's ID to retrieve its associated tax rates.
-        - name: shipping_profile_id
-          in: query
-          description: Filter by a shipping profile's ID to retrieve its associated tax rates.
-          required: false
-          schema:
-            type: string
-            title: shipping_profile_id
-            description: Filter by a shipping profile's ID to retrieve its associated tax rates.
-        - name: provider_id
-          in: query
-          description: Filter by a fulfillment provider's ID to retrieve its associated tax rates.
-          required: false
-          schema:
-            type: string
-            title: provider_id
-            description: Filter by a fulfillment provider's ID to retrieve its associated tax rates.
-        - name: shipping_option_type_id
-          in: query
-          description: Filter by a shipping option type's ID to retrieve its associated tax rates.
-          required: false
-          schema:
-            type: string
-            title: shipping_option_type_id
-            description: Filter by a shipping option type's ID to retrieve its associated tax rates.
         - name: with_deleted
           in: query
           description: Whether to include deleted records in the result.
@@ -63724,69 +64685,12 @@ paths:
                   type: array
                   description: The translations to create.
                   items:
-                    type: object
-                    description: The translation's details.
-                    required:
-                      - reference
-                      - reference_id
-                      - locale_code
-                      - translations
-                    properties:
-                      reference:
-                        type: string
-                        title: reference
-                        description: The resource that the translation belongs to.
-                        example: product
-                      reference_id:
-                        type: string
-                        title: reference_id
-                        description: The ID of the resource that the translation belongs to. For example, the ID of a product.
-                        example: prod_123
-                      locale_code:
-                        type: string
-                        title: locale_code
-                        description: The translation's locale code in BCP 47 format.
-                        example: fr-FR
-                      translations:
-                        type: object
-                        description: The translation key-value pairs. Each key is a field in the resource, and the value is the translated text.
-                        example:
-                          title: Chaussures
-                          description: Des chaussures élégantes.
+                    $ref: '#/components/schemas/AdminCreateTranslation'
                 update:
                   type: array
                   description: The translations to update.
                   items:
-                    type: object
-                    description: The data for updating a translation.
-                    required:
-                      - id
-                    properties:
-                      id:
-                        type: string
-                        title: id
-                        description: The ID of the translation to update.
-                      reference:
-                        type: string
-                        title: reference
-                        description: The resource that the translation belongs to.
-                        example: product
-                      reference_id:
-                        type: string
-                        title: reference_id
-                        description: The ID of the resource that the translation belongs to. For example, the ID of a product.
-                        example: prod_123
-                      locale_code:
-                        type: string
-                        title: locale_code
-                        description: The translation's locale code in BCP 47 format.
-                        example: fr-FR
-                      translations:
-                        type: object
-                        description: The translation key-value pairs. Each key is a field in the resource, and the value is the translated text.
-                        example:
-                          title: Chaussures Modifiées
-                          description: Des chaussures élégantes et modifiées.
+                    $ref: '#/components/schemas/AdminUpdateTranslation'
                 delete:
                   type: array
                   description: The translations to delete.
@@ -64201,25 +65105,31 @@ paths:
           description: The locale codes to retrieve translation statistics for. Locale codes are in [BCP 47](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1) format.
           required: true
           schema:
-            type: array
-            description: The locale codes to retrieve translation statistics for.
-            items:
-              type: string
-              title: locales
-              description: A locale code in [BCP 47](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1) format.
-              example: fr-FR
+            oneOf:
+              - type: string
+                title: locales
+                description: A locale code to retrieve translation statistics for. Locale codes are in [BCP 47](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1) format.
+              - type: array
+                description: Locale codes to retrieve translation statistics for.
+                items:
+                  type: string
+                  title: locales
+                  description: A locale code in [BCP 47](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1) format.
         - name: entity_types
           in: query
           description: The table names of entities to retrieve translation statistics for.
           required: true
           schema:
-            type: array
-            description: The table names of entities to retrieve translation statistics for.
-            items:
-              type: string
-              title: entity_types
-              description: The table name of an entity.
-              example: products
+            oneOf:
+              - type: string
+                title: entity_types
+                description: The table name of an entity type to retrieve translation statistics for.
+              - type: array
+                description: The table names of entity types to retrieve translation statistics for.
+                items:
+                  type: string
+                  title: entity_types
+                  description: A table name.
       security:
         - api_token: []
         - cookie_auth: []
@@ -65399,6 +66309,46 @@ paths:
             ```
           description: Emitted when users are deleted.
           deprecated: false
+  /admin/views/entities:
+    get:
+      operationId: GetViewsEntities
+      summary: List Views
+      description: Retrieve a list of views. The views can be filtered by fields such as `id`. The views can also be sorted or paginated.
+      x-authenticated: true
+      parameters: []
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl '{backend_url}/admin/views/entities' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Views
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminEntityListResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-since: 2.10.3
+      x-featureFlag: view_configurations
   /admin/views/{entity}/columns:
     get:
       operationId: GetViewsEntityColumns
@@ -67714,6 +68664,9 @@ components:
                 type: string
                 title: internal_note
                 description: A note that's only viewed by admin users.
+              metadata:
+                type: object
+                description: Key-value pairs of custom data.
     AdminAddClaimOutboundItems:
       type: object
       description: The details of the outbound items to add to the claim.
@@ -67753,6 +68706,9 @@ components:
                 type: string
                 title: description
                 description: The item's description.
+              metadata:
+                type: object
+                description: Key-value pairs of custom data.
     AdminAddDraftOrderItems:
       type: object
       description: The details of the items to add to a draft order.
@@ -68190,6 +69146,43 @@ components:
           title: incoming_quantity
           description: The incoming quantity to be added to stock.
       x-schemaName: AdminBatchCreateInventoryItemsLocationLevels
+    AdminBatchCreateVariantInventoryItem:
+      type: object
+      description: The associations to create between a product variant and an inventory item.
+      required:
+        - inventory_item_id
+        - required_quantity
+        - variant_id
+      properties:
+        required_quantity:
+          type: number
+          title: required_quantity
+          description: The number of units a single quantity is equivalent to. For example, if a customer orders one quantity of the variant, Medusa checks the availability of the quantity multiplied by the value set for `required_quantity`. When the customer orders the quantity, Medusa reserves the ordered quantity multiplied by the value set for `required_quantity`.
+        inventory_item_id:
+          type: string
+          title: inventory_item_id
+          description: The ID of the inventory item to associate the variant with.
+        variant_id:
+          type: string
+          title: variant_id
+          description: The ID of the variant.
+      x-schemaName: AdminBatchCreateVariantInventoryItem
+    AdminBatchDeleteVariantInventoryItem:
+      type: object
+      description: Delete a product variant's association with an inventory item.
+      required:
+        - inventory_item_id
+        - variant_id
+      properties:
+        inventory_item_id:
+          type: string
+          title: inventory_item_id
+          description: The ID of the inventory item associated with the variant.
+        variant_id:
+          type: string
+          title: variant_id
+          description: The ID of the variant.
+      x-schemaName: AdminBatchDeleteVariantInventoryItem
     AdminBatchImageVariantRequest:
       type: object
       description: Details of the associations between variants and a product image to manage.
@@ -68231,7 +69224,7 @@ components:
             type: string
             title: removed
             description: The ID of the variant removed.
-    AdminBatchInventoryItemLocationsLevel:
+    AdminBatchInventoryItemLocationLevels:
       type: object
       description: The inventory levels to create, update, or delete.
       properties:
@@ -68239,48 +69232,12 @@ components:
           type: array
           description: The inventory levels to create.
           items:
-            type: object
-            description: The inventory level's details.
-            required:
-              - location_id
-            properties:
-              location_id:
-                type: string
-                title: location_id
-                description: The ID of the associated location.
-              stocked_quantity:
-                type: number
-                title: stocked_quantity
-                description: The inventory level's stocked quantity.
-              incoming_quantity:
-                type: number
-                title: incoming_quantity
-                description: The inventory level's incoming quantity.
+            $ref: '#/components/schemas/AdminBatchCreateInventoryItemLocationLevels'
         update:
           type: array
           description: The inventory levels to update.
           items:
-            type: object
-            description: The inventory level's details.
-            properties:
-              stocked_quantity:
-                type: number
-                title: stocked_quantity
-                description: The inventory level's stocked quantity.
-              incoming_quantity:
-                type: number
-                title: incoming_quantity
-                description: The inventory level's incoming quantity.
-              location_id:
-                type: string
-                title: location_id
-                description: The associated stock location's ID.
-              id:
-                type: string
-                title: id
-                description: The ID of the location level.
-            required:
-              - location_id
+            $ref: '#/components/schemas/AdminBatchUpdateInventoryItemLocationLevels'
         delete:
           type: array
           description: The inventory levels to delete.
@@ -68292,7 +69249,7 @@ components:
           type: boolean
           title: force
           description: Whether to delete specified inventory levels even if they have a non-zero stocked quantity.
-      x-schemaName: AdminBatchInventoryItemLocationsLevel
+      x-schemaName: AdminBatchInventoryItemLocationLevels
     AdminBatchInventoryItemsLocationLevels:
       type: object
       description: The inventory levels to manage.
@@ -68318,10 +69275,6 @@ components:
           type: boolean
           title: force
           description: Whether to delete specified inventory levels even if they have a non-zero stocked quantity.
-      required:
-        - create
-        - update
-        - delete
       x-schemaName: AdminBatchInventoryItemsLocationLevels
     AdminBatchInventoryItemsLocationLevelsResponse:
       type: object
@@ -68332,12 +69285,12 @@ components:
           type: array
           description: The created inventory levels.
           items:
-            $ref: '#/components/schemas/InventoryLevel'
+            $ref: '#/components/schemas/AdminInventoryLevel'
         updated:
           type: array
           description: The updated inventory levels.
           items:
-            $ref: '#/components/schemas/InventoryLevel'
+            $ref: '#/components/schemas/AdminInventoryLevel'
         deleted:
           type: array
           description: The IDs of deleted inventory levels.
@@ -68494,6 +69447,108 @@ components:
               type: boolean
               title: deleted
               description: Whether the product variants were deleted.
+    AdminBatchPropertyLabelResponse:
+      type: object
+      description: The response of managing property labels.
+      x-schemaName: AdminBatchPropertyLabelResponse
+      required:
+        - created
+        - updated
+        - deleted
+      properties:
+        created:
+          type: array
+          description: The created property labels.
+          items:
+            $ref: '#/components/schemas/AdminPropertyLabel'
+        updated:
+          type: array
+          description: The updated property labels.
+          items:
+            $ref: '#/components/schemas/AdminPropertyLabel'
+        deleted:
+          type: array
+          description: The deleted property labels.
+          items:
+            type: object
+            description: Details of a deleted property label.
+            required:
+              - id
+              - object
+              - deleted
+            properties:
+              id:
+                type: string
+                title: id
+                description: The ID of the deleted property label.
+              object:
+                type: string
+                title: object
+                description: The type of the deleted object.
+              deleted:
+                type: boolean
+                title: deleted
+                description: Indicates if the property label was deleted.
+    AdminBatchPropertyLabels:
+      type: object
+      description: The property labels to manage.
+      x-schemaName: AdminBatchPropertyLabels
+      properties:
+        create:
+          type: array
+          description: The property labels to create.
+          items:
+            type: object
+            description: The details of a property label to create.
+            required:
+              - entity
+              - property
+              - label
+            properties:
+              entity:
+                type: string
+                title: entity
+                description: The name of the entity the property label belongs to.
+              property:
+                type: string
+                title: property
+                description: The property the label is for.
+              label:
+                type: string
+                title: label
+                description: The label to use for the property.
+              description:
+                type: string
+                title: description
+                description: The description of the property label.
+        update:
+          type: array
+          description: The property labels to update.
+          items:
+            type: object
+            description: The details of a property label to update.
+            required:
+              - id
+            properties:
+              id:
+                type: string
+                title: id
+                description: The ID of the property label to update.
+              label:
+                type: string
+                title: label
+                description: The updated label of the property label.
+              description:
+                type: string
+                title: description
+                description: The updated description of the property label.
+        delete:
+          type: array
+          description: The property labels to delete.
+          items:
+            type: string
+            title: delete
+            description: The ID of the property label to delete.
     AdminBatchTranslationSettings:
       type: object
       description: The translation settings to create, update, or delete in batch.
@@ -68558,6 +69613,29 @@ components:
               type: boolean
               title: deleted
               description: Whether the deletion was successful.
+    AdminBatchUpdateInventoryItemLocationLevels:
+      type: object
+      description: The inventory level's details.
+      properties:
+        stocked_quantity:
+          type: number
+          title: stocked_quantity
+          description: The inventory level's stocked quantity.
+        incoming_quantity:
+          type: number
+          title: incoming_quantity
+          description: The inventory level's incoming quantity.
+        location_id:
+          type: string
+          title: location_id
+          description: The associated stock location's ID.
+        id:
+          type: string
+          title: id
+          description: The ID of the location level.
+      required:
+        - location_id
+      x-schemaName: AdminBatchUpdateInventoryItemLocationLevels
     AdminBatchUpdateInventoryItemsLocationLevels:
       type: object
       description: The details of an inventory level to update.
@@ -68834,7 +69912,7 @@ components:
           type: array
           description: The product variant's prices.
           items:
-            $ref: '#/components/schemas/AdminCreateProductVariantPrice'
+            $ref: '#/components/schemas/AdminUpdateProductVariantPrice'
         options:
           type: object
           description: The product variant's options.
@@ -68848,6 +69926,27 @@ components:
           description: The variant's thumbnail.
       required:
         - id
+    AdminBatchUpdateVariantInventoryItem:
+      type: object
+      description: Update a product variant's association with an inventory item.
+      required:
+        - inventory_item_id
+        - required_quantity
+        - variant_id
+      properties:
+        required_quantity:
+          type: number
+          title: required_quantity
+          description: The number of units a single quantity is equivalent to. For example, if a customer orders one quantity of the variant, Medusa checks the availability of the quantity multiplied by the value set for `required_quantity`. When the customer orders the quantity, Medusa reserves the ordered quantity multiplied by the value set for `required_quantity`.
+        inventory_item_id:
+          type: string
+          title: inventory_item_id
+          description: The ID of the inventory item the variant is associated with.
+        variant_id:
+          type: string
+          title: variant_id
+          description: The ID of the variant.
+      x-schemaName: AdminBatchUpdateVariantInventoryItem
     AdminBatchVariantImagesRequest:
       type: object
       description: Details of the associations between images and a product variant to manage.
@@ -68889,6 +69988,26 @@ components:
             type: string
             title: removed
             description: The ID of the image removed.
+    AdminBatchVariantInventoryItems:
+      type: object
+      description: The product variant inventories to manage.
+      properties:
+        create:
+          type: array
+          description: The associations to create between product variants and inventory items.
+          items:
+            $ref: '#/components/schemas/AdminBatchCreateVariantInventoryItem'
+        update:
+          type: array
+          description: The product variants to update their association with inventory items.
+          items:
+            $ref: '#/components/schemas/AdminBatchUpdateVariantInventoryItem'
+        delete:
+          type: array
+          description: The product variants to delete their association with inventory items.
+          items:
+            $ref: '#/components/schemas/AdminBatchDeleteVariantInventoryItem'
+      x-schemaName: AdminBatchVariantInventoryItems
     AdminCampaign:
       type: object
       description: The campaign's details.
@@ -69354,6 +70473,10 @@ components:
           description: The collection's translations.
           items:
             $ref: '#/components/schemas/AdminTranslation'
+        external_id:
+          type: string
+          title: external_id
+          description: The collection's external ID, which can be used to link the collection to an external system or database.
     AdminCollectionDeleteResponse:
       type: object
       description: The details of the deleted collection.
@@ -69532,6 +70655,88 @@ components:
             - timestamp
             - metric
             - relationship
+        render_mode:
+          type: string
+          title: render_mode
+          description: The column's render mode.
+        filter:
+          type: object
+          description: The column's filter.
+          required:
+            - enabled
+          properties:
+            enabled:
+              type: boolean
+              title: enabled
+              description: Whether the column's filter is enabled.
+            operators:
+              type: array
+              description: The filter's operators.
+              items:
+                type: string
+                title: operators
+                description: An operator for the column's filter.
+            enumValues:
+              type: array
+              description: The filter's enum values, if the filter supports enums.
+              items:
+                type: string
+                title: enumValues
+                description: An enum value for the column's filter.
+            relationship:
+              type: object
+              description: The filter's relationship details. Only available if the filter is a relationship filter.
+              x-schemaName: RelationshipFilterConfig
+              required:
+                - entity
+                - value_field
+                - display_field
+                - multiple
+                - endpoint
+              properties:
+                entity:
+                  type: string
+                  title: entity
+                  description: The entity the relationship filter is for.
+                value_field:
+                  type: string
+                  title: value_field
+                  description: The relationship filter's value field.
+                display_field:
+                  type: string
+                  title: display_field
+                  description: The relationship filter's display field.
+                multiple:
+                  type: boolean
+                  title: multiple
+                  description: Whether the relationship filter allows multiple selections.
+                endpoint:
+                  type: string
+                  title: endpoint
+                  description: The relationship filter's endpoint.
+        source:
+          type: object
+          description: The column's source details. Only available if the column is from a source.
+          required:
+            - module
+            - entity
+          properties:
+            module:
+              type: string
+              title: module
+              description: The source's module.
+            entity:
+              type: string
+              title: entity
+              description: The source's entity.
+        custom_label:
+          type: boolean
+          title: custom_label
+          description: Whether the column has a custom label.
+        label_id:
+          type: string
+          title: label_id
+          description: The ID of the column's label, if it has a custom label.
     AdminConfirmReceiveReturn:
       type: object
       description: The confirmation's details.
@@ -70249,6 +71454,11 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/admin#manage-metadata
             description: Learn how to manage metadata
+        location_levels:
+          type: array
+          description: The inventory item's location levels.
+          items:
+            $ref: '#/components/schemas/AdminBatchCreateInventoryItemLocationLevels'
     AdminCreateOrderCreditLine:
       type: object
       description: The details of a credit line to add to an order.
@@ -70396,13 +71606,15 @@ components:
           type: boolean
           title: is_tax_inclusive
           description: Whether the price is tax inclusive if the value of the specified attribute matches the specified value.
+      required:
+        - value
+        - attribute
     AdminCreateProduct:
       type: object
       description: The product's details.
       x-schemaName: AdminCreateProduct
       required:
         - title
-        - options
       properties:
         title:
           type: string
@@ -70597,6 +71809,10 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/admin#manage-metadata
             description: Learn how to manage metadata
+        external_id:
+          type: string
+          title: external_id
+          description: The ID of the product category in an external or third-party system.
     AdminCreateProductOption:
       type: object
       description: The product option's details.
@@ -70633,6 +71849,10 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/admin#manage-metadata
             description: Learn how to manage metadata
+        external_id:
+          type: string
+          title: external_id
+          description: The ID of the product tag in an external or third-party system.
     AdminCreateProductType:
       type: object
       description: The details of the product type to create.
@@ -70650,6 +71870,10 @@ components:
           type: string
           title: value
           description: The product type's value.
+        external_id:
+          type: string
+          title: external_id
+          description: The ID of the product type in an external or third-party system.
     AdminCreateProductVariant:
       type: object
       description: The product variant's details.
@@ -70749,6 +71973,7 @@ components:
       x-schemaName: AdminCreateProductVariantInventoryKit
       required:
         - inventory_item_id
+        - required_quantity
       properties:
         inventory_item_id:
           type: string
@@ -70787,13 +72012,6 @@ components:
           description: The price's rules.
           example:
             region_id: reg_123
-          properties:
-            region_id:
-              type: string
-              title: region_id
-              description: The ID of a region.
-          required:
-            - region_id
     AdminCreatePromotionRule:
       type: object
       description: The promotion rule's details.
@@ -70836,6 +72054,31 @@ components:
                 title: values
                 description: An attribute value.
                 example: prod_123
+    AdminCreatePropertyLabel:
+      type: object
+      description: The details of a property label to create.
+      x-schemaName: AdminCreatePropertyLabel
+      required:
+        - entity
+        - property
+        - label
+      properties:
+        entity:
+          type: string
+          title: entity
+          description: The name of the entity the property label belongs to.
+        property:
+          type: string
+          title: property
+          description: The property the label is for.
+        label:
+          type: string
+          title: label
+          description: The label to use for the property.
+        description:
+          type: string
+          title: description
+          description: The description of the property label.
     AdminCreateRefundReason:
       type: object
       description: The refund reason's details.
@@ -70856,9 +72099,6 @@ components:
           type: string
           title: code
           description: The refund reason's code.
-        metadata:
-          type: object
-          description: The refund reason's metadata. Can hold custom key-value pairs.
     AdminCreateRegion:
       type: object
       description: The region's details.
@@ -71040,8 +72280,8 @@ components:
       description: The shipping option type's details.
       x-schemaName: AdminCreateShippingOptionType
       required:
-        - label
         - code
+        - label
       properties:
         label:
           type: string
@@ -71270,6 +72510,37 @@ components:
           type: string
           title: provider_id
           description: The ID of the tax provider used to calculate the tax rate in this tax region.
+    AdminCreateTranslation:
+      type: object
+      description: The translation's details.
+      required:
+        - reference_id
+        - reference
+        - locale_code
+        - translations
+      properties:
+        reference:
+          type: string
+          title: reference
+          description: The resource that the translation belongs to.
+          example: product
+        reference_id:
+          type: string
+          title: reference_id
+          description: The ID of the resource that the translation belongs to. For example, the ID of a product.
+          example: prod_123
+        locale_code:
+          type: string
+          title: locale_code
+          description: The translation's locale code in BCP 47 format.
+          example: fr-FR
+        translations:
+          type: object
+          description: The translation key-value pairs. Each key is a field in the resource, and the value is the translated text.
+          example:
+            title: Chaussures
+            description: Des chaussures élégantes.
+      x-schemaName: AdminCreateTranslation
     AdminCreateTranslationSettings:
       type: object
       description: The translation settings to create.
@@ -71300,8 +72571,8 @@ components:
       description: The details of the variant-inventory item association.
       x-schemaName: AdminCreateVariantInventoryItem
       required:
-        - required_quantity
         - inventory_item_id
+        - required_quantity
       properties:
         required_quantity:
           type: number
@@ -71411,6 +72682,21 @@ components:
           type: string
           title: transaction_id
           description: The ID of the workflow execution's transaction.
+    AdminCreditStoreCreditAccountParams:
+      type: object
+      description: The details of crediting a store credit account.
+      x-schemaName: AdminCreditStoreCreditAccountParams
+      required:
+        - amount
+      properties:
+        amount:
+          type: number
+          title: amount
+          description: The amount to credit the store credit account with.
+        note:
+          type: string
+          title: note
+          description: An additional note to add to the store credit transaction.
     AdminCurrency:
       type: object
       description: The currency's currencies.
@@ -72380,7 +73666,6 @@ components:
         - payment_collections
         - items
         - shipping_methods
-        - status
         - id
         - version
         - region_id
@@ -72388,6 +73673,7 @@ components:
         - sales_channel_id
         - email
         - currency_code
+        - status
         - payment_status
         - fulfillment_status
         - summary
@@ -72695,7 +73981,6 @@ components:
       required:
         - return_requested_total
         - order_change
-        - status
         - id
         - version
         - region_id
@@ -72703,6 +73988,7 @@ components:
         - sales_channel_id
         - email
         - currency_code
+        - status
         - payment_collections
         - payment_status
         - fulfillment_status
@@ -73366,6 +74652,49 @@ components:
       properties:
         draft_order:
           $ref: '#/components/schemas/AdminDraftOrder'
+    AdminEntityInfo:
+      type: object
+      description: The details of an entity.
+      x-schemaName: AdminEntityInfo
+      required:
+        - name
+        - pluralName
+        - module
+        - propertyCount
+        - hasOverrides
+      properties:
+        name:
+          type: string
+          title: name
+          description: The entity's name.
+        pluralName:
+          type: string
+          title: pluralName
+          description: The entity's plural name.
+        module:
+          type: string
+          title: module
+          description: The module the entity belongs to.
+        propertyCount:
+          type: number
+          title: propertyCount
+          description: The number of properties the entity has.
+        hasOverrides:
+          type: boolean
+          title: hasOverrides
+          description: Whether the entity has overrides.
+    AdminEntityListResponse:
+      type: object
+      description: The list of entities in the view.
+      x-schemaName: AdminEntityListResponse
+      required:
+        - entities
+      properties:
+        entities:
+          type: array
+          description: The list of entities.
+          items:
+            $ref: '#/components/schemas/AdminEntityInfo'
     AdminExchange:
       type: object
       description: The exchange's details.
@@ -74279,6 +75608,21 @@ components:
           format: date-time
           title: deleted_at
           description: The geo zone's deleted at.
+    AdminGetInviteAcceptParams:
+      type: object
+      description: The details of the user to be created.
+      properties:
+        token:
+          type: string
+          title: token
+          description: The invite's token.
+        fields:
+          type: string
+          title: fields
+          description: The invite's fields.
+      x-schemaName: AdminGetInviteAcceptParams
+      required:
+        - token
     AdminGiftCard:
       type: object
       description: The gift card's details.
@@ -74287,17 +75631,17 @@ components:
         - line_item
         - customer
         - id
-        - code
-        - status
-        - value
-        - currency_code
         - customer_id
-        - reference_id
-        - note
-        - reference
-        - expires_at
+        - currency_code
+        - status
         - created_at
         - updated_at
+        - reference
+        - reference_id
+        - value
+        - code
+        - note
+        - expires_at
       properties:
         line_item:
           $ref: '#/components/schemas/AdminOrderLineItem'
@@ -74748,24 +76092,6 @@ components:
           format: date-time
           title: updated_at
           description: The date the invite was updated.
-    AdminInviteAccept:
-      type: object
-      description: The details of the user to be created.
-      properties:
-        email:
-          type: string
-          title: email
-          description: The user's email.
-          format: email
-        first_name:
-          type: string
-          title: first_name
-          description: The user's first name.
-        last_name:
-          type: string
-          title: last_name
-          description: The user's last name.
-      x-schemaName: AdminInviteAccept
     AdminInviteResponse:
       type: object
       description: The invite's details.
@@ -74863,6 +76189,15 @@ components:
       properties:
         locale:
           $ref: '#/components/schemas/AdminLocale'
+    AdminMarkOrderFulfillmentAsDelivered:
+      type: object
+      description: The details of marking an order fulfillment as delivered.
+      x-schemaName: AdminMarkOrderFulfillmentAsDelivered
+      properties:
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: Whether to send a notification to the customer about the fulfillment being marked as delivered.
     AdminMarkPaymentCollectionAsPaid:
       type: object
       description: The payment details.
@@ -74990,7 +76325,6 @@ components:
         - payment_collections
         - items
         - shipping_methods
-        - status
         - id
         - version
         - region_id
@@ -74998,6 +76332,7 @@ components:
         - sales_channel_id
         - email
         - currency_code
+        - status
         - payment_status
         - fulfillment_status
         - summary
@@ -75347,9 +76682,9 @@ components:
         - return_order
         - exchange
         - actions
-        - status
         - id
         - version
+        - status
         - metadata
         - created_at
         - updated_at
@@ -75991,7 +77326,6 @@ components:
       required:
         - return_requested_total
         - order_change
-        - status
         - id
         - version
         - region_id
@@ -75999,6 +77333,7 @@ components:
         - sales_channel_id
         - email
         - currency_code
+        - status
         - payment_collections
         - payment_status
         - fulfillment_status
@@ -77276,6 +78611,9 @@ components:
           type: number
           title: compare_at_unit_price
           description: The original price of the item before a promotion or sale.
+        metadata:
+          type: object
+          description: Key-value pairs of custom data.
     AdminPostReturnsDismissItemsActionReqSchema:
       type: object
       description: The details to update of the damaged item.
@@ -77862,9 +79200,8 @@ components:
         - options
         - images
         - title
-        - status
-        - length
         - id
+        - status
         - created_at
         - updated_at
         - subtitle
@@ -77874,6 +79211,7 @@ components:
         - is_giftcard
         - width
         - weight
+        - length
         - height
         - origin_country
         - hs_code
@@ -78426,6 +79764,10 @@ components:
           description: The tag's translations.
           items:
             $ref: '#/components/schemas/AdminTranslation'
+        external_id:
+          type: string
+          title: external_id
+          description: The tag's external ID used for integration with third-party systems.
     AdminProductTagDeleteResponse:
       type: object
       description: The details of the product tag deletion.
@@ -78533,6 +79875,10 @@ components:
           description: The type's translations.
           items:
             $ref: '#/components/schemas/AdminTranslation'
+        external_id:
+          type: string
+          title: external_id
+          description: The type's external ID used for integration with third-party systems.
     AdminProductTypeDeleteResponse:
       type: object
       description: The details of the product type deletion.
@@ -79099,6 +80445,105 @@ components:
             - cusgroup_123
           items:
             $ref: '#/components/schemas/BasePromotionRuleValue'
+    AdminPropertyLabel:
+      type: object
+      description: The property label's details.
+      x-schemaName: AdminPropertyLabel
+      required:
+        - id
+        - entity
+        - property
+        - label
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          title: id
+          description: The property label's ID.
+        entity:
+          type: string
+          title: entity
+          description: The entity the property label belongs to.
+        property:
+          type: string
+          title: property
+          description: The property the label is associated with.
+        label:
+          type: string
+          title: label
+          description: The label for the property.
+        description:
+          type: string
+          title: description
+          description: The property label's description.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The date the property label was created.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The date the property label was last updated.
+    AdminPropertyLabelDeleteResponse:
+      type: object
+      description: The details of deleting a property label.
+      x-schemaName: AdminPropertyLabelDeleteResponse
+      required:
+        - id
+        - object
+        - deleted
+      properties:
+        id:
+          type: string
+          title: id
+          description: The ID of the deleted property label.
+        object:
+          type: string
+          title: object
+          description: The type of the deleted object, which is `property_label`.
+        deleted:
+          type: boolean
+          title: deleted
+          description: Whether the property label was successfully deleted.
+    AdminPropertyLabelListResponse:
+      type: object
+      description: The paginated list of property labels.
+      x-schemaName: AdminPropertyLabelListResponse
+      required:
+        - property_labels
+        - count
+        - offset
+        - limit
+      properties:
+        property_labels:
+          type: array
+          description: TThe list of property labels.
+          items:
+            $ref: '#/components/schemas/AdminPropertyLabel'
+        count:
+          type: number
+          title: count
+          description: The total number of property labels.
+        offset:
+          type: number
+          title: offset
+          description: The number of items skipped before retrieving the returned items.
+        limit:
+          type: number
+          title: limit
+          description: The maximum number of items returned.
+    AdminPropertyLabelResponse:
+      type: object
+      description: The details of a property label.
+      x-schemaName: AdminPropertyLabelResponse
+      required:
+        - property_label
+      properties:
+        property_label:
+          $ref: '#/components/schemas/AdminPropertyLabel'
     AdminReceiveItems:
       type: object
       description: The items details.
@@ -79379,6 +80824,11 @@ components:
           type: string
           title: internal_note
           description: An internal note viewable only by admin users.
+        update_order_email:
+          type: boolean
+          title: update_order_email
+          default: false
+          description: Whether to update the order's email to the email of the customer the order is being transferred to. By default, the order's email will not be updated.
     AdminReservation:
       type: object
       description: The reservation's details.
@@ -80486,6 +81936,7 @@ components:
       required:
         - id
         - name
+        - metadata
         - address_id
       properties:
         id:
@@ -80517,6 +81968,9 @@ components:
           description: The fulfillment sets associated with the location.
           items:
             type: object
+        metadata:
+          type: object
+          description: Key-value pairs of custom data.
     AdminStockLocationAddress:
       type: object
       description: The details of the stock location address.
@@ -81638,6 +83092,33 @@ components:
           type: string
           title: sales_channel_id
           description: The ID of the sales channel associated with the draft order.
+        locale:
+          type: string
+          title: locale
+          description: The draft order's locale.
+    AdminUpdateDraftOrderActionItem:
+      type: object
+      description: The updates to make on a draft order's item.
+      x-schemaName: AdminUpdateDraftOrderActionItem
+      required:
+        - quantity
+      properties:
+        quantity:
+          type: number
+          title: quantity
+          description: The item's quantity.
+        unit_price:
+          type: number
+          title: unit_price
+          description: The item's unit price.
+        compare_at_unit_price:
+          type: number
+          title: compare_at_unit_price
+          description: The original price of the item before a promotion or sale.
+        internal_note:
+          type: string
+          title: internal_note
+          description: A note viewed only by admin users about the item.
     AdminUpdateDraftOrderActionShippingMethod:
       type: object
       description: The updates to make on a changed shipping method.
@@ -81690,6 +83171,9 @@ components:
           type: string
           title: internal_note
           description: A note viewed only by admin users about the item.
+        metadata:
+          type: object
+          description: Key-value pairs of custom data.
     AdminUpdateDraftOrderShippingMethod:
       type: object
       description: The updates to make on a draft order's shipping method.
@@ -82278,6 +83762,10 @@ components:
           type: number
           title: rank
           description: The product category's rank among other categories.
+        external_id:
+          type: string
+          title: external_id
+          description: The product category's external ID used to link it with external systems.
       x-schemaName: AdminUpdateProductCategory
     AdminUpdateProductOption:
       type: object
@@ -82295,6 +83783,10 @@ components:
             type: string
             title: values
             description: An option value.
+        id:
+          type: string
+          title: id
+          description: The option's ID.
     AdminUpdateProductTag:
       type: object
       description: The properties to update in the product tag.
@@ -82309,6 +83801,10 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/admin#manage-metadata
             description: Learn how to manage metadata
+        external_id:
+          type: string
+          title: external_id
+          description: The product tag's external ID used to link it with external systems.
       x-schemaName: AdminUpdateProductTag
     AdminUpdateProductType:
       type: object
@@ -82324,6 +83820,10 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/admin#manage-metadata
             description: Learn how to manage metadata
+        external_id:
+          type: string
+          title: external_id
+          description: The product type's external ID used to link it with external systems.
       x-schemaName: AdminUpdateProductType
     AdminUpdateProductVariant:
       type: object
@@ -82408,6 +83908,36 @@ components:
         options:
           type: object
           description: The product variant's options.
+    AdminUpdateProductVariantPrice:
+      type: object
+      description: The details of a variant's price.
+      x-schemaName: AdminUpdateProductVariantPrice
+      properties:
+        currency_code:
+          type: string
+          title: currency_code
+          description: The price's currency code.
+        amount:
+          type: number
+          title: amount
+          description: The price's amount.
+        min_quantity:
+          type: number
+          title: min_quantity
+          description: The minimum quantity that must be available in the cart for this price to apply.
+        max_quantity:
+          type: number
+          title: max_quantity
+          description: The maximum quantity that must not be surpassed in the cart for this price to apply.
+        rules:
+          type: object
+          description: The price's rules.
+          example:
+            region_id: reg_123
+        id:
+          type: string
+          title: id
+          description: The price's ID.
     AdminUpdatePromotionRule:
       type: object
       description: The properties to update in a buy rule.
@@ -82453,6 +83983,19 @@ components:
                 description: An attribute value.
                 example: prod_123
       x-schemaName: AdminUpdatePromotionRule
+    AdminUpdatePropertyLabel:
+      type: object
+      description: The details to update in a property label.
+      x-schemaName: AdminUpdatePropertyLabel
+      properties:
+        label:
+          type: string
+          title: label
+          description: The label of the property.
+        description:
+          type: string
+          title: description
+          description: The property label's description.
     AdminUpdateRefundReason:
       type: object
       description: The properties to update in the refund reason.
@@ -82469,13 +84012,7 @@ components:
           type: string
           title: code
           description: The refund reason's code.
-        metadata:
-          type: object
-          description: The refund reason's metadata.
       x-schemaName: AdminUpdateRefundReason
-      required:
-        - label
-        - code
     AdminUpdateRegion:
       type: object
       description: The propeties to update in the region.
@@ -83068,8 +84605,6 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/admin#manage-metadata
             description: Learn how to manage metadata
-      required:
-        - code
     AdminUpdateTaxRegion:
       type: object
       description: The details to update in a tax region.
@@ -83093,6 +84628,38 @@ components:
           type: string
           title: provider_id
           description: The ID of the tax provider to use when calculating taxes for this tax region.
+    AdminUpdateTranslation:
+      type: object
+      description: The data for updating a translation.
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          title: id
+          description: The ID of the translation to update.
+        reference:
+          type: string
+          title: reference
+          description: The resource that the translation belongs to.
+          example: product
+        reference_id:
+          type: string
+          title: reference_id
+          description: The ID of the resource that the translation belongs to. For example, the ID of a product.
+          example: prod_123
+        locale_code:
+          type: string
+          title: locale_code
+          description: The translation's locale code in BCP 47 format.
+          example: fr-FR
+        translations:
+          type: object
+          description: The translation key-value pairs. Each key is a field in the resource, and the value is the translated text.
+          example:
+            title: Chaussures Modifiées
+            description: Des chaussures élégantes et modifiées.
+      x-schemaName: AdminUpdateTranslation
     AdminUpdateTranslationSettings:
       type: object
       description: The translation settings to update.
@@ -83219,8 +84786,8 @@ components:
       x-schemaName: AdminUploadPreSignedUrl
       required:
         - originalname
-        - size
         - mime_type
+        - size
       properties:
         originalname:
           type: string
@@ -83284,8 +84851,8 @@ components:
       description: The details of the stock location address to create.
       x-schemaName: AdminUpsertStockLocationAddress
       required:
-        - address_1
         - country_code
+        - address_1
       properties:
         address_1:
           type: string
@@ -84573,6 +86140,10 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/store#manage-metadata
             description: Learn how to manage metadata
+        external_id:
+          type: string
+          title: external_id
+          description: The collection's external ID used to link it with external systems.
     BaseExchangeItem:
       type: object
       description: The item's details.
@@ -86638,6 +88209,10 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/store#manage-metadata
             description: Learn how to manage metadata
+        external_id:
+          type: string
+          title: external_id
+          description: The tag's external ID used to link it with external systems.
     BaseProductType:
       type: object
       description: The product type's details.
@@ -86677,6 +88252,10 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/store#manage-metadata
             description: Learn how to manage metadata
+        external_id:
+          type: string
+          title: external_id
+          description: The type's external ID used to link it with external systems.
     BaseProductVariant:
       type: object
       description: The product variant's details.
@@ -89013,6 +90592,7 @@ components:
       required:
         - item
         - item_id
+        - version
         - id
         - amount
         - order_id
@@ -89063,6 +90643,10 @@ components:
           format: date-time
           title: updated_at
           description: The date the adjustment was updated.
+        version:
+          type: number
+          title: version
+          description: The adjustment's version.
     OrderLineItemTaxLine:
       type: object
       description: The line item tax line's details.
@@ -89304,6 +90888,7 @@ components:
       required:
         - shipping_method
         - shipping_method_id
+        - version
         - id
         - amount
         - order_id
@@ -89354,6 +90939,10 @@ components:
           format: date-time
           title: updated_at
           description: The date the adjustment was updated.
+        version:
+          type: number
+          title: version
+          description: The adjustment's version.
     OrderShippingMethodTaxLine:
       type: object
       description: The shipping method tax line's details.
@@ -90800,6 +92389,26 @@ components:
           type: boolean
           title: insufficient_inventory
           description: Whether the shipping option's location doesn't have sufficient quantity for any of the cart's items.
+    StoreClaimStoreCreditAccountParams:
+      type: object
+      description: The parameters required to claim a store credit account.
+      x-schemaName: StoreClaimStoreCreditAccountParams
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          title: code
+          description: The store credit account's code.
+    StoreClaimStoreCreditAccountResponse:
+      type: object
+      description: The details of the claimed store credit account.
+      x-schemaName: StoreClaimStoreCreditAccountResponse
+      required:
+        - store_credit_account
+      properties:
+        store_credit_account:
+          $ref: '#/components/schemas/StoreStoreCreditAccount'
     StoreCollection:
       type: object
       description: The collection's details.
@@ -90851,6 +92460,10 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/store#manage-metadata
             description: Learn how to manage metadata
+        external_id:
+          type: string
+          title: external_id
+          description: The collection's external ID used to link it with external systems.
     StoreCollectionResponse:
       type: object
       description: The collection's details.
@@ -90902,8 +92515,6 @@ components:
       type: object
       description: The details of the customer to create.
       x-schemaName: StoreCreateCustomer
-      required:
-        - email
       properties:
         email:
           type: string
@@ -91514,8 +93125,8 @@ components:
       description: The store locale's details.
       x-schemaName: StoreLocale
       required:
-        - code
         - name
+        - code
       properties:
         code:
           type: string
@@ -91546,13 +93157,13 @@ components:
       required:
         - items
         - shipping_methods
-        - status
         - id
         - region_id
         - customer_id
         - sales_channel_id
         - email
         - currency_code
+        - status
         - payment_status
         - fulfillment_status
         - summary
@@ -98431,8 +100042,8 @@ components:
       description: The product option value's details.
       x-schemaName: StoreProductOptionValue
       required:
-        - value
         - id
+        - value
       properties:
         id:
           type: string
@@ -98512,6 +100123,10 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/store#manage-metadata
             description: Learn how to manage metadata
+        external_id:
+          type: string
+          title: external_id
+          description: The tag's external ID used to link it with external systems.
       required:
         - id
         - value
@@ -98597,6 +100212,10 @@ components:
           type: string
           title: value
           description: The type's value.
+        external_id:
+          type: string
+          title: external_id
+          description: The type's external ID used to link it with external systems.
     StoreProductTypeListResponse:
       type: object
       description: The paginated list of product types.
@@ -98767,13 +100386,13 @@ components:
       required:
         - options
         - title
-        - length
         - id
         - created_at
         - updated_at
         - thumbnail
         - width
         - weight
+        - length
         - height
         - origin_country
         - hs_code
@@ -98782,10 +100401,10 @@ components:
         - deleted_at
         - manage_inventory
         - allow_backorder
+        - sku
         - ean
         - upc
         - barcode
-        - sku
     StoreRegion:
       type: object
       description: The region's details.
@@ -98892,6 +100511,11 @@ components:
           type: string
           title: description
           description: The transfer's description, which can be shown to the other customer receiving the request.
+        update_order_email:
+          type: boolean
+          title: update_order_email
+          default: false
+          description: Whether to update the order's email to the receiving customer's email. By default, the order's email will not be updated.
     StoreReturn:
       type: object
       description: The return's details.

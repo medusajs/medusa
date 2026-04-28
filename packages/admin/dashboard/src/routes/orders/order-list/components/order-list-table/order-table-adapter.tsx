@@ -31,7 +31,8 @@ export function createOrderTableAdapter(): TableAdapter<HttpTypes.AdminOrder> {
           placeholderData: (previousData, previousQuery) => {
             // Only keep placeholder data if the fields haven't changed
             const prevFields =
-              previousQuery?.[previousQuery.length - 1]?.query?.fields
+              // @ts-ignore not sure what the expected type here is
+              previousQuery?.[previousQuery?.length - 1]?.query?.fields
             if (prevFields && prevFields !== fields) {
               // Fields changed, don't use placeholder data
               return undefined

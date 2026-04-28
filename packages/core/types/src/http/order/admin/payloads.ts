@@ -100,6 +100,18 @@ export interface AdminCreateOrderShipment {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The data needed to mark a fulfillment as delivered.
+ *
+ * @since 2.13.7
+ */
+export interface AdminMarkOrderFulfillmentAsDelivered {
+  /**
+   * Whether to notify the customer about the delivery.
+   */
+  no_notification?: boolean
+}
+
 export interface AdminCancelOrderFulfillment {
   /**
    * Whether to notify the customer about this change.

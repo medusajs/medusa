@@ -9,9 +9,9 @@
  *   - return_order
  *   - exchange
  *   - actions
- *   - status
  *   - id
  *   - version
+ *   - status
  *   - metadata
  *   - created_at
  *   - updated_at

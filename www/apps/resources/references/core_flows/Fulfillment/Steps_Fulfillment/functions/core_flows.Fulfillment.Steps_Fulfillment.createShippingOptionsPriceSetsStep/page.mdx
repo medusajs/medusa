@@ -28,13 +28,9 @@ import { createShippingOptionsPriceSetsStep } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = createShippingOptionsPriceSetsStep({
-      "id": "id_ksiqA0hl7baAhAIO",
-      "prices": [{
-        "currency_code": "vnd",
-        "amount": 18
-      }]
-    })
+    const data = createShippingOptionsPriceSetsStep([
+      {}
+    ])
   }
 )
 ```
@@ -42,8 +38,8 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"CreateShippingOptionsPriceSetsStepInput","type":"[CreateShippingOptionsPriceSetsStepInput](../../../../types/core_flows.CreateShippingOptionsPriceSetsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to create price sets for shipping options.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the shipping option.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"prices","type":"([ShippingOptionsPriceCurrencyCode](../../../../interfaces/core_flows.ShippingOptionsPriceCurrencyCode/page.mdx) \\| `ShippingOptionsPriceRegionId`)[]","description":"The prices to create for the shipping option.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"currency_code","type":"`string`","description":"The currency code of the price.","optional":false,"defaultValue":"","example":"usd","expandable":false,"children":[]},{"name":"amount","type":"`number`","description":"The amount of the price.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rules","type":"[PriceRule](../../../../../pricing_models/variables/pricing_models.PriceRule/page.mdx)[]","description":"The rules of the price.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"[IsDmlEntity]","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"name","type":"[InferDmlEntityNameFromConfig](../../../../../types/DmlTypes/types/types.DmlTypes.InferDmlEntityNameFromConfig/page.mdx)&#60;TConfig&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"schema","type":"Schema","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createShippingOptionsPriceSetsStep"/>
+<TypeList types={[{"name":"CreateShippingOptionsPriceSetsStepInput","type":"[CreateShippingOptionsPriceSetsStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.CreateShippingOptionsPriceSetsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CreateShippingOptionsPriceSetsStepInput","type":"`object`[]","description":"The data to create price sets for shipping options.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createShippingOptionsPriceSetsStep"/>
 
 ## Output
 
-<TypeList types={[{"name":"object[]","type":"`object`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the shipping option.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"priceSetId","type":"`string`","description":"The ID of the price set.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createShippingOptionsPriceSetsStep"/>
+<TypeList types={[{"name":"object[]","type":"`object`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createShippingOptionsPriceSetsStep"/>
