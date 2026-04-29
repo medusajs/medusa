@@ -16,15 +16,18 @@ export type BaseUploadFile =
       /**
        * The list of files to upload.
        */
-      files: ({
-        /**
-         * The name of the file.
-         */ 
-        name: string; 
-        /**
-         * The content of the file.
-         */
-        content: string
-      } | File)[]
+      files: (
+        | {
+            /**
+             * The name of the file.
+             */
+            name: string
+            /**
+             * The content of the file.
+             */
+            content: string
+          }
+        | File
+      )[]
     }
   | FileList
