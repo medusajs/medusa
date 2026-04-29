@@ -41,7 +41,7 @@ export const useInventoryTableQuery = ({
     ...params
   } = raw
 
-  const searchParams: HttpTypes.AdminInventoryItemParams = {
+  const searchParams: HttpTypes.AdminInventoryItemsParams = {
     limit: pageSize,
     offset: offset ? parseInt(offset) : undefined,
     weight: weight ? JSON.parse(weight) : undefined,

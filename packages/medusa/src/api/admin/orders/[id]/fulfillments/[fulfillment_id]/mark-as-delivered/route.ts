@@ -7,13 +7,20 @@ import {
 } from "@medusajs/framework/http"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<{}, HttpTypes.AdminGetOrderParams>,
+  req: AuthenticatedMedusaRequest<
+    HttpTypes.AdminMarkOrderFulfillmentAsDelivered,
+    HttpTypes.AdminGetOrderParams
+  >,
   res: MedusaResponse<HttpTypes.AdminOrderResponse>
 ) => {
   const { id: orderId, fulfillment_id: fulfillmentId } = req.params
 
   await markOrderFulfillmentAsDeliveredWorkflow(req.scope).run({
-    input: { orderId, fulfillmentId },
+    input: {
+      orderId,
+      fulfillmentId,
+      no_notification: req.validatedBody.no_notification,
+    },
   })
 
   const order = await refetchEntity({

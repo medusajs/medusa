@@ -14,7 +14,7 @@ This documentation provides a reference to the `deleteCartCreditLinesWorkflow`. 
 
 This workflow deletes one or more credit lines from a cart.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/cart/workflows/delete-cart-credit-lines.ts#L13" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/cart/workflows/delete-cart-credit-lines.ts#L13" />
 
 ## Examples
 
@@ -34,11 +34,7 @@ export async function POST(
 ) {
   const { result } = await deleteCartCreditLinesWorkflow(req.scope)
     .run({
-      input: {
-        "id": [
-          "id_XcYWJHkDKjLisj2C4rRV"
-        ]
-      }
+      input: {}
     })
 
   res.send(result)
@@ -61,11 +57,7 @@ export default async function handleOrderPlaced({
 }: SubscriberArgs < { id: string } > ) {
   const { result } = await deleteCartCreditLinesWorkflow(container)
     .run({
-      input: {
-        "id": [
-          "id_XcYWJHkDKjLisj2C4rRV"
-        ]
-      }
+      input: {}
     })
 
   console.log(result)
@@ -88,11 +80,7 @@ export default async function myCustomJob(
 ) {
   const { result } = await deleteCartCreditLinesWorkflow(container)
     .run({
-      input: {
-        "id": [
-          "id_XcYWJHkDKjLisj2C4rRV"
-        ]
-      }
+      input: {}
     })
 
   console.log(result)
@@ -116,11 +104,7 @@ const myWorkflow = createWorkflow(
   () => {
     const result = deleteCartCreditLinesWorkflow
       .runAsStep({
-        input: {
-          "id": [
-            "id_XcYWJHkDKjLisj2C4rRV"
-          ]
-        }
+        input: {}
       })
   }
 )
@@ -132,7 +116,3 @@ const myWorkflow = createWorkflow(
 ## Steps
 
 <WorkflowDiagram workflow={{"name":"deleteCartCreditLinesWorkflow","steps":[{"type":"step","name":"deleteEntitiesStep","description":"This step deletes one or more entities using methods in a module's service.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.deleteEntitiesStep/page.mdx","depth":1}]}} />
-
-## Input
-
-<TypeList types={[{"name":"id","type":"`string`[]","description":"The IDs of the credit lines to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteCartCreditLinesWorkflow"/>

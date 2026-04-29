@@ -249,7 +249,9 @@ export default class PaymentModuleService
         {
           id: idOrSelector,
           ...data,
-          currency_code: normalizeCurrencyCode(data.currency_code ?? ""),
+          ...(data.currency_code ? 
+            { currency_code: normalizeCurrencyCode(data.currency_code) } :
+            {}),
         },
       ]
     } else {
@@ -262,7 +264,10 @@ export default class PaymentModuleService
       updateData = collections.map((c) => ({
         id: c.id,
         ...data,
-        currency_code: normalizeCurrencyCode(data.currency_code ?? ""),
+        ...(data.currency_code ?
+          { currency_code: normalizeCurrencyCode(data.currency_code) } :
+          {}
+        ),
       }))
     }
 
@@ -319,7 +324,10 @@ export default class PaymentModuleService
       )
       .map((element) => ({
         ...element,
-        currency_code: normalizeCurrencyCode(element.currency_code ?? ""),
+        ...(element.currency_code ? 
+          { currency_code: normalizeCurrencyCode(element.currency_code) } :
+          {}
+        )
       }))
     const forCreate = input
       .filter(
@@ -327,7 +335,10 @@ export default class PaymentModuleService
       )
       .map((element) => ({
         ...element,
-        currency_code: normalizeCurrencyCode(element.currency_code ?? ""),
+        ...(element.currency_code ? 
+          { currency_code: normalizeCurrencyCode(element.currency_code) } :
+          {}
+        )
       }))
 
     const operations: Promise<InferEntityType<typeof PaymentCollection>[]>[] =
@@ -406,7 +417,7 @@ export default class PaymentModuleService
           },
           data: { ...input.data, session_id: paymentSession!.id },
           amount: input.amount,
-          currency_code: normalizeCurrencyCode(input.currency_code ?? ""),
+          currency_code: normalizeCurrencyCode(input.currency_code),
         }
       )
 
@@ -449,7 +460,7 @@ export default class PaymentModuleService
         payment_collection_id: paymentCollectionId,
         provider_id: data.provider_id,
         amount: data.amount,
-        currency_code: normalizeCurrencyCode(data.currency_code ?? ""),
+        currency_code: normalizeCurrencyCode(data.currency_code),
         context: data.context,
         data: data.data,
         metadata: data.metadata,
@@ -477,7 +488,7 @@ export default class PaymentModuleService
       {
         data: data.data,
         amount: data.amount,
-        currency_code: normalizeCurrencyCode(data.currency_code ?? ""),
+        currency_code: normalizeCurrencyCode(data.currency_code),
         context: data.context,
       }
     )
@@ -486,7 +497,7 @@ export default class PaymentModuleService
       {
         id: session.id,
         amount: data.amount,
-        currency_code: normalizeCurrencyCode(data.currency_code ?? ""),
+        currency_code: normalizeCurrencyCode(data.currency_code),
         data: providerData.data,
         // Allow the caller to explicitly set the status (eg. due to a webhook), fallback to the update response, and finally to the existing status.
         status: data.status ?? providerData.status ?? session.status,
@@ -631,7 +642,7 @@ export default class PaymentModuleService
     const payment = await this.paymentService_.create(
       {
         amount: session.amount,
-        currency_code: normalizeCurrencyCode(session.currency_code ?? ""),
+        currency_code: normalizeCurrencyCode(session.currency_code),
         payment_session: session.id,
         payment_collection_id: session.payment_collection_id,
         provider_id: session.provider_id,

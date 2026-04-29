@@ -31,9 +31,45 @@ Once we have this information, we'll look into it further.
 
 ---
 
-## Step 2 — Check for User Error
+## Step 2 — Check Documentation for Intentional Behavior
 
-Before validating the bug in code, assess whether the issue may be caused by the user:
+> **CRITICAL:** Before treating anything as a bug, check the official Medusa documentation to determine if the reported behavior is **intentional and documented**. Do this actively — search the docs and the codebase for explanations of the feature.
+
+Read the relevant documentation section (e.g. `www/apps/book/app/learn/fundamentals/`) for the feature mentioned in the issue. Ask: "Is the behavior the user is reporting described as by design anywhere in the docs?"
+
+**If the behavior is explicitly documented as by design:**
+1. Add a comment explaining the behavior is intentional, referencing the relevant documentation section
+2. Close the issue
+3. **Stop** — this is not a bug
+
+**Comment template — documented intentional behavior:**
+```
+Thank you for the report! After investigating, the behavior you're describing is actually intentional and documented.
+
+[Explain the behavior and why it works this way]
+
+You can find more details in our [documentation](link-to-relevant-docs-section).
+
+If you'd like a different behavior, we'd suggest [workaround or alternative approach if applicable].
+
+I'm going to close this issue, but feel free to reopen if your situation differs from what I've described.
+```
+
+Then: `bash scripts/close_issue.sh <issue_number>`
+
+---
+
+**If the behavior is undocumented or the docs are unclear/misleading** (but it still turns out to be by design after codebase review), treat it as a documentation gap — see Step 3 below.
+
+---
+
+**If the behavior is NOT described in the docs at all**, continue to Step 2.5.
+
+---
+
+## Step 2.5 — Check for User Error
+
+After verifying it's not documented intentional behavior, assess whether the issue may be caused by the user:
 
 - Incorrect usage not matching the [Medusa docs](https://docs.medusajs.com)
 - Custom code that diverges from documented patterns
@@ -139,6 +175,18 @@ I was able to reproduce/confirm this issue. [Brief explanation of what's happeni
 We'll track this for a fix. Thank you for the detailed report!
 ```
 
+**Comment template — bug confirmed, PR already linked:**
+
+> Use this when Step 0.5 detected a linked open PR. Do NOT add `good-first-issue` or `help-wanted`.
+
+```
+I was able to confirm this issue. [Brief explanation of what's happening and why.]
+
+[Optional: point to the relevant code location if found]
+
+It looks like #[pr_number] is already addressing this — we'll track progress there. Thank you for the report!
+```
+
 **Comment template — bug confirmed with `good-first-issue`:**
 ```
 I was able to reproduce/confirm this issue. [Brief explanation of what's happening and why.]
@@ -165,8 +213,9 @@ The fix may be a bit involved, but we'd welcome community contributions on this 
 | Priority is `critical` or `high` | `requires-team` |
 | Claude couldn't clearly identify root cause despite sufficient details | `requires-team` |
 | Issue is WWW-related (plugin not featured, etc.) | `requires-team` |
-| Bug confirmed, fix appears straightforward | `good-first-issue` |
-| Bug confirmed, fix appears complex | `help-wanted` |
+| Bug confirmed, fix appears straightforward, **no linked PR** | `good-first-issue` |
+| Bug confirmed, fix appears complex, **no linked PR** | `help-wanted` |
+| Bug confirmed, **open PR already linked** | Do NOT add `good-first-issue` or `help-wanted` |
 | Report lacks details (from Step 1) | `requires-more` |
 
 ```bash

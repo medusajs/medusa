@@ -487,6 +487,20 @@
  *       items:
  *         type: object
  *       title: $or
+ *   - name: description
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: description
+ *           description: Filter by a shipping option type's description.
+ *         - type: array
+ *           description: Filter by shipping option type descriptions.
+ *           items:
+ *             type: string
+ *             title: description
+ *             description: A description.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

@@ -116,20 +116,6 @@ get:
               type: string
               title: id
               description: A product category ID.
-    - name: name
-      in: query
-      required: false
-      schema:
-        oneOf:
-          - type: string
-            title: name
-            description: Filter by the product category's name.
-          - type: array
-            description: Filter by product category names.
-            items:
-              type: string
-              title: name
-              description: A product category name.
     - name: description
       in: query
       required: false
@@ -1053,6 +1039,20 @@ get:
         items:
           type: object
         title: $or
+    - name: external_id
+      in: query
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: external_id
+            description: Filter by an external ID.
+          - type: array
+            description: Filter by multiple external IDs.
+            items:
+              type: string
+              title: external_id
+              description: An external ID.
   security:
     - api_token: []
     - cookie_auth: []

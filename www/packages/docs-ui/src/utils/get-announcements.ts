@@ -4,7 +4,7 @@ import { CloudAnnouncement } from "types"
 
 export async function getAnnouncements(): Promise<CloudAnnouncement[]> {
   const response = await fetch(
-    "https://api.prod.medusajs.cloud/v1/announcements?limit=3&offset=0&order=-published_at&type%5B0%5D=feature",
+    "https://api.prod.medusajs.cloud/v1/announcements?limit=3&offset=0&order=-published_at&type%5B0%5D=feature&type%5B1%5D=incident",
     {
       // @ts-expect-error - next is not in the types for this package
       next: {
@@ -20,5 +20,5 @@ export async function getAnnouncements(): Promise<CloudAnnouncement[]> {
 
   const data = await response.json()
   // we'll merge them with the version announcement
-  return data as CloudAnnouncement[]
+  return data.announcements as CloudAnnouncement[]
 }

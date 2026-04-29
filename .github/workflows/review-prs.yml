@@ -2,13 +2,13 @@ name: PR Review
 
 on:
   pull_request_target:
-    types: [opened, reopened, synchronize, edited]
+    types: [opened, reopened, synchronize, edited, ready_for_review]
   issue_comment:
     types: [created]
   workflow_dispatch:
     inputs:
       skip_reviewed:
-        description: 'Skip PRs that already have initial-approval or requires-more labels'
+        description: "Skip PRs that already have initial-approval or requires-more labels"
         required: false
         default: true
         type: boolean
@@ -49,8 +49,8 @@ jobs:
       fail-fast: false
     uses: ./.github/workflows/review-pr-action.yml
     with:
-      pr_number: '${{ matrix.pr.number }}'
-      trigger_reason: 'manual workflow dispatch'
+      pr_number: "${{ matrix.pr.number }}"
+      trigger_reason: "manual workflow dispatch"
     secrets:
       MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
       MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
@@ -109,6 +109,7 @@ jobs:
               reopened)  echo "trigger_reason=PR reopened" >> $GITHUB_OUTPUT ;;
               synchronize) echo "trigger_reason=new commit pushed" >> $GITHUB_OUTPUT ;;
               edited)    echo "trigger_reason=PR description updated" >> $GITHUB_OUTPUT ;;
+              ready_for_review) echo "trigger_reason=PR marked as ready for review" >> $GITHUB_OUTPUT ;;
               *)         echo "trigger_reason=${{ github.event.action }}" >> $GITHUB_OUTPUT ;;
             esac
 

@@ -16,12 +16,39 @@ import { PluginModule } from "../../../types";
 import { retrieveGiftCardsBalanceStep } from "../../gift-cards/steps/retrieve-gift-card-balance";
 import { validateGiftCardBalancesStep } from "../steps/validate-gift-card-balances";
 
-/*
-  A workflow that refreshes gift card to a cart
-*/
+/**
+ * Data to refresh the gift card credit lines on a cart.
+ */
+export type RefreshCartGiftCardsWorkflowInput = {
+  /**
+   * The ID of the cart for which to refresh gift card credit lines.
+   */
+  cart_id: string;
+};
+
+/**
+ * This workflow refreshes the gift card credit lines on a cart. It removes existing
+ * gift card credit lines and recreates them based on current gift card balances,
+ * accounting for any changes to the cart total or gift card balances.
+ *
+ * You can use this workflow within your own customizations or custom workflows,
+ * allowing you to wrap custom logic around refreshing cart gift cards.
+ *
+ * @example
+ * const { result } = await refreshCartGiftCardsWorkflow(container)
+ *   .run({
+ *     input: {
+ *       cart_id: "cart_123",
+ *     },
+ *   })
+ *
+ * @summary
+ *
+ * Refresh gift card credit lines on a cart.
+ */
 export const refreshCartGiftCardsWorkflow = createWorkflow(
   "refresh-cart-gift-card",
-  function (input: { cart_id: string }) {
+  function (input: RefreshCartGiftCardsWorkflowInput) {
     const existingCardQuery = useQueryGraphStep({
       entity: "cart",
       filters: { id: input.cart_id },
