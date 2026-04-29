@@ -1,6 +1,6 @@
 {
   "name": "integration-tests-http",
-  "version": "1.1.1",
+  "version": "1.1.8",
   "main": "index.js",
   "license": "MIT",
   "private": true,
@@ -21,6 +21,7 @@
     "@medusajs/fulfillment": "workspace:^",
     "@medusajs/fulfillment-manual": "workspace:^",
     "@medusajs/inventory": "workspace:^",
+    "@medusajs/loyalty-plugin": "workspace:^",
     "@medusajs/medusa": "workspace:*",
     "@medusajs/modules-sdk": "workspace:^",
     "@medusajs/pricing": "workspace:^",

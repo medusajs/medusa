@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/store-credit-accounts/{id}/credit
  * operationId: PostStoreCreditAccountsIdCredit
- * summary: Add Credit
- * description: Add credit to a store credit account.
+ * summary: Add Credit to Store Credit Account
+ * description: Add credit to a store credit account
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -28,7 +28,7 @@
  *       -H 'Authorization: Bearer {access_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "amount": 0
+ *         "amount": 39
  *       }'
  * tags:
  *   - Store Credit Accounts
@@ -52,9 +52,9 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-badges:
- *   - text: Cloud
+ *   - text: Loyalty Plugin
  *     description: |
- *       This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+ *       This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/store-credit).
  * 
 */
 

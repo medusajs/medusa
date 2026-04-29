@@ -37,7 +37,7 @@ export const AdminUpdateUser = z.object({
   first_name: z.string().nullish(),
   last_name: z.string().nullish(),
   avatar_url: z.string().nullish(),
-  metadata: z.record(z.unknown()).nullish().optional(),
+  metadata: z.record(z.string(), z.unknown()).nullish().optional(),
 })
 
 export type AdminAssignUserRolesType = z.infer<typeof AdminAssignUserRoles>

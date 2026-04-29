@@ -15,7 +15,7 @@ import { OrderFulfillmentSection } from "./components/order-fulfillment-section"
 import { OrderGeneralSection } from "./components/order-general-section"
 import { OrderPaymentSection } from "./components/order-payment-section"
 import { OrderSummarySection } from "./components/order-summary-section"
-import { DEFAULT_FIELDS } from "./constants"
+import { DEFAULT_FIELDS, ExtendedOrder } from "./constants"
 import { orderLoader } from "./loader"
 
 export const OrderDetail = () => {
@@ -37,7 +37,7 @@ export const OrderDetail = () => {
 
   // TODO: Retrieve endpoints don't have an order ability, so a JS sort until this is available
   if (order) {
-    order.items = order.items.sort((itemA, itemB) => {
+    order.items = order.items.sort((itemA: any, itemB: any) => {
       if (itemA.created_at > itemB.created_at) {
         return 1
       }
@@ -82,14 +82,14 @@ export const OrderDetail = () => {
         <ActiveOrderClaimSection orderPreview={orderPreview!} />
         <ActiveOrderExchangeSection orderPreview={orderPreview!} />
         <ActiveOrderReturnSection orderPreview={orderPreview!} />
-        <OrderGeneralSection order={order} />
+        <OrderGeneralSection order={order as ExtendedOrder} />
         <OrderSummarySection order={order} plugins={plugins} />
-        <OrderPaymentSection order={order} plugins={plugins} />
-        <OrderFulfillmentSection order={order} />
+        <OrderPaymentSection order={order as ExtendedOrder} plugins={plugins} />
+        <OrderFulfillmentSection order={order as ExtendedOrder} />
       </TwoColumnPage.Main>
       <TwoColumnPage.Sidebar>
         <OrderCustomerSection order={order} />
-        <OrderActivitySection order={order} />
+        <OrderActivitySection order={order as ExtendedOrder} />
       </TwoColumnPage.Sidebar>
     </TwoColumnPage>
   )

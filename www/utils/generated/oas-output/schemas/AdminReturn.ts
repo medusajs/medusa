@@ -11,6 +11,7 @@
  *   - display_id
  *   - received_at
  *   - created_at
+ *   - created_by
  *   - canceled_at
  * properties:
  *   id:
@@ -76,6 +77,10 @@
  *     type: string
  *     title: received_at
  *     description: The date the return was received.
+ *   created_by:
+ *     type: string
+ *     title: created_by
+ *     description: The ID of the user that created the return.
  * 
 */
 

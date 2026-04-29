@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { applyAndAndOrOperators } from "../../../utils/common-validators"
 import {
   createFindParams,
@@ -40,7 +40,7 @@ export const AdminCreateRbacPolicy = z
     operation: z.string(),
     name: z.string().nullish(),
     description: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 
@@ -52,6 +52,6 @@ export const AdminUpdateRbacPolicy = z
     operation: z.string().optional(),
     name: z.string().nullish(),
     description: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()

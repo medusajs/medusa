@@ -1146,10 +1146,9 @@ medusaIntegrationTestRunner({
                   issues: [
                     {
                       code: "invalid_type",
-                      expected: "object",
-                      message: "Expected object, received array",
+                      expected: "record",
+                      message: "Invalid input: expected record, received array",
                       path: [],
-                      received: "array",
                     },
                   ],
                 }),

@@ -13,12 +13,9 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/framework/utils"
 import { refetchCustomer } from "../../../helpers"
-import {
-  StoreGetCustomerAddressParamsType,
-} from "../../../validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<StoreGetCustomerAddressParamsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.StoreGetCustomerAddressParams>,
   res: MedusaResponse<HttpTypes.StoreCustomerAddressResponse>
 ) => {
   const customerId = req.auth_context.actor_id

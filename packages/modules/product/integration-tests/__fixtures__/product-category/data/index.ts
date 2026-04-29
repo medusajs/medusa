@@ -5,6 +5,7 @@ export const productCategoriesData = [
     id: "category-0",
     name: "category 0",
     parent_category_id: null,
+    external_id: "ext-id-0",
   },
   {
     id: "category-1",

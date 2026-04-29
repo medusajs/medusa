@@ -23,8 +23,8 @@ export const CampaignSpend = ({ campaign }: CampaignSpendProps) => {
           {campaign.budget?.type === "use_by_attribute"
             ? t("campaigns.fields.totalUsedByAttribute")
             : campaign.budget?.type === "spend"
-              ? t("campaigns.fields.total_spend")
-              : t("campaigns.fields.total_used")}
+            ? t("campaigns.fields.total_spend")
+            : t("campaigns.fields.total_used")}
         </Heading>
       </div>
 

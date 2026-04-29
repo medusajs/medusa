@@ -2,6 +2,8 @@ import { TypeList } from "docs-ui"
 
 # AdminUpdateCollection
 
+The data to update a collection.
+
 ## Properties
 
-<TypeList types={[{"name":"title","type":"`string`","description":"The collection's title.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"handle","type":"`string`","description":"The collection's handle.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, any>`","description":"Key-value pairs of custom data.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="AdminUpdateCollection"/>
+<TypeList types={[{"name":"title","type":"`string`","description":"The collection's title.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"handle","type":"`string`","description":"The collection's handle.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"external_id","type":"`null` \\| `string`","description":"An external ID for the collection.","optional":true,"defaultValue":"","expandable":false,"children":[],"since":"2.13.7"},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Key-value pairs of custom data.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="AdminUpdateCollection"/>

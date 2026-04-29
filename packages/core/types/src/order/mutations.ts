@@ -840,6 +840,13 @@ export interface CreateOrderShippingMethodAdjustmentDTO {
    * The associated provider's ID.
    */
   provider_id?: string
+
+  /**
+   * The version of the adjustment.
+   *
+   * @since 2.13.7
+   */
+  version?: number
 }
 
 /**
@@ -2231,7 +2238,7 @@ export interface CreateOrderReturnReasonDTO {
   /**
    * The associated parent return reason's ID.
    */
-  parent_return_reason_id?: string
+  parent_return_reason_id?: string | null
 
   /**
    * Holds custom data in key-value pairs.

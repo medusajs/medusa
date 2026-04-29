@@ -150,7 +150,7 @@ medusaIntegrationTestRunner({
                   variants: {
                     prices: {
                       amount: { $gt: 50 },
-                      currency_code: { $eq: "AUD" },
+                      currency_code: { $eq: "aud" },
                     },
                   },
                 },
@@ -179,7 +179,7 @@ medusaIntegrationTestRunner({
         for (const variant of variants) {
           expect(variant.prices.length).toBe(1)
           expect(variant.prices[0].amount).toBeGreaterThan(50)
-          expect(variant.prices[0].currency_code).toBe("AUD")
+          expect(variant.prices[0].currency_code).toBe("aud")
         }
       })
 

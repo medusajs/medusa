@@ -1,7 +1,12 @@
 post:
   operationId: PostStoreCreditAccountsClaim
-  summary: Claim Credits
-  description: Claim credits of the logged-in customer's store credit account.
+  summary: Claim a Store Credit Account
+  description: >-
+    Claim a store credit account as the logged-in customer. The store credit
+    account must not belong to another customer, and it must have amount
+    available to claim. This is typically used to claim anonymous store credit
+    accounts, such as those created for guest users or through gift cards.
+  x-sidebar-summary: Claim Store Credit Account
   x-authenticated: true
   parameters:
     - name: x-publishable-api-key
@@ -69,7 +74,7 @@ post:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-badges:
-    - text: Cloud
+    - text: Loyalty Plugin
       description: >
-        This API route is only available in [Medusa
-        Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+        This API route is only available through the [Loyalty
+        Plugin](https://docs.medusajs.com/resources/commerce-modules/store-credit).

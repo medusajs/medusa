@@ -8,6 +8,17 @@ import { CampaignSection } from "./components/campaign-section"
 import { PromotionConditionsSection } from "./components/promotion-conditions-section"
 import { PromotionGeneralSection } from "./components/promotion-general-section"
 import { promotionLoader } from "./loader"
+import { AdminPromotionRule } from "@medusajs/types"
+import { BasePromotionRuleValue } from "@medusajs/types/dist/http/promotion/common"
+
+export type ExtendedPromotionRule = Omit<AdminPromotionRule, "values"> & {
+  attribute_label?: string
+  operator_label?: string
+  field_type?: string
+  values?: (BasePromotionRuleValue & {
+    label?: string
+  })[]
+}
 
 export const PromotionDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -22,9 +33,19 @@ export const PromotionDetail = () => {
     query.promotion_type = promotion.type
   }
 
-  const { rules } = usePromotionRules(id!, "rules", query)
-  const { rules: targetRules } = usePromotionRules(id!, "target-rules", query)
-  const { rules: buyRules } = usePromotionRules(id!, "buy-rules", query)
+  const { rules } = usePromotionRules(id!, "rules", query) as {
+    rules: ExtendedPromotionRule[]
+  }
+  const { rules: targetRules } = usePromotionRules(
+    id!,
+    "target-rules",
+    query
+  ) as {
+    rules: ExtendedPromotionRule[]
+  }
+  const { rules: buyRules } = usePromotionRules(id!, "buy-rules", query) as {
+    rules: ExtendedPromotionRule[]
+  }
 
   const { getWidgets } = useExtension()
 
@@ -53,7 +74,7 @@ export const PromotionDetail = () => {
           rules={targetRules || []}
           ruleType={"target-rules"}
           applicationMethodTargetType={
-            promotion.application_method.target_type || "items"
+            promotion.application_method?.target_type || "items"
           }
         />
         {promotion.type === "buyget" && (

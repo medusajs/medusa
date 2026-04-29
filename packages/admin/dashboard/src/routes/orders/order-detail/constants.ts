@@ -1,3 +1,14 @@
+import {
+  AdminFulfillmentItem,
+  AdminFulfillmentLabel,
+  AdminOrder,
+  AdminOrderFulfillment,
+  AdminPayment,
+  AdminPaymentCollection,
+  AdminRefund,
+  AdminRefundReason,
+} from "@medusajs/types"
+
 const DEFAULT_PROPERTIES = [
   "id",
   "status",
@@ -62,3 +73,32 @@ const DEFAULT_RELATIONS = [
 export const DEFAULT_FIELDS = `${DEFAULT_PROPERTIES.join(
   ","
 )},${DEFAULT_RELATIONS.join(",")}`
+
+export type ExtendedOrderFulfillment = AdminOrderFulfillment & {
+  items: AdminFulfillmentItem[]
+  labels: AdminFulfillmentLabel[]
+  shipping_option?: {
+    service_zone?: {
+      fulfillment_set?: {
+        type: string
+      }
+    }
+  }
+}
+
+export type ExtendedRefund = AdminRefund & {
+  payment_id: string | null
+  refund_reason: AdminRefundReason
+}
+
+export type ExtendedOrder = Omit<AdminOrder, "fulfillments"> & {
+  fulfillments?: ExtendedOrderFulfillment[]
+  no_notification?: boolean
+  canceled_at?: string | null
+  display_id: string
+  payment_collection?: AdminPaymentCollection & {
+    payments: (AdminPayment & {
+      refunds: ExtendedRefund[]
+    })[]
+  }
+}

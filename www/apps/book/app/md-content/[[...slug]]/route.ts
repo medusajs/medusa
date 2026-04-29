@@ -1,10 +1,10 @@
-import { getCleanMd } from "docs-utils"
+import { getCleanMd, addExtraToMd } from "docs-utils"
 import { existsSync, readFileSync } from "fs"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
 import path from "path"
-import { posthog } from "posthog-js"
+import { PostHog } from "posthog-node"
 import {
   addUrlToRelativeLink,
   crossProjectLinksPlugin,
@@ -20,17 +20,23 @@ export async function GET(req: NextRequest, { params }: Params) {
   const { slug = ["/"] } = await params
 
   if (slug[0] === "/") {
-    const llmsFile = readFileSync(
-      path.join(process.cwd(), "public", "llms.txt"),
+    const homepageFile = readFileSync(
+      path.join(process.cwd(), "public", "homepage.md"),
       "utf-8"
     )
 
-    return new NextResponse(llmsFile, {
-      headers: {
-        "Content-Type": "text/markdown",
-      },
-      status: 200,
-    })
+    return new NextResponse(
+      addExtraToMd(homepageFile, {
+        baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "",
+      }),
+      {
+        headers: {
+          "content-type": "text/markdown",
+          "cache-control": "public, max-age=3600, must-revalidate",
+        },
+        status: 200,
+      }
+    )
   }
 
   // keep this so that Vercel keeps the files in deployment
@@ -78,32 +84,37 @@ export async function GET(req: NextRequest, { params }: Params) {
     acceptHeader.includes("text/plain") ||
     acceptHeader.includes("text/markdown")
   ) {
-    if (!posthog.__loaded) {
-      posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-        api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-        person_profiles: "always",
-        defaults: "2025-05-24",
-      })
-    }
+    const client = new PostHog(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+      host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    })
 
-    posthog.capture(
-      "md_content_requested_agents",
-      {
-        $current_url: req.url,
+    const urlObj = new URL(req.url)
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL || ""}${process.env.NEXT_PUBLIC_BASE_PATH || ""}${urlObj.pathname}`
+
+    client.capture({
+      distinctId: "anonymous",
+      event: "md_content_requested_agents",
+      properties: {
+        $current_url: url,
         $raw_user_agent: req.headers.get("user-agent") || undefined,
       },
-      {
-        send_instantly: true,
-      }
-    )
+    })
+
+    await client.shutdown()
   }
 
-  return new NextResponse(cleanMdContent, {
-    headers: {
-      "Content-Type": "text/markdown",
-    },
-    status: 200,
-  })
+  return new NextResponse(
+    addExtraToMd(cleanMdContent, {
+      baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "",
+    }),
+    {
+      headers: {
+        "content-type": "text/markdown",
+        "cache-control": "public, max-age=3600, must-revalidate",
+      },
+      status: 200,
+    }
+  )
 }
 
 const getCleanMd_ = unstable_cache(

@@ -8,6 +8,10 @@ export interface AdminOrderFilters extends FindParams, BaseOrderFilters {
    */
   id?: string[] | string
   /**
+   * Filter by name(s).
+   */
+  name?: string | string[]
+  /**
    * Filter by sales channel IDs to retrieve their associated orders.
    */
   sales_channel_id?: string[]
@@ -48,7 +52,9 @@ export interface AdminOrderItemsFilters extends SelectParams {
   version?: number[] | number
 }
 
-export interface AdminOrderChangesFilters extends BaseOrderChangesFilters, SelectParams {
+export interface AdminOrderChangesFilters
+  extends BaseOrderChangesFilters,
+    SelectParams {
   /**
    * Apply filters on the change's creation date.
    */
@@ -63,11 +69,26 @@ export interface AdminOrderChangesFilters extends BaseOrderChangesFilters, Selec
   deleted_at?: OperatorMap<string>
 }
 
-export interface AdminGetOrderShippingOptionList {}
-export interface AdminGetOrderParams extends SelectParams {}
+export interface AdminGetOrderParams extends SelectParams {
+  /**
+   * The version of the order to retrieve.
+   */
+  version?: number
+}
 export interface AdminGetOrderDetailsParams extends SelectParams {
   /**
    * The version of the order to retrieve details for.
    */
   version?: number
 }
+
+export interface AdminOrderChangeParams extends SelectParams {
+  status?: string | string[] | undefined
+  created_at?: any
+  id?: string | string[] | undefined
+  updated_at?: any
+  deleted_at?: any
+  change_type?: string | string[] | undefined
+}
+
+export interface AdminGetOrderShippingOptionList {}

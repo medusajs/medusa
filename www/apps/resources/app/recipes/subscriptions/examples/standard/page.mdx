@@ -77,13 +77,7 @@ npx create-medusa-app@latest
 
 You'll first be asked for the project's name. Then, when you're asked whether you want to install the Next.js Starter Storefront, choose `Y` for yes.
 
-Afterwards, the installation process will start, which will install the Medusa application in a directory with your project's name, and the Next.js Starter Storefront in a directory with the `{project-name}-storefront` name.
-
-<Note title="Why is the storefront installed separately?">
-
-The Medusa application is composed of a headless Node.js server and an admin dashboard. The storefront is installed or custom-built separately and connects to the Medusa application through its REST endpoints, called [API routes](!docs!/learn/fundamentals/api-routes). Learn more about Medusa's architecture in [this documentation](!docs!/learn/introduction/architecture).
-
-</Note>
+the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
 
 Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form.
 
@@ -92,6 +86,12 @@ Afterwards, you can log in with the new user and explore the dashboard. The Next
 <Note title="Ran into Errors?">
 
 Check out the [troubleshooting guides](../../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
+
+</Note>
+
+<Note>
+
+In this guide, all file paths of backend customizations are relative to the `apps/backend` directory of your Medusa project.
 
 </Note>
 
@@ -1264,13 +1264,13 @@ You change the request to send a `POST` request to the `/store/carts/[id]/subscr
 
 To test out the cart completion flow:
 
-1. In the Medusa application's directory, run the following command to start the application:
+1. In the `apps/backend` directory, run the following command to start the application:
 
 ```bash npm2yarn
 npm run dev
 ```
 
-2. In the Next.js Starter's directory, run the following command to start the storefront:
+2. In the `apps/storefront` directory, run the following command to start the storefront:
 
 ```bash npm2yarn
 npm run dev
