@@ -1,3 +1,4 @@
+import React from "react"
 import type { MDXContentClientProps } from "@/components/MDXContent/Client"
 import type { MDXContentServerProps } from "@/components/MDXContent/Server"
 import type { OpenAPI } from "types"
@@ -7,14 +8,14 @@ import { Loading } from "docs-ui"
 import dynamic from "next/dynamic"
 
 const MDXContentClient = dynamic<MDXContentClientProps>(
-  async () => import("../../../MDXContent/Client"),
+  async () => import("@/components/MDXContent/Client"),
   {
     loading: () => <Loading />,
   }
 ) as React.FC<MDXContentClientProps>
 
 const MDXContentServer = dynamic<MDXContentServerProps>(
-  async () => import("../../../MDXContent/Server"),
+  async () => import("@/components/MDXContent/Server"),
   {
     loading: () => <Loading />,
   }
@@ -31,22 +32,25 @@ const SecurityDescription = ({
 }: SecurityDescriptionProps) => {
   return (
     <>
-      <h2>{securitySchema["x-displayName"] as string}</h2>
+      <h2 data-testid="title">{securitySchema["x-displayName"] as string}</h2>
       {isServer && <MDXContentServer content={securitySchema.description} />}
       {!isServer && <MDXContentClient content={securitySchema.description} />}
-      <p>
+      <p data-testid="security-scheme-type">
         <strong>Security Scheme Type:</strong>{" "}
         {getSecuritySchemaTypeName(securitySchema)}
       </p>
       {(securitySchema.type === "http" || securitySchema.type === "apiKey") && (
-        <p className={clsx("bg-medusa-bg-subtle", "p-1")}>
+        <p
+          className={clsx("bg-medusa-bg-subtle", "p-1")}
+          data-testid="security-scheme-type-details"
+        >
           <strong>
             {securitySchema.type === "http"
               ? "HTTP Authorization Scheme"
               : "Cookie parameter name"}
             :
           </strong>{" "}
-          <code>
+          <code data-testid="security-scheme-type-details-value">
             {securitySchema.type === "http"
               ? securitySchema.scheme
               : securitySchema.name}

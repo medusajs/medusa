@@ -1,0 +1,74 @@
+import { 
+  Tabs,
+  TabsContent,
+  TabsContentWrapper,
+  TabsList,
+  TabsTrigger,
+  Link,
+} from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Medusa MCP Remote Server`,
+}
+
+# {metadata.title}
+
+The Medusa documentation provides a remote Model Context Protocol (MCP) server that allows you to find information from the Medusa documentation right in your IDEs or AI tools, such as Cursor.
+
+Medusa hosts a Streamable HTTP MCP server at `https://docs.medusajs.com/mcp` that you can add to AI agents supporting MCP server connections.
+
+## Connect to the Medusa MCP Server
+
+### Claude Code
+
+To connect to the Medusa MCP server in Claude Code, run the following command in your terminal:
+
+```sh
+claude mcp add --transport http medusa https://docs.medusajs.com/mcp
+```
+
+### Cursor
+
+<Link href="cursor://anysphere.cursor-deeplink/mcp/install?name=medusa&config=eyJ1cmwiOiJodHRwczovL2RvY3MubWVkdXNhanMuY29tL21jcCJ9" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Medusa MCP server to Cursor.
+
+To manually connect to the Medusa MCP server in Cursor, add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://docs.cursor.com/context/model-context-protocol):
+
+```json
+{
+  "mcpServers": {
+    "medusa": {
+      "url": "https://docs.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+### VS Code
+
+<Link href="https://vscode.dev/redirect/mcp/install?name=medusa&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fdocs.medusajs.com%2Fmcp%22%7D" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Medusa MCP server to VSCode.
+
+To manually connect to the Medusa MCP server in VSCode, add the following to your `.vscode/mcp.json` file in your workspace:
+
+```json
+{
+  "servers": {
+    "medusa": {
+      "type": "http",
+      "url": "https://docs.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+---
+
+## How to Use the MCP Server
+
+After connecting to the Medusa MCP server in your AI tool or IDE, you can start asking questions or requesting your AI assistant to build Medusa customizations. It will fetch the relevant information from the Medusa documentation and provide you with accurate answers, code snippets, and explanations.
+
+For example, you can ask:
+
+1. "Create a Product Review module for Medusa. Refer to the Medusa documentation for information."
+2. "How to update Medusa to the latest version?"
+3. "Explain the Medusa workflow system."
+4. "Integrate Medusa with X provider. Refer to the Medusa documentation for information."

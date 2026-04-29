@@ -4,8 +4,8 @@ import {
   transform,
 } from "@medusajs/framework/workflows-sdk"
 import type { WorkflowTypes } from "@medusajs/framework/types"
-import { generateProductCsvStep, getAllProductsStep } from "../steps"
-import { useRemoteQueryStep } from "../../common"
+import { exportProductsStep } from "../steps"
+import { useQueryGraphStep } from "../../common"
 import { notifyOnFailureStep, sendNotificationsStep } from "../../notification"
 
 export const exportProductsWorkflowId = "export-products"
@@ -55,7 +55,7 @@ export const exportProductsWorkflow = createWorkflow(
   (
     input: WorkflowData<WorkflowTypes.ProductWorkflow.ExportProductsDTO>
   ): WorkflowData<void> => {
-    const products = getAllProductsStep(input).config({
+    const file = exportProductsStep(input).config({
       async: true,
       backgroundExecution: true,
     })
@@ -76,12 +76,11 @@ export const exportProductsWorkflow = createWorkflow(
     })
     notifyOnFailureStep(failureNotification)
 
-    const file = generateProductCsvStep(products)
-    const fileDetails = useRemoteQueryStep({
+    const { data: fileDetails } = useQueryGraphStep({
+      entity: "file",
       fields: ["id", "url"],
-      entry_point: "file",
-      variables: { id: file.id },
-      list: false,
+      filters: { id: file.id },
+      options: { isList: false },
     })
 
     const notifications = transform({ fileDetails, file }, (data) => {

@@ -88,3 +88,10 @@ export type CachingModuleOptions = Partial<ModuleServiceInitializeOptions> & {
     options?: Record<string, unknown>
   }[]
 }
+
+declare module "@medusajs/types" {
+  interface ModuleOptions {
+    "@medusajs/caching": CachingModuleOptions
+    "@medusajs/medusa/caching": CachingModuleOptions
+  }
+}

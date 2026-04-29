@@ -3,7 +3,7 @@
  * operationId: GetTranslationsSettings
  * summary: List Translation Settings
  * x-sidebar-summary: List Settings
- * description: Retrieve the list of translatable fields for all entities, such as products and collections.
+ * description: Retrieve the list of translatable fields for all entities, such as products and collections. You can also filter the results by entity type or active entities.
  * x-authenticated: true
  * parameters:
  *   - name: entity_type
@@ -15,6 +15,14 @@
  *       title: entity_type
  *       description: The entity to retrieve translation settings for.
  *       example: product
+ *   - name: is_active
+ *     in: query
+ *     description: Filter resources by whether translations is activated for them or not. If not provided, all resources are returned.
+ *     required: false
+ *     schema:
+ *       type: boolean
+ *       title: is_active
+ *       description: Filter resources by whether translations is activated for them or not. If not provided, all resources are returned.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -36,8 +44,8 @@
  *       sdk.admin.translation.settings({
  *         entity_type: "product"
  *       })
- *       .then(({ translatable_fields }) => {
- *         console.log(translatable_fields)
+ *       .then(({ translation_settings }) => {
+ *         console.log(translation_settings)
  *       })
  *   - lang: Shell
  *     label: cURL

@@ -2,7 +2,7 @@
 
 import React from "react"
 import clsx from "clsx"
-import { CopyButton } from "@/components"
+import { CopyButton } from "@/components/CopyButton"
 
 export type InlineCodeProps = React.ComponentProps<"code"> & {
   variant?: "default" | "grey-bg"

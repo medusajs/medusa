@@ -1,3 +1,4 @@
+import React from "react"
 import type { OpenAPI } from "types"
 import TagOperationParameters from "../../Parameters"
 
@@ -60,6 +61,7 @@ const TagsOperationDescriptionSectionParameters = ({
           <TagOperationParameters
             schemaObject={headerParameters}
             topLevel={true}
+            data-testid="header-parameters"
           />
         </>
       )}
@@ -71,6 +73,7 @@ const TagsOperationDescriptionSectionParameters = ({
           <TagOperationParameters
             schemaObject={pathParameters}
             topLevel={true}
+            data-testid="path-parameters"
           />
         </>
       )}
@@ -82,6 +85,7 @@ const TagsOperationDescriptionSectionParameters = ({
           <TagOperationParameters
             schemaObject={queryParameters}
             topLevel={true}
+            data-testid="query-parameters"
           />
         </>
       )}

@@ -204,6 +204,11 @@ export const troubleshootingSidebar = [
         children: [
           {
             type: "link",
+            path: "/troubleshooting/nextjs-node-25",
+            title: "Errors with Node v25+",
+          },
+          {
+            type: "link",
             path: "/troubleshooting/nextjs-starter-rewrites",
             title: "Google Cloud Run Error",
           },

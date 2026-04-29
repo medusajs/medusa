@@ -276,6 +276,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: deleted_at
  *   - name: q
  *     in: query
  *     description: Search term to filter the collection's searchable properties by.
@@ -557,6 +558,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: Filter by the collection's update date.
@@ -788,6 +790,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: updated_at
  *   - name: $and
  *     in: query
  *     description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
@@ -816,6 +819,20 @@
  *       type: boolean
  *       title: with_deleted
  *       description: Whether to include deleted records in the result.
+ *   - name: external_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: external_id
+ *           description: Filter by an external ID.
+ *         - type: array
+ *           description: Filter by multiple external IDs.
+ *           items:
+ *             type: string
+ *             title: external_id
+ *             description: An external ID.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

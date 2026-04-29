@@ -25,7 +25,8 @@
   "scripts": {
     "build": "yarn clean && tsc",
     "clean": "rimraf dist",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "test": "vitest --passWithNoTests"
   },
   "dependencies": {
     "@mdx-js/mdx": "^3.1.0",
@@ -44,7 +45,9 @@
     "rimraf": "^5.0.5",
     "tsconfig": "*",
     "types": "*",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^2.1.8"
   },
   "engines": {
     "node": ">=18.17.0"

@@ -31,6 +31,7 @@ import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-chan
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import { computeDraftOrderAdjustmentsWorkflow } from "./compute-draft-order-adjustments"
+import { getTranslatedShippingOptionsStep } from "../../common/steps/get-translated-shipping-option"
 
 const validateShippingOptionStep = createStep(
   "validate-shipping-option",
@@ -148,12 +149,17 @@ export const addDraftOrderShippingMethodsWorkflow = createWorkflow(
       },
     }).config({ name: "fetch-shipping-option" })
 
+    const translatedShippingOptions = getTranslatedShippingOptionsStep({
+      shippingOptions: shippingOptions,
+      locale: order.locale!,
+    })
+
     validateShippingOptionStep({ shippingOptions, input })
 
     const shippingMethodInput = transform(
       {
         relatedEntity: { order_id: order.id },
-        shippingOptions,
+        shippingOptions: translatedShippingOptions,
         customPrice: input.custom_amount as any, // Need to cast this to any otherwise the type becomes to complex.
         orderChange,
         input,
@@ -174,23 +180,6 @@ export const addDraftOrderShippingMethodsWorkflow = createWorkflow(
         order_id: order.id,
         shipping_method_ids: shippingMethodIds,
       },
-    })
-
-    const appliedPromoCodes: string[] = transform(
-      order,
-      (order) => order.promotions?.map((promotion) => promotion.code) ?? []
-    )
-
-    // If any the order has any promo codes, then we need to refresh the adjustments.
-    when(
-      appliedPromoCodes,
-      (appliedPromoCodes) => appliedPromoCodes.length > 0
-    ).then(() => {
-      computeDraftOrderAdjustmentsWorkflow.runAsStep({
-        input: {
-          order_id: input.order_id,
-        },
-      })
     })
 
     const orderChangeActionInput = transform(
@@ -226,6 +215,23 @@ export const addDraftOrderShippingMethodsWorkflow = createWorkflow(
 
     createOrderChangeActionsWorkflow.runAsStep({
       input: [orderChangeActionInput],
+    })
+
+    const appliedPromoCodes: string[] = transform(
+      order,
+      (order) => order.promotions?.map((promotion) => promotion.code) ?? []
+    )
+
+    // If any the order has any promo codes, then we need to refresh the adjustments.
+    when(
+      appliedPromoCodes,
+      (appliedPromoCodes) => appliedPromoCodes.length > 0
+    ).then(() => {
+      computeDraftOrderAdjustmentsWorkflow.runAsStep({
+        input: {
+          order_id: input.order_id,
+        },
+      })
     })
 
     releaseLockStep({

@@ -893,24 +893,6 @@ const generatedgeneratedAdminSidebarSidebar = {
     },
     {
       "type": "category",
-      "title": "Transaction Groups",
-      "children": [
-        {
-          "type": "link",
-          "path": "transaction-groups_transactiongroup_schema",
-          "title": "TransactionGroup Object",
-          "loaded": true,
-          "badge": {
-            "variant": "neutral",
-            "text": "Schema"
-          }
-        }
-      ],
-      "loaded": false,
-      "showLoadingIfEmpty": true
-    },
-    {
-      "type": "category",
       "title": "Translations",
       "children": [
         {

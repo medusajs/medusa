@@ -4,7 +4,7 @@ import { ProductOption, ProductVariant } from "./index"
 const ProductOptionValue = model
   .define("ProductOptionValue", {
     id: model.id({ prefix: "optval" }).primaryKey(),
-    value: model.text(),
+    value: model.text().translatable(),
     metadata: model.json().nullable(),
     option: model
       .belongsTo(() => ProductOption, {

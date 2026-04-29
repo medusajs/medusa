@@ -332,13 +332,13 @@ export class Reporter {
   }
 
   /**
-   * Logs a message at the vebose level.
+   * Logs a message at the verbose level.
    * @param {string} message - the message to log
    * Level 4
    */
   verbose(message: string) {
     this.loggerInstance_.log({
-      level: "vebose",
+      level: "verbose",
       message,
     })
   }

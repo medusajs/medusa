@@ -276,7 +276,8 @@
 			"code": "The code of the promotion.",
 			"amount": "The amount of the adjustment",
 			"provider_id": "The ID of the provider used to apply the adjustment.",
-			"shipping_method": "The associated shipping method that the adjustment is applied on.\n\n@expandable"
+			"shipping_method": "The associated shipping method that the adjustment is applied on.\n\n@expandable",
+			"version": "The version of the order shipping method adjustment"
 		},
 		"deprecated": {
 			"is_deprecated": false

@@ -1,3 +1,4 @@
+import React from "react"
 import dynamic from "next/dynamic"
 import type { OpenAPI } from "types"
 import type { SecurityDescriptionProps } from "./Description"

@@ -7,7 +7,6 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep } from "../../common/steps/emit-event"
 import { createTranslationsStep } from "../steps"
-import { validateTranslationsStep } from "../steps"
 import { TranslationWorkflowEvents } from "@medusajs/framework/utils"
 
 /**
@@ -27,7 +26,7 @@ export const createTranslationsWorkflowId = "create-translations"
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to create translations in your custom flows.
- * 
+ *
  * @since 2.12.3
  * @featureFlag translation
  *
@@ -55,7 +54,6 @@ export const createTranslationsWorkflow = createWorkflow(
   (
     input: WorkflowData<CreateTranslationsWorkflowInput>
   ): WorkflowResponse<TranslationDTO[]> => {
-    validateTranslationsStep(input.translations)
     const translations = createTranslationsStep(input.translations)
 
     const translationIdEvents = transform(

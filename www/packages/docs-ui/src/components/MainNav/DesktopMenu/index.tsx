@@ -2,22 +2,22 @@
 
 import { BarsThree, Book, SidebarLeft, TimelineVertical } from "@medusajs/icons"
 import React, { useMemo, useRef, useState } from "react"
-import {
-  Button,
-  getOsShortcut,
-  Menu,
-  useClickOutside,
-  useSidebar,
-} from "../../.."
+import { Button } from "@/components/Button"
+import { Menu } from "@/components/Menu"
+import { useSidebar } from "@/providers/Sidebar"
+import { useClickOutside } from "@/hooks/use-click-outside"
+import { getOsShortcut } from "@/utils/os-browser-utils"
 import clsx from "clsx"
 import { HouseIcon } from "../../Icons/House"
 import { MainNavThemeMenu } from "./ThemeMenu"
 import { MenuItem } from "types"
+import { useMainNav } from "../../../providers/MainNav"
 
 export const MainNavDesktopMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
   const { setDesktopSidebarOpen, isSidebarShown, desktopSidebarOpen } =
     useSidebar()
+  const { additionalMenuItems } = useMainNav()
   const ref = useRef<HTMLDivElement>(null)
 
   useClickOutside({
@@ -26,26 +26,28 @@ export const MainNavDesktopMenu = () => {
   })
 
   const items: MenuItem[] = useMemo(() => {
-    const items: MenuItem[] = [
-      {
-        type: "link",
-        icon: <HouseIcon />,
-        title: "Homepage",
-        link: "https://medusajs.com",
-      },
-      {
-        type: "link",
-        icon: <Book />,
-        title: "Medusa v1",
-        link: "https://docs.medusajs.com/v1",
-      },
-      {
-        type: "link",
-        icon: <TimelineVertical />,
-        title: "Changelog",
-        link: "https://medusajs.com/changelog",
-      },
-    ]
+    const items: MenuItem[] = additionalMenuItems
+      ? [...additionalMenuItems]
+      : [
+          {
+            type: "link",
+            icon: <HouseIcon />,
+            title: "Homepage",
+            link: "https://medusajs.com",
+          },
+          {
+            type: "link",
+            icon: <Book />,
+            title: "Medusa v1",
+            link: "https://docs.medusajs.com/v1",
+          },
+          {
+            type: "link",
+            icon: <TimelineVertical />,
+            title: "Changelog",
+            link: "https://medusajs.com/changelog",
+          },
+        ]
 
     if (isSidebarShown) {
       items.push(
@@ -76,7 +78,7 @@ export const MainNavDesktopMenu = () => {
     )
 
     return items
-  }, [isSidebarShown, desktopSidebarOpen])
+  }, [isSidebarShown, desktopSidebarOpen, additionalMenuItems])
 
   return (
     <div
@@ -87,6 +89,7 @@ export const MainNavDesktopMenu = () => {
         variant="transparent"
         onClick={() => setIsOpen((prev) => !prev)}
         className="!p-[6.5px]"
+        data-testid="menu-button"
       >
         <BarsThree className="text-medusa-fg-subtle" />
       </Button>

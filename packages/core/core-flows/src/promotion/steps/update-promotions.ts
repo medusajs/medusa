@@ -12,7 +12,7 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 export const updatePromotionsStepId = "update-promotions"
 /**
  * This step updates one or more promotions.
- * 
+ *
  * @example
  * const data = updatePromotionsStep([
  *   {
@@ -27,6 +27,14 @@ export const updatePromotionsStep = createStep(
     const promotionModule = container.resolve<IPromotionModuleService>(
       Modules.PROMOTION
     )
+
+    if (!data.length) {
+      return new StepResponse([], {
+        dataBeforeUpdate: [],
+        selects: [],
+        relations: [],
+      })
+    }
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data)
     const dataBeforeUpdate = await promotionModule.listPromotions(

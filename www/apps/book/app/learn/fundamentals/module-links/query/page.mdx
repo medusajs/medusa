@@ -854,6 +854,62 @@ In the example above, you retrieve only deleted posts by enabling the `withDelet
 
 ---
 
+## Retrieve Localized Data
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.12.4 or later",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.12.4"
+    },
+    {
+      text: "Translation Module Configured",
+      link: "!resources!/commerce-modules/translation#configure-translation-module",
+    },
+  ]}
+/>
+
+To retrieve localized data for data models that have translations, pass a `locale` property in the second parameter object of the `query.graph` method.
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
+```ts highlights={[["7", "locale", "Pass the locale to retrieve localized data."]]}
+const { data: products } = await query.graph(
+  {
+    entity: "product",
+    fields: ["id", "title", "description"],
+  },
+  {
+    locale: "fr-FR",
+  }
+)
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["5", "locale", "Pass the locale to retrieve localized data."]]}
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: ["id", "title", "description"],
+  options: {
+    locale: "fr-FR",
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+The `locale` property is a string representing the locale code following the [IETF BCP 47 standard](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1).
+
+The returned products will have their `title` and `description` properties in French (`fr-FR`), if translations are available.
+
+Learn more in the [Translation Module](!resources!/commerce-modules/translation) documentation.
+
+---
+
 ## Configure Query to Throw Error
 
 By default, if Query doesn't find records matching your query, it returns an empty array. You can configure Query to throw an error when no records are found.

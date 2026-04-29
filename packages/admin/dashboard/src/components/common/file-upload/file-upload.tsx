@@ -23,7 +23,7 @@ export interface FileUploadProps {
   onUploaded: (files: FileType[], rejectedFiles?: RejectedFile[]) => void
 }
 
-const DEFAULT_MAX_FILE_SIZE = 1024 * 1024 // 1MB
+const DEFAULT_MAX_FILE_SIZE = __MAX_UPLOAD_FILE_SIZE__ ?? 1024 * 1024 // 1MB fallback
 
 export const FileUpload = ({
   label,

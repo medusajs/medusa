@@ -25,7 +25,7 @@ export const TranslationsEdit = () => {
   }, [reference, navigate, isTranslationsEnabled])
 
   const {
-    translatable_fields,
+    translation_settings,
     isPending: isTranslationSettingsPending,
     isError: isTranslationSettingsError,
     error: translationSettingsError,
@@ -55,7 +55,7 @@ export const TranslationsEdit = () => {
   const ready =
     !isPending &&
     !!translations &&
-    !!translatable_fields &&
+    !!translation_settings &&
     !isTranslationSettingsPending &&
     !!references &&
     !isStorePending &&
@@ -70,10 +70,10 @@ export const TranslationsEdit = () => {
       {ready && (
         <TranslationsEditForm
           translations={translations}
-          references={references}
+          references={references as { [key: string]: string; id: string }[]}
           entityType={reference!}
           availableLocales={store?.supported_locales ?? []}
-          translatableFields={translatable_fields[reference!]}
+          translatableFields={translation_settings[reference!]?.fields ?? []}
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}

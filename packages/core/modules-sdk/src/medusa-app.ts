@@ -86,6 +86,7 @@ export async function loadModules(args: {
   sharedContainer: MedusaContainer
   sharedResourcesConfig?: SharedResources
   migrationOnly?: boolean
+  schemaOnly?: boolean
   loaderOnly?: boolean
   workerMode?: "shared" | "worker" | "server"
   cwd?: string
@@ -95,6 +96,7 @@ export async function loadModules(args: {
     sharedContainer,
     sharedResourcesConfig,
     migrationOnly = false,
+    schemaOnly = false,
     loaderOnly = false,
     workerMode = "shared" as ModuleBootstrapOptions["workerMode"],
     cwd,
@@ -164,6 +166,7 @@ export async function loadModules(args: {
 
   const loaded = (await MedusaModule.bootstrapAll(modulesToLoad, {
     migrationOnly,
+    schemaOnly,
     loaderOnly,
     workerMode,
     cwd,
@@ -204,6 +207,8 @@ async function initializeLinks({
   linkModules,
   injectedDependencies,
   moduleExports,
+  migrationOnly = false,
+  schemaOnly = false,
 }) {
   try {
     let resources = moduleExports
@@ -220,7 +225,10 @@ async function initializeLinks({
     const linkResolution = await initialize(
       config,
       linkModules,
-      injectedDependencies
+      injectedDependencies,
+      undefined,
+      migrationOnly,
+      schemaOnly
     )
 
     return {
@@ -309,10 +317,15 @@ export type MedusaAppOptions = {
    */
   loaderOnly?: boolean
   /**
-   * Only partially load modules to retrieve their joiner configs without running loaders.
-   * Useful for type generation and migrations.
+   * Only partially load modules to retrieve their module joiner configs and run their loaders.
+   * Useful for migrations.
    */
   migrationOnly?: boolean
+  /**
+   * Only partially load modules to retrieve their module joiner configs without running loaders.
+   * Useful for type generation.
+   */
+  schemaOnly?: boolean
   cwd?: string
 }
 
@@ -327,6 +340,7 @@ async function MedusaApp_({
   remoteFetchData,
   injectedDependencies = {},
   migrationOnly = false,
+  schemaOnly = false,
   loaderOnly = false,
   workerMode = "shared",
   cwd = process.cwd(),
@@ -425,6 +439,7 @@ async function MedusaApp_({
     sharedContainer: sharedContainer_,
     sharedResourcesConfig: { database: dbData },
     migrationOnly,
+    schemaOnly,
     loaderOnly,
     workerMode,
     cwd,
@@ -488,6 +503,8 @@ async function MedusaApp_({
     linkModules,
     injectedDependencies,
     moduleExports: isMedusaModule(linkModule) ? linkModule : undefined,
+    migrationOnly,
+    schemaOnly,
   })
 
   const loadedSchema = getLoadedSchema()

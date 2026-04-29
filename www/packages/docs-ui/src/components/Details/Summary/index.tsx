@@ -47,17 +47,21 @@ export const DetailsSummary = ({
             "text-compact-medium-plus text-medusa-fg-base",
             titleClassName
           )}
+          data-testid="details-summary-title"
         >
           {title || children}
         </span>
         {subtitle && (
-          <span className="text-compact-medium text-medusa-fg-subtle mt-0.5">
+          <span
+            className="text-compact-medium text-medusa-fg-subtle mt-0.5"
+            data-testid="details-summary-subtitle"
+          >
             {subtitle}
           </span>
         )}
       </span>
       {(badge || expandable) && (
-        <span className="flex gap-docs_0.5">
+        <span className="flex gap-docs_0.5" data-testid="details-summary-extra">
           {badge}
           {expandable && !hideExpandableIcon && (
             <PlusMini

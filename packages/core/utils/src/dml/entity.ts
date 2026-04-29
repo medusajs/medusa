@@ -7,6 +7,7 @@ import {
   IDmlEntity,
   IDmlEntityConfig,
   InferDmlEntityNameFromConfig,
+  PropertyType,
   QueryCondition,
 } from "@medusajs/types"
 import { isObject, isString, toCamelCase, upperCaseFirst } from "../common"
@@ -16,6 +17,32 @@ import { DMLSchemaDefaults } from "./helpers/entity-builder/create-default-prope
 import { BelongsTo } from "./relations/belongs-to"
 
 const IsDmlEntity = Symbol.for("isDmlEntity")
+
+/**
+ * Represents an entity with translatable properties
+ */
+export type TranslatableEntityEntry = {
+  /**
+   * The entity name (PascalCase)
+   */
+  entity: string
+  /**
+   * The list of translatable property names
+   */
+  fields: string[]
+}
+
+/**
+ * Module-level storage for translatable entities using Map for O(1) lookups.
+ * Keys are entity names (PascalCase), values are Sets of field names.
+ *
+ * @example
+ * import { DmlEntity } from "@medusajs/framework/utils"
+ *
+ * const translatables = DmlEntity.getTranslatableEntities()
+ * // Returns: [{ entity: "Store", fields: ["name"] }]
+ */
+const TRANSLATABLE_ENTITIES = new Map<string, Set<string>>()
 
 export type DMLEntitySchemaBuilder<Schema extends DMLSchema> =
   DMLSchemaWithBigNumber<Schema> & DMLSchemaDefaults & Schema
@@ -86,6 +113,32 @@ export class DmlEntity<
     this.schema = schema
     this.name = name
     this.#tableName = tableName
+
+    this.#registerTranslatableFields(name, schema)
+  }
+
+  /**
+   * Collects translatable fields from the schema and registers them
+   */
+  #registerTranslatableFields(entityName: string, schema: Schema): void {
+    for (const [fieldName, property] of Object.entries(schema)) {
+      if (typeof (property as PropertyType<any>).parse !== "function") {
+        continue
+      }
+
+      const parsed = (property as PropertyType<any>).parse(fieldName)
+      if (!("fieldName" in parsed) || !parsed.dataType?.options?.translatable) {
+        continue
+      }
+
+      // Get or create the Set for this entity
+      const existingFields = TRANSLATABLE_ENTITIES.get(entityName)
+      if (existingFields) {
+        existingFields.add(fieldName)
+      } else {
+        TRANSLATABLE_ENTITIES.set(entityName, new Set([fieldName]))
+      }
+    }
   }
 
   /**
@@ -97,6 +150,36 @@ export class DmlEntity<
    */
   static isDmlEntity(entity: unknown): entity is DmlEntity<any, any> {
     return !!entity?.[IsDmlEntity]
+  }
+
+  /**
+   * Returns all registered translatable entities with their translatable fields.
+   * Each entry contains the entity name (PascalCase) and an array
+   * of field names that are marked as translatable.
+   *
+   * @example
+   * import { DmlEntity } from "@medusajs/framework/utils"
+   *
+   * const translatables = DmlEntity.getTranslatableEntities()
+   * // Returns: [{ entity: "Store", fields: ["name"] }]
+   *
+   * @customNamespace Model Methods
+   */
+  static getTranslatableEntities(): TranslatableEntityEntry[] {
+    return Array.from(TRANSLATABLE_ENTITIES.entries()).map(
+      ([entity, fields]) => ({
+        entity,
+        fields: Array.from(fields),
+      })
+    )
+  }
+
+  /**
+   * Clears all registered translatable entities.
+   * This is primarily used for testing purposes.
+   */
+  static clearTranslatableEntities(): void {
+    TRANSLATABLE_ENTITIES.clear()
   }
 
   /**

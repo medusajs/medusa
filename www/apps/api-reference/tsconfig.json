@@ -22,6 +22,8 @@
     "**/*.mjs"
   ],
   "exclude": [
-    "specs"
+    "specs",
+    "**/__tests__",
+    "**/__mocks__"
   ]
 }

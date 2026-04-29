@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import {
   Badge,
   DetailsSummary,
@@ -105,15 +106,27 @@ const TagsOperationDescriptionSectionEvent = ({
           </MarkdownContent>
           {event.deprecated &&
             (event.deprecated_message ? (
-              <Tooltip text={event.deprecated_message}>
-                <Badge variant="orange">Deprecated</Badge>
+              <Tooltip
+                text={event.deprecated_message}
+                data-testid="deprecated-tooltip"
+              >
+                <Badge variant="orange" data-testid="deprecated-badge">
+                  Deprecated
+                </Badge>
               </Tooltip>
             ) : (
-              <Badge variant="orange">Deprecated</Badge>
+              <Badge variant="orange" data-testid="deprecated-badge">
+                Deprecated
+              </Badge>
             ))}
           {event.since && (
-            <Tooltip text={`This event is emitted since v${event.since}`}>
-              <Badge variant="blue">v{event.since}</Badge>
+            <Tooltip
+              text={`This event is emitted since v${event.since}`}
+              data-testid="since-tooltip"
+            >
+              <Badge variant="blue" data-testid="since-badge">
+                v{event.since}
+              </Badge>
             </Tooltip>
           )}
         </div>

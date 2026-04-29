@@ -66,7 +66,7 @@ export default class CustomResolver
               return
             }
             if (utils.isReactForwardRefCall(path)) {
-              // If the the inner function was previously identified as a component
+              // If the inner function was previously identified as a component
               // replace it with the parent node
               const inner = utils.resolveToValue(argument) as ComponentNodePath
               state.foundDefinitions.delete(inner)

@@ -1,0 +1,36 @@
+---
+slug: /references/medusa-workflows/steps/updateGiftCardsStep
+sidebar_label: updateGiftCardsStep
+tags:
+  - loyalty
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# updateGiftCardsStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `updateGiftCardsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step updates gift cards. It stores the previous state of the gift cards
+before the update to enable rollback.
+
+## Example
+
+```ts
+const data = updateGiftCardsStep([
+  {
+    id: "gc_123",
+    status: GiftCardStatus.REDEEMED,
+    // other updatable gift card properties...
+  },
+])
+```
+
+## Input
+
+<TypeList types={[{"name":"UpdateGiftCardsStepInput","type":"[UpdateGiftCardsStepInput](../../../../plugins_loyalty_src_workflows/types/core_flows.plugins_loyalty_src_workflows.UpdateGiftCardsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"UpdateGiftCardsStepInput","type":"`ModuleUpdateGiftCard`[]","description":"Data for updating one or more gift cards in the Loyalty module.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="updateGiftCardsStep"/>
+
+## Output
+
+<TypeList types={[{"name":"ModuleGiftCard[]","type":"`ModuleGiftCard`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="updateGiftCardsStep"/>

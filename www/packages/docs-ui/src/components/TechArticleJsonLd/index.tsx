@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState } from "react"
 import type { TechArticle } from "schema-dts"
-import { useIsBrowser, useSiteConfig } from "../../providers"
 import { getJsonLd } from "../../utils"
 import { usePathname } from "next/navigation"
+import { useSiteConfig } from "../../providers/SiteConfig"
+import { useIsBrowser } from "../../providers/BrowserProvider"
 
 export const TechArticleJsonLd = () => {
   const {
@@ -20,7 +21,6 @@ export const TechArticleJsonLd = () => {
       return
     }
 
-    // Use a small delay to ensure the document has been updated after navigation
     const updateJsonLd = () => {
       const baseLink = `${baseUrl}${basePath}`.replace(/\/+$/, "")
       const title = document.title.replace(` - ${titleSuffix}`, "")

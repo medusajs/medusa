@@ -4,10 +4,9 @@ import {
 } from "@medusajs/core-flows"
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework"
 import { HttpTypes } from "@medusajs/types"
-import { AdminUpdateDraftOrderItemType } from "../../../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminUpdateDraftOrderItemType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminUpdateDraftOrderActionItem>,
   res: MedusaResponse
 ) => {
   const { id, action_id } = req.params

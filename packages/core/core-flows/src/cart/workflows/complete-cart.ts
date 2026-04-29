@@ -6,6 +6,7 @@ import {
   UsageComputedActions,
 } from "@medusajs/framework/types"
 import {
+  EventPriority,
   isDefined,
   Modules,
   OrderStatus,
@@ -598,6 +599,9 @@ export const completeCartWorkflow = createWorkflow(
         emitEventStep({
           eventName: OrderWorkflowEvents.PLACED,
           data: { id: createdOrder.id },
+          options: {
+            priority: EventPriority.CRITICAL,
+          },
         })
       )
 

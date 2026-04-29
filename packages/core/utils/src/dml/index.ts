@@ -5,4 +5,6 @@ export * from "./helpers/create-mikro-orm-entity"
 export * from "./relations/index"
 export * from "./properties/index"
 
+export { TranslatableEntityEntry } from "./entity"
+
 export * from "./helpers/entity-builder/index"

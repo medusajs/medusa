@@ -16,6 +16,8 @@ type EditOrderBillingAddressFormProps = {
 }
 
 const EditOrderBillingAddressSchema = zod.object({
+  first_name: zod.string().optional(),
+  last_name: zod.string().optional(),
   address_1: zod.string().min(1),
   address_2: zod.string().optional(),
   country_code: zod.string().min(2).max(2),
@@ -34,6 +36,8 @@ export function EditOrderBillingAddressForm({
 
   const form = useForm<zod.infer<typeof EditOrderBillingAddressSchema>>({
     defaultValues: {
+      first_name: order.billing_address?.first_name || "",
+      last_name: order.billing_address?.last_name || "",
       address_1: order.billing_address?.address_1 || "",
       address_2: order.billing_address?.address_2 || "",
       city: order.billing_address?.city || "",
@@ -150,6 +154,36 @@ export function EditOrderBillingAddressForm({
                 return (
                   <Form.Item>
                     <Form.Label optional>{t("fields.state")}</Form.Label>
+                    <Form.Control>
+                      <Input size="small" {...field} />
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="first_name"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("fields.firstName")}</Form.Label>
+                    <Form.Control>
+                      <Input size="small" {...field} />
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="last_name"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("fields.lastName")}</Form.Label>
                     <Form.Control>
                       <Input size="small" {...field} />
                     </Form.Control>

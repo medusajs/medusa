@@ -28,6 +28,9 @@
     },
     "lint": { },
     "lint:content": { },
+    "test": {
+      "dependsOn": ["^build"]
+    },
     "watch": { },
     "dev:monorepo": {
       "dependsOn": [

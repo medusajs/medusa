@@ -15,12 +15,13 @@ class EventsKindGenerator extends DefaultKindGenerator<ts.VariableDeclaration> {
     if (
       !super.isAllowed(node) ||
       !node.initializer ||
-      !ts.isObjectLiteralExpression(node.initializer)
+      !ts.isAsExpression(node.initializer) ||
+      !ts.isObjectLiteralExpression(node.initializer.expression)
     ) {
       return false
     }
 
-    return node.initializer.properties.length > 0
+    return node.initializer.expression.properties.length > 0
   }
 
   async getDocBlock(
@@ -31,8 +32,10 @@ class EventsKindGenerator extends DefaultKindGenerator<ts.VariableDeclaration> {
       return await super.getDocBlock(node, options)
     }
 
-    const properties = (node.initializer as ts.ObjectLiteralExpression)
-      .properties
+    const properties = (
+      (node.initializer as ts.AsExpression)
+        .expression as ts.ObjectLiteralExpression
+    ).properties
 
     const events: MedusaEvent[] = properties
       .filter((property) => ts.isPropertyAssignment(property))

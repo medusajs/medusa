@@ -1,3 +1,4 @@
+import React from "react"
 import type { OpenAPI } from "types"
 import dynamic from "next/dynamic"
 import type { TagsOperationCodeSectionResponsesSampleProps } from "./Sample"

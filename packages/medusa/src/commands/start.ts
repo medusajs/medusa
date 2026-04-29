@@ -9,17 +9,21 @@ import path from "path"
 import {
   ContainerRegistrationKeys,
   dynamicImport,
+  FeatureFlag,
   FileSystem,
   generateContainerTypes,
+  generatePolicyTypes,
   gqlSchemaToTypes,
   GracefulShutdownServer,
   isFileSkipped,
   isPresent,
+  promiseAll,
 } from "@medusajs/framework/utils"
 
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import { Logger, MedusaContainer } from "@medusajs/framework/types"
 import { parse } from "url"
+import RbacFeatureFlag from "../feature-flags/rbac"
 import loaders, { initializeContainer } from "../loaders"
 import { reloadResources } from "./utils/dev-server"
 import { HMRReloadError } from "./utils/dev-server/errors"
@@ -274,27 +278,37 @@ async function start(args: {
       if (generateTypes) {
         const typesDirectory = path.join(directory, ".medusa/types")
 
-        /**
-         * Cleanup existing types directory before creating new artifacts
-         */
-        await new FileSystem(typesDirectory).cleanup({ recursive: true })
+        const fileGenPromises: Promise<void>[] = []
 
-        await generateContainerTypes(modules, {
-          outputDir: typesDirectory,
-          interfaceName: "ModuleImplementations",
-        })
-        logger.debug("Generated container types")
+        fileGenPromises.push(
+          generateContainerTypes(modules, {
+            outputDir: typesDirectory,
+            interfaceName: "ModuleImplementations",
+          })
+        )
 
         if (gqlSchema) {
-          await gqlSchemaToTypes({
-            outputDir: typesDirectory,
-            filename: "query-entry-points",
-            interfaceName: "RemoteQueryEntryPoints",
-            schema: gqlSchema,
-            joinerConfigs: MedusaModule.getAllJoinerConfigs(),
-          })
-          logger.debug("Generated modules types")
+          fileGenPromises.push(
+            gqlSchemaToTypes({
+              outputDir: typesDirectory,
+              filename: "query-entry-points",
+              interfaceName: "RemoteQueryEntryPoints",
+              schema: gqlSchema,
+              joinerConfigs: MedusaModule.getAllJoinerConfigs(),
+            })
+          )
         }
+
+        if (FeatureFlag.isFeatureEnabled(RbacFeatureFlag.key)) {
+          fileGenPromises.push(
+            generatePolicyTypes({
+              outputDir: typesDirectory,
+            })
+          )
+        }
+
+        await promiseAll(fileGenPromises)
+        logger.debug("Generated policy types")
       }
 
       // Register a health check endpoint. Ideally this also checks the readiness of the service, rather than just returning a static response.

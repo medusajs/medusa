@@ -5,11 +5,12 @@ import {
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { HttpTypes } from "@medusajs/types"
 
+/**
+ * @since 2.12.4
+ * @featureFlag translation
+ */
 export const GET = async (
-  req: AuthenticatedMedusaRequest<
-    undefined,
-    HttpTypes.AdminTranslationEntitiesParams
-  >,
+  req: AuthenticatedMedusaRequest<{}, HttpTypes.AdminTranslationEntitiesParams>,
   res: MedusaResponse<HttpTypes.AdminTranslationEntitiesResponse>
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)

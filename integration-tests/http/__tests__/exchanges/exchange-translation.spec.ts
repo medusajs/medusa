@@ -34,15 +34,23 @@ medusaIntegrationTestRunner({
       let stockLocation: { id: string }
       let shippingOption: { id: string }
       let outboundShippingOption: { id: string }
+      let returnShippingOption: { id: string }
       let inventoryItem: { id: string }
+      let taxRate: { id: string }
 
       beforeAll(async () => {
         appContainer = getContainer()
       })
 
       beforeEach(async () => {
-        await setupTaxStructure(appContainer.resolve(Modules.TAX))
+        const taxStructure = await setupTaxStructure(
+          appContainer.resolve(Modules.TAX)
+        )
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        const translationModule = appContainer.resolve(Modules.TRANSLATION)
+        await translationModule.__hooks?.onApplicationStart?.().catch(() => {})
+
         const publishableKey = await generatePublishableKey(appContainer)
         storeHeaders = generateStoreHeaders({ publishableKey })
 
@@ -224,6 +232,40 @@ medusaIntegrationTestRunner({
           )
         ).data.shipping_option
 
+        returnShippingOption = (
+          await api.post(
+            `/admin/shipping-options`,
+            {
+              name: "Return shipping",
+              service_zone_id: fulfillmentSet.service_zones[0].id,
+              shipping_profile_id: shippingProfile.id,
+              provider_id: "manual_test-provider",
+              price_type: "flat",
+              type: {
+                label: "Test type",
+                description: "Test description",
+                code: "test-code",
+              },
+              prices: [{ currency_code: "usd", amount: 500 }],
+              rules: [
+                {
+                  operator: RuleOperator.EQ,
+                  attribute: "is_return",
+                  value: "true",
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.shipping_option
+        const taxRatesResponse = await api.get(
+          `/admin/tax-rates?tax_region_id=${taxStructure.us.children.cal.province.id}`,
+          adminHeaders
+        )
+        taxRate = taxRatesResponse.data.tax_rates.find(
+          (rate: { code: string }) => rate.code === "CADEFAULT"
+        )
+
         await api.post(
           "/admin/translations/batch",
           {
@@ -269,6 +311,54 @@ medusaIntegrationTestRunner({
                 reference: "product_variant",
                 locale_code: "de-DE",
                 translations: { title: "Mittel" },
+              },
+              {
+                reference_id: outboundShippingOption.id,
+                reference: "shipping_option",
+                locale_code: "fr-FR",
+                translations: {
+                  name: "Expédition sortante",
+                },
+              },
+              {
+                reference_id: outboundShippingOption.id,
+                reference: "shipping_option",
+                locale_code: "de-DE",
+                translations: {
+                  name: "Ausgehende Versand",
+                },
+              },
+              {
+                reference_id: returnShippingOption.id,
+                reference: "shipping_option",
+                locale_code: "fr-FR",
+                translations: {
+                  name: "Expédition de retour",
+                },
+              },
+              {
+                reference_id: returnShippingOption.id,
+                reference: "shipping_option",
+                locale_code: "de-DE",
+                translations: {
+                  name: "Rückversand",
+                },
+              },
+              {
+                reference_id: taxRate.id,
+                reference: "tax_rate",
+                locale_code: "fr-FR",
+                translations: {
+                  name: "Taux par défaut CA",
+                },
+              },
+              {
+                reference_id: taxRate.id,
+                reference: "tax_rate",
+                locale_code: "de-DE",
+                translations: {
+                  name: "CA Standardsteuersatz",
+                },
               },
             ],
           },
@@ -387,73 +477,21 @@ medusaIntegrationTestRunner({
               variant_title: "Moyen",
             })
           )
-        })
 
-        it("should translate exchange items using German locale", async () => {
-          const order = await createOrderFromCart("de-DE")
-
-          await api.post(
-            `/admin/orders/${order.id}/fulfillments`,
-            {
-              location_id: stockLocation.id,
-              items: [{ id: order.items[0].id, quantity: 1 }],
-            },
-            adminHeaders
+          expect(newItem.tax_lines.length).toBeGreaterThan(0)
+          const taxLine = newItem.tax_lines.find(
+            (tl) => tl.code === "CADEFAULT"
           )
+          expect(taxLine.description).toEqual("Taux par défaut CA")
 
-          const exchange = (
-            await api.post(
-              "/admin/exchanges",
-              { order_id: order.id, description: "Test exchange" },
-              adminHeaders
-            )
-          ).data.exchange
-
-          // Add inbound item (item being returned)
-          await api.post(
-            `/admin/exchanges/${exchange.id}/inbound/items`,
-            {
-              items: [{ id: order.items[0].id, quantity: 1 }],
-            },
-            adminHeaders
+          const outboundShippingMethod = updatedOrder.shipping_methods.find(
+            (sm) => sm.shipping_option_id === outboundShippingOption.id
           )
-
-          // Add outbound item (new item being sent)
-          await api.post(
-            `/admin/exchanges/${exchange.id}/outbound/items`,
-            {
-              items: [{ variant_id: product.variants[1].id, quantity: 1 }],
-            },
-            adminHeaders
+          expect(outboundShippingMethod.tax_lines.length).toBeGreaterThan(0)
+          const shippingTaxLine = outboundShippingMethod.tax_lines.find(
+            (tl) => tl.code === "CADEFAULT"
           )
-
-          await api.post(
-            `/admin/exchanges/${exchange.id}/outbound/shipping-method`,
-            { shipping_option_id: outboundShippingOption.id },
-            adminHeaders
-          )
-
-          await api.post(
-            `/admin/exchanges/${exchange.id}/request`,
-            {},
-            adminHeaders
-          )
-
-          const updatedOrder = (
-            await api.get(`/admin/orders/${order.id}`, adminHeaders)
-          ).data.order
-
-          const newItem = updatedOrder.items.find(
-            (item: any) => item.variant_id === product.variants[1].id
-          )
-
-          expect(newItem).toEqual(
-            expect.objectContaining({
-              product_title: "Medusa T-Shirt DE",
-              product_description: "Ein bequemes Baumwoll-T-Shirt",
-              variant_title: "Mittel",
-            })
-          )
+          expect(shippingTaxLine.description).toEqual("Taux par défaut CA")
         })
 
         it("should have original values when order has no locale", async () => {
@@ -518,6 +556,293 @@ medusaIntegrationTestRunner({
               product_title: "Medusa T-Shirt",
               product_description: "A comfortable cotton t-shirt",
               variant_title: "Medium",
+            })
+          )
+
+          expect(newItem.tax_lines.length).toBeGreaterThan(0)
+          const taxLine = newItem.tax_lines.find(
+            (tl) => tl.code === "CADEFAULT"
+          )
+          expect(taxLine.description).toEqual("CA Default Rate")
+
+          const outboundShippingMethod = updatedOrder.shipping_methods.find(
+            (sm) => sm.shipping_option_id === outboundShippingOption.id
+          )
+          expect(outboundShippingMethod.tax_lines.length).toBeGreaterThan(0)
+          const shippingTaxLine = outboundShippingMethod.tax_lines.find(
+            (tl) => tl.code === "CADEFAULT"
+          )
+          expect(shippingTaxLine.description).toEqual("CA Default Rate")
+        })
+      })
+
+      describe("Exchange shipping method translation", () => {
+        it("should translate outbound and inbound shipping methods added during exchange using order locale", async () => {
+          const order = await createOrderFromCart("fr-FR")
+
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            {
+              location_id: stockLocation.id,
+              items: [{ id: order.items[0].id, quantity: 1 }],
+            },
+            adminHeaders
+          )
+
+          const exchange = (
+            await api.post(
+              "/admin/exchanges",
+              { order_id: order.id, description: "Test exchange" },
+              adminHeaders
+            )
+          ).data.exchange
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/inbound/items`,
+            {
+              items: [{ id: order.items[0].id, quantity: 1 }],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/inbound/shipping-method`,
+            { shipping_option_id: returnShippingOption.id },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/outbound/items`,
+            {
+              items: [{ variant_id: product.variants[1].id, quantity: 1 }],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/outbound/shipping-method`,
+            { shipping_option_id: outboundShippingOption.id },
+            adminHeaders
+          )
+
+          const exchangeResult = (
+            await api.post(
+              `/admin/exchanges/${exchange.id}/request`,
+              {},
+              adminHeaders
+            )
+          ).data.exchange
+
+          const updatedOrder = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          const outboundShippingMethod = updatedOrder.shipping_methods.find(
+            (sm: any) => sm.shipping_option_id === outboundShippingOption.id
+          )
+
+          expect(outboundShippingMethod).toEqual(
+            expect.objectContaining({
+              shipping_option_id: outboundShippingOption.id,
+              name: "Expédition sortante",
+            })
+          )
+
+          const orderReturn = (
+            await api.get(
+              `/admin/returns/${exchangeResult.return_id}?fields=*shipping_methods`,
+              adminHeaders
+            )
+          ).data.return
+
+          const inboundShippingMethod = orderReturn.shipping_methods.find(
+            (sm: any) => sm.shipping_option_id === returnShippingOption.id
+          )
+
+          expect(inboundShippingMethod).toEqual(
+            expect.objectContaining({
+              shipping_option_id: returnShippingOption.id,
+              name: "Expédition de retour",
+            })
+          )
+        })
+
+        it("should translate outbound and inbound shipping methods using German locale", async () => {
+          const order = await createOrderFromCart("de-DE")
+
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            {
+              location_id: stockLocation.id,
+              items: [{ id: order.items[0].id, quantity: 1 }],
+            },
+            adminHeaders
+          )
+
+          const exchange = (
+            await api.post(
+              "/admin/exchanges",
+              { order_id: order.id, description: "Test exchange" },
+              adminHeaders
+            )
+          ).data.exchange
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/inbound/items`,
+            {
+              items: [{ id: order.items[0].id, quantity: 1 }],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/inbound/shipping-method`,
+            { shipping_option_id: returnShippingOption.id },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/outbound/items`,
+            {
+              items: [{ variant_id: product.variants[1].id, quantity: 1 }],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/outbound/shipping-method`,
+            { shipping_option_id: outboundShippingOption.id },
+            adminHeaders
+          )
+
+          const exchangeResult = (
+            await api.post(
+              `/admin/exchanges/${exchange.id}/request`,
+              {},
+              adminHeaders
+            )
+          ).data.exchange
+
+          const updatedOrder = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          const outboundShippingMethod = updatedOrder.shipping_methods.find(
+            (sm: any) => sm.shipping_option_id === outboundShippingOption.id
+          )
+
+          expect(outboundShippingMethod).toEqual(
+            expect.objectContaining({
+              shipping_option_id: outboundShippingOption.id,
+              name: "Ausgehende Versand",
+            })
+          )
+
+          const orderReturn = (
+            await api.get(
+              `/admin/returns/${exchangeResult.return_id}?fields=*shipping_methods`,
+              adminHeaders
+            )
+          ).data.return
+
+          const inboundShippingMethod = orderReturn.shipping_methods.find(
+            (sm: any) => sm.shipping_option_id === returnShippingOption.id
+          )
+
+          expect(inboundShippingMethod).toEqual(
+            expect.objectContaining({
+              shipping_option_id: returnShippingOption.id,
+              name: "Rückversand",
+            })
+          )
+        })
+
+        it("should have original shipping method names when order has no locale", async () => {
+          const order = await createOrderFromCart()
+
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            {
+              location_id: stockLocation.id,
+              items: [{ id: order.items[0].id, quantity: 1 }],
+            },
+            adminHeaders
+          )
+
+          const exchange = (
+            await api.post(
+              "/admin/exchanges",
+              { order_id: order.id, description: "Test exchange" },
+              adminHeaders
+            )
+          ).data.exchange
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/inbound/items`,
+            {
+              items: [{ id: order.items[0].id, quantity: 1 }],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/inbound/shipping-method`,
+            { shipping_option_id: returnShippingOption.id },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/outbound/items`,
+            {
+              items: [{ variant_id: product.variants[1].id, quantity: 1 }],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/outbound/shipping-method`,
+            { shipping_option_id: outboundShippingOption.id },
+            adminHeaders
+          )
+
+          const exchangeResult = (
+            await api.post(
+              `/admin/exchanges/${exchange.id}/request`,
+              {},
+              adminHeaders
+            )
+          ).data.exchange
+
+          const updatedOrder = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          const outboundShippingMethod = updatedOrder.shipping_methods.find(
+            (sm: any) => sm.shipping_option_id === outboundShippingOption.id
+          )
+
+          expect(outboundShippingMethod).toEqual(
+            expect.objectContaining({
+              shipping_option_id: outboundShippingOption.id,
+              name: "Outbound shipping",
+            })
+          )
+
+          const orderReturn = (
+            await api.get(
+              `/admin/returns/${exchangeResult.return_id}?fields=*shipping_methods`,
+              adminHeaders
+            )
+          ).data.return
+
+          const inboundShippingMethod = orderReturn.shipping_methods.find(
+            (sm: any) => sm.shipping_option_id === returnShippingOption.id
+          )
+
+          expect(inboundShippingMethod).toEqual(
+            expect.objectContaining({
+              shipping_option_id: returnShippingOption.id,
+              name: "Return shipping",
             })
           )
         })

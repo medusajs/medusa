@@ -199,6 +199,11 @@ export interface BaseCart {
    * The sum of all shipping methods' original tax totals before discounts.
    */
   original_shipping_tax_total: number
+
+  /**
+   * The date the cart was completed.
+   */
+  completed_at?: string | Date
 }
 
 export interface BaseCartAddress {

@@ -2,7 +2,7 @@
 generate_toc: true
 ---
 
-import { CodeTabs, CodeTab, ChildDocs, Prerequisites } from "docs-ui"
+import { CodeTabs, CodeTab, ChildDocs, Prerequisites, Table } from "docs-ui"
 
 export const metadata = {
   title: `Translation Module`,
@@ -20,7 +20,7 @@ In this section of the documentation, you will find resources to learn more abou
     },
     {
       text: "Translation Feature Flag Enabled",
-      link: "#"
+      link: "#configure-translation-module"
     }
   ]}
 />
@@ -43,6 +43,8 @@ Refer to the [Module Isolation](!docs!/learn/fundamentals/modules/isolation) gui
 
 - [Translation and Locale Management](./concepts/page.mdx): Manage locales and add translations for different resources in your store.
 - [Multi-Language Support](./storefront/page.mdx): Manage and serve resources like products in multiple languages to cater to a diverse customer base.
+- [Translation for Custom Models](./custom-data-models/page.mdx): Extend translation capabilities to custom data models in your Medusa application.
+- [Manage Translatable Resources from Medusa Admin](!user-guide!/settings/translations#manage-translatable-resources): Configure which resources and fields are translatable directly from the Medusa Admin dashboard.
 
 ---
 
@@ -69,7 +71,7 @@ module.exports = defineConfig({
 
 Then, run the following command to make the necessary database changes for the Translation Module:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -213,9 +215,134 @@ Refer to the [Workflows](!docs!/learn/fundamentals/workflows) documentation to l
 
 ## Supported Module Translations
 
-The Translation Module currently supports translations for all data models in the [Product Module](../product/page.mdx), including products, product variants, and categories.
+The Translation Module currently supports translations for the following data models:
 
-Future versions of the Translation Module will include support for all Commerce Modules, as well as custom modules.
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Data Model
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Translatable Fields
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `CustomerGroup` ([Customer Module](../customer/page.mdx)) ([+v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4))
+      </Table.Cell>
+      <Table.Cell>
+        `name`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `Product` ([Product Module](../product/page.mdx))
+      </Table.Cell>
+      <Table.Cell>
+        - `title`
+        - `description`
+        - `material`
+        - `subtitle`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ProductCategory` ([Product Module](../product/page.mdx))
+      </Table.Cell>
+      <Table.Cell>
+        - `name`
+        - `description`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ProductCollection` ([Product Module](../product/page.mdx))
+      </Table.Cell>
+      <Table.Cell>
+        `title`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ProductOption` ([Product Module](../product/page.mdx))
+      </Table.Cell>
+      <Table.Cell>
+        `title`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ProductOptionValue` ([Product Module](../product/page.mdx))
+      </Table.Cell>
+      <Table.Cell>
+        `value`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ProductTag` ([Product Module](../product/page.mdx))
+      </Table.Cell>
+      <Table.Cell>
+        `value`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ProductType` ([Product Module](../product/page.mdx))
+      </Table.Cell>
+      <Table.Cell>
+        `value`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ProductVariant` ([Product Module](../product/page.mdx))
+      </Table.Cell>
+      <Table.Cell>
+        - `title`
+        - `material`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `Region` ([Region Module](../region/page.mdx)) ([+v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4))
+      </Table.Cell>
+      <Table.Cell>
+        `name`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ShippingOption` ([Fulfillment Module](../fulfillment/page.mdx)) ([+v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4))
+      </Table.Cell>
+      <Table.Cell>
+        `name`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `ShippingOptionType` ([Fulfillment Module](../fulfillment/page.mdx)) ([+v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4))
+      </Table.Cell>
+      <Table.Cell>
+        - `label`
+        - `description`
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `TaxRate` ([Tax Module](../tax/page.mdx)) ([+v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4))
+      </Table.Cell>
+      <Table.Cell>
+        `name`
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+Future versions of the Translation Module will include support for all Commerce Modules.
 
 ---
 

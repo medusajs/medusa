@@ -1,4 +1,4 @@
-import { AdminTranslation } from "../../translations"
+import { AdminTranslation } from "../../translation"
 import { BaseProductType } from "../common"
 
 export interface AdminProductType extends BaseProductType {

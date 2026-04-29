@@ -3,7 +3,7 @@
 import { MagnifyingGlass, XMark } from "@medusajs/icons"
 import clsx from "clsx"
 import React from "react"
-import { useKeyboardShortcut } from "../../../hooks"
+import { useKeyboardShortcut } from "../../../hooks/use-keyboard-shortcut"
 import { Kbd } from "../../Kbd"
 
 type SearchInputProps = {
@@ -50,6 +50,7 @@ export const SearchInput = ({
               "flex items-center justify-center"
             )}
             onClick={() => onChange("")}
+            data-testid="clear-button"
           >
             <XMark className="text-medusa-fg-muted" />
           </button>

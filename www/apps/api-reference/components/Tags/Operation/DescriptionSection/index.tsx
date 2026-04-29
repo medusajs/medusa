@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import type { OpenAPI } from "types"
 import type { TagsOperationDescriptionSectionSecurityProps } from "./Security"
 import type { TagsOperationDescriptionSectionRequestProps } from "./RequestBody"
@@ -77,7 +78,7 @@ const TagsOperationDescriptionSection = ({
           <Tooltip
             text={`This API route is available since v${operation["x-since"]}`}
           >
-            <Badge variant="blue" className="ml-0.5">
+            <Badge variant="blue" className="ml-0.5" data-testid="since-badge">
               v{operation["x-since"]}
             </Badge>
           </Tooltip>
@@ -95,7 +96,11 @@ const TagsOperationDescriptionSection = ({
             }
             clickable={true}
           >
-            <Badge variant={badge.variant || "neutral"} className="ml-0.5">
+            <Badge
+              variant={badge.variant || "neutral"}
+              className="ml-0.5"
+              data-testid="custom-badge"
+            >
               {badge.text}
             </Badge>
           </Tooltip>
@@ -116,6 +121,7 @@ const TagsOperationDescriptionSection = ({
             href={operation.externalDocs.url}
             target="_blank"
             variant="content"
+            data-testid="related-guide-link"
           >
             {operation.externalDocs.description || "Read More"}
           </Link>
@@ -133,16 +139,17 @@ const TagsOperationDescriptionSection = ({
           security={operation.security}
         />
       )}
-      {operation.parameters && (
+      {operation.parameters && operation.parameters.length > 0 && (
         <TagsOperationDescriptionSectionParameters
           parameters={operation.parameters}
         />
       )}
-      {operation.requestBody && (
-        <TagsOperationDescriptionSectionRequest
-          requestBody={operation.requestBody}
-        />
-      )}
+      {operation.requestBody?.content !== undefined &&
+        Object.keys(operation.requestBody.content).length > 0 && (
+          <TagsOperationDescriptionSectionRequest
+            requestBody={operation.requestBody}
+          />
+        )}
       <TagsOperationDescriptionSectionResponses
         responses={operation.responses}
       />

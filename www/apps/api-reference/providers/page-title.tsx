@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { createContext, useEffect } from "react"
 import { useSidebar } from "docs-ui"
 import { useArea } from "./area"
@@ -30,6 +31,8 @@ const PageTitleProvider = ({ children }: PageTitleProviderProps) => {
         ) as Sidebar.SidebarItemLink
         if (item) {
           document.title = `${item.title} - ${titleSuffix}`
+        } else {
+          document.title = titleSuffix
         }
       }
     }

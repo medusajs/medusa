@@ -1,7 +1,11 @@
 "use client"
 
 import React from "react"
-import { CopyButton, useGenerateSnippet, UseGenerateSnippet } from "../.."
+import { CopyButton } from "@/components/CopyButton"
+import {
+  useGenerateSnippet,
+  UseGenerateSnippet,
+} from "@/hooks/use-generate-snippet"
 import { SquareTwoStack, CheckCircle } from "@medusajs/icons"
 
 export type CopyGeneratedSnippetButtonProps = UseGenerateSnippet & {

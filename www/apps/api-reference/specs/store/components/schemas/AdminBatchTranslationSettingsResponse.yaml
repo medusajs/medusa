@@ -1,0 +1,41 @@
+type: object
+description: The result of managing the translation settings in batch.
+x-schemaName: AdminBatchTranslationSettingsResponse
+required:
+  - created
+  - updated
+  - deleted
+properties:
+  created:
+    type: array
+    description: The created translation settings.
+    items:
+      $ref: ./AdminTranslationSettings.yaml
+  updated:
+    type: array
+    description: The updated translation settings.
+    items:
+      $ref: ./AdminTranslationSettings.yaml
+  deleted:
+    type: object
+    description: The deletion result.
+    required:
+      - ids
+      - object
+      - deleted
+    properties:
+      ids:
+        type: array
+        description: The IDs of the deleted translation settings.
+        items:
+          type: string
+          title: ids
+          description: The ID of a deleted translation settings.
+      object:
+        type: string
+        title: object
+        description: The type of object deleted.
+      deleted:
+        type: boolean
+        title: deleted
+        description: Whether the deletion was successful.

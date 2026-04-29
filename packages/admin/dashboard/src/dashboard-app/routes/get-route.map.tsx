@@ -1299,6 +1299,11 @@ export function getRouteMap({
                         ),
                     },
                     {
+                      path: "metadata/edit",
+                      lazy: () =>
+                        import("../../routes/locations/location-metadata"),
+                    },
+                    {
                       path: "fulfillment-set/:fset_id",
                       children: [
                         {
@@ -1851,6 +1856,12 @@ export function getRouteMap({
                   path: "",
                   lazy: () =>
                     import("../../routes/translations/translation-list"),
+                  children: [
+                    {
+                      path: "settings",
+                      lazy: () => import("../../routes/translations/settings"),
+                    },
+                  ],
                 },
                 {
                   path: "edit",
@@ -1863,7 +1874,7 @@ export function getRouteMap({
                 },
               ],
             },
-            ...(settingsRoutes?.[0]?.children || []),
+            ...settingsRoutes.flatMap((r) => r?.children || []),
           ],
         },
       ],

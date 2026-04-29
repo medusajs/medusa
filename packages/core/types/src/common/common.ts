@@ -438,6 +438,10 @@ export type RawRounding = {
  */
 export type QueryConfig<TEntity> = {
   /**
+   * The main entity to retrieve. For example, `product`.
+   */
+  entity?: TEntity | string
+  /**
    * Default fields and relations to return.
    * use `*` or `.*` to select all fields from a relations (e.g '*products' or 'products.*' will select all products properties)
    */

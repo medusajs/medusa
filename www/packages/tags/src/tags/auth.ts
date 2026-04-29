@@ -52,6 +52,10 @@ export const auth = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setAuthAppMetadataStep"
   },
   {
+    "title": "setAuthAppMetadataWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/setAuthAppMetadataWorkflow"
+  },
+  {
     "title": "createCustomerAccountWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createCustomerAccountWorkflow"
   },

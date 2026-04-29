@@ -1,0 +1,42 @@
+---
+sidebar_autogenerate_exclude: true
+sidebar_label: "Gift Card Products Overview"
+tags:
+  - user guide
+  - loyalty
+products:
+  - loyalty
+---
+
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Gift Card Products in Medusa Admin`,
+}
+
+# {metadata.title}
+
+<Prerequisites
+  items={[
+    {
+      text: "Loyalty plugin installed",
+      link: "!resources!/commerce-modules/loyalty#1-install-the-loyalty-plugin",
+    },
+  ]}
+/>
+
+Gift card products are storefront products that customers can purchase to receive a gift card. When a customer buys a gift card product, a gift card is automatically generated and delivered to them.
+
+You can configure a gift card product's preset denominations, manage media, and control which sales channels the product is available in.
+
+<Note>
+
+Gift card products are different from gift cards. A gift card product is a purchasable item on your storefront. A gift card is the code issued after a purchase or created directly by you. See the [Gift Cards](../gift-cards/page.mdx) guide for more details.
+
+</Note>
+
+---
+
+## Sections
+
+- [Manage Gift Card Products](./manage/page.mdx)

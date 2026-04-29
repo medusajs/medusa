@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import {
   createFindParams,
   createOperatorMap,
@@ -15,6 +15,7 @@ export const AdminGetProductTagsParamsFields = z.object({
   q: z.string().optional(),
   id: z.union([z.string(), z.array(z.string())]).optional(),
   value: z.union([z.string(), z.array(z.string())]).optional(),
+  external_id: z.union([z.string(), z.array(z.string())]).optional(),
   created_at: createOperatorMap().optional(),
   updated_at: createOperatorMap().optional(),
   deleted_at: createOperatorMap().optional(),
@@ -34,7 +35,8 @@ export type AdminCreateProductTagType = z.infer<typeof AdminCreateProductTag>
 export const AdminCreateProductTag = z
   .object({
     value: z.string(),
-    metadata: z.record(z.unknown()).nullish(),
+    external_id: z.string().nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 
@@ -42,6 +44,7 @@ export type AdminUpdateProductTagType = z.infer<typeof AdminUpdateProductTag>
 export const AdminUpdateProductTag = z
   .object({
     value: z.string().optional(),
-    metadata: z.record(z.unknown()).nullish(),
+    external_id: z.string().nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()

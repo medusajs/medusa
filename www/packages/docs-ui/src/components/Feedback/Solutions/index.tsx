@@ -1,7 +1,8 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import { Link, MDXComponents } from "@/components"
+import { Link } from "@/components/Link"
+import { MDXComponents } from "@/components/MDXComponents"
 
 export type SolutionsProps = {
   feedback: boolean
@@ -75,7 +76,7 @@ export const Solutions = ({ feedback, message }: SolutionsProps) => {
           </span>
           <Ul>
             {possibleSolutions.map((solution) => (
-              <Li key={solution.url}>
+              <Li key={solution.url} data-testid="solution-item">
                 <Link
                   href={solution.html_url}
                   target="_blank"

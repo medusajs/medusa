@@ -1,26 +1,37 @@
-import { HttpTypes } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { refetchCollection } from "../helpers"
-import { applyTranslations } from "@medusajs/framework/utils"
+import { HttpTypes } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.SelectParams>,
   res: MedusaResponse<HttpTypes.StoreCollectionResponse>
 ) => {
-  const collection = await refetchCollection(
-    req.params.id,
-    req.scope,
-    req.queryConfig.fields
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+
+  const { data: collections } = await query.graph(
+    {
+      entity: "product_collection",
+      filters: { id: req.params.id },
+      fields: req.queryConfig.fields,
+    },
+    {
+      locale: req.locale,
+    }
   )
 
-  await applyTranslations({
-    localeCode: req.locale,
-    objects: [collection],
-    container: req.scope,
-  })
+  const collection = collections[0]
+  if (!collection) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Collection with id: ${req.params.id} was not found`
+    )
+  }
 
-  res.status(200).json({ collection })
+  res.status(200).json({ collection: collection })
 }

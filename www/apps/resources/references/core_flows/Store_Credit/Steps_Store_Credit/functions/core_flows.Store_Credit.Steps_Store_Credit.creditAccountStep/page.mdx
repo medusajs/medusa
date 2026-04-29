@@ -1,0 +1,37 @@
+---
+slug: /references/medusa-workflows/steps/creditAccountStep
+sidebar_label: creditAccountStep
+tags:
+  - store credit
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# creditAccountStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `creditAccountStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step credits one or more store credit accounts with transactions.
+The step supports rollback by deleting the created transactions.
+
+## Example
+
+```ts
+const data = creditAccountStep([
+  {
+    account_id: "sca_123",
+    amount: 100,
+    reference: "gift_card",
+    reference_id: "gc_123",
+  },
+])
+```
+
+## Input
+
+<TypeList types={[{"name":"CreditAccountStepInput","type":"[CreditAccountStepInput](../../../../plugins_loyalty_src_workflows/types/core_flows.plugins_loyalty_src_workflows.CreditAccountStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CreditAccountStepInput","type":"`ModuleCreditAccount`[]","description":"Data for crediting one or more store credit accounts.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="creditAccountStep"/>
+
+## Output
+
+<TypeList types={[{"name":"ModuleAccountTransaction[]","type":"`ModuleAccountTransaction`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="creditAccountStep"/>

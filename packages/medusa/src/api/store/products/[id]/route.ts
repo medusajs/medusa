@@ -1,15 +1,13 @@
 import { MedusaResponse } from "@medusajs/framework/http"
-import { HttpTypes } from "@medusajs/framework/types"
+import { HttpTypes, QueryContextType } from "@medusajs/framework/types"
 import {
-  applyTranslations,
-  isPresent,
+  ContainerRegistrationKeys,
   MedusaError,
   QueryContext,
 } from "@medusajs/framework/utils"
 import { wrapVariantsWithInventoryQuantityForSalesChannel } from "../../../utils/middlewares"
 import {
   filterOutInternalProductCategories,
-  refetchProduct,
   RequestWithContext,
   wrapProductsWithTaxPrices,
 } from "../helpers"
@@ -33,12 +31,11 @@ export const GET = async (
     ...req.filterableFields,
   }
 
-  if (isPresent(req.pricingContext)) {
-    filters["context"] ??= {}
-    filters["context"]["variants"] ??= {}
-    filters["context"]["variants"]["calculated_price"] ??= QueryContext(
-      req.pricingContext!
-    )
+  const context: QueryContextType = {}
+
+  if (req.pricingContext) {
+    context["variants"] ??= {}
+    context["variants"]["calculated_price"] ??= QueryContext(req.pricingContext)
   }
 
   const includesCategoriesField = req.queryConfig.fields.some((field) =>
@@ -49,11 +46,20 @@ export const GET = async (
     req.queryConfig.fields.push("categories.is_internal")
   }
 
-  const product = await refetchProduct(
-    filters,
-    req.scope,
-    req.queryConfig.fields
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+
+  const { data: products } = await query.graph(
+    {
+      entity: "product",
+      filters,
+      context,
+      fields: req.queryConfig.fields,
+    },
+    {
+      locale: req.locale,
+    }
   )
+  const product = products[0]
 
   if (!product) {
     throw new MedusaError(
@@ -74,10 +80,5 @@ export const GET = async (
   }
 
   await wrapProductsWithTaxPrices(req, [product])
-  await applyTranslations({
-    localeCode: req.locale,
-    objects: [product],
-    container: req.scope,
-  })
   res.json({ product })
 }

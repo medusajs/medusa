@@ -1,16 +1,14 @@
 "use client"
 
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import {
-  Details,
-  CopyButton,
-  DetailsSummary,
-  ExpandableNotice,
-  FeatureFlagNotice,
-  InlineCode,
-  MarkdownContent,
-  MDXComponents,
-} from "@/components"
+import { Details } from "@/components/Details"
+import { CopyButton } from "@/components/CopyButton"
+import { DetailsSummary } from "@/components/Details/Summary"
+import { ExpandableNotice } from "@/components/Notices/ExpandableNotice"
+import { FeatureFlagNotice } from "@/components/Notices/FeatureFlagNotice"
+import { InlineCode } from "@/components/InlineCode"
+import { MarkdownContent } from "@/components/MarkdownContent"
+import { MDXComponents } from "@/components/MDXComponents"
 import clsx from "clsx"
 import { Type, CommonProps as ParentCommonProps } from ".."
 import {
@@ -20,9 +18,11 @@ import {
   Link,
   TriangleRightMini,
 } from "@medusajs/icons"
-import { decodeStr, isInView } from "@/utils"
+import { decodeStr } from "@/utils/decode-str"
+import { isInView } from "@/utils/is-in-view"
 import { usePathname } from "next/navigation"
-import { useIsBrowser, useSiteConfig } from "../../.."
+import { useSiteConfig } from "../../../providers/SiteConfig"
+import { useIsBrowser } from "../../../providers/BrowserProvider"
 import { VersionNotice } from "../../Notices/VersionNotice"
 import { DeprecatedNotice } from "../../Notices/DeprecatedNotice"
 
@@ -237,8 +237,13 @@ const TypeListItem = ({
             </CopyButton>
           )}
           <div className="flex gap-0.75 flex-wrap flex-1">
-            <InlineCode>{decodeStr(item.name)}</InlineCode>
-            <span className="font-monospace text-compact-small-plus text-medusa-fg-subtle">
+            <InlineCode data-testid="type-name">
+              {decodeStr(item.name)}
+            </InlineCode>
+            <span
+              className="font-monospace text-compact-small-plus text-medusa-fg-subtle"
+              data-testid="type-type"
+            >
               <MarkdownContent allowedElements={["a"]} unwrapDisallowed={true}>
                 {item.type}
               </MarkdownContent>
@@ -249,6 +254,7 @@ const TypeListItem = ({
                   "text-compact-x-small-plus",
                   "text-medusa-tag-blue-text"
                 )}
+                data-testid="type-optional"
               >
                 Optional
               </span>

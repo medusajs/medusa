@@ -20,7 +20,7 @@ export const CountrySelect = forwardRef<
   const innerRef = useRef<HTMLButtonElement>(null)
 
   useImperativeHandle(ref, () => innerRef.current as HTMLButtonElement)
-  
+
   return (
     <div className="relative">
       <Select

@@ -27,20 +27,41 @@ export const sidebars = [
           },
           {
             type: "link",
-            title: "AI Assistants and LLMs",
+            title: "Architecture",
+            path: "/learn/introduction/architecture",
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Agentic Development",
+        children: [
+          {
+            type: "link",
+            title: "Overview",
             path: "/learn/introduction/build-with-llms-ai",
           },
           {
             type: "link",
-            title: "Architecture",
-            path: "/learn/introduction/architecture",
+            title: "Bloom",
+            path: "/learn/introduction/build-with-llms-ai/bloom",
           },
           {
             type: "link",
-            title: "From v1 to v2",
-            path: "/learn/introduction/from-v1-to-v2",
+            title: "MCP Server",
+            path: "/learn/introduction/build-with-llms-ai/mcp-server",
           },
-        ],
+          {
+            type: "link",
+            title: "Agentic Skills",
+            path: "/learn/introduction/build-with-llms-ai/agentic-skills",
+          },
+          {
+            type: "link",
+            title: "AI-Friendly Docs",
+            path: "/learn/introduction/build-with-llms-ai/ai-friendly-docs",
+          }
+        ]
       },
       {
         type: "category",
@@ -291,7 +312,7 @@ export const sidebars = [
               },
               {
                 type: "link",
-                path: "/learn/fundamentals/data-models/index",
+                path: "/learn/fundamentals/data-models/indexes",
                 title: "Define Index",
               },
               {
@@ -365,6 +386,11 @@ export const sidebars = [
                 type: "link",
                 path: "/learn/fundamentals/api-routes/retrieve-custom-links",
                 title: "Retrieve Custom Links",
+              },
+              {
+                type: "link",
+                path: "/learn/fundamentals/api-routes/localization",
+                title: "Localization",
               },
               {
                 type: "link",
@@ -475,6 +501,11 @@ export const sidebars = [
                 path: "/learn/fundamentals/events-and-subscribers/emit-event",
                 title: "Emit Event",
               },
+              {
+                type: "link",
+                path: "/learn/fundamentals/events-and-subscribers/event-priority",
+                title: "Event Priority",
+              },
             ],
           },
           {
@@ -581,6 +612,11 @@ export const sidebars = [
         type: "category",
         title: "Configurations",
         children: [
+          {
+            type: "link",
+            title: "pnpm",
+            path: "/learn/configurations/pnpm",
+          },
           {
             type: "link",
             title: "Environment Variables",
@@ -747,7 +783,17 @@ export const sidebars = [
                 title: "Replace Imports (v2.11.0+)",
                 path: "/learn/codemods/replace-imports",
               },
+              {
+                type: "link",
+                title: "Replace Zod Imports (v2.13.0+)",
+                path: "/learn/codemods/replace-zod-imports",
+              },
             ],
+          },
+          {
+            type: "link",
+            title: "From v1 to v2",
+            path: "/learn/introduction/from-v1-to-v2",
           },
         ],
       },

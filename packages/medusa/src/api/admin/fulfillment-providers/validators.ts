@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { booleanString } from "../../utils/common-validators"
 import { createFindParams } from "../../utils/validators"
 

@@ -14,6 +14,7 @@ import {
   WorkflowResponse,
   createStep,
   createWorkflow,
+  parallelize,
   transform,
   when,
 } from "@medusajs/framework/workflows-sdk"
@@ -23,9 +24,12 @@ import {
   previewOrderChangeStep,
   registerOrderChangesStep,
   updateOrderItemsTranslationsStep,
+  updateOrderShippingMethodsTranslationsStep,
   updateOrdersStep,
 } from "../steps"
 import { throwIfOrderIsCancelled } from "../utils/order-validation"
+import { findOrCreateCustomerStep } from "../../cart"
+import { updateOrderTaxLinesTranslationsStep } from "../steps/update-order-tax-lines-translations"
 
 /**
  * The data to validate the order update.
@@ -134,6 +138,9 @@ export const updateOrderWorkflow = createWorkflow(
         "shipping_address.*",
         "billing_address.*",
         "metadata",
+        "shipping_methods.id",
+        "shipping_methods.name",
+        "shipping_methods.shipping_option_id",
       ],
       filters: { id: input.id },
       options: { throwIfKeyNotFound: true },
@@ -146,30 +153,43 @@ export const updateOrderWorkflow = createWorkflow(
 
     updateOrderValidationStep({ order, input })
 
-    const updateInput = transform({ input, order }, ({ input, order }) => {
-      const update: UpdateOrderDTO = {}
-
-      if (input.shipping_address) {
-        const address = {
-          // we want to create a new address
-          ...order.shipping_address,
-          ...input.shipping_address,
-        }
-        delete address.id
-        update.shipping_address = address
-      }
-
-      if (input.billing_address) {
-        const address = {
-          ...order.billing_address,
-          ...input.billing_address,
-        }
-        delete address.id
-        update.billing_address = address
-      }
-
-      return { ...input, ...update }
+    const customerData = when({ input, order }, ({ input, order }) => {
+      return !order.email && !!input.email
+    }).then(() => {
+      return findOrCreateCustomerStep({ email: input.email })
     })
+
+    const updateInput = transform(
+      { input, order, customerData },
+      ({ input, order, customerData }) => {
+        const update: UpdateOrderDTO = {}
+
+        if (input.shipping_address) {
+          const address = {
+            // we want to create a new address
+            ...order.shipping_address,
+            ...input.shipping_address,
+          }
+          delete address.id
+          update.shipping_address = address
+        }
+
+        if (input.billing_address) {
+          const address = {
+            ...order.billing_address,
+            ...input.billing_address,
+          }
+          delete address.id
+          update.billing_address = address
+        }
+
+        if (!!customerData?.customer) {
+          update.customer_id = customerData.customer.id
+        }
+
+        return { ...input, ...update }
+      }
+    )
 
     const updatedOrders = updateOrdersStep({
       selector: { id: input.id },
@@ -261,10 +281,20 @@ export const updateOrderWorkflow = createWorkflow(
     when("locale-changed", { input, order }, ({ input, order }) => {
       return !!input.locale && input.locale !== order.locale
     }).then(() => {
-      updateOrderItemsTranslationsStep({
-        order_id: input.id,
-        locale: input.locale!,
-      })
+      parallelize(
+        updateOrderItemsTranslationsStep({
+          order_id: input.id,
+          locale: input.locale!,
+        }),
+        updateOrderShippingMethodsTranslationsStep({
+          locale: input.locale!,
+          shippingMethods: order.shipping_methods,
+        }),
+        updateOrderTaxLinesTranslationsStep({
+          order_id: input.id,
+          locale: input.locale!,
+        })
+      )
     })
 
     emitEventStep({

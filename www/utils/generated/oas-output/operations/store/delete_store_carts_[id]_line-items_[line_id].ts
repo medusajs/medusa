@@ -29,7 +29,7 @@
  *       type: string
  *       externalDocs:
  *         url: https://docs.medusajs.com/api/store#publishable-api-key
- *   - name: Content-Language
+ *   - name: x-medusa-locale
  *     in: header
  *     description: The locale in BCP 47 format to retrieve localized content.
  *     required: false
@@ -140,7 +140,16 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: deleteLineItemsWorkflow
- * x-events: []
+ * x-events:
+ *   - name: cart.updated
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the cart
+ *       }
+ *       ```
+ *     description: Emitted when a cart's details are updated.
+ *     deprecated: false
  * 
 */
 

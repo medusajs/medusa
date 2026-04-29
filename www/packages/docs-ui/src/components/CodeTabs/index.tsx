@@ -1,17 +1,13 @@
 "use client"
 
 import React, { Children, useCallback, useEffect, useMemo, useRef } from "react"
-import {
-  Badge,
-  BaseTabType,
-  CodeBlockProps,
-  CodeBlockStyle,
-  useColorMode,
-  useTabs,
-} from "../.."
+import { Badge } from "@/components/Badge"
+import { CodeBlockProps, CodeBlockStyle } from "@/components/CodeBlock"
+import { useColorMode } from "@/providers/ColorMode"
 import clsx from "clsx"
 import { CodeBlockActions, CodeBlockActionsProps } from "../CodeBlock/Actions"
 import { CodeBlockHeaderWrapper } from "../CodeBlock/Header/Wrapper"
+import { BaseTabType, useTabs } from "../../hooks/use-tabs"
 
 type CodeTab = BaseTabType & {
   codeProps: CodeBlockProps
@@ -262,6 +258,7 @@ export const CodeTabs = ({
         boxShadow,
         className
       )}
+      data-testid="code-tabs"
     >
       <CodeBlockHeaderWrapper blockStyle={blockStyle} ref={codeTabsWrapperRef}>
         <span

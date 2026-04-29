@@ -721,12 +721,10 @@ medusaIntegrationTestRunner({
 
           validateHook = undefined
 
-          const paymentSessionQuery = await query.graph({
+          const paymentCollectionQuery = await query.graph({
             entity: "payment_collection",
-            variables: {
-              filters: {
-                id: paymentSession.payment_collection_id,
-              },
+            filters: {
+              id: paymentSession.payment_collection_id,
             },
             fields: [
               "*",
@@ -738,7 +736,7 @@ medusaIntegrationTestRunner({
           })
 
           // expects the payment to be refunded and a new payment session to be created
-          expect(paymentSessionQuery.data[0].payments[0]).toEqual(
+          expect(paymentCollectionQuery.data[0].payments[0]).toEqual(
             expect.objectContaining({
               amount: 3000,
               payment_session_id: paymentSession.id,
@@ -755,9 +753,13 @@ medusaIntegrationTestRunner({
               ],
             })
           )
-          expect(paymentSessionQuery.data[0].payment_sessions[0].id).not.toBe(
-            paymentSession.id
-          )
+
+          const sessions = paymentCollectionQuery.data[0].payment_sessions
+          expect(sessions).toHaveLength(1)
+
+          expect(sessions[0].id).toBeDefined()
+          expect(sessions[0].id).not.toBe(paymentSession.id)
+          expect(sessions[0].status).toBe("pending")
         })
 
         it("should complete cart when payment webhook and storefront are called in simultaneously", async () => {

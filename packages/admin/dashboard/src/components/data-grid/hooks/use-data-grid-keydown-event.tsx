@@ -353,7 +353,7 @@ export const useDataGridKeydownEvent = <
         setSingleRange(pos)
         scrollToCoordinates(pos, "vertical")
       } else {
-        // If the the user is at the last cell, we want to focus the container of the cell.
+        // If the user is at the last cell, we want to focus the container of the cell.
         const container = queryTool?.getContainer(anchor)
 
         container?.focus()
@@ -720,7 +720,7 @@ function getFocusableElements(ref: React.RefObject<HTMLDivElement>) {
   const shortcuts =
     currentElementIndex > 0 ? focusableElements[currentElementIndex - 1] : null
 
-  let cancel = null
+  let cancel: HTMLElement | null = null
   for (let i = currentElementIndex + 1; i < focusableElements.length; i++) {
     if (!ref.current!.contains(focusableElements[i])) {
       cancel = focusableElements[i]

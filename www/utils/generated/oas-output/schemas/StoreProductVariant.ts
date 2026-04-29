@@ -127,7 +127,6 @@
  *       $ref: "#/components/schemas/BaseProductImage"
  * required:
  *   - options
- *   - length
  *   - title
  *   - id
  *   - created_at
@@ -135,19 +134,19 @@
  *   - thumbnail
  *   - width
  *   - weight
+ *   - length
  *   - height
  *   - origin_country
  *   - hs_code
  *   - mid_code
  *   - material
- *   - images
  *   - deleted_at
  *   - manage_inventory
  *   - allow_backorder
+ *   - sku
  *   - ean
  *   - upc
  *   - barcode
- *   - sku
  * 
 */
 

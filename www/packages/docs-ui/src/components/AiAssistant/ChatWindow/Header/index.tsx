@@ -6,7 +6,7 @@ import { Tooltip } from "../../../Tooltip"
 import { Link } from "../../../Link"
 import { ShieldCheck, XMark } from "@medusajs/icons"
 import { Button } from "../../../Button"
-import { useAiAssistant } from "../../../../providers"
+import { useAiAssistant } from "../../../../providers/AiAssistant"
 
 export const AiAssistantChatWindowHeader = () => {
   const { setChatOpened } = useAiAssistant()
@@ -19,7 +19,7 @@ export const AiAssistantChatWindowHeader = () => {
       )}
     >
       <div className="flex gap-[6px] items-center">
-        <span className="text-h3 text-medusa-fg-base">Ask Anything</span>
+        <span className="text-h3 text-medusa-fg-base">Ask Bloom</span>
         <Tooltip
           tooltipChildren={
             <>

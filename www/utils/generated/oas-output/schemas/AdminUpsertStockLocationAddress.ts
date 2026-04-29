@@ -4,8 +4,8 @@
  * description: The details of the stock location address to create.
  * x-schemaName: AdminUpsertStockLocationAddress
  * required:
- *   - address_1
  *   - country_code
+ *   - address_1
  * properties:
  *   address_1:
  *     type: string
@@ -44,6 +44,9 @@
  *     externalDocs:
  *       url: https://en.wikipedia.org/wiki/ISO_3166-2
  *       description: Learn more about ISO 3166-2
+ *   metadata:
+ *     type: object
+ *     description: The address's metadata.
  * 
 */
 

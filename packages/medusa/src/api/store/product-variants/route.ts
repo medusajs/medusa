@@ -4,7 +4,6 @@ import {
 } from "@medusajs/framework/http"
 import { HttpTypes, QueryContextType } from "@medusajs/framework/types"
 import {
-  applyTranslations,
   ContainerRegistrationKeys,
   QueryContext,
 } from "@medusajs/framework/utils"
@@ -13,8 +12,7 @@ import { StoreRequestWithContext } from "../types"
 import { wrapVariantsWithTaxPrices } from "./helpers"
 
 type StoreVariantListRequest<T = HttpTypes.StoreProductVariantParams> =
-  StoreRequestWithContext<T> &
-    AuthenticatedMedusaRequest<T>
+  StoreRequestWithContext<T> & AuthenticatedMedusaRequest<T>
 
 /**
  * @since 2.11.2
@@ -52,14 +50,9 @@ export const GET = async (
       cache: {
         enable: true,
       },
+      locale: req.locale,
     }
   )
-
-  await applyTranslations({
-    localeCode: req.locale,
-    objects: variants,
-    container: req.scope,
-  })
 
   if (withInventoryQuantity) {
     await wrapVariantsWithInventoryQuantityForSalesChannel(req, variants)

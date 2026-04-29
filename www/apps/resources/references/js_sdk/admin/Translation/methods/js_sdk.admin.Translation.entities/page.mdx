@@ -1,0 +1,50 @@
+import { TypeList } from "docs-ui"
+
+# entities
+
+This method retrieves a paginated list of entities for a given entity type with only their
+translatable fields.
+It sends a request to the
+[Get Translation Entities](https://docs.medusajs.com/api/admin#translations\_gettranslationentities) API route.
+
+:::note
+
+This is available starting from [Medusa v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4).
+
+:::
+
+## Example
+
+To retrieve the entities for a given entity type:
+
+```ts
+sdk.admin.translation.entities({
+  type: "product"
+})
+.then(({ data, count, offset, limit }) => {
+  console.log(data)
+})
+```
+
+To configure the pagination, pass the `limit` and `offset` query parameters.
+
+For example, to retrieve only 10 items and skip 10 items:
+
+```ts
+sdk.admin.translation.entities({
+  type: "product",
+  limit: 10,
+  offset: 10
+})
+.then(({ data, count, offset, limit }) => {
+  console.log(data)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"query","type":"[AdminTranslationEntitiesParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationEntitiesParams/page.mdx)","description":"The query parameters including the entity type and pagination configurations.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"type","type":"`string`","description":"The entity type to retrieve (e.g., \"product\", \"product\\_variant\").\nThis determines which table to query and which translatable fields to return.","optional":false,"defaultValue":"","example":"\"product\"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"The maximum number of items to retrieve.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip before retrieving the returned items.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort by and in which order.","optional":true,"defaultValue":"","example":"-created_at","expandable":false,"children":[]},{"name":"with_deleted","type":"`boolean`","description":"Whether to include soft-deleted items in the results.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string` \\| `string`[]","description":"Filter by entity ID(s). Can be a single ID or an array of IDs.","optional":true,"defaultValue":"","example":"\"prod_123\"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="entities"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminTranslationEntitiesResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationEntitiesResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The paginated list of entities with their translatable fields.","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>` & `object`[]","description":"The list of entities with their translatable fields.\nEach entity contains only the fields configured as translatable\nfor that entity type in the translation settings, plus all\ntranslations for all locales.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"translations","type":"[AdminTranslation](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminTranslation/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"count","type":"`number`","description":"The total count of entities.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The offset of the current page.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"The limit of items per page.","optional":false,"defaultValue":"","expandable":false,"children":[]}],"since":"2.12.4"}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="entities"/>

@@ -8,7 +8,9 @@ import React, {
   useMemo,
   useRef,
 } from "react"
-import { BadgeProps, Modal, Search, SearchProps } from "@/components"
+import { BadgeProps } from "../../components/Badge"
+import { Modal } from "../../components/Modal"
+import { Search, SearchProps } from "../../components/Search"
 import {
   liteClient as algoliasearch,
   LiteClient as SearchClient,

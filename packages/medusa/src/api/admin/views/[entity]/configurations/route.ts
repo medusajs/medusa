@@ -4,7 +4,10 @@ import {
 } from "@medusajs/framework/http"
 import { AdminCreateViewConfigurationType } from "./validators"
 import { HttpTypes } from "@medusajs/framework/types"
-import { MedusaError, Modules } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+} from "@medusajs/framework/utils"
 import { createViewConfigurationWorkflow } from "@medusajs/core-flows"
 
 /**
@@ -15,7 +18,7 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminGetViewConfigurationsParams>,
   res: MedusaResponse<HttpTypes.AdminViewConfigurationListResponse>
 ) => {
-  const settingsService = req.scope.resolve(Modules.SETTINGS)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const filters = {
     ...req.filterableFields,
@@ -23,17 +26,18 @@ export const GET = async (
     $or: [{ user_id: req.auth_context.actor_id }, { is_system_default: true }],
   }
 
-  const [viewConfigurations, count] =
-    await settingsService.listAndCountViewConfigurations(
-      filters,
-      req.queryConfig
-    )
+  const { data: viewConfigurations, metadata } = await query.graph({
+    entity: "view_configuration",
+    fields: req.queryConfig.fields,
+    filters,
+    pagination: req.queryConfig.pagination,
+  })
 
   res.json({
     view_configurations: viewConfigurations,
-    count,
-    offset: req.queryConfig.pagination?.skip || 0,
-    limit: req.queryConfig.pagination?.take || 20,
+    count: metadata?.count ?? 0,
+    offset: metadata?.skip ?? 0,
+    limit: metadata?.take ?? 20,
   })
 }
 
@@ -45,6 +49,8 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateViewConfigurationType>,
   res: MedusaResponse<HttpTypes.AdminViewConfigurationResponse>
 ) => {
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+
   // Validate: name is required unless creating a system default
   if (!req.body.is_system_default && !req.body.name) {
     throw new MedusaError(
@@ -63,5 +69,13 @@ export const POST = async (
     input,
   })
 
-  return res.json({ view_configuration: result })
+  const {
+    data: [viewConfiguration],
+  } = await query.graph({
+    entity: "view_configuration",
+    fields: req.queryConfig.fields,
+    filters: { id: result.id },
+  })
+
+  return res.json({ view_configuration: viewConfiguration })
 }

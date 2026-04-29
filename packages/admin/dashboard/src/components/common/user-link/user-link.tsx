@@ -1,6 +1,7 @@
 import { Avatar, Text } from "@medusajs/ui"
 import { Link } from "react-router-dom"
 import { useUser } from "../../../hooks/api/users"
+import { useCustomer } from "../../../hooks/api/customers"
 
 type UserLinkProps = {
   id: string
@@ -24,7 +25,7 @@ export const UserLink = ({
   return (
     <Link
       to={link}
-      className="flex items-center gap-x-2 w-fit transition-fg hover:text-ui-fg-subtle outline-none focus-visible:shadow-borders-focus rounded-md"
+      className="transition-fg hover:text-ui-fg-subtle focus-visible:shadow-borders-focus flex w-fit items-center gap-x-2 rounded-md outline-none"
     >
       <Avatar size="2xsmall" fallback={fallback.toUpperCase()} />
       <Text size="small" leading="compact" weight="regular">
@@ -35,11 +36,22 @@ export const UserLink = ({
 }
 
 export const By = ({ id }: { id: string }) => {
-  const { user } = useUser(id) // todo: extend to support customers
-
-  if (!user) {
+  const isUser = id.startsWith("user_")
+  const isCustomer = id.startsWith("cus_")
+  if (!isUser && !isCustomer) {
     return null
   }
 
-  return <UserLink {...user} />
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { user } = useUser(id, undefined, { enabled: isUser }) // todo: extend to support customers
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { customer } = useCustomer(id, undefined, { enabled: isCustomer })
+
+  const actor = isUser ? user : customer
+
+  if (!actor) {
+    return null
+  }
+
+  return <UserLink {...actor} />
 }

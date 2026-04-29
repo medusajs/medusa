@@ -66,7 +66,18 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/ResetPasswordRequest"
+ *         type: object
+ *         description: The details of the reset password token to generate.
+ *         required:
+ *           - identifier
+ *         properties:
+ *           identifier:
+ *             type: string
+ *             title: identifier
+ *             description: The actor identifier. For example, an email address.
+ *           metadata:
+ *             type: object
+ *             description: The actor's custom metadata to be included in the emitted event when the token is generated.
  * x-events:
  *   - name: auth.password_reset
  *     payload: |-
@@ -75,6 +86,7 @@
  *         entity_id, // The identifier of the user or customer. For example, an email address.
  *         actor_type, // The type of actor. For example, "customer", "user", or custom.
  *         token, // The generated token.
+ *         metadata, // Optional custom metadata passed from the request.
  *       }
  *       ```
  *     description: |-

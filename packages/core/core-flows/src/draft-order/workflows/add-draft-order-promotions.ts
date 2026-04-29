@@ -117,12 +117,6 @@ export const addDraftOrderPromotionWorkflow = createWorkflow(
       action: PromotionActions.ADD,
     })
 
-    computeDraftOrderAdjustmentsWorkflow.runAsStep({
-      input: {
-        order_id: input.order_id,
-      },
-    })
-
     const orderChangeActionInput = transform(
       { order, orderChange, promotions },
       ({ order, orderChange, promotions }) => {
@@ -141,6 +135,12 @@ export const addDraftOrderPromotionWorkflow = createWorkflow(
 
     createOrderChangeActionsWorkflow.runAsStep({
       input: orderChangeActionInput,
+    })
+
+    computeDraftOrderAdjustmentsWorkflow.runAsStep({
+      input: {
+        order_id: input.order_id,
+      },
     })
 
     releaseLockStep({

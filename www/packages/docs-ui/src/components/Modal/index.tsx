@@ -2,11 +2,11 @@
 
 import clsx from "clsx"
 import React, { useCallback, useEffect, useRef } from "react"
-import { useModal } from "@/providers"
+import { useModal } from "@/providers/Modal"
 import { ModalHeader } from "./Header"
 import { ModalFooter } from "./Footer"
 import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
-import { ButtonProps } from "@/components"
+import { ButtonProps } from "@/components/Button"
 import { Ref } from "types"
 
 export type ModalProps = {
@@ -105,6 +105,7 @@ export const Modal = ({
           "h-auto w-full",
           modalContainerClassName
         )}
+        data-testid="modal-container"
       >
         {title && <ModalHeader title={title} />}
         <div
@@ -112,6 +113,7 @@ export const Modal = ({
             "overflow-auto py-docs_1.5 px-docs_2 rounded-docs_lg",
             contentClassName
           )}
+          data-testid="modal-content"
         >
           {children}
         </div>

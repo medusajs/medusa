@@ -3,6 +3,7 @@ import chalk from "chalk"
 import { emojify } from "node-emoji"
 import { Ora } from "ora"
 import ProcessManager from "./process-manager.js"
+import terminalLink from "terminal-link"
 
 export type FactBoxOptions = {
   interval: NodeJS.Timeout | null
@@ -33,6 +34,15 @@ const facts = [
   "Commerce Modules are built-in modules that provide core commerce logic specific to domains like Product, Cart and Order.",
   "Workflows are a series of queries and actions, called steps, that complete a task.",
   "A workflow's steps can be retried or rolled back in case of an error.",
+  `Medusa provides ${terminalLink(
+    "Claude Code plugins",
+    "https://github.com/medusajs/medusa-claude-plugins"
+  )} to facilitate your development.`,
+  "Medusa provides an MCP server at https://docs.medusajs.com/mcp to support your learning and development experience with AI agents",
+  `Medusa is optimized to build custom commerce software with AI agents through its MCP server and ${terminalLink(
+    "Claude Code plugins",
+    "https://github.com/medusajs/medusa-claude-plugins"
+  )}.`,
 ]
 
 export const getFact = () => {

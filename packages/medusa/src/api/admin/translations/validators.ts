@@ -1,12 +1,12 @@
-import { applyAndAndOrOperators } from "../../utils/common-validators"
+import { z } from "@medusajs/framework/zod"
+import {
+  applyAndAndOrOperators,
+  booleanString,
+} from "../../utils/common-validators"
 import {
   createBatchBody,
   createFindParams,
-  createSelectParams,
 } from "../../utils/validators"
-import { z } from "zod"
-
-export const AdminGetTranslationParams = createSelectParams()
 
 export const AdminGetTranslationParamsFields = z.object({
   q: z.string().optional(),
@@ -31,7 +31,7 @@ export const AdminCreateTranslation = z.object({
   reference_id: z.string(),
   reference: z.string(),
   locale_code: z.string(),
-  translations: z.record(z.string()),
+  translations: z.record(z.string(), z.string()),
 })
 
 export type AdminUpdateTranslationType = z.infer<typeof AdminUpdateTranslation>
@@ -40,7 +40,7 @@ export const AdminUpdateTranslation = z.object({
   reference_id: z.string().optional(),
   reference: z.string().optional(),
   locale_code: z.string().optional(),
-  translations: z.record(z.string()).optional(),
+  translations: z.record(z.string(), z.string()).optional(),
 })
 
 export type AdminBatchTranslationsType = z.infer<typeof AdminBatchTranslations>
@@ -50,9 +50,9 @@ export const AdminBatchTranslations = createBatchBody(
 )
 
 export type AdminTranslationStatisticsType = z.infer<
-  typeof AdminTranslationStatistics
+  typeof AdminTranslationStatisticsParams
 >
-export const AdminTranslationStatistics = z
+export const AdminTranslationStatisticsParams = z
   .object({
     locales: z.union([z.string(), z.array(z.string())]),
     entity_types: z.union([z.string(), z.array(z.string())]),
@@ -70,7 +70,29 @@ export type AdminTranslationSettingsParamsType = z.infer<
 >
 export const AdminTranslationSettingsParams = z.object({
   entity_type: z.string().optional(),
+  is_active: booleanString().optional(),
 })
+
+const AdminUpdateTranslationSettings = z.object({
+  id: z.string(),
+  entity_type: z.string().optional(),
+  fields: z.array(z.string()).optional(),
+  is_active: z.boolean().optional(),
+})
+
+const AdminCreateTranslationSettings = z.object({
+  entity_type: z.string(),
+  fields: z.array(z.string()),
+  is_active: z.boolean().optional(),
+})
+
+export type AdminBatchTranslationSettingsType = z.infer<
+  typeof AdminBatchTranslationSettings
+>
+export const AdminBatchTranslationSettings = createBatchBody(
+  AdminCreateTranslationSettings,
+  AdminUpdateTranslationSettings
+)
 
 export type AdminTranslationEntitiesParamsType = z.infer<
   typeof AdminTranslationEntitiesParams

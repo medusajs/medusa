@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import type { OpenAPI } from "types"
 import { findSidebarItem, useSidebar } from "docs-ui"
 import { Fragment, Suspense, useEffect, useMemo } from "react"
@@ -10,7 +11,7 @@ import getTagChildSidebarItems from "@/utils/get-tag-child-sidebar-items"
 import { useLoading } from "@/providers/loading"
 import DividedLoading from "@/components/DividedLoading"
 import { Sidebar } from "types"
-import { compareOperations } from "../../../utils/sort-operations-utils"
+import { compareOperations } from "@/utils/sort-operations-utils"
 
 const TagOperation = dynamic<TagOperationProps>(
   async () => import("../Operation")
@@ -26,34 +27,31 @@ const TagPaths = ({ tag, className, paths }: TagPathsProps) => {
   const { loading } = useLoading()
 
   useEffect(() => {
-    if (!shownSidebar) {
+    if (!shownSidebar || !Object.keys(paths).length) {
       return
     }
 
-    if (paths) {
-      const parentItem = findSidebarItem({
-        sidebarItems:
-          "items" in shownSidebar
-            ? shownSidebar.items
-            : shownSidebar.children || [],
-        item: { title: tag.name, type: "category" },
-        checkChildren: false,
-      }) as Sidebar.SidebarItemCategory
-      const pathItems: Sidebar.SidebarItem[] = getTagChildSidebarItems(paths)
-      const targetLength =
-        pathItems.length + (tag["x-associatedSchema"] ? 1 : 0)
-      if ((parentItem.children?.length || 0) < targetLength) {
-        addItems(pathItems, {
-          sidebar_id: shownSidebar.sidebar_id,
-          parent: {
-            type: "category",
-            title: tag.name,
-            path: "",
-            changeLoaded: true,
-          },
-          indexPosition: tag["x-associatedSchema"] ? 1 : 0,
-        })
-      }
+    const parentItem = findSidebarItem({
+      sidebarItems:
+        "items" in shownSidebar
+          ? shownSidebar.items
+          : shownSidebar.children || [],
+      item: { title: tag.name, type: "category" },
+      checkChildren: false,
+    }) as Sidebar.SidebarItemCategory | undefined
+    const pathItems: Sidebar.SidebarItem[] = getTagChildSidebarItems(paths)
+    const targetLength = pathItems.length + (tag["x-associatedSchema"] ? 1 : 0)
+    if (parentItem && (parentItem.children?.length || 0) < targetLength) {
+      addItems(pathItems, {
+        sidebar_id: shownSidebar.sidebar_id,
+        parent: {
+          type: "category",
+          title: tag.name,
+          path: "",
+          changeLoaded: true,
+        },
+        indexPosition: tag["x-associatedSchema"] ? 1 : 0,
+      })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paths, shownSidebar?.sidebar_id])

@@ -30,4 +30,26 @@ export type AuthModuleOptions = Partial<ModuleServiceInitializeOptions> & {
      */
     options?: Record<string, unknown>
   }[]
+  /**
+   * Options for the default Medusa Cloud Auth provider
+   * @private
+   */
+  cloud?: MedusaCloudAuthProviderOptions
+}
+
+export interface MedusaCloudAuthProviderOptions {
+  oauth_authorize_endpoint: string
+  oauth_token_endpoint: string
+  environment_handle: string
+  sandbox_handle: string
+  api_key: string
+  callback_url: string
+  disabled: boolean
+}
+
+declare module "@medusajs/types" {
+  interface ModuleOptions {
+    "@medusajs/auth": AuthModuleOptions
+    "@medusajs/medusa/auth": AuthModuleOptions
+  }
 }

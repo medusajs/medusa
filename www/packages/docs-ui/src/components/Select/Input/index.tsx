@@ -64,6 +64,7 @@ export const SelectInput = ({
           setOpen((prev) => !prev)
         }
       }}
+      data-testid="select-input"
     >
       {hasSelectedValues && (
         <Badge

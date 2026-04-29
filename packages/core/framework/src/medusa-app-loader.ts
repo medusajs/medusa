@@ -311,8 +311,13 @@ export class MedusaAppLoader {
    * @param config
    */
   async load(
-    config: { registerInContainer?: boolean; migrationOnly?: boolean } = {
+    config: {
+      registerInContainer?: boolean
+      schemaOnly?: boolean
+      migrationOnly?: boolean
+    } = {
       registerInContainer: true,
+      schemaOnly: false,
       migrationOnly: false,
     }
   ): Promise<MedusaAppOutput> {
@@ -321,7 +326,9 @@ export class MedusaAppLoader {
     )
 
     const { sharedResourcesConfig, injectedDependencies } =
-      !config.migrationOnly ? this.prepareSharedResourcesAndDeps() : {}
+      !config.migrationOnly && !config.schemaOnly
+        ? this.prepareSharedResourcesAndDeps()
+        : {}
 
     this.#container.register(
       ContainerRegistrationKeys.REMOTE_QUERY,
@@ -349,6 +356,7 @@ export class MedusaAppLoader {
       medusaConfigPath: this.#medusaConfigPath,
       cwd: this.#cwd,
       migrationOnly: config.migrationOnly,
+      schemaOnly: config.schemaOnly,
     })
 
     if (!config.registerInContainer) {

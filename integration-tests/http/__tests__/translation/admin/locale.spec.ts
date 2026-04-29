@@ -1,4 +1,5 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { Modules } from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -13,6 +14,10 @@ medusaIntegrationTestRunner({
     describe("Admin Locale API", () => {
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, getContainer())
+
+        const appContainer = getContainer()
+        const translationModule = appContainer.resolve(Modules.TRANSLATION)
+        await translationModule.__hooks?.onApplicationStart?.().catch(() => {})
       })
 
       afterAll(async () => {

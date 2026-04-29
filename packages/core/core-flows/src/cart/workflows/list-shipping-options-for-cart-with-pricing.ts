@@ -23,6 +23,7 @@ import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import { calculateShippingOptionsPricesStep } from "../../fulfillment"
 import { cartFieldsForCalculateShippingOptionsPrices } from "../utils/fields"
 import { shippingOptionsContextResult } from "../utils/schemas"
+import { getTranslatedShippingOptionsStep } from "../../common/steps/get-translated-shipping-option"
 
 const COMMON_OPTIONS_FIELDS = [
   "id",
@@ -378,6 +379,10 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
               ...shippingOption,
               amount: price?.calculated_amount,
               is_tax_inclusive: !!price?.is_calculated_price_tax_inclusive,
+              stock_location:
+                fulfillmentSetLocationMap[
+                  shippingOption.service_zone.fulfillment_set_id
+                ],
             }
           }),
           ...shippingOptionsCalculated.map((shippingOption, index) => {
@@ -397,7 +402,12 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
       }
     )
 
-    return new WorkflowResponse(shippingOptionsWithPrice, {
+    const translatedShippingOptions = getTranslatedShippingOptionsStep({
+      shippingOptions: shippingOptionsWithPrice,
+      locale: cart.locale,
+    })
+
+    return new WorkflowResponse(translatedShippingOptions as any[], {
       hooks: [setShippingOptionsContext] as const,
     })
   }

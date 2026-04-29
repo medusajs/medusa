@@ -41,7 +41,7 @@ export async function generateTypes({
 
   const { gqlSchema, modules } = await new MedusaAppLoader().load({
     registerInContainer: false,
-    migrationOnly: true,
+    schemaOnly: true,
   })
 
   const typesDirectory = path.join(directory, ".medusa/types")

@@ -12,7 +12,11 @@ import {
 } from "../steps"
 import { validateFulfillmentProvidersStep } from "../steps/validate-fulfillment-providers"
 import { validateShippingOptionPricesStep } from "../steps/validate-shipping-option-prices"
-import { ShippingOptionPriceType } from "@medusajs/framework/utils"
+import {
+  ShippingOptionPriceType,
+  ShippingOptionWorkflowEvents,
+} from "@medusajs/framework/utils"
+import { emitEventStep } from "../../common"
 
 /**
  * The data to update the shipping options.
@@ -92,6 +96,10 @@ export const updateShippingOptionsWorkflow = createWorkflow(
       data.shippingOptions
     )
 
+    const eventData = transform(updatedShippingOptions, (data) => {
+      return data.map((option) => option.id)
+    })
+
     const normalizedShippingOptionsPrices = transform(
       {
         shippingOptions: updatedShippingOptions,
@@ -115,8 +123,14 @@ export const updateShippingOptionsWorkflow = createWorkflow(
       }
     )
 
-    setShippingOptionsPricesStep(
-      normalizedShippingOptionsPrices.shippingOptionsPrices
+    parallelize(
+      setShippingOptionsPricesStep(
+        normalizedShippingOptionsPrices.shippingOptionsPrices
+      ),
+      emitEventStep({
+        eventName: ShippingOptionWorkflowEvents.UPDATED,
+        data: eventData,
+      })
     )
 
     return new WorkflowResponse(updatedShippingOptions)
