@@ -79,6 +79,10 @@ export interface PriceListDTO {
    * @expandable
    */
   price_list_rules?: PriceListRuleDTO[]
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 /**
@@ -164,6 +168,10 @@ export interface CreatePriceListDTO {
    * The prices associated with the price list.
    */
   prices?: CreatePriceListPriceDTO[]
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 /**
@@ -200,6 +208,10 @@ export interface UpdatePriceListDTO {
    * The rules to be created and associated with the price list.
    */
   rules?: CreatePriceListRules
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 /**
