@@ -1497,9 +1497,9 @@ Refer to [this guide](!docs!/learn/customization/extend-features/extend-create-p
   ]}
 />
 
-Medusa's Store APIs support localization. Currently, only product-related information can be localized, such as product titles and descriptions.
+Medusa's Store APIs support localization of core and custom data models. Refer to the [Translation Module](!resources!/commerce-modules/translation) guide to learn about supported core data models, and how to [configure translations for custom data models](!resources!/commerce-modules/translation/custom-data-models).
 
-By default, the Store APIs return data in the default locale configured in your Medusa application, and falls back to the original data of a resource.
+By default, the Store APIs returns the original data without localization.
 
 </DividedMarkdownContent>
 
@@ -1512,8 +1512,8 @@ By default, the Store APIs return data in the default locale configured in your 
 You can set the locale of a request using one of the following methods:
 
 - Use the JS SDK's `setLocale` method. The JS SDK will automatically include the locale in the `x-medusa-locale` header of subsequent requests.
-- Pass the `locale` query parameter to the [List Products API route](#products_getproducts).
-- Set the `x-medusa-locale` header in the API request to the [List Products API route](#products_getproducts).
+- Pass the `locale` query parameter to the relevant API route. By default, all `/store` API routes support the `locale` query parameter.
+- Set the `x-medusa-locale` header in the API request to the relevant API route. By default, all `/store` API routes support the `x-medusa-locale` header.
 
 Locales are in the [IETF BCP 47](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1) format, such as `en-US` for American English, or `fr-FR` for French.
 

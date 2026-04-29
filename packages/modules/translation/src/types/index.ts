@@ -10,7 +10,7 @@ type StringValuedKeys<T> = {
     ? never
     : "__typename" extends K
     ? never
-    : "id" extends keyof K
+    : "id" extends K
     ? never
     : NonNullable<T[K]> extends string
     ? K

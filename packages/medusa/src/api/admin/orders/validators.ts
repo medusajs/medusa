@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { AddressPayload } from "../../utils/common-validators"
 import {
   createFindParams,
@@ -6,11 +6,12 @@ import {
   createSelectParams,
   WithAdditionalData,
 } from "../../utils/validators"
+import { isString } from "@medusajs/framework/utils"
 
 export const AdminGetOrdersOrderParams = createSelectParams().merge(
   z.object({
     version: z.preprocess((val) => {
-      if (val && typeof val === "string") {
+      if (isString(val) && val) {
         return parseInt(val)
       }
       return val
@@ -26,7 +27,12 @@ export const AdminGetOrdersOrderItemsParams = createSelectParams().merge(
   z.object({
     id: z.union([z.string(), z.array(z.string())]).optional(),
     item_id: z.union([z.string(), z.array(z.string())]).optional(),
-    version: z.number().optional(),
+    version: z.preprocess((val) => {
+      if (isString(val) && val) {
+        return parseInt(val)
+      }
+      return val
+    }, z.number().optional()),
   })
 )
 
@@ -40,10 +46,7 @@ export type AdminGetOrderShippingOptionListType = z.infer<
   typeof AdminGetOrderShippingOptionList
 >
 
-/**
- * Parameters used to filter and configure the pagination of the retrieved order.
- */
-export const AdminGetOrdersParams = createFindParams({
+const AdminGetOrdersParamsBase = createFindParams({
   limit: 15,
   offset: 0,
 }).merge(
@@ -61,7 +64,22 @@ export const AdminGetOrdersParams = createFindParams({
     q: z.string().optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
+    total: createOperatorMap().optional(),
   })
+)
+
+type AdminGetOrdersParamsInput = z.infer<typeof AdminGetOrdersParamsBase>
+
+const AdminGetOrdersParamsTransform = (v: AdminGetOrdersParamsInput) => {
+  const { total, ...rest } = v
+  return {
+    ...rest,
+    ...(total ? { summary: { totals: { current_order_total: total } } } : {}),
+  }
+}
+
+export const AdminGetOrdersParams = AdminGetOrdersParamsBase.transform(
+  AdminGetOrdersParamsTransform
 )
 
 export type AdminGetOrdersParamsType = z.infer<typeof AdminGetOrdersParams>
@@ -81,7 +99,7 @@ export const OrderCreateFulfillment = z.object({
   location_id: z.string().nullish(),
   shipping_option_id: z.string().optional(),
   no_notification: z.boolean().optional(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 export const AdminOrderCreateFulfillment = WithAdditionalData(
   OrderCreateFulfillment
@@ -98,9 +116,13 @@ export const OrderCreateShipment = z.object({
   items: z.array(Item),
   labels: z.array(Label).optional(),
   no_notification: z.boolean().optional(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 export const AdminOrderCreateShipment = WithAdditionalData(OrderCreateShipment)
+
+export const AdminMarkOrderFulfillmentAsDelivered = z.object({
+  no_notification: z.boolean().optional(),
+})
 
 export type AdminOrderCancelFulfillmentType = z.infer<
   typeof OrderCancelFulfillment
@@ -125,23 +147,13 @@ export const AdminOrderChangesParams = createSelectParams().merge(
 
 export type AdminOrderChangesType = z.infer<typeof AdminOrderChangesParams>
 
-export type AdminMarkOrderFulfillmentDeliveredType = z.infer<
-  typeof AdminMarkOrderFulfillmentDelivered
->
-
-export const AdminMarkOrderFulfillmentDelivered = z.object({})
-
 export type AdminTransferOrderType = z.infer<typeof AdminTransferOrder>
 export const AdminTransferOrder = z.object({
   customer_id: z.string(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
+  update_order_email: z.boolean().optional(),
 })
-
-export type AdminCancelOrderTransferRequestType = z.infer<
-  typeof AdminCancelOrderTransferRequest
->
-export const AdminCancelOrderTransferRequest = z.object({})
 
 export type AdminUpdateOrderType = z.infer<typeof AdminUpdateOrder>
 export const AdminUpdateOrder = z.object({
@@ -149,7 +161,7 @@ export const AdminUpdateOrder = z.object({
   shipping_address: AddressPayload.optional(),
   billing_address: AddressPayload.optional(),
   locale: z.string().nullish(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 
 export type AdminCreateOrderCreditLinesType = z.infer<
@@ -159,5 +171,5 @@ export const AdminCreateOrderCreditLines = z.object({
   amount: z.number(),
   reference: z.string(),
   reference_id: z.string(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })

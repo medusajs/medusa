@@ -38,6 +38,13 @@ vi.mock("@/components/Npm2YarnCode", () => ({
     <div data-testid="npm2yarn-code">{npmCode}</div>
   ),
 }))
+vi.mock("@/components/Npx2YarnCode", () => ({
+  Npx2YarnCode: ({ npxCode, isExecutable }: { npxCode: string; isExecutable?: boolean }) => (
+    <div data-testid="npx2yarn-code" data-is-executable={isExecutable}>
+      {npxCode}
+    </div>
+  ),
+}))
 
 import { CodeMdx } from "../../CodeMdx"
 
@@ -84,6 +91,50 @@ describe("render", () => {
     )
     expect(npm2yarnCode).toBeInTheDocument()
     expect(npm2yarnCode).toHaveTextContent(mockSource)
+  })
+
+  test("renders with npx2yarn", () => {
+    const { container } = render(
+      <CodeMdx npx2yarn={true} className="language-bash">
+        {mockSource}
+      </CodeMdx>
+    )
+    expect(container).toBeInTheDocument()
+    const npx2yarnCode = container.querySelector(
+      "[data-testid='npx2yarn-code']"
+    )
+    expect(npx2yarnCode).toBeInTheDocument()
+    expect(npx2yarnCode).toHaveTextContent(mockSource)
+    expect(npx2yarnCode).toHaveAttribute("data-is-executable", "false")
+  })
+
+  test("renders with npx2yarnExec", () => {
+    const { container } = render(
+      <CodeMdx npx2yarnExec={true} className="language-bash">
+        {mockSource}
+      </CodeMdx>
+    )
+    expect(container).toBeInTheDocument()
+    const npx2yarnCode = container.querySelector(
+      "[data-testid='npx2yarn-code']"
+    )
+    expect(npx2yarnCode).toBeInTheDocument()
+    expect(npx2yarnCode).toHaveTextContent(mockSource)
+    expect(npx2yarnCode).toHaveAttribute("data-is-executable", "true")
+  })
+
+  test("renders with npx2yarnExec taking precedence over npx2yarn", () => {
+    const { container } = render(
+      <CodeMdx npx2yarn={true} npx2yarnExec={true} className="language-bash">
+        {mockSource}
+      </CodeMdx>
+    )
+    expect(container).toBeInTheDocument()
+    const npx2yarnCode = container.querySelector(
+      "[data-testid='npx2yarn-code']"
+    )
+    expect(npx2yarnCode).toBeInTheDocument()
+    expect(npx2yarnCode).toHaveAttribute("data-is-executable", "true")
   })
 
   test("renders with mermaid", () => {

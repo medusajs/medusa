@@ -14,7 +14,7 @@
  *       type: string
  *       externalDocs:
  *         url: https://docs.medusajs.com/api/store#publishable-api-key
- *   - name: Content-Language
+ *   - name: x-medusa-locale
  *     in: header
  *     description: The locale in BCP 47 format to retrieve localized content.
  *     required: false

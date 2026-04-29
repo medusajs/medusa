@@ -1,5 +1,8 @@
 import { model } from "@medusajs/framework/utils"
 
+/**
+ * @since 2.12.4
+ */
 const Settings = model
   .define("translation_settings", {
     id: model.id({ prefix: "trset" }).primaryKey(),
@@ -15,6 +18,12 @@ const Settings = model
      * ["title", "description", "material"]
      */
     fields: model.json(),
+    /**
+     * Wether the entity translatable status is enabled.
+     * 
+     * @since 2.13.0
+     */
+    is_active: model.boolean().default(true),
   })
   .indexes([
     {

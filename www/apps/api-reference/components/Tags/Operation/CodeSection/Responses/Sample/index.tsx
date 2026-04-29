@@ -1,7 +1,8 @@
+import React from "react"
 import { CodeBlock } from "docs-ui"
 import type { OpenAPI } from "types"
 import { useEffect, useState } from "react"
-import useSchemaExample from "../../../../../../hooks/use-schema-example"
+import useSchemaExample from "@/hooks/use-schema-example"
 
 export type TagsOperationCodeSectionResponsesSampleProps = {
   response: OpenAPI.ResponseObject
@@ -27,11 +28,17 @@ const TagsOperationCodeSectionResponsesSample = ({
     setSelectedExample(examples[0])
   }, [examples])
 
+  const isEmptyResponse =
+    response?.content === undefined ||
+    Object.keys(response.content).length === 0
+
   return (
     <>
       <div className={className}>
-        {response.content && (
-          <span>Content type: {Object.keys(response.content)[0]}</span>
+        {!isEmptyResponse && (
+          <span data-testid="content-type">
+            Content type: {Object.keys(response.content)[0]}
+          </span>
         )}
         <>
           {examples.length > 1 && (
@@ -70,5 +77,5 @@ const TagsOperationCodeSectionResponsesSample = ({
 export default TagsOperationCodeSectionResponsesSample
 
 const getLanguageFromMedia = (media: string) => {
-  return media.substring(media.indexOf("/"))
+  return media.substring(media.indexOf("/") + 1)
 }

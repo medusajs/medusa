@@ -1,13 +1,12 @@
-import { StoreProductTagResponse } from "@medusajs/framework/types"
-import {
-  applyTranslations,
-  ContainerRegistrationKeys,
-  MedusaError,
-} from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { StoreProductTagResponse } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+} from "@medusajs/framework/utils"
 
 import { StoreProductTagParamsType } from "../validators"
 
@@ -17,13 +16,18 @@ export const GET = async (
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const { data } = await query.graph({
-    entity: "product_tag",
-    filters: {
-      id: req.params.id,
+  const { data } = await query.graph(
+    {
+      entity: "product_tag",
+      filters: {
+        id: req.params.id,
+      },
+      fields: req.queryConfig.fields,
     },
-    fields: req.queryConfig.fields,
-  })
+    {
+      locale: req.locale,
+    }
+  )
 
   if (!data.length) {
     throw new MedusaError(
@@ -33,12 +37,6 @@ export const GET = async (
   }
 
   const productTag = data[0]
-
-  await applyTranslations({
-    localeCode: req.locale,
-    objects: [productTag],
-    container: req.scope,
-  })
 
   res.json({ product_tag: productTag })
 }

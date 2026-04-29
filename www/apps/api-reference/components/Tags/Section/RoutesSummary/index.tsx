@@ -3,7 +3,7 @@ import { getSectionId } from "docs-utils"
 import Link from "next/link"
 import React, { useMemo } from "react"
 import { OpenAPI } from "types"
-import { compareOperations } from "../../../../utils/sort-operations-utils"
+import { compareOperations } from "@/utils/sort-operations-utils"
 
 type RoutesSummaryProps = {
   tagName: string
@@ -85,6 +85,7 @@ export const RoutesSummary = ({ tagName, paths }: RoutesSummaryProps) => {
                   <Link
                     href={`#${operationId}`}
                     className="text-medusa-contrast-fg-secondary hover:text-medusa-contrast-fg-primary w-[85%]"
+                    data-testid="link"
                   >
                     {endpointPath}
                   </Link>

@@ -1,3 +1,4 @@
+import React from "react"
 import type { OpenAPI } from "types"
 import clsx from "clsx"
 import type { TagOperationParametersProps } from ".."
@@ -27,12 +28,13 @@ const TagsOperationParametersSection = ({
       {header && (
         <h3
           className={clsx(!contentType && "my-2", contentType && "mt-2 mb-0")}
+          data-testid="header"
         >
           {header}
         </h3>
       )}
       {contentType && (
-        <span className={clsx("mb-2 inline-block")}>
+        <span className={clsx("mb-2 inline-block")} data-testid="content-type">
           Content type: {contentType}
         </span>
       )}

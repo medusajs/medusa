@@ -1,7 +1,6 @@
 import { MedusaResponse } from "@medusajs/framework/http"
 import { HttpTypes, QueryContextType } from "@medusajs/framework/types"
 import {
-  applyTranslations,
   ContainerRegistrationKeys,
   FeatureFlag,
   isPresent,
@@ -76,6 +75,7 @@ async function getProductsWithIndexEngine(
       cache: {
         enable: true,
       },
+      locale: req.locale,
     }
   )
 
@@ -87,12 +87,6 @@ async function getProductsWithIndexEngine(
   }
 
   await wrapProductsWithTaxPrices(req, products)
-
-  await applyTranslations({
-    localeCode: req.locale,
-    objects: products,
-    container: req.scope,
-  })
 
   res.json({
     products,
@@ -138,6 +132,7 @@ async function getProducts(
       cache: {
         enable: true,
       },
+      locale: req.locale,
     }
   )
 
@@ -149,12 +144,6 @@ async function getProducts(
   }
 
   await wrapProductsWithTaxPrices(req, products)
-
-  await applyTranslations({
-    localeCode: req.locale,
-    objects: products,
-    container: req.scope,
-  })
 
   res.json({
     products,

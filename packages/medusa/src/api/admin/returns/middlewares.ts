@@ -1,9 +1,11 @@
-import { MiddlewareRoute } from "@medusajs/framework/http"
 import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
+import { MiddlewareRoute } from "@medusajs/framework/http"
+import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
+import { Entities } from "./query-config"
 import {
   AdminGetOrdersOrderParams,
   AdminGetOrdersParams,
@@ -22,6 +24,15 @@ import {
 
 export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
   {
+    matcher: "/admin/returns/*",
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/returns",
     middlewares: [
@@ -29,6 +40,12 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetOrdersParams,
         QueryConfig.listTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.read,
+      },
     ],
   },
   {
@@ -51,6 +68,12 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -61,6 +84,12 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.create,
+      },
     ],
   },
   {
@@ -73,6 +102,12 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -84,6 +119,12 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["DELETE"],
@@ -93,6 +134,12 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -105,6 +152,12 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -116,6 +169,12 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["DELETE"],
@@ -125,6 +184,12 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -136,6 +201,12 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -148,11 +219,23 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/returns/:id/request",
     middlewares: [],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.delete,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -164,11 +247,23 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/returns/:id/receive",
     middlewares: [],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -179,6 +274,12 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -191,6 +292,12 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -202,6 +309,12 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["DELETE"],
@@ -211,6 +324,12 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -223,6 +342,12 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -234,6 +359,12 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["DELETE"],
@@ -243,6 +374,12 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
     ],
   },
 ]

@@ -270,6 +270,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: Filter by the category's update date.
@@ -389,6 +390,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: updated_at
  *   - name: deleted_at
  *     in: query
  *     description: Filter by the category's deletion date.
@@ -508,6 +510,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: deleted_at
  *   - name: $and
  *     in: query
  *     required: false
@@ -526,20 +529,6 @@
  *       items:
  *         type: object
  *       title: $or
- *   - name: name
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: name
- *           description: The product category's name.
- *         - type: array
- *           description: The product category's name.
- *           items:
- *             type: string
- *             title: name
- *             description: The name's details.
  *   - name: with_deleted
  *     in: query
  *     description: Whether to include deleted records in the result.
@@ -548,6 +537,20 @@
  *       type: boolean
  *       title: with_deleted
  *       description: Whether to include deleted records in the result.
+ *   - name: external_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: external_id
+ *           description: Filter by an external ID.
+ *         - type: array
+ *           description: Filter by multiple external IDs.
+ *           items:
+ *             type: string
+ *             title: external_id
+ *             description: An external ID.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

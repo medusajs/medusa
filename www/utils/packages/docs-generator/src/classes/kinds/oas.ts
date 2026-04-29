@@ -1377,7 +1377,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       }),
       this.getParameterObject({
         type: "header",
-        name: "Content-Language",
+        name: "x-medusa-locale",
         description:
           "The locale in BCP 47 format to retrieve localized content.",
         required: false,
@@ -2573,11 +2573,14 @@ class OasKindGenerator extends FunctionKindGenerator {
         false
 
       const schemaNameChanged =
-        oldSchemaObj!["x-schemaName"] !== newSchemaObj?.["x-schemaName"]
+        !!newSchemaObj?.["x-schemaName"] &&
+        oldSchemaObj!["x-schemaName"] !== newSchemaObj["x-schemaName"]
       wasUpdated = requiredChanged || schemaNameChanged
     }
     oldSchemaObj!.required = newSchemaObj?.required
-    oldSchemaObj!["x-schemaName"] = newSchemaObj?.["x-schemaName"]
+    if (newSchemaObj?.["x-schemaName"]) {
+      oldSchemaObj!["x-schemaName"] = newSchemaObj?.["x-schemaName"]
+    }
 
     return {
       schema: oldSchemaObj,

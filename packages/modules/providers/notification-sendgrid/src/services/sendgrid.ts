@@ -79,13 +79,17 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
       }
     }
 
+    const personalizations = notification.provider_data?.personalizations as
+      | sendgrid.MailDataRequired["personalizations"]
+      | undefined
+
     const message: sendgrid.MailDataRequired = {
-      to: notification.to,
       from: from,
       dynamicTemplateData: notification.data as
         | { [key: string]: any }
         | undefined,
       attachments: attachments,
+      ...(personalizations?.length ? { personalizations } : { to: notification.to }),
       ...mailContent,
     }
 

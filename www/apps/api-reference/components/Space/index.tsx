@@ -1,3 +1,5 @@
+import React from "react"
+
 type SpaceProps = {
   top?: number
   bottom?: number
@@ -16,6 +18,7 @@ const Space = ({ top = 0, bottom = 0, left = 0, right = 0 }: SpaceProps) => {
         marginLeft: `${left}px`,
         marginRight: `${right}px`,
       }}
+      data-testid="space"
     ></div>
   )
 }

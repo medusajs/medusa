@@ -1,5 +1,5 @@
 import { BaseProductTag } from "../common"
-import { AdminTranslation } from "../../translations"
+import { AdminTranslation } from "../../translation"
 
 export interface AdminProductTag extends BaseProductTag {
   /**

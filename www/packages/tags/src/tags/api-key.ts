@@ -44,6 +44,10 @@ export const apiKey = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateApiKeysWorkflow"
   },
   {
+    "title": "createDefaultsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createDefaultsWorkflow"
+  },
+  {
     "title": "apiKey",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/apiKey"
   }

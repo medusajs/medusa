@@ -5,6 +5,7 @@ sidebar_description: Delete one or more shipping options.
 tags:
   - fulfillment
   - link
+  - event bus
   - workflow
 ---
 
@@ -20,7 +21,7 @@ This workflow deletes one or more shipping options. It's used by the
 You can use this workflow within your own customizations or custom workflows, allowing you to
 delete shipping options within your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/774bbf68b2397e995bfbaf67198ab8d774373b2e/packages/core/core-flows/src/fulfillment/workflows/delete-shipping-options.ts#L27" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/fulfillment/workflows/delete-shipping-options.ts#L32" />
 
 ## Examples
 
@@ -129,8 +130,69 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"deleteShippingOptionsWorkflow","steps":[{"type":"step","name":"deleteShippingOptionsStep","description":"This step deletes one or more shipping options.","link":"../../../Steps_Fulfillment/functions/core_flows.Fulfillment.Steps_Fulfillment.deleteShippingOptionsStep/page.mdx","depth":1},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record if cascade deletion is enabled.\n\nLearn more in the [Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/link#cascade-delete-linked-records)","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.removeRemoteLinkStep/page.mdx","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"deleteShippingOptionsWorkflow","steps":[{"type":"step","name":"deleteShippingOptionsStep","description":"This step deletes one or more shipping options.","link":"../../../Steps_Fulfillment/functions/core_flows.Fulfillment.Steps_Fulfillment.deleteShippingOptionsStep/page.mdx","depth":1},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record if cascade deletion is enabled.\n\nLearn more in the [Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/link#cascade-delete-linked-records)","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.removeRemoteLinkStep/page.mdx","depth":2},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":2}]}} />
 
 ## Input
 
 <TypeList types={[{"name":"DeleteShippingOptionsWorkflowInput","type":"[DeleteShippingOptionsWorkflowInput](../../../../../types/WorkflowTypes/FulfillmentWorkflow/interfaces/types.WorkflowTypes.FulfillmentWorkflow.DeleteShippingOptionsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"The IDs of the shipping options to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteShippingOptionsWorkflow"/>
+
+## Emitted Events
+
+This section lists the events that are either triggered by the `emitEventStep` in the workflow, or by another workflow executed within this workflow.
+
+:::note
+
+The `emitEventStep` only emits the event after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+
+:::
+
+You can listen to these events in a subscriber, as explained in the [Subscribers](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers) documentation.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+Event
+</Table.HeaderCell>
+      <Table.HeaderCell>
+Description
+</Table.HeaderCell>
+      <Table.HeaderCell>
+Payload
+</Table.HeaderCell>
+      <Table.HeaderCell>
+Action
+</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+`shipping-option.deleted`
+
+<Tooltip text="This event was added in version v2.12.4"><Badge variant="blue">v2.12.4</Badge></Tooltip>
+
+</Table.Cell>
+      <Table.Cell>
+Emitted when shipping options are deleted.
+</Table.Cell>
+      <Table.Cell>
+```ts blockStyle="inline"
+{
+  id, // The ID of the shipping option
+}
+```
+</Table.Cell>
+      <Table.Cell>
+<CopyGeneratedSnippetButton tooltipText="Copy subscriber for event" type="subscriber" options={{
+        event: "shipping-option.deleted",
+        payload: `\`\`\`ts
+{
+  id, // The ID of the shipping option
+}
+\`\`\``
+        }}/>
+</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

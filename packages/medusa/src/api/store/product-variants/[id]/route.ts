@@ -4,7 +4,6 @@ import {
 } from "@medusajs/framework/http"
 import { HttpTypes, QueryContextType } from "@medusajs/framework/types"
 import {
-  applyTranslations,
   ContainerRegistrationKeys,
   MedusaError,
   QueryContext,
@@ -42,15 +41,20 @@ export const GET = async (
     context["calculated_price"] = QueryContext(req.pricingContext)
   }
 
-  const { data: variants = [] } = await query.graph({
-    entity: "variant",
-    filters: {
-      ...req.filterableFields,
-      id: req.params.id,
+  const { data: variants = [] } = await query.graph(
+    {
+      entity: "variant",
+      filters: {
+        ...req.filterableFields,
+        id: req.params.id,
+      },
+      fields: req.queryConfig.fields,
+      context,
     },
-    fields: req.queryConfig.fields,
-    context,
-  })
+    {
+      locale: req.locale,
+    }
+  )
 
   const variant = variants[0]
 
@@ -60,12 +64,6 @@ export const GET = async (
       `Product variant with id: ${req.params.id} was not found`
     )
   }
-
-  await applyTranslations({
-    localeCode: req.locale,
-    objects: [variant],
-    container: req.scope,
-  })
 
   if (withInventoryQuantity) {
     await wrapVariantsWithInventoryQuantityForSalesChannel(req, [variant])

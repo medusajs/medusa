@@ -23,7 +23,7 @@ export interface AdminCreateShippingOptionRule {
   value: string | string[]
 }
 
-export interface AdminCreateShippingOptionType {
+interface AdminCreateShippingOptionType {
   /**
    * The label of the shipping option type.
    */
@@ -36,21 +36,6 @@ export interface AdminCreateShippingOptionType {
    * The code of the shipping option type.
    */
   code: string
-}
-
-export interface AdminUpdateShippingOptionType {
-  /**
-   * The label of the shipping option type.
-   */
-  label?: string
-  /**
-   * The description of the shipping option type.
-   */
-  description?: string
-  /**
-   * The code of the shipping option type.
-   */
-  code?: string
 }
 
 interface AdminShippingOptionPriceWithRules {
@@ -153,7 +138,7 @@ interface AdminCreateShippingOptionBase {
   rules?: AdminCreateShippingOptionRule[]
   /**
    * Custom key-value pairs that can be added to the shipping option.
-   * 
+   *
    * @since 2.11.0
    */
   metadata?: Record<string, unknown>
@@ -177,6 +162,10 @@ export interface AdminCreateFlatRateShippingOption
 export interface AdminCreateCalculatedShippingOption
   extends AdminCreateShippingOptionBase {
   price_type: "calculated"
+  prices: (
+    | AdminCreateShippingOptionPriceWithCurrency
+    | AdminCreateShippingOptionPriceWithRegion
+  )[]
 }
 
 export type AdminCreateShippingOption =
@@ -287,7 +276,7 @@ export interface AdminUpdateShippingOption {
   rules?: (AdminUpdateShippingOptionRule | AdminCreateShippingOptionRule)[]
   /**
    * Custom key-value pairs that can be added to the shipping option.
-   * 
+   *
    * @since 2.11.0
    */
   metadata?: Record<string, unknown>

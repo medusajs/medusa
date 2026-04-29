@@ -3,19 +3,26 @@ import { beforeEach, describe, expect, test, vi } from "vitest"
 import { fireEvent, render } from "@testing-library/react"
 import * as AiAssistantMocks from "../../../../AiAssistant/__mocks__"
 
+// mock functions
+const mockUseSiteConfig = vi.fn()
+
+const defaultUseSiteConfigReturn = {
+  config: {
+    features: {
+      aiAssistant: true,
+    },
+  },
+}
+
 // mock components
 vi.mock("@/providers/AiAssistant", () => ({
   useAiAssistant: () => AiAssistantMocks.mockUseAiAssistant(),
 }))
-vi.mock("@/providers/SiteConfig", () => ({
-  useSiteConfig: () => ({
-    config: {
-      basePath: "http://example.com",
-    },
-  }),
-}))
 vi.mock("@kapaai/react-sdk", () => ({
   useChat: () => AiAssistantMocks.mockUseChat(),
+}))
+vi.mock("@/providers/SiteConfig", () => ({
+  useSiteConfig: () => mockUseSiteConfig(),
 }))
 vi.mock("@/components/Tooltip", () => ({
   Tooltip: ({
@@ -31,6 +38,10 @@ vi.mock("@/components/Tooltip", () => ({
   ),
 }))
 
+vi.mock("@/components/Icons/Bloom", () => ({
+  BloomIcon: () => <span data-testid="bloom-icon" />,
+}))
+
 import { CodeBlockAskAiAction } from "../../AskAi"
 
 beforeEach(() => {
@@ -42,9 +53,27 @@ beforeEach(() => {
   AiAssistantMocks.mockUseChat.mockReturnValue(
     AiAssistantMocks.defaultUseChatReturn
   )
+  mockUseSiteConfig.mockReturnValue(defaultUseSiteConfigReturn)
 })
 
 describe("rendering", () => {
+  test("does not render when ai assistant feature is disabled", () => {
+    mockUseSiteConfig.mockReturnValueOnce({
+      config: {
+        features: {
+          aiAssistant: false,
+        },
+      },
+    })
+    const { container } = render(
+      <CodeBlockAskAiAction
+        source="console.log('Hello, world!');"
+        inHeader={false}
+      />
+    )
+    expect(container).toBeEmptyDOMElement()
+  })
+
   test("render code block ask ai action in header", () => {
     const { container } = render(
       <CodeBlockAskAiAction
@@ -60,11 +89,8 @@ describe("rendering", () => {
     expect(span).toBeInTheDocument()
     expect(span).toHaveClass("p-[4.5px]")
     expect(span).toHaveClass("cursor-pointer")
-    const image = span?.querySelector("img")
-    expect(image).toBeInTheDocument()
-    expect(image).toHaveAttribute("width", "15")
-    expect(image).toHaveAttribute("height", "15")
-    expect(image).toHaveAttribute("alt", "Ask AI")
+    const icon = span?.querySelector("[data-testid='bloom-icon']")
+    expect(icon).toBeInTheDocument()
   })
 
   test("render code block ask ai action not in header", () => {

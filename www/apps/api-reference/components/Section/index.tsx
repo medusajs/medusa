@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import clsx from "clsx"
 import { useActiveOnScroll, useSidebar } from "docs-ui"
 import { useRouter } from "next/navigation"

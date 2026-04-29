@@ -226,6 +226,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: Filter by a shipping option type's update date.
@@ -345,6 +346,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: updated_at
  *   - name: deleted_at
  *     in: query
  *     description: Filter by a shipping option type's deletion date.
@@ -464,6 +466,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: deleted_at
  *   - name: $and
  *     in: query
  *     description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
@@ -484,6 +487,20 @@
  *       items:
  *         type: object
  *       title: $or
+ *   - name: description
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: description
+ *           description: Filter by a shipping option type's description.
+ *         - type: array
+ *           description: Filter by shipping option type descriptions.
+ *           items:
+ *             type: string
+ *             title: description
+ *             description: A description.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

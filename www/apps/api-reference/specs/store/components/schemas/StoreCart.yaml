@@ -208,3 +208,8 @@ properties:
     description: The cart's promotions.
     items:
       $ref: ./StoreCartPromotion.yaml
+  completed_at:
+    type: string
+    title: completed_at
+    description: The date the cart was completed.
+    format: date-time

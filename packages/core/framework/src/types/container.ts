@@ -21,6 +21,7 @@ import {
   IPricingModuleService,
   IProductModuleService,
   IPromotionModuleService,
+  IRbacModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
   ISettingsModuleService,
@@ -82,6 +83,7 @@ declare module "@medusajs/types" {
     [Modules.CACHING]: ICachingModuleService
     [Modules.INDEX]: IIndexService
     [Modules.TRANSLATION]: ITranslationModuleService
+    [Modules.RBAC]: IRbacModuleService
   }
 }
 

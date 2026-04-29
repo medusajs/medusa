@@ -1,4 +1,5 @@
 import {
+  EventPriority,
   Modules,
   OrderStatus,
   OrderWorkflowEvents,
@@ -180,6 +181,9 @@ export const convertDraftOrderWorkflow = createWorkflow(
       emitEventStep({
         eventName: OrderWorkflowEvents.PLACED,
         data: { id: updatedOrder.id },
+        options: {
+          priority: EventPriority.CRITICAL,
+        },
       })
     )
 

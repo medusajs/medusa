@@ -17,7 +17,7 @@ export const H3 = ({ className, children, ...props }: H3Props) => {
   return (
     <h3
       className={clsx(
-        "text-h3 [&_code]:!text-h3 [&_code]:!font-mono my-docs_1 text-medusa-fg-base",
+        "text-h3 [&>code]:!text-h3 [&>code]:!font-mono my-docs_1 text-medusa-fg-base",
         props.id && [
           "group/h3",
           showCollapsedNavbar && "scroll-m-docs_7",

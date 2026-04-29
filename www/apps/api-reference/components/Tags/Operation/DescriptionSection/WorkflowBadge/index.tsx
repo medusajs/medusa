@@ -1,5 +1,6 @@
+import React from "react"
 import { DecisionProcessIcon, SourceCodeLink } from "docs-ui"
-import { config } from "../../../../../config"
+import { config } from "@/config"
 
 export type TagsOperationDescriptionSectionWorkflowBadgeProps = {
   workflow: string

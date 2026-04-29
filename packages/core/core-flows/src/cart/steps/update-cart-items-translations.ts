@@ -5,7 +5,6 @@ import {
   RemoteQueryFunction,
 } from "@medusajs/framework/types"
 import {
-  applyTranslations,
   ContainerRegistrationKeys,
   deduplicate,
   FeatureFlag,
@@ -122,17 +121,16 @@ export const updateCartItemsTranslationsStep = createStep(
           })
         }
 
-        const { data: variants } = await query.graph({
-          entity: "variants",
-          filters: { id: variantIds },
-          fields: productVariantsFields,
-        })
-
-        await applyTranslations({
-          localeCode: data.locale,
-          objects: variants as Record<string, any>[],
-          container,
-        })
+        const { data: variants } = await query.graph(
+          {
+            entity: "variants",
+            filters: { id: variantIds },
+            fields: productVariantsFields,
+          },
+          {
+            locale: data.locale,
+          }
+        )
 
         const translatedItems = applyTranslationsToItems(
           items as { variant_id?: string; [key: string]: any }[],

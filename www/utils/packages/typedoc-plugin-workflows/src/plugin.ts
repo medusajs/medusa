@@ -13,7 +13,7 @@ import {
   SignatureReflection,
 } from "typedoc"
 import ts, { SyntaxKind, VariableStatement } from "typescript"
-import { WorkflowManager, WorkflowDefinition } from "@medusajs/orchestration"
+import { WorkflowManager, WorkflowDefinition } from "@medusajs/framework/orchestration"
 import Helper, { WORKFLOW_AS_STEP_SUFFIX } from "./utils/helper.js"
 import {
   findReflectionInNamespaces,
@@ -101,7 +101,8 @@ class WorkflowsPlugin {
     for (const reflection of context.project.getReflectionsByKind(
       ReflectionKind.All
     )) {
-      if (!(reflection instanceof SignatureReflection)) {
+      const isIgnored = reflection.comment?.modifierTags.has("@ignore")
+      if (!(reflection instanceof SignatureReflection) || isIgnored) {
         continue
       }
 
@@ -994,9 +995,6 @@ class WorkflowsPlugin {
       })
     }
 
-    if (workflowReflection.name === "completeCartWorkflow") {
-      console.log("here")
-    }
     const hasAcquireLockStep = checkHasAcquireLockStep(
       workflowReflection.documents || []
     )

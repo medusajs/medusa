@@ -122,31 +122,6 @@ export const updateDraftOrderShippingMethodWorkflow = createWorkflow(
       },
     })
 
-    const refetchedOrder = useRemoteQueryStep({
-      entry_point: "orders",
-      fields: draftOrderFieldsForRefreshSteps,
-      variables: { id: input.order_id },
-      list: false,
-      throw_if_key_not_found: true,
-    }).config({ name: "refetched-order-query" })
-
-    const appliedPromoCodes = transform(
-      refetchedOrder,
-      (refetchedOrder) =>
-        refetchedOrder.promotions?.map((promotion) => promotion.code) ?? []
-    )
-
-    when(
-      appliedPromoCodes,
-      (appliedPromoCodes) => appliedPromoCodes.length > 0
-    ).then(() => {
-      computeDraftOrderAdjustmentsWorkflow.runAsStep({
-        input: {
-          order_id: input.order_id,
-        },
-      })
-    })
-
     const orderChangeActionInput = transform(
       { order, orderChange, data: input.data, before, after },
       ({ order, orderChange, data, before, after }) => {
@@ -170,6 +145,31 @@ export const updateDraftOrderShippingMethodWorkflow = createWorkflow(
 
     createOrderChangeActionsWorkflow.runAsStep({
       input: [orderChangeActionInput as any],
+    })
+
+    const refetchedOrder = useRemoteQueryStep({
+      entry_point: "orders",
+      fields: draftOrderFieldsForRefreshSteps,
+      variables: { id: input.order_id },
+      list: false,
+      throw_if_key_not_found: true,
+    }).config({ name: "refetched-order-query" })
+
+    const appliedPromoCodes = transform(
+      refetchedOrder,
+      (refetchedOrder) =>
+        refetchedOrder.promotions?.map((promotion) => promotion.code) ?? []
+    )
+
+    when(
+      appliedPromoCodes,
+      (appliedPromoCodes) => appliedPromoCodes.length > 0
+    ).then(() => {
+      computeDraftOrderAdjustmentsWorkflow.runAsStep({
+        input: {
+          order_id: input.order_id,
+        },
+      })
     })
 
     releaseLockStep({

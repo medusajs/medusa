@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { applyAndAndOrOperators } from "../../utils/common-validators"
 import {
   createFindParams,
@@ -14,6 +14,7 @@ export const AdminGetCollectionsParamsFields = z.object({
   id: z.union([z.string(), z.array(z.string())]).optional(),
   title: z.union([z.string(), z.array(z.string())]).optional(),
   handle: z.union([z.string(), z.array(z.string())]).optional(),
+  external_id: z.union([z.string(), z.array(z.string())]).optional(),
   created_at: createOperatorMap().optional(),
   updated_at: createOperatorMap().optional(),
   deleted_at: createOperatorMap().optional(),
@@ -33,7 +34,8 @@ export type AdminCreateCollectionType = z.infer<typeof CreateCollection>
 export const CreateCollection = z.object({
   title: z.string(),
   handle: z.string().optional(),
-  metadata: z.record(z.unknown()).nullish(),
+  external_id: z.string().nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 
 export const AdminCreateCollection = WithAdditionalData(CreateCollection)
@@ -42,7 +44,8 @@ export type AdminUpdateCollectionType = z.infer<typeof UpdateCollection>
 export const UpdateCollection = z.object({
   title: z.string().optional(),
   handle: z.string().optional(),
-  metadata: z.record(z.unknown()).nullish(),
+  external_id: z.string().nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 
 export const AdminUpdateCollection = WithAdditionalData(UpdateCollection)

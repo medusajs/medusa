@@ -9,7 +9,7 @@ export interface CreateLocaleDTO {
 
   /**
    * The BCP 47 language tag code of the locale.
-   * 
+   *
    * @example
    * "en-US"
    */
@@ -17,7 +17,7 @@ export interface CreateLocaleDTO {
 
   /**
    * The human-readable name of the locale.
-   * 
+   *
    * @example
    * "English (United States)"
    */
@@ -30,7 +30,7 @@ export interface CreateLocaleDTO {
 export interface UpdateLocaleDataDTO {
   /**
    * The BCP 47 language tag code of the locale.
-   * 
+   *
    * @example
    * "en-US"
    */
@@ -38,7 +38,7 @@ export interface UpdateLocaleDataDTO {
 
   /**
    * The human-readable name of the locale.
-   * 
+   *
    * @example
    * "English (United States)"
    */
@@ -66,7 +66,7 @@ export interface UpsertLocaleDTO {
 
   /**
    * The BCP 47 language tag code of the locale.
-   * 
+   *
    * @example
    * "en-US"
    */
@@ -74,7 +74,7 @@ export interface UpsertLocaleDTO {
 
   /**
    * The human-readable name of the locale.
-   * 
+   *
    * @example
    * "English (United States)"
    */
@@ -87,7 +87,7 @@ export interface UpsertLocaleDTO {
 export interface CreateTranslationDTO {
   /**
    * The ID of the data model being translated.
-   * 
+   *
    * @example
    * "prod_123"
    */
@@ -95,7 +95,7 @@ export interface CreateTranslationDTO {
 
   /**
    * The name of the table that the translation belongs to.
-   * 
+   *
    * @example
    * "product"
    */
@@ -103,7 +103,7 @@ export interface CreateTranslationDTO {
 
   /**
    * The BCP 47 language tag code for this translation.
-   * 
+   *
    * @example
    * "en-US"
    */
@@ -111,7 +111,7 @@ export interface CreateTranslationDTO {
 
   /**
    * The translated fields as key-value pairs.
-   * 
+   *
    * @example
    * {
    *   "title": "Product Title",
@@ -127,7 +127,7 @@ export interface CreateTranslationDTO {
 export interface UpdateTranslationDataDTO {
   /**
    * The ID of the data model being translated.
-   * 
+   *
    * @example
    * "prod_123"
    */
@@ -135,7 +135,7 @@ export interface UpdateTranslationDataDTO {
 
   /**
    * The name of the table that the translation belongs to.
-   * 
+   *
    * @example
    * "product"
    */
@@ -143,7 +143,7 @@ export interface UpdateTranslationDataDTO {
 
   /**
    * The BCP 47 language tag code for this translation.
-   * 
+   *
    * @example
    * "en-US"
    */
@@ -151,7 +151,7 @@ export interface UpdateTranslationDataDTO {
 
   /**
    * The translated fields as key-value pairs.
-   * 
+   *
    * @example
    * {
    *   "title": "Product Title",
@@ -182,7 +182,7 @@ export interface UpsertTranslationDTO {
 
   /**
    * The ID of the data model being translated.
-   * 
+   *
    * @example
    * "prod_123"
    */
@@ -190,7 +190,7 @@ export interface UpsertTranslationDTO {
 
   /**
    * The name of the table that the translation belongs to.
-   * 
+   *
    * @example
    * "product"
    */
@@ -198,7 +198,7 @@ export interface UpsertTranslationDTO {
 
   /**
    * The BCP 47 language tag code for this translation.
-   * 
+   *
    * @example
    * "en-US"
    */
@@ -206,7 +206,7 @@ export interface UpsertTranslationDTO {
 
   /**
    * The translated fields as key-value pairs.
-   * 
+   *
    * @example
    * {
    *   "title": "Product Title",
@@ -214,4 +214,53 @@ export interface UpsertTranslationDTO {
    * }
    */
   translations?: Record<string, unknown>
+}
+
+export interface CreateTranslationSettingsDTO {
+  /**
+   * The entity type.
+   *
+   * @example
+   * "product"
+   */
+  entity_type: string
+  /**
+   * The translatable fields.
+   *
+   * @example
+   * ["title", "description", "material"]
+   */
+  fields: string[]
+  /**
+   * Whether the entity translatable status is enabled.
+   */
+  is_active?: boolean
+}
+
+/**
+ * The translation settings to be created or updated.
+ */
+export interface UpdateTranslationSettingsDTO {
+  /**
+   * The ID of the translation settings to update.
+   */
+  id: string
+  /**
+   * The entity type.
+   *
+   * @example
+   * "product"
+   */
+  entity_type?: string
+  /**
+   * The translatable fields.
+   *
+   * @example
+   * ["title", "description", "material"]
+   */
+  fields?: string[]
+  /**
+   * Whether the entity translatable status is enabled.
+   */
+  is_active?: boolean
 }

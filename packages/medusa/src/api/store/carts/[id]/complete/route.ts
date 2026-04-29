@@ -44,15 +44,17 @@ export const POST = async (
 
     // If we end up with errors outside of statusOKErrors, it means that the cart is not in a state to be
     // completed. In these cases, we return a 400.
+    const cartReq = await prepareRetrieveQuery(
+      {},
+      {
+        defaults: defaultStoreCartFields,
+      },
+      req as MedusaRequest
+    )
     const cart = await refetchCart(
       cart_id,
       req.scope,
-      prepareRetrieveQuery(
-        {},
-        {
-          defaults: defaultStoreCartFields,
-        }
-      ).remoteQueryConfig.fields
+      cartReq.remoteQueryConfig.fields
     )
 
     if (!statusOKErrors.includes(error?.type)) {

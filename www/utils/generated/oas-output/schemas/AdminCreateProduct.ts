@@ -5,7 +5,6 @@
  * x-schemaName: AdminCreateProduct
  * required:
  *   - title
- *   - options
  * properties:
  *   title:
  *     type: string

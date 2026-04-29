@@ -43,6 +43,5 @@ const step = createStep(
  */
 export const getTranslatedLineItemsStep = <T>(
   data: GetTranslatedLineItemsStepInput<T>
-): ReturnType<StepFunction<any, T[]>> => step(data) as unknown as ReturnType<
-  StepFunction<any, T[]>
->
+): ReturnType<StepFunction<any, T[]>> =>
+  step(data) as unknown as ReturnType<StepFunction<any, T[]>>

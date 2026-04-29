@@ -1,21 +1,27 @@
 import { useTranslation } from "react-i18next"
 
-import React from "react"
 import { IconButton, Input, Text } from "@medusajs/ui"
 import { UseFormReturn } from "react-hook-form"
-import { HttpTypes, AdminOrderLineItem } from "@medusajs/types"
+import {
+  HttpTypes,
+  AdminOrderLineItem,
+  AdminOrderLinePreview,
+} from "@medusajs/types"
 import { ChatBubble, DocumentText, XCircle, XMark } from "@medusajs/icons"
 
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
 import { Form } from "../../../../../components/common/form"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  Action,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { Combobox } from "../../../../../components/inputs/combobox"
 import { useReturnReasons } from "../../../../../hooks/api/return-reasons"
 
 type OrderEditItemProps = {
   item: AdminOrderLineItem
-  previewItem: AdminOrderLineItem
+  previewItem: AdminOrderLinePreview
   currencyCode: string
   index: number
 
@@ -126,14 +132,14 @@ function ReturnItem({
                     onClick: onRemove,
                     icon: <XCircle />,
                   },
-                ].filter(Boolean),
+                ].filter(Boolean) as Action[],
               },
             ]}
           />
         </div>
       </div>
       <>
-        {/*REASON*/}
+        {/* REASON*/}
         {showReturnReason && (
           <div className="grid grid-cols-1 gap-2 p-3 md:grid-cols-2">
             <div>
@@ -187,7 +193,7 @@ function ReturnItem({
           </div>
         )}
 
-        {/*NOTE*/}
+        {/* NOTE*/}
         {showNote && (
           <div className="grid grid-cols-1 gap-2 p-3 md:grid-cols-2">
             <div>

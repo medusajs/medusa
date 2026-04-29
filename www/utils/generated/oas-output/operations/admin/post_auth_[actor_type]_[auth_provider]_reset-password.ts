@@ -28,9 +28,17 @@
  *     application/json:
  *       schema:
  *         type: object
- *         title: identifier
- *         description: The user's identifier for the selected auth provider. For example, for the `emailpass` auth provider, the value is the user's email.
- *         example: "admin@medusa-test.com"
+ *         description: The input data necessary to generate a reset password token.
+ *         required:
+ *           - identifier
+ *         properties:
+ *           identifier:
+ *             type: string
+ *             description: The identifier of the admin user. For example, their email address.
+ *             example: "admin@medusa-test.com"
+ *           metadata:
+ *             type: object
+ *             description: Optional metadata to include with the reset password token generation request.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK
@@ -89,6 +97,7 @@
  *         entity_id, // The identifier of the user or customer. For example, an email address.
  *         actor_type, // The type of actor. For example, "customer", "user", or custom.
  *         token, // The generated token.
+ *         metadata, // Optional custom metadata passed from the request.
  *       }
  *       ```
  *     description: |-

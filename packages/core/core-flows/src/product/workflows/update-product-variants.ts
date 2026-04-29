@@ -13,7 +13,10 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep } from "../../common"
 import { updatePriceSetsStep } from "../../pricing"
-import { updateProductVariantsStep } from "../steps"
+import {
+  dismissProductVariantsInventoryStep,
+  updateProductVariantsStep,
+} from "../steps"
 import { getVariantPricingLinkStep } from "../steps/get-variant-pricing-link"
 
 /**
@@ -57,12 +60,12 @@ export const updateProductVariantsWorkflowId = "update-product-variants"
  * allows you to update custom data models linked to the product variants.
  *
  * You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around product-variant update.
- * 
+ *
  * :::note
- * 
- * Learn more about adding rules to the product variant's prices in the Pricing Module's 
+ *
+ * Learn more about adding rules to the product variant's prices in the Pricing Module's
  * [Price Rules](https://docs.medusajs.com/resources/commerce-modules/pricing/price-rules) documentation.
- * 
+ *
  * :::
  *
  * @example
@@ -150,6 +153,32 @@ export const updateProductVariantsWorkflow = createWorkflow(
     })
 
     const updatedVariants = updateProductVariantsStep(updateWithoutPrices)
+
+    const variantsToDismissInventory = transform(
+      { input, updatedVariants },
+      (data) => {
+        const variantIds: string[] = []
+
+        if ("product_variants" in data.input) {
+          for (const variant of data.input.product_variants) {
+            if (variant.id && variant.manage_inventory === false) {
+              variantIds.push(variant.id)
+            }
+          }
+        } else if (
+          data.input.update &&
+          data.input.update?.manage_inventory === false
+        ) {
+          variantIds.push(...data.updatedVariants.map((v) => v.id))
+        }
+
+        return variantIds
+      }
+    )
+
+    dismissProductVariantsInventoryStep({
+      variantIds: variantsToDismissInventory,
+    })
 
     // We don't want to do any pricing updates if the prices didn't change
     const variantIds = transform({ input, updatedVariants }, (data) => {

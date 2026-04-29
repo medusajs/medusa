@@ -7,5 +7,8 @@
   "exclude": [
     "../../../../packages/modules/pricing/dist", 
     "../../../../packages/modules/pricing/node_modules"
-  ]
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../packages/modules/pricing/src"
+  }
 }

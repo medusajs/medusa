@@ -1,0 +1,17 @@
+If you install the Next.js Starter Storefront with Node v25+, you may encounter the following error when starting the storefront:
+
+```bash
+[TypeError: localStorage.getItem is not a function]
+```
+
+### Why this Error Occurred
+
+This error occurs because the Next.js Starter Storefront uses Next.js v15.3.8, which doesn't yet support Node v25+.
+
+The error is related to changes in Node v25+ that affect how certain web APIs, like `localStorage`, are handled in server-side environments.
+
+---
+
+### How to Fix it
+
+Our team is actively working on updating the Next.js Starter Storefront to support Node v25+. In the meantime, you can resolve this error by downgrading your Node.js version to v24 LTS or lower.

@@ -1,12 +1,9 @@
-import { HttpTypes } from "@medusajs/framework/types"
-import {
-  applyTranslations,
-  ContainerRegistrationKeys,
-} from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { HttpTypes } from "@medusajs/framework/types"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.StoreProductTagListParams>,
@@ -14,18 +11,17 @@ export const GET = async (
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const { data: product_tags, metadata } = await query.graph({
-    entity: "product_tag",
-    filters: req.filterableFields,
-    pagination: req.queryConfig.pagination,
-    fields: req.queryConfig.fields,
-  })
-
-  await applyTranslations({
-    localeCode: req.locale,
-    objects: product_tags,
-    container: req.scope,
-  })
+  const { data: product_tags, metadata } = await query.graph(
+    {
+      entity: "product_tag",
+      filters: req.filterableFields,
+      pagination: req.queryConfig.pagination,
+      fields: req.queryConfig.fields,
+    },
+    {
+      locale: req.locale,
+    }
+  )
 
   res.json({
     product_tags,

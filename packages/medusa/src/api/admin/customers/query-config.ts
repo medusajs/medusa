@@ -1,3 +1,8 @@
+export enum Entities {
+  customer = "customer",
+  customer_address = "customer_address",
+}
+
 export const defaultAdminCustomerFields = [
   "id",
   "company_name",
@@ -34,11 +39,13 @@ export const retrieveTransformQueryConfig = {
   defaults: defaultAdminCustomerFields,
   allowed,
   isList: false,
+  entity: Entities.customer,
 }
 
 export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,
+  entity: Entities.customer,
 }
 
 export const defaultAdminCustomerAddressFields = [
@@ -62,9 +69,11 @@ export const defaultAdminCustomerAddressFields = [
 export const retrieveAddressTransformQueryConfig = {
   defaults: defaultAdminCustomerAddressFields,
   isList: false,
+  entity: Entities.customer_address,
 }
 
 export const listAddressesTransformQueryConfig = {
   ...retrieveAddressTransformQueryConfig,
   isList: true,
+  entity: Entities.customer_address,
 }

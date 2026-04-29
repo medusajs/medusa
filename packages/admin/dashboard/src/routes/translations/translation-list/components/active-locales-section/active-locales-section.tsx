@@ -1,17 +1,10 @@
-import { PencilSquare, Language } from "@medusajs/icons"
-import {
-  Container,
-  Heading,
-  IconButton,
-  InlineTip,
-  Text,
-  Tooltip,
-} from "@medusajs/ui"
+import { Language } from "@medusajs/icons"
+import { HttpTypes } from "@medusajs/types"
+import { Container, Heading, Text, Tooltip } from "@medusajs/ui"
+import { useCallback, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { IconAvatar } from "../../../../../components/common/icon-avatar"
-import { HttpTypes } from "@medusajs/types"
-import { useCallback, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { LinkButton } from "../../../../../components/common/link-button"
 
 type ActiveLocalesSectionProps = {
   locales: HttpTypes.AdminLocale[]
@@ -21,12 +14,7 @@ export const ActiveLocalesSection = ({
   locales,
 }: ActiveLocalesSectionProps) => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const [isHovered, setIsHovered] = useState(false)
-
-  const handleManageLocales = useCallback(() => {
-    navigate("/settings/translations/add-locales")
-  }, [navigate])
 
   const renderLocales = useCallback(() => {
     const maxLocalesToDetail = 2
@@ -46,18 +34,26 @@ export const ActiveLocalesSection = ({
     <Container className="flex flex-col p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("translations.activeLocales.heading")}</Heading>
-        <IconButton variant="transparent" onClick={handleManageLocales}>
-          <PencilSquare></PencilSquare>
-        </IconButton>
+        <LinkButton
+          variant="interactive"
+          className="text-ui-fg-subtle hover:text-ui-fg-subtle-hover"
+          to="/settings/translations/add-locales"
+        >
+          {t("translations.activeLocales.noLocalesTipConfigureAction")}
+        </LinkButton>
       </div>
-      <div className="px-1 pb-1">
-        {hasLocales ? (
+      {hasLocales && (
+        <div className="px-1 pb-1">
           <Tooltip
             open={isHovered}
             content={
               <div className="flex flex-col gap-y-1 p-1">
                 {locales.map((locale) => (
-                  <Text key={locale.code} size="small" weight="plus">
+                  <Text
+                    key={locale.code}
+                    size="base"
+                    className="text-ui-fg-subtle"
+                  >
                     {locale.name}
                   </Text>
                 ))}
@@ -82,12 +78,8 @@ export const ActiveLocalesSection = ({
               </div>
             </Container>
           </Tooltip>
-        ) : (
-          <InlineTip label="Tip">
-            {t("translations.activeLocales.noLocalesTip")}
-          </InlineTip>
-        )}
-      </div>
+        </div>
+      )}
     </Container>
   )
 }

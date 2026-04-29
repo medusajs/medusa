@@ -242,13 +242,13 @@
  *   discount_total:
  *     type: number
  *     title: discount_total
- *     description: The total amount of discounts applied to the shipping method, including the tax portion of discounts. This field is only available if you expand the `shipping_methods.*` relation. Learn more in the [Cart
- *       Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals) guide.
+ *     description: The total amount of discounts applied to the shipping method, including the tax portion of discounts. This field is only available if you expand the `shipping_methods.*` relation. Learn
+ *       more in the [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals) guide.
  *   discount_tax_total:
  *     type: number
  *     title: discount_tax_total
- *     description: The total amount of discounts applied to the shipping method's tax. Represents the tax portion of discounts. This field is only available if you expand the `shipping_methods.*` relation. Learn more in the [Cart
- *       Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals) guide.
+ *     description: The total amount of discounts applied to the shipping method's tax. Represents the tax portion of discounts. This field is only available if you expand the `shipping_methods.*` relation.
+ *       Learn more in the [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals) guide.
  * 
 */
 

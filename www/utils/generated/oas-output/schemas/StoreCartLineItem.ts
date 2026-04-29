@@ -339,8 +339,8 @@
  *   discount_tax_total:
  *     type: number
  *     title: discount_tax_total
- *     description: The total amount of discounts applied to the line item's tax. Represents the tax portion of discounts. This field is only available if you expand the `items.*` relation. Learn more in the [Cart
- *       Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-cart-item-totals) guide.
+ *     description: The total amount of discounts applied to the line item's tax. Represents the tax portion of discounts. This field is only available if you expand the `items.*` relation. Learn more in the
+ *       [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-cart-item-totals) guide.
  * 
 */
 

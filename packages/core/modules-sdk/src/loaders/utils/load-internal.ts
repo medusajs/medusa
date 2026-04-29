@@ -45,6 +45,15 @@ type ModuleResource = {
   normalizedPath: string
 }
 
+type LoadInternalArgs = {
+  container: MedusaContainer
+  resolution: ModuleResolution
+  logger: Logger
+  migrationOnly?: boolean
+  schemaOnly?: boolean
+  loaderOnly?: boolean
+}
+
 type MigrationFunction = (
   options: LoaderOptions<any>,
   moduleDeclaration?: InternalModuleDeclaration
@@ -115,16 +124,10 @@ export async function resolveModuleExports({
 }
 
 async function loadInternalProvider(
-  args: {
-    container: MedusaContainer
-    resolution: ModuleResolution
-    logger: Logger
-    migrationOnly?: boolean
-    loaderOnly?: boolean
-  },
+  args: LoadInternalArgs,
   providers: ModuleProvider[]
 ): Promise<{ error?: Error } | void> {
-  const { container, resolution, logger, migrationOnly } = args
+  const { container, resolution, logger, migrationOnly, schemaOnly } = args
 
   const errors: { error?: Error }[] = []
   for (const provider of providers) {
@@ -154,6 +157,7 @@ async function loadInternalProvider(
       },
       logger,
       migrationOnly,
+      schemaOnly,
       loadingProviders: true,
     })
 
@@ -181,6 +185,7 @@ export async function loadInternalModule(args: {
   migrationOnly?: boolean
   loaderOnly?: boolean
   loadingProviders?: boolean
+  schemaOnly?: boolean
 }): Promise<{ error?: Error } | void> {
   const {
     container,
@@ -189,6 +194,7 @@ export async function loadInternalModule(args: {
     migrationOnly,
     loaderOnly,
     loadingProviders,
+    schemaOnly,
   } = args
 
   const keyName = !loaderOnly
@@ -283,7 +289,10 @@ export async function loadInternalModule(args: {
     )?.options
   }
 
-  if (migrationOnly && !loadingProviders) {
+  // Partial module load: register only __joinerConfig
+  // - migrationOnly: needed for migration planning + loader execution
+  // - schemaOnly: needed for GraphQL schema + type generation
+  if ((schemaOnly || migrationOnly) && !loadingProviders) {
     const moduleService_ =
       moduleResources.moduleService ?? loadedModule_.service
 
@@ -296,6 +305,12 @@ export async function loadInternalModule(args: {
       [keyName]: asValue(moduleService),
     })
 
+    return
+  }
+
+  if (schemaOnly) {
+    // in schema only mode, we only need to register the service __joinerConfig function to be able to resolve it later
+    // For providers in schema-only mode, skip without registration
     return
   }
 

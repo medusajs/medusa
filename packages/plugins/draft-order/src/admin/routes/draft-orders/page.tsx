@@ -18,6 +18,7 @@ import { useSalesChannels } from "../../hooks/api/sales-channels"
 import { useDataTableDateFilters } from "../../hooks/common/use-data-table-date-filters"
 import { useQueryParams } from "../../hooks/common/use-query-params"
 import { getFullDate } from "../../lib/utils/date-utils"
+import { useTranslation } from "react-i18next"
 
 const PAGE_SIZE = 20
 
@@ -26,6 +27,7 @@ export const handle = {
 }
 
 const List = () => {
+  const { t } = useTranslation()
   const queryParams = useDraftOrderTableQuery({
     pageSize: PAGE_SIZE,
   })
@@ -60,20 +62,20 @@ const List = () => {
           isLoading={isPending}
           pageSize={PAGE_SIZE}
           rowCount={count}
-          heading="Draft Orders"
+          heading={t("draftOrders.domain")}
           action={{
-            label: "Create",
+            label: t("actions.create"),
             to: "create",
           }}
           rowHref={(row) => `${row.id}`}
           emptyState={{
             empty: {
-              heading: "No draft orders found",
-              description: "Create a new draft order to get started.",
+              heading: t("draftOrders.list.noRecordsMessage"),
+              description: t("draftOrders.list.description"),
             },
             filtered: {
-              heading: "No results found",
-              description: "No draft orders match your filter criteria.",
+              heading: t("draftOrders.list.filtered.heading"),
+              description: t("draftOrders.list.filtered.description"),
             },
           }}
         />

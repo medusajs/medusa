@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import {
   createFindParams,
   createOperatorMap,
@@ -13,6 +13,7 @@ export const StoreGetCollectionsParamsFields = z.object({
   id: z.union([z.string(), z.array(z.string())]).optional(),
   title: z.union([z.string(), z.array(z.string())]).optional(),
   handle: z.union([z.string(), z.array(z.string())]).optional(),
+  external_id: z.union([z.string(), z.array(z.string())]).optional(),
   created_at: createOperatorMap().optional(),
   updated_at: createOperatorMap().optional(),
 })

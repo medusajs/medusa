@@ -66,6 +66,10 @@ const modules = {
     resolve: "@medusajs/index",
     disable: process.env.ENABLE_INDEX_MODULE !== "true",
   },
+  [Modules.RBAC]: {
+    resolve: "@medusajs/rbac",
+    disable: process.env.MEDUSA_FF_RBAC !== "true",
+  },
 }
 
 if (process.env.MEDUSA_FF_TRANSLATION === "true") {
@@ -86,6 +90,13 @@ module.exports = defineConfig({
   featureFlags: {
     index_engine: process.env.ENABLE_INDEX_MODULE === "true",
     translation: process.env.MEDUSA_FF_TRANSLATION === "true",
+    rbac: process.env.MEDUSA_FF_RBAC === "true",
   },
   modules,
+  plugins: [
+    {
+      resolve: "@medusajs/loyalty-plugin",
+      options: {},
+    },
+  ],
 })

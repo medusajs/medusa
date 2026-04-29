@@ -1,3 +1,4 @@
+import type { ProjectConfigOptions } from "@medusajs/framework/types"
 import {
   AuthWorkflowEvents,
   generateJwtToken,
@@ -9,7 +10,6 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep, useRemoteQueryStep } from "../../common"
-import type { ProjectConfigOptions } from "@medusajs/framework/types"
 
 /**
  * This workflow generates a reset password token for a user. It's used by the
@@ -48,6 +48,7 @@ export const generateResetPasswordTokenWorkflow = createWorkflow(
     provider: string
     secret: ProjectConfigOptions["http"]["jwtSecret"]
     jwtOptions?: ProjectConfigOptions["http"]["jwtOptions"]
+    metadata?: Record<string, unknown>
   }) => {
     const providerIdentities = useRemoteQueryStep({
       entry_point: "provider_identity",
@@ -95,6 +96,7 @@ export const generateResetPasswordTokenWorkflow = createWorkflow(
         entity_id: input.entityId,
         actor_type: input.actorType,
         token,
+        metadata: input.metadata ?? {},
       },
     })
 

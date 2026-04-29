@@ -4,8 +4,9 @@ import Product from "./product"
 const ProductCollection = model
   .define("ProductCollection", {
     id: model.id({ prefix: "pcol" }).primaryKey(),
-    title: model.text().searchable(),
+    title: model.text().searchable().translatable(),
     handle: model.text(),
+    external_id: model.text().nullable(),
     metadata: model.json().nullable(),
     products: model.hasMany(() => Product, {
       mappedBy: "collection",

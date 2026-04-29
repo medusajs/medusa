@@ -35,6 +35,7 @@ import {
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 import { computeAdjustmentsForPreviewWorkflow } from "../compute-adjustments-for-preview"
 import { refreshExchangeShippingWorkflow } from "./refresh-shipping"
+import { fieldsToComputeAdjustmentsForPreview } from "../order-edit/utils/fields"
 
 /**
  * The data to validate that items can be returned as part of an exchange.
@@ -178,14 +179,12 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: [
-        "id",
+        ...fieldsToComputeAdjustmentsForPreview,
+        "canceled_at",
         "status",
-        "currency_code",
-        "items.*",
         "items.variant.manage_inventory",
         "items.variant.inventory_items.inventory_item_id",
         "items.variant.inventory_items.inventory.location_levels.location_id",
-        "promotions.*",
       ],
       variables: { id: orderExchange.order_id },
       list: false,

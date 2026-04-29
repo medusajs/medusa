@@ -13,6 +13,7 @@ import { useUpdateProductOption } from "../../../../../hooks/api/products"
 
 type EditProductOptionFormProps = {
   option: HttpTypes.AdminProductOption
+  productId: string
 }
 
 const CreateProductOptionSchema = z.object({
@@ -22,6 +23,7 @@ const CreateProductOptionSchema = z.object({
 
 export const CreateProductOptionForm = ({
   option,
+  productId,
 }: EditProductOptionFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
@@ -29,13 +31,13 @@ export const CreateProductOptionForm = ({
   const form = useForm<z.infer<typeof CreateProductOptionSchema>>({
     defaultValues: {
       title: option.title,
-      values: option.values.map((v: any) => v.value),
+      values: option.values?.map((v: any) => v.value),
     },
     resolver: zodResolver(CreateProductOptionSchema),
   })
 
   const { mutateAsync, isPending } = useUpdateProductOption(
-    option.product_id,
+    productId,
     option.id
   )
 

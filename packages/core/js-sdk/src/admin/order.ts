@@ -7,8 +7,8 @@ import {
   SelectParams,
 } from "@medusajs/types"
 
-import { Client } from "../client"
-import { ClientHeaders } from "../types"
+import { Client } from "../client.js"
+import { ClientHeaders } from "../types.js"
 
 export class Order {
   /**
@@ -475,6 +475,7 @@ export class Order {
    *
    * @param id - The order's ID.
    * @param fulfillmentId - The fulfillment's ID.
+   * @param body - The delivery options.
    * @param query - Configure the fields to retrieve in the order.
    * @param headers - Headers to pass in the request
    * @returns The order's details.
@@ -491,6 +492,7 @@ export class Order {
   async markAsDelivered(
     id: string,
     fulfillmentId: string,
+    body?: HttpTypes.AdminMarkOrderFulfillmentAsDelivered,
     query?: SelectParams,
     headers?: ClientHeaders
   ) {
@@ -499,6 +501,7 @@ export class Order {
       {
         method: "POST",
         headers,
+        body,
         query,
       }
     )

@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { createSelectParams } from "../../utils/validators"
 
 export type AdminGetPaymentCollectionParamsType = z.infer<
@@ -24,3 +24,11 @@ export const AdminMarkPaymentCollectionPaid = z
     order_id: z.string(),
   })
   .strict()
+
+export type AdminInitializePaymentSessionType = z.infer<
+  typeof AdminInitializePaymentSession
+>
+export const AdminInitializePaymentSession = z.strictObject({
+  provider_id: z.string(),
+  data: z.record(z.string(), z.unknown()).optional(),
+})

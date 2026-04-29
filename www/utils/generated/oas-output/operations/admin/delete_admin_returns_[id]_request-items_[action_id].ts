@@ -437,6 +437,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: updated_at
  *   - name: limit
  *     in: query
  *     description: Limit the number of items returned in the list.
@@ -706,6 +707,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: created_at
  * security:
  *   - api_token: []
  *   - cookie_auth: []

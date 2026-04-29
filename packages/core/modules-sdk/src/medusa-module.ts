@@ -90,6 +90,8 @@ export type LinkModuleBootstrapOptions = {
   moduleExports?: ModuleExports
   injectedDependencies?: Record<string, any>
   cwd?: string
+  migrationOnly?: boolean
+  schemaOnly?: boolean
 }
 
 export type RegisterModuleJoinerConfig =
@@ -300,18 +302,20 @@ class MedusaModule {
   public static async bootstrapAll(
     modulesOptions: Omit<
       ModuleBootstrapOptions,
-      "migrationOnly" | "loaderOnly" | "workerMode"
+      "migrationOnly" | "loaderOnly" | "workerMode" | "schemaOnly"
     >[],
     {
       migrationOnly,
       loaderOnly,
       workerMode,
+      schemaOnly,
       cwd,
     }: {
       migrationOnly?: boolean
       loaderOnly?: boolean
       workerMode?: ModuleBootstrapOptions["workerMode"]
       cwd?: string
+      schemaOnly?: boolean
     }
   ): Promise<
     {
@@ -323,6 +327,7 @@ class MedusaModule {
       loaderOnly,
       workerMode,
       cwd,
+      schemaOnly,
     })
   }
 
@@ -391,18 +396,20 @@ class MedusaModule {
   protected static async bootstrap_<T>(
     modulesOptions: Omit<
       ModuleBootstrapOptions,
-      "migrationOnly" | "loaderOnly" | "workerMode" | "cwd"
+      "migrationOnly" | "loaderOnly" | "workerMode" | "cwd" | "schemaOnly"
     >[],
     {
       migrationOnly,
       loaderOnly,
       workerMode,
       cwd = process.cwd(),
+      schemaOnly,
     }: {
       migrationOnly?: boolean
       loaderOnly?: boolean
       workerMode?: "shared" | "worker" | "server"
       cwd?: string
+      schemaOnly?: boolean
     }
   ): Promise<
     {
@@ -507,6 +514,7 @@ class MedusaModule {
             moduleResolutions,
             logger: logger_,
             migrationOnly,
+            schemaOnly,
             loaderOnly,
           })
         } catch (err) {
@@ -652,6 +660,8 @@ class MedusaModule {
     moduleExports,
     injectedDependencies,
     cwd,
+    migrationOnly,
+    schemaOnly,
   }: LinkModuleBootstrapOptions): Promise<{
     [key: string]: unknown
   }> {
@@ -720,6 +730,8 @@ class MedusaModule {
       await moduleLoader({
         container,
         moduleResolutions,
+        migrationOnly,
+        schemaOnly,
         logger: logger_,
       })
     } catch (err) {

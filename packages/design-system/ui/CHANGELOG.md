@@ -1,5 +1,99 @@
 # @medusajs/ui
 
+## 4.1.8
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.14.1
+
+## 4.1.7
+
+### Patch Changes
+
+- Updated dependencies [[`9757a6a8d19b3e819c43ae5a29f35c65fdce9c34`](https://github.com/medusajs/medusa/commit/9757a6a8d19b3e819c43ae5a29f35c65fdce9c34)]:
+  - @medusajs/icons@2.14.0
+
+## 4.1.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.13.6
+
+## 4.1.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.13.5
+
+## 4.1.4
+
+### Patch Changes
+
+- [#14849](https://github.com/medusajs/medusa/pull/14849) [`4efa4a6d8f10d1864156b575c7d867048deb6e93`](https://github.com/medusajs/medusa/commit/4efa4a6d8f10d1864156b575c7d867048deb6e93) Thanks [@fPolic](https://github.com/fPolic)! - fix(ui): propagate data table scroll
+
+- Updated dependencies []:
+  - @medusajs/icons@2.13.4
+
+## 4.1.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.13.3
+
+## 4.1.2
+
+### Patch Changes
+
+- [#14160](https://github.com/medusajs/medusa/pull/14160) [`63e50fd6a4430dbb7737d1223818f8d27bb3d53b`](https://github.com/medusajs/medusa/commit/63e50fd6a4430dbb7737d1223818f8d27bb3d53b) Thanks [@adevinwild](https://github.com/adevinwild)! - fix(ui): stale filters when selecting a view (VIEW_CONFIUGRATIONS_FF)
+
+- Updated dependencies [[`873571a7c9471a28732ac7fad70ff66c28571a0e`](https://github.com/medusajs/medusa/commit/873571a7c9471a28732ac7fad70ff66c28571a0e)]:
+  - @medusajs/icons@2.13.2
+
+## 4.1.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.13.1
+
+## 4.1.0
+
+### Minor Changes
+
+- [`a31e72c31c5235240cead2d04e39e5927688eec7`](https://github.com/medusajs/medusa/commit/a31e72c31c5235240cead2d04e39e5927688eec7) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Minor bump
+
+### Patch Changes
+
+- Updated dependencies [[`a31e72c31c5235240cead2d04e39e5927688eec7`](https://github.com/medusajs/medusa/commit/a31e72c31c5235240cead2d04e39e5927688eec7)]:
+  - @medusajs/icons@2.13.0
+
+## 4.0.34
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.12.6
+
+## 4.0.33
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.12.5
+
+## 4.0.32
+
+### Patch Changes
+
+- [#14464](https://github.com/medusajs/medusa/pull/14464) [`d54589751c7f929c173c500344ce5689b8a5dc15`](https://github.com/medusajs/medusa/commit/d54589751c7f929c173c500344ce5689b8a5dc15) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(translation): Improve translation alert in empty languages state
+
+- Updated dependencies []:
+  - @medusajs/icons@2.12.4
+
 ## 4.0.31
 
 ### Patch Changes

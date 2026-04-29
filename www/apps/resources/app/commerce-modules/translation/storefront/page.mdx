@@ -47,7 +47,7 @@ You must pass a publishable API key in the request header to store API routes. L
 
 ## Retrieve Translations for Resources
 
-Currently, you can retrieve translations using the [Store API routes](!api!/store) for product-related resources, such as products, product variants, and categories. Future releases will expand translation support to additional resources.
+You can retrieve translations using the [Store API routes](!api!/store) for [supported](../page.mdx#supported-module-translations) and [custom](../custom-data-models/page.mdx) data models. Future releases will expand translation support to additional resources.
 
 Medusa determines the locale for the request in the following order of priority:
 
@@ -56,7 +56,7 @@ Medusa determines the locale for the request in the following order of priority:
 
 If translations aren't available for the selected locale, or no locale is selected, the original content stored in the resource's data model is returned.
 
-For example:
+For example, to retrieve products with translations in French (France):
 
 ```bash
 curl "http://localhost:9000/store/products?locale=fr-FR" \

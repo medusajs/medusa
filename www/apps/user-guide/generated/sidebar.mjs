@@ -392,6 +392,73 @@ export const generatedSidebars = [
         "loaded": true,
         "isPathHref": true,
         "type": "category",
+        "title": "Loyalty",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Overview",
+            "path": "/loyalty",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Gift Cards",
+            "path": "/loyalty/gift-cards",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Manage Gift Cards",
+                "path": "/loyalty/gift-cards/manage",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Gift Card Products",
+            "path": "/loyalty/gift-card-products",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Manage Gift Card Products",
+                "path": "/loyalty/gift-card-products/manage",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Store Credits",
+            "path": "/loyalty/store-credits",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Manage Store Credits",
+                "path": "/loyalty/store-credits/manage",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "category",
         "title": "Settings",
         "children": [
           {

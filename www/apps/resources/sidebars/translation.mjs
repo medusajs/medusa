@@ -24,6 +24,11 @@ export const translationSidebar = [
           },
           {
             type: "link",
+            path: "/commerce-modules/translation/custom-data-models",
+            title: "Translate Custom Models",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/translation/storefront",
             title: "Translation in Storefront",
           },

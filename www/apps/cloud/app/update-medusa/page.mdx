@@ -59,10 +59,11 @@ To update your Medusa application deployed on Cloud:
 1. Update your Medusa application locally either on the long-lived environment's branch (for example, Staging) or in a new branch that will be used to create a pull request.
     - To learn how to update your Medusa application, refer to the [Update guide](!docs!/learn/update). It includes all the details you need to update the Medusa application locally.
 2. Once you're done updating your application locally, push the changes in `package.json`, lock file (for example, `yarn.lock`), and any other affected files to the branch.
+    - If you deployed a storefront alongside your Medusa application, both the backend and storefront will be redeployed when you push changes.
     - If you're using a long-lived environment, Medusa will automatically deploy the changes to the branch's environment.
     - If you're using a new branch to create a pull request, open the pull request to the production branch. This will create a preview environment that you can use to test the update before merging it into the production branch.
 
-Then, you can access the environment's [live deployment](../deployments/page.mdx#access-live-deployment) to test the update. You can also use the [build](../logs/page.mdx#view-build-logs) and [runtime](../logs/page.mdx#view-runtime-logs) logs of the environment to debug any issues that occur during the update process or testing.
+Then, you can access the environment's [live deployment](../deployments/access/page.mdx) to test the update. You can also use the [build](../logs/page.mdx#view-build-logs) and [runtime](../logs/page.mdx#view-runtime-logs) logs of the environment to debug any issues that occur during the update process or testing.
 
 ### Push Update to Production
 

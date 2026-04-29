@@ -328,6 +328,10 @@ export const order = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateOrderShippingMethodsStep"
   },
   {
+    "title": "updateOrderShippingMethodsTranslationsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateOrderShippingMethodsTranslationsStep"
+  },
+  {
     "title": "updateOrdersStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateOrdersStep"
   },
