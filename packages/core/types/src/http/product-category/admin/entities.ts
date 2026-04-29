@@ -1,5 +1,5 @@
 import { AdminProduct } from "../../product"
-import { AdminTranslation } from "../../translations"
+import { AdminTranslation } from "../../translation"
 import { BaseProductCategory } from "../common"
 
 export interface AdminProductCategory

@@ -7,4 +7,4 @@ export type StoreGetGiftCardsParamsType = z.infer<
 export const StoreGetGiftCardParams = createSelectParams();
 
 export type StoreRedeemGiftCardType = z.infer<typeof StoreRedeemGiftCard>;
-export const StoreRedeemGiftCard = z.object({}).strict();
+export const StoreRedeemGiftCard = z.strictObject({});

@@ -1,15 +1,13 @@
 import { PencilSquare, ShoppingBag } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
 import { Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { SidebarLink } from "../../../../../components/common/sidebar-link/sidebar-link"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { ExtendedProduct } from "../../constants"
 
 type ProductShippingProfileSectionProps = {
-  product: HttpTypes.AdminProduct & {
-    shipping_profile: HttpTypes.AdminShippingProfile
-  }
+  product: ExtendedProduct
 }
 
 export const ProductShippingProfileSection = ({

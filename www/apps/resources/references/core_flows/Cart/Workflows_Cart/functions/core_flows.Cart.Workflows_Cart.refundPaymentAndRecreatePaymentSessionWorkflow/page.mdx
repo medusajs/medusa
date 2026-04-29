@@ -18,7 +18,7 @@ This documentation provides a reference to the `refundPaymentAndRecreatePaymentS
 
 This workflow refunds a payment and creates a new payment session.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/cart/workflows/refund-payment-recreate-payment-session.ts#L67" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/cart/workflows/refund-payment-recreate-payment-session.ts#L67" />
 
 ## Examples
 
@@ -39,12 +39,7 @@ export async function POST(
   const { result } = await refundPaymentAndRecreatePaymentSessionWorkflow(req
       .scope)
     .run({
-      input: {
-        "payment_collection_id": "{value}",
-        "provider_id": "{value}",
-        "payment_id": "{value}",
-        "amount": 49
-      }
+      input: {}
     })
 
   res.send(result)
@@ -68,12 +63,7 @@ export default async function handleOrderPlaced({
   const { result } = await refundPaymentAndRecreatePaymentSessionWorkflow(
       container)
     .run({
-      input: {
-        "payment_collection_id": "{value}",
-        "provider_id": "{value}",
-        "payment_id": "{value}",
-        "amount": 49
-      }
+      input: {}
     })
 
   console.log(result)
@@ -97,12 +87,7 @@ export default async function myCustomJob(
   const { result } = await refundPaymentAndRecreatePaymentSessionWorkflow(
       container)
     .run({
-      input: {
-        "payment_collection_id": "{value}",
-        "provider_id": "{value}",
-        "payment_id": "{value}",
-        "amount": 49
-      }
+      input: {}
     })
 
   console.log(result)
@@ -126,12 +111,7 @@ const myWorkflow = createWorkflow(
   () => {
     const result = refundPaymentAndRecreatePaymentSessionWorkflow
       .runAsStep({
-        input: {
-          "payment_collection_id": "{value}",
-          "provider_id": "{value}",
-          "payment_id": "{value}",
-          "amount": 49
-        }
+        input: {}
       })
   }
 )
@@ -146,7 +126,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"refundPaymentAndRecreatePaymentSessionWorkflowInput","type":"[refundPaymentAndRecreatePaymentSessionWorkflowInput](../../../../interfaces/core_flows.refundPaymentAndRecreatePaymentSessionWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to create payment sessions.","expandable":false,"children":[{"name":"payment_collection_id","type":"`string`","description":"The ID of the payment collection to create payment sessions for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"The ID of the payment provider that the payment sessions are associated with.\nThis provider is used to later process the payment sessions and their payments.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_id","type":"`string`","description":"The ID of the payment to refund.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberInput](../../../../../types/types/types.BigNumberInput/page.mdx)","description":"The amount to refund.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customer_id","type":"`string`","description":"The ID of the customer that the payment session should be associated with.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"Custom data relevant for the payment provider to process the payment session.\nLearn more in [this documentation](https://docs.medusajs.com/resources/commerce-modules/payment/payment-session#data-property).","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"Additional context that's useful for the payment provider to process the payment session.\nCurrently all of the context is calculated within the workflow.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"note","type":"`string`","description":"The note to attach to the refund.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="refundPaymentAndRecreatePaymentSessionWorkflow"/>
+<TypeList types={[{"name":"refundPaymentAndRecreatePaymentSessionWorkflowInput","type":"[refundPaymentAndRecreatePaymentSessionWorkflowInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.refundPaymentAndRecreatePaymentSessionWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"refundPaymentAndRecreatePaymentSessionWorkflowInput","type":"`object`","description":"The data to create payment sessions.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="refundPaymentAndRecreatePaymentSessionWorkflow"/>
 
 ## Output
 

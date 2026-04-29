@@ -979,13 +979,12 @@ module.exports = defineConfig({
 
 ### path
 
-The `admin.path` configuration indicates the path to the admin dashboard, which is `/app` by default. The value must start with `/` and can't end with a `/`.
+The `admin.path` configuration indicates the path to the admin dashboard, which is `/app` by default. The value must start with `/` and can't end with a `/`, except when using the root path `/`.
 
 The value cannot be one of the reserved paths:
 - `/admin`
 - `/store`
 - `/auth`
-- `/`
 
 <Note>
 

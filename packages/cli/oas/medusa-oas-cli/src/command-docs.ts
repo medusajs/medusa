@@ -74,6 +74,10 @@ export const commandOptions: Option[] = [
     "--main-file-name <mainFileName>",
     "The name of the main YAML file."
   ).default("openapi.yaml"),
+  new Option(
+    "--archive-out-file <archiveOutFile>",
+    "Path to copy the full bundled YAML to (e.g. for versioned storage). Creates intermediate directories as needed."
+  ),
 ]
 
 export function getCommand(): Command {
@@ -101,6 +105,9 @@ export async function execute(cliParams: OptionValues): Promise<void> {
   const dryRun = !!cliParams.dryRun
   const srcFile = path.resolve(cliParams.srcFile)
   const outDir = path.resolve(cliParams.outDir)
+  const archiveOutFile = cliParams.archiveOutFile
+    ? path.resolve(cliParams.archiveOutFile)
+    : undefined
 
   const configFileCustom = cliParams.config
     ? path.resolve(cliParams.config)
@@ -145,6 +152,12 @@ export async function execute(cliParams: OptionValues): Promise<void> {
   const srcFileSanitized = path.resolve(tmpDir, "tmp.oas.yaml")
   await sanitizeOAS(srcFile, srcFileSanitized, configTmpFile)
   await fixCirclularReferences(srcFileSanitized)
+
+  if (archiveOutFile && !dryRun) {
+    await mkdir(path.dirname(archiveOutFile), { recursive: true })
+    await fs.copyFile(srcFileSanitized, archiveOutFile)
+    console.log(`⚫️ Archived OAS to - ${archiveOutFile}`)
+  }
 
   if (dryRun) {
     console.log(`⚫️ Dry run - no files generated`)

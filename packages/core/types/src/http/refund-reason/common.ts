@@ -48,10 +48,6 @@ export interface BaseRefundReasonListParams extends FindParams {
    */
   id?: string | string[]
   /**
-   * Filter by parent refund reason ID(s).
-   */
-  parent_refund_reason_id?: string | OperatorMap<string | string[]>
-  /**
    * Filter by creation date.
    */
   created_at?: OperatorMap<string>

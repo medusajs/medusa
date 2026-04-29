@@ -239,6 +239,53 @@ export const sidebar = [
       },
       {
         type: "category",
+        title: "Loyalty",
+        children: [
+          {
+            type: "link",
+            title: "Overview",
+            path: "/loyalty",
+          },
+          {
+            type: "link",
+            title: "Gift Cards",
+            path: "/loyalty/gift-cards",
+            children: [
+              {
+                type: "link",
+                title: "Manage Gift Cards",
+                path: "/loyalty/gift-cards/manage",
+              },
+            ],
+          },
+          {
+            type: "link",
+            title: "Gift Card Products",
+            path: "/loyalty/gift-card-products",
+            children: [
+              {
+                type: "link",
+                title: "Manage Gift Card Products",
+                path: "/loyalty/gift-card-products/manage",
+              },
+            ],
+          },
+          {
+            type: "link",
+            title: "Store Credits",
+            path: "/loyalty/store-credits",
+            children: [
+              {
+                type: "link",
+                title: "Manage Store Credits",
+                path: "/loyalty/store-credits/manage",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "category",
         title: "Settings",
         children: [
           {

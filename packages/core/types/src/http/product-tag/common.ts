@@ -1,6 +1,9 @@
 import { OperatorMap } from "../../dal"
 import { FindParams } from "../common"
 
+/**
+ * A product tag. Tags can be applied to products to help categorize them.
+ */
 export interface BaseProductTag {
   /**
    * The tag's ID.
@@ -24,6 +27,8 @@ export interface BaseProductTag {
   deleted_at?: string | null
   /**
    * An external ID for the tag.
+   *
+   * @since 2.13.7
    */
   external_id?: string | null
   /**
@@ -32,6 +37,9 @@ export interface BaseProductTag {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The filters to apply when retrieving a list of product tags.
+ */
 export interface BaseProductTagListParams extends FindParams {
   /**
    * Query or keyword to apply on the tag's searchable fields.
@@ -47,6 +55,8 @@ export interface BaseProductTagListParams extends FindParams {
   value?: string | string[]
   /**
    * Filter by external ID(s).
+   *
+   * @since 2.13.7
    */
   external_id?: string | string[]
   /**

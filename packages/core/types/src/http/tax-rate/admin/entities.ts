@@ -15,6 +15,10 @@ export interface AdminTaxRateRule {
    * "protyp_123"
    */
   reference_id: string
+  /**
+   * The date the tax rate rule was created.
+   */
+  created_at: string
 }
 
 export interface AdminTaxRate {

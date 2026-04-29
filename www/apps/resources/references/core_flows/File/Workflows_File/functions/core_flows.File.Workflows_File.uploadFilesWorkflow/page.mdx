@@ -20,7 +20,7 @@ This workflow uploads one or more files using the installed
 You can use this workflow within your customizations or your own custom workflows, allowing you to
 upload files within your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/file/workflows/upload-files.ts#L72" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/file/workflows/upload-files.ts#L72" />
 
 ## Examples
 
@@ -153,7 +153,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"UploadFilesWorkflowInput","type":"[UploadFilesWorkflowInput](../../../../types/core_flows.UploadFilesWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to upload files.","expandable":false,"children":[{"name":"files","type":"`object`[]","description":"The files to upload.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"filename","type":"`string`","description":"The name of the file.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"mimeType","type":"`string`","description":"The MIME type of the file.","optional":false,"defaultValue":"","example":"img/jpg","expandable":false,"children":[]},{"name":"content","type":"`string`","description":"The content of the file. For images, for example,\nuse base64 string. For CSV files, use the CSV content.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"access","type":"`\"public\"` \\| `\"private\"`","description":"The access level of the file. Use `public` for the file that\ncan be accessed by anyone. For example, for images that are displayed\non the storefront. Use `private` for files that are only accessible\nby authenticated users. For example, for CSV files used to\nimport data.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="uploadFilesWorkflow"/>
+<TypeList types={[{"name":"UploadFilesWorkflowInput","type":"[UploadFilesWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.UploadFilesWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"UploadFilesWorkflowInput","type":"`object`","description":"The data to upload files.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="uploadFilesWorkflow"/>
 
 ## Output
 

@@ -19,7 +19,7 @@ This workflow deletes one or more campaigns. It's used by the
 You can use this workflow within your own customizations or custom workflows, allowing you to
 delete campaigns within your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/promotion/workflows/delete-campaigns.ts#L39" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/promotion/workflows/delete-campaigns.ts#L39" />
 
 ## Examples
 
@@ -132,7 +132,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"DeleteCampaignsWorkflowInput","type":"[DeleteCampaignsWorkflowInput](../../../../types/core_flows.DeleteCampaignsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to delete one or more campaigns.","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"The IDs of the campaigns to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteCampaignsWorkflow"/>
+<TypeList types={[{"name":"DeleteCampaignsWorkflowInput","type":"[DeleteCampaignsWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.DeleteCampaignsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeleteCampaignsWorkflowInput","type":"`object`","description":"The data to delete one or more campaigns.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteCampaignsWorkflow"/>
 
 ## Hooks
 
@@ -150,7 +150,7 @@ This step is a hook that you can inject custom functionality into.
 import { deleteCampaignsWorkflow } from "@medusajs/medusa/core-flows"
 
 deleteCampaignsWorkflow.hooks.campaignsDeleted(
-  (async ({ ids }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -160,4 +160,4 @@ deleteCampaignsWorkflow.hooks.campaignsDeleted(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Promotion.Workflows_Promotion/page.mdx#__type-2)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="campaignsDeleted"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Promotion.Workflows_Promotion/page.mdx#__type-2)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="campaignsDeleted"/>

@@ -12,7 +12,7 @@ import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
 import { refetchEntity } from "@medusajs/framework/http"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<HttpTypes.SelectParams>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetProductParams>,
   res: MedusaResponse<HttpTypes.AdminProductResponse>
 ) => {
   const selectFields = remapKeysForProduct(req.queryConfig.fields ?? [])

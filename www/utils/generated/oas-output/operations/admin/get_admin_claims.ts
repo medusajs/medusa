@@ -277,14 +277,6 @@
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
  *       title: deleted_at
- *   - name: q
- *     in: query
- *     description: The claim's q.
- *     required: false
- *     schema:
- *       type: string
- *       title: q
- *       description: The claim's q.
  *   - name: id
  *     in: query
  *     required: false

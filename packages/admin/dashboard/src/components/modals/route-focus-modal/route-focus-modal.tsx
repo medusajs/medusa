@@ -17,6 +17,7 @@ const Root = ({ prev = "..", children }: RouteFocusModalProps) => {
   const [stackedModalOpen, onStackedModalOpen] = useState(false)
 
   const to: string | Partial<Path> | number =
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     typeof prev === "number" ? prev : useStateAwareTo(prev)
 
   /**

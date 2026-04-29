@@ -66,7 +66,11 @@ export const LocationGeneralSection = ({
           <div>
             <Heading>{location.name}</Heading>
             <Text className="text-ui-fg-subtle txt-small">
-              {getFormattedAddress({ address: location.address }).join(", ")}
+              {getFormattedAddress({
+                address: location.address as
+                  | HttpTypes.AdminOrderAddress
+                  | undefined,
+              }).join(", ")}
             </Text>
           </div>
           <Actions location={location} />

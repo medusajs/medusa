@@ -1,3 +1,6 @@
+/**
+ * The data to create a collection.
+ */
 export interface AdminCreateCollection {
   /**
    * The collection's title.
@@ -9,14 +12,19 @@ export interface AdminCreateCollection {
   handle?: string
   /**
    * An external ID for the collection.
+   *
+   * @since 2.13.7
    */
   external_id?: string | null
   /**
    * Key-value pairs of custom data.
    */
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The data to update a collection.
+ */
 export interface AdminUpdateCollection {
   /**
    * The collection's title.
@@ -28,14 +36,19 @@ export interface AdminUpdateCollection {
   handle?: string
   /**
    * An external ID for the collection.
+   *
+   * @since 2.13.7
    */
   external_id?: string | null
   /**
    * Key-value pairs of custom data.
    */
-  metadata?: Record<string, any> | null
+  metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The data to update the products associated with a collection.
+ */
 export interface AdminUpdateCollectionProducts {
   /**
    * IDs of products to add to the collection.

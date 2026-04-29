@@ -196,6 +196,7 @@ async function runValidate(options: ValidateOptions): Promise<void> {
         httpTypeFile,
         hasFindParams: resolved.hasFindParams,
         hasSelectParams: resolved.hasSelectParams,
+        batchBodyArgOutputTypes: schema.batchBodyArgOutputTypes,
       })
     }
   }

@@ -1,3 +1,6 @@
+/**
+ * The data to create a product tag.
+ */
 export interface AdminCreateProductTag {
   /**
    * The tag's value.
@@ -5,6 +8,8 @@ export interface AdminCreateProductTag {
   value: string
   /**
    * An external ID for the tag.
+   *
+   * @since 2.13.7
    */
   external_id?: string | null
   /**
@@ -13,6 +18,9 @@ export interface AdminCreateProductTag {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The data to update a product tag.
+ */
 export interface AdminUpdateProductTag {
   /**
    * The tag's value.
@@ -20,6 +28,8 @@ export interface AdminUpdateProductTag {
   value?: string
   /**
    * An external ID for the tag.
+   *
+   * @since 2.13.7
    */
   external_id?: string | null
   /**

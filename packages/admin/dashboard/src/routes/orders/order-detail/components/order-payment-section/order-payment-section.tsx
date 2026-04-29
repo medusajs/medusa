@@ -1,4 +1,4 @@
-import { OrderCreditLineDTO } from "@medusajs/framework/types"
+import { OrderCreditLineDTO } from "@medusajs/types"
 import { ArrowDownRightMini, DocumentText, XCircle } from "@medusajs/icons"
 import { AdminOrder, AdminPayment, HttpTypes } from "@medusajs/types"
 import {
@@ -26,9 +26,10 @@ import { getOrderPaymentStatus } from "../../../../../lib/order-helpers"
 import { getPaymentsFromOrder } from "../../../../../lib/orders"
 import { getTotalCaptured, getTotalPending } from "../../../../../lib/payment"
 import { getLoyaltyPlugin } from "../../../../../lib/plugins"
+import { ExtendedOrder, ExtendedRefund } from "../../constants"
 
 type OrderPaymentSectionProps = {
-  order: HttpTypes.AdminOrder
+  order: ExtendedOrder
   plugins: HttpTypes.AdminPlugin[]
 }
 
@@ -41,7 +42,7 @@ export const OrderPaymentSection = ({
   const refunds = payments
     .map((payment) => payment?.refunds)
     .flat(1)
-    .filter(Boolean) as HttpTypes.AdminRefund[]
+    .filter(Boolean) as ExtendedRefund[]
 
   return (
     <Container className="divide-y divide-dashed p-0">
@@ -60,7 +61,7 @@ export const OrderPaymentSection = ({
   )
 }
 
-const Header = ({ order }: { order: HttpTypes.AdminOrder }) => {
+const Header = ({ order }: { order: ExtendedOrder }) => {
   const { t } = useTranslation()
   const { label, color } = getOrderPaymentStatus(t, order.payment_status)
 
@@ -130,7 +131,7 @@ const Payment = ({
   refunds,
   currencyCode,
 }: {
-  order: HttpTypes.AdminOrder
+  order: ExtendedOrder
   payment: HttpTypes.AdminPayment
   refunds: HttpTypes.AdminRefund[]
   currencyCode: string
@@ -183,13 +184,13 @@ const Payment = ({
 
   const [status, color] = getPaymentStatusAttributes(payment) as [
     string,
-    "green" | "orange" | "red",
+    "green" | "orange" | "red"
   ]
 
   const showCapture =
     payment.captured_at === null && payment.canceled_at === null
 
-  const totalRefunded = payment.refunds.reduce(
+  const totalRefunded = (payment.refunds ?? []).reduce(
     (acc, next) => next.amount + acc,
     0
   )
@@ -253,7 +254,7 @@ const Payment = ({
             <Text size="small" leading="compact">
               <Trans
                 i18nKey="orders.payment.isReadyToBeCaptured"
-                components={[<DisplayId id={payment.id} />]}
+                components={[<DisplayId key={payment.id} id={payment.id} />]}
               />
             </Text>
           </div>
@@ -325,7 +326,7 @@ const CreditLine = ({
           </Text>
           <Text size="small" leading="compact">
             {format(
-              new Date(creditLine.created_at as string),
+              new Date(creditLine.created_at as unknown as string),
               "dd MMM, yyyy, HH:mm:ss"
             )}
           </Text>
@@ -352,9 +353,9 @@ const PaymentBreakdown = ({
   currencyCode,
   plugins,
 }: {
-  order: HttpTypes.AdminOrder
+  order: ExtendedOrder
   payments: HttpTypes.AdminPayment[]
-  refunds: HttpTypes.AdminRefund[]
+  refunds: ExtendedRefund[]
   currencyCode: string
   plugins: HttpTypes.AdminPlugin[]
 }) => {

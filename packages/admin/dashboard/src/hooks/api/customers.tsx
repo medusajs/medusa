@@ -226,16 +226,15 @@ export const useDeleteCustomerAddress = (
 
 export const useListCustomerAddresses = (
   id: string,
-  query?: Record<string, any>,
   options?: UseQueryOptions<
-    HttpTypes.AdminCustomerResponse,
+    HttpTypes.AdminCustomerAddressListResponse,
     FetchError,
-    HttpTypes.AdminCustomerResponse,
+    HttpTypes.AdminCustomerAddressListResponse,
     QueryKey
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => sdk.admin.customer.listAddresses(id, query),
+    queryFn: () => sdk.admin.customer.listAddresses(id),
     queryKey: customerAddressesQueryKeys.list(id),
     ...options,
   })

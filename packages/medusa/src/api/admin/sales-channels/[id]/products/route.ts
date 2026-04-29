@@ -10,7 +10,7 @@ import { refetchSalesChannel } from "../../helpers"
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     HttpTypes.AdminBatchLink,
-    HttpTypes.SelectParams
+    HttpTypes.AdminGetSalesChannelParams
   >,
   res: MedusaResponse<HttpTypes.AdminSalesChannelResponse>
 ) => {

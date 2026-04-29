@@ -24,7 +24,7 @@ allows you to update custom data models linked to the fulfillment.
 
 You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around canceling a fulfillment.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/order/workflows/cancel-order-fulfillment.ts#L315" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/order/workflows/cancel-order-fulfillment.ts#L315" />
 
 ## Examples
 
@@ -153,7 +153,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"CancelOrderFulfillmentWorkflowInput","type":"[CancelOrderFulfillmentWorkflowInput](../../../../types/core_flows.CancelOrderFulfillmentWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to cancel an order's fulfillment, along with custom data that's passed to the workflow's hooks.","expandable":false,"children":[{"name":"order_id","type":"`string`","description":"The ID of the order to cancel its fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillment_id","type":"`string`","description":"The ID of the fulfillment to cancel.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"no_notification","type":"`boolean`","description":"Whether to notify the customer about the cancellation.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"canceled_by","type":"`string`","description":"The ID of the user that canceled the fulfillment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"additional_data","type":"`Record<string, unknown>`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\n\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="cancelOrderFulfillmentWorkflow"/>
+<TypeList types={[{"name":"CancelOrderFulfillmentWorkflowInput","type":"[CancelOrderFulfillmentWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.CancelOrderFulfillmentWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"order_id","type":"`string`","description":"The ID of the order to cancel its fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillment_id","type":"`string`","description":"The ID of the fulfillment to cancel.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"no_notification","type":"`boolean`","description":"Whether to notify the customer about the cancellation.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"canceled_by","type":"`string`","description":"The ID of the user that canceled the fulfillment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"additional_data","type":"`Record<string, unknown>`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\n\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="cancelOrderFulfillmentWorkflow"/>
 
 ## Hooks
 
@@ -171,7 +171,7 @@ This hook is executed after the fulfillment is canceled. You can consume this ho
 import { cancelOrderFulfillmentWorkflow } from "@medusajs/medusa/core-flows"
 
 cancelOrderFulfillmentWorkflow.hooks.orderFulfillmentCanceled(
-  (async ({ fulfillment, additional_data }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -181,7 +181,7 @@ cancelOrderFulfillmentWorkflow.hooks.orderFulfillmentCanceled(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Order.Workflows_Order/page.mdx#__type-1)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fulfillment","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"additional_data","type":"`Record<string, unknown> | undefined`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="orderFulfillmentCanceled"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Order.Workflows_Order/page.mdx#__type-1)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="orderFulfillmentCanceled"/>
 
 ## Emitted Events
 
