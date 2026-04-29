@@ -11,7 +11,27 @@ type DownloadParams = {
 export async function GET(request: Request, props: DownloadParams) {
   const params = await props.params
   const { area } = params
-  const filePath = path.join(process.cwd(), "specs", area, "openapi.full.yaml")
+  const { searchParams } = new URL(request.url)
+  const version = searchParams.get("version")
+
+  const defaultPath = path.join(
+    process.cwd(),
+    "specs",
+    area,
+    "openapi.full.yaml"
+  )
+  const versionedPath = version
+    ? path.join(
+        process.cwd(),
+        "specs",
+        "versions",
+        version,
+        area,
+        "openapi.full.yaml"
+      )
+    : null
+  const filePath =
+    versionedPath && existsSync(versionedPath) ? versionedPath : defaultPath
 
   if (!existsSync(filePath)) {
     return new NextResponse(null, {

@@ -1,5 +1,99 @@
+import sendgrid from "@sendgrid/mail"
 import { SendgridNotificationService } from "../../src/services/sendgrid"
+
+jest.mock("@sendgrid/mail", () => ({
+  __esModule: true,
+  default: {
+    setApiKey: jest.fn(),
+    send: jest.fn().mockResolvedValue([{ statusCode: 202 }, {}]),
+  },
+}))
+
+jest.mock("@medusajs/framework/utils", () => ({
+  AbstractNotificationProviderService: class {},
+  MedusaError: class MedusaError extends Error {
+    static Types = {
+      INVALID_DATA: "invalid_data",
+      UNEXPECTED_STATE: "unexpected_state",
+    }
+    type: string
+    constructor(type: string, message: string) {
+      super(message)
+      this.type = type
+    }
+  },
+}), { virtual: true })
+
+const mockSend = sendgrid.send as jest.MockedFunction<typeof sendgrid.send>
+
 jest.setTimeout(100000)
+
+describe("SendgridNotificationService - personalizations", () => {
+  let service: SendgridNotificationService
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+    service = new SendgridNotificationService(
+      { logger: console as any },
+      { api_key: "test-api-key", from: "sender@example.com" }
+    )
+  })
+
+  it("passes provider_data.personalizations directly to sendgrid and omits top-level to", async () => {
+    await service.send({
+      to: "recipient@example.com",
+      channel: "email",
+      template: "some-template",
+      provider_data: {
+        personalizations: [
+          {
+            to: [{ email: "recipient@example.com" }],
+            customArgs: { campaign_id: "abc123", source: "welcome-flow" },
+          },
+        ],
+      },
+    })
+
+    expect(mockSend).toHaveBeenCalledTimes(1)
+    const message = mockSend.mock.calls[0][0] as any
+    expect(message).not.toHaveProperty("to")
+    expect(message.personalizations).toEqual([
+      {
+        to: [{ email: "recipient@example.com" }],
+        customArgs: { campaign_id: "abc123", source: "welcome-flow" },
+      },
+    ])
+  })
+
+  it("uses top-level to and omits personalizations when provider_data.personalizations is absent", async () => {
+    await service.send({
+      to: "recipient@example.com",
+      channel: "email",
+      template: "some-template",
+    })
+
+    expect(mockSend).toHaveBeenCalledTimes(1)
+    const message = mockSend.mock.calls[0][0] as any
+    expect(message.to).toEqual("recipient@example.com")
+    expect(message).not.toHaveProperty("personalizations")
+  })
+
+  it("falls back to top-level to when provider_data.personalizations is an empty array", async () => {
+    await service.send({
+      to: "recipient@example.com",
+      channel: "email",
+      template: "some-template",
+      provider_data: {
+        personalizations: [],
+      },
+    })
+
+    expect(mockSend).toHaveBeenCalledTimes(1)
+    const message = mockSend.mock.calls[0][0] as any
+    expect(message.to).toEqual("recipient@example.com")
+    expect(message).not.toHaveProperty("personalizations")
+  })
+})
 
 // Note: This test hits the sendgrid service, and it is mainly meant to be run manually after setting all the envvars below.
 // We could also setup a sink email service to test this automatically, but it is not necessary for the time being.

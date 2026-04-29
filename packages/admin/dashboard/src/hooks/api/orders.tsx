@@ -45,7 +45,12 @@ export const useOrder = (
   id: string,
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<any, FetchError, any, QueryKey>,
+    UseQueryOptions<
+      HttpTypes.AdminOrderResponse,
+      FetchError,
+      HttpTypes.AdminOrderResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
@@ -296,11 +301,12 @@ export const useMarkOrderFulfillmentAsDelivered = (
   options?: UseMutationOptions<
     { order: HttpTypes.AdminOrder },
     FetchError,
-    void
+    HttpTypes.AdminMarkOrderFulfillmentAsDelivered
   >
 ) => {
   return useMutation({
-    mutationFn: () => sdk.admin.order.markAsDelivered(orderId, fulfillmentId),
+    mutationFn: (payload: HttpTypes.AdminMarkOrderFulfillmentAsDelivered) =>
+      sdk.admin.order.markAsDelivered(orderId, fulfillmentId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.all,

@@ -1,12 +1,12 @@
 import { clx, Textarea } from "@medusajs/ui"
 import { Popover as RadixPopover } from "radix-ui"
-import { useCallback, useEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Controller, ControllerRenderProps } from "react-hook-form"
 
 import { useCombinedRefs } from "../../../hooks/use-combined-refs"
 import { useDataGridCell, useDataGridCellError } from "../hooks"
 import { useDataGridContext } from "../context"
-import { DataGridCellProps, InputProps, DataGridCellContext } from "../types"
+import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
 type DataGridExpandableTextCellProps<TData, TValue = any> = DataGridCellProps<

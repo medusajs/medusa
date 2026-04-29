@@ -6,10 +6,7 @@ import {
 import {
   createBatchBody,
   createFindParams,
-  createSelectParams,
 } from "../../utils/validators"
-
-export const AdminGetTranslationParams = createSelectParams()
 
 export const AdminGetTranslationParamsFields = z.object({
   q: z.string().optional(),
@@ -53,9 +50,9 @@ export const AdminBatchTranslations = createBatchBody(
 )
 
 export type AdminTranslationStatisticsType = z.infer<
-  typeof AdminTranslationStatistics
+  typeof AdminTranslationStatisticsParams
 >
-export const AdminTranslationStatistics = z
+export const AdminTranslationStatisticsParams = z
   .object({
     locales: z.union([z.string(), z.array(z.string())]),
     entity_types: z.union([z.string(), z.array(z.string())]),

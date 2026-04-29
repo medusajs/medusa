@@ -1,5 +1,5 @@
 import { BaseFilterable, OperatorMap } from "../../../dal"
-import { FindParams } from "../../common"
+import { FindParams, SelectParams } from "../../common"
 
 export interface AdminTaxRateListParams
   extends FindParams,
@@ -17,22 +17,6 @@ export interface AdminTaxRateListParams
    */
   is_default?: "true" | "false"
   /**
-   * Filter by service zone ID(s) to retrieve tax rates that are associated with the service zones.
-   */
-  service_zone_id?: string
-  /**
-   * Filter by shipping profile ID(s) to retrieve tax rates that are associated with the shipping profiles.
-   */
-  shipping_profile_id?: string
-  /**
-   * Filter by tax provider ID(s) to retrieve tax rates that are associated with the providers.
-   */
-  provider_id?: string
-  /**
-   * Filter by shipping option type ID(s) to retrieve tax rates that are associated with the shipping option types.
-   */
-  shipping_option_type_id?: string
-  /**
    * Filter by the date the tax rate was created.
    */
   created_at?: OperatorMap<string>
@@ -45,3 +29,5 @@ export interface AdminTaxRateListParams
    */
   deleted_at?: OperatorMap<string>
 }
+
+export interface AdminGetTaxRateParams extends SelectParams {}

@@ -15,6 +15,10 @@
  *       type: string
  *       title: values
  *       description: An option value.
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The option's ID.
  * 
 */
 

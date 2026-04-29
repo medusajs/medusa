@@ -1,9 +1,13 @@
 import { HttpTypes } from "@medusajs/types"
 import { useProducts } from "../../../../../hooks/api/products"
 import { productColumnAdapter } from "../../../../../lib/table/entity-adapters"
-import { createTableAdapter, TableAdapter } from "../../../../../lib/table/table-adapters"
+import {
+  createTableAdapter,
+  TableAdapter,
+} from "../../../../../lib/table/table-adapters"
 import { useProductTableFilters } from "./use-product-table-filters"
 
+// eslint-disable-next-line max-len
 export function createProductTableAdapter(): TableAdapter<HttpTypes.AdminProduct> {
   return createTableAdapter<HttpTypes.AdminProduct>({
     entity: "products",
@@ -18,9 +22,10 @@ export function createProductTableAdapter(): TableAdapter<HttpTypes.AdminProduct
           is_giftcard: false, // Exclude gift cards from product list
         },
         {
-          placeholderData: (previousData, previousQuery) => {
+          placeholderData: (previousData, previousQuery: any) => {
             // Only keep placeholder data if the fields haven't changed
-            const prevFields = previousQuery?.[previousQuery.length - 1]?.query?.fields
+            const prevFields =
+              previousQuery?.[previousQuery?.length - 1]?.query?.fields
             if (prevFields && prevFields !== fields) {
               // Fields changed, don't use placeholder data
               return undefined

@@ -13,7 +13,7 @@ import {
   AdminGetTranslationsParams,
   AdminTranslationEntitiesParams,
   AdminTranslationSettingsParams,
-  AdminTranslationStatistics,
+  AdminTranslationStatisticsParams,
 } from "./validators"
 
 export const adminTranslationsRoutesMiddlewares: MiddlewareRoute[] = [
@@ -63,7 +63,7 @@ export const adminTranslationsRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["GET"],
     matcher: "/admin/translations/statistics",
-    middlewares: [validateAndTransformQuery(AdminTranslationStatistics, {})],
+    middlewares: [validateAndTransformQuery(AdminTranslationStatisticsParams, {})],
   },
   {
     method: ["GET"],

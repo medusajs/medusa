@@ -146,6 +146,14 @@ const generatedgeneratedToolsSidebarSidebar = {
               ]
             }
           ]
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "link",
+          "path": "/medusa-oas-cli",
+          "title": "medusa-oas-cli",
+          "children": []
         }
       ]
     },

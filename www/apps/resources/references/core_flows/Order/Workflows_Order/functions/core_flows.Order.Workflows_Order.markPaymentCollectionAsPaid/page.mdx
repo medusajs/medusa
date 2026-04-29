@@ -24,7 +24,7 @@ This workflow marks a payment collection for an order as paid. It's used by the
 You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
 marking a payment collection for an order as paid.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/order/workflows/mark-payment-collection-as-paid.ts#L97" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/order/workflows/mark-payment-collection-as-paid.ts#L97" />
 
 ## Examples
 
@@ -141,7 +141,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"MarkPaymentCollectionAsPaidInput","type":"[MarkPaymentCollectionAsPaidInput](../../../../types/core_flows.MarkPaymentCollectionAsPaidInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to mark a payment collection as paid.","expandable":false,"children":[{"name":"payment_collection_id","type":"`string`","description":"The ID of the payment collection to mark as paid.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"order_id","type":"`string`","description":"The ID of the order that the payment collection belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"captured_by","type":"`string`","description":"The ID of the user marking the payment collection as completed.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="markPaymentCollectionAsPaid"/>
+<TypeList types={[{"name":"MarkPaymentCollectionAsPaidInput","type":"[MarkPaymentCollectionAsPaidInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.MarkPaymentCollectionAsPaidInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"MarkPaymentCollectionAsPaidInput","type":"`object`","description":"The data to mark a payment collection as paid.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="markPaymentCollectionAsPaid"/>
 
 ## Output
 

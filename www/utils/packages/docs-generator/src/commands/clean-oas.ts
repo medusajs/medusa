@@ -39,13 +39,24 @@ type OasFileInfo = {
 export default async function () {
   const oasOutputBasePath = getOasOutputBasePath()
   const oasOperationsPath = path.join(oasOutputBasePath, "operations")
-  const apiRoutesPath = path.join(
-    getMonorepoRoot(),
-    "packages",
-    "medusa",
-    "src",
-    "api"
-  )
+  const monorepoRoot = getMonorepoRoot()
+  const apiRoutesPaths = [
+    path.join(
+      monorepoRoot,
+      "packages",
+      "medusa",
+      "src",
+      "api"
+    ),
+    path.join(
+      monorepoRoot,
+      "packages",
+      "plugins",
+      "loyalty",
+      "src",
+      "api"
+    ),
+  ]
   const areas: OasArea[] = ["admin", "store"]
   const tags: Map<OasArea, Set<string>> = new Map()
   const oasSchemaHelper = new OasSchemaHelper()
@@ -151,11 +162,20 @@ export default async function () {
           const normalizedOasPrefix = splitPath
             .map((item) => item.replace(/^\{(.+)\}$/, "[$1]"))
             .join("/")
-          const sourceFilePath = path.join(
-            apiRoutesPath,
-            normalizedOasPrefix,
-            "route.ts"
-          )
+          let sourceFilePath = ""
+
+          // Try to find the source file in both API paths
+          for (const apiPath of apiRoutesPaths) {
+            const potentialSourceFile = path.join(
+              apiPath,
+              normalizedOasPrefix,
+              "route.ts"
+            )
+            if (existsSync(potentialSourceFile)) {
+              sourceFilePath = potentialSourceFile
+              break
+            }
+          }
 
           oasFileInfos.push({
             file: oasFile,

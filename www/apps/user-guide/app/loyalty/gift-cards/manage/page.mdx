@@ -1,0 +1,98 @@
+---
+sidebar_position: 1
+sidebar_label: "Manage Gift Cards"
+tags:
+  - user guide
+  - loyalty
+products:
+  - loyalty
+---
+
+import { Prerequisites, InlineIcon } from "docs-ui"
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Gift Cards in Medusa Admin`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to create and manage gift cards in the Medusa Admin.
+
+<Prerequisites
+  items={[
+    {
+      text: "Loyalty plugin installed",
+      link: "!resources!/commerce-modules/loyalty#1-install-the-loyalty-plugin",
+    },
+  ]}
+/>
+
+## View Gift Cards
+
+To view all gift cards in your store, click on **Gift Cards** in the sidebar.
+
+The list shows each gift card's code, linked product (if any), date issued, and value. You can filter the list by date range or customer.
+
+---
+
+## Create a Gift Card
+
+To create a new gift card:
+
+1. Go to **Gift Cards** from the sidebar.
+2. Click the **Create** button at the top end of the table section.
+3. In the form that opens, fill in the following fields:
+    - **Currency**: Select the currency for this gift card.
+    - **Value**: Enter the initial value of the gift card.
+    - **Expires at**: Optionally set an expiration date and time.
+    - **Note**: Optionally add an internal note about the gift card.
+4. Click the **Create** button.
+
+You'll be taken to the new gift card's details page where you can view and manage its details.
+
+<Note title="Tip">
+
+Creating a gift card also creates a [store credit account](../../store-credits/page.mdx) that isn't linked to any customer. When the gift card is redeemed on an order, the store credit account's balance will be deducted with the amount.
+
+</Note>
+
+---
+
+## View Gift Card Details
+
+To view the details of a gift card:
+
+1. Go to **Gift Cards** from the sidebar.
+2. Click on the gift card you want to view.
+
+The details page shows the gift card's code, linked product (if any), currency, initial value, expiration date, and note.
+
+On the side, you can see the current balance compared to the initial value, and any orders where the gift card was applied.
+
+The Transactions section shows the transaction history with all balance changes.
+
+---
+
+## Edit Expiration Date
+
+To edit a gift card's expiration date:
+
+1. Go to the gift card's details page.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top end of the first section.
+3. Choose **Edit expiration date** from the dropdown.
+4. In the side window that opens, choose one of the following:
+    - **No expiration date**: The gift card does not expire.
+    - **Set expiration date**: Enter a specific date and time.
+5. Click the **Save** button.
+
+---
+
+## Edit Note
+
+To edit the internal note on a gift card:
+
+1. Go to the gift card's details page.
+2. In the **Note** section, click **Edit note**.
+3. In the side window that opens, update the note text.
+4. Click the **Save** button.

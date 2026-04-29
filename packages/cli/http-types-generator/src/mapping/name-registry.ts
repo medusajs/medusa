@@ -8,6 +8,10 @@
  * When adding new validator schemas, prefer adding a `@http-type-name` JSDoc
  * tag in the validator file instead of adding to this registry. This registry
  * is only meant to remain backward-compatible with existing schemas that predate this tool.
+ * 
+ * Value can be `skip` to indicate that this export should be ignored by the generator 
+ * (e.g. if it's a single-item select params that shares a name with the list params, 
+ * or if it's an embedded schema used within another payload).
  *
  * @example
  * ```typescript
@@ -22,17 +26,19 @@ export const VALIDATOR_TO_HTTP_TYPE_NAME: Record<string, string> = {
   AdminCustomerAddressesParams: "AdminCustomerAddressFilters",
 
   // ----------- products -----------
-  AdminGetProductsParams: "AdminProductListParams",
+  AdminGetProductsParams: "skip",
   AdminGetProductOptionsParams: "AdminProductOptionParams",
   AdminGetProductVariantsParams: "AdminProductVariantParams",
-  // Singular GET params (createSelectParams) for single-item fetches
-  AdminGetProductVariantParams: "AdminProductVariantParams",
-  AdminGetProductOptionParams: "AdminProductOptionParams",
+  // Singular GET params (createSelectParams) for single-item fetches; skip them.
+  // The list params are validated via AdminGetProductVariantsParams and AdminGetProductOptionsParams.
+  AdminGetProductVariantParams: "skip",
+  AdminGetProductOptionParams: "skip",
   // Payload schemas with different HTTP type names
   AdminCreateVariantPrice: "AdminCreateProductVariantPrice",
   AdminBatchImageVariant: "AdminBatchImageVariantRequest",
   AdminBatchVariantImages: "AdminBatchVariantImagesRequest",
   AdminImportProducts: "AdminImportProductsRequest",
+  StoreProductVariantListParams: "StoreProductVariantParams",
 
   // ----------- orders -----------
   AdminGetOrdersParams: "AdminOrderFilters",
@@ -47,7 +53,9 @@ export const VALIDATOR_TO_HTTP_TYPE_NAME: Record<string, string> = {
   AdminCreateOrderCreditLines: "AdminCreateOrderCreditLine",
 
   // ----------- returns -----------
-  AdminGetReturnParams: "AdminReturnFilters",
+  // AdminGetReturnParams is a single-item select params; the return list params
+  // are validated via the return domain-scoped override (AdminGetOrdersParams).
+  AdminGetReturnParams: "skip",
 
   // ----------- return-reasons -----------
   AdminGetReturnReasonsReturnReasonParams: "AdminReturnReasonParams",
@@ -104,13 +112,16 @@ export const VALIDATOR_TO_HTTP_TYPE_NAME: Record<string, string> = {
   StoreProductTypesParams: "StoreProductTypeListParams",
 
   // ----------- product-variants -----------
-  StoreGetProductVariantsParams: "StoreProductVariantParams",
+  // StoreProductVariantParams (from store/product-variants) is a single-item
+  // select params with context fields; the list params are validated via
+  // StoreGetProductVariantsParams above.
+  StoreProductVariantParams: "skip",
 
   // ----------- price-preferences -----------
   AdminGetPricePreferencesParams: "AdminPricePreferenceListParams",
 
   // ----------- products -----------
-  StoreGetProductsParams: "StoreProductListParams",
+  StoreGetProductsParams: "skip",
 
   // ----------- regions -----------
   StoreGetRegionsParams: "StoreRegionFilters",
@@ -128,15 +139,16 @@ export const VALIDATOR_TO_HTTP_TYPE_NAME: Record<string, string> = {
   AdminGetPriceListsParams: "AdminPriceListListParams",
   AdminGetPriceListParams: "AdminPriceListParams",
   AdminGetPriceListPricesParams: "AdminPriceListPriceListParams",
+  AdminRemoveProductsPriceList: "AdminLinkPriceListProducts",
 
   // ----------- inventory items -----------
   AdminGetInventoryItemsParams: "AdminInventoryItemsParams",
 
   // ----------- sales-channels -----------
-  AdminGetSalesChannelsParams: "AdminSalesChannelListParams",
+  AdminGetSalesChannelsParams: "skip",
 
   // ----------- stock-locations -----------
-  AdminGetStockLocationsParams: "AdminStockLocationListParams",
+  AdminGetStockLocationsParams: "skip",
 
   // ----------- reservations -----------
   AdminGetReservationParams: "AdminReservationParams",
@@ -168,13 +180,17 @@ export const VALIDATOR_TO_HTTP_TYPE_NAME: Record<string, string> = {
   AdminGetDraftOrderParams: "AdminDraftOrderParams",
 
   // ----------- exchanges -----------
-  AdminGetExchangeParams: "AdminExchangeListParams",
+  // AdminGetExchangeParams is a single-item select params; exchange list params
+  // are validated via the exchange domain-scoped override (AdminGetOrdersParams).
+  AdminGetExchangeParams: "skip",
 
   // ----------- fulfillment-providers -----------
   AdminFulfillmentProvidersParams: "AdminGetFulfillmentProvidersParams",
 
   // ----------- fulfillment-sets -----------
-  AdminFulfillmentSetParams: "AdminFulfillmentSetListParams",
+  // AdminFulfillmentSetParams is a single-item select params; there is no list
+  // validator for fulfillment sets, so skip this mapping.
+  AdminFulfillmentSetParams: "skip",
 
   // ----------- inventory-levels -----------
   AdminGetInventoryLocationLevelsParams: "AdminInventoryLevelFilters",
@@ -229,13 +245,16 @@ export const VALIDATOR_TO_HTTP_TYPE_NAME: Record<string, string> = {
   StoreDeclineOrderTransferRequest: "StoreDeclineOrderTransfer",
 
   // ----------- payment (store) queries -----------
-  StoreGetPaymentCollectionParams: "StorePaymentCollectionFilters",
+  // StoreGetPaymentCollectionParams is a single-item select params; skip it.
+  StoreGetPaymentCollectionParams: "skip",
 
   // ----------- payment-session (store) payloads -----------
   StoreCreatePaymentSession: "StoreInitializePaymentSession",
 
   // ----------- shipping-options (store) -----------
-  StoreGetShippingOptionsParams: "StoreGetShippingOptionList",
+  // StoreGetShippingOptionsParams is a single-item select params; skip it.
+  // The list params are validated via StoreGetShippingOptions above.
+  StoreGetShippingOptionsParams: "skip",
 }
 
 /**
@@ -256,7 +275,7 @@ export const DOMAIN_SCOPED_OVERRIDES: Record<string, Record<string, string>> = {
     AdminGetOrdersParams: "AdminExchangeListParams",
   },
   claim: {
-    AdminGetOrdersOrderParams: "AdminClaimActionsParams",
+    AdminGetOrdersOrderParams: "AdminClaimParams",
     AdminGetOrdersParams: "AdminClaimListParams",
   },
   return: {
@@ -266,6 +285,22 @@ export const DOMAIN_SCOPED_OVERRIDES: Record<string, Record<string, string>> = {
     // listing here explicitly to document the domain context).
     AdminGetOrdersParams: "AdminReturnFilters",
   },
+  // The products validator file defines simplified versions of AdminCreateProductTag,
+  // AdminUpdateProductTag, and AdminCreateProductType (without metadata) for
+  // embedded use within product creation. These types are validated separately
+  // from their domain-specific validator files (product-tags, product-types).
+  product: {
+    AdminCreateProductTag: "skip",
+    AdminUpdateProductTag: "skip",
+    AdminCreateProductType: "skip",
+  },
+  // The payments validator file defines a simplified inline version of
+  // AdminCreatePaymentRefundReason (label + description only, no code) for
+  // inline refund reason creation during payment refunds. The standalone refund
+  // reason type is validated separately from the refund-reasons domain.
+  payment: {
+    AdminCreatePaymentRefundReason: "skip",
+  },
 }
 
 /**
@@ -274,7 +309,7 @@ export const DOMAIN_SCOPED_OVERRIDES: Record<string, Record<string, string>> = {
  */
 export const HTTP_TYPE_TO_VALIDATOR_NAME: Record<string, string> =
   Object.fromEntries(
-    Object.entries(VALIDATOR_TO_HTTP_TYPE_NAME).map(([k, v]) => [v, k])
+    Object.entries(VALIDATOR_TO_HTTP_TYPE_NAME).filter(([_, v]) => v !== "skip").map(([k, v]) => [v, k])
   )
 
 /**
