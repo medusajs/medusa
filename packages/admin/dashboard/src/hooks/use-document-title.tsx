@@ -10,9 +10,14 @@ type RouteHandle = {
 
 /**
  * Attempts to extract a display title from route loader data.
- * Handles common patterns used in the admin dashboard.
+ *
+ * The property paths below (e.g. `product.title`, `order.display_id`,
+ * `tax_region.country_code`) are coupled to the shape returned by each
+ * route's loader. If a loader's data shape changes, this function silently
+ * falls back to a generic title rather than throwing — keep this in sync
+ * when adding new entity types or renaming loader fields.
  */
-function getTitleFromRouteData(data: unknown): string | null {
+export function getTitleFromRouteData(data: unknown): string | null {
   if (!data || typeof data !== "object") {
     return null
   }
@@ -214,7 +219,7 @@ function getTitleFromRouteData(data: unknown): string | null {
  * Gets the title from a route's breadcrumb function.
  * Returns the string if the breadcrumb returns a string directly.
  */
-function getTitleFromBreadcrumb(
+export function getTitleFromBreadcrumb(
   handle: RouteHandle | undefined,
   match: UIMatch
 ): string | null {
