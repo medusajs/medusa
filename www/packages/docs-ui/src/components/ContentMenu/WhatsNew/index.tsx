@@ -136,7 +136,7 @@ const AnnouncementTracker = ({ isNew }: { isNew: boolean }) => {
         <div
           className={clsx(
             "absolute top-0 left-0 w-full h-full rounded-full opacity-20",
-            isNew && "bg-medusa-tag-orange-icon"
+            isNew && "bg-medusa-tag-green-icon"
           )}
         />
         <div
@@ -144,7 +144,7 @@ const AnnouncementTracker = ({ isNew }: { isNew: boolean }) => {
             "w-[5px] h-[5px] rounded-full",
             "border-[0.5px] border-medusa-alphas-alpha-10",
             "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
-            isNew ? "bg-medusa-tag-orange-icon" : "bg-medusa-fg-disabled"
+            isNew ? "bg-medusa-tag-green-icon" : "bg-medusa-fg-disabled"
           )}
         />
       </div>

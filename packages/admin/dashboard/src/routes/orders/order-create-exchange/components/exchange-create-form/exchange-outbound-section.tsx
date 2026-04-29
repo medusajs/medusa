@@ -1,8 +1,8 @@
 import {
   AdminExchange,
+  AdminInventoryLevel,
   AdminOrder,
   AdminOrderPreview,
-  InventoryLevelDTO,
 } from "@medusajs/types"
 import { Alert, Button, Heading, Text, toast } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
@@ -31,6 +31,7 @@ import { ExchangeOutboundItem } from "./exchange-outbound-item"
 import { useOrderShippingOptions } from "../../../../../hooks/api/orders"
 import { CreateExchangeSchemaType } from "./schema"
 import { getFormattedShippingOptionLocationName } from "../../../../../lib/shipping-options"
+import { ExtendedVariant } from "../../../../product-variants/product-variant-detail/constants"
 
 type ExchangeOutboundSectionProps = {
   order: AdminOrder
@@ -52,7 +53,7 @@ export const ExchangeOutboundSection = ({
 
   const { setIsOpen } = useStackedModal()
   const [inventoryMap, setInventoryMap] = useState<
-    Record<string, InventoryLevelDTO[]>
+    Record<string, AdminInventoryLevel[]>
   >({})
 
   /**
@@ -247,6 +248,9 @@ export const ExchangeOutboundSection = ({
 
     const allItemsHaveLocation = outboundItems
       .map((i) => {
+        if (!i.variant_id) {
+          return true
+        }
         const item = variantItemMap.get(i.variant_id)
         if (!item?.variant_id || !item?.variant) {
           return true
@@ -267,7 +271,7 @@ export const ExchangeOutboundSection = ({
 
   useEffect(() => {
     const getInventoryMap = async () => {
-      const ret: Record<string, InventoryLevelDTO[]> = {}
+      const ret: Record<string, AdminInventoryLevel[]> = {}
 
       if (!outboundItems.length) {
         return ret
@@ -275,14 +279,14 @@ export const ExchangeOutboundSection = ({
 
       const variantIds = outboundItems
         .map((item) => item?.variant_id)
-        .filter(Boolean)
+        .filter(Boolean) as string[]
 
       const variants = (
         await sdk.admin.productVariant.list({
           id: variantIds,
           fields: "*inventory.location_levels",
         })
-      ).variants
+      ).variants as ExtendedVariant[]
 
       variants.forEach((variant) => {
         ret[variant.id] = variant.inventory?.[0]?.location_levels || []
@@ -311,10 +315,16 @@ export const ExchangeOutboundSection = ({
             <StackedFocusModal.Header />
 
             <AddExchangeOutboundItemsTable
-              selectedItems={outboundItems.map((i) => i.variant_id)}
+              selectedItems={
+                outboundItems
+                  .map((i) => i.variant_id)
+                  .filter(Boolean) as string[]
+              }
               currencyCode={order.currency_code}
               onSelectionChange={(finalSelection) => {
-                const alreadySelected = outboundItems.map((i) => i.variant_id)
+                const alreadySelected = outboundItems
+                  .map((i) => i.variant_id)
+                  .filter(Boolean) as string[]
 
                 itemsToAdd = finalSelection.filter(
                   (selection) => !alreadySelected.includes(selection)
@@ -354,6 +364,7 @@ export const ExchangeOutboundSection = ({
 
       {outboundItems.map(
         (item, index) =>
+          item.variant_id &&
           variantOutboundMap.get(item.variant_id) && (
             <ExchangeOutboundItem
               key={item.id}
@@ -395,7 +406,7 @@ export const ExchangeOutboundSection = ({
       )}
       {!showOutboundItemsPlaceholder && (
         <div className="mt-8 flex flex-col gap-y-4">
-          {/*OUTBOUND SHIPPING*/}
+          {/* OUTBOUND SHIPPING*/}
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             <div>
               <Form.Label>{t("orders.exchanges.outboundShipping")}</Form.Label>
@@ -421,7 +432,9 @@ export const ExchangeOutboundSection = ({
                         }}
                         {...field}
                         options={outboundShippingOptions.map((so) => ({
-                          label: `${so.name} (${getFormattedShippingOptionLocationName(so)})`,
+                          label: `${
+                            so.name
+                          } (${getFormattedShippingOptionLocationName(so)})`,
                           value: so.id,
                         }))}
                         disabled={!outboundShippingOptions.length}

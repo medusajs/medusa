@@ -41,13 +41,10 @@ export const PriceListPricesAddProductIdsForm = ({
   const { control, setValue } = form
 
   const variantIdMap = useMemo(() => {
-    return priceList.prices.reduce(
-      (acc, curr) => {
-        acc[curr.variant_id] = true
-        return acc
-      },
-      {} as Record<string, boolean>
-    )
+    return priceList.prices.reduce((acc, curr) => {
+      acc[curr.variant_id] = true
+      return acc
+    }, {} as Record<string, boolean>)
   }, [priceList.prices])
 
   const selectedIds = useWatch({

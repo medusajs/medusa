@@ -1,11 +1,5 @@
 import { Buildings, XCircle } from "@medusajs/icons"
-import {
-  AdminOrder,
-  AdminOrderFulfillment,
-  AdminOrderLineItem,
-  HttpTypes,
-  OrderLineItemDTO,
-} from "@medusajs/types"
+import { AdminOrder, AdminOrderLineItem } from "@medusajs/types"
 import {
   Button,
   Container,
@@ -35,9 +29,10 @@ import { useStockLocation } from "../../../../../hooks/api/stock-locations"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
 import { FulfillmentSetType } from "../../../../locations/common/constants"
+import { ExtendedOrderFulfillment, ExtendedOrder } from "../../constants"
 
 type OrderFulfillmentSectionProps = {
-  order: AdminOrder
+  order: ExtendedOrder
 }
 
 export const OrderFulfillmentSection = ({
@@ -59,7 +54,7 @@ const UnfulfilledItem = ({
   item,
   currencyCode,
 }: {
-  item: OrderLineItemDTO & { variant: HttpTypes.AdminProductVariant }
+  item: AdminOrderLineItem
   currencyCode: string
 }) => {
   return (
@@ -85,7 +80,7 @@ const UnfulfilledItem = ({
             </div>
           )}
           <Text size="small">
-            {item.variant?.options.map((o) => o.value).join(" · ")}
+            {item.variant?.options?.map((o) => o.value).join(" · ")}
           </Text>
         </div>
       </div>
@@ -105,7 +100,7 @@ const UnfulfilledItem = ({
         </div>
         <div className="flex items-center justify-end">
           <Text size="small">
-            {getLocaleAmount(item.subtotal || 0, currencyCode)}
+            {getLocaleAmount((item.subtotal as number) || 0, currencyCode)}
           </Text>
         </div>
       </div>
@@ -208,8 +203,8 @@ const Fulfillment = ({
   order,
   index,
 }: {
-  fulfillment: AdminOrderFulfillment
-  order: AdminOrder
+  fulfillment: ExtendedOrderFulfillment
+  order: ExtendedOrder
   index: number
 }) => {
   const { t } = useTranslation()
@@ -219,7 +214,7 @@ const Fulfillment = ({
   const showLocation = !!fulfillment.location_id
 
   const isPickUpFulfillment =
-    fulfillment.shipping_option?.service_zone.fulfillment_set.type ===
+    fulfillment.shipping_option?.service_zone?.fulfillment_set?.type ===
     FulfillmentSetType.Pickup
 
   const { stock_location, isError, error } = useStockLocation(

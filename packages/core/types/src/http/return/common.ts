@@ -104,4 +104,5 @@ export interface BaseReturn {
    * The date when the return was canceled.
    */
   canceled_at: string
+  requested_at: string
 }

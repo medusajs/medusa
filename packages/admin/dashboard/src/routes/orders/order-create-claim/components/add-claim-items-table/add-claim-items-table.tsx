@@ -70,8 +70,8 @@ export const AddClaimItemsTable = ({
     if (q) {
       results = results.filter((i) => {
         return (
-          i.product_title.toLowerCase().includes(q.toLowerCase()) ||
-          i.variant_title.toLowerCase().includes(q.toLowerCase()) ||
+          i.product_title?.toLowerCase().includes(q.toLowerCase()) ||
+          i.variant_title?.toLowerCase().includes(q.toLowerCase()) ||
           i.variant_sku?.toLowerCase().includes(q.toLowerCase())
         )
       })
@@ -181,12 +181,15 @@ const sortItems = (
     } else if (field === "sku") {
       aValue = a.variant_sku
       bValue = b.variant_sku
+      // Couldn't find any reference to these fields in
+      // the codebase, but to not introduce breaking changes,
+      // will cast it as any.
     } else if (field === "returnable_quantity") {
-      aValue = a.quantity - (a.returned_quantity || 0)
-      bValue = b.quantity - (b.returned_quantity || 0)
+      aValue = a.quantity - ((a as any).returned_quantity || 0)
+      bValue = b.quantity - ((b as any).returned_quantity || 0)
     } else if (field === "refundable_amount") {
-      aValue = a.refundable || 0
-      bValue = b.refundable || 0
+      aValue = (a as any).refundable || 0
+      bValue = (b as any).refundable || 0
     }
 
     if (aValue < bValue) {
@@ -250,8 +253,13 @@ const filterByNumber = (
       : { ...defaultOperators, eq: value }
 
   return items.filter((i) => {
-    const returnableQuantity = i.quantity - (i.returned_quantity || 0)
-    const refundableAmount = getStylizedAmount(i.refundable || 0, currency_code)
+    // Similar to sorting, these fields don't exist in the codebase, but to not
+    // introduce breaking changes, will cast it as any.
+    const returnableQuantity = i.quantity - ((i as any).returned_quantity || 0)
+    const refundableAmount = getStylizedAmount(
+      (i as any).refundable || 0,
+      currency_code
+    )
 
     const itemValue =
       field === "returnable_quantity" ? returnableQuantity : refundableAmount
@@ -263,19 +271,19 @@ const filterByNumber = (
     let isValid = true
 
     if (gt) {
-      isValid = isValid && itemValue > gt
+      isValid = isValid && Number(itemValue) > gt
     }
 
     if (gte) {
-      isValid = isValid && itemValue >= gte
+      isValid = isValid && Number(itemValue) >= gte
     }
 
     if (lt) {
-      isValid = isValid && itemValue < lt
+      isValid = isValid && Number(itemValue) < lt
     }
 
     if (lte) {
-      isValid = isValid && itemValue <= lte
+      isValid = isValid && Number(itemValue) <= lte
     }
 
     return isValid
