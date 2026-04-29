@@ -50,7 +50,7 @@ describe("S3FileService URL encoding", () => {
   beforeEach(() => {
     mockS3Send.mockClear()
     mockS3Send.mockResolvedValue({})
-    ;(Upload as jest.Mock).mockClear()
+    jest.mocked(Upload).mockClear()
   })
 
   it("preserves path separators in upload() URLs (no %2F between prefix segments)", async () => {
@@ -137,7 +137,7 @@ describe("S3FileService URL encoding", () => {
     expect(result.url).toMatch(/my%20document-[^/]+\.jpg$/)
 
     expect(Upload).toHaveBeenCalledTimes(1)
-    const uploadArgs = (Upload as jest.Mock).mock.calls[0][0] as { params: { Key: string } }
+    const uploadArgs = jest.mocked(Upload).mock.calls[0][0] as { params: { Key: string } }
     expect(uploadArgs.params.Key).toMatch(/^uploads\/2024\/my document-/)
   })
 })
