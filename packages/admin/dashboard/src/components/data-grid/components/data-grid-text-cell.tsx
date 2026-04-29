@@ -1,5 +1,5 @@
 import { clx } from "@medusajs/ui"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Controller, ControllerRenderProps } from "react-hook-form"
 
 import { useCombinedRefs } from "../../../hooks/use-combined-refs"
@@ -43,29 +43,29 @@ const Inner = ({
   const { ref: inputRef, onBlur: onInputBlur, onChange, ...input } = inputProps
 
   const [localValue, setLocalValue] = useState(value)
+  const inputElRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     setLocalValue(value)
   }, [value])
 
-  const combinedRefs = useCombinedRefs(inputRef, ref)
+  const combinedRefs = useCombinedRefs(inputRef, ref, inputElRef)
 
   return (
     <input
       className={clx(
-        "txt-compact-small text-ui-fg-subtle flex size-full cursor-pointer items-center justify-center bg-transparent outline-none",
-        "focus:cursor-text"
+        "txt-compact-small text-ui-fg-subtle flex size-full cursor-pointer bg-transparent outline-none",
+        "focus:cursor-text",
+        "items-center justify-center"
       )}
       autoComplete="off"
       tabIndex={-1}
-      value={localValue}
+      value={localValue ?? ""}
       onChange={(e) => setLocalValue(e.target.value)}
       ref={combinedRefs}
       onBlur={() => {
         onBlur()
         onInputBlur()
-
-        // We propagate the change to the field only when the input is blurred
         onChange(localValue, value)
       }}
       {...input}

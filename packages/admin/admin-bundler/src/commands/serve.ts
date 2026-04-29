@@ -1,5 +1,5 @@
 import compression from "compression"
-import { Request, Response, Router, static as static_ } from "express"
+import { IRouter, Request, Response, Router, static as static_ } from "express"
 import fs from "fs"
 import { ServerResponse } from "http"
 import path from "path"
@@ -10,7 +10,7 @@ type ServeOptions = {
 
 const router = Router()
 
-export async function serve(options: ServeOptions) {
+export async function serve(options: ServeOptions): Promise<IRouter> {
   const htmlPath = path.resolve(options.outDir, "index.html")
 
   /**
@@ -42,7 +42,7 @@ export async function serve(options: ServeOptions) {
     res.setHeader("Vary", "Origin, Cache-Control")
   }
 
-  router.use(compression())
+  router.use(compression() as any)
 
   router.get("/", sendHtml)
   router.use(

@@ -3,6 +3,7 @@ export const defaultStoreCartFields = [
   "id",
   "currency_code",
   "email",
+  "locale",
   "region_id",
   "created_at",
   "updated_at",

@@ -52,7 +52,7 @@ Learn more about [Medusa’s architecture](https://docs.medusajs.com/learn/advan
 
 You can view the planned, started and completed features in the [Roadmap discussion](https://github.com/medusajs/medusa/discussions/categories/roadmap).
 
-Follow the [Upgrade Guides](https://docs.medusajs.com/upgrade-guides/) to keep your Medusa project up-to-date.
+Follow the [Upgrade Guides](https://docs.medusajs.com/learn/update) to keep your Medusa project up-to-date.
 
 ## Community & Contributions
 

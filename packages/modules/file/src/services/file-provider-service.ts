@@ -1,7 +1,7 @@
-import type { Readable } from "stream"
 import { Constructor, FileTypes } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import { FileProviderRegistrationPrefix } from "@types"
+import type { Readable, Writable } from "stream"
 
 type InjectedDependencies = {
   [
@@ -80,5 +80,14 @@ export default class FileProviderService {
 
   getAsBuffer(fileData: FileTypes.ProviderGetFileDTO): Promise<Buffer> {
     return this.fileProvider_.getAsBuffer(fileData)
+  }
+
+  getUploadStream(fileData: FileTypes.ProviderUploadStreamDTO): Promise<{
+    writeStream: Writable
+    promise: Promise<FileTypes.ProviderFileResultDTO>
+    url: string
+    fileKey: string
+  }> {
+    return this.fileProvider_.getUploadStream(fileData)
   }
 }

@@ -10,11 +10,18 @@ import { TypeList } from "docs-ui"
 - [PaymentSessionStatus](../../utils/enums/utils.PaymentSessionStatus/page.mdx)
 - [PaymentWebhookEvents](../../utils/enums/utils.PaymentWebhookEvents/page.mdx)
 
+## Functions
+
+- [discoverPoliciesFromDir](page.mdx#discoverpoliciesfromdir)
+
 ## Interfaces
 
 - [Argument](../../utils/interfaces/utils.Argument/page.mdx)
 - [Directive](../../utils/interfaces/utils.Directive/page.mdx)
 - [Entity](../../utils/interfaces/utils.Entity/page.mdx)
+- [StepResourceData](../../utils/interfaces/utils.StepResourceData/page.mdx)
+- [SubscriberResourceData](../../utils/interfaces/utils.SubscriberResourceData/page.mdx)
+- [WorkflowResourceData](../../utils/interfaces/utils.WorkflowResourceData/page.mdx)
 
 ## Namespaces
 
@@ -23,6 +30,7 @@ import { TypeList } from "docs-ui"
 - [Cart](../../utils/utils.Cart/page.mdx)
 - [CoreFlowsUitls](../../utils/utils.CoreFlowsUitls/page.mdx)
 - [Customer](../../utils/utils.Customer/page.mdx)
+- [DevServerUtils](../../utils/utils.DevServerUtils/page.mdx)
 - [Fulfillment](../../utils/utils.Fulfillment/page.mdx)
 - [FulfillmentUtils](../../utils/utils.FulfillmentUtils/page.mdx)
 - [GraphQLUtils](../../utils/utils.GraphQLUtils/page.mdx)
@@ -39,12 +47,15 @@ import { TypeList } from "docs-ui"
 - [Sales Channel](../../utils/utils.Sales_Channel/page.mdx)
 - [SearchUtils](../../utils/utils.SearchUtils/page.mdx)
 - [ShippingProfileUtils](../../utils/utils.ShippingProfileUtils/page.mdx)
+- [Translation](../../utils/utils.Translation/page.mdx)
+- [TranslationsUtils](../../utils/utils.TranslationsUtils/page.mdx)
 - [User](../../utils/utils.User/page.mdx)
 - [UserUtils](../../utils/utils.UserUtils/page.mdx)
 
 ## Type Aliases
 
 - [NormalizedRow](../../utils/types/utils.NormalizedRow/page.mdx)
+- [ResourceRegistrationData](../../utils/types/utils.ResourceRegistrationData/page.mdx)
 - [TargetMethodArgs](../../utils/types/utils.TargetMethodArgs/page.mdx)
 - [TotalVariantAvailabilityData](../../utils/types/utils.TotalVariantAvailabilityData/page.mdx)
 - [VariantAvailabilityData](../../utils/types/utils.VariantAvailabilityData/page.mdx)
@@ -54,6 +65,22 @@ import { TypeList } from "docs-ui"
 - [MedusaModuleProviderType](page.mdx#medusamoduleprovidertype)
 - [MedusaModuleType](page.mdx#medusamoduletype)
 - [NotificationEvents](page.mdx#notificationevents)
+
+___
+
+## Functions
+
+### discoverPoliciesFromDir
+
+Discover policy definitions from a directory and subdirectories
+
+#### Parameters
+
+<TypeList types={[{"name":"maxDepth","type":"`number`","description":"","optional":false,"defaultValue":"2","expandable":false,"children":[]},{"name":"sourcePath","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="discoverPoliciesFromDir"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Discover policy definitions from a directory and subdirectories","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="discoverPoliciesFromDir"/>
 
 ___
 
@@ -69,4 +96,4 @@ ___
 
 ### NotificationEvents
 
- `Const` **NotificationEvents**: ReturnType&#60;["notification"]&#62;
+ `Const` **NotificationEvents**: ReturnType&#60;["notification"], "notification"&#62;

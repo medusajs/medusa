@@ -1,3 +1,4 @@
+import { logger } from "@medusajs/framework/logger"
 import {
   ContainerRegistrationKeys,
   DmlEntity,
@@ -8,11 +9,11 @@ import {
   normalizeImportPathWithSource,
   toMikroOrmEntities,
 } from "@medusajs/framework/utils"
-import { logger } from "@medusajs/framework/logger"
 import * as fs from "fs"
 import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
 import { initModules, InitModulesOptions } from "./init-modules"
 import { default as MockEventBusService } from "./mock-event-bus-service"
+import { ulid } from "ulid"
 
 export interface SuiteOptions<TService = unknown> {
   MikroOrmWrapper: TestDatabase
@@ -114,9 +115,10 @@ class ModuleTestRunner<TService = any> {
   constructor(config: ModuleTestRunnerConfig<TService>) {
     const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
     this.moduleName = config.moduleName
+    const moduleName = this.moduleName ?? ulid()
     this.dbName =
       config.dbName ??
-      `medusa-${config.moduleName.toLowerCase()}-integration-${tempName}`
+      `medusa-${moduleName.toLowerCase()}-integration-${tempName}`
     this.schema = config.schema ?? "public"
     this.debug = config.debug ?? false
     this.resolve = config.resolve
@@ -183,6 +185,9 @@ class ModuleTestRunner<TService = any> {
         [ContainerRegistrationKeys.PG_CONNECTION]: this.connection,
         [Modules.EVENT_BUS]: new MockEventBusService(),
         [ContainerRegistrationKeys.LOGGER]: console,
+        [ContainerRegistrationKeys.CONFIG_MODULE]: {
+          modules: this.modulesConfig,
+        },
         ...this.injectedDependencies,
       },
       modulesConfig: this.modulesConfig,
@@ -304,6 +309,7 @@ export function moduleIntegrationTestRunner<TService = any>({
   moduleDependencies,
   joinerConfig = [],
   schema = "public",
+  dbName,
   debug = false,
   testSuite,
   resolve,
@@ -332,6 +338,7 @@ export function moduleIntegrationTestRunner<TService = any>({
     moduleDependencies,
     joinerConfig,
     schema,
+    dbName,
     debug,
     resolve,
     injectedDependencies,

@@ -22,3 +22,10 @@ export type AnalyticsModuleOptions = Partial<ModuleServiceInitializeOptions> & {
     options?: Record<string, unknown>
   }[]
 }
+
+declare module "@medusajs/types" {
+  interface ModuleOptions {
+    "@medusajs/analytics": AnalyticsModuleOptions
+    "@medusajs/medusa/analytics": AnalyticsModuleOptions
+  }
+}

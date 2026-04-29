@@ -12,5 +12,5 @@ export const defaultI18nOptions: InitOptions = {
   fallbackNS: "translation",
   interpolation: {
     escapeValue: false,
-  }
+  },
 }

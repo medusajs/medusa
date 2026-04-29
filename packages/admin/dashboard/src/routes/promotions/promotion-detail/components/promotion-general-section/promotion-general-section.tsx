@@ -196,6 +196,20 @@ export const PromotionGeneralSection = ({
           </div>
         </div>
       )}
+
+      {typeof promotion.limit === "number" && (
+        <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+          <Text size="small" weight="plus" leading="compact">
+            Usage Limit
+          </Text>
+
+          <div className="flex items-center gap-x-2">
+            <Text className="inline" size="small" leading="compact">
+              {promotion.used || 0} / {promotion.limit}
+            </Text>
+          </div>
+        </div>
+      )}
     </Container>
   )
 }

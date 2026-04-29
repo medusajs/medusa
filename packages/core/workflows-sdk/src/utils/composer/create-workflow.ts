@@ -13,6 +13,7 @@ import {
   isString,
   Modules,
   OrchestrationUtils,
+  registerDevServerResource,
 } from "@medusajs/utils"
 import { ulid } from "ulid"
 import { exportWorkflow, WorkflowResult } from "../../helper"
@@ -115,6 +116,12 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
   const fileSourcePath = getCallerFilePath() as string
   const name = isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name
   const options = isString(nameOrConfig) ? {} : nameOrConfig
+
+  registerDevServerResource({
+    sourcePath: fileSourcePath,
+    id: name,
+    type: "workflow",
+  })
 
   const handlers: WorkflowHandler = new Map()
 

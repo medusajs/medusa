@@ -117,7 +117,9 @@ const useDynamicSearchResults = (
     {
       q: debouncedSearch,
       limit,
-      fields: "id,title,thumbnail",
+      // TODO: Remove exclusion once we avoid including unnecessary relations by default in the query config
+      fields:
+        "id,title,thumbnail,-type,-collection,-options,-tags,-images,-variants,-sales_channels",
     },
     {
       enabled: isAreaEnabled(currentArea, "product"),
@@ -424,7 +426,13 @@ const useDynamicSearchResults = (
       .map(([key, response]) => {
         const area = key as SearchArea
         if (isAreaEnabled(currentArea, area) || currentArea === "all") {
-          return transformDynamicSearchResults(area, limit, t, response)
+          return transformDynamicSearchResults(
+            area,
+            limit,
+            t,
+            // Type assertion is valid since all requests pass pagination parameters and return a response with a count property
+            response as { count: number } | undefined
+          )
         }
         return null
       })

@@ -219,6 +219,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: Filter by a promotion's update date.
@@ -338,6 +339,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: updated_at
  *   - name: deleted_at
  *     in: query
  *     description: Filter by a promotion's deletion date.
@@ -457,6 +459,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: deleted_at
  *   - name: $and
  *     in: query
  *     required: false
@@ -475,34 +478,6 @@
  *       items:
  *         type: object
  *       title: $or
- *   - name: currency_code
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: currency_code
- *           description: Filter by a currency code. The promotions are filtered based on their application method's currency code.
- *         - type: array
- *           description: Filter by currency codes. The promotions are filtered based on their application method's currency code.
- *           items:
- *             type: string
- *             title: currency_code
- *             description: A currency code.
- *   - name: application_method_type
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: application_method_type
- *           description: Filter by an application method type. The promotions are filtered based on their application method's type.
- *         - type: array
- *           description: Filter by application method types. The promotions are filtered based on their application method's type.
- *           items:
- *             type: string
- *             title: application_method_type
- *             description: An application method type.
  *   - name: with_deleted
  *     in: query
  *     description: Whether to include deleted records in the result.

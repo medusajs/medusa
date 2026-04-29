@@ -62,7 +62,7 @@
  *     type: array
  *     description: The claim's transactions.
  *     externalDocs:
- *       url: https://docs.medusajs.com/v2/resources/commerce-modules/order/transactions
+ *       url: https://docs.medusajs.com/resources/commerce-modules/order/transactions
  *       description: Learn more about transactions of orders and associated models.
  *     items:
  *       $ref: "#/components/schemas/BaseOrderTransaction"

@@ -11,7 +11,7 @@ post:
     continue authentication with the third-party service.
   externalDocs:
     url: >-
-      https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route#types-of-authentication-flows
+      https://docs.medusajs.com/resources/commerce-modules/auth/authentication-route#types-of-authentication-flows
     description: Learn about different authentication flows.
   x-authenticated: false
   parameters:

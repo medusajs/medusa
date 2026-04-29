@@ -2,8 +2,10 @@
 
 import clsx from "clsx"
 import React from "react"
-import { CopyButton, Link } from "@/components"
-import { useHeadingUrl, useLayout } from "../../.."
+import { CopyButton } from "@/components/CopyButton"
+import { Link } from "@/components/Link"
+import { useHeadingUrl } from "../../../hooks/use-heading-url"
+import { useLayout } from "../../../providers/Layout"
 
 export type H2Props = React.HTMLAttributes<HTMLHeadingElement> & {
   id?: string
@@ -19,7 +21,7 @@ export const H2 = ({ className, children, passRef, ...props }: H2Props) => {
   return (
     <h2
       className={clsx(
-        "text-h2 [&_code]:!text-h2 [&_code]:!font-mono mb-docs_1 mt-docs_2 text-medusa-fg-base",
+        "text-h2 [&>code]:!text-h2 [&>code]:!font-mono mb-docs_1 mt-docs_2 text-medusa-fg-base",
         props.id && [
           "group/h2",
           showCollapsedNavbar && "scroll-m-docs_7",

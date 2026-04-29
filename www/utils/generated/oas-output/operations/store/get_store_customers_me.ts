@@ -6,7 +6,7 @@
  * description: Retrieve the logged-in customer. You can expand the customer's relations or select the fields that should be returned.
  * x-authenticated: true
  * externalDocs:
- *   url: https://docs.medusajs.com/v2/resources/storefront-development/customers/retrieve
+ *   url: https://docs.medusajs.com/resources/storefront-development/customers/retrieve
  *   description: "Storefront guide: How to retrieve the logged-in customer."
  * parameters:
  *   - name: x-publishable-api-key
@@ -17,6 +17,16 @@
  *       type: string
  *       externalDocs:
  *         url: https://docs.medusajs.com/api/store#publishable-api-key
+ *   - name: x-medusa-locale
+ *     in: header
+ *     description: The locale in BCP 47 format to retrieve localized content.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       example: en-US
+ *       externalDocs:
+ *         url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+ *         description: Learn more in the Serve Translations in Storefront guide.
  *   - name: fields
  *     in: query
  *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
@@ -31,6 +41,16 @@
  *         Links](https://docs.medusajs.com/learn/fundamentals/api-routes/retrieve-custom-links) documentation.
  *       externalDocs:
  *         url: "#select-fields-and-relations"
+ *   - name: locale
+ *     in: query
+ *     description: The locale in BCP 47 format to retrieve localized content.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       example: en-US
+ *       externalDocs:
+ *         url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+ *         description: Learn more in the Serve Translations in Storefront guide.
  * security:
  *   - cookie_auth: []
  *   - jwt_token: []

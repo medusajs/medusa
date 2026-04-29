@@ -1,8 +1,14 @@
-import { createWorkflow, WorkflowData } from "@medusajs/framework/workflows-sdk"
+import {
+  createWorkflow,
+  parallelize,
+  WorkflowData,
+} from "@medusajs/framework/workflows-sdk"
 import { AdditionalData } from "@medusajs/types"
 import { refreshCartItemsWorkflow } from "../../cart/workflows/refresh-cart-items"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import { deleteLineItemsStep } from "../steps/delete-line-items"
+import { emitEventStep } from "../../common/steps/emit-event"
+import { CartWorkflowEvents } from "@medusajs/framework/utils"
 
 /**
  * The data to delete line items from a cart.
@@ -53,9 +59,18 @@ export const deleteLineItemsWorkflow = createWorkflow(
 
     deleteLineItemsStep(input.ids)
 
-    refreshCartItemsWorkflow.runAsStep({
-      input: { cart_id: input.cart_id, additional_data: input.additional_data },
-    })
+    parallelize(
+      refreshCartItemsWorkflow.runAsStep({
+        input: {
+          cart_id: input.cart_id,
+          additional_data: input.additional_data,
+        },
+      }),
+      emitEventStep({
+        eventName: CartWorkflowEvents.UPDATED,
+        data: { id: input.cart_id },
+      })
+    )
 
     releaseLockStep({
       key: input.cart_id,

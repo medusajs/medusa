@@ -37,6 +37,7 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  normalizeCurrencyCode,
   PriceListType,
   PricingRuleOperator,
   promiseAll,
@@ -535,16 +536,16 @@ export default class PricingModuleService
           id: calculatedPrice?.id || null,
           price_list_id: calculatedPrice?.price_list_id || null,
           price_list_type: calculatedPrice?.price_list_type || null,
-          min_quantity: parseInt(calculatedPrice?.min_quantity || "") || null,
-          max_quantity: parseInt(calculatedPrice?.max_quantity || "") || null,
+          min_quantity: parseFloat(calculatedPrice?.min_quantity || "") || null,
+          max_quantity: parseFloat(calculatedPrice?.max_quantity || "") || null,
         },
 
         original_price: {
           id: originalPrice?.id || null,
           price_list_id: originalPrice?.price_list_id || null,
           price_list_type: originalPrice?.price_list_type || null,
-          min_quantity: parseInt(originalPrice?.min_quantity || "") || null,
-          max_quantity: parseInt(originalPrice?.max_quantity || "") || null,
+          min_quantity: parseFloat(originalPrice?.min_quantity || "") || null,
+          max_quantity: parseFloat(originalPrice?.max_quantity || "") || null,
         },
       }
 
@@ -957,6 +958,10 @@ export default class PricingModuleService
         entry.price_rules = rules
         entry.rules_count = rules.length
         delete (entry as CreatePricesDTO).rules
+      }
+
+      if (isDefined(entry.currency_code)) {
+        entry.currency_code = normalizeCurrencyCode(entry.currency_code)!
       }
 
       const entryHash = hashPrice(entry)
@@ -1815,7 +1820,7 @@ const hashPrice = (
   const parts: string[] = []
 
   if ("currency_code" in price) {
-    parts.push(`cc:${price.currency_code ?? ""}`)
+    parts.push(`cc:${normalizeCurrencyCode(price.currency_code ?? "")}`)
   }
   if ("price_set_id" in price) {
     parts.push(`ps:${price.price_set_id ?? ""}`)
@@ -1868,8 +1873,8 @@ const buildPreNormalizationPriceConstraintsFromData = (
 
     const constraint: any = {}
 
-    if (price.currency_code !== undefined) {
-      constraint.currency_code = price.currency_code
+    if (!!price.currency_code) {
+      constraint.currency_code = normalizeCurrencyCode(price.currency_code)
     }
     if ("price_set_id" in price && price.price_set_id !== undefined) {
       constraint.price_set_id = price.price_set_id

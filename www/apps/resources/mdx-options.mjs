@@ -19,6 +19,9 @@ const mdxPluginOptions = {
         {
           baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
           projectUrls: {
+            bloom: {
+              url: process.env.NEXT_PUBLIC_BLOOM_URL,
+            },
             docs: {
               url: process.env.NEXT_PUBLIC_DOCS_URL,
               path: "",

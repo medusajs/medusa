@@ -1,5 +1,5 @@
 import { PriceListStatus, PriceListType } from "../../../pricing"
-import { AdminPrice } from "../../pricing"
+import { AdminPrice } from "../../price-preference"
 
 export interface AdminPriceListPrice extends AdminPrice {
   /**

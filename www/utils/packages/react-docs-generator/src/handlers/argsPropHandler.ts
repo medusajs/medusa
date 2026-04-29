@@ -50,7 +50,7 @@ function resolveDocumentation(
       utils.setPropDescription(documentation, propertyPath)
 
       // set type if missing
-      if (!propDescriptor.tsType && typedocManager) {
+      if (typedocManager && !propDescriptor.tsType) {
         const typeAnnotation = utils.getTypeAnnotation(path)
         if (typeAnnotation?.isTSTypeReference()) {
           const typeName = typeAnnotation.get("typeName")
@@ -71,7 +71,8 @@ function resolveDocumentation(
         }
       } else if (
         propDescriptor.tsType &&
-        typedocManager?.doesOnlyHaveName(propDescriptor.tsType)
+        (typedocManager?.onlyHasName(propDescriptor.tsType) ||
+          typedocManager?.isRawTypeEmpty(propDescriptor.tsType))
       ) {
         // see if the type needs to be resolved.
         const typeReflection = typedocManager?.getReflectionByName(

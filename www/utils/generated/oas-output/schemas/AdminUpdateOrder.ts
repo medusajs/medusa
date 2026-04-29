@@ -19,6 +19,11 @@
  *     externalDocs:
  *       url: https://docs.medusajs.com/api/admin#manage-metadata
  *       description: Learn how to manage metadata
+ *   locale:
+ *     type: string
+ *     title: locale
+ *     description: The order's locale in [BCP 47](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1) format.
+ *     example: en-US
  * 
 */
 

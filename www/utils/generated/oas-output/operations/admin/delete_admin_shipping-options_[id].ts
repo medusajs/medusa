@@ -60,7 +60,17 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: deleteShippingOptionsWorkflow
- * x-events: []
+ * x-events:
+ *   - name: shipping-option.deleted
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the shipping option
+ *       }
+ *       ```
+ *     description: Emitted when shipping options are deleted.
+ *     deprecated: false
+ *     since: 2.12.4
  * 
 */
 

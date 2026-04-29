@@ -1,10 +1,23 @@
-import { ChatBubble, DocumentText, XCircle, XMark } from "@medusajs/icons"
-import { AdminOrderLineItem, HttpTypes } from "@medusajs/types"
-import { IconButton, Input, Text } from "@medusajs/ui"
+import {
+  ChatBubble,
+  DocumentText,
+  ReceiptPercent,
+  XCircle,
+  XMark,
+} from "@medusajs/icons"
+import {
+  AdminOrderLineItem,
+  AdminOrderLinePreview,
+  HttpTypes,
+} from "@medusajs/types"
+import { IconButton, Input, Text, Tooltip } from "@medusajs/ui"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  Action,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { Form } from "../../../../../components/common/form"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { Combobox } from "../../../../../components/inputs/combobox"
@@ -13,7 +26,7 @@ import { useReturnReasons } from "../../../../../hooks/api/return-reasons"
 
 type ExchangeInboundItemProps = {
   item: AdminOrderLineItem
-  previewItem: AdminOrderLineItem
+  previewItem: AdminOrderLinePreview
   currencyCode: string
   index: number
 
@@ -39,13 +52,17 @@ function ExchangeInboundItem({
   const showReturnReason = typeof formItem.reason_id === "string"
   const showNote = typeof formItem.note === "string"
 
+  const appliedPromoCodes = (previewItem.adjustments || []).map(
+    (adjustment) => adjustment.code
+  )
+
   return (
     <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl ">
-      <div className="flex flex-col items-center gap-x-2 gap-y-2 p-3 text-sm md:flex-row">
+      <div className="flex flex-col items-center gap-x-3 gap-y-2 p-3 text-sm md:flex-row">
         <div className="flex flex-1 items-center gap-x-3">
           <Thumbnail src={item.thumbnail} />
 
-          <div className="flex flex-col">
+          <div className="flex flex-grow flex-col">
             <div>
               <Text className="txt-small" as="span" weight="plus">
                 {item.title}{" "}
@@ -57,6 +74,21 @@ function ExchangeInboundItem({
               {item.product_title}
             </Text>
           </div>
+          {appliedPromoCodes.length > 0 && (
+            <div className="flex flex-shrink">
+              <Tooltip
+                content={
+                  <span className="text-pretty">
+                    {appliedPromoCodes.map((code) => (
+                      <div key={code}>{code}</div>
+                    ))}
+                  </span>
+                }
+              >
+                <ReceiptPercent className="text-ui-fg-subtle" />
+              </Tooltip>
+            </div>
+          )}
         </div>
 
         <div className="flex flex-1 justify-between">
@@ -124,14 +156,14 @@ function ExchangeInboundItem({
                     onClick: onRemove,
                     icon: <XCircle />,
                   },
-                ].filter(Boolean),
+                ].filter(Boolean) as Action[],
               },
             ]}
           />
         </div>
       </div>
       <>
-        {/*REASON*/}
+        {/* REASON*/}
         {showReturnReason && (
           <div className="grid grid-cols-1 gap-2 p-3 md:grid-cols-2">
             <div>
@@ -186,7 +218,7 @@ function ExchangeInboundItem({
           </div>
         )}
 
-        {/*NOTE*/}
+        {/* NOTE*/}
         {showNote && (
           <div className="grid grid-cols-1 gap-2 p-3 md:grid-cols-2">
             <div>

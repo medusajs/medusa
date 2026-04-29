@@ -1,0 +1,73 @@
+get:
+  operationId: GetLocales
+  summary: List Locales
+  description: >-
+    Retrieve the list of supported locales. You can use this list to allow
+    customers to select their preferred locale in your storefront.
+  externalDocs:
+    url: https://docs.medusajs.com/resources/storefront-development/localization
+    description: Learn how to serve localized content in your storefront.
+  x-authenticated: false
+  parameters:
+    - name: x-publishable-api-key
+      in: header
+      description: Publishable API Key created in the Medusa Admin.
+      required: true
+      schema:
+        type: string
+        externalDocs:
+          url: https://docs.medusajs.com/api/store#publishable-api-key
+    - name: x-medusa-locale
+      in: header
+      description: The locale in BCP 47 format to retrieve localized content.
+      required: false
+      schema:
+        type: string
+        example: en-US
+        externalDocs:
+          url: >-
+            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          description: Learn more in the Serve Translations in Storefront guide.
+    - name: locale
+      in: query
+      description: The locale in BCP 47 format to retrieve localized content.
+      required: false
+      schema:
+        type: string
+        example: en-US
+        externalDocs:
+          url: >-
+            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          description: Learn more in the Serve Translations in Storefront guide.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/store_locales/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_locales/get.sh
+  tags:
+    - Locales
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreLocaleListResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-since: 2.12.3
+  x-featureFlag: translation

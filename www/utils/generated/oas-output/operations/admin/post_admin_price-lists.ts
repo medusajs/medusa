@@ -158,6 +158,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: starts_at
  *   - name: ends_at
  *     in: query
  *     description: Filter by a price list's end date.
@@ -277,6 +278,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: ends_at
  *   - name: status
  *     in: query
  *     description: Filter by price list statuses.

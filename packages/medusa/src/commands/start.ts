@@ -9,18 +9,24 @@ import path from "path"
 import {
   ContainerRegistrationKeys,
   dynamicImport,
+  FeatureFlag,
   FileSystem,
   generateContainerTypes,
+  generatePolicyTypes,
   gqlSchemaToTypes,
   GracefulShutdownServer,
   isFileSkipped,
   isPresent,
+  promiseAll,
 } from "@medusajs/framework/utils"
 
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
-import { MedusaContainer } from "@medusajs/framework/types"
+import { Logger, MedusaContainer } from "@medusajs/framework/types"
 import { parse } from "url"
+import RbacFeatureFlag from "../feature-flags/rbac"
 import loaders, { initializeContainer } from "../loaders"
+import { reloadResources } from "./utils/dev-server"
+import { HMRReloadError } from "./utils/dev-server/errors"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
@@ -163,6 +169,37 @@ function findExpressRoutePath({
   return undefined
 }
 
+function handleHMRReload(logger: Logger) {
+  // Set up HMR reload handler if running in HMR mode
+  if (process.env.MEDUSA_HMR_ENABLED === "true" && process.send) {
+    ;(global as any).__MEDUSA_HMR_ROUTE_REGISTRY__ = true
+
+    process.on("message", async (msg: any) => {
+      if (msg?.type === "hmr-reload") {
+        const { action, file, rootDirectory } = msg
+
+        const success = await reloadResources({
+          logSource: "[HMR]",
+          action,
+          absoluteFilePath: file,
+          logger,
+          rootDirectory,
+        })
+          .then(() => true)
+          .catch((error) => {
+            if (HMRReloadError.isHMRReloadError(error)) {
+              return false
+            }
+            logger.error("[HMR] Reload failed with unexpected error", error)
+            return false
+          })
+
+        process.send!({ type: "hmr-result", success })
+      }
+    })
+  }
+}
+
 async function start(args: {
   directory: string
   host?: string
@@ -171,7 +208,10 @@ async function start(args: {
   cluster?: string
   workers?: string
   servers?: string
-}) {
+}): Promise<{
+  server: GracefulShutdownServer
+  gracefulShutDown: () => void
+} | void> {
   const {
     port = 9000,
     host,
@@ -200,6 +240,8 @@ async function start(args: {
       skipDbConnection: true,
     })
     const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+    const serverActivity = logger.activity(`Creating server`)
+
     await registerInstrumentation(directory)
 
     const app = express()
@@ -236,30 +278,38 @@ async function start(args: {
       if (generateTypes) {
         const typesDirectory = path.join(directory, ".medusa/types")
 
-        /**
-         * Cleanup existing types directory before creating new artifacts
-         */
-        await new FileSystem(typesDirectory).cleanup({ recursive: true })
+        const fileGenPromises: Promise<void>[] = []
 
-        await generateContainerTypes(modules, {
-          outputDir: typesDirectory,
-          interfaceName: "ModuleImplementations",
-        })
-        logger.debug("Generated container types")
+        fileGenPromises.push(
+          generateContainerTypes(modules, {
+            outputDir: typesDirectory,
+            interfaceName: "ModuleImplementations",
+          })
+        )
 
         if (gqlSchema) {
-          await gqlSchemaToTypes({
-            outputDir: typesDirectory,
-            filename: "query-entry-points",
-            interfaceName: "RemoteQueryEntryPoints",
-            schema: gqlSchema,
-            joinerConfigs: MedusaModule.getAllJoinerConfigs(),
-          })
-          logger.debug("Generated modules types")
+          fileGenPromises.push(
+            gqlSchemaToTypes({
+              outputDir: typesDirectory,
+              filename: "query-entry-points",
+              interfaceName: "RemoteQueryEntryPoints",
+              schema: gqlSchema,
+              joinerConfigs: MedusaModule.getAllJoinerConfigs(),
+            })
+          )
         }
-      }
 
-      const serverActivity = logger.activity(`Creating server`)
+        if (FeatureFlag.isFeatureEnabled(RbacFeatureFlag.key)) {
+          fileGenPromises.push(
+            generatePolicyTypes({
+              outputDir: typesDirectory,
+            })
+          )
+        }
+
+        await promiseAll(fileGenPromises)
+        logger.debug("Generated policy types")
+      }
 
       // Register a health check endpoint. Ideally this also checks the readiness of the service, rather than just returning a static response.
       app.get("/health", (_, res) => {
@@ -296,7 +346,9 @@ async function start(args: {
         track("PING")
       })
 
-      return { server }
+      handleHMRReload(logger)
+
+      return { server, gracefulShutDown }
     } catch (err) {
       logger.error("Error starting server", err)
       process.exit(1)
@@ -357,14 +409,14 @@ async function start(args: {
           process.env.PLUGIN_ADMIN_UI_SKIP_CACHE = "true"
         }
 
-        await internalStart(!!types && msg.index === 0)
+        return await internalStart(!!types && msg.index === 0)
       })
     }
   } else {
     /**
      * Not in cluster mode
      */
-    await internalStart(!!types)
+    return await internalStart(!!types)
   }
 }
 

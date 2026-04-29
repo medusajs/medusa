@@ -36,9 +36,10 @@
   ],
   "dependencies": {
     "@medusajs/core-flows": "link:../../../../packages/core/core-flows",
-    "@medusajs/workflows-sdk": "link:../../../../packages/core/workflows-sdk",
+    "@medusajs/framework": "link:../../../../packages/core/framework",
+    "@medusajs/loyalty-plugin": "link:../../../../packages/plugins/loyalty",
     "eslint": "^8.53.0",
-    "glob": "^10.3.10",
+    "glob": "13.0.6",
     "utils": "*",
     "yaml": "^2.3.3"
   }

@@ -1,9 +1,10 @@
+import React from "react"
 import type { OpenAPI } from "types"
 import dynamic from "next/dynamic"
 import type { TagOperationParametersDefaultProps } from "../Default"
 import { TagOperationParametersObjectProps } from "../Object"
 import { Loading } from "docs-ui"
-import mergeAllOfTypes from "../../../../../../utils/merge-all-of-types"
+import mergeAllOfTypes from "@/utils/merge-all-of-types"
 
 const TagOperationParametersObject = dynamic<TagOperationParametersObjectProps>(
   async () => import("../Object"),
@@ -34,7 +35,12 @@ const TagOperationParametersUnion = ({
   topLevel,
 }: TagOperationParametersUnionProps) => {
   const objectSchema = schema.anyOf
-    ? schema.anyOf.find((item) => item.type === "object" && item.properties)
+    ? schema.anyOf.find(
+        (item) =>
+          item.type === "object" &&
+          item.properties &&
+          Object.keys(item.properties).length > 0
+      )
     : schema.allOf
       ? mergeAllOfTypes(schema)
       : undefined

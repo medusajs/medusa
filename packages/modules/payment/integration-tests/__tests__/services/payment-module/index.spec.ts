@@ -313,7 +313,7 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
                 payment_providers: [],
                 payment_sessions: [],
                 payments: [],
-                currency_code: "USD",
+                currency_code: "usd",
                 amount: 200,
               })
             )
@@ -407,6 +407,24 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               expect.objectContaining({
                 id: "pay-col-id-2",
                 currency_code: "eur",
+              })
+            )
+          })
+
+          it("should not reset currency_code to empty string when updating other fields", async () => {
+            await service.updatePaymentCollections("pay-col-id-2", {
+              amount: 9,
+            })
+
+            const collection = await service.retrievePaymentCollection(
+              "pay-col-id-2"
+            )
+
+            expect(collection).toEqual(
+              expect.objectContaining({
+                id: "pay-col-id-2",
+                amount: 9,
+                currency_code: "usd",
               })
             )
           })
@@ -631,6 +649,62 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               })
             )
           })
+
+          it("should auto capture payment when provider returns captured status", async () => {
+            const collection = await service.createPaymentCollections({
+              amount: 200,
+              currency_code: "usd",
+            })
+
+            const session = await service.createPaymentSession(collection.id, {
+              provider_id: "pp_system_default",
+              amount: 100,
+              currency_code: "usd",
+              data: {},
+              context: {
+                customer: { id: "cus-id-1", email: "new@test.tsst" },
+              },
+            })
+
+            // Mock the provider to return CAPTURED status
+            const authorizePaymentMock = jest
+              .spyOn(
+                (service as any).paymentProviderService_,
+                "authorizePayment"
+              )
+              .mockResolvedValueOnce({
+                data: { payment_id: "external_payment_id" },
+                status: "captured",
+              })
+
+            const capturePaymentMock = jest.spyOn(
+              (service as any).paymentProviderService_,
+              "capturePayment"
+            )
+
+            const payment = await service.authorizePaymentSession(
+              session.id,
+              {}
+            )
+
+            expect(authorizePaymentMock).toHaveBeenCalledTimes(1)
+            expect(capturePaymentMock).not.toHaveBeenCalled()
+
+            expect(payment).toEqual(
+              expect.objectContaining({
+                id: expect.any(String),
+                amount: 100,
+                currency_code: "usd",
+                provider_id: "pp_system_default",
+                captured_at: expect.any(Date),
+                captures: [expect.objectContaining({})],
+                payment_session: expect.objectContaining({
+                  status: "authorized",
+                  authorized_at: expect.any(Date),
+                }),
+              })
+            )
+          })
         })
       })
 
@@ -778,6 +852,68 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
 
             expect(error.message).toEqual(
               "The payment: pay-id-1 has been canceled."
+            )
+          })
+
+          it("should not call provider capturePayment for auto-captured payments", async () => {
+            const collection = await service.createPaymentCollections({
+              amount: 200,
+              currency_code: "usd",
+            })
+
+            const session = await service.createPaymentSession(collection.id, {
+              provider_id: "pp_system_default",
+              amount: 100,
+              currency_code: "usd",
+              data: {},
+              context: {
+                customer: { id: "cus-id-1", email: "new@test.tsst" },
+              },
+            })
+
+            // Mock the provider to return CAPTURED status for auto-capture
+            jest
+              .spyOn(
+                (service as any).paymentProviderService_,
+                "authorizePayment"
+              )
+              .mockResolvedValueOnce({
+                data: { payment_id: "external_payment_id" },
+                status: "captured",
+              })
+
+            const payment = await service.authorizePaymentSession(
+              session.id,
+              {}
+            )
+
+            // Spy on capturePayment provider method
+            const capturePaymentMock = jest.spyOn(
+              (service as any).paymentProviderService_,
+              "capturePayment"
+            )
+
+            // Try to capture the already auto-captured payment
+            const capturedPayment = await service.capturePayment({
+              amount: 100,
+              payment_id: payment.id,
+            })
+
+            // Provider's capturePayment should NOT be called since it was auto-captured
+            expect(capturePaymentMock).not.toHaveBeenCalled()
+
+            // Verify data consistency
+            expect(capturedPayment).toEqual(
+              expect.objectContaining({
+                id: payment.id,
+                amount: 100,
+                captured_at: expect.any(Date),
+                captures: [
+                  expect.objectContaining({
+                    amount: 100,
+                  }),
+                ],
+              })
             )
           })
         })

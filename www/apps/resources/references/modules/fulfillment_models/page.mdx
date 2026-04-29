@@ -20,9 +20,9 @@ erDiagram
 	FulfillmentSet ||--|| ServiceZone : service_zones
 	ServiceZone ||--|| GeoZone : geo_zones
 	ServiceZone ||--|| ShippingOption : shipping_options
-	ShippingOption ||--|| ShippingOptionType : type
 	ShippingOption ||--|| ShippingOptionRule : rules
 	ShippingOption ||--|| Fulfillment : fulfillments
+	ShippingOptionType ||--|| ShippingOption : shipping_options
 	ShippingProfile ||--|| ShippingOption : shipping_options
 
 ```

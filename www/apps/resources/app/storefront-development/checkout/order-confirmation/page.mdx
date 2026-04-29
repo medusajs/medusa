@@ -6,7 +6,7 @@ products:
   - order
 ---
 
-import { CodeTabs, CodeTab, Table } from "docs-ui"
+import { CodeTabs, CodeTab, Table, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Order Confirmation in Storefront`,
@@ -144,6 +144,21 @@ return (
 
 In the above example, you show the order items in a list, displaying the item's title, quantity, and unit price formatted with the `formatPrice` function.
 
+### Locale of Order Items
+
+<Prerequisites
+  items={[
+    {
+      text: "Translation Module Configured",
+      link: "/commerce-modules/translation#configure-translation-module",
+    }
+  ]}
+/>
+
+When you complete the cart, items in the order will be in the locale that was set for the cart. This ensures that the customer sees the order details in their preferred language.
+
+If no locale was set for the cart, then the order's items will be in the original product content.
+
 ---
 
 ## Show Order Totals
@@ -163,7 +178,7 @@ An order has various fields for the order totals, which you can check out in the
         `subtotal`
       </Table.Cell>
       <Table.Cell>
-        The order's subtotal excluding taxes, and including total of items, shipping, and discounts.
+        The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -171,7 +186,7 @@ An order has various fields for the order totals, which you can check out in the
       `discount_total`
       </Table.Cell>
       <Table.Cell>
-        The total discounts or promotions applied to the order.
+        The total amount of discounts applied to the order, including the tax portion of discounts.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -179,7 +194,7 @@ An order has various fields for the order totals, which you can check out in the
         `shipping_total`
       </Table.Cell>
       <Table.Cell>
-        The total shipping cost.
+        The sum of all shipping methods' totals after discounts, including taxes.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -187,7 +202,7 @@ An order has various fields for the order totals, which you can check out in the
         `tax_total`
       </Table.Cell>
       <Table.Cell>
-        The total tax amount.
+        The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -195,7 +210,7 @@ An order has various fields for the order totals, which you can check out in the
         `total`
       </Table.Cell>
       <Table.Cell>
-        The total amount of the order including all taxes, shipping, and discounts.
+        The order's final total after discounts and credit lines, including taxes.
       </Table.Cell>
     </Table.Row>
   </Table.Body>

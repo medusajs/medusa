@@ -1,7 +1,9 @@
 import { FetchError } from "@medusajs/js-sdk"
 import { FindParams, HttpTypes, PaginatedResponse } from "@medusajs/types"
 import {
+  InfiniteData,
   QueryKey,
+  UseInfiniteQueryOptions,
   UseMutationOptions,
   UseQueryOptions,
   useMutation,
@@ -11,6 +13,7 @@ import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { productsQueryKeys } from "./products"
+import { useInfiniteList } from "../use-infinite-list"
 
 const COLLECTION_QUERY_KEY = "collections" as const
 export const collectionsQueryKeys = queryKeysFactory(COLLECTION_QUERY_KEY)
@@ -57,6 +60,34 @@ export const useCollections = (
   return { ...data, ...rest }
 }
 
+export const useInfiniteCollections = (
+  query?: Omit<HttpTypes.AdminCollectionListParams, "offset" | "limit"> & {
+    limit?: number
+  },
+  options?: Omit<
+    UseInfiniteQueryOptions<
+      HttpTypes.AdminCollectionListResponse,
+      FetchError,
+      InfiniteData<HttpTypes.AdminCollectionListResponse, number>,
+      HttpTypes.AdminCollectionListResponse,
+      QueryKey,
+      number
+    >,
+    "queryFn" | "queryKey" | "initialPageParam" | "getNextPageParam"
+  >
+) => {
+  return useInfiniteList<
+    HttpTypes.AdminCollectionListResponse,
+    HttpTypes.AdminCollectionListParams,
+    FetchError,
+    QueryKey
+  >({
+    queryKey: (params) => collectionsQueryKeys.list(params),
+    queryFn: (params) => sdk.admin.productCollection.list(params),
+    query,
+    options,
+  })
+}
 export const useUpdateCollection = (
   id: string,
   options?: UseMutationOptions<

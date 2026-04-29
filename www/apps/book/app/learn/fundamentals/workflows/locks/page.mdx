@@ -20,8 +20,8 @@ The [Locking Module](!resources!/infrastructure-modules/locking) handles the loc
 
 Medusa provides two steps that you can use to create locks in your workflows:
 
-- `acquireLockStep`: Attempt to acquire a lock. If the lock is already held by another process, this step will wait until the lock is released. It will fail if a timeout occurs before acquiring the lock.
-- `releaseLockStep`: Release a previously acquired lock.
+- [acquireLockStep](!resources!/references/medusa-workflows/steps/acquireLockStep): Attempt to acquire a lock. If the lock is already held by another process, this step will wait until the lock is released. It will fail if a timeout occurs before acquiring the lock.
+- [releaseLockStep](!resources!/references/medusa-workflows/steps/releaseLockStep): Release a previously acquired lock.
 
 You can use these steps in your workflows to ensure that only one instance of a workflow can modify a resource at a time.
 
@@ -122,10 +122,73 @@ In this example, the `chargeCustomerStep` step acquires a lock on the order usin
 
 <Note title="Tip">
 
-The step will wait until the lock is acquired based on the configured Locking Module Provider's options. For example, the [Redis Locking Module Provider](!resources!/infrastructure-modules/locking/redis) will wait five seconds before timing out.
+The step will wait until the lock is acquired based on the configured Locking Module Provider's options. For example, the [Redis Locking Module Provider](!resources!/infrastructure-modules/locking/redis) will wait five seconds before timing out by default, with exponential backoff retry intervals.
 
 </Note>
 
 ### Locking Module Service API
 
 Refer to the [Locking Module reference](!resources!/references/locking-service) for more information on the Locking Module's service methods.
+
+---
+
+## Locks in Nested Workflows
+
+When a [Nested workflows](../execute-another-workflow/page.mdx) acquires a lock with `acquireLockStep`, the lock is not acquired. So, if you're using a workflow that acquires locks with `acquireLockStep` within another workflow, the parent workflow must handle the locking mechanism.
+
+<Note>
+
+If the nested workflow acquires a lock in a step using the Locking Module's service, the lock will be acquired as expected.
+
+</Note>
+
+For example, consider a custom workflow that executes Medusa's [completeCartWorkflow](!resources!/references/medusa-workflows/completeCartWorkflow). The `completeCartWorkflow` acquires locks on the cart with `acquireLockStep` to prevent race conditions.
+
+Therefore, the custom workflow must acquire and release the locks around the `completeCartWorkflow` execution. For example:
+
+export const nestedWorkflowLockHighlights = [
+  ["16", "acquireLockStep", "Acquire a lock on the cart before executing the nested workflow."],
+  ["23", "completeCartWorkflow", "Execute the nested workflow that requires the lock."],
+  ["30", "releaseLockStep", "Release the lock after the nested workflow is complete."]
+]
+
+```ts title="src/workflows/custom-complete-cart.ts" highlights={nestedWorkflowLockHighlights}
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { 
+  acquireLockStep, 
+  releaseLockStep,
+  completeCartWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+type WorkflowInput = {
+  cart_id: string;
+}
+
+export const customCompleteCartWorkflow = createWorkflow(
+  "custom-complete-cart",
+  (input: WorkflowInput) => {
+    // acquire the same lock as the nested workflow
+    acquireLockStep({
+      key: input.cart_id,
+      timeout: 30,
+      ttl: 60 * 2,
+    })
+
+    // Execute the nested workflow
+    completeCartWorkflow.runAsStep({
+      input: {
+        id: input.cart_id,
+      },
+    })
+
+    // release the lock after the nested workflow is complete
+    releaseLockStep({
+      key: input.cart_id,
+    })
+  }
+)
+```
+
+In the example above, the `customCompleteCartWorkflow` acquires a lock on the cart before executing the `completeCartWorkflow` and releases it afterward.
+
+Make sure you're acquiring the same lock key as the nested workflow.

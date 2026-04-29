@@ -11,7 +11,7 @@
   "main": "_base.js",
   "version": "0.0.0",
   "dependencies": {
-    "glob": "^10.3.10"
+    "glob": "13.0.6"
   },
   "devDependencies": {
     "types": "*"

@@ -65,7 +65,7 @@
  *     type: object
  *     description: The shipping option's data, useful for the provider handling fulfillment.
  *     externalDocs:
- *       url: https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/shipping-option#data-property
+ *       url: https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property
  *   metadata:
  *     type: object
  *     description: The shipping option's metadata, can hold custom key-value pairs.

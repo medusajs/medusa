@@ -131,14 +131,6 @@ export interface AdminUpdateApplicationMethod {
    */
   allocation?: ApplicationMethodAllocationValues
   /**
-   * The target rules of the application method.
-   */
-  target_rules?: AdminCreatePromotionRule[]
-  /**
-   * The buy rules of the application method.
-   */
-  buy_rules?: AdminCreatePromotionRule[]
-  /**
    * The quantity of the application method.
    */
   apply_to_quantity?: number | null
@@ -169,6 +161,10 @@ export interface AdminCreatePromotion {
    */
   type: PromotionTypeValues
   /**
+   * The status of the promotion.
+   */
+  status?: PromotionStatusValues
+  /**
    * The ID of the campaign that the promotion belongs to.
    */
   campaign_id?: string | null
@@ -180,6 +176,10 @@ export interface AdminCreatePromotion {
    * The application method of the promotion.
    */
   application_method: AdminCreateApplicationMethod
+  /**
+   * The maximum number of times this promotion can be used.
+   */
+  limit?: number | null
   /**
    * The rules of the promotion.
    */
@@ -214,17 +214,13 @@ export interface AdminUpdatePromotion {
    */
   campaign_id?: string | null
   /**
-   * The campaign that the promotion belongs to.
-   */
-  campaign?: AdminCreateCampaign
-  /**
    * The application method of the promotion.
    */
   application_method?: AdminUpdateApplicationMethod
   /**
-   * The rules of the promotion.
+   * The maximum number of times this promotion can be used.
    */
-  rules?: AdminCreatePromotionRule[]
+  limit?: number | null
 }
 
 export interface BatchAddPromotionRulesReq {

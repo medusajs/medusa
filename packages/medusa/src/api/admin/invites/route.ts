@@ -8,8 +8,8 @@ import {
 } from "@medusajs/framework/utils"
 
 import { createInvitesWorkflow } from "@medusajs/core-flows"
-import { refetchInvite } from "./helpers"
 import { HttpTypes } from "@medusajs/framework/types"
+import { refetchInvite } from "./helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminGetInvitesParams>,
@@ -60,5 +60,3 @@ export const POST = async (
 
   res.status(200).json({ invite })
 }
-
-export const AUTHENTICATE = false

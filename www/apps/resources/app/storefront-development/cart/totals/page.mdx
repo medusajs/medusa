@@ -35,7 +35,7 @@ The fields that are most commonly used are:
         `subtotal`
       </Table.Cell>
       <Table.Cell>
-        The cart's subtotal excluding taxes and including items, shipping, and discounts.
+        The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -43,7 +43,7 @@ The fields that are most commonly used are:
       `discount_total`
       </Table.Cell>
       <Table.Cell>
-        The total discounts or promotions applied to the cart.
+        The total amount of discounts applied to the cart, including the tax portion of discounts.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -51,7 +51,7 @@ The fields that are most commonly used are:
         `shipping_total`
       </Table.Cell>
       <Table.Cell>
-        The total shipping cost.
+        The sum of all shipping methods' totals after discounts, including taxes.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -59,7 +59,7 @@ The fields that are most commonly used are:
         `tax_total`
       </Table.Cell>
       <Table.Cell>
-        The total tax amount.
+        The cart's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -67,7 +67,7 @@ The fields that are most commonly used are:
         `total`
       </Table.Cell>
       <Table.Cell>
-        The total amount of the cart including all taxes, shipping, and discounts.
+        The cart's final total after discounts and credit lines, including taxes.
       </Table.Cell>
     </Table.Row>
   </Table.Body>

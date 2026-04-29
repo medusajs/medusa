@@ -1,7 +1,9 @@
 import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import {
+  InfiniteData,
   QueryKey,
+  UseInfiniteQueryOptions,
   UseMutationOptions,
   UseQueryOptions,
   useMutation,
@@ -10,6 +12,7 @@ import {
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { useInfiniteList } from "../use-infinite-list"
 
 const PRODUCT_TYPES_QUERY_KEY = "product_types" as const
 export const productTypesQueryKeys = queryKeysFactory(PRODUCT_TYPES_QUERY_KEY)
@@ -55,6 +58,35 @@ export const useProductTypes = (
   })
 
   return { ...data, ...rest }
+}
+
+export const useInfiniteProductTypes = (
+  query?: Omit<HttpTypes.AdminProductTypeListParams, "offset" | "limit"> & {
+    limit?: number
+  },
+  options?: Omit<
+    UseInfiniteQueryOptions<
+      HttpTypes.AdminProductTypeListResponse,
+      FetchError,
+      InfiniteData<HttpTypes.AdminProductTypeListResponse, number>,
+      HttpTypes.AdminProductTypeListResponse,
+      QueryKey,
+      number
+    >,
+    "queryFn" | "queryKey" | "initialPageParam" | "getNextPageParam"
+  >
+) => {
+  return useInfiniteList<
+    HttpTypes.AdminProductTypeListResponse,
+    HttpTypes.AdminProductTypeListParams,
+    FetchError,
+    QueryKey
+  >({
+    queryKey: (params) => productTypesQueryKeys.list(params),
+    queryFn: (params) => sdk.admin.productType.list(params),
+    query,
+    options,
+  })
 }
 
 export const useCreateProductType = (

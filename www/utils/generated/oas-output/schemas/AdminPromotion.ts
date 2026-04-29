@@ -67,6 +67,14 @@
  *     type: boolean
  *     title: is_tax_inclusive
  *     description: Whether the promotion is tax inclusive. If enabled, the promotion is applied after tax is calculated.
+ *   limit:
+ *     type: number
+ *     title: limit
+ *     description: The limit of times the promotion can be used.
+ *   used:
+ *     type: number
+ *     title: used
+ *     description: The number of times the promotion has been used.
  * 
 */
 

@@ -10,6 +10,7 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import { updateFulfillmentWorkflow } from "./update-fulfillment"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 
 export const validateFulfillmentDeliverabilityStepId =
   "validate-fulfillment-deliverability"
@@ -84,6 +85,12 @@ export const markFulfillmentAsDeliveredWorkflowId =
 export const markFulfillmentAsDeliveredWorkflow = createWorkflow(
   markFulfillmentAsDeliveredWorkflowId,
   ({ id }: WorkflowData<MarkFulfillmentAsDeliveredInput>) => {
+    acquireLockStep({
+      key: id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const fulfillment = useRemoteQueryStep({
       entry_point: "fulfillment",
       fields: ["id", "delivered_at", "canceled_at"],
@@ -99,8 +106,13 @@ export const markFulfillmentAsDeliveredWorkflow = createWorkflow(
       delivered_at: new Date(),
     }))
 
-    return new WorkflowResponse(
-      updateFulfillmentWorkflow.runAsStep({ input: updateInput })
-    )
+    const updatedFulfillment = updateFulfillmentWorkflow.runAsStep({
+      input: updateInput,
+    })
+
+    releaseLockStep({
+      key: id,
+    })
+    return new WorkflowResponse(updatedFulfillment)
   }
 )

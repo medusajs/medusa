@@ -4,6 +4,10 @@ export const nextjs = [
     "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/category-images"
   },
   {
+    "title": "Customer Tiers",
+    "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/customer-tiers"
+  },
+  {
     "title": "First-Purchase Discount",
     "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/first-purchase-discounts"
   },
@@ -22,6 +26,10 @@ export const nextjs = [
   {
     "title": "Implement Product Builder",
     "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/product-builder"
+  },
+  {
+    "title": "Implement Product Rentals",
+    "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/product-rentals"
   },
   {
     "title": "Saved Payment Methods",

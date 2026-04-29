@@ -1,3 +1,6 @@
+// TODO: Comment temporarely and we will re enable it in the near future #14478
+// import { EventOptions } from "@medusajs/types"
+
 /**
  * @category Cart
  * @customNamespace Cart
@@ -51,7 +54,7 @@ export const CartWorkflowEvents = {
 
   /**
    * Emitted when the customer in the cart is transferred.
-   * 
+   *
    * @since 2.8.0
    *
    * @eventPayload
@@ -63,7 +66,7 @@ export const CartWorkflowEvents = {
    * ```
    */
   CUSTOMER_TRANSFERRED: "cart.customer_transferred",
-}
+} as const
 
 /**
  * @category Customer
@@ -75,9 +78,9 @@ export const CustomerWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the customer
-   * }]
+   * }
    * ```
    */
   CREATED: "customer.created",
@@ -86,9 +89,9 @@ export const CustomerWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the customer
-   * }]
+   * }
    * ```
    */
   UPDATED: "customer.updated",
@@ -97,13 +100,13 @@ export const CustomerWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the customer
-   * }]
+   * }
    * ```
    */
   DELETED: "customer.deleted",
-}
+} as const
 
 /**
  * @category Order
@@ -151,9 +154,9 @@ export const OrderWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the order
-   * }]
+   * }
    * ```
    */
   COMPLETED: "order.completed",
@@ -162,9 +165,9 @@ export const OrderWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the order
-   * }]
+   * }
    * ```
    */
   ARCHIVED: "order.archived",
@@ -259,7 +262,7 @@ export const OrderWorkflowEvents = {
    * ```
    */
   TRANSFER_REQUESTED: "order.transfer_requested",
-}
+} as const
 
 /**
  * @category Order Edit
@@ -308,7 +311,7 @@ export const OrderEditWorkflowEvents = {
    * ```
    */
   CANCELED: "order-edit.canceled",
-}
+} as const
 
 /**
  * @category User
@@ -320,9 +323,9 @@ export const UserWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the user
-   * }]
+   * }
    * ```
    */
   CREATED: "user.created",
@@ -331,9 +334,9 @@ export const UserWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the user
-   * }]
+   * }
    * ```
    */
   UPDATED: "user.updated",
@@ -342,13 +345,13 @@ export const UserWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the user
-   * }]
+   * }
    * ```
    */
   DELETED: "user.deleted",
-}
+} as const
 
 /**
  * @category Auth
@@ -365,11 +368,12 @@ export const AuthWorkflowEvents = {
    *   entity_id, // The identifier of the user or customer. For example, an email address.
    *   actor_type, // The type of actor. For example, "customer", "user", or custom.
    *   token, // The generated token.
+   *   metadata, // Optional custom metadata passed from the request.
    * }
    * ```
    */
   PASSWORD_RESET: "auth.password_reset",
-}
+} as const
 
 /**
  * @category Sales Channel
@@ -381,9 +385,9 @@ export const SalesChannelWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the sales channel
-   * }]
+   * }
    * ```
    */
   CREATED: "sales-channel.created",
@@ -392,9 +396,9 @@ export const SalesChannelWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the sales channel
-   * }]
+   * }
    * ```
    */
   UPDATED: "sales-channel.updated",
@@ -403,13 +407,13 @@ export const SalesChannelWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the sales channel
-   * }]
+   * }
    * ```
    */
   DELETED: "sales-channel.deleted",
-}
+} as const
 
 /**
  * @category Product Category
@@ -421,9 +425,9 @@ export const ProductCategoryWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product category
-   * }]
+   * }
    * ```
    */
   CREATED: "product-category.created",
@@ -432,9 +436,9 @@ export const ProductCategoryWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product category
-   * }]
+   * }
    * ```
    */
   UPDATED: "product-category.updated",
@@ -443,13 +447,13 @@ export const ProductCategoryWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product category
-   * }]
+   * }
    * ```
    */
   DELETED: "product-category.deleted",
-}
+} as const
 
 /**
  * @category Product Collection
@@ -461,9 +465,9 @@ export const ProductCollectionWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product collection
-   * }]
+   * }
    * ```
    */
   CREATED: "product-collection.created",
@@ -472,9 +476,9 @@ export const ProductCollectionWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product collection
-   * }]
+   * }
    * ```
    */
   UPDATED: "product-collection.updated",
@@ -483,13 +487,13 @@ export const ProductCollectionWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product collection
-   * }]
+   * }
    * ```
    */
   DELETED: "product-collection.deleted",
-}
+} as const
 
 /**
  * @category Product Variant
@@ -501,9 +505,9 @@ export const ProductVariantWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product variant
-   * }]
+   * }
    * ```
    */
   UPDATED: "product-variant.updated",
@@ -512,9 +516,9 @@ export const ProductVariantWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product variant
-   * }]
+   * }
    * ```
    */
   CREATED: "product-variant.created",
@@ -523,13 +527,13 @@ export const ProductVariantWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product variant
-   * }]
+   * }
    * ```
    */
   DELETED: "product-variant.deleted",
-}
+} as const
 
 /**
  * @category Product
@@ -541,9 +545,9 @@ export const ProductWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product
-   * }]
+   * }
    * ```
    */
   UPDATED: "product.updated",
@@ -552,9 +556,9 @@ export const ProductWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product
-   * }]
+   * }
    * ```
    */
   CREATED: "product.created",
@@ -563,13 +567,13 @@ export const ProductWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product
-   * }]
+   * }
    * ```
    */
   DELETED: "product.deleted",
-}
+} as const
 
 /**
  * @category Product Type
@@ -581,9 +585,9 @@ export const ProductTypeWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product type
-   * }]
+   * }
    * ```
    */
   UPDATED: "product-type.updated",
@@ -592,9 +596,9 @@ export const ProductTypeWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product type
-   * }]
+   * }
    * ```
    */
   CREATED: "product-type.created",
@@ -603,13 +607,13 @@ export const ProductTypeWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product type
-   * }]
+   * }
    * ```
    */
   DELETED: "product-type.deleted",
-}
+} as const
 
 /**
  * @category Product Tag
@@ -621,9 +625,9 @@ export const ProductTagWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product tag
-   * }]
+   * }
    * ```
    */
   UPDATED: "product-tag.updated",
@@ -632,9 +636,9 @@ export const ProductTagWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product tag
-   * }]
+   * }
    * ```
    */
   CREATED: "product-tag.created",
@@ -643,13 +647,13 @@ export const ProductTagWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product tag
-   * }]
+   * }
    * ```
    */
   DELETED: "product-tag.deleted",
-}
+} as const
 
 /**
  * @category Product Option
@@ -661,9 +665,9 @@ export const ProductOptionWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product option
-   * }]
+   * }
    * ```
    */
   UPDATED: "product-option.updated",
@@ -672,9 +676,9 @@ export const ProductOptionWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product option
-   * }]
+   * }
    * ```
    */
   CREATED: "product-option.created",
@@ -683,13 +687,13 @@ export const ProductOptionWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the product option
-   * }]
+   * }
    * ```
    */
   DELETED: "product-option.deleted",
-}
+} as const
 
 /**
  * @category Invite
@@ -713,9 +717,9 @@ export const InviteWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the invite
-   * }]
+   * }
    * ```
    */
   CREATED: "invite.created",
@@ -724,9 +728,9 @@ export const InviteWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the invite
-   * }]
+   * }
    * ```
    */
   DELETED: "invite.deleted",
@@ -737,13 +741,13 @@ export const InviteWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the invite
-   * }]
+   * }
    * ```
    */
   RESENT: "invite.resent",
-}
+} as const
 
 /**
  * @category Region
@@ -755,9 +759,9 @@ export const RegionWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the region
-   * }]
+   * }
    * ```
    */
   UPDATED: "region.updated",
@@ -766,9 +770,9 @@ export const RegionWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the region
-   * }]
+   * }
    * ```
    */
   CREATED: "region.created",
@@ -777,13 +781,13 @@ export const RegionWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the region
-   * }]
+   * }
    * ```
    */
   DELETED: "region.deleted",
-}
+} as const
 
 /**
  * @category Fulfillment
@@ -813,7 +817,7 @@ export const FulfillmentWorkflowEvents = {
    * ```
    */
   DELIVERY_CREATED: "delivery.created",
-}
+} as const
 
 /**
  * @category Shipping Option Type
@@ -827,9 +831,9 @@ export const ShippingOptionTypeWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the shipping option type
-   * }]
+   * }
    * ```
    */
   UPDATED: "shipping-option-type.updated",
@@ -840,9 +844,9 @@ export const ShippingOptionTypeWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the shipping option type
-   * }]
+   * }
    * ```
    */
   CREATED: "shipping-option-type.created",
@@ -853,13 +857,59 @@ export const ShippingOptionTypeWorkflowEvents = {
    *
    * @eventPayload
    * ```ts
-   * [{
+   * {
    *   id, // The ID of the shipping option type
-   * }]
+   * }
    * ```
    */
   DELETED: "shipping-option-type.deleted",
-}
+} as const
+
+/**
+ * @category Shipping Option
+ * @customNamespace Fulfillment
+ */
+export const ShippingOptionWorkflowEvents = {
+  /**
+   * Emitted when shipping options are created.
+   *
+   * @since 2.12.4
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the shipping option
+   * }
+   * ```
+   */
+  CREATED: "shipping-option.created",
+  /**
+   * Emitted when shipping options are updated.
+   *
+   * @since 2.12.4
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the shipping option
+   * }
+   * ```
+   */
+  UPDATED: "shipping-option.updated",
+  /**
+   * Emitted when shipping options are deleted.
+   *
+   * @since 2.12.4
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the shipping option
+   * }
+   * ```
+   */
+  DELETED: "shipping-option.deleted",
+} as const
 
 /**
  * @category Payment
@@ -888,4 +938,168 @@ export const PaymentEvents = {
    * ```
    */
   REFUNDED: "payment.refunded",
-}
+} as const
+
+/**
+ * @category Translation
+ * @customNamespace Translation
+ */
+export const TranslationWorkflowEvents = {
+  /**
+   * Emitted when translations are created.
+   *
+   * @since 2.12.3
+   * @featureFlag translation
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the translation
+   * }
+   * ```
+   */
+  CREATED: "translation.created",
+  /**
+   * Emitted when translations are updated.
+   *
+   * @since 2.12.3
+   * @featureFlag translation
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the translation
+   * }
+   * ```
+   */
+  UPDATED: "translation.updated",
+  /**
+   * Emitted when translations are deleted.
+   *
+   * @since 2.12.3
+   * @featureFlag translation
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the translation
+   * }
+   * ```
+   */
+  DELETED: "translation.deleted",
+} as const
+
+// TODO: Comment temporarely and we will re enable it in the near future #14478
+// declare module "@medusajs/types" {
+//   export interface EventBusEventsOptions {
+//     // Cart events
+//     [CartWorkflowEvents.CREATED]?: EventOptions
+//     [CartWorkflowEvents.UPDATED]?: EventOptions
+//     [CartWorkflowEvents.CUSTOMER_UPDATED]?: EventOptions
+//     [CartWorkflowEvents.REGION_UPDATED]?: EventOptions
+//     [CartWorkflowEvents.CUSTOMER_TRANSFERRED]?: EventOptions
+
+//     // Customer events
+//     [CustomerWorkflowEvents.CREATED]?: EventOptions
+//     [CustomerWorkflowEvents.UPDATED]?: EventOptions
+//     [CustomerWorkflowEvents.DELETED]?: EventOptions
+
+//     // Order events
+//     [OrderWorkflowEvents.UPDATED]?: EventOptions
+//     [OrderWorkflowEvents.PLACED]?: EventOptions
+//     [OrderWorkflowEvents.CANCELED]?: EventOptions
+//     [OrderWorkflowEvents.COMPLETED]?: EventOptions
+//     [OrderWorkflowEvents.ARCHIVED]?: EventOptions
+//     [OrderWorkflowEvents.FULFILLMENT_CREATED]?: EventOptions
+//     [OrderWorkflowEvents.FULFILLMENT_CANCELED]?: EventOptions
+//     [OrderWorkflowEvents.RETURN_REQUESTED]?: EventOptions
+//     [OrderWorkflowEvents.RETURN_RECEIVED]?: EventOptions
+//     [OrderWorkflowEvents.CLAIM_CREATED]?: EventOptions
+//     [OrderWorkflowEvents.EXCHANGE_CREATED]?: EventOptions
+//     [OrderWorkflowEvents.TRANSFER_REQUESTED]?: EventOptions
+
+//     // Order Edit events
+//     [OrderEditWorkflowEvents.REQUESTED]?: EventOptions
+//     [OrderEditWorkflowEvents.CONFIRMED]?: EventOptions
+//     [OrderEditWorkflowEvents.CANCELED]?: EventOptions
+
+//     // User events
+//     [UserWorkflowEvents.CREATED]?: EventOptions
+//     [UserWorkflowEvents.UPDATED]?: EventOptions
+//     [UserWorkflowEvents.DELETED]?: EventOptions
+
+//     // Auth events
+//     [AuthWorkflowEvents.PASSWORD_RESET]?: EventOptions
+
+//     // Sales Channel events
+//     [SalesChannelWorkflowEvents.CREATED]?: EventOptions
+//     [SalesChannelWorkflowEvents.UPDATED]?: EventOptions
+//     [SalesChannelWorkflowEvents.DELETED]?: EventOptions
+
+//     // Product Category events
+//     [ProductCategoryWorkflowEvents.CREATED]?: EventOptions
+//     [ProductCategoryWorkflowEvents.UPDATED]?: EventOptions
+//     [ProductCategoryWorkflowEvents.DELETED]?: EventOptions
+
+//     // Product Collection events
+//     [ProductCollectionWorkflowEvents.CREATED]?: EventOptions
+//     [ProductCollectionWorkflowEvents.UPDATED]?: EventOptions
+//     [ProductCollectionWorkflowEvents.DELETED]?: EventOptions
+
+//     // Product Variant events
+//     [ProductVariantWorkflowEvents.CREATED]?: EventOptions
+//     [ProductVariantWorkflowEvents.UPDATED]?: EventOptions
+//     [ProductVariantWorkflowEvents.DELETED]?: EventOptions
+
+//     // Product events
+//     [ProductWorkflowEvents.CREATED]?: EventOptions
+//     [ProductWorkflowEvents.UPDATED]?: EventOptions
+//     [ProductWorkflowEvents.DELETED]?: EventOptions
+
+//     // Product Type events
+//     [ProductTypeWorkflowEvents.CREATED]?: EventOptions
+//     [ProductTypeWorkflowEvents.UPDATED]?: EventOptions
+//     [ProductTypeWorkflowEvents.DELETED]?: EventOptions
+
+//     // Product Tag events
+//     [ProductTagWorkflowEvents.CREATED]?: EventOptions
+//     [ProductTagWorkflowEvents.UPDATED]?: EventOptions
+//     [ProductTagWorkflowEvents.DELETED]?: EventOptions
+
+//     // Product Option events
+//     [ProductOptionWorkflowEvents.CREATED]?: EventOptions
+//     [ProductOptionWorkflowEvents.UPDATED]?: EventOptions
+//     [ProductOptionWorkflowEvents.DELETED]?: EventOptions
+
+//     // Invite events
+//     [InviteWorkflowEvents.ACCEPTED]?: EventOptions
+//     [InviteWorkflowEvents.CREATED]?: EventOptions
+//     [InviteWorkflowEvents.DELETED]?: EventOptions
+//     [InviteWorkflowEvents.RESENT]?: EventOptions
+
+//     // Region events
+//     [RegionWorkflowEvents.CREATED]?: EventOptions
+//     [RegionWorkflowEvents.UPDATED]?: EventOptions
+//     [RegionWorkflowEvents.DELETED]?: EventOptions
+
+//     // Fulfillment events
+//     [FulfillmentWorkflowEvents.SHIPMENT_CREATED]?: EventOptions
+//     [FulfillmentWorkflowEvents.DELIVERY_CREATED]?: EventOptions
+
+//     // Shipping Option Type events
+//     [ShippingOptionTypeWorkflowEvents.CREATED]?: EventOptions
+//     [ShippingOptionTypeWorkflowEvents.UPDATED]?: EventOptions
+//     [ShippingOptionTypeWorkflowEvents.DELETED]?: EventOptions
+
+//     // Shipping Option events
+//     [ShippingOptionWorkflowEvents.CREATED]?: EventOptions
+//     [ShippingOptionWorkflowEvents.UPDATED]?: EventOptions
+//     [ShippingOptionWorkflowEvents.DELETED]?: EventOptions
+
+//     // Payment events
+//     [PaymentEvents.CAPTURED]?: EventOptions
+//     [PaymentEvents.REFUNDED]?: EventOptions
+
+//     // Translation events
+//     [TranslationWorkflowEvents.CREATED]?: EventOptions
+//     [TranslationWorkflowEvents.UPDATED]?: EventOptions
+//     [TranslationWorkflowEvents.DELETED]?: EventOptions
+//   }
+// }

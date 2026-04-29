@@ -168,47 +168,47 @@
  *   original_total:
  *     type: number
  *     title: original_total
- *     description: The item's total including taxes, excluding promotions.
+ *     description: The line item's original total before discounts, including taxes.
  *   original_subtotal:
  *     type: number
  *     title: original_subtotal
- *     description: The item's total excluding taxes, including promotions.
+ *     description: The line item's original subtotal before discounts, excluding taxes.
  *   original_tax_total:
  *     type: number
  *     title: original_tax_total
- *     description: The total taxes of the item, excluding promotions.
+ *     description: The line item's original tax total before discounts.
  *   item_total:
  *     type: number
  *     title: item_total
- *     description: The total taxes of the item, including promotions.
+ *     description: The line item's total after discounts, including taxes.
  *   item_subtotal:
  *     type: number
  *     title: item_subtotal
- *     description: The item's total excluding taxes, including promotions.
+ *     description: The line item's subtotal before discounts, excluding taxes.
  *   item_tax_total:
  *     type: number
  *     title: item_tax_total
- *     description: The total taxes of the item, including promotions.
+ *     description: The line item's tax total after discounts.
  *   total:
  *     type: number
  *     title: total
- *     description: The item's total, including taxes and promotions.
+ *     description: The line item's total after discounts, including taxes.
  *   subtotal:
  *     type: number
  *     title: subtotal
- *     description: The item's subtotal excluding taxes, including promotions.
+ *     description: The line item's subtotal before discounts, excluding taxes.
  *   tax_total:
  *     type: number
  *     title: tax_total
- *     description: The tax total of the item including promotions.
+ *     description: The line item's tax total after discounts.
  *   discount_total:
  *     type: number
  *     title: discount_total
- *     description: The total discount amount of the item.
+ *     description: The total amount of discounts applied to the line item, including the tax portion of discounts.
  *   discount_tax_total:
  *     type: number
  *     title: discount_tax_total
- *     description: The total taxes applied on the discounted amount.
+ *     description: The total amount of discounts applied to the line item's tax. Represents the tax portion of discounts.
  *   refundable_total:
  *     type: number
  *     title: refundable_total

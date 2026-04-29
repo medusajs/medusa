@@ -64,6 +64,18 @@ export const eventBus = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateDraftOrderWorkflow"
   },
   {
+    "title": "createShippingOptionsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createShippingOptionsWorkflow"
+  },
+  {
+    "title": "deleteShippingOptionsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteShippingOptionsWorkflow"
+  },
+  {
+    "title": "updateShippingOptionsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateShippingOptionsWorkflow"
+  },
+  {
     "title": "acceptInviteWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/acceptInviteWorkflow"
   },
@@ -78,6 +90,10 @@ export const eventBus = [
   {
     "title": "refreshInviteTokensWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshInviteTokensWorkflow"
+  },
+  {
+    "title": "deleteLineItemsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteLineItemsWorkflow"
   },
   {
     "title": "archiveOrderWorkflow",
@@ -278,6 +294,22 @@ export const eventBus = [
   {
     "title": "updateShippingOptionTypesWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateShippingOptionTypesWorkflow"
+  },
+  {
+    "title": "batchTranslationsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchTranslationsWorkflow"
+  },
+  {
+    "title": "createTranslationsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createTranslationsWorkflow"
+  },
+  {
+    "title": "deleteTranslationsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteTranslationsWorkflow"
+  },
+  {
+    "title": "updateTranslationsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateTranslationsWorkflow"
   },
   {
     "title": "createUserAccountWorkflow",

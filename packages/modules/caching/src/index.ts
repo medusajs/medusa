@@ -1,3 +1,4 @@
+import "./types"
 import { Module, Modules } from "@medusajs/framework/utils"
 import { default as loadHash } from "./loaders/hash"
 import { default as loadProviders } from "./loaders/providers"

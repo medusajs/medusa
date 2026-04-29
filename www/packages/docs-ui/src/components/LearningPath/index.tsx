@@ -4,9 +4,10 @@ import clsx from "clsx"
 import React from "react"
 import { LearningPathIcon } from "./Icon"
 import { getLearningPath } from "@/utils"
-import { useLearningPath } from "@/providers"
-import { Button, Link } from "@/components"
-import { useNotifications } from "@/providers"
+import { useLearningPath } from "@/providers/LearningPath"
+import { Button } from "@/components/Button"
+import { Link } from "@/components/Link"
+import { useNotifications } from "@/providers/Notification"
 import { CircleMiniSolid } from "@medusajs/icons"
 
 type LearningPathProps = {

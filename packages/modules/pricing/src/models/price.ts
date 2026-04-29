@@ -9,8 +9,8 @@ const Price = model
     title: model.text().nullable(),
     currency_code: model.text(),
     amount: model.bigNumber(),
-    min_quantity: model.number().nullable(),
-    max_quantity: model.number().nullable(),
+    min_quantity: model.bigNumber().nullable(),
+    max_quantity: model.bigNumber().nullable(),
     rules_count: model.number().default(0).nullable(),
     price_set: model.belongsTo(() => PriceSet, {
       mappedBy: "prices",

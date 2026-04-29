@@ -152,6 +152,14 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "link",
+              "path": "/infrastructure-modules/caching/guides/clear-cache",
+              "title": "Clear Cache",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
               "path": "/references/caching-module-provider",
               "title": "Create Caching Module Provider",
               "children": []

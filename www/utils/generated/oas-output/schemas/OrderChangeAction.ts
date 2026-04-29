@@ -17,6 +17,7 @@
  *   - action
  *   - details
  *   - internal_note
+ *   - ordering
  *   - created_at
  *   - updated_at
  * properties:
@@ -100,6 +101,10 @@
  *     format: date-time
  *     title: updated_at
  *     description: The date the action was updated.
+ *   ordering:
+ *     type: number
+ *     title: ordering
+ *     description: The action's ordering among other actions in the same order change.
  * 
 */
 

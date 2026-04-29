@@ -1,4 +1,5 @@
 import * as QueryConfig from "./query-config"
+import { Entities } from "./query-config"
 
 import {
   AdminCreateWorkflowsAsyncResponse,
@@ -7,11 +8,23 @@ import {
   AdminGetWorkflowExecutionsParams,
 } from "./validators"
 
+import {
+  validateAndTransformBody,
+  validateAndTransformQuery,
+} from "@medusajs/framework"
 import { MiddlewareRoute } from "@medusajs/framework/http"
-import { validateAndTransformQuery } from "@medusajs/framework"
-import { validateAndTransformBody } from "@medusajs/framework"
+import { PolicyOperation } from "@medusajs/framework/utils"
 
 export const adminWorkflowsExecutionsMiddlewares: MiddlewareRoute[] = [
+  {
+    matcher: "/admin/workflows-executions/*",
+    policies: [
+      {
+        resource: Entities.workflow_execution,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
   {
     method: ["GET"],
     matcher: "/admin/workflows-executions",
@@ -20,6 +33,12 @@ export const adminWorkflowsExecutionsMiddlewares: MiddlewareRoute[] = [
         AdminGetWorkflowExecutionsParams,
         QueryConfig.listTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.workflow_execution,
+        operation: PolicyOperation.read,
+      },
     ],
   },
   {

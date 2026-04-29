@@ -4,12 +4,10 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
 import { StatusCell } from "../../../../../components/table/table-cells/common/status-cell"
-import {
-  TextCell,
-  TextHeader,
-} from "../../../../../components/table/table-cells/common/text-cell"
+import { TextHeader } from "../../../../../components/table/table-cells/common/text-cell"
 import { getPriceListStatus } from "../../../common/utils"
 import { PriceListListTableActions } from "./price-list-list-table-actions"
+import { PriceCountCell } from "./price-count-cell"
 
 const columnHelper = createColumnHelper<HttpTypes.AdminPriceList>()
 
@@ -30,9 +28,10 @@ export const usePricingTableColumns = () => {
           return <StatusCell color={color}>{text}</StatusCell>
         },
       }),
-      columnHelper.accessor("prices", {
+      columnHelper.display({
+        id: "price_overrides",
         header: t("priceLists.fields.priceOverrides.header"),
-        cell: (info) => <TextCell text={`${info.getValue()?.length || "-"}`} />,
+        cell: ({ row }) => <PriceCountCell priceListId={row.original.id} />,
       }),
       columnHelper.display({
         id: "actions",

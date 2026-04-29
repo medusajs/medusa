@@ -107,8 +107,7 @@ const Header = () => {
 
   return (
     <div className="w-full p-3">
-    <DropdownMenu
-          dir={direction}>
+      <DropdownMenu dir={direction}>
         <DropdownMenu.Trigger
           disabled={!isLoaded}
           className={clx(
@@ -348,6 +347,7 @@ const ExtensionRouteSection = () => {
                     label={item.label}
                     icon={item.icon ? item.icon : <SquaresPlus />}
                     items={item.items}
+                    translationNs={item.translationNs}
                     type="extension"
                   />
                 )

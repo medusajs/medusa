@@ -1,0 +1,293 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Credits and Plans`,
+}
+
+# {metadata.title}
+
+Bloom uses a credit-based pricing system. Every month, your plan includes credits that you spend when chatting with Bloom to build and update your store.
+
+## What Are Credits?
+
+{/* TODO add correct definition for credits */}
+
+Credits are the currency Bloom uses to measure usage. Each time you send a prompt to Bloom, it consumes credits based on the complexity and scope of your request.
+
+---
+
+## How Credits Are Consumed
+
+Different types of prompts consume different amounts of credits. More complex requests that require Bloom to generate more code or make extensive changes will use more credits.
+
+{/* ### Example Credit Usage
+
+For example, here's how different types of prompts typically consume credits:
+
+<Note>
+
+These examples are estimates and actual credit usage may vary based on the specific details of your prompt and the changes Bloom needs to make.
+
+</Note>
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Prompt Type
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Example
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Estimated Credits
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Add data
+      </Table.Cell>
+      <Table.Cell>
+        "Add a category and products for desks"
+      </Table.Cell>
+      <Table.Cell>
+        0.13 credits
+      </Table.Cell>
+    </Table.Row>
+
+    <Table.Row>
+      <Table.Cell>
+        Layout change
+      </Table.Cell>
+      <Table.Cell>
+        "Move the product description above the product images on the product page"
+      </Table.Cell>
+      <Table.Cell>
+        0.21 credits
+      </Table.Cell>
+    </Table.Row>
+
+    <Table.Row>
+      <Table.Cell>
+        New feature
+      </Table.Cell>
+      <Table.Cell>
+        "Add a product review system with star ratings"
+      </Table.Cell>
+      <Table.Cell>
+        0.7 credits
+      </Table.Cell>
+    </Table.Row>
+
+    <Table.Row>
+      <Table.Cell>
+        Design overhaul
+      </Table.Cell>
+      <Table.Cell>
+        "Change the homepage to match this website: example.com"
+      </Table.Cell>
+      <Table.Cell>
+        0.52 credits
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table> */}
+
+### Factors Affecting Credit Usage
+
+The number of credits a prompt consumes can depend on several factors, including:
+
+1. **Complexity:** Features requiring more code changes use more credits.
+2. **Scope:** Changes affecting multiple pages or components cost more than single-item updates.
+3. **Media Processing:** Uploading images, generating images, and processing design files may use additional credits.
+
+### Tips to Optimize Credit Usage
+
+To get the most out of your credits, consider:
+
+- [Using Selection Mode](../features/selection-mode/page.mdx): Selection Mode lets you make quick text changes, design tweaks, and content updates without consuming credits. Use it for small adjustments to save your credits for bigger changes.
+- [Writing Clear Prompts](../prompting/store-design-prompting/page.mdx): Clear, specific prompts help Bloom understand your request better and reduce iterations, saving credits.
+
+---
+
+## Available Plans
+
+Bloom provides two types of plans: [Free](#free-plan) and [Hobby](#hobby-plan). Plans provide a set of credits per month with different features to support your store-building journey.
+
+### Free Plan 
+
+The Free plan is idea for new users who want to try Bloom and explore its capabilities. With the Free plan, you get:
+
+- 5 credits per month to use Bloom and make changes to your store.
+- Access to all of Bloom's core features, including generating code, making design changes, and real-time previews.
+- Shareable preview links to share your store with collaborators or clients.
+
+Once you're ready to publish your store or need more credits, upgrade to the [Hobby plan](#hobby-plan).
+
+### Hobby Plan
+
+The Hobby plan is designed for active store builders who are ready to start selling or need more credits to build and update their store.
+
+The Hobby plan includes everything in the Free plan, plus:
+
+- **More Credits:** Get more credits per month to make changes to your store and keep building without interruption.
+{/* - **Transactional Emails:** Send order confirmations, shipping updates, and other transactional emails to your customers out-of-the-box. */}
+- **Deploy to Production:** Publish your store to a custom domain and start selling to customers immediately.
+- **Export code to GitHub:** Get your store's code in a GitHub repository for version control and collaboration.
+
+### Pricing Tiers
+
+The Hobby plan has multiple pricing tiers based on the number of credits you need per month:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Credits per Month
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Price
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        50 credits
+      </Table.Cell>
+      <Table.Cell>
+        $29/month
+      </Table.Cell>
+    </Table.Row>
+
+    <Table.Row>
+      <Table.Cell>
+        90 credits
+      </Table.Cell>
+      <Table.Cell>
+        $50/month
+      </Table.Cell>
+    </Table.Row>
+
+    <Table.Row>
+      <Table.Cell>
+        160 credits
+      </Table.Cell>
+      <Table.Cell>
+        $80/month
+      </Table.Cell>
+    </Table.Row>
+
+    <Table.Row>
+      <Table.Cell>
+        240 credits
+      </Table.Cell>
+      <Table.Cell>
+        $120/month
+      </Table.Cell>
+    </Table.Row>
+
+    <Table.Row>
+      <Table.Cell>
+        360 credits
+      </Table.Cell>
+      <Table.Cell>
+        $180/month
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Check Available Credits
+
+To see how many credits you have left for the month:
+
+1. In the account view, you'll see the credits remaining for the current month at the top right. For example, you'll see "40 credits left".
+
+{/* TODO: Add image: Credits remaining shown at the top right of the account view */}
+
+2. In the project view, click on the project name at the top left to open the project menu. The credits remaining show as a progress bar displaying how much you've used and how much is left. For example, you'll see "10.00/50".
+
+{/* TODO: Add image: Credits remaining shown in the project menu as a progress bar */}
+
+Credits reset automatically at the start of each month. Unused credits don't roll over to the next month.
+
+---
+
+## Upgrade Your Plan
+
+Upgrade to a higher plan at any time to get more credits or access additional features.
+
+To upgrade your plan:
+
+1. In the account view, click "Upgrade" at the top right.
+2. In the pop-up, select the plan with the number of credits you want and click "Pay and upgrade".
+3. You'll be charged immediately for the new plan, and your credits will update right away so you can continue working.
+
+<Note>
+
+Upgrading your plan doesn't reset your credit usage. For example, if you've used 50 credits and upgrade to 160 credits, you'll have 110 credits remaining (160 - 50 = 110).
+
+</Note>
+
+{/* TODO: Add image: Upgrade pop-up showing plan options and "Pay and upgrade" button */}
+
+### Downgrade Your Plan
+
+{/* TODO confirm information */}
+
+Downgrade to a lower plan if you don't need as many credits or to cancel your subscription. Downgrading takes effect at the start of the next billing cycle, so you'll keep your current credits until then.
+
+To downgrade your plan, follow the same steps as [upgrading](#upgrade-your-plan) but select a lower-tier plan instead. Your new plan and credit limit will take effect at the start of the next month when your credits reset.
+
+### Downgrade to Free Plan
+
+Downgrading to the Free plan cancels your subscription. Your current plan stays active until the end of your billing cycle, then your account switches to the Free plan with its limitations:
+
+- You'll have 5 credits per month.
+- You won't have access to {/* - transactional emails, */} production deployment, or code export features.
+- Your production store will be taken down, but your preview store will remain live so you can continue working on it and upgrade again when you're ready to publish.
+
+---
+
+## Manage Billing Details
+
+To update your payment method, manage billing details, or view a breakdown of your current cycle, see the [Manage Billing](../manage-billing/page.mdx) guide.
+
+---
+
+## FAQs
+
+### Do I need to enter payment info for the Free plan?
+
+No, you don't need to enter payment information to use the Free plan. You can start building your store and using Bloom's features without providing any payment details.
+
+### What happens if I run out of credits?
+
+If you run out of credits before the end of the month, you'll receive an error when you try to send a prompt to Bloom.
+
+If you're on the Hobby plan, your production store stays live, but you can't make changes with Bloom until your credits reset at the start of the next month. You can still push updates through [Export to GitHub](../developers/export-to-github/page.mdx) or make edits with [Selection Mode](../features/selection-mode/page.mdx), which doesn't consume credits.
+
+To upgrade and get more credits immediately, follow the steps in the [Upgrade Your Plan](#upgrade-your-plan) section above.
+
+### Are credits shared across multiple stores?
+
+Yes, credits are shared across all stores under the same account. This means that if you have multiple projects, they will all draw from the same pool of credits.
+
+### Can I buy extra credits for just this month without upgrading?
+
+No, Bloom doesn't offer one-time credit purchases. To get more credits immediately, [upgrade to a higher plan](#upgrade-your-plan). Your new credits become available right away. Downgrade back to your original plan at the start of the next month if you don't need the extra credits long-term.
+
+### Can I cancel my subscription anytime?
+
+Yes, cancel your subscription at any time by [downgrading to the Free plan](#downgrade-your-plan). Your plan stays active until the end of your current billing cycle, then switches to the Free plan with its limitations.
+
+### What happens to my store if I cancel my plan?
+
+Your store stays live with all existing features until the end of your billing cycle. After that, if you were on the Hobby plan, your store switches to the Free plan with its limitations (5 credits per month, {/* - transactional emails, */} no production deployment). Continue using your store on the Free plan or upgrade again to regain more credits and features.

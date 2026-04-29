@@ -30,17 +30,38 @@ export const sidebars = [
             title: "Architecture",
             path: "/learn/introduction/architecture",
           },
+        ],
+      },
+      {
+        type: "category",
+        title: "Agentic Development",
+        children: [
           {
             type: "link",
-            title: "AI Assistants and LLMs",
+            title: "Overview",
             path: "/learn/introduction/build-with-llms-ai",
           },
           {
             type: "link",
-            title: "From v1 to v2",
-            path: "/learn/introduction/from-v1-to-v2",
+            title: "Bloom",
+            path: "/learn/introduction/build-with-llms-ai/bloom",
           },
-        ],
+          {
+            type: "link",
+            title: "MCP Server",
+            path: "/learn/introduction/build-with-llms-ai/mcp-server",
+          },
+          {
+            type: "link",
+            title: "Agentic Skills",
+            path: "/learn/introduction/build-with-llms-ai/agentic-skills",
+          },
+          {
+            type: "link",
+            title: "AI-Friendly Docs",
+            path: "/learn/introduction/build-with-llms-ai/ai-friendly-docs",
+          }
+        ]
       },
       {
         type: "category",
@@ -291,7 +312,7 @@ export const sidebars = [
               },
               {
                 type: "link",
-                path: "/learn/fundamentals/data-models/index",
+                path: "/learn/fundamentals/data-models/indexes",
                 title: "Define Index",
               },
               {
@@ -368,6 +389,11 @@ export const sidebars = [
               },
               {
                 type: "link",
+                path: "/learn/fundamentals/api-routes/localization",
+                title: "Localization",
+              },
+              {
+                type: "link",
                 path: "/learn/fundamentals/api-routes/override",
                 title: "Override API Routes",
               },
@@ -441,7 +467,7 @@ export const sidebars = [
               {
                 type: "link",
                 path: "/learn/fundamentals/workflows/execute-another-workflow",
-                title: "Execute Nested Workflows",
+                title: "Nested Workflows",
               },
               {
                 type: "link",
@@ -474,6 +500,11 @@ export const sidebars = [
                 type: "link",
                 path: "/learn/fundamentals/events-and-subscribers/emit-event",
                 title: "Emit Event",
+              },
+              {
+                type: "link",
+                path: "/learn/fundamentals/events-and-subscribers/event-priority",
+                title: "Event Priority",
               },
             ],
           },
@@ -583,6 +614,11 @@ export const sidebars = [
         children: [
           {
             type: "link",
+            title: "pnpm",
+            path: "/learn/configurations/pnpm",
+          },
+          {
+            type: "link",
             title: "Environment Variables",
             path: "/learn/fundamentals/environment-variables",
           },
@@ -681,6 +717,22 @@ export const sidebars = [
       },
       {
         type: "category",
+        title: "Best Practices",
+        children: [
+          {
+            type: "link",
+            path: "/learn/best-practices/third-party-sync",
+            title: "Third-Party Syncing",
+          },
+          {
+            type: "ref",
+            path: "/learn/fundamentals/scheduled-jobs/interval",
+            title: "Scheduled Job Intervals",
+          },
+        ],
+      },
+      {
+        type: "category",
         title: "Production",
         children: [
           {
@@ -731,7 +783,17 @@ export const sidebars = [
                 title: "Replace Imports (v2.11.0+)",
                 path: "/learn/codemods/replace-imports",
               },
+              {
+                type: "link",
+                title: "Replace Zod Imports (v2.13.0+)",
+                path: "/learn/codemods/replace-zod-imports",
+              },
             ],
+          },
+          {
+            type: "link",
+            title: "From v1 to v2",
+            path: "/learn/introduction/from-v1-to-v2",
           },
         ],
       },

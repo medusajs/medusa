@@ -328,6 +328,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: created_at
     - name: updated_at
       in: query
       description: Filter by a reservation's update date.
@@ -467,6 +468,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: updated_at
     - name: deleted_at
       in: query
       description: Filter by a reservation's deletion date.
@@ -606,6 +608,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: deleted_at
     - name: with_deleted
       in: query
       description: Whether to include deleted records in the result.
@@ -658,21 +661,21 @@ get:
                   title: $eq
                   description: Filter by an exact match.
           $ne:
-            type: string
+            type: number
             title: $ne
             description: Filter by values not equal to this parameter.
           $in:
             type: array
             description: Filter by values in this array.
             items:
-              type: string
+              type: number
               title: $in
               description: Filter by values in this array.
           $nin:
             type: array
             description: Filter by values not in this array.
             items:
-              type: string
+              type: number
               title: $nin
               description: Filter by values not in this array.
           $not:
@@ -697,70 +700,68 @@ get:
                     Filter by values not matching the conditions in this
                     parameter.
           $gt:
-            type: string
+            type: number
             title: $gt
             description: >-
               Filter by values greater than this parameter. Useful for numbers
               and dates only.
           $gte:
-            type: string
+            type: number
             title: $gte
             description: >-
               Filter by values greater than or equal to this parameter. Useful
               for numbers and dates only.
           $lt:
-            type: string
+            type: number
             title: $lt
             description: >-
               Filter by values less than this parameter. Useful for numbers and
               dates only.
           $lte:
-            type: string
+            type: number
             title: $lte
             description: >-
               Filter by values less than or equal to this parameter. Useful for
               numbers and dates only.
           $like:
-            type: string
+            type: number
             title: $like
             description: Apply a `like` filter. Useful for strings only.
           $re:
-            type: string
+            type: number
             title: $re
             description: Apply a regex filter. Useful for strings only.
           $ilike:
-            type: string
+            type: number
             title: $ilike
             description: Apply a case-insensitive `like` filter. Useful for strings only.
           $fulltext:
-            type: string
+            type: number
             title: $fulltext
             description: Filter to apply on full-text properties.
           $overlap:
             type: array
             description: Filter arrays that have overlapping values with this parameter.
             items:
-              type: string
-              title: $overlap
+              type: number
               description: Filter arrays that have overlapping values with this parameter.
           $contains:
             type: array
             description: Filter arrays that contain some of the values of this parameter.
             items:
-              type: string
-              title: $contains
+              type: number
               description: Filter arrays that contain some of the values of this parameter.
           $contained:
             type: array
             description: Filter arrays that contain all values of this parameter.
             items:
-              type: string
-              title: $contained
+              type: number
               description: Filter arrays that contain all values of this parameter.
           $exists:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: quantity
   security:
     - api_token: []
     - cookie_auth: []

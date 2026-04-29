@@ -21,7 +21,11 @@ export const ProductImageVariantsEdit = () => {
 
   const { product, isPending } = useProduct(
     product_id!,
-    { fields: "images.id,images.url,images.variants.id" },
+    {
+      // TODO: Remove exclusion once we avoid including unnecessary relations by default in the query config
+      fields:
+        "images.id,images.url,images.variants.id,-type,-collection,-options,-tags,-variants,-sales_channels",
+    },
     {
       enabled: !!product_id && !!image_id,
     }

@@ -31,6 +31,13 @@
         "name": "string"
       }
     },
+    "autoComplete": {
+      "description": "Describes the type of autocomplete functionality the input should provide if any. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete).",
+      "required": false,
+      "tsType": {
+        "name": "string"
+      }
+    },
     "autoFocus": {
       "description": "Whether the element should receive focus on render.",
       "required": false,
@@ -86,6 +93,51 @@
             }
           }
         ]
+      }
+    },
+    "firstDayOfWeek": {
+      "description": "The day that starts the week.",
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "\"sun\" \\| \"mon\" \\| \"tue\" \\| \"wed\" \\| \"thu\" \\| \"fri\" \\| \"sat\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"sun\""
+          },
+          {
+            "name": "literal",
+            "value": "\"mon\""
+          },
+          {
+            "name": "literal",
+            "value": "\"tue\""
+          },
+          {
+            "name": "literal",
+            "value": "\"wed\""
+          },
+          {
+            "name": "literal",
+            "value": "\"thu\""
+          },
+          {
+            "name": "literal",
+            "value": "\"fri\""
+          },
+          {
+            "name": "literal",
+            "value": "\"sat\""
+          }
+        ]
+      }
+    },
+    "form": {
+      "description": "The `<form>` element to associate the input with.\nThe value of this attribute must be the id of a `<form>` in the same document.\nSee [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input#form).",
+      "required": false,
+      "tsType": {
+        "name": "string"
       }
     },
     "hideTimeZone": {
@@ -177,15 +229,21 @@
       "tsType": {
         "name": "signature",
         "type": "function",
-        "raw": "(e: FocusEvent&#60;Element, Element&#62;) => void",
+        "raw": "(e: FocusEvent&#60;Element&#62;) => void",
         "signature": {
           "arguments": [
             {
               "name": "e",
               "type": {
                 "name": "FocusEvent",
-                "elements": [],
-                "raw": "FocusEvent&#60;Element, Element&#62;"
+                "elements": [
+                  {
+                    "name": "Element"
+                  },
+                  {
+                    "name": "Element"
+                  }
+                ]
               },
               "rest": false
             }
@@ -202,15 +260,21 @@
       "tsType": {
         "name": "signature",
         "type": "function",
-        "raw": "(e: FocusEvent&#60;Element, Element&#62;) => void",
+        "raw": "(e: FocusEvent&#60;Element&#62;) => void",
         "signature": {
           "arguments": [
             {
               "name": "e",
               "type": {
                 "name": "FocusEvent",
-                "elements": [],
-                "raw": "FocusEvent&#60;Element, Element&#62;"
+                "elements": [
+                  {
+                    "name": "Element"
+                  },
+                  {
+                    "name": "Element"
+                  }
+                ]
               },
               "rest": false
             }
@@ -257,8 +321,8 @@
               "name": "e",
               "type": {
                 "name": "KeyboardEvent",
-                "elements": [],
-                "raw": "KeyboardEvent"
+                "raw": "KeyboardEvent",
+                "elements": []
               },
               "rest": false
             }
@@ -282,8 +346,8 @@
               "name": "e",
               "type": {
                 "name": "KeyboardEvent",
-                "elements": [],
-                "raw": "KeyboardEvent"
+                "raw": "KeyboardEvent",
+                "elements": []
               },
               "rest": false
             }
@@ -331,8 +395,11 @@
       "required": false,
       "tsType": {
         "name": "union",
-        "raw": "CalendarDate \\| CalendarDateTime",
+        "raw": "null \\| CalendarDate \\| CalendarDateTime",
         "elements": [
+          {
+            "name": "null"
+          },
           {
             "name": "CalendarDate",
             "elements": [],
@@ -418,5 +485,8 @@
         ]
       }
     }
-  }
+  },
+  "composes": [
+    "Omit"
+  ]
 }

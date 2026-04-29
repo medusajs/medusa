@@ -1,0 +1,37 @@
+---
+slug: /references/medusa-workflows/steps/createGiftCardsStep
+sidebar_label: createGiftCardsStep
+tags:
+  - loyalty
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# createGiftCardsStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `createGiftCardsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates gift cards. If no code is provided for
+a gift card, a unique code is automatically generated. The step supports rollback
+by deleting the created gift cards.
+
+## Example
+
+```ts
+const data = createGiftCardsStep([
+  {
+    value: 100,
+    currency_code: "usd",
+    // other gift card properties...
+  },
+])
+```
+
+## Input
+
+<TypeList types={[{"name":"CreateGiftCardsStepInput","type":"[CreateGiftCardsStepInput](../../../../plugins_loyalty_src_workflows/types/core_flows.plugins_loyalty_src_workflows.CreateGiftCardsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CreateGiftCardsStepInput","type":"`ModuleCreateGiftCard`[]","description":"Data for creating one or more gift cards in the Loyalty module.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createGiftCardsStep"/>
+
+## Output
+
+<TypeList types={[{"name":"ModuleGiftCard[]","type":"`ModuleGiftCard`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createGiftCardsStep"/>

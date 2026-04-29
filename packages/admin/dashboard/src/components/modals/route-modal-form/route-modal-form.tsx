@@ -24,7 +24,12 @@ export const RouteModalForm = <TFieldValues extends FieldValues = any>({
   } = form
 
   const blocker = useBlocker(({ currentLocation, nextLocation }) => {
-    const { isSubmitSuccessful } = nextLocation.state || {}
+    // Check both nextLocation and currentLocation state for successful submission
+    // This handles browser history navigation (-1) where we set state on current location
+    const { isSubmitSuccessful: nextIsSuccessful } = nextLocation.state || {}
+    const { isSubmitSuccessful: currentIsSuccessful } =
+      currentLocation.state || {}
+    const isSubmitSuccessful = nextIsSuccessful || currentIsSuccessful
 
     if (isSubmitSuccessful) {
       onClose?.(true)

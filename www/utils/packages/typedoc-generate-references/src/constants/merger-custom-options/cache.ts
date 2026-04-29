@@ -9,7 +9,7 @@ const cacheOptions: FormattingOptionsType = {
 
 :::note[Deprecation Notice]
 
-The Cache Module is deprecated starting from [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0). [Use the Caching Module](#) instead.
+The Cache Module is deprecated starting from [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0). [Use the Caching Module](https://docs.medusajs.com/resources/infrastructure-modules/caching) instead.
 
 :::
     `,

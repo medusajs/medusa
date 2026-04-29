@@ -1,6 +1,8 @@
 import React from "react"
 import clsx from "clsx"
-import { Badge, BorderedIcon, Link } from "@/components"
+import { Badge } from "@/components/Badge"
+import { BorderedIcon } from "@/components/BorderedIcon"
+import { Link } from "@/components/Link"
 import { ArrowUpRightOnBox, TriangleRightMini } from "@medusajs/icons"
 import { CardProps } from "../../.."
 import { useIsExternalLink } from "../../../.."
@@ -18,6 +20,7 @@ export const CardDefaultLayout = ({
   badge,
   rightIcon: RightIconComponent,
   highlightText = [],
+  onClick,
 }: CardProps) => {
   const isExternal = useIsExternalLink({ href })
 
@@ -37,6 +40,7 @@ export const CardDefaultLayout = ({
         <span
           key={index}
           className="bg-medusa-tag-blue-bg px-px rounded-s-docs_xxs"
+          data-testid="highlight-text"
         >
           {part}
         </span>
@@ -77,12 +81,18 @@ export const CardDefaultLayout = ({
         className={clsx("flex flex-col flex-1 overflow-auto", contentClassName)}
       >
         {title && (
-          <div className="text-small-plus text-medusa-fg-base truncate">
+          <div
+            className="text-small-plus text-medusa-fg-base truncate"
+            data-testid="title"
+          >
             {getHighlightedText(title)}
           </div>
         )}
         {text && (
-          <span className="text-small-plus text-medusa-fg-subtle">
+          <span
+            className="text-small-plus text-medusa-fg-subtle"
+            data-testid="text"
+          >
             {getHighlightedText(text)}
           </span>
         )}
@@ -91,8 +101,12 @@ export const CardDefaultLayout = ({
       {badge && <Badge {...badge} />}
       <span className="text-medusa-fg-subtle">
         {RightIconComponent && <RightIconComponent />}
-        {!RightIconComponent && isExternal && <ArrowUpRightOnBox />}
-        {!RightIconComponent && !isExternal && <TriangleRightMini />}
+        {!RightIconComponent && isExternal && (
+          <ArrowUpRightOnBox data-testid="external-icon" />
+        )}
+        {!RightIconComponent && !isExternal && (
+          <TriangleRightMini data-testid="internal-icon" />
+        )}
       </span>
 
       {href && (
@@ -100,6 +114,10 @@ export const CardDefaultLayout = ({
           href={href}
           className="absolute left-0 top-0 h-full w-full rounded"
           prefetch={false}
+          rel={isExternal ? "noopener noreferrer" : undefined}
+          target={isExternal ? "_blank" : undefined}
+          aria-label={title}
+          onClick={onClick}
         />
       )}
     </div>

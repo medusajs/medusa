@@ -35,8 +35,12 @@ moduleIntegrationTestRunner({
 
         expect(Object.keys(linkable)).toEqual([
           "promotion",
+          "applicationMethod",
           "campaign",
+          "campaignBudget",
+          "campaignBudgetUsage",
           "promotionRule",
+          "promotionRuleValue",
         ])
 
         Object.keys(linkable).forEach((key) => {
@@ -53,6 +57,15 @@ moduleIntegrationTestRunner({
               field: "promotion",
             },
           },
+          applicationMethod: {
+            id: {
+              linkable: "application_method_id",
+              entity: "ApplicationMethod",
+              primaryKey: "id",
+              serviceName: "promotion",
+              field: "applicationMethod",
+            },
+          },
           campaign: {
             id: {
               linkable: "campaign_id",
@@ -62,6 +75,24 @@ moduleIntegrationTestRunner({
               field: "campaign",
             },
           },
+          campaignBudget: {
+            id: {
+              linkable: "campaign_budget_id",
+              entity: "CampaignBudget",
+              primaryKey: "id",
+              serviceName: "promotion",
+              field: "campaignBudget",
+            },
+          },
+          campaignBudgetUsage: {
+            id: {
+              linkable: "campaign_budget_usage_id",
+              entity: "CampaignBudgetUsage",
+              primaryKey: "id",
+              serviceName: "promotion",
+              field: "campaignBudgetUsage",
+            },
+          },
           promotionRule: {
             id: {
               linkable: "promotion_rule_id",
@@ -69,6 +100,15 @@ moduleIntegrationTestRunner({
               primaryKey: "id",
               serviceName: "promotion",
               field: "promotionRule",
+            },
+          },
+          promotionRuleValue: {
+            id: {
+              linkable: "promotion_rule_value_id",
+              entity: "PromotionRuleValue",
+              primaryKey: "id",
+              serviceName: "promotion",
+              field: "promotionRuleValue",
             },
           },
         })

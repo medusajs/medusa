@@ -35,6 +35,7 @@ moduleIntegrationTestRunner({
           expect(testFunc(["2"], operator, [2])).toEqual(false)
           expect(testFunc(["2"], operator, ["2"])).toEqual(false)
           expect(testFunc(["2"], operator, ["22"])).toEqual(true)
+          expect(testFunc(["2"], operator, [])).toEqual(true)
         })
       })
 

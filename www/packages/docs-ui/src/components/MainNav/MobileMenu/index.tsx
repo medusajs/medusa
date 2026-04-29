@@ -30,6 +30,7 @@ export const MainNavMobileMenu = () => {
         variant="transparent"
         onClick={() => setIsOpen((prev) => !prev)}
         className="text-medusa-fg-subtle !p-[6.5px]"
+        data-testid="menu-button"
       >
         {!isOpen && <BarsThree />}
         {isOpen && <XMark />}
@@ -41,6 +42,7 @@ export const MainNavMobileMenu = () => {
           !isOpen && "-left-full",
           isOpen && "left-0"
         )}
+        data-testid="menu-panel"
       >
         <SwitchTransition>
           <CSSTransition

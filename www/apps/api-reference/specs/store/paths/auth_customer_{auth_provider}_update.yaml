@@ -9,7 +9,7 @@ post:
     You pass the token as a bearer token in the request's Authorization header.
   externalDocs:
     url: >-
-      https://docs.medusajs.com/v2/resources/storefront-development/customers/reset-password#2-reset-password-page
+      https://docs.medusajs.com/resources/storefront-development/customers/reset-password#2-reset-password-page
     description: 'Storefront development: How to create the reset password page.'
   x-authenticated: true
   parameters:

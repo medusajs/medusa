@@ -1,8 +1,4 @@
-import {
-  ChangeActionType,
-  OrderChangeStatus,
-  PromotionActions,
-} from "@medusajs/framework/utils"
+import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
 import {
   createWorkflow,
   transform,
@@ -18,8 +14,8 @@ import {
 } from "../../order"
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
-import { refreshDraftOrderAdjustmentsWorkflow } from "./refresh-draft-order-adjustments"
 import { acquireLockStep, releaseLockStep } from "../../locking"
+import { computeDraftOrderAdjustmentsWorkflow } from "./compute-draft-order-adjustments"
 
 export const removeDraftOrderShippingMethodWorkflowId =
   "remove-draft-order-shipping-method"
@@ -93,33 +89,6 @@ export const removeDraftOrderShippingMethodWorkflow = createWorkflow(
 
     validateDraftOrderChangeStep({ order, orderChange })
 
-    const appliedPromoCodes: string[] = transform(
-      order,
-      (order) => order.promotions?.map((promotion) => promotion.code) ?? []
-    )
-
-    // If any the order has any promo codes, then we need to refresh the adjustments.
-    when(
-      appliedPromoCodes,
-      (appliedPromoCodes) => appliedPromoCodes.length > 0
-    ).then(() => {
-      const refetchedOrder = useRemoteQueryStep({
-        entry_point: "orders",
-        fields: draftOrderFieldsForRefreshSteps,
-        variables: { id: input.order_id },
-        list: false,
-        throw_if_key_not_found: true,
-      }).config({ name: "refetched-order-query" })
-
-      refreshDraftOrderAdjustmentsWorkflow.runAsStep({
-        input: {
-          order: refetchedOrder,
-          promo_codes: appliedPromoCodes,
-          action: PromotionActions.REPLACE,
-        },
-      })
-    })
-
     const orderChangeActionInput = transform(
       {
         input,
@@ -141,6 +110,23 @@ export const removeDraftOrderShippingMethodWorkflow = createWorkflow(
 
     createOrderChangeActionsWorkflow.runAsStep({
       input: orderChangeActionInput,
+    })
+
+    const appliedPromoCodes: string[] = transform(
+      order,
+      (order) => order.promotions?.map((promotion) => promotion.code) ?? []
+    )
+
+    // If any the order has any promo codes, then we need to refresh the adjustments.
+    when(
+      appliedPromoCodes,
+      (appliedPromoCodes) => appliedPromoCodes.length > 0
+    ).then(() => {
+      computeDraftOrderAdjustmentsWorkflow.runAsStep({
+        input: {
+          order_id: input.order_id,
+        },
+      })
     })
 
     releaseLockStep({

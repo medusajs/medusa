@@ -6,7 +6,7 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { Modules } from "@medusajs/utils"
+import { Modules, TransactionState } from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -93,6 +93,54 @@ medusaIntegrationTestRunner({
           transactionId2
         )
       })
+    })
+
+    describe("POST /admin/workflow-execution/[workflow_id]/steps/failure", function () {
+        it("should set step as failed", async () => {
+            const stepId = 'test-step'
+            const step = createStep({
+                name: stepId,
+                async: true,
+            }, () => { })
+
+            const workflowId = 'test-workflow'
+            createWorkflow({
+                name: workflowId,
+                retentionTime: 60,
+            }, () => {
+                step()
+                return new WorkflowResponse(void 0)
+            })
+
+            const transactionId = "test-transaction"
+            const engine = container.resolve(Modules.WORKFLOW_ENGINE) as IWorkflowEngineService
+            await engine.run(workflowId, {
+                transactionId
+            })
+            let workflowDetail = (await api.get(`/admin/workflows-executions/${workflowId}/${transactionId}`, adminHeaders)).data.workflow_execution
+
+            expect(workflowDetail.state).toBe(TransactionState.INVOKING)
+
+            const setFailureResponse = await api.post(`/admin/workflows-executions/${workflowId}/steps/failure`, {
+                transaction_id: transactionId,
+                step_id: stepId
+            }, adminHeaders)
+
+            expect(setFailureResponse.status).toBe(200)
+            expect(setFailureResponse.data).toEqual(
+                expect.objectContaining({
+                    success: true,
+                })
+            )
+
+            workflowDetail = (await api.get(`/admin/workflows-executions/${workflowId}/${transactionId}`, adminHeaders)).data.workflow_execution
+            
+            expect(workflowDetail).toEqual(
+                expect.objectContaining({
+                    state: TransactionState.REVERTED,
+                })
+            )
+        })
     })
 
     describe("Workflow Orchestrator module subscribe", function () {

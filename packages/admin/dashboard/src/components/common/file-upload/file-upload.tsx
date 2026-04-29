@@ -8,14 +8,22 @@ export interface FileType {
   file: File
 }
 
+export interface RejectedFile {
+  file: File
+  reason: "size" | "format"
+}
+
 export interface FileUploadProps {
   label: string
   multiple?: boolean
   hint?: string
   hasError?: boolean
   formats: string[]
-  onUploaded: (files: FileType[]) => void
+  maxFileSize?: number // in bytes, defaults to 1MB. Set to Infinity to disable.
+  onUploaded: (files: FileType[], rejectedFiles?: RejectedFile[]) => void
 }
+
+const DEFAULT_MAX_FILE_SIZE = __MAX_UPLOAD_FILE_SIZE__ ?? 1024 * 1024 // 1MB fallback
 
 export const FileUpload = ({
   label,
@@ -23,6 +31,7 @@ export const FileUpload = ({
   multiple = true,
   hasError,
   formats,
+  maxFileSize = DEFAULT_MAX_FILE_SIZE,
   onUploaded,
 }: FileUploadProps) => {
   const [isDragOver, setIsDragOver] = useState<boolean>(false)
@@ -65,18 +74,26 @@ export const FileUpload = ({
     }
 
     const fileList = Array.from(files)
-    const fileObj = fileList.map((file) => {
-      const id = Math.random().toString(36).substring(7)
+    const validFiles: FileType[] = []
+    const rejectedFiles: RejectedFile[] = []
+    const normalizedMaxFileSize = Math.min(maxFileSize, Infinity)
 
+    fileList.forEach((file) => {
+      if (file.size > normalizedMaxFileSize) {
+        rejectedFiles.push({ file, reason: "size" })
+        return
+      }
+
+      const id = Math.random().toString(36).substring(7)
       const previewUrl = URL.createObjectURL(file)
-      return {
+      validFiles.push({
         id: id,
         url: previewUrl,
         file,
-      }
+      })
     })
 
-    onUploaded(fileObj)
+    onUploaded(validFiles, rejectedFiles)
   }
 
   const handleDrop = (event: DragEvent) => {

@@ -4,7 +4,12 @@ import {
   MedusaContainer,
   Subscriber,
 } from "@medusajs/types"
-import { isFileSkipped, kebabCase, Modules } from "@medusajs/utils"
+import {
+  isFileSkipped,
+  kebabCase,
+  Modules,
+  registerDevServerResource,
+} from "@medusajs/utils"
 import { parse } from "path"
 import { configManager } from "../config"
 import { container } from "../container"
@@ -154,7 +159,7 @@ export class SubscriberLoader extends ResourceLoader {
     return kebabCase(idFromFile)
   }
 
-  private createSubscriber<T = unknown>({
+  createSubscriber<T = unknown>({
     fileName,
     config,
     handler,
@@ -185,6 +190,14 @@ export class SubscriberLoader extends ResourceLoader {
       eventBusService.subscribe(e, subscriber as Subscriber, {
         ...config.context,
         subscriberId,
+      })
+
+      registerDevServerResource({
+        type: "subscriber",
+        id: subscriberId,
+        sourcePath: fileName,
+        subscriberId,
+        events,
       })
     }
   }

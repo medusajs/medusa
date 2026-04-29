@@ -1,7 +1,8 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { useIsBrowser, useSiteConfig } from "../../providers"
+import { useIsBrowser } from "../../providers/BrowserProvider"
+import { useSiteConfig } from "../../providers/SiteConfig"
 import { useMemo } from "react"
 
 type useHeadingUrlProps = {

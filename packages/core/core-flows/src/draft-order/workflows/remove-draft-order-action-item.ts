@@ -1,4 +1,4 @@
-import { OrderChangeStatus, PromotionActions } from "@medusajs/framework/utils"
+import { OrderChangeStatus } from "@medusajs/framework/utils"
 import {
   createWorkflow,
   transform,
@@ -20,8 +20,8 @@ import {
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { validateDraftOrderRemoveActionItemStep } from "../steps/validate-draft-order-remove-action-item"
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
-import { refreshDraftOrderAdjustmentsWorkflow } from "./refresh-draft-order-adjustments"
 import { acquireLockStep, releaseLockStep } from "../../locking"
+import { computeDraftOrderAdjustmentsWorkflow } from "./compute-draft-order-adjustments"
 
 export const removeDraftOrderActionItemWorkflowId =
   "remove-draft-order-action-item"
@@ -109,11 +109,9 @@ export const removeDraftOrderActionItemWorkflow = createWorkflow(
       appliedPromoCodes,
       (appliedPromoCodes) => appliedPromoCodes.length > 0
     ).then(() => {
-      refreshDraftOrderAdjustmentsWorkflow.runAsStep({
+      computeDraftOrderAdjustmentsWorkflow.runAsStep({
         input: {
-          order: refetchedOrder,
-          promo_codes: appliedPromoCodes,
-          action: PromotionActions.REPLACE,
+          order_id: input.order_id,
         },
       })
     })

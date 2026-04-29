@@ -1,14 +1,15 @@
 "use client"
 
 import React, { Suspense, useMemo, useRef } from "react"
-import { useSidebar } from "@/providers"
+import { useSidebar } from "@/providers/Sidebar"
 import clsx from "clsx"
-import { Loading } from "@/components"
+import { Loading } from "@/components/Loading"
 import { SidebarItem } from "./Item"
 // @ts-expect-error can't install the types package because it doesn't support React v19
 import { CSSTransition, SwitchTransition } from "react-transition-group"
 import { SidebarTop } from "./Top"
-import { useClickOutside, useKeyboardShortcut } from "@/hooks"
+import { useClickOutside } from "@/hooks/use-click-outside"
+import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
 import useResizeObserver from "@react-hook/resize-observer"
 import { isSidebarItemLink } from "../../utils/sidebar-utils"
 
@@ -65,6 +66,7 @@ export const Sidebar = ({ className = "" }: SidebarProps) => {
             "lg:hidden bg-medusa-bg-overlay opacity-70",
             "fixed top-0 left-0 w-full h-full z-[45]"
           )}
+          data-testid="mobile-sidebar-overlay"
         ></div>
       )}
       <aside

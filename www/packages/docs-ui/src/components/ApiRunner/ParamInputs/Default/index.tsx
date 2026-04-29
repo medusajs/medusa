@@ -1,5 +1,5 @@
 import React from "react"
-import { InputText } from "../../../.."
+import { InputText } from "../../../../components/Input/Text"
 import setObjValue from "../../../../utils/set-obj-value"
 import { ApiRunnerParamObjectInput } from "../Object"
 import { ApiRunnerParamArrayInput } from "../Array"

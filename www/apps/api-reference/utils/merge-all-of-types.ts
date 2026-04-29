@@ -26,8 +26,16 @@ export default function mergeAllOfTypes(
     return allOfSchema.allOf[0]
   }
 
+  const required = allOfSchema.allOf.reduce<string[]>((acc, item) => {
+    if (item.required) {
+      acc.push(...item.required)
+    }
+    return acc
+  }, [])
+
   return {
     type: "object",
     properties,
+    required: [...new Set(required)],
   }
 }

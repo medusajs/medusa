@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react"
 import { FrontMatter, ToCItem } from "types"
-import { useSiteConfig } from "../../providers"
+import { useSiteConfig } from "../../providers/SiteConfig"
 
 type InjectedMDXDataProps = {
   frontmatter: FrontMatter

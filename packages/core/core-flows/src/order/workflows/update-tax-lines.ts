@@ -1,18 +1,25 @@
-import type { OrderWorkflowDTO } from "@medusajs/framework/types"
+import type {
+  ItemTaxLineDTO,
+  OrderWorkflowDTO,
+  ShippingTaxLineDTO,
+} from "@medusajs/framework/types"
 import {
   createWorkflow,
   transform,
   when,
   WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../common"
 import { getItemTaxLinesStep } from "../../tax/steps/get-item-tax-lines"
 import { setOrderTaxLinesForItemsStep } from "../steps"
+import { getTranslatedTaxLinesStep } from "../../common/steps/get-translated-tax-lines"
 
 const completeOrderFields = [
   "id",
   "currency_code",
   "email",
+  "locale",
   "region.id",
   "region.automatic_taxes",
   "items.id",
@@ -64,6 +71,7 @@ const orderFields = [
   "id",
   "currency_code",
   "email",
+  "locale",
   "region.id",
   "region.automatic_taxes",
   "shipping_methods.tax_lines.id",
@@ -179,9 +187,7 @@ export const updateOrderTaxLinesWorkflowId = "update-order-tax-lines"
  */
 export const updateOrderTaxLinesWorkflow = createWorkflow(
   updateOrderTaxLinesWorkflowId,
-  (
-    input: WorkflowData<UpdateOrderTaxLinesWorkflowInput>
-  ): WorkflowData<void> => {
+  (input: WorkflowData<UpdateOrderTaxLinesWorkflowInput>) => {
     const isFullOrder = transform(input, (data) => {
       return !data.item_ids && !data.shipping_method_ids
     })
@@ -209,9 +215,13 @@ export const updateOrderTaxLinesWorkflow = createWorkflow(
       return orderLineItems
     })
 
-    const shippingMethods = when("get-order-shipping-methods", { input }, ({ input }) => {
-      return input.shipping_method_ids!?.length > 0
-    }).then(() => {
+    const shippingMethods = when(
+      "get-order-shipping-methods",
+      { input },
+      ({ input }) => {
+        return input.shipping_method_ids!?.length > 0
+      }
+    ).then(() => {
       const { data: orderShippingMethods } = useQueryGraphStep({
         entity: "order_shipping_method",
         filters: { id: input.shipping_method_ids },
@@ -245,10 +255,22 @@ export const updateOrderTaxLinesWorkflow = createWorkflow(
       )
     )
 
+    const translatedTaxLines = getTranslatedTaxLinesStep({
+      itemTaxLines: taxLineItems.lineItemTaxLines,
+      shippingTaxLines: taxLineItems.shippingMethodsTaxLines,
+      locale: order.locale,
+    })
+
     setOrderTaxLinesForItemsStep({
       order,
-      item_tax_lines: taxLineItems.lineItemTaxLines,
-      shipping_tax_lines: taxLineItems.shippingMethodsTaxLines,
+      item_tax_lines: translatedTaxLines.itemTaxLines as ItemTaxLineDTO[],
+      shipping_tax_lines:
+        translatedTaxLines.shippingTaxLines as ShippingTaxLineDTO[],
+    })
+
+    return new WorkflowResponse({
+      itemTaxLines: taxLineItems.lineItemTaxLines,
+      shippingTaxLines: taxLineItems.shippingMethodsTaxLines,
     })
   }
 )

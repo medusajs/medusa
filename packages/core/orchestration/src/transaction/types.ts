@@ -25,7 +25,7 @@ export type TransactionStepsDefinition = {
 
   /**
    * Indicates whether the workflow should continue even if there is a permanent failure in this step.
-   * In case it is set to true, the the current step will be marked as TransactionStepState.PERMANENT_FAILURE and the next steps will be executed.
+   * In case it is set to true, the current step will be marked as TransactionStepState.PERMANENT_FAILURE and the next steps will be executed.
    */
   continueOnPermanentFailure?: boolean
 
@@ -114,6 +114,12 @@ export type TransactionStepsDefinition = {
    * Defines the next step(s) to execute after this step. Can be a single step or an array of steps.
    */
   next?: TransactionStepsDefinition | TransactionStepsDefinition[]
+
+  /**
+   * @private
+   * Whether we need to store checkpoint at this step.
+   */
+  store?: boolean
 
   // TODO: add metadata field for customizations
 }

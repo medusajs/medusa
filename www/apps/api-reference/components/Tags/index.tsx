@@ -1,7 +1,7 @@
+import React, { Suspense } from "react"
 import { OpenAPI } from "types"
 import { TagSectionProps } from "./Section"
 import dynamic from "next/dynamic"
-import { Suspense } from "react"
 
 const TagSection = dynamic<TagSectionProps>(
   async () => import("./Section")

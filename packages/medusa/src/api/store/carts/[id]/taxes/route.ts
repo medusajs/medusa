@@ -4,7 +4,7 @@ import { HttpTypes } from "@medusajs/framework/types"
 import { refetchCart } from "../../helpers"
 
 export const POST = async (
-  req: MedusaStoreRequest<{}, HttpTypes.SelectParams>,
+  req: MedusaStoreRequest<{}, HttpTypes.StoreCalculateCartTaxes>,
   res: MedusaResponse<HttpTypes.StoreCartResponse>
 ) => {
   await updateTaxLinesWorkflow(req.scope).run({

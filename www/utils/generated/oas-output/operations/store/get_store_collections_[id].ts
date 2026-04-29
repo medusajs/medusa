@@ -5,7 +5,7 @@
  * description: Retrieve a collection by its ID. You can expand the collection's relations or select the fields that should be returned.
  * x-authenticated: false
  * externalDocs:
- *   url: https://docs.medusajs.com/v2/resources/storefront-development/products/collections/retrieve
+ *   url: https://docs.medusajs.com/resources/storefront-development/products/collections/retrieve
  *   description: "Storefront guide: How to retrieve a collection."
  * parameters:
  *   - name: id
@@ -22,6 +22,16 @@
  *       type: string
  *       externalDocs:
  *         url: https://docs.medusajs.com/api/store#publishable-api-key
+ *   - name: x-medusa-locale
+ *     in: header
+ *     description: The locale in BCP 47 format to retrieve localized content.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       example: en-US
+ *       externalDocs:
+ *         url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+ *         description: Learn more in the Serve Translations in Storefront guide.
  *   - name: fields
  *     in: query
  *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
@@ -34,6 +44,16 @@
  *         fields. without prefix it will replace the entire default fields.
  *       externalDocs:
  *         url: "#select-fields-and-relations"
+ *   - name: locale
+ *     in: query
+ *     description: The locale in BCP 47 format to retrieve localized content.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       example: en-US
+ *       externalDocs:
+ *         url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+ *         description: Learn more in the Serve Translations in Storefront guide.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK

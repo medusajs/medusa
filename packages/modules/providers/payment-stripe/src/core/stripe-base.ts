@@ -114,7 +114,8 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
       extra?.payment_method_data as Stripe.PaymentIntentCreateParams.PaymentMethodData
 
     res.payment_method_options =
-      extra?.payment_method_options as Stripe.PaymentIntentCreateParams.PaymentMethodOptions
+      (extra?.payment_method_options as Stripe.PaymentIntentCreateParams.PaymentMethodOptions) ??
+      this.paymentIntentOptions.payment_method_options
 
     res.automatic_payment_methods =
       (extra?.automatic_payment_methods as { enabled: true } | undefined) ??
@@ -353,7 +354,9 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
         }
       )
     } catch (e) {
-      throw this.buildError("An error occurred in refundPayment", e)
+      if (e.code !== ErrorCodes.CHARGE_ALREADY_REFUNDED) {
+        throw this.buildError("An error occurred in refundPayment", e)
+      }
     }
 
     return { data }

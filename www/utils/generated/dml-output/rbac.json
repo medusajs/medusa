@@ -1,0 +1,67 @@
+{
+	"RbacPolicy": {
+		"filePath": "packages/modules/rbac/src/models/rbac-policy.ts",
+		"properties": {
+			"id": "The ID of the rbac policy.",
+			"key": "The key of the rbac policy",
+			"resource": "The resource of the rbac policy",
+			"operation": "The operation of the rbac policy",
+			"name": "The name of the rbac policy",
+			"description": "The description of the rbac policy",
+			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
+		}
+	},
+	"RbacRoleParent": {
+		"filePath": "packages/modules/rbac/src/models/rbac-role-parent.ts",
+		"properties": {
+			"id": "The ID of the rbac role parent.",
+			"role": "The associated role.\n\n@expandable",
+			"parent": "The associated parent.\n\n@expandable",
+			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
+		}
+	},
+	"RbacRolePolicy": {
+		"filePath": "packages/modules/rbac/src/models/rbac-role-policy.ts",
+		"properties": {
+			"id": "The ID of the rbac role policy.",
+			"role": "The associated role.\n\n@expandable",
+			"policy": "The associated policy.\n\n@expandable",
+			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
+		}
+	},
+	"RbacRole": {
+		"filePath": "packages/modules/rbac/src/models/rbac-role.ts",
+		"properties": {
+			"id": "The ID of the rbac role.",
+			"name": "The name of the rbac role",
+			"description": "The description of the rbac role",
+			"metadata": "Holds custom data in key-value pairs.",
+			"policies": "The associated policies.\n\n@expandable",
+			"parents": "The associated parents.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
+		}
+	},
+	"RbacRoleInheritance": {
+		"filePath": "packages/modules/rbac/src/models/rbac-role-inheritance.ts",
+		"properties": {
+			"id": "The ID of the rbac role inheritance.",
+			"role": "The associated role.\n\n@expandable",
+			"inherited_role": "The associated inherited_role.\n\n@expandable",
+			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
+		}
+	}
+}

@@ -1,9 +1,9 @@
-import { IAuthModuleService } from "@medusajs/framework/types"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { IAuthModuleService } from "@medusajs/framework/types"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import { generateJwtTokenForAuthIdentity } from "../../utils/generate-jwt-token"
 
 // Retrieve a newly generated JWT token. All checks that the existing token is valid already happen in the auth middleware.
@@ -16,15 +16,21 @@ export const POST = async (
   const service: IAuthModuleService = req.scope.resolve(Modules.AUTH)
 
   const authIdentity = await service.retrieveAuthIdentity(
-    req.auth_context.auth_identity_id
+    req.auth_context.auth_identity_id,
+    { relations: ["provider_identities"] }
   )
 
   const { http } = req.scope.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
   ).projectConfig
 
-  const token = generateJwtTokenForAuthIdentity(
-    { authIdentity, actorType: req.auth_context.actor_type },
+  const token = await generateJwtTokenForAuthIdentity(
+    {
+      authIdentity,
+      actorType: req.auth_context.actor_type,
+      authProvider: req.auth_context.auth_provider,
+      container: req.scope,
+    },
     {
       secret: http.jwtSecret!,
       expiresIn: http.jwtExpiresIn,

@@ -48,6 +48,7 @@ export const UploadImport = ({
           }
           onUploaded(files[0].file)
         }}
+        maxFileSize={Infinity}
       />
 
       {error && (

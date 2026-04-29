@@ -5,7 +5,6 @@
  * x-sidebar-summary: List Store Credit Accounts
  * description: Retrieve the logged-in customer's store credit accounts. The store credit accounts can be filtered by fields such as `id`. The store credit accounts can also be sorted or paginated.
  * x-authenticated: true
- * x-ignoreCleanup: true
  * parameters:
  *   - name: x-publishable-api-key
  *     in: header
@@ -15,6 +14,16 @@
  *       type: string
  *       externalDocs:
  *         url: https://docs.medusajs.com/api/store#publishable-api-key
+ *   - name: x-medusa-locale
+ *     in: header
+ *     description: The locale in BCP 47 format to retrieve localized content.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       example: en-US
+ *       externalDocs:
+ *         url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+ *         description: Learn more in the Serve Translations in Storefront guide.
  *   - name: currency_code
  *     in: query
  *     description: Filter by the store credit account's currency code.
@@ -143,6 +152,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: Filter by a store credit account's update date.
@@ -262,6 +272,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: updated_at
  *   - name: limit
  *     in: query
  *     description: Limit the number of items returned in the list.
@@ -324,6 +335,24 @@
  *       items:
  *         type: object
  *       title: $or
+ *   - name: locale
+ *     in: query
+ *     description: The locale in BCP 47 format to retrieve localized content.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       example: en-US
+ *       externalDocs:
+ *         url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+ *         description: Learn more in the Serve Translations in Storefront guide.
+ *   - name: with_deleted
+ *     in: query
+ *     description: Whether to include deleted records in the result.
+ *     required: false
+ *     schema:
+ *       type: boolean
+ *       title: with_deleted
+ *       description: Whether to include deleted records in the result.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -355,9 +384,9 @@
  *   - cookie_auth: []
  *   - jwt_token: []
  * x-badges:
- *   - text: Cloud
+ *   - text: Loyalty Plugin
  *     description: |
- *       This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+ *       This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/store-credit).
  * 
 */
 

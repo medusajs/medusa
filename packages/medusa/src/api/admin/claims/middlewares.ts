@@ -1,10 +1,13 @@
-import { MiddlewareRoute } from "@medusajs/framework/http"
 import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
+import { MiddlewareRoute } from "@medusajs/framework/http"
+import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
+import { Entities } from "./query-config"
 import {
+  AdminDeleteClaimItemActionSchema,
   AdminGetOrdersOrderParams,
   AdminGetOrdersParams,
   AdminPostCancelClaimReqSchema,
@@ -19,6 +22,15 @@ import {
 
 export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
   {
+    matcher: "/admin/claims/*",
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/claims",
     middlewares: [
@@ -26,6 +38,12 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetOrdersParams,
         QueryConfig.listTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.read,
+      },
     ],
   },
   {
@@ -48,6 +66,12 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.create,
+      },
+    ],
   },
 
   {
@@ -60,6 +84,12 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -71,15 +101,27 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/claims/:id/claim-items/:action_id",
     middlewares: [
       validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
+        AdminDeleteClaimItemActionSchema,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
     ],
   },
 
@@ -93,6 +135,12 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -104,15 +152,27 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/claims/:id/inbound/items/:action_id",
     middlewares: [
       validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
+        AdminDeleteClaimItemActionSchema,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -125,6 +185,12 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -136,15 +202,27 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/claims/:id/inbound/shipping-method/:action_id",
     middlewares: [
       validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
+        AdminDeleteClaimItemActionSchema,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
     ],
   },
 
@@ -158,6 +236,12 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -169,15 +253,31 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/claims/:id/outbound/items/:action_id",
     middlewares: [
       validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
+        AdminDeleteClaimItemActionSchema,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -190,6 +290,12 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -201,15 +307,27 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/claims/:id/outbound/shipping-method/:action_id",
     middlewares: [
       validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
+        AdminDeleteClaimItemActionSchema,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -221,16 +339,34 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/claims/:id/request",
     middlewares: [],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.delete,
+      },
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/claims/:id",
     middlewares: [],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.delete,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -241,6 +377,12 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
     ],
   },
 ]

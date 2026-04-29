@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/auth-github",
-  "version": "2.11.2",
+  "version": "2.14.1",
   "description": "Github OAuth authentication provider for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -20,22 +20,16 @@
   "author": "Medusa",
   "license": "MIT",
   "scripts": {
-    "test": "jest --passWithNoTests src",
-    "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.spec.ts",
-    "build": "rimraf dist && tsc --build",
-    "watch": "tsc --watch"
+    "test": "../../../../node_modules/.bin/jest --passWithNoTests src",
+    "test:integration": "../../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.spec\\.ts\"",
+    "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
+    "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.11.2",
-    "@swc/core": "^1.7.28",
-    "@swc/jest": "^0.2.36",
-    "jest": "^29.7.0",
-    "msw": "^2.3.0",
-    "rimraf": "^5.0.1",
-    "typescript": "^5.6.2"
+    "@medusajs/framework": "2.14.1"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.11.2"
+    "@medusajs/framework": "2.14.1"
   },
   "keywords": [
     "medusa-provider",

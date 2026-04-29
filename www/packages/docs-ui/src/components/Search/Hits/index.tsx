@@ -11,8 +11,10 @@ import {
   useInstantSearch,
 } from "react-instantsearch"
 import { SearchNoResult } from "../NoResults"
-import { useSearch } from "@/providers"
-import { Badge, Link, SearchHitGroupName } from "@/components"
+import { useSearch } from "@/providers/Search"
+import { Badge } from "@/components/Badge"
+import { Link } from "@/components/Link"
+import { SearchHitGroupName } from "@/components/Search/Hits/GroupName"
 
 export type Hierarchy = "lvl0" | "lvl1" | "lvl2" | "lvl3" | "lvl4" | "lvl5"
 
@@ -56,8 +58,10 @@ export const SearchHitsWrapper = ({
   const { status } = useInstantSearch()
   const { selectedIndex, indices } = useSearch()
   const [hasNoResults, setHasNoResults] = useState<IndexResults>({
-    [indices[0].value]: false,
-    [indices[1].value]: false,
+    ...indices.reduce((acc, index) => {
+      acc[index.value] = false
+      return acc
+    }, {} as IndexResults),
   })
   const setNoResults = (index: string, value: boolean) => {
     setHasNoResults((prev) => ({

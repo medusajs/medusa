@@ -2,14 +2,17 @@ import bg from "./bg.json"
 import de from "./de.json"
 import el from "./el.json"
 import en from "./en.json"
+import enGB from "./enGB.json"
 import es from "./es.json"
 import fr from "./fr.json"
 import he from "./he.json"
+import hr from "./hr.json"
 import hu from "./hu.json"
 import it from "./it.json"
 import ja from "./ja.json"
 import pl from "./pl.json"
 import ptBR from "./ptBR.json"
+import ptPT from "./ptPT.json"
 import th from "./th.json"
 import tr from "./tr.json"
 import uk from "./uk.json"
@@ -27,6 +30,8 @@ import ko from "./ko.json"
 import nl from "./nl.json"
 import bs from "./bs.json"
 import id from "./id.json"
+import zhTW from "./zhTW.json"
+
 export default {
   bs: {
     translation: bs,
@@ -43,6 +48,9 @@ export default {
   en: {
     translation: en,
   },
+  enGB: {
+    translation: enGB,
+  },
   es: {
     translation: es,
   },
@@ -51,6 +59,9 @@ export default {
   },
   he: {
     translation: he,
+  },
+  hr: {
+    translation: hr,
   },
   hu: {
     translation: hu,
@@ -66,6 +77,9 @@ export default {
   },
   ptBR: {
     translation: ptBR,
+  },
+  ptPT: {
+    translation: ptPT,
   },
   th: {
     translation: th,
@@ -114,5 +128,8 @@ export default {
   },
   id: {
     translation: id,
+  },
+  zhTW: {
+    translation: zhTW,
   },
 }

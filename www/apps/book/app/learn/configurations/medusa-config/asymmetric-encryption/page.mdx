@@ -73,7 +73,17 @@ Asymmetric encryption is useful in several scenarios:
 
 ## How to Configure Asymmetric Encryption
 
-### Step 1: Set Asymmetric JWT Configuration
+### Step 1: Install Dependencies
+
+First, you need to install `jsonwebtoken` to handle JWT token creation and verification.
+
+Run the following command in your Medusa application:
+
+```bash npm2yarn
+npm install jsonwebtoken
+```
+
+### Step 2: Set Asymmetric JWT Configuration
 
 To configure asymmetric encryption, you need to set up both signing and verification options in your `medusa-config.ts` file.
 
@@ -141,7 +151,7 @@ You set the JWT configurations in the following options:
     - Refer to the [Medusa Configuration chapter](../page.mdx#http) for more details on these options and their default values.
 2. [User Module options](!resources!/commerce-modules/user/module-options): You set the JWT options specific to the User Module, which are used to sign and verify invite tokens.
 
-### Step 2: Generate Key Pair
+### Step 3: Generate Key Pair
 
 Next, generate an RSA key pair (private and public keys) for signing and verifying tokens. You can use OpenSSL to generate the keys:
 
@@ -161,7 +171,7 @@ private-key.pem
 *.pem
 ```
 
-### Step 3: Set Environment Variables
+### Step 4: Set Environment Variables
 
 Finally, set the following environment variables using the generated keys:
 

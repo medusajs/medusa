@@ -1,8 +1,17 @@
 import React, { useMemo } from "react"
-import { Highlight } from ".."
+import { CodeBlockStyle, Highlight } from "../../CodeBlock"
 import { RenderProps, Token } from "prism-react-renderer"
 import clsx from "clsx"
-import { MarkdownContent, Tooltip } from "@/components"
+import { Tooltip } from "@/components/Tooltip"
+import dynamic from "next/dynamic"
+
+const MarkdownContent = dynamic(
+  async () =>
+    import("@/components/MarkdownContent").then((mod) => mod.MarkdownContent),
+  {
+    ssr: false,
+  }
+)
 
 type HighlightedTokens = {
   start: number
@@ -25,6 +34,7 @@ type CodeBlockLineProps = {
   lineNumberBgClassName: string
   isTerminal: boolean
   animateTokenHighlights?: boolean
+  codeBlockStyle: CodeBlockStyle
 } & Pick<RenderProps, "getLineProps" | "getTokenProps">
 
 export const CodeBlockLine = ({
@@ -38,6 +48,7 @@ export const CodeBlockLine = ({
   lineNumberBgClassName,
   isTerminal,
   animateTokenHighlights = false,
+  codeBlockStyle,
 }: CodeBlockLineProps) => {
   const lineProps = getLineProps({ line, key: lineNumber })
 
@@ -215,18 +226,29 @@ export const CodeBlockLine = ({
     isTokenHighlighted: boolean
     offset: number
   }) => (
-    <span className={clsx(isTokenHighlighted && "relative")}>
+    <span
+      className={clsx(isTokenHighlighted && "relative group")}
+      data-testid="code-block-line-tokens"
+    >
       {isTokenHighlighted && (
         <span
           className={clsx(
-            animateTokenHighlights && [
-              "animate-fast animate-growWidth animation-fill-forwards",
+            "absolute left-0 z-0",
+            codeBlockStyle === "loud" && [
+              "top-0 h-full",
+              "lg:bg-medusa-alpha-white-alpha-6 lg:border lg:border-medusa-alpha-white-alpha-12",
+              "lg:rounded-docs_xs scale-x-[1.05]",
+              animateTokenHighlights && [
+                "animate-fast animate-growWidth animation-fill-forwards",
+              ],
+              !animateTokenHighlights && "w-full",
             ],
-            !animateTokenHighlights && "w-full",
-            "absolute left-0 top-0 h-full z-0",
-            "lg:bg-medusa-alpha-white-alpha-6 lg:border lg:border-medusa-alpha-white-alpha-12",
-            "lg:rounded-docs_xs scale-x-[1.05]"
+            codeBlockStyle === "subtle" && [
+              "bottom-0 w-full h-full scale-y-[0.1] transition-transform origin-bottom",
+              "group-hover:scale-y-100 bg-medusa-fg-base",
+            ]
           )}
+          data-testid="code-block-line-highlight"
         />
       )}
       {tokens.map((token, key) => {
@@ -240,8 +262,13 @@ export const CodeBlockLine = ({
             key={tokenKey}
             className={clsx(
               tokenClassName,
-              isTokenHighlighted && "relative z-[1]"
+              isTokenHighlighted && [
+                "relative z-[1]",
+                codeBlockStyle === "subtle" &&
+                  "group-hover:!text-medusa-fg-on-color group-hover:dark:!text-medusa-fg-on-inverted",
+              ]
             )}
+            data-testid="code-block-line-token"
             {...rest}
           />
         )
@@ -263,6 +290,7 @@ export const CodeBlockLine = ({
         isHighlightedLine && "bg-medusa-alpha-white-alpha-6",
         lineProps.className
       )}
+      data-testid="code-block-line"
     >
       {(showLineNumber || isTerminal) && (
         <span
@@ -272,6 +300,7 @@ export const CodeBlockLine = ({
             lineNumberColorClassName,
             lineNumberBgClassName
           )}
+          data-testid="line-number"
         >
           {isTerminal ? "❯" : showLineNumber ? lineNumber + 1 : ""}
         </span>

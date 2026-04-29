@@ -1,7 +1,7 @@
 {
   "name": "medusa-dev-cli",
   "description": "CLI helpers for contributors working on Medusa",
-  "version": "2.11.2",
+  "version": "2.14.1",
   "author": "Sebastian Rindom <skrindom@gmail.com>",
   "bin": {
     "medusa-dev": "./dist/index.js"
@@ -17,18 +17,12 @@
     "execa": "^5.1.1",
     "find-yarn-workspace-root": "^2.0.0",
     "fs-extra": "^11.1.1",
-    "glob": "^10.4.5",
+    "glob": "13.0.6",
     "got": "^11.8.6",
     "lodash": "^4.17.21",
     "signal-exit": "^3.0.7",
     "verdaccio": "^5.0.0",
     "yargs": "^17.7.2"
-  },
-  "devDependencies": {
-    "@swc/core": "^1.7.28",
-    "@swc/jest": "^0.2.36",
-    "jest": "^29.7.0",
-    "typescript": "^5.6.2"
   },
   "peerDependencies": {
     "ts-node": "^10.9.2",
@@ -54,9 +48,9 @@
     "directory": "packages/cli/medusa-dev-cli"
   },
   "scripts": {
-    "test": "jest --passWithNoTests -- src",
+    "test": "../../../node_modules/.bin/jest --passWithNoTests --testPathPattern=src",
     "build": "tsc",
-    "watch": "tsc --watch"
+    "watch": "yarn run -T tsc --watch"
   },
   "engines": {
     "node": ">=16"

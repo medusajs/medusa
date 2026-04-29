@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/admin-vite-plugin",
-  "version": "2.11.2",
+  "version": "2.14.1",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -21,27 +21,23 @@
     "package.json"
   ],
   "scripts": {
-    "build": "tsup",
-    "watch": "tsup --watch",
-    "test": "vitest --run",
-    "test:watch": "vitest"
+    "build": "yarn run -T tsup",
+    "watch": "yarn run -T tsup --watch",
+    "test": "../../../node_modules/.bin/vitest --run",
+    "test:watch": "../../../node_modules/.bin/vitest"
   },
   "devDependencies": {
-    "@types/node": "^20.12.11",
-    "tsup": "^8.4.0",
-    "typescript": "^5.6.2",
-    "vite": "^5.4.14",
-    "vitest": "^3.0.5"
+    "vite": "^5.4.21"
   },
   "peerDependencies": {
-    "vite": "^5.4.14"
+    "vite": "^5.4.21"
   },
   "dependencies": {
     "@babel/parser": "7.25.6",
     "@babel/traverse": "7.25.6",
     "@babel/types": "7.25.6",
-    "@medusajs/admin-shared": "2.11.2",
-    "chokidar": "3.5.3",
+    "@medusajs/admin-shared": "2.14.1",
+    "chokidar": "^3.5.3",
     "fdir": "6.1.1",
     "magic-string": "0.30.5",
     "outdent": "^0.8.0",

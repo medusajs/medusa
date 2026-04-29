@@ -23,6 +23,14 @@
  *         fields. without prefix it will replace the entire default fields.
  *       externalDocs:
  *         url: "#select-fields-and-relations"
+ *   - name: version
+ *     in: query
+ *     description: The order's version.
+ *     required: false
+ *     schema:
+ *       type: number
+ *       title: version
+ *       description: The order's version.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -90,9 +98,9 @@
  *   - name: order.completed
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the order
- *       }]
+ *       }
  *       ```
  *     description: Emitted when orders are completed.
  *     deprecated: false

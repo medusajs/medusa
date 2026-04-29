@@ -3,7 +3,7 @@ products:
   - currency
 ---
 
-import { CodeTabs, CodeTab, Table } from "docs-ui"
+import { CodeTabs, CodeTab, Table, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Links between Store Module and Other Modules`,
@@ -55,6 +55,20 @@ Read-only links are used to query data across modules, but the relations aren't 
         [Learn more](#currency-module)
       </Table.Cell>
     </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [StoreLocale](/references/store/models/StoreLocale)
+      </Table.Cell>
+      <Table.Cell>
+        [Locale](/references/translation/models/Locale) in [Translation Module](../../translation/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        Read-only - has many
+      </Table.Cell>
+      <Table.Cell>
+        [Learn more](#translation-module)
+      </Table.Cell>
+    </Table.Row>
   </Table.Body>
 </Table>
 
@@ -62,9 +76,9 @@ Read-only links are used to query data across modules, but the relations aren't 
 
 ## Currency Module
 
-The Store Module has a `Currency` data model that stores the supported currencies of a store. However, these currencies don't hold all the details of a currency, such as its name or symbol.
+The Store Module has a `StoreCurrency` data model that stores the supported currencies of a store. However, these currencies don't hold all the details of a currency, such as its name or symbol.
 
-Instead, Medusa defines a read-only link between the [Currency Module](../../currency/page.mdx)'s `Currency` data model and the Store Module's `StoreCurrency` data model. This means you can retrieve the details of a store's supported currencies, but you don't manage the links in a pivot table in the database. The currencies of a store are determined by the `currency_code` of the [Currency](/references/store/models/StoreCurrency) data model in the Store Module (not in the Currency Module).
+Instead, Medusa defines a read-only link from the Store Module's `StoreCurrency` data model to the [Currency Module](../../currency/page.mdx)'s `Currency` data model. This means you can retrieve the details of a store's supported currencies, but you don't manage the links in a pivot table in the database.
 
 ### Retrieve with Query
 
@@ -100,6 +114,63 @@ const { data: stores } = useQueryGraphStep({
 })
 
 // stores[0].supported_currencies
+```
+
+  </CodeTab>
+</CodeTabs>
+
+
+---
+
+## Translation Module
+
+<Prerequisites
+  items={[
+    {
+      text: "Translation Module Configured",
+      link: "/commerce-modules/translation#configure-translation-module",
+    }
+  ]}
+/>
+
+The Store Module has a `StoreLocale` data model that stores the supported locales of a store. However, these locales don't hold all the details of a locale, such as its name.
+
+Instead, Medusa defines a read-only link from the Store Module's `StoreLocale` data model to the [Translation Module](../../translation/page.mdx)'s `Locale` data model. This means you can retrieve the details of a store's supported locales, but you don't manage the links in a pivot table in the database.
+
+### Retrieve with Query
+
+To retrieve the details of a store's locales with [Query](!docs!/learn/fundamentals/module-links/query), pass `supported_locales.locale.*` in `fields`:
+
+<CodeTabs group="relation-query">
+  <CodeTab label="query.graph" value="method">
+
+```ts
+const { data: stores } = await query.graph({
+  entity: "store",
+  fields: [
+    "supported_locales.locale.*",
+  ],
+})
+
+// stores[0].supported_locales[0].locale
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="step">
+
+```ts
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+// ...
+
+const { data: stores } = useQueryGraphStep({
+  entity: "store",
+  fields: [
+    "supported_locales.locale.*",
+  ],
+})
+
+// stores[0].supported_locales[0].locale
 ```
 
   </CodeTab>

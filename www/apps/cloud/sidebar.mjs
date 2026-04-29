@@ -29,6 +29,11 @@ export const sidebar = [
             path: "/comparison",
             title: "Cloud vs Self Hosting",
           },
+          {
+            type: "link",
+            title: "Command Palette",
+            path: "/command-palette",
+          },
         ],
       },
       {
@@ -45,6 +50,18 @@ export const sidebar = [
             type: "link",
             title: "Projects",
             path: "/projects",
+            children: [
+              {
+                type: "link",
+                title: "Prerequisites",
+                path: "/projects/prerequisites",
+              },
+              {
+                type: "link",
+                title: "Rename Repository",
+                path: "/projects/rename-repo-branch",
+              },
+            ],
           },
           {
             type: "link",
@@ -66,6 +83,21 @@ export const sidebar = [
                 title: "Environment Variables",
                 path: "/environments/environment-variables",
               },
+              {
+                type: "link",
+                title: "Subdomains",
+                path: "/environments/subdomains",
+              },
+              {
+                type: "link",
+                title: "Custom Domains",
+                path: "/environments/custom-domains",
+              },
+              {
+                type: "ref",
+                title: "Monitoring",
+                path: "/monitoring",
+              }
             ],
           },
           {
@@ -75,10 +107,20 @@ export const sidebar = [
             children: [
               {
                 type: "link",
+                title: "Access Deployment",
+                path: "/deployments/access",
+              },
+              {
+                type: "link",
                 title: "Troubleshooting",
                 path: "/deployments/troubleshooting",
               },
             ],
+          },
+          {
+            type: "link",
+            title: "Account",
+            path: "/user",
           },
         ],
       },
@@ -87,6 +129,11 @@ export const sidebar = [
         title: "Resources",
         initialOpen: true,
         children: [
+          {
+            type: "link",
+            title: "Storefront",
+            path: "/storefront",
+          },
           {
             type: "link",
             title: "Database",
@@ -107,6 +154,18 @@ export const sidebar = [
             title: "Cache",
             path: "/cache",
           },
+          {
+            type: "link",
+            title: "Emails",
+            path: "/emails",
+            children: [
+              {
+                type: "link",
+                title: "React Email Templates",
+                path: "/emails/react-email",
+              },
+            ],
+          },
         ],
       },
       {
@@ -117,7 +176,11 @@ export const sidebar = [
           {
             type: "link",
             title: "Loyalty",
-            path: "/loyalty-plugin",
+            path: "https://docs.medusajs.com/resources/commerce-modules/loyalty",
+            badge: {
+              text: "Published",
+              variant: "blue",
+            },
           },
           {
             type: "link",
@@ -176,6 +239,40 @@ export const sidebar = [
             type: "link",
             title: "Usage",
             path: "/usage",
+          },
+          {
+            type: "link",
+            title: "Performance",
+            path: "/monitoring",
+            children: [
+              {
+                type: "link",
+                title: "Servers",
+                path: "/monitoring/servers",
+              },
+              {
+                type: "link",
+                title: "Workers",
+                path: "/monitoring/workers",
+              },
+              {
+                type: "link",
+                title: "HTTP",
+                path: "/monitoring/http",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Networking",
+        initialOpen: true,
+        children: [
+          {
+            type: "link",
+            title: "IP Addresses",
+            path: "/ip-addresses",
           },
         ],
       },

@@ -17,7 +17,7 @@ import {
   when,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { useQueryGraphStep } from "../../common"
+import { getTranslatedLineItemsStep, useQueryGraphStep } from "../../common"
 import { emitEventStep } from "../../common/steps/emit-event"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import {
@@ -42,7 +42,9 @@ import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 import { getVariantsAndItemsWithPrices } from "./get-variants-and-items-with-prices"
 import { refreshCartItemsWorkflow } from "./refresh-cart-items"
 
-const cartFields = ["completed_at"].concat(cartFieldsForPricingContext)
+const cartFields = ["completed_at", "locale"].concat(
+  cartFieldsForPricingContext
+)
 
 export const addToCartWorkflowId = "add-to-cart"
 /**
@@ -292,10 +294,33 @@ export const addToCartWorkflow = createWorkflow(
       },
     })
 
+    const itemsToCreateVariants = transform(
+      { itemsToCreate, variants } as {
+        itemsToCreate: CreateLineItemForCartDTO[]
+        variants: PrepareVariantLineItemInput[]
+      },
+      (data) => {
+        if (!data.itemsToCreate?.length) {
+          return []
+        }
+
+        const variantsMap = new Map(data.variants?.map((v) => [v.id, v]))
+        return data.itemsToCreate
+          .map((item) => item.variant_id && variantsMap.get(item.variant_id))
+          .filter(Boolean) as PrepareVariantLineItemInput[]
+      }
+    )
+
+    const translatedItemsToCreate = getTranslatedLineItemsStep({
+      items: itemsToCreate,
+      variants: itemsToCreateVariants,
+      locale: cart.locale,
+    })
+
     const [createdLineItems, updatedLineItems] = parallelize(
       createLineItemsStep({
         id: cart.id,
-        items: itemsToCreate,
+        items: translatedItemsToCreate,
       }),
       updateLineItemsStep({
         id: cart.id,

@@ -51,6 +51,10 @@ export interface RefreshDraftOrderAdjustmentsWorkflowInput {
    * - Replace the existing promo codes with the new ones.
    */
   action: PromotionActions
+  /**
+   * The version of the order change to refresh the adjustments for.
+   */
+  version?: number
 }
 
 /**
@@ -92,7 +96,7 @@ export const refreshDraftOrderAdjustmentsWorkflow = createWorkflow(
     })
 
     const actions = getActionsToComputeFromPromotionsStep({
-      cart: input.order as any,
+      computeActionContext: input.order as any,
       promotionCodesToApply,
     })
 
@@ -114,6 +118,7 @@ export const refreshDraftOrderAdjustmentsWorkflow = createWorkflow(
       createDraftOrderLineItemAdjustmentsStep({
         lineItemAdjustmentsToCreate: lineItemAdjustmentsToCreate,
         order_id: input.order.id,
+        version: input.version,
       }),
       createDraftOrderShippingMethodAdjustmentsStep({
         shippingMethodAdjustmentsToCreate: shippingMethodAdjustmentsToCreate,

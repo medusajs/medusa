@@ -60,6 +60,7 @@ type ProductVariant {
   width: Float
   options: [ProductOptionValue!]!
   images: [ProductImage!]!
+  thumbnail: String
   metadata: JSON
   product: Product
   product_id: String
@@ -74,6 +75,7 @@ type ProductCategory {
   name: String!
   description: String!
   handle: String!
+  mpath: String!
   is_active: Boolean!
   is_internal: Boolean!
   rank: Int!
@@ -92,6 +94,9 @@ type ProductTag {
   value: String!
   metadata: JSON
   products: [Product]
+  created_at: DateTime!
+  updated_at: DateTime!
+  deleted_at: DateTime
 }
 
 type ProductCollection {
@@ -109,6 +114,7 @@ type ProductType {
   id: ID!
   value: String!
   metadata: JSON
+  products: [Product]
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime
@@ -131,6 +137,9 @@ type ProductImage {
   url: String!
   rank: Int!
   metadata: JSON
+  product: Product
+  product_id: String
+  variants: [ProductVariant]
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime
@@ -141,7 +150,19 @@ type ProductOptionValue {
   value: String!
   option: ProductOption
   option_id: String
+  variants: [ProductVariant]
   metadata: JSON
+  created_at: DateTime!
+  updated_at: DateTime!
+  deleted_at: DateTime
+}
+
+type ProductVariantProductImage {
+  id: ID!
+  variant: ProductVariant!
+  variant_id: String!
+  image: ProductImage!
+  image_id: String!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime

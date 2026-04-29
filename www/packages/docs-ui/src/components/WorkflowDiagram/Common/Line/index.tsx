@@ -7,7 +7,7 @@ export type WorkflowDiagramLineProps = {
 }
 
 export const WorkflowDiagramLine = ({ step }: WorkflowDiagramLineProps) => {
-  if (!step) {
+  if (!step.length) {
     return <></>
   }
 

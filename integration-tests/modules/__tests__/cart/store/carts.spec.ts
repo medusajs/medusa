@@ -2168,8 +2168,8 @@ medusaIntegrationTestRunner({
           authorizePaymentSessionSpy.mockImplementation(
             (id, context, sharedContext) => {
               throw new MedusaError(
-                MedusaError.Types.INVALID_DATA,
-                `Throw a random error`
+                MedusaError.Types.PAYMENT_AUTHORIZATION_ERROR,
+                `Payment authorization failed`
               )
             }
           )

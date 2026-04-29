@@ -5,8 +5,8 @@
  * x-schemaName: AdminUploadPreSignedUrl
  * required:
  *   - originalname
- *   - size
  *   - mime_type
+ *   - size
  * properties:
  *   originalname:
  *     type: string

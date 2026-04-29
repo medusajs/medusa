@@ -1,7 +1,7 @@
 import { IStoreModuleService } from "@medusajs/framework/types"
 import { Module, Modules } from "@medusajs/framework/utils"
-import { StoreModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import { StoreModuleService } from "@services"
 import { createStoreFixture } from "../__fixtures__"
 
 jest.setTimeout(100000)
@@ -15,7 +15,11 @@ moduleIntegrationTestRunner<IStoreModuleService>({
           service: StoreModuleService,
         }).linkable
 
-        expect(Object.keys(linkable)).toEqual(["store", "storeCurrency"])
+        expect(Object.keys(linkable)).toEqual([
+          "store",
+          "storeCurrency",
+          "storeLocale",
+        ])
 
         Object.keys(linkable).forEach((key) => {
           delete linkable[key].toJSON
@@ -40,6 +44,15 @@ moduleIntegrationTestRunner<IStoreModuleService>({
               field: "storeCurrency",
             },
           },
+          storeLocale: {
+            id: {
+              linkable: "store_locale_id",
+              entity: "StoreLocale",
+              primaryKey: "id",
+              serviceName: "store",
+              field: "storeLocale",
+            },
+          },
         })
       })
 
@@ -53,6 +66,10 @@ moduleIntegrationTestRunner<IStoreModuleService>({
               supported_currencies: expect.arrayContaining([
                 expect.objectContaining({ currency_code: "eur" }),
                 expect.objectContaining({ currency_code: "usd" }),
+              ]),
+              supported_locales: expect.arrayContaining([
+                expect.objectContaining({ locale_code: "fr-FR" }),
+                expect.objectContaining({ locale_code: "en-US" }),
               ]),
               default_sales_channel_id: "test-sales-channel",
               default_region_id: "test-region",
@@ -142,6 +159,20 @@ moduleIntegrationTestRunner<IStoreModuleService>({
             .catch((err) => err.message)
 
           expect(updateErr).toEqual("Duplicate currency codes: usd")
+        })
+
+        it("should fail updating locales where a duplicate locale code exists", async function () {
+          const createdStore = await service.createStores(createStoreFixture)
+          const updateErr = await service
+            .updateStores(createdStore.id, {
+              supported_locales: [
+                { locale_code: "en-US" },
+                { locale_code: "en-US" },
+              ],
+            })
+            .catch((err) => err.message)
+
+          expect(updateErr).toEqual("Duplicate locale codes: en-US")
         })
 
         it("should fail updating currencies where there is more than 1 default currency", async function () {

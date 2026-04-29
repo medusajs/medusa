@@ -9,7 +9,7 @@ post:
     You pass the token as a bearer token in the request's Authorization header.
   externalDocs:
     url: >-
-      https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route#reset-password-route
+      https://docs.medusajs.com/resources/commerce-modules/auth/authentication-route#reset-password-route
     description: Learn more about this API route.
   x-authenticated: true
   parameters:

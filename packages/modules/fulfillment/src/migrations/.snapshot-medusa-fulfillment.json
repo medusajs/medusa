@@ -157,7 +157,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_address_deleted_at\" ON \"fulfillment_address\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_address_deleted_at\" ON \"fulfillment_address\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "fulfillment_address_pkey",
@@ -238,7 +238,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_provider_deleted_at\" ON \"fulfillment_provider\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_provider_deleted_at\" ON \"fulfillment_provider\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "fulfillment_provider_pkey",
@@ -336,7 +336,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_set_deleted_at\" ON \"fulfillment_set\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_set_deleted_at\" ON \"fulfillment_set\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_fulfillment_set_name_unique",
@@ -345,7 +345,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_fulfillment_set_name_unique\" ON \"fulfillment_set\" (name) WHERE deleted_at IS NULL"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_fulfillment_set_name_unique\" ON \"fulfillment_set\" (\"name\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "fulfillment_set_pkey",
@@ -443,7 +443,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_service_zone_fulfillment_set_id\" ON \"service_zone\" (fulfillment_set_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_service_zone_fulfillment_set_id\" ON \"service_zone\" (\"fulfillment_set_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_service_zone_deleted_at",
@@ -452,7 +452,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_service_zone_deleted_at\" ON \"service_zone\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_service_zone_deleted_at\" ON \"service_zone\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_service_zone_name_unique",
@@ -461,7 +461,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_service_zone_name_unique\" ON \"service_zone\" (name) WHERE deleted_at IS NULL"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_service_zone_name_unique\" ON \"service_zone\" (\"name\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "service_zone_pkey",
@@ -616,7 +616,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_service_zone_id\" ON \"geo_zone\" (service_zone_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_service_zone_id\" ON \"geo_zone\" (\"service_zone_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_geo_zone_deleted_at",
@@ -625,7 +625,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_deleted_at\" ON \"geo_zone\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_deleted_at\" ON \"geo_zone\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_geo_zone_country_code",
@@ -634,7 +634,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_country_code\" ON \"geo_zone\" (country_code) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_country_code\" ON \"geo_zone\" (\"country_code\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_geo_zone_province_code",
@@ -643,7 +643,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_province_code\" ON \"geo_zone\" (province_code) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_province_code\" ON \"geo_zone\" (\"province_code\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_geo_zone_city",
@@ -652,7 +652,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_city\" ON \"geo_zone\" (city) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_city\" ON \"geo_zone\" (\"city\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "geo_zone_pkey",
@@ -764,7 +764,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_type_deleted_at\" ON \"shipping_option_type\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_type_deleted_at\" ON \"shipping_option_type\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "shipping_option_type_pkey",
@@ -862,7 +862,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_profile_deleted_at\" ON \"shipping_profile\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_profile_deleted_at\" ON \"shipping_profile\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_shipping_profile_name_unique",
@@ -871,7 +871,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_shipping_profile_name_unique\" ON \"shipping_profile\" (name) WHERE deleted_at IS NULL"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_shipping_profile_name_unique\" ON \"shipping_profile\" (\"name\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "shipping_profile_pkey",
@@ -1019,7 +1019,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_service_zone_id\" ON \"shipping_option\" (service_zone_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_service_zone_id\" ON \"shipping_option\" (\"service_zone_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_shipping_option_shipping_profile_id",
@@ -1028,7 +1028,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_shipping_profile_id\" ON \"shipping_option\" (shipping_profile_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_shipping_profile_id\" ON \"shipping_option\" (\"shipping_profile_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_shipping_option_provider_id",
@@ -1037,7 +1037,16 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_provider_id\" ON \"shipping_option\" (provider_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_provider_id\" ON \"shipping_option\" (\"provider_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_shipping_option_shipping_option_type_id",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_shipping_option_type_id\" ON \"shipping_option\" (\"shipping_option_type_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_shipping_option_deleted_at",
@@ -1046,7 +1055,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_deleted_at\" ON \"shipping_option\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_deleted_at\" ON \"shipping_option\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "shipping_option_pkey",
@@ -1215,7 +1224,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_rule_shipping_option_id\" ON \"shipping_option_rule\" (shipping_option_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_rule_shipping_option_id\" ON \"shipping_option_rule\" (\"shipping_option_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_shipping_option_rule_deleted_at",
@@ -1224,7 +1233,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_rule_deleted_at\" ON \"shipping_option_rule\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_rule_deleted_at\" ON \"shipping_option_rule\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "shipping_option_rule_pkey",
@@ -1431,7 +1440,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_shipping_option_id\" ON \"fulfillment\" (shipping_option_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_shipping_option_id\" ON \"fulfillment\" (\"shipping_option_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_fulfillment_deleted_at",
@@ -1440,7 +1449,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_deleted_at\" ON \"fulfillment\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_deleted_at\" ON \"fulfillment\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_fulfillment_location_id",
@@ -1449,7 +1458,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_location_id\" ON \"fulfillment\" (location_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_location_id\" ON \"fulfillment\" (\"location_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "fulfillment_pkey",
@@ -1596,7 +1605,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_label_fulfillment_id\" ON \"fulfillment_label\" (fulfillment_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_label_fulfillment_id\" ON \"fulfillment_label\" (\"fulfillment_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_fulfillment_label_deleted_at",
@@ -1605,7 +1614,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_label_deleted_at\" ON \"fulfillment_label\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_label_deleted_at\" ON \"fulfillment_label\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "fulfillment_label_pkey",
@@ -1762,7 +1771,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_item_fulfillment_id\" ON \"fulfillment_item\" (fulfillment_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_item_fulfillment_id\" ON \"fulfillment_item\" (\"fulfillment_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_fulfillment_item_deleted_at",
@@ -1771,7 +1780,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_item_deleted_at\" ON \"fulfillment_item\" (deleted_at) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_item_deleted_at\" ON \"fulfillment_item\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_fulfillment_item_inventory_item_id",
@@ -1780,7 +1789,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_item_inventory_item_id\" ON \"fulfillment_item\" (inventory_item_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_item_inventory_item_id\" ON \"fulfillment_item\" (\"inventory_item_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_fulfillment_item_line_item_id",
@@ -1789,7 +1798,7 @@
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_item_line_item_id\" ON \"fulfillment_item\" (line_item_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_item_line_item_id\" ON \"fulfillment_item\" (\"line_item_id\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "fulfillment_item_pkey",

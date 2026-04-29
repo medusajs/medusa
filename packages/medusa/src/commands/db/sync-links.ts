@@ -9,6 +9,7 @@ import {
 import {
   ContainerRegistrationKeys,
   getResolvedPlugins,
+  isDefined,
   mergePluginModules,
 } from "@medusajs/framework/utils"
 import boxen from "boxen"
@@ -16,7 +17,7 @@ import chalk from "chalk"
 import { join } from "path"
 
 import { initializeContainer } from "../../loaders"
-import { ensureDbExists } from "../utils"
+import { ensureDbExists, isPgstreamEnabled } from "../utils"
 
 /**
  * Groups action tables by their "action" property
@@ -102,14 +103,26 @@ export async function syncLinks(
     executeSafe,
     directory,
     container,
+    concurrency,
   }: {
     executeSafe: boolean
     executeAll: boolean
     directory: string
     container: MedusaContainer
+    concurrency?: number
   }
 ) {
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+
+  // Check if pgstream is enabled - if so, force concurrency to 1
+  const pgstreamEnabled = await isPgstreamEnabled(container)
+  if (pgstreamEnabled) {
+    concurrency = 1
+  }
+
+  if (isDefined(concurrency)) {
+    process.env.DB_MIGRATION_CONCURRENCY = String(concurrency)
+  }
 
   const planner = await medusaAppLoader.getLinksExecutionPlanner()
 
@@ -192,7 +205,12 @@ export async function syncLinks(
   }
 }
 
-const main = async function ({ directory, executeSafe, executeAll }) {
+const main = async function ({
+  directory,
+  executeSafe,
+  executeAll,
+  concurrency,
+}) {
   const container = await initializeContainer(directory)
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
@@ -218,6 +236,7 @@ const main = async function ({ directory, executeSafe, executeAll }) {
       executeSafe,
       directory,
       container,
+      concurrency,
     })
     process.exit()
   } catch (error) {

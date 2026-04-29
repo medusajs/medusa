@@ -6,7 +6,7 @@ products:
   - product
 ---
 
-import { CodeTabs, CodeTab } from "docs-ui"
+import { CodeTabs, CodeTab, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Retrieve a Product in Storefront`,
@@ -38,12 +38,7 @@ Learn how to install and configure the JS SDK in the [JS SDK documentation](../.
 <CodeTabs group="store-request">
   <CodeTab label="React" value="react">
 
-export const highlights = [
-  ["22"], ["23"], 
-  ["24"], ["25"], ["26"], ["27"],
-]
-
-  ```tsx highlights={highlights}
+  ```tsx highlights={[["22"], ["23"], ["24"], ["25"], ["26"], ["27"]]}
   "use client" // include with Next.js 13+
 
   import { useEffect, useState } from "react"
@@ -70,7 +65,7 @@ export const highlights = [
         setProduct(dataProduct)
         setLoading(false)
       })
-    }, [loading])
+    }, [loading, id])
 
     return (
       <div>
@@ -93,7 +88,7 @@ export const highlights = [
               </ul>
             )}
             {product.images?.map((image) => (
-              <img src={image.url} key={image.id} />
+              <img src={image.url} alt={product.title} key={image.id} />
             ))}
           </>
         )}
@@ -132,16 +127,12 @@ Refer to the [Features in Product Details Page](#features-in-product-details-pag
 
 ## Retrieve a Product by Handle
 
-To retrieve a product by its handle, send a request to the [List Products API route](!api!/store#products_getproducts) passing it the `handle` query parameter:
+To retrieve a product by its handle, send a request to the [List Products API route](!api!/store#products_getproducts) passing the `handle` query parameter:
 
 <CodeTabs group="store-request">
   <CodeTab label="React" value="react">
 
-export const handleHighlights = [
-  ["24"], ["25"], ["26"], ["27"], ["28"], ["29"], ["30"], ["31"], ["32"]
-]
-
-  ```tsx highlights={handleHighlights}
+  ```tsx highlights={[["24"], ["25"], ["26"], ["27"], ["28"], ["29"], ["30"], ["31"], ["32"]]}
   "use client" // include with Next.js 13+
 
   import { useEffect, useState } from "react"
@@ -174,7 +165,7 @@ export const handleHighlights = [
         }
         setLoading(false)
       })
-    }, [loading])
+    }, [loading, handle])
 
     return (
       <div>
@@ -190,7 +181,7 @@ export const handleHighlights = [
                     {option.title}
                     <ul>
                       {option.values?.map((optionValue) => (
-                        <li id={optionValue.id}>{optionValue.value}</li>
+                        <li key={optionValue.id}>{optionValue.value}</li>
                       ))}
                     </ul>
                   </li>
@@ -198,7 +189,7 @@ export const handleHighlights = [
               </ul>
             )}
             {product.images?.map((image) => (
-              <img src={image.url} key={image.id} />
+              <img src={image.url} alt={product.title} key={image.id} />
             ))}
           </>
         )}
@@ -220,7 +211,7 @@ export const handleFetchHighlights = [
   })
   .then(({ products }) => {
     if (!products.length) {
-      // product with the specified handle doesn't exist
+      // Product not found with the specified handle
       return
     }
     // use the product...
@@ -233,11 +224,87 @@ export const handleFetchHighlights = [
 
 ---
 
+## Retrieve Translated Product
+
+<Prerequisites
+  items={[
+    {
+      text: "Translation Module Configured",
+      link: "/commerce-modules/translation#configure-translation-module",
+    }
+  ]}
+/>
+
+By default, Medusa returns the product's original content (such as title and description).
+
+If you support [localization](../../localization/page.mdx) in your storefront, you can set the locale to retrieve product information based on the customer's preferred language.
+
+You can set the locale using one of the following methods:
+
+- Use the JS SDK's `setLocale` method. The JS SDK will automatically include the locale in subsequent requests.
+- Pass the `locale` query parameter to the [List Products API route](!api!/store#products_getproducts).
+- Set the `x-medusa-locale` header in the API request to the [List Products API route](!api!/store#products_getproducts).
+
+For example:
+
+<CodeTabs group="localized-products">
+  <CodeTab label="Using JS SDK" value="js-sdk">
+
+```ts
+sdk.setLocale("fr-FR")
+sdk.store.product.retrieve(id)
+.then(({ product }) => {
+  // TODO use the product...
+  console.log(product)
+})
+```
+
+  </CodeTab>
+  <CodeTab label="Using Query Parameter" value="query-param">
+
+```bash
+curl "http://localhost:9000/store/products/prod_123?locale=fr-FR" \
+-H 'x-publishable-api-key: {your_publishable_api_key}'
+```
+
+  </CodeTab>
+  <CodeTab label="Using Header" value="header">
+
+```bash
+curl "http://localhost:9000/store/products/prod_123" \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
+-H "x-medusa-locale: fr-FR"
+```
+
+  </CodeTab>
+</CodeTabs>
+
+The returned product will have the same structure as described in the [products schema](!api!/store#products_product_schema), but fields such as `title` and `description` will be in the specified locale:
+
+```json
+{
+  "id": "prod_123",
+  "title": "Chemise Exemple",
+  "description": "Ceci est une description en français.",
+  // other product fields...
+}
+```
+
+If translations aren't available for the selected locale, or no locale is selected, the product's original content is returned.
+
+### Retrieve in Server-Side Environments
+
+For server-side environments (such as server components or server actions in Next.js), you can set the locale using cookies to persist the selected locale across requests.
+
+Learn more in the [Storefront Localization](../../localization/page.mdx#set-locale-in-server-environments) guide.
+
+---
+
 ## Features in Product Details Page
 
-In a product's details page, you want to allow the customer to choose a variant, see its price, and add it to the cart.
+On a product details page, you typically want to allow customers to choose a variant, see its price, and add it to the cart.
 
-The following guides will help you add these features into your storefront:
+The following guides will help you add these features to your storefront:
 
 - [Select a variant](../variants/page.mdx)
 - [Show variant price](../price/page.mdx)

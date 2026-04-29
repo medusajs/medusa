@@ -15,6 +15,7 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { pricingContextResult } from "../../../cart/utils/schemas"
 import { useRemoteQueryStep } from "../../../common"
+import { acquireLockStep, releaseLockStep } from "../../../locking"
 import { previewOrderChangeStep } from "../../steps"
 import { createOrderShippingMethods } from "../../steps/create-order-shipping-methods"
 import {
@@ -24,6 +25,7 @@ import {
 import { prepareShippingMethod } from "../../utils/prepare-shipping-method"
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 import { updateOrderTaxLinesWorkflow } from "../update-tax-lines"
+import { getTranslatedShippingOptionsStep } from "../../../common/steps/get-translated-shipping-option"
 
 /**
  * The data to validate that a shipping method can be created for an order edit.
@@ -113,11 +115,11 @@ export const createOrderEditShippingMethodWorkflowId =
  * @summary
  *
  * Create a shipping method for an order edit.
- * 
+ *
  * @property hooks.setPricingContext - This hook is executed before the shipping method is created. You can consume this hook to return any custom context useful for the prices retrieval of the shipping method's option.
- * 
+ *
  * For example, assuming you have the following custom pricing rule:
- * 
+ *
  * ```json
  * {
  *   "attribute": "location_id",
@@ -125,13 +127,13 @@ export const createOrderEditShippingMethodWorkflowId =
  *   "value": "sloc_123",
  * }
  * ```
- * 
+ *
  * You can consume the `setPricingContext` hook to add the `location_id` context to the prices calculation:
- * 
+ *
  * ```ts
  * import { createOrderEditShippingMethodWorkflow } from "@medusajs/medusa/core-flows";
  * import { StepResponse } from "@medusajs/workflows-sdk";
- * 
+ *
  * createOrderEditShippingMethodWorkflow.hooks.setPricingContext((
  *   { order, shipping_option_id, additional_data }, { container }
  * ) => {
@@ -140,13 +142,13 @@ export const createOrderEditShippingMethodWorkflowId =
  *   });
  * });
  * ```
- * 
+ *
  * The price of the shipping method's option will now be retrieved using the context you return.
- * 
+ *
  * :::note
- * 
+ *
  * Learn more about prices calculation context in the [Prices Calculation](https://docs.medusajs.com/resources/commerce-modules/pricing/price-calculation) documentation.
- * 
+ *
  * :::
  */
 export const createOrderEditShippingMethodWorkflow = createWorkflow(
@@ -154,9 +156,15 @@ export const createOrderEditShippingMethodWorkflow = createWorkflow(
   function (
     input: CreateOrderEditShippingMethodWorkflowInput & AdditionalData
   ) {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["id", "status", "currency_code", "canceled_at"],
+      fields: ["id", "status", "currency_code", "canceled_at", "locale"],
       variables: { id: input.order_id },
       list: false,
       throw_if_key_not_found: true,
@@ -213,10 +221,15 @@ export const createOrderEditShippingMethodWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
+    const translatedShippingOptions = getTranslatedShippingOptionsStep({
+      shippingOptions: shippingOptions,
+      locale: order.locale!,
+    })
+
     const shippingMethodInput = transform(
       {
         relatedEntity: { order_id: order.id },
-        shippingOptions,
+        shippingOptions: translatedShippingOptions,
         customPrice: input.custom_amount,
         orderChange,
         input,
@@ -274,11 +287,16 @@ export const createOrderEditShippingMethodWorkflow = createWorkflow(
       input: [orderChangeActionInput],
     })
 
-    return new WorkflowResponse(
-      previewOrderChangeStep(order.id) as OrderPreviewDTO,
-      {
-        hooks: [setPricingContext] as const,
-      }
-    )
+    const previewOrderChange = previewOrderChangeStep(
+      order.id
+    ) as OrderPreviewDTO
+
+    releaseLockStep({
+      key: input.order_id,
+    })
+
+    return new WorkflowResponse(previewOrderChange, {
+      hooks: [setPricingContext] as const,
+    })
   }
 )

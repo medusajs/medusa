@@ -1,10 +1,10 @@
 {
   "name": "@medusajs/admin-bundler",
-  "version": "2.11.2",
+  "version": "2.14.1",
   "description": "Bundler for the Medusa admin dashboard.",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "scripts": {
-    "build": "tsup"
+    "build": "yarn run -T tsup"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -18,26 +18,22 @@
     "package.json"
   ],
   "devDependencies": {
-    "@medusajs/types": "2.11.2",
-    "@types/compression": "^1.7.5",
-    "@types/express": "^4.17.21",
-    "tsup": "^8.4.0",
-    "typescript": "^5.6.2"
+    "@medusajs/types": "2.14.1"
   },
   "dependencies": {
-    "@medusajs/admin-shared": "2.11.2",
-    "@medusajs/admin-vite-plugin": "2.11.2",
-    "@medusajs/dashboard": "2.11.2",
+    "@medusajs/admin-shared": "2.14.1",
+    "@medusajs/admin-vite-plugin": "2.14.1",
+    "@medusajs/dashboard": "2.14.1",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
     "compression": "^1.8.0",
     "express": "^4.21.0",
     "get-port": "^5.1.1",
-    "glob": "^10.4.5",
+    "glob": "13.0.6",
     "outdent": "^0.8.0",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3",
-    "vite": "^5.4.14"
+    "vite": "^5.4.21"
   },
   "packageManager": "yarn@3.2.1"
 }

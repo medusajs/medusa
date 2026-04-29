@@ -9,17 +9,17 @@ export type DismissRemoteLinksStepInput = LinkDefinition | LinkDefinition[]
 // TODO: add ability for this step to restore links from only foreign keys
 export const dismissRemoteLinkStepId = "dismiss-remote-links"
 /**
- * This step removes remote links between two records of linked data models.
+ * This step removes links between two records of linked data models.
  *
- * Learn more in the [Remote Link documentation.](https://docs.medusajs.com/learn/fundamentals/module-links/remote-link#dismiss-link).
+ * Learn more in the [Link documentation.](https://docs.medusajs.com/learn/fundamentals/module-links/link#dismiss-link).
  *
  * @example
  * dismissRemoteLinkStep([{
  *   [Modules.PRODUCT]: {
  *     product_id: "prod_123",
  *   },
- *   "helloModuleService": {
- *     my_custom_id: "mc_123",
+ *   blog: {
+ *     post_id: "post_123",
  *   },
  * }])
  */

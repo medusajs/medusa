@@ -1,6 +1,11 @@
+export enum Entities {
+  order = "order",
+}
+
 export const defaultAdminListOrderFields = [
   "id",
   "display_id",
+  "custom_display_id",
   "status",
   "version",
   "email",
@@ -16,6 +21,7 @@ export const defaultAdminListOrderFields = [
 export const defaultAdminOrderFields = [
   "id",
   "display_id",
+  "custom_display_id",
   "status",
   "version",
   "email",
@@ -41,10 +47,12 @@ export const defaultAdminOrderFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminOrderFields,
   isList: false,
+  entity: Entities.order,
 }
 
 export const listTransformQueryConfig = {
   defaults: defaultAdminListOrderFields,
   defaultLimit: 20,
   isList: true,
+  entity: Entities.order,
 }

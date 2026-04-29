@@ -16,8 +16,8 @@ import { deleteOrderChangesStep, deleteOrderShippingMethods } from "../../order"
 import { restoreDraftOrderShippingMethodsStep } from "../steps/restore-draft-order-shipping-methods"
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
-import { refreshDraftOrderAdjustmentsWorkflow } from "./refresh-draft-order-adjustments"
 import { acquireLockStep, releaseLockStep } from "../../locking"
+import { updateDraftOrderPromotionsStep } from "../steps/update-draft-order-promotions"
 
 export const cancelDraftOrderEditWorkflowId = "cancel-draft-order-edit"
 
@@ -85,34 +85,6 @@ export const cancelDraftOrderEditWorkflow = createWorkflow(
 
     validateDraftOrderChangeStep({ order, orderChange })
 
-    const shippingToRemove = transform(
-      { orderChange, input },
-      ({ orderChange }) => {
-        return (orderChange.actions ?? [])
-          .filter((a) => a.action === ChangeActionType.SHIPPING_ADD)
-          .map(({ reference_id }) => reference_id)
-      }
-    )
-
-    const shippingToRestore = transform(
-      { orderChange, input },
-      ({ orderChange }) => {
-        return (orderChange.actions ?? [])
-          .filter((a) => a.action === ChangeActionType.SHIPPING_UPDATE)
-          .map(({ reference_id, details }) => ({
-            id: reference_id,
-            before: {
-              shipping_option_id: details?.old_shipping_option_id,
-              amount: details?.old_amount,
-            },
-            after: {
-              shipping_option_id: details?.new_shipping_option_id,
-              amount: details?.new_amount,
-            },
-          }))
-      }
-    )
-
     const promotionsToRemove = transform(
       { orderChange, input },
       ({ orderChange }) => {
@@ -155,18 +127,44 @@ export const cancelDraftOrderEditWorkflow = createWorkflow(
       }
     )
 
+    updateDraftOrderPromotionsStep({
+      id: input.order_id,
+      promo_codes: promotionsToRefresh as string[],
+      action: PromotionActions.REPLACE,
+    })
+
+    const shippingToRemove = transform(
+      { orderChange, input },
+      ({ orderChange }) => {
+        return (orderChange.actions ?? [])
+          .filter((a) => a.action === ChangeActionType.SHIPPING_ADD)
+          .map(({ reference_id }) => reference_id)
+      }
+    )
+
+    const shippingToRestore = transform(
+      { orderChange, input },
+      ({ orderChange }) => {
+        return (orderChange.actions ?? [])
+          .filter((a) => a.action === ChangeActionType.SHIPPING_UPDATE)
+          .map(({ reference_id, details }) => ({
+            id: reference_id,
+            before: {
+              shipping_option_id: details?.old_shipping_option_id,
+              amount: details?.old_amount,
+            },
+            after: {
+              shipping_option_id: details?.new_shipping_option_id,
+              amount: details?.new_amount,
+            },
+          }))
+      }
+    )
+
     parallelize(
       deleteOrderChangesStep({ ids: [orderChange.id] }),
       deleteOrderShippingMethods({ ids: shippingToRemove })
     )
-
-    refreshDraftOrderAdjustmentsWorkflow.runAsStep({
-      input: {
-        order,
-        promo_codes: promotionsToRefresh,
-        action: PromotionActions.REPLACE,
-      },
-    })
 
     when(shippingToRestore, (methods) => !!methods?.length).then(() => {
       restoreDraftOrderShippingMethodsStep({

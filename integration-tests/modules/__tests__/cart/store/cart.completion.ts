@@ -1,11 +1,14 @@
 import {
   addToCartWorkflow,
+  beginOrderEditOrderWorkflow,
   completeCartWorkflow,
+  confirmOrderEditRequestWorkflow,
   createCartWorkflow,
   createPaymentCollectionForCartWorkflow,
   createPaymentSessionsWorkflow,
   getOrderDetailWorkflow,
   listShippingOptionsForCartWorkflow,
+  orderEditAddNewItemWorkflow,
   processPaymentWorkflow,
 } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
@@ -26,6 +29,7 @@ import {
 import {
   ContainerRegistrationKeys,
   Modules,
+  PaymentCollectionStatus,
   ProductStatus,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
@@ -717,12 +721,10 @@ medusaIntegrationTestRunner({
 
           validateHook = undefined
 
-          const paymentSessionQuery = await query.graph({
+          const paymentCollectionQuery = await query.graph({
             entity: "payment_collection",
-            variables: {
-              filters: {
-                id: paymentSession.payment_collection_id,
-              },
+            filters: {
+              id: paymentSession.payment_collection_id,
             },
             fields: [
               "*",
@@ -734,7 +736,7 @@ medusaIntegrationTestRunner({
           })
 
           // expects the payment to be refunded and a new payment session to be created
-          expect(paymentSessionQuery.data[0].payments[0]).toEqual(
+          expect(paymentCollectionQuery.data[0].payments[0]).toEqual(
             expect.objectContaining({
               amount: 3000,
               payment_session_id: paymentSession.id,
@@ -751,9 +753,13 @@ medusaIntegrationTestRunner({
               ],
             })
           )
-          expect(paymentSessionQuery.data[0].payment_sessions[0].id).not.toBe(
-            paymentSession.id
-          )
+
+          const sessions = paymentCollectionQuery.data[0].payment_sessions
+          expect(sessions).toHaveLength(1)
+
+          expect(sessions[0].id).toBeDefined()
+          expect(sessions[0].id).not.toBe(paymentSession.id)
+          expect(sessions[0].status).toBe("pending")
         })
 
         it("should complete cart when payment webhook and storefront are called in simultaneously", async () => {
@@ -871,6 +877,8 @@ medusaIntegrationTestRunner({
               },
             }),
           ])
+
+          await new Promise((resolve) => setTimeout(resolve, 100))
 
           const { result: fullOrder } = await getOrderDetailWorkflow(
             appContainer
@@ -1015,12 +1023,193 @@ medusaIntegrationTestRunner({
               eventGroupId
             ) ?? []
 
-          expect(grouppedEventBefore).toHaveLength(1)
+          expect(grouppedEventBefore).toHaveLength(17)
           expect(grouppedEventAfter).toHaveLength(0) // events have been compensated
 
           expect(errors[0].error.message).toBe(
             "Failed to do something before ending complete cart workflow"
           )
+        })
+
+        it("should avoid completing cart when order already exists", async () => {
+          const salesChannel = await scModuleService.createSalesChannels({
+            name: "Webshop",
+          })
+
+          const location = await stockLocationModule.createStockLocations({
+            name: "Warehouse",
+          })
+
+          const [product] = await productModule.createProducts([
+            {
+              title: "Test product",
+              status: ProductStatus.PUBLISHED,
+              variants: [
+                {
+                  title: "Test variant",
+                  manage_inventory: false,
+                },
+              ],
+            },
+          ])
+
+          const priceSet = await pricingModule.createPriceSets({
+            prices: [
+              {
+                amount: 3000,
+                currency_code: "usd",
+              },
+            ],
+          })
+
+          await pricingModule.createPricePreferences({
+            attribute: "currency_code",
+            value: "usd",
+            has_tax_inclusive: true,
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.PRICING]: {
+                price_set_id: priceSet.id,
+              },
+            },
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+            },
+          ])
+
+          // create cart
+          const cart = await cartModuleService.createCarts({
+            currency_code: "usd",
+            sales_channel_id: salesChannel.id,
+          })
+
+          await addToCartWorkflow(appContainer).run({
+            input: {
+              items: [
+                {
+                  variant_id: product.variants[0].id,
+                  quantity: 1,
+                  requires_shipping: false,
+                },
+              ],
+              cart_id: cart.id,
+            },
+          })
+
+          await createPaymentCollectionForCartWorkflow(appContainer).run({
+            input: {
+              cart_id: cart.id,
+            },
+          })
+
+          const [payCol] = await remoteQuery(
+            remoteQueryObjectFromString({
+              entryPoint: "cart_payment_collection",
+              variables: { filters: { cart_id: cart.id } },
+              fields: ["payment_collection_id"],
+            })
+          )
+
+          await createPaymentSessionsWorkflow(appContainer).run({
+            input: {
+              payment_collection_id: payCol.payment_collection_id,
+              provider_id: "pp_system_default",
+              context: {},
+              data: {},
+            },
+          })
+
+          const {
+            result: { id: orderId },
+          } = await completeCartWorkflow(appContainer).run({
+            input: {
+              id: cart.id,
+            },
+          })
+
+          await beginOrderEditOrderWorkflow(appContainer).run({
+            input: {
+              order_id: orderId,
+            },
+          })
+          await orderEditAddNewItemWorkflow(appContainer).run({
+            input: {
+              order_id: orderId,
+              items: [
+                {
+                  variant_id: product.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+          })
+          await confirmOrderEditRequestWorkflow(appContainer).run({
+            input: { order_id: orderId },
+          })
+
+          const orderPaymentCollections = await remoteQuery(
+            remoteQueryObjectFromString({
+              entryPoint: "order_payment_collection",
+              variables: { filters: { order_id: orderId } },
+              fields: ["payment_collection_id"],
+            })
+          )
+
+          const [pendingPaymentCollection] = await remoteQuery(
+            remoteQueryObjectFromString({
+              entryPoint: "payment_collection",
+              variables: {
+                filters: {
+                  id: orderPaymentCollections.map(
+                    (orderPayCol) => orderPayCol.payment_collection_id
+                  ),
+                  status: PaymentCollectionStatus.NOT_PAID,
+                },
+              },
+              fields: ["id"],
+            })
+          )
+
+          const { result: paymentSession } =
+            await createPaymentSessionsWorkflow(appContainer).run({
+              input: {
+                payment_collection_id: pendingPaymentCollection.id,
+                provider_id: "pp_system_default",
+                context: {},
+                data: {},
+              },
+            })
+
+          let completeCartCalled = false
+          const workflow = processPaymentWorkflow(appContainer)
+
+          workflow.addAction("track-complete-cart-step", {
+            invoke: async function trackStep({ invoke }) {
+              completeCartCalled = !!invoke["complete-cart-after-payment-step"]
+            },
+          })
+
+          await workflow.run({
+            input: {
+              action: "captured",
+              data: {
+                session_id: paymentSession.id,
+                amount: 3000,
+              },
+            },
+          })
+
+          expect(completeCartCalled).toBe(false)
         })
       })
     })

@@ -96,6 +96,10 @@ export const cart = [
     "path": "https://docs.medusajs.com/resources/storefront-development/guides/express-checkout"
   },
   {
+    "title": "Implement Mobile App with React Native, Expo, and Medusa",
+    "path": "https://docs.medusajs.com/resources/storefront-development/guides/react-native-expo"
+  },
+  {
     "title": "addShippingMethodToCartStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/addShippingMethodToCartStep"
   },
@@ -148,8 +152,16 @@ export const cart = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateShippingMethodsStep"
   },
   {
+    "title": "addGiftCardToCartWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addGiftCardToCartWorkflow"
+  },
+  {
     "title": "addShippingMethodToCartWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addShippingMethodToCartWorkflow"
+  },
+  {
+    "title": "addStoreCreditsToCartWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addStoreCreditsToCartWorkflow"
   },
   {
     "title": "addToCartWorkflow",
@@ -170,6 +182,10 @@ export const cart = [
   {
     "title": "refreshCartShippingMethodsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartShippingMethodsWorkflow"
+  },
+  {
+    "title": "removeGiftCardFromCartWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeGiftCardFromCartWorkflow"
   },
   {
     "title": "transferCartCustomerWorkflow",

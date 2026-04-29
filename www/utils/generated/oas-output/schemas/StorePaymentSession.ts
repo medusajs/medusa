@@ -25,7 +25,7 @@
  *     type: object
  *     description: The payment session's data, useful for the payment provider processing the payment.
  *     externalDocs:
- *       url: https://docs.medusajs.com/v2/resources/commerce-modules/payment/payment-session#data-property
+ *       url: https://docs.medusajs.com/resources/commerce-modules/payment/payment-session#data-property
  *   context:
  *     type: object
  *     description: The context around the payment, such as the customer's details.

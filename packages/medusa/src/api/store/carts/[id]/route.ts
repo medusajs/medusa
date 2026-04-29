@@ -5,7 +5,7 @@ import { Modules } from "@medusajs/framework/utils"
 import { refetchCart } from "../helpers"
 
 export const GET = async (
-  req: MedusaStoreRequest<HttpTypes.SelectParams>,
+  req: MedusaStoreRequest<HttpTypes.StoreGetCartsCart>,
   res: MedusaResponse<HttpTypes.StoreCartResponse>
 ) => {
   const cart = await refetchCart(

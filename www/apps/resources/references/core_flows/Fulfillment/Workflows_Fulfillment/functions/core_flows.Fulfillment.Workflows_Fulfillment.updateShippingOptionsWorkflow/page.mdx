@@ -7,6 +7,7 @@ tags:
   - region
   - remote query
   - pricing
+  - event bus
   - workflow
 ---
 
@@ -29,7 +30,7 @@ Learn more about adding rules to the shipping option's prices in the Pricing Mod
 
 :::
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/96b2df170752a0d66628a84c46397a24ca9502da/packages/core/core-flows/src/fulfillment/workflows/update-shipping-options.ts#L54" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/fulfillment/workflows/update-shipping-options.ts#L58" />
 
 ## Examples
 
@@ -142,12 +143,73 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"updateShippingOptionsWorkflow","steps":[{"type":"step","name":"validateShippingOptionPricesStep","description":"This step validates that shipping options can be created based on provided price configuration.\n\nFor flat rate prices, it validates that regions exist for the shipping option prices.\nFor calculated prices, it validates with the fulfillment provider if the price can be calculated.\n\nIf not valid, the step throws an error.","link":"../../../Steps_Fulfillment/functions/core_flows.Fulfillment.Steps_Fulfillment.validateShippingOptionPricesStep/page.mdx","depth":1},{"type":"step","name":"upsertShippingOptionsStep","description":"This step creates or updates shipping options.","link":"../../../Steps_Fulfillment/functions/core_flows.Fulfillment.Steps_Fulfillment.upsertShippingOptionsStep/page.mdx","depth":2},{"type":"step","name":"setShippingOptionsPricesStep","description":"This step sets the prices of one or more shipping options.","link":"../../../Steps_Fulfillment/functions/core_flows.Fulfillment.Steps_Fulfillment.setShippingOptionsPricesStep/page.mdx","depth":3}]}} />
+<WorkflowDiagram workflow={{"name":"updateShippingOptionsWorkflow","steps":[{"type":"step","name":"validateShippingOptionPricesStep","description":"This step validates that shipping options can be created based on provided price configuration.\n\nFor flat rate prices, it validates that regions exist for the shipping option prices.\nFor calculated prices, it validates with the fulfillment provider if the price can be calculated.\n\nIf not valid, the step throws an error.","link":"../../../Steps_Fulfillment/functions/core_flows.Fulfillment.Steps_Fulfillment.validateShippingOptionPricesStep/page.mdx","depth":1},{"type":"step","name":"upsertShippingOptionsStep","description":"This step creates or updates shipping options.","link":"../../../Steps_Fulfillment/functions/core_flows.Fulfillment.Steps_Fulfillment.upsertShippingOptionsStep/page.mdx","depth":2},{"type":"step","name":"setShippingOptionsPricesStep","description":"This step sets the prices of one or more shipping options.","link":"../../../Steps_Fulfillment/functions/core_flows.Fulfillment.Steps_Fulfillment.setShippingOptionsPricesStep/page.mdx","depth":3},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":3}]}} />
 
 ## Input
 
-<TypeList types={[{"name":"UpdateShippingOptionsWorkflowInput","type":"[UpdateShippingOptionsWorkflowInput](../../../../types/core_flows.UpdateShippingOptionsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to update the shipping options.","expandable":false,"children":[{"name":"UpdateShippingOptionsWorkflowInput","type":"[UpdateShippingOptionsWorkflowInput](../../../../../types/WorkflowTypes/FulfillmentWorkflow/types/types.WorkflowTypes.FulfillmentWorkflow.UpdateShippingOptionsWorkflowInput/page.mdx)[]","description":"The data to update the shipping options.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="updateShippingOptionsWorkflow"/>
+<TypeList types={[{"name":"UpdateShippingOptionsWorkflowInput","type":"[UpdateShippingOptionsWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.UpdateShippingOptionsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"UpdateShippingOptionsWorkflowInput","type":"[UpdateShippingOptionsWorkflowInput](../../../../../types/WorkflowTypes/FulfillmentWorkflow/types/types.WorkflowTypes.FulfillmentWorkflow.UpdateShippingOptionsWorkflowInput/page.mdx)[]","description":"The data to update the shipping options.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="updateShippingOptionsWorkflow"/>
 
 ## Output
 
 <TypeList types={[{"name":"UpdateShippingOptionsWorkflowOutput","type":"[UpdateShippingOptionsWorkflowOutput](../../../../../types/WorkflowTypes/FulfillmentWorkflow/types/types.WorkflowTypes.FulfillmentWorkflow.UpdateShippingOptionsWorkflowOutput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The updated shipping option's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="updateShippingOptionsWorkflow"/>
+
+## Emitted Events
+
+This section lists the events that are either triggered by the `emitEventStep` in the workflow, or by another workflow executed within this workflow.
+
+:::note
+
+The `emitEventStep` only emits the event after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+
+:::
+
+You can listen to these events in a subscriber, as explained in the [Subscribers](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers) documentation.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+Event
+</Table.HeaderCell>
+      <Table.HeaderCell>
+Description
+</Table.HeaderCell>
+      <Table.HeaderCell>
+Payload
+</Table.HeaderCell>
+      <Table.HeaderCell>
+Action
+</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+`shipping-option.updated`
+
+<Tooltip text="This event was added in version v2.12.4"><Badge variant="blue">v2.12.4</Badge></Tooltip>
+
+</Table.Cell>
+      <Table.Cell>
+Emitted when shipping options are updated.
+</Table.Cell>
+      <Table.Cell>
+```ts blockStyle="inline"
+{
+  id, // The ID of the shipping option
+}
+```
+</Table.Cell>
+      <Table.Cell>
+<CopyGeneratedSnippetButton tooltipText="Copy subscriber for event" type="subscriber" options={{
+        event: "shipping-option.updated",
+        payload: `\`\`\`ts
+{
+  id, // The ID of the shipping option
+}
+\`\`\``
+        }}/>
+</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

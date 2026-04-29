@@ -1,3 +1,4 @@
+import React from "react"
 import type { OpenAPI } from "types"
 import clsx from "clsx"
 import TagOperationParameters from "../../Parameters"
@@ -19,9 +20,12 @@ const TagsOperationDescriptionSectionResponses = ({
       >
         {Object.entries(responses).map(([code, response], index) => {
           const successCode = code.startsWith("20")
+          const isEmptyResponse =
+            response?.content === undefined ||
+            Object.keys(response.content).length === 0
           return (
             <Fragment key={index}>
-              {response.content && (
+              {!isEmptyResponse && (
                 <>
                   {successCode && (
                     <>
@@ -34,6 +38,7 @@ const TagsOperationDescriptionSectionResponses = ({
                           index !== 0 && "border-t-0",
                           index === 0 && "border-b-0"
                         )}
+                        data-testid="response-success"
                       />
                       <TagOperationParameters
                         schemaObject={
@@ -41,6 +46,7 @@ const TagsOperationDescriptionSectionResponses = ({
                             .schema
                         }
                         topLevel={true}
+                        data-testid="response-success-parameters"
                       />
                     </>
                   )}
@@ -56,6 +62,7 @@ const TagsOperationDescriptionSectionResponses = ({
                       }
                       openInitial={index === 0}
                       className={clsx(index > 1 && "border-t-0")}
+                      data-testid="response-error"
                     >
                       <TagOperationParameters
                         schemaObject={
@@ -63,12 +70,13 @@ const TagsOperationDescriptionSectionResponses = ({
                             .schema
                         }
                         topLevel={true}
+                        data-testid="response-error-parameters"
                       />
                     </Details>
                   )}
                 </>
               )}
-              {!response.content && (
+              {isEmptyResponse && (
                 <DetailsSummary
                   title={`${code} ${response.description}`}
                   subtitle={"Empty response"}
@@ -84,6 +92,7 @@ const TagsOperationDescriptionSectionResponses = ({
                       Object.entries(responses).length > 1 &&
                       "border-b-0"
                   )}
+                  data-testid="response-empty"
                 />
               )}
             </Fragment>

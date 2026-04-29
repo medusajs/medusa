@@ -41,6 +41,14 @@ export const generatedSidebars = [
             "path": "/comparison",
             "title": "Cloud vs Self Hosting",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Command Palette",
+            "path": "/command-palette",
+            "children": []
           }
         ]
       },
@@ -65,7 +73,24 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Projects",
             "path": "/projects",
-            "children": []
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Prerequisites",
+                "path": "/projects/prerequisites",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Rename Repository",
+                "path": "/projects/rename-repo-branch",
+                "children": []
+              }
+            ]
           },
           {
             "loaded": true,
@@ -97,6 +122,30 @@ export const generatedSidebars = [
                 "title": "Environment Variables",
                 "path": "/environments/environment-variables",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Subdomains",
+                "path": "/environments/subdomains",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Custom Domains",
+                "path": "/environments/custom-domains",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "ref",
+                "title": "Monitoring",
+                "path": "/monitoring",
+                "children": []
               }
             ]
           },
@@ -111,11 +160,27 @@ export const generatedSidebars = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
+                "title": "Access Deployment",
+                "path": "/deployments/access",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
                 "title": "Troubleshooting",
                 "path": "/deployments/troubleshooting",
                 "children": []
               }
             ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Account",
+            "path": "/user",
+            "children": []
           }
         ]
       },
@@ -126,6 +191,14 @@ export const generatedSidebars = [
         "title": "Resources",
         "initialOpen": true,
         "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Storefront",
+            "path": "/storefront",
+            "children": []
+          },
           {
             "loaded": true,
             "isPathHref": true,
@@ -157,6 +230,23 @@ export const generatedSidebars = [
             "title": "Cache",
             "path": "/cache",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Emails",
+            "path": "/emails",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "React Email Templates",
+                "path": "/emails/react-email",
+                "children": []
+              }
+            ]
           }
         ]
       },
@@ -172,7 +262,11 @@ export const generatedSidebars = [
             "isPathHref": true,
             "type": "link",
             "title": "Loyalty",
-            "path": "/loyalty-plugin",
+            "path": "https://docs.medusajs.com/resources/commerce-modules/loyalty",
+            "badge": {
+              "text": "Published",
+              "variant": "blue"
+            },
             "children": []
           },
           {
@@ -259,6 +353,56 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Usage",
             "path": "/usage",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Performance",
+            "path": "/monitoring",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Servers",
+                "path": "/monitoring/servers",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Workers",
+                "path": "/monitoring/workers",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "HTTP",
+                "path": "/monitoring/http",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "category",
+        "title": "Networking",
+        "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "IP Addresses",
+            "path": "/ip-addresses",
             "children": []
           }
         ]

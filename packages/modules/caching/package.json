@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/caching",
-  "version": "2.11.2",
+  "version": "2.14.1",
   "description": "Caching Module for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -20,25 +20,20 @@
   "author": "Medusa",
   "license": "MIT",
   "scripts": {
-    "watch": "tsc --build --watch",
-    "watch:test": "tsc --build tsconfig.spec.json --watch",
-    "resolve:aliases": "tsc --showConfig -p tsconfig.json > tsconfig.resolved.json && tsc-alias -p tsconfig.resolved.json && rimraf tsconfig.resolved.json",
-    "build": "rimraf dist && tsc --build && npm run resolve:aliases",
-    "test": "jest --passWithNoTests --runInBand --bail --forceExit -- src/",
-    "test:integration": "jest --runInBand --forceExit -- integration-tests/__tests__/**/*.ts"
+    "watch": "yarn run -T tsc --build --watch",
+    "watch:test": "yarn run -T tsc --build tsconfig.spec.json --watch",
+    "resolve:aliases": "yarn run -T tsc --showConfig -p tsconfig.json > tsconfig.resolved.json && yarn run -T tsc-alias -p tsconfig.resolved.json && yarn run -T rimraf tsconfig.resolved.json",
+    "build": "yarn run -T rimraf dist && yarn run -T tsc --build && npm run resolve:aliases",
+    "test": "../../../node_modules/.bin/jest --passWithNoTests --bail --forceExit --testPathPattern=src",
+    "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.ts\""
   },
   "devDependencies": {
-    "@medusajs/framework": "2.11.2",
-    "@medusajs/test-utils": "2.11.2",
-    "@swc/core": "^1.7.28",
-    "@swc/jest": "^0.2.36",
-    "jest": "^29.7.0",
-    "rimraf": "^5.0.1",
-    "tsc-alias": "^1.8.7",
-    "typescript": "^5.6.2"
+    "@medusajs/framework": "2.14.1",
+    "@medusajs/test-utils": "2.14.1",
+    "awilix": "^8.0.1"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.11.2",
+    "@medusajs/framework": "2.14.1",
     "awilix": "^8.0.1"
   },
   "dependencies": {

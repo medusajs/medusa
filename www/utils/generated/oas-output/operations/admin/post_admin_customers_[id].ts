@@ -135,9 +135,9 @@
  *   - name: customer.updated
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the customer
- *       }]
+ *       }
  *       ```
  *     description: Emitted when a customer is updated.
  *     deprecated: false

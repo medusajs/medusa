@@ -1,4 +1,4 @@
-import { InlineIcon } from "docs-ui"
+import { InlineIcon, getOsShortcut, Kbd } from "docs-ui"
 import { ArrowDownTray, ArrowPath, Brackets } from "@medusajs/icons"
 
 export const metadata = {
@@ -22,7 +22,7 @@ Logs are essential for monitoring your application's health and debugging issues
 There are two types of logs for your environment's deployments:
 
 - **Build logs**: Messages generated during the build process before deploying and starting the application. These logs are useful for debugging when a deployment's build fails.
-- **Runtime logs**: Messages logged by the Medusa application when it starts and while it's running, such as informational startup messages, HTTP requests, errors, and more. These logs are useful for debugging the application's deployment and runtime errors.
+- **Runtime logs**: Messages logged by the Medusa backend and storefront when they start and while they're running, such as informational startup messages, HTTP requests, errors, and more. These logs are useful for debugging the application's deployment and runtime errors.
 
 ---
 
@@ -37,37 +37,42 @@ To view the build logs for a deployment:
 1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
 2. Click on the project that the deployment belongs to.
 3. Click on the environment that the deployment belongs to, such as "Production".
-4. Under the "Deployments" section, find the deployment you want to view the build logs for and click on it.
+4. In the "Deployments" table, find the deployment you want to view the build logs for and click on it.
 
-This will open the deployment details page, where you can see the build logs. The build logs are updated in real time as the build process runs, so you can see the progress and any errors that occur during the build.
+This will open the deployment details page, where you can see the deployment's activity:
 
-![Build Logs for a deployment](https://res.cloudinary.com/dza7lstvk/image/upload/v1750248493/Cloud/CleanShot_2025-06-18_at_15.07.29_2x_i9ztnt.png)
+- **Backend build logs**: Logs for building the Medusa backend.
+- **Storefront build logs**: If you deployed a storefront alongside the Medusa application, this shows the logs for building the storefront.
+
+The build logs are updated in real time as the build process runs, so you can see the progress and any errors that occur during the build.
+
+![Build Logs for a deployment](https://res.cloudinary.com/dza7lstvk/image/upload/v1767862882/Cloud/CleanShot_2026-01-08_at_11.01.17_2x_x5mfvn.png)
 
 ### Search Build Logs on Cloud
 
-You can search the build logs using the search bar at the top right of the "Build logs" section. This is useful for finding specific messages or errors in the logs.
+You can search the build logs (for backend and storefront) using the search bar at the top right of the logs. This is useful for finding specific messages or errors in the logs.
 
 For example, you can search for keywords like "error" or "warning" to quickly locate issues in the build process.
 
-When you enter the search term, you'll see how many results match your search. You can then move between the results using the up and down arrows next to the search bar. The matching text will be highlighted in the logs.
+When you enter the search term, you'll see how the results matching your search. You can move between the results using the up and down arrows next to the search bar. The matching text will be highlighted in the logs.
 
-![Search Build Logs with results highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1750316571/Cloud/CleanShot_2025-06-19_at_10.02.36_2x_qzn11c.png)
+![Search Build Logs with results highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1767863066/Cloud/CleanShot_2026-01-08_at_11.04.21_2x_ldiem6.png)
 
 ### Expand and Collapse Build Logs on Cloud
 
 Logs for steps in the build process can be expanded or collapsed to improve readability. This is useful when you have many log messages and want to focus on specific parts of the build process.
 
-By default, logs for all steps in the build process are expanded. You can collapse all logs by clicking the "Collapse all" button at the top right of the "Build logs" section. This will hide all the detailed logs and only show the titles of each step.
+By default, logs for all steps in the build process are expanded. You can collapse all logs by clicking the "Collapse all" button at the top right of the logs. This will hide all the detailed logs and only show the titles of each step.
 
-![Build logs collapsed](https://res.cloudinary.com/dza7lstvk/image/upload/v1750316687/Cloud/CleanShot_2025-06-19_at_10.04.31_2x_esyfss.png)
+![Build logs collapsed](https://res.cloudinary.com/dza7lstvk/image/upload/v1767863208/Cloud/CleanShot_2026-01-08_at_11.06.39_2x_guwi4v.png)
 
 You can also expand the logs of all steps in the build process by clicking the "Expand all" button at the top right. This will show all the detailed logs for each step.
 
-![Build logs expanded](https://res.cloudinary.com/dza7lstvk/image/upload/v1750316739/Cloud/CleanShot_2025-06-19_at_10.05.20_2x_ofyfej.png)
+![Build logs expanded](https://res.cloudinary.com/dza7lstvk/image/upload/v1767863142/Cloud/CleanShot_2026-01-08_at_11.05.29_2x_epkwit.png)
 
 In addition, you can expand or collapse individual steps by clicking the arrow next to a step's title. This gives you more control over which parts of the logs you want to see or hide.
 
-![Build logs with one step collapsed](https://res.cloudinary.com/dza7lstvk/image/upload/v1750316810/Cloud/CleanShot_2025-06-19_at_10.06.36_2x_gfkkzj.png)
+![Build logs with one step collapsed](https://res.cloudinary.com/dza7lstvk/image/upload/v1767863176/Cloud/CleanShot_2026-01-08_at_11.06.06_2x_yo9zni.png)
 
 ### Pause Build Logs on Cloud
 
@@ -75,30 +80,34 @@ When you view the build logs while the build is still in progress, you can pause
 
 To pause the build logs, click the "Pause" button at the bottom right of the page. This button is only shown when there are incoming log messages. When you pause the logs, the button will change to "Resume", allowing you to resume the live log updates.
 
-![Pause button at the bottom right of the page](https://res.cloudinary.com/dza7lstvk/image/upload/v1750316962/Cloud/CleanShot_2025-06-19_at_10.08.43_2x_buricw.png)
-
 ### Download Build Logs on Cloud
 
 You can download the build logs as a `.log` file for offline analysis, sharing with your team, or sharing with Cloud support if you need help debugging a build issue.
 
-To download build logs, click the <InlineIcon Icon={ArrowDownTray} alt="download" /> button at the top right of the "Build logs" section. This will download the logs in a `.log` file format, which you can open with any text editor.
+To download build logs, click the <InlineIcon Icon={ArrowDownTray} alt="download" /> button at the top right of the logs. This will download the logs in a `.log` file format, which you can open with any text editor.
 
-![Download Build Logs button](https://res.cloudinary.com/dza7lstvk/image/upload/v1750317068/Cloud/CleanShot_2025-06-19_at_10.10.52_2x_swbgqj.png)
+![Download Build Logs button](https://res.cloudinary.com/dza7lstvk/image/upload/v1767863250/Cloud/CleanShot_2026-01-08_at_11.07.20_2x_yuklfj.png)
 
 ---
 
 ## View Runtime Logs on Cloud
 
-Runtime logs are useful for debugging the live deployment of an environment, especially when the deployment's status is "Deploy failed". They include logs for:
+Runtime logs are useful for debugging the live deployment of an environment's backend and storefront, especially when the deployment's status is "Deploy failed". They include logs for:
 
-- Errors that occur during application startup.
-- Errors that occur when handling incoming HTTP requests, such as 404 errors or 500 server errors.
+- Errors that occur during backend or storefront startup.
+- Errors that occur when handling incoming HTTP requests in the backend, such as 404 errors or 500 server errors.
 - Scheduled jobs, subscribers, and background workflow executions not working as expected (if they log informational or error messages).
-- Other runtime issues that may occur while the application is running.
+- Other runtime issues that may occur while the backend or storefront are running.
 
 You can only view the runtime logs of an environment's live deployment, as older deployments are no longer running and do not produce runtime logs.
 
 To view the runtime logs for an environment's live deployment:
+
+<Note title="Tip">
+
+You can also navigate to an environment's runtime logs from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, select **View Logs**, then choose a project.
+
+</Note>
 
 1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
 2. Click on the project that the environment belongs to.
@@ -108,6 +117,15 @@ To view the runtime logs for an environment's live deployment:
 This will open the runtime logs page, where you can see the logs for the live deployment of the environment.
 
 ![Runtime Logs for an environment](https://res.cloudinary.com/dza7lstvk/image/upload/v1750317226/Cloud/CleanShot_2025-06-19_at_10.13.36_2x_rfvows.png)
+
+### Switch Between Backend and Storefront Runtime Logs
+
+The runtime logs page shows logs for both the Medusa backend and, if you deployed a storefront alongside the Medusa application, the storefront. You can switch between the two using the toggle at the top of the logs table:
+
+- **Backend**: Logs from the Medusa backend application, such as HTTP requests, errors, and startup messages.
+- **Storefront**: Logs from the storefront application. This option is only available if you deployed a storefront alongside the Medusa application.
+
+![Runtime logs page with the backend and storefront toggle highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1773825145/Cloud/CleanShot_2026-03-18_at_11.12.05_2x_pop7tp.png)
 
 ### Search Runtime Logs
 

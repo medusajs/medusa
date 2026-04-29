@@ -21,9 +21,5 @@ export class Migration20250226130616 extends Migration {
     this.addSql(
       `CREATE INDEX IF NOT EXISTS "IDX_promotion_code" ON "promotion" (code) WHERE deleted_at IS NULL;`
     )
-
-    this.addSql(
-      'alter table if exists "promotion" add constraint "IDX_promotion_code_unique" unique ("code");'
-    )
   }
 }

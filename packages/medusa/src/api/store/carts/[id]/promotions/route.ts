@@ -19,6 +19,7 @@ export const POST = async (
         payload.promo_codes.length > 0
           ? PromotionActions.ADD
           : PromotionActions.REPLACE,
+      force_refresh_payment_collection: true,
     },
   })
 
@@ -47,6 +48,7 @@ export const DELETE = async (
       promo_codes: payload.promo_codes,
       cart_id: req.params.id,
       action: PromotionActions.REMOVE,
+      force_refresh_payment_collection: true,
     },
   })
 

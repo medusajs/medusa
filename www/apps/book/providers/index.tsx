@@ -23,10 +23,7 @@ type ProvidersProps = {
 
 const Providers = ({ children, aiAssistantProps = {} }: ProvidersProps) => {
   return (
-    <AnalyticsProvider
-      segmentWriteKey={process.env.NEXT_PUBLIC_SEGMENT_API_KEY}
-      reoDevKey={process.env.NEXT_PUBLIC_REO_DEV_CLIENT_ID}
-    >
+    <AnalyticsProvider reoDevKey={process.env.NEXT_PUBLIC_REO_DEV_CLIENT_ID}>
       <SiteConfigProvider config={config}>
         <LearningPathProvider>
           <NotificationProvider>

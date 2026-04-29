@@ -61,7 +61,7 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
 
-          expect(response.data.count).toBe(2)
+          expect(response.data.count).toBe(3) // two created keys and the default publishable api key
           expect(response.data.limit).toBe(2)
           expect(response.data.offset).toBe(0)
           expect(response.data.api_keys).toHaveLength(2)

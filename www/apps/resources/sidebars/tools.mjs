@@ -39,6 +39,11 @@ export const toolsSidebar = [
           },
         ],
       },
+      {
+        type: "link",
+        path: "/medusa-oas-cli",
+        title: "medusa-oas-cli",
+      },
     ],
   },
   {
@@ -112,6 +117,11 @@ export const toolsSidebar = [
                 type: "link",
                 path: "/nextjs-starter/guides/revalidate-cache",
                 title: "Revalidate Cache",
+              },
+              {
+                type: "link",
+                path: "/nextjs-starter/guides/remove-country-code",
+                title: "Remove Country Code from URLs",
               },
             ],
           },

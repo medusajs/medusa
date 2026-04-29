@@ -27,7 +27,10 @@ export const MainNavMobileSubMenu = ({
   }, [menu])
   return (
     <div className="flex flex-col gap-[23px] max-h-[90%]">
-      <span className="text-compact-small-plus text-medusa-fg-muted uppercase">
+      <span
+        className="text-compact-small-plus text-medusa-fg-muted uppercase"
+        data-testid="menu-title"
+      >
         {title}
       </span>
       <ul className="flex flex-col gap-[18px] max-h-full overflow-auto">
@@ -44,6 +47,7 @@ export const MainNavMobileSubMenu = ({
                 href={item.link}
                 className="block w-full"
                 onClick={() => onOpenLink?.()}
+                data-testid="link-item"
               >
                 {item.title}
               </Link>
@@ -60,6 +64,7 @@ export const MainNavMobileSubMenu = ({
                     },
                   ])
                 }
+                data-testid="sub-menu-item"
               >
                 <span>{item.title}</span>
                 <TriangleRightMini />

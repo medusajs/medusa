@@ -5,7 +5,7 @@
  * x-sidebar-summary: Reset Password
  * description: Reset an admin user's password using a reset-password token generated with the [Generate Reset Password Token API route](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_providerresetpassword). You pass the token as a bearer token in the request's Authorization header.
  * externalDocs:
- *   url: https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route#reset-password-route
+ *   url: https://docs.medusajs.com/resources/commerce-modules/auth/authentication-route#reset-password-route
  *   description: Learn more about this API route.
  * x-authenticated: true
  * parameters:

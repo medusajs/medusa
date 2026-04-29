@@ -22,11 +22,7 @@ import { validateSalesChannelsExistStep } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = validateSalesChannelsExistStep({
-      "sales_channel_ids": [
-        "{value}"
-      ]
-    })
+    const data = validateSalesChannelsExistStep({})
   }
 )
 ```
@@ -34,7 +30,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"ValidateSalesChannelsExistStepInput","type":"[ValidateSalesChannelsExistStepInput](../../../../interfaces/core_flows.ValidateSalesChannelsExistStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to validate that the sales channels exist.","expandable":false,"children":[{"name":"sales_channel_ids","type":"`string`[]","description":"The IDs of the sales channels to validate.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validateSalesChannelsExistStep"/>
+<TypeList types={[{"name":"ValidateSalesChannelsExistStepInput","type":"[ValidateSalesChannelsExistStepInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidateSalesChannelsExistStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ValidateSalesChannelsExistStepInput","type":"`object`","description":"The data to validate that the sales channels exist.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validateSalesChannelsExistStep"/>
 
 ## Output
 

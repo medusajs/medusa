@@ -27,7 +27,7 @@
  *     type: object
  *     description: The flat-rate shipping option's data, useful for the fulfillment provider handling its processing.
  *     externalDocs:
- *       url: https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/shipping-option#data-property
+ *       url: https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property
  *   price_type:
  *     type: string
  *     description: The shipping option's price type. If `flat`, the shipping option has a fixed price set in `prices`. Otherwise, the shipping option's price is calculated by the fulfillment provider.

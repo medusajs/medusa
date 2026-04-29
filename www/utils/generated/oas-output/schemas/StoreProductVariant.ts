@@ -101,14 +101,14 @@
  *     title: manage_inventory
  *     description: Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
  *     externalDocs:
- *       url: https://docs.medusajs.com/v2/resources/storefront-development/products/inventory
+ *       url: https://docs.medusajs.com/resources/storefront-development/products/inventory
  *       description: "Storefront guide: How to retrieve a product variant's inventory details."
  *   inventory_quantity:
  *     type: number
  *     title: inventory_quantity
  *     description: The variant's inventory quantity. This property is only available if you pass `+variants.inventory_quantity` in the `fields` query parameter.
  *     externalDocs:
- *       url: https://docs.medusajs.com/v2/resources/storefront-development/products/inventory
+ *       url: https://docs.medusajs.com/resources/storefront-development/products/inventory
  *       description: "Storefront guide: How to retrieve a product variant's inventory details."
  *   variant_rank:
  *     type: number
@@ -120,9 +120,13 @@
  *     type: string
  *     title: thumbnail
  *     description: The variant's thumbnail.
+ *   images:
+ *     type: array
+ *     description: The variant's images.
+ *     items:
+ *       $ref: "#/components/schemas/BaseProductImage"
  * required:
  *   - options
- *   - length
  *   - title
  *   - id
  *   - created_at
@@ -130,6 +134,7 @@
  *   - thumbnail
  *   - width
  *   - weight
+ *   - length
  *   - height
  *   - origin_country
  *   - hs_code
@@ -138,10 +143,10 @@
  *   - deleted_at
  *   - manage_inventory
  *   - allow_backorder
+ *   - sku
  *   - ean
  *   - upc
  *   - barcode
- *   - sku
  * 
 */
 

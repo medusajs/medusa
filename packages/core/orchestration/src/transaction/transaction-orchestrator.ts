@@ -487,7 +487,10 @@ export class TransactionOrchestrator extends EventEmitter {
           hasSkipped = true
         } else if (curState.state === TransactionStepState.REVERTED) {
           hasReverted = true
-        } else if (curState.state === TransactionStepState.FAILED) {
+        } else if (
+          curState.state === TransactionStepState.FAILED ||
+          curState.state === TransactionStepState.TIMEOUT
+        ) {
           if (
             stepDef.definition.continueOnPermanentFailure ||
             stepDef.definition.skipOnPermanentFailure
@@ -825,11 +828,15 @@ export class TransactionOrchestrator extends EventEmitter {
       }
 
       if (!step.isCompensating()) {
-        if (
+        const isTransactionTimeout =
+          TransactionTimeoutError.isTransactionTimeoutError(timeoutError!)
+
+        const canContinueOnFailure =
           (step.definition.continueOnPermanentFailure ||
             step.definition.skipOnPermanentFailure) &&
-          !TransactionTimeoutError.isTransactionTimeoutError(timeoutError!)
-        ) {
+          !isTransactionTimeout
+
+        if (canContinueOnFailure) {
           if (step.definition.skipOnPermanentFailure) {
             const until = isString(step.definition.skipOnPermanentFailure)
               ? step.definition.skipOnPermanentFailure
@@ -1504,16 +1511,13 @@ export class TransactionOrchestrator extends EventEmitter {
     const hasTransactionTimeout = !!this.options.timeout
     const isIdempotent = !!this.options.idempotent
 
-    if (hasAsyncSteps) {
-      this.options.store = true
-    }
-
     if (
       hasStepTimeouts ||
       hasRetriesTimeout ||
       hasTransactionTimeout ||
       isIdempotent ||
-      this.options.retentionTime
+      this.options.retentionTime ||
+      hasAsyncSteps
     ) {
       this.options.store = true
     }
@@ -1628,6 +1632,12 @@ export class TransactionOrchestrator extends EventEmitter {
         const definitionCopy = { ...obj } as TransactionStepsDefinition
         delete definitionCopy.next
 
+        const isAsync = !!definitionCopy.async
+        const hasRetryInterval = !!(
+          definitionCopy.retryInterval || definitionCopy.retryIntervalAwaiting
+        )
+        const hasTimeout = !!definitionCopy.timeout
+
         if (definitionCopy.async) {
           features.hasAsyncSteps = true
         }
@@ -1645,6 +1655,20 @@ export class TransactionOrchestrator extends EventEmitter {
 
         if (definitionCopy.nested) {
           features.hasNestedTransactions = true
+        }
+
+        /**
+         * Force the checkpoint to save even for sync step when they have specific configurations.
+         */
+        definitionCopy.store = !!(
+          definitionCopy.store ||
+          isAsync ||
+          hasRetryInterval ||
+          hasTimeout
+        )
+
+        if (existingSteps?.[id]) {
+          existingSteps[id].definition.store = definitionCopy.store
         }
 
         states[id] = Object.assign(

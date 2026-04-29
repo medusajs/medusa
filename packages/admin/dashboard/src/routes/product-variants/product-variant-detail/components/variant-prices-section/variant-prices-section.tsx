@@ -10,7 +10,11 @@ import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
 
 type VariantPricesSectionProps = {
-  variant: HttpTypes.AdminProductVariant
+  variant: Omit<HttpTypes.AdminProductVariant, "prices"> & {
+    prices?: (HttpTypes.AdminPrice & {
+      rules?: Record<string, unknown>
+    })[]
+  }
 }
 
 export function VariantPricesSection({ variant }: VariantPricesSectionProps) {

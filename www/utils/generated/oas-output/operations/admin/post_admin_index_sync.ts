@@ -4,7 +4,6 @@
  * summary: Trigger Index Sync
  * description: Trigger reindexing or re-ingestion of the Index Module.
  * x-authenticated: true
- * parameters: []
  * security:
  *   - api_token: []
  *   - cookie_auth: []

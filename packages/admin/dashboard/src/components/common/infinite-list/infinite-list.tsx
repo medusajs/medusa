@@ -16,7 +16,7 @@ type InfiniteListProps<TResponse, TEntity, TParams> = {
 export const InfiniteList = <
   TResponse extends { count: number; offset: number; limit: number },
   TEntity extends { id: string },
-  TParams extends { offset?: number; limit?: number },
+  TParams extends { offset?: number; limit?: number }
 >({
   queryKey,
   queryFn,
@@ -65,6 +65,13 @@ export const InfiniteList = <
   const parentRef = useRef<HTMLDivElement>(null)
   const startObserver = useRef<IntersectionObserver>()
   const endObserver = useRef<IntersectionObserver>()
+  const fetchNextPageRef = useRef(fetchNextPage)
+  const fetchPreviousPageRef = useRef(fetchPreviousPage)
+
+  useEffect(() => {
+    fetchNextPageRef.current = fetchNextPage
+    fetchPreviousPageRef.current = fetchPreviousPage
+  }, [fetchNextPage, fetchPreviousPage])
 
   useEffect(() => {
     if (isPending) {
@@ -78,7 +85,7 @@ export const InfiniteList = <
         (entries) => {
           if (entries[0].isIntersecting && hasPreviousPage) {
             startObserver.current?.disconnect()
-            fetchPreviousPage()
+            fetchPreviousPageRef.current()
           }
         },
         {
@@ -90,7 +97,7 @@ export const InfiniteList = <
         (entries) => {
           if (entries[0].isIntersecting && hasNextPage) {
             endObserver.current?.disconnect()
-            fetchNextPage()
+            fetchNextPageRef.current()
           }
         },
         {
@@ -112,14 +119,7 @@ export const InfiniteList = <
       startObserver.current?.disconnect()
       endObserver.current?.disconnect()
     }
-  }, [
-    fetchNextPage,
-    fetchPreviousPage,
-    hasNextPage,
-    hasPreviousPage,
-    isFetching,
-    isPending,
-  ])
+  }, [hasNextPage, hasPreviousPage, isFetching, isPending])
 
   useEffect(() => {
     if (error) {

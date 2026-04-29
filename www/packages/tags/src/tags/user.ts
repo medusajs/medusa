@@ -16,6 +16,10 @@ export const user = [
     "path": "https://docs.medusajs.com/user-guide/settings/users"
   },
   {
+    "title": "How to Add Custom Authentication in Medusa Admin",
+    "path": "https://docs.medusajs.com/resources/how-to-tutorials/how-to/admin/auth"
+  },
+  {
     "title": "createInviteStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createInviteStep"
   },

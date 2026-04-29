@@ -1,4 +1,4 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
+import { GlobeEurope, PencilSquare, Trash } from "@medusajs/icons"
 import { AdminProductCategoryResponse } from "@medusajs/types"
 import { Button, Container, Heading, Text } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
@@ -14,6 +14,7 @@ import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useDeleteProductCategoryAction } from "../../../common/hooks/use-delete-product-category-action"
 import { useCategoryTableColumns } from "./use-category-table-columns"
 import { useCategoryTableQuery } from "./use-category-table-query"
+import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 
 const PAGE_SIZE = 20
 
@@ -105,6 +106,7 @@ const CategoryRowActions = ({
   category: AdminProductCategoryResponse["product_category"]
 }) => {
   const { t } = useTranslation()
+  const isTranslationsEnabled = useFeatureFlag("translation")
   const handleDelete = useDeleteProductCategoryAction(category)
 
   return (
@@ -119,6 +121,19 @@ const CategoryRowActions = ({
             },
           ],
         },
+        ...(isTranslationsEnabled
+          ? [
+              {
+                actions: [
+                  {
+                    icon: <GlobeEurope />,
+                    label: t("translations.actions.manage"),
+                    to: `/settings/translations/edit?reference=product_category&reference_id=${category.id}`,
+                  },
+                ],
+              },
+            ]
+          : []),
         {
           actions: [
             {

@@ -1,8 +1,8 @@
 import type { FileDTO } from "@medusajs/framework/types"
 import {
+  createWorkflow,
   WorkflowData,
   WorkflowResponse,
-  createWorkflow,
 } from "@medusajs/framework/workflows-sdk"
 import { uploadFilesStep } from "../steps"
 
@@ -27,7 +27,7 @@ export type UploadFilesWorkflowInput = {
     mimeType: string
     /**
      * The content of the file. For images, for example,
-     * use binary string. For CSV files, use the CSV content.
+     * use base64 string. For CSV files, use the CSV content.
      */
     content: string
     /**
@@ -58,7 +58,7 @@ export const uploadFilesWorkflowId = "upload-files"
  *       {
  *         filename: "test.jpg",
  *         mimeType: "img/jpg",
- *         content: "binary-string",
+ *         content: "base64-string",
  *         access: "public"
  *       }
  *     ]

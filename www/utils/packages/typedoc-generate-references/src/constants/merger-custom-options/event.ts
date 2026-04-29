@@ -29,7 +29,7 @@ const step1 = createStep(
   "step-1",
   async ({}, { container }) => {
     const eventModuleService = container.resolve(
-      Modules.EVENT
+      Modules.EVENT_BUS
     )
     
     // TODO use eventModuleService

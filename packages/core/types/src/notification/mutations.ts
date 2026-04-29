@@ -12,6 +12,10 @@ export interface CreateNotificationDTO {
    */
   to: string
   /**
+   * The sender of the notification. It can be email, phone number, or username, depending on the channel.
+   */
+  from?: string | null
+  /**
    * The channel through which the notification is sent, such as `email` or `sms`.
    */
   channel: string
@@ -23,6 +27,10 @@ export interface CreateNotificationDTO {
    * The data that gets passed over to the provider for rendering the notification.
    */
   data?: Record<string, unknown> | null
+  /**
+   * Additional data specific to the provider or channel. For example, cc and bcc for emails.
+   */
+  provider_data?: Record<string, unknown> | null
   /**
    * The content that gets passed over to the provider.
    */

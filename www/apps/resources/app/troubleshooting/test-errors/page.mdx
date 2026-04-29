@@ -1,8 +1,10 @@
 export const metadata = {
-  title: `Test Errors`,
+  title: `Errors When Running Tests`,
 }
 
 # {metadata.title}
+
+This troubleshooting guide covers common errors you may encounter when running tests in your Medusa application and how to resolve them.
 
 ## Loaders for module Workflows failed
 
@@ -23,10 +25,16 @@ module.exports = {
 
 Then, create the `integration-tests/setup.js` file with the following content:
 
+<Note>
+
+If you're using a version prior to Medusa v2.11.0, change `@medusajs/framework/mikro-orm/core` to `@mikro-orm/core`. Learn more in the [v2.11.0 codemod](!docs!/learn/codemods/replace-imports).
+
+</Note>
+
 ```js title="integration-tests/setup.js"
 const { MetadataStorage } = require("@medusajs/framework/mikro-orm/core")
 
 MetadataStorage.clear()
 ```
 
-Learn more about configuring test tools in [this documentation](!docs!/learn/debugging-and-testing/testing-tools)
+Refer to the [Testing Tools](!docs!/learn/debugging-and-testing/testing-tools) guide for more details.

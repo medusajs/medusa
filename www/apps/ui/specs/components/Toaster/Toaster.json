@@ -10,9 +10,36 @@
       },
       "description": "The position of the created toasts.",
       "tsType": {
-        "name": "Position",
-        "elements": [],
-        "raw": "Position"
+        "name": "union",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"top-left\""
+          },
+          {
+            "name": "literal",
+            "value": "\"top-center\""
+          },
+          {
+            "name": "literal",
+            "value": "\"top-right\""
+          },
+          {
+            "name": "literal",
+            "value": "\"bottom-left\""
+          },
+          {
+            "name": "literal",
+            "value": "\"bottom-center\""
+          },
+          {
+            "name": "literal",
+            "value": "\"bottom-right\""
+          },
+          {
+            "name": "undefined"
+          }
+        ]
       },
       "required": false
     },
@@ -35,13 +62,15 @@
       "description": "The space from the edges of the screen.",
       "tsType": {
         "name": "union",
-        "raw": "string \\| number",
         "elements": [
           {
             "name": "string"
           },
           {
             "name": "number"
+          },
+          {
+            "name": "undefined"
           }
         ]
       },

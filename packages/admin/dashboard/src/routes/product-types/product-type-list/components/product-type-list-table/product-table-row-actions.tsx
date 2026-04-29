@@ -1,8 +1,9 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
+import { GlobeEurope, PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeleteProductTypeAction } from "../../../common/hooks/use-delete-product-type-action"
+import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 
 type ProductTypeRowActionsProps = {
   productType: HttpTypes.AdminProductType
@@ -16,6 +17,7 @@ export const ProductTypeRowActions = ({
     productType.id,
     productType.value
   )
+  const isTranslationsEnabled = useFeatureFlag("translation")
 
   return (
     <ActionMenu
@@ -29,6 +31,19 @@ export const ProductTypeRowActions = ({
             },
           ],
         },
+        ...(isTranslationsEnabled
+          ? [
+              {
+                actions: [
+                  {
+                    icon: <GlobeEurope />,
+                    label: t("translations.actions.manage"),
+                    to: `/settings/translations/edit?reference=product_type&reference_id=${productType.id}`,
+                  },
+                ],
+              },
+            ]
+          : []),
         {
           actions: [
             {

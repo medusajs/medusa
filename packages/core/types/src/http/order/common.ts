@@ -265,19 +265,19 @@ export interface BaseOrderShippingMethod {
    */
   adjustments?: BaseOrderShippingMethodAdjustment[]
   /**
-   * The total of the shipping method including taxes, excluding promotions.
+   * The shipping method's original total before discounts, including taxes.
    */
   original_total: number
   /**
-   * The total of the shipping method excluding taxes, including promotions.
+   * The shipping method's original subtotal before discounts, excluding taxes.
    */
   original_subtotal: number
   /**
-   * The tax total of the shipping method excluding promotions.
+   * The shipping method's original tax total before discounts.
    */
   original_tax_total: number
   /**
-   * The total of the shipping method including taxes and promotions.
+   * The shipping method's total after discounts, including taxes.
    */
   total: number
   /**
@@ -285,19 +285,19 @@ export interface BaseOrderShippingMethod {
    */
   detail?: BaseOrderShippingDetail
   /**
-   * The total of the shipping method excluding taxes, including promotions.
+   * The shipping method's subtotal before discounts, excluding taxes.
    */
   subtotal: number
   /**
-   * The tax total of the shipping method including promotions.
+   * The shipping method's tax total after discounts.
    */
   tax_total: number
   /**
-   * The total discounted amount.
+   * The total amount of discounts applied to the shipping method, including the tax portion of discounts.
    */
   discount_total: number
   /**
-   * The tax total of the shipping method's discounted amount.
+   * The total amount of discounts applied to the shipping method's tax. Represents the tax portion of discounts.
    */
   discount_tax_total: number
   /**
@@ -436,47 +436,47 @@ export interface BaseOrderLineItem {
    */
   metadata: Record<string, unknown> | null
   /**
-   * The total of the item including taxes, excluding promotions.
+   * The line item's original total before discounts, including taxes.
    */
   original_total: number
   /**
-   * The total of the item excluding taxes, including promotions.
+   * The line item's original subtotal before discounts, excluding taxes.
    */
   original_subtotal: number
   /**
-   * The total taxes applied on the item, excluding promotions.
+   * The line item's original tax total before discounts.
    */
   original_tax_total: number
   /**
-   * The total of a single quantity of the the item including taxes and promotions.
+   * The line item's total after discounts, including taxes.
    */
   item_total: number
   /**
-   * The total of a single quantity of the the item excluding taxes, including promotions.
+   * The line item's subtotal before discounts, excluding taxes.
    */
   item_subtotal: number
   /**
-   * The total taxes applied on a single quantity of the item, including promotions.
+   * The line item's tax total after discounts.
    */
   item_tax_total: number
   /**
-   * The total of the item including taxes and promotions.
+   * The line item's total after discounts, including taxes.
    */
   total: number
   /**
-   * The total of the item excluding taxes, including promotions.
+   * The line item's subtotal before discounts, excluding taxes.
    */
   subtotal: number
   /**
-   * The total taxes of the item, including promotions.
+   * The line item's tax total after discounts.
    */
   tax_total: number
   /**
-   * The total discount applied on the item.
+   * The total amount of discounts applied to the line item, including the tax portion of discounts.
    */
   discount_total: number
   /**
-   * The total taxes applied on the discounted amount.
+   * The total amount of discounts applied to the line item's tax. Represents the tax portion of discounts.
    */
   discount_tax_total: number
   /**
@@ -677,6 +677,14 @@ export interface BaseOrderFulfillment {
    */
   created_at: Date
   /**
+   * The ID of the user that created the fulfillment.
+   */
+  created_by: string | null
+  /**
+   * The ID of the user that shipped the fulfillment.
+   */
+  marked_shipped_by: string | null
+  /**
    * The date the fulfillment was updated.
    */
   updated_at: Date
@@ -741,6 +749,10 @@ export interface BaseOrder {
    */
   display_id?: number
   /**
+   * The order's custom display ID.
+   */
+  custom_display_id?: string
+  /**
    * The order's status.
    */
   status: string
@@ -797,63 +809,63 @@ export interface BaseOrder {
    */
   updated_at: string | Date
   /**
-   * The total of the order's items including taxes, excluding promotions.
+   * The sum of all line items' original totals before discounts, including taxes.
    */
   original_item_total: number
   /**
-   * The total of the order's items excluding taxes, including promotions.
+   * The sum of all line items' original subtotals before discounts, excluding taxes.
    */
   original_item_subtotal: number
   /**
-   * The tax total applied on the order's items, excluding promotions.
+   * The sum of all line items' original tax totals before discounts.
    */
   original_item_tax_total: number
   /**
-   * The total of the order's items including taxes and promotions.
+   * The sum of all line items' totals after discounts, including taxes.
    */
   item_total: number
   /**
-   * The total of the order's items excluding taxes, including promotions.
+   * The sum of all line items' subtotals before discounts, excluding taxes.
    */
   item_subtotal: number
   /**
-   * The tax total applied on the order's items, including promotions.
+   * The sum of all line items' tax totals after discounts.
    */
   item_tax_total: number
   /**
-   * The promotion total applied on the order's items.
+   * The sum of all discounts applied to line items, including the tax portion of discounts.
    */
   item_discount_total: number
   /**
-   * The total of the order including taxes, excluding promotions.
+   * The order's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
    */
   original_total: number
   /**
-   * The total of the order excluding taxes, including promotions.
+   * The order's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
    */
   original_subtotal: number
   /**
-   * The tax total applied on the order's items, excluding promotions.
+   * The order's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
    */
   original_tax_total: number
   /**
-   * The total of the order including taxes and promotions.
+   * The order's final total after discounts and credit lines, including taxes.
    */
   total: number
   /**
-   * The total of the order excluding taxes and promotions.
+   * The order's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
    */
   subtotal: number
   /**
-   * The tax total applied on the order's items, including promotions.
+   * The order's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
    */
   tax_total: number
   /**
-   * The total amount discounted.
+   * The total amount of discounts applied to the order, including the tax portion of discounts.
    */
   discount_total: number
   /**
-   * The tax total applied on the order's discounted amount.
+   * The total amount of discounts applied to the order's tax. Represents the tax portion of discounts.
    */
   discount_tax_total: number
   /**
@@ -865,35 +877,35 @@ export interface BaseOrder {
    */
   gift_card_tax_total: number
   /**
-   * The total of the order's shipping methods including taxes and promotions.
+   * The sum of all shipping methods' totals after discounts, including taxes.
    */
   shipping_total: number
   /**
-   * The total of the order's shipping methods excluding taxes, including promotions.
+   * The sum of all shipping methods' subtotals before discounts, excluding taxes.
    */
   shipping_subtotal: number
   /**
-   * The tax total applied on the order's shipping methods, including promotions.
+   * The sum of all shipping methods' tax totals after discounts.
    */
   shipping_tax_total: number
   /**
-   * The promotion total applied on the order's shipping methods.
+   * The sum of all discounts applied to shipping methods, including the tax portion of discounts.
    */
   shipping_discount_total: number
   /**
-   * The total of the order's shipping methods including taxes, excluding promotions.
+   * The sum of all shipping methods' original totals before discounts, including taxes.
    */
   original_shipping_total: number
   /**
-   * The total of the order's shipping methods excluding taxes, including promotions.
+   * The sum of all shipping methods' original subtotals before discounts, excluding taxes.
    */
   original_shipping_subtotal: number
   /**
-   * The tax total applied on the order's shipping methods, excluding promotions.
+   * The sum of all shipping methods' original tax totals before discounts.
    */
   original_shipping_tax_total: number
   /**
-   * The total of the order's credit lines.
+   * The total amount of credit lines applied to the order, including taxes. Subtracted from the final total.
    */
   credit_line_total: number
 }
@@ -1009,6 +1021,11 @@ export interface BaseOrderChange {
   actions: BaseOrderChangeAction[]
 
   /**
+   * Whether to carry over promotions (apply promotions to outbound exchange items).
+   */
+  carry_over_promotions?: boolean | null
+
+  /**
    * The status of the order change
    */
   status: OrderChangeStatus
@@ -1054,7 +1071,7 @@ export interface BaseOrderChange {
   declined_at: Date | null
 
   /**
-   * The canceled by of the order change
+   * The ID of the user that canceled the order change
    */
   canceled_by: string | null
 
@@ -1062,6 +1079,11 @@ export interface BaseOrderChange {
    * When the order change was canceled
    */
   canceled_at: Date | null
+
+  /**
+   * The ID of the user that created the order change
+   */
+  created_by: string | null
 
   /**
    * When the order change was created

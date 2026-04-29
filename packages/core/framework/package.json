@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/framework",
-  "version": "2.11.2",
+  "version": "2.14.1",
   "description": "Framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,7 +27,10 @@
     "./telemetry": "./dist/telemetry/index.js",
     "./feature-flags": "./dist/feature-flags/index.js",
     "./utils": "./dist/utils/index.js",
-    "./types": "./dist/types/index.js",
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/types/index.js"
+    },
     "./build-tools": "./dist/build-tools/index.js",
     "./orchestration": "./dist/orchestration/index.js",
     "./workflows-sdk": "./dist/workflows-sdk/index.js",
@@ -45,7 +48,8 @@
     "./opentelemetry/resources": "./dist/deps/opentelemetry-resources.js",
     "./opentelemetry/api": "./dist/deps/opentelemetry-api.js",
     "./awilix": "./dist/deps/awilix.js",
-    "./pg": "./dist/deps/pg.js"
+    "./pg": "./dist/deps/pg.js",
+    "./zod": "./dist/deps/zod.js"
   },
   "engines": {
     "node": ">=20"
@@ -61,66 +65,46 @@
   "author": "Medusa",
   "license": "MIT",
   "scripts": {
-    "watch": "tsc --watch ",
-    "watch:test": "tsc --watch",
-    "build": "rimraf dist && tsc --build",
-    "test": "jest --bail --forceExit -- src/**/__tests__/**/*.ts"
+    "watch": "yarn run -T tsc --watch ",
+    "watch:test": "yarn run -T tsc --watch",
+    "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
+    "test": "../../../node_modules/.bin/jest --bail --forceExit --testPathPattern=src"
   },
   "devDependencies": {
-    "@aws-sdk/client-dynamodb": "^3.218.0",
-    "@medusajs/cli": "2.11.2",
-    "@swc/core": "^1.7.28",
-    "@swc/jest": "^0.2.36",
-    "@types/cors": "^2.8.17",
-    "@types/jsonwebtoken": "^8.5.9",
-    "connect-dynamodb": "^3.0.5",
-    "ioredis": "^5.4.1",
-    "jest": "^29.7.0",
-    "rimraf": "^5.0.1",
-    "supertest": "^4.0.2",
-    "typescript": "^5.6.2",
-    "vite": "^5.4.14"
+    "@medusajs/cli": "2.14.1"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.218.0",
     "@jercle/yargonaut": "^1.1.5",
-    "@medusajs/deps": "2.11.2",
-    "@medusajs/modules-sdk": "2.11.2",
-    "@medusajs/orchestration": "2.11.2",
-    "@medusajs/telemetry": "2.11.2",
-    "@medusajs/types": "2.11.2",
-    "@medusajs/utils": "2.11.2",
-    "@medusajs/workflows-sdk": "2.11.2",
+    "@medusajs/deps": "2.14.1",
+    "@medusajs/modules-sdk": "2.14.1",
+    "@medusajs/orchestration": "2.14.1",
+    "@medusajs/telemetry": "2.14.1",
+    "@medusajs/types": "2.14.1",
+    "@medusajs/utils": "2.14.1",
+    "@medusajs/workflows-sdk": "2.14.1",
     "@types/express": "^4.17.21",
-    "chokidar": "^3.5.3",
-    "compression": "^1.8.0",
+    "chokidar": "^4.0.3",
+    "compression": "^1.8.1",
+    "connect-dynamodb": "^3.0.5",
     "connect-redis": "5.2.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.21.0",
     "express-session": "^1.17.3",
-    "glob": "^10.4.5",
+    "glob": "13.0.6",
     "jsonwebtoken": "^9.0.2",
     "lodash.memoize": "^4.1.2",
     "morgan": "^1.9.1",
-    "path-to-regexp": "^0.1.12",
+    "path-to-regexp": "^8.2.0",
     "tsconfig-paths": "^4.2.0",
-    "zod": "3.25.76",
-    "zod-validation-error": "3.5.1"
+    "zod-validation-error": "5.0.0"
   },
   "peerDependencies": {
-    "@aws-sdk/client-dynamodb": "^3.218.0",
-    "@medusajs/cli": "2.11.2",
-    "connect-dynamodb": "^3.0.5",
-    "ioredis": "^5.4.1",
-    "vite": "^5.4.14"
+    "@medusajs/cli": "2.14.1",
+    "ioredis": "^5.4.1"
   },
   "peerDependenciesMeta": {
-    "@aws-sdk/client-dynamodb": {
-      "optional": true
-    },
-    "connect-dynamodb": {
-      "optional": true
-    },
     "ioredis": {
       "optional": true
     },

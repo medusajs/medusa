@@ -62,7 +62,7 @@ export const POST = async (
 }
 
 export const DELETE = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<{}, HttpTypes.SelectParams>,
   res: MedusaResponse<HttpTypes.AdminClaimReturnPreviewResponse>
 ) => {
   const { id, action_id } = req.params

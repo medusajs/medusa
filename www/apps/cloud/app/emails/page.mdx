@@ -1,0 +1,352 @@
+---
+keywords:
+  - email
+  - mail
+  - medusa mail
+  - transactional email
+  - marketing email
+  - email service
+  - cloud email
+  - medusa cloud email
+  - medusa emails
+---
+
+import { CodeTabs, CodeTab, Prerequisites, InlineIcon, getOsShortcut, Kbd } from "docs-ui"
+import { ChevronUpDown } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Medusa Emails`,
+  keywords: [
+    "email",
+    "mail",
+    "medusa mail",
+    "transactional email",
+    "marketing email",
+    "email service",
+    "cloud email",
+    "medusa emails",
+  ],
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn about Medusa Emails and how to send emails in your Cloud projects.
+
+## What is Medusa Emails?
+
+Medusa Emails is a built-in email sending service for Cloud organizations and projects.
+
+<Note title="Not a Cloud user yet?">
+
+[Sign up for Cloud](../sign-up/page.mdx) to use Medusa Emails and other Cloud features.
+
+</Note>
+
+Medusa Emails allows you to send transactional and marketing emails like order confirmations directly from your Medusa application without needing to set up and manage your own email infrastructure.
+
+Medusa Emails is available for all Cloud plans, with different sending limits based on your [plan](../pricing/page.mdx). You can use it out-of-the-box without manual configuration.
+
+Through your organization's dashboard, you can also monitor email sending statistics and manage your email sender domain.
+
+---
+
+## Set Up Medusa Emails in Cloud Projects
+
+Medusa Emails is enabled by default for all Cloud projects and organizations with zero configuration.
+
+### Remove Other Email Notification Module Providers
+
+Medusa enables Medusa Emails by default for all Cloud projects if you haven't configured a [Notification Module Provider](!resources!/infrastructure-modules/notification) for the `email` channel in your Medusa application.
+
+So, if you have a notification provider like the [SendGrid Notification Module Provider](!resources!/infrastructure-modules/notification/sendgrid), remove it from your Medusa application to use Medusa Emails.
+
+#### Local Development Email Setup
+
+Since Medusa Emails isn't available for local development, you can set up the [Local Notification Module Provider](!resources!/infrastructure-modules/notification/local) to test email sending functionality in your local environment. This provider will log the email details to the console instead of sending them.
+
+For example, you can add the following configuration to `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/notification",
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/notification-local",
+            id: "local",
+            options: {
+              channels: [
+                process.env.NODE_ENV === "development"
+                  ? "email"
+                  : "feed",
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+In this setup, the Local Notification Module Provider is used for the `email` channel only in the development environment. In other environments, it uses the `feed` channel.
+
+### (Optional) Add Email Sender Domain to Cloud
+
+By default, Medusa Emails sends emails using a randomly generated email address at the domain `medusajsemails.com`.
+
+If you don't add an email sender domain, you can only send emails to addresses of users in your Cloud organization.
+
+To send emails to external email addresses, [add an email sender domain](#add-email-sender-domain-to-cloud).
+
+---
+
+## Send Emails on Cloud
+
+To send emails using Medusa Emails in your Cloud project, create a notification that's sent through the `email` channel in your project's code.
+
+For example:
+
+<CodeTabs group="medusa-email-example">
+  <CodeTab label="Workflow" value="workflow">
+
+```ts
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { sendNotificationsStep } from "@medusajs/medusa/core-flows"
+
+type Input = {
+  email: string
+}
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  (input: Input) => {
+    const data = sendNotificationsStep({
+      // must either have an added sender domain or use an email
+      // address that belongs to your Cloud organization
+      to: input.email,
+      channel: "email",
+      content: {
+        html: "<h1>Welcome to Medusa Emails!</h1><p>This is a test email sent using Medusa Emails in a Cloud project.</p>",
+        subject: "Welcome to Medusa Emails",
+      },
+    })
+  }
+)
+```
+
+  </CodeTab>
+  <CodeTab label="Scheduled Job / Subscriber / API Route" value="job">
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+
+// ...
+
+const notificationModuleService = container.resolve(
+  Modules.NOTIFICATION
+)
+
+await notificationModuleService.createNotifications({
+  // must either have an added sender domain or use an email
+  // address that belongs to your Cloud organization
+  to: "user@example.com",
+  channel: "email",
+  content: {
+    html: "<h1>Welcome to Medusa Emails!</h1><p>This is a test email sent using Medusa Emails in a Cloud project.</p>",
+    subject: "Welcome to Medusa Emails",
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+When this code is executed in your Cloud project, Medusa sends the email using Medusa Emails. You can track whether the email was delivered on the [Email Activity page](#monitor-email-sending-activity-on-cloud).
+
+### Writing Email Templates
+
+To write email templates for Medusa Emails, use packages like [react-email](https://react.email). React Email lets you create email templates using React components with preview and testing capabilities.
+
+Refer to the [Set Up React Email Templates](./react-email/page.mdx) guide to learn how to set up React Email templates in your Cloud project with examples.
+
+---
+
+## Add Email Sender Domain to Cloud
+
+<Prerequisites
+  items={[
+    {
+      text: "A domain that you own and can access its DNS settings.",
+    },
+  ]}
+/>
+
+<Note>
+
+Verified email sender domains are available for Launch, Scale, and Enterprise plans only. Learn more about plan features on the [pricing page](../pricing/page.mdx).
+
+</Note>
+
+To send emails to external email addresses using Medusa Emails, you need to add an email sender domain in your Cloud organization. You can add multiple sender domains if needed.
+
+To add your email sender domain:
+
+<Note title="Tip">
+
+You can also navigate to the sender domains form from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> and select **Add Sender Domain**.
+
+</Note>
+
+1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
+2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](../organizations/page.mdx#switch-organization) at the top left of the Cloud dashboard.
+3. Choose "Organization Settings" from the dropdown.
+
+![Organization switcher dropdown opened](https://res.cloudinary.com/dza7lstvk/image/upload/v1750238273/Cloud/CleanShot_2025-06-18_at_12.17.33_2x_zcg69z.png)
+
+4. Click Emails -> Sender Domains from the sidebar.
+5. Click the "Add sender domain" button.
+6. In the form that opens, perform these two steps:
+    - **Domain**: Enter the domain you want to add (for example, `yourdomain.com`).
+    - **DNS Records**: Add the provided DNS records to your domain's DNS settings. These records are necessary for verifying domain ownership and setting up email authentication.
+        - If you're unsure how to add DNS records, refer to your domain registrar's documentation or support.
+7. Once you're done, click the "I've added the records" button.
+
+The domain will then be added, and the system will periodically check the DNS records to verify it. This process may take a few minutes to several hours, depending on your DNS provider.
+
+![Sender Domains page with the sender domain added](https://res.cloudinary.com/dza7lstvk/image/upload/v1762947495/Cloud/CleanShot_2025-11-12_at_13.36.59_2x_sbaf7y.png)
+
+### Specify From Email
+
+After adding your email sender domain, specify a `from` property in the notification to set the sender email address.
+
+For example:
+
+<CodeTabs group="medusa-email-from-example">
+  <CodeTab label="Workflow" value="workflow">
+
+```ts
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { sendNotificationsStep } from "@medusajs/medusa/core-flows"
+
+type Input = {
+  email: string
+}
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  (input: Input) => {
+    const data = sendNotificationsStep({
+      to: input.email,
+      from: "no-reply@yourdomain.com",
+      channel: "email",
+      content: {
+        html: "<h1>Welcome to Medusa Emails!</h1><p>This is a test email sent using Medusa Emails in a Cloud project.</p>",
+        subject: "Welcome to Medusa Emails",
+      },
+    })
+  }
+)
+```
+
+  </CodeTab>
+  <CodeTab label="Scheduled Job / Subscriber / API Route" value="job">
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+
+// ...
+
+const notificationModuleService = container.resolve(
+  Modules.NOTIFICATION
+)
+
+await notificationModuleService.createNotifications({
+  to: "user@example.com",
+  from: "no-reply@yourdomain.com",
+  channel: "email",
+  content: {
+    html: "<h1>Welcome to Medusa Emails!</h1><p>This is a test email sent using Medusa Emails in a Cloud project.</p>",
+    subject: "Welcome to Medusa Emails",
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+The email will be sent from the `no-reply@yourdomain.com` address, assuming it belongs to your verified sender domain.
+
+---
+
+## Monitor Email Sending Activity on Cloud
+
+You can monitor email sending activity like sent emails, delivery rates, open rates, and click rates for your Cloud organization using the Email Activity page in your Cloud dashboard.
+
+To view email sending activity:
+
+<Note title="Tip">
+
+You can also navigate to the sender domains form from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> and select **Sender Domains**.
+
+</Note>
+
+1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
+2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](../organizations/page.mdx#switch-organization) at the top left of the Cloud dashboard.
+3. Choose "Organization Settings" from the dropdown.
+4. Click Emails -> Activity from the sidebar.
+
+At the top of the Email Activity page, you'll see email sending statistics for your organization across all projects, including:
+
+- **Sent**: Total number of sent emails in the specified time range.
+- **Deliverability Rate**: Percentage of sent emails that were successfully delivered to recipients.
+- **Open Rate**: Percentage of delivered emails that were opened by recipients.
+- **Click Rate**: Percentage of opened emails where recipients clicked on links within the email.
+- **Bounce Rate**: Percentage of sent emails that were not delivered due to permanent delivery failures.
+- **Complaint Rate**: Percentage of sent emails that recipients marked as spam or junk.
+
+Below the statistics, you'll find a detailed list of sent emails.
+
+![Email Activity page showing email sending statistics and a list of sent emails](https://res.cloudinary.com/dza7lstvk/image/upload/v1762948757/Cloud/CleanShot_2025-11-12_at_13.59.02_2x_uetth1.png)
+
+### Change Email Activity Time Range
+
+To change the time range for email activity statistics and the list of sent emails, click the time range dropdown at the top right of the page. You can choose custom ranges or predefined ranges like "Last 7 days" or "Last 30 days".
+
+![Time range dropdown opened on the Email Activity page](https://res.cloudinary.com/dza7lstvk/image/upload/v1762948832/Cloud/CleanShot_2025-11-12_at_14.00.17_2x_bqlopg.png)
+
+### Filter Emails by Project
+
+By default, the Email Activity page shows emails from all projects in your Cloud organization.
+
+To filter emails by a specific project, click the "All projects" dropdown at the top right of the page and select the desired project.
+
+This updates the email sending statistics and list to show only emails from the selected project.
+
+![Project filter dropdown opened on the Email Activity page](https://res.cloudinary.com/dza7lstvk/image/upload/v1762948832/Cloud/CleanShot_2025-11-12_at_14.00.17_2x_bqlopg.png)
+
+### View Email Details
+
+To view an email's details, click the email entry in the list on the Email Activity page.
+
+At the top of the Email Details page, you'll see an overview of the email's event history, including when it was sent, delivered, opened, and when its links were clicked.
+
+Below that, you'll see a preview of the email content as it was sent to the recipient, with support for both HTML and plain text views.
+
+![Email Details page showing the email's event history and a preview of the email content](https://res.cloudinary.com/dza7lstvk/image/upload/v1762950939/Cloud/CleanShot_2025-11-12_at_14.03.33_2x_tv6ydx.png)
+
+---
+
+## Troubleshoot Email Delivery Issues on Cloud
+
+If you try to send an email using Medusa Emails in your Cloud project and it's not delivered, consider these troubleshooting steps:
+
+1. **Check Email Activity**: Go to the [Email Activity page](#monitor-email-sending-activity-on-cloud) in your Cloud organization's dashboard to see if the email appears in the list. If it does, check its status and event history for delivery issues.
+2. **Verify Sender Domain**: If you're sending emails to external addresses, ensure you've verified your email sender domain in your Cloud organization. Without a verified sender domain, you can only send emails to addresses in your Cloud organization.
+3. **Check Logs**: Review your project's [logs](../logs/page.mdx#view-runtime-logs-on-cloud) for errors or warnings related to email sending. Look for issues that might indicate why the email wasn't sent or delivered.
+4. **Check Spam/Junk Folder**: Ask the recipient to check their spam or junk email folder. Sometimes emails may be incorrectly marked as spam by email providers.
+5. **Contact Support**: If you've tried the above steps and are still experiencing issues, contact support for assistance.

@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useRef } from "react"
 import clsx from "clsx"
-import { OptionType } from "@/hooks"
+import { OptionType } from "@/hooks/use-select"
 import { Ref } from "types"
 import { CheckMini, EllipseMiniSolid } from "@medusajs/icons"
 
@@ -113,6 +113,7 @@ export const SelectDropdown = ({
             !isSelected && "text-compact-small",
             isSelected && "text-compact-small-plus"
           )}
+          data-testid="select-dropdown-option"
         >
           <span>
             {isSelected && (
@@ -158,6 +159,7 @@ export const SelectDropdown = ({
         className
       )}
       ref={setRefs}
+      data-testid="select-dropdown-wrapper"
     >
       <ul
         className={clsx(

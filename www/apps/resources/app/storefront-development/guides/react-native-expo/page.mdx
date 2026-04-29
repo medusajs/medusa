@@ -1,0 +1,5389 @@
+---
+tags:
+  - storefront
+  - cart
+  - product
+  - payment
+  - fulfillment
+  - order
+  - region
+  - example
+products:
+  - cart
+  - product
+  - payment
+  - fulfillment
+  - order
+  - region
+---
+
+import { Card, Prerequisites, Details, CodeTabs, CodeTab } from "docs-ui"
+import { Github } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Implement Mobile App with React Native, Expo, and Medusa`,
+}
+
+# {metadata.title}
+
+In this tutorial, you'll learn how to create a mobile app that connects to your Medusa backend with React Native and Expo. You can then publish your app to the Apple App Store and Google Play Store.
+
+When you install a Medusa application, you get a fully-fledged commerce server and an admin dashboard to manage the commerce store's data. Medusa's [architecture](!docs!/learn/introduction/architecture) is flexible and customizable, allowing you to build your own custom storefronts using any technology you prefer.
+
+[React Native](https://reactnative.dev/) allows developers to build native apps using React. [Expo](https://expo.dev/) is a platform for universal React applications that makes it easy to build, deploy, and iterate on native iOS and Android apps.
+
+## Summary
+
+By following this tutorial, you'll learn how to:
+
+1. Set up a Medusa application.
+2. Create an app with React Native and Expo.
+3. Connect the Expo app to the Medusa backend.
+4. Implement essential ecommerce features such as product listing, cart management, and checkout.
+
+You can follow this guide whether you're new to Medusa or an advanced Medusa developer. However, this tutorial assumes you have a basic understanding of React Native and JavaScript.
+
+![Screenshot of home screen of the Expo app](https://res.cloudinary.com/dza7lstvk/image/upload/v1762333811/Medusa%20Resources/CleanShot_2025-11-05_at_11.09.27_lxl2tw.png)
+
+<Card
+  title="Full Code"
+  text="Find the full code for this tutorial in this repository."
+  href="https://github.com/medusajs/examples/tree/main/react-native-expo"
+  icon={Github}
+/>
+
+---
+
+## Step 1: Install a Medusa Application
+
+<Prerequisites items={[
+  {
+    text: "Node.js v20+",
+    link: "https://nodejs.org/en/download"
+  },
+  {
+    text: "Git CLI tool",
+    link: "https://git-scm.com/downloads"
+  },
+  {
+    text: "PostgreSQL",
+    link: "https://www.postgresql.org/download/"
+  }
+]} />
+
+Start by installing the Medusa application on your machine with the following command:
+
+```bash npx2yarnExec
+npx create-medusa-app@latest
+```
+
+You'll first be asked for the project's name. Then, when you're asked whether you want to install the Next.js Starter Storefront, choose `N` for no. You'll create the Expo app instead.
+
+Afterwards, the installation process will start, which will install the Medusa application in a directory with your project's name. Once the installation finishes successfully, the Medusa Admin dashboard will open in your browser at `http://localhost:9000/app` with a form to create a new user. Enter the user's credentials and submit the form.
+
+Then, you can log in with the new user and explore the dashboard.
+
+<Note title="Ran into Errors?">
+
+Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
+
+</Note>
+
+---
+
+## Step 2: Create an Expo App
+
+In this step, you'll create a new Expo app with React Native.
+
+In a directory separate from your Medusa application, run the following command to create a new Expo project:
+
+```bash npx2yarnExec
+npx create-expo-app@latest
+```
+
+When prompted, enter a name for your project and wait for the installation to complete.
+
+Once the installation is complete, navigate to the project directory:
+
+```bash
+cd your-project-name
+```
+
+The rest of this tutorial assumes you're in the Expo app's root directory.
+
+---
+
+## Step 3: Install Dependencies
+
+In this step, you'll install dependencies that you'll use while building the Expo app.
+
+Run the following command to install the required packages:
+
+```bash npm2yarn
+npm install @medusajs/js-sdk @medusajs/types @react-native-async-storage/async-storage @react-native-picker/picker @react-navigation/drawer
+```
+
+You install the following packages:
+
+- `@medusajs/js-sdk`: Medusa's [JS SDK](../../../js-sdk/page.mdx) to interact with the Medusa backend.
+- `@medusajs/types`: TypeScript types for Medusa, which are useful when working with Medusa's JS SDK.
+- `@react-native-async-storage/async-storage`: An asynchronous key-value storage system for React Native, used to store data like cart ID.
+- `@react-native-picker/picker`: A cross-platform picker component for React Native, used for selecting options like country.
+- `@react-navigation/drawer`: A navigation library for React Native that provides a drawer-based navigation experience.
+
+You'll use these packages in the upcoming steps to build the app's functionality.
+
+---
+
+## Step 4: Update App Theme (Optional)
+
+In this step, you'll update the theme for the app to ensure a consistent look and feel across all screens. This is optional, and you can customize the theme based on your brand identity instead.
+
+In your React Native project, you should have the following directories:
+
+- `constants`: This directory will contain constant values used throughout the app. It should already have a `theme.ts` file.
+- `hooks`: This directory will contain custom React hooks. It should already have hooks for color schemes: `use-color-scheme.ts`, `use-color-scheme.web.ts`, and `use-theme-color.ts`.
+
+To update the app's theme, replace the content of the `constants/theme.ts` file with the following:
+
+```ts title="constants/theme.ts"
+/**
+ * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
+ * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ */
+
+import { Platform } from "react-native"
+
+const tintColorLight = "#000"
+const tintColorDark = "#fff"
+
+export const Colors = {
+  light: {
+    text: "#11181C",
+    background: "#fff",
+    tint: tintColorLight,
+    icon: "#687076",
+    tabIconDefault: "#687076",
+    tabIconSelected: tintColorLight,
+    border: "#e0e0e0",
+    cardBackground: "#f9f9f9",
+    error: "#ff3b30",
+    warning: "#ff9500",
+    success: "#4CAF50",
+    imagePlaceholder: "#f0f0f0",
+  },
+  dark: {
+    text: "#ECEDEE",
+    background: "#151718",
+    tint: tintColorDark,
+    icon: "#9BA1A6",
+    tabIconDefault: "#9BA1A6",
+    tabIconSelected: tintColorDark,
+    border: "#333",
+    cardBackground: "#1a1a1a",
+    error: "#ff3b30",
+    warning: "#ff9500",
+    success: "#4CAF50",
+    imagePlaceholder: "#2a2a2a",
+  },
+}
+
+export const Fonts = Platform.select({
+  ios: {
+    /** iOS `UIFontDescriptorSystemDesignDefault` */
+    sans: "system-ui",
+    /** iOS `UIFontDescriptorSystemDesignSerif` */
+    serif: "ui-serif",
+    /** iOS `UIFontDescriptorSystemDesignRounded` */
+    rounded: "ui-rounded",
+    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
+    mono: "ui-monospace",
+  },
+  default: {
+    sans: "normal",
+    serif: "serif",
+    rounded: "normal",
+    mono: "monospace",
+  },
+  web: {
+    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+    serif: "Georgia, 'Times New Roman', serif",
+    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
+    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+  },
+})
+```
+
+---
+
+## Step 5: Initialize Medusa JS SDK
+
+In this step, you'll set up Medusa's [JS SDK](../../../js-sdk/page.mdx) in your Expo app. You'll use the SDK to interact with the Medusa backend.
+
+To initialize the SDK, create the file `lib/sdk.ts` in your Expo project with the following content:
+
+```ts title="lib/sdk.ts"
+import Medusa from "@medusajs/js-sdk"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import Constants from "expo-constants"
+
+const MEDUSA_BACKEND_URL =
+  Constants.expoConfig?.extra?.EXPO_PUBLIC_MEDUSA_URL ||
+  process.env.EXPO_PUBLIC_MEDUSA_URL ||
+  "http://localhost:9000"
+
+const MEDUSA_PUBLISHABLE_API_KEY = 
+  Constants.expoConfig?.extra?.EXPO_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY ||
+  process.env.EXPO_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY ||
+  ""
+
+export const sdk = new Medusa({
+  baseUrl: MEDUSA_BACKEND_URL,
+  debug: __DEV__,
+  auth: {
+    type: "jwt",
+    jwtTokenStorageMethod: "custom",
+    storage: AsyncStorage,
+  },
+  publishableKey: MEDUSA_PUBLISHABLE_API_KEY,
+})
+```
+
+You configure the SDK with the:
+
+- Medusa backend URL, which is read from the environment variable `EXPO_PUBLIC_MEDUSA_URL`. If the variable is not set, it defaults to `http://localhost:9000`.
+- [Publishable API key](../../publishable-api-keys/page.mdx), which is required to retrieve products in the associated sales channel. It is read from the environment variable `EXPO_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY`.
+
+You also customize the JWT token storage method of the JS SDK to use `AsyncStorage`, which is suitable for React Native apps.
+
+<Note>
+
+Refer to the [JS SDK documentation](../../../js-sdk/page.mdx) for more configuration options.
+
+</Note>
+
+### Set Environment Variables
+
+Next, you'll set the environment variables in your Expo project. Before you do that, you need to retrieve the Medusa backend URL and the Publishable API key.
+
+The Medusa backend URL is the URL where your Medusa server is running. If you're running the Medusa server locally, it should be the IP address of your machine at the port `9000`. For example, `http://192.168.1.100:9000`.
+
+You can find your machine's local IP address by running the following command in your terminal:
+
+<CodeTabs group="os">
+  <CodeTab label="macOS" value="macos">
+
+```bash
+ipconfig getifaddr en0
+```
+
+  </CodeTab>
+  <CodeTab label="Linux" value="linux">
+
+```bash
+ip addr
+```
+
+  </CodeTab>
+  <CodeTab label="Windows" value="windows">
+
+```bash
+ipconfig
+```
+
+  </CodeTab>
+</CodeTabs>
+
+Next, to get the Publishable API key, start the Medusa application by running the following command in its directory:
+
+```bash npm2yarn badgeLabel="Medusa Application" badgeColor="green"
+npm run dev
+```
+
+Then:
+
+1. Open the Medusa Admin dashboard at `http://localhost:9000/app` and log in.
+2. Go to **Settings** > **Publishable API Keys**.
+3. Either copy the key of an existing Publishable API key, or create a new one by clicking on the **Create Publishable API Key** button.
+
+Once you have the Medusa backend URL and the Publishable API key, create the file `.env` in the root directory of your Expo project with the following content:
+
+```shell title=".env"
+EXPO_PUBLIC_MEDUSA_URL=http://192.168.1.100:9000
+EXPO_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY=your_publishable_api_key
+```
+
+Make sure to replace the values with your actual Medusa backend URL and Publishable API key.
+
+### Optional: Update CORS in Medusa
+
+If you plan to test the Expo app in a web browser, you'll need to update the CORS settings in the Medusa backend to allow requests from the Expo development server.
+
+In your Medusa application's directory, add the Expo development server URL to the `STORE_CORS` and `AUTH_CORS` environment variables in the `.env` file:
+
+```env
+STORE_CORS=previous_values...,http://localhost:8081
+AUTH_CORS=previous_values...,http://localhost:8081
+```
+
+Append `,http://localhost:8081` to the existing values of `STORE_CORS` and `AUTH_CORS`, which is the default URL for the Expo development server.
+
+Make sure to restart the Medusa server after making changes to the `.env` file.
+
+---
+
+## Step 6: Create Region Selector
+
+In this step, you'll create a region selector component that allows users to select their country and currency. This is important for providing a localized shopping experience.
+
+To implement this, you'll:
+
+1. Create a region context to manage the selected region state.
+2. Create a region selector component that allows users to choose their country and currency from a list.
+3. Update the app's navigation to add a drawer menu for the region selector.
+
+### Create Region Context
+
+The region context will manage the selected region state and provide it to child components. You'll create a context, a provider component, and a custom hook to access the context.
+
+To create the region context, create the file `context/region-context.tsx` with the following content:
+
+export const regionContextHighlights = [
+  ["7", "regions", "Available regions from the Medusa backend."],
+  ["8", "selectedRegion", "The currently selected region."],
+  ["9", "selectedCountryCode", "The selected country code within the selected region."],
+  ["10", "setSelectedRegion", "Update the selected region and country code."],
+  ["11", "loading", "Whether the regions are being loaded."],
+  ["12", "error", "An error message if loading the regions fails."]
+]
+
+```tsx title="context/region-context.tsx" highlights={regionContextHighlights}
+import { sdk } from "@/lib/sdk"
+import type { HttpTypes } from "@medusajs/types"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import React, { createContext, ReactNode, useContext, useEffect, useState } from "react"
+
+interface RegionContextType {
+  regions: HttpTypes.StoreRegion[];
+  selectedRegion: HttpTypes.StoreRegion | null;
+  selectedCountryCode: string | null;
+  setSelectedRegion: (region: HttpTypes.StoreRegion, countryCode: string) => void;
+  loading: boolean;
+  error: string | null;
+}
+
+const RegionContext = createContext<RegionContextType | undefined>(undefined)
+
+const REGION_STORAGE_KEY = "selected_region_id"
+const COUNTRY_STORAGE_KEY = "selected_country_code"
+
+export function RegionProvider({ children }: { children: ReactNode }) {
+  const [regions, setRegions] = useState<HttpTypes.StoreRegion[]>([])
+  const [selectedRegion, setSelectedRegionState] = useState<HttpTypes.StoreRegion | null>(null)
+  const [selectedCountryCode, setSelectedCountryCode] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  // TODO load and select regions
+}
+
+// TODO add useRegion hook
+```
+
+You define the `RegionContext` with the following properties that child components can use:
+
+1. `regions`: An array of available regions fetched from the Medusa backend.
+2. `selectedRegion`: The currently selected region.
+3. `selectedCountryCode`: The country code of the selected country within the selected region. This is useful as regions can have multiple countries, and you'll allow customers to select their country.
+4. `setSelectedRegion`: A function to update the selected region and country code.
+5. `loading`: A boolean indicating whether the regions are being loaded.
+6. `error`: An error message if loading the regions fails.
+
+You also define the `RegionProvider` component that will wrap the app and provide the region context to its children.
+
+Next, you'll implement the logic to load the regions from the Medusa backend, and manage the selected region state.
+
+Replace the `// TODO load and select regions` comment with the following:
+
+export const regionLoadingHighlights = [
+  ["1", "loadRegions", "Load regions from the Medusa backend."],
+  ["41", "useEffect", "Load regions when the component mounts."],
+  ["45", "setSelectedRegion", "Update the selected region and country code."]
+]
+
+```tsx title="context/region-context.tsx" highlights={regionLoadingHighlights}
+const loadRegions = async () => {
+  try {
+    setLoading(true)
+    setError(null)
+    
+    const { regions: fetchedRegions } = await sdk.store.region.list()
+    setRegions(fetchedRegions)
+
+    // Load saved region and country or use first region's first country
+    const savedRegionId = await AsyncStorage.getItem(REGION_STORAGE_KEY)
+    const savedCountryCode = await AsyncStorage.getItem(COUNTRY_STORAGE_KEY)
+    
+    const regionToSelect = savedRegionId
+      ? fetchedRegions.find((r) => r.id === savedRegionId) || fetchedRegions[0]
+      : fetchedRegions[0]
+
+    if (regionToSelect) {
+      setSelectedRegionState(regionToSelect)
+      await AsyncStorage.setItem(REGION_STORAGE_KEY, regionToSelect.id)
+      
+      // Set country code - use saved one if it exists in the region, otherwise use first country
+      const countryCodeToSelect = savedCountryCode && 
+        regionToSelect.countries?.some((c) => (c.iso_2 || c.id) === savedCountryCode)
+        ? savedCountryCode
+        : regionToSelect.countries?.[0]?.iso_2 || regionToSelect.countries?.[0]?.id || null
+      
+      setSelectedCountryCode(countryCodeToSelect)
+      if (countryCodeToSelect) {
+        await AsyncStorage.setItem(COUNTRY_STORAGE_KEY, countryCodeToSelect)
+      }
+    }
+  } catch (err) {
+    console.error("Failed to load regions:", err)
+    setError("Failed to load regions. Please try again.")
+  } finally {
+    setLoading(false)
+  }
+}
+
+// Load regions on mount
+useEffect(() => {
+  loadRegions()
+}, [])
+
+const setSelectedRegion = async (region: HttpTypes.StoreRegion, countryCode: string) => {
+  setSelectedRegionState(region)
+  setSelectedCountryCode(countryCode)
+  await AsyncStorage.setItem(REGION_STORAGE_KEY, region.id)
+  await AsyncStorage.setItem(COUNTRY_STORAGE_KEY, countryCode)
+}
+
+return (
+  <RegionContext.Provider
+    value={{
+      regions,
+      selectedRegion,
+      selectedCountryCode,
+      setSelectedRegion,
+      loading,
+      error,
+    }}
+  >
+    {children}
+  </RegionContext.Provider>
+)
+```
+
+You define the `loadRegions` function that fetches the regions from the Medusa backend using the JS SDK. It also loads any previously selected region and country from `AsyncStorage`, or defaults to the first region and its first country.
+
+Then, you run the `loadRegions` function when the component mounts using the `useEffect` hook.
+
+You also define the `setSelectedRegion` function that updates the selected region and country, and saves them to `AsyncStorage`.
+
+Then, you provide the context values to child components using the `RegionContext.Provider`.
+
+Finally, you'll create a custom hook in the same file to access the region context easily. Replace the `// TODO add useRegion hook` comment with the following:
+
+```tsx title="context/region-context.tsx"
+export function useRegion() {
+  const context = useContext(RegionContext)
+  if (!context) {
+    throw new Error("useRegion must be used within a RegionProvider")
+  }
+  return context
+}
+```
+
+You define the `useRegion` hook that retrieves the context value using `useContext`. It also throws an error if the hook is used by a component that is not wrapped in the `RegionProvider`.
+
+### Create Region Selector Component
+
+Next, you'll create the region selector component that allows users to choose their country and currency.
+
+To create the region selector component, create the file `components/region-selector.tsx` with the following content:
+
+```tsx title="components/region-selector.tsx" collapsibleLines="53-87" expandButtonLabel="Show Styles"
+import { Colors } from "@/constants/theme"
+import { useRegion } from "@/context/region-context"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import type { HttpTypes } from "@medusajs/types"
+import React, { useMemo } from "react"
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+
+interface RegionSelectorProps {
+  onRegionChange?: () => void;
+}
+
+interface CountryWithRegion {
+  countryCode: string;
+  countryName: string;
+  region: HttpTypes.StoreRegion;
+  currencyCode: string;
+}
+
+export function RegionSelector({ onRegionChange }: RegionSelectorProps) {
+  const { 
+    regions, 
+    selectedRegion, 
+    selectedCountryCode, 
+    setSelectedRegion,
+  } = useRegion()
+  const colorScheme = useColorScheme()
+  const colors = Colors[colorScheme ?? "light"]
+
+  // Flatten countries from all regions
+  const countries = useMemo(() => {
+    const countryList: CountryWithRegion[] = []
+    
+    regions.forEach((region) => {
+      if (region.countries) {
+        region.countries.forEach((country) => {
+          countryList.push({
+            countryCode: country.iso_2 || country.id,
+            countryName: country.display_name || country.name || country.iso_2 || country.id,
+            region: region,
+            currencyCode: region.currency_code || "",
+          })
+        })
+      }
+    })
+    
+    // Sort alphabetically by country name
+    return countryList.sort((a, b) => a.countryName.localeCompare(b.countryName))
+  }, [regions])
+
+  // TODO handle country selection
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "700",
+    marginBottom: 20,
+  },
+  countryItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    marginBottom: 8,
+  },
+  countryInfo: {
+    flex: 1,
+  },
+  countryName: {
+    fontSize: 16,
+    marginBottom: 4,
+  },
+  currencyCode: {
+    fontSize: 12,
+  },
+  emptyText: {
+    fontSize: 14,
+    textAlign: "center",
+    marginTop: 20,
+  },
+})
+```
+
+You define the `RegionSelector` component that receives an optional `onRegionChange` prop. This prop is a callback function that will be called when the user selects a new region.
+
+In the component, you:
+
+1. Use the `useRegion` hook to access all regions, the selected region and country, and the function to set the selected region.
+2. Use the `useColorScheme` hook to get the current color scheme and apply the appropriate colors.
+3. Create a memoized list of countries by flattening the countries from all regions. Each country includes its associated region and currency code. The list is sorted alphabetically by country name.
+
+Next, you'll implement the logic to handle country selection and render the list of countries. Replace the `// TODO handle country selection` comment with the following:
+
+```tsx title="components/region-selector.tsx"
+const handleSelectCountry = async (countryWithRegion: CountryWithRegion) => {
+  setSelectedRegion(countryWithRegion.region, countryWithRegion.countryCode)
+  onRegionChange?.()
+}
+
+const isCountrySelected = (countryWithRegion: CountryWithRegion) => {
+  return selectedRegion?.id === countryWithRegion.region.id && 
+          selectedCountryCode === countryWithRegion.countryCode
+}
+
+return (
+  <ScrollView style={styles.container}>
+    <Text style={[styles.title, { color: colors.text }]}>Select Country</Text>
+    {countries.length === 0 ? (
+      <Text style={[styles.emptyText, { color: colors.icon }]}>
+        No countries available
+      </Text>
+    ) : (
+      countries.map((country) => {
+        const isSelected = isCountrySelected(country)
+        
+        return (
+          <TouchableOpacity
+            key={`${country.region.id}-${country.countryCode}`}
+            style={[
+              styles.countryItem,
+              {
+                backgroundColor: isSelected ? colors.tint + "20" : "transparent",
+                borderColor: colors.icon + "30",
+              },
+            ]}
+            onPress={() => handleSelectCountry(country)}
+          >
+            <View style={styles.countryInfo}>
+              <Text
+                style={[
+                  styles.countryName,
+                  {
+                    color: isSelected ? colors.tint : colors.text,
+                    fontWeight: isSelected ? "600" : "400",
+                  },
+                ]}
+              >
+                {country.countryName}
+              </Text>
+              <Text style={[styles.currencyCode, { color: colors.icon }]}>
+                {country.currencyCode.toUpperCase()}
+              </Text>
+            </View>
+            {isSelected && (
+              <Text style={{ color: colors.tint, fontSize: 18 }}>✓</Text>
+            )}
+          </TouchableOpacity>
+        )
+      })
+    )}
+  </ScrollView>
+)
+```
+
+You define the `handleSelectCountry` function that is called when a user selects a country. It updates the selected region and country using the `setSelectedRegion` function from the context, and calls the `onRegionChange` callback if provided.
+
+You also define the `isCountrySelected` function that checks if a given country is currently selected.
+
+Finally, you render the countries in a scrollable view. For each country, you create a touchable item that displays the country name and currency code. The selected country is highlighted, and a checkmark is shown next to it.
+
+### Add Drawer Content Component
+
+Next, you'll create a custom drawer content component that includes the region selector in the app's navigation drawer.
+
+Create the file `components/drawer-content.tsx` with the following content:
+
+```tsx title="components/drawer-content.tsx"
+import { DrawerContentComponentProps, DrawerContentScrollView } from "@react-navigation/drawer"
+import React from "react"
+import { StyleSheet, View } from "react-native"
+import { RegionSelector } from "./region-selector"
+
+export function DrawerContent(props: DrawerContentComponentProps) {
+  return (
+    <DrawerContentScrollView {...props}>
+      <View style={styles.container}>
+        <RegionSelector onRegionChange={() => props.navigation.closeDrawer()} />
+      </View>
+    </DrawerContentScrollView>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+})
+```
+
+The `DrawerContent` component receives the drawer navigation props. You render the `RegionSelector` component and pass an `onRegionChange` callback that closes the drawer when a region is selected.
+
+### Add Drawer Navigation
+
+Finally, you'll update the app's navigation to wrap the main screens in a drawer navigator that uses the custom drawer content.
+
+If you have an `app/(tabs)` directory for tab navigation, remove it for now. You'll add it later inside the drawer navigator.
+
+Then, create the directory `app/(drawer)` which will contain the drawer navigation setup.
+
+Next, create the file `app/(drawer)/_layout.tsx` with the following content:
+
+```tsx title="app/(drawer)/_layout.tsx"
+import { Drawer } from "expo-router/drawer"
+
+import { DrawerContent } from "@/components/drawer-content"
+
+export default function DrawerLayout() {
+  return (
+    <Drawer
+      drawerContent={(props) => <DrawerContent {...props} />}
+      screenOptions={{
+        headerShown: false,
+        drawerPosition: "left",
+      }}
+    >
+      {/* TODO add tabs screens */}
+    </Drawer>
+  )
+}
+```
+
+The `DrawerLayout` component sets up the drawer navigator using Expo Router's `Drawer` component.
+
+The custom drawer content is shown on the left side of the screen, and the header is hidden.
+
+Later, you'll add the tab screens inside the drawer navigator.
+
+Next, replace the content of the file `app/_layout.tsx` with the following:
+
+```tsx title="app/_layout.tsx"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native"
+import { Stack } from "expo-router"
+import { StatusBar } from "expo-status-bar"
+import { GestureHandlerRootView } from "react-native-gesture-handler"
+import "react-native-reanimated"
+import { RegionProvider } from "@/context/region-context"
+
+export default function RootLayout() {
+  const colorScheme = useColorScheme()
+
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <RegionProvider>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+            {/* TODO: Add checkout and order confirmation screens */}
+          </Stack>
+          <StatusBar style="auto" />
+        </RegionProvider>
+      </ThemeProvider>
+    </GestureHandlerRootView>
+  )
+}
+```
+
+The key changes are:
+
+1. Wrap the app in the `RegionProvider` to provide the region context to all components.
+2. Set the initial screen to the `(drawer)` layout, which contains the drawer navigator.
+
+Later, you'll add the checkout and order confirmation screens to the stack navigator.
+
+You'll test the region selector after implementing the main screens of the app in the next steps.
+
+---
+
+## Step 7: Create Cart Context
+
+In this step, you'll create a cart context to manage the customer's cart state throughout the app. The cart context will allow you to create, manage, and complete the cart.
+
+### Create Cart Context
+
+Create the file `context/cart-context.tsx` with the following content:
+
+export const cartContextHighlights = [
+  ["9", "cart", "The current cart object."],
+  ["10", "addToCart", "Add an item to the cart."],
+  ["11", "updateItemQuantity", "Update the quantity of an item in the cart."],
+  ["12", "removeItem", "Remove an item from the cart."],
+  ["13", "refreshCart", "Refresh the cart data from the backend."],
+  ["14", "clearCart", "Clear the cart, useful after checkout."],
+  ["15", "loading", "Indicate whether a cart operation is in progress."],
+  ["16", "error", "An error message if a cart operation fails."]
+]
+
+```tsx title="context/cart-context.tsx" highlights={cartContextHighlights}
+import { sdk } from "@/lib/sdk"
+import { FetchError } from "@medusajs/js-sdk"
+import type { HttpTypes } from "@medusajs/types"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import React, { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react"
+import { useRegion } from "./region-context"
+
+interface CartContextType {
+  cart: HttpTypes.StoreCart | null;
+  addToCart: (variantId: string, quantity: number) => Promise<void>;
+  updateItemQuantity: (itemId: string, quantity: number) => Promise<void>;
+  removeItem: (itemId: string) => Promise<void>;
+  refreshCart: () => Promise<void>;
+  clearCart: () => Promise<void>;
+  loading: boolean;
+  error: string | null;
+}
+
+const CartContext = createContext<CartContextType | undefined>(undefined)
+
+const CART_STORAGE_KEY = "cart_id"
+
+export function CartProvider({ children }: { children: ReactNode }) {
+  const [cart, setCart] = useState<HttpTypes.StoreCart | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const { selectedRegion } = useRegion()
+
+  // TODO load cart
+}
+
+// TODO add useCart hook
+```
+
+You define the `CartContext` with the following properties that child components can use:
+
+- `cart`: The current cart object.
+- `addToCart`: A function to add an item to the cart.
+- `updateItemQuantity`: A function to update the quantity of an item in the cart.
+- `removeItem`: A function to remove an item from the cart.
+- `refreshCart`: A function to refresh the cart data from the backend.
+- `clearCart`: A function to clear the cart, which is useful after checkout.
+- `loading`: A boolean indicating whether a cart operation is in progress.
+- `error`: An error message if a cart operation fails.
+
+You also define the `CartProvider` component that will wrap the app and provide the cart context to its children.
+
+Next, you'll implement the logic to load the cart from the Medusa backend. Replace the `// TODO load cart` comment with the following:
+
+```tsx title="context/cart-context.tsx"
+const loadCart = useCallback(async () => {
+  if (!selectedRegion) {return null}
+
+  try {
+    setLoading(true)
+    setError(null)
+
+    const savedCartId = await AsyncStorage.getItem(CART_STORAGE_KEY)
+
+    if (savedCartId) {
+      try {
+        const { cart: fetchedCart } = await sdk.store.cart.retrieve(savedCartId, {
+          fields: "+items.*",
+        })
+        
+        setCart(fetchedCart)
+        return fetchedCart
+      } catch {
+        // Cart not found or invalid, remove from storage
+        await AsyncStorage.removeItem(CART_STORAGE_KEY)
+      }
+    }
+
+    // Create new cart for current region
+    const { cart: newCart } = await sdk.store.cart.create({
+      region_id: selectedRegion.id,
+    }, {
+      fields: "+items.*",
+    })
+    setCart(newCart)
+    await AsyncStorage.setItem(CART_STORAGE_KEY, newCart.id)
+    return newCart
+  } catch (err) {
+    setError(`Failed to load cart: ${err instanceof FetchError ? err.message : String(err)}`)
+    return null
+  } finally {
+    setLoading(false)
+  }
+}, [selectedRegion])
+
+// Load cart on mount
+useEffect(() => {
+  loadCart()
+}, [loadCart])
+
+// TODO handle region update
+```
+
+The `loadCart` function creates or retrieves the saved cart from the Medusa backend using the JS SDK. This function runs when the component mounts using the `useEffect` hook.
+
+Next, you'll implement the logic to handle region updates, as the cart's region must match the selected region.
+
+Replace the `// TODO handle region update` comment with the following:
+
+```tsx title="context/cart-context.tsx"
+useEffect(() => {
+  const updateCartRegion = async () => {
+    if (!cart || !selectedRegion || cart.region_id === selectedRegion.id) {
+      return
+    }
+
+    try {
+      setLoading(true)
+      const { cart: updatedCart } = await sdk.store.cart.update(cart.id, {
+        region_id: selectedRegion.id,
+      }, {
+        fields: "+items.*",
+      })
+      setCart(updatedCart)
+    } catch (err) {
+      setError(`Failed to update cart region: ${err instanceof FetchError ? err.message : String(err)}`)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  updateCartRegion()
+}, [selectedRegion])
+
+// TODO implement cart operations
+```
+
+You add an effect that runs whenever the selected region changes. If the cart's region doesn't match the selected region, it updates the cart's region using the JS SDK.
+
+Next, you'll implement the cart operations that you defined in the context type. Replace the `// TODO implement cart operations` comment with the following:
+
+export const cartOperationsHighlights = [
+  ["1", "addToCart", "Add an item to the cart."],
+  ["28", "updateItemQuantity", "Update the quantity of an item in the cart."],
+  ["52", "removeItem", "Remove an item from the cart."],
+  ["71", "refreshCart", "Refresh the cart data from the backend."],
+  ["84", "clearCart", "Clear the cart, useful after checkout."]
+]
+
+```tsx title="context/cart-context.tsx" highlights={cartOperationsHighlights}
+const addToCart = async (variantId: string, quantity: number) => {
+  let currentCart = cart
+  
+  if (!currentCart) {
+    currentCart = await loadCart()
+    if (!currentCart) {throw new Error("Could not create cart")}
+  }
+
+  try {
+    setLoading(true)
+    setError(null)
+
+    const { cart: updatedCart } = await sdk.store.cart.createLineItem(currentCart.id, {
+      variant_id: variantId,
+      quantity,
+    }, {
+      fields: "+items.*",
+    })
+    setCart(updatedCart)
+  } catch (err) {
+    setError(`Failed to add item to cart: ${err instanceof FetchError ? err.message : String(err)}`)
+    throw err
+  } finally {
+    setLoading(false)
+  }
+}
+
+const updateItemQuantity = async (itemId: string, quantity: number) => {
+  if (!cart) {return}
+
+  try {
+    setLoading(true)
+    setError(null)
+
+    const { cart: updatedCart } = await sdk.store.cart.updateLineItem(
+      cart.id,
+      itemId,
+      { quantity },
+      {
+        fields: "+items.*",
+      }
+    )
+    setCart(updatedCart)
+  } catch (err) {
+    setError(`Failed to update quantity: ${err instanceof FetchError ? err.message : String(err)}`)
+    throw err
+  } finally {
+    setLoading(false)
+  }
+}
+
+const removeItem = async (itemId: string) => {
+  if (!cart) {return}
+
+  try {
+    setLoading(true)
+    setError(null)
+
+    const { parent: updatedCart } = await sdk.store.cart.deleteLineItem(cart.id, itemId, {
+      fields: "+items.*",
+    })
+    setCart(updatedCart!)
+  } catch (err) {
+    setError(`Failed to remove item: ${err instanceof FetchError ? err.message : String(err)}`)
+    throw err
+  } finally {
+    setLoading(false)
+  }
+}
+
+const refreshCart = async () => {
+  if (!cart) {return}
+
+  try {
+    const { cart: updatedCart } = await sdk.store.cart.retrieve(cart.id, {
+      fields: "+items.*",
+    })
+    setCart(updatedCart)
+  } catch (err) {
+    setError(`Failed to refresh cart: ${err instanceof FetchError ? err.message : String(err)}`)
+  }
+}
+
+const clearCart = async () => {
+  setCart(null)
+  await AsyncStorage.removeItem(CART_STORAGE_KEY)
+  // Create a new cart
+  if (selectedRegion) {
+    const { cart: newCart } = await sdk.store.cart.create({
+      region_id: selectedRegion.id,
+    }, {
+      fields: "+items.*",
+    })
+    setCart(newCart)
+    await AsyncStorage.setItem(CART_STORAGE_KEY, newCart.id)
+  }
+}
+
+return (
+  <CartContext.Provider
+    value={{
+      cart,
+      addToCart,
+      updateItemQuantity,
+      removeItem,
+      refreshCart,
+      clearCart,
+      loading,
+      error,
+    }}
+  >
+    {children}
+  </CartContext.Provider>
+)
+```
+
+You define the following cart operation functions:
+
+- `addToCart`: Adds an item to the cart by creating a line item.
+- `updateItemQuantity`: Updates the quantity of an item in the cart.
+- `removeItem`: Removes an item from the cart.
+- `refreshCart`: Refreshes the cart data from the backend.
+- `clearCart`: Clears the cart and creates a new one.
+
+You also add a `return` statement providing the context values to child components using the `CartContext.Provider`.
+
+Finally, you'll create a custom hook in the same file to access the cart context easily. Replace the `// TODO add useCart hook` comment with the following:
+
+```tsx title="context/cart-context.tsx"
+export function useCart() {
+  const context = useContext(CartContext)
+  if (!context) {
+    throw new Error("useCart must be used within a CartProvider")
+  }
+  return context
+}
+```
+
+The `useCart` hook retrieves the context value using `useContext`. It throws an error if used outside of a `CartProvider`.
+
+### Wrap App in Cart Provider
+
+Next, you'll wrap the app in the `CartProvider` to provide the cart context to all components.
+
+In `app/_layout.tsx`, add the following import at the top of the file:
+
+```tsx title="app/_layout.tsx"
+import { CartProvider } from "@/context/cart-context"
+```
+
+Then, in the `RootLayout`'s `return` statement, add the `CartProvider` as a child of the `RegionProvider` and a parent of the `Stack` component:
+
+```tsx title="app/_layout.tsx" highlights={[["5"]]}
+return (
+  <GestureHandlerRootView style={{ flex: 1 }}>
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <RegionProvider>
+        <CartProvider>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+          </Stack>
+          <StatusBar style="auto" />
+        </CartProvider>
+      </RegionProvider>
+    </ThemeProvider>
+  </GestureHandlerRootView>
+)
+```
+
+Child components can now access the cart context using the `useCart` hook.
+
+---
+
+## Step 8: Create Home Screen
+
+In this step, you'll create the home screen of the app. It will display a hero image with a list of products retrieved from the Medusa backend.
+
+To implement the home screen, you'll create:
+
+1. Necessary utilities and components for the home screen.
+2. The home screen and navigation setup.
+
+### Add Price Formatting Utility
+
+First, you'll create a utility function to format prices based on the selected region's currency.
+
+Create the file `lib/format-price.ts` with the following content:
+
+```ts title="lib/format-price.ts"
+/**
+ * Format a price amount with currency code
+ * Note: Medusa stores prices in major units (e.g., dollars, euros)
+ * so no conversion is needed
+ */
+export function formatPrice(
+  amount: number | undefined,
+  currencyCode: string | undefined
+): string {
+  if (amount === undefined || !currencyCode) {
+    return "N/A"
+  }
+
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currencyCode.toUpperCase(),
+  }).format(amount)
+}
+```
+
+The `formatPrice` function takes an amount and a currency code as parameters. It formats the amount using the `Intl.NumberFormat` API to display it in the appropriate currency format.
+
+### Add Loading Component
+
+Next, you'll create a loading component that can be reused across the app to indicate loading states.
+
+Create the file `components/loading.tsx` with the following content:
+
+```tsx title="components/loading.tsx"
+import { Colors } from "@/constants/theme"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import React from "react"
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native"
+
+interface LoadingProps {
+  message?: string;
+}
+
+export function Loading({ message }: LoadingProps) {
+  const colorScheme = useColorScheme()
+  const colors = Colors[colorScheme ?? "light"]
+
+  return (
+    <View style={styles.container}>
+      <ActivityIndicator size="large" color={colors.tint} />
+      {message && (
+        <Text style={[styles.message, { color: colors.text }]}>{message}</Text>
+      )}
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  message: {
+    marginTop: 12,
+    fontSize: 16,
+  },
+})
+```
+
+The `Loading` component displays a spinner and an optional message.
+
+### Add Product Card Component
+
+Next, you'll create a product card component to display individual products on the home screen.
+
+Create the file `components/product-card.tsx` with the following content:
+
+```tsx title="components/product-card.tsx" collapsibleLines="58-93" expandButtonLabel="Show Styles"
+import { Colors } from "@/constants/theme"
+import { useRegion } from "@/context/region-context"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import { formatPrice } from "@/lib/format-price"
+import type { HttpTypes } from "@medusajs/types"
+import { Image } from "expo-image"
+import { useRouter } from "expo-router"
+import React from "react"
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+
+interface ProductCardProps {
+  product: HttpTypes.StoreProduct;
+}
+
+export const ProductCard = React.memo(function ProductCard({ product }: ProductCardProps) {
+  const router = useRouter()
+  const colorScheme = useColorScheme()
+  const colors = Colors[colorScheme ?? "light"]
+  const { selectedRegion } = useRegion()
+
+  const thumbnail = product.thumbnail || product.images?.[0]?.url
+  const variant = product.variants?.[0]
+  
+  // Get price from calculated_price.calculated_amount
+  const priceAmount = variant?.calculated_price?.calculated_amount || 0
+  
+  // Use selected region's currency code
+  const currencyCode = selectedRegion?.currency_code
+
+  return (
+    <TouchableOpacity
+      style={[styles.card, { backgroundColor: colors.background }]}
+      onPress={() => router.push({
+        pathname: `/(home)/product/${product.id}` as any,
+        params: { title: product.title },
+      })}
+      activeOpacity={0.7}
+    >
+      <Image
+        source={{ uri: thumbnail || "https://via.placeholder.com/200" }}
+        style={[styles.image, { backgroundColor: colors.imagePlaceholder }]}
+        contentFit="cover"
+      />
+      <View style={styles.content}>
+        <Text
+          style={[styles.title, { color: colors.text }]}
+          numberOfLines={2}
+        >
+          {product.title}
+        </Text>
+        <View style={styles.priceRow}>
+          <Text style={[styles.price, { color: colors.tint }]}>
+            {formatPrice(priceAmount, currencyCode)}
+          </Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  )
+})
+
+const styles = StyleSheet.create({
+  card: {
+    flex: 1,
+    margin: 8,
+    overflow: "hidden",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  image: {
+    width: "100%",
+    height: 180,
+    borderRadius: 8,
+  },
+  content: {
+    padding: 12,
+  },
+  title: {
+    fontSize: 14,
+    fontWeight: "600",
+    marginBottom: 12,
+  },
+  priceRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 8,
+  },
+  price: {
+    fontSize: 14,
+    fontWeight: "400",
+    flex: 1,
+  },
+})
+```
+
+The `ProductCard` component receives a product as a prop.
+
+It displays the product's thumbnail image, title, and price formatted using the `formatPrice` utility. When the card is pressed, it navigates to the product detail screen that you'll add later.
+
+### Add Home Screen
+
+Next, you'll add the home screen that displays a hero image and a list of products.
+
+Your app will have a tab-based navigation structure, with a tab for the home screen, and another you'll add later for the cart.
+
+So, to set up the tab navigation within the drawer navigator, create the directory `app/(drawer)/(tabs)`.
+
+Then, to create the home screen, create the file `app/(drawer)/(tabs)/(home)/index.tsx` with the following content:
+
+export const homeScreenHighlights = [
+  ["22", "fetchProducts", "Fetch products from the Medusa backend based on the selected region."],
+  ["42", "useEffect", "Fetch products when the selected region changes."],
+  ["48", "onRefresh", "Handle pull-to-refresh to reload products."]
+]
+
+```tsx title="app/(drawer)/(tabs)/(home)/index.tsx" collapsibleLines="56-98" expandButtonLabel="Show Styles" highlights={homeScreenHighlights}
+import { Loading } from "@/components/loading"
+import { ProductCard } from "@/components/product-card"
+import { Colors } from "@/constants/theme"
+import { useRegion } from "@/context/region-context"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import { sdk } from "@/lib/sdk"
+import type { HttpTypes } from "@medusajs/types"
+import { Image } from "expo-image"
+import React, { useCallback, useEffect, useState } from "react"
+import { FlatList, RefreshControl, StyleSheet, Text, View } from "react-native"
+
+export default function HomeScreen() {
+  const colorScheme = useColorScheme()
+  const colors = Colors[colorScheme ?? "light"]
+  const { selectedRegion } = useRegion()
+  
+  const [products, setProducts] = useState<HttpTypes.StoreProduct[]>([])
+  const [loading, setLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const fetchProducts = useCallback(async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      
+      const { products: fetchedProducts } = await sdk.store.product.list({
+        region_id: selectedRegion?.id,
+        fields: "*variants.calculated_price,+variants.inventory_quantity",
+      })
+      
+      setProducts(fetchedProducts)
+    } catch (err) {
+      console.error("Failed to fetch products:", err)
+      setError("Failed to load products. Please try again.")
+    } finally {
+      setLoading(false)
+      setRefreshing(false)
+    }
+  }, [selectedRegion])
+
+  useEffect(() => {
+    if (selectedRegion) {
+      fetchProducts()
+    }
+  }, [selectedRegion, fetchProducts])
+
+  const onRefresh = () => {
+    setRefreshing(true)
+    fetchProducts()
+  }
+
+  // TODO add return statement
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  centerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  header: {
+    width: "100%",
+  },
+  banner: {
+    width: "100%",
+    height: 200,
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: "700",
+    marginTop: 24,
+    marginBottom: 16,
+    paddingHorizontal: 16,
+  },
+  listContent: {
+    paddingBottom: 20,
+  },
+  row: {
+    justifyContent: "space-between",
+    paddingHorizontal: 8,
+  },
+  errorText: {
+    fontSize: 16,
+    textAlign: "center",
+  },
+  emptyContainer: {
+    padding: 40,
+    alignItems: "center",
+  },
+  emptyText: {
+    fontSize: 16,
+  },
+})
+```
+
+The home screen component fetches products from the Medusa backend based on the selected region. It manages loading, refreshing, and error states.
+
+Next, you'll add the return statement to render the home screen UI. Replace the `// TODO add return statement` comment with the following:
+
+```tsx title="app/(drawer)/(tabs)/(home)/index.tsx"
+if (loading) {
+  return <Loading message="Loading products..." />
+}
+
+if (error) {
+  return (
+    <View style={[styles.centerContainer, { backgroundColor: colors.background }]}>
+      <Text style={[styles.errorText, { color: colors.text }]}>{error}</Text>
+    </View>
+  )
+}
+
+return (
+  <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <FlatList
+      data={products}
+      keyExtractor={(item) => item.id}
+      numColumns={2}
+      columnWrapperStyle={styles.row}
+      initialNumToRender={6}
+      maxToRenderPerBatch={6}
+      windowSize={5}
+      removeClippedSubviews={true}
+      ListHeaderComponent={
+        <View style={styles.header}>
+          <Image
+            source={{ uri: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=800" }}
+            style={[styles.banner, { backgroundColor: colors.imagePlaceholder }]}
+            contentFit="cover"
+          />
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
+            Latest Products
+          </Text>
+        </View>
+      }
+      renderItem={({ item }) => <ProductCard product={item} />}
+      contentContainerStyle={styles.listContent}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          tintColor={colors.tint}
+        />
+      }
+      ListEmptyComponent={
+        <View style={styles.emptyContainer}>
+          <Text style={[styles.emptyText, { color: colors.text }]}>
+            No products available
+          </Text>
+        </View>
+      }
+    />
+  </View>
+)
+```
+
+You handle three main states in the return statement:
+
+1. Loading State: If the products are still loading, you display the `Loading` component with a message.
+2. Error State: If there was an error fetching the products, you display an error message.
+3. Success State: If the products are successfully fetched, you render a `FlatList` to display the products in a grid layout. The list includes a header with a hero image and a section title.
+
+You also configure the `FlatList` to support pull-to-refresh functionality and handle empty states.
+
+Next, you'll add stack navigation for the home screen, which will later allow you to add a product detail screen.
+
+Create the file `app/(drawer)/(tabs)/(home)/_layout.tsx` with the following content:
+
+```tsx title="app/(drawer)/(tabs)/(home)/_layout.tsx"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import { DrawerActions } from "@react-navigation/native"
+import { Stack, useNavigation } from "expo-router"
+import React from "react"
+import { TouchableOpacity } from "react-native"
+
+import { IconSymbol } from "@/components/ui/icon-symbol"
+import { Colors } from "@/constants/theme"
+
+export default function HomeStackLayout() {
+  const colorScheme = useColorScheme()
+  const navigation = useNavigation()
+  const colors = Colors[colorScheme ?? "light"]
+
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: true,
+      }}
+    >
+      <Stack.Screen 
+        name="index"
+        options={{
+          title: "Medusa Store",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+              style={{ height: 36, width: 36, display: "flex", alignItems: "center", justifyContent: "center" }}
+            >
+              <IconSymbol size={28} name="line.3.horizontal" color={colors.icon} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      {/* TODO add product details screen */}
+    </Stack>
+  )
+}
+```
+
+The `HomeStackLayout` component sets up a stack navigator for the home screen. It adds a header with a title and a menu button to open the drawer navigator.
+
+Next, you'll add the tab navigation layout to include the home screen tab.
+
+Create the file `app/(drawer)/(tabs)/_layout.tsx` with the following content:
+
+```tsx title="app/(drawer)/(tabs)/_layout.tsx"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import { Tabs } from "expo-router"
+import React from "react"
+
+import { HapticTab } from "@/components/haptic-tab"
+import { IconSymbol } from "@/components/ui/icon-symbol"
+import { Colors } from "@/constants/theme"
+
+export default function TabLayout() {
+  const colorScheme = useColorScheme()
+
+  return (
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        headerShown: true,
+        tabBarButton: HapticTab,
+      }}>
+      <Tabs.Screen
+        name="index"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="(home)"
+        options={{
+          title: "Medusa Store",
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          headerShown: false, // Let the home stack manage its own headers
+        }}
+      />
+      {/* TODO add cart tab */}
+    </Tabs>
+  )
+}
+```
+
+The `TabLayout` component sets up a tab navigator using Expo Router's `Tabs` component. It adds a tab for the home screen with an icon and title.
+
+An `index` tab is also specified to redirect to the home screen, ensuring it's always the default tab when the app opens.
+
+So, create the file `app/(drawer)/(tabs)/index.tsx` with the following content:
+
+```tsx title="app/(drawer)/(tabs)/index.tsx"
+import { Redirect } from "expo-router"
+import React from "react"
+
+const MainScreen = () => {
+  return <Redirect href="/(drawer)/(tabs)/(home)" />
+}
+
+export default MainScreen
+```
+
+The `MainScreen` component redirects to the home screen tab when accessed.
+
+<Note>
+
+If you get a type error regarding the `href` prop in the `Redirect` component, wait until the next time you run the project. The Expo Router types should update and the error should go away.
+
+</Note>
+
+### Add Tabs to Drawer Navigator
+
+Finally, you'll add the tab navigator to the drawer navigator.
+
+In `app/(drawer)/_layout.tsx`, update the `return` statement to replace the `TODO` comment with the tabs screen:
+
+```tsx title="app/(drawer)/_layout.tsx"
+return (
+  <Drawer
+    drawerContent={(props) => <DrawerContent {...props} />}
+    screenOptions={{
+      headerShown: false,
+      drawerPosition: "left",
+    }}
+  >
+    <Drawer.Screen
+      name="(tabs)"
+      options={{
+        drawerLabel: "Home",
+        title: "Shop",
+      }}
+    />
+  </Drawer>
+)
+```
+
+The drawer navigator now includes the tab navigator as its main screen.
+
+### Test the Home Screen
+
+You can now test the home screen of your app.
+
+There are different ways to run the React Native app, which you can learn about in [Expo's documentation](https://docs.expo.dev/get-started/set-up-your-environment/?platform=ios&device=physical&mode=expo-go). The recommended way is to install the [Expo Go](https://expo.dev/go) app on your mobile device and run the app on it.
+
+Before you run your app, start the Medusa backend by running the following command in the Medusa project directory:
+
+```bash badgeLabel="Medusa Application" badgeColor="green"
+npm run dev
+```
+
+Then, run the following command in your Expo project directory to start the Expo server:
+
+```bash badgeLabel="Expo Application" badgeColor="blue"
+npm run start
+```
+
+In the terminal, you should see a QR code. Scan it using your device to open the app in Expo Go.
+
+When the app opens, you'll see a home screen displaying a hero image and a list of products fetched from the Medusa application.
+
+<Note>
+
+Clicking on a product won't do anything yet, as you haven't implemented the product detail screen. You'll add it in the next step.
+
+</Note>
+
+![Home screen showing the hero image and list of products](https://res.cloudinary.com/dza7lstvk/image/upload/v1762344360/Medusa%20Resources/CleanShot_2025-11-05_at_13.54.13_2x_efopgu.png)
+
+If you click the menu icon in the top-left corner, the drawer navigator will open, allowing you to select the region using the region selector you implemented earlier.
+
+![Drawer navigator showing the region selector](https://res.cloudinary.com/dza7lstvk/image/upload/v1762344361/Medusa%20Resources/CleanShot_2025-11-05_at_13.54.38_2x_r0tb6i.png)
+
+---
+
+## Step 9: Create Product Detail Screen
+
+In this step, you'll create the product detail screen that displays detailed information about a selected product.
+
+You'll create the necessary components and utilities first, then implement the product detail screen and navigation.
+
+### Add Button Component
+
+First, you'll create a button component that can be reused across the app.
+
+Create the file `components/ui/button.tsx` with the following content:
+
+```tsx title="components/ui/button.tsx" collapsibleLines="63-84" expandButtonLabel="Show Styles"
+import { Colors } from "@/constants/theme"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import React from "react"
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableOpacityProps,
+} from "react-native"
+
+interface ButtonProps extends TouchableOpacityProps {
+  title: string;
+  variant?: "primary" | "secondary";
+  loading?: boolean;
+}
+
+export function Button({
+  title,
+  variant = "primary",
+  loading = false,
+  disabled,
+  style,
+  ...props
+}: ButtonProps) {
+  const colorScheme = useColorScheme()
+  const colors = Colors[colorScheme ?? "light"]
+
+  const isPrimary = variant === "primary"
+  const isDisabled = disabled || loading
+  
+  // Primary button: white background with dark text in dark mode, tint background with white text in light mode
+  const primaryBgColor = colorScheme === "dark" ? "#fff" : colors.tint
+  const primaryTextColor = colorScheme === "dark" ? "#000" : "#fff"
+
+  return (
+    <TouchableOpacity
+      style={[
+        styles.button,
+        isPrimary ? { backgroundColor: primaryBgColor } : styles.secondaryButton,
+        isDisabled && styles.disabled,
+        style,
+      ]}
+      disabled={isDisabled}
+      {...props}
+    >
+      {loading ? (
+        <ActivityIndicator color={isPrimary ? primaryTextColor : colors.tint} />
+      ) : (
+        <Text
+          style={[
+            styles.text,
+            isPrimary ? { color: primaryTextColor } : { color: colors.tint },
+          ]}
+        >
+          {title}
+        </Text>
+      )}
+    </TouchableOpacity>
+  )
+}
+
+const styles = StyleSheet.create({
+  button: {
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: 48,
+  },
+  secondaryButton: {
+    backgroundColor: "transparent",
+    borderWidth: 1,
+    borderColor: "#ccc",
+  },
+  text: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  disabled: {
+    opacity: 0.5,
+  },
+})
+```
+
+The `Button` component accepts props for the title, variant (primary or secondary), loading state, and other touchable opacity props.
+
+### Add Product Image Slider Component
+
+Next, you'll create a product image slider component to display multiple images of a product.
+
+Create the file `components/product-image-slider.tsx` with the following content:
+
+```tsx title="components/product-image-slider.tsx" collapsibleLines="77-103" expandButtonLabel="Show Styles"
+import { Colors } from "@/constants/theme"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import { Image } from "expo-image"
+import React, { useRef, useState } from "react"
+import { Dimensions, FlatList, StyleSheet, View } from "react-native"
+
+const { width: SCREEN_WIDTH } = Dimensions.get("window")
+
+interface ProductImageSliderProps {
+  images: string[];
+}
+
+export function ProductImageSlider({ images }: ProductImageSliderProps) {
+  const colorScheme = useColorScheme()
+  const colors = Colors[colorScheme ?? "light"]
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const imageListRef = useRef<FlatList>(null)
+
+  const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
+    if (viewableItems.length > 0) {
+      setCurrentImageIndex(viewableItems[0].index || 0)
+    }
+  }).current
+
+  const viewabilityConfig = useRef({
+    itemVisiblePercentThreshold: 50,
+  }).current
+
+  const renderImageItem = ({ item }: { item: string }) => (
+    <View style={styles.imageSlide}>
+      <Image
+        source={{ uri: item }}
+        style={[styles.image, { backgroundColor: colors.imagePlaceholder }]}
+        contentFit="cover"
+      />
+    </View>
+  )
+
+  if (images.length === 0) {
+    return null
+  }
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        ref={imageListRef}
+        data={images}
+        renderItem={renderImageItem}
+        keyExtractor={(item, index) => `image-${index}`}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={viewabilityConfig}
+      />
+      {images.length > 1 && (
+        <View style={styles.pagination}>
+          {images.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.paginationDot,
+                {
+                  backgroundColor: currentImageIndex === index 
+                    ? colors.tint 
+                    : colors.icon + "40",
+                },
+              ]}
+            />
+          ))}
+        </View>
+      )}
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    position: "relative",
+  },
+  imageSlide: {
+    width: SCREEN_WIDTH,
+  },
+  image: {
+    width: SCREEN_WIDTH,
+    height: 400,
+  },
+  pagination: {
+    position: "absolute",
+    bottom: 16,
+    left: 0,
+    right: 0,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 6,
+  },
+  paginationDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+})
+```
+
+The `ProductImageSlider` component receives an array of image URLs as a prop and displays them in a horizontally scrollable `FlatList`. It also includes pagination dots to indicate the current image being viewed.
+
+### Add Product Skeleton Component
+
+Next, you'll create a skeleton component to display while the product details are loading. This improves the user experience by providing a visual placeholder.
+
+Create the file `components/product-skeleton.tsx` with the following content:
+
+```tsx title="components/product-skeleton.tsx" collapsibleLines="160-256" expandButtonLabel="Show Styles"
+import { Colors } from "@/constants/theme"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import React, { useEffect, useRef } from "react"
+import { Animated, StyleSheet, View } from "react-native"
+
+export function ProductSkeleton() {
+  const colorScheme = useColorScheme()
+  const colors = Colors[colorScheme ?? "light"]
+  const shimmerAnim = useRef(new Animated.Value(0)).current
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(shimmerAnim, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(shimmerAnim, {
+          toValue: 0,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start()
+  }, [shimmerAnim])
+
+  const opacity = shimmerAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.3, 0.7],
+  })
+
+  const skeletonColor = colorScheme === "dark" ? "#333" : "#e0e0e0"
+
+  return (
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      {/* Main Image Skeleton with Pagination Dots */}
+      <View style={styles.imageContainer}>
+        <Animated.View
+          style={[
+            styles.imageSkeleton,
+            { backgroundColor: skeletonColor, opacity },
+          ]}
+        />
+        <View style={styles.pagination}>
+          {[1, 2, 3].map((i) => (
+            <Animated.View
+              key={i}
+              style={[
+                styles.paginationDot,
+                { backgroundColor: skeletonColor, opacity },
+              ]}
+            />
+          ))}
+        </View>
+      </View>
+
+      <View style={styles.content}>
+        {/* Title Skeleton */}
+        <Animated.View
+          style={[
+            styles.titleSkeleton,
+            { backgroundColor: skeletonColor, opacity },
+          ]}
+        />
+
+        {/* Description Skeleton - 3 lines */}
+        <View style={styles.descriptionContainer}>
+          <Animated.View
+            style={[
+              styles.descriptionLine,
+              { backgroundColor: skeletonColor, opacity, width: "100%" },
+            ]}
+          />
+          <Animated.View
+            style={[
+              styles.descriptionLine,
+              { backgroundColor: skeletonColor, opacity, width: "90%" },
+            ]}
+          />
+          <Animated.View
+            style={[
+              styles.descriptionLine,
+              { backgroundColor: skeletonColor, opacity, width: "70%" },
+            ]}
+          />
+        </View>
+
+        {/* Price Skeleton */}
+        <Animated.View
+          style={[
+            styles.priceSkeleton,
+            { backgroundColor: skeletonColor, opacity },
+          ]}
+        />
+
+        {/* Options Skeleton */}
+        <View style={styles.optionsContainer}>
+          <Animated.View
+            style={[
+              styles.optionTitleSkeleton,
+              { backgroundColor: skeletonColor, opacity },
+            ]}
+          />
+          <View style={styles.optionButtons}>
+            {[1, 2, 3].map((i) => (
+              <Animated.View
+                key={i}
+                style={[
+                  styles.optionButtonSkeleton,
+                  { backgroundColor: skeletonColor, opacity },
+                ]}
+              />
+            ))}
+          </View>
+        </View>
+
+        {/* Quantity Skeleton */}
+        <View style={styles.quantityContainer}>
+          <Animated.View
+            style={[
+              styles.quantityLabelSkeleton,
+              { backgroundColor: skeletonColor, opacity },
+            ]}
+          />
+          <View style={styles.quantityControls}>
+            <Animated.View
+              style={[
+                styles.quantityButtonSkeleton,
+                { backgroundColor: skeletonColor, opacity },
+              ]}
+            />
+            <Animated.View
+              style={[
+                styles.quantityValueSkeleton,
+                { backgroundColor: skeletonColor, opacity },
+              ]}
+            />
+            <Animated.View
+              style={[
+                styles.quantityButtonSkeleton,
+                { backgroundColor: skeletonColor, opacity },
+              ]}
+            />
+          </View>
+        </View>
+
+        {/* Add to Cart Button Skeleton */}
+        <Animated.View
+          style={[
+            styles.buttonSkeleton,
+            { backgroundColor: skeletonColor, opacity },
+          ]}
+        />
+      </View>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  imageContainer: {
+    position: "relative",
+  },
+  imageSkeleton: {
+    width: "100%",
+    height: 400,
+  },
+  pagination: {
+    position: "absolute",
+    bottom: 16,
+    left: 0,
+    right: 0,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 6,
+  },
+  paginationDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  content: {
+    padding: 20,
+  },
+  titleSkeleton: {
+    height: 32,
+    width: "70%",
+    borderRadius: 4,
+    marginBottom: 12,
+  },
+  descriptionContainer: {
+    marginBottom: 20,
+  },
+  descriptionLine: {
+    height: 16,
+    borderRadius: 4,
+    marginBottom: 8,
+  },
+  priceSkeleton: {
+    height: 36,
+    width: "40%",
+    borderRadius: 4,
+    marginBottom: 24,
+  },
+  optionsContainer: {
+    marginBottom: 24,
+  },
+  optionTitleSkeleton: {
+    height: 20,
+    width: "30%",
+    borderRadius: 4,
+    marginBottom: 12,
+  },
+  optionButtons: {
+    flexDirection: "row",
+    gap: 8,
+  },
+  optionButtonSkeleton: {
+    height: 40,
+    width: 80,
+    borderRadius: 8,
+  },
+  quantityContainer: {
+    marginBottom: 32,
+  },
+  quantityLabelSkeleton: {
+    height: 20,
+    width: "25%",
+    borderRadius: 4,
+    marginBottom: 12,
+  },
+  quantityControls: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  quantityButtonSkeleton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+  },
+  quantityValueSkeleton: {
+    width: 30,
+    height: 20,
+    borderRadius: 4,
+    marginHorizontal: 20,
+  },
+  buttonSkeleton: {
+    height: 48,
+    borderRadius: 8,
+    marginTop: 8,
+  },
+})
+```
+
+The `ProductSkeleton` component uses animated views to create a shimmering effect for various sections of the product detail screen, including the image, title, and buttons.
+
+### Add Toast Component
+
+Next, you'll create a toast component to display brief messages to the user, such as confirming that an item has been added to the cart.
+
+Create the file `components/ui/toast.tsx` with the following content:
+
+```tsx title="components/ui/toast.tsx" collapsibleLines="91-116" expandButtonLabel="Show Styles"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import React, { useCallback, useEffect, useRef } from "react"
+import { Animated, StyleSheet, Text, View } from "react-native"
+
+interface ToastProps {
+  message: string;
+  visible: boolean;
+  onHide: () => void;
+  duration?: number;
+  type?: "success" | "error" | "info";
+}
+
+export function Toast({ 
+  message, 
+  visible, 
+  onHide, 
+  duration = 3000,
+  type = "success", 
+}: ToastProps) {
+  const colorScheme = useColorScheme()
+  const opacity = useRef(new Animated.Value(0)).current
+  const translateY = useRef(new Animated.Value(50)).current
+
+  const hideToast = useCallback(() => {
+    Animated.parallel([
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(translateY, {
+        toValue: 50,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      onHide()
+    })
+  }, [opacity, translateY, onHide])
+
+  useEffect(() => {
+    if (visible) {
+      // Fade in and slide up
+      Animated.parallel([
+        Animated.timing(opacity, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(translateY, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]).start()
+
+      // Auto hide after duration
+      const timer = setTimeout(() => {
+        hideToast()
+      }, duration)
+
+      return () => clearTimeout(timer)
+    }
+  }, [visible, duration, opacity, translateY, hideToast])
+
+  if (!visible) {
+    return null
+  }
+
+  // Use inverted colors for minimal design: white in dark mode, black in light mode
+  const backgroundColor = colorScheme === "dark" ? "#fff" : "#000"
+  const textColor = colorScheme === "dark" ? "#000" : "#fff"
+
+  return (
+    <Animated.View
+      style={[
+        styles.container,
+        {
+          opacity,
+          transform: [{ translateY }],
+        },
+      ]}
+    >
+      <View style={[styles.toast, { backgroundColor }]}>
+        <Text style={[styles.message, { color: textColor }]}>{message}</Text>
+      </View>
+    </Animated.View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    position: "absolute",
+    bottom: 100,
+    left: 20,
+    right: 20,
+    alignItems: "center",
+    zIndex: 1000,
+  },
+  toast: {
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+    minWidth: 200,
+  },
+  message: {
+    fontSize: 15,
+    fontWeight: "600",
+    textAlign: "center",
+  },
+})
+```
+
+The `Toast` component accepts props for the message, visibility, hide callback, duration, and type. It uses animated values to create fade-in and slide-up effects when the toast appears and disappears.
+
+### Add Inventory Utility
+
+Next, you'll create a utility function to check if a product variant is in stock.
+
+Create the file `lib/inventory.ts` with the following content:
+
+```ts title="lib/inventory.ts"
+import type { HttpTypes } from "@medusajs/types"
+
+/**
+ * Check if a product variant is in stock
+ * A variant is in stock if:
+ * - manage_inventory is false (inventory tracking disabled), OR
+ * - inventory_quantity is greater than 0
+ */
+export function isVariantInStock(
+  variant: HttpTypes.StoreProductVariant | undefined | null
+): boolean {
+  if (!variant) {
+    return false
+  }
+
+  return variant.manage_inventory === false || (variant.inventory_quantity || 0) > 0
+}
+```
+
+The `isVariantInStock` function checks if a product variant is in stock. A variant is considered in stock if:
+
+- `manage_inventory` is false (inventory tracking is disabled), OR
+- `inventory_quantity` is greater than 0.
+
+### Implement Product Detail Screen
+
+You can now implement the product detail screen using the components and utilities you've created.
+
+Create the file `app/(drawer)/(tabs)/(home)/product/[id].tsx` with the following content:
+
+export const productDetailHighlights = [
+  ["18", "id", "The product ID from the URL parameters."],
+  ["21", "addToCart", "Function to add items to the cart from the cart context."],
+  ["22", "selectedRegion", "The currently selected region from the region context."],
+  ["24", "product", "The product details fetched from the backend."],
+  ["25", "selectedOptions", "The currently selected product options, such as size or color."],
+  ["26", "quantity", "The quantity of the product to add to the cart."],
+  ["27", "loading", "Loading state for fetching product details."],
+  ["28", "addingToCart", "Loading state for adding the product to the cart."],
+  ["29", "error", "Error message if fetching product details fails."],
+]
+
+```tsx title="app/(drawer)/(tabs)/(home)/product/[id].tsx" collapsibleLines="37-143" expandButtonLabel="Show Styles" highlights={productDetailHighlights}
+import { ProductImageSlider } from "@/components/product-image-slider"
+import { ProductSkeleton } from "@/components/product-skeleton"
+import { Button } from "@/components/ui/button"
+import { Toast } from "@/components/ui/toast"
+import { Colors } from "@/constants/theme"
+import { useCart } from "@/context/cart-context"
+import { useRegion } from "@/context/region-context"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import { formatPrice } from "@/lib/format-price"
+import { isVariantInStock } from "@/lib/inventory"
+import { sdk } from "@/lib/sdk"
+import type { HttpTypes } from "@medusajs/types"
+import { useLocalSearchParams, useNavigation } from "expo-router"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+
+export default function ProductDetailsScreen() {
+  const { id, title } = useLocalSearchParams<{ id: string; title?: string }>()
+  const colorScheme = useColorScheme()
+  const colors = Colors[colorScheme ?? "light"]
+  const { addToCart } = useCart()
+  const { selectedRegion } = useRegion()
+
+  const [product, setProduct] = useState<HttpTypes.StoreProduct | null>(null)
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
+  const [quantity, setQuantity] = useState(1)
+  const [loading, setLoading] = useState(true)
+  const [addingToCart, setAddingToCart] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [toastVisible, setToastVisible] = useState(false)
+  const [toastMessage, setToastMessage] = useState("")
+  const navigation = useNavigation()
+
+  // TODO fetch product
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  centerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  content: {
+    padding: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "700",
+    marginBottom: 12,
+  },
+  description: {
+    fontSize: 16,
+    lineHeight: 24,
+    marginBottom: 20,
+  },
+  priceContainer: {
+    marginBottom: 24,
+  },
+  price: {
+    fontSize: 20,
+    fontWeight: "700",
+    marginBottom: 8,
+  },
+  stockBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+    alignSelf: "flex-start",
+  },
+  outOfStockText: {
+    color: "#fff",
+    fontSize: 13,
+    fontWeight: "600",
+    textTransform: "uppercase",
+  },
+  lowStockText: {
+    color: "#fff",
+    fontSize: 13,
+    fontWeight: "600",
+  },
+  optionsSection: {
+    marginBottom: 24,
+  },
+  optionGroup: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginBottom: 12,
+  },
+  optionValues: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+  },
+  optionButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  optionText: {
+    fontSize: 14,
+  },
+  quantitySection: {
+    marginBottom: 32,
+  },
+  quantityControls: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  quantityButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  quantityButtonText: {
+    fontSize: 18,
+    fontWeight: "600",
+  },
+  quantity: {
+    marginHorizontal: 20,
+    fontSize: 18,
+    fontWeight: "600",
+    minWidth: 30,
+    textAlign: "center",
+  },
+  addButton: {
+    marginTop: 8,
+  },
+  errorText: {
+    fontSize: 16,
+    textAlign: "center",
+  },
+})
+```
+
+The `ProductDetailsScreen` includes the following variables:
+
+- `id`: The product ID from the URL parameters.
+- `colorScheme` and `colors`: For theming based on the current color scheme.
+- `addToCart`: Function to add items to the cart from the cart context.
+- `selectedRegion`: The currently selected region from the region context.
+- `product`: The product details fetched from the backend.
+- `selectedOptions`: The currently selected product options, such as size or color.
+- `quantity`: The quantity of the product to add to the cart.
+- `loading`: Loading state for fetching product details.
+- `addingToCart`: Loading state for adding the product to the cart.
+- `error`: Error message if fetching product details fails.
+- `toastVisible` and `toastMessage`: For displaying toast messages.
+
+Next, you'll implement the logic to fetch the product details based on the product ID. Replace the `// TODO fetch product` comment with the following:
+
+```tsx title="app/(drawer)/(tabs)/(home)/product/[id].tsx"
+const fetchProduct = useCallback(async () => {
+  try {
+    setLoading(true)
+    setError(null)
+
+    const { product: fetchedProduct } = await sdk.store.product.retrieve(id, {
+      fields: "*variants.calculated_price,+variants.inventory_quantity",
+      region_id: selectedRegion?.id,
+    })
+
+    setProduct(fetchedProduct)
+    
+    // Initialize selected options with first variant's option values
+    if (fetchedProduct.variants && fetchedProduct.variants.length > 0) {
+      const firstVariant = fetchedProduct.variants[0]
+      const initialOptions: Record<string, string> = {}
+      firstVariant.options?.forEach((optionValue) => {
+        if (optionValue.option_id && optionValue.value) {
+          initialOptions[optionValue.option_id] = optionValue.value
+        }
+      })
+      setSelectedOptions(initialOptions)
+    }
+  } catch (err) {
+    console.error("Failed to fetch product:", err)
+    setError("Failed to load product. Please try again.")
+  } finally {
+    setLoading(false)
+  }
+}, [id, selectedRegion])
+
+useEffect(() => {
+  if (id && selectedRegion) {
+    fetchProduct()
+  }
+}, [id, selectedRegion, fetchProduct])
+
+// Update screen title immediately if passed as param, or when product is loaded
+useEffect(() => {
+  const productTitle = title || product?.title
+  if (productTitle) {
+    navigation.setOptions({
+      title: productTitle,
+    })
+  }
+}, [title, product, navigation])
+
+// TODO select variant based on selected options
+```
+
+The `fetchProduct` function retrieves product details from the Medusa backend using the product ID. The region ID is passed as a query parameter to get prices specific to the selected region.
+
+The `selectedOptions` state is initialized with the option values of the product's first variant.
+
+Next, you'll implement the logic to select the appropriate product variant based on the currently selected options. Replace the `// TODO select variant based on selected options` comment with the following:
+
+export const productDetailVariantHighlights = [
+  ["2", "selectedVariant", "The product variant that matches the currently selected options."],
+  ["20", "shouldShowOptions", "Whether to show the options UI."],
+  ["29", "images", "Array of image URLs for the product."],
+]
+
+```tsx title="app/(drawer)/(tabs)/(home)/product/[id].tsx" highlights={productDetailVariantHighlights}
+// Compute selected variant based on selected options
+const selectedVariant = useMemo(() => {
+  if (
+    !product?.variants ||
+    !product.options ||
+    Object.keys(selectedOptions).length !== product.options?.length
+  ) {
+    return
+  }
+
+  return product.variants.find((variant) =>
+    variant.options?.every(
+      (optionValue) => optionValue.value === selectedOptions[optionValue.option_id!]
+    )
+  )
+}, [selectedOptions, product])
+
+// Check if we should show options UI
+// Hide if there's only one option with one value (or all options have only one value each)
+const shouldShowOptions = useMemo(() => {
+  if (!product?.options || product.options.length === 0) {
+    return false
+  }
+  // Show options only if at least one option has more than one value
+  return product.options.some((option) => (option.values?.length ?? 0) > 1)
+}, [product])
+
+// Get all images from product
+const images = useMemo(() => {
+  const productImages = product?.images?.map((img) => img.url).filter(Boolean) || []
+  // If no images, use thumbnail or fallback
+  if (productImages.length === 0 && product?.thumbnail) {
+    return [product.thumbnail]
+  }
+  return productImages.length > 0 ? productImages : []
+}, [product])
+
+// TODO handle add to cart
+```
+
+You define the following memoized values:
+
+- `selectedVariant`: The product variant that matches the currently selected options.
+- `shouldShowOptions`: A boolean indicating whether to show the options UI. The options UI is hidden if there's a single option with a single value.
+- `images`: An array of image URLs for the product, falling back to the thumbnail if no images are available.
+
+Next, you'll implement the logic to handle adding the selected product variant to the cart. Replace the `// TODO handle add to cart` comment with the following:
+
+```tsx title="app/(drawer)/(tabs)/(home)/product/[id].tsx"
+const handleAddToCart = async () => {
+  if (!selectedVariant) {
+    setToastMessage(shouldShowOptions ? "Please select all options" : "Variant not available")
+    setToastVisible(true)
+    return
+  }
+
+  try {
+    setAddingToCart(true)
+    await addToCart(selectedVariant.id, quantity)
+    setToastMessage("Product added to cart!")
+    setToastVisible(true)
+  } catch {
+    setToastMessage("Failed to add product to cart")
+    setToastVisible(true)
+  } finally {
+    setAddingToCart(false)
+  }
+}
+
+// TODO render UI
+```
+
+The `handleAddToCart` function adds the selected variant to the cart using the `addToCart` function from the cart context. It displays appropriate toast messages based on the outcome.
+
+Finally, you'll implement the UI rendering for the product detail screen. Replace the `// TODO render UI` comment with the following:
+
+```tsx title="app/(drawer)/(tabs)/(home)/product/[id].tsx"
+if (loading) {
+  return <ProductSkeleton />
+}
+
+if (error || !product) {
+  return (
+    <View style={[styles.centerContainer, { backgroundColor: colors.background }]}>
+      <Text style={[styles.errorText, { color: colors.text }]}>
+        {error || "Product not found"}
+      </Text>
+    </View>
+  )
+}
+
+// Get price from calculated_price.calculated_amount
+const priceAmount = selectedVariant?.calculated_price?.calculated_amount || 0
+
+// Use selected region's currency code
+const currencyCode = selectedRegion?.currency_code
+
+// Check if selected variant is in stock
+const isInStock = isVariantInStock(selectedVariant)
+
+return (
+  <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
+    <ProductImageSlider images={images} />
+
+    <View style={styles.content}>
+      <Text style={[styles.title, { color: colors.text }]}>{product.title}</Text>
+      
+      {product.description && (
+        <Text style={[styles.description, { color: colors.icon }]}>
+          {product.description}
+        </Text>
+      )}
+
+      <View style={styles.priceContainer}>
+        <Text style={[styles.price, { color: colors.tint }]}>
+          {formatPrice(priceAmount, currencyCode)}
+        </Text>
+        {!isInStock && (
+          <View style={[styles.stockBadge, { backgroundColor: colors.error }]}>
+            <Text style={styles.outOfStockText}>Out of Stock</Text>
+          </View>
+        )}
+        {isInStock && selectedVariant?.inventory_quantity !== undefined && 
+          selectedVariant.inventory_quantity! <= 10 && 
+          selectedVariant.manage_inventory !== false && (
+          <View style={[styles.stockBadge, { backgroundColor: colors.warning }]}>
+            <Text style={styles.lowStockText}>
+              Only {selectedVariant.inventory_quantity} left
+            </Text>
+          </View>
+        )}
+      </View>
+
+      {shouldShowOptions && (
+        <View style={styles.optionsSection}>
+          {product.options?.map((option) => (
+            <View key={option.id} style={styles.optionGroup}>
+              <Text style={[styles.sectionTitle, { color: colors.text }]}>
+                {option.title}
+              </Text>
+              <View style={styles.optionValues}>
+                {option.values?.map((optionValue) => {
+                  const isSelected = selectedOptions[option.id!] === optionValue.value
+                  return (
+                    <TouchableOpacity
+                      key={optionValue.id}
+                      style={[
+                        styles.optionButton,
+                        {
+                          backgroundColor: isSelected
+                            ? colors.tint + "20"
+                            : "transparent",
+                          borderColor: isSelected
+                            ? colors.tint
+                            : colors.icon + "30",
+                        },
+                      ]}
+                      onPress={() => {
+                        setSelectedOptions((prev) => ({
+                          ...prev,
+                          [option.id!]: optionValue.value!,
+                        }))
+                      }}
+                    >
+                      <Text
+                        style={[
+                          styles.optionText,
+                          {
+                            color: isSelected ? colors.tint : colors.text,
+                            fontWeight: isSelected ? "600" : "400",
+                          },
+                        ]}
+                      >
+                        {optionValue.value}
+                      </Text>
+                    </TouchableOpacity>
+                  )
+                })}
+              </View>
+            </View>
+          ))}
+        </View>
+      )}
+
+      <View style={styles.quantitySection}>
+        <Text style={[styles.sectionTitle, { color: colors.text }]}>Quantity</Text>
+        <View style={styles.quantityControls}>
+          <TouchableOpacity
+            style={[styles.quantityButton, { borderColor: colors.icon }]}
+            onPress={() => setQuantity(Math.max(1, quantity - 1))}
+          >
+            <Text style={[styles.quantityButtonText, { color: colors.text }]}>-</Text>
+          </TouchableOpacity>
+          <Text style={[styles.quantity, { color: colors.text }]}>{quantity}</Text>
+          <TouchableOpacity
+            style={[styles.quantityButton, { borderColor: colors.icon }]}
+            onPress={() => setQuantity(quantity + 1)}
+          >
+            <Text style={[styles.quantityButtonText, { color: colors.text }]}>+</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <Button
+        title={isInStock ? "Add to Cart" : "Out of Stock"}
+        onPress={handleAddToCart}
+        loading={addingToCart}
+        disabled={!isInStock}
+        style={styles.addButton}
+      />
+    </View>
+    
+    <Toast
+      message={toastMessage}
+      visible={toastVisible}
+      onHide={() => setToastVisible(false)}
+      type="success"
+    />
+  </ScrollView>
+)
+```
+
+You handle three main states:
+
+1. Loading: Displays the `ProductSkeleton` while fetching product details.
+2. Error: Displays an error message if fetching fails or the product is not found.
+3. Success: Renders the product detail screen with the image slider, title, description, price, stock status, options, quantity selector, and add to cart button.
+
+### Add Product Detail Screen to Navigation
+
+Finally, you'll add the product detail screen to the home stack navigator.
+
+In `app/(drawer)/(tabs)/(home)/_layout.tsx`, replace the `TODO add product details screen` comment with the following:
+
+```tsx title="app/(drawer)/(tabs)/(home)/_layout.tsx"
+<Stack.Screen 
+  name="product/[id]"
+  options={{
+    title: "Product Details",
+    presentation: "card",
+    headerBackButtonDisplayMode: "minimal",
+  }}
+/>
+```
+
+A new screen is added to the stack navigator for the product detail screen, allowing users to navigate between the home screen and the product detail screen seamlessly.
+
+### Test Product Detail Screen
+
+To test out the product detail screen, run your Medusa application and Expo app.
+
+Then, in the home screen, click on a product to view its details. This will open the product detail screen where you can view its images, select options, adjust quantity, and add it to the cart.
+
+![Product Detail Screen](https://res.cloudinary.com/dza7lstvk/image/upload/v1762417976/Medusa%20Resources/CleanShot_2025-11-06_at_10.29.04_2x_girdxx.png)
+
+You can try adding a product to the cart and see the toast notification confirming the action. You'll implement the cart screen in the next step.
+
+---
+
+## Step 10: Create Cart Screen
+
+In this step, you'll create a cart screen where users can view the items they've added to their cart, adjust quantities, and proceed to checkout.
+
+You'll create the necessary components and utilities first, then implement the cart screen and add it to the navigation.
+
+### Add Cart Item Component
+
+First, you'll create a cart item component to display individual items in the cart.
+
+Create the file `components/cart-item.tsx` with the following content:
+
+```tsx title="components/cart-item.tsx" collapsibleLines="72-137" expandButtonLabel="Show Styles"
+import { IconSymbol } from "@/components/ui/icon-symbol"
+import { Colors } from "@/constants/theme"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import { formatPrice } from "@/lib/format-price"
+import type { HttpTypes } from "@medusajs/types"
+import { Image } from "expo-image"
+import React from "react"
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+
+interface CartItemProps {
+  item: HttpTypes.StoreCartLineItem;
+  currencyCode?: string;
+  onUpdateQuantity: (quantity: number) => void;
+  onRemove: () => void;
+}
+
+export const CartItem = React.memo(function CartItem({ item, currencyCode, onUpdateQuantity, onRemove }: CartItemProps) {
+  const colorScheme = useColorScheme()
+  const colors = Colors[colorScheme ?? "light"]
+
+  const thumbnail = item.thumbnail || item.variant?.product?.thumbnail
+  const total = item.subtotal || 0
+
+  return (
+    <View style={[styles.container, { borderBottomColor: colors.icon + "30" }]}>
+      <Image
+        source={{ uri: thumbnail || "https://via.placeholder.com/80" }}
+        style={[styles.image, { backgroundColor: colors.imagePlaceholder }]}
+        contentFit="cover"
+      />
+      <View style={styles.content}>
+        <View style={styles.info}>
+          <Text style={[styles.title, { color: colors.text }]} numberOfLines={2}>
+            {item.product_title || item.title}
+          </Text>
+          {item.variant_title && (
+            <Text style={[styles.variant, { color: colors.icon }]}>
+              {item.variant_title}
+            </Text>
+          )}
+          <Text style={[styles.price, { color: colors.text }]}>
+            {formatPrice(total, currencyCode)}
+          </Text>
+        </View>
+        <View style={styles.actions}>
+          <View style={styles.quantityContainer}>
+            <TouchableOpacity
+              style={[styles.quantityButton, { borderColor: colors.icon }]}
+              onPress={() => onUpdateQuantity(Math.max(1, item.quantity - 1))}
+            >
+              <Text style={[styles.quantityButtonText, { color: colors.text }]}>-</Text>
+            </TouchableOpacity>
+            <Text style={[styles.quantity, { color: colors.text }]}>
+              {item.quantity}
+            </Text>
+            <TouchableOpacity
+              style={[styles.quantityButton, { borderColor: colors.icon }]}
+              onPress={() => onUpdateQuantity(item.quantity + 1)}
+            >
+              <Text style={[styles.quantityButtonText, { color: colors.text }]}>+</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity onPress={onRemove} style={styles.removeButton}>
+            <IconSymbol size={20} name="trash" color={colors.text} />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  )
+})
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    padding: 16,
+    borderBottomWidth: 1,
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+  },
+  content: {
+    flex: 1,
+    marginLeft: 12,
+    justifyContent: "space-between",
+  },
+  info: {
+    flex: 1,
+  },
+  title: {
+    fontSize: 14,
+    fontWeight: "600",
+    marginBottom: 4,
+  },
+  variant: {
+    fontSize: 12,
+    marginBottom: 4,
+  },
+  price: {
+    fontSize: 14,
+    fontWeight: "700",
+    marginTop: 4,
+  },
+  actions: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 8,
+  },
+  quantityContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  quantityButton: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  quantityButtonText: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  quantity: {
+    marginHorizontal: 12,
+    fontSize: 14,
+    fontWeight: "600",
+    minWidth: 20,
+    textAlign: "center",
+  },
+  removeButton: {
+    padding: 4,
+  },
+})
+```
+
+The `CartItem` component receives the following props:
+
+- `item`: The cart line item to display.
+- `currencyCode`: The currency code for formatting prices.
+- `onUpdateQuantity`: Callback to update the quantity of the item.
+- `onRemove`: Callback to remove the item from the cart.
+
+In the component, you display the item's image, title, variant name, and price. You also provide buttons to adjust the quantity and remove the item from the cart.
+
+### Add Cart Screen
+
+Next, you'll implement the cart screen where users can view and manage their cart items.
+
+As mentioned before, you'll have a tab for the cart screen. So, to create the cart screen, create the file `app/(drawer)/(tabs)/(cart)/index.tsx` with the following content:
+
+```tsx title="app/(drawer)/(tabs)/(cart)/index.tsx" collapsibleLines="99-158" expandButtonLabel="Show Styles"
+import { CartItem } from "@/components/cart-item"
+import { Loading } from "@/components/loading"
+import { Button } from "@/components/ui/button"
+import { Colors } from "@/constants/theme"
+import { useCart } from "@/context/cart-context"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import { formatPrice } from "@/lib/format-price"
+import { useRouter } from "expo-router"
+import React from "react"
+import { FlatList, StyleSheet, Text, View } from "react-native"
+
+export default function CartScreen() {
+  const colorScheme = useColorScheme()
+  const colors = Colors[colorScheme ?? "light"]
+  const router = useRouter()
+  const { cart, updateItemQuantity, removeItem, loading } = useCart()
+
+  const isEmpty = !cart?.items || cart.items.length === 0
+
+  if (loading && !cart) {
+    return <Loading message="Loading cart..." />
+  }
+
+  if (isEmpty) {
+    return (
+      <View style={[styles.emptyContainer, { backgroundColor: colors.background }]}>
+        <Text style={[styles.emptyTitle, { color: colors.text }]}>Your cart is empty</Text>
+        <Text style={[styles.emptyText, { color: colors.icon }]}>
+          Add some products to get started
+        </Text>
+        <Button
+          title="Browse Products"
+          onPress={() => router.push("/")}
+          style={styles.browseButton}
+        />
+      </View>
+    )
+  }
+
+  return (
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <FlatList
+        data={cart.items}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <CartItem
+            item={item}
+            currencyCode={cart.currency_code}
+            onUpdateQuantity={(quantity) => updateItemQuantity(item.id, quantity)}
+            onRemove={() => removeItem(item.id)}
+          />
+        )}
+        contentContainerStyle={styles.listContent}
+      />
+      
+      <View style={[styles.footer, { backgroundColor: colors.background, borderTopColor: colors.icon + "30" }]}>
+        <View style={styles.totals}>
+          <View style={styles.totalRow}>
+            <Text style={[styles.totalLabel, { color: colors.text }]}>Subtotal</Text>
+            <Text style={[styles.totalValue, { color: colors.text }]}>
+              {formatPrice(cart.item_subtotal, cart.currency_code)}
+            </Text>
+          </View>
+          {cart.tax_total !== undefined && cart.tax_total > 0 && (
+            <View style={styles.totalRow}>
+              <Text style={[styles.totalLabel, { color: colors.text }]}>Tax</Text>
+              <Text style={[styles.totalValue, { color: colors.text }]}>
+                {formatPrice(cart.tax_total, cart.currency_code)}
+              </Text>
+            </View>
+          )}
+          {cart.shipping_total !== undefined && cart.shipping_total > 0 && (
+            <View style={styles.totalRow}>
+              <Text style={[styles.totalLabel, { color: colors.text }]}>Shipping</Text>
+              <Text style={[styles.totalValue, { color: colors.text }]}>
+                {formatPrice(cart.shipping_total, cart.currency_code)}
+              </Text>
+            </View>
+          )}
+          <View style={[styles.totalRow, styles.grandTotalRow, { borderTopColor: colors.border }]}>
+            <Text style={[styles.grandTotalLabel, { color: colors.text }]}>Total</Text>
+            <Text style={[styles.grandTotalValue, { color: colors.tint }]}>
+              {formatPrice(cart.total, cart.currency_code)}
+            </Text>
+          </View>
+        </View>
+        <Button
+          title="Proceed to Checkout"
+          onPress={() =>  {
+            // TODO navigate to checkout screen
+          }}
+          loading={loading}
+        />
+      </View>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 40,
+  },
+  emptyTitle: {
+    fontSize: 24,
+    fontWeight: "700",
+    marginBottom: 12,
+  },
+  emptyText: {
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 32,
+  },
+  browseButton: {
+    minWidth: 200,
+  },
+  listContent: {
+    paddingBottom: 20,
+  },
+  footer: {
+    padding: 16,
+    borderTopWidth: 1,
+  },
+  totals: {
+    marginBottom: 20,
+  },
+  totalRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  totalLabel: {
+    fontSize: 14,
+  },
+  totalValue: {
+    fontSize: 14,
+    fontWeight: "500",
+  },
+  grandTotalRow: {
+    marginTop: 8,
+    paddingTop: 12,
+    borderTopWidth: 1,
+  },
+  grandTotalLabel: {
+    fontSize: 18,
+    fontWeight: "700",
+  },
+  grandTotalValue: {
+    fontSize: 20,
+    fontWeight: "700",
+  },
+})
+```
+
+You define the `CartScreen` component that uses the `useCart` hook to access the cart state and actions. It handles three main states:
+
+- Loading: Displays a loading indicator while fetching the cart.
+- Empty Cart: Displays a message and a button to browse products if the cart is empty.
+- Cart with Items: Renders a list of cart items using the `CartItem` component, along with cart totals.
+
+You also provide a button to proceed to checkout. Right now, the button does nothing. You'll change it to navigate to the checkout screen later.
+
+Next, you'll add stack navigation for the cart screen.
+
+Create the file `app/(drawer)/(tabs)/(cart)/_layout.tsx` with the following content:
+
+```tsx title="app/(drawer)/(tabs)/(cart)/_layout.tsx"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import { DrawerActions } from "@react-navigation/native"
+import { Stack, useNavigation } from "expo-router"
+import React from "react"
+import { TouchableOpacity } from "react-native"
+
+import { IconSymbol } from "@/components/ui/icon-symbol"
+import { Colors } from "@/constants/theme"
+
+export default function CartStackLayout() {
+  const colorScheme = useColorScheme()
+  const navigation = useNavigation()
+  const colors = Colors[colorScheme ?? "light"]
+
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: true,
+      }}
+    >
+      <Stack.Screen 
+        name="index"
+        options={{
+          title: "Cart",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+              style={{ height: 36, width: 36, display: "flex", alignItems: "center", justifyContent: "center" }}
+            >
+              <IconSymbol size={28} name="line.3.horizontal" color={colors.icon} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+    </Stack>
+  )
+}
+```
+
+You show the cart screen with a header that includes a button to open the drawer navigation.
+
+### Add Cart Tab to Navigation
+
+Finally, you'll add the cart tab to the main tab navigator.
+
+In `app/(drawer)/(tabs)/_layout.tsx`, add the following import at the top of the file:
+
+```tsx title="app/(drawer)/(tabs)/_layout.tsx"
+import { useCart } from "@/context/cart-context"
+```
+
+Then, in the `TabLayout` component, add the following before the `return` statement:
+
+```tsx title="app/(drawer)/(tabs)/_layout.tsx"
+const { cart } = useCart()
+
+const itemCount = cart?.items?.length || 0
+```
+
+You access the cart from the cart context to get the number of items in the cart.
+
+Finally, replace the `// TODO add cart tab` comment in the `return` statement with the following:
+
+```tsx title="app/(drawer)/(tabs)/_layout.tsx"
+<Tabs.Screen
+  name="(cart)"
+  options={{
+    title: "Cart",
+    tabBarIcon: ({ color }) => <IconSymbol size={28} name="cart.fill" color={color} />,
+    tabBarBadge: itemCount > 0 ? itemCount : undefined,
+    tabBarBadgeStyle: {
+      backgroundColor: Colors[colorScheme ?? "light"].tint,
+    },
+    headerShown: false, // Let the cart stack manage its own headers
+  }}
+/>
+```
+
+You add a new tab to the tab navigator for the cart screen. The tab displays a badge with the number of items in the cart.
+
+### Test Cart Screen
+
+To test out the cart screen, run your Medusa application and Expo app.
+
+Then, add some products to your cart from the product detail screen. You can open the cart by clicking its tab in the bottom navigation.
+
+![Cart screen with items in it](https://res.cloudinary.com/dza7lstvk/image/upload/v1762358342/Medusa%20Resources/CleanShot_2025-11-05_at_17.58.18_2x_w5gmly.png)
+
+You can update an item's quantity or remove an item, and the cart will be updated accordingly.
+
+---
+
+## Step 11: Create Checkout Screen
+
+In this step, you'll create a checkout screen where users enter their address, choose shipping and payment methods, and place their order.
+
+The checkout screen will have three steps:
+
+1. Delivery: Enter shipping and billing addresses.
+2. Shipping: Choose a shipping method.
+3. Payment: Choose a payment method.
+
+You'll implement first the three steps components, including their components and utilities, then the main checkout screen and navigation.
+
+### Add Address Form Component
+
+First, you'll create an address form component to collect shipping and billing addresses.
+
+Create the file `components/checkout/address-form.tsx` with the following content:
+
+```tsx title="components/checkout/address-form.tsx" collapsibleLines="241-297" expandButtonLabel="Show Styles"
+import { IconSymbol } from "@/components/ui/icon-symbol"
+import { Colors } from "@/constants/theme"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import type { HttpTypes } from "@medusajs/types"
+import { Picker } from "@react-native-picker/picker"
+import React, { useRef, useState } from "react"
+import {
+  Modal,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native"
+
+interface AddressFormProps {
+  firstName: string;
+  lastName: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  countryCode: string;
+  phone: string;
+  countries: HttpTypes.StoreRegionCountry[];
+  onFirstNameChange: (value: string) => void;
+  onLastNameChange: (value: string) => void;
+  onAddressChange: (value: string) => void;
+  onCityChange: (value: string) => void;
+  onPostalCodeChange: (value: string) => void;
+  onCountryCodeChange: (value: string) => void;
+  onPhoneChange: (value: string) => void;
+}
+
+export function AddressForm({
+  firstName,
+  lastName,
+  address,
+  city,
+  postalCode,
+  countryCode,
+  phone,
+  countries,
+  onFirstNameChange,
+  onLastNameChange,
+  onAddressChange,
+  onCityChange,
+  onPostalCodeChange,
+  onCountryCodeChange,
+  onPhoneChange,
+}: AddressFormProps) {
+  const colorScheme = useColorScheme()
+  const colors = Colors[colorScheme ?? "light"]
+  const [showPicker, setShowPicker] = useState(false)
+  const [tempCountryCode, setTempCountryCode] = useState(countryCode)
+
+  // Create refs for each input field
+  const lastNameRef = useRef<TextInput>(null)
+  const addressRef = useRef<TextInput>(null)
+  const cityRef = useRef<TextInput>(null)
+  const postalCodeRef = useRef<TextInput>(null)
+  const phoneRef = useRef<TextInput>(null)
+
+  const selectedCountry = countries.find(
+    (c) => (c.iso_2 || c.id) === countryCode
+  )
+  const selectedCountryName = selectedCountry
+    ? selectedCountry.display_name || selectedCountry.name || selectedCountry.iso_2 || selectedCountry.id
+    : "Select Country"
+
+  const handleDone = () => {
+    onCountryCodeChange(tempCountryCode)
+    setShowPicker(false)
+    // Focus phone field after country selection
+    setTimeout(() => phoneRef.current?.focus(), 100)
+  }
+
+  const handleCancel = () => {
+    setTempCountryCode(countryCode)
+    setShowPicker(false)
+  }
+
+  return (
+    <>
+      <View style={styles.row}>
+        <TextInput
+          style={[
+            styles.input,
+            styles.halfInput,
+            { color: colors.text, borderColor: colors.icon + "30" },
+          ]}
+          placeholder="First Name"
+          placeholderTextColor={colors.icon}
+          value={firstName}
+          onChangeText={onFirstNameChange}
+          returnKeyType="next"
+          onSubmitEditing={() => lastNameRef.current?.focus()}
+        />
+        <TextInput
+          ref={lastNameRef}
+          style={[
+            styles.input,
+            styles.halfInput,
+            { color: colors.text, borderColor: colors.icon + "30" },
+          ]}
+          placeholder="Last Name"
+          placeholderTextColor={colors.icon}
+          value={lastName}
+          onChangeText={onLastNameChange}
+          returnKeyType="next"
+          onSubmitEditing={() => addressRef.current?.focus()}
+        />
+      </View>
+
+      <TextInput
+        ref={addressRef}
+        style={[styles.input, { color: colors.text, borderColor: colors.icon + "30" }]}
+        placeholder="Address"
+        placeholderTextColor={colors.icon}
+        value={address}
+        onChangeText={onAddressChange}
+        returnKeyType="next"
+        onSubmitEditing={() => cityRef.current?.focus()}
+      />
+
+      <View style={styles.row}>
+        <TextInput
+          ref={cityRef}
+          style={[
+            styles.input,
+            styles.halfInput,
+            { color: colors.text, borderColor: colors.icon + "30" },
+          ]}
+          placeholder="City"
+          placeholderTextColor={colors.icon}
+          value={city}
+          onChangeText={onCityChange}
+          returnKeyType="next"
+          onSubmitEditing={() => postalCodeRef.current?.focus()}
+        />
+          <TextInput
+            ref={postalCodeRef}
+            style={[
+              styles.input,
+              styles.halfInput,
+              { color: colors.text, borderColor: colors.icon + "30" },
+            ]}
+            placeholder="Postal Code"
+            placeholderTextColor={colors.icon}
+            value={postalCode}
+            onChangeText={onPostalCodeChange}
+            returnKeyType="next"
+            onSubmitEditing={() => {
+              setTempCountryCode(countryCode)
+              setShowPicker(true)
+            }}
+          />
+      </View>
+
+      <TouchableOpacity
+        style={[
+          styles.input,
+          styles.pickerButton,
+          { borderColor: colors.icon + "30" },
+        ]}
+        onPress={() => {
+          setTempCountryCode(countryCode)
+          setShowPicker(true)
+        }}
+      >
+        <Text style={[styles.pickerButtonText, { color: countryCode ? colors.text : colors.icon }]}>
+          {selectedCountryName}
+        </Text>
+        <IconSymbol size={20} name="chevron.down" color={colors.icon} />
+      </TouchableOpacity>
+
+      <Modal
+        visible={showPicker}
+        transparent={true}
+        animationType="none"
+        onRequestClose={handleCancel}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={handleCancel}
+        >
+          <TouchableOpacity
+            activeOpacity={1}
+            style={[styles.modalContent, { backgroundColor: colors.background }]}
+            onPress={(e) => e.stopPropagation()}
+          >
+            <View style={[styles.modalHeader, { borderBottomColor: colors.icon + "30" }]}>
+              <TouchableOpacity onPress={handleCancel}>
+                <Text style={[styles.modalButton, { color: colors.tint }]}>Cancel</Text>
+              </TouchableOpacity>
+              <Text style={[styles.modalTitle, { color: colors.text }]}>Select Country</Text>
+              <TouchableOpacity onPress={handleDone}>
+                <Text style={[styles.modalButton, { color: colors.tint }]}>Done</Text>
+              </TouchableOpacity>
+            </View>
+            <Picker
+              selectedValue={tempCountryCode}
+              onValueChange={(value) => {
+                setTempCountryCode(value)
+                if (Platform.OS === "android") {
+                  onCountryCodeChange(value)
+                  setShowPicker(false)
+                  // Focus phone field after country selection on Android
+                  setTimeout(() => phoneRef.current?.focus(), 100)
+                }
+              }}
+              style={[styles.picker, Platform.OS === "android" && { color: colors.text }]}
+              itemStyle={Platform.OS === "ios" ? styles.pickerItemIOS : undefined}
+            >
+              <Picker.Item label="Select Country" value="" enabled={false} />
+              {countries.map((country) => {
+                const code = country.iso_2 || country.id
+                const name = country.display_name || country.name || country.iso_2 || country.id
+                return <Picker.Item key={code} label={name} value={code} />
+              })}
+            </Picker>
+          </TouchableOpacity>
+        </TouchableOpacity>
+      </Modal>
+
+      <TextInput
+        ref={phoneRef}
+        style={[styles.input, { color: colors.text, borderColor: colors.icon + "30" }]}
+        placeholder="Phone Number"
+        placeholderTextColor={colors.icon}
+        value={phone}
+        onChangeText={onPhoneChange}
+        keyboardType="phone-pad"
+        returnKeyType="done"
+      />
+    </>
+  )
+}
+
+const styles = StyleSheet.create({
+  input: {
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
+    marginBottom: 12,
+  },
+  row: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  halfInput: {
+    flex: 1,
+  },
+  pickerButton: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  pickerButtonText: {
+    fontSize: 16,
+    flex: 1,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "flex-end",
+  },
+  modalContent: {
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: "50%",
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 16,
+    borderBottomWidth: 1,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+  },
+  modalButton: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  picker: {
+    width: "100%",
+    height: Platform.OS === "ios" ? 250 : 48,
+  },
+  pickerItemIOS: {
+    height: 200,
+  },
+})
+```
+
+The `AddressForm` component receives various props for the address fields and their change handlers. It also receives a list of countries to populate the country picker.
+
+The component renders input fields for the address and a modal picker for selecting the country. It handles input focus and country selection appropriately.
+
+### Add Delivery Step Component
+
+Next, you'll create the delivery step component for the checkout process. It will use the `AddressForm` component to collect shipping and billing addresses.
+
+Create the file `components/checkout/delivery-step.tsx` with the following content:
+
+```tsx title="components/checkout/delivery-step.tsx" collapsibleLines="185-232" expandButtonLabel="Show Styles"
+import { AddressForm } from "@/components/checkout/address-form"
+import { Button } from "@/components/ui/button"
+import { Colors } from "@/constants/theme"
+import { useRegion } from "@/context/region-context"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import React, { useEffect, useRef, useState } from "react"
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  TextInput,
+  View,
+} from "react-native"
+
+interface Address {
+  firstName: string;
+  lastName: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  countryCode: string;
+  phone: string;
+}
+
+interface DeliveryStepProps {
+  email: string;
+  shippingAddress: Address;
+  billingAddress: Address;
+  useSameForBilling: boolean;
+  loading: boolean;
+  onEmailChange: (value: string) => void;
+  onShippingAddressChange: (field: keyof Address, value: string) => void;
+  onBillingAddressChange: (field: keyof Address, value: string) => void;
+  onUseSameForBillingChange: (value: boolean) => void;
+  onNext: () => void;
+}
+
+export function DeliveryStep({
+  email,
+  shippingAddress,
+  billingAddress,
+  useSameForBilling,
+  loading,
+  onEmailChange,
+  onShippingAddressChange,
+  onBillingAddressChange,
+  onUseSameForBillingChange,
+  onNext,
+}: DeliveryStepProps) {
+  const colorScheme = useColorScheme()
+  const colors = Colors[colorScheme ?? "light"]
+  const { selectedRegion } = useRegion()
+  const scrollViewRef = useRef<ScrollView>(null)
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false)
+
+  const countries = selectedRegion?.countries || []
+
+  useEffect(() => {
+    const keyboardWillShowListener = Keyboard.addListener(
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
+      () => setKeyboardVisible(true)
+    )
+    const keyboardWillHideListener = Keyboard.addListener(
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
+      () => setKeyboardVisible(false)
+    )
+
+    return () => {
+      keyboardWillShowListener.remove()
+      keyboardWillHideListener.remove()
+    }
+  }, [])
+
+  return (
+    <KeyboardAvoidingView 
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
+    >
+      <ScrollView
+        ref={scrollViewRef}
+        style={styles.scrollView}
+        contentContainerStyle={[
+          styles.scrollContent,
+          isKeyboardVisible && styles.scrollContentKeyboard,
+        ]}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+        showsVerticalScrollIndicator={true}
+        automaticallyAdjustKeyboardInsets={true}
+      >
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
+            Contact Information
+          </Text>
+
+          <TextInput
+            style={[styles.input, { color: colors.text, borderColor: colors.icon + "30" }]}
+            placeholder="Email"
+            placeholderTextColor={colors.icon}
+            value={email}
+            onChangeText={onEmailChange}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            returnKeyType="next"
+          />
+
+          <Text style={[styles.sectionTitle, { color: colors.text, marginTop: 20 }]}>
+            Shipping Address
+          </Text>
+
+          <AddressForm
+            firstName={shippingAddress.firstName}
+            lastName={shippingAddress.lastName}
+            address={shippingAddress.address}
+            city={shippingAddress.city}
+            postalCode={shippingAddress.postalCode}
+            countryCode={shippingAddress.countryCode}
+            phone={shippingAddress.phone}
+            countries={countries}
+            onFirstNameChange={(value) => onShippingAddressChange("firstName", value)}
+            onLastNameChange={(value) => onShippingAddressChange("lastName", value)}
+            onAddressChange={(value) => onShippingAddressChange("address", value)}
+            onCityChange={(value) => onShippingAddressChange("city", value)}
+            onPostalCodeChange={(value) => onShippingAddressChange("postalCode", value)}
+            onCountryCodeChange={(value) => onShippingAddressChange("countryCode", value)}
+            onPhoneChange={(value) => onShippingAddressChange("phone", value)}
+          />
+
+          <View style={styles.switchContainer}>
+            <Text style={[styles.switchLabel, { color: colors.text }]}>
+              Use same address for billing
+            </Text>
+            <Switch
+              value={useSameForBilling}
+              onValueChange={onUseSameForBillingChange}
+            />
+          </View>
+
+          {!useSameForBilling && (
+            <>
+              <Text style={[styles.sectionTitle, { color: colors.text, marginTop: 20 }]}>
+                Billing Address
+              </Text>
+
+              <AddressForm
+                firstName={billingAddress.firstName}
+                lastName={billingAddress.lastName}
+                address={billingAddress.address}
+                city={billingAddress.city}
+                postalCode={billingAddress.postalCode}
+                countryCode={billingAddress.countryCode}
+                phone={billingAddress.phone}
+                countries={countries}
+                onFirstNameChange={(value) => onBillingAddressChange("firstName", value)}
+                onLastNameChange={(value) => onBillingAddressChange("lastName", value)}
+                onAddressChange={(value) => onBillingAddressChange("address", value)}
+                onCityChange={(value) => onBillingAddressChange("city", value)}
+                onPostalCodeChange={(value) => onBillingAddressChange("postalCode", value)}
+                onCountryCodeChange={(value) => onBillingAddressChange("countryCode", value)}
+                onPhoneChange={(value) => onBillingAddressChange("phone", value)}
+              />
+            </>
+          )}
+        </View>
+
+        {/* Button moved inside ScrollView for consistent behavior */}
+        <View style={[styles.buttonContainer, { backgroundColor: colors.background }]}>
+          <Button
+            title="Continue"
+            onPress={onNext}
+            loading={loading}
+            style={styles.button}
+          />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 20,
+  },
+  scrollContentKeyboard: {
+    paddingBottom: Platform.OS === "ios" ? 300 : 320,
+  },
+  section: {
+    padding: 20,
+  },
+  buttonContainer: {
+    padding: 20,
+    paddingTop: 10,
+    paddingBottom: 30,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    marginBottom: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
+    marginBottom: 12,
+  },
+  switchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginVertical: 16,
+  },
+  switchLabel: {
+    fontSize: 16,
+    flex: 1,
+  },
+  button: {
+    marginTop: 8,
+  },
+})
+```
+
+The `DeliveryStep` component receives the following props:
+
+- `email`: The email address associated with the cart.
+- `shippingAddress`: The shipping address details of the cart.
+- `billingAddress`: The billing address details of the cart.
+- `useSameForBilling`: A boolean indicating whether to use the shipping address for billing.
+- `loading`: A boolean indicating whether the form is in a loading state.
+- `onEmailChange`: Callback to update the email address.
+- `onShippingAddressChange`: Callback to update the shipping address fields.
+- `onBillingAddressChange`: Callback to update the billing address fields.
+- `onUseSameForBillingChange`: Callback to toggle the use of the same address for billing.
+- `onNext`: Callback to proceed to the next step.
+
+The component renders an email input field and uses the `AddressForm` component to collect shipping and billing addresses. A switch is provided to toggle whether to use the same address for billing.
+
+### Add Shipping Step Component
+
+Next, you'll create the shipping step component for the checkout process. This step allows users to select a shipping method.
+
+Create the file `components/checkout/shipping-step.tsx` with the following content:
+
+```tsx title="components/checkout/shipping-step.tsx" collapsibleLines="113-165" expandButtonLabel="Show Styles"
+import { Loading } from "@/components/loading"
+import { Button } from "@/components/ui/button"
+import { Colors } from "@/constants/theme"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import { formatPrice } from "@/lib/format-price"
+import type { HttpTypes } from "@medusajs/types"
+import React from "react"
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+
+interface ShippingStepProps {
+  shippingOptions: HttpTypes.StoreCartShippingOption[];
+  selectedShippingOption: string | null;
+  currencyCode?: string;
+  loading: boolean;
+  onSelectOption: (optionId: string) => void;
+  onBack: () => void;
+  onNext: () => void;
+}
+
+export function ShippingStep({
+  shippingOptions,
+  selectedShippingOption,
+  currencyCode,
+  loading,
+  onSelectOption,
+  onBack,
+  onNext,
+}: ShippingStepProps) {
+  const colorScheme = useColorScheme()
+  const colors = Colors[colorScheme ?? "light"]
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.contentWrapper}>
+        <View style={styles.section}>
+      <Text style={[styles.sectionTitle, { color: colors.text }]}>
+        Select Shipping Method
+      </Text>
+
+      {loading ? (
+        <Loading />
+      ) : shippingOptions.length === 0 ? (
+        <Text style={[styles.emptyText, { color: colors.icon }]}>
+          No shipping options available
+        </Text>
+      ) : (
+        shippingOptions.map((option) => (
+          <TouchableOpacity
+            key={option.id}
+            style={[
+              styles.optionCard,
+              {
+                backgroundColor:
+                  selectedShippingOption === option.id
+                    ? colors.tint + "20"
+                    : "transparent",
+                borderColor:
+                  selectedShippingOption === option.id
+                    ? colors.tint
+                    : colors.icon + "30",
+              },
+            ]}
+            onPress={() => onSelectOption(option.id)}
+          >
+            <View style={styles.optionInfo}>
+              <Text
+                style={[
+                  styles.optionTitle,
+                  {
+                    color:
+                      selectedShippingOption === option.id
+                        ? colors.tint
+                        : colors.text,
+                  },
+                ]}
+              >
+                {option.name}
+              </Text>
+              <Text style={[styles.optionPrice, { color: colors.text }]}>
+                {formatPrice(option.amount, currencyCode)}
+              </Text>
+            </View>
+            {selectedShippingOption === option.id && (
+              <Text style={{ color: colors.tint, fontSize: 20 }}>✓</Text>
+            )}
+          </TouchableOpacity>
+        ))
+      )}
+        </View>
+      </View>
+
+      <View style={[styles.buttonContainer, { backgroundColor: colors.background, borderTopColor: colors.icon + "30" }]}>
+        <View style={styles.buttonRow}>
+          <Button
+            title="Back"
+            variant="secondary"
+            onPress={onBack}
+            style={styles.halfButton}
+          />
+          <Button
+            title="Continue"
+            onPress={onNext}
+            loading={loading}
+            disabled={!selectedShippingOption}
+            style={styles.halfButton}
+          />
+        </View>
+      </View>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  contentWrapper: {
+    flex: 1,
+  },
+  section: {
+    padding: 20,
+  },
+  buttonContainer: {
+    padding: 20,
+    paddingBottom: 30,
+    borderTopWidth: 1,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    marginBottom: 20,
+  },
+  optionCard: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    marginBottom: 12,
+  },
+  optionInfo: {
+    flex: 1,
+  },
+  optionTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    marginBottom: 4,
+  },
+  optionPrice: {
+    fontSize: 14,
+  },
+  emptyText: {
+    fontSize: 16,
+    textAlign: "center",
+    padding: 20,
+  },
+  buttonRow: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  halfButton: {
+    flex: 1,
+  },
+})
+```
+
+The `ShippingStep` component receives the following props:
+
+- `shippingOptions`: An array of available shipping options.
+- `selectedShippingOption`: The ID of the currently selected shipping option.
+- `currencyCode`: The currency code for formatting prices.
+- `loading`: A boolean indicating whether the shipping options are being loaded.
+- `onSelectOption`: Callback to select a shipping option.
+- `onBack`: Callback to go back to the previous step.
+- `onNext`: Callback to proceed to the next step.
+
+The component renders a list of shipping options with their names and prices. The selected option is highlighted.
+
+### Add Payment Provider Utility
+
+Before creating the payment step component, you'll add a utility function that maps payment provider IDs to their display information.
+
+Create the file `lib/payment-providers.ts` with the following content:
+
+```ts title="lib/payment-providers.ts"
+/**
+ * Information about a payment provider for display purposes
+ */
+export interface PaymentProviderInfo {
+  icon: string;
+  title: string;
+}
+
+/**
+ * Get display information for a payment provider based on its ID
+ * Returns an icon name and formatted title for the payment provider
+ */
+export function getPaymentProviderInfo(providerId: string): PaymentProviderInfo {
+  switch (providerId) {
+    case "pp_system_default":
+      return {
+        icon: "creditcard",
+        title: "Manual Payment",
+      }
+    default:
+      return {
+        icon: "creditcard",
+        title: providerId.replace("pp_", "").replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()),
+      }
+  }
+}
+```
+
+The `getPaymentProviderInfo` function takes a payment provider ID and returns an object containing an icon name and a formatted title for display purposes.
+
+The function only handles Medusa's built-in manual payment provider `pp_system_default`. You can expand it later to include more providers that you integrate.
+
+### Add Payment Step Component
+
+You'll now create the payment step component for the checkout process. This step allows users to select a payment method, and shows the cart's summary before placing the order.
+
+This step will not handle actual payment processing. Instead, it will just allow users to select a payment method and place the order. If you integrate real payment providers later, you'll need to handle their specific payment flows.
+
+Create the file `components/checkout/payment-step.tsx` with the following content:
+
+```tsx title="components/checkout/payment-step.tsx" collapsibleLines="149-237" expandButtonLabel="Show Styles"
+import { Loading } from "@/components/loading"
+import { Button } from "@/components/ui/button"
+import { IconSymbol } from "@/components/ui/icon-symbol"
+import { Colors } from "@/constants/theme"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import { formatPrice } from "@/lib/format-price"
+import { getPaymentProviderInfo } from "@/lib/payment-providers"
+import type { HttpTypes } from "@medusajs/types"
+import React from "react"
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+
+interface PaymentStepProps {
+  cart: HttpTypes.StoreCart;
+  paymentProviders: HttpTypes.StorePaymentProvider[];
+  selectedPaymentProvider: string | null;
+  loading: boolean;
+  onSelectProvider: (providerId: string) => void;
+  onBack: () => void;
+  onPlaceOrder: () => void;
+}
+
+export function PaymentStep({
+  cart,
+  paymentProviders,
+  selectedPaymentProvider,
+  loading,
+  onSelectProvider,
+  onBack,
+  onPlaceOrder,
+}: PaymentStepProps) {
+  const colorScheme = useColorScheme()
+  const colors = Colors[colorScheme ?? "light"]
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.contentWrapper}>
+        <View style={styles.section}>
+      <Text style={[styles.sectionTitle, { color: colors.text }]}>
+        Select Payment Method
+      </Text>
+
+      {loading ? (
+        <Loading />
+      ) : paymentProviders.length === 0 ? (
+        <Text style={[styles.emptyText, { color: colors.icon }]}>
+          No payment providers available
+        </Text>
+      ) : (
+        paymentProviders.map((provider) => {
+          const providerInfo = getPaymentProviderInfo(provider.id)
+          const isSelected = selectedPaymentProvider === provider.id
+          
+          return (
+            <TouchableOpacity
+              key={provider.id}
+              style={[
+                styles.optionCard,
+                {
+                  backgroundColor: isSelected ? colors.tint + "20" : "transparent",
+                  borderColor: isSelected ? colors.tint : colors.icon + "30",
+                },
+              ]}
+              onPress={() => onSelectProvider(provider.id)}
+            >
+              <View style={styles.optionContent}>
+                <IconSymbol
+                  size={24}
+                  name={providerInfo.icon as any}
+                  color={isSelected ? colors.tint : colors.icon}
+                />
+                <Text
+                  style={[
+                    styles.optionTitle,
+                    {
+                      color: isSelected ? colors.tint : colors.text,
+                    },
+                  ]}
+                >
+                  {providerInfo.title}
+                </Text>
+              </View>
+              {isSelected && (
+                <Text style={{ color: colors.tint, fontSize: 20 }}>✓</Text>
+              )}
+            </TouchableOpacity>
+          )
+        })
+      )}
+
+      <View style={[styles.summary, { borderColor: colors.icon + "30" }]}>
+        <Text style={[styles.summaryTitle, { color: colors.text }]}>
+          Order Summary
+        </Text>
+        <View style={styles.summaryRow}>
+          <Text style={[styles.summaryLabel, { color: colors.text }]}>Subtotal</Text>
+          <Text style={[styles.summaryValue, { color: colors.text }]}>
+            {formatPrice(cart.item_subtotal || 0, cart.currency_code)}
+          </Text>
+        </View>
+        <View style={styles.summaryRow}>
+          <Text style={[styles.summaryLabel, { color: colors.text }]}>Discount</Text>
+          <Text style={[styles.summaryValue, { color: colors.text }]}>
+            {(cart.discount_total || 0) > 0 ? "-" : ""}{formatPrice(cart.discount_total || 0, cart.currency_code)}
+          </Text>
+        </View>
+        <View style={styles.summaryRow}>
+          <Text style={[styles.summaryLabel, { color: colors.text }]}>Shipping</Text>
+          <Text style={[styles.summaryValue, { color: colors.text }]}>
+            {formatPrice(cart.shipping_total || 0, cart.currency_code)}
+          </Text>
+        </View>
+        <View style={styles.summaryRow}>
+          <Text style={[styles.summaryLabel, { color: colors.text }]}>Tax</Text>
+          <Text style={[styles.summaryValue, { color: colors.text }]}>
+            {formatPrice(cart.tax_total || 0, cart.currency_code)}
+          </Text>
+        </View>
+        <View style={[styles.summaryRow, styles.totalRow, { borderTopColor: colors.border }]}>
+          <Text style={[styles.totalLabel, { color: colors.text }]}>Total</Text>
+          <Text style={[styles.totalValue, { color: colors.tint }]}>
+            {formatPrice(cart.total, cart.currency_code)}
+          </Text>
+        </View>
+      </View>
+        </View>
+      </View>
+
+      <View style={[styles.buttonContainer, { backgroundColor: colors.background, borderTopColor: colors.icon + "30" }]}>
+        <View style={styles.buttonRow}>
+          <Button
+            title="Back"
+            variant="secondary"
+            onPress={onBack}
+            style={styles.halfButton}
+          />
+          <Button
+            title="Place Order"
+            onPress={onPlaceOrder}
+            loading={loading}
+            disabled={!selectedPaymentProvider}
+            style={styles.halfButton}
+          />
+        </View>
+      </View>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  contentWrapper: {
+    flex: 1,
+  },
+  section: {
+    padding: 20,
+  },
+  buttonContainer: {
+    padding: 20,
+    paddingBottom: 30,
+    borderTopWidth: 1,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    marginBottom: 20,
+  },
+  optionCard: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    marginBottom: 12,
+  },
+  optionContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    flex: 1,
+  },
+  optionTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  emptyText: {
+    fontSize: 16,
+    textAlign: "center",
+    padding: 20,
+  },
+  summary: {
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 16,
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  summaryTitle: {
+    fontSize: 18,
+    fontWeight: "700",
+    marginBottom: 12,
+  },
+  summaryRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 8,
+  },
+  summaryLabel: {
+    fontSize: 14,
+  },
+  summaryValue: {
+    fontSize: 14,
+    fontWeight: "500",
+  },
+  totalRow: {
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+  },
+  totalLabel: {
+    fontSize: 18,
+    fontWeight: "700",
+  },
+  totalValue: {
+    fontSize: 20,
+    fontWeight: "700",
+  },
+  buttonRow: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  halfButton: {
+    flex: 1,
+  },
+})
+```
+
+The `PaymentStep` component receives the following props:
+
+- `cart`: The current cart object containing pricing details.
+- `paymentProviders`: An array of available payment providers.
+- `selectedPaymentProvider`: The ID of the currently selected payment provider.
+- `loading`: A boolean indicating whether the payment providers are being loaded.
+- `onSelectProvider`: Callback to select a payment provider.
+- `onBack`: Callback to go back to the previous step.
+- `onPlaceOrder`: Callback to place the order.
+
+The component renders a list of payment providers with their icons and titles. The selected provider is highlighted.
+
+A summary of the cart's pricing details is displayed, including subtotal, discounts, shipping, tax, and total amount.
+
+### Add Checkout Screen Component
+
+Finally, you'll create the main checkout screen that manages the multi-step checkout process. It will use the previously created step components to guide users through entering their information, selecting shipping and payment methods, and placing their order.
+
+Create the file `app/checkout.tsx` with the following content:
+
+```tsx title="app/checkout.tsx" collapsibleLines="55-96" expandButtonLabel="Show Styles"
+import { DeliveryStep } from "@/components/checkout/delivery-step"
+import { PaymentStep } from "@/components/checkout/payment-step"
+import { ShippingStep } from "@/components/checkout/shipping-step"
+import { Colors } from "@/constants/theme"
+import { useCart } from "@/context/cart-context"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import { sdk } from "@/lib/sdk"
+import type { HttpTypes } from "@medusajs/types"
+import React, { useCallback, useEffect, useState } from "react"
+import { Alert, StyleSheet, Text, View } from "react-native"
+
+type CheckoutStep = "delivery" | "shipping" | "payment";
+
+export default function CheckoutScreen() {
+  const colorScheme = useColorScheme()
+  const colors = Colors[colorScheme ?? "light"]
+  const { cart, refreshCart } = useCart()
+
+  const [currentStep, setCurrentStep] = useState<CheckoutStep>("delivery")
+  const [loading, setLoading] = useState(false)
+
+  // Contact & Address state
+  const [email, setEmail] = useState("")
+  const [shippingAddress, setShippingAddress] = useState({
+    firstName: "",
+    lastName: "",
+    address: "",
+    city: "",
+    postalCode: "",
+    countryCode: "",
+    phone: "",
+  })
+  const [useSameForBilling, setUseSameForBilling] = useState(true)
+  const [billingAddress, setBillingAddress] = useState({
+    firstName: "",
+    lastName: "",
+    address: "",
+    city: "",
+    postalCode: "",
+    countryCode: "",
+    phone: "",
+  })
+
+  // Shipping step
+  const [shippingOptions, setShippingOptions] = useState<HttpTypes.StoreCartShippingOption[]>([])
+  const [selectedShippingOption, setSelectedShippingOption] = useState<string | null>(null)
+
+  // Payment step
+  const [paymentProviders, setPaymentProviders] = useState<HttpTypes.StorePaymentProvider[]>([])
+  const [selectedPaymentProvider, setSelectedPaymentProvider] = useState<string | null>(null)
+
+  // TODO update state when cart changes
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  centerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  steps: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 20,
+    borderBottomWidth: 1,
+  },
+  stepIndicator: {
+    alignItems: "center",
+  },
+  stepCircle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 8,
+  },
+  stepNumber: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  stepLabel: {
+    fontSize: 12,
+  },
+  content: {
+    flex: 1,
+  },
+  errorText: {
+    fontSize: 16,
+    textAlign: "center",
+  },
+})
+```
+
+The `CheckoutScreen` component includes the following state variables:
+
+- `currentStep`: The current step in the checkout process.
+- `loading`: A boolean indicating whether an operation is in progress.
+- Contact and address fields for shipping and billing.
+- Shipping options and the selected shipping option.
+- Payment providers and the selected payment provider.
+
+Next, you'll handle updating the state variables when the cart changes. Replace the `// TODO update state when cart changes` comment with the following:
+
+```tsx title="app/checkout.tsx"
+useEffect(() => {
+  // Populate form with existing cart data or reset to empty values
+  setEmail(cart?.email || "")
+  setShippingAddress({
+    firstName: cart?.shipping_address?.first_name || "",
+    lastName: cart?.shipping_address?.last_name || "",
+    address: cart?.shipping_address?.address_1 || "",
+    city: cart?.shipping_address?.city || "",
+    postalCode: cart?.shipping_address?.postal_code || "",
+    countryCode: cart?.shipping_address?.country_code || "",
+    phone: cart?.shipping_address?.phone || "",
+  })
+  
+  // Billing address - check if different from shipping
+  const hasDifferentBilling = cart?.billing_address && 
+    (cart.billing_address.address_1 !== cart.shipping_address?.address_1 ||
+      cart.billing_address.city !== cart.shipping_address?.city)
+  
+  setUseSameForBilling(!hasDifferentBilling)
+  setBillingAddress({
+    firstName: cart?.billing_address?.first_name || "",
+    lastName: cart?.billing_address?.last_name || "",
+    address: cart?.billing_address?.address_1 || "",
+    city: cart?.billing_address?.city || "",
+    postalCode: cart?.billing_address?.postal_code || "",
+    countryCode: cart?.billing_address?.country_code || "",
+    phone: cart?.billing_address?.phone || "",
+  })
+  
+  // Reset selections when cart is null
+  if (!cart) {
+    setSelectedShippingOption(null)
+    setSelectedPaymentProvider(null)
+    setCurrentStep("delivery")
+  }
+}, [cart])
+
+// TODO fetch shipping options and payment providers
+```
+
+A `useEffect` hook populates the form fields with existing cart data when the cart changes.
+
+Next, you'll fetch the available shipping options and payment providers when the user reaches the respective steps. Replace the `// TODO fetch shipping options and payment providers` comment with the following:
+
+export const fetchCheckoutHighlights = [
+  ["1", "fetchShippingOptions", "Retrieve shipping options for the cart"],
+  ["18", "fetchPaymentProviders", "Retrieve payment providers for the cart's region"],
+  ["35", "useEffect", "Call fetch functions when navigating to shipping or payment steps"]
+]
+
+```tsx title="app/checkout.tsx" highlights={fetchCheckoutHighlights}
+const fetchShippingOptions = useCallback(async () => {
+  if (!cart) {return}
+
+  try {
+    setLoading(true)
+    const { shipping_options } = await sdk.store.fulfillment.listCartOptions({
+      cart_id: cart.id,
+    })
+    setShippingOptions(shipping_options || [])
+  } catch (err) {
+    console.error("Failed to fetch shipping options:", err)
+    Alert.alert("Error", "Failed to load shipping options")
+  } finally {
+    setLoading(false)
+  }
+}, [cart])
+
+const fetchPaymentProviders = useCallback(async () => {
+  if (!cart) {return}
+
+  try {
+    setLoading(true)
+    const { payment_providers } = await sdk.store.payment.listPaymentProviders({
+      region_id: cart.region_id || "",
+    })
+    setPaymentProviders(payment_providers || [])
+  } catch (err) {
+    console.error("Failed to fetch payment providers:", err)
+    Alert.alert("Error", "Failed to load payment providers")
+  } finally {
+    setLoading(false)
+  }
+}, [cart])
+
+useEffect(() => {
+  if (currentStep === "shipping") {
+    fetchShippingOptions()
+  } else if (currentStep === "payment") {
+    fetchPaymentProviders()
+  }
+}, [currentStep, fetchShippingOptions, fetchPaymentProviders])
+
+// TODO handle step transitions and order placement
+```
+
+You add a `fetchShippingOptions` function that retrieves shipping options, and a `fetchPaymentProviders` function that retrieves payment providers from the Medusa backend.
+
+You also add a `useEffect` hook that calls these functions when the user navigates to the shipping or payment steps.
+
+Next, you'll add functions that handle moving between steps and placing the order. Replace the `// TODO handle step transitions and order placement` comment with the following:
+
+export const handleStepTransitions = [
+  ["1", "handleDeliveryNext", "Validate and save delivery information, then go to shipping step"],
+  ["60", "handleShippingNext", "Validate and save selected shipping option, then go to payment step"],
+  ["83", "handlePlaceOrder", "Validate and place the order, then navigate to order confirmation"]
+]
+
+```tsx title="app/checkout.tsx" highlights={handleStepTransitions}
+const handleDeliveryNext = async () => {
+  // Validate shipping address
+  if (!email || !shippingAddress.firstName || !shippingAddress.lastName || 
+      !shippingAddress.address || !shippingAddress.city || !shippingAddress.postalCode || 
+      !shippingAddress.countryCode || !shippingAddress.phone) {
+    Alert.alert("Error", "Please fill in all shipping address fields")
+    return
+  }
+
+  // Validate billing address if different
+  if (!useSameForBilling) {
+    if (!billingAddress.firstName || !billingAddress.lastName || !billingAddress.address || 
+        !billingAddress.city || !billingAddress.postalCode || !billingAddress.countryCode || 
+        !billingAddress.phone) {
+      Alert.alert("Error", "Please fill in all billing address fields")
+      return
+    }
+  }
+
+  if (!cart) {return}
+
+  try {
+    setLoading(true)
+    const shippingAddressData = {
+      first_name: shippingAddress.firstName,
+      last_name: shippingAddress.lastName,
+      address_1: shippingAddress.address,
+      city: shippingAddress.city,
+      postal_code: shippingAddress.postalCode,
+      country_code: shippingAddress.countryCode,
+      phone: shippingAddress.phone,
+    }
+
+    const billingAddressData = useSameForBilling ? shippingAddressData : {
+      first_name: billingAddress.firstName,
+      last_name: billingAddress.lastName,
+      address_1: billingAddress.address,
+      city: billingAddress.city,
+      postal_code: billingAddress.postalCode,
+      country_code: billingAddress.countryCode,
+      phone: billingAddress.phone,
+    }
+
+    await sdk.store.cart.update(cart.id, {
+      email,
+      shipping_address: shippingAddressData,
+      billing_address: billingAddressData,
+    })
+
+    await refreshCart()
+    setCurrentStep("shipping")
+  } catch (err) {
+    console.error("Failed to update cart:", err)
+    Alert.alert("Error", "Failed to save delivery information")
+  } finally {
+    setLoading(false)
+  }
+}
+
+const handleShippingNext = async () => {
+  if (!selectedShippingOption || !cart) {
+    Alert.alert("Error", "Please select a shipping method")
+    return
+  }
+
+  try {
+    setLoading(true)
+
+    await sdk.store.cart.addShippingMethod(cart.id, {
+      option_id: selectedShippingOption,
+    })
+
+    await refreshCart()
+    setCurrentStep("payment")
+  } catch (err) {
+    console.error("Failed to add shipping method:", err)
+    Alert.alert("Error", "Failed to save shipping method")
+  } finally {
+    setLoading(false)
+  }
+}
+
+const handlePlaceOrder = async () => {
+  if (!selectedPaymentProvider || !cart) {
+    Alert.alert("Error", "Please select a payment provider")
+    return
+  }
+
+  try {
+    setLoading(true)
+
+    // Create payment session
+    await sdk.store.payment.initiatePaymentSession(cart, {
+      provider_id: selectedPaymentProvider,
+    })
+
+    // Complete cart (converts cart to order on backend)
+    const result = await sdk.store.cart.complete(cart.id)
+
+    if (result.type === "order") {
+      // Navigate to order confirmation first
+      // Cart will be cleared on the order confirmation page to prevent empty cart flash
+      // TODO navigate to order confirmation screen with order details
+    } else {
+      Alert.alert("Error", result.error?.message || "Failed to complete order")
+    }
+  } catch (err: any) {
+    console.error("Failed to complete order:", err)
+    Alert.alert("Error", err?.message || "Failed to complete order")
+  } finally {
+    setLoading(false)
+  }
+}
+
+// TODO render step components
+```
+
+The following functions are added:
+
+- `handleDeliveryNext`: Validates the delivery information, updates the cart with the email and addresses, and moves to the shipping step.
+- `handleShippingNext`: Validates the selected shipping option, adds it to the cart, and moves to the payment step.
+- `handlePlaceOrder`: Validates the selected payment provider, initiates the payment session, completes the cart, and handles the order confirmation. This function should also navigate to an order confirmation screen, which you'll implement later.
+
+Finally, you'll render the appropriate step component based on the current step. Replace the `// TODO render step components` comment with the following:
+
+```tsx title="app/checkout.tsx"
+if (!cart) {
+  return (
+    <View style={[styles.centerContainer, { backgroundColor: colors.background }]}>
+      <Text style={[styles.errorText, { color: colors.text }]}>
+        No cart found. Please add items to your cart first.
+      </Text>
+    </View>
+  )
+}
+
+// Active step uses inverted colors: white bg with dark text in dark mode, tint bg with white text in light mode
+const activeStepBg = colorScheme === "dark" ? "#fff" : colors.tint
+const activeStepText = colorScheme === "dark" ? "#000" : "#fff"
+
+return (
+  <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={[styles.steps, { borderBottomColor: colors.border }]}>
+      {(["delivery", "shipping", "payment"] as CheckoutStep[]).map((step, index) => (
+        <View key={step} style={styles.stepIndicator}>
+          <View
+            style={[
+              styles.stepCircle,
+              {
+                backgroundColor:
+                  currentStep === step ? activeStepBg : colors.icon + "30",
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.stepNumber,
+                { color: currentStep === step ? activeStepText : colors.icon },
+              ]}
+            >
+              {index + 1}
+            </Text>
+          </View>
+          <Text
+            style={[
+              styles.stepLabel,
+              {
+                color: currentStep === step ? colors.text : colors.icon,
+                fontWeight: currentStep === step ? "600" : "400",
+              },
+            ]}
+          >
+            {step.charAt(0).toUpperCase() + step.slice(1)}
+          </Text>
+        </View>
+      ))}
+    </View>
+
+    <View style={styles.content}>
+      {currentStep === "delivery" && (
+        <DeliveryStep
+          email={email}
+          shippingAddress={shippingAddress}
+          billingAddress={billingAddress}
+          useSameForBilling={useSameForBilling}
+          loading={loading}
+          onEmailChange={setEmail}
+          onShippingAddressChange={(field, value) => 
+            setShippingAddress((prev) => ({ ...prev, [field]: value }))
+          }
+          onBillingAddressChange={(field, value) => 
+            setBillingAddress((prev) => ({ ...prev, [field]: value }))
+          }
+          onUseSameForBillingChange={setUseSameForBilling}
+          onNext={handleDeliveryNext}
+        />
+      )}
+
+      {currentStep === "shipping" && (
+        <ShippingStep
+          shippingOptions={shippingOptions}
+          selectedShippingOption={selectedShippingOption}
+          currencyCode={cart.currency_code}
+          loading={loading}
+          onSelectOption={setSelectedShippingOption}
+          onBack={() => setCurrentStep("delivery")}
+          onNext={handleShippingNext}
+        />
+      )}
+
+      {currentStep === "payment" && (
+        <PaymentStep
+          cart={cart}
+          paymentProviders={paymentProviders}
+          selectedPaymentProvider={selectedPaymentProvider}
+          loading={loading}
+          onSelectProvider={setSelectedPaymentProvider}
+          onBack={() => setCurrentStep("shipping")}
+          onPlaceOrder={handlePlaceOrder}
+        />
+      )}
+    </View>
+  </View>
+)
+```
+
+If the cart isn't set, a message prompts the user to add items to their cart.
+
+Otherwise, the step indicators are rendered at the top of the screen, and the current step's component is shown.
+
+### Add Checkout Screen to Navigation
+
+Next, you'll add the checkout screen to the app's navigation structure. You'll add it as a top-level stack screen.
+
+In `app/_layout.tsx`, Replace the `TODO: Add checkout and order confirmation screens` comment with the following:
+
+```tsx title="app/_layout.tsx"
+<Stack.Screen
+  name="checkout"
+  options={{
+    headerShown: true,
+    title: "Checkout",
+    presentation: "card",
+    headerBackButtonDisplayMode: "minimal",
+  }}
+/>
+```
+
+### Update Cart Screen to Navigate to Checkout
+
+Finally, you'll update the cart screen to navigate to the checkout screen when the user taps the "Proceed to Checkout" button.
+
+In `app/(drawer)/(tabs)/(cart)/index.tsx`, find the `Button` at the end of the `CartScreen` component's `return` statement, and change the `onPress` prop to the following:
+
+```tsx title="app/(drawer)/(tabs)/(cart)/index.tsx"
+<Button
+  title="Proceed to Checkout"
+  onPress={() => router.push("/checkout")}
+  loading={loading}
+/>
+```
+
+If you get a type error regarding the `/checkout` route, the error will be resolved when you run the app.
+
+### Test the Checkout Flow
+
+To test the checkout flow, run your Medusa application and Expo app.
+
+Then, in your Expo app, click on the "Proceed to Checkout" button in the cart screen. You should be taken to the checkout screen with the Delivery step as the current step.
+
+In the Delivery step, fill in the email and address fields, then click "Continue" to proceed to the Shipping step.
+
+![Delivery step with address filled](https://res.cloudinary.com/dza7lstvk/image/upload/v1762360359/Medusa%20Resources/CleanShot_2025-11-05_at_18.31.49_2x_jl3q4g.png)
+
+Then, in the Shipping step, select a shipping method and click "Continue" to proceed to the Payment step.
+
+![Shipping step with shipping method selected](https://res.cloudinary.com/dza7lstvk/image/upload/v1762360359/Medusa%20Resources/CleanShot_2025-11-05_at_18.31.49_2x_jl3q4g.png)
+
+Finally, in the Payment step, select a payment provider. You currently can place an order, but there is no order confirmation screen yet. You'll add it in the next step.
+
+![Payment step with payment provider selected](https://res.cloudinary.com/dza7lstvk/image/upload/v1762360464/Medusa%20Resources/CleanShot_2025-11-05_at_18.33.59_2x_eled5o.png)
+
+---
+
+## Step 12: Create Order Confirmation Screen
+
+The last step in this tutorial is to create an order confirmation screen that customers are taken to after successfully placing an order.
+
+You'll implement the order confirmation screen, then add it to the navigation structure.
+
+### Create Order Confirmation Screen Component
+
+To create the order confirmation screen, create the file `app/order-confirmation/[id].tsx` with the following content:
+
+```tsx title="app/order-confirmation/[id].tsx" collapsibleLines="31-181" expandButtonLabel="Show Styles"
+import { Loading } from "@/components/loading"
+import { Button } from "@/components/ui/button"
+import { IconSymbol } from "@/components/ui/icon-symbol"
+import { Colors } from "@/constants/theme"
+import { useCart } from "@/context/cart-context"
+import { useColorScheme } from "@/hooks/use-color-scheme"
+import { formatPrice } from "@/lib/format-price"
+import { getPaymentProviderInfo } from "@/lib/payment-providers"
+import { sdk } from "@/lib/sdk"
+import type { HttpTypes } from "@medusajs/types"
+import { Image } from "expo-image"
+import { useLocalSearchParams, useRouter } from "expo-router"
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import { ScrollView, StyleSheet, Text, View } from "react-native"
+
+export default function OrderConfirmationScreen() {
+  const { id } = useLocalSearchParams<{ id: string }>()
+  const router = useRouter()
+  const colorScheme = useColorScheme()
+  const colors = Colors[colorScheme ?? "light"]
+  const { clearCart } = useCart()
+
+  const [order, setOrder] = useState<HttpTypes.StoreOrder | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const hasCleared = useRef(false)
+
+  // TODO fetch order details and clear cart
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  centerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  content: {
+    padding: 20,
+  },
+  successIcon: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
+    marginBottom: 24,
+  },
+  checkmark: {
+    fontSize: 48,
+    color: "#fff",
+    fontWeight: "700",
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "700",
+    textAlign: "center",
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 32,
+  },
+  card: {
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: "700",
+    marginBottom: 16,
+  },
+  infoRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 12,
+  },
+  label: {
+    fontSize: 14,
+  },
+  value: {
+    fontSize: 14,
+    fontWeight: "500",
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  addressText: {
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  paymentMethodRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 4,
+  },
+  itemRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+  },
+  lastItemRow: {
+    borderBottomWidth: 0,
+    marginBottom: 0,
+    paddingBottom: 0,
+  },
+  itemImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 8,
+    marginRight: 12,
+  },
+  itemInfo: {
+    flex: 1,
+  },
+  itemTitle: {
+    fontSize: 14,
+    fontWeight: "600",
+    marginBottom: 4,
+  },
+  itemVariant: {
+    fontSize: 12,
+    marginBottom: 4,
+  },
+  itemQuantity: {
+    fontSize: 12,
+  },
+  itemPrice: {
+    fontSize: 14,
+    fontWeight: "600",
+    marginLeft: 12,
+  },
+  summaryRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 12,
+  },
+  summaryLabel: {
+    fontSize: 14,
+  },
+  summaryValue: {
+    fontSize: 14,
+    fontWeight: "500",
+  },
+  totalRow: {
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+  },
+  totalLabel: {
+    fontSize: 18,
+    fontWeight: "700",
+  },
+  totalValue: {
+    fontSize: 20,
+    fontWeight: "700",
+  },
+  button: {
+    marginTop: 20,
+  },
+  continueButton: {
+    marginBottom: 24,
+  },
+  errorText: {
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 20,
+  },
+})
+```
+
+The `OrderConfirmationScreen` component includes the following state variables:
+
+- `order`: The order details fetched from the backend.
+- `loading`: A boolean indicating whether the order details are being loaded.
+- `error`: An error message if fetching the order details fails.
+
+Next, you'll fetch the order details using the order ID from the URL parameters, and clear the cart once the order is successfully placed. Replace the `// TODO fetch order details and clear cart` comment with the following:
+
+```tsx title="app/order-confirmation/[id].tsx"
+const fetchOrder = useCallback(async () => {
+  try {
+    setLoading(true)
+    setError(null)
+
+    const { order: fetchedOrder } = await sdk.store.order.retrieve(id, {
+      fields: "*payment_collections.payments",
+    })
+    setOrder(fetchedOrder)
+  } catch (err) {
+    console.error("Failed to fetch order:", err)
+    setError("Failed to load order details")
+  } finally {
+    setLoading(false)
+  }
+}, [id])
+
+// Fetch order when id changes
+useEffect(() => {
+  if (id) {
+    fetchOrder()
+  }
+}, [id, fetchOrder])
+
+// Clear cart when order confirmation page loads (only once)
+useEffect(() => {
+  if (!hasCleared.current) {
+    hasCleared.current = true
+    clearCart()
+  }
+}, [clearCart])
+
+// TODO render order details
+```
+
+The `fetchOrder` function retrieves order details from the Medusa backend using the order ID from the URL parameters.
+
+Two `useEffect` hooks are added:
+
+1. One calls `fetchOrder` when the order ID changes.
+2. Another clears the cart when the order confirmation page loads, ensuring it runs only once.
+
+Finally, you'll render the order details. Replace the `// TODO render order details` comment with the following:
+
+```tsx title="app/order-confirmation/[id].tsx"
+if (loading) {
+  return <Loading message="Loading order details..." />
+}
+
+if (error || !order) {
+  return (
+    <View style={[styles.centerContainer, { backgroundColor: colors.background }]}>
+      <Text style={[styles.errorText, { color: colors.text }]}>
+        {error || "Order not found"}
+      </Text>
+      <Button
+        title="Go to Home"
+        onPress={() => {
+          // Reset to home screen and clear the navigation stack
+          router.dismissAll()
+          router.replace("/(drawer)/(tabs)/(home)")
+        }}
+        style={styles.button}
+      />
+    </View>
+  )
+}
+
+return (
+  <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={styles.content}>
+      <View style={[styles.successIcon, { backgroundColor: colors.success }]}>
+        <Text style={styles.checkmark}>✓</Text>
+      </View>
+
+      <Text style={[styles.title, { color: colors.text }]}>Order Confirmed!</Text>
+      <Text style={[styles.subtitle, { color: colors.icon }]}>
+        We have received your order and will process it as soon as possible.
+      </Text>
+
+      <Button
+        title="Continue Shopping"
+        onPress={() => {
+          // Reset to home screen and clear the navigation stack
+          router.dismissAll()
+          router.replace("/(drawer)/(tabs)/(home)")
+        }}
+        style={styles.continueButton}
+      />
+
+      <View style={[styles.card, { backgroundColor: colors.background, borderColor: colors.icon + "30" }]}>
+        <Text style={[styles.cardTitle, { color: colors.text }]}>Order Details</Text>
+        
+        <View style={styles.infoRow}>
+          <Text style={[styles.label, { color: colors.icon }]}>Order ID</Text>
+          <Text style={[styles.value, { color: colors.text }]}>{order.display_id}</Text>
+        </View>
+
+        <View style={styles.infoRow}>
+          <Text style={[styles.label, { color: colors.icon }]}>Email</Text>
+          <Text style={[styles.value, { color: colors.text }]}>{order.email}</Text>
+        </View>
+      </View>
+
+      <View style={[styles.card, { backgroundColor: colors.background, borderColor: colors.icon + "30" }]}>
+        <Text style={[styles.cardTitle, { color: colors.text }]}>Order Items</Text>
+        
+        {order.items?.map((item, index) => (
+          <View 
+            key={item.id} 
+            style={[
+              styles.itemRow,
+              index === order.items!.length - 1 && styles.lastItemRow,
+              { borderBottomColor: colors.icon + "30" },
+            ]}
+          >
+            <Image
+              source={{ uri: item.thumbnail || "https://via.placeholder.com/60" }}
+              style={[styles.itemImage, { backgroundColor: colors.imagePlaceholder }]}
+              contentFit="cover"
+            />
+            <View style={styles.itemInfo}>
+              <Text style={[styles.itemTitle, { color: colors.text }]}>
+                {item.product_title || item.title}
+              </Text>
+              {item.variant_title && (
+                <Text style={[styles.itemVariant, { color: colors.icon }]}>
+                  {item.variant_title}
+                </Text>
+              )}
+              <Text style={[styles.itemQuantity, { color: colors.icon }]}>
+                Qty: {item.quantity}
+              </Text>
+            </View>
+            <Text style={[styles.itemPrice, { color: colors.text }]}>
+              {formatPrice(item.subtotal, order.currency_code)}
+            </Text>
+          </View>
+        ))}
+      </View>
+
+      <View style={[styles.card, { backgroundColor: colors.background, borderColor: colors.icon + "30" }]}>
+        <Text style={[styles.cardTitle, { color: colors.text }]}>Shipping</Text>
+        
+        {order.shipping_address && (
+          <>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>
+              Shipping Address
+            </Text>
+            <Text style={[styles.addressText, { color: colors.text }]}>
+              {order.shipping_address.first_name} {order.shipping_address.last_name}
+            </Text>
+            <Text style={[styles.addressText, { color: colors.text }]}>
+              {order.shipping_address.address_1}
+            </Text>
+            <Text style={[styles.addressText, { color: colors.text }]}>
+              {order.shipping_address.city}, {order.shipping_address.postal_code}
+            </Text>
+            <Text style={[styles.addressText, { color: colors.text }]}>
+              {order.shipping_address.country_code?.toUpperCase()}
+            </Text>
+          </>
+        )}
+
+        {order.shipping_methods && order.shipping_methods.length > 0 && (
+          <>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>
+              Shipping Method
+            </Text>
+            {order.shipping_methods.map((method) => (
+              <Text key={method.id} style={[styles.addressText, { color: colors.text }]}>
+                {method.name} - {formatPrice(method.amount || 0, order.currency_code)}
+              </Text>
+            ))}
+          </>
+        )}
+      </View>
+
+      <View style={[styles.card, { backgroundColor: colors.background, borderColor: colors.icon + "30" }]}>
+        <Text style={[styles.cardTitle, { color: colors.text }]}>Payment</Text>
+        
+        {order.payment_collections && order.payment_collections.length > 0 && (
+          <>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>
+              Payment Method
+            </Text>
+            {order.payment_collections[0].payments?.map((payment) => {
+              const providerInfo = getPaymentProviderInfo(payment.provider_id)
+              return (
+                <View key={payment.id} style={styles.paymentMethodRow}>
+                  <IconSymbol
+                    size={20}
+                    name={providerInfo.icon as any}
+                    color={colors.text}
+                  />
+                  <Text style={[styles.addressText, { color: colors.text, marginLeft: 8 }]}>
+                    {providerInfo.title}
+                  </Text>
+                </View>
+              )
+            })}
+          </>
+        )}
+
+        {order.billing_address && (
+          <>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>
+              Billing Address
+            </Text>
+            <Text style={[styles.addressText, { color: colors.text }]}>
+              {order.billing_address.first_name} {order.billing_address.last_name}
+            </Text>
+            <Text style={[styles.addressText, { color: colors.text }]}>
+              {order.billing_address.address_1}
+            </Text>
+            <Text style={[styles.addressText, { color: colors.text }]}>
+              {order.billing_address.city}, {order.billing_address.postal_code}
+            </Text>
+            <Text style={[styles.addressText, { color: colors.text }]}>
+              {order.billing_address.country_code?.toUpperCase()}
+            </Text>
+          </>
+        )}
+      </View>
+
+      <View style={[styles.card, { backgroundColor: colors.background, borderColor: colors.icon + "30" }]}>
+        <Text style={[styles.cardTitle, { color: colors.text }]}>Order Summary</Text>
+        
+        <View style={styles.summaryRow}>
+          <Text style={[styles.summaryLabel, { color: colors.text }]}>Subtotal</Text>
+          <Text style={[styles.summaryValue, { color: colors.text }]}>
+            {formatPrice(order.item_subtotal || 0, order.currency_code)}
+          </Text>
+        </View>
+
+        <View style={styles.summaryRow}>
+          <Text style={[styles.summaryLabel, { color: colors.text }]}>Discount</Text>
+          <Text style={[styles.summaryValue, { color: colors.text }]}>
+            {(order.discount_total || 0) > 0 ? "-" : ""}{formatPrice(order.discount_total || 0, order.currency_code)}
+          </Text>
+        </View>
+
+        <View style={styles.summaryRow}>
+          <Text style={[styles.summaryLabel, { color: colors.text }]}>Shipping</Text>
+          <Text style={[styles.summaryValue, { color: colors.text }]}>
+            {formatPrice(order.shipping_total || 0, order.currency_code)}
+          </Text>
+        </View>
+
+        <View style={styles.summaryRow}>
+          <Text style={[styles.summaryLabel, { color: colors.text }]}>Tax</Text>
+          <Text style={[styles.summaryValue, { color: colors.text }]}>
+            {formatPrice(order.tax_total || 0, order.currency_code)}
+          </Text>
+        </View>
+
+        <View style={[styles.summaryRow, styles.totalRow, { borderTopColor: colors.border }]}>
+          <Text style={[styles.totalLabel, { color: colors.text }]}>Total</Text>
+          <Text style={[styles.totalValue, { color: colors.tint }]}>
+            {formatPrice(order.total, order.currency_code)}
+          </Text>
+        </View>
+      </View>
+    </View>
+  </ScrollView>
+)
+```
+
+Three states are handled in the render method:
+
+- Loading: Displays a loading indicator while the order details are being fetched.
+- Error: Displays an error message if fetching the order details fails.
+- Success: Displays the order confirmation details, including the order ID, items, shipping, and payment information.
+
+### Add Order Confirmation Screen to Navigation
+
+Next, you'll add the order confirmation screen to the app's navigation structure. You'll add it as a top-level stack screen.
+
+In `app/_layout.tsx`, add the following after the checkout screen you added earlier:
+
+```tsx title="app/_layout.tsx"
+<Stack.Screen
+  name="order-confirmation/[id]"
+  options={{
+    headerShown: true,
+    title: "Order Confirmed",
+    headerLeft: () => null,
+    gestureEnabled: false,
+    headerBackVisible: false,
+  }}
+/>
+```
+
+### Navigate to Order Confirmation After Placing Order
+
+Finally, you'll update the checkout screen to navigate to the order confirmation screen after successfully placing an order.
+
+In `app/checkout.tsx`, add the following import at the top of the file:
+
+```tsx
+import { useRouter } from "expo-router"
+```
+
+Then, inside the `CheckoutScreen` component, initialize the router:
+
+```tsx title="app/checkout.tsx"
+export default function CheckoutScreen() {
+  const router = useRouter()
+  // ...
+}
+```
+
+Finally, find the `handlePlaceOrder` function, and replace the `// TODO navigate to order confirmation screen with order details` comment with the following:
+
+```tsx title="app/checkout.tsx"
+router.replace(`/order-confirmation/${result.order.id}`)
+```
+
+If you get a type error regarding the `/order-confirmation/[id]` route, the error will be resolved when you run the app.
+
+### Test the Order Confirmation Screen
+
+To test the order confirmation screen, run your Medusa application and Expo app.
+
+Then, in your Expo app, go through the checkout flow as before. After selecting a payment provider and placing the order, you should be taken to the order confirmation screen displaying the order details.
+
+![Order confirmation screen](https://res.cloudinary.com/dza7lstvk/image/upload/v1762360994/Medusa%20Resources/CleanShot_2025-11-05_at_18.42.42_2x_prvkba.png)
+
+---
+
+## Next Steps
+
+You now have an ecommerce app built with React Native and Medusa, complete with product listing, cart management, checkout flow, and order confirmation.
+
+You can expand this app to:
+
+1. [Add customer authentication and account management](../../customers/login/page.mdx).
+2. [Integrate payment providers like Stripe](../../checkout/payment/stripe/page.mdx).
+3. [Publish the app to app stores](https://docs.expo.dev/distribution/app-stores/).
+
+### Learn More about Medusa
+
+If you're new to Medusa, check out the [main documentation](!docs!/learn), where you'll get a more in-depth understanding of all the concepts you've used in this guide and more.
+
+To learn more about the commerce features that Medusa provides, check out Medusa's [Commerce Modules](../../../commerce-modules/page.mdx).
+
+### Troubleshooting
+
+If you encounter issues during your development, check out the [troubleshooting guides](../../../troubleshooting/page.mdx).
+
+### Getting Help
+
+If you encounter issues not covered in the troubleshooting guides:
+
+1. Visit the [Medusa GitHub repository](https://github.com/medusajs/medusa) to report issues or ask questions.
+2. Join the [Medusa Discord community](https://discord.gg/medusajs) for real-time support from community members.

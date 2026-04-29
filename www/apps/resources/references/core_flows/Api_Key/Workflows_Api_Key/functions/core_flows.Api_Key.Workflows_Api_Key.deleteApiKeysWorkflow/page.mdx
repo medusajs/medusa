@@ -20,7 +20,7 @@ This workflow deletes one or more secret or publishable API keys. It's used by t
 You can use this workflow within your customizations or your own custom workflows, allowing you to
 delete API keys within your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/96b2df170752a0d66628a84c46397a24ca9502da/packages/core/core-flows/src/api-key/workflows/delete-api-keys.ts#L36" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/api-key/workflows/delete-api-keys.ts#L36" />
 
 ## Examples
 
@@ -129,8 +129,8 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"deleteApiKeysWorkflow","steps":[{"type":"step","name":"deleteApiKeysStep","description":"This step deletes one or more API keys.","link":"../../../Steps_Api_Key/functions/core_flows.Api_Key.Steps_Api_Key.deleteApiKeysStep/page.mdx","depth":1},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record.\n\nLearn more in the [Remote Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/remote-link#cascade-delete-linked-records)","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.removeRemoteLinkStep/page.mdx","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"deleteApiKeysWorkflow","steps":[{"type":"step","name":"deleteApiKeysStep","description":"This step deletes one or more API keys.","link":"../../../Steps_Api_Key/functions/core_flows.Api_Key.Steps_Api_Key.deleteApiKeysStep/page.mdx","depth":1},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record if cascade deletion is enabled.\n\nLearn more in the [Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/link#cascade-delete-linked-records)","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.removeRemoteLinkStep/page.mdx","depth":2}]}} />
 
 ## Input
 
-<TypeList types={[{"name":"DeleteApiKeysWorkflowInput","type":"[DeleteApiKeysWorkflowInput](../../../../types/core_flows.DeleteApiKeysWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to delete API keys.","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"The IDs of the API keys to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteApiKeysWorkflow"/>
+<TypeList types={[{"name":"DeleteApiKeysWorkflowInput","type":"[DeleteApiKeysWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.DeleteApiKeysWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeleteApiKeysWorkflowInput","type":"`object`","description":"The data to delete API keys.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteApiKeysWorkflow"/>

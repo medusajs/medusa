@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { useEffect, useState } from "react"
 import getCustomComponents from "../../MDXComponents"
 import type { ScopeType } from "../../MDXComponents"

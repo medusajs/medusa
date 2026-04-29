@@ -6,11 +6,15 @@ export const Notification = model.define("notification", {
   id: model.id({ prefix: "noti" }).primaryKey(),
   // This can be an email, phone number, or username, depending on the channel.
   to: model.text().searchable(),
+  // This can be an email, phone number, or username, depending on the channel.
+  from: model.text().searchable().nullable(),
   channel: model.text(),
   // The template name in the provider's system.
   template: model.text().nullable(),
   // The data that gets passed over to the provider for rendering the notification.
   data: model.json().nullable(),
+  // Additional data specific to the channel or provider. For example, cc and bcc for emails.
+  provider_data: model.json().nullable(),
   // This can be the event name, the workflow, or anything else that can help to identify what triggered the notification.
   trigger_type: model.text().nullable(),
   // The ID of the resource this notification is for, if applicable. Useful for displaying relevant information in the UI

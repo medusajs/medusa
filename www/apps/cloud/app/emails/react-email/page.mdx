@@ -1,0 +1,790 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Set Up React Email Templates for Cloud Projects`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to set up React Email templates for [sending emails in Cloud projects](../page.mdx).
+
+## What is React Email?
+
+[React Email](https://react.email) is a library that allows you to create email templates using React components. You can then transform these templates into HTML strings for sending emails.
+
+React Email also allows you to preview and test your email templates during development.
+
+In this guide, you'll learn how to:
+
+- Install React Email dependencies in your Medusa project.
+- Create an invite user email template using React Email.
+- Preview email templates during development.
+- Send emails using the React Email template with Medusa Emails.
+
+You'll also find examples of common email templates built with React Email at the end of this guide.
+
+<Note>
+
+Medusa Emails is available for all Cloud organizations and projects, given you [don't have another Notification Module Provider for the `email` channel configured](../page.mdx#remove-other-email-notification-module-providers). You also optionally need to [verify your sending domain](../page.mdx#verify-email-sender-domain-on-cloud) to send emails to users outside your organization. Verified sender domains are available for Launch, Scale, and Enterprise plans only.
+
+</Note>
+
+---
+
+## Step 1: Install React Email Dependencies
+
+In the Medusa project where you want to set up email templates, install the following dependencies:
+
+```bash npm2yarn
+npm install @react-email/components@0.3.3 @react-email/render@1.1.4
+npm install -D @react-email/preview-server@4.2.5 react-email@4.2.5
+```
+
+These packages include:
+
+- `@react-email/components`: Provides pre-built React components for building email templates.
+- `@react-email/render`: Renders React Email templates to HTML strings.
+- `@react-email/preview-server` and `react-email`: Development dependencies for previewing and testing email templates.
+
+<Note>
+
+Newer versions of React Email are not supported due to Node version incompatibilities on Cloud.
+
+</Note>
+
+---
+
+## Step 2: Create Invite User Email Template
+
+Next, create the `src/emails` directory to store your email templates in your Medusa project.
+
+Then, create your email templates as React components in that directory.
+
+For example, to create an email template for sending invites to new admin users, create the file `src/emails/invite-user.tsx` with the following content:
+
+```tsx title="src/emails/invite-user.tsx"
+import {
+  Text,
+  Container,
+  Heading,
+  Html,
+  Section,
+  Tailwind,
+  Head,
+  Preview,
+  Body,
+  Button,
+} from "@react-email/components"
+
+type InviteEmailProps = {
+  inviteUrl: string
+  storeName: string
+}
+
+function Template({ inviteUrl, storeName }: InviteEmailProps) {
+  return (
+    <Tailwind>
+      <Html className="font-sans bg-gray-100">
+        <Head />
+        <Preview>{`You've been invited to join ${storeName ?? ""}`}</Preview>
+        <Body className="bg-white my-10 mx-auto w-full max-w-2xl">
+          {/* Main Content */}
+          <Container className="p-6 text-center">
+            <Heading className="text-lg font-semibold text-black mb-6">
+              You've been invited to join {storeName ?? ""}
+            </Heading>
+
+            <Text className="text-sm text-black leading-relaxed mb-6">
+              Click the button below to accept the invitation and get started.
+            </Text>
+
+            <Section className="text-center my-8">
+              <Button
+                href={inviteUrl}
+                className="bg-black text-white py-3 px-8 inline-block"
+              >
+                Accept invitation
+              </Button>
+            </Section>
+          </Container>
+
+          {/* Footer */}
+          <Section className="bg-gray-50 p-6 mt-10">
+            <Text className="text-center text-black text-xs mt-4">
+              © {new Date().getFullYear()} {storeName}, Inc. All rights reserved.
+            </Text>
+          </Section>
+        </Body>
+      </Html>
+    </Tailwind>
+  )
+}
+
+export default function getInviteTemplate(props?: InviteEmailProps) {
+  return (
+    <Template 
+      inviteUrl={props?.inviteUrl ?? "#"} 
+      storeName={props?.storeName ?? "Demo Store"}
+    />
+  )
+}
+```
+
+In the file, you define:
+
+- A React component `Template` that uses React Email components to structure the email.
+- A default export function `getInviteTemplate` that returns the `Template` component with default props.
+
+The file must export a function that returns a React component representing the email template. React Email uses this function to preview the email, and you'll use it later to render the template to HTML.
+
+---
+
+## Step 3: Preview Email Template (Optional)
+
+It's useful to preview your email templates during development to ensure they look as expected. This allows you to catch any design issues or mistakes early.
+
+To preview your email template, use the React Email Preview Server.
+
+First, add the following script to the `scripts` section of your `package.json`:
+
+```json
+{
+  "scripts": {
+    "preview:emails": "email dev --dir ./src/emails"
+  }
+}
+```
+
+This script uses the `email dev` command from `react-email`, specifying the directory where your email templates are located.
+
+Then, run the preview server with the following command:
+
+```bash npm2yarn
+npm run preview:emails
+```
+
+The preview server will start at `http://localhost:3000`, where you can view and test your email templates in the browser.
+
+---
+
+## Step 4: Send Email Using Template
+
+Once you have the email template, you can use it to send emails from your Medusa project deployed on Cloud.
+
+For example, to send an invite email when a new admin user is invited, create a [subscriber](!docs!/learn/fundamentals/events-and-subscribers) with the following content:
+
+```ts title="src/subscribers/invite-admin-subscriber.ts"
+import type {
+  SubscriberArgs,
+  SubscriberConfig,
+} from "@medusajs/framework"
+import { render, pretty } from "@react-email/render"
+import getInviteTemplate from "../emails/invite-user"
+
+export default async function inviteCreatedHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  const query = container.resolve("query")
+
+  const {
+    data: [store],
+  } = await query.graph({
+    entity: "store",
+    fields: ["name"],
+  })
+
+  const {
+    data: [invite],
+  } = await query.graph({
+    entity: "invite",
+    fields: ["email", "token"],
+    filters: {
+      id: data.id,
+    },
+  })
+
+  const config = container.resolve("configModule")
+
+  const adminPath = config.admin.path
+
+  const inviteUrl = `/${adminPath}/invite?token=${invite.token}`
+
+  const notificationModule = container.resolve("notification")
+
+  const html = await pretty(
+    await render(getInviteTemplate({
+      inviteUrl,
+      storeName: store.name,
+    }))
+  )
+
+  await notificationModule.createNotifications({
+    to: invite.email,
+    // optional: set from email
+    // from: "no-reply@yourdomain.com"
+    channel: "email",
+    content: {
+      html,
+      subject: `You've been invited to join ${store.name}`,
+    },
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: [
+    "invite.created",
+    "invite.resent",
+  ],
+}
+```
+
+This subscriber listens for the `invite.created` and `invite.resent` events. When triggered, it:
+
+1. Retrieves the store name and invite details.
+2. Constructs the invite URL. Invites to the admin dashboard are at the `/admin/invite` path and include the invite token as a `token` query parameter.
+3. Renders the invite email template to an HTML string using React Email's `render` function, passing the `getInviteTemplate` function with the invite URL and store name as props.
+4. Sends the email by creating a notification using Medusa's Notification Module.
+
+---
+
+## Test Email Sending on Cloud
+
+To test that your emails are sent correctly on Cloud, make sure you've pushed all changes to the project's repository, and the changes have been deployed to your Cloud project.
+
+Then, [invite a new admin user](!user-guide!/settings/users/invites) to your Cloud project through the Medusa Admin dashboard.
+
+If everything is set up correctly, the new admin user should receive the invite email using your React Email template.
+
+Otherwise, refer to the [Troubleshooting Medusa Emails on Cloud](../page.mdx#troubleshooting-medusa-emails-on-cloud) guide for help resolving common issues.
+
+---
+
+## Common Email Templates
+
+This section provides examples of common email templates you can create using React Email, then send in your Cloud projects. You can customize these templates to fit your brand and use case.
+
+You can also refer to the [React Email documentation](https://react.email/docs) for more information on building email templates with React Email.
+
+### Order Placed Email Template
+
+The Order Placed email template notifies customers when they successfully place an order. It typically includes order details, shipping information, and a thank-you message.
+
+You can use the following template for your Order Placed email:
+
+```tsx title="src/emails/order-placed.tsx" collapsibleLines="36-257"
+import { CustomerDTO, OrderDTO } from "@medusajs/framework/types"
+import {
+  Body,
+  Column,
+  Container,
+  Head,
+  Heading,
+  Html,
+  Img,
+  Preview,
+  Row,
+  Section,
+  Tailwind,
+  Text,
+} from "@react-email/components"
+
+type OrderPlacedEmailProps = {
+  order: OrderDTO & { customer: CustomerDTO }
+  storeName: string
+}
+
+function Template({ order, storeName }: OrderPlacedEmailProps) {
+  const getLocaleAmount = (amount: number) => {
+    const formatter = new Intl.NumberFormat([], {
+      style: "currency",
+      currencyDisplay: "narrowSymbol",
+      currency: order.currency_code,
+    })
+
+    return formatter.format(amount)
+  }
+
+  const items = order.items?.map((item) => {
+    const itemTotal = item.unit_price * item.quantity
+
+    return (
+      <Section key={item.id} className="border-b border-gray-200 py-4 px-0">
+        <Row className="px-0">
+          <Column className="w-1/6">
+            <Img
+              src={item.thumbnail ?? ""}
+              alt={""}
+              className="rounded-lg"
+              width="100%"
+            />
+          </Column>
+          <Column className="w-7/8 pl-4">
+            <Text className="text-sm text-black my-2">
+              {item.product_title}
+            </Text>
+            <Text className="text-xs text-black my-2">
+              {item.variant_title}
+            </Text>
+            <Text className="text-xs text-black my-2">
+              <span className="font-semibold">
+                {item.quantity} x {getLocaleAmount(item.unit_price)}
+              </span>
+            </Text>
+            <Text className="text-xs text-black font-bold my-2">
+              {getLocaleAmount(itemTotal)}
+            </Text>
+          </Column>
+        </Row>
+      </Section>
+    )
+  })
+
+  return (
+    <Tailwind>
+      <Html className="font-sans bg-gray-100">
+        <Head />
+        <Preview>Thank you for your order from {storeName}</Preview>
+        <Body className="bg-white my-10 mx-auto w-full max-w-2xl">
+          {/* Greeting and Order Confirmation */}
+          <Container className="p-6">
+            <Heading className="text-lg font-normal text-black mb-6">
+              Dear{" "}
+              {order.customer?.first_name || order.shipping_address?.first_name}
+              ,
+            </Heading>
+
+            <Text className="text-sm text-black leading-relaxed mb-6">
+              Thank you for your order. Below you will find the details for your
+              purchase.
+            </Text>
+
+            <div className="mb-6">
+              <Text className="text-sm text-black m-0 mb-1">
+                Order number:{" "}
+                <span className="font-semibold">{order.display_id}</span>
+              </Text>
+              <Text className="text-sm text-black m-0">
+                Order date:{" "}
+                <span className="font-semibold">
+                  {new Date(order.created_at).toLocaleDateString("en-GB", {
+                    weekday: "short",
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </span>
+              </Text>
+            </div>
+
+            <Text className="text-sm text-black leading-relaxed">
+              We're getting your order ready to be shipped. We will notify you
+              when it has been sent. If you have any questions, please don't
+              hesitate to contact us.
+            </Text>
+          </Container>
+
+          {/* Order Items */}
+          <Container className="px-6">
+            <Heading className="text-base font-semibold text-black mb-2">
+              Your Items
+            </Heading>
+
+            {items}
+
+            {/* Order Summary */}
+            <Section className="mt-8 border-t border-gray-200 pt-6">
+              <Row className="text-black">
+                <Column className="w-1/2">
+                  <Text className="text-sm m-0 mb-2">Subtotal (incl. VAT)</Text>
+                </Column>
+                <Column className="w-1/2 text-right">
+                  <Text className="text-sm m-0 mb-2">
+                    {getLocaleAmount(order.item_total as number)}
+                  </Text>
+                </Column>
+              </Row>
+              <Row className="text-black">
+                <Column className="w-1/2">
+                  <Text className="text-sm m-0 mb-2">Shipping Total</Text>
+                </Column>
+                <Column className="w-1/2 text-right">
+                  <Text className="text-sm m-0 mb-2">
+                    {getLocaleAmount(order.shipping_total as number)}
+                  </Text>
+                </Column>
+              </Row>
+              {Number(order.discount_total) > 0 ? (
+                <Row className="text-black">
+                  <Column className="w-1/2">
+                    <Text className="text-sm m-0 mb-2">Discount</Text>
+                  </Column>
+                  <Column className="w-1/2 text-right">
+                    <Text className="text-sm m-0 mb-2">
+                      -{getLocaleAmount(order.discount_total as number)}
+                    </Text>
+                  </Column>
+                </Row>
+              ) : null}
+              <Row className="text-black font-bold">
+                <Column className="w-1/2">
+                  <Text className="text-sm m-0 mb-2">Total</Text>
+                </Column>
+                <Column className="w-1/2 text-right">
+                  <Text className="text-sm m-0 mb-2">
+                    {getLocaleAmount(order.total as number)}
+                  </Text>
+                </Column>
+              </Row>
+              <Row className="text-black">
+                <Column className="w-1/2">
+                  <Text className="text-sm m-0 italic">VAT Amount</Text>
+                </Column>
+                <Column className="w-1/2 text-right">
+                  <Text className="text-sm m-0 italic">
+                    {getLocaleAmount(order.tax_total as number)}
+                  </Text>
+                </Column>
+              </Row>
+            </Section>
+
+            {/* Shipping Address */}
+            <Section className="mt-8 mb-8">
+              <Heading className="text-base font-semibold text-black mb-2">
+                Shipping Address
+              </Heading>
+              <Text className="text-sm text-black m-0 mb-1">
+                {order.shipping_address?.first_name}{" "}
+                {order.shipping_address?.last_name}
+              </Text>
+              <Text className="text-sm text-black m-0 mb-1">
+                {order.shipping_address?.address_1}
+              </Text>
+              {order.shipping_address?.address_2 && (
+                <Text className="text-sm text-black m-0 mb-1">
+                  {order.shipping_address?.address_2}
+                </Text>
+              )}
+              <Text className="text-sm text-black m-0 mb-1">
+                {order.shipping_address?.postal_code}{" "}
+                {order.shipping_address?.city}
+              </Text>
+              <Text className="text-sm text-black m-0">
+                {order.shipping_address?.country_code?.toUpperCase()}
+              </Text>
+            </Section>
+          </Container>
+
+          {/* Footer */}
+          <Section className="bg-gray-50 p-6 mt-10">
+            <Text className="text-center text-black text-sm">
+              Order ID: {order.id}
+            </Text>
+            <Text className="text-center text-black text-xs mt-4">
+              © {new Date().getFullYear()} {storeName}, Inc. All rights reserved.
+            </Text>
+          </Section>
+        </Body>
+      </Html>
+    </Tailwind>
+  )
+}
+
+export default function getOrderPlacedTemplate(props?: OrderPlacedEmailProps) {
+  const demoData: OrderDTO & { customer: CustomerDTO } = {
+    id: "order_01J5K6M8N9P0Q1R2S3T4U5V6W7",
+    display_id: 1234,
+    created_at: new Date().toISOString(),
+    currency_code: "usd",
+    item_total: 5999,
+    shipping_total: 500,
+    discount_total: 0,
+    tax_total: 840,
+    total: 6499,
+    items: [
+      {
+        id: "item_01",
+        product_title: "Premium Wireless Headphones",
+        variant_title: "Black / Standard",
+        thumbnail: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb",
+        unit_price: 2999,
+        quantity: 2,
+      },
+    ],
+    customer: {
+      id: "cust_01",
+      email: "customer@example.com",
+      first_name: "John",
+      last_name: "Doe",
+    },
+    shipping_address: {
+      first_name: "John",
+      last_name: "Doe",
+      address_1: "123 Main Street",
+      address_2: "Apt 4B",
+      city: "New York",
+      postal_code: "10001",
+      country_code: "us",
+    },
+  } as OrderDTO & { customer: CustomerDTO }
+
+  return <Template order={props?.order ?? demoData} storeName={props?.storeName ?? "Demo Store"} />
+}
+```
+
+Then, to send the Order Placed email when an order is created, create a subscriber at `src/subscribers/order-created.ts` with the following content:
+
+```ts title="src/subscribers/order-created.ts"
+import type {
+  SubscriberArgs,
+  SubscriberConfig,
+} from "@medusajs/framework"
+import { render, pretty } from "@react-email/render"
+import getOrderPlacedTemplate from "../emails/order-placed"
+
+export default async function orderPlacedHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  const query = container.resolve("query")
+
+  const {
+    data: [store],
+  } = await query.graph({
+    entity: "store",
+    fields: ["name"],
+  })
+
+  const {
+    data: [order],
+  } = await query.graph({
+    entity: "order",
+    fields: [
+      "id",
+      "email",
+      "display_id",
+      "created_at",
+
+      // Customer
+      "customer.first_name",
+      "customer.email",
+
+      // Items
+      "items.id",
+      "items.product_title",
+      "items.variant_title",
+      "items.quantity",
+      "items.unit_price",
+
+      // Shipping address
+      "shipping_address.first_name",
+      "shipping_address.last_name",
+      "shipping_address.address_1",
+      "shipping_address.address_2",
+      "shipping_address.city",
+      "shipping_address.postal_code",
+      "shipping_address.country_code",
+
+      // Totals
+      "item_total",
+      "shipping_total",
+      "discount_total",
+      "tax_total",
+      "total",
+    ],
+    filters: {
+      id: data.id,
+    },
+  })
+
+  if (!order.customer?.email) {
+    console.warn(`Order ${order.id} has no customer email, skipping notification`)
+    return
+  }
+
+  const notificationModule = container.resolve("notification")
+
+  const html = await pretty(
+    await render(getOrderPlacedTemplate({
+      order: order as any,
+      storeName: store.name,
+    }))
+  )
+
+  await notificationModule.createNotifications({
+    to: order.customer.email,
+    // optional: set from email
+    // from: "no-reply@yourdomain.com"
+    channel: "email",
+    content: {
+      html,
+      subject: `Order Confirmation - ${store.name}`,
+    },
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+This subscriber listens for the `order.placed` event. When triggered, it:
+
+1. Retrieves the store name and order details.
+2. Renders the Order Placed email template to an HTML string using React Email's `render` function, passing the `getOrderPlacedTemplate` function with the order and store name as props.
+3. Sends the email by creating a notification using Medusa's Notification Module.
+
+Whenever a new order is placed, the customer will receive an Order Placed email using your React Email template.
+
+### Reset Password Email Template
+
+The Reset Password email template allows customers and admin users to reset their password if they forget it. It typically includes a link to a password reset page.
+
+You can use the following template for your Reset Password email:
+
+```tsx title="src/emails/reset-password.tsx"
+import {
+  Text,
+  Container,
+  Heading,
+  Html,
+  Section,
+  Tailwind,
+  Head,
+  Preview,
+  Body,
+  Button,
+} from "@react-email/components"
+
+type ResetPasswordEmailProps = {
+  resetPasswordUrl: string
+  storeName: string
+}
+
+function Template({ resetPasswordUrl, storeName }: ResetPasswordEmailProps) {
+  return (
+    <Tailwind>
+      <Html className="font-sans bg-gray-100">
+        <Head />
+        <Preview>Reset your password</Preview>
+        <Body className="bg-white my-10 mx-auto w-full max-w-2xl">
+          {/* Main Content */}
+          <Container className="p-6 text-center">
+            <Heading className="text-lg font-semibold text-black mb-6">
+              You have submitted a password change request.
+            </Heading>
+
+            <Section className="text-center my-8">
+              <Button
+                href={resetPasswordUrl}
+                className="bg-black text-white py-3 px-8 inline-block"
+              >
+                Reset password
+              </Button>
+            </Section>
+
+            <Text className="text-sm text-black leading-relaxed mt-6">
+              If you didn't request a password reset, you can safely ignore this
+              email.
+            </Text>
+          </Container>
+
+          {/* Footer */}
+          <Section className="bg-gray-50 p-6 mt-10">
+            <Text className="text-center text-black text-xs mt-4">
+              © {new Date().getFullYear()} {storeName}, Inc. All rights reserved.
+            </Text>
+          </Section>
+        </Body>
+      </Html>
+    </Tailwind>
+  )
+}
+
+export default function getResetPasswordTemplate(props?: ResetPasswordEmailProps) {
+  return (
+    <Template
+      resetPasswordUrl={props?.resetPasswordUrl ?? "#"}
+      storeName={props?.storeName ?? "Demo Store"}
+    />
+  )
+}
+```
+
+Then, to send the Reset Password email when a password reset is requested, create a subscriber at `src/subscribers/reset-password.ts` with the following content:
+
+```ts title="src/subscribers/reset-password.ts"
+import {
+  SubscriberArgs,
+  type SubscriberConfig,
+} from "@medusajs/medusa"
+import { Modules } from "@medusajs/framework/utils"
+import { render, pretty } from "@react-email/render"
+import getResetPasswordTemplate from "../emails/reset-password"
+
+export default async function resetPasswordTokenHandler({
+  event: { data: {
+    entity_id: email,
+    token,
+    actor_type,
+  } },
+  container,
+}: SubscriberArgs<{ entity_id: string, token: string, actor_type: string }>) {
+  const notificationModuleService = container.resolve(
+    Modules.NOTIFICATION
+  )
+  const config = container.resolve("configModule")
+  const query = container.resolve("query")
+
+  const {
+    data: [store],
+  } = await query.graph({
+    entity: "store",
+    fields: ["name"],
+  })
+
+  let urlPrefix = ""
+
+  if (actor_type === "customer") {
+    urlPrefix = config.admin.storefrontUrl || "https://storefront.com"
+  } else {
+    const backendUrl = config.admin.backendUrl !== "/" ? config.admin.backendUrl :
+      "http://localhost:9000"
+    const adminPath = config.admin.path
+    urlPrefix = `${backendUrl}${adminPath}`
+  }
+
+  const resetPasswordUrl = `${urlPrefix}/reset-password?token=${token}&email=${email}`
+
+  const html = await pretty(
+    await render(getResetPasswordTemplate({
+      resetPasswordUrl,
+      storeName: store.name,
+    }))
+  )
+
+  await notificationModuleService.createNotifications({
+    to: email,
+    // optional: set from email
+    // from: "no-reply@yourdomain.com"
+    channel: "email",
+    content: {
+      html,
+      subject: `Reset your password - ${store.name}`,
+    },
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: "auth.password_reset",
+}
+```
+
+This subscriber listens for the `auth.password_reset` event. When triggered, it:
+
+1. Retrieves the store name.
+2. Constructs the reset password URL based on whether the request is for a customer or admin user.
+3. Renders the Reset Password email template to an HTML string using React Email's `render` function, passing the `getResetPasswordTemplate` function with the reset password URL and store name as props.
+4. Sends the email by creating a notification using Medusa's Notification Module.
+
+Whenever a user requests a password reset, they will receive a Reset Password email using your React Email template.

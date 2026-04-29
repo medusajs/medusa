@@ -1,0 +1,10 @@
+type: object
+description: The data to update in the order change.
+x-schemaName: AdminUpdateOrderChange
+properties:
+  carry_over_promotions:
+    type: boolean
+    title: carry_over_promotions
+    description: >-
+      Whether promotions from the original order should be carried over to the
+      order change (specifically, exchanges).

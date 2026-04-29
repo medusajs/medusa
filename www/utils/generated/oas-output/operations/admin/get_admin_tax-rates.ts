@@ -240,6 +240,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: Filter by a tax rate's update date.
@@ -359,6 +360,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: updated_at
  *   - name: deleted_at
  *     in: query
  *     description: Filter by a tax rate's deletion date.
@@ -478,6 +480,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: deleted_at
  *   - name: $and
  *     in: query
  *     required: false
@@ -496,38 +499,6 @@
  *       items:
  *         type: object
  *       title: $or
- *   - name: service_zone_id
- *     in: query
- *     description: Filter by a service zone's ID to retrieve its associated tax rates.
- *     required: false
- *     schema:
- *       type: string
- *       title: service_zone_id
- *       description: Filter by a service zone's ID to retrieve its associated tax rates.
- *   - name: shipping_profile_id
- *     in: query
- *     description: Filter by a shipping profile's ID to retrieve its associated tax rates.
- *     required: false
- *     schema:
- *       type: string
- *       title: shipping_profile_id
- *       description: Filter by a shipping profile's ID to retrieve its associated tax rates.
- *   - name: provider_id
- *     in: query
- *     description: Filter by a fulfillment provider's ID to retrieve its associated tax rates.
- *     required: false
- *     schema:
- *       type: string
- *       title: provider_id
- *       description: Filter by a fulfillment provider's ID to retrieve its associated tax rates.
- *   - name: shipping_option_type_id
- *     in: query
- *     description: Filter by a shipping option type's ID to retrieve its associated tax rates.
- *     required: false
- *     schema:
- *       type: string
- *       title: shipping_option_type_id
- *       description: Filter by a shipping option type's ID to retrieve its associated tax rates.
  *   - name: with_deleted
  *     in: query
  *     description: Whether to include deleted records in the result.

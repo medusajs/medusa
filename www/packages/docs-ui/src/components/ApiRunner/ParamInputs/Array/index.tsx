@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react"
 import { ApiRunnerParamInput, ApiRunnerParamInputProps } from "../Default"
 import clsx from "clsx"
 import setObjValue from "@/utils/set-obj-value"
-import { Button } from "../../../.."
+import { Button } from "../../../../components/Button"
 import { Minus, Plus } from "@medusajs/icons"
 
 export const ApiRunnerParamArrayInput = ({
@@ -17,7 +17,7 @@ export const ApiRunnerParamArrayInput = ({
 
   useEffect(() => {
     setValue((prev: unknown) => {
-      return typeof prev === "object"
+      return typeof prev === "object" && !Array.isArray(prev)
         ? setObjValue({
             obj: { ...prev },
             value: itemsValue,
@@ -70,6 +70,7 @@ export const ApiRunnerParamArrayInput = ({
                 setItemsValue((prev: unknown[]) => prev.splice(index, 1))
               }}
               className="mt-0.5"
+              data-testid="minus-button"
             >
               <Minus />
             </Button>
@@ -90,6 +91,7 @@ export const ApiRunnerParamArrayInput = ({
           ])
         }}
         className="mt-0.5"
+        data-testid="plus-button"
       >
         <Plus />
       </Button>

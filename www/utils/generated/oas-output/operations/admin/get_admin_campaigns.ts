@@ -81,7 +81,7 @@
  *           type: string
  *           title: currency_code
  *           description: The budget's currency code.
- *           example: "usd"
+ *           example: usd
  *   - name: $and
  *     in: query
  *     description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.

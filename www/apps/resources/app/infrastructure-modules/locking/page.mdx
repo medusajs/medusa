@@ -1,4 +1,4 @@
-import { Table, CardList } from "docs-ui"
+import { Table, CardList, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
 
 export const metadata = {
   title: `Locking Module`,
@@ -22,44 +22,96 @@ For example, Medusa uses the Locking Module in inventory management to ensure th
 
 You can use the Locking Module as part of the [workflows](!docs!/learn/fundamentals/workflows) you build for your custom features. A workflow is a special function composed of a series of steps that guarantees data consistency and reliable roll-back mechanism.
 
-In a step of your workflow, you can resolve the Locking Module's service and use its methods to execute an asynchronous job, acquire a lock, or release locks.
+In a workflow, you can either use:
+
+- Medusa's [acquireLockStep](/references/medusa-workflows/steps/acquireLockStep) and [releaseLockStep](/references/medusa-workflows/steps/releaseLockStep) to create locks around critical steps in your workflow.
+- The Locking Module's service directly in your steps to have more control over the locking mechanism
 
 For example:
 
-```ts
-import { Modules } from "@medusajs/framework/utils"
-import { 
-  createStep,
-  createWorkflow,
-} from "@medusajs/framework/workflows-sdk"
+<Tabs defaultValue="workflow">
+  <TabsList>
+    <TabsTrigger value="workflow">Workflow</TabsTrigger>
+    <TabsTrigger value="step">Step</TabsTrigger>
+  </TabsList>
+  <TabsContentWrapper>
+    <TabsContent value="workflow">
 
-const step1 = createStep(
-  "step-1",
-  async ({}, { container }) => {
-    const lockingModuleService = container.resolve(
-      Modules.LOCKING
+    ```ts title="src/workflows/charge-customer.ts"
+    import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+    import { acquireLockStep, releaseLockStep } from "@medusajs/medusa/core-flows"
+    import { chargeCustomerStep } from "./steps/charge-customer-step"
+
+    type WorkflowInput = {
+      customer_id: string;
+      order_id: string;
+    }
+
+    export const chargeCustomerWorkflow = createWorkflow(
+      "charge-customer",
+      (input: WorkflowInput) => {
+        acquireLockStep({
+          key: input.order_id,
+          // Attempt to acquire the lock for two seconds before timing out
+          timeout: 2,
+          // Lock is only held for a maximum of ten seconds
+          ttl: 10,
+        })
+
+        chargeCustomerStep(input)
+
+        releaseLockStep({
+          key: input.order_id,
+        })
+      }
     )
-    const productModuleService = container.resolve(
-      Modules.PRODUCT
+    ```
+
+    In the example above, you create a workflow that acquires a lock on an order using the `acquireLockStep` before charging a customer. The lock is then released using the `releaseLockStep` after the operation is complete.
+
+    This ensures that only one instance of the workflow can modify the order at a time, preventing issues like double charging the customer.
+
+    </TabsContent>
+    <TabsContent value="step">
+
+    ```ts
+    import { Modules } from "@medusajs/framework/utils"
+    import { 
+      createStep,
+      createWorkflow,
+    } from "@medusajs/framework/workflows-sdk"
+
+    const step1 = createStep(
+      "step-1",
+      async ({}, { container }) => {
+        const lockingModuleService = container.resolve(
+          Modules.LOCKING
+        )
+        const productModuleService = container.resolve(
+          Modules.PRODUCT
+        )
+
+        await lockingModuleService.execute("prod_123", async () => {
+          await productModuleService.deleteProduct("prod_123")
+        })
+      } 
     )
 
-    await lockingModuleService.execute("prod_123", async () => {
-      await productModuleService.deleteProduct("prod_123")
-    })
-  } 
-)
+    export const workflow = createWorkflow(
+      "workflow-1",
+      () => {
+        step1()
+      }
+    )
+    ```
 
-export const workflow = createWorkflow(
-  "workflow-1",
-  () => {
-    step1()
-  }
-)
-```
+    In the example above, you create a workflow that has a step. In the step, you resolve the services of the Locking and Product modules from the [Medusa container](!docs!/learn/fundamentals/medusa-container).
 
-In the example above, you create a workflow that has a step. In the step, you resolve the services of the Locking and Product modules from the [Medusa container](!docs!/learn/fundamentals/medusa-container).
+    Then, you use the `execute` method of the Locking Module to acquire a lock for the product with the ID `prod_123` and execute an asynchronous function, which deletes the product.
 
-Then, you use the `execute` method of the Locking Module to acquire a lock for the product with the ID `prod_123` and execute an asynchronous function, which deletes the product.
+    </TabsContent>
+  </TabsContentWrapper>
+</Tabs>
 
 ---
 

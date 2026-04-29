@@ -1,6 +1,16 @@
-import { ContainerRegistrationKeys, parseCorsOrigins } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  FeatureFlag,
+  isFileDisabled,
+  parseCorsOrigins,
+} from "@medusajs/utils"
 import cors, { CorsOptions } from "cors"
-import type { ErrorRequestHandler, Express, RequestHandler } from "express"
+import type {
+  ErrorRequestHandler,
+  Express,
+  IRouter,
+  RequestHandler,
+} from "express"
 import type {
   AdditionalDataValidatorRoute,
   BodyParserConfigRoute,
@@ -15,10 +25,12 @@ import type {
 } from "./types"
 
 import { Logger, MedusaContainer } from "@medusajs/types"
+import { join } from "path"
 import { configManager } from "../config"
 import { MiddlewareFileLoader } from "./middleware-file-loader"
-import { authenticate, AuthType } from "./middlewares"
+import { applyLocale, authenticate, AuthType } from "./middlewares"
 import { createBodyParserMiddlewaresStack } from "./middlewares/bodyparser"
+import { wrapWithPoliciesCheck } from "./middlewares/check-permissions"
 import { ensurePublishableApiKeyMiddleware } from "./middlewares/ensure-publishable-api-key"
 import { errorHandler } from "./middlewares/error-handler"
 import { RoutesFinder } from "./routes-finder"
@@ -83,9 +95,10 @@ export class ApiLoader {
    */
   async #loadHttpResources() {
     const routesLoader = new RoutesLoader()
+
     const middlewareLoader = new MiddlewareFileLoader()
 
-    for (let dir of this.#sourceDirs) {
+    for (const dir of this.#sourceDirs) {
       await routesLoader.scanDir(dir)
       await middlewareLoader.scanDir(dir)
     }
@@ -104,6 +117,38 @@ export class ApiLoader {
   }
 
   /**
+   * Checks if a route file is disabled for a given matcher and method
+   * by trying to find the corresponding route file path
+   */
+  #isRouteFileDisabled(matcher: string): boolean {
+    const routePathSegments = matcher
+      .split("/")
+      .filter(Boolean)
+      .map((segment) => {
+        if (segment.startsWith(":")) {
+          return `[${segment.slice(1)}]`
+        }
+        return segment
+      })
+
+    for (const sourceDir of this.#sourceDirs) {
+      for (const ext of [".ts", ".js"]) {
+        const routeFilePath = join(
+          sourceDir,
+          ...routePathSegments,
+          `route${ext}`
+        )
+
+        if (isFileDisabled(routeFilePath)) {
+          return true
+        }
+      }
+    }
+
+    return false
+  }
+
+  /**
    * Registers a middleware or a route handler with Express
    */
   #registerExpressHandler(
@@ -119,16 +164,25 @@ export class ApiLoader {
         : route.handler
 
       this.#app[route.method.toLowerCase()](route.matcher, wrapHandler(handler))
+
       return
     }
 
+    const isRbacEnabled = FeatureFlag.isFeatureEnabled("rbac")
     if (!route.methods) {
       this.#logger.debug(`registering global middleware for ${route.matcher}`)
+
+      // Wrap with permission check if policies are defined
+      let handlerToUse = route.handler
+      if (route.policies && isRbacEnabled) {
+        handlerToUse = wrapWithPoliciesCheck(route.handler, route.policies)
+      }
+
       const handler = ApiLoader.traceMiddleware
-        ? (ApiLoader.traceMiddleware(route.handler, {
+        ? (ApiLoader.traceMiddleware(handlerToUse, {
             route: route.matcher,
           }) as RequestHandler)
-        : (route.handler as RequestHandler)
+        : (handlerToUse as RequestHandler)
 
       this.#app.use(route.matcher, wrapHandler(handler))
       return
@@ -138,15 +192,29 @@ export class ApiLoader {
       ? route.methods
       : [route.methods]
     methods.forEach((method) => {
+      const isDisabled = this.#isRouteFileDisabled(route.matcher)
+      if (isDisabled) {
+        this.#logger.debug(
+          `skipping disabled route middleware registration for ${method} ${route.matcher}`
+        )
+        return
+      }
+
       this.#logger.debug(
         `registering route middleware ${method} ${route.matcher}`
       )
+
+      let handlerToUse = route.handler
+      if (route.policies && isRbacEnabled) {
+        handlerToUse = wrapWithPoliciesCheck(route.handler, route.policies)
+      }
+
       const handler = ApiLoader.traceMiddleware
-        ? (ApiLoader.traceMiddleware(wrapHandler(route.handler), {
+        ? (ApiLoader.traceMiddleware(wrapHandler(handlerToUse), {
             route: route.matcher,
             method: method,
           }) as RequestHandler)
-        : wrapHandler(route.handler)
+        : wrapHandler(handlerToUse)
 
       this.#app[method.toLowerCase()](route.matcher, handler)
     })
@@ -353,7 +421,23 @@ export class ApiLoader {
     this.#app.use(namespace, middleware as RequestHandler)
   }
 
+  #applyLocaleMiddleware(namespace: string) {
+    this.#logger.debug(
+      `Registering locale middleware for namespace ${namespace}`
+    )
+    let middleware = ApiLoader.traceMiddleware
+      ? ApiLoader.traceMiddleware(applyLocale, {
+          route: namespace,
+        })
+      : applyLocale
+    this.#app.use(namespace, middleware as RequestHandler)
+  }
+
   async load() {
+    if (FeatureFlag.isFeatureEnabled("backend_hmr")) {
+      ;(global as any).__MEDUSA_HMR_API_LOADER__ = this
+    }
+
     const {
       errorHandler: sourceErrorHandler,
       middlewares,
@@ -425,6 +509,8 @@ export class ApiLoader {
      */
     this.#applyStorePublishableKeyMiddleware("/store")
 
+    this.#applyLocaleMiddleware("/store")
+
     this.#applyAuthMiddleware(
       routesFinder,
       "/store",
@@ -461,5 +547,20 @@ export class ApiLoader {
      * Registering error handler as the final handler
      */
     this.#app.use(sourceErrorHandler ?? errorHandler())
+  }
+
+  /**
+   * Clear all API resources registered by this loader
+   * This removes all routes and middleware added after the initial stack state
+   * Used by HMR to reset the API state before reloading
+   */
+  clearAllResources() {
+    const router = this.#app._router as IRouter
+    const initialStackLength =
+      (global as any).__MEDUSA_HMR_INITIAL_STACK_LENGTH__ ?? 0
+
+    if (router && router.stack) {
+      router.stack.splice(initialStackLength)
+    }
   }
 }

@@ -1,4 +1,5 @@
 import {
+  EventPriority,
   Modules,
   OrderStatus,
   OrderWorkflowEvents,
@@ -8,13 +9,23 @@ import {
   createWorkflow,
   parallelize,
   StepResponse,
+  transform,
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import type { IOrderModuleService, OrderDTO } from "@medusajs/framework/types"
+import type {
+  ConfirmVariantInventoryWorkflowInputDTO,
+  IOrderModuleService,
+  OrderDTO,
+} from "@medusajs/framework/types"
 import { emitEventStep, useRemoteQueryStep } from "../../common"
 import { validateDraftOrderStep } from "../steps/validate-draft-order"
 import { acquireLockStep, releaseLockStep } from "../../locking"
+import {
+  prepareConfirmInventoryInput,
+  requiredOrderFieldsForInventoryConfirmation,
+} from "../../cart/utils/prepare-confirm-inventory-input"
+import { reserveInventoryStep } from "../../cart"
 
 export const convertDraftOrderWorkflowId = "convert-draft-order"
 
@@ -119,6 +130,48 @@ export const convertDraftOrderWorkflow = createWorkflow(
 
     validateDraftOrderStep({ order })
 
+    const orderItems = useRemoteQueryStep({
+      entry_point: "order",
+      fields: requiredOrderFieldsForInventoryConfirmation,
+      variables: { id: input.id },
+      list: false,
+      throw_if_key_not_found: true,
+    }).config({ name: "order-items-query" })
+
+    const { variants, items } = transform({ orderItems }, ({ orderItems }) => {
+      const items: ConfirmVariantInventoryWorkflowInputDTO["items"] = []
+      const variants: ConfirmVariantInventoryWorkflowInputDTO["variants"] = []
+
+      for (const orderItem of orderItems.items ?? []) {
+        items.push({
+          variant_id: orderItem.variant?.id,
+          quantity: orderItem.quantity,
+          id: orderItem.id,
+        })
+        if (orderItem.variant) {
+          variants.push(orderItem.variant)
+        }
+      }
+
+      return {
+        variants,
+        items,
+      }
+    })
+
+    const formatedInventoryItems = transform(
+      {
+        input: {
+          sales_channel_id: (orderItems as any).sales_channel_id,
+          variants,
+          items,
+        },
+      },
+      prepareConfirmInventoryInput
+    )
+
+    reserveInventoryStep(formatedInventoryItems)
+
     const updatedOrder = convertDraftOrderStep({ id: input.id })
 
     parallelize(
@@ -128,6 +181,9 @@ export const convertDraftOrderWorkflow = createWorkflow(
       emitEventStep({
         eventName: OrderWorkflowEvents.PLACED,
         data: { id: updatedOrder.id },
+        options: {
+          priority: EventPriority.CRITICAL,
+        },
       })
     )
 

@@ -300,6 +300,12 @@ export function getRouteMap({
                 {
                   path: "",
                   lazy: () => import("../../routes/orders/order-list"),
+                  children: [
+                    {
+                      path: "export",
+                      lazy: () => import("../../routes/orders/order-export"),
+                    },
+                  ],
                 },
                 {
                   path: ":id",
@@ -1010,6 +1016,10 @@ export function getRouteMap({
                   lazy: () => import("../../routes/store/store-add-currencies"),
                 },
                 {
+                  path: "locales",
+                  lazy: () => import("../../routes/store/store-add-locales"),
+                },
+                {
                   path: "metadata/edit",
                   lazy: () => import("../../routes/store/store-metadata"),
                 },
@@ -1287,6 +1297,11 @@ export function getRouteMap({
                         import(
                           "../../routes/locations/location-fulfillment-providers"
                         ),
+                    },
+                    {
+                      path: "metadata/edit",
+                      lazy: () =>
+                        import("../../routes/locations/location-metadata"),
                     },
                     {
                       path: "fulfillment-set/:fset_id",
@@ -1830,7 +1845,36 @@ export function getRouteMap({
                 },
               ],
             },
-            ...(settingsRoutes?.[0]?.children || []),
+            {
+              path: "translations",
+              errorElement: <ErrorBoundary />,
+              handle: {
+                breadcrumb: () => t("translations.domain"),
+              },
+              children: [
+                {
+                  path: "",
+                  lazy: () =>
+                    import("../../routes/translations/translation-list"),
+                  children: [
+                    {
+                      path: "settings",
+                      lazy: () => import("../../routes/translations/settings"),
+                    },
+                  ],
+                },
+                {
+                  path: "edit",
+                  lazy: () =>
+                    import("../../routes/translations/translations-edit"),
+                },
+                {
+                  path: "add-locales",
+                  lazy: () => import("../../routes/translations/add-locales"),
+                },
+              ],
+            },
+            ...settingsRoutes.flatMap((r) => r?.children || []),
           ],
         },
       ],

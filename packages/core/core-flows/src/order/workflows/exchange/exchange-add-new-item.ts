@@ -4,6 +4,7 @@ import {
   OrderExchangeDTO,
   OrderPreviewDTO,
   OrderWorkflow,
+  PromotionDTO,
 } from "@medusajs/framework/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
 import {
@@ -21,8 +22,10 @@ import {
 } from "../../utils/order-validation"
 import { addOrderLineItemsWorkflow } from "../add-line-items"
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
+import { computeAdjustmentsForPreviewWorkflow } from "../compute-adjustments-for-preview"
 import { updateOrderTaxLinesWorkflow } from "../update-tax-lines"
 import { refreshExchangeShippingWorkflow } from "./refresh-shipping"
+import { fieldsToComputeAdjustmentsForPreview } from "../order-edit/utils/fields"
 
 /**
  * The data to validate that new or outbound items can be added to an exchange.
@@ -123,7 +126,11 @@ export const orderExchangeAddNewItemWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["id", "status", "canceled_at", "items.*"],
+      fields: [
+        ...fieldsToComputeAdjustmentsForPreview,
+        "status",
+        "canceled_at",
+      ],
       variables: { id: orderExchange.order_id },
       list: false,
       throw_if_key_not_found: true,
@@ -131,7 +138,13 @@ export const orderExchangeAddNewItemWorkflow = createWorkflow(
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
-      fields: ["id", "status"],
+      fields: [
+        "id",
+        "status",
+        "version",
+        "exchange_id",
+        "carry_over_promotions",
+      ],
       variables: {
         filters: {
           order_id: orderExchange.order_id,
@@ -190,6 +203,20 @@ export const orderExchangeAddNewItemWorkflow = createWorkflow(
 
     createOrderChangeActionsWorkflow.runAsStep({
       input: orderChangeActionInput,
+    })
+
+    const orderWithPromotions = transform({ order }, ({ order }) => {
+      return {
+        ...order,
+        promotions: (order as any).promotions ?? [],
+      } as OrderDTO & { promotions: PromotionDTO[] }
+    })
+
+    computeAdjustmentsForPreviewWorkflow.runAsStep({
+      input: {
+        order: orderWithPromotions,
+        orderChange,
+      },
     })
 
     const refreshArgs = transform(

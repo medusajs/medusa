@@ -1,4 +1,7 @@
-import { MathBN, MEDUSA_EPSILON } from "@medusajs/framework/utils"
+import {
+  MathBN,
+  MEDUSA_DEFAULT_CURRENCY_EPSILON,
+} from "@medusajs/framework/utils"
 import {
   getLastFulfillmentStatus,
   getLastPaymentStatus,
@@ -113,7 +116,7 @@ describe("Aggregate Order Status", () => {
           {
             status: "authorized",
             captured_amount: 10,
-            refunded_amount: MathBN.sub(10, MEDUSA_EPSILON),
+            refunded_amount: MathBN.sub(10, MEDUSA_DEFAULT_CURRENCY_EPSILON),
             amount: 10,
           },
           { status: "canceled" },

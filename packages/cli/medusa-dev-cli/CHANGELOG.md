@@ -1,5 +1,57 @@
 # Change Log
 
+## 2.14.1
+
+## 2.14.0
+
+## 2.13.6
+
+### Patch Changes
+
+- [#15005](https://github.com/medusajs/medusa/pull/15005) [`2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d`](https://github.com/medusajs/medusa/commit/2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update glob version
+
+## 2.13.5
+
+## 2.13.4
+
+## 2.13.3
+
+## 2.13.2
+
+## 2.13.1
+
+## 2.13.0
+
+### Minor Changes
+
+- [`a31e72c31c5235240cead2d04e39e5927688eec7`](https://github.com/medusajs/medusa/commit/a31e72c31c5235240cead2d04e39e5927688eec7) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Minor bump
+
+## 2.12.6
+
+## 2.12.5
+
+## 2.12.4
+
+## 2.12.3
+
+## 2.12.2
+
+## 2.12.1
+
+## 2.12.0
+
+### Patch Changes
+
+- [#14083](https://github.com/medusajs/medusa/pull/14083) [`beb91d88a2f224075e4fcf35a0ee9483b3124504`](https://github.com/medusajs/medusa/commit/beb91d88a2f224075e4fcf35a0ee9483b3124504) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(): Update glob package
+
+## 2.11.3
+
+### Patch Changes
+
+- [#13910](https://github.com/medusajs/medusa/pull/13910) [`224ab39a81e8d3cf3d6fa3ff5eee82541f64728d`](https://github.com/medusajs/medusa/commit/224ab39a81e8d3cf3d6fa3ff5eee82541f64728d) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(): Dependencies cleanup and improvements
+
+- [#13940](https://github.com/medusajs/medusa/pull/13940) [`afb40d437b3cc4ceb015df70985b2f005f40eaff`](https://github.com/medusajs/medusa/commit/afb40d437b3cc4ceb015df70985b2f005f40eaff) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(): Cleanup and organize deps
+
 ## 2.11.2
 
 ## 2.11.1

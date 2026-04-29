@@ -256,6 +256,18 @@ In your frontend, decode the token using tools like [react-jwt](https://www.npmj
 - If the decoded data has an `actor_id` property, the user is already registered. So, use this token for subsequent authenticated requests.
 - If not, use the token in the header of a request that creates the user, such as the [Create Customer API route](!api!/store#customers_postcustomers).
 
+The decoded data may look like this:
+
+```json
+{
+  "actor_id": "", // Empty if the user is not registered
+  "user_metadata": {
+    "email": "Whitney_Schultz@gmail.com"
+  }
+  // other fields...
+}
+```
+
 ---
 
 ## Refresh Token Route

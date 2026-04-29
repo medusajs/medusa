@@ -9,7 +9,7 @@
  *   When used with a third-party provider, such as Google, the request returns a `location` property. You redirect to the
  *   specified URL in your frontend to continue authentication with the third-party service.
  * externalDocs:
- *   url: https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route#types-of-authentication-flows
+ *   url: https://docs.medusajs.com/resources/commerce-modules/auth/authentication-route#types-of-authentication-flows
  *   description: Learn about different authentication flows.
  * x-authenticated: false
  * parameters:

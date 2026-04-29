@@ -30,6 +30,7 @@ export type Parameter = {
   type: string
   optional?: boolean
   defaultValue?: string
+  example?: string
   description?: string
   featureFlag?: string
   expandable: boolean

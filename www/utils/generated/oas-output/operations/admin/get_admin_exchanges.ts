@@ -276,6 +276,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: deleted_at
  *   - name: id
  *     in: query
  *     required: false
@@ -549,6 +550,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: Filter by the exchange's update date.
@@ -780,6 +782,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: updated_at
  *   - name: with_deleted
  *     in: query
  *     description: Whether to include deleted records in the result.

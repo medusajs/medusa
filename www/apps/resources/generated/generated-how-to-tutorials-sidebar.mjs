@@ -256,6 +256,7 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
           "autogenerate_tags": "howTo+admin",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
+          "description": "These how-to guides help you customize the Medusa Admin dashboard with practical examples.",
           "children": [
             {
               "loaded": true,
@@ -384,6 +385,14 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
                   ]
                 }
               ]
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "title": "Custom Admin Authentication",
+              "path": "/how-to-tutorials/how-to/admin/auth",
+              "children": []
             }
           ]
         }
@@ -458,6 +467,15 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
           "title": "Custom Item Pricing",
           "path": "/examples/guides/custom-item-price",
           "description": "Learn how to use prices from external systems for products.",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "link",
+          "title": "Customer Tiers",
+          "path": "/how-to-tutorials/tutorials/customer-tiers",
+          "description": "Learn how to implement customer tiers in your Medusa store.",
           "children": []
         },
         {
@@ -609,6 +627,15 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
           "title": "Product Builder",
           "path": "/how-to-tutorials/tutorials/product-builder",
           "description": "Learn how to implement a product builder that allows customers to customize products before adding them to the cart.",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "link",
+          "title": "Product Rentals",
+          "path": "/how-to-tutorials/tutorials/product-rentals",
+          "description": "Learn how to implement product rentals in your Medusa store.",
           "children": []
         },
         {

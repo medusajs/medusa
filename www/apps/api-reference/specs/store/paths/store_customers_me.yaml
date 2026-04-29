@@ -8,7 +8,7 @@ get:
   x-authenticated: true
   externalDocs:
     url: >-
-      https://docs.medusajs.com/v2/resources/storefront-development/customers/retrieve
+      https://docs.medusajs.com/resources/storefront-development/customers/retrieve
     description: 'Storefront guide: How to retrieve the logged-in customer.'
   parameters:
     - name: x-publishable-api-key
@@ -19,6 +19,17 @@ get:
         type: string
         externalDocs:
           url: https://docs.medusajs.com/api/store#publishable-api-key
+    - name: x-medusa-locale
+      in: header
+      description: The locale in BCP 47 format to retrieve localized content.
+      required: false
+      schema:
+        type: string
+        example: en-US
+        externalDocs:
+          url: >-
+            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          description: Learn more in the Serve Translations in Storefront guide.
     - name: fields
       in: query
       description: >-
@@ -45,6 +56,17 @@ get:
           documentation.
         externalDocs:
           url: '#select-fields-and-relations'
+    - name: locale
+      in: query
+      description: The locale in BCP 47 format to retrieve localized content.
+      required: false
+      schema:
+        type: string
+        example: en-US
+        externalDocs:
+          url: >-
+            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          description: Learn more in the Serve Translations in Storefront guide.
   security:
     - cookie_auth: []
     - jwt_token: []
@@ -84,7 +106,7 @@ post:
   description: Update the logged-in customer's details.
   externalDocs:
     url: >-
-      https://docs.medusajs.com/v2/resources/storefront-development/customers/profile
+      https://docs.medusajs.com/resources/storefront-development/customers/profile
     description: 'Storefront guide: How to edit a customer''s profile.'
   x-authenticated: true
   parameters:
@@ -96,6 +118,17 @@ post:
         type: string
         externalDocs:
           url: https://docs.medusajs.com/api/store#publishable-api-key
+    - name: x-medusa-locale
+      in: header
+      description: The locale in BCP 47 format to retrieve localized content.
+      required: false
+      schema:
+        type: string
+        example: en-US
+        externalDocs:
+          url: >-
+            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          description: Learn more in the Serve Translations in Storefront guide.
     - name: fields
       in: query
       description: >-
@@ -118,6 +151,17 @@ post:
           documentation.
         externalDocs:
           url: '#select-fields-and-relations'
+    - name: locale
+      in: query
+      description: The locale in BCP 47 format to retrieve localized content.
+      required: false
+      schema:
+        type: string
+        example: en-US
+        externalDocs:
+          url: >-
+            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          description: Learn more in the Serve Translations in Storefront guide.
   security:
     - cookie_auth: []
     - jwt_token: []
@@ -161,9 +205,9 @@ post:
     - name: customer.updated
       payload: |-
         ```ts
-        [{
+        {
           id, // The ID of the customer
-        }]
+        }
         ```
       description: Emitted when a customer is updated.
       deprecated: false

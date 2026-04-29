@@ -24,6 +24,11 @@ export const orderSidebar = [
           },
           {
             type: "link",
+            path: "/commerce-modules/order/custom-display-id",
+            title: "Custom Order Display ID",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/order/promotion-adjustments",
             title: "Promotions Adjustments",
           },

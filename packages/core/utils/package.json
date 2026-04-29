@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/utils",
-  "version": "2.11.2",
+  "version": "2.14.1",
   "description": "Medusa utilities functions shared by Medusa core and Modules",
   "main": "dist/index.js",
   "exports": {
@@ -26,25 +26,15 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "2.11.2",
-    "@swc/core": "^1.7.28",
-    "@swc/jest": "^0.2.36",
-    "@types/autocannon": "^7.12.5",
-    "@types/express": "^4.17.21",
-    "autocannon": "^7.15.0",
-    "expect-type": "^0.20.0",
-    "express": "^4.21.0",
-    "jest": "^29.7.0",
-    "pg-god": "^1.0.12",
-    "rimraf": "^5.0.1",
-    "typescript": "^5.6.2"
+    "@medusajs/types": "2.14.1",
+    "express": "^4.21.0"
   },
   "dependencies": {
     "@graphql-codegen/core": "^4.0.2",
     "@graphql-codegen/typescript": "^4.0.9",
     "@graphql-tools/merge": "^9.0.7",
     "@graphql-tools/schema": "^10.0.6",
-    "@medusajs/deps": "2.11.2",
+    "@medusajs/deps": "2.14.1",
     "@types/pluralize": "^0.0.33",
     "bignumber.js": "^9.1.2",
     "dotenv": "^16.4.5",
@@ -53,16 +43,15 @@
     "jsonwebtoken": "^9.0.2",
     "pg-connection-string": "^2.7.0",
     "pluralize": "^8.0.0",
-    "ulid": "^2.3.0",
-    "zod": "3.25.76"
+    "ulid": "^2.3.0"
   },
   "peerDependencies": {
     "express": "^4.21.0"
   },
   "scripts": {
-    "build": "rimraf dist && tsc --build",
-    "watch": "tsc --build --watch",
-    "test": "jest --silent=false --bail --forceExit --testPathIgnorePatterns='/integration-tests/' -- src/**/__tests__/**/*.ts",
-    "test:integration": "jest --silent --bail --forceExit -- src/**/integration-tests/__tests__/**/*.ts"
+    "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
+    "watch": "yarn run -T tsc --build --watch",
+    "test": "../../../node_modules/.bin/jest --silent=false --bail --forceExit --testPathIgnorePatterns='/integration-tests/' --testPathPattern=src",
+    "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --silent --bail --forceExit --testPathPattern=\"src/.*/integration-tests/__tests__/.*\\.ts\""
   }
 }

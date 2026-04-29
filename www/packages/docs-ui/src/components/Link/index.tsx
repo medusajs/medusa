@@ -13,6 +13,8 @@ export type LinkProps = Partial<NextLinkProps> &
     variant?: "default" | "content"
   }
 
+const HASH_REGEX = /#.*$/
+
 export const Link = ({
   href,
   children,
@@ -21,8 +23,10 @@ export const Link = ({
   variant = "default",
   ...rest
 }: LinkProps) => {
-  if (href?.replace(/#.*$/, "").endsWith("page.mdx")) {
-    href = href.replace("/page.mdx", "")
+  const hash = href?.match(HASH_REGEX)?.[0] || ""
+  const hrefWithoutHash = href?.replace(HASH_REGEX, "") || ""
+  if (hrefWithoutHash.endsWith("page.mdx")) {
+    href = hrefWithoutHash.replace("/page.mdx", "") + hash
   }
   return (
     <NextLink

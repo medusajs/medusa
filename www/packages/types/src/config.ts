@@ -9,6 +9,7 @@ export type BreadcrumbOptions = {
 
 export declare type DocsConfig = {
   titleSuffix?: string
+  description?: string
   baseUrl: string
   basePath?: string
   sidebars: Sidebar.Sidebar[]
@@ -22,6 +23,7 @@ export declare type DocsConfig = {
   version: {
     number: string
     releaseUrl: string
+    releaseDate: string
     hide?: boolean
     bannerImage?: {
       light: string
@@ -30,4 +32,8 @@ export declare type DocsConfig = {
   }
   reportIssueLink?: string
   logo: string
+  features?: {
+    aiAssistant?: boolean
+  }
+  contentMenuSections?: Record<string, boolean>
 }

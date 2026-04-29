@@ -37,10 +37,10 @@ export class Compiler {
     this.#adminOnlyDistFolder = path.join(this.#projectRoot, ".medusa/admin")
     this.#pluginsDistFolder = path.join(this.#projectRoot, ".medusa/server")
     this.#backendIgnoreFiles = [
-      "/integration-tests/",
-      "/test/",
-      "/unit-tests/",
-      "/src/admin/",
+      "integration-tests",
+      "test",
+      "unit-tests",
+      "src/admin",
     ]
   }
 
@@ -190,7 +190,10 @@ export class Compiler {
   }> {
     const ts = await this.#loadTSCompiler()
     const filesToCompile = tsConfig.fileNames.filter((fileName) => {
-      return !chunksToIgnore.some((chunk) => fileName.includes(`${chunk}`))
+      const relativeFileName = path.relative(this.#projectRoot, fileName)
+      return !chunksToIgnore.some((chunk) =>
+        relativeFileName.includes(`${chunk}`)
+      )
     })
 
     /**
@@ -423,7 +426,7 @@ export class Compiler {
    */
   async buildPluginBackend(tsConfig: tsStatic.ParsedCommandLine) {
     const tracker = this.#trackDuration()
-    const dist = ".medusa/server"
+    const dist = this.#pluginsDistFolder
     this.#logger.info("Compiling plugin source...")
 
     /**
@@ -495,7 +498,7 @@ export class Compiler {
         "dist",
         "static",
         "private",
-        ".medusa/**/*",
+        ".medusa",
         ...this.#backendIgnoreFiles,
       ],
     })

@@ -57,6 +57,12 @@ const generatedgeneratedStoreSidebarSidebar = {
       "loaded": true
     },
     {
+      "type": "link",
+      "title": "Localization",
+      "path": "localization",
+      "loaded": true
+    },
+    {
       "type": "separator"
     },
     {
@@ -146,6 +152,24 @@ const generatedgeneratedStoreSidebarSidebar = {
           "type": "link",
           "path": "gift-cards_giftcard_schema",
           "title": "GiftCard Object",
+          "loaded": true,
+          "badge": {
+            "variant": "neutral",
+            "text": "Schema"
+          }
+        }
+      ],
+      "loaded": false,
+      "showLoadingIfEmpty": true
+    },
+    {
+      "type": "category",
+      "title": "Locales",
+      "children": [
+        {
+          "type": "link",
+          "path": "locales_locale_schema",
+          "title": "Locale Object",
           "loaded": true,
           "badge": {
             "variant": "neutral",

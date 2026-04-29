@@ -16,7 +16,7 @@ export const Toggle = ({
         "disabled:!bg-ui-bg-disabled group relative inline-flex items-center rounded-full outline-none transition-all before:absolute",
         "before:inset-0 before:rounded-full before:content-[''] after:absolute after:inset-0 after:rounded-full after:content-['']",
         "disabled:cursor-not-allowed",
-        // eslint-disable-next-line react/prop-types
+
         props.size !== "small" &&
           "h-[18px] w-[32px] [&_span]:h-[14px] [&_span]:w-[14px]",
         "[&_span]:bg-medusa-fg-on-color [&_span]:shadow-details-switch-handle [&_span]:group-disabled:bg-ui-fg-disabled [&_span]:pointer-events-none",

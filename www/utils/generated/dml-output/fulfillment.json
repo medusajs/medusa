@@ -121,7 +121,7 @@
 			"label": "The label of the shipping option type",
 			"description": "The description of the shipping option type",
 			"code": "The code of the shipping option type",
-			"shipping_option": "The associated shipping option.\n\n@expandable"
+			"shipping_options": "The associated shipping options.\n\n@expandable"
 		},
 		"deprecated": {
 			"is_deprecated": false

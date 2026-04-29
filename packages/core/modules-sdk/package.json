@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/modules-sdk",
-  "version": "2.11.2",
+  "version": "2.14.1",
   "description": "SDK for medusa modules",
   "main": "dist/index.js",
   "export": {
@@ -26,25 +26,16 @@
   "author": "Medusa",
   "license": "MIT",
   "scripts": {
-    "build": "rimraf dist && tsc --build",
-    "test": "jest --bail --forceExit",
-    "watch": "tsc --build --watch"
+    "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
+    "test": "../../../node_modules/.bin/jest --bail --forceExit",
+    "watch": "yarn run -T tsc --build --watch"
   },
   "devDependencies": {
-    "@medusajs/types": "2.11.2",
-    "@swc/core": "^1.7.28",
-    "@swc/jest": "^0.2.36",
-    "cross-env": "^5.2.1",
-    "jest": "^29.7.0",
-    "rimraf": "^5.0.1",
-    "typescript": "^5.6.2"
+    "@medusajs/types": "2.14.1"
   },
   "dependencies": {
-    "@medusajs/deps": "2.11.2",
-    "@medusajs/orchestration": "2.11.2",
-    "@medusajs/utils": "2.11.2"
-  },
-  "peerDependencies": {
-    "express": "^4.21.0"
+    "@medusajs/deps": "2.14.1",
+    "@medusajs/orchestration": "2.14.1",
+    "@medusajs/utils": "2.14.1"
   }
 }

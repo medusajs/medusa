@@ -11,12 +11,13 @@ import { useProductVariant } from "../../../../../hooks/api/products"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
 import { CreateFulfillmentSchema } from "./constants"
 import { InformationCircleSolid } from "@medusajs/icons"
+import { ExtendedVariant } from "../../../../product-variants/product-variant-detail/constants"
 
 type OrderEditItemProps = {
   item: HttpTypes.AdminOrderLineItem
-  currencyCode: string
+  currencyCode?: string
   locationId?: string
-  onItemRemove: (itemId: string) => void
+  onItemRemove?: (itemId: string) => void
   reservations: HttpTypes.AdminReservation[]
   form: UseFormReturn<zod.infer<typeof CreateFulfillmentSchema>>
   disabled: boolean
@@ -32,15 +33,15 @@ export function OrderCreateFulfillmentItem({
   const { t } = useTranslation()
 
   const { variant } = useProductVariant(
-    item.product_id,
-    item.variant_id,
+    item.product_id ?? "",
+    item.variant_id ?? "",
     {
       fields: "*inventory,*inventory.location_levels,*inventory_items",
     },
     {
       enabled: !!item.variant,
     }
-  )
+  ) as { variant: ExtendedVariant }
 
   const { availableQuantity, inStockQuantity } = useMemo(() => {
     if (
@@ -89,7 +90,8 @@ export function OrderCreateFulfillmentItem({
         }
       }
 
-      const availableQuantity = level.available_quantity / requiredQuantity
+      const availableQuantity =
+        (level.available_quantity ?? 0) / requiredQuantity
       const stockedQuantity = level.stocked_quantity / requiredQuantity
 
       return {
@@ -213,7 +215,7 @@ export function OrderCreateFulfillmentItem({
 
                             field.onChange(val)
 
-                            if (!isNaN(val)) {
+                            if (val !== null && !isNaN(val)) {
                               if (val < minValue || val > maxValue) {
                                 form.setError(`quantity.${item.id}`, {
                                   type: "manual",

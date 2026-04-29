@@ -2,10 +2,19 @@
  * @oas [get] /store/products
  * operationId: GetProducts
  * summary: List Products
- * description: Retrieve a list of products. The products can be filtered by fields such as `id`. The products can also be sorted or paginated.
+ * description: >
+ *   Retrieve a list of products. The products can be filtered by fields such as `id`. The products can also be sorted or paginated.
+ * 
+ * 
+ *   You can retrieve the content of the products translated to a specific locale either by passing the `locale` query parameter or by setting the `x-medusa-locale` header to the desired locale code in
+ *   BCP 47 format. If you don't pass a locale, and your store has a default locale, the default locale will be used.
+ * 
+ * 
+ *   With localization, the products' content like title and description will be in the specified locale if a translation is available,  and fallback to the original content otherwise. Learn more in the
+ *   [Localization](#localization) section.
  * x-authenticated: false
  * externalDocs:
- *   url: https://docs.medusajs.com/v2/resources/storefront-development/products/price
+ *   url: https://docs.medusajs.com/resources/storefront-development/products/price
  *   description: "Storefront guide: How to retrieve a product variants' prices."
  * parameters:
  *   - name: x-publishable-api-key
@@ -16,6 +25,16 @@
  *       type: string
  *       externalDocs:
  *         url: https://docs.medusajs.com/api/store#publishable-api-key
+ *   - name: x-medusa-locale
+ *     in: header
+ *     description: The locale in BCP 47 format to retrieve localized content.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       example: en-US
+ *       externalDocs:
+ *         url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+ *         description: Learn more in the Serve Translations in Storefront guide.
  *   - name: fields
  *     in: query
  *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
@@ -143,7 +162,7 @@
  *     schema:
  *       description: Filter by a collection's ID to retrieve the products in it.
  *       externalDocs:
- *         url: https://docs.medusajs.com/v2/resources/storefront-development/products/collections/products
+ *         url: https://docs.medusajs.com/resources/storefront-development/products/collections/products
  *         description: "Storefront guide: Retrieve a collection's products."
  *       items:
  *         type: string
@@ -410,6 +429,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: Filter by the product's update date.
@@ -641,6 +661,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: updated_at
  *   - name: region_id
  *     in: query
  *     description: The ID of the region the products are being viewed from. This is required if you're retrieving product variant prices with taxes.
@@ -650,7 +671,7 @@
  *       title: region_id
  *       description: The ID of the region the products are being viewed from. This is required if you're retrieving product variant prices with taxes.
  *       externalDocs:
- *         url: https://docs.medusajs.com/v2/resources/storefront-development/products/price/examples/tax-price
+ *         url: https://docs.medusajs.com/resources/storefront-development/products/price/examples/tax-price
  *         description: "Storefront guide: How to show product variants' prices with taxes."
  *   - name: province
  *     in: query
@@ -697,25 +718,480 @@
  *     description: Filter the products' variants.
  *     required: false
  *     schema:
- *       type: object
- *       description: Filter the products' variants.
- *       x-schemaName: StoreProductVariantParams
- *       properties:
- *         options:
- *           type: object
- *           description: Filter by the variants' options.
- *           required:
- *             - value
- *             - option_id
+ *       allOf:
+ *         - type: object
+ *           description: The product's variants.
+ *           x-schemaName: StoreProductVariantParams
  *           properties:
- *             option_id:
+ *             sku:
+ *               oneOf:
+ *                 - type: string
+ *                   title: sku
+ *                   description: The variant's SKU.
+ *                 - type: array
+ *                   description: The variant's SKUs.
+ *                   items:
+ *                     type: string
+ *                     title: sku
+ *                     description: A variant SKU.
+ *             manage_inventory:
+ *               type: boolean
+ *               title: manage_inventory
+ *               description: Filter by whether Medusa manages the variant's inventory.
+ *             allow_backorder:
+ *               type: boolean
+ *               title: allow_backorder
+ *               description: Filter by whether backorders are allowed for the variant.
+ *             product_id:
+ *               oneOf:
+ *                 - type: string
+ *                   title: product_id
+ *                   description: Filter by the variant's product ID.
+ *                 - type: array
+ *                   description: Filter by the variant's product IDs.
+ *                   items:
+ *                     type: string
+ *                     title: product_id
+ *                     description: A variant's product ID.
+ *             q:
  *               type: string
- *               title: option_id
- *               description: The ID of the option to filter by.
- *             value:
+ *               title: q
+ *               description: Search term to filter the variant's searchable properties.
+ *             id:
+ *               oneOf:
+ *                 - type: string
+ *                   title: id
+ *                   description: Filter by the variant's ID.
+ *                 - type: array
+ *                   description: Filter by the variant's IDs.
+ *                   items:
+ *                     type: string
+ *                     title: id
+ *                     description: A variant's ID.
+ *             options:
+ *               type: object
+ *               description: Filter by the variant's options.
+ *               properties:
+ *                 value:
+ *                   type: string
+ *                   title: value
+ *                   description: Filter by the option's value.
+ *                 option_id:
+ *                   type: string
+ *                   title: option_id
+ *                   description: Filter by the option's option ID.
+ *             created_at:
+ *               type: object
+ *               properties:
+ *                 $and:
+ *                   type: array
+ *                   description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *                   items:
+ *                     type: object
+ *                 $or:
+ *                   type: array
+ *                   description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *                   items:
+ *                     type: object
+ *                 $eq:
+ *                   oneOf:
+ *                     - type: string
+ *                       title: $eq
+ *                       description: Filter by exact value.
+ *                     - type: array
+ *                       title: $eq
+ *                       description: Filter by exact value.
+ *                       items:
+ *                         type: string
+ *                 $ne:
+ *                   type: string
+ *                   title: $ne
+ *                   description: Filter by not equal to the given value.
+ *                 $in:
+ *                   type: array
+ *                   title: $in
+ *                   description: Filter by values included in the given array.
+ *                   items:
+ *                     type: string
+ *                 $nin:
+ *                   type: array
+ *                   title: $nin
+ *                   description: Filter by values not included in the given array.
+ *                   items:
+ *                     type: string
+ *                 $not:
+ *                   oneOf:
+ *                     - type: string
+ *                       title: $not
+ *                       description: Filter by not equal to the given value.
+ *                     - type: object
+ *                       title: $not
+ *                       description: Filter by values not matching the conditions in this parameter.
+ *                     - type: array
+ *                       title: $not
+ *                       description: Filter by values not matching the conditions in this parameter.
+ *                       items:
+ *                         type: string
+ *                 $gt:
+ *                   type: string
+ *                   title: $gt
+ *                   description: Filter by values greater than the given value.
+ *                 $gte:
+ *                   type: string
+ *                   title: $gte
+ *                   description: Filter by values greater than or equal to the given value.
+ *                 $lt:
+ *                   type: string
+ *                   title: $lt
+ *                   description: Filter by values less than the given value.
+ *                 $lte:
+ *                   type: string
+ *                   title: $lte
+ *                   description: Filter by values less than or equal to the given value.
+ *                 $like:
+ *                   type: string
+ *                   title: $like
+ *                   description: Apply a `like` filter. Useful for strings only.
+ *                 $re:
+ *                   type: string
+ *                   title: $re
+ *                   description: Apply a regex filter. Useful for strings only.
+ *                 $ilike:
+ *                   type: string
+ *                   title: $ilike
+ *                   description: Apply a case-insensitive `like` filter. Useful for strings only.
+ *                 $fulltext:
+ *                   type: string
+ *                   title: $fulltext
+ *                   description: Filter to apply on full-text properties.
+ *                 $overlap:
+ *                   type: array
+ *                   title: $overlap
+ *                   description: Filter to apply on array properties to find overlapping values.
+ *                   items:
+ *                     type: string
+ *                 $contains:
+ *                   type: array
+ *                   title: $contains
+ *                   description: Filter to apply on array properties to find contained values.
+ *                   items:
+ *                     type: string
+ *                 $contained:
+ *                   type: array
+ *                   title: $contained
+ *                   description: Filter to apply on array properties to find contained values.
+ *                   items:
+ *                     type: string
+ *                 $exists:
+ *                   type: boolean
+ *                   title: $exists
+ *                   description: Filter by whether a value exists or not.
+ *               title: created_at
+ *               description: The variant's created at.
+ *             updated_at:
+ *               type: object
+ *               properties:
+ *                 $and:
+ *                   type: array
+ *                   description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *                   items:
+ *                     type: object
+ *                 $or:
+ *                   type: array
+ *                   description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *                   items:
+ *                     type: object
+ *                 $eq:
+ *                   oneOf:
+ *                     - type: string
+ *                       title: $eq
+ *                       description: Filter by exact value.
+ *                     - type: array
+ *                       title: $eq
+ *                       description: Filter by exact value.
+ *                       items:
+ *                         type: string
+ *                 $ne:
+ *                   type: string
+ *                   title: $ne
+ *                   description: Filter by not equal to the given value.
+ *                 $in:
+ *                   type: array
+ *                   title: $in
+ *                   description: Filter by values included in the given array.
+ *                   items:
+ *                     type: string
+ *                 $nin:
+ *                   type: array
+ *                   title: $nin
+ *                   description: Filter by values not included in the given array.
+ *                   items:
+ *                     type: string
+ *                 $not:
+ *                   oneOf:
+ *                     - type: string
+ *                       title: $not
+ *                       description: Filter by not equal to the given value.
+ *                     - type: object
+ *                       title: $not
+ *                       description: Filter by values not matching the conditions in this parameter.
+ *                     - type: array
+ *                       title: $not
+ *                       description: Filter by values not matching the conditions in this parameter.
+ *                       items:
+ *                         type: string
+ *                 $gt:
+ *                   type: string
+ *                   title: $gt
+ *                   description: Filter by values greater than the given value.
+ *                 $gte:
+ *                   type: string
+ *                   title: $gte
+ *                   description: Filter by values greater than or equal to the given value.
+ *                 $lt:
+ *                   type: string
+ *                   title: $lt
+ *                   description: Filter by values less than the given value.
+ *                 $lte:
+ *                   type: string
+ *                   title: $lte
+ *                   description: Filter by values less than or equal to the given value.
+ *                 $like:
+ *                   type: string
+ *                   title: $like
+ *                   description: Apply a `like` filter. Useful for strings only.
+ *                 $re:
+ *                   type: string
+ *                   title: $re
+ *                   description: Apply a regex filter. Useful for strings only.
+ *                 $ilike:
+ *                   type: string
+ *                   title: $ilike
+ *                   description: Apply a case-insensitive `like` filter. Useful for strings only.
+ *                 $fulltext:
+ *                   type: string
+ *                   title: $fulltext
+ *                   description: Filter to apply on full-text properties.
+ *                 $overlap:
+ *                   type: array
+ *                   title: $overlap
+ *                   description: Filter to apply on array properties to find overlapping values.
+ *                   items:
+ *                     type: string
+ *                 $contains:
+ *                   type: array
+ *                   title: $contains
+ *                   description: Filter to apply on array properties to find contained values.
+ *                   items:
+ *                     type: string
+ *                 $contained:
+ *                   type: array
+ *                   title: $contained
+ *                   description: Filter to apply on array properties to find contained values.
+ *                   items:
+ *                     type: string
+ *                 $exists:
+ *                   type: boolean
+ *                   title: $exists
+ *                   description: Filter by whether a value exists or not.
+ *               title: updated_at
+ *               description: The variant's updated at.
+ *             deleted_at:
+ *               type: object
+ *               properties:
+ *                 $and:
+ *                   type: array
+ *                   description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *                   items:
+ *                     type: object
+ *                 $or:
+ *                   type: array
+ *                   description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *                   items:
+ *                     type: object
+ *                 $eq:
+ *                   oneOf:
+ *                     - type: string
+ *                       title: $eq
+ *                       description: Filter by exact value.
+ *                     - type: array
+ *                       title: $eq
+ *                       description: Filter by exact value.
+ *                       items:
+ *                         type: string
+ *                 $ne:
+ *                   type: string
+ *                   title: $ne
+ *                   description: Filter by not equal to the given value.
+ *                 $in:
+ *                   type: array
+ *                   title: $in
+ *                   description: Filter by values included in the given array.
+ *                   items:
+ *                     type: string
+ *                 $nin:
+ *                   type: array
+ *                   title: $nin
+ *                   description: Filter by values not included in the given array.
+ *                   items:
+ *                     type: string
+ *                 $not:
+ *                   oneOf:
+ *                     - type: string
+ *                       title: $not
+ *                       description: Filter by not equal to the given value.
+ *                     - type: object
+ *                       title: $not
+ *                       description: Filter by values not matching the conditions in this parameter.
+ *                     - type: array
+ *                       title: $not
+ *                       description: Filter by values not matching the conditions in this parameter.
+ *                       items:
+ *                         type: string
+ *                 $gt:
+ *                   type: string
+ *                   title: $gt
+ *                   description: Filter by values greater than the given value.
+ *                 $gte:
+ *                   type: string
+ *                   title: $gte
+ *                   description: Filter by values greater than or equal to the given value.
+ *                 $lt:
+ *                   type: string
+ *                   title: $lt
+ *                   description: Filter by values less than the given value.
+ *                 $lte:
+ *                   type: string
+ *                   title: $lte
+ *                   description: Filter by values less than or equal to the given value.
+ *                 $like:
+ *                   type: string
+ *                   title: $like
+ *                   description: Apply a `like` filter. Useful for strings only.
+ *                 $re:
+ *                   type: string
+ *                   title: $re
+ *                   description: Apply a regex filter. Useful for strings only.
+ *                 $ilike:
+ *                   type: string
+ *                   title: $ilike
+ *                   description: Apply a case-insensitive `like` filter. Useful for strings only.
+ *                 $fulltext:
+ *                   type: string
+ *                   title: $fulltext
+ *                   description: Filter to apply on full-text properties.
+ *                 $overlap:
+ *                   type: array
+ *                   title: $overlap
+ *                   description: Filter to apply on array properties to find overlapping values.
+ *                   items:
+ *                     type: string
+ *                 $contains:
+ *                   type: array
+ *                   title: $contains
+ *                   description: Filter to apply on array properties to find contained values.
+ *                   items:
+ *                     type: string
+ *                 $contained:
+ *                   type: array
+ *                   title: $contained
+ *                   description: Filter to apply on array properties to find contained values.
+ *                   items:
+ *                     type: string
+ *                 $exists:
+ *                   type: boolean
+ *                   title: $exists
+ *                   description: Filter by whether a value exists or not.
+ *               title: deleted_at
+ *               description: The variant's deleted at.
+ *             limit:
+ *               type: number
+ *               title: limit
+ *               description: Limit the number of items returned in the list.
+ *               externalDocs:
+ *                 url: "#pagination"
+ *             offset:
+ *               type: number
+ *               title: offset
+ *               description: The number of items to skip when retrieving a list.
+ *               externalDocs:
+ *                 url: "#pagination"
+ *             order:
  *               type: string
- *               title: value
- *               description: Filter by a value of the option.
+ *               title: order
+ *               description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+ *               externalDocs:
+ *                 url: "#pagination"
+ *             with_deleted:
+ *               type: boolean
+ *               title: with_deleted
+ *               description: The variant's with deleted.
+ *             fields:
+ *               type: string
+ *               title: fields
+ *               description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *                 fields. Without prefix it will replace the entire default fields.
+ *               externalDocs:
+ *                 url: "#select-fields-and-relations"
+ *             $and:
+ *               type: array
+ *               description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *               items:
+ *                 type: object
+ *               title: $and
+ *             $or:
+ *               type: array
+ *               description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *               items:
+ *                 type: object
+ *               title: $or
+ *         - type: object
+ *           description: Filter the products by their variants.
+ *           properties:
+ *             sku:
+ *               oneOf:
+ *                 - type: string
+ *                   title: sku
+ *                   description: Filter by the variant's sku.
+ *                 - type: array
+ *                   description: Filter by the variant's skus.
+ *                   items:
+ *                     type: string
+ *                     title: sku
+ *                     description: A variant's sku.
+ *             ean:
+ *               oneOf:
+ *                 - type: string
+ *                   title: ean
+ *                   description: Filter by the variant's ean.
+ *                 - type: array
+ *                   description: Filter by the variant's eans.
+ *                   items:
+ *                     type: string
+ *                     title: ean
+ *                     description: A variant's ean.
+ *             upc:
+ *               oneOf:
+ *                 - type: string
+ *                   title: upc
+ *                   description: Filter by the variant's upc.
+ *                 - type: array
+ *                   description: Filter by the variant's upcs.
+ *                   items:
+ *                     type: string
+ *                     title: upc
+ *                     description: A variant's upc.
+ *             barcode:
+ *               oneOf:
+ *                 - type: string
+ *                   title: barcode
+ *                   description: Filter by the variant's barcode.
+ *                 - type: array
+ *                   description: Filter by the variant's barcodes.
+ *                   items:
+ *                     type: string
+ *                     title: barcode
+ *                     description: A variant's barcode.
  *   - name: country_code
  *     in: query
  *     description: The product's country code.
@@ -732,6 +1208,30 @@
  *       type: string
  *       title: cart_id
  *       description: The product's cart id.
+ *   - name: locale
+ *     in: query
+ *     description: The locale in BCP 47 format to retrieve localized content.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       example: en-US
+ *       externalDocs:
+ *         url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+ *         description: Learn more in the Serve Translations in Storefront guide.
+ *   - name: external_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: external_id
+ *           description: Filter by a product's external ID.
+ *         - type: array
+ *           description: Filter by external IDs.
+ *           items:
+ *             type: string
+ *             title: external_id
+ *             description: The external ID.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK
@@ -767,36 +1267,7 @@
  *     content:
  *       application/json:
  *         schema:
- *           allOf:
- *             - type: object
- *               description: The paginated list of products.
- *               required:
- *                 - limit
- *                 - offset
- *                 - count
- *               properties:
- *                 limit:
- *                   type: number
- *                   title: limit
- *                   description: The maximum number of items returned.
- *                 offset:
- *                   type: number
- *                   title: offset
- *                   description: The number of items skipped before retrieving the returned items.
- *                 count:
- *                   type: number
- *                   title: count
- *                   description: The total number of items.
- *             - type: object
- *               description: The paginated list of products.
- *               required:
- *                 - products
- *               properties:
- *                 products:
- *                   type: array
- *                   description: The list of products.
- *                   items:
- *                     $ref: "#/components/schemas/StoreProduct"
+ *           $ref: "#/components/schemas/StoreProductListResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

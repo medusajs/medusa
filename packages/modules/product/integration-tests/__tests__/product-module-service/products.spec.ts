@@ -11,6 +11,7 @@ import {
   ProductImage,
   ProductType,
 } from "@models"
+import { setTimeout } from "timers/promises"
 
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { UpdateProductInput } from "@types"
@@ -24,6 +25,8 @@ jest.setTimeout(300000)
 
 moduleIntegrationTestRunner<IProductModuleService>({
   moduleName: Modules.PRODUCT,
+  // dbName: "product_update_performance",
+  // debug: true,
   testSuite: ({ MikroOrmWrapper, service }) => {
     describe("ProductModuleService products", function () {
       let productCollectionOne: ProductCollection
@@ -170,6 +173,162 @@ moduleIntegrationTestRunner<IProductModuleService>({
           productOne = res[0]
           productTwo = res[1]
         })
+
+        it.skip("test update performance", async () => {
+          const PRODUCT_COUNT = 1000
+          const VARIANTS_PER_PRODUCT = 100
+          const OPTION_VALUES_COUNT = 10 // 10 x 10 = 100 variant combinations
+
+          // Generate option values for 2 options
+          const sizeValues = Array.from(
+            { length: OPTION_VALUES_COUNT },
+            (_, i) => `size-${i + 1}`
+          )
+          const colorValues = Array.from(
+            { length: OPTION_VALUES_COUNT },
+            (_, i) => `color-${i + 1}`
+          )
+
+          // Generate all variant combinations
+          const generateVariants = () => {
+            const variants: {
+              title: string
+              sku: string
+              options: { size: string; color: string }
+            }[] = []
+
+            for (let s = 0; s < OPTION_VALUES_COUNT; s++) {
+              for (let c = 0; c < OPTION_VALUES_COUNT; c++) {
+                variants.push({
+                  title: `Variant ${sizeValues[s]}-${colorValues[c]}`,
+                  sku: `SKU-${sizeValues[s]}-${
+                    colorValues[c]
+                  }-${Date.now()}-${Math.random()}`,
+                  options: {
+                    size: sizeValues[s],
+                    color: colorValues[c],
+                  },
+                })
+              }
+            }
+
+            return variants
+          }
+
+          // Generate random number of images (10-50)
+          const generateImages = () => {
+            const imageCount = Math.floor(Math.random() * 41) + 10 // 10-50 images
+            return Array.from({ length: imageCount }, (_, i) => ({
+              url: `https://example.com/image-${
+                i + 1
+              }-${Date.now()}-${Math.random()}.jpg`,
+            }))
+          }
+
+          // Build product data
+          const productsData = Array.from(
+            { length: PRODUCT_COUNT },
+            (_, i) => ({
+              title: `Performance Test Product ${i + 1}`,
+              handle: `perf-product-${i + 1}-${Date.now()}`,
+              status: ProductStatus.PUBLISHED,
+              options: [
+                { title: "size", values: sizeValues },
+                { title: "color", values: colorValues },
+              ],
+              variants: generateVariants(),
+              images: generateImages(),
+            })
+          )
+
+          console.log(`Creating ${PRODUCT_COUNT} products...`)
+          console.log(`Each product has ${VARIANTS_PER_PRODUCT} variants`)
+          console.log(
+            `Each product has 2 options with ${OPTION_VALUES_COUNT} values each`
+          )
+          console.log(
+            `Each product has 10-50 images (random), total images: ${productsData.reduce(
+              (sum, p) => sum + p.images.length,
+              0
+            )}`
+          )
+
+          const startTime = Date.now()
+
+          // Create products in batches to avoid memory issues
+          const BATCH_SIZE = 10
+          const createdProducts: any[] = []
+
+          for (let i = 0; i < PRODUCT_COUNT; i += BATCH_SIZE) {
+            const batch = productsData.slice(i, i + BATCH_SIZE)
+            const batchStart = Date.now()
+
+            const products = await service.createProducts(batch)
+            createdProducts.push(...products)
+
+            const batchEnd = Date.now()
+            console.log(
+              `Batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(
+                PRODUCT_COUNT / BATCH_SIZE
+              )} created in ${batchEnd - batchStart}ms`
+            )
+          }
+
+          const createEndTime = Date.now()
+          console.log(`\nTotal creation time: ${createEndTime - startTime}ms`)
+          console.log(
+            `Average per product: ${
+              (createEndTime - startTime) / PRODUCT_COUNT
+            }ms`
+          )
+
+          // Retrieve a sample product to verify structure
+          const sampleProduct = await service.retrieveProduct(
+            createdProducts[0].id,
+            {
+              relations: ["variants", "images", "options", "options.values"],
+            }
+          )
+
+          console.log(`\nSample product verification:`)
+          console.log(`  - Variants: ${sampleProduct.variants.length}`)
+          console.log(`  - Options: ${sampleProduct.options.length}`)
+          console.log(`  - Images: ${sampleProduct.images.length}`)
+
+          /**
+           * ----------------------------------------------------------------------------
+           * ----------------------------------------------------------------------------
+           * ----------------------------------------------------------------------------
+           */
+
+          console.log(`IT IS TIME TO CLEAR THE LOGS`)
+          await setTimeout(2000)
+
+          const productToUpdateId = createdProducts[0].id
+          createdProducts[0].variants[0].title = "updated variant 1"
+
+          function formatVariantOptions(variant) {
+            const result = {}
+            for (const option of variant.options) {
+              result[option.option.title] = option.value
+            }
+            return result
+          }
+
+          createdProducts[0].variants.forEach((variant) => {
+            variant.options = formatVariantOptions(variant)
+          })
+
+          const now = performance.now()
+          await service.updateProducts(productToUpdateId, {
+            title: "updated title",
+            variants: createdProducts[0].variants,
+          })
+          const end = performance.now()
+          console.log(`Update time: ${end - now}ms`)
+
+          console.log("break")
+        }, 1000000)
 
         it("should update multiple products", async () => {
           await service.upsertProducts([

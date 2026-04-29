@@ -87,10 +87,6 @@ export abstract class AbstractEventBusModuleService
     subscriber: EventBusTypes.Subscriber,
     context?: EventBusTypes.SubscriberContext
   ): this {
-    if (!this.isWorkerMode) {
-      return this
-    }
-
     if (typeof subscriber !== `function`) {
       throw new Error("Subscriber must be a function")
     }

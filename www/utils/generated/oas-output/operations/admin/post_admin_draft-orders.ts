@@ -288,7 +288,7 @@
  *                       type: object
  *                       description: The shipping method's data, useful for fulfillment providers.
  *                       externalDocs:
- *                         url: https://docs.medusajs.com/v2/resources/commerce-modules/order/concepts#data-property
+ *                         url: https://docs.medusajs.com/resources/commerce-modules/order/concepts#data-property
  *                     amount:
  *                       oneOf:
  *                         - type: string

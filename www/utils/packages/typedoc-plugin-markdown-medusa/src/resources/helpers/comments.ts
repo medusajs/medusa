@@ -11,6 +11,7 @@ const EXCLUDED_TAGS = [
   "@tags",
   "@summary",
   "@workflowEvent",
+  "@workflowLock",
 ]
 
 export default function () {

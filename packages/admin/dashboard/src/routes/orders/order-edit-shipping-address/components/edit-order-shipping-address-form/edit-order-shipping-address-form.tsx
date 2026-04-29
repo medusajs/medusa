@@ -16,6 +16,8 @@ type EditOrderShippingAddressFormProps = {
 }
 
 const EditOrderShippingAddressSchema = zod.object({
+  first_name: zod.string().optional(),
+  last_name: zod.string().optional(),
   address_1: zod.string().min(1),
   address_2: zod.string().optional(),
   country_code: zod.string().min(2).max(2),
@@ -34,6 +36,8 @@ export function EditOrderShippingAddressForm({
 
   const form = useForm<zod.infer<typeof EditOrderShippingAddressSchema>>({
     defaultValues: {
+      first_name: order.shipping_address?.first_name || "",
+      last_name: order.shipping_address?.last_name || "",
       address_1: order.shipping_address?.address_1 || "",
       address_2: order.shipping_address?.address_2 || "",
       city: order.shipping_address?.city || "",
@@ -154,6 +158,34 @@ export function EditOrderShippingAddressForm({
                       <Input size="small" {...field} />
                     </Form.Control>
                     <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="first_name"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("fields.firstName")}</Form.Label>
+                    <Form.Control>
+                      <Input size="small" {...field} />
+                    </Form.Control>
+                  </Form.Item>
+                )
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="last_name"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("fields.lastName")}</Form.Label>
+                    <Form.Control>
+                      <Input size="small" {...field} />
+                    </Form.Control>
                   </Form.Item>
                 )
               }}

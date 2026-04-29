@@ -1,5 +1,5 @@
 import { BaseFilterable, OperatorMap } from "../../../dal"
-import { FindParams } from "../../common"
+import { FindParams, SelectParams } from "../../common"
 
 export interface AdminSalesChannelListParams
   extends FindParams,
@@ -47,3 +47,5 @@ export interface AdminSalesChannelListParams
    */
   deleted_at?: OperatorMap<string>
 }
+
+export interface AdminGetSalesChannelParams extends SelectParams {}

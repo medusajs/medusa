@@ -8,6 +8,8 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 export const config: DocsConfig = {
   ...globalConfig,
   titleSuffix: "Medusa Cloud Documentation",
+  description:
+    "Learn about Cloud, Medusa's PaaS offering for scalable deployments. Learn how to sign up, deploy, and manage your Medusa Cloud projects.",
   baseUrl,
   basePath: process.env.NEXT_PUBLIC_BASE_PATH,
   sidebars: generatedSidebars as Sidebar.Sidebar[],

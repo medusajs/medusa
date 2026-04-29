@@ -25,7 +25,13 @@ payment collection after an update.
 You can use this workflow within your own customizations or custom workflows, allowing you to refresh the cart's payment collection after making updates to it in your
 custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/96b2df170752a0d66628a84c46397a24ca9502da/packages/core/core-flows/src/cart/workflows/refresh-payment-collection.ts#L57" />
+:::note
+
+If you use this workflow in another, you must acquire a lock before running it and release the lock after. Learn more in the [Locking Operations in Workflows](https://docs.medusajs.com/learn/fundamentals/workflows/locks#locks-in-nested-workflows) guide.
+
+:::
+
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/cart/workflows/refresh-payment-collection.ts#L58" />
 
 ## Examples
 
@@ -119,12 +125,16 @@ import { refreshPaymentCollectionForCartWorkflow } from "@medusajs/medusa/core-f
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
+    // Acquire lock from nested workflow here
+    // acquireLockStep({  key: cart.id,  timeout: 2,  ttl: 10,  })
     const result = refreshPaymentCollectionForCartWorkflow
       .runAsStep({
         input: {
           cart_id: "cart_123",
         }
       })
+    // Release lock here
+    // releaseLockStep({ key: cart.id })
   }
 )
 ```
@@ -134,11 +144,11 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"refreshPaymentCollectionForCartWorkflow","steps":[{"type":"step","name":"acquireLockStep","description":"This step acquires a lock for a given key. Learn more about locks in the [Locking Module](https://docs.medusajs.com/resources/infrastructure-modules/locking)\nguide.","link":"../../../../Locking/Steps_Locking/functions/core_flows.Locking.Steps_Locking.acquireLockStep/page.mdx","depth":2},{"type":"hook","name":"validate","description":"This hook is executed before all operations. You can consume this hook to perform any custom validation. If validation fails, you can throw an error to stop the workflow execution.","link":"#validate","depth":3},{"type":"when","condition":"{\n        const valueIsEqual = MathBN.eq(\n          cart.payment_collection?.raw_amount ?? -1,\n          cart.raw_total\n        )\n\n        if (valueIsEqual) {\n          return cart.payment_collection.currency_code !== cart.currency_code\n        }\n\n        return shouldExecute\n      }","depth":"4","steps":[{"type":"workflow","name":"deletePaymentSessionsWorkflow","description":"Delete payment sessions.","link":"../../../../Payment_Collection/Workflows_Payment_Collection/functions/core_flows.Payment_Collection.Workflows_Payment_Collection.deletePaymentSessionsWorkflow/page.mdx","depth":4},{"type":"step","name":"updatePaymentCollectionStep","description":"This step updates payment collections matching the specified filters.","link":"../../../../Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.updatePaymentCollectionStep/page.mdx","depth":4}]},{"type":"step","name":"releaseLockStep","description":"This step releases a lock for a given key. Learn more about locks in the [Locking Module](https://docs.medusajs.com/resources/infrastructure-modules/locking)\nguide.","link":"../../../../Locking/Steps_Locking/functions/core_flows.Locking.Steps_Locking.releaseLockStep/page.mdx","depth":5}]}} />
+<WorkflowDiagram workflow={{"name":"refreshPaymentCollectionForCartWorkflow","steps":[{"type":"step","name":"validateCartStep","description":"This step validates a cart to ensure it exists and is not completed.\nIf not valid, the step throws an error.\n\n:::tip\n\nYou can use the [retrieveCartStep](../../../Steps_Cart/functions/core_flows.Cart.Steps_Cart.retrieveCartStep/page.mdx) to retrieve a cart's details.\n\n:::","link":"../../../Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateCartStep/page.mdx","depth":2},{"type":"step","name":"acquireLockStep","description":"This step acquires a lock for a given key. Learn more about locks in the [Locking Module](https://docs.medusajs.com/resources/infrastructure-modules/locking)\nguide.","link":"../../../../Locking/Steps_Locking/functions/core_flows.Locking.Steps_Locking.acquireLockStep/page.mdx","depth":3},{"type":"hook","name":"validate","description":"This hook is executed before all operations. You can consume this hook to perform any custom validation. If validation fails, you can throw an error to stop the workflow execution.","link":"#validate","depth":4},{"type":"when","condition":"{\n        const valueIsEqual = MathBN.eq(\n          cart.payment_collection?.raw_amount ?? -1,\n          cart.raw_total\n        )\n\n        if (valueIsEqual) {\n          return cart.payment_collection.currency_code !== cart.currency_code\n        }\n\n        return shouldExecute\n      }","depth":"5","steps":[{"type":"workflow","name":"deletePaymentSessionsWorkflow","description":"Delete payment sessions.","link":"../../../../Payment_Collection/Workflows_Payment_Collection/functions/core_flows.Payment_Collection.Workflows_Payment_Collection.deletePaymentSessionsWorkflow/page.mdx","depth":5},{"type":"step","name":"updatePaymentCollectionStep","description":"This step updates payment collections matching the specified filters.","link":"../../../../Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.updatePaymentCollectionStep/page.mdx","depth":5}]},{"type":"step","name":"releaseLockStep","description":"This step releases a lock for a given key. Learn more about locks in the [Locking Module](https://docs.medusajs.com/resources/infrastructure-modules/locking)\nguide.","link":"../../../../Locking/Steps_Locking/functions/core_flows.Locking.Steps_Locking.releaseLockStep/page.mdx","depth":6}]}} />
 
 ## Input
 
-<TypeList types={[{"name":"RefreshPaymentCollectionForCartWorklowInput","type":"[RefreshPaymentCollectionForCartWorklowInput](../../../../types/core_flows.RefreshPaymentCollectionForCartWorklowInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of the cart to refresh.","expandable":false,"children":[{"name":"cart_id","type":"`string`","description":"The cart's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"`any`","description":"The Cart reference.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="refreshPaymentCollectionForCartWorkflow"/>
+<TypeList types={[{"name":"RefreshPaymentCollectionForCartWorklowInput","type":"[RefreshPaymentCollectionForCartWorklowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.RefreshPaymentCollectionForCartWorklowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"RefreshPaymentCollectionForCartWorklowInput","type":"`object`","description":"The details of the cart to refresh.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="refreshPaymentCollectionForCartWorkflow"/>
 
 ## Hooks
 
@@ -156,7 +166,7 @@ This hook is executed before all operations. You can consume this hook to perfor
 import { refreshPaymentCollectionForCartWorkflow } from "@medusajs/medusa/core-flows"
 
 refreshPaymentCollectionForCartWorkflow.hooks.validate(
-  (async ({ input, cart }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -166,4 +176,4 @@ refreshPaymentCollectionForCartWorkflow.hooks.validate(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Cart.Workflows_Cart/page.mdx#__type-14)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"input","type":"[RefreshPaymentCollectionForCartWorklowInput](../../../../types/core_flows.RefreshPaymentCollectionForCartWorklowInput/page.mdx)","description":"The details of the cart to refresh.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"cart_id","type":"`string`","description":"The cart's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"`any`","description":"The Cart reference.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"cart","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validate"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Cart.Workflows_Cart/page.mdx#__type-13)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validate"/>

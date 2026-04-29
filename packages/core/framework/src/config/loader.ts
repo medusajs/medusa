@@ -25,22 +25,29 @@ container.register(
  *
  * @param entryDirectory The directory to find the config file from
  * @param configFileName The name of the config file to search for in the entry directory
+ * @param options.throwOnError When false, missing config files and validation errors won't throw.
+ * Useful for build/compile commands. Defaults to true.
  */
 export async function configLoader(
   entryDirectory: string,
-  configFileName: string = "medusa-config"
+  configFileName: string = "medusa-config",
+  options?: {
+    throwOnError?: boolean
+  }
 ): Promise<ConfigModule> {
+  const { throwOnError = true } = options ?? {}
   const config = await getConfigFile<ConfigModule>(
     entryDirectory,
     configFileName
   )
 
-  if (config.error) {
+  if (config.error && throwOnError) {
     handleConfigError(config.error)
   }
 
   return configManager.loadConfig({
     projectConfig: config.configModule!,
     baseDir: entryDirectory,
+    throwOnError,
   })
 }

@@ -243,7 +243,7 @@ class DmlKindGenerator extends DefaultKindGenerator<ts.CallExpression> {
       )
       const isBoolean = propertyTypeStr.includes("BooleanProperty")
       const relationName = isRelation ? camelToWords(propertyName) : undefined
-      const { summary, sinceTag, deprecatedTag, featureFlagTag } =
+      const { summary, sinceTag, deprecatedTag, featureFlagTag, example } =
         this.getInformationFromTags(propertyNode)
 
       let propertyDescription =
@@ -283,6 +283,12 @@ class DmlKindGenerator extends DefaultKindGenerator<ts.CallExpression> {
       if (deprecatedTag) {
         propertyDescription += `\n\n@deprecated ${
           this.formatJSDocTag(deprecatedTag) ?? ""
+        }`
+      }
+
+      if (example) {
+        propertyDescription += `\n\n@example ${
+          this.formatJSDocTag(example) ?? ""
         }`
       }
 

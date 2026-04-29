@@ -51,7 +51,7 @@ export const POST = async (
 }
 
 export const DELETE = async (
-  req: AuthenticatedMedusaRequest<{}, HttpTypes.AdminClaimActionsParams>,
+  req: AuthenticatedMedusaRequest<{}, HttpTypes.SelectParams>,
   res: MedusaResponse<HttpTypes.AdminClaimPreviewResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

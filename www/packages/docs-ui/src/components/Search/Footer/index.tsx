@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import React from "react"
-import { Kbd } from "../../.."
+import { Kbd } from "@/components/Kbd"
 
 export const SearchFooter = () => {
   return (

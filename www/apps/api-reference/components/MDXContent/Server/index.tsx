@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 "use server"
 
+import React from "react"
 import { MDXRemote } from "next-mdx-remote/rsc"
 import getCustomComponents from "../../MDXComponents"
 import type { ScopeType } from "../../MDXComponents"

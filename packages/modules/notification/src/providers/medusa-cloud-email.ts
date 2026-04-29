@@ -39,6 +39,7 @@ export class MedusaCloudEmailNotificationProvider extends AbstractNotificationPr
           attachments: notification.attachments,
           template: notification.template,
           data: notification.data,
+          provider_data: notification.provider_data,
           content: notification.content,
         }),
       })

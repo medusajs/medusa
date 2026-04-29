@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/analytics-posthog",
-  "version": "2.11.2",
+  "version": "2.14.1",
   "description": "Posthog analytics provider for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -20,22 +20,17 @@
   "author": "Medusa",
   "license": "MIT",
   "scripts": {
-    "test": "jest --passWithNoTests src",
-    "build": "rimraf dist && tsc --build ./tsconfig.json",
-    "watch": "tsc --watch"
+    "test": "../../../../node_modules/.bin/jest --passWithNoTests src",
+    "build": "yarn run -T rimraf dist && yarn run -T tsc --build ./tsconfig.json",
+    "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.11.2",
-    "@swc/core": "^1.7.28",
-    "@swc/jest": "^0.2.36",
-    "jest": "^29.7.0",
-    "posthog-node": "^4.17.1",
-    "rimraf": "^5.0.1",
-    "typescript": "^5.6.2"
+    "@medusajs/framework": "2.14.1",
+    "posthog-node": "^5.11.0"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.11.2",
-    "posthog-node": "^4.17.1"
+    "@medusajs/framework": "2.14.1",
+    "posthog-node": "^5.11.0"
   },
   "keywords": [
     "medusa-plugin",

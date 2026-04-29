@@ -10,7 +10,7 @@
  *   You can decode the JWT token using libraries like [react-jwt](https://www.npmjs.com/package/react-jwt) in the frontend. If the decoded data doesn't 
  *   have an `actor_id` property, then you must create a user, typically using the Accept Invite route passing the token in the request's Authorization header.
  * externalDocs:
- *   url: https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route#2-third-party-service-authenticate-flow
+ *   url: https://docs.medusajs.com/resources/commerce-modules/auth/authentication-route#2-third-party-service-authenticate-flow
  *   description: Learn about third-party authentication flow.
  * x-authenticated: false
  * parameters:
@@ -26,6 +26,7 @@
  *     label: Google Provider
  *     source: |-
  *       import Medusa from "@medusajs/js-sdk"
+ *       import { decodeToken } from "react-jwt"
  * 
  *       export const sdk = new Medusa({
  *         baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
@@ -35,7 +36,7 @@
  *         },
  *       })
  * 
- *       await sdk.auth.callback(
+ *       const token = await sdk.auth.callback(
  *         "user",
  *         "google",
  *         {
@@ -43,23 +44,33 @@
  *           state: "456"
  *         }
  *       )
- *       
  *       // all subsequent requests will use the token in the header
- *       sdk.admin.invite.accept(
- *         {
- *           email: "user@gmail.com",
- *           first_name: "John",
- *           last_name: "Smith",
- *           invite_token: "12345..."
- *         },
- *       )
- *       .then(({ user }) => {
- *         console.log(user)
- *       })
+ * 
+ *       const decodedToken = decodeToken(token) as { actor_id: string, user_metadata: Record<string, unknown> }
+ *       
+ *       const shouldCreateUser = decodedToken.actor_id === ""
+ *       
+ *       if (shouldCreateUser) {
+ *         const user = await sdk.admin.invite.accept(
+ *           {
+ *             email: decodedToken.user_metadata.email as string,
+ *             first_name: "John",
+ *             last_name: "Smith",
+ *             invite_token: "12345..."
+ *           },
+ *         )
+ * 
+ *         // refresh auth token
+ *         await sdk.auth.refresh()
+ *         // all subsequent requests will use the new token in the header
+ *       } else {
+ *         // User already exists and is authenticated
+ *       }
  *   - lang: TypeScript
  *     label: GitHub Provider
  *     source: |-
  *       import Medusa from "@medusajs/js-sdk"
+ *       import { decodeToken } from "react-jwt"
  * 
  *       export const sdk = new Medusa({
  *         baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
@@ -69,27 +80,36 @@
  *         },
  *       })
  * 
- *       const authToken = await sdk.auth.callback(
+ *       const token = await sdk.auth.callback(
  *         "user",
- *         "google",
+ *         "github",
  *         {
  *           code: "123",
  *           state: "456"
  *         }
  *       )
- *       
  *       // all subsequent requests will use the token in the header
- *       sdk.admin.invite.accept(
- *         {
- *           email: "user@gmail.com",
- *           first_name: "John",
- *           last_name: "Smith",
- *           invite_token: "12345..."
- *         },
- *       )
- *       .then(({ user }) => {
- *         console.log(user)
- *       })
+ * 
+ *       const decodedToken = decodeToken(token) as { actor_id: string, user_metadata: Record<string, unknown> }
+ *       
+ *       const shouldCreateUser = decodedToken.actor_id === ""
+ *       
+ *       if (shouldCreateUser) {
+ *         const user = await sdk.admin.invite.accept(
+ *           {
+ *             email: decodedToken.user_metadata.email as string,
+ *             first_name: "John",
+ *             last_name: "Smith",
+ *             invite_token: "12345..."
+ *           },
+ *         )
+ * 
+ *         // refresh auth token
+ *         await sdk.auth.refresh()
+ *         // all subsequent requests will use the new token in the header
+ *       } else {
+ *         // User already exists and is authenticated
+ *       }
  * tags:
  *   - Auth
  * responses:

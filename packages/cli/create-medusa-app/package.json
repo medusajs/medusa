@@ -1,6 +1,6 @@
 {
   "name": "create-medusa-app",
-  "version": "2.11.2",
+  "version": "2.14.1",
   "description": "Create a Medusa project using a single command.",
   "type": "module",
   "exports": "./dist/index.js",
@@ -9,12 +9,13 @@
   "scripts": {
     "dev": "node --loader ts-node/esm src/index.ts",
     "start": "node dist/index.js",
-    "build": "tsc",
-    "watch": "tsc --watch"
+    "build": "yarn run -T tsc",
+    "watch": "yarn run -T tsc --watch",
+    "test": "../../../node_modules/.bin/jest --passWithNoTests src"
   },
   "dependencies": {
-    "@medusajs/deps": "2.11.2",
-    "@medusajs/telemetry": "2.11.2",
+    "@medusajs/deps": "2.14.1",
+    "@medusajs/telemetry": "2.14.1",
     "boxen": "^5.0.1",
     "chalk": "^4.1.2",
     "commander": "^11.0.0",
@@ -25,31 +26,12 @@
     "open": "^9.1.0",
     "ora": "^5.4.1",
     "slugify": "^1.6.6",
+    "terminal-link": "^5.0.0",
     "uuid": "^9.0.0",
-    "validator": "^13.15.20",
-    "wait-on": "^7.0.1",
-    "winston": "^3.9.0"
-  },
-  "devDependencies": {
-    "@types/chalk": "^2.2.0",
-    "@types/commander": "^2.12.2",
-    "@types/configstore": "^6.0.0",
-    "@types/inquirer": "^9.0.3",
-    "@types/node": "^20.12.11",
-    "@types/node-emoji": "^1.8.2",
-    "@types/uuid": "^9.0.1",
-    "@types/validator": "^13.7.17",
-    "@types/wait-on": "^5.3.1",
-    "@typescript-eslint/eslint-plugin": "^6.19.0",
-    "@typescript-eslint/parser": "^6.19.0",
-    "configstore": "^5.0.1",
-    "eslint": "^8.40.0",
-    "eslint-config-google": "^0.14.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.8.8",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.6.2"
+    "validator": "^13.15.22",
+    "wait-on": "^9.0.1",
+    "winston": "^3.9.0",
+    "yaml": "^2.8.3"
   },
   "engines": {
     "node": ">=14.16"

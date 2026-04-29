@@ -276,14 +276,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
- *   - name: q
- *     in: query
- *     description: The claim's q.
- *     required: false
- *     schema:
- *       type: string
- *       title: q
- *       description: The claim's q.
+ *       title: deleted_at
  *   - name: id
  *     in: query
  *     required: false
@@ -557,6 +550,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: Filter by the claim's update date.
@@ -788,6 +782,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: updated_at
  *   - name: $and
  *     in: query
  *     description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.

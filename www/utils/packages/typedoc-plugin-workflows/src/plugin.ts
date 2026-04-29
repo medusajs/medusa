@@ -13,7 +13,7 @@ import {
   SignatureReflection,
 } from "typedoc"
 import ts, { SyntaxKind, VariableStatement } from "typescript"
-import { WorkflowManager, WorkflowDefinition } from "@medusajs/orchestration"
+import { WorkflowManager, WorkflowDefinition } from "@medusajs/framework/orchestration"
 import Helper, { WORKFLOW_AS_STEP_SUFFIX } from "./utils/helper.js"
 import {
   findReflectionInNamespaces,
@@ -101,7 +101,8 @@ class WorkflowsPlugin {
     for (const reflection of context.project.getReflectionsByKind(
       ReflectionKind.All
     )) {
-      if (!(reflection instanceof SignatureReflection)) {
+      const isIgnored = reflection.comment?.modifierTags.has("@ignore")
+      if (!(reflection instanceof SignatureReflection) || isIgnored) {
         continue
       }
 
@@ -149,7 +150,7 @@ class WorkflowsPlugin {
       }
     }
 
-    this.handleAddTagsAfterParsing(context)
+    this.addTagsAfterParsingWorkflows(context)
   }
 
   /**
@@ -242,6 +243,10 @@ class WorkflowsPlugin {
 
     this.updateWorkflowsTagsMap(workflowId, uniqueResources)
     this.attachEvents(parentReflection)
+    this.attachLocksInWorkflow({
+      workflowReflection: parentReflection,
+      context,
+    })
   }
 
   /**
@@ -843,7 +848,7 @@ class WorkflowsPlugin {
     this.workflowsTagsMap.set(workflowId, existingItems)
   }
 
-  handleAddTagsAfterParsing(context: Context) {
+  addTagsAfterParsingWorkflows(context: Context) {
     let keys = Object.keys(this.addTagsAfterParsing)
 
     const handleForWorkflow = (
@@ -959,6 +964,86 @@ class WorkflowsPlugin {
         ])
       })
     )
+  }
+
+  attachLocksInWorkflow({
+    workflowReflection,
+    context,
+  }: {
+    workflowReflection: DeclarationReflection
+    context: Context
+  }) {
+    const { initializer: workflowInitializer } =
+      this.helper.getReflectionSymbolAndInitializer({
+        project: context.project,
+        reflection: workflowReflection,
+      }) || {}
+    // check if the workflow acquires a lock
+    // for simplicity we'll assume the workflow acquires a lock
+    // with acquireLockStep only once
+    const checkHasAcquireLockStep = (
+      documents: DocumentReflection[]
+    ): boolean => {
+      return documents.some((child) => {
+        if (child.name === "acquireLockStep") {
+          return true
+        }
+
+        if (child.children) {
+          return checkHasAcquireLockStep(child.children)
+        }
+      })
+    }
+
+    const hasAcquireLockStep = checkHasAcquireLockStep(
+      workflowReflection.documents || []
+    )
+
+    if (!hasAcquireLockStep) {
+      return
+    }
+
+    // use regex to get acquireLockStep call
+    const workflowText = workflowInitializer
+      ? workflowInitializer.getText()
+      : ""
+
+    const acquireLockStepRegex = /acquireLockStep\s*\(\s*\{[\s\S]*?\}\s*\)/g
+
+    // catch one match only
+    const match = acquireLockStepRegex.exec(workflowText)
+
+    if (!match) {
+      return
+    }
+
+    // remove extra spaces after new lines
+    const acquireLockStepCall = match[0]
+      .replace(/\n\s\s/g, "")
+      .replace(/\s{2,}/g, "  ")
+
+    // extract the key
+    const keyRegex = /key:\s*([^,}\n]+)/g
+    const keyMatch = keyRegex.exec(acquireLockStepCall)
+
+    if (!keyMatch) {
+      return
+    }
+
+    const lockKey = keyMatch[1].trim()
+
+    const comment = workflowReflection.comment || new Comment()
+
+    comment.blockTags.push(
+      new CommentTag(`@workflowLock`, [
+        {
+          kind: "text",
+          text: `${lockKey} --- ${acquireLockStepCall}`,
+        },
+      ])
+    )
+
+    workflowReflection.comment = comment
   }
 }
 

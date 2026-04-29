@@ -1,4 +1,4 @@
-import { Prerequisites } from "docs-ui"
+import { Prerequisites, CodeTab, CodeTabs } from "docs-ui"
 
 export const metadata = {
   title: `${pageNumber} Admin UI Routes`,
@@ -105,10 +105,93 @@ export default CustomPage
 
 The configuration object is created using `defineRouteConfig` from the Medusa Framework. It accepts the following properties:
 
-- `label`: the sidebar item’s label.
+- `label`: the sidebar item's label.
 - `icon`: an optional React component used as an icon in the sidebar.
+- `rank`: an optional number to order the route among sibling routes. Learn more in the [Specify UI Route Sidebar Rank](#specify-ui-route-sidebar-rank) section.
 
 The above example adds a new sidebar item with the label `Custom Route` and an icon from the [Medusa UI Icons package](!ui!/icons/overview).
+
+### Specify UI Route Sidebar Rank
+
+<Note>
+
+UI route ranking is available starting [Medusa v2.11.4](https://github.com/medusajs/medusa/releases/tag/v2.11.4).
+
+</Note>
+
+By default, custom UI routes are added to the sidebar in the order their files are loaded. This applies to your custom UI routes, and UI routes defined in plugins.
+
+You can specify the ranking of your UI route in the sidebar using the `rank` property passed to `defineRouteConfig`.
+
+For example, consider you have the following UI routes:
+
+<CodeTabs group="ui-routes">
+  <CodeTab label="UI Route 1" value="ui-route-1">
+
+```tsx title="src/admin/routes/analytics/page.tsx" highlights={[["18"]]}
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+import { ChartBar } from "@medusajs/icons"
+import { Container, Heading } from "@medusajs/ui"
+
+const AnalyticsPage = () => {
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">Analytics Dashboard</Heading>
+      </div>
+    </Container>
+  )
+}
+
+export const config = defineRouteConfig({
+  label: "Analytics",
+  icon: ChartBar,
+  rank: 1,
+})
+
+export default AnalyticsPage
+```
+
+  </CodeTab>
+  <CodeTab label="UI Route 2" value="ui-route-2">
+
+```tsx title="src/admin/routes/reports/page.tsx" highlights={[["18"]]}
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+import { DocumentText } from "@medusajs/icons"
+import { Container, Heading } from "@medusajs/ui"
+
+const ReportsPage = () => {
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">Reports</Heading>
+      </div>
+    </Container>
+  )
+}
+
+export const config = defineRouteConfig({
+  label: "Reports",
+  icon: DocumentText,
+  rank: 2,
+})
+
+export default ReportsPage
+```
+
+  </CodeTab>
+</CodeTabs>
+
+In the sidebar, "Analytics" with the rank `1` will be added before "Reports" with the rank `2`.
+
+#### How are UI Routes Sorted in the Sidebar
+
+Medusa sorts custom UI routes based on their rank:
+
+1. UI routes that have ranks are sorted in ascending order.
+2. UI routes without a rank are added after the ranked UI routes.
+
+Medusa also applies the same sorting logic to UI routes at the nested level. Learn more in the [Nested UI Routes Ranking](#nested-ui-routes-ranking) section.
 
 ### Nested UI Routes
 
@@ -174,6 +257,30 @@ export default NestedOrdersPage
 ```
 
 The `nested` property passed to `defineRouteConfig` specifies which route this custom route is nested under. This route will now show in the sidebar under the existing "Orders" sidebar item.
+
+#### Nested UI Routes Ranking
+
+Nested UI routes also accept the [rank](#specify-ui-route-sidebar-rank) configuration. It allows you to specify the order that the nested UI routes are shown in the sidebar under the parent item.
+
+For example:
+
+```tsx title="src/admin/routes/orders/insights/page.tsx"
+// In nested UI route 1 at src/admin/routes/orders/insights/page.tsx
+export const config = defineRouteConfig({
+  label: "Order Insights",
+  nested: "/orders",
+  rank: 1, // Will appear first
+})
+
+// In nested UI route 2 at src/admin/routes/orders/reports/page.tsx
+export const config = defineRouteConfig({
+  label: "Order Reports",
+  nested: "/orders",
+  rank: 2, // Will appear second
+})
+```
+
+In this example, the "Order Insights" item will appear before the "Order Reports" item under the parent "Orders" item in the sidebar.
 
 ---
 

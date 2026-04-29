@@ -12,7 +12,7 @@ export const POST = async (
       HttpTypes.AdminCreateShippingOptionRule,
       HttpTypes.AdminUpdateShippingOptionRule
     >,
-    HttpTypes.SelectParams
+    HttpTypes.AdminGetShippingOptionRuleParams
   >,
   res: MedusaResponse<HttpTypes.AdminUpdateShippingOptionRulesResponse>
 ) => {

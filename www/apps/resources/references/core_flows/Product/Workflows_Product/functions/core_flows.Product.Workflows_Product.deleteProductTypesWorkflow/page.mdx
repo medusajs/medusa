@@ -23,7 +23,7 @@ you can delete custom records linked to the product types.
 
 You can also use this workflow within your own custom workflows, allowing you to wrap custom logic around product-type deletion.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/96b2df170752a0d66628a84c46397a24ca9502da/packages/core/core-flows/src/product/workflows/delete-product-types.ts#L48" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/product/workflows/delete-product-types.ts#L48" />
 
 ## Examples
 
@@ -132,11 +132,11 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"deleteProductTypesWorkflow","steps":[{"type":"step","name":"deleteProductTypesStep","description":"This step deletes one or more product types.","link":"../../../Steps_Product/functions/core_flows.Product.Steps_Product.deleteProductTypesStep/page.mdx","depth":1},{"type":"hook","name":"productTypesDeleted","description":"This hook is executed after the types are deleted. You can consume this hook to perform custom actions on the deleted types.","link":"#productTypesDeleted","depth":2},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record.\n\nLearn more in the [Remote Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/remote-link#cascade-delete-linked-records)","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.removeRemoteLinkStep/page.mdx","depth":3},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":3}]}} />
+<WorkflowDiagram workflow={{"name":"deleteProductTypesWorkflow","steps":[{"type":"step","name":"deleteProductTypesStep","description":"This step deletes one or more product types.","link":"../../../Steps_Product/functions/core_flows.Product.Steps_Product.deleteProductTypesStep/page.mdx","depth":1},{"type":"hook","name":"productTypesDeleted","description":"This hook is executed after the types are deleted. You can consume this hook to perform custom actions on the deleted types.","link":"#productTypesDeleted","depth":2},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record if cascade deletion is enabled.\n\nLearn more in the [Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/link#cascade-delete-linked-records)","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.removeRemoteLinkStep/page.mdx","depth":3},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":3}]}} />
 
 ## Input
 
-<TypeList types={[{"name":"DeleteProductTypesWorkflowInput","type":"[DeleteProductTypesWorkflowInput](../../../../types/core_flows.DeleteProductTypesWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to delete one or more product types.","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"The IDs of the types to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteProductTypesWorkflow"/>
+<TypeList types={[{"name":"DeleteProductTypesWorkflowInput","type":"[DeleteProductTypesWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.DeleteProductTypesWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeleteProductTypesWorkflowInput","type":"`object`","description":"The data to delete one or more product types.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteProductTypesWorkflow"/>
 
 ## Hooks
 
@@ -154,7 +154,7 @@ This hook is executed after the types are deleted. You can consume this hook to 
 import { deleteProductTypesWorkflow } from "@medusajs/medusa/core-flows"
 
 deleteProductTypesWorkflow.hooks.productTypesDeleted(
-  (async ({ ids }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -164,13 +164,17 @@ deleteProductTypesWorkflow.hooks.productTypesDeleted(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Product.Workflows_Product/page.mdx#__type-17)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="productTypesDeleted"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Product.Workflows_Product/page.mdx#__type-18)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="productTypesDeleted"/>
 
 ## Emitted Events
 
 This section lists the events that are either triggered by the `emitEventStep` in the workflow, or by another workflow executed within this workflow.
 
+:::note
+
 The `emitEventStep` only emits the event after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+
+:::
 
 You can listen to these events in a subscriber, as explained in the [Subscribers](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers) documentation.
 
@@ -201,18 +205,18 @@ Emitted when product types are deleted.
 </Table.Cell>
       <Table.Cell>
 ```ts blockStyle="inline"
-[{
+{
   id, // The ID of the product type
-}]
+}
 ```
 </Table.Cell>
       <Table.Cell>
 <CopyGeneratedSnippetButton tooltipText="Copy subscriber for event" type="subscriber" options={{
         event: "product-type.deleted",
         payload: `\`\`\`ts
-[{
+{
   id, // The ID of the product type
-}]
+}
 \`\`\``
         }}/>
 </Table.Cell>

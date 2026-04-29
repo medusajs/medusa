@@ -15,5 +15,6 @@
     "declaration": true,
     "declarationMap": true
   },
-  "include": ["src/**/*", "tailwind.config.js", "postcss.config.js"]
+  "include": ["src/**/*", "tailwind.config.js", "postcss.config.js"],
+  "exclude": ["**/__tests__/**", "**/__mocks__/**"]
 }

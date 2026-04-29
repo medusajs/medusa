@@ -15,7 +15,11 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { VirtualItem, useVirtualizer } from "@tanstack/react-virtual"
+import {
+  VirtualItem,
+  Virtualizer,
+  useVirtualizer,
+} from "@tanstack/react-virtual"
 import React, {
   CSSProperties,
   ReactNode,
@@ -51,7 +55,7 @@ import { isCellMatch, isSpecialFocusKey } from "../utils"
 import { DataGridKeyboardShortcutModal } from "./data-grid-keyboard-shortcut-modal"
 export interface DataGridRootProps<
   TData,
-  TFieldValues extends FieldValues = FieldValues,
+  TFieldValues extends FieldValues = FieldValues
 > {
   data?: TData[]
   columns: ColumnDef<TData>[]
@@ -60,6 +64,25 @@ export interface DataGridRootProps<
   onEditingChange?: (isEditing: boolean) => void
   disableInteractions?: boolean
   multiColumnSelection?: boolean
+  showColumnsDropdown?: boolean
+  /**
+   * Custom content to render in the header, positioned between the column visibility
+   * controls and the error/shortcuts section.
+   */
+  headerContent?: ReactNode
+  /**
+   * Lazy loading props - when totalRowCount is provided, the grid enters lazy loading mode.
+   * In this mode, the virtualizer will size based on totalRowCount and trigger onFetchMore
+   * when the user scrolls near the end of loaded data.
+   */
+  /** Total count of rows for scroll sizing (enables lazy loading mode when provided) */
+  totalRowCount?: number
+  /** Called when more data should be fetched */
+  onFetchMore?: () => void
+  /** Whether more data is currently being fetched */
+  isFetchingMore?: boolean
+  /** Whether there is more data to fetch */
+  hasNextPage?: boolean
 }
 
 const ROW_HEIGHT = 40
@@ -97,7 +120,7 @@ const getCommonPinningStyles = <TData,>(
 
 export const DataGridRoot = <
   TData,
-  TFieldValues extends FieldValues = FieldValues,
+  TFieldValues extends FieldValues = FieldValues
 >({
   data = [],
   columns,
@@ -106,7 +129,15 @@ export const DataGridRoot = <
   onEditingChange,
   disableInteractions,
   multiColumnSelection = false,
+  showColumnsDropdown = true,
+  totalRowCount,
+  onFetchMore,
+  isFetchingMore,
+  hasNextPage,
+  headerContent,
 }: DataGridRootProps<TData, TFieldValues>) => {
+  // TODO: remove once everything is lazy loaded
+  const isLazyMode = totalRowCount !== undefined
   const containerRef = useRef<HTMLDivElement>(null)
 
   const { redo, undo, execute } = useCommandHistory()
@@ -163,10 +194,18 @@ export const DataGridRoot = <
   )
   const visibleColumns = grid.getVisibleLeafColumns()
 
+  const effectiveRowCount = isLazyMode ? totalRowCount! : visibleRows.length
+
   const rowVirtualizer = useVirtualizer({
-    count: visibleRows.length,
+    count: effectiveRowCount,
     estimateSize: () => ROW_HEIGHT,
     getScrollElement: () => containerRef.current,
+    // Measure actual row heights for dynamic sizing (disabled in Firefox due to measurement issues). Taken from Tanstack
+    measureElement:
+      typeof window !== "undefined" &&
+      navigator.userAgent.indexOf("Firefox") === -1
+        ? (element) => element?.getBoundingClientRect().height
+        : undefined,
     overscan: 5,
     rangeExtractor: (range) => {
       const toRender = new Set(
@@ -188,6 +227,76 @@ export const DataGridRoot = <
     },
   })
   const virtualRows = rowVirtualizer.getVirtualItems()
+
+  /**
+   * Lazy loading scroll detection.
+   * When the user scrolls near the end of loaded data, trigger onFetchMore.
+   * We use refs to get latest values in the scroll handler without re-attaching.
+   */
+  const lazyLoadingRefs = useRef({
+    onFetchMore,
+    hasNextPage,
+    isFetchingMore,
+    loadedRowCount: visibleRows.length,
+  })
+
+  // Keep refs updated
+  useEffect(() => {
+    lazyLoadingRefs.current = {
+      onFetchMore,
+      hasNextPage,
+      isFetchingMore,
+      loadedRowCount: visibleRows.length,
+    }
+  }, [onFetchMore, hasNextPage, isFetchingMore, visibleRows.length])
+
+  const hasData = visibleRows.length > 0
+
+  const handleScroll = useCallback(() => {
+    const { onFetchMore, hasNextPage, isFetchingMore, loadedRowCount } =
+      lazyLoadingRefs.current
+
+    if (!onFetchMore || !hasNextPage || isFetchingMore) {
+      return
+    }
+
+    const scrollElement = containerRef.current
+
+    const { scrollTop, clientHeight } = scrollElement!
+    const loadedHeight = loadedRowCount * ROW_HEIGHT
+    const viewportBottom = scrollTop + clientHeight
+    const fetchThreshold = loadedHeight - ROW_HEIGHT * 10
+
+    if (viewportBottom >= fetchThreshold) {
+      onFetchMore()
+    }
+  }, [lazyLoadingRefs, containerRef])
+
+  useEffect(() => {
+    if (!isLazyMode || !hasData) {
+      return
+    }
+
+    const container = containerRef.current
+    if (!container) {
+      return
+    }
+
+    const timeoutId = setTimeout(() => {
+      const scrollElement: HTMLElement | null = containerRef.current
+      if (!scrollElement) {
+        return
+      }
+
+      scrollElement.addEventListener("scroll", handleScroll)
+    }, 100)
+
+    return () => {
+      clearTimeout(timeoutId)
+      const scrollElement = containerRef.current
+      scrollElement?.removeEventListener("scroll", handleScroll)
+    }
+  }, [isLazyMode, hasData])
 
   const columnVirtualizer = useVirtualizer({
     count: visibleColumns.length,
@@ -552,6 +661,7 @@ export const DataGridRoot = <
     <DataGridContext.Provider value={values}>
       <div className="bg-ui-bg-subtle flex size-full flex-col">
         <DataGridHeader
+          showColumnsDropdown={showColumnsDropdown}
           columnOptions={columnOptions}
           isDisabled={isColumsDisabled}
           onToggleColumn={handleToggleColumnVisibility}
@@ -560,6 +670,7 @@ export const DataGridRoot = <
           onResetColumns={handleResetColumns}
           isHighlighted={isHighlighted}
           onHeaderInteractionChange={handleHeaderInteractionChange}
+          headerContent={headerContent}
         />
         <div className="size-full overflow-hidden">
           <div
@@ -650,6 +761,20 @@ export const DataGridRoot = <
               >
                 {virtualRows.map((virtualRow) => {
                   const row = visibleRows[virtualRow.index] as Row<TData>
+
+                  // In lazy mode, rows beyond loaded data show as skeleton
+                  if (!row) {
+                    return (
+                      <DataGridRowSkeleton
+                        key={`skeleton-${virtualRow.index}`}
+                        virtualRow={virtualRow}
+                        virtualColumns={virtualColumns}
+                        virtualPaddingLeft={virtualPaddingLeft}
+                        virtualPaddingRight={virtualPaddingRight}
+                      />
+                    )
+                  }
+
                   const rowIndex = flatRows.findIndex((r) => r.id === row.id)
 
                   return (
@@ -658,6 +783,7 @@ export const DataGridRoot = <
                       row={row}
                       rowIndex={rowIndex}
                       virtualRow={virtualRow}
+                      rowVirtualizer={rowVirtualizer}
                       flatColumns={flatColumns}
                       virtualColumns={virtualColumns}
                       anchor={anchor}
@@ -680,12 +806,14 @@ export const DataGridRoot = <
 type DataGridHeaderProps = {
   columnOptions: GridColumnOption[]
   isDisabled: boolean
+  showColumnsDropdown: boolean
   onToggleColumn: (index: number) => (value: boolean) => void
   onResetColumns: () => void
   isHighlighted: boolean
   errorCount: number
   onToggleErrorHighlighting: () => void
   onHeaderInteractionChange: (isActive: boolean) => void
+  headerContent?: ReactNode
 }
 
 const DataGridHeader = ({
@@ -697,6 +825,8 @@ const DataGridHeader = ({
   errorCount,
   onToggleErrorHighlighting,
   onHeaderInteractionChange,
+  showColumnsDropdown,
+  headerContent,
 }: DataGridHeaderProps) => {
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
   const [columnsOpen, setColumnsOpen] = useState(false)
@@ -717,58 +847,61 @@ const DataGridHeader = ({
   }
   return (
     <div className="bg-ui-bg-base flex items-center justify-between border-b p-4">
-      <div className="flex items-center gap-x-2">
-        <DropdownMenu
-          dir={direction}
-          open={columnsOpen}
-          onOpenChange={handleColumnsOpenChange}
-        >
-          <ConditionalTooltip
-            showTooltip={isDisabled}
-            content={t("dataGrid.columns.disabled")}
+      {showColumnsDropdown && (
+        <div className="flex items-center gap-x-2">
+          <DropdownMenu
+            dir={direction}
+            open={columnsOpen}
+            onOpenChange={handleColumnsOpenChange}
           >
-            <DropdownMenu.Trigger asChild disabled={isDisabled}>
-              <Button size="small" variant="secondary">
-                {hasChanged ? <AdjustmentsDone /> : <Adjustments />}
-                {t("dataGrid.columns.view")}
-              </Button>
-            </DropdownMenu.Trigger>
-          </ConditionalTooltip>
-          <DropdownMenu.Content>
-            {columnOptions.map((column, index) => {
-              const { checked, disabled, id, name } = column
+            <ConditionalTooltip
+              showTooltip={isDisabled}
+              content={t("dataGrid.columns.disabled")}
+            >
+              <DropdownMenu.Trigger asChild disabled={isDisabled}>
+                <Button size="small" variant="secondary">
+                  {hasChanged ? <AdjustmentsDone /> : <Adjustments />}
+                  {t("dataGrid.columns.view")}
+                </Button>
+              </DropdownMenu.Trigger>
+            </ConditionalTooltip>
+            <DropdownMenu.Content>
+              {columnOptions.map((column, index) => {
+                const { checked, disabled, id, name } = column
 
-              if (disabled) {
-                return null
-              }
+                if (disabled) {
+                  return null
+                }
 
-              return (
-                <DropdownMenu.CheckboxItem
-                  key={id}
-                  checked={checked}
-                  onCheckedChange={onToggleColumn(index)}
-                  onSelect={(e) => e.preventDefault()}
-                >
-                  {name}
-                </DropdownMenu.CheckboxItem>
-              )
-            })}
-          </DropdownMenu.Content>
-        </DropdownMenu>
-        {hasChanged && (
-          <Button
-            size="small"
-            variant="transparent"
-            type="button"
-            onClick={onResetColumns}
-            className="text-ui-fg-muted hover:text-ui-fg-subtle"
-            data-id="reset-columns"
-          >
-            {t("dataGrid.columns.resetToDefault")}
-          </Button>
-        )}
-      </div>
-      <div className="flex items-center gap-x-2">
+                return (
+                  <DropdownMenu.CheckboxItem
+                    key={id}
+                    checked={checked}
+                    onCheckedChange={onToggleColumn(index)}
+                    onSelect={(e) => e.preventDefault()}
+                  >
+                    {name}
+                  </DropdownMenu.CheckboxItem>
+                )
+              })}
+            </DropdownMenu.Content>
+          </DropdownMenu>
+          {hasChanged && (
+            <Button
+              size="small"
+              variant="transparent"
+              type="button"
+              onClick={onResetColumns}
+              className="text-ui-fg-muted hover:text-ui-fg-subtle"
+              data-id="reset-columns"
+            >
+              {t("dataGrid.columns.resetToDefault")}
+            </Button>
+          )}
+        </div>
+      )}
+      {headerContent}
+      <div className="ml-auto flex items-center gap-x-2">
         {errorCount > 0 && (
           <Button
             size="small"
@@ -832,11 +965,11 @@ const DataGridCell = <TData,>({
       data-row-index={rowIndex}
       data-column-index={columnIndex}
       className={clx(
-        "relative flex items-center border-b border-r p-0 outline-none"
+        "relative flex items-stretch border-b border-r p-0 outline-none"
       )}
       tabIndex={-1}
     >
-      <div className="relative h-full w-full">
+      <div className="relative w-full">
         {flexRender(cell.column.columnDef.cell, {
           ...cell.getContext(),
           columnIndex,
@@ -861,10 +994,11 @@ const DataGridCell = <TData,>({
 type DataGridRowProps<TData> = {
   row: Row<TData>
   rowIndex: number
-  virtualRow: VirtualItem<Element>
+  virtualRow: VirtualItem
+  rowVirtualizer: Virtualizer<HTMLDivElement, Element>
   virtualPaddingLeft?: number
   virtualPaddingRight?: number
-  virtualColumns: VirtualItem<Element>[]
+  virtualColumns: VirtualItem[]
   flatColumns: Column<TData, unknown>[]
   anchor: DataGridCoordinates | null
   onDragToFillStart: (e: React.MouseEvent<HTMLElement>) => void
@@ -875,6 +1009,7 @@ const DataGridRow = <TData,>({
   row,
   rowIndex,
   virtualRow,
+  rowVirtualizer,
   virtualPaddingLeft,
   virtualPaddingRight,
   virtualColumns,
@@ -889,10 +1024,12 @@ const DataGridRow = <TData,>({
     <div
       role="row"
       aria-rowindex={virtualRow.index}
+      data-index={virtualRow.index}
+      ref={(node) => rowVirtualizer.measureElement(node)}
       style={{
         transform: `translateY(${virtualRow.start}px)`,
       }}
-      className="bg-ui-bg-subtle txt-compact-small absolute flex h-10 w-full"
+      className="bg-ui-bg-subtle txt-compact-small absolute flex min-h-10 w-full"
     >
       {virtualPaddingLeft ? (
         <div
@@ -934,6 +1071,80 @@ const DataGridRow = <TData,>({
 
         return acc
       }, [] as ReactNode[])}
+      {virtualPaddingRight ? (
+        <div
+          role="presentation"
+          style={{ display: "flex", width: virtualPaddingRight }}
+        />
+      ) : null}
+    </div>
+  )
+}
+
+/**
+ * Skeleton row component for lazy loading.
+ * Displays placeholder cells while data is being fetched.
+ */
+type DataGridRowSkeletonProps = {
+  virtualRow: VirtualItem
+  virtualPaddingLeft?: number
+  virtualPaddingRight?: number
+  virtualColumns: VirtualItem[]
+}
+
+const DataGridRowSkeleton = ({
+  virtualRow,
+  virtualPaddingLeft,
+  virtualPaddingRight,
+  virtualColumns,
+}: DataGridRowSkeletonProps) => {
+  return (
+    <div
+      role="row"
+      aria-rowindex={virtualRow.index}
+      style={{
+        transform: `translateY(${virtualRow.start}px)`,
+      }}
+      className="bg-ui-bg-subtle txt-compact-small absolute flex h-10 w-full"
+    >
+      {virtualPaddingLeft ? (
+        <div
+          role="presentation"
+          style={{ display: "flex", width: virtualPaddingLeft }}
+        />
+      ) : null}
+      {virtualColumns.map((vc, index, array) => {
+        const previousVC = array[index - 1]
+        const elements: ReactNode[] = []
+
+        if (previousVC && vc.index !== previousVC.index + 1) {
+          elements.push(
+            <div
+              key={`padding-${previousVC.index}-${vc.index}`}
+              role="presentation"
+              style={{
+                display: "flex",
+                width: `${vc.start - previousVC.end}px`,
+              }}
+            />
+          )
+        }
+
+        elements.push(
+          <div
+            key={`skeleton-cell-${vc.index}`}
+            role="gridcell"
+            style={{ width: vc.size }}
+            className="relative flex items-center border-b border-r p-0 outline-none"
+          >
+            <div className="flex h-full w-full items-center px-4">
+              <div className="bg-ui-bg-component h-4 w-3/4 animate-pulse rounded" />
+            </div>
+          </div>
+        )
+
+        return elements
+      })}
       {virtualPaddingRight ? (
         <div
           role="presentation"

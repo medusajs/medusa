@@ -5,10 +5,7 @@ import {
   OrderPreviewDTO,
   OrderWorkflow,
 } from "@medusajs/framework/types"
-import {
-  ChangeActionType,
-  OrderChangeStatus
-} from "@medusajs/framework/utils"
+import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -17,6 +14,7 @@ import {
   transform,
 } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../../common"
+import { acquireLockStep, releaseLockStep } from "../../../locking"
 import {
   deleteOrderChangeActionsStep,
   previewOrderChangeStep,
@@ -25,6 +23,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { computeAdjustmentsForPreviewWorkflow } from "../compute-adjustments-for-preview"
 import { fieldsToRefreshOrderEdit } from "./utils/fields"
 
 /**
@@ -130,6 +129,12 @@ export const removeItemOrderEditActionWorkflow = createWorkflow(
   function (
     input: WorkflowData<OrderWorkflow.DeleteOrderEditItemActionWorkflowInput>
   ): WorkflowResponse<OrderPreviewDTO> {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const orderResult = useQueryGraphStep({
       entity: "order",
       fields: fieldsToRefreshOrderEdit,
@@ -145,7 +150,7 @@ export const removeItemOrderEditActionWorkflow = createWorkflow(
 
     const orderChangeResult = useQueryGraphStep({
       entity: "order_change",
-      fields: ["id", "status", "version", "actions.*"],
+      fields: ["id", "status", "version", "actions.*", "carry_over_promotions"],
       filters: {
         order_id: input.order_id,
         status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
@@ -167,6 +172,19 @@ export const removeItemOrderEditActionWorkflow = createWorkflow(
 
     deleteOrderChangeActionsStep({ ids: [input.action_id] })
 
-    return new WorkflowResponse(previewOrderChangeStep(order.id))
+    computeAdjustmentsForPreviewWorkflow.runAsStep({
+      input: {
+        order,
+        orderChange,
+      },
+    })
+
+    const previewOrderChange = previewOrderChangeStep(order.id) as OrderPreviewDTO
+
+    releaseLockStep({
+      key: input.order_id,
+    })
+
+    return new WorkflowResponse(previewOrderChange)
   }
 )

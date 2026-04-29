@@ -1,0 +1,36 @@
+---
+slug: /references/js-sdk/store/locale
+sidebar_label: locale
+tags:
+  - js sdk
+  - storefront
+  - locale
+---
+
+import { TypeList } from "docs-ui"
+
+# locale - JS SDK Store Reference
+
+This documentation provides a reference to the `sdk.store.locale` set of methods used to send requests to Medusa's Store API routes.
+
+## list
+
+This method retrieves the list of supported locales in the store. It sends a request to the
+[List Locales](https://docs.medusajs.com/api/store#locales\_getlocales) API route.
+
+### Example
+
+```ts
+sdk.store.locale.list()
+.then(({ locales }) => {
+  console.log(locales)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[StoreLocaleListResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.StoreLocaleListResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The list of supported locales.","expandable":false,"children":[{"name":"locales","type":"[StoreLocale](../../../../../types/HttpTypes/interfaces/types.HttpTypes.StoreLocale/page.mdx)[]","description":"The list of locales.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The locale's code.","optional":false,"defaultValue":"","example":"en-US","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The locale's display name.","optional":false,"defaultValue":"","example":"English (United States)","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>

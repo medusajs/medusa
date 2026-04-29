@@ -149,8 +149,13 @@ properties:
     type: array
     description: The variant's images.
     items:
-      $ref: ./AdminProductImage.yaml
+      $ref: ./BaseProductImage.yaml
   thumbnail:
     type: string
     title: thumbnail
     description: The variant's thumbnail.
+  translations:
+    type: array
+    description: The variant's translations.
+    items:
+      $ref: ./AdminTranslation.yaml

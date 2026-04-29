@@ -69,19 +69,25 @@ const expectedMenuItems = `
             label: RouteConfig0.label,
             icon: RouteConfig0.icon,
             path: "/one",
-            nested: undefined
+            nested: undefined,
+            rank: undefined,
+            translationNs: undefined
           },
           {
             label: RouteConfig1.label,
             icon: undefined,
             path: "/two",
-            nested: undefined
+            nested: undefined,
+            rank: undefined,
+            translationNs: undefined
           },
           {
             label: RouteConfig2.label,
             icon: RouteConfig2.icon,
             path: "/three",
-            nested: "/products"
+            nested: "/products",
+            rank: undefined,
+            translationNs: undefined
           }
         ]
       `
@@ -135,6 +141,223 @@ describe("generateMenuItems", () => {
     ])
     expect(utils.normalizeString(result.code)).toEqual(
       utils.normalizeString(expectedMenuItems)
+    )
+  })
+
+  it("should include rank property in generated menu items", async () => {
+    const mockFilesWithRank = [
+      "Users/user/medusa/src/admin/routes/analytics/page.tsx",
+      "Users/user/medusa/src/admin/routes/reports/page.tsx",
+    ]
+
+    const mockFileContentsWithRank = [
+      `
+        import { defineRouteConfig } from "@medusajs/admin-sdk"
+
+        const Page = () => {
+            return <div>Analytics</div>
+        }
+
+        export const config = defineRouteConfig({
+            label: "Analytics",
+            icon: "ChartBar",
+            rank: 1,
+        })
+
+        export default Page
+      `,
+      `
+        import { defineRouteConfig } from "@medusajs/admin-sdk"
+
+        const Page = () => {
+            return <div>Reports</div>
+        }
+
+        export const config = defineRouteConfig({
+            label: "Reports",
+            rank: 2,
+        })
+
+        export default Page
+      `,
+    ]
+
+    vi.mocked(utils.crawl).mockResolvedValue(mockFilesWithRank)
+
+    vi.mocked(fs.readFile).mockImplementation(async (file) =>
+      Promise.resolve(
+        mockFileContentsWithRank[mockFilesWithRank.indexOf(file as string)]
+      )
+    )
+
+    const result = await generateMenuItems(
+      new Set(["Users/user/medusa/src/admin"])
+    )
+
+    const expectedMenuItemsWithRank = `
+      menuItems: [
+        {
+          label: RouteConfig0.label,
+          icon: RouteConfig0.icon,
+          path: "/analytics",
+          nested: undefined,
+          rank: 1,
+          translationNs: undefined
+        },
+        {
+          label: RouteConfig1.label,
+          icon: undefined,
+          path: "/reports",
+          nested: undefined,
+          rank: 2,
+          translationNs: undefined
+        }
+      ]
+    `
+
+    expect(utils.normalizeString(result.code)).toEqual(
+      utils.normalizeString(expectedMenuItemsWithRank)
+    )
+  })
+
+  it("should handle translationNs field", async () => {
+    const mockFileWithTranslation = `
+      import { defineRouteConfig } from "@medusajs/admin-sdk"
+
+      const Page = () => {
+          return <div>Custom Page</div>
+      }
+
+      export const config = defineRouteConfig({
+          label: "menuItems.customFeature",
+          translationNs: "my-plugin",
+      })
+
+      export default Page
+    `
+
+    const mockFiles = ["Users/user/medusa/src/admin/routes/custom/page.tsx"]
+    vi.mocked(utils.crawl).mockResolvedValue(mockFiles)
+    vi.mocked(fs.readFile).mockResolvedValue(mockFileWithTranslation)
+
+    const result = await generateMenuItems(
+      new Set(["Users/user/medusa/src/admin"])
+    )
+
+    expect(result.imports).toEqual([
+      `import { config as RouteConfig0 } from "Users/user/medusa/src/admin/routes/custom/page.tsx"`,
+    ])
+
+    const expectedOutput = `
+      menuItems: [
+        {
+          label: RouteConfig0.label,
+          icon: undefined,
+          path: "/custom",
+          nested: undefined,
+          rank: undefined,
+          translationNs: RouteConfig0.translationNs
+        }
+      ]
+    `
+
+    expect(utils.normalizeString(result.code)).toEqual(
+      utils.normalizeString(expectedOutput)
+    )
+  })
+
+  it("should handle mixed ranked and unranked routes", async () => {
+    const mockMixedFiles = [
+      "Users/user/medusa/src/admin/routes/first/page.tsx",
+      "Users/user/medusa/src/admin/routes/second/page.tsx",
+      "Users/user/medusa/src/admin/routes/third/page.tsx",
+    ]
+
+    const mockMixedContents = [
+      `
+        import { defineRouteConfig } from "@medusajs/admin-sdk"
+
+        const Page = () => {
+            return <div>First</div>
+        }
+
+        export const config = defineRouteConfig({
+            label: "First",
+            rank: 1,
+        })
+
+        export default Page
+      `,
+      `
+        import { defineRouteConfig } from "@medusajs/admin-sdk"
+
+        const Page = () => {
+            return <div>Second</div>
+        }
+
+        export const config = defineRouteConfig({
+            label: "Second",
+        })
+
+        export default Page
+      `,
+      `
+        import { defineRouteConfig } from "@medusajs/admin-sdk"
+
+        const Page = () => {
+            return <div>Third</div>
+        }
+
+        export const config = defineRouteConfig({
+            label: "Third",
+            rank: 0,
+        })
+
+        export default Page
+      `,
+    ]
+
+    vi.mocked(utils.crawl).mockResolvedValue(mockMixedFiles)
+
+    vi.mocked(fs.readFile).mockImplementation(async (file) =>
+      Promise.resolve(mockMixedContents[mockMixedFiles.indexOf(file as string)])
+    )
+
+    const result = await generateMenuItems(
+      new Set(["Users/user/medusa/src/admin"])
+    )
+
+    const expectedMixedMenuItems = `
+      menuItems: [
+        {
+          label: RouteConfig0.label,
+          icon: undefined,
+          path: "/first",
+          nested: undefined,
+          rank: 1,
+          translationNs: undefined
+        },
+        {
+          label: RouteConfig1.label,
+          icon: undefined,
+          path: "/second",
+          nested: undefined,
+          rank: undefined,
+          translationNs: undefined
+        },
+        {
+          label: RouteConfig2.label,
+          icon: undefined,
+          path: "/third",
+          nested: undefined,
+          rank: 0,
+          translationNs: undefined
+        }
+      ]
+    `
+
+    expect(utils.normalizeString(result.code)).toEqual(
+      utils.normalizeString(expectedMixedMenuItems)
     )
   })
 })

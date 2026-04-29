@@ -8,7 +8,7 @@ products:
   - sales channel
 ---
 
-import { CodeTabs, CodeTab, Table } from "docs-ui"
+import { CodeTabs, CodeTab, Table, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Links between Product Module and Other Modules`,
@@ -128,6 +128,118 @@ Read-only links are used to query data across modules, but the relations aren't 
       </Table.Cell>
       <Table.Cell>
         [Learn more](#sales-channel-module)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [Product](/references/product/models/Product)
+      </Table.Cell>
+      <Table.Cell>
+        [Translation](/references/translation/models/Translation) in [Translation Module](../../translation/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        Read-only - one-to-many
+      </Table.Cell>
+      <Table.Cell>
+        [Learn more](#translation-module)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [ProductVariant](/references/product/models/ProductVariant)
+      </Table.Cell>
+      <Table.Cell>
+        [Translation](/references/translation/models/Translation) in [Translation Module](../../translation/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        Read-only - one-to-many
+      </Table.Cell>
+      <Table.Cell>
+        [Learn more](#translation-module)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [ProductCategory](/references/product/models/ProductCategory)
+      </Table.Cell>
+      <Table.Cell>
+        [Translation](/references/translation/models/Translation) in [Translation Module](../../translation/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        Read-only - one-to-many
+      </Table.Cell>
+      <Table.Cell>
+        [Learn more](#translation-module)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [ProductCollection](/references/product/models/ProductCollection)
+      </Table.Cell>
+      <Table.Cell>
+        [Translation](/references/translation/models/Translation) in [Translation Module](../../translation/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        Read-only - one-to-many
+      </Table.Cell>
+      <Table.Cell>
+        [Learn more](#translation-module)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [ProductTag](/references/product/models/ProductTag)
+      </Table.Cell>
+      <Table.Cell>
+        [Translation](/references/translation/models/Translation) in [Translation Module](../../translation/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        Read-only - one-to-many
+      </Table.Cell>
+      <Table.Cell>
+        [Learn more](#translation-module)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [ProductType](/references/product/models/ProductType)
+      </Table.Cell>
+      <Table.Cell>
+        [Translation](/references/translation/models/Translation) in [Translation Module](../../translation/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        Read-only - one-to-many
+      </Table.Cell>
+      <Table.Cell>
+        [Learn more](#translation-module)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [ProductOption](/references/product/models/ProductOption)
+      </Table.Cell>
+      <Table.Cell>
+        [Translation](/references/translation/models/Translation) in [Translation Module](../../translation/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        Read-only - one-to-many
+      </Table.Cell>
+      <Table.Cell>
+        [Learn more](#translation-module)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [ProductOptionValue](/references/product/models/ProductOptionValue)
+      </Table.Cell>
+      <Table.Cell>
+        [Translation](/references/translation/models/Translation) in [Translation Module](../../translation/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        Read-only - one-to-many
+      </Table.Cell>
+      <Table.Cell>
+        [Learn more](#translation-module)
       </Table.Cell>
     </Table.Row>
   </Table.Body>
@@ -620,6 +732,75 @@ createRemoteLinkStep({
     sales_channel_id: "sc_123",
   },
 })
+```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Translation Module
+
+<Prerequisites
+  items={[
+    {
+      title: "Translation Module",
+      link: "/commerce-modules/translation",
+    },
+  ]}
+/>
+
+Medusa defines read-only links from several data models in the Product Module to the [Translation](/references/translation/models/Translation) data model in the [Translation Module](../../translation/page.mdx):
+
+- `Product` (one-to-many) to `Translation`, and vice versa.
+- `ProductVariant` (one-to-many) to `Translation`. You can only retrieve the translations of a product variant, and not the other way around.
+- `ProductCategory` (one-to-many) to `Translation`. You can only retrieve the translations of a product category, and not the other way around.
+- `ProductCollection` (one-to-many) to `Translation`. You can only retrieve the translations of a product collection, and not the other way around.
+- `ProductTag` (one-to-many) to `Translation`. You can only retrieve the translations of a product tag, and not the other way around.
+- `ProductType` (one-to-many) to `Translation`. You can only retrieve the translations of a product type, and not the other way around.
+- `ProductOption` (one-to-many) to `Translation`. You can only retrieve the translations of a product option, and not the other way around.
+- `ProductOptionValue` (one-to-many) to `Translation`. You can only retrieve the translations of a product option value, and not the other way around.
+
+### Retrieve with Query
+
+To retrieve the translations of a product with [Query](!docs!/learn/fundamentals/module-links/query), pass `translations.*` in `fields`:
+
+<Note>
+
+You can pass the `translations.*` field when querying any of the above-mentioned data models to retrieve their associated translations.
+
+</Note>
+
+<CodeTabs group="relation-query">
+  <CodeTab label="query.graph" value="method">
+
+```ts
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: [
+    "translations.*",
+  ],
+})
+
+// products[0].translations
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="step">
+
+```ts
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+// ...
+
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: [
+    "translations.*",
+  ],
+})
+
+// products[0].translations
 ```
 
   </CodeTab>

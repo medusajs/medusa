@@ -190,7 +190,6 @@ export class InMemoryDistributedTransactionStorage
 
     const stepsArray = Object.values(data.flow.steps) as TransactionStep[]
     let currentStep!: TransactionStep
-    let currentStepsIsAsync = false
 
     const targetStates = isFlowInvoking
       ? new Set([
@@ -215,6 +214,7 @@ export class InMemoryDistributedTransactionStorage
       }
     }
 
+    let shouldStoreCurrentSteps = false
     if (currentStep) {
       for (const step of stepsArray) {
         if (step.id === "_root") {
@@ -223,9 +223,9 @@ export class InMemoryDistributedTransactionStorage
 
         if (
           step.depth === currentStep.depth &&
-          step?.definition?.async === true
+          step?.definition?.store === true
         ) {
-          currentStepsIsAsync = true
+          shouldStoreCurrentSteps = true
           break
         }
       }
@@ -233,7 +233,7 @@ export class InMemoryDistributedTransactionStorage
 
     if (
       !(isNotStarted || isFinished || isWaitingToCompensate) &&
-      !currentStepsIsAsync &&
+      !shouldStoreCurrentSteps &&
       !asyncVersion
     ) {
       return
