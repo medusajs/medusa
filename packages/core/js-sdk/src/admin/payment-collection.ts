@@ -2,6 +2,9 @@ import { HttpTypes, SelectParams } from "@medusajs/types"
 import { Client } from "../client.js"
 import { ClientHeaders } from "../types.js"
 
+/**
+ * Methods to manage payment collections in Medusa.
+ */
 export class PaymentCollection {
   /**
    * @ignore
@@ -122,6 +125,8 @@ export class PaymentCollection {
    * @param query - Configure the fields to retrieve in the payment collection.
    * @param headers - Headers to pass in the request.
    * @returns The payment collection's details.
+   * 
+   * @since 2.14.2
    *
    * @example
    * sdk.admin.paymentCollection.createPaymentSession("paycol_123", {

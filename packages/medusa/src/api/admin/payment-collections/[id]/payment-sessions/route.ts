@@ -6,6 +6,14 @@ import {
   refetchEntity,
 } from "@medusajs/framework/http"
 
+/**
+ * Creates a payment session for a payment collection.
+ * 
+ * @param req - The authenticated request containing payment session data
+ * @param res - The response object containing the updated payment collection
+ * 
+ * @since 2.14.2
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     HttpTypes.AdminInitializePaymentSession,
