@@ -1,5 +1,4 @@
 ---
-"integration-tests-http": patch
 "@medusajs/medusa": patch
 ---
 

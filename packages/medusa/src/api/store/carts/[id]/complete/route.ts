@@ -53,7 +53,7 @@ export const POST = async (
           defaults: defaultStoreCartFields,
         }
       ).remoteQueryConfig.fields
-    , req)
+    )
 
     if (!statusOKErrors.includes(error?.type)) {
       throw error

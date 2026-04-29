@@ -4,7 +4,7 @@ import {
   getVariantAvailability,
   MedusaError,
 } from "@medusajs/framework/utils"
-import { AuthenticatedMedusaRequest, MedusaRequest, MedusaStoreRequest } from "@medusajs/framework/http"
+import { MedusaRequest, MedusaStoreRequest } from "@medusajs/framework/http"
 import { transformAndValidateSalesChannelIds } from "./filter-by-valid-sales-channels"
 
 export const wrapVariantsWithTotalInventoryQuantity = async (
@@ -26,13 +26,13 @@ export const wrapVariantsWithTotalInventoryQuantity = async (
 }
 
 export const wrapVariantsWithInventoryQuantityForSalesChannel = async (
-  req: AuthenticatedMedusaRequest<any, any> | MedusaStoreRequest<any, any>,
+  req: MedusaStoreRequest<any, any>,
   variants: VariantInput[]
 ) => {
   const salesChannelIds = transformAndValidateSalesChannelIds(req)
 
   const publishableApiKeySalesChannelIds =
-    req.publishable_key_context?.sales_channel_ids ?? []
+    req.publishable_key_context.sales_channel_ids ?? []
 
   let channelsToUse: string
 
@@ -48,7 +48,6 @@ export const wrapVariantsWithInventoryQuantityForSalesChannel = async (
   }
 
   variants ??= []
-  
   const variantIds = variants.map((variant) => variant.id).flat(1)
 
   if (!variantIds.length) {

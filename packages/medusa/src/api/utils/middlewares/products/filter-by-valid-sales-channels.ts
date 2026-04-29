@@ -1,4 +1,4 @@
-import { AuthenticatedMedusaRequest, MedusaStoreRequest } from "@medusajs/framework/http"
+import { MedusaStoreRequest } from "@medusajs/framework/http"
 import { arrayDifference, MedusaError } from "@medusajs/framework/utils"
 import { NextFunction } from "express"
 
@@ -8,10 +8,10 @@ import { NextFunction } from "express"
  * @returns The transformed and validated sales channel ids
  */
 export function transformAndValidateSalesChannelIds(
-  req: AuthenticatedMedusaRequest<any, any> | MedusaStoreRequest<any, any>
+  req: MedusaStoreRequest
 ): string[] {
   const { sales_channel_ids: idsFromPublishableKey = [] } =
-    req.publishable_key_context ?? {}
+    req.publishable_key_context
 
   let { sales_channel_id: idsFromRequest = [] } = req.validatedQuery as {
     sales_channel_id: string | string[]
