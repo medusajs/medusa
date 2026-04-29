@@ -6,6 +6,9 @@ import {
   refetchEntity,
 } from "@medusajs/framework/http"
 
+/**
+ * @since 2.14.2
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     HttpTypes.AdminInitializePaymentSession,

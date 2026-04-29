@@ -2,6 +2,9 @@ import { HttpTypes, SelectParams } from "@medusajs/types"
 import { Client } from "../client.js"
 import { ClientHeaders } from "../types.js"
 
+/**
+ * The main service interface for payment collections in the admin SDK.
+ */
 export class PaymentCollection {
   /**
    * @ignore
@@ -130,6 +133,9 @@ export class PaymentCollection {
    * .then(({ payment_collection }) => {
    *   console.log(payment_collection)
    * })
+   *
+   * @since 2.14.2
+   * @tags payment-collections
    */
   async createPaymentSession(
     id: string,
