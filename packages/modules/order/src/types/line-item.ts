@@ -23,6 +23,7 @@ interface PartialUpsertOrderLineItemDTO {
   is_tax_inclusive?: boolean
 
   compare_at_unit_price?: BigNumberInput
+  metadata?: Record<string, unknown> | null
 }
 
 export interface CreateOrderLineItemDTO extends PartialUpsertOrderLineItemDTO {

@@ -1,0 +1,36 @@
+---
+slug: /references/medusa-workflows/steps/createStoreCreditAccountsStep
+sidebar_label: createStoreCreditAccountsStep
+tags:
+  - store credit
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# createStoreCreditAccountsStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `createStoreCreditAccountsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates store credit accounts. If no code is provided, a unique code
+prefixed with "SC" is automatically generated. The step supports rollback by
+deleting the created accounts.
+
+## Example
+
+```ts
+const data = createStoreCreditAccountsStep([
+  {
+    currency_code: "usd",
+    customer_id: "cust_123",
+  },
+])
+```
+
+## Input
+
+<TypeList types={[{"name":"CreateStoreCreditAccountsStepInput","type":"[CreateStoreCreditAccountsStepInput](../../../../plugins_loyalty_src_workflows/types/core_flows.plugins_loyalty_src_workflows.CreateStoreCreditAccountsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CreateStoreCreditAccountsStepInput","type":"`ModuleCreateStoreCreditAccount`[]","description":"Data for creating one or more store credit accounts.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createStoreCreditAccountsStep"/>
+
+## Output
+
+<TypeList types={[{"name":"ModuleStoreCreditAccount[]","type":"`ModuleStoreCreditAccount`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createStoreCreditAccountsStep"/>

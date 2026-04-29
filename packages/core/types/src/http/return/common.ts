@@ -97,7 +97,12 @@ export interface BaseReturn {
    */
   created_at: string
   /**
+   * The ID of the user that created the return.
+   */
+  created_by: string
+  /**
    * The date when the return was canceled.
    */
   canceled_at: string
+  requested_at: string
 }

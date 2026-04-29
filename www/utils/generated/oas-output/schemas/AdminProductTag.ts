@@ -43,6 +43,10 @@
  *     description: The tag's translations.
  *     items:
  *       $ref: "#/components/schemas/AdminTranslation"
+ *   external_id:
+ *     type: string
+ *     title: external_id
+ *     description: The tag's external ID used for integration with third-party systems.
  * 
 */
 

@@ -24,6 +24,9 @@ import { acquireLockStep, releaseLockStep } from "../../locking"
 import { deleteOrderChangeActionsStep } from "../../order/steps/delete-order-change-actions"
 import { prepareOrderComputeActionContextStep } from "../../order/workflows/order-edit/utils/prepare-order-compute-action-context"
 
+/**
+ * The ID of the compute draft order adjustments workflow.
+ */
 export const computeDraftOrderAdjustmentsWorkflowId =
   "compute-draft-order-adjustments"
 
@@ -146,9 +149,9 @@ export const computeDraftOrderAdjustmentsWorkflow = createWorkflow(
       })
 
       const actionsToComputeItemsInput = prepareOrderComputeActionContextStep({
-          order,
-          previewedOrder,
-        })
+        order,
+        previewedOrder,
+      })
 
       const actions = getActionsToComputeFromPromotionsStep({
         computeActionContext: actionsToComputeItemsInput,

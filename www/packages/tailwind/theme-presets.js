@@ -110,6 +110,7 @@ const light = {
   "--docs-alphas-alpha-6": "rgba(24, 24, 27, 0.06)",
   "--docs-alphas-alpha-10": "rgba(24, 24, 27, 0.10)",
   "--docs-alphas-alpha-16": "rgba(24, 24, 27, 0.16)",
+  "--docs-alphas-alpha-24": "rgba(24, 24, 27, 0.24)",
 }
 
 const dark = {
@@ -221,7 +222,8 @@ const dark = {
   "--docs-alphas-alpha-250": "rgba(255, 255, 255, 0.1)",
   "--docs-alphas-alpha-6": "rgba(255, 255, 255, 0.06)",
   "--docs-alphas-alpha-10": "rgba(255, 255, 255, 0.10)",
-  "--docs-alphas-alpha-16": "rgba(255, 255, 255, 0.16)"
+  "--docs-alphas-alpha-16": "rgba(255, 255, 255, 0.16)",
+  "--docs-alphas-alpha-24": "rgba(255, 255, 255, 0.24)",
 }
 
 module.exports = {

@@ -10,13 +10,14 @@ import {
   ContainerRegistrationKeys,
   MedusaError,
 } from "@medusajs/framework/utils"
-import {
-  AdminAssignUserRolesType,
-  AdminRemoveUserRolesType,
-} from "../../validators"
+import { HttpTypes } from "@medusajs/types"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetUserRolesParams>,
   res: MedusaResponse
 ) => {
   const userId = req.params.id
@@ -39,8 +40,14 @@ export const GET = async (
   })
 }
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminAssignUserRolesType>,
+  req: AuthenticatedMedusaRequest<
+    HttpTypes.AdminAssignUserRoles
+  >,
   res: MedusaResponse
 ) => {
   const userId = req.params.id
@@ -82,8 +89,12 @@ export const POST = async (
   res.status(200).json({ roles: userRoles })
 }
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const DELETE = async (
-  req: AuthenticatedMedusaRequest<AdminRemoveUserRolesType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminRemoveUserRoles>,
   res: MedusaResponse
 ) => {
   const userId = req.params.id

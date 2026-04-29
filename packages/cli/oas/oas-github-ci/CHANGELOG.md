@@ -1,5 +1,49 @@
 # @medusajs/oas-github-ci
 
+## 2.14.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.14.1
+
+## 2.14.0
+
+### Patch Changes
+
+- [`bbc7a77e2fcaf53d02e222ba6522bcea84388efc`](undefined) - feat(medusa-oas-cli, oas-github-ci): support versioning for outputted oas
+
+- Updated dependencies [[`bbc7a77e2fcaf53d02e222ba6522bcea84388efc`](undefined)]:
+  - @medusajs/medusa-oas-cli@2.14.0
+
+## 2.13.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.13.6
+
+## 2.13.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.13.5
+
+## 2.13.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.13.4
+
+## 2.13.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.13.3
+
 ## 2.13.2
 
 ### Patch Changes

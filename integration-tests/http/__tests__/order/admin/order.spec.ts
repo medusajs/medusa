@@ -3833,7 +3833,15 @@ medusaIntegrationTestRunner({
     })
 
     describe("POST /orders/:id/credit-lines", () => {
+      let storeHeaders
+
       beforeEach(async () => {
+        const publishableKey = await generatePublishableKey(container)
+
+        storeHeaders = generateStoreHeaders({
+          publishableKey,
+        })
+
         const inventoryItemOverride = (
           await api.post(
             `/admin/inventory-items`,
@@ -3983,6 +3991,62 @@ medusaIntegrationTestRunner({
         expect(error3.response.status).toBe(400)
         expect(error3.response.data.message).toBe(
           "Cannot create more negative credit lines with amount more than the pending difference"
+        )
+
+        const error4 = await api
+          .post(
+            `/admin/orders/${order.id}/credit-lines`,
+            {
+              amount: -106,
+              reference: "order",
+              reference_id: order.id,
+            },
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(error4.response.status).toBe(400)
+        expect(error4.response.data.message).toBe(
+          "Store credit refunds can only be issued to registered customers"
+        )
+
+        const registeredCustomerToken = (
+          await api.post("/auth/customer/emailpass/register", {
+            email: "registered@medusajs.com",
+            password: "password",
+          })
+        ).data.token
+
+        const customer = (
+          await api.post(
+            "/store/customers",
+            { email: "registered@medusajs.com" },
+            {
+              headers: {
+                ...storeHeaders.headers,
+                Authorization: `Bearer ${registeredCustomerToken}`,
+              },
+            }
+          )
+        ).data.customer
+
+        await api.post(
+          `/admin/orders/${order.id}/transfer`,
+          { customer_id: customer.id },
+          adminHeaders
+        )
+
+        const orderChanges = (
+          await api.get(`/admin/orders/${order.id}/changes`, adminHeaders)
+        ).data.order_changes
+
+        await api.post(
+          `/store/orders/${order.id}/transfer/accept`,
+          {
+            token:
+              orderChanges[orderChanges.length - 1].actions[0].details.token,
+          },
+          storeHeaders
         )
 
         const response2 = await api.post(

@@ -1,5 +1,49 @@
 # @medusajs/ui
 
+## 4.1.8
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.14.1
+
+## 4.1.7
+
+### Patch Changes
+
+- Updated dependencies [[`9757a6a8d19b3e819c43ae5a29f35c65fdce9c34`](https://github.com/medusajs/medusa/commit/9757a6a8d19b3e819c43ae5a29f35c65fdce9c34)]:
+  - @medusajs/icons@2.14.0
+
+## 4.1.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.13.6
+
+## 4.1.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.13.5
+
+## 4.1.4
+
+### Patch Changes
+
+- [#14849](https://github.com/medusajs/medusa/pull/14849) [`4efa4a6d8f10d1864156b575c7d867048deb6e93`](https://github.com/medusajs/medusa/commit/4efa4a6d8f10d1864156b575c7d867048deb6e93) Thanks [@fPolic](https://github.com/fPolic)! - fix(ui): propagate data table scroll
+
+- Updated dependencies []:
+  - @medusajs/icons@2.13.4
+
+## 4.1.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.13.3
+
 ## 4.1.2
 
 ### Patch Changes

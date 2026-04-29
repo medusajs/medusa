@@ -1,0 +1,228 @@
+import { InlineIcon, Table } from "docs-ui"
+import { ArrowPath } from "@medusajs/icons"
+
+export const metadata = {
+  title: `HTTP Monitoring`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about monitoring HTTP requests to your environment in Cloud.
+
+## HTTP Monitoring Overview
+
+The HTTP monitoring dashboard provides insights into the performance of your environment's HTTP requests, allowing you to track key metrics such as request latency, error rates, and timeouts.
+
+By monitoring these metrics, you can ensure that your environment is performing optimally or identify potential issues in your application's HTTP request handling.
+
+---
+
+## Troubleshooting Common HTTP Issues
+
+The following table outlines common HTTP performance issues, their potential causes, and the specific metrics you can monitor to identify and troubleshoot these issues effectively.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Issue
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Potential Cause
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Metric to Check
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Increased error rates
+      </Table.Cell>
+      <Table.Cell>
+        Specific endpoints returning 4xx or 5xx responses due to crashes or invalid logic.
+      </Table.Cell>
+      <Table.Cell>
+        [Errors by Endpoint](#monitor-errors-by-endpoint) and [HTTP Requests over Time](#monitor-http-requests-over-time)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        High latency
+      </Table.Cell>
+      <Table.Cell>
+        Inefficient database queries or external API calls in specific endpoints.
+      </Table.Cell>
+      <Table.Cell>
+        [Latency by Endpoint](#monitor-latency-by-endpoint) and [Latency over Time](#monitor-latency-over-time)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Client timeouts
+      </Table.Cell>
+      <Table.Cell>
+        Endpoints taking too long to respond, often due to heavy processing or blocking operations.
+      </Table.Cell>
+      <Table.Cell>
+        [Client Timeouts by Endpoint](#monitor-client-timeouts-by-endpoint)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Unexpected traffic spikes
+      </Table.Cell>
+      <Table.Cell>
+        Sudden surge in request volume that may strain your environment's resources.
+      </Table.Cell>
+      <Table.Cell>
+        [HTTP Requests over Time](#monitor-http-requests-over-time)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        High bandwidth consumption
+      </Table.Cell>
+      <Table.Cell>
+        Endpoints returning large response payloads or receiving large request bodies.
+      </Table.Cell>
+      <Table.Cell>
+        [Bytes Sent by Endpoint](#monitor-bytes-sent-by-endpoint) and [Bandwidth over Time](#monitor-bandwidth-over-time)
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## View HTTP Metrics
+
+To view your project environment's HTTP metrics:
+
+1. In the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard), click on the "Monitoring" tab.
+2. Select "HTTP" from the sidebar.
+
+This opens the HTTP monitoring dashboard, where you can analyze your environment's HTTP performance across any time range.
+
+### Change Time Range
+
+By default, the dashboard shows metrics for the last hour. To change the time range:
+
+1. Click on the time range selector at the top right of the dashboard.
+2. Either choose a preset time range (for example, last 24 hours) or set a custom time range.
+
+The charts will update to show metrics for the selected time range, allowing you to analyze performance trends and patterns over different periods.
+
+### Refresh Metrics
+
+To refresh the metrics displayed on the dashboard, click the <InlineIcon Icon={ArrowPath} alt="refresh" /> button.
+
+The metrics will refresh to show the most up-to-date performance data for your environment's HTTP requests in the selected time range.
+
+---
+
+## Monitor HTTP Requests over Time
+
+The HTTP Requests over Time chart shows the total number of HTTP requests received by your environment over time. It also shows error and client timeout rates.
+
+This chart helps you identify trends in your environment's traffic, such as peak usage times or sudden spikes in requests, as well as potential issues indicated by increased error rates or timeouts.
+
+In the [HTTP monitoring dashboard](#view-http-metrics), the HTTP Requests over Time chart shows:
+
+- **Total Requests** (green): The total number of HTTP requests received by your environment per second.
+- **Error Rate** (red): The percentage of HTTP requests that resulted in errors (status codes 4xx and 5xx).
+- **Client Timeout Rate** (orange): The percentage of HTTP requests that resulted in client timeouts.
+
+By monitoring these metrics, you can ensure that your environment is handling HTTP traffic effectively and identify potential issues in your application's request handling.
+
+---
+
+## Monitor Bandwidth over Time
+
+The Bandwidth over Time chart shows the total bandwidth consumed by HTTP requests to your environment over time.
+
+This chart helps you understand the data transfer patterns of your environment, identify peak bandwidth usage times, and correlate bandwidth consumption with traffic trends or performance issues.
+
+In the [HTTP monitoring dashboard](#view-http-metrics), the Bandwidth over Time chart shows:
+
+- **Bytes Received** (green): The total amount of data received by your environment through HTTP requests.
+- **Bytes Sent** (blue): The total amount of data sent by your environment in HTTP responses.
+
+By monitoring these metrics, you can ensure that your environment is efficiently handling data transfer and identify potential issues related to bandwidth consumption.
+
+---
+
+## Monitor Latency over Time
+
+The Latency over Time chart shows the latency percentiles of HTTP requests to your environment over time.
+
+<Note title="What is Latency?">
+
+Latency refers to the time it takes for an HTTP request to be processed by your environment and for a response to be sent back to the client. High latency can indicate performance issues in your application or infrastructure.
+
+</Note>
+
+This chart helps you track the responsiveness of your environment to HTTP requests, identify trends in latency, and correlate latency patterns with traffic trends or performance issues.
+
+In the [HTTP monitoring dashboard](#view-http-metrics), the Latency over Time chart shows:
+
+- **P50** (green): The 50th percentile latency, meaning 50% of requests complete faster than this time.
+- **P90** (orange): The 90th percentile latency, meaning 90% of requests complete faster than this time.
+- **P99** (blue): The 99th percentile latency, meaning 99% of requests complete faster than this time.
+
+You can click on any legend item to toggle that percentile line on or off, allowing you to focus on specific latency metrics.
+
+By monitoring these percentiles, you can get detailed insights into your environment's response times and identify potential issues in your application's request handling that may be causing increased latency.
+
+---
+
+## Monitor Requests by Endpoint
+
+The Requests by Endpoint section breaks down the total number of HTTP requests by endpoint, allowing you to identify which parts of your application are receiving the most traffic.
+
+In the [HTTP monitoring dashboard](#view-http-metrics), the Requests by Endpoint section shows a list of your application's endpoints, along with the average number of requests they receive per second. The endpoints are listed in descending order, with the most requested endpoints at the top.
+
+This breakdown helps you understand traffic distribution across your application's endpoints, identify popular or underutilized endpoints, and correlate traffic patterns with performance metrics to optimize your application's request handling.
+
+---
+
+## Monitor Errors by Endpoint
+
+The Errors by Endpoint section breaks down the total number of HTTP errors (status codes 4xx and 5xx) by endpoint, allowing you to identify which parts of your application are experiencing the most issues.
+
+In the [HTTP monitoring dashboard](#view-http-metrics), the Errors by Endpoint section shows a list of your application's endpoints, along with the total number of errors they received in the selected time range. The endpoints are listed in descending order, with the most error-prone endpoints at the top.
+
+This breakdown helps you identify problematic endpoints in your application and prioritize debugging efforts to improve the endpoints.
+
+---
+
+## Monitor Client Timeouts by Endpoint
+
+The Client Timeouts by Endpoint section breaks down the total number of HTTP client timeouts by endpoint, allowing you to identify which parts of your application are experiencing the most timeouts.
+
+In the [HTTP monitoring dashboard](#view-http-metrics), the Client Timeouts by Endpoint section shows a list of your application's endpoints, along with the total number of client timeouts they received in the selected time range. The endpoints are listed in descending order, with the most timeout-prone endpoints at the top.
+
+This breakdown helps you identify endpoints in your application that may be causing client timeouts, allowing you to investigate potential performance issues or bottlenecks in those endpoints and optimize their responsiveness.
+
+---
+
+## Monitor Bytes Sent by Endpoint
+
+The Bytes Sent by Endpoint section breaks down the total amount of data sent in HTTP responses by endpoint, allowing you to identify which parts of your application are consuming the most bandwidth.
+
+In the [HTTP monitoring dashboard](#view-http-metrics), the Bytes Sent by Endpoint section shows a list of your application's endpoints, along with the total size of data sent in their HTTP responses in the selected time range. The endpoints are listed in descending order, with the endpoints sending the most data at the top.
+
+This breakdown helps you understand bandwidth consumption across your application's endpoints, identify potential issues related to large response sizes, and optimize your application's data transfer.
+
+---
+
+## Monitor Latency by Endpoint
+
+The Latency by Endpoint section breaks down the P90 latency of HTTP requests by endpoint, allowing you to identify which parts of your application are experiencing the most latency.
+
+In the [HTTP monitoring dashboard](#view-http-metrics), the Latency by Endpoint section shows a list of your application's endpoints, along with the P90 latency of HTTP requests they receive in the selected time range.
+
+P90 latency represents the 90th percentile, meaning 90% of requests to each endpoint complete faster than the displayed time. Latency is measured in milliseconds (ms). The endpoints are listed in descending order, with the endpoints experiencing the highest latency at the top.
+
+This breakdown helps you identify endpoints with high latency, understand performance bottlenecks, and optimize your application's responsiveness.

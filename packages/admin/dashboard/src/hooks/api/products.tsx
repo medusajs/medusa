@@ -409,15 +409,18 @@ export const useDeleteProduct = (
 }
 
 export const useExportProducts = (
-  query?: HttpTypes.AdminProductListParams,
   options?: UseMutationOptions<
     HttpTypes.AdminExportProductResponse,
     FetchError,
-    HttpTypes.AdminExportProductRequest
+    {
+      payload?: HttpTypes.AdminExportProductRequest
+      query?: HttpTypes.AdminProductListParams
+    }
   >
 ) => {
   return useMutation({
-    mutationFn: (payload) => sdk.admin.product.export(payload, query),
+    mutationFn: ({ payload = {}, query }) =>
+      sdk.admin.product.export(payload, query),
     onSuccess: (data, variables, context) => {
       options?.onSuccess?.(data, variables, context)
     },

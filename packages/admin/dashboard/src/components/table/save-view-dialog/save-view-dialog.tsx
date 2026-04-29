@@ -1,16 +1,11 @@
 import React, { useState } from "react"
-import {
-  Button,
-  Input,
-  Label,
-  Drawer,
-  Heading,
-  Text,
-} from "@medusajs/ui"
+import { Button, Input, Label, Drawer, Heading, Text } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
-import { useViewConfigurations, useViewConfiguration } from "../../../hooks/use-view-configurations"
+import {
+  useViewConfigurations,
+  useViewConfiguration,
+} from "../../../hooks/use-view-configurations"
 import type { ViewConfiguration } from "../../../hooks/use-view-configurations"
-
 
 type SaveViewFormData = {
   name: string
@@ -41,7 +36,7 @@ export const SaveViewDialog: React.FC<SaveViewDialogProps> = ({
   onSaved,
 }) => {
   const { createView } = useViewConfigurations(entity)
-  const { updateView } = useViewConfiguration(entity, editingView?.id || '')
+  const { updateView } = useViewConfiguration(entity, editingView?.id || "")
   const [isLoading, setIsLoading] = useState(false)
 
   const {
@@ -66,14 +61,28 @@ export const SaveViewDialog: React.FC<SaveViewDialogProps> = ({
         const result = await updateView.mutateAsync({
           name: data.name.trim(),
           configuration: {
-            visible_columns: currentColumns?.visible || editingView.configuration.visible_columns,
-            column_order: currentColumns?.order || editingView.configuration.column_order,
-            filters: currentConfiguration?.filters || editingView.configuration.filters || {},
-            sorting: currentConfiguration?.sorting || editingView.configuration.sorting || null,
-            search: currentConfiguration?.search || editingView.configuration.search || "",
+            visible_columns:
+              currentColumns?.visible ||
+              editingView.configuration.visible_columns,
+            column_order:
+              currentColumns?.order || editingView.configuration.column_order,
+            filters:
+              currentConfiguration?.filters ||
+              editingView.configuration.filters ||
+              {},
+            sorting:
+              currentConfiguration?.sorting ||
+              editingView.configuration.sorting ||
+              null,
+            search:
+              currentConfiguration?.search ||
+              editingView.configuration.search ||
+              "",
           },
         })
-        onSaved(result.view_configuration)
+        if (result.view_configuration) {
+          onSaved(result.view_configuration)
+        }
       } else {
         // Create new view
         const result = await createView.mutateAsync({
@@ -87,7 +96,9 @@ export const SaveViewDialog: React.FC<SaveViewDialogProps> = ({
             search: currentConfiguration?.search || "",
           },
         })
-        onSaved(result.view_configuration)
+        if (result.view_configuration) {
+          onSaved(result.view_configuration)
+        }
       }
     } catch (error) {
       // Error is handled by the hook
@@ -114,7 +125,10 @@ export const SaveViewDialog: React.FC<SaveViewDialogProps> = ({
           </Drawer.Description>
         </Drawer.Header>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-1 flex-col">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-1 flex-col"
+        >
           <Drawer.Body className="flex-1">
             <div className="flex flex-col gap-y-2">
               <Label htmlFor="name" weight="plus">
@@ -123,14 +137,15 @@ export const SaveViewDialog: React.FC<SaveViewDialogProps> = ({
               <Input
                 {...register("name", {
                   required: "Name is required",
-                  validate: value => value.trim().length > 0 || "Name cannot be empty"
+                  validate: (value) =>
+                    value.trim().length > 0 || "Name cannot be empty",
                 })}
                 type="text"
                 placeholder="Enter view name"
                 autoFocus
               />
               {errors.name && (
-                <span className="text-sm text-ui-fg-error">
+                <span className="text-ui-fg-error text-sm">
                   {errors.name.message}
                 </span>
               )}
@@ -139,11 +154,7 @@ export const SaveViewDialog: React.FC<SaveViewDialogProps> = ({
 
           <Drawer.Footer>
             <Drawer.Close asChild>
-              <Button
-                variant="secondary"
-                size="small"
-                type="button"
-              >
+              <Button variant="secondary" size="small" type="button">
                 Cancel
               </Button>
             </Drawer.Close>
