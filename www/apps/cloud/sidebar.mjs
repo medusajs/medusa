@@ -119,9 +119,14 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "Access Keys",
+            path: "/access-keys",
+          },
+          {
+            type: "link",
             title: "Account",
             path: "/user",
-          },
+          }
         ],
       },
       {
@@ -147,6 +152,16 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "use",
+            path: "/cli/commands/use",
+          },
+          {
+            type: "link",
+            title: "whoami",
+            path: "/cli/commands/whoami",
+          },
+          {
+            type: "link",
             title: "organizations",
             path: "/cli/commands/organizations",
           },
@@ -162,8 +177,23 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "deployments",
+            path: "/cli/commands/deployments",
+          },
+          {
+            type: "link",
+            title: "variables",
+            path: "/cli/commands/variables",
+          },
+          {
+            type: "link",
             title: "logs",
             path: "/cli/commands/logs",
+          },
+          {
+            type: "link",
+            title: "version",
+            path: "/cli/commands/version",
           },
           {
             type: "link",

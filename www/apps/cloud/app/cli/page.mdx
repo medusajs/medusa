@@ -14,7 +14,7 @@ In this guide, you'll learn about the Medusa Cloud CLI, how to install it, and h
 
 ## What is the Medusa Cloud CLI?
 
-The Medusa Cloud CLI (`mcloud`) is a command-line tool for managing your Cloud resources (organizations, projects, environments, and logs) directly from your terminal. It provides the same capabilities as the Cloud dashboard but in a scriptable, AI-friendly form.
+The Medusa Cloud CLI (`mcloud`) is a command-line tool for managing your Cloud resources (organizations, projects, environments, logs, and more) directly from your terminal. It provides the same capabilities as the Cloud dashboard but in a scriptable, AI-friendly form.
 
 Use the CLI when you want to:
 
@@ -40,7 +40,7 @@ Use the CLI when you want to:
 Install the CLI globally using npm or your preferred package manager:
 
 ```bash npm2yarn
-npm install @medusajs/mc -g
+npm install @medusajs/mcloud -g
 ```
 
 After installation, verify it is available by checking its version:
@@ -63,11 +63,11 @@ This opens a browser window where you complete the login flow. Your credentials 
 
 ### Non-Interactive Authentication
 
-For CI/CD pipelines and automated environments where a browser is not available, either set the `MC_TOKEN` environment variable to your access key or pass the key directly to `mcloud login`:
+For CI/CD pipelines and automated environments where a browser is not available, either set the `MCLOUD_TOKEN` environment variable to your access key or pass the key directly to `mcloud login`:
 
 ```bash
 # Method 1: Set environment variable
-export MC_TOKEN=sk_123ABC
+export MCLOUD_TOKEN=sk_123ABC
 
 # Method 2: pass directly to login command
 mcloud login --token sk_123ABC
@@ -77,97 +77,35 @@ See the [login command](./commands/login/page.mdx) for more details on access ke
 
 ---
 
-## Environment Variables
+## Set the Active Context
 
-The Cloud CLI supports environment variables for common flags to simplify usage in interactive and automated contexts. For example, you can set the `MC_ORGANIZATION_ID` environment variable to avoid passing `--organization` on every command that requires it.
+Most commands operate on a specific organization, project, and environment.
 
-When you run a command that accepts these flags, the CLI checks for the corresponding environment variable and uses it if set. This allows you to configure your environment once and have it apply to all relevant commands.
+Instead of passing `--organization`, `--project`, and `--environment` on every command, use [`mcloud use`](./commands/use/page.mdx) to persist your selection in a context configuration file. The CLI reads this context for every command that accepts these flags.
 
-<Table>
-  <Table.Header>
-    <Table.Row>
-      <Table.HeaderCell>
-        Variable
-      </Table.HeaderCell>
-      <Table.HeaderCell>
-        Description
-      </Table.HeaderCell>
-      <Table.HeaderCell>
-        Flag Equivalent
-      </Table.HeaderCell>
-    </Table.Row>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row>
-      <Table.Cell>
+```bash
+# Interactive: select organization, project, and environment from prompts
+mcloud use
 
-      `MC_TOKEN`
+# Non-interactive: pass values directly
+mcloud use --organization org_123 --project my-store --environment production
+```
 
-      </Table.Cell>
-      <Table.Cell>
+Once set, you can omit these flags from subsequent commands:
 
-      Access key for non-interactive authentication.
+```bash
+mcloud environments list
+mcloud logs --follow
+mcloud variables list
+```
 
-      </Table.Cell>
-      <Table.Cell>
+To check the current active context, run `mcloud whoami`:
 
-      `--token` on `mcloud login`
+```bash
+mcloud whoami
+```
 
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-      `MC_ORGANIZATION_ID`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      The ID of the organization to use when running commands.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `-o`, `--organization`
-
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-      `MC_PROJECT_HANDLE`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      The ID or handle of the project to use.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `-p`, `--project`
-
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-      `MC_ENVIRONMENT_HANDLE`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      The ID or handle of the environment to use.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `-e`, `--environment`
-
-      </Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table>
+See [`mcloud whoami`](./commands/whoami/page.mdx) and [`mcloud use`](./commands/use/page.mdx) for more details.
 
 ---
 

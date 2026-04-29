@@ -16,12 +16,10 @@ Fetch runtime logs for a Cloud environment's backend or storefront.
   ```
 
   </CodeTab>
-  <CodeTab label="With Environment Variables" value="env">
+  <CodeTab label="Using mcloud use" value="use">
 
   ```bash
-  # MC_ORGANIZATION_ID=org_123
-  # MC_PROJECT_HANDLE=proj_123
-  # MC_ENVIRONMENT_HANDLE=env_123
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
 
   mcloud logs
   ```
@@ -72,7 +70,7 @@ stream new log lines continuously with `--follow`.
       </Table.Cell>
       <Table.Cell>
 
-      Falls back to the `MC_ORGANIZATION_ID` environment variable, if set.
+      Falls back to the organization in the [active context](../use/page.mdx#set-the-active-context), if set.
 
       </Table.Cell>
     </Table.Row>
@@ -94,19 +92,19 @@ stream new log lines continuously with `--follow`.
       </Table.Cell>
       <Table.Cell>
 
-      Falls back to the `MC_PROJECT_HANDLE` environment variable, if set.
+      Falls back to the project in the [active context](../use/page.mdx#set-the-active-context), if set.
 
       </Table.Cell>
     </Table.Row>
     <Table.Row>
       <Table.Cell>
 
-      `-e <id-or-handle>`, `--environment <id-or-handle>`
+      `-e <handle>`, `--environment <handle>`
 
       </Table.Cell>
       <Table.Cell>
 
-      [The ID or handle of the environment](../environments/page.mdx#find-environment-ids-and-handles) to fetch logs for.
+      [The handle of the environment](../environments/page.mdx#find-environment-handles) to fetch logs for.
 
       </Table.Cell>
       <Table.Cell>
@@ -116,7 +114,7 @@ stream new log lines continuously with `--follow`.
       </Table.Cell>
       <Table.Cell>
 
-      Falls back to the `MC_ENVIRONMENT_HANDLE` environment variable, if set.
+      Falls back to the environment in the [active context](../use/page.mdx#set-the-active-context), if set.
 
       </Table.Cell>
     </Table.Row>
@@ -240,7 +238,7 @@ stream new log lines continuously with `--follow`.
     <Table.Row>
       <Table.Cell>
 
-      `--deployment-id <id>`
+      `--deployment <id>`
 
       </Table.Cell>
       <Table.Cell>
@@ -368,18 +366,17 @@ other tools for filtering and analysis:
 
   ```bash
   mcloud logs \
-    --project my-store \
+    --project proj_123 \
     --environment production \
     --search "500" \
     --json | jq '.[] | .message'
   ```
 
   </CodeTab>
-  <CodeTab label="With Environment Variables" value="env">
+  <CodeTab label="Using mcloud use" value="use">
 
   ```bash
-  # MC_PROJECT_HANDLE=my-store
-  # MC_ENVIRONMENT_HANDLE=production
+  # Run once: mcloud use --project proj_123 --environment production
 
   mcloud logs --search "500" --json | jq '.[] | .message'
   ```
@@ -387,12 +384,10 @@ other tools for filtering and analysis:
   </CodeTab>
 </CodeTabs>
 
-Set environment variables once to avoid repeating project and environment
-flags across multiple commands in the same session:
+Set the active context once with [`mcloud use`](../use/page.mdx) to avoid repeating project and environment flags across multiple commands:
 
 ```bash
-export MC_PROJECT_HANDLE=my-store
-export MC_ENVIRONMENT_HANDLE=production
+mcloud use --project proj_123 --environment production
 
 mcloud logs --search error --limit 500 --json
 mcloud logs --follow
@@ -417,12 +412,10 @@ when monitoring a deployment in progress or watching for errors in real time:
   ```
 
   </CodeTab>
-  <CodeTab label="With Environment Variables" value="env">
+  <CodeTab label="Using mcloud use" value="use">
 
   ```bash
-  # MC_ORGANIZATION_ID=org_123
-  # MC_PROJECT_HANDLE=proj_123
-  # MC_ENVIRONMENT_HANDLE=env_123
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
 
   mcloud logs --follow
   ```
@@ -459,12 +452,10 @@ as the search bar in the Cloud dashboard logs view:
   ```
 
   </CodeTab>
-  <CodeTab label="With Environment Variables" value="env">
+  <CodeTab label="Using mcloud use" value="use">
 
   ```bash
-  # MC_ORGANIZATION_ID=org_123
-  # MC_PROJECT_HANDLE=proj_123
-  # MC_ENVIRONMENT_HANDLE=env_123
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
 
   mcloud logs --search error --limit 1000
   ```
@@ -487,12 +478,10 @@ Alternatively, if you're looking for HTTP calls that resulted in 500 or other er
   ```
 
   </CodeTab>
-  <CodeTab label="With Environment Variables" value="env">
+  <CodeTab label="Using mcloud use" value="use">
 
   ```bash
-  # MC_ORGANIZATION_ID=org_123
-  # MC_PROJECT_HANDLE=proj_123
-  # MC_ENVIRONMENT_HANDLE=env_123
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
 
   mcloud logs --metadata status=500 --limit 1000
   ```
@@ -505,8 +494,14 @@ Alternatively, if you're looking for HTTP calls that resulted in 500 or other er
 ## Fetch Logs for a Specific Deployment
 
 When a deployment fails, query the logs for that deployment directly using
-its ID. Find the deployment ID from `mcloud environments get` or the Cloud
+its ID. Find the deployment ID from [`mcloud deployments list`](../deployments/page.mdx#deployments-list) or the Cloud
 dashboard.
+
+<Note title="Tip">
+
+To fetch the build logs for a deployment instead of its runtime logs, use [`mcloud deployments build-logs`](../deployments/page.mdx#deployments-build-logs).
+
+</Note>
 
 <CodeTabs group="cli-auth">
   <CodeTab label="With Flags" value="flags">
@@ -516,18 +511,16 @@ dashboard.
     --organization org_123 \
     --project proj_123 \
     --environment env_123 \
-    --deployment-id dep_01ABC123
+    --deployment bld_01ABC123
   ```
 
   </CodeTab>
-  <CodeTab label="With Environment Variables" value="env">
+  <CodeTab label="Using mcloud use" value="use">
 
   ```bash
-  # MC_ORGANIZATION_ID=org_123
-  # MC_PROJECT_HANDLE=proj_123
-  # MC_ENVIRONMENT_HANDLE=env_123
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
 
-  mcloud logs --deployment-id dep_01ABC123
+  mcloud logs --deployment bld_01ABC123
   ```
 
   </CodeTab>
@@ -557,12 +550,10 @@ For example, to fetch logs from April 22, 2026 between 10:00am and 11:00am UTC:
   ```
 
   </CodeTab>
-  <CodeTab label="With Environment Variables" value="env">
+  <CodeTab label="Using mcloud use" value="use">
 
   ```bash title="Fetch logs within an hour time range"
-  # MC_ORGANIZATION_ID=org_123
-  # MC_PROJECT_HANDLE=proj_123
-  # MC_ENVIRONMENT_HANDLE=env_123
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
 
   mcloud logs --to 2026-04-22T11:00:00Z
   ```
@@ -585,12 +576,10 @@ To increase the limit to 1000 log lines in that time range:
   ```
 
   </CodeTab>
-  <CodeTab label="With Environment Variables" value="env">
+  <CodeTab label="Using mcloud use" value="use">
 
   ```bash title="Fetch logs within an hour time range with a higher limit"
-  # MC_ORGANIZATION_ID=org_123
-  # MC_PROJECT_HANDLE=proj_123
-  # MC_ENVIRONMENT_HANDLE=env_123
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
 
   mcloud logs --to 2026-04-22T11:00:00Z --limit 1000
   ```
@@ -614,12 +603,10 @@ To fetch logs starting from a specific time until now, pass `--from` without `--
   ```
 
   </CodeTab>
-  <CodeTab label="With Environment Variables" value="env">
+  <CodeTab label="Using mcloud use" value="use">
 
   ```bash title="Fetch logs starting from a specific time until now"
-  # MC_ORGANIZATION_ID=org_123
-  # MC_PROJECT_HANDLE=proj_123
-  # MC_ENVIRONMENT_HANDLE=env_123
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
 
   mcloud logs --from 2026-04-22T10:00:00Z
   ```
@@ -645,12 +632,10 @@ For example, to pass logs until 5 minutes ago, you don't need to specify `--from
   ```
 
   </CodeTab>
-  <CodeTab label="With Environment Variables" value="env">
+  <CodeTab label="Using mcloud use" value="use">
 
   ```bash title="Fetch logs until a time that's within the last 15 minutes"
-  # MC_ORGANIZATION_ID=org_123
-  # MC_PROJECT_HANDLE=proj_123
-  # MC_ENVIRONMENT_HANDLE=env_123
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
 
   mcloud logs --to 2026-04-22T10:55:00Z # assuming now is 2026-04-22T11:00:00Z
   ```
@@ -673,12 +658,10 @@ However, if you want to fetch logs until 20 minutes ago, you must also specify `
   ```
 
   </CodeTab>
-  <CodeTab label="With Environment Variables" value="env">
+  <CodeTab label="Using mcloud use" value="use">
 
   ```bash title="Fetch logs until a time that's more than 15 minutes ago, with a valid time window"
-  # MC_ORGANIZATION_ID=org_123
-  # MC_PROJECT_HANDLE=proj_123
-  # MC_ENVIRONMENT_HANDLE=env_123
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
 
   mcloud logs \
     --from 2026-04-22T10:00:00Z \
@@ -707,12 +690,10 @@ pass `--type storefront`:
   ```
 
   </CodeTab>
-  <CodeTab label="With Environment Variables" value="env">
+  <CodeTab label="Using mcloud use" value="use">
 
   ```bash
-  # MC_ORGANIZATION_ID=org_123
-  # MC_PROJECT_HANDLE=proj_123
-  # MC_ENVIRONMENT_HANDLE=env_123
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
 
   mcloud logs --type storefront
   ```

@@ -178,6 +178,14 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "title": "Access Keys",
+            "path": "/access-keys",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "title": "Account",
             "path": "/user",
             "children": []
@@ -220,6 +228,22 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "title": "use",
+            "path": "/cli/commands/use",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "whoami",
+            "path": "/cli/commands/whoami",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "title": "organizations",
             "path": "/cli/commands/organizations",
             "children": []
@@ -244,8 +268,32 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "title": "deployments",
+            "path": "/cli/commands/deployments",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "variables",
+            "path": "/cli/commands/variables",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "title": "logs",
             "path": "/cli/commands/logs",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "version",
+            "path": "/cli/commands/version",
             "children": []
           },
           {
