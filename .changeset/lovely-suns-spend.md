@@ -2,4 +2,4 @@
 "@medusajs/dashboard": patch
 ---
 
-Add ability to clear optional collection, type, and country fields in product and inventory forms
+fix(dashboard): allow clearing optional collection, type, and country fields

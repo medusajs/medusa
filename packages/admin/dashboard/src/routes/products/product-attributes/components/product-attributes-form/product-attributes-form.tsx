@@ -74,7 +74,7 @@ export const ProductAttributesForm = ({
         height: data.height ? data.height : null,
         mid_code: data.mid_code,
         hs_code: data.hs_code,
-        origin_country: data.origin_country,
+        origin_country: data.origin_country || null,
       },
       {
         onSuccess: () => {
