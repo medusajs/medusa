@@ -37,10 +37,41 @@ You can replace `npm run postbuild` with the appropriate command for your packag
 
 ---
 
+## AI Support Agent for Failed Deployments
+
+When a deployment fails during the build or deployment process, Cloud provides an AI support agent to help diagnose and resolve the issue.
+
+The AI support agent button appears in the deployment activity section header when:
+
+- A build fails (status: "Build failed")
+- A deployment fails (status: "Deploy failed")
+
+To use the AI support agent:
+
+1. [Navigate to the failed deployment's details page](../page.mdx#find-deployment-details).
+2. In the Activity section, look for the AI support agent button in the section header.
+3. Click the button to open the AI assistant.
+
+The AI assistant will automatically ask contextual questions based on the type of failure:
+
+- For build failures: "Why did my build fail and how can I fix it?"
+- For deployment failures: "Why did my deployment fail and how can I fix it?"
+
+The AI support agent analyzes your deployment logs and provides tailored suggestions to help resolve the specific issue you're encountering.
+
+<Note>
+
+The AI support agent feature may not be available for all users as it's currently being rolled out gradually.
+
+</Note>
+
+---
+
 ## Troubleshooting Other Cloud Deployment Issues
 
 To troubleshoot other Cloud deployment issues, you can:
 
 - [Check the build and runtime logs of your deployment](../../logs/page.mdx).
+- Use the [AI support agent](#ai-support-agent-for-failed-deployments) for automated troubleshooting assistance.
 - [Refer to Medusa's troubleshooting guides](!resources!/troubleshooting).
 - Contact support for help.
