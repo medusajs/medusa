@@ -32,7 +32,7 @@ type AddCurrenciesFormProps = {
 }
 
 const AddCurrenciesSchema = zod.object({
-  currencies: zod.array(zod.string()),
+  currencies: zod.array(zod.string()).min(1),
   pricePreferences: zod.record(zod.boolean()),
 })
 
@@ -296,6 +296,9 @@ const useColumns = (
                     ...pricePreferences,
                     [row.original.code]: val,
                   })
+                  if (val && !row.getIsSelected()) {
+                    row.toggleSelected(true)
+                  }
                 }}
               />
             </div>

@@ -25,7 +25,7 @@ type AddLocalesFormProps = {
 }
 
 const AddLocalesSchema = z.object({
-  locales: z.array(z.string()),
+  locales: z.array(z.string()).min(1),
 })
 
 const PAGE_SIZE = 50
