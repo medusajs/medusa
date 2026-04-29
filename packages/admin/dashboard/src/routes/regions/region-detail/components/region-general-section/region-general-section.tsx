@@ -40,7 +40,7 @@ export const RegionGeneralSection = ({
               {region.currency_code}
             </Badge>
             <Text size="small" leading="compact">
-              {currencies[region.currency_code.toUpperCase()].name}
+              {currencies[region.currency_code.toUpperCase()]?.name}
             </Text>
           </div>
         }

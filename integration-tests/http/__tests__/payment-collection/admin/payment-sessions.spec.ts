@@ -6,6 +6,7 @@ import {
   generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
 import { getProductFixture } from "../../../../helpers/fixtures"
+import { createOrderSeeder } from "../../fixtures/order"
 import { createAuthenticatedCustomer } from "../../../../modules/helpers/create-authenticated-customer"
 
 jest.setTimeout(60000)
@@ -33,7 +34,7 @@ medusaIntegrationTestRunner({
       }
     })
 
-    describe("POST /admin/payment-collections/:id/payment-sessions", () => {
+    describe("POST /store/payment-collections/:id/payment-sessions", () => {
       let region
       let product
       let cart
@@ -181,6 +182,42 @@ medusaIntegrationTestRunner({
             provider_id: "pp_system_default",
             status: "pending",
             amount: 150,
+          }),
+        ])
+      })
+    })
+
+    describe("POST /admin/payment-collections/:id/payment-sessions", () => {
+      let order
+
+      beforeEach(async () => {
+        const container = getContainer()
+        const result = await createOrderSeeder({ api, container })
+        order = result.order
+      })
+
+      it("should create a payment session via the admin endpoint", async () => {
+        const paymentCollection = (
+          await api.post(
+            "/admin/payment-collections",
+            { order_id: order.id, amount: 100 },
+            adminHeaders
+          )
+        ).data.payment_collection
+
+        const {
+          data: { payment_collection },
+        } = await api.post(
+          `/admin/payment-collections/${paymentCollection.id}/payment-sessions`,
+          { provider_id: "pp_system_default" },
+          adminHeaders
+        )
+
+        expect(payment_collection.payment_sessions).toEqual([
+          expect.objectContaining({
+            provider_id: "pp_system_default",
+            status: "pending",
+            amount: 100,
           }),
         ])
       })

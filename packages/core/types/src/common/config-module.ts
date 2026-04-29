@@ -59,7 +59,6 @@ export interface AdminOptions {
    * - `/admin`
    * - `/store`
    * - `/auth`
-   * - `/`
    *
    * @example
    * ```ts title="medusa-config.ts"

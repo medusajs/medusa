@@ -1,16 +1,10 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState } from "react"
+import { Badge, usePrompt, toast, DropdownMenu } from "@medusajs/ui"
+import { Trash, PencilSquare, ArrowUturnLeft } from "@medusajs/icons"
 import {
-  Badge,
-  usePrompt,
-  toast,
-  DropdownMenu,
-} from "@medusajs/ui"
-import {
-  Trash,
-  PencilSquare,
-  ArrowUturnLeft,
-} from "@medusajs/icons"
-import { useViewConfigurations, useViewConfiguration } from "../../../hooks/use-view-configurations"
+  useViewConfigurations,
+  useViewConfiguration,
+} from "../../../hooks/use-view-configurations"
 import type { ViewConfiguration } from "../../../hooks/use-view-configurations"
 import { SaveViewDialog } from "../save-view-dialog"
 
@@ -32,12 +26,8 @@ export const ViewPills: React.FC<ViewPillsProps> = ({
   currentColumns,
   currentConfiguration,
 }) => {
-  const {
-    listViews,
-    activeView,
-    setActiveView,
-    isDefaultViewActive,
-  } = useViewConfigurations(entity)
+  const { listViews, activeView, setActiveView, isDefaultViewActive } =
+    useViewConfigurations(entity)
 
   const views = listViews?.view_configurations || []
 
@@ -51,7 +41,7 @@ export const ViewPills: React.FC<ViewPillsProps> = ({
   const currentActiveView = activeView?.view_configuration || null
 
   // Get delete mutation for the current deleting view
-  const { deleteView } = useViewConfiguration(entity, deletingViewId || '')
+  const { deleteView } = useViewConfiguration(entity, deletingViewId || "")
 
   const handleViewSelect = async (viewId: string | null) => {
     try {
@@ -61,7 +51,7 @@ export const ViewPills: React.FC<ViewPillsProps> = ({
         return
       }
 
-      const view = views.find(v => v.id === viewId)
+      const view = views.find((v) => v.id === viewId)
       if (view) {
         await setActiveView.mutateAsync(viewId)
       }
@@ -87,12 +77,15 @@ export const ViewPills: React.FC<ViewPillsProps> = ({
   // Handle deletion when deletingViewId is set
   useEffect(() => {
     if (deletingViewId && deleteView.mutateAsync) {
-      deleteView.mutateAsync().then(() => {
-        setDeletingViewId(null)
-      }).catch(() => {
-        setDeletingViewId(null)
-        // Error is handled by the hook
-      })
+      deleteView
+        .mutateAsync()
+        .then(() => {
+          setDeletingViewId(null)
+        })
+        .catch(() => {
+          setDeletingViewId(null)
+          // Error is handled by the hook
+        })
     }
   }, [deletingViewId, deleteView.mutateAsync])
 
@@ -101,10 +94,13 @@ export const ViewPills: React.FC<ViewPillsProps> = ({
     setSaveDialogOpen(true)
   }
 
-  const handleResetSystemDefault = async (systemDefaultView: ViewConfiguration) => {
+  const handleResetSystemDefault = async (
+    systemDefaultView: ViewConfiguration
+  ) => {
     const result = await prompt({
       title: "Reset system default",
-      description: "This will delete the saved system default and revert to the original code-level defaults. All users will be affected. Are you sure?",
+      description:
+        "This will delete the saved system default and revert to the original code-level defaults. All users will be affected. Are you sure?",
       confirmText: "Reset",
       cancelText: "Cancel",
     })
@@ -115,8 +111,8 @@ export const ViewPills: React.FC<ViewPillsProps> = ({
     }
   }
 
-  const systemDefaultView = views.find(v => v.is_system_default)
-  const personalViews = views.filter(v => !v.is_system_default)
+  const systemDefaultView = views.find((v) => v.is_system_default)
+  const personalViews = views.filter((v) => !v.is_system_default)
 
   // Determine if we're showing default
   const isDefaultActive = isDefaultViewActive
@@ -136,27 +132,29 @@ export const ViewPills: React.FC<ViewPillsProps> = ({
               e.preventDefault()
               if (systemDefaultView) {
                 setContextMenuPosition({ x: e.clientX, y: e.clientY })
-                setContextMenuOpen('default')
+                setContextMenuOpen("default")
               }
             }}
           >
             {defaultLabel}
           </Badge>
-          {systemDefaultView && contextMenuOpen === 'default' && (
+          {systemDefaultView && contextMenuOpen === "default" && (
             <DropdownMenu
               open={true}
               onOpenChange={(open) => {
-                if (!open) setContextMenuOpen(null)
+                if (!open) {
+                  setContextMenuOpen(null)
+                }
               }}
             >
               <DropdownMenu.Trigger asChild>
                 <div
                   style={{
-                    position: 'fixed',
+                    position: "fixed",
                     left: contextMenuPosition.x,
                     top: contextMenuPosition.y,
                     width: 0,
-                    height: 0
+                    height: 0,
                   }}
                 />
               </DropdownMenu.Trigger>
@@ -199,17 +197,19 @@ export const ViewPills: React.FC<ViewPillsProps> = ({
               <DropdownMenu
                 open={true}
                 onOpenChange={(open) => {
-                  if (!open) setContextMenuOpen(null)
+                  if (!open) {
+                    setContextMenuOpen(null)
+                  }
                 }}
               >
                 <DropdownMenu.Trigger asChild>
                   <div
                     style={{
-                      position: 'fixed',
+                      position: "fixed",
                       left: contextMenuPosition.x,
                       top: contextMenuPosition.y,
                       width: 0,
-                      height: 0
+                      height: 0,
                     }}
                   />
                 </DropdownMenu.Trigger>
@@ -229,7 +229,7 @@ export const ViewPills: React.FC<ViewPillsProps> = ({
                       handleDeleteView(view)
                       setContextMenuOpen(null)
                     }}
-                    className="flex items-center gap-x-2 text-ui-fg-error"
+                    className="text-ui-fg-error flex items-center gap-x-2"
                   >
                     <Trash />
                     <span>Delete</span>
@@ -239,7 +239,6 @@ export const ViewPills: React.FC<ViewPillsProps> = ({
             )}
           </div>
         ))}
-
       </div>
 
       {saveDialogOpen && (

@@ -2,9 +2,14 @@ import { describe, expect, it } from "vitest"
 import { sortMenuItemsByRank } from "../utils/sort-menu-items-by-rank"
 import { INavItem } from "../../components/layout/nav-item"
 
+type RankedNavItem = INavItem & {
+  rank?: number
+  items?: (INavItem & { rank?: number })[]
+}
+
 describe("sortMenuItemsByRank", () => {
   it("should sort items by rank in ascending order", () => {
-    const items: INavItem[] = [
+    const items: RankedNavItem[] = [
       { label: "Third", to: "/third", rank: 3 },
       { label: "First", to: "/first", rank: 1 },
       { label: "Second", to: "/second", rank: 2 },
@@ -18,7 +23,7 @@ describe("sortMenuItemsByRank", () => {
   })
 
   it("should place items with rank before items without rank", () => {
-    const items: INavItem[] = [
+    const items: RankedNavItem[] = [
       { label: "No Rank", to: "/no-rank" },
       { label: "Ranked 2", to: "/ranked-2", rank: 2 },
       { label: "Ranked 1", to: "/ranked-1", rank: 1 },
@@ -34,7 +39,7 @@ describe("sortMenuItemsByRank", () => {
   })
 
   it("should handle items with rank 0", () => {
-    const items: INavItem[] = [
+    const items: RankedNavItem[] = [
       { label: "Rank 2", to: "/rank-2", rank: 2 },
       { label: "Rank 0", to: "/rank-0", rank: 0 },
       { label: "Rank 1", to: "/rank-1", rank: 1 },
@@ -48,7 +53,7 @@ describe("sortMenuItemsByRank", () => {
   })
 
   it("should handle negative ranks", () => {
-    const items: INavItem[] = [
+    const items: RankedNavItem[] = [
       { label: "Rank 1", to: "/rank-1", rank: 1 },
       { label: "Rank -1", to: "/rank-minus-1", rank: -1 },
       { label: "Rank 0", to: "/rank-0", rank: 0 },
@@ -62,7 +67,7 @@ describe("sortMenuItemsByRank", () => {
   })
 
   it("should sort nested items independently", () => {
-    const items: INavItem[] = [
+    const items: RankedNavItem[] = [
       {
         label: "Parent 2",
         to: "/parent-2",
@@ -101,7 +106,7 @@ describe("sortMenuItemsByRank", () => {
   })
 
   it("should handle nested items with mixed ranked and unranked", () => {
-    const items: INavItem[] = [
+    const items: RankedNavItem[] = [
       {
         label: "Parent",
         to: "/parent",
@@ -122,7 +127,7 @@ describe("sortMenuItemsByRank", () => {
   })
 
   it("should handle empty items array", () => {
-    const items: INavItem[] = []
+    const items: RankedNavItem[] = []
 
     const sorted = sortMenuItemsByRank(items)
 
@@ -130,7 +135,9 @@ describe("sortMenuItemsByRank", () => {
   })
 
   it("should handle single item", () => {
-    const items: INavItem[] = [{ label: "Only Item", to: "/only", rank: 1 }]
+    const items: RankedNavItem[] = [
+      { label: "Only Item", to: "/only", rank: 1 },
+    ]
 
     const sorted = sortMenuItemsByRank(items)
 
@@ -139,7 +146,7 @@ describe("sortMenuItemsByRank", () => {
   })
 
   it("should preserve items without nested arrays", () => {
-    const items: INavItem[] = [
+    const items: RankedNavItem[] = [
       { label: "Item 1", to: "/item-1", rank: 2 },
       { label: "Item 2", to: "/item-2", rank: 1 },
     ]
@@ -151,13 +158,13 @@ describe("sortMenuItemsByRank", () => {
   })
 
   it("should handle duplicate rank values", () => {
-    const items: INavItem[] = [
+    const items: RankedNavItem[] = [
       { label: "Item C", to: "/item-c", rank: 1 },
       { label: "Item A", to: "/item-a", rank: 1 },
       { label: "Item B", to: "/item-b", rank: 1 },
     ]
 
-    const sorted = sortMenuItemsByRank(items)
+    const sorted = sortMenuItemsByRank(items) as RankedNavItem[]
 
     // All should have rank 1, order should be stable
     expect(sorted[0].rank).toBe(1)
@@ -166,4 +173,3 @@ describe("sortMenuItemsByRank", () => {
     expect(sorted).toHaveLength(3)
   })
 })
-

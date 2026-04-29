@@ -1,5 +1,6 @@
 import { OperatorMap } from "../../dal"
 import { FindParams } from "../common"
+import { AdminOrderLineItem } from "../order"
 import {
   BaseOrder,
   BaseOrderShippingMethod,
@@ -41,6 +42,10 @@ export interface BaseExchangeItem {
    * The date the exchange item was updated.
    */
   updated_at: string | null
+  /**
+   * The associated order line item.
+   */
+  item?: AdminOrderLineItem
 }
 
 export interface BaseExchange {

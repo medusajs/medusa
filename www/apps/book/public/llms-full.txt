@@ -2568,14 +2568,13 @@ module.exports = defineConfig({
 
 ### path
 
-The `admin.path` configuration indicates the path to the admin dashboard, which is `/app` by default. The value must start with `/` and can't end with a `/`.
+The `admin.path` configuration indicates the path to the admin dashboard, which is `/app` by default. The value must start with `/` and can't end with a `/`, except when using the root path `/`.
 
 The value cannot be one of the reserved paths:
 
 - `/admin`
 - `/store`
 - `/auth`
-- `/`
 
 When using Docker, make sure that the root path of the Docker image isn't the same as the admin's path. For example, if the Docker image's root path is `/app`, change
 the value of the `admin.path` configuration, since it's `/app` by default.
@@ -26778,25 +26777,31 @@ In this chapter, you'll learn how to install and run a Medusa application.
 
 ## Get Started with Cloud
 
-[Cloud](https://docs.medusajs.com/cloud/index.html.md) is Medusa's PaaS platform that allows you to deploy and manage production-ready Medusa applications with ease. Benefit from features like zero-configuration deployments, automatic scaling, storefront hosting, and GitHub integration to streamline your development workflow.
+[Cloud](https://docs.medusajs.com/cloud/index.html.md) is the quickest way to get started with Medusa. With Cloud, you can deploy your ecommerce applications in minutes. Benefit from features like:
 
-[Sign up](http://cloud.medusajs.com/signup) with Cloud and create your first Medusa project in minutes.
+- Zero-configuration deployments
+- Automatic scaling
+- Storefront hosting
+- GitHub integration
+- AI-friendly tools to streamline your development workflow
+
+And [more features](https://docs.medusajs.com/cloud#features/index.html.md).
+
+[Sign up with Cloud](http://cloud.medusajs.com/signup?utm_source=docs\&utm_medium=website\&utm_campaign=cloud_signup_guide) and create your first Medusa project in minutes.
 
 ***
 
 ## Create Medusa Application Locally
 
-A Medusa application is made up of a Node.js server and a Vite admin dashboard. You can optionally install the [Next.js Starter Storefront](https://docs.medusajs.com/resources/nextjs-starter/index.html.md) either while installing the Medusa application or at a later point.
+Medusa is open-source, so you can also install and run it locally on your machine. This is a great option if you want to have more control over your development environment.
 
-While this is the recommended way to create a Medusa application, you can alternatively [install a Medusa application with Docker](https://docs.medusajs.com/learn/installation/docker/index.html.md).
+A Medusa application is made up of a Node.js server and a Vite admin dashboard. You can optionally install the [Next.js Starter Storefront](https://docs.medusajs.com/resources/nextjs-starter/index.html.md) either while installing the Medusa application or at a later point.
 
 ### Prerequisites
 
-- [Node.js v20+ (LTS versions only)](https://nodejs.org/en/download)
+- [Node.js v20+ (LTS versions only). If you choose to install the Next.js Starter Storefront, make sure to use Node v24 LTS or lower.](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL installed and running](https://www.postgresql.org/download/)
-
-If you choose to install the Next.js Starter Storefront, it currently doesn't support Node v25+. Make sure to downgrade to Node v24 LTS or lower before installing the Medusa application with the storefront.
 
 To create a Medusa application, use the `create-medusa-app` command:
 
@@ -26822,11 +26827,11 @@ pnpm dlx create-medusa-app@latest my-medusa-store
 npx create-medusa-app@latest my-medusa-store
 ```
 
-Where `my-medusa-store` is the name of the project's directory and PostgreSQL database created for the project. When you run the command, you'll be asked whether you want to install the Next.js Starter Storefront.
+Where `my-medusa-store` is the name of the project's directory, and the PostgreSQL database created for the project will be of the name `medusa-my-medusa-store`. When you run the command, you'll be asked whether you want to install the Next.js Starter Storefront.
 
 To customize the default installation behavior, such as specify a database URL, refer to the [create-medusa-app reference](https://docs.medusajs.com/resources/create-medusa-app/index.html.md).
 
-After answering the prompts, the command installs the Medusa application in a monorepository with your project name, and sets up a PostgreSQL database that the application connects to. The backend (with the admin dashboard) is installed in the `apps/backend` directory of the monorepository.
+After answering the prompts, the command installs the Medusa application in a monorepository. The backend (with the admin dashboard) is installed in the `apps/backend` directory of the monorepository.
 
 If you chose to install the storefront with the Medusa application, the storefront is installed in the monorepository under the `apps/storefront` directory.
 
@@ -26840,7 +26845,7 @@ The Medusa Admin dashboard also runs at `http://localhost:9000/app`. The install
 
 If you also installed the Next.js Starter Storefront, it'll be running at `http://localhost:8000`.
 
-You can stop the servers for the Medusa application and Next.js Starter Storefront by exiting the installation command. To run the server for the Medusa application again, refer to [this section](#run-medusa-application-in-development).
+You can stop the servers for the Medusa application and Next.js Starter Storefront by exiting the installation command. To run the server for the Medusa application again, refer to the [Run Medusa Application in Development](#run-medusa-application-in-development) section.
 
 ![Post-installation running services overview: Medusa backend server and admin dashboard running on localhost:9000, Next.js Starter Storefront running on localhost:8000, with PostgreSQL database and other essential services active and ready for development](https://res.cloudinary.com/dza7lstvk/image/upload/v1745856706/Medusa%20Resources/success-overview_bj4pbt.jpg)
 
@@ -26875,51 +26880,17 @@ The application will restart if you make any changes to code under the `src` dir
 
 ***
 
-## Start Building with Claude Code
+## Start Building with AI Agents
 
-Medusa provides [Claude Code plugins](https://github.com/medusajs/medusa-agent-skills) to assist you in learning and building with Medusa. You can also use the skills in these plugins with other AI agents by copying the skills.
+Medusa provides [agentic skills](https://github.com/medusajs/medusa-agent-skills) to assist you in learning and building with Medusa using AI agents like Claude Code.
 
-This section covers key plugins as you get started with Medusa development using Claude Code. Refer to the [Build with AI Assistants and LLMs](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/index.html.md) chapter for more details on using Medusa with AI tools.
+{/* TODO add cloud related stuff? */}
 
-### Interactive Learning
+### Build Features with AI Agents
 
-If you're a Medusa beginner and use Claude Code, install the `learn-medusa` plugin:
+Medusa provides a set of skills to help you build features with AI agents. You can build features like product reviews, wishlists, quote requests, and more with AI agents.
 
-### Claude Code
-
-```bash
-claude # start claude code
-/plugin marketplace add medusajs/medusa-agent-skills
-/plugin install learn-medusa@medusa
-```
-
-### Other AI Agents
-
-```bash
-npx skills add medusajs/medusa-agent-skills
-# choose the following skill:
-# - learning-medusa
-```
-
-Then, start the learning experience with this prompt:
-
-```bash title="Claude Code Prompt"
-I want to learn Medusa.
-```
-
-You can also run the skill using the `/learn-medusa:learning-medusa` command in Claude Code.
-
-This starts the interactive learning experience where you'll learn Medusa concepts step-by-step by building a brands feature, similar to the [Brands tutorial](https://docs.medusajs.com/learn/customization/custom-features/index.html.md). You will:
-
-1. Create a Brand Module with API routes to manage brands.
-2. Link brands to products to associate products with brands.
-3. Customize the Medusa Admin dashboard to allow admin users to manage brands.
-
-By the end, you'll have a solid understanding of Medusa's architecture and how to build custom features.
-
-### Medusa Development Assistance
-
-If you want assistance in your Medusa development, install the `medusa-dev` plugin:
+This skill is ideal for all developers and non-technical users who want to build features with the help of AI agents.
 
 ### Claude Code
 
@@ -26927,6 +26898,9 @@ If you want assistance in your Medusa development, install the `medusa-dev` plug
 claude # start claude code
 /plugin marketplace add medusajs/medusa-agent-skills
 /plugin install medusa-dev@medusa
+
+# Ask Claude Code to build features with the medusa-dev plugin. For example:
+Help me implement a product reviews feature. Authenticated customers can add reviews. Admin users can view and approve or reject reviews from the dashboard
 ```
 
 ### Other AI Agents
@@ -26940,18 +26914,46 @@ npx skills add medusajs/medusa-agent-skills
 # - db-generate
 # - db-migrate
 # - new-user
+
+# Ask your AI agent to build features with the installed skills. For example:
+Help me implement a product reviews feature. Authenticated customers can add reviews. Admin users can view and approve or reject reviews from the dashboard
 ```
 
-Then, you can ask Claude Code to build Medusa features, fix bugs, and more. Claude Code will use the skills in the plugin to provide you with accurate and relevant Medusa code.
+By following this flow, you can quickly bring your business ideas to life with the help of AI agents, without having to worry about the underlying code or technical details.
 
-Examples of prompts you can use:
+### Learn Medusa Development with AI Agents
 
-```bash title="Claude Code Prompts"
-Implement a product reviews feature. Authenticated customers can add reviews. Admin users can view and approve or reject reviews from the dashboard
-Create a wishlist feature where customers can save products. I need API routes for adding/removing items and retrieving the wishlist.
-Add a widget to the product detail page in the admin that allows managing related products. Admin users should be able to select which products are related using a searchable table.
-Help me integrate the custom reviews API into my Next.js storefront. Show product reviews on the product detail page with pagination.
+If you're a Medusa beginner and you want to learn Medusa development with the help of an AI agent, install and use the `learn-medusa` skills:
+
+### Claude Code
+
+```bash
+claude # start claude code
+/plugin marketplace add medusajs/medusa-agent-skills
+/plugin install learn-medusa@medusa
+
+# then use the following prompt to start learning:
+I want to learn Medusa.
 ```
+
+### Other AI Agents
+
+```bash
+npx skills add medusajs/medusa-agent-skills
+# choose the following skill:
+# - learning-medusa
+
+# then use the following prompt in your AI agent to start learning:
+I want to learn Medusa.
+```
+
+This starts the interactive learning experience where you'll learn Medusa concepts step-by-step by building a brands feature, similar to the [Brands tutorial](https://docs.medusajs.com/learn/customization/custom-features/index.html.md). You will:
+
+1. Create a Brand Module with API routes to manage brands.
+2. Link brands to products to associate products with brands.
+3. Customize the Medusa Admin dashboard to allow admin users to manage brands.
+
+By the end, you'll have a solid understanding of Medusa's architecture and how to build custom features.
 
 ***
 
@@ -27101,26 +27103,6 @@ The following diagram illustrates Medusa's architecture including all its layers
 
 # Build with AI Assistants and LLMs
 
-In this chapter, you'll learn how you can use AI assistants and LLMs effectively in your Medusa development.
-
-## Bloom: AI-Powered Commerce Assistant
-
-[Bloom](https://bloom.chat/) is an AI-powered commerce assistant built by Medusa to help you build, manage, and scale your ecommerce store.
-
-Bloom has the ecommerce expertise to build your store following best practices and using Medusa's rich commerce features. You can build a complete ecommerce store that has a storefront, admin dashboard, and backend with a single prompt.
-
-Bloom helps you design your store, implement custom features, integrate third-party services, and more. It's ideal for:
-
-1. **Developers:** Build showcases for business ideas, speed up store development, and focus on advanced customizations.
-2. **Side Hustlers:** Start your ecommerce journey with minimal investment.
-3. **Business Owners:** Launch your online store quickly without technical expertise.
-4. **Designers:** Build production-ready storefronts with your unique design vision.
-5. **Marketers:** Test new store concepts and campaigns rapidly.
-
-Go to [Bloom](https://bloom.chat/) to get started. You'll start with free credits to try out Bloom's features and upgrade your plan as needed.
-
-***
-
 ## Agent Skills for Medusa
 
 Medusa provides [agent skills](https://github.com/medusajs/medusa-agent-skills) to assist you in learning and building with Medusa. You can use them as plugins in Claude Code, or copy them into other AI tools that support custom skills.
@@ -27240,52 +27222,6 @@ This starts the interactive learning experience where you'll learn Medusa concep
 
 By the end, you'll have a solid understanding of Medusa's architecture and how to build custom features.
 
-***
-
-## MCP Remote Server
-
-The Medusa documentation provides a remote Model Context Protocol (MCP) server that allows you to find information from the Medusa documentation right in your IDEs or AI tools, such as Cursor.
-
-Medusa hosts a Streamable HTTP MCP server at `https://docs.medusajs.com/mcp` that you can add to AI agents supporting MCP server connections.
-
-### Cursor
-
-<Link href="cursor://anysphere.cursor-deeplink/mcp/install?name=medusa&config=eyJ1cmwiOiJodHRwczovL2RvY3MubWVkdXNhanMuY29tL21jcCJ9" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Medusa MCP server to Cursor.
-
-To manually connect to the Medusa MCP server in Cursor, add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://docs.cursor.com/context/model-context-protocol):
-
-```json
-{
-  "mcpServers": {
-    "medusa": {
-      "url": "https://docs.medusajs.com/mcp"
-    }
-  }
-}
-```
-
-### VSCode
-
-To manually connect to the Medusa MCP server in Claude Code, run the following command in your terminal:
-
-```sh
-claude mcp add --transport http medusa https://docs.medusajs.com/mcp
-```
-
-### Claude Code
-
-### How to Use the MCP Server
-
-After connecting to the Medusa MCP server in your AI tool or IDE, you can start asking questions or requesting your AI assistant to build Medusa customizations. It will fetch the relevant information from the Medusa documentation and provide you with accurate answers, code snippets, and explanations.
-
-For example, you can ask:
-
-1. "Create a Product Review module for Medusa. Refer to the Medusa documentation for information."
-2. "How to update Medusa to the latest version?"
-3. "Explain the Medusa workflow system."
-4. "Integrate Medusa with X provider. Refer to the Medusa documentation for information."
-
-***
 
 ## AI Assistant in Documentation
 
@@ -27344,6 +27280,103 @@ You can access the following plain text documentation files:
 - **Markdown version of any page** - You can access the Markdown version of any documentation page by appending `/index.html.md` to the page URL. For example, the plain text content of the current page is available at [https://docs.medusajs.com/learn/introduction/build-with-llms-ai/index.html.md](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/index.html.md).
 
 You can provide these files to your AI tools or LLM editors like [Cursor](https://docs.cursor.com/context/@-symbols/@-docs). This helps them understand the Medusa documentation and provide better assistance when building customizations or answering questions.
+
+
+# Build with AI Assistants and LLMs
+
+## Bloom: AI-Powered Commerce Assistant
+
+[Bloom](https://bloom.chat/) is an AI-powered commerce assistant built by Medusa to help you build, manage, and scale your ecommerce store.
+
+Bloom has the ecommerce expertise to build your store following best practices and using Medusa's rich commerce features. You can build a complete ecommerce store that has a storefront, admin dashboard, and backend with a single prompt.
+
+Bloom helps you design your store, implement custom features, integrate third-party services, and more. It's ideal for:
+
+1. **Developers:** Build showcases for business ideas, speed up store development, and focus on advanced customizations.
+2. **Side Hustlers:** Start your ecommerce journey with minimal investment.
+3. **Business Owners:** Launch your online store quickly without technical expertise.
+4. **Designers:** Build production-ready storefronts with your unique design vision.
+5. **Marketers:** Test new store concepts and campaigns rapidly.
+
+Go to [Bloom](https://bloom.chat/) to get started. You'll start with free credits to try out Bloom's features and upgrade your plan as needed.
+
+
+## MCP Remote Server
+
+The Medusa documentation provides a remote Model Context Protocol (MCP) server that allows you to find information from the Medusa documentation right in your IDEs or AI tools, such as Cursor.
+
+Medusa hosts a Streamable HTTP MCP server at `https://docs.medusajs.com/mcp` that you can add to AI agents supporting MCP server connections.
+
+### Cursor
+
+<Link href="cursor://anysphere.cursor-deeplink/mcp/install?name=medusa&config=eyJ1cmwiOiJodHRwczovL2RvY3MubWVkdXNhanMuY29tL21jcCJ9" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Medusa MCP server to Cursor.
+
+To manually connect to the Medusa MCP server in Cursor, add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://docs.cursor.com/context/model-context-protocol):
+
+```json
+{
+  "mcpServers": {
+    "medusa": {
+      "url": "https://docs.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+### VSCode
+
+To manually connect to the Medusa MCP server in Claude Code, run the following command in your terminal:
+
+```sh
+claude mcp add --transport http medusa https://docs.medusajs.com/mcp
+```
+
+### Claude Code
+
+### How to Use the MCP Server
+
+After connecting to the Medusa MCP server in your AI tool or IDE, you can start asking questions or requesting your AI assistant to build Medusa customizations. It will fetch the relevant information from the Medusa documentation and provide you with accurate answers, code snippets, and explanations.
+
+For example, you can ask:
+
+1. "Create a Product Review module for Medusa. Refer to the Medusa documentation for information."
+2. "How to update Medusa to the latest version?"
+3. "Explain the Medusa workflow system."
+4. "Integrate Medusa with X provider. Refer to the Medusa documentation for information."
+
+
+# Build with AI Assistants and LLMs
+
+In the next chapters, you'll learn how to power up your ecommerce development and store with AI assistants and Large Language Models (LLMs). These tools can help you build your store faster, get assistance in your development, and even learn Medusa interactively.
+
+## What Makes Medusa AI-Friendly?
+
+Medusa's architecture and customization capabilities make it an ideal platform for leveraging AI assistants and LLMs in your commerce development workflow.
+
+A common issue with traditional commerce platforms is that they aren't built to support AI assistants and LLMs, leading to unreliable implementations, security risks, and AI not understanding the platform's architecture. This is often due to hacky workarounds, rigid architecture, or lack of protected yet flexible customization capabilities.
+
+On the other hand, Medusa's architecture, Framework, and AI tools support developers and non-technical store owners in using AI assistants to build stores efficiently and securely, and go live faster. With Medusa, you can leverage AI assistants and LLMs to build your store, get assistance in your development, and even learn Medusa interactively.
+
+***
+
+## What Can You Build with Medusa and AI Assistants?
+
+By levaging AI assistants in your Medusa development workflow, you can:
+
+1. Build unique features in your store that are tailored to your business needs efficiently, without worrying about the complexities of the platform's architecture.
+2. Get assistance in your development, such as debugging issues, optimizing performance, deployment, and more.
+3. Build storefronts that follow best practices for commerce and provide a great user experience.
+
+***
+
+## AI Tools and Integrations for Commerce Development
+
+Medusa provides various tools and integrations to help you leverage AI assistants and LLMs in your commerce development workflow:
+
+- [Bloom](https://bloom.chat/)
+- [Medusa Agent Skills](#)
+- [MCP Remote Server](#)
+- [AI-Friendly Documentation](#)
 
 
 # From Medusa v1 to v2: Conceptual Differences
@@ -28700,23 +28733,25 @@ Refer to the [Deployment](https://docs.medusajs.com/resources/deployment/index.h
 
 # Introduction
 
-Medusa is a digital commerce platform with a built-in Framework for customization.
+Medusa is an AI-native commerce platform with a Framework to build custom commerce features.
 
 Medusa ships with three main tools:
 
 1. A suite of [Commerce Modules](https://docs.medusajs.com/resources/commerce-modules/index.html.md) with core commerce functionalities, such as tracking inventory, calculating cart totals, accepting payments, managing orders, and much more.
-2. A [Framework](https://docs.medusajs.com/learn/fundamentals/framework/index.html.md) for building custom functionalities specific to your business, product, or industry. This includes tools for introducing custom API endpoints, business logic, and data models; building workflows and automations; and integrating with third-party services.
+2. A [Framework](https://docs.medusajs.com/learn/fundamentals/framework/index.html.md) for building agentic flows and custom functionalities specific to your business, product, or industry. This includes tools for introducing custom API endpoints, business logic, and data models; building workflows and automations; and integrating with third-party services.
 3. A customizable admin dashboard for merchants to configure and operate their store.
 
-When you install Medusa, you get a fully fledged commerce platform with all the features you need to get off the ground. However, unlike other platforms, Medusa is built with customization in mind. You don't need to build hacky workarounds that are difficult to maintain and scale. Your efforts go into building features that bring your business's vision to life.
+When you install Medusa, you get a fully fledged commerce platform with all the features you need to get off the ground. However, unlike other platforms, you don't need to build hacky workarounds that are difficult to maintain and scale.
+
+Medusa is built with customization in mind. Build features that bring your business's vision to life, with native support of AI agents to automate your operations and customer interactions.
 
 ***
 
 ## Who should use Medusa
 
-Medusa is for businesses and teams looking for a digital commerce platform with the tools to implement unique requirements that other platforms aren't built to support.
+Medusa is for businesses and teams looking for a cutting-edge commerce platform that supports their unique requirements, visions, and automated workflows that other platforms aren't built to support.
 
-Businesses of all sizes can use Medusa, from small start ups to large enterprises. Also, technical teams of all sizes can build with Medusa; all it takes is a developer to manage and deploy Medusa projects.
+Businesses of all sizes can use Medusa, from small start ups building with agentic flows to large enterprises building complex commerce features. Medusa is also for developers that want to build with the latest technologies and tools, and have the freedom to implement unique features without being limited by the platform's architecture.
 
 Below are some stories from companies that use Medusa:
 
@@ -28729,11 +28764,11 @@ Below are some stories from companies that use Medusa:
 
 ***
 
-## Who is this documentation for
+## How to learn Medusa
 
 This documentation introduces you to Medusa's concepts and how they help you build your business use case. The documentation is structured to gradually introduce Medusa's concepts, with easy-to-follow examples along the way.
 
-By following this documentation, you'll be able to create custom commerce experiences that would otherwise take large engineering teams months to build.
+You can also jump right into building your store with the help of our [agentic skills, MCP server, and other AI-friendly tools](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/index.html.md).
 
 ### How to use the documentation
 
@@ -28742,24 +28777,15 @@ This documentation is split into the following sections:
 |Section|Description|
 |---|---|---|
 |Main Documentation|The documentation you're currently reading. It's recommended to follow the chapters in this documentation to understand the core concepts of Medusa and how to use them before jumping into the other sections.|
+|Cloud|Learn about Cloud, our managed services offering for Medusa applications. Find guides on how to deploy your Medusa application, manage organizations, and more.|
 |Product|Documentation for the |
 |Build|Recipes|
 |Tools|Guides on how to setup and use Medusa's CLI tools, |
 |API Routes References|References of the |
 |References|Useful during your development with Medusa to learn about different APIs and how to use them. Its references include the |
 |User Guide|Guides that introduce merchants and store managers to the Medusa Admin dashboard and helps them understand how to use the dashboard to manage their store.|
-|Cloud|Learn about Cloud, our managed services offering for Medusa applications. Find guides on how to deploy your Medusa application, manage organizations, and more.|
 
 To get started, check out the [Installation chapter](https://docs.medusajs.com/learn/installation/index.html.md).
-
-***
-
-## Useful Links
-
-- Need Help? Refer to our [GitHub repository](https://github.com/medusajs/medusa) for [issues](https://github.com/medusajs/medusa/issues) and [discussions](https://github.com/medusajs/medusa/discussions).
-- [Join the community on Discord](https://discord.gg/medusajs).
-- Have questions or need more support? Contact our [sales team](https://medusajs.com/contact/).
-- Facing issues in your development? Refer to our [troubleshooting guides](https://docs.medusajs.com/resources/troubleshooting/index.html.md).
 
 
 # Worker Mode of Medusa Instance
@@ -51650,9 +51676,12 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [updateApiKeysWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateApiKeysWorkflow/index.html.md)
 - [generateResetPasswordTokenWorkflow](https://docs.medusajs.com/references/medusa-workflows/generateResetPasswordTokenWorkflow/index.html.md)
 - [setAuthAppMetadataWorkflow](https://docs.medusajs.com/references/medusa-workflows/setAuthAppMetadataWorkflow/index.html.md)
+- [addGiftCardToCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/addGiftCardToCartWorkflow/index.html.md)
 - [addShippingMethodToCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/addShippingMethodToCartWorkflow/index.html.md)
+- [addStoreCreditsToCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/addStoreCreditsToCartWorkflow/index.html.md)
 - [addToCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/addToCartWorkflow/index.html.md)
 - [completeCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/completeCartWorkflow/index.html.md)
+- [confirmCartCreditLinesWorkflow](https://docs.medusajs.com/references/medusa-workflows/confirmCartCreditLinesWorkflow/index.html.md)
 - [confirmVariantInventoryWorkflow](https://docs.medusajs.com/references/medusa-workflows/confirmVariantInventoryWorkflow/index.html.md)
 - [createCartCreditLinesWorkflow](https://docs.medusajs.com/references/medusa-workflows/createCartCreditLinesWorkflow/index.html.md)
 - [createCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/createCartWorkflow/index.html.md)
@@ -51660,16 +51689,25 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [deleteCartCreditLinesWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteCartCreditLinesWorkflow/index.html.md)
 - [listShippingOptionsForCartWithPricingWorkflow](https://docs.medusajs.com/references/medusa-workflows/listShippingOptionsForCartWithPricingWorkflow/index.html.md)
 - [listShippingOptionsForCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/listShippingOptionsForCartWorkflow/index.html.md)
+- [refreshCartGiftCardsWorkflow](https://docs.medusajs.com/references/medusa-workflows/refreshCartGiftCardsWorkflow/index.html.md)
 - [refreshCartItemsWorkflow](https://docs.medusajs.com/references/medusa-workflows/refreshCartItemsWorkflow/index.html.md)
 - [refreshCartShippingMethodsWorkflow](https://docs.medusajs.com/references/medusa-workflows/refreshCartShippingMethodsWorkflow/index.html.md)
 - [refreshPaymentCollectionForCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/refreshPaymentCollectionForCartWorkflow/index.html.md)
 - [refundPaymentAndRecreatePaymentSessionWorkflow](https://docs.medusajs.com/references/medusa-workflows/refundPaymentAndRecreatePaymentSessionWorkflow/index.html.md)
+- [removeGiftCardFromCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/removeGiftCardFromCartWorkflow/index.html.md)
+- [retrieveGiftCardBalanceStep](https://docs.medusajs.com/references/medusa-workflows/retrieveGiftCardBalanceStep/index.html.md)
 - [transferCartCustomerWorkflow](https://docs.medusajs.com/references/medusa-workflows/transferCartCustomerWorkflow/index.html.md)
 - [updateCartPromotionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateCartPromotionsWorkflow/index.html.md)
 - [updateCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateCartWorkflow/index.html.md)
 - [updateLineItemInCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateLineItemInCartWorkflow/index.html.md)
 - [updateTaxLinesWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateTaxLinesWorkflow/index.html.md)
+- [validateCartGiftCardStep](https://docs.medusajs.com/references/medusa-workflows/validateCartGiftCardStep/index.html.md)
+- [validateCartStep](https://docs.medusajs.com/references/medusa-workflows/validateCartStep/index.html.md)
+- [validateCustomerStoreCreditAccountStep](https://docs.medusajs.com/references/medusa-workflows/validateCustomerStoreCreditAccountStep/index.html.md)
 - [validateExistingPaymentCollectionStep](https://docs.medusajs.com/references/medusa-workflows/validateExistingPaymentCollectionStep/index.html.md)
+- [validateGiftCardInCartStep](https://docs.medusajs.com/references/medusa-workflows/validateGiftCardInCartStep/index.html.md)
+- [validateGiftCardStep](https://docs.medusajs.com/references/medusa-workflows/validateGiftCardStep/index.html.md)
+- [validateStoreCreditAccountStep](https://docs.medusajs.com/references/medusa-workflows/validateStoreCreditAccountStep/index.html.md)
 - [batchLinksWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchLinksWorkflow/index.html.md)
 - [createLinksWorkflow](https://docs.medusajs.com/references/medusa-workflows/createLinksWorkflow/index.html.md)
 - [dismissLinksWorkflow](https://docs.medusajs.com/references/medusa-workflows/dismissLinksWorkflow/index.html.md)
@@ -51729,6 +51767,13 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [updateShippingOptionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateShippingOptionsWorkflow/index.html.md)
 - [updateShippingProfilesWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateShippingProfilesWorkflow/index.html.md)
 - [validateFulfillmentDeliverabilityStep](https://docs.medusajs.com/references/medusa-workflows/validateFulfillmentDeliverabilityStep/index.html.md)
+- [claimGiftCardWorkflow](https://docs.medusajs.com/references/medusa-workflows/claimGiftCardWorkflow/index.html.md)
+- [createGiftCardsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createGiftCardsWorkflow/index.html.md)
+- [deleteGiftCardWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteGiftCardWorkflow/index.html.md)
+- [redeemGiftCardWorkflow](https://docs.medusajs.com/references/medusa-workflows/redeemGiftCardWorkflow/index.html.md)
+- [updateGiftCardsWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateGiftCardsWorkflow/index.html.md)
+- [validateClaimGiftCardInputStep](https://docs.medusajs.com/references/medusa-workflows/validateClaimGiftCardInputStep/index.html.md)
+- [validateGiftCardRedeemStep](https://docs.medusajs.com/references/medusa-workflows/validateGiftCardRedeemStep/index.html.md)
 - [batchInventoryItemLevelsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchInventoryItemLevelsWorkflow/index.html.md)
 - [bulkCreateDeleteLevelsWorkflow](https://docs.medusajs.com/references/medusa-workflows/bulkCreateDeleteLevelsWorkflow/index.html.md)
 - [createInventoryItemsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createInventoryItemsWorkflow/index.html.md)
@@ -51989,7 +52034,11 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [deleteSalesChannelsWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteSalesChannelsWorkflow/index.html.md)
 - [linkProductsToSalesChannelWorkflow](https://docs.medusajs.com/references/medusa-workflows/linkProductsToSalesChannelWorkflow/index.html.md)
 - [updateSalesChannelsWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateSalesChannelsWorkflow/index.html.md)
+- [batchPropertyLabelsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchPropertyLabelsWorkflow/index.html.md)
+- [createPropertyLabelsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createPropertyLabelsWorkflow/index.html.md)
 - [createViewConfigurationWorkflow](https://docs.medusajs.com/references/medusa-workflows/createViewConfigurationWorkflow/index.html.md)
+- [deletePropertyLabelsWorkflow](https://docs.medusajs.com/references/medusa-workflows/deletePropertyLabelsWorkflow/index.html.md)
+- [updatePropertyLabelsWorkflow](https://docs.medusajs.com/references/medusa-workflows/updatePropertyLabelsWorkflow/index.html.md)
 - [updateViewConfigurationWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateViewConfigurationWorkflow/index.html.md)
 - [createShippingOptionTypesWorkflow](https://docs.medusajs.com/references/medusa-workflows/createShippingOptionTypesWorkflow/index.html.md)
 - [deleteShippingOptionTypesWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteShippingOptionTypesWorkflow/index.html.md)
@@ -52004,6 +52053,13 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [createStoresWorkflow](https://docs.medusajs.com/references/medusa-workflows/createStoresWorkflow/index.html.md)
 - [deleteStoresWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteStoresWorkflow/index.html.md)
 - [updateStoresWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateStoresWorkflow/index.html.md)
+- [claimStoreCreditAccountWorkflow](https://docs.medusajs.com/references/medusa-workflows/claimStoreCreditAccountWorkflow/index.html.md)
+- [createStoreCreditAccountsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createStoreCreditAccountsWorkflow/index.html.md)
+- [creditAccountsWorkflow](https://docs.medusajs.com/references/medusa-workflows/creditAccountsWorkflow/index.html.md)
+- [creditStoreCreditAccountWorkflow](https://docs.medusajs.com/references/medusa-workflows/creditStoreCreditAccountWorkflow/index.html.md)
+- [debitAccountsWorkflow](https://docs.medusajs.com/references/medusa-workflows/debitAccountsWorkflow/index.html.md)
+- [validateClaimStoreCreditAccountInputStep](https://docs.medusajs.com/references/medusa-workflows/validateClaimStoreCreditAccountInputStep/index.html.md)
+- [validateStoreCreditAccountInputStep](https://docs.medusajs.com/references/medusa-workflows/validateStoreCreditAccountInputStep/index.html.md)
 - [createTaxRateRulesWorkflow](https://docs.medusajs.com/references/medusa-workflows/createTaxRateRulesWorkflow/index.html.md)
 - [createTaxRatesWorkflow](https://docs.medusajs.com/references/medusa-workflows/createTaxRatesWorkflow/index.html.md)
 - [createTaxRegionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createTaxRegionsWorkflow/index.html.md)
@@ -52123,6 +52179,10 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [upsertShippingOptionsStep](https://docs.medusajs.com/references/medusa-workflows/steps/upsertShippingOptionsStep/index.html.md)
 - [validateShipmentStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateShipmentStep/index.html.md)
 - [validateShippingOptionPricesStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateShippingOptionPricesStep/index.html.md)
+- [createGiftCardsStep](https://docs.medusajs.com/references/medusa-workflows/steps/createGiftCardsStep/index.html.md)
+- [deleteGiftCardsStep](https://docs.medusajs.com/references/medusa-workflows/steps/deleteGiftCardsStep/index.html.md)
+- [retrieveGiftCardsBalanceStep](https://docs.medusajs.com/references/medusa-workflows/steps/retrieveGiftCardsBalanceStep/index.html.md)
+- [updateGiftCardsStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateGiftCardsStep/index.html.md)
 - [adjustInventoryLevelsStep](https://docs.medusajs.com/references/medusa-workflows/steps/adjustInventoryLevelsStep/index.html.md)
 - [attachInventoryItemToVariants](https://docs.medusajs.com/references/medusa-workflows/steps/attachInventoryItemToVariants/index.html.md)
 - [createInventoryItemsStep](https://docs.medusajs.com/references/medusa-workflows/steps/createInventoryItemsStep/index.html.md)
@@ -52285,8 +52345,11 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [detachLocationsFromSalesChannelsStep](https://docs.medusajs.com/references/medusa-workflows/steps/detachLocationsFromSalesChannelsStep/index.html.md)
 - [detachProductsFromSalesChannelsStep](https://docs.medusajs.com/references/medusa-workflows/steps/detachProductsFromSalesChannelsStep/index.html.md)
 - [updateSalesChannelsStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateSalesChannelsStep/index.html.md)
+- [createPropertyLabelsStep](https://docs.medusajs.com/references/medusa-workflows/steps/createPropertyLabelsStep/index.html.md)
 - [createViewConfigurationStep](https://docs.medusajs.com/references/medusa-workflows/steps/createViewConfigurationStep/index.html.md)
+- [deletePropertyLabelsStep](https://docs.medusajs.com/references/medusa-workflows/steps/deletePropertyLabelsStep/index.html.md)
 - [setActiveViewConfigurationStep](https://docs.medusajs.com/references/medusa-workflows/steps/setActiveViewConfigurationStep/index.html.md)
+- [updatePropertyLabelsStep](https://docs.medusajs.com/references/medusa-workflows/steps/updatePropertyLabelsStep/index.html.md)
 - [updateViewConfigurationStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateViewConfigurationStep/index.html.md)
 - [createShippingOptionTypesStep](https://docs.medusajs.com/references/medusa-workflows/steps/createShippingOptionTypesStep/index.html.md)
 - [deleteShippingOptionTypesStep](https://docs.medusajs.com/references/medusa-workflows/steps/deleteShippingOptionTypesStep/index.html.md)
@@ -52299,6 +52362,9 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [createStoresStep](https://docs.medusajs.com/references/medusa-workflows/steps/createStoresStep/index.html.md)
 - [deleteStoresStep](https://docs.medusajs.com/references/medusa-workflows/steps/deleteStoresStep/index.html.md)
 - [updateStoresStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateStoresStep/index.html.md)
+- [createStoreCreditAccountsStep](https://docs.medusajs.com/references/medusa-workflows/steps/createStoreCreditAccountsStep/index.html.md)
+- [creditAccountStep](https://docs.medusajs.com/references/medusa-workflows/steps/creditAccountStep/index.html.md)
+- [debitAccountStep](https://docs.medusajs.com/references/medusa-workflows/steps/debitAccountStep/index.html.md)
 - [createTaxRateRulesStep](https://docs.medusajs.com/references/medusa-workflows/steps/createTaxRateRulesStep/index.html.md)
 - [createTaxRatesStep](https://docs.medusajs.com/references/medusa-workflows/steps/createTaxRatesStep/index.html.md)
 - [createTaxRegionsStep](https://docs.medusajs.com/references/medusa-workflows/steps/createTaxRegionsStep/index.html.md)
@@ -54037,6 +54103,22 @@ By default, the Medusa Admin is built to the `.medusa/server/public/admin` direc
 
 If you want a separate build to host the admin as a standalone application, such as on Vercel, pass the `--admin-only` option as explained in the [Options](#options) section. This outputs the admin to the `.medusa/admin` directory instead.
 
+By default, the Medusa Admin dashboard is hosted at the `/app` path. You can change it with the `admin.path` configuration in `medusa-config.ts`.
+
+For example, to serve it from the root path `/` when hosting on a separate domain:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  admin: {
+    path: "/",
+    backendUrl: process.env.MEDUSA_BACKEND_URL,
+  },
+  // ...
+})
+```
+
+The admin will now run at `/` of your application. For example, at `acme.com`.
+
 
 # codemod Command - Medusa CLI Reference
 
@@ -54475,6 +54557,22 @@ Refer to the [Build Medusa Application](https://docs.medusajs.com/docs/learn/bui
 By default, the Medusa Admin is built to the `.medusa/server/public/admin` directory.
 
 If you want a separate build to host the admin as a standalone application, such as on Vercel, pass the `--admin-only` option as explained in the [Options](#options) section. This outputs the admin to the `.medusa/admin` directory instead.
+
+By default, the Medusa Admin dashboard is hosted at the `/app` path. You can change it with the `admin.path` configuration in `medusa-config.ts`.
+
+For example, to serve it from the root path `/` when hosting on a separate domain:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  admin: {
+    path: "/",
+    backendUrl: process.env.MEDUSA_BACKEND_URL,
+  },
+  // ...
+})
+```
+
+The admin will now run at `/` of your application. For example, at `acme.com`.
 
 
 # codemod Command - Medusa CLI Reference
@@ -134545,6 +134643,12 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [POST /admin/promotions/{id}/rules/batch](https://docs.medusajs.com/api/admin#promotions_postpromotionsidrulesbatch)
 - [POST /admin/promotions/{id}/target-rules/batch](https://docs.medusajs.com/api/admin#promotions_postpromotionsidtargetrulesbatch)
 - [GET /admin/promotions/{id}/{rule_type}](https://docs.medusajs.com/api/admin#promotions_getpromotionsidrule_type)
+- [GET /admin/property-labels](https://docs.medusajs.com/api/admin#property-labels_getpropertylabels)
+- [POST /admin/property-labels](https://docs.medusajs.com/api/admin#property-labels_postpropertylabels)
+- [POST /admin/property-labels/batch](https://docs.medusajs.com/api/admin#property-labels_postpropertylabelsbatch)
+- [GET /admin/property-labels/{id}](https://docs.medusajs.com/api/admin#property-labels_getpropertylabelsid)
+- [POST /admin/property-labels/{id}](https://docs.medusajs.com/api/admin#property-labels_postpropertylabelsid)
+- [DELETE /admin/property-labels/{id}](https://docs.medusajs.com/api/admin#property-labels_deletepropertylabelsid)
 - [GET /admin/refund-reasons](https://docs.medusajs.com/api/admin#refund-reasons_getrefundreasons)
 - [POST /admin/refund-reasons](https://docs.medusajs.com/api/admin#refund-reasons_postrefundreasons)
 - [GET /admin/refund-reasons/{id}](https://docs.medusajs.com/api/admin#refund-reasons_getrefundreasonsid)
@@ -134620,6 +134724,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [GET /admin/store-credit-accounts](https://docs.medusajs.com/api/admin#store-credit-accounts_getstorecreditaccounts)
 - [POST /admin/store-credit-accounts](https://docs.medusajs.com/api/admin#store-credit-accounts_poststorecreditaccounts)
 - [GET /admin/store-credit-accounts/{id}](https://docs.medusajs.com/api/admin#store-credit-accounts_getstorecreditaccountsid)
+- [POST /admin/store-credit-accounts/{id}/credit](https://docs.medusajs.com/api/admin#store-credit-accounts_poststorecreditaccountsidcredit)
 - [GET /admin/store-credit-accounts/{id}/transactions](https://docs.medusajs.com/api/admin#store-credit-accounts_getstorecreditaccountsidtransactions)
 - [GET /admin/stores](https://docs.medusajs.com/api/admin#stores_getstores)
 - [GET /admin/stores/{id}](https://docs.medusajs.com/api/admin#stores_getstoresid)
@@ -134652,6 +134757,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [GET /admin/users/{id}](https://docs.medusajs.com/api/admin#users_getusersid)
 - [POST /admin/users/{id}](https://docs.medusajs.com/api/admin#users_postusersid)
 - [DELETE /admin/users/{id}](https://docs.medusajs.com/api/admin#users_deleteusersid)
+- [GET /admin/views/entities](https://docs.medusajs.com/api/admin#views_getviewsentities)
 - [GET /admin/views/{entity}/columns](https://docs.medusajs.com/api/admin#views_getviewsentitycolumns)
 - [GET /admin/views/{entity}/configurations](https://docs.medusajs.com/api/admin#views_getviewsentityconfigurations)
 - [POST /admin/views/{entity}/configurations](https://docs.medusajs.com/api/admin#views_postviewsentityconfigurations)
@@ -134742,6 +134848,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [GET /store/shipping-options](https://docs.medusajs.com/api/store#shipping-options_getshippingoptions)
 - [POST /store/shipping-options/{id}/calculate](https://docs.medusajs.com/api/store#shipping-options_postshippingoptionsidcalculate)
 - [GET /store/store-credit-accounts](https://docs.medusajs.com/api/store#store-credit-accounts_getstorecreditaccounts)
+- [POST /store/store-credit-accounts/claim](https://docs.medusajs.com/api/store#store-credit-accounts_poststorecreditaccountsclaim)
 - [GET /store/store-credit-accounts/{id}](https://docs.medusajs.com/api/store#store-credit-accounts_getstorecreditaccountsid)
 
 
