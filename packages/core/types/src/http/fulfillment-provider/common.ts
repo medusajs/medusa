@@ -18,4 +18,11 @@ export interface BaseFulfillmentProviderOption {
    * Whether the fulfillment provider option can be used for returns.
    */
   is_return: boolean
+  /**
+   * Additional properties of the fulfillment provider option.
+   * These are provider-specific and can include any additional data relevant to the option.
+   * 
+   * It may commonly include properties like `name` (the name of the option).
+   */
+  [k: string]: unknown
 }

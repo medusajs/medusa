@@ -1,7 +1,4 @@
-const commonHiddenFields = [
-  "type",
-  "application_method.type",
-]
+const commonHiddenFields = ["type", "application_method.type"]
 
 const amountOfOrderHiddenFields = [
   ...commonHiddenFields,

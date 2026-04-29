@@ -75,7 +75,7 @@ export const useClaimItemTableColumns = (currencyCode: string) => {
             <span className="truncate">{t("fields.quantity")}</span>
           </div>
         ),
-        cell: ({ getValue, row }) => {
+        cell: ({ row }) => {
           return getReturnableQuantity(row.original)
         },
       }),
