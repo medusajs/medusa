@@ -32,7 +32,7 @@ If you use this workflow in another, you must acquire a lock before running it a
 
 :::
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/cart/workflows/update-cart-promotions.ts#L83" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/cart/workflows/update-cart-promotions.ts#L83" />
 
 ## Examples
 
@@ -161,7 +161,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"UpdateCartPromotionsWorkflowInput","type":"[UpdateCartPromotionsWorkflowInput](../../../../types/core_flows.UpdateCartPromotionsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of the promotion updates on a cart.","expandable":false,"children":[{"name":"cart_id","type":"`string`","description":"The cart's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"`any`","description":"The Cart reference.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"promo_codes","type":"`string`[]","description":"The promotion codes to add to the cart, remove from the cart,\nor replace all existing promotions in the cart.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"action","type":"[ADD](../../../../../utils/PromotionUtils/enums/utils.PromotionUtils.PromotionActions/page.mdx#add) \\| [REMOVE](../../../../../utils/PromotionUtils/enums/utils.PromotionUtils.PromotionActions/page.mdx#remove) \\| [REPLACE](../../../../../utils/PromotionUtils/enums/utils.PromotionUtils.PromotionActions/page.mdx#replace)","description":"The action to perform with the specified promotion codes.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"force_refresh_payment_collection","type":"`boolean`","description":"Wether to force the refresh of the cart payment collection. If the caller doesn't refresh it explicitly,\nyou should probably set this property to true.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="updateCartPromotionsWorkflow"/>
+<TypeList types={[{"name":"UpdateCartPromotionsWorkflowInput","type":"[UpdateCartPromotionsWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.UpdateCartPromotionsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"UpdateCartPromotionsWorkflowInput","type":"`object`","description":"The details of the promotion updates on a cart.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="updateCartPromotionsWorkflow"/>
 
 ## Hooks
 
@@ -179,7 +179,7 @@ This hook is executed before all operations. You can consume this hook to perfor
 import { updateCartPromotionsWorkflow } from "@medusajs/medusa/core-flows"
 
 updateCartPromotionsWorkflow.hooks.validate(
-  (async ({ input, cart }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -189,4 +189,4 @@ updateCartPromotionsWorkflow.hooks.validate(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Cart.Workflows_Cart/page.mdx#__type-18)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"input","type":"[UpdateCartPromotionsWorkflowInput](../../../../types/core_flows.UpdateCartPromotionsWorkflowInput/page.mdx)","description":"The details of the promotion updates on a cart.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"cart_id","type":"`string`","description":"The cart's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"`any`","description":"The Cart reference.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"promo_codes","type":"`string`[]","description":"The promotion codes to add to the cart, remove from the cart,\nor replace all existing promotions in the cart.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"action","type":"[ADD](../../../../../utils/PromotionUtils/enums/utils.PromotionUtils.PromotionActions/page.mdx#add) \\| [REMOVE](../../../../../utils/PromotionUtils/enums/utils.PromotionUtils.PromotionActions/page.mdx#remove) \\| [REPLACE](../../../../../utils/PromotionUtils/enums/utils.PromotionUtils.PromotionActions/page.mdx#replace)","description":"The action to perform with the specified promotion codes.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"force_refresh_payment_collection","type":"`boolean`","description":"Wether to force the refresh of the cart payment collection. If the caller doesn't refresh it explicitly,\nyou should probably set this property to true.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"cart","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validate"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Cart.Workflows_Cart/page.mdx#__type-17)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validate"/>

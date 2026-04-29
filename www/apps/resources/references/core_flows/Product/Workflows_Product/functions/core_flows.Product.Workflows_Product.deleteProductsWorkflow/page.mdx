@@ -25,7 +25,7 @@ you can delete custom records linked to the products.
 
 You can also use this workflow within your own custom workflows, allowing you to wrap custom logic around product deletion.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/product/workflows/delete-products.ts#L53" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/product/workflows/delete-products.ts#L53" />
 
 ## Examples
 
@@ -138,7 +138,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"DeleteProductsWorkflowInput","type":"[DeleteProductsWorkflowInput](../../../../types/core_flows.DeleteProductsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to delete one or more products.","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"The IDs of the products to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteProductsWorkflow"/>
+<TypeList types={[{"name":"DeleteProductsWorkflowInput","type":"[DeleteProductsWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.DeleteProductsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeleteProductsWorkflowInput","type":"`object`","description":"The data to delete one or more products.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteProductsWorkflow"/>
 
 ## Hooks
 
@@ -156,7 +156,7 @@ This hook is executed after the products are deleted. You can consume this hook 
 import { deleteProductsWorkflow } from "@medusajs/medusa/core-flows"
 
 deleteProductsWorkflow.hooks.productsDeleted(
-  (async ({ ids }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -166,7 +166,7 @@ deleteProductsWorkflow.hooks.productsDeleted(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Product.Workflows_Product/page.mdx#__type-20)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="productsDeleted"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Product.Workflows_Product/page.mdx#__type-20)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="productsDeleted"/>
 
 ## Emitted Events
 

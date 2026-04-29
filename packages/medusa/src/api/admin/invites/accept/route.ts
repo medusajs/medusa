@@ -5,10 +5,9 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { AdminInviteAcceptType } from "../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminInviteAcceptType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetInviteAcceptParams>,
   res: MedusaResponse<HttpTypes.AdminAcceptInviteResponse>
 ) => {
   if (req.auth_context.actor_id) {

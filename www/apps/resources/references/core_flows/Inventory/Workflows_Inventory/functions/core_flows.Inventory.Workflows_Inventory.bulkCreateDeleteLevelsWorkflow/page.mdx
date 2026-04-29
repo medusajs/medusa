@@ -22,7 +22,7 @@ Use `batchInventoryItemLevels` instead.
 
 :::
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/inventory/workflows/bulk-create-delete-levels.ts#L28" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/inventory/workflows/bulk-create-delete-levels.ts#L28" />
 
 ## Examples
 
@@ -42,16 +42,7 @@ export async function POST(
 ) {
   const { result } = await bulkCreateDeleteLevelsWorkflow(req.scope)
     .run({
-      input: {
-        "creates": [{
-          "inventory_item_id": "{value}",
-          "location_id": "{value}"
-        }],
-        "deletes": [{
-          "inventory_item_id": "{value}",
-          "location_id": "{value}"
-        }]
-      }
+      input: {}
     })
 
   res.send(result)
@@ -74,16 +65,7 @@ export default async function handleOrderPlaced({
 }: SubscriberArgs < { id: string } > ) {
   const { result } = await bulkCreateDeleteLevelsWorkflow(container)
     .run({
-      input: {
-        "creates": [{
-          "inventory_item_id": "{value}",
-          "location_id": "{value}"
-        }],
-        "deletes": [{
-          "inventory_item_id": "{value}",
-          "location_id": "{value}"
-        }]
-      }
+      input: {}
     })
 
   console.log(result)
@@ -106,16 +88,7 @@ export default async function myCustomJob(
 ) {
   const { result } = await bulkCreateDeleteLevelsWorkflow(container)
     .run({
-      input: {
-        "creates": [{
-          "inventory_item_id": "{value}",
-          "location_id": "{value}"
-        }],
-        "deletes": [{
-          "inventory_item_id": "{value}",
-          "location_id": "{value}"
-        }]
-      }
+      input: {}
     })
 
   console.log(result)
@@ -139,16 +112,7 @@ const myWorkflow = createWorkflow(
   () => {
     const result = bulkCreateDeleteLevelsWorkflow
       .runAsStep({
-        input: {
-          "creates": [{
-            "inventory_item_id": "{value}",
-            "location_id": "{value}"
-          }],
-          "deletes": [{
-            "inventory_item_id": "{value}",
-            "location_id": "{value}"
-          }]
-        }
+        input: {}
       })
   }
 )
@@ -163,7 +127,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"BulkCreateDeleteLevelsWorkflowInput","type":"[BulkCreateDeleteLevelsWorkflowInput](../../../../interfaces/core_flows.BulkCreateDeleteLevelsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"creates","type":"[CreateInventoryLevelInput](../../../../../types/InventoryTypes/interfaces/types.InventoryTypes.CreateInventoryLevelInput/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"inventory_item_id","type":"`string`","description":"The ID of the associated inventory item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The ID of the associated location.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"stocked_quantity","type":"`number`","description":"The stocked quantity of the associated inventory item in the associated location.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"incoming_quantity","type":"`number`","description":"The incoming quantity of the associated inventory item in the associated location.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"deletes","type":"`object`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"inventory_item_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="bulkCreateDeleteLevelsWorkflow"/>
+<TypeList types={[{"name":"BulkCreateDeleteLevelsWorkflowInput","type":"[BulkCreateDeleteLevelsWorkflowInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.BulkCreateDeleteLevelsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"BulkCreateDeleteLevelsWorkflowInput","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="bulkCreateDeleteLevelsWorkflow"/>
 
 ## Output
 

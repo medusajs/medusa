@@ -30,19 +30,12 @@ export const CountrySelect = forwardRef<
 
     useImperativeHandle(ref, () => innerRef.current as HTMLInputElement)
 
-    // Keep empty string as empty string for Combobox controlled state
-    const normalizedValue = value || ""
-
-    const handleChange = (newValue: string | undefined) => {
-      onChange?.(newValue || "")
-    }
-
     return (
       <Combobox
         {...props}
         ref={innerRef}
-        value={normalizedValue}
-        onChange={handleChange}
+        value={value || ""}
+        onChange={(newValue) => onChange?.(newValue || "")}
         options={countries.map((country) => ({
           label: country.display_name,
           value: country.iso_2.toLowerCase(),

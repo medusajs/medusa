@@ -5,7 +5,6 @@
  * x-sidebar-summary: List Store Credit Accounts
  * description: Retrieve the logged-in customer's store credit accounts. The store credit accounts can be filtered by fields such as `id`. The store credit accounts can also be sorted or paginated.
  * x-authenticated: true
- * x-ignoreCleanup: true
  * parameters:
  *   - name: x-publishable-api-key
  *     in: header
@@ -346,6 +345,14 @@
  *       externalDocs:
  *         url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
  *         description: Learn more in the Serve Translations in Storefront guide.
+ *   - name: with_deleted
+ *     in: query
+ *     description: Whether to include deleted records in the result.
+ *     required: false
+ *     schema:
+ *       type: boolean
+ *       title: with_deleted
+ *       description: Whether to include deleted records in the result.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -377,9 +384,9 @@
  *   - cookie_auth: []
  *   - jwt_token: []
  * x-badges:
- *   - text: Cloud
+ *   - text: Loyalty Plugin
  *     description: |
- *       This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+ *       This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/store-credit).
  * 
 */
 

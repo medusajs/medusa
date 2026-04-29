@@ -14,14 +14,17 @@ on:
       - "packages/core/utils/src/**"
       - "packages/core/workflows-sdk/src/utils/composer/**"
       - "packages/core/core-flows/src/**"
+      - "packages/plugins/loyalty/src/workflows/**"
+      - "packages/plugins/loyalty/src/types/**"
 
 jobs:
   generate-tsdocs:
     if: |
       !contains(github.event.head_commit.message, 'Version Packages') &&
+      !contains(github.event.head_commit.message, 'docs/add-tsdocs') &&
+      !startsWith(github.event.head_commit.message, 'docs: add TSDocs') &&
       github.actor != 'github-actions[bot]' &&
-      github.actor != 'dependabot[bot]' &&
-      !startsWith(github.ref, 'refs/heads/docs/add-tsdocs')
+      github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     permissions:
       contents: write

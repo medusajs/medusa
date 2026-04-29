@@ -192,11 +192,30 @@ Learn more in the [Logs guide](../../logs/page.mdx).
 
 ---
 
+## Monitor Environment Performance
+
+You can monitor the performance of your environment in the "Monitoring" section of the environment's dashboard. This includes monitoring HTTP requests, background jobs, and more.
+
+Learn more in the [Monitoring guide](../../monitoring/page.mdx).
+
+---
+
 ## Manage Environment Variables
 
 In the environment's "Settings" tab, you can manage the environment variables for the environment's Medusa application and storefront. Environment variables are key-value pairs that store sensitive information, such as API keys, or configurations that your application needs to run.
 
 Learn how to manage environment variables in the [Environment Variables](../environment-variables/page.mdx) guide.
+
+---
+
+## Manage Domains
+
+Your long-lived environment has two types of domains:
+
+- **Medusa-provided subdomains**: The default `medusajs.app` (backend) and `medusajs.site` (storefront) subdomains assigned to the environment. For example, `acme.medusajs.app` and `acme.medusajs.site`.
+- **Custom domains**: Your own domain names to serve the backend and storefront instead of the Medusa-provided subdomains. For example, `acme.com`.
+
+To update these domains, see the [Subdomains](../subdomains/page.mdx) and [Custom Domains](../custom-domains/page.mdx) guides.
 
 ---
 

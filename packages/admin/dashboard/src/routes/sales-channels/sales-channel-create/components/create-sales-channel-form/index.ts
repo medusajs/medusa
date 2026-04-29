@@ -1,1 +1,1 @@
-export * from "./create-sales-channel-form";
+export * from "./create-sales-channel-form"

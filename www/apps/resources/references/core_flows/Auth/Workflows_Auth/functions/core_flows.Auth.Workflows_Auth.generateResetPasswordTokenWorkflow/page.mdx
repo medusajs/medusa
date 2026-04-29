@@ -27,7 +27,7 @@ how to handle this event.
 You can use this workflow within your customizations or your own custom workflows, allowing you to
 generate reset password tokens within your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/auth/workflows/generate-reset-password-token.ts#L43" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/auth/workflows/generate-reset-password-token.ts#L43" />
 
 ## Examples
 
@@ -149,10 +149,6 @@ const myWorkflow = createWorkflow(
 ## Steps
 
 <WorkflowDiagram workflow={{"name":"generateResetPasswordTokenWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/learn/fundamentals/module-links/query).\n\n:::note\n\nThis step is deprecated. Use [useQueryGraphStep](../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.useQueryGraphStep/page.mdx) instead.\n\n:::","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":2}]}} />
-
-## Input
-
-<TypeList types={[{"name":"entityId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actorType","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"secret","type":"`undefined` \\| `Secret`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"jwtOptions","type":"`SignOptions`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="generateResetPasswordTokenWorkflow"/>
 
 ## Output
 

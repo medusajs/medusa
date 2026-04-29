@@ -10,7 +10,10 @@ import { Combobox } from "../../../../../components/inputs/combobox"
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { sdk } from "../../../../../lib/client"
 import { formatProvider } from "../../../../../lib/format-provider"
-import { FulfillmentSetType, ShippingOptionPriceType, } from "../../../common/constants"
+import {
+  FulfillmentSetType,
+  ShippingOptionPriceType,
+} from "../../../common/constants"
 import { CreateShippingOptionSchema } from "./schema"
 import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
 
@@ -269,7 +272,7 @@ export const CreateShippingOptionDetailsForm = ({
                           ?.filter((fo) => !!fo.is_return === isReturn)
                           .map((option) => (
                             <Select.Item value={option.id} key={option.id}>
-                              {option.name || option.id}
+                              {(option.name as string) || option.id}
                             </Select.Item>
                           ))}
                       </Select.Content>

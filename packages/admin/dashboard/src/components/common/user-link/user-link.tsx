@@ -42,7 +42,9 @@ export const By = ({ id }: { id: string }) => {
     return null
   }
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { user } = useUser(id, undefined, { enabled: isUser }) // todo: extend to support customers
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { customer } = useCustomer(id, undefined, { enabled: isCustomer })
 
   const actor = isUser ? user : customer

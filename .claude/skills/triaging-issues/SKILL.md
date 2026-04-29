@@ -30,6 +30,7 @@ All GitHub operations are performed via scripts in `scripts/`:
 bash scripts/get_issue.sh <issue_number>               # Fetch issue details (title, body, author, state)
 bash scripts/get_comments.sh <issue_number>            # Fetch all comments on the issue
 bash scripts/get_labels.sh <issue_number>              # Fetch current labels on the issue
+bash scripts/get_linked_prs.sh <issue_number>          # Fetch PRs linked to the issue (cross-ref or connected)
 bash scripts/add_comment.sh <issue_number> <body>      # Post a comment on the issue
 bash scripts/labels.sh <issue_number> <action> <label> # Manage labels: action is "add", "edit", or "remove"
 bash scripts/close_issue.sh <issue_number>             # Close the issue
@@ -50,7 +51,25 @@ bash scripts/get_comments.sh <issue_number> # always — comments are never pass
 bash scripts/get_labels.sh <issue_number>   # always — current labels are never passed as arguments
 ```
 
-### Step 0.5 — Possible Early Exit for Comment-Only Events
+### Step 0.5 — Check for Linked PRs
+
+After fetching context, check if any PRs are already linked to this issue:
+
+```bash
+bash scripts/get_linked_prs.sh <issue_number>
+```
+
+If one or more PRs are linked:
+
+1. **PR is MERGED** — The fix is already shipped. Add the relevant category label (e.g., `type: bug`), post a short acknowledgement, and close the issue if still open. **Stop.**
+2. **PR is OPEN** — A fix is in progress. Continue triage (categorize, validate, add labels), but:
+   - **Do NOT** add `good-first-issue` or `help-wanted` labels
+   - Use the "PR already linked" comment template from `reference/bug-report.md` instead of soliciting contributions
+   - Still add `type: bug`, `requires-team`, or other applicable labels
+
+If no linked PRs, continue to Step 0.75.
+
+### Step 0.75 — Possible Early Exit for Comment-Only Events
 
 **Only applies when triggered by a new comment (not a new issue).**
 
@@ -123,6 +142,7 @@ Load the reference file for the assigned category and follow the detailed flow:
 | Label | When to apply |
 |-------|---------------|
 | `type: bug` | Bug is confirmed — always apply when closing the triage on a valid bug report |
+| `type: docs` | Issue is caused by a documentation gap — apply even when the issue was originally reported as a bug |
 | `requires-more` | Issue lacks details needed to validate or reproduce |
 | `requires-team` | Critical/high priority, or needs team expertise; cannot be resolved without team review |
 | `good-first-issue` | Bug is confirmed, fix is straightforward — encourages community contribution |
@@ -158,12 +178,17 @@ Whenever linking to Medusa docs in a comment, load `reference/doc-links.md` to c
 
 - [ ] Triaging a comment that is just an ongoing user conversation — exit early instead
 - [ ] Categorizing based on comments instead of the original issue body
+- [ ] Confirming a bug without first checking the documentation — always check if the behavior is documented as intentional before treating it as a bug
 - [ ] Closing an issue without leaving a comment explaining why
 - [ ] Adding `good-first-issue` or `help-wanted` before confirming the bug in the codebase
 - [ ] Skipping the docs/codebase check for feature requests
 - [ ] Missing the Cloud platform exception in support issues
 - [ ] Linking to documentation using raw file paths instead of following `reference/doc-links.md`
 - [ ] Not fetching issue details when they weren't passed as arguments
+- [ ] Closing an issue that was reported as a bug but is actually a documentation gap — keep it open, add `type: docs`, and route to the docs flow
+- [ ] Forgetting to add `type: docs` when the root cause is a documentation gap, even if the issue was filed as a bug
+- [ ] Adding `good-first-issue` or `help-wanted` when a PR is already linked to the issue
+- [ ] Posting a full triage comment soliciting contributions when a linked PR already addresses the fix
 
 ## Reference Files
 

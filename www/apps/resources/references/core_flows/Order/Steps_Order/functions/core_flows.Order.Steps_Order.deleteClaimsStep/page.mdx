@@ -21,11 +21,7 @@ import { deleteClaimsStep } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = deleteClaimsStep({
-      "ids": [
-        "id_gDerVn8ZMbVmvRa2t4Kr"
-      ]
-    })
+    const data = deleteClaimsStep({})
   }
 )
 ```
@@ -33,7 +29,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"DeleteOrderClaimsInput","type":"[DeleteOrderClaimsInput](../../../../types/core_flows.DeleteOrderClaimsInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of deleting one or more claims.","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"The IDs of the claims to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteClaimsStep"/>
+<TypeList types={[{"name":"DeleteOrderClaimsInput","type":"[DeleteOrderClaimsInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.DeleteOrderClaimsInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeleteOrderClaimsInput","type":"`object`","description":"The details of deleting one or more claims.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteClaimsStep"/>
 
 ## Output
 

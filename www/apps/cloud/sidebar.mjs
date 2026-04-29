@@ -85,9 +85,19 @@ export const sidebar = [
               },
               {
                 type: "link",
+                title: "Subdomains",
+                path: "/environments/subdomains",
+              },
+              {
+                type: "link",
                 title: "Custom Domains",
                 path: "/environments/custom-domains",
               },
+              {
+                type: "ref",
+                title: "Monitoring",
+                path: "/monitoring",
+              }
             ],
           },
           {
@@ -166,7 +176,11 @@ export const sidebar = [
           {
             type: "link",
             title: "Loyalty",
-            path: "/loyalty-plugin",
+            path: "https://docs.medusajs.com/resources/commerce-modules/loyalty",
+            badge: {
+              text: "Published",
+              variant: "blue",
+            },
           },
           {
             type: "link",
@@ -225,6 +239,40 @@ export const sidebar = [
             type: "link",
             title: "Usage",
             path: "/usage",
+          },
+          {
+            type: "link",
+            title: "Performance",
+            path: "/monitoring",
+            children: [
+              {
+                type: "link",
+                title: "Servers",
+                path: "/monitoring/servers",
+              },
+              {
+                type: "link",
+                title: "Workers",
+                path: "/monitoring/workers",
+              },
+              {
+                type: "link",
+                title: "HTTP",
+                path: "/monitoring/http",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Networking",
+        initialOpen: true,
+        children: [
+          {
+            type: "link",
+            title: "IP Addresses",
+            path: "/ip-addresses",
           },
         ],
       },
