@@ -1,10 +1,12 @@
 import { HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
+  FeatureFlag,
   remoteQueryObjectFromString,
 } from "@medusajs/framework/utils"
 import { NextFunction } from "express"
 import { MedusaRequest } from "@medusajs/framework/http"
+import IndexEngineFeatureFlag from "../../../../feature-flags/index-engine"
 
 export function maybeApplyPriceListsFilter() {
   return async function applyPriceListsFilter(
@@ -16,6 +18,19 @@ export function maybeApplyPriceListsFilter() {
       req.filterableFields
 
     if (!filterableFields.price_list_id) {
+      return next()
+    }
+
+    // When the index engine is enabled and the route handler will use the
+    // index path (i.e. no `tags`/`categories` filters that force a fallback),
+    // the handler resolves `price_list_id` natively as
+    // `variants.prices.price_list_id` against the index. Skip the in-JS
+    // variant id expansion in that case.
+    if (
+      FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key) &&
+      !filterableFields.tags &&
+      !filterableFields.categories
+    ) {
       return next()
     }
 
