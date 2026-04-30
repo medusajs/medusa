@@ -198,6 +198,8 @@ module.exports = {
               250: "var(--docs-alphas-alpha-250)",
               6: "var(--docs-alphas-alpha-6)",
               16: "var(--docs-alphas-alpha-16)",
+              10: "var(--docs-alphas-alpha-10)",
+              24: "var(--docs-alphas-alpha-24)",
             }
           }
         },
@@ -288,8 +290,6 @@ module.exports = {
           "linear-gradient(180deg,var(--docs-fg-disabled) 1px,transparent 1px)",
         "ai-assistant-bottom":
           "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, var(--docs-bg-base) 100%)",
-        "bg-stripes": "url('/images/bg-stripes.png')",
-        "bg-stripes-dark": "url('/images/bg-stripes-dark.png')",
         "bg-bloom-callout": "linear-gradient(90deg, var(--docs-tags-orange-bg) 0%, var(--docs-tags-red-bg) 33%, var(--docs-tags-purple-bg) 66%, var(--docs-tags-blue-bg) 100%)",
         "bg-bloom-callout-text": "linear-gradient(90deg, var(--docs-tags-orange-text) 0%, var(--docs-tags-red-text) 33%, var(--docs-tags-purple-text) 66%, var(--docs-tags-blue-text) 100%)",
       },
@@ -524,6 +524,13 @@ module.exports = {
           "12px",
           {
             lineHeight: "150%",
+            fontWeight: "500",
+          },
+        ],
+        "2x-small-plus": [
+          "11px",
+          {
+            lineHeight: "160%",
             fontWeight: "500",
           },
         ],

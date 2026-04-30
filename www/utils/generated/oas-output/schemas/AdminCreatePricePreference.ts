@@ -18,6 +18,9 @@
  *     type: boolean
  *     title: is_tax_inclusive
  *     description: Whether the price is tax inclusive if the value of the specified attribute matches the specified value.
+ * required:
+ *   - value
+ *   - attribute
  * 
 */
 

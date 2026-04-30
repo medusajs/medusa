@@ -8,8 +8,17 @@ import {
 
 export interface StoreProductOptionListParams
   extends BaseProductOptionListParams {}
+
+/**
+ * The product option's details.
+ */
 export interface StoreProductOptionParams extends BaseProductOptionParams {}
-export interface StoreProductVariantParams extends BaseProductVariantParams {}
+export interface StoreProductVariantParams extends BaseProductVariantParams {
+  sku?: string | string[]
+  manage_inventory?: boolean
+  allow_backorder?: boolean
+  product_id?: string | string[]
+}
 export interface StoreProductPricingContext {
   /**
    * The ID of the customer's region. This parameter must be included if you want to apply taxes on the product variant's price.
@@ -28,7 +37,9 @@ export interface StoreProductPricingContext {
    */
   cart_id?: string
 }
-export interface StoreProductParams extends SelectParams, StoreProductPricingContext {
+export interface StoreProductParams
+  extends SelectParams,
+    StoreProductPricingContext {
   /**
    * The locale code in BCP 47 format. Information of the
    * product and related entities will be localized based on the provided locale.
@@ -37,12 +48,18 @@ export interface StoreProductParams extends SelectParams, StoreProductPricingCon
    *
    * @example
    * "en-US"
+   * 
+   * @http-validation-ignore
    */
   locale?: string
 }
 
 export interface StoreProductListParams
-  extends Omit<BaseProductListParams, "tags" | "status" | "categories" | "deleted_at" | "with_deleted">, StoreProductPricingContext {
+  extends Omit<
+      BaseProductListParams,
+      "tags" | "status" | "categories" | "deleted_at" | "with_deleted"
+    >,
+    StoreProductPricingContext {
   /**
    * Filter by the product's tag(s).
    */
@@ -50,7 +67,32 @@ export interface StoreProductListParams
   /**
    * Filter by the product's variants.
    */
-  variants?: Pick<StoreProductVariantParams, "options">
+  variants?: StoreProductVariantParams & {
+    /**
+     * Filter by variant sku(s).
+     *
+     * @since 2.13.7
+     */
+    sku?: string | string[]
+    /**
+     * Filter by variant ean(s).
+     *
+     * @since 2.13.7
+     */
+    ean?: string | string[]
+    /**
+     * Filter by variant upc(s).
+     *
+     * @since 2.13.7
+     */
+    upc?: string | string[]
+    /**
+     * Filter by variant barcode(s).
+     *
+     * @since 2.13.7
+     */
+    barcode?: string | string[]
+  }
   /**
    * The locale code in BCP 47 format. Information of the
    * product and related entities will be localized based on the provided locale.

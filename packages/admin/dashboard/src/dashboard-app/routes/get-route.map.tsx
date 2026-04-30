@@ -1351,6 +1351,11 @@ export function getRouteMap({
                         ),
                     },
                     {
+                      path: "metadata/edit",
+                      lazy: () =>
+                        import("../../routes/locations/location-metadata"),
+                    },
+                    {
                       path: "fulfillment-set/:fset_id",
                       children: [
                         {
@@ -1921,7 +1926,7 @@ export function getRouteMap({
                 },
               ],
             },
-            ...(settingsRoutes?.[0]?.children || []),
+            ...settingsRoutes.flatMap((r) => r?.children || []),
           ],
         },
       ],

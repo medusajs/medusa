@@ -159,6 +159,11 @@ export interface AdminOrderAddress extends BaseOrderAddress {
 
 export interface AdminOrderShippingMethod extends BaseOrderShippingMethod {}
 
+export interface AdminOrderLinePreview extends AdminOrderLineItem {
+  actions?: AdminOrderChangeAction[]
+  return_requested_total: number
+}
+
 export interface AdminOrderPreview
   extends Omit<AdminOrder, "items" | "shipping_methods"> {
   /**
@@ -172,7 +177,7 @@ export interface AdminOrderPreview
   /**
    * The order's items.
    */
-  items: (AdminOrderLineItem & { actions?: AdminOrderChangeAction[] })[]
+  items: AdminOrderLinePreview[]
   /**
    * The order's shipping methods.
    */

@@ -1,12 +1,12 @@
 import { AdminCollection } from "../../collection"
 import { AdminInventoryItem } from "../../inventory"
-import { AdminPrice } from "../../pricing"
+import { AdminPrice } from "../../price-preference"
 import { AdminProductCategory } from "../../product-category"
 import { AdminProductTag } from "../../product-tag"
 import { AdminProductType } from "../../product-type"
 import { AdminSalesChannel } from "../../sales-channel"
 import { AdminShippingProfile } from "../../shipping-profile"
-import { AdminTranslation } from "../../translations"
+import { AdminTranslation } from "../../translation"
 import {
   BaseProduct,
   BaseProductImage,

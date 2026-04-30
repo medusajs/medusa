@@ -92,6 +92,39 @@ medusaIntegrationTestRunner({
           })
         )
       })
+
+      it("should create a stock location with address metadata", async () => {
+        const response = await api.post(
+          "/admin/stock-locations",
+          {
+            name: "Metadata Test Location",
+            address: {
+              address_1: "123 Test St",
+              country_code: "US",
+              metadata: {
+                internal_id: "LOC-123",
+                gate_code: "9999",
+              },
+            },
+          },
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.stock_location).toEqual(
+          expect.objectContaining({
+            name: "Metadata Test Location",
+            address: expect.objectContaining({
+              address_1: "123 Test St",
+              country_code: "US",
+              metadata: {
+                internal_id: "LOC-123",
+                gate_code: "9999",
+              },
+            }),
+          })
+        )
+      })
     })
 
     describe("list stock locations", () => {
@@ -214,6 +247,33 @@ medusaIntegrationTestRunner({
               address_1: "test 2",
               country_code: "dk",
             }),
+          })
+        )
+      })
+
+      it("should update stock location address metadata", async () => {
+        const response = await api.post(
+          `/admin/stock-locations/${location1.id}`,
+          {
+            address: {
+              address_1: "123 Test St",
+              country_code: "US",
+              metadata: {
+                updated_id: "LOC-456",
+              },
+            },
+          },
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.stock_location.address).toEqual(
+          expect.objectContaining({
+            address_1: "123 Test St",
+            country_code: "US",
+            metadata: {
+              updated_id: "LOC-456",
+            },
           })
         )
       })

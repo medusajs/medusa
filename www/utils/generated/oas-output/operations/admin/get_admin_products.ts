@@ -1021,6 +1021,17 @@
  *           type: boolean
  *           title: with_deleted
  *           description: Whether to include deleted variants.
+ *         sku:
+ *           oneOf:
+ *             - type: string
+ *               title: sku
+ *               description: Filter by an SKU.
+ *             - type: array
+ *               description: Filter by multiple SKUs.
+ *               items:
+ *                 type: string
+ *                 title: sku
+ *                 description: An SKU.
  *   - name: with_deleted
  *     in: query
  *     description: Whether to include deleted products.
@@ -1029,34 +1040,20 @@
  *       type: boolean
  *       title: with_deleted
  *       description: Whether to include deleted products.
- *   - name: option_id
+ *   - name: external_id
  *     in: query
  *     required: false
  *     schema:
  *       oneOf:
  *         - type: string
- *           title: option_id
- *           description: Filter by an option ID to get products that use the given option.
+ *           title: external_id
+ *           description: Filter by the product's external ID.
  *         - type: array
- *           description: Filter by option IDs to get products that use the given options.
+ *           description: Filter by external IDs.
  *           items:
  *             type: string
- *             title: option_id
- *             description: An option ID.
- *   - name: option_value_id
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: option_value_id
- *           description: Filter by an option value ID to get products with at least one variant that uses the given option value.
- *         - type: array
- *           description: Filter by option value IDs to get products with at least one variant that uses the given option values.
- *           items:
- *             type: string
- *             title: option_value_id
- *             description: An option value ID.
+ *             title: external_id
+ *             description: The external ID.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

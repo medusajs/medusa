@@ -15,7 +15,7 @@ export const metadata = {
 
 # {metadata.title}
 
-The `create-medusa-app` CLI tool simplifies the process of creating a new Medusa project. It also allows you to setup a [Medusa plugin project](#create-a-medusa-plugin-project).
+The `create-medusa-app` CLI tool simplifies the process of creating a new Medusa project. It creates a monorepo containing your Medusa backend application and, optionally, a Next.js storefront. It also allows you to setup a [Medusa plugin project](#create-a-medusa-plugin-project).
 
 <Prerequisites items={[
   {
@@ -85,7 +85,7 @@ The command will use the package manager you run it with to create a new Medusa 
       </Table.Cell>
       <Table.Cell>
       
-      `https://github.com/medusajs/medusa-starter-default`
+      `https://github.com/medusajs/dtc-starter`
 
       </Table.Cell>
     </Table.Row>
@@ -182,7 +182,7 @@ The command will use the package manager you run it with to create a new Medusa 
       </Table.Cell>
       <Table.Cell>
 
-        Installs the Next.js Starter storefront under the `{project-name}-storefront` directory, where `{project-name}` is the name of the project you enter in the first question. If the `{project-name}-storefront` directory already exists, random characters are added at the end of it.
+        Installs the Next.js Starter storefront in the `apps/storefront` directory within your project monorepo. If this option is not specified, the storefront directory is removed from the project.
 
       </Table.Cell>
       <Table.Cell>
@@ -325,6 +325,29 @@ npx create-medusa-app@latest --db-url "postgres://postgres.<host>:<password>@aws
 If the database already has the necessary migrations and you don't need the command to run migrations, you can pass the `--no-migrations` option.
 
 </Note>
+
+---
+
+## Project Structure
+
+The `create-medusa-app` tool creates a monorepo project with the following structure:
+
+```
+my-medusa-store/
+├── apps/
+│   ├── backend/          # Your Medusa backend application
+│   │   ├── src/
+│   │   ├── package.json
+│   │   └── medusa-config.ts
+│   └── storefront/       # Next.js storefront (if --with-nextjs-starter is used)
+│       ├── src/
+│       ├── package.json
+│       └── next.config.js
+├── package.json          # Root package.json for workspace management
+└── pnpm-workspace.yaml   # Workspace configuration
+```
+
+Your Medusa backend will be located in the `apps/backend` directory, and the optional Next.js storefront in `apps/storefront`.
 
 ---
 

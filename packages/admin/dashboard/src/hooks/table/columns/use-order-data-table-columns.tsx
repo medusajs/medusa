@@ -32,7 +32,10 @@ import {
   TotalCell,
   TotalHeader,
 } from "../../../components/table/table-cells/order/total-cell"
-import { TextCell, TextHeader } from "../../../components/table/table-cells/common/text-cell"
+import {
+  TextCell,
+  TextHeader,
+} from "../../../components/table/table-cells/common/text-cell"
 
 const columnHelper = createColumnHelper<HttpTypes.AdminOrder>()
 
@@ -40,7 +43,7 @@ const columnHelper = createColumnHelper<HttpTypes.AdminOrder>()
  * Hook to build columns dynamically based on API columns response
  */
 export const useOrderDataTableColumns = (
-  apiColumns: HttpTypes.AdminOrderColumn[] | undefined,
+  apiColumns: HttpTypes.AdminColumn[] | undefined,
   visibleColumns: string[]
 ) => {
   const { t } = useTranslation()
@@ -128,7 +131,7 @@ export const useOrderDataTableColumns = (
                 return <DisplayIdCell displayId={id!} />
               },
             })
-          
+
           case "created_at":
           case "updated_at":
             return columnHelper.accessor(col.field as any, {
@@ -138,7 +141,7 @@ export const useOrderDataTableColumns = (
                 return date ? <DateCell date={date} /> : null
               },
             })
-          
+
           case "email":
             return columnHelper.accessor("email", {
               header: () => <TextHeader text={col.name} />,
@@ -147,7 +150,7 @@ export const useOrderDataTableColumns = (
                 return <TextCell text={email || ""} />
               },
             })
-          
+
           case "customer_display":
             return columnHelper.accessor("customer", {
               header: () => <CustomerHeader />,
@@ -156,7 +159,7 @@ export const useOrderDataTableColumns = (
                 return <CustomerCell customer={customer} />
               },
             })
-          
+
           case "sales_channel.name":
             return columnHelper.accessor("sales_channel", {
               header: () => <SalesChannelHeader />,
@@ -165,7 +168,7 @@ export const useOrderDataTableColumns = (
                 return <SalesChannelCell channel={channel} />
               },
             })
-          
+
           case "payment_status":
             return columnHelper.accessor("payment_status", {
               header: () => <PaymentStatusHeader />,
@@ -174,7 +177,7 @@ export const useOrderDataTableColumns = (
                 return <PaymentStatusCell status={status} />
               },
             })
-          
+
           case "fulfillment_status":
             return columnHelper.accessor("fulfillment_status", {
               header: () => <FulfillmentStatusHeader />,
@@ -183,7 +186,7 @@ export const useOrderDataTableColumns = (
                 return <FulfillmentStatusCell status={status} />
               },
             })
-          
+
           case "total":
             return columnHelper.accessor("total", {
               header: () => <TotalHeader />,
@@ -193,7 +196,7 @@ export const useOrderDataTableColumns = (
                 return <TotalCell currencyCode={currencyCode} total={total} />
               },
             })
-          
+
           case "country":
             return columnHelper.display({
               id: "country",
@@ -202,24 +205,27 @@ export const useOrderDataTableColumns = (
                 return <CountryCell country={country} />
               },
             })
-          
+
           default:
             // Handle relationship fields (e.g., customer.email)
             if (col.field.includes(".")) {
               const [relation, field] = col.field.split(".")
-              return columnHelper.accessor((row: any) => {
-                const relationData = row[relation]
-                return relationData?.[field] || ""
-              }, {
-                id: col.id,
-                header: () => <TextHeader text={col.name} />,
-                cell: ({ getValue }) => {
-                  const value = getValue()
-                  return <TextCell text={value || ""} />
+              return columnHelper.accessor(
+                (row: any) => {
+                  const relationData = row[relation]
+                  return relationData?.[field] || ""
                 },
-              })
+                {
+                  id: col.id,
+                  header: () => <TextHeader text={col.name} />,
+                  cell: ({ getValue }) => {
+                    const value = getValue()
+                    return <TextCell text={value || ""} />
+                  },
+                }
+              )
             }
-            
+
             // Default text column
             return columnHelper.accessor(col.field as any, {
               header: () => <TextHeader text={col.name} />,

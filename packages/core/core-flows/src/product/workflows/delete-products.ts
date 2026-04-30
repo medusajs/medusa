@@ -118,7 +118,7 @@ export const deleteProductsWorkflow = createWorkflow(
           if (variant.manage_inventory) {
             variant.inventory.forEach((inventoryItem) => {
               // only if every variant that is linked to the inventory item is being deleted, we can remove the item
-              if (inventoryItem.variants.every((v) => variantsMap.has(v.id))) {
+              if (!!inventoryItem && inventoryItem.variants.every((v) => variantsMap.has(v.id))) {
                 toDeleteIds.add(inventoryItem.id)
               }
             })

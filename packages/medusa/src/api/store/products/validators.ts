@@ -29,6 +29,10 @@ export const StoreGetProductVariantsParamsFields = z.object({
   q: z.string().optional(),
   id: z.union([z.string(), z.array(z.string())]).optional(),
   sku: z.union([z.string(), z.array(z.string())]).optional(),
+  ean: z.union([z.string(), z.array(z.string())]).optional(),
+  upc: z.union([z.string(), z.array(z.string())]).optional(),
+  barcode: z.union([z.string(), z.array(z.string())]).optional(),
+    
   options: z
     .object({ value: z.string().optional(), option_id: z.string().optional() })
     .optional(),
@@ -36,16 +40,6 @@ export const StoreGetProductVariantsParamsFields = z.object({
   updated_at: createOperatorMap().optional(),
   deleted_at: createOperatorMap().optional(),
 })
-
-export type StoreGetProductVariantsParamsType = z.infer<
-  typeof StoreGetProductVariantsParams
->
-export const StoreGetProductVariantsParams = createFindParams({
-  offset: 0,
-  limit: 50,
-})
-  .merge(StoreGetProductVariantsParamsFields)
-  .merge(applyAndAndOrOperators(StoreGetProductVariantsParamsFields))
 
 export const StoreGetProductsParamsFields = z
   .object({

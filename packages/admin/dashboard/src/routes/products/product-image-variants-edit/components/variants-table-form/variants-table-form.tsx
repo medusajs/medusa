@@ -27,7 +27,7 @@ const PAGE_SIZE = 20
 
 type VariantsTableFormProps = {
   productId: string
-  image: { id: string; variants: { id: string }[] }
+  image: { id: string; url?: string; variants: { id: string }[] }
 }
 
 const BatchImageVariantsSchema = zod.object({
@@ -71,7 +71,7 @@ export const VariantsTableForm = ({
     resolver: zodResolver(BatchImageVariantsSchema),
   })
 
-  const handleSubmit = form.handleSubmit(async (data) => {
+  const handleSubmit = form.handleSubmit(async () => {
     const initialVariantIds =
       image?.variants?.map((variant) => variant.id) || []
 

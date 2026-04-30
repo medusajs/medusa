@@ -156,11 +156,6 @@ export const AdminUpdateVariantPrice = z.object({
   rules: z.record(z.string(), z.string()).optional(),
 })
 
-export type AdminCreateProductTypeType = z.infer<typeof AdminCreateProductType>
-export const AdminCreateProductType = z.object({
-  value: z.string(),
-})
-
 export type AdminCreateProductVariantType = z.infer<typeof CreateProductVariant>
 export const CreateProductVariant = z
   .object({
@@ -180,9 +175,9 @@ export const CreateProductVariant = z
     width: z.number().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
     prices: z.array(AdminCreateVariantPrice),
-    options: z.record(z.string()).optional(),
+    options: z.record(z.string(), z.string()).optional(),
     inventory_items: z
       .array(
         z.object({
@@ -218,8 +213,8 @@ export const UpdateProductVariant = z
     width: z.number().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
-    options: z.record(z.string()).optional(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
+    options: z.record(z.string(), z.string()).optional(),
   })
   .strict()
 
@@ -276,7 +271,7 @@ export const CreateProduct = z
     mid_code: z.string().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 
@@ -307,7 +302,7 @@ export const UpdateProduct = z
       .array(z.object({ id: z.string().optional(), url: z.string() }))
       .optional(),
     thumbnail: z.string().nullish(),
-    handle: z.string().nullish(),
+    handle: z.string().optional(),
     type_id: z.string().nullish(),
     external_id: z.string().nullish(),
     collection_id: z.string().nullish(),
@@ -323,7 +318,7 @@ export const UpdateProduct = z
     mid_code: z.string().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 

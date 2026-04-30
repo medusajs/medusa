@@ -1,0 +1,188 @@
+import { Prerequisites, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Custom Storefront Domains`,
+}
+
+# {metadata.title}
+
+Connect your own domain name to your Bloom store to build brand identity. This guide covers how to add and manage your custom storefront domain in Bloom.
+
+<Note title="Important">
+
+Custom domains apply only to your storefront, not the admin dashboard. Your admin dashboard will continue using its original URL.
+
+</Note>
+
+## Add Custom Storefront Domain
+
+<Prerequisites
+  items={[
+    {
+      text: "Published Bloom store",
+      link: "/going-live"
+    },
+    {
+      text: "Domain name you own. Can be purchased from providers like Namecheap or GoDaddy.",
+    },
+    {
+      text: "Access to your domain provider's settings to add DNS records."
+    }
+  ]}
+/>
+
+By default, your Bloom store is hosted on a `medusajs.site` subdomain. For example, if your store's name is "acme", your store's URL will be `acme.medusajs.site`.
+
+This domain works for testing. However, a custom domain (like `acme.com`) gives your store a professional look, builds trust with customers, and strengthens your brand identity.
+
+To add a custom domain:
+
+1. Open your project in Bloom.
+2. Click the project name at the top-left to open the project menu.
+3. Select "Project Settings" from the menu.
+4. Click "Custom Domains" in the sidebar.
+5. Click the "Add Domain" button.
+6. Enter your domain name. For example, `acme.com`.
+7. Click "Add Domain" to save.
+
+{/* TODO: Add image: Custom Domains settings page with Add Domain button */}
+
+After adding your domain, it shows with a "Pending" status. This means the DNS records aren't configured yet. [Configure DNS records](#configure-dns-records) to verify you own the domain.
+
+{/* TODO: Add image: Domain added with Pending status */}
+
+---
+
+## Configure DNS Records
+
+DNS records connect your domain to your Bloom store. Adding these records proves you own the domain and makes it point to your store.
+
+This is a one-time setup that typically takes 5-10 minutes to complete.
+
+### View DNS Records
+
+After adding your domain, Bloom displays a table with three DNS records you need to add:
+
+- Two TXT records (for verification)
+- One CNAME record (to point your domain to your store)
+
+To add these DNS records to your domain provider, refer to the domain provider's documentation. Each provider has a different interface for managing DNS records.
+
+<Note title="Tip">
+
+Click the copy icon next to each value in Bloom's table to copy it accurately. Paste these values directly into your domain provider's DNS settings.
+
+</Note>
+
+{/* TODO: Add image: DNS records table showing records to add */}
+
+### Verification Timeline
+
+After adding DNS records, verification takes a few minutes to 48 hours. It usually completes within an hour.
+
+During this time, your domain status in Bloom remains "Pending." Bloom automatically checks for the DNS records and updates the status to "Verified" once found.
+
+---
+
+## Check Domain Status
+
+To check your domain's verification status:
+
+1. Open your project in Bloom.
+2. Go to Project Settings -> Custom Domains.
+3. Look at the status badge below your domain name.
+
+{/* TODO: Add image: Domain status badge showing Pending status */}
+
+Your domain can have three statuses:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Status
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Pending
+      </Table.Cell>
+      <Table.Cell>
+        Bloom hasn't verified the DNS records yet. Bloom is still checking for the records you added.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Configured
+      </Table.Cell>
+      <Table.Cell>
+        Bloom found the DNS records, but hasn't confirmed the domain is active yet. This happens when DNS changes are still spreading across the internet. Wait a bit longer and refresh the page.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Verified
+      </Table.Cell>
+      <Table.Cell>
+        Bloom confirmed the DNS records and your domain is active.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+Once Bloom verifies the domain, customers can access your store at your custom domain. The change is automatic and doesn't require you to republish your store.
+
+---
+
+## Retry Verification
+
+If your domain stays "Pending" or "Configured" after adding DNS records, you can manually retry verification.
+
+To retry verification:
+
+1. Go to Project Settings -> Custom Domains.
+2. Click the "Retry Verification" button.
+
+Bloom checks for the DNS records again in the next few minutes. If Bloom finds the records, your domain status updates to "Verified," and customers can access your store using your custom domain.
+
+{/* TODO: Add image: Retry Verification button */}
+
+---
+
+## Remove Custom Domain
+
+<Note type="warning">
+
+Removing a domain is immediate and can't be undone. Customers won't be able to access your store through that domain until you add it again and verify it.
+
+</Note>
+
+Remove a custom domain to switch to a different domain or revert to your `.medusajs.site` address.
+
+To remove a custom domain:
+
+1. Go to Project Settings -> Custom Domains.
+2. Click the delete icon (trash can) next to your domain name.
+3. Confirm the removal.
+
+Your store immediately reverts to the `.medusajs.site` domain. Customers can't access your store through the removed custom domain anymore. They can still access it through the original `.medusajs.site` URL.
+
+{/* TODO: Add image: Delete icon next to domain name */}
+
+---
+
+## Troubleshooting
+
+If your domain status remains "Pending" or "Configured" after 48 hours:
+
+1. Check that you added all three DNS records correctly in your domain provider.
+2. Verify that you copied the exact values from Bloom's table without extra spaces or characters.
+3. Make sure you added the records to the correct domain.
+4. Click "Retry Verification" in Bloom.
+
+If the issue continues, [contact support](../help-and-feedback/page.mdx#contact-support) for help.
