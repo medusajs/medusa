@@ -28,8 +28,8 @@ export function maybeApplyPriceListsFilter() {
     // variant id expansion in that case.
     if (
       FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key) &&
-      !filterableFields.tags &&
-      !filterableFields.categories
+      !filterableFields.tag_id &&
+      !filterableFields.category_id
     ) {
       return next()
     }
