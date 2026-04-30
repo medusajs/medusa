@@ -1,9 +1,9 @@
 import {
   AdminExchange,
+  AdminInventoryLevel,
   AdminOrder,
   AdminOrderPreview,
   AdminReturn,
-  InventoryLevelDTO,
 } from "@medusajs/types"
 import { Alert, Button, Heading, Text, toast } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
@@ -33,6 +33,7 @@ import { ItemPlaceholder } from "../../../order-create-claim/components/claim-cr
 import { AddExchangeInboundItemsTable } from "../add-exchange-inbound-items-table"
 import { ExchangeInboundItem } from "./exchange-inbound-item"
 import { CreateExchangeSchemaType } from "./schema"
+import { ExtendedVariant } from "../../../../product-variants/product-variant-detail/constants"
 
 type ExchangeInboundSectionProps = {
   order: AdminOrder
@@ -59,7 +60,7 @@ export const ExchangeInboundSection = ({
    */
   const { setIsOpen } = useStackedModal()
   const [inventoryMap, setInventoryMap] = useState<
-    Record<string, InventoryLevelDTO[]>
+    Record<string, AdminInventoryLevel[]>
   >({})
 
   /**
@@ -306,7 +307,7 @@ export const ExchangeInboundSection = ({
 
   useEffect(() => {
     const getInventoryMap = async () => {
-      const ret: Record<string, InventoryLevelDTO[]> = {}
+      const ret: Record<string, AdminInventoryLevel[]> = {}
 
       if (!inboundItems.length) {
         return ret
@@ -314,14 +315,14 @@ export const ExchangeInboundSection = ({
 
       const variantIds = inboundItems
         .map((item) => item?.variant_id)
-        .filter(Boolean)
+        .filter(Boolean) as string[]
 
       const variants = (
         await sdk.admin.productVariant.list({
           id: variantIds,
           fields: "*inventory.location_levels",
         })
-      ).variants
+      ).variants as ExtendedVariant[]
 
       variants.forEach((variant) => {
         ret[variant.id] = variant.inventory?.[0]?.location_levels || []
@@ -445,7 +446,7 @@ export const ExchangeInboundSection = ({
       )}
       {!showInboundItemsPlaceholder && (
         <div className="mt-8 flex flex-col gap-y-4">
-          {/*LOCATION*/}
+          {/* LOCATION*/}
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             <div>
               <Form.Label>{t("orders.returns.location")}</Form.Label>
@@ -482,7 +483,7 @@ export const ExchangeInboundSection = ({
             />
           </div>
 
-          {/*INBOUND SHIPPING*/}
+          {/* INBOUND SHIPPING*/}
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             <div>
               <Form.Label>

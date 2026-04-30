@@ -50,7 +50,7 @@ export const useDataGridClipboardEvents = <
           if (typeof value === "object" && value !== null) {
             return JSON.stringify(value)
           }
-          return `${value}` ?? ""
+          return `${value}`
         })
         .join("\t")
 

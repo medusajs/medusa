@@ -8,10 +8,6 @@ export interface AdminOrderFilters extends FindParams, BaseOrderFilters {
    */
   id?: string[] | string
   /**
-   * Filter by name(s).
-   */
-  name?: string | string[]
-  /**
    * Filter by sales channel IDs to retrieve their associated orders.
    */
   sales_channel_id?: string[]

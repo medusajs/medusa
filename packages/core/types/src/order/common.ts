@@ -3050,7 +3050,10 @@ export interface OrderPreviewDTO
   /**
    * The items of the order, along with changes on the items.
    */
-  items: (OrderLineItemDTO & { actions?: OrderChangeActionDTO[] })[]
+  items: (OrderLineItemDTO & { 
+    actions?: OrderChangeActionDTO[]
+    return_requested_total: number
+  })[]
   /**
    * The shipping methods of the order, along with changes on the shipping methods.
    */

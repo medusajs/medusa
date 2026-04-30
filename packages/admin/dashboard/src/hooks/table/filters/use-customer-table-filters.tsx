@@ -29,7 +29,7 @@ export const useCustomerTableFilters = (
       type: "select",
       multiple: true,
       options: customer_groups.map((s) => ({
-        label: s.name,
+        label: s.name ?? "-",
         value: s.id,
       })),
     }

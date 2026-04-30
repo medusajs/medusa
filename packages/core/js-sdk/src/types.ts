@@ -78,6 +78,6 @@ export interface ServerSentEventMessage {
 }
 
 export interface FetchStreamResponse {
-  stream: AsyncGenerator<ServerSentEventMessage, void, unknown> | null
+  stream: AsyncGenerator<ServerSentEventMessage, void, unknown>
   abort: () => void
 }

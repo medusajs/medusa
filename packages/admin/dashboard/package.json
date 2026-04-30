@@ -2,15 +2,16 @@
   "name": "@medusajs/dashboard",
   "version": "2.14.1",
   "scripts": {
+    "typecheck": "tsgo --noEmit -p tsconfig.typecheck.json",
     "generate:static": "node ./scripts/generate-currencies.js && prettier --write ./src/lib/currencies.ts",
     "dev": "../../../node_modules/.bin/vite",
-    "build": "yarn run -T tsup && node ./scripts/generate-types.js",
+    "build": "yarn typecheck && yarn run -T tsup && node ./scripts/generate-types.js",
     "build:preview": "../../../node_modules/.bin/vite build",
     "preview": "../../../node_modules/.bin/vite preview",
     "test": "../../../node_modules/.bin/vitest --run",
     "i18n:validate": "node ./scripts/i18n/validate-translation.js",
     "i18n:schema": "node ./scripts/i18n/generate-schema.js",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint . --ext ts,tsx --ignore-pattern dist --report-unused-disable-directives --max-warnings 0"
   },
   "main": "dist/app.js",
   "module": "dist/app.mjs",
@@ -83,7 +84,10 @@
     "@medusajs/admin-shared": "2.14.1",
     "@medusajs/admin-vite-plugin": "2.14.1",
     "@medusajs/types": "2.14.1",
-    "@medusajs/ui-preset": "2.14.1"
+    "@medusajs/ui-preset": "2.14.1",
+    "@typescript/native-preview": "^7.0.0-dev.20260423.1",
+    "eslint": "8",
+    "typescript": "5.9.3"
   },
   "packageManager": "yarn@3.2.1"
 }

@@ -2,9 +2,12 @@ import { OrderListTable } from "./components/order-list-table"
 
 import { SingleColumnPage } from "../../../components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { ConfigurableOrderListTable } from "./components/order-list-table/configurable-order-list-table"
 
 export const OrderList = () => {
   const { getWidgets } = useExtension()
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
 
   return (
     <SingleColumnPage
@@ -14,7 +17,11 @@ export const OrderList = () => {
       }}
       hasOutlet={false}
     >
-      <OrderListTable />
+      {isViewConfigEnabled ? (
+        <ConfigurableOrderListTable />
+      ) : (
+        <OrderListTable />
+      )}
     </SingleColumnPage>
   )
 }

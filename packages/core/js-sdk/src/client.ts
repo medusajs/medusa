@@ -194,17 +194,26 @@ export class Client {
     const abortController = new AbortController()
     const abortFunc = abortController.abort.bind(abortController)
 
-    let res = await this.fetch_(input, {
+    const fetchPromise = this.fetch_(input, {
       ...init,
       signal: abortController.signal,
       headers: { ...init?.headers, accept: "text/event-stream" },
     })
 
-    if (res.ok) {
-      return { stream: events(res, abortController.signal), abort: abortFunc }
-    }
+    return {
+      stream: (async function* () {
+        const res = await fetchPromise
 
-    return { stream: null, abort: abortFunc }
+        if (!res.ok) {
+          const error = new Error(`Stream failed with status ${res.status}`)
+          error.name = "HttpError"
+          throw error
+        }
+
+        yield* events(res, abortController.signal)
+      })(),
+      abort: abortFunc
+    }
   }
 
   async setToken(token: string) {
