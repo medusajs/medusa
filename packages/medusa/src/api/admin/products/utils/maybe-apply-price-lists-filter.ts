@@ -22,11 +22,16 @@ export function maybeApplyPriceListsFilter() {
     const priceListIds = filterableFields.price_list_id
     delete filterableFields.price_list_id
 
+    // Query the `price` entry point directly with a `price_list_id` filter
+    // instead of `price_list` with a wide `prices.price_set.variant.id`
+    // expansion. The latter forces the remote joiner to hydrate every price
+    // and price-set on the price list before we can extract variant ids — a
+    // significant overhead on large price lists (thousands of prices).
     const queryObject = remoteQueryObjectFromString({
-      entryPoint: "price_list",
-      fields: ["prices.price_set.variant.id"],
+      entryPoint: "price",
+      fields: ["price_set.variant.id"],
       variables: {
-        id: priceListIds,
+        filters: { price_list_id: priceListIds },
       },
     })
 
@@ -34,22 +39,19 @@ export function maybeApplyPriceListsFilter() {
       ContainerRegistrationKeys.REMOTE_QUERY
     )
 
-    const variantIds: string[] = []
-    const priceLists = await remoteQuery(queryObject)
+    const prices = await remoteQuery(queryObject)
+    const variantIds = new Set<string>()
 
-    priceLists.forEach((priceList) => {
-      priceList.prices?.forEach((price) => {
-        const variantId = price.price_set?.variant?.id
-
-        if (variantId) {
-          variantIds.push(variantId)
-        }
-      })
-    })
+    for (const price of prices) {
+      const variantId = price.price_set?.variant?.id
+      if (variantId) {
+        variantIds.add(variantId)
+      }
+    }
 
     filterableFields.variants = {
       ...(filterableFields.variants ?? {}),
-      id: variantIds,
+      id: Array.from(variantIds),
     }
 
     return next()
