@@ -23,7 +23,8 @@
 			"ends_at": "The date the price list ends.",
 			"rules_count": "The total number of rules of the price list.",
 			"prices": "The associated `Price` records.\n\n@expandable",
-			"price_list_rules": "The associated `PriceListRule` records.\n\n@expandable"
+			"price_list_rules": "The associated `PriceListRule` records.\n\n@expandable",
+			"metadata": "Holds custom data in key-value pairs."
 		},
 		"deprecated": {
 			"is_deprecated": false
