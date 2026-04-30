@@ -445,7 +445,7 @@ moduleIntegrationTestRunner<ICachingModuleService>({
         })
       })
 
-      describe("Variant Availability Cache Invalidation (issue #15178)", () => {
+      describe("Variant Availability Cache Invalidation", () => {
         it("should invalidate cached variant inventory items list when an inventory item is created", async () => {
           const variantInventoryQuery = {
             entity: "product_variant_inventory_items",
