@@ -3855,6 +3855,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.validateClaimStoreCreditAccountInputStep/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.validateSourceStoreCreditAccountsStep",
+    "newSlug": "/references/medusa-workflows/validateSourceStoreCreditAccountsStep",
+    "filePath": "/www/apps/resources/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.validateSourceStoreCreditAccountsStep/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.validateStoreCreditAccountInputStep",
     "newSlug": "/references/medusa-workflows/validateStoreCreditAccountInputStep",
     "filePath": "/www/apps/resources/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.validateStoreCreditAccountInputStep/page.mdx"
