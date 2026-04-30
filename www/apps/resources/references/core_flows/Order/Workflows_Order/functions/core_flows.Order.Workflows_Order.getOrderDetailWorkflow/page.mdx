@@ -19,7 +19,7 @@ This workflow retrieves an order's details. It's used by many API routes, includ
 You can use this workflow within your customizations or your own custom workflows, allowing you to retrieve an
 order's details in your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/order/workflows/get-order-detail.ts#L71" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/core-flows/src/order/workflows/get-order-detail.ts#L71" />
 
 ## Examples
 
@@ -132,7 +132,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"GetOrderDetailWorkflowInput","type":"[GetOrderDetailWorkflowInput](../../../../types/core_flows.GetOrderDetailWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to retrieve an order's details.","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"The fields and relations to retrieve in the order. These fields\nare passed to [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),\nso you can pass names of custom models linked to the order.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"order_id","type":"`string`","description":"The ID of the order to retrieve.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"filters","type":"`object`","description":"Additional filters to apply on the retrieved order.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"is_draft_order","type":"`boolean`","description":"Whether to retrieve a draft order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_id","type":"`string`","description":"The ID of the customer that the order belongs to.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"version","type":"`number`","description":"The version of the order to retrieve. If not provided, the latest version\nof the order will be retrieved.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="getOrderDetailWorkflow"/>
+<TypeList types={[{"name":"GetOrderDetailWorkflowInput","type":"[GetOrderDetailWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.GetOrderDetailWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"GetOrderDetailWorkflowInput","type":"`object`","description":"The data to retrieve an order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="getOrderDetailWorkflow"/>
 
 ## Output
 

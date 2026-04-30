@@ -138,6 +138,14 @@ export const generatedSidebars = [
                 "title": "Custom Domains",
                 "path": "/environments/custom-domains",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "ref",
+                "title": "Monitoring",
+                "path": "/monitoring",
+                "children": []
               }
             ]
           },
@@ -254,7 +262,11 @@ export const generatedSidebars = [
             "isPathHref": true,
             "type": "link",
             "title": "Loyalty",
-            "path": "/loyalty-plugin",
+            "path": "https://docs.medusajs.com/resources/commerce-modules/loyalty",
+            "badge": {
+              "text": "Published",
+              "variant": "blue"
+            },
             "children": []
           },
           {
@@ -342,6 +354,39 @@ export const generatedSidebars = [
             "title": "Usage",
             "path": "/usage",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Performance",
+            "path": "/monitoring",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Servers",
+                "path": "/monitoring/servers",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Workers",
+                "path": "/monitoring/workers",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "HTTP",
+                "path": "/monitoring/http",
+                "children": []
+              }
+            ]
           }
         ]
       },

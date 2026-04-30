@@ -16,21 +16,7 @@ enum ChangeActionType {
   REINSTATE_ITEM
 }
 
-enum ClaimType {
-  refund
-  replace
-}
-
-enum ClaimReason {
-  missing_item
-  wrong_item
-  production_failure
-  other
-}
-
 type OrderSummary {
-  id: ID!
-  version: Int!
   pending_difference: Float
   current_order_total: Float
   original_order_total: Float
@@ -47,7 +33,6 @@ type OrderSummary {
   raw_refunded_total: JSON
   raw_credit_line_total: JSON
   raw_accounting_total: JSON
-  order: Order!
 }
 
 type OrderShippingMethodAdjustment {
@@ -67,15 +52,14 @@ type OrderShippingMethodAdjustment {
 type OrderLineItemAdjustment {
   id: ID!
   code: String
-  amount: Float!
+  amount: Float
+  order_id: String!
   description: String
   promotion_id: String
   provider_id: String
-  version: Int!
-  is_tax_inclusive: Boolean!
   created_at: DateTime
   updated_at: DateTime
-  item: OrderLineItem!
+  item: OrderLineItem
   item_id: String!
 }
 
@@ -137,10 +121,9 @@ type OrderShippingMethod {
   order_id: String!
   name: String!
   description: String
-  amount: Float!
-  raw_amount: JSON!
-  is_tax_inclusive: Boolean!
-  is_custom_amount: Boolean!
+  amount: Float
+  raw_amount: JSON
+  is_tax_inclusive: Boolean
   shipping_option_id: String
   data: JSON
   metadata: JSON
@@ -187,8 +170,6 @@ type OrderLineItem {
   requires_shipping: Boolean!
   is_discountable: Boolean!
   is_tax_inclusive: Boolean!
-  is_giftcard: Boolean!
-  is_custom_price: Boolean!
   compare_at_unit_price: Float
   raw_compare_at_unit_price: JSON
   unit_price: Float!
@@ -273,7 +254,6 @@ type Order {
   version: Int!
   order_change: OrderChange
   status: OrderStatus!
-  is_draft_order: Boolean!
   region_id: String
   customer_id: String
   display_id: String
@@ -281,15 +261,11 @@ type Order {
   sales_channel_id: String
   email: String
   currency_code: String!
-  locale: String
-  no_notification: Boolean
   shipping_address: OrderAddress
   billing_address: OrderAddress
   items: [OrderLineItem]
   shipping_methods: [OrderShippingMethod]
   transactions: [OrderTransaction]
-  credit_lines: [OrderCreditLine]
-  returns: [Return]
   summary: OrderSummary
   metadata: JSON
   canceled_at: DateTime
@@ -342,7 +318,6 @@ type Order {
 }
 
 enum ReturnStatus {
-  open
   requested
   received
   partially_received
@@ -352,26 +327,9 @@ enum ReturnStatus {
 type Return {
   id: ID!
   status: ReturnStatus!
-  order_version: Int!
-  display_id: Int
-  location_id: String
-  no_notification: Boolean
   refund_amount: Float
-  raw_refund_amount: JSON
-  created_by: String
-  metadata: JSON
-  requested_at: DateTime
-  received_at: DateTime
-  canceled_at: DateTime
-  created_at: DateTime
-  updated_at: DateTime
   order_id: String!
-  order: Order!
   items: [OrderReturnItem]!
-  exchange: OrderExchange
-  claim: OrderClaim
-  shipping_methods: [OrderShipping]
-  transactions: [OrderTransaction]
 }
 
 type OrderReturnItem {
@@ -381,18 +339,12 @@ type OrderReturnItem {
   item_id: String!
   reason_id: String
   quantity: Int!
-  raw_quantity: JSON!
-  received_quantity: Int!
-  raw_received_quantity: JSON!
-  damaged_quantity: Int!
-  raw_damaged_quantity: JSON!
-  note: String
+  raw_quantity: JSON
+  received_quantity: Int
+  raw_received_quantity: JSON
   metadata: JSON
   created_at: DateTime
   updated_at: DateTime
-  reason: ReturnReason
-  item: OrderLineItem
-  return: Return
 }
 
 type OrderClaimItem {
@@ -401,16 +353,12 @@ type OrderClaimItem {
   order_id: String!
   item_id: String!
   quantity: Int!
-  reason: ClaimReason
-  is_additional_item: Boolean!
-  note: String
+  reason: ClaimReason!
   images: [OrderClaimItemImage]
   raw_quantity: JSON
   metadata: JSON
   created_at: DateTime
   updated_at: DateTime
-  item: OrderLineItem
-  claim: OrderClaim
 }
 
 type OrderClaimItemImage {
@@ -429,102 +377,32 @@ type OrderExchangeItem {
   order_id: String!
   item_id: String!
   quantity: Int!
-  note: String
   raw_quantity: JSON
   metadata: JSON
   created_at: DateTime
   updated_at: DateTime
-  exchange: OrderExchange
-  item: OrderLineItem
 }
 
 type OrderClaim {
-  id: ID!
   order_id: String!
-  order_version: Int!
-  display_id: Int!
-  type: ClaimType!
-  no_notification: Boolean
-  refund_amount: Float
-  raw_refund_amount: JSON
-  created_by: String
-  canceled_at: DateTime
-  metadata: JSON
-  created_at: DateTime
-  updated_at: DateTime
-  order: Order!
   claim_items: [OrderClaimItem]!
   additional_items: [OrderClaimItem]!
   return: Return
   return_id: String
-  shipping_methods: [OrderShipping]
-  transactions: [OrderTransaction]
+  no_notification: Boolean
+  refund_amount: Float
+  created_by: String
 }
 
 type OrderExchange {
-  id: ID!
   order_id: String!
-  order_version: Int!
-  display_id: Int!
+  return_items: [OrderReturnItem]!
+  additional_items: [OrderExchangeItem]!
   no_notification: Boolean
   difference_due: Float
-  raw_difference_due: JSON
-  allow_backorder: Boolean!
+  return: Return
+  return_id: String
   created_by: String
-  canceled_at: DateTime
-  metadata: JSON
-  created_at: DateTime
-  updated_at: DateTime
-  order: Order!
-  additional_items: [OrderExchangeItem]!
-  return: Return
-  return_id: String
-  shipping_methods: [OrderShipping]
-  transactions: [OrderTransaction]
-}
-
-type OrderCreditLine {
-  id: ID!
-  version: Int!
-  order_id: String!
-  reference: String
-  reference_id: String
-  amount: Float!
-  raw_amount: JSON!
-  metadata: JSON
-  created_at: DateTime
-  updated_at: DateTime
-  order: Order!
-}
-
-type ReturnReason {
-  id: ID!
-  value: String!
-  label: String!
-  description: String
-  metadata: JSON
-  created_at: DateTime
-  updated_at: DateTime
-  deleted_at: DateTime
-  parent_return_reason: ReturnReason
-  parent_return_reason_id: String
-  return_reason_children: [ReturnReason]
-}
-
-type OrderShipping {
-  id: ID!
-  version: Int!
-  order_id: String!
-  return_id: String
-  exchange_id: String
-  claim_id: String
-  created_at: DateTime
-  updated_at: DateTime
-  order: Order!
-  return: Return
-  exchange: OrderExchange
-  claim: OrderClaim
-  shipping_method: OrderShippingMethod
 }
 
 enum PaymentStatus {
@@ -556,21 +434,16 @@ type OrderDetail {
   version: Int!
   order_change: OrderChange
   status: OrderStatus!
-  is_draft_order: Boolean!
   region_id: String
   customer_id: String
   sales_channel_id: String
   email: String
   currency_code: String!
-  locale: String
-  no_notification: Boolean
   shipping_address: OrderAddress
   billing_address: OrderAddress
   items: [OrderLineItem]
   shipping_methods: [OrderShippingMethod]
   transactions: [OrderTransaction]
-  credit_lines: [OrderCreditLine]
-  returns: [Return]
   summary: OrderSummary
   metadata: JSON
   canceled_at: DateTime
@@ -640,9 +513,6 @@ type OrderChange {
   claim: OrderClaim
   actions: [OrderChangeAction]!
   status: String!
-  description: String
-  internal_note: String
-  created_by: String
   requested_by: String
   requested_at: DateTime
   confirmed_by: String
@@ -653,7 +523,6 @@ type OrderChange {
   declined_at: DateTime
   canceled_by: String
   canceled_at: DateTime
-  carry_over_promotions: Boolean
   created_at: DateTime!
   updated_at: DateTime!
 }
@@ -672,11 +541,6 @@ type OrderChangeAction {
   action: ChangeActionType!
   details: JSON
   internal_note: String
-  ordering: Int!
-  version: Int
-  amount: Float
-  raw_amount: JSON
-  applied: Boolean!
   created_at: DateTime!
   updated_at: DateTime!
 }
@@ -685,18 +549,11 @@ type OrderTransaction {
   id: ID!
   order_id: String!
   order: Order!
-  version: Int!
   amount: Float!
   raw_amount: JSON
   currency_code: String!
   reference: String!
   reference_id: String!
-  return_id: String
-  exchange_id: String
-  claim_id: String
-  return: Return
-  exchange: OrderExchange
-  claim: OrderClaim
   metadata: JSON
   created_at: DateTime!
   updated_at: DateTime!

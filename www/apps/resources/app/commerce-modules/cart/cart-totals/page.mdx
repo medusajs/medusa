@@ -71,6 +71,8 @@ export const myWorkflow = createWorkflow(
         "original_shipping_tax_total",
         "original_shipping_subtotal",
         "original_shipping_total",
+        "gift_card_total",
+        "gift_card_tax_total",
         "credit_line_subtotal",
         "credit_line_tax_total",
         "credit_line_total",
@@ -115,6 +117,8 @@ const { data: [cart] } = await query.graph({
     "original_shipping_tax_total",
     "original_shipping_subtotal",
     "original_shipping_total",
+    "gift_card_total",
+    "gift_card_tax_total",
     "credit_line_subtotal",
     "credit_line_tax_total",
     "credit_line_total",
@@ -155,6 +159,8 @@ The returned `cart` object will look like this:
   "original_shipping_tax_total": 0,
   "original_shipping_subtotal": 10,
   "original_shipping_total": 10,
+  "gift_card_total": 0,
+  "gift_card_tax_total": 0,
   "credit_line_subtotal": 0,
   "credit_line_tax_total": 0,
   "credit_line_total": 0,
@@ -215,6 +221,8 @@ The cart will include the following total fields:
 - `original_shipping_tax_total`: The sum of all shipping methods' original tax totals before discounts.
 - `original_shipping_subtotal`: The sum of all shipping methods' original subtotals before discounts, excluding taxes.
 - `original_shipping_total`: The sum of all shipping methods' original totals before discounts, including taxes.
+- `gift_card_total`: The total amount of gift cards applied to the cart.
+- `gift_card_tax_total`: The tax total of gift cards applied to the cart.
 - `credit_line_subtotal`: The subtotal of credit lines applied to the cart, excluding taxes.
 - `credit_line_tax_total`: The tax total of credit lines applied to the cart.
 - `credit_line_total`: The total amount of credit lines applied to the cart, including taxes. Subtracted from the final total.
