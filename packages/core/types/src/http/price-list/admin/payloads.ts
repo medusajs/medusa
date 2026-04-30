@@ -63,6 +63,10 @@ export interface AdminCreatePriceList {
    * The price list's prices.
    */
   prices?: AdminCreatePriceListPrice[]
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminUpdatePriceListPrice {
@@ -128,6 +132,10 @@ export interface AdminUpdatePriceList {
    * The price list's rules.
    */
   rules?: Record<string, string[]>
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminBatchPriceListPrice {

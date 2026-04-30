@@ -61,4 +61,8 @@ export interface AdminPriceList {
    * The date the price list was deleted.
    */
   deleted_at: string | null
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata: Record<string, unknown> | null
 }

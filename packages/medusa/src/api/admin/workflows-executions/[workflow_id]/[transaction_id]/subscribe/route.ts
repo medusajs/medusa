@@ -14,7 +14,7 @@ export const GET = async (
     Modules.WORKFLOW_ENGINE
   )
 
-  const { workflow_id, transaction_id } = req.query as any
+  const { workflow_id, transaction_id } = req.params
 
   const subscriberId = "__sub__" + Math.random().toString(36).substring(2, 9)
   res.writeHead(200, {

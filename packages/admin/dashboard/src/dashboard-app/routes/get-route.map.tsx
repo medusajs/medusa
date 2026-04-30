@@ -640,6 +640,13 @@ export function getRouteMap({
                           "../../routes/price-lists/price-list-prices-edit"
                         ),
                     },
+                    {
+                      path: "metadata/edit",
+                      lazy: () =>
+                        import(
+                          "../../routes/price-lists/price-list-metadata"
+                        ),
+                    },
                   ],
                 },
               ],
