@@ -29,6 +29,7 @@ medusaIntegrationTestRunner({
           product: fixtures.product,
           location: fixtures.location,
           inventoryItem: fixtures.inventoryItem,
+          customer: fixtures.customer,
         })
 
         service = container.resolve(Modules.ORDER)

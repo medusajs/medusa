@@ -1,7 +1,7 @@
 /**
  * @schema StoreClaimStoreCreditAccountResponse
  * type: object
- * description: The claimed store credit account's details.
+ * description: The details of the claimed store credit account.
  * x-schemaName: StoreClaimStoreCreditAccountResponse
  * required:
  *   - store_credit_account

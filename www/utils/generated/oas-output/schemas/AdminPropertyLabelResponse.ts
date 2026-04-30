@@ -1,0 +1,13 @@
+/**
+ * @schema AdminPropertyLabelResponse
+ * type: object
+ * description: The details of a property label.
+ * x-schemaName: AdminPropertyLabelResponse
+ * required:
+ *   - property_label
+ * properties:
+ *   property_label:
+ *     $ref: "#/components/schemas/AdminPropertyLabel"
+ * 
+*/
+

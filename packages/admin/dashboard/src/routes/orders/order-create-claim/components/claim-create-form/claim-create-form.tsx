@@ -2,9 +2,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { InformationCircleSolid, PencilSquare } from "@medusajs/icons"
 import {
   AdminClaim,
+  AdminInventoryLevel,
   AdminOrder,
   AdminOrderPreview,
-  InventoryLevelDTO,
 } from "@medusajs/types"
 import {
   Alert,
@@ -58,6 +58,7 @@ import { currencies } from "../../../../../lib/data/currencies"
 import { ReturnShippingPlaceholder } from "../../../common/placeholders"
 import { ClaimOutboundSection } from "./claim-outbound-section"
 import { ItemPlaceholder } from "./item-placeholder"
+import { ExtendedVariant } from "../../../../product-variants/product-variant-detail/constants.ts"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -101,7 +102,7 @@ export const ClaimCreateForm = ({
     })
 
   const [inventoryMap, setInventoryMap] = useState<
-    Record<string, InventoryLevelDTO[]>
+    Record<string, AdminInventoryLevel[]>
   >({})
 
   /**
@@ -538,7 +539,7 @@ export const ClaimCreateForm = ({
 
   useEffect(() => {
     const getInventoryMap = async () => {
-      const ret: Record<string, InventoryLevelDTO[]> = {}
+      const ret: Record<string, AdminInventoryLevel[]> = {}
 
       if (!inboundItems.length) {
         return ret
@@ -546,7 +547,7 @@ export const ClaimCreateForm = ({
 
       const variantIds = inboundItems
         .map((item) => item?.variant_id)
-        .filter(Boolean)
+        .filter(Boolean) as string[]
 
       const variants = (
         await sdk.admin.productVariant.list({
@@ -557,7 +558,8 @@ export const ClaimCreateForm = ({
 
       variants.forEach((variant) => {
         // TODO: fix this for inventory kits
-        ret[variant.id] = variant.inventory?.[0]?.location_levels || []
+        ret[variant.id] =
+          (variant as ExtendedVariant).inventory?.[0]?.location_levels || []
       })
 
       return ret
@@ -856,7 +858,9 @@ export const ClaimCreateForm = ({
                       const action = item.actions?.find(
                         (act) => act.action === "RETURN_ITEM"
                       )
-                      acc = acc + (action?.amount || 0)
+
+                      // `RETURN_ITEM` action has amount
+                      acc = acc + Number((action as any)?.amount || 0)
 
                       return acc
                     }, 0) * -1,
@@ -876,7 +880,8 @@ export const ClaimCreateForm = ({
                       const action = item.actions?.find(
                         (act) => act.action === "ITEM_ADD"
                       )
-                      acc = acc + (action?.amount || 0)
+                      // `ITEM_ADD` action has amount
+                      acc = acc + Number((action as any)?.amount || 0)
 
                       return acc
                     }, 0),
@@ -945,7 +950,7 @@ export const ClaimCreateForm = ({
                           .symbol_native
                       }
                       code={order.currency_code}
-                      onValueChange={(value, _name, values) => {
+                      onValueChange={(_value, _name, values) => {
                         setCustomInboundShippingAmount({
                           value: values?.value ?? "",
                           float: values?.float ?? null,
@@ -1018,7 +1023,7 @@ export const ClaimCreateForm = ({
                           .symbol_native
                       }
                       code={order.currency_code}
-                      onValueChange={(value, _name, values) => {
+                      onValueChange={(_value, _name, values) => {
                         setCustomOutboundShippingAmount({
                           value: values?.value ?? "",
                           float: values?.float ?? null,

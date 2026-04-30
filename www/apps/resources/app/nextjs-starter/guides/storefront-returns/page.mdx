@@ -62,13 +62,7 @@ npx create-medusa-app@latest
 
 You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../page.mdx), choose Yes.
 
-Afterward, the installation process will start, which will install the Medusa application in a directory with your project's name, and the Next.js Starter Storefront in a separate directory with the `{project-name}-storefront` name.
-
-<Note title="Why is the storefront installed separately?">
-
-The Medusa application is composed of a headless Node.js server and an admin dashboard. The storefront is installed or custom-built separately and connects to the Medusa application through its REST endpoints, called [API routes](!docs!/learn/fundamentals/api-routes). Learn more in [Medusa's Architecture documentation](!docs!/learn/introduction/architecture).
-
-</Note>
+Afterward, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
 
 Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
 
@@ -84,14 +78,12 @@ Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-ap
 
 In this step, you'll add server functions to the Next.js Starter Storefront that let you send requests to the Medusa application for order returns. You'll use these functions later in the storefront pages.
 
-<Note title="Reminder" forceMultiline>
+<Note title="Reminder">
 
-If you installed the Next.js Starter Storefront with the Medusa backend, the storefront was installed in a separate directory. The directory's name is `{your-project}-storefront`.
-
-So, if your Medusa application's directory is `medusa-returns`, you can find the storefront by going back to the parent directory and changing to the `medusa-returns-storefront` directory:
+The Next.js Starter Storefront is available in the `apps/storefront` directory of your project:
 
 ```bash
-cd ../medusa-returns-storefront # change based on your project name
+cd apps/storefront
 ```
 
 </Note>
@@ -1210,7 +1202,7 @@ You add a button that links to the return request page next to the "Back to over
 
 Now that you've added the return request page and the necessary components, you can test the functionality.
 
-First, run the following command from the Medusa application's directory to start the development server:
+First, run the following command from the `apps/backend` directory to start the development server:
 
 ```bash npm2yarn badgeLabel="Medusa Application" badgeColor="green"
 npm run dev

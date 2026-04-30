@@ -273,40 +273,8 @@ function resolveModules(
     },
   ]
 
-  const cloudModules = [
+  const cloudModules: InputConfig["modules"] = [
     ...sharedModules,
-    {
-      resolve: TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ENGINE],
-      options: {
-        redis: { url: process.env.REDIS_URL },
-      },
-    },
-    {
-      resolve: TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.CACHE],
-      options: { redisUrl: process.env.REDIS_URL },
-    },
-    {
-      resolve: TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.EVENT_BUS],
-      options: {
-        redisUrl: process.env.REDIS_URL,
-        workerOptions: { concurrency: 1 },
-      },
-    },
-    {
-      resolve: MODULE_PACKAGE_NAMES[Modules.LOCKING],
-      options: {
-        providers: [
-          {
-            id: "locking-redis",
-            resolve: TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.LOCKING],
-            is_default: true,
-            options: {
-              redisUrl: process.env.REDIS_URL,
-            },
-          },
-        ],
-      },
-    },
     {
       resolve: MODULE_PACKAGE_NAMES[Modules.FILE],
       options: {
@@ -327,6 +295,55 @@ function resolveModules(
       },
     },
   ]
+
+  if (process.env.REDIS_URL) {
+    cloudModules.push(
+      ...[
+        {
+          resolve:
+            TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ENGINE],
+          options: {
+            redis: { url: process.env.REDIS_URL },
+          },
+        },
+        {
+          resolve: TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.CACHE],
+          options: { redisUrl: process.env.REDIS_URL },
+        },
+        {
+          resolve: TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.EVENT_BUS],
+          options: {
+            redisUrl: process.env.REDIS_URL,
+            workerOptions: { concurrency: 1 },
+          },
+        },
+        {
+          resolve: MODULE_PACKAGE_NAMES[Modules.LOCKING],
+          options: {
+            providers: [
+              {
+                id: "locking-redis",
+                resolve: TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.LOCKING],
+                is_default: true,
+                options: {
+                  redisUrl: process.env.REDIS_URL,
+                },
+              },
+            ],
+          },
+        },
+      ]
+    )
+  } else {
+    cloudModules.push(
+      ...[
+        { resolve: MODULE_PACKAGE_NAMES[Modules.CACHE] },
+        { resolve: MODULE_PACKAGE_NAMES[Modules.EVENT_BUS] },
+        { resolve: MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ENGINE] },
+        { resolve: MODULE_PACKAGE_NAMES[Modules.LOCKING] },
+      ]
+    )
+  }
 
   if (process.env.CACHE_REDIS_URL) {
     cloudModules.push({

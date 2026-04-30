@@ -11,6 +11,7 @@ import { MetadataStorage } from "@medusajs/framework/mikro-orm/core"
 import { MikroORM } from "@medusajs/framework/mikro-orm/postgresql"
 import { glob } from "glob"
 import { dirname, join } from "path"
+import { setTimeout } from "timers/promises"
 
 const TERMINAL_SIZE = process.stdout.columns
 
@@ -140,6 +141,15 @@ async function generateMigrations(
 
     if (result.fileName) {
       logger.info(`Migration created: ${result.fileName}`)
+
+      // Add a 1-second delay after creating a migration file to ensure unique
+      // timestamps across modules. MikroORM uses second-precision timestamps
+      // (YYYYMMDDHHmmss format), so without this delay, multiple modules
+      // processed within the same second would get identical migration filenames.
+      // The delay is only added when a migration is actually created, not when
+      // skipped due to no schema changes.
+      // See: https://github.com/medusajs/medusa/issues/14410
+      await setTimeout(1000)
     } else {
       logger.info(`No migration created`)
     }

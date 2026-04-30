@@ -1,10 +1,10 @@
-import { getCleanMd, PLAINTEXT_DOC_MESSAGE } from "docs-utils"
+import { addExtraToMd, getCleanMd } from "docs-utils"
 import { existsSync } from "fs"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
 import path from "path"
-import { posthog } from "posthog-js"
+import { PostHog } from "posthog-node"
 import {
   addUrlToRelativeLink,
   crossProjectLinksPlugin,
@@ -65,32 +65,38 @@ export async function GET(req: NextRequest, { params }: Params) {
     acceptHeader.includes("text/plain") ||
     acceptHeader.includes("text/markdown")
   ) {
-    if (!posthog.__loaded) {
-      posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-        api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-        person_profiles: "always",
-        defaults: "2025-05-24",
-      })
-    }
+    const client = new PostHog(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+      host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    })
 
-    posthog.capture(
-      "md_content_requested_agents",
-      {
-        $current_url: req.url,
+    const urlObj = new URL(req.url)
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL || ""}${process.env.NEXT_PUBLIC_BASE_PATH || ""}${urlObj.pathname}`
+
+    client.capture({
+      distinctId: "anonymous",
+      event: "md_content_requested_agents",
+      properties: {
+        $current_url: url,
         $raw_user_agent: req.headers.get("user-agent") || undefined,
       },
-      {
-        send_instantly: true,
-      }
-    )
+    })
+
+    await client.shutdown()
   }
 
-  return new NextResponse(cleanMdContent + PLAINTEXT_DOC_MESSAGE, {
-    headers: {
-      "Content-Type": "text/markdown",
-    },
-    status: 200,
-  })
+  return new NextResponse(
+    addExtraToMd(cleanMdContent, {
+      baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "",
+      basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
+    }),
+    {
+      headers: {
+        "Content-Type": "text/markdown",
+        "Cache-Control": "public, max-age=3600, must-revalidate",
+      },
+      status: 200,
+    }
+  )
 }
 
 const getCleanMd_ = unstable_cache(

@@ -1,4 +1,5 @@
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
+import { setTimeout } from "timers/promises"
 import { mikroOrmCreateConnection } from "../../dal"
 import { loadDatabaseConfig } from "../load-module-database-config"
 import { Migrations } from "../../migrations"
@@ -58,6 +59,15 @@ export function buildGenerateMigrationScript({
       const { fileName } = await migrations.generate()
       if (fileName) {
         logger.info(`Generated successfully (${fileName}).`)
+
+        // Add a 1-second delay after creating a migration file to ensure unique
+        // timestamps across modules. MikroORM uses second-precision timestamps
+        // (YYYYMMDDHHmmss format), so without this delay, multiple modules
+        // processed within the same second would get identical migration filenames.
+        // The delay is only added when a migration is actually created, not when
+        // skipped due to no schema changes.
+        // See: https://github.com/medusajs/medusa/issues/14410
+        await setTimeout(1000)
       } else {
         logger.info(`Skipped. No changes detected in your models.`)
       }

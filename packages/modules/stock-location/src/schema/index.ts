@@ -10,6 +10,7 @@ type StockLocationAddress {
   postal_code: String
   province: String
   metadata: JSON
+  stock_locations: StockLocation
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime

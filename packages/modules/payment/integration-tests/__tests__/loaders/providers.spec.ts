@@ -78,7 +78,7 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               payment_providers: [],
               payment_sessions: [],
               payments: [],
-              currency_code: "USD",
+              currency_code: "usd",
               amount: 200,
             })
           )

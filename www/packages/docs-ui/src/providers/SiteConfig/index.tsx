@@ -48,6 +48,10 @@ export const SiteConfigProvider = ({
         features: {
           aiAssistant: true,
         },
+        contentMenuSections: {
+          products: true,
+          whatsNew: true,
+        },
       },
       globalConfig,
       initConfig || {}

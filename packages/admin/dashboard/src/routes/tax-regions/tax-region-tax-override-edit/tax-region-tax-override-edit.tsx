@@ -53,7 +53,7 @@ export const TaxRegionTaxOverrideEdit = () => {
 
 const useDefaultRulesValues = (
   taxRate?: HttpTypes.AdminTaxRate
-): { initialValues: InitialRuleValues; isPending: boolean } => {
+): { initialValues?: InitialRuleValues; isPending: boolean } => {
   const rules = taxRate?.rules || []
 
   const idsByReferenceType: {
@@ -185,7 +185,7 @@ const useDefaultRulesValues = (
       let initialValues: TaxRateRuleReference[] = []
 
       if (queryResults[index].enabled) {
-        const fetchedEntityList = getResult(queryResults[index].result)
+        const fetchedEntityList = getResult(queryResults[index].result as any)
 
         const entityIdMap = new Map(
           fetchedEntityList.map((entity) => [entity.value, entity])

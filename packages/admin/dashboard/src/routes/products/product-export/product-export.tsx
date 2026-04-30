@@ -25,23 +25,30 @@ export const ProductExport = () => {
 
 const ProductExportContent = () => {
   const { t } = useTranslation()
-  const { searchParams } = useProductTableQuery({})
+  const { searchParams } = useProductTableQuery({ prefix: "p" })
+  delete searchParams.fields
 
-  const { mutateAsync } = useExportProducts({ ...searchParams })
+  const { mutateAsync } = useExportProducts()
   const { handleSuccess } = useRouteModal()
 
   const handleExportRequest = async () => {
-    await mutateAsync(searchParams, {
-      onSuccess: () => {
-        toast.info(t("products.export.success.title"), {
-          description: t("products.export.success.description"),
-        })
-        handleSuccess()
+    await mutateAsync(
+      {
+        payload: {},
+        query: searchParams,
       },
-      onError: (err) => {
-        toast.error(err.message)
-      },
-    })
+      {
+        onSuccess: () => {
+          toast.info(t("products.export.success.title"), {
+            description: t("products.export.success.description"),
+          })
+          handleSuccess()
+        },
+        onError: (err) => {
+          toast.error(err.message)
+        },
+      }
+    )
   }
 
   return (

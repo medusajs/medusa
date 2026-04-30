@@ -1,7 +1,7 @@
 /**
  * @schema StoreClaimStoreCreditAccountParams
  * type: object
- * description: The details of claiming the credit.
+ * description: The parameters required to claim a store credit account.
  * x-schemaName: StoreClaimStoreCreditAccountParams
  * required:
  *   - code
@@ -9,7 +9,7 @@
  *   code:
  *     type: string
  *     title: code
- *     description: The code of the store credit account to claim.
+ *     description: The store credit account's code.
  * 
 */
 

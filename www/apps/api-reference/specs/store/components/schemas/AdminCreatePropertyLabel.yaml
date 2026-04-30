@@ -1,0 +1,24 @@
+type: object
+description: The details of a property label to create.
+x-schemaName: AdminCreatePropertyLabel
+required:
+  - entity
+  - property
+  - label
+properties:
+  entity:
+    type: string
+    title: entity
+    description: The name of the entity the property label belongs to.
+  property:
+    type: string
+    title: property
+    description: The property the label is for.
+  label:
+    type: string
+    title: label
+    description: The label to use for the property.
+  description:
+    type: string
+    title: description
+    description: The description of the property label.
