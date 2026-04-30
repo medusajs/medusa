@@ -14,6 +14,21 @@ import {
 import IndexEngineFeatureFlag from "../../../feature-flags/index-engine"
 import { remapKeysForProduct, remapProductResponse } from "./helpers"
 
+/**
+ * This API route retrieves a list of products based on the provided filters.
+ * When the index engine feature flag is enabled, it uses the index for improved
+ * performance, except when tags or categories filters are used which require
+ * falling back to the regular query path.
+ *
+ * @param req - The authenticated request object containing filter parameters
+ * @param res - The response object to send the product list
+ * @returns Promise that resolves when the response is sent
+ *
+ * @example
+ * GET /admin/products
+ * GET /admin/products?q=shirt
+ * GET /admin/products?price_list_id=plist_123
+ */
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminProductListParams>,
   res: MedusaResponse<HttpTypes.AdminProductListResponse>
@@ -101,6 +116,23 @@ async function getProductsWithIndexEngine(
   })
 }
 
+/**
+ * This API route creates a new product using the provided product data.
+ * It runs the create products workflow and returns the newly created product
+ * with the specified fields.
+ *
+ * @param req - The authenticated request object containing product creation data
+ * @param res - The response object to send the created product
+ * @returns Promise that resolves when the response is sent
+ *
+ * @example
+ * POST /admin/products
+ * {
+ *   "title": "Sample Product",
+ *   "handle": "sample-product",
+ *   "description": "A sample product"
+ * }
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     HttpTypes.AdminCreateProduct & AdditionalData,

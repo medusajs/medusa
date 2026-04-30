@@ -10,6 +10,24 @@ import IndexEngineFeatureFlag from "../../../feature-flags/index-engine"
 import { wrapVariantsWithInventoryQuantityForSalesChannel } from "../../utils/middlewares"
 import { RequestWithContext, wrapProductsWithTaxPrices } from "./helpers"
 
+/**
+ * This API route retrieves a list of products for the storefront based on the
+ * provided filters. When the index engine feature flag is enabled, it uses the
+ * index for improved performance, except when tag or category filters are used
+ * which require falling back to the regular graph query path.
+ *
+ * The response includes products with calculated prices, tax information, and
+ * inventory quantities when requested.
+ *
+ * @param req - The request object containing filter parameters and context
+ * @param res - The response object to send the product list
+ * @returns Promise that resolves when the response is sent
+ *
+ * @example
+ * GET /store/products
+ * GET /store/products?q=shirt&sales_channel_id=sc_123
+ * GET /store/products?tag_id=tag_123&category_id=cat_456
+ */
 export const GET = async (
   req: RequestWithContext<HttpTypes.StoreProductListParams>,
   res: MedusaResponse<HttpTypes.StoreProductListResponse>
