@@ -1,6 +1,9 @@
 import { PriceListStatus, PriceListType } from "../../../pricing"
 import { AdminPrice } from "../../price-preference"
 
+/**
+ * A price list price returned in admin API responses.
+ */
 export interface AdminPriceListPrice extends AdminPrice {
   /**
    * The ID of the variant that this price is for.
@@ -12,6 +15,9 @@ export interface AdminPriceListPrice extends AdminPrice {
   rules: Record<string, unknown>
 }
 
+/**
+ * A price list returned in admin API responses.
+ */
 export interface AdminPriceList {
   /**
    * The price list's ID.
@@ -63,6 +69,7 @@ export interface AdminPriceList {
   deleted_at: string | null
   /**
    * Holds custom data in key-value pairs.
+   * @since 2.14.2
    */
   metadata: Record<string, unknown> | null
 }
