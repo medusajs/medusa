@@ -51,16 +51,8 @@ export const ProductOptionProductSection = ({
         heading={t("products.domain")}
         emptyState={{
           empty: {
-            heading: (
-              <span className="text-ui-fg-subtle">
-                {t("general.noRecordsMessage")}
-              </span>
-            ),
-            description: (
-              <span className="text-ui-fg-muted">
-                {t("productOptions.products.list.noRecords")}
-              </span>
-            ),
+            heading: t("general.noRecordsMessage"),
+            description: t("productOptions.products.list.noRecords"),
           },
           filtered: {
             heading: t("general.noRecordsMessage"),

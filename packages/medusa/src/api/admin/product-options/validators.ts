@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import {
   createFindParams,
   createOperatorMap,
@@ -35,9 +35,9 @@ export const AdminCreateProductOption = z
   .object({
     title: z.string(),
     values: z.array(z.string()),
-    ranks: z.record(z.number()).optional(),
+    ranks: z.record(z.string(), z.number()).optional(),
     is_exclusive: z.boolean().optional(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 
@@ -48,8 +48,8 @@ export const AdminUpdateProductOption = z
   .object({
     title: z.string().optional(),
     values: z.array(z.string()).optional(),
-    ranks: z.record(z.number()).optional(),
+    ranks: z.record(z.string(), z.number()).optional(),
     is_exclusive: z.boolean().optional(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
