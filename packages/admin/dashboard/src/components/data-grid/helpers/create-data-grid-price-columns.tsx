@@ -3,8 +3,8 @@ import { ColumnDef } from "@tanstack/react-table"
 import { TFunction } from "i18next"
 import { FieldPath, FieldValues } from "react-hook-form"
 import { IncludesTaxTooltip } from "../../common/tax-badge/tax-badge"
-import { DataGridCurrencyCell } from "../components/data-grid-currency-cell"
 import { DataGridReadonlyCell } from "../components/data-grid-readonly-cell"
+import { DataGridQuantityPriceCell } from "../components/data-grid-quantity-price-cell"
 import { FieldContext } from "../types"
 import { createDataGridHelper } from "./create-data-grid-column-helper"
 
@@ -21,6 +21,10 @@ type CreateDataGridPriceColumnsProps<
     value: string
   ) => FieldPath<TFieldValues> | null
   t: TFunction
+  onPriceCellClick?: (
+    context: FieldContext<TData>,
+    currencyCode: string
+  ) => void
 }
 
 export const createDataGridPriceColumns = <
@@ -33,6 +37,7 @@ export const createDataGridPriceColumns = <
   isReadyOnly,
   getFieldName,
   t,
+  onPriceCellClick,
 }: CreateDataGridPriceColumnsProps<TData, TFieldValues>): ColumnDef<
   TData,
   unknown
@@ -77,7 +82,13 @@ export const createDataGridPriceColumns = <
             return <DataGridReadonlyCell context={context} />
           }
 
-          return <DataGridCurrencyCell code={currency} context={context} />
+          return (
+            <DataGridQuantityPriceCell
+              code={currency}
+              context={context}
+              onPriceCellClick={onPriceCellClick}
+            />
+          )
         },
       })
     }) ?? []),
@@ -124,9 +135,10 @@ export const createDataGridPriceColumns = <
           }
 
           return (
-            <DataGridCurrencyCell
+            <DataGridQuantityPriceCell
               code={region.currency_code}
               context={context}
+              onPriceCellClick={onPriceCellClick}
             />
           )
         },

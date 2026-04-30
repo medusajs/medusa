@@ -21,10 +21,12 @@ export const usePriceListGridColumns = ({
   currencies = [],
   regions = [],
   pricePreferences = [],
+  onPriceCellClick,
 }: {
   currencies?: HttpTypes.AdminStoreCurrency[]
   regions?: HttpTypes.AdminRegion[]
   pricePreferences?: HttpTypes.AdminPricePreference[]
+  onPriceCellClick?: (context: any, currencyCode: string) => void
 }) => {
   const { t } = useTranslation()
 
@@ -77,15 +79,16 @@ export const usePriceListGridColumns = ({
           }
 
           if (context.column.id?.startsWith("currency_prices")) {
-            return `products.${entity.product_id}.variants.${entity.id}.currency_prices.${value}.amount`
+            return `products.${entity.product_id}.variants.${entity.id}.currency_prices.${value}.0.amount`
           }
 
-          return `products.${entity.product_id}.variants.${entity.id}.region_prices.${value}.amount`
+          return `products.${entity.product_id}.variants.${entity.id}.region_prices.${value}.0.amount`
         },
         t,
+        onPriceCellClick,
       }),
     ]
-  }, [t, currencies, regions, pricePreferences])
+  }, [t, currencies, regions, pricePreferences, onPriceCellClick])
 
   return colDefs
 }

@@ -7,6 +7,9 @@ import {
   PriceListCreateCurrencyPrice,
   PriceListCreateProductVariantSchema,
   PriceListCreateProductsSchema,
+  PriceListUpdateProductsSchema,
+  PriceListUpdateProductVariantsSchema,
+  PriceListUpdateCurrencyPrice,
 } from "./schemas"
 
 const getValues = (priceList: HttpTypes.AdminPriceList) => {
@@ -84,27 +87,40 @@ const extractPricesFromVariants = (
       throw json({ message: "Currency code not found" }, 400)
     }
 
+    const rules: Record<string, string> =
+      priceType === "region" ? { region_id: id } : {}
+
     return {
       amount: castNumber(price.amount!),
-      ...(priceType === "region" ? { rules: { region_id: id } } : {}),
       currency_code: currencyCode,
       variant_id: variantId,
+      min_quantity: price.min_quantity
+        ? castNumber(price.min_quantity)
+        : undefined,
+      max_quantity: price.max_quantity
+        ? castNumber(price.max_quantity)
+        : undefined,
+      rules: Object.keys(rules).length > 0 ? rules : undefined,
     }
   }
 
   const currencyPrices = Object.entries(variant.currency_prices || {}).flatMap(
-    ([currencyCode, currencyPrice]) => {
-      return currencyPrice?.amount
-        ? [extractPriceDetails(currencyPrice, "currency", currencyCode)]
-        : []
+    ([currencyCode, currencyPrices]) => {
+      return (currencyPrices || []).flatMap((currencyPrice) =>
+        currencyPrice?.amount
+          ? [extractPriceDetails(currencyPrice, "currency", currencyCode)]
+          : []
+      )
     }
   )
 
   const regionPrices = Object.entries(variant.region_prices || {}).flatMap(
-    ([regionId, regionPrice]) => {
-      return regionPrice?.amount
-        ? [extractPriceDetails(regionPrice, "region", regionId)]
-        : []
+    ([regionId, regionPrices]) => {
+      return (regionPrices || []).flatMap((regionPrice) =>
+        regionPrice?.amount
+          ? [extractPriceDetails(regionPrice, "region", regionId)]
+          : []
+      )
     }
   )
 
@@ -120,4 +136,244 @@ export const exctractPricesFromProducts = (
       extractPricesFromVariants(variantId, variant, regions)
     )
   )
+}
+
+export function initRecord(
+  priceList: HttpTypes.AdminPriceList,
+  products: HttpTypes.AdminProduct[]
+): PriceListUpdateProductsSchema {
+  const record: PriceListUpdateProductsSchema = {}
+
+  const variantPrices = priceList.prices?.reduce((variants, price) => {
+    const variantObject = variants[price.variant_id] || {}
+
+    const isRegionPrice = !!price.rules?.region_id
+
+    if (isRegionPrice) {
+      const regionId = price.rules.region_id as string
+
+      variantObject.region_prices = {
+        ...variantObject.region_prices,
+        [regionId]: [
+          ...(variantObject.region_prices?.[regionId] || []),
+          {
+            amount: price.amount.toString(),
+            id: price.id,
+            min_quantity: price.rules?.min_quantity?.toString(),
+            max_quantity: price.rules?.max_quantity?.toString(),
+          },
+        ],
+      }
+    } else {
+      variantObject.currency_prices = {
+        ...variantObject.currency_prices,
+        [price.currency_code]: [
+          ...(variantObject.currency_prices?.[price.currency_code] || []),
+          {
+            amount: price.amount.toString(),
+            id: price.id,
+            min_quantity: price.rules?.min_quantity?.toString(),
+            max_quantity: price.rules?.max_quantity?.toString(),
+          },
+        ],
+      }
+    }
+
+    variants[price.variant_id] = variantObject
+    return variants
+  }, {} as PriceListUpdateProductVariantsSchema)
+
+  for (const product of products) {
+    record[product.id] = {
+      variants:
+        product.variants?.reduce((variants, variant) => {
+          const prices = variantPrices[variant.id] || {}
+          variants[variant.id] = {
+            currency_prices: prices.currency_prices || {},
+            region_prices: prices.region_prices || {},
+          }
+          return variants
+        }, {} as PriceListUpdateProductVariantsSchema) || {},
+    }
+  }
+
+  return record
+}
+
+type PriceObject = {
+  variantId: string
+  currencyCode: string
+  regionId?: string
+  amount: number
+  id?: string | null
+  minQuantity?: number
+  maxQuantity?: number
+}
+
+export function convertToPriceArray(
+  data: PriceListUpdateProductsSchema,
+  regions: HttpTypes.AdminRegion[]
+) {
+  const prices: PriceObject[] = []
+
+  const regionCurrencyMap = regions.reduce((map, region) => {
+    map[region.id] = region.currency_code
+    return map
+  }, {} as Record<string, string>)
+
+  for (const [_productId, product] of Object.entries(data || {})) {
+    const { variants } = product || {}
+
+    for (const [variantId, variant] of Object.entries(variants || {})) {
+      const {
+        currency_prices: variantCurrencyPrices,
+        region_prices: variantRegionPrices,
+      } = variant || {}
+
+      for (const [currencyCode, currencyPrices] of Object.entries(
+        variantCurrencyPrices || {}
+      )) {
+        (currencyPrices || []).forEach((currencyPrice) => {
+          if (
+            currencyPrice?.amount !== "" &&
+            typeof currencyPrice?.amount !== "undefined"
+          ) {
+            prices.push({
+              variantId,
+              currencyCode,
+              amount: castNumber(currencyPrice.amount),
+              id: currencyPrice.id,
+              minQuantity: currencyPrice.min_quantity ? castNumber(currencyPrice.min_quantity) : undefined,
+              maxQuantity: currencyPrice.max_quantity ? castNumber(currencyPrice.max_quantity) : undefined,
+            })
+          }
+        })
+      }
+
+      for (const [regionId, regionPrices] of Object.entries(
+        variantRegionPrices || {}
+      )) {
+        (regionPrices || []).forEach((regionPrice) => {
+          if (
+            regionPrice?.amount !== "" &&
+            typeof regionPrice?.amount !== "undefined"
+          ) {
+            prices.push({
+              variantId,
+              regionId,
+              currencyCode: regionCurrencyMap[regionId],
+              amount: castNumber(regionPrice.amount),
+              id: regionPrice.id,
+              minQuantity: regionPrice.min_quantity ? castNumber(regionPrice.min_quantity) : undefined,
+              maxQuantity: regionPrice.max_quantity ? castNumber(regionPrice.max_quantity) : undefined,
+            })
+          }
+        })
+      }
+    }
+  }
+
+  return prices
+}
+
+function createMapKey(obj: PriceObject) {
+  if (obj.id) {
+    return `id-${obj.id}`
+  }
+  return `${obj.variantId}-${obj.currencyCode}-${obj.regionId || "none"}-${obj.amount}-${obj.minQuantity || "none"}-${obj.maxQuantity || "none"}`
+}
+
+export function comparePrices(initialPrices: PriceObject[], newPrices: PriceObject[]) {
+  const pricesToUpdate: HttpTypes.AdminUpdatePriceListPrice[] = []
+  const pricesToCreate: HttpTypes.AdminCreatePriceListPrice[] = []
+  const pricesToDelete: string[] = []
+
+  const initialPriceMap = initialPrices.reduce((map, price) => {
+    map[createMapKey(price)] = price
+    return map
+  }, {} as Record<string, (typeof initialPrices)[0]>)
+
+  const newPriceMap = newPrices.reduce((map, price) => {
+    map[createMapKey(price)] = price
+    return map
+  }, {} as Record<string, (typeof newPrices)[0]>)
+
+  const keys = new Set([
+    ...Object.keys(initialPriceMap),
+    ...Object.keys(newPriceMap),
+  ])
+
+  for (const key of keys) {
+    const initialPrice = initialPriceMap[key]
+    const newPrice = newPriceMap[key]
+
+    if (initialPrice && newPrice) {
+      if (isNaN(newPrice.amount) && newPrice.id) {
+        pricesToDelete.push(newPrice.id)
+      }
+
+      if (
+        initialPrice.amount !== newPrice.amount ||
+        initialPrice.minQuantity !== newPrice.minQuantity ||
+        initialPrice.maxQuantity !== newPrice.maxQuantity
+      ) {
+        if (newPrice.id) {
+          pricesToUpdate.push({
+            id: newPrice.id,
+            variant_id: newPrice.variantId,
+            currency_code: newPrice.currencyCode,
+            amount: newPrice.amount,
+            min_quantity: newPrice.minQuantity,
+            max_quantity: newPrice.maxQuantity,
+            rules: {
+              ...(newPrice.regionId ? { region_id: newPrice.regionId } : {}),
+            },
+          })
+        }
+      }
+    }
+
+    if (!initialPrice && newPrice) {
+      pricesToCreate.push({
+        variant_id: newPrice.variantId,
+        currency_code: newPrice.currencyCode,
+        amount: newPrice.amount,
+        min_quantity: newPrice.minQuantity,
+        max_quantity: newPrice.maxQuantity,
+        rules: {
+          ...(newPrice.regionId ? { region_id: newPrice.regionId } : {}),
+        },
+      })
+    }
+
+    if (initialPrice && !newPrice && initialPrice.id) {
+      pricesToDelete.push(initialPrice.id)
+    }
+  }
+
+  return { pricesToDelete, pricesToCreate, pricesToUpdate }
+}
+
+export function sortPrices(
+  data: PriceListUpdateProductsSchema,
+  initialValue: PriceListUpdateProductsSchema,
+  regions: HttpTypes.AdminRegion[]
+) {
+  const initialPrices = convertToPriceArray(initialValue, regions)
+  const newPrices = convertToPriceArray(data, regions)
+
+  return comparePrices(initialPrices, newPrices)
+}
+
+export function formatQuantityPrices(
+  prices: { amount?: string; min_quantity?: string; max_quantity?: string; id?: string }[]
+): PriceListUpdateCurrencyPrice[] {
+  return prices
+    .filter((p) => p.amount && p.amount.trim() !== "")
+    .map((p) => ({
+      ...p,
+      amount: castNumber(p.amount!),
+      min_quantity: p.min_quantity ? castNumber(p.min_quantity) : undefined,
+      max_quantity: p.max_quantity ? castNumber(p.max_quantity) : undefined,
+    }))
 }

@@ -8962,6 +8962,73 @@
         "domain": {
           "type": "string"
         },
+        "quantityPricing": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "actions": {
+              "type": "object",
+              "properties": {
+                "addPrice": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "addPrice"
+              ],
+              "additionalProperties": false
+            },
+            "rules": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "type": "string"
+                },
+                "minQuantity": {
+                  "type": "string"
+                },
+                "maxQuantity": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "amount",
+                "minQuantity",
+                "maxQuantity"
+              ],
+              "additionalProperties": false
+            },
+            "errors": {
+              "type": "object",
+              "properties": {
+                "minGreaterThanMax": {
+                  "type": "string"
+                },
+                "mustBePositive": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "minGreaterThanMax",
+                "mustBePositive"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "header",
+            "description",
+            "actions",
+            "rules",
+            "errors"
+          ],
+          "additionalProperties": false
+        },
         "subtitle": {
           "type": "string"
         },

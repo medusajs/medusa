@@ -2455,6 +2455,22 @@
         "successToast": "Prices were successfully updated."
       }
     },
+    "quantityPricing": {
+      "header": "Quantity pricing - {{name}}",
+      "description": "Set different prices based on quantity tiers.",
+      "actions": {
+        "addPrice": "Add price"
+      },
+      "rules": {
+        "amount": "Amount",
+        "minQuantity": "Min quantity",
+        "maxQuantity": "Max quantity"
+      },
+      "errors": {
+        "minGreaterThanMax": "Minimum quantity cannot be greater than maximum quantity",
+        "mustBePositive": "Quantity must be at least 1"
+      }
+    },
     "fields": {
       "priceOverrides": {
         "label": "Price overrides",
