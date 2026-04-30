@@ -2492,13 +2492,13 @@ export default class ProductModuleService
     service: ModulesSdkTypes.IMedusaInternalService<any>,
     selector: object,
     sharedContext: Context,
-    batchSize = 500
+    batchSize = 2000
   ): Promise<T[]> {
     const results: T[] = []
     let skip = 0
     let batch: T[] = []
     do {
-      batch = await service.list(selector, { take: batchSize, skip }, sharedContext)
+      batch = await service.list(selector, { select: ["id"], take: batchSize, skip }, sharedContext)
       results.push(...batch)
       skip += batchSize
     } while (batch.length === batchSize)

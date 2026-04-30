@@ -79,8 +79,7 @@ export default class CartModuleService
     ShippingMethodAdjustment: { dto: CartTypes.ShippingMethodAdjustmentDTO }
     ShippingMethodTaxLine: { dto: CartTypes.ShippingMethodTaxLineDTO }
   }>(generateMethodForModels)
-  implements ICartModuleService
-{
+  implements ICartModuleService {
   protected baseRepository_: DAL.RepositoryService
   protected cartService_: ModulesSdkTypes.IMedusaInternalService<
     InferEntityType<typeof Cart>
@@ -417,27 +416,20 @@ export default class CartModuleService
     } else {
       // Batch list() calls to avoid unbounded memory consumption
       // when a broad selector is passed
-      const BATCH_SIZE = 500
-      let skip = 0
-      let batch: InferEntityType<typeof Cart>[] = []
+      const carts = await this.cartService_.list(
+        { ...dataOrIdOrSelector },
+        {},
+        sharedContext
+      )
+      toUpdate.push(
+        ...carts.map((cart) => ({
+          ...data,
+          ...(data?.currency_code
+            ? { currency_code: normalizeCurrencyCode(data.currency_code) }
+            : {}),
+        }))
+      )
 
-      do {
-        batch = await this.cartService_.list(
-          { ...dataOrIdOrSelector },
-          { select: ["id"], take: BATCH_SIZE, skip },
-          sharedContext
-        )
-        toUpdate.push(
-          ...batch.map((cart) => ({
-            ...data,
-            id: cart.id,
-            ...(data?.currency_code
-              ? { currency_code: normalizeCurrencyCode(data.currency_code) }
-              : {}),
-          }))
-        )
-        skip += BATCH_SIZE
-      } while (batch.length === BATCH_SIZE)
     }
 
     const result = await this.cartService_.update(toUpdate, sharedContext)
@@ -586,11 +578,11 @@ export default class CartModuleService
     const toUpdate = Array.isArray(lineItemIdOrDataOrSelector)
       ? lineItemIdOrDataOrSelector
       : [
-          {
-            selector: lineItemIdOrDataOrSelector,
-            data: data,
-          } as CartTypes.UpdateLineItemWithSelectorDTO,
-        ]
+        {
+          selector: lineItemIdOrDataOrSelector,
+          data: data,
+        } as CartTypes.UpdateLineItemWithSelectorDTO,
+      ]
 
     items = await this.updateLineItemsWithSelector_(
       toUpdate as CartTypes.UpdateLineItemWithSelectorDTO[],
