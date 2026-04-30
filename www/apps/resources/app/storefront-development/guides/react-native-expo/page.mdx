@@ -1250,7 +1250,7 @@ export const ProductCard = React.memo(function ProductCard({ product }: ProductC
       activeOpacity={0.7}
     >
       <Image
-        source={{ uri: thumbnail || "https://via.placeholder.com/200" }}
+        source={{ uri: thumbnail || "https://placehold.co/200" }}
         style={[styles.image, { backgroundColor: colors.imagePlaceholder }]}
         contentFit="cover"
       />
@@ -2860,7 +2860,7 @@ export const CartItem = React.memo(function CartItem({ item, currencyCode, onUpd
   return (
     <View style={[styles.container, { borderBottomColor: colors.icon + "30" }]}>
       <Image
-        source={{ uri: thumbnail || "https://via.placeholder.com/80" }}
+        source={{ uri: thumbnail || "https://placehold.co/80" }}
         style={[styles.image, { backgroundColor: colors.imagePlaceholder }]}
         contentFit="cover"
       />
@@ -5148,7 +5148,7 @@ return (
             ]}
           >
             <Image
-              source={{ uri: item.thumbnail || "https://via.placeholder.com/60" }}
+              source={{ uri: item.thumbnail || "https://placehold.co/60" }}
               style={[styles.itemImage, { backgroundColor: colors.imagePlaceholder }]}
               contentFit="cover"
             />
