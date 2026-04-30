@@ -6,6 +6,15 @@ import {
 import { NextFunction } from "express"
 import { MedusaRequest } from "@medusajs/framework/http"
 
+/**
+ * Creates a middleware that applies price list filtering to product queries.
+ * When a `price_list_id` filter is provided, this middleware converts it to variant-based
+ * filtering by querying prices directly to extract variant IDs associated with the price list.
+ * This optimization avoids hydrating all prices on large price lists, which can be a
+ * significant performance overhead.
+ * 
+ * @returns A middleware function that processes price list filters
+ */
 export function maybeApplyPriceListsFilter() {
   return async function applyPriceListsFilter(
     req: MedusaRequest,
