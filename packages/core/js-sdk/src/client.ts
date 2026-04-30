@@ -9,7 +9,13 @@ import {
   Logger,
 } from "./types.js"
 
+/**
+ * The header name used for the publishable API key.
+ */
 export const PUBLISHABLE_KEY_HEADER = "x-publishable-api-key"
+/**
+ * The storage key used for storing the locale in localStorage.
+ */
 export const LOCALE_STORAGE_KEY = "medusa_locale"
 
 // We want to explicitly retrieve the base URL instead of relying on relative paths that differ in behavior between browsers.
@@ -94,6 +100,9 @@ const normalizeResponse = async (resp: Response, reqHeaders: Headers) => {
   return isJsonRequest ? await resp.json() : resp
 }
 
+/**
+ * Error class for HTTP fetch operations that includes status information.
+ */
 export class FetchError extends Error {
   status: number | undefined
   statusText: string | undefined
@@ -105,6 +114,9 @@ export class FetchError extends Error {
   }
 }
 
+/**
+ * The main HTTP client for the Medusa JS SDK.
+ */
 export class Client {
   public fetch_: ClientFetch
   private config: Config

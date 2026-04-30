@@ -46,11 +46,20 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Trigger release notes generation
+      - name: Trigger draft release generation
         if: steps.changesets.outputs.published == 'true'
-        run: |
-          curl -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/${{ github.repository }}/dispatches \
-            -d '{"event_type":"release-published","client_payload":{"published_packages":${{ steps.changesets.outputs.publishedPackages }}}}'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const packages = JSON.parse('${{ steps.changesets.outputs.publishedPackages }}')
+            const version = packages[0]?.version ?? ''
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'draft-release.yml',
+              ref: 'develop',
+              inputs: {
+                version
+              }
+            })
