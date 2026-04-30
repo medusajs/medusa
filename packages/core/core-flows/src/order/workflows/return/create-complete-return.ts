@@ -364,7 +364,7 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
         "total",
         "item_total",
         "items.*",
-        "shipping_address.*"
+        "shipping_address.*",
       ],
       variables: { id: input.order_id },
       list: false,
