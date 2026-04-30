@@ -81,6 +81,7 @@ export interface PriceListDTO {
   price_list_rules?: PriceListRuleDTO[]
   /**
    * Holds custom data in key-value pairs.
+   * @since 2.14.2
    */
   metadata?: Record<string, unknown> | null
 }
@@ -101,6 +102,11 @@ export interface CreatePriceListPriceDTO extends CreateMoneyAmountDTO {
   rules?: CreatePriceListPriceRules
 }
 
+/**
+ * @interface
+ *
+ * The prices associated with a price list to update.
+ */
 export interface UpdatePriceListPriceDTO extends UpdateMoneyAmountDTO {
   /**
    * The ID of the associated price set.
@@ -170,6 +176,7 @@ export interface CreatePriceListDTO {
   prices?: CreatePriceListPriceDTO[]
   /**
    * Holds custom data in key-value pairs.
+   * @since 2.14.2
    */
   metadata?: Record<string, unknown> | null
 }
@@ -210,6 +217,7 @@ export interface UpdatePriceListDTO {
   rules?: CreatePriceListRules
   /**
    * Holds custom data in key-value pairs.
+   * @since 2.14.2
    */
   metadata?: Record<string, unknown> | null
 }
