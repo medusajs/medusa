@@ -78,13 +78,37 @@ export interface AdminGetOrderDetailsParams extends SelectParams {
   version?: number
 }
 
+/**
+ * The filters to apply when retrieving order changes.
+ */
 export interface AdminOrderChangeParams extends SelectParams {
+  /**
+   * Filter by change status(es).
+   */
   status?: string | string[] | undefined
+  /**
+   * Apply filters on the change's creation date.
+   */
   created_at?: any
+  /**
+   * Filter by change ID(s).
+   */
   id?: string | string[] | undefined
+  /**
+   * Apply filters on the change's update date.
+   */
   updated_at?: any
+  /**
+   * Apply filters on the change's deletion date.
+   */
   deleted_at?: any
+  /**
+   * Filter by change type(s).
+   */
   change_type?: string | string[] | undefined
 }
 
+/**
+ * The filters to apply when retrieving order shipping options.
+ */
 export interface AdminGetOrderShippingOptionList {}
