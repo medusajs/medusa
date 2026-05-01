@@ -89,6 +89,8 @@ medusaIntegrationTestRunner({
         })
 
         it("should create payment sessions with customer", async () => {
+          // Regression (#15152): account_holders may be undefined when the
+          // customer has no linked rows; workflow must treat that as no holders.
           await createPaymentSessionsWorkflow(appContainer).run({
             input: {
               payment_collection_id: paymentCollection.id,
