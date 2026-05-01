@@ -233,7 +233,7 @@ export function convertToPriceArray(
       for (const [currencyCode, currencyPrices] of Object.entries(
         variantCurrencyPrices || {}
       )) {
-        (currencyPrices || []).forEach((currencyPrice) => {
+        ;(currencyPrices || []).forEach((currencyPrice) => {
           if (
             currencyPrice?.amount !== "" &&
             typeof currencyPrice?.amount !== "undefined"
@@ -243,8 +243,12 @@ export function convertToPriceArray(
               currencyCode,
               amount: castNumber(currencyPrice.amount),
               id: currencyPrice.id,
-              minQuantity: currencyPrice.min_quantity ? castNumber(currencyPrice.min_quantity) : undefined,
-              maxQuantity: currencyPrice.max_quantity ? castNumber(currencyPrice.max_quantity) : undefined,
+              minQuantity: currencyPrice.min_quantity
+                ? castNumber(currencyPrice.min_quantity)
+                : undefined,
+              maxQuantity: currencyPrice.max_quantity
+                ? castNumber(currencyPrice.max_quantity)
+                : undefined,
             })
           }
         })
@@ -253,7 +257,7 @@ export function convertToPriceArray(
       for (const [regionId, regionPrices] of Object.entries(
         variantRegionPrices || {}
       )) {
-        (regionPrices || []).forEach((regionPrice) => {
+        ;(regionPrices || []).forEach((regionPrice) => {
           if (
             regionPrice?.amount !== "" &&
             typeof regionPrice?.amount !== "undefined"
@@ -264,8 +268,12 @@ export function convertToPriceArray(
               currencyCode: regionCurrencyMap[regionId],
               amount: castNumber(regionPrice.amount),
               id: regionPrice.id,
-              minQuantity: regionPrice.min_quantity ? castNumber(regionPrice.min_quantity) : undefined,
-              maxQuantity: regionPrice.max_quantity ? castNumber(regionPrice.max_quantity) : undefined,
+              minQuantity: regionPrice.min_quantity
+                ? castNumber(regionPrice.min_quantity)
+                : undefined,
+              maxQuantity: regionPrice.max_quantity
+                ? castNumber(regionPrice.max_quantity)
+                : undefined,
             })
           }
         })
@@ -280,10 +288,15 @@ function createMapKey(obj: PriceObject) {
   if (obj.id) {
     return `id-${obj.id}`
   }
-  return `${obj.variantId}-${obj.currencyCode}-${obj.regionId || "none"}-${obj.amount}-${obj.minQuantity || "none"}-${obj.maxQuantity || "none"}`
+  return `${obj.variantId}-${obj.currencyCode}-${obj.regionId || "none"}-${
+    obj.amount
+  }-${obj.minQuantity || "none"}-${obj.maxQuantity || "none"}`
 }
 
-export function comparePrices(initialPrices: PriceObject[], newPrices: PriceObject[]) {
+export function comparePrices(
+  initialPrices: PriceObject[],
+  newPrices: PriceObject[]
+) {
   const pricesToUpdate: HttpTypes.AdminUpdatePriceListPrice[] = []
   const pricesToCreate: HttpTypes.AdminCreatePriceListPrice[] = []
   const pricesToDelete: string[] = []
@@ -310,9 +323,7 @@ export function comparePrices(initialPrices: PriceObject[], newPrices: PriceObje
     if (initialPrice && newPrice) {
       if (isNaN(newPrice.amount) && newPrice.id) {
         pricesToDelete.push(newPrice.id)
-      }
-
-      if (
+      } else if (
         initialPrice.amount !== newPrice.amount ||
         initialPrice.minQuantity !== newPrice.minQuantity ||
         initialPrice.maxQuantity !== newPrice.maxQuantity
@@ -366,7 +377,12 @@ export function sortPrices(
 }
 
 export function formatQuantityPrices(
-  prices: { amount?: string; min_quantity?: string; max_quantity?: string; id?: string }[]
+  prices: {
+    amount?: string
+    min_quantity?: string
+    max_quantity?: string
+    id?: string
+  }[]
 ): PriceListUpdateCurrencyPrice[] {
   return prices
     .filter((p) => p.amount && p.amount.trim() !== "")

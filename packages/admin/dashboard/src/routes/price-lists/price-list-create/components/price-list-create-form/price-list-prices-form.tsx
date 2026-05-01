@@ -13,6 +13,7 @@ import { PriceListCreateProductVariantsSchema } from "../../../common/schemas"
 import { isProductRow } from "../../../common/utils"
 import { PricingCreateSchemaType } from "./schema"
 import { QuantityPriceForm } from "../../../common/components/quantity-price-form/quantity-price-form"
+import { getCurrencySymbol } from "../../../../../lib/data/currencies"
 
 const QUANTITY_PRICE_MODAL_ID = "quantity-price-form"
 
@@ -32,6 +33,8 @@ export const PriceListPricesForm = ({
   const [editingCell, setEditingCell] = useState<{
     variantId: string
     currencyCode: string
+    regionId?: string
+    productId: string
   } | null>(null)
 
   const { getIsOpen, setIsOpen } = useStackedModal()
@@ -74,9 +77,17 @@ export const PriceListPricesForm = ({
     if (isProductRow(entity)) {
       return
     }
+
+    const isRegionPrice = context.column.id?.startsWith("region_prices")
+    const regionId = isRegionPrice
+      ? context.column.id?.split(".")[1]
+      : undefined
+
     setEditingCell({
       variantId: entity.id,
       currencyCode,
+      regionId,
+      productId: entity.product_id,
     })
     setIsOpen(QUANTITY_PRICE_MODAL_ID, true)
   }
@@ -151,23 +162,23 @@ export const PriceListPricesForm = ({
             currency: {
               code: editingCurrency.currency_code,
               name: editingProduct?.title || "Product",
-              symbol_native: "$",
+              symbol_native: getCurrencySymbol(editingCurrency.currency_code),
               decimal_digits: 2,
             },
             name: editingProduct?.title || "Product",
             prices:
-              (form.getValues("products") as any)?.[editingProduct?.id]
-                ?.variants?.[editingCell.variantId]?.currency_prices?.[
-                editingCell.currencyCode
-              ] || [],
+              (form.getValues("products") as any)?.[editingCell.productId]
+                ?.variants?.[editingCell.variantId]?.[
+                editingCell.regionId ? "region_prices" : "currency_prices"
+              ]?.[editingCell.regionId || editingCell.currencyCode] || [],
           }}
           onClose={handleCloseQuantityModal}
           onSave={(prices) => {
             if (editingProduct) {
-              setValue(
-                `products.${editingProduct.id}.variants.${editingCell.variantId}.currency_prices.${editingCell.currencyCode}`,
-                prices
-              )
+              const path = editingCell.regionId
+                ? `products.${editingCell.productId}.variants.${editingCell.variantId}.region_prices.${editingCell.regionId}`
+                : `products.${editingCell.productId}.variants.${editingCell.variantId}.currency_prices.${editingCell.currencyCode}`
+              setValue(path as any, prices)
             }
             handleCloseQuantityModal()
           }}

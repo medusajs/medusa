@@ -8994,6 +8994,21 @@
                 },
                 "maxQuantity": {
                   "type": "string"
+                },
+                "qty": {
+                  "type": "string"
+                },
+                "pcs": {
+                  "type": "string"
+                },
+                "allQuantities": {
+                  "type": "string"
+                },
+                "min": {
+                  "type": "string"
+                },
+                "max": {
+                  "type": "string"
                 }
               },
               "required": [

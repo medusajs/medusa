@@ -2464,7 +2464,12 @@
       "rules": {
         "amount": "Amount",
         "minQuantity": "Min quantity",
-        "maxQuantity": "Max quantity"
+        "maxQuantity": "Max quantity",
+        "qty": "QTY",
+        "pcs": "PCS",
+        "allQuantities": "All quantities",
+        "min": "Min",
+        "max": "Max"
       },
       "errors": {
         "minGreaterThanMax": "Minimum quantity cannot be greater than maximum quantity",

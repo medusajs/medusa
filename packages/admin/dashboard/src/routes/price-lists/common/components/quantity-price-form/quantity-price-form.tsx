@@ -400,6 +400,7 @@ interface QuantityInputProps {
 }
 
 const QuantityInput = ({ field, label }: QuantityInputProps) => {
+  const { t } = useTranslation()
   const innerRef = useRef<HTMLInputElement>(null)
   const [isActive, setIsActive] = useState(false)
 
@@ -446,7 +447,7 @@ const QuantityInput = ({ field, label }: QuantityInputProps) => {
                     leading="compact"
                     className="text-ui-fg-muted pointer-events-none select-none uppercase"
                   >
-                    QTY
+                    {t("priceLists.quantityPricing.rules.qty")}
                   </Text>
                 </span>
                 <input
@@ -472,7 +473,7 @@ const QuantityInput = ({ field, label }: QuantityInputProps) => {
                     leading="compact"
                     className="text-ui-fg-muted pointer-events-none select-none"
                   >
-                    PCS
+                    {t("priceLists.quantityPricing.rules.pcs")}
                   </Text>
                 </span>
               </div>
@@ -513,6 +514,7 @@ const QuantityDisplay = ({
   index: number
   control: Control<QuantityPriceFormSchemaType>
 }) => {
+  const { t } = useTranslation()
   const min = useWatch({
     control,
     name: `prices.${index}.min_quantity`,
@@ -525,16 +527,16 @@ const QuantityDisplay = ({
   if (!min && !max) {
     return (
       <Text size="small" className="text-ui-fg-subtle">
-        All quantities
+        {t("priceLists.quantityPricing.rules.allQuantities")}
       </Text>
     )
   }
 
   return (
     <Text size="small" className="text-ui-fg-subtle">
-      {min ? `Min: ${min}` : ""}
+      {min ? `${t("priceLists.quantityPricing.rules.min")}: ${min}` : ""}
       {min && max ? " / " : ""}
-      {max ? `Max: ${max}` : ""}
+      {max ? `${t("priceLists.quantityPricing.rules.max")}: ${max}` : ""}
     </Text>
   )
 }
