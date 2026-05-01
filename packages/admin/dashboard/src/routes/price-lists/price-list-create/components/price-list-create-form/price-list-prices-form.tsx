@@ -13,7 +13,10 @@ import { PriceListCreateProductVariantsSchema } from "../../../common/schemas"
 import { isProductRow } from "../../../common/utils"
 import { PricingCreateSchemaType } from "./schema"
 import { QuantityPriceForm } from "../../../common/components/quantity-price-form/quantity-price-form"
-import { getCurrencySymbol } from "../../../../../lib/data/currencies"
+import {
+  getCurrencyDecimalDigits,
+  getCurrencySymbol,
+} from "../../../../../lib/data/currencies"
 
 const QUANTITY_PRICE_MODAL_ID = "quantity-price-form"
 
@@ -163,7 +166,9 @@ export const PriceListPricesForm = ({
               code: editingCurrency.currency_code,
               name: editingProduct?.title || "Product",
               symbol_native: getCurrencySymbol(editingCurrency.currency_code),
-              decimal_digits: 2,
+              decimal_digits: getCurrencyDecimalDigits(
+                editingCurrency.currency_code
+              ),
             },
             name: editingProduct?.title || "Product",
             prices:

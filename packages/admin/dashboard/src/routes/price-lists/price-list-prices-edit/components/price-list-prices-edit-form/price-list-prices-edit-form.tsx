@@ -16,16 +16,14 @@ import {
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useBatchPriceListPrices } from "../../../../../hooks/api/price-lists"
 import { usePriceListGridColumns } from "../../../common/hooks/use-price-list-grid-columns"
-import {
-  PriceListUpdateProductsSchema,
-} from "../../../common/schemas"
+import { PriceListUpdateProductsSchema } from "../../../common/schemas"
 import { QuantityPriceForm } from "../../../common/components/quantity-price-form/quantity-price-form"
 import { PriceListUpdateCurrencyPrice } from "../../../common/schemas"
+import { isProductRow, initRecord, sortPrices } from "../../../common/utils"
 import {
-  isProductRow,
-  initRecord,
-  sortPrices,
-} from "../../../common/utils"
+  getCurrencyDecimalDigits,
+  getCurrencySymbol,
+} from "../../../../../lib/data/currencies"
 
 type PriceListPricesEditFormProps = {
   priceList: HttpTypes.AdminPriceList
@@ -102,15 +100,26 @@ export const PriceListPricesEditForm = ({
 
   const handlePriceCellClick = (context: any, currencyCode: string) => {
     const entity = context.row.original
+
+    if (isProductRow(entity)) {
+      return
+    }
+
     const variantId = entity.id
     const productId = entity.product_id
 
     const isRegionPrice = context.column.id?.startsWith("region_prices")
-    const regionId = isRegionPrice ? context.column.id?.split(".")[1] : undefined
+    const regionId = isRegionPrice
+      ? context.column.id?.split(".")[1]
+      : undefined
 
     const prices = isRegionPrice
-      ? form.getValues(`products.${productId}.variants.${variantId}.region_prices.${regionId}`)
-      : form.getValues(`products.${productId}.variants.${variantId}.currency_prices.${currencyCode}`)
+      ? form.getValues(
+          `products.${productId}.variants.${variantId}.region_prices.${regionId}`
+        )
+      : form.getValues(
+          `products.${productId}.variants.${variantId}.currency_prices.${currencyCode}`
+        )
 
     setSelectedPriceInfo({
       productId,
@@ -187,9 +196,13 @@ export const PriceListPricesEditForm = ({
                 info={{
                   currency: {
                     code: selectedPriceInfo.currencyCode,
-                    name: selectedPriceInfo.name,
-                    symbol_native: "$",
-                    decimal_digits: 2,
+                    name: selectedPriceInfo?.name || "Product",
+                    symbol_native: getCurrencySymbol(
+                      selectedPriceInfo.currencyCode
+                    ),
+                    decimal_digits: getCurrencyDecimalDigits(
+                      selectedPriceInfo.currencyCode
+                    ),
                   },
                   name: selectedPriceInfo.name,
                   prices: selectedPriceInfo.prices,
@@ -216,4 +229,3 @@ export const PriceListPricesEditForm = ({
     </RouteFocusModal.Form>
   )
 }
-
