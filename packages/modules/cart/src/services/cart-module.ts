@@ -414,22 +414,20 @@ export default class CartModuleService
           : {}),
       }))
     } else {
-      // Batch list() calls to avoid unbounded memory consumption
-      // when a broad selector is passed
       const carts = await this.cartService_.list(
         { ...dataOrIdOrSelector },
-        {},
+        { select: ["id"] },
         sharedContext
       )
       toUpdate.push(
         ...carts.map((cart) => ({
+          id: cart.id,
           ...data,
           ...(data?.currency_code
             ? { currency_code: normalizeCurrencyCode(data.currency_code) }
             : {}),
         }))
       )
-
     }
 
     const result = await this.cartService_.update(toUpdate, sharedContext)
