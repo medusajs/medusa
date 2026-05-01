@@ -8,7 +8,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
   moduleName: Modules.CART,
   testSuite: ({ service }) => {
     describe("CartModuleService - batched selector-based updates", () => {
-      const BATCH_SIZE = 500
+      const BATCH_SIZE = 2000
 
       describe("updateCarts() - batching with selector", () => {
         it("should update all carts when selector matches more than BATCH_SIZE records", async () => {

@@ -8,7 +8,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
   moduleName: Modules.PRODUCT,
   testSuite: ({ service }) => {
     describe("ProductModuleService - batched selector-based updates", () => {
-      const BATCH_SIZE = 500
+      const BATCH_SIZE = 2000
 
       afterEach(async () => {
         // Cleanup handled by test runner between suites

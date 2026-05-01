@@ -2492,7 +2492,7 @@ export default class ProductModuleService
     service: ModulesSdkTypes.IMedusaInternalService<any>,
     selector: object,
     sharedContext: Context,
-    batchSize = 2000
+    batchSize = 500
   ): Promise<T[]> {
     const results: T[] = []
     let skip = 0
