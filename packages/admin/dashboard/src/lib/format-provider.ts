@@ -8,11 +8,22 @@
  * @returns A formatted string
  */
 export const formatProvider = (id: string) => {
-  const [_, name, type] = id.split("_")
+  if (id == null || id === "") {
+    return ""
+  }
+
+  const parts = id.split("_")
+  const name = parts[1]
+  if (name == null || name === "") {
+    return id
+  }
+
+  const type = parts[2]
   return (
     name
       .split("-")
-      .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+      .map((s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : ""))
+      .filter(Boolean)
       .join(" ") + (type ? ` (${type.toUpperCase()})` : "")
   )
 }

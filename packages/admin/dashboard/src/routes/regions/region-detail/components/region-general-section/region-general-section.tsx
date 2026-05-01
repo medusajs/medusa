@@ -26,6 +26,11 @@ export const RegionGeneralSection = ({
       preference.attribute === "region_id" && preference.value === region.id
   )
 
+  const currencyCodeUpper = region.currency_code?.toUpperCase() ?? ""
+  const currencyDisplayName = currencyCodeUpper
+    ? (currencies[currencyCodeUpper]?.name ?? region.currency_code)
+    : null
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
@@ -37,10 +42,10 @@ export const RegionGeneralSection = ({
         value={
           <div className="flex items-center gap-x-2">
             <Badge size="2xsmall" className="uppercase">
-              {region.currency_code}
+              {region.currency_code ?? "-"}
             </Badge>
             <Text size="small" leading="compact">
-              {currencies[region.currency_code.toUpperCase()]?.name}
+              {currencyDisplayName ?? "-"}
             </Text>
           </div>
         }
@@ -66,7 +71,9 @@ export const RegionGeneralSection = ({
           <div className="inline-flex">
             {region.payment_providers?.length ? (
               <ListSummary
-                list={region.payment_providers.map((p) => formatProvider(p.id))}
+                list={region.payment_providers.map((p) =>
+                  formatProvider(p.id ?? "")
+                )}
               />
             ) : (
               "-"
