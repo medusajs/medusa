@@ -31,6 +31,8 @@ import { PutObjectCommand } from "@aws-sdk/client-s3"
 import { Upload } from "@aws-sdk/lib-storage"
 import { S3FileService } from "../s3-file"
 
+const UploadMock = Upload as jest.MockedClass<typeof Upload>
+
 describe("S3FileService URL encoding", () => {
   const logger = {
     error: jest.fn(),
@@ -50,7 +52,7 @@ describe("S3FileService URL encoding", () => {
   beforeEach(() => {
     mockS3Send.mockClear()
     mockS3Send.mockResolvedValue({})
-    jest.mocked(Upload).mockClear()
+    UploadMock.mockClear()
   })
 
   it("preserves path separators in upload() URLs (no %2F between prefix segments)", async () => {
@@ -136,8 +138,8 @@ describe("S3FileService URL encoding", () => {
     expect(result.url).toContain("uploads/2024/")
     expect(result.url).toMatch(/my%20document-[^/]+\.jpg$/)
 
-    expect(Upload).toHaveBeenCalledTimes(1)
-    const uploadArgs = jest.mocked(Upload).mock.calls[0][0] as { params: { Key: string } }
+    expect(UploadMock).toHaveBeenCalledTimes(1)
+    const uploadArgs = UploadMock.mock.calls[0][0] as { params: { Key: string } }
     expect(uploadArgs.params.Key).toMatch(/^uploads\/2024\/my document-/)
   })
 })
