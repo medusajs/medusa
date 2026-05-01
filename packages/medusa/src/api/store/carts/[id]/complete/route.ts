@@ -18,7 +18,7 @@ export const POST = async (
   const we = req.scope.resolve(Modules.WORKFLOW_ENGINE)
 
   const { errors, result, transaction } = await we.run(completeCartWorkflowId, {
-    input: { id: cart_id },
+    input: { id: cart_id, allow_empty_cart: false },
     throwOnError: false,
   })
 
