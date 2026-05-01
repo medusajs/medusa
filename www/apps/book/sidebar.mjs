@@ -27,20 +27,41 @@ export const sidebars = [
           },
           {
             type: "link",
-            title: "AI Assistants and LLMs",
+            title: "Architecture",
+            path: "/learn/introduction/architecture",
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Agentic Development",
+        children: [
+          {
+            type: "link",
+            title: "Overview",
             path: "/learn/introduction/build-with-llms-ai",
           },
           {
             type: "link",
-            title: "Architecture",
-            path: "/learn/introduction/architecture",
+            title: "Bloom",
+            path: "/learn/introduction/build-with-llms-ai/bloom",
           },
           {
             type: "link",
-            title: "From v1 to v2",
-            path: "/learn/introduction/from-v1-to-v2",
+            title: "MCP Server",
+            path: "/learn/introduction/build-with-llms-ai/mcp-server",
           },
-        ],
+          {
+            type: "link",
+            title: "Agentic Skills",
+            path: "/learn/introduction/build-with-llms-ai/agentic-skills",
+          },
+          {
+            type: "link",
+            title: "AI-Friendly Docs",
+            path: "/learn/introduction/build-with-llms-ai/ai-friendly-docs",
+          }
+        ]
       },
       {
         type: "category",
@@ -768,6 +789,11 @@ export const sidebars = [
                 path: "/learn/codemods/replace-zod-imports",
               },
             ],
+          },
+          {
+            type: "link",
+            title: "From v1 to v2",
+            path: "/learn/introduction/from-v1-to-v2",
           },
         ],
       },
