@@ -420,14 +420,15 @@ export default class CartModuleService
         sharedContext
       )
       toUpdate.push(
-  ...carts.map((cart) => ({
-    ...data,
-    id: cart.id,
-    ...(data?.currency_code
-      ? { currency_code: normalizeCurrencyCode(data.currency_code) }
-      : {}),
-  }))
-)
+        ...carts.map((cart) => ({
+          ...data,
+          id: cart.id,
+          ...(data?.currency_code
+            ? { currency_code: normalizeCurrencyCode(data.currency_code) }
+            : {}),
+        }))
+      )
+    }
 
     const result = await this.cartService_.update(toUpdate, sharedContext)
     return result
