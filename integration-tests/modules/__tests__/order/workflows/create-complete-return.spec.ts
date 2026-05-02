@@ -491,7 +491,7 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it("should populate delivery_address on the return fulfillment with the order's shipping address", async() => {
+      it("should populate delivery_address on the return fulfillment with the stock location's address", async() => {
         const order = await createOrderFixture({ container, product })
         const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
           {
