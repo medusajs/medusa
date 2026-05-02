@@ -1,28 +1,37 @@
-import { DataGridCurrencyCell } from "./data-grid-currency-cell"
 import { DataGridCellProps } from "../types"
-import { ArrowsPointingOut } from "@medusajs/icons"
+import { CurrencyInfo } from "../../../lib/data/currencies"
+import { useQuantityPrice } from "../../../routes/price-lists/common/components/quantity-price-provider/use-quantity-price"
+import { TieredPriceCell } from "../../table/table-cells/common/tiered-price-cell/tiered-price-cell"
 
 interface DataGridQuantityPriceCellProps<TData, TValue = any>
   extends DataGridCellProps<TData, TValue> {
   code: string
-  onPriceCellClick?: (context: any, currencyCode: string) => void
 }
 
 export const DataGridQuantityPriceCell = <TData, TValue = any>({
   context,
   code,
-  onPriceCellClick,
 }: DataGridQuantityPriceCellProps<TData, TValue>) => {
+  const { onOpenQuantityPricesModal } = useQuantityPrice()
+
+  const handleOpenModal = (field: string, currency: CurrencyInfo) =>
+    onOpenQuantityPricesModal({
+      field,
+      name: "Quantity Price",
+      currency,
+    })
 
   return (
-    <div
-      className="relative flex size-full items-center group"
-      onClick={() => onPriceCellClick?.(context, code)}
-    >
-      <DataGridCurrencyCell code={code} context={context} />
-      <div className="absolute right-1 flex items-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-        <ArrowsPointingOut className="text-ui-fg-muted size-3" />
-      </div>
-    </div>
+    <TieredPriceCell
+      context={context}
+      code={code}
+      getTieredFieldName={(field) => {
+        return field
+          .replace("currency_prices", "conditional_currency_prices")
+          .replace("region_prices", "conditional_region_prices")
+          .replace(/\.0\.amount$/, "")
+      }}
+      onOpenModal={handleOpenModal}
+    />
   )
 }

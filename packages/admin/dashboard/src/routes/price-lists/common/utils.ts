@@ -149,34 +149,37 @@ export function initRecord(
 
     const isRegionPrice = !!price.rules?.region_id
 
+    const isTiered = !!(price.rules?.min_quantity || price.rules?.max_quantity)
+
     if (isRegionPrice) {
       const regionId = price.rules.region_id as string
-
-      variantObject.region_prices = {
-        ...variantObject.region_prices,
-        [regionId]: [
-          ...(variantObject.region_prices?.[regionId] || []),
-          {
-            amount: price.amount.toString(),
-            id: price.id,
-            min_quantity: price.rules?.min_quantity?.toString(),
-            max_quantity: price.rules?.max_quantity?.toString(),
-          },
-        ],
-      }
+      const field = isTiered
+        ? "conditional_region_prices"
+        : ("region_prices"((variantObject[field] = variantObject[field] || {}))[
+            regionId
+          ] = [
+            ...(variantObject[field]?.[regionId] || []),
+            {
+              amount: price.amount.toString(),
+              id: price.id,
+              min_quantity: price.rules?.min_quantity?.toString(),
+              max_quantity: price.rules?.max_quantity?.toString(),
+            },
+          ])
     } else {
-      variantObject.currency_prices = {
-        ...variantObject.currency_prices,
-        [price.currency_code]: [
-          ...(variantObject.currency_prices?.[price.currency_code] || []),
-          {
-            amount: price.amount.toString(),
-            id: price.id,
-            min_quantity: price.rules?.min_quantity?.toString(),
-            max_quantity: price.rules?.max_quantity?.toString(),
-          },
-        ],
-      }
+      const field = isTiered
+        ? "conditional_currency_prices"
+        : ("currency_prices"(
+            (variantObject[field] = variantObject[field] || {})
+          )[price.currency_code] = [
+            ...(variantObject[field]?.[price.currency_code] || []),
+            {
+              amount: price.amount.toString(),
+              id: price.id,
+              min_quantity: price.rules?.min_quantity?.toString(),
+              max_quantity: price.rules?.max_quantity?.toString(),
+            },
+          ])
     }
 
     variants[price.variant_id] = variantObject
@@ -191,6 +194,9 @@ export function initRecord(
           variants[variant.id] = {
             currency_prices: prices.currency_prices || {},
             region_prices: prices.region_prices || {},
+            conditional_currency_prices:
+              prices.conditional_currency_prices || {},
+            conditional_region_prices: prices.conditional_region_prices || {},
           }
           return variants
         }, {} as PriceListUpdateProductVariantsSchema) || {},
@@ -230,54 +236,64 @@ export function convertToPriceArray(
         region_prices: variantRegionPrices,
       } = variant || {}
 
-      for (const [currencyCode, currencyPrices] of Object.entries(
-        variantCurrencyPrices || {}
-      )) {
-        ;(currencyPrices || []).forEach((currencyPrice) => {
-          if (
-            currencyPrice?.amount !== "" &&
-            typeof currencyPrice?.amount !== "undefined"
-          ) {
-            prices.push({
-              variantId,
-              currencyCode,
-              amount: castNumber(currencyPrice.amount),
-              id: currencyPrice.id,
-              minQuantity: currencyPrice.min_quantity
-                ? castNumber(currencyPrice.min_quantity)
-                : undefined,
-              maxQuantity: currencyPrice.max_quantity
-                ? castNumber(currencyPrice.max_quantity)
-                : undefined,
-            })
-          }
-        })
+      const processCurrencyPrices = (currencyPricesMap: any) => {
+        for (const [currencyCode, currencyPrices] of Object.entries(
+          currencyPricesMap || {}
+        )) {
+          ;(currencyPrices || []).forEach((currencyPrice: any) => {
+            if (
+              currencyPrice?.amount !== "" &&
+              typeof currencyPrice?.amount !== "undefined"
+            ) {
+              prices.push({
+                variantId,
+                currencyCode,
+                amount: castNumber(currencyPrice.amount),
+                id: currencyPrice.id,
+                minQuantity: currencyPrice.min_quantity
+                  ? castNumber(currencyPrice.min_quantity)
+                  : undefined,
+                maxQuantity: currencyPrice.max_quantity
+                  ? castNumber(currencyPrice.max_quantity)
+                  : undefined,
+              })
+            }
+          })
+        }
       }
 
-      for (const [regionId, regionPrices] of Object.entries(
-        variantRegionPrices || {}
-      )) {
-        ;(regionPrices || []).forEach((regionPrice) => {
-          if (
-            regionPrice?.amount !== "" &&
-            typeof regionPrice?.amount !== "undefined"
-          ) {
-            prices.push({
-              variantId,
-              regionId,
-              currencyCode: regionCurrencyMap[regionId],
-              amount: castNumber(regionPrice.amount),
-              id: regionPrice.id,
-              minQuantity: regionPrice.min_quantity
-                ? castNumber(regionPrice.min_quantity)
-                : undefined,
-              maxQuantity: regionPrice.max_quantity
-                ? castNumber(regionPrice.max_quantity)
-                : undefined,
-            })
-          }
-        })
+      processCurrencyPrices(variantCurrencyPrices)
+      processCurrencyPrices(variant.conditional_currency_prices)
+
+      const processRegionPrices = (regionPricesMap: any) => {
+        for (const [regionId, regionPrices] of Object.entries(
+          regionPricesMap || {}
+        )) {
+          ;(regionPrices || []).forEach((regionPrice: any) => {
+            if (
+              regionPrice?.amount !== "" &&
+              typeof regionPrice?.amount !== "undefined"
+            ) {
+              prices.push({
+                variantId,
+                regionId,
+                currencyCode: regionCurrencyMap[regionId],
+                amount: castNumber(regionPrice.amount),
+                id: regionPrice.id,
+                minQuantity: regionPrice.min_quantity
+                  ? castNumber(regionPrice.min_quantity)
+                  : undefined,
+                maxQuantity: regionPrice.max_quantity
+                  ? castNumber(regionPrice.max_quantity)
+                  : undefined,
+              })
+            }
+          })
+        }
       }
+
+      processRegionPrices(variantRegionPrices)
+      processRegionPrices(variant.conditional_region_prices)
     }
   }
 

@@ -18,6 +18,7 @@ import { useBatchPriceListPrices } from "../../../../../hooks/api/price-lists"
 import { usePriceListGridColumns } from "../../../common/hooks/use-price-list-grid-columns"
 import { PriceListUpdateProductsSchema } from "../../../common/schemas"
 import { QuantityPriceForm } from "../../../common/components/quantity-price-form/quantity-price-form"
+import { QuantityPriceProvider } from "../../../common/components/quantity-price-provider/quantity-price-provider"
 import { PriceListUpdateCurrencyPrice } from "../../../common/schemas"
 import { isProductRow, initRecord, sortPrices } from "../../../common/utils"
 import {
@@ -98,39 +99,36 @@ export const PriceListPricesEditForm = ({
     )
   })
 
-  const handlePriceCellClick = (context: any, currencyCode: string) => {
-    const entity = context.row.original
+  const handleOpenQuantityPricesModal = ({ field }: { field: string }) => {
+    const parts = field.split(".")
+    const productId = parts[1]
+    const variantId = parts[3]
+    const type = parts[4]
+    const code = parts[5]
 
-    if (isProductRow(entity)) {
-      return
-    }
+    const prices =
+      type === "region_prices"
+        ? form.getValues(
+            `products.${productId}.variants.${variantId}.region_prices.${code}`
+          )
+        : form.getValues(
+            `products.${productId}.variants.${variantId}.currency_prices.${code}`
+          )
 
-    const variantId = entity.id
-    const productId = entity.product_id
-
-    const isRegionPrice = context.column.id?.startsWith("region_prices")
-    const regionId = isRegionPrice
-      ? context.column.id?.split(".")[1]
-      : undefined
-
-    const prices = isRegionPrice
-      ? form.getValues(
-          `products.${productId}.variants.${variantId}.region_prices.${regionId}`
-        )
-      : form.getValues(
-          `products.${productId}.variants.${variantId}.currency_prices.${currencyCode}`
-        )
+    const product = products.find((p) => p.id === productId)
 
     setSelectedPriceInfo({
       productId,
       variantId,
-      currencyCode,
-      regionId,
-      name: `${entity.title} (${currencyCode})`,
+      currencyCode: code,
+      regionId: type === "region_prices" ? code : undefined,
+      name: `${product?.title || "Product"} (${code})`,
       prices: Array.isArray(prices) ? prices : prices ? [prices] : [],
     })
     setIsOpen(QUANTITY_PRICE_MODAL_ID, true)
   }
+
+  const handlePriceCellClick = () => {}
 
   const handleCloseQuantityModal = () => {
     setIsOpen(QUANTITY_PRICE_MODAL_ID, false)
@@ -139,7 +137,9 @@ export const PriceListPricesEditForm = ({
 
   const handleSaveQuantityPrices = (prices: PriceListUpdateCurrencyPrice[]) => {
     const info = selectedPriceInfo
-    if (!info) return
+    if (!info) {
+      return
+    }
 
     const { productId, variantId, currencyCode, regionId } = info
 
@@ -171,47 +171,52 @@ export const PriceListPricesEditForm = ({
       <KeyboundForm onSubmit={handleSubmit} className="flex size-full flex-col">
         <RouteFocusModal.Header />
         <RouteFocusModal.Body className="flex flex-col overflow-hidden">
-          <StackedFocusModal
-            id={QUANTITY_PRICE_MODAL_ID}
-            onOpenChangeCallback={(open) => {
-              if (!open) {
-                setSelectedPriceInfo(null)
-              }
-            }}
+          <QuantityPriceProvider
+            onOpenQuantityPricesModal={handleOpenQuantityPricesModal}
+            onCloseQuantityPricesModal={handleCloseQuantityModal}
           >
-            <DataGrid
-              columns={columns}
-              data={products}
-              getSubRows={(row) => {
-                if (isProductRow(row) && row.variants) {
-                  return row.variants
+            <StackedFocusModal
+              id={QUANTITY_PRICE_MODAL_ID}
+              onOpenChangeCallback={(open) => {
+                if (!open) {
+                  setSelectedPriceInfo(null)
                 }
               }}
-              state={form}
-              onEditingChange={(editing) => setCloseOnEscape(!editing)}
-              disableInteractions={getIsOpen(QUANTITY_PRICE_MODAL_ID)}
-            />
-            {selectedPriceInfo && (
-              <QuantityPriceForm
-                info={{
-                  currency: {
-                    code: selectedPriceInfo.currencyCode,
-                    name: selectedPriceInfo?.name || "Product",
-                    symbol_native: getCurrencySymbol(
-                      selectedPriceInfo.currencyCode
-                    ),
-                    decimal_digits: getCurrencyDecimalDigits(
-                      selectedPriceInfo.currencyCode
-                    ),
-                  },
-                  name: selectedPriceInfo.name,
-                  prices: selectedPriceInfo.prices,
+            >
+              <DataGrid
+                columns={columns}
+                data={products}
+                getSubRows={(row) => {
+                  if (isProductRow(row) && row.variants) {
+                    return row.variants
+                  }
                 }}
-                onClose={handleCloseQuantityModal}
-                onSave={handleSaveQuantityPrices}
+                state={form}
+                onEditingChange={(editing) => setCloseOnEscape(!editing)}
+                disableInteractions={getIsOpen(QUANTITY_PRICE_MODAL_ID)}
               />
-            )}
-          </StackedFocusModal>
+              {selectedPriceInfo && (
+                <QuantityPriceForm
+                  info={{
+                    currency: {
+                      code: selectedPriceInfo.currencyCode,
+                      name: selectedPriceInfo?.name || "Product",
+                      symbol_native: getCurrencySymbol(
+                        selectedPriceInfo.currencyCode
+                      ),
+                      decimal_digits: getCurrencyDecimalDigits(
+                        selectedPriceInfo.currencyCode
+                      ),
+                    },
+                    name: selectedPriceInfo.name,
+                    prices: selectedPriceInfo.prices,
+                  }}
+                  onClose={handleCloseQuantityModal}
+                  onSave={handleSaveQuantityPrices}
+                />
+              )}
+            </StackedFocusModal>
+          </QuantityPriceProvider>
         </RouteFocusModal.Body>
         <RouteFocusModal.Footer>
           <div className="flex items-center justify-end gap-x-2">

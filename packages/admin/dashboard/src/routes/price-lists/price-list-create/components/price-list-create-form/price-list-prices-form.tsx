@@ -13,6 +13,7 @@ import { PriceListCreateProductVariantsSchema } from "../../../common/schemas"
 import { isProductRow } from "../../../common/utils"
 import { PricingCreateSchemaType } from "./schema"
 import { QuantityPriceForm } from "../../../common/components/quantity-price-form/quantity-price-form"
+import { QuantityPriceProvider } from "../../../common/components/quantity-price-provider/quantity-price-provider"
 import {
   getCurrencyDecimalDigits,
   getCurrencySymbol,
@@ -75,22 +76,23 @@ export const PriceListPricesForm = ({
 
   const { setValue } = form
 
-  const handlePriceCellClick = (context: any, currencyCode: string) => {
-    const entity = context.row.original
-    if (isProductRow(entity)) {
-      return
-    }
+  const handleOpenQuantityPricesModal = ({ field }: { field: string }) => {
+    const parts = field.split(".")
+    const productId = parts[1]
+    const variantId = parts[3]
+    const type = parts[4]
+    const code = parts[5]
 
-    const isRegionPrice = context.column.id?.startsWith("region_prices")
-    const regionId = isRegionPrice
-      ? context.column.id?.split(".")[1]
-      : undefined
+    const currencyCode =
+      type === "region_prices"
+        ? regions.find((r) => r.id === code)?.currency_code
+        : code
 
     setEditingCell({
-      variantId: entity.id,
+      variantId,
       currencyCode,
-      regionId,
-      productId: entity.product_id,
+      regionId: type === "region_prices" ? code : undefined,
+      productId,
     })
     setIsOpen(QUANTITY_PRICE_MODAL_ID, true)
   }
@@ -123,6 +125,8 @@ export const PriceListPricesForm = ({
     }
   }, [products, existingProducts, isLoading, setValue])
 
+  const handlePriceCellClick = () => {}
+
   const columns = usePriceListGridColumns({
     currencies,
     regions,
@@ -135,60 +139,67 @@ export const PriceListPricesForm = ({
   }
 
   return (
-    <StackedFocusModal
-      id={QUANTITY_PRICE_MODAL_ID}
-      onOpenChangeCallback={(open) => {
-        if (!open) {
-          setEditingCell(null)
-        }
-      }}
+    <QuantityPriceProvider
+      onOpenQuantityPricesModal={handleOpenQuantityPricesModal}
+      onCloseQuantityPricesModal={handleCloseQuantityModal}
     >
-      <div className="flex size-full flex-col divide-y overflow-hidden">
-        <DataGrid
-          isLoading={isLoading}
-          columns={columns}
-          data={products}
-          getSubRows={(row) => {
-            if (isProductRow(row) && row.variants) {
-              return row.variants
-            }
-          }}
-          state={form}
-          onEditingChange={(editing) => setCloseOnEscape(!editing)}
-          disableInteractions={getIsOpen(QUANTITY_PRICE_MODAL_ID)}
-        />
-      </div>
+      <StackedFocusModal
+        id={QUANTITY_PRICE_MODAL_ID}
+        onOpenChangeCallback={(open) => {
+          if (!open) {
+            setEditingCell(null)
+          }
+        }}
+      >
+        <div className="flex size-full flex-col divide-y overflow-hidden">
+          <DataGrid
+            isLoading={isLoading}
+            columns={columns}
+            data={products}
+            getSubRows={(row) => {
+              if (isProductRow(row) && row.variants) {
+                return row.variants
+              }
+            }}
+            state={form}
+            onEditingChange={(editing) => setCloseOnEscape(!editing)}
+            disableInteractions={getIsOpen(QUANTITY_PRICE_MODAL_ID)}
+          />
+        </div>
 
-      {editingCell && editingCurrency && editingProduct && (
-        <QuantityPriceForm
-          info={{
-            currency: {
-              code: editingCurrency.currency_code,
+        {editingCell && editingCurrency && editingProduct && (
+          <QuantityPriceForm
+            info={{
+              currency: {
+                code: editingCurrency.currency_code,
+                name: editingProduct?.title || "Product",
+                symbol_native: getCurrencySymbol(editingCurrency.currency_code),
+                decimal_digits: getCurrencyDecimalDigits(
+                  editingCurrency.currency_code
+                ),
+              },
               name: editingProduct?.title || "Product",
-              symbol_native: getCurrencySymbol(editingCurrency.currency_code),
-              decimal_digits: getCurrencyDecimalDigits(
-                editingCurrency.currency_code
-              ),
-            },
-            name: editingProduct?.title || "Product",
-            prices:
-              (form.getValues("products") as any)?.[editingCell.productId]
-                ?.variants?.[editingCell.variantId]?.[
-                editingCell.regionId ? "region_prices" : "currency_prices"
-              ]?.[editingCell.regionId || editingCell.currencyCode] || [],
-          }}
-          onClose={handleCloseQuantityModal}
-          onSave={(prices) => {
-            if (editingProduct) {
-              const path = editingCell.regionId
-                ? `products.${editingCell.productId}.variants.${editingCell.variantId}.region_prices.${editingCell.regionId}`
-                : `products.${editingCell.productId}.variants.${editingCell.variantId}.currency_prices.${editingCell.currencyCode}`
-              setValue(path as any, prices)
-            }
-            handleCloseQuantityModal()
-          }}
-        />
-      )}
-    </StackedFocusModal>
+              prices:
+                (form.getValues("products") as any)?.[editingCell.productId]
+                  ?.variants?.[editingCell.variantId]?.[
+                  editingCell.regionId
+                    ? "conditional_region_prices"
+                    : "conditional_currency_prices"
+                ]?.[editingCell.regionId || editingCell.currencyCode] || [],
+            }}
+            onClose={handleCloseQuantityModal}
+            onSave={(prices) => {
+              if (editingProduct) {
+                const path = editingCell.regionId
+                  ? `products.${editingCell.productId}.variants.${editingCell.variantId}.conditional_region_prices.${editingCell.regionId}`
+                  : `products.${editingCell.productId}.variants.${editingCell.variantId}.conditional_currency_prices.${editingCell.currencyCode}`
+                setValue(path as any, prices)
+              }
+              handleCloseQuantityModal()
+            }}
+          />
+        )}
+      </StackedFocusModal>
+    </QuantityPriceProvider>
   )
 }
