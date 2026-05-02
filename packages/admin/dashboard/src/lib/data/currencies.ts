@@ -1,4 +1,3 @@
-/** This file is auto-generated. Do not modify it manually. */
 export type CurrencyInfo = {
   code: string
   name: string
