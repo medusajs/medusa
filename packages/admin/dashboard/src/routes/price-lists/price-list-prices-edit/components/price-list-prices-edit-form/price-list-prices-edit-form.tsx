@@ -106,22 +106,26 @@ export const PriceListPricesEditForm = ({
     const type = parts[4]
     const code = parts[5]
 
-    const prices =
-      type === "region_prices"
-        ? form.getValues(
-            `products.${productId}.variants.${variantId}.region_prices.${code}`
-          )
-        : form.getValues(
-            `products.${productId}.variants.${variantId}.currency_prices.${code}`
-          )
+    const isRegion = type === "region_prices"
+    const conditionalField = isRegion
+      ? "conditional_region_prices"
+      : "conditional_currency_prices"
+
+    const prices = form.getValues(
+      `products.${productId}.variants.${variantId}.${conditionalField}.${code}`
+    )
+
+    const currencyCode = isRegion
+      ? regions.find((r) => r.id === code)?.currency_code ?? code
+      : code
 
     const product = products.find((p) => p.id === productId)
 
     setSelectedPriceInfo({
       productId,
       variantId,
-      currencyCode: code,
-      regionId: type === "region_prices" ? code : undefined,
+      currencyCode,
+      regionId: isRegion ? code : undefined,
       name: `${product?.title || "Product"} (${code})`,
       prices: Array.isArray(prices) ? prices : prices ? [prices] : [],
     })
@@ -145,13 +149,13 @@ export const PriceListPricesEditForm = ({
 
     if (regionId) {
       form.setValue(
-        `products.${productId}.variants.${variantId}.region_prices.${regionId}`,
+        `products.${productId}.variants.${variantId}.conditional_region_prices.${regionId}`,
         prices,
         { shouldDirty: true }
       )
     } else {
       form.setValue(
-        `products.${productId}.variants.${variantId}.currency_prices.${currencyCode}`,
+        `products.${productId}.variants.${variantId}.conditional_currency_prices.${currencyCode}`,
         prices,
         { shouldDirty: true }
       )

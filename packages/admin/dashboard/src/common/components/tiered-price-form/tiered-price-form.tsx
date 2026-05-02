@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Text } from "@medusajs/ui"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+import { z } from "zod"
 import { Form } from "../../../components/common/form"
 import { StackedFocusModal } from "../../../components/modals"
 import { KeyboundForm } from "../../../components/utilities/keybound-form"
@@ -33,13 +34,13 @@ export const TieredPriceForm = <T extends TieredPriceSchema>({
         initialValues.length > 0
           ? initialValues
           : [{ amount: "", [fieldConfig.min]: "", [fieldConfig.max]: "" }],
-    },
+    } as any,
     resolver: zodResolver(schema),
   })
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "prices",
+    name: "prices" as any,
   })
 
   const handleAdd = () => {
@@ -47,7 +48,7 @@ export const TieredPriceForm = <T extends TieredPriceSchema>({
       amount: "",
       [fieldConfig.min]: "",
       [fieldConfig.max]: "",
-    })
+    } as any)
 
     setValue([...value, getRuleValue(fields.length)])
   }

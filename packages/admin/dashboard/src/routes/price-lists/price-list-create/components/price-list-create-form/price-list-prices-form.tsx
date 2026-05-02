@@ -85,7 +85,7 @@ export const PriceListPricesForm = ({
 
     const currencyCode =
       type === "region_prices"
-        ? regions.find((r) => r.id === code)?.currency_code
+        ? regions.find((r) => r.id === code)?.currency_code ?? code
         : code
 
     setEditingCell({

@@ -153,33 +153,29 @@ export function initRecord(
 
     if (isRegionPrice) {
       const regionId = price.rules.region_id as string
-      const field = isTiered
-        ? "conditional_region_prices"
-        : ("region_prices"((variantObject[field] = variantObject[field] || {}))[
-            regionId
-          ] = [
-            ...(variantObject[field]?.[regionId] || []),
-            {
-              amount: price.amount.toString(),
-              id: price.id,
-              min_quantity: price.rules?.min_quantity?.toString(),
-              max_quantity: price.rules?.max_quantity?.toString(),
-            },
-          ])
+      const field = isTiered ? "conditional_region_prices" : "region_prices"
+      ;(variantObject[field] = variantObject[field] || {})[regionId] = [
+        ...(variantObject[field]?.[regionId] || []),
+        {
+          amount: price.amount.toString(),
+          id: price.id,
+          min_quantity: price.rules?.min_quantity?.toString(),
+          max_quantity: price.rules?.max_quantity?.toString(),
+        },
+      ]
     } else {
-      const field = isTiered
-        ? "conditional_currency_prices"
-        : ("currency_prices"(
-            (variantObject[field] = variantObject[field] || {})
-          )[price.currency_code] = [
-            ...(variantObject[field]?.[price.currency_code] || []),
-            {
-              amount: price.amount.toString(),
-              id: price.id,
-              min_quantity: price.rules?.min_quantity?.toString(),
-              max_quantity: price.rules?.max_quantity?.toString(),
-            },
-          ])
+      const field = isTiered ? "conditional_currency_prices" : "currency_prices"
+      ;(variantObject[field] = variantObject[field] || {})[
+        price.currency_code
+      ] = [
+        ...(variantObject[field]?.[price.currency_code] || []),
+        {
+          amount: price.amount.toString(),
+          id: price.id,
+          min_quantity: price.rules?.min_quantity?.toString(),
+          max_quantity: price.rules?.max_quantity?.toString(),
+        },
+      ]
     }
 
     variants[price.variant_id] = variantObject
@@ -240,7 +236,7 @@ export function convertToPriceArray(
         for (const [currencyCode, currencyPrices] of Object.entries(
           currencyPricesMap || {}
         )) {
-          ;(currencyPrices || []).forEach((currencyPrice: any) => {
+          ;((currencyPrices as any[]) || []).forEach((currencyPrice: any) => {
             if (
               currencyPrice?.amount !== "" &&
               typeof currencyPrice?.amount !== "undefined"
@@ -269,7 +265,7 @@ export function convertToPriceArray(
         for (const [regionId, regionPrices] of Object.entries(
           regionPricesMap || {}
         )) {
-          ;(regionPrices || []).forEach((regionPrice: any) => {
+          ;((regionPrices as any[]) || []).forEach((regionPrice: any) => {
             if (
               regionPrice?.amount !== "" &&
               typeof regionPrice?.amount !== "undefined"
