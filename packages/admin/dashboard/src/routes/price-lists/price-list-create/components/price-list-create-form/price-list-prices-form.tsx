@@ -125,13 +125,10 @@ export const PriceListPricesForm = ({
     }
   }, [products, existingProducts, isLoading, setValue])
 
-  const handlePriceCellClick = () => {}
-
   const columns = usePriceListGridColumns({
     currencies,
     regions,
     pricePreferences,
-    onPriceCellClick: handlePriceCellClick,
   })
 
   if (isError) {

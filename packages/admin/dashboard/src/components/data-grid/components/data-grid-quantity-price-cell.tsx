@@ -6,7 +6,6 @@ import { TieredPriceCell } from "../../table/table-cells/common/tiered-price-cel
 interface DataGridQuantityPriceCellProps<TData, TValue = any>
   extends DataGridCellProps<TData, TValue> {
   code: string
-  onPriceCellClick?: (context: any, currencyCode: string) => void
 }
 
 export const DataGridQuantityPriceCell = <TData, TValue = any>({

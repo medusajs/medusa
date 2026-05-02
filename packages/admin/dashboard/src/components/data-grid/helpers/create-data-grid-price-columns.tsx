@@ -21,10 +21,6 @@ type CreateDataGridPriceColumnsProps<
     value: string
   ) => FieldPath<TFieldValues> | null
   t: TFunction
-  onPriceCellClick?: (
-    context: FieldContext<TData>,
-    currencyCode: string
-  ) => void
 }
 
 export const createDataGridPriceColumns = <
@@ -37,7 +33,6 @@ export const createDataGridPriceColumns = <
   isReadyOnly,
   getFieldName,
   t,
-  onPriceCellClick,
 }: CreateDataGridPriceColumnsProps<TData, TFieldValues>): ColumnDef<
   TData,
   unknown
@@ -82,13 +77,7 @@ export const createDataGridPriceColumns = <
             return <DataGridReadonlyCell context={context} />
           }
 
-          return (
-            <DataGridQuantityPriceCell
-              code={currency}
-              context={context}
-              onPriceCellClick={onPriceCellClick}
-            />
-          )
+          return <DataGridQuantityPriceCell code={currency} context={context} />
         },
       })
     }) ?? []),
@@ -138,7 +127,6 @@ export const createDataGridPriceColumns = <
             <DataGridQuantityPriceCell
               code={region.currency_code}
               context={context}
-              onPriceCellClick={onPriceCellClick}
             />
           )
         },

@@ -16,10 +16,12 @@ import {
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useBatchPriceListPrices } from "../../../../../hooks/api/price-lists"
 import { usePriceListGridColumns } from "../../../common/hooks/use-price-list-grid-columns"
-import { PriceListUpdateProductsSchema } from "../../../common/schemas"
+import {
+  PriceListUpdateProductsSchema,
+  PriceListUpdateCurrencyPrice,
+} from "../../../common/schemas"
 import { QuantityPriceForm } from "../../../common/components/quantity-price-form/quantity-price-form"
 import { QuantityPriceProvider } from "../../../common/components/quantity-price-provider/quantity-price-provider"
-import { PriceListUpdateCurrencyPrice } from "../../../common/schemas"
 import { isProductRow, initRecord, sortPrices } from "../../../common/utils"
 import {
   getCurrencyDecimalDigits,
@@ -132,8 +134,6 @@ export const PriceListPricesEditForm = ({
     setIsOpen(QUANTITY_PRICE_MODAL_ID, true)
   }
 
-  const handlePriceCellClick = () => {}
-
   const handleCloseQuantityModal = () => {
     setIsOpen(QUANTITY_PRICE_MODAL_ID, false)
     setSelectedPriceInfo(null)
@@ -167,7 +167,6 @@ export const PriceListPricesEditForm = ({
     currencies,
     regions,
     pricePreferences,
-    onPriceCellClick: handlePriceCellClick,
   })
 
   return (

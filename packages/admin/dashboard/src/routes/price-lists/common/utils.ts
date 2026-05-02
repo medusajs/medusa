@@ -104,27 +104,36 @@ const extractPricesFromVariants = (
     }
   }
 
-  const currencyPrices = Object.entries(variant.currency_prices || {}).flatMap(
-    ([currencyCode, currencyPrices]) => {
-      return (currencyPrices || []).flatMap((currencyPrice) =>
-        currencyPrice?.amount
-          ? [extractPriceDetails(currencyPrice, "currency", currencyCode)]
-          : []
+  const processPrices = (
+    pricesMap:
+      | Record<string, PriceListCreateCurrencyPrice[] | undefined>
+      | undefined,
+    priceType: "region" | "currency"
+  ) => {
+    return Object.entries(pricesMap || {}).flatMap(([id, prices]) => {
+      return (prices || []).flatMap((price) =>
+        price?.amount ? [extractPriceDetails(price, priceType, id)] : []
       )
-    }
+    })
+  }
+
+  const currencyPrices = processPrices(variant.currency_prices, "currency")
+  const conditionalCurrencyPrices = processPrices(
+    variant.conditional_currency_prices,
+    "currency"
+  )
+  const regionPrices = processPrices(variant.region_prices, "region")
+  const conditionalRegionPrices = processPrices(
+    variant.conditional_region_prices,
+    "region"
   )
 
-  const regionPrices = Object.entries(variant.region_prices || {}).flatMap(
-    ([regionId, regionPrices]) => {
-      return (regionPrices || []).flatMap((regionPrice) =>
-        regionPrice?.amount
-          ? [extractPriceDetails(regionPrice, "region", regionId)]
-          : []
-      )
-    }
-  )
-
-  return [...currencyPrices, ...regionPrices]
+  return [
+    ...currencyPrices,
+    ...conditionalCurrencyPrices,
+    ...regionPrices,
+    ...conditionalRegionPrices,
+  ]
 }
 
 export const exctractPricesFromProducts = (
