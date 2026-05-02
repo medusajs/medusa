@@ -19,12 +19,12 @@ export const TieredPriceInput = ({
   const refs = useCombinedRefs(innerRef, ref)
 
   useEffect(() => {
-    if (value !== null && value !== "") {
+    if (value !== toggleValues.inactive) {
       setIsActive(true)
     } else {
       setIsActive(false)
     }
-  }, [value])
+  }, [value, toggleValues.inactive])
 
   const action = () => {
     if (!isActive) {

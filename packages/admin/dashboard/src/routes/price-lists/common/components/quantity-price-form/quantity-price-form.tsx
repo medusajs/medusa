@@ -141,7 +141,7 @@ const QuantityConditionItem = ({
             field={field}
             label={t("priceLists.quantityPricing.rules.minQuantity")}
             toggleValues={{ active: "1", inactive: "" }}
-            renderInput={({ field, value }) => (
+            renderInput={({ field: { onChange, ...fieldProps }, value }) => (
               <div className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover focus-within:bg-ui-bg-field-component-hover shadow-buttons-neutral placeholder-ui-fg-muted text-ui-fg-base transition-fg focus-within:shadow-borders-interactive-with-active relative flex h-8 w-full items-center gap-x-1 overflow-hidden rounded-md">
                 <span className="flex w-fit min-w-[48px] items-center gap-x-1 border-r px-2 py-[9px]">
                   <CubeSolid className="text-ui-fg-muted" />
@@ -159,15 +159,15 @@ const QuantityConditionItem = ({
                   onChange={(e) => {
                     const val = e.target.value.replace(/\D/g, "")
                     if (val === "") {
-                      field.onChange("")
+                      onChange("")
                       return
                     }
                     if (parseInt(val, 10) < 1) {
                       return
                     }
-                    field.onChange(val)
+                    onChange(val)
                   }}
-                  {...field}
+                  {...fieldProps}
                 />
                 <span className="flex w-fit min-w-[32px] items-center justify-center border-l px-2 py-[9px] text-right">
                   <Text
@@ -192,7 +192,7 @@ const QuantityConditionItem = ({
             field={field}
             label={t("priceLists.quantityPricing.rules.maxQuantity")}
             toggleValues={{ active: "1", inactive: "" }}
-            renderInput={({ field, value }) => (
+            renderInput={({ field: { onChange, ...fieldProps }, value }) => (
               <div className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover focus-within:bg-ui-bg-field-component-hover shadow-buttons-neutral placeholder-ui-fg-muted text-ui-fg-base transition-fg focus-within:shadow-borders-interactive-with-active relative flex h-8 w-full items-center gap-x-1 overflow-hidden rounded-md">
                 <span className="flex w-fit min-w-[48px] items-center gap-x-1 border-r px-2 py-[9px]">
                   <CubeSolid className="text-ui-fg-muted" />
@@ -210,15 +210,15 @@ const QuantityConditionItem = ({
                   onChange={(e) => {
                     const val = e.target.value.replace(/\D/g, "")
                     if (val === "") {
-                      field.onChange("")
+                      onChange("")
                       return
                     }
                     if (parseInt(val, 10) < 1) {
                       return
                     }
-                    field.onChange(val)
+                    onChange(val)
                   }}
-                  {...field}
+                  {...fieldProps}
                 />
                 <span className="flex w-fit min-w-[32px] items-center justify-center border-l px-2 py-[9px] text-right">
                   <Text
