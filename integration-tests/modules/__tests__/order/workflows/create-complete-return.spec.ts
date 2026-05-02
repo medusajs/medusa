@@ -526,8 +526,6 @@ medusaIntegrationTestRunner({
 
         expect(returnFulfillment.delivery_address).toEqual(
           expect.objectContaining({
-            first_name: "Test",
-            last_name: "Test",
             address_1: "Test",
             city: "Test",
             country_code: "US",

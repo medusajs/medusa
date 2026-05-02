@@ -142,7 +142,7 @@ function prepareFulfillmentData({
   returnShippingOption: {
     id: string
     provider_id: string
-    service_zone: { fulfillment_set: { location?: { id: string } } }
+    service_zone: { fulfillment_set: { location?: { id: string , address: Record<string, any> } } }
   }
 }) {
   const inputItems = input.items
@@ -173,6 +173,10 @@ function prepareFulfillmentData({
     )
   }
 
+  // delivery address is set to the stock location address
+  const address = returnShippingOption.service_zone.fulfillment_set.location?.address ?? {}
+  delete address.id
+
   return {
     input: {
       location_id: locationId,
@@ -180,7 +184,7 @@ function prepareFulfillmentData({
       shipping_option_id: input.return_shipping?.option_id,
       items: fulfillmentItems,
       labels: input.return_shipping?.labels ?? [],
-      delivery_address: order.shipping_address ?? ({} as any), // TODO: should it be the stock location address?
+      delivery_address: address,
       order: order,
     },
   }
@@ -364,7 +368,6 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
         "total",
         "item_total",
         "items.*",
-        "shipping_address.*",
       ],
       variables: { id: input.order_id },
       list: false,
@@ -400,6 +403,7 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
         "calculated_price.calculated_amount",
         "calculated_price.is_calculated_price_tax_inclusive",
         "service_zone.fulfillment_set.location.id",
+        "service_zone.fulfillment_set.location.address.*", 
       ],
       variables: returnShippingOptionsVariables,
       list: false,
