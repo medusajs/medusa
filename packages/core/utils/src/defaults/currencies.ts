@@ -360,6 +360,15 @@ export const defaultCurrencies: Record<string, Currency> = {
     code: "GEL",
     name_plural: "Georgian laris",
   },
+  GMD: {
+    symbol: "D",
+    name: "Gambian Dalasi",
+    symbol_native: "D",
+    decimal_digits: 2,
+    rounding: 0,
+    code: "GMD",
+    name_plural: "Gambian Dalasis",
+  },
   GHS: {
     symbol: "GH₵",
     name: "Ghanaian Cedi",

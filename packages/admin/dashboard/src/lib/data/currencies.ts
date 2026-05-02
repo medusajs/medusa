@@ -241,6 +241,12 @@ export const currencies: Record<string, CurrencyInfo> = {
     symbol_native: "GEL",
     decimal_digits: 2,
   },
+  GMD: {
+    code: "GMD",
+    name: "Gambian Dalasi",
+    symbol_native: "D",
+    decimal_digits: 2,
+  },
   GHS: {
     code: "GHS",
     name: "Ghanaian Cedi",
