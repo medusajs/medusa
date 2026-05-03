@@ -28,7 +28,21 @@ export async function pgConnectionLoader(): Promise<
   const driverOptions: any = {
     ...(configModule.projectConfig.databaseDriverOptions || {}),
   }
-  const schema = configModule.projectConfig.databaseSchema || "public"
+  // Falls back to the DATABASE_SCHEMA env var so the shared knex
+  // connection's search_path stays in sync with what each module's
+  // `loadDatabaseConfig` resolves to (it reads the same env directly).
+  //
+  // Without this fallback, setting DATABASE_SCHEMA in the environment
+  // without also assigning `projectConfig.databaseSchema` produces the
+  // bug reported in medusajs/medusa#12001 and #769: modules that reuse
+  // the shared connection write to "public" (because the shared knex's
+  // searchPath is "public"), while modules that build their own
+  // connection write to the configured schema. The result is one set
+  // of tables in `public` and another in the requested schema.
+  const schema =
+    configModule.projectConfig.databaseSchema ||
+    process.env.DATABASE_SCHEMA ||
+    "public"
   const idleTimeoutMillis = driverOptions.pool?.idleTimeoutMillis ?? undefined // prevent null to be passed
   const poolMin = driverOptions.pool?.min ?? 2
   const poolMax = driverOptions.pool?.max
