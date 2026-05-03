@@ -125,7 +125,7 @@
     "@medusajs/framework": "2.14.2",
     "@swc/core": "^1.7.28",
     "posthog-node": "^5.11.0",
-    "react-dom": "^18.3.1",
+    "react-dom": "^18.3.1 || ^19.0.0",
     "yalc": "^1.0.0-pre.53"
   },
   "peerDependenciesMeta": {
