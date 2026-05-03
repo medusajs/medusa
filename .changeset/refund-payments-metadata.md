@@ -4,7 +4,7 @@
 "@medusajs/types": patch
 ---
 
-fix(payment): expose `metadata` on refund creation through `refundPaymentsWorkflow`
+fix(core-flows, payment, types): expose `metadata` on refund creation through `refundPaymentsWorkflow`
 
 The `Refund` data model supports a `metadata` field, but it was not exposed on
 `CreateRefundDTO`, `RefundPaymentsStepInput`, or `RefundPaymentsWorkflowInput`,
