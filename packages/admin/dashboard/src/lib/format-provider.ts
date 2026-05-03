@@ -8,7 +8,13 @@
  * @returns A formatted string
  */
 export const formatProvider = (id: string) => {
-  const [_, name, type] = id.split("_")
+  const parts = id.split("_")
+
+  if (parts.length < 2) {
+    return id.charAt(0).toUpperCase() + id.slice(1)
+  }
+
+  const [_, name, type] = parts
   return (
     name
       .split("-")

@@ -52,8 +52,8 @@ export const useCountries = ({
     const query = q.toLowerCase()
     const results = countries.filter(
       (c) =>
-        c.name.toLowerCase().includes(query) ||
-        c.iso_2.toLowerCase().includes(query)
+        c.name?.toLowerCase().includes(query) ||
+        c.iso_2?.toLowerCase().includes(query)
     )
     return {
       countries: results,

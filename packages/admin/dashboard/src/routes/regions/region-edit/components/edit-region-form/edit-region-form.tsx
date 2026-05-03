@@ -47,7 +47,7 @@ export const EditRegionForm = ({
   const form = useForm<zod.infer<typeof EditRegionSchema>>({
     defaultValues: {
       name: region.name,
-      currency_code: region.currency_code.toUpperCase(),
+      currency_code: region.currency_code?.toUpperCase() ?? "",
       payment_providers: region.payment_providers?.map((pp) => pp.id) || [],
       automatic_taxes: region.automatic_taxes,
       is_tax_inclusive: pricePreferenceForRegion?.is_tax_inclusive || false,
