@@ -191,6 +191,12 @@ export const useUpdateProductVariantsBatch = (
       queryClient.invalidateQueries({
         queryKey: productsQueryKeys.detail(productId),
       })
+      queryClient.invalidateQueries({
+        queryKey: inventoryItemsQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.lists(),
+      })
 
       options?.onSuccess?.(data, variables, context)
     },
