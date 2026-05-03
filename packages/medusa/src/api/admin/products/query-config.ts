@@ -104,10 +104,27 @@ export const defaultAdminProductFields = [
 ]
 
 /**
+ * Default fields for admin products when variants shouldn't be eagerly refetched.
+ */
+export const defaultAdminProductFieldsWithoutVariants =
+  defaultAdminProductFields.filter((field) => {
+    return field !== "*variants" && !field.startsWith("*variants.") && !field.startsWith("variants.")
+  })
+
+/**
  * Query configuration for retrieving a single product.
  */
 export const retrieveProductQueryConfig = {
   defaults: defaultAdminProductFields,
+  isList: false,
+  entity: Entities.product,
+}
+
+/**
+ * Query configuration for retrieving a single product without variants.
+ */
+export const retrieveProductWithoutVariantsQueryConfig = {
+  defaults: defaultAdminProductFieldsWithoutVariants,
   isList: false,
   entity: Entities.product,
 }
