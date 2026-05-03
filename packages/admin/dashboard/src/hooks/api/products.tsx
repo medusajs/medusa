@@ -215,6 +215,9 @@ export const useProductVariantsInventoryItemsBatch = (
       queryClient.invalidateQueries({
         queryKey: productsQueryKeys.detail(productId),
       })
+      queryClient.invalidateQueries({
+        queryKey: inventoryItemsQueryKeys.lists(),
+      })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -235,10 +238,6 @@ export const useDeleteVariant = (
       queryClient.invalidateQueries({
         queryKey: productsQueryKeys.detail(productId),
       })
-      queryClient.invalidateQueries({
-        queryKey: inventoryItemsQueryKeys.lists(),
-      })
-
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
