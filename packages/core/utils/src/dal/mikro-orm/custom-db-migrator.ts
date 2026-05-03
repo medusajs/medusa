@@ -41,12 +41,18 @@ export class CustomDBMigrator extends BaseMigrator {
       if (customSchema) {
         const up = instance.up
         const down = instance.down
+        // Queue `SET LOCAL search_path` as the first statement of the
+        // migration's transaction (instead of running it ahead of time
+        // on the migrator driver, which goes to a different pool
+        // connection and never affects the migration's own transaction).
+        // Without this, unqualified DDL like `CREATE TABLE foo` falls
+        // through to `public` even when `databaseSchema` is set.
         instance.up = async function (...args) {
-          this.driver.execute(`SET LOCAL search_path TO ${customSchema}`)
+          this.addSql(`SET LOCAL search_path TO ${customSchema}`)
           return up.bind(this)(...args)
         }
         instance.down = async function (...args) {
-          this.driver.execute(`SET LOCAL search_path TO ${customSchema}`)
+          this.addSql(`SET LOCAL search_path TO ${customSchema}`)
           return down.bind(this)(...args)
         }
       }
