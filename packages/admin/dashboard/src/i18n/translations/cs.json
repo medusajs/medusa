@@ -1432,14 +1432,14 @@
         "itemsLabel": "Položky"
       },
       "refund": {
-        "title": "Vytvořit vratka",
-        "sendNotificationHint": "Oznámit zákazníkům o vytvořeném vratka.",
+        "title": "Vytvořit vrátku",
+        "sendNotificationHint": "Oznámit zákazníkům o vytvořené vrátce.",
         "systemPayment": "Systémová platba",
-        "systemPaymentDesc": "Jedna nebo více vašich plateb je systémová platba. Upozorňujeme, že příjem platby ani vratka nejsou zpracovávány Medusou pro takové platby.",
+        "systemPaymentDesc": "Jedna nebo více vašich plateb je systémová platba. Upozorňujeme, že příjem platby ani vratky nejsou zpracovávány Medusou pro takové platby.",
         "error": {
           "amountToLarge": "Nelze vrátit více než původní částku objednávky.",
           "amountNegative": "Částka k vrácení musí být kladné číslo.",
-          "reasonRequired": "Prosím vyberte důvod vratka."
+          "reasonRequired": "Prosím vyberte důvod vrátky."
         }
       },
       "customer": {
@@ -2870,7 +2870,7 @@
     },
     "login": {
       "forgotPassword": "Zapomněli jste heslo? - <0>Obnovit</0>",
-      "title": "Vítejte v Jamai Cafe",
+      "title": "Vítejte v Meduse",
       "hint": "Přihlaste se pro přístup do administrace"
     },
     "invite": {
@@ -3258,13 +3258,13 @@
       }
     },
     "refundReasons": {
-      "domain": "Důvody vratka",
+      "domain": "Důvody vrátky",
       "subtitle": "Spravujte důvody pro vracení peněz.",
       "calloutHint": "Spravujte důvody pro kategorizaci vratek.",
       "editReason": "Upravit důvod vrácení",
       "create": {
         "header": "Přidat důvod vrácení",
-        "subtitle": "Specifikujte nejčastější důvody pro vratka.",
+        "subtitle": "Specifikujte nejčastější důvody pro vrátky.",
         "hint": "Vytvořte nový důvod vrácení pro kategorizaci vratek.",
         "successToast": "Důvod vrácení {{label}} byl úspěšně vytvořen."
       },
