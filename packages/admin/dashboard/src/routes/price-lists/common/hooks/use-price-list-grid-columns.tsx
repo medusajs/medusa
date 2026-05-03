@@ -9,6 +9,7 @@ import {
   DataGrid,
 } from "../../../../components/data-grid"
 import { createDataGridPriceColumns } from "../../../../components/data-grid/helpers/create-data-grid-price-columns"
+import { DataGridQuantityPriceCell } from "../../../../components/data-grid/components/data-grid-quantity-price-cell"
 import { PricingCreateSchemaType } from "../../price-list-create/components/price-list-create-form/schema"
 import { isProductRow } from "../utils"
 
@@ -65,6 +66,9 @@ export const usePriceListGridColumns = ({
         currencies: currencies.map((c) => c.currency_code),
         regions,
         pricePreferences,
+        renderPriceCell: (code, context) => (
+          <DataGridQuantityPriceCell code={code} context={context} />
+        ),
         isReadyOnly: (context) => {
           const entity = context.row.original
           return isProductRow(entity)
