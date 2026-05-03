@@ -525,12 +525,12 @@ medusaIntegrationTestRunner({
         const remoteQueryObject = remoteQueryObjectFromString({
           entryPoint: "return",
           variables: { id: returnResult.id },
-          fields: ["id", "fulfillment.id", "fulfillment.delivery_address.*"],
+          fields: ["id", "fulfillments.id", "fulfillments.delivery_address.*"],
         })
 
         const [returnWithFulfillment] = await remoteQuery(remoteQueryObject)
 
-        expect(returnWithFulfillment.fulfillment.delivery_address).toEqual(
+        expect(returnWithFulfillment.fulfillments[0].delivery_address).toEqual(
           expect.objectContaining({
             first_name: "Test",
             last_name: "Test",
