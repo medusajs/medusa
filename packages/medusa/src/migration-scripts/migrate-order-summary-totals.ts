@@ -1,205 +1,195 @@
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
-import { ExecArgs } from "@medusajs/framework/types"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import { IOrderModuleService } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+  createRawPropertiesFromBigNumber,
+  decorateCartTotals,
+  Modules,
+} from "@medusajs/framework/utils"
+import {
+  createStep,
+  createWorkflow,
+  StepResponse,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { ExecArgs } from "@medusajs/types"
+
+type SummaryRecord = {
+  id: string
+  order_id: string
+  version: number
+  totals: Record<string, any> | null
+}
+
+const retrieveOrderSummariesMissingTotalsStep = createStep(
+  "retrieve-order-summaries-missing-totals",
+  async (_, { container }) => {
+    const knex = container.resolve(ContainerRegistrationKeys.PG_CONNECTION)
+
+    // We join with the order table to only fetch summaries for the CURRENT
+    // version of each order. Older versions cannot be accurately recomputed
+    // since listOrders always returns the order at its current state.
+    const records: SummaryRecord[] = await knex("order_summary as os")
+      .join("order as o", function () {
+        this.on("o.id", "=", "os.order_id").andOnNull("o.deleted_at")
+      })
+      .whereNull("os.deleted_at")
+      .whereRaw("os.version = o.version")
+      .where((builder) => {
+        builder
+          .whereNull("os.totals")
+          .orWhereRaw("NOT jsonb_exists(os.totals, 'subtotal')")
+          .orWhereRaw("NOT jsonb_exists(os.totals, 'tax_total')")
+          .orWhereRaw("NOT jsonb_exists(os.totals, 'original_tax_total')")
+          .orWhereRaw("NOT jsonb_exists(os.totals, 'shipping_total')")
+          .orWhereRaw("NOT jsonb_exists(os.totals, 'original_shipping_total')")
+          .orWhereRaw("NOT jsonb_exists(os.totals, 'discount_total')")
+          .orWhereRaw("NOT jsonb_exists(os.totals, 'discount_tax_total')")
+      })
+      .select("os.id", "os.order_id", "os.version", "os.totals")
+
+    return new StepResponse(records)
+  }
+)
+
+const backfillOrderSummaryTotalsStep = createStep(
+  "backfill-order-summary-totals",
+  async (records: SummaryRecord[], { container }) => {
+    if (!records.length) {
+      return new StepResponse(0, [])
+    }
+
+    const knex = container.resolve(ContainerRegistrationKeys.PG_CONNECTION)
+    const orderService: IOrderModuleService = container.resolve(Modules.ORDER)
+
+    const previousTotals: { id: string; totals: SummaryRecord["totals"] }[] =
+      []
+
+    // Batch-fetch all orders in one query instead of one per record.
+    // Including "total" in select triggers shouldIncludeTotals(), which
+    // automatically loads items, items.tax_lines, items.adjustments,
+    // shipping_methods, shipping_methods.tax_lines, shipping_methods.adjustments
+    // — everything decorateCartTotals needs to compute accurate totals.
+    const orderIds = records.map((r) => r.order_id)
+    const orders = await orderService.listOrders(
+      { id: orderIds },
+      {
+        select: [
+          "id",
+          "currency_code",
+          "total",
+          "subtotal",
+          "tax_total",
+          "shipping_total",
+          "discount_total",
+        ],
+      }
+    )
+    const ordersById = new Map(orders.map((o) => [o.id, o]))
+
+    for (const record of records) {
+      const order = ordersById.get(record.order_id)
+
+      if (!order) {
+        continue
+      }
+
+      previousTotals.push({ id: record.id, totals: record.totals })
+
+      // decorateCartTotals computes all breakdown fields (subtotal, tax_total,
+      // shipping_total, discount_total, etc.) using Medusa's own pricing logic,
+      // correctly handling tax-inclusive prices, adjustments, and deleted rows.
+      const orderWithTotals = decorateCartTotals(order as any)
+
+      createRawPropertiesFromBigNumber(orderWithTotals)
+
+      const existingTotals = record.totals ?? {}
+
+      const newTotals = {
+        ...existingTotals,
+        subtotal:
+          existingTotals.subtotal ?? (orderWithTotals as any).subtotal,
+        tax_total:
+          existingTotals.tax_total ?? (orderWithTotals as any).tax_total,
+        original_tax_total:
+          existingTotals.original_tax_total ??
+          (orderWithTotals as any).original_tax_total,
+        shipping_total:
+          existingTotals.shipping_total ??
+          (orderWithTotals as any).shipping_total,
+        original_shipping_total:
+          existingTotals.original_shipping_total ??
+          (orderWithTotals as any).original_shipping_total,
+        discount_total:
+          existingTotals.discount_total ??
+          (orderWithTotals as any).discount_total,
+        discount_tax_total:
+          existingTotals.discount_tax_total ??
+          (orderWithTotals as any).discount_tax_total,
+        raw_subtotal:
+          existingTotals.raw_subtotal ??
+          (orderWithTotals as any).raw_subtotal,
+        raw_tax_total:
+          existingTotals.raw_tax_total ??
+          (orderWithTotals as any).raw_tax_total,
+        raw_original_tax_total:
+          existingTotals.raw_original_tax_total ??
+          (orderWithTotals as any).raw_original_tax_total,
+        raw_shipping_total:
+          existingTotals.raw_shipping_total ??
+          (orderWithTotals as any).raw_shipping_total,
+        raw_original_shipping_total:
+          existingTotals.raw_original_shipping_total ??
+          (orderWithTotals as any).raw_original_shipping_total,
+        raw_discount_total:
+          existingTotals.raw_discount_total ??
+          (orderWithTotals as any).raw_discount_total,
+        raw_discount_tax_total:
+          existingTotals.raw_discount_tax_total ??
+          (orderWithTotals as any).raw_discount_tax_total,
+      }
+
+      await knex("order_summary")
+        .where("id", record.id)
+        .update({ totals: JSON.stringify(newTotals) })
+    }
+
+    return new StepResponse(records.length, previousTotals)
+  },
+  async (previousTotals, { container }) => {
+    if (!previousTotals?.length) {
+      return
+    }
+
+    const knex = container.resolve(ContainerRegistrationKeys.PG_CONNECTION)
+
+    for (const { id, totals } of previousTotals) {
+      await knex("order_summary")
+        .where("id", id)
+        .update({ totals: totals ? JSON.stringify(totals) : null })
+    }
+  }
+)
+
+const migrateOrderSummaryTotalsWorkflow = createWorkflow(
+  "migrate-order-summary-totals",
+  () => {
+    const summaries = retrieveOrderSummariesMissingTotalsStep()
+    backfillOrderSummaryTotalsStep(summaries)
+    return new WorkflowResponse(void 0)
+  }
+)
 
 export default async function migrateOrderSummaryTotals({
   container,
 }: ExecArgs) {
-  const knex = container.resolve(ContainerRegistrationKeys.PG_CONNECTION)
+  if (!MedusaModule.isInstalled(Modules.ORDER)) {
+    return
+  }
 
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
-  logger.info("Backfilling order summary breakdown totals")
-
-  await knex.transaction(async (trx) => {
-    await trx.raw(`
-      WITH summary_rows AS (
-        SELECT
-          id,
-          order_id,
-          version,
-          COALESCE(totals, '{}'::jsonb) AS totals
-        FROM "order_summary"
-        WHERE deleted_at IS NULL
-          AND (
-            totals IS NULL
-            OR NOT totals ? 'subtotal'
-            OR NOT totals ? 'tax_total'
-            OR NOT totals ? 'original_tax_total'
-            OR NOT totals ? 'shipping_total'
-            OR NOT totals ? 'original_shipping_total'
-            OR NOT totals ? 'discount_total'
-            OR NOT totals ? 'discount_tax_total'
-          )
-      ),
-      line_item_adjustments AS (
-        SELECT
-          item_id,
-          version,
-          SUM(
-            CASE
-              WHEN is_tax_inclusive = true THEN amount / (1 + tax_rate)
-              ELSE amount
-            END
-          ) AS discount_subtotal
-        FROM (
-          SELECT
-            adj.item_id,
-            adj.version,
-            adj.amount,
-            adj.is_tax_inclusive,
-            COALESCE(SUM(tax.rate), 0) / 100 AS tax_rate
-          FROM "order_line_item_adjustment" adj
-          LEFT JOIN "order_line_item_tax_line" tax ON tax.item_id = adj.item_id
-          GROUP BY adj.id, adj.item_id, adj.version, adj.amount, adj.is_tax_inclusive
-        ) adjustment_totals
-        GROUP BY item_id, version
-      ),
-      line_item_totals AS (
-        SELECT
-          sr.id AS summary_id,
-          SUM(amounts.subtotal) AS item_subtotal,
-          SUM(taxes.tax_total) AS item_tax_total,
-          SUM(taxes.original_tax_total) AS item_original_tax_total,
-          SUM(discount_totals.discount_total) AS item_discount_total,
-          SUM(discounts.discount_tax_total) AS item_discount_tax_total
-        FROM summary_rows sr
-        JOIN "order_item" oi ON oi.order_id = sr.order_id
-          AND oi.version = sr.version
-          AND oi.deleted_at IS NULL
-        JOIN "order_line_item" oli ON oli.id = oi.item_id
-        LEFT JOIN line_item_adjustments lia ON lia.item_id = oi.item_id
-          AND lia.version = oi.version
-        LEFT JOIN LATERAL (
-          SELECT COALESCE(SUM(rate), 0) / 100 AS tax_rate
-          FROM "order_line_item_tax_line"
-          WHERE item_id = oi.item_id
-        ) tax ON true
-        CROSS JOIN LATERAL (
-          SELECT
-            GREATEST(
-              oi.quantity - COALESCE(oi.return_received_quantity, 0) - COALESCE(oi.return_dismissed_quantity, 0),
-              0
-            ) AS current_quantity
-        ) quantity
-        CROSS JOIN LATERAL (
-          SELECT
-            CASE
-              WHEN oli.is_tax_inclusive = true THEN (oli.unit_price * quantity.current_quantity) / (1 + tax.tax_rate)
-              ELSE oli.unit_price * quantity.current_quantity
-            END AS subtotal,
-            CASE
-              WHEN oi.quantity = 0 THEN 0
-              ELSE COALESCE(lia.discount_subtotal, 0) / oi.quantity * quantity.current_quantity
-            END AS discount_subtotal
-        ) amounts
-        CROSS JOIN LATERAL (
-          SELECT
-            amounts.subtotal * tax.tax_rate AS original_tax_total,
-            (amounts.subtotal - amounts.discount_subtotal) * tax.tax_rate AS tax_total
-        ) taxes
-        CROSS JOIN LATERAL (
-          SELECT
-            taxes.original_tax_total - taxes.tax_total AS discount_tax_total
-        ) discounts
-        CROSS JOIN LATERAL (
-          SELECT
-            amounts.discount_subtotal + discounts.discount_tax_total AS discount_total
-        ) discount_totals
-        GROUP BY sr.id
-      ),
-      shipping_adjustments AS (
-        SELECT
-          shipping_method_id,
-          version,
-          SUM(amount) AS discount_subtotal
-        FROM "order_shipping_method_adjustment"
-        GROUP BY shipping_method_id, version
-      ),
-      shipping_totals AS (
-        SELECT
-          sr.id AS summary_id,
-          SUM(totals.shipping_total) AS shipping_total,
-          SUM(totals.original_shipping_total) AS original_shipping_total,
-          SUM(taxes.tax_total) AS shipping_tax_total,
-          SUM(taxes.original_tax_total) AS shipping_original_tax_total,
-          SUM(totals.discount_total) AS shipping_discount_total,
-          SUM(discounts.discount_tax_total) AS shipping_discount_tax_total
-        FROM summary_rows sr
-        JOIN "order_shipping" os ON os.order_id = sr.order_id
-          AND os.version = sr.version
-          AND os.deleted_at IS NULL
-        JOIN "order_shipping_method" osm ON osm.id = os.shipping_method_id
-        LEFT JOIN shipping_adjustments sa ON sa.shipping_method_id = os.shipping_method_id
-          AND sa.version = os.version
-        LEFT JOIN LATERAL (
-          SELECT COALESCE(SUM(rate), 0) / 100 AS tax_rate
-          FROM "order_shipping_method_tax_line"
-          WHERE shipping_method_id = os.shipping_method_id
-        ) tax ON true
-        CROSS JOIN LATERAL (
-          SELECT
-            CASE
-              WHEN osm.is_tax_inclusive = true THEN osm.amount / (1 + tax.tax_rate)
-              ELSE osm.amount
-            END AS subtotal,
-            COALESCE(sa.discount_subtotal, 0) AS discount_subtotal
-        ) amounts
-        CROSS JOIN LATERAL (
-          SELECT
-            amounts.subtotal * tax.tax_rate AS original_tax_total,
-            (amounts.subtotal - amounts.discount_subtotal) * tax.tax_rate AS tax_total
-        ) taxes
-        CROSS JOIN LATERAL (
-          SELECT
-            taxes.original_tax_total - taxes.tax_total AS discount_tax_total
-        ) discounts
-        CROSS JOIN LATERAL (
-          SELECT
-            amounts.subtotal - amounts.discount_subtotal + taxes.tax_total AS shipping_total,
-            CASE
-              WHEN osm.is_tax_inclusive = true THEN osm.amount
-              ELSE amounts.subtotal + taxes.original_tax_total
-            END AS original_shipping_total,
-            amounts.discount_subtotal + discounts.discount_tax_total AS discount_total
-        ) totals
-        GROUP BY sr.id
-      ),
-      backfill_totals AS (
-        SELECT
-          sr.id,
-          COALESCE(li.item_subtotal, 0) + COALESCE(sh.shipping_total, 0) - COALESCE(sh.shipping_tax_total, 0) + COALESCE(sh.shipping_discount_total, 0) - COALESCE(sh.shipping_discount_tax_total, 0) AS subtotal,
-          COALESCE(li.item_tax_total, 0) + COALESCE(sh.shipping_tax_total, 0) AS tax_total,
-          COALESCE(li.item_original_tax_total, 0) + COALESCE(sh.shipping_original_tax_total, 0) AS original_tax_total,
-          COALESCE(sh.shipping_total, 0) AS shipping_total,
-          COALESCE(sh.original_shipping_total, 0) AS original_shipping_total,
-          COALESCE(li.item_discount_total, 0) + COALESCE(sh.shipping_discount_total, 0) AS discount_total,
-          COALESCE(li.item_discount_tax_total, 0) + COALESCE(sh.shipping_discount_tax_total, 0) AS discount_tax_total
-        FROM summary_rows sr
-        LEFT JOIN line_item_totals li ON li.summary_id = sr.id
-        LEFT JOIN shipping_totals sh ON sh.summary_id = sr.id
-      )
-      UPDATE "order_summary" os
-      SET totals = sr.totals || jsonb_build_object(
-        'subtotal', COALESCE(sr.totals->'subtotal', to_jsonb(bt.subtotal)),
-        'tax_total', COALESCE(sr.totals->'tax_total', to_jsonb(bt.tax_total)),
-        'original_tax_total', COALESCE(sr.totals->'original_tax_total', to_jsonb(bt.original_tax_total)),
-        'shipping_total', COALESCE(sr.totals->'shipping_total', to_jsonb(bt.shipping_total)),
-        'original_shipping_total', COALESCE(sr.totals->'original_shipping_total', to_jsonb(bt.original_shipping_total)),
-        'discount_total', COALESCE(sr.totals->'discount_total', to_jsonb(bt.discount_total)),
-        'discount_tax_total', COALESCE(sr.totals->'discount_tax_total', to_jsonb(bt.discount_tax_total)),
-        'raw_subtotal', COALESCE(sr.totals->'raw_subtotal', jsonb_build_object('value', bt.subtotal::text, 'precision', 20)),
-        'raw_tax_total', COALESCE(sr.totals->'raw_tax_total', jsonb_build_object('value', bt.tax_total::text, 'precision', 20)),
-        'raw_original_tax_total', COALESCE(sr.totals->'raw_original_tax_total', jsonb_build_object('value', bt.original_tax_total::text, 'precision', 20)),
-        'raw_shipping_total', COALESCE(sr.totals->'raw_shipping_total', jsonb_build_object('value', bt.shipping_total::text, 'precision', 20)),
-        'raw_original_shipping_total', COALESCE(sr.totals->'raw_original_shipping_total', jsonb_build_object('value', bt.original_shipping_total::text, 'precision', 20)),
-        'raw_discount_total', COALESCE(sr.totals->'raw_discount_total', jsonb_build_object('value', bt.discount_total::text, 'precision', 20)),
-        'raw_discount_tax_total', COALESCE(sr.totals->'raw_discount_tax_total', jsonb_build_object('value', bt.discount_tax_total::text, 'precision', 20))
-      )
-      FROM summary_rows sr
-      JOIN backfill_totals bt ON bt.id = sr.id
-      WHERE os.id = sr.id
-    `)
-  })
-
-  logger.info("Order summary breakdown totals backfilled successfully")
+  logger.info("Starting backfill of order summary breakdown totals...")
+  await migrateOrderSummaryTotalsWorkflow(container).run()
+  logger.info("Finished backfill of order summary breakdown totals.")
 }
