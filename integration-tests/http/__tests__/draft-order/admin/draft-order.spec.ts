@@ -807,6 +807,97 @@ medusaIntegrationTestRunner({
 
         expect(reservations.length).toBe(0)
       })
+
+      it("should update item metadata", async () => {
+        // Create edit
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit`,
+          {},
+          adminHeaders
+        )
+
+        // Add item with initial metadata
+        let orderPreview = (
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/items`,
+            {
+              items: [
+                {
+                  variant_id: product.variants.find(
+                    (v) => v.title === "L shirt"
+                  ).id,
+                  quantity: 1,
+                  metadata: { initial: "value", custom_field: "original" },
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.draft_order_preview
+
+        const itemToUpdate = orderPreview.items.find(
+          (i) => i.subtitle === "L shirt"
+        )
+        expect(itemToUpdate.metadata).toEqual({
+          initial: "value",
+          custom_field: "original",
+        })
+
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit/confirm`,
+          {},
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit`,
+          {},
+          adminHeaders
+        )
+
+        // Update item with new metadata
+        orderPreview = (
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/items/item/${itemToUpdate.id}`,
+            {
+              quantity: 2,
+              metadata: { updated: "metadata", custom_field: "modified" },
+            },
+            adminHeaders
+          )
+        ).data.draft_order_preview
+
+        const updatedItem = orderPreview.items.find(
+          (i) => i.subtitle === "L shirt"
+        )
+        expect(updatedItem.quantity).toBe(2)
+        expect(updatedItem.metadata).toEqual({
+          updated: "metadata",
+          initial: "value",
+          custom_field: "modified",
+        })
+
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit/confirm`,
+          {},
+          adminHeaders
+        )
+
+        const order = (
+          await api.get(
+            `/admin/draft-orders/${testDraftOrder.id}`,
+            adminHeaders
+          )
+        ).data.draft_order
+
+        expect(
+          order.items.find((i) => i.subtitle === "L shirt").metadata
+        ).toEqual({
+          updated: "metadata",
+          initial: "value",
+          custom_field: "modified",
+        })
+      })
     })
 
     describe("POST /draft-orders/:id/edit/promotions", () => {

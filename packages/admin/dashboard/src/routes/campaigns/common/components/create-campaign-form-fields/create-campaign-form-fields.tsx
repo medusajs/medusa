@@ -21,7 +21,13 @@ import {
 } from "../../../../../lib/data/currencies"
 import { Combobox } from "../../../../../components/inputs/combobox"
 
-export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
+export const CreateCampaignFormFields = ({
+  form,
+  fieldScope = "",
+}: {
+  form: any
+  fieldScope?: string
+}) => {
   const { t } = useTranslation()
   const { store } = useStore()
   const direction = useDocumentDirection()

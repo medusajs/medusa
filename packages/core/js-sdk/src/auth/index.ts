@@ -1,6 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
-import { Client } from "../client"
-import { ClientHeaders, Config } from "../types"
+import { Client } from "../client.js"
+import { ClientHeaders, Config } from "../types.js"
 
 export class Auth {
   private client: Client

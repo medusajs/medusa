@@ -1,5 +1,30 @@
 # @medusajs/cart
 
+## 2.14.2
+
+### Patch Changes
+
+- Updated dependencies [[`be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0`](https://github.com/medusajs/medusa/commit/be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0), [`7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23`](https://github.com/medusajs/medusa/commit/7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23)]:
+  - @medusajs/framework@2.14.2
+
+## 2.14.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.14.1
+
+## 2.14.0
+
+### Patch Changes
+
+- [#13975](https://github.com/medusajs/medusa/pull/13975) [`67499a8aa6b3b53cbdecb5be9fcc358b4e466696`](https://github.com/medusajs/medusa/commit/67499a8aa6b3b53cbdecb5be9fcc358b4e466696) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(currency,payment,pricing,region,order,store,cart,core-flows,medusa,utils): repo wide currency_code normalization
+
+- [#14801](https://github.com/medusajs/medusa/pull/14801) [`e489aebaf301ea2eb2834449af65bc3da7f7465a`](https://github.com/medusajs/medusa/commit/e489aebaf301ea2eb2834449af65bc3da7f7465a) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(cart,order,product,inventory,fulfillment,stock-location,workflow-engine-redis,workflow-engine-inmemory): add missing fields for types auto-generation
+
+- Updated dependencies [[`0929b8d192833e10b6b91795f1ffc478938c3fb7`](https://github.com/medusajs/medusa/commit/0929b8d192833e10b6b91795f1ffc478938c3fb7), [`843dbfe7c8f27b732486c7a8da7b6d63f2fdf967`](https://github.com/medusajs/medusa/commit/843dbfe7c8f27b732486c7a8da7b6d63f2fdf967)]:
+  - @medusajs/framework@2.14.0
+
 ## 2.13.6
 
 ### Patch Changes

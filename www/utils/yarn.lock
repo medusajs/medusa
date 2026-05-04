@@ -795,6 +795,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@medusajs/framework@link:../../../../packages/core/framework::locator=typedoc-plugin-workflows%40workspace%3Apackages%2Ftypedoc-plugin-workflows":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/framework@link:../../../../packages/core/framework::locator=typedoc-plugin-workflows%40workspace%3Apackages%2Ftypedoc-plugin-workflows"
+  languageName: node
+  linkType: soft
+
+"@medusajs/loyalty-plugin@link:../../../../packages/plugins/loyalty::locator=typedoc-generate-references%40workspace%3Apackages%2Ftypedoc-generate-references":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/loyalty-plugin@link:../../../../packages/plugins/loyalty::locator=typedoc-generate-references%40workspace%3Apackages%2Ftypedoc-generate-references"
+  languageName: node
+  linkType: soft
+
+"@medusajs/loyalty-plugin@link:../../../../packages/plugins/loyalty::locator=typedoc-plugin-workflows%40workspace%3Apackages%2Ftypedoc-plugin-workflows":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/loyalty-plugin@link:../../../../packages/plugins/loyalty::locator=typedoc-plugin-workflows%40workspace%3Apackages%2Ftypedoc-plugin-workflows"
+  languageName: node
+  linkType: soft
+
 "@medusajs/modules-sdk@npm:2.13.5":
   version: 2.13.5
   resolution: "@medusajs/modules-sdk@npm:2.13.5"
@@ -844,12 +862,6 @@ __metadata:
 "@medusajs/workflows-sdk@link:../../../../packages/core/workflows-sdk::locator=typedoc-generate-references%40workspace%3Apackages%2Ftypedoc-generate-references":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflows-sdk@link:../../../../packages/core/workflows-sdk::locator=typedoc-generate-references%40workspace%3Apackages%2Ftypedoc-generate-references"
-  languageName: node
-  linkType: soft
-
-"@medusajs/workflows-sdk@link:../../../../packages/core/workflows-sdk::locator=typedoc-plugin-workflows%40workspace%3Apackages%2Ftypedoc-plugin-workflows":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/workflows-sdk@link:../../../../packages/core/workflows-sdk::locator=typedoc-plugin-workflows%40workspace%3Apackages%2Ftypedoc-plugin-workflows"
   languageName: node
   linkType: soft
 
@@ -7683,6 +7695,7 @@ __metadata:
   resolution: "typedoc-generate-references@workspace:packages/typedoc-generate-references"
   dependencies:
     "@medusajs/core-flows": "link:../../../../packages/core/core-flows"
+    "@medusajs/loyalty-plugin": "link:../../../../packages/plugins/loyalty"
     "@medusajs/workflows-sdk": "link:../../../../packages/core/workflows-sdk"
     "@types/node": ^20.12.10
     "@types/pluralize": ^0.0.33
@@ -7690,6 +7703,7 @@ __metadata:
     commander: ^11.1.0
     cross-env: ^7.0.3
     dotenv: ^16.3.1
+    pluralize: ^8.0.0
     randomcolor: ^0.6.2
     ts-node: ^10.9.1
     typedoc: ^0.27.5
@@ -7759,7 +7773,8 @@ __metadata:
   resolution: "typedoc-plugin-workflows@workspace:packages/typedoc-plugin-workflows"
   dependencies:
     "@medusajs/core-flows": "link:../../../../packages/core/core-flows"
-    "@medusajs/workflows-sdk": "link:../../../../packages/core/workflows-sdk"
+    "@medusajs/framework": "link:../../../../packages/core/framework"
+    "@medusajs/loyalty-plugin": "link:../../../../packages/plugins/loyalty"
     "@types/eslint": ^8.56.6
     "@types/node": ^20.12.10
     eslint: ^8.53.0

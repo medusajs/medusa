@@ -27,10 +27,11 @@ export const ContentMenuWhatsNew = () => {
 
     const versionAnnouncement: CloudAnnouncement = {
       id: `version-${version.number}`,
+      type: "version",
       title: `v${version.number} is live`,
       subtitle: `See new features and improvements`,
-      published_at: new Date(version.releaseDate),
-      created_at: new Date(version.releaseDate),
+      published_at: version.releaseDate,
+      created_at: version.releaseDate,
       link_url: version.releaseUrl,
     }
 
@@ -40,8 +41,8 @@ export const ContentMenuWhatsNew = () => {
 
     return [versionAnnouncement, ...announcements]
       .sort((a, b) => {
-        const dateA = (a.published_at || a.created_at).getTime()
-        const dateB = (b.published_at || b.created_at).getTime()
+        const dateA = new Date(a.published_at || a.created_at).getTime()
+        const dateB = new Date(b.published_at || b.created_at).getTime()
         return dateB - dateA
       })
       .slice(0, 3)
@@ -135,7 +136,7 @@ const AnnouncementTracker = ({ isNew }: { isNew: boolean }) => {
         <div
           className={clsx(
             "absolute top-0 left-0 w-full h-full rounded-full opacity-20",
-            isNew && "bg-medusa-tag-orange-icon"
+            isNew && "bg-medusa-tag-green-icon"
           )}
         />
         <div
@@ -143,7 +144,7 @@ const AnnouncementTracker = ({ isNew }: { isNew: boolean }) => {
             "w-[5px] h-[5px] rounded-full",
             "border-[0.5px] border-medusa-alphas-alpha-10",
             "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
-            isNew ? "bg-medusa-tag-orange-icon" : "bg-medusa-fg-disabled"
+            isNew ? "bg-medusa-tag-green-icon" : "bg-medusa-fg-disabled"
           )}
         />
       </div>

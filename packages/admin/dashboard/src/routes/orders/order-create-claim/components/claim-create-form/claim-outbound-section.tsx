@@ -1,8 +1,8 @@
 import {
   AdminClaim,
+  AdminInventoryLevel,
   AdminOrder,
   AdminOrderPreview,
-  InventoryLevelDTO,
 } from "@medusajs/types"
 import { Alert, Button, Heading, Text, toast } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
@@ -32,6 +32,7 @@ import { ItemPlaceholder } from "./item-placeholder"
 import { CreateClaimSchemaType } from "./schema"
 import { useOrderShippingOptions } from "../../../../../hooks/api/orders"
 import { getFormattedShippingOptionLocationName } from "../../../../../lib/shipping-options"
+import { ExtendedVariant } from "../../../../product-variants/product-variant-detail/constants"
 
 type ClaimOutboundSectionProps = {
   order: AdminOrder
@@ -53,7 +54,7 @@ export const ClaimOutboundSection = ({
 
   const { setIsOpen } = useStackedModal()
   const [inventoryMap, setInventoryMap] = useState<
-    Record<string, InventoryLevelDTO[]>
+    Record<string, AdminInventoryLevel[]>
   >({})
 
   /**
@@ -202,7 +203,7 @@ export const ClaimOutboundSection = ({
         (a) => a.action === "SHIPPING_ADD" && !a.return_id
       )
 
-      return action && !!!action?.return_id
+      return action && !action?.return_id
     })
 
     const promises = outboundShippingMethods
@@ -238,6 +239,9 @@ export const ClaimOutboundSection = ({
 
     const allItemsHaveLocation = outboundItems
       .map((i) => {
+        if (!i.variant_id) {
+          return true
+        }
         const item = variantItemMap.get(i.variant_id)
         if (!item?.variant_id || !item?.variant) {
           return true
@@ -259,7 +263,7 @@ export const ClaimOutboundSection = ({
   useEffect(() => {
     // TODO: Ensure inventory validation occurs correctly
     const getInventoryMap = async () => {
-      const ret: Record<string, InventoryLevelDTO[]> = {}
+      const ret: Record<string, AdminInventoryLevel[]> = {}
 
       if (!outboundItems.length) {
         return ret
@@ -267,14 +271,14 @@ export const ClaimOutboundSection = ({
 
       const variantIds = outboundItems
         .map((item) => item?.variant_id)
-        .filter(Boolean)
+        .filter(Boolean) as string[]
 
       const variants = (
         await sdk.admin.productVariant.list({
           id: variantIds,
           fields: "*inventory.location_levels",
         })
-      ).variants
+      ).variants as ExtendedVariant[]
 
       variants.forEach((variant) => {
         ret[variant.id] = variant.inventory?.[0]?.location_levels || []
@@ -303,10 +307,16 @@ export const ClaimOutboundSection = ({
             <StackedFocusModal.Header />
 
             <AddClaimOutboundItemsTable
-              selectedItems={outboundItems.map((i) => i.variant_id)}
+              selectedItems={
+                outboundItems
+                  .map((i) => i.variant_id)
+                  .filter(Boolean) as string[]
+              }
               currencyCode={order.currency_code}
               onSelectionChange={(finalSelection) => {
-                const alreadySelected = outboundItems.map((i) => i.variant_id)
+                const alreadySelected = outboundItems
+                  .map((i) => i.variant_id)
+                  .filter(Boolean) as string[]
 
                 itemsToAdd = finalSelection.filter(
                   (selection) => !alreadySelected.includes(selection)
@@ -346,6 +356,7 @@ export const ClaimOutboundSection = ({
 
       {outboundItems.map(
         (item, index) =>
+          item.variant_id &&
           variantOutboundMap.get(item.variant_id) && (
             <ClaimOutboundItem
               key={item.id}
@@ -387,7 +398,7 @@ export const ClaimOutboundSection = ({
       )}
       {!showOutboundItemsPlaceholder && (
         <div className="mt-8 flex flex-col gap-y-4">
-          {/*OUTBOUND SHIPPING*/}
+          {/* OUTBOUND SHIPPING*/}
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             <div>
               <Form.Label>{t("orders.claims.outboundShipping")}</Form.Label>
@@ -412,7 +423,9 @@ export const ClaimOutboundSection = ({
                         }}
                         {...field}
                         options={outboundShippingOptions.map((so) => ({
-                          label: `${so.name} (${getFormattedShippingOptionLocationName(so)})`,
+                          label: `${
+                            so.name
+                          } (${getFormattedShippingOptionLocationName(so)})`,
                           value: so.id,
                         }))}
                         disabled={!outboundShippingOptions.length}

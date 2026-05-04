@@ -1,0 +1,33 @@
+---
+slug: /references/medusa-workflows/validateClaimGiftCardInputStep
+sidebar_label: validateClaimGiftCardInputStep
+sidebar_description: ""
+tags:
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# validateClaimGiftCardInputStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `validateClaimGiftCardInputStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that a gift card can be claimed. It throws an error if the
+gift card does not have a store credit account, the gift card's store credit account
+has no code, or the customer does not have a registered account.
+
+## Example
+
+```ts
+const data = validateClaimGiftCardInputStep({
+  giftCard: {
+    id: "gc_123",
+    store_credit_account: { id: "sca_123", code: "SC-XXXX" },
+    // other gift card properties...
+  },
+  customer: {
+    has_account: true,
+    // other customer properties...
+  },
+})
+```

@@ -14,6 +14,7 @@ import {
   ProjectOptions,
 } from "./creator.js"
 import terminalLink from "terminal-link"
+import { promptClaudeCodePlugin } from "../claude-code-plugin.js"
 
 // Plugin Project Creator
 export class PluginProjectCreator
@@ -27,6 +28,7 @@ export class PluginProjectCreator
 
   async create(): Promise<void> {
     track("CREATE_CLI_CMP")
+    await promptClaudeCodePlugin()
 
     logMessage({
       message: `${emojify(

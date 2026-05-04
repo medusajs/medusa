@@ -137,6 +137,7 @@ export const AdminUpdateDraftOrderItem = z.object({
   unit_price: z.number().nullish(),
   compare_at_unit_price: z.number().nullish(),
   internal_note: z.string().optional(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 
 export type AdminUpdateDraftOrderActionItemType = z.infer<

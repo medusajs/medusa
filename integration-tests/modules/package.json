@@ -23,6 +23,7 @@
     "@medusajs/fulfillment-manual": "workspace:^",
     "@medusajs/inventory": "workspace:^",
     "@medusajs/link-modules": "workspace:^",
+    "@medusajs/loyalty-plugin": "workspace:^",
     "@medusajs/medusa": "workspace:*",
     "@medusajs/modules-sdk": "workspace:^",
     "@medusajs/payment": "workspace:^",

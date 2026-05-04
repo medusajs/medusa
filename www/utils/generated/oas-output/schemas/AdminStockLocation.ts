@@ -6,6 +6,7 @@
  * required:
  *   - id
  *   - name
+ *   - metadata
  *   - address_id
  * properties:
  *   id:
@@ -37,6 +38,9 @@
  *     description: The fulfillment sets associated with the location.
  *     items:
  *       $ref: "#/components/schemas/AdminFulfillmentSet"
+ *   metadata:
+ *     type: object
+ *     description: Key-value pairs of custom data.
  * 
 */
 

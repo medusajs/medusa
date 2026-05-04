@@ -73,7 +73,9 @@ export async function generateJwtTokenForAuthIdentity(
       actor_id: entityId ?? "",
       actor_type: actorType,
       auth_identity_id: authIdentity?.id ?? "",
+      ...(authProvider ? { auth_provider: authProvider } : {}),
       app_metadata: {
+        ...(authIdentity.app_metadata ?? {}),
         [entityIdKey]: entityId,
         roles,
       },
