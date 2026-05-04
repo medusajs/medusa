@@ -33,6 +33,13 @@ export class FieldParser {
       }
 
       allFields.add("id")
+
+      if (allFields.has("*")) {
+        allFields.delete("*")
+        defaults.forEach((field) => {
+          allFields.add(field)
+        })
+      }
     }
 
     this.extractStarFields(allFields, starFields)

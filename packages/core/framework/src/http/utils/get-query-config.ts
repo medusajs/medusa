@@ -59,12 +59,7 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
     with_deleted,
   } = validated
 
-  const expandedFields =
-    fields?.includes("*")
-      ? fields.replace("*", defaults.join(","))
-      : fields
-
-  const parsedFields = FieldParser.parse(expandedFields, defaults as string[])
+  const parsedFields = FieldParser.parse(fields, defaults as string[])
   const { fields: allFields, starFields } = parsedFields
 
   const rbacFilterFieldsFeatureFlag =
