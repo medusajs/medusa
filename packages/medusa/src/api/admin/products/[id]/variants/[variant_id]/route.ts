@@ -39,7 +39,7 @@ export const POST = async (
     HttpTypes.AdminUpdateProductVariant & AdditionalData,
     HttpTypes.SelectParams
   >,
-  res: MedusaResponse<HttpTypes.AdminProductResponse>
+  res: MedusaResponse<HttpTypes.AdminProductVariantResponse>
 ) => {
   const productId = req.params.id
   const variantId = req.params.variant_id
@@ -53,14 +53,14 @@ export const POST = async (
     },
   })
 
-  const product = await refetchEntity({
-    entity: "product",
-    idOrFilter: productId,
+  const variant = await refetchEntity({
+    entity: "variant",
+    idOrFilter: { id: variantId, product_id: productId },
     scope: req.scope,
-    fields: remapKeysForProduct(req.queryConfig.fields ?? []),
+    fields: remapKeysForVariant(req.queryConfig.fields ?? []),
   })
 
-  res.status(200).json({ product: remapProductResponse(product) })
+  res.status(200).json({ variant: remapVariantResponse(variant) })
 }
 
 export const DELETE = async (
