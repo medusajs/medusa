@@ -1,5 +1,5 @@
 import { toast } from "@medusajs/ui"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate, useParams } from "react-router-dom"
 
@@ -21,7 +21,7 @@ export const OrderEditCreate = () => {
   })
 
   const { order: preview } = useOrderPreview(id!)
-  const { mutateAsync: createOrderEdit } = useCreateOrderEdit(order.id)
+  const { mutateAsync: createOrderEdit } = useCreateOrderEdit(order?.id ?? "")
 
   useEffect(() => {
     async function run() {
@@ -41,11 +41,13 @@ export const OrderEditCreate = () => {
       IS_REQUEST_RUNNING = true
 
       try {
-        const { order } = await createOrderEdit({
+        await createOrderEdit({
           order_id: preview.id,
         })
       } catch (e) {
-        toast.error(e.message)
+        toast.error(
+          e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+        )
         navigate(`/orders/${preview.id}`, { replace: true })
       } finally {
         IS_REQUEST_RUNNING = false

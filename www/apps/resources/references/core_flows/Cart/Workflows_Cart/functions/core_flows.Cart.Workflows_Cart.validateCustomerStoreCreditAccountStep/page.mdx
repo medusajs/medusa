@@ -1,0 +1,32 @@
+---
+slug: /references/medusa-workflows/validateCustomerStoreCreditAccountStep
+sidebar_label: validateCustomerStoreCreditAccountStep
+sidebar_description: ""
+tags:
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# validateCustomerStoreCreditAccountStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `validateCustomerStoreCreditAccountStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that a customer's store credit account exists and has a positive
+balance. It throws an error if the account is not found or has no balance.
+
+## Example
+
+```ts
+const data = validateCustomerStoreCreditAccountStep({
+  storeCreditAccount: {
+    id: "sca_123",
+    balance: 100,
+    // other store credit account properties...
+  },
+})
+```
+
+## Input
+
+<TypeList types={[{"name":"ValidateCustomerStoreCreditAccountStepInput","type":"[ValidateCustomerStoreCreditAccountStepInput](../../../../plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.ValidateCustomerStoreCreditAccountStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ValidateCustomerStoreCreditAccountStepInput","type":"`object`","description":"Input to validate that a customer's store credit account exists and has a positive balance.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validateCustomerStoreCreditAccountStep"/>

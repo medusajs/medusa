@@ -30,7 +30,7 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
   "core-flows": getOptions({
     entryPointPath: [
       "packages/core/core-flows/src/index.ts",
-      "packages/plugins/loyalty/src/workflows/index.ts"
+      "packages/plugins/loyalty/src/workflows/index.ts",
     ],
     tsConfigName: "core-flows.json",
     name: "core-flows",
@@ -229,6 +229,49 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     tsConfigName: "workflows.json",
     name: "workflows",
     enableInternalResolve: true,
+  }),
+  loyalty: getOptions({
+    entryPointPath: "packages/plugins/loyalty/src/types/loyalty/service.ts",
+    tsConfigName: "loyalty.json",
+    name: "loyalty",
+    entryPointStrategy: "expand",
+    plugin: ["typedoc-plugin-rename-defaults"],
+    enableInternalResolve: true,
+  }),
+  "loyalty-models": getOptions({
+    entryPointPath: "packages/plugins/loyalty/src/modules/loyalty/models",
+    name: `loyalty-models`,
+    tsConfigName: `loyalty.json`,
+    generateModelsDiagram: true,
+    diagramAddToFile:
+      "packages/plugins/loyalty/src/modules/loyalty/models/index.ts",
+    resolveDmlRelations: true,
+    generateDMLsDiagram: true,
+    diagramDMLAddToFile:
+      "packages/plugins/loyalty/src/modules/loyalty/models/index.ts",
+    normalizeDmlTypes: true,
+  }),
+  "store-credit": getOptions({
+    entryPointPath:
+      "packages/plugins/loyalty/src/types/store-credit/service.ts",
+    tsConfigName: "loyalty.json",
+    name: "store-credit",
+    entryPointStrategy: "expand",
+    plugin: ["typedoc-plugin-rename-defaults"],
+    enableInternalResolve: true,
+  }),
+  "store-credit-models": getOptions({
+    entryPointPath: "packages/plugins/loyalty/src/modules/store-credit/models",
+    name: `store-credit-models`,
+    tsConfigName: `loyalty.json`,
+    generateModelsDiagram: true,
+    diagramAddToFile:
+      "packages/plugins/loyalty/src/modules/store-credit/models/index.ts",
+    resolveDmlRelations: true,
+    generateDMLsDiagram: true,
+    diagramDMLAddToFile:
+      "packages/plugins/loyalty/src/modules/store-credit/models/index.ts",
+    normalizeDmlTypes: true,
   }),
 }
 

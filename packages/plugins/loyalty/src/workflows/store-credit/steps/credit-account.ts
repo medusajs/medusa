@@ -38,7 +38,7 @@ export const creditAccountStep = createStep(
       transactions.map((t) => t.id)
     );
   },
-  async (ids: string[], { container }) => {
+  async (ids, { container }) => {
     if (!ids?.length) {
       return;
     }

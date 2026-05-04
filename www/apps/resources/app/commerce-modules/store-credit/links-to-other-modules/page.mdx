@@ -1,0 +1,204 @@
+import { CodeTabs, CodeTab, Table, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Links between Store Credit Module and Other Modules`,
+}
+
+# {metadata.title}
+
+This document showcases the module links defined between the Store Credit Module and other Commerce Modules.
+
+<Prerequisites
+  items={[
+    {
+      text: "Loyalty Plugin Installed",
+      link: "../page.mdx#1-install-the-loyalty-plugin",
+    }
+  ]}
+/>
+
+## Summary
+
+The Store Credit Module has the following links to other modules:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        First Data Model
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Second Data Model
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Type
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `StoreCreditAccount` in [Store Credit Module](../page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        `Customer` in [Customer Module](../../customer/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        Read-only
+      </Table.Cell>
+      <Table.Cell>
+        [Learn more](#customer-module)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `GiftCard` in [Loyalty Module](../../loyalty/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        `StoreCreditAccount` in [Store Credit Module](../page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        Stored - many-to-one
+      </Table.Cell>
+      <Table.Cell>
+        [Learn more](#loyalty-module)
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Customer Module
+
+Medusa defines a read-only link between the `StoreCreditAccount` data model and the [Customer Module](../../customer/page.mdx)'s `Customer` data model. This means you can retrieve the customer associated with a store credit account, but you don't manage the links in a pivot table in the database. The customer of a store credit account is determined by the `customer_id` property of the `StoreCreditAccount` data model.
+
+### Retrieve with Query
+
+To retrieve the customer of a store credit account with [Query](!docs!/learn/fundamentals/module-links/query), pass `customer.*` in `fields`:
+
+<CodeTabs group="relation-query">
+  <CodeTab label="query.graph" value="method">
+
+```ts
+const { data: storeCreditAccounts } = await query.graph({
+  entity: "store_credit_account",
+  fields: [
+    "customer.*",
+  ],
+})
+
+// storeCreditAccounts[0].customer
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="step">
+
+```ts
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+// ...
+
+const { data: storeCreditAccounts } = useQueryGraphStep({
+  entity: "store_credit_account",
+  fields: [
+    "customer.*",
+  ],
+})
+
+// storeCreditAccounts[0].customer
+```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Loyalty Module
+
+Medusa defines a link between the `GiftCard` in the [Loyalty Module](../../loyalty/page.mdx) and `StoreCreditAccount` data models. This link is created when a gift card is created (alongside its store credit account) or when a gift card is redeemed.
+
+This allows you to retrieve the store credit account associated with a gift card.
+
+### Retrieve with Query
+
+To retrieve the store credit account of a gift card with [Query](!docs!/learn/fundamentals/module-links/query), pass `store_credit_account.*` in `fields`:
+
+<CodeTabs group="relation-query">
+  <CodeTab label="query.graph" value="method">
+
+```ts
+const { data: giftCards } = await query.graph({
+  entity: "gift_card",
+  fields: [
+    "store_credit_account.*",
+  ],
+})
+
+// giftCards[0].store_credit_account
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="step">
+
+```ts
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+// ...
+
+const { data: giftCards } = useQueryGraphStep({
+  entity: "gift_card",
+  fields: [
+    "store_credit_account.*",
+  ],
+})
+
+// giftCards[0].store_credit_account
+```
+
+  </CodeTab>
+</CodeTabs>
+
+### Manage with Link
+
+To manage the store credit account of a gift card, use [Link](!docs!/learn/fundamentals/module-links/link):
+
+<CodeTabs group="relation-link">
+  <CodeTab label="link.create" value="method">
+
+```ts
+// ...
+
+await link.create({
+  loyalty: {
+    gift_card_id: "gcard_123",
+  },
+  store_credit: {
+    store_credit_account_id: "sc_acc_123",
+  },
+})
+```
+
+  </CodeTab>
+  <CodeTab label="createRemoteLinkStep" value="step">
+
+```ts
+import { createRemoteLinkStep } from "@medusajs/medusa/core-flows"
+
+// ...
+
+createRemoteLinkStep({
+  loyalty: {
+    gift_card_id: "gcard_123",
+  },
+  store_credit: {
+    store_credit_account_id: "sc_acc_123",
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>

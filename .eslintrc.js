@@ -348,11 +348,12 @@ module.exports = {
         },
         ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
         sourceType: "module", // Allows for the use of imports
-        project: "./packages/admin/dashboard/tsconfig.json",
+        project: path.join(__dirname, "./packages/admin/dashboard/tsconfig.json"),
       },
       globals: {
         __BASE__: "readonly",
         __AUTH_TYPE__: "readonly",
+        __MAX_UPLOAD_FILE_SIZE__: "readonly",
       },
       env: {
         browser: true,

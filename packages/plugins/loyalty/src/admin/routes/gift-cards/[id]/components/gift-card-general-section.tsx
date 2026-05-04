@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Calendar, Trash } from "@medusajs/icons";
+import { Calendar } from "@medusajs/icons";
 import {
   Badge,
   Container,
@@ -7,45 +7,17 @@ import {
   Heading,
   StatusBadge,
   Text,
-  toast,
-  usePrompt,
 } from "@medusajs/ui";
 import { Link } from "react-router-dom";
 import { AdminGiftCard } from "../../../../../types";
 import { ActionMenu } from "../../../../components/action-menu";
 import { SectionRow } from "../../../../components/section-row";
 import { Thumbnail } from "../../../../components/thumbnail";
-import { useDeleteGiftCard } from "../../../../hooks/api/gift-cards";
 import { getFullDate } from "../../../../utils/date-utils";
 import { formatAmount } from "../../../../utils/format-amount";
 import { formatDate, getRelativeDate } from "../../../../utils/format-date";
 
 const GiftCardGeneralSection = ({ giftCard }: { giftCard: AdminGiftCard }) => {
-  const prompt = usePrompt();
-
-  const { mutateAsync: deleteGiftCard, isPending: isDeleting } =
-    useDeleteGiftCard(giftCard.id!);
-
-  const handleDelete = async () => {
-    const res = await prompt({
-      title: "Delete gift card",
-      description: "Are you sure? This cannot be undone.",
-      verificationText: giftCard.value.toString(),
-      verificationInstruction: "Confirmation",
-      confirmText: "Delete",
-      cancelText: "Cancel",
-    });
-
-    if (!res) {
-      return;
-    }
-
-    await deleteGiftCard(undefined, {
-      onSuccess: () => toast.success("Gift card deleted successfully"),
-      onError: (error) => toast.error(error.message),
-    });
-  };
-
   const hasGiftCardExpired = useMemo(() => {
     return giftCard.expires_at && new Date(giftCard.expires_at) < new Date();
   }, [giftCard.expires_at]);
@@ -79,16 +51,6 @@ const GiftCardGeneralSection = ({ giftCard }: { giftCard: AdminGiftCard }) => {
                     icon: <Calendar />,
                     label: "Edit expiration date",
                     to: "expiration",
-                  },
-                ],
-              },
-              {
-                actions: [
-                  {
-                    icon: <Trash />,
-                    label: "Delete",
-                    onClick: handleDelete,
-                    disabled: isDeleting || true,
                   },
                 ],
               },

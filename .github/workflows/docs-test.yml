@@ -77,9 +77,9 @@ jobs:
         run: yarn
         working-directory: www/utils
 
-      - name: Build packages
+      - name: Build scripts package
         run: yarn build
-        working-directory: www/utils
+        working-directory: www/utils/packages/scripts
 
       # reviewdog throws an error when the number
       # of file changes in a PR is > 300, so
@@ -135,9 +135,9 @@ jobs:
         run: yarn
         working-directory: www/utils
 
-      - name: Build packages
+      - name: Build scripts package
         run: yarn build
-        working-directory: www/utils
+        working-directory: www/utils/packages/scripts
 
       # reviewdog throws an error when the number
       # of file changes in a PR is > 300, so
@@ -192,9 +192,9 @@ jobs:
         run: yarn
         working-directory: www/utils
 
-      - name: Build packages
+      - name: Build scripts package
         run: yarn build
-        working-directory: www/utils
+        working-directory: www/utils/packages/scripts
 
       # reviewdog throws an error when the number
       # of file changes in a PR is > 300, so
@@ -249,9 +249,9 @@ jobs:
         run: yarn
         working-directory: www/utils
 
-      - name: Build packages
+      - name: Build scripts package
         run: yarn build
-        working-directory: www/utils
+        working-directory: www/utils/packages/scripts
 
       # reviewdog throws an error when the number
       # of file changes in a PR is > 300, so
@@ -307,9 +307,9 @@ jobs:
         run: yarn
         working-directory: www/utils
 
-      - name: Build packages
+      - name: Build scripts package
         run: yarn build
-        working-directory: www/utils
+        working-directory: www/utils/packages/scripts
 
       # reviewdog throws an error when the number
       # of file changes in a PR is > 300, so
@@ -365,9 +365,9 @@ jobs:
         run: yarn
         working-directory: www/utils
 
-      - name: Build packages
+      - name: Build scripts package
         run: yarn build
-        working-directory: www/utils
+        working-directory: www/utils/packages/scripts
 
       # reviewdog throws an error when the number
       # of file changes in a PR is > 300, so
@@ -422,9 +422,9 @@ jobs:
         run: yarn
         working-directory: www/utils
 
-      - name: Build packages
+      - name: Build scripts package
         run: yarn build
-        working-directory: www/utils
+        working-directory: www/utils/packages/scripts
 
       # reviewdog throws an error when the number
       # of file changes in a PR is > 300, so

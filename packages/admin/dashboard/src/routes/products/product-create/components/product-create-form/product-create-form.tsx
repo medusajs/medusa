@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types"
+import { AdminFile, HttpTypes } from "@medusajs/types"
 import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useWatch } from "react-hook-form"
@@ -78,13 +78,10 @@ export const ProductCreateForm = ({
       return {}
     }
 
-    return regions.reduce(
-      (acc, reg) => {
-        acc[reg.id] = reg.currency_code
-        return acc
-      },
-      {} as Record<string, string>
-    )
+    return regions.reduce((acc, reg) => {
+      acc[reg.id] = reg.currency_code
+      return acc
+    }, {} as Record<string, string>)
   }, [regions])
 
   /**
@@ -112,13 +109,22 @@ export const ProductCreateForm = ({
     const media = values.media || []
     const payload = { ...values, media: undefined }
 
-    let uploadedMedia: (HttpTypes.AdminFile & { isThumbnail: boolean })[] = []
+    let uploadedMedia: {
+      id?: string
+      url: string
+      isThumbnail: boolean
+      file: File
+    }[] = []
     try {
       if (media.length) {
         const thumbnailReq = media.find((m) => m.isThumbnail)
         const otherMediaReq = media.filter((m) => !m.isThumbnail)
 
-        const fileReqs = []
+        const fileReqs = [] as Promise<
+          (AdminFile & {
+            isThumbnail: boolean
+          })[]
+        >[]
         if (thumbnailReq) {
           fileReqs.push(
             sdk.admin.upload
@@ -136,7 +142,12 @@ export const ProductCreateForm = ({
           )
         }
 
-        uploadedMedia = (await Promise.all(fileReqs)).flat()
+        uploadedMedia = (await Promise.all(fileReqs)).flat() as {
+          id?: string
+          url: string
+          isThumbnail: boolean
+          file: File
+        }[]
       }
     } catch (error) {
       if (error instanceof Error) {

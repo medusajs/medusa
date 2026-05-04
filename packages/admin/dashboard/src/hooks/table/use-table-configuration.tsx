@@ -1,7 +1,10 @@
 import { useState, useMemo, useCallback, useEffect } from "react"
 import { useSearchParams } from "react-router-dom"
 import { HttpTypes } from "@medusajs/types"
-import { useViewConfigurations, useViewConfiguration } from "../use-view-configurations"
+import {
+  useViewConfigurations,
+  useViewConfiguration,
+} from "../use-view-configurations"
 import { useEntityColumns } from "../api/views"
 import { useFeatureFlag } from "../../providers/feature-flag-provider"
 import { useColumnState } from "./columns/use-column-state"
@@ -61,14 +64,20 @@ export function useTableConfiguration({
 
   const { activeView, createView } = useViewConfigurations(entity)
   const currentActiveView = activeView?.view_configuration || null
-  const { updateView } = useViewConfiguration(entity, currentActiveView?.id || "")
+  const { updateView } = useViewConfiguration(
+    entity,
+    currentActiveView?.id || ""
+  )
 
-  const { columns: apiColumns, isLoading: isLoadingColumns } = useEntityColumns(entity, {
-    enabled: isViewConfigEnabled,
-  })
+  const { columns: apiColumns, isLoading: isLoadingColumns } = useEntityColumns(
+    entity,
+    {
+      enabled: isViewConfigEnabled,
+    }
+  )
 
   const queryParams = useQueryParams(
-    ["q", "order", "offset", "limit", ...filters.map(f => f.id)],
+    ["q", "order", "offset", "limit", ...filters.map((f) => f.id)],
     queryPrefix
   )
 
@@ -84,14 +93,19 @@ export function useTableConfiguration({
 
   // Sync view configuration with URL and column state
   useEffect(() => {
-    if (!apiColumns) return
+    if (!apiColumns) {
+      return
+    }
     originalHandleViewChange(currentActiveView, apiColumns)
     setSearchParams((prev) => {
       // Clear existing query params
-      const keysToDelete = Array.from(prev.keys()).filter(key =>
-        key.startsWith(queryPrefix + "_") || key === queryPrefix + "_q" || key === queryPrefix + "_order"
+      const keysToDelete = Array.from(prev.keys()).filter(
+        (key) =>
+          key.startsWith(queryPrefix + "_") ||
+          key === queryPrefix + "_q" ||
+          key === queryPrefix + "_order"
       )
-      keysToDelete.forEach(key => prev.delete(key))
+      keysToDelete.forEach((key) => prev.delete(key))
 
       // Apply view configuration
       if (currentActiveView) {
@@ -122,7 +136,7 @@ export function useTableConfiguration({
   // Current configuration from URL
   const currentConfiguration = useMemo(() => {
     const currentFilters: Record<string, any> = {}
-    filters.forEach(filter => {
+    filters.forEach((filter) => {
       if (queryParams[filter.id] !== undefined) {
         currentFilters[filter.id] = JSON.parse(queryParams[filter.id] || "")
       }
@@ -136,7 +150,8 @@ export function useTableConfiguration({
   }, [filters, queryParams])
 
   // Check if configuration has changed from view
-  const [debouncedHasConfigChanged, setDebouncedHasConfigChanged] = useState(false)
+  const [debouncedHasConfigChanged, setDebouncedHasConfigChanged] =
+    useState(false)
 
   const hasConfigurationChanged = useMemo(() => {
     const currentFilters = currentConfiguration.filters
@@ -151,13 +166,21 @@ export function useTableConfiguration({
       const viewFilters = currentActiveView.configuration.filters || {}
       const viewSorting = currentActiveView.configuration.sorting
       const viewSearch = currentActiveView.configuration.search || ""
-      const viewVisibleColumns = [...(currentActiveView.configuration.visible_columns || [])].sort()
+      const viewVisibleColumns = [
+        ...(currentActiveView.configuration.visible_columns || []),
+      ].sort()
       const viewColumnOrder = currentActiveView.configuration.column_order || []
 
       // Check filters
-      const filterKeys = new Set([...Object.keys(currentFilters), ...Object.keys(viewFilters)])
+      const filterKeys = new Set([
+        ...Object.keys(currentFilters),
+        ...Object.keys(viewFilters),
+      ])
       for (const key of filterKeys) {
-        if (JSON.stringify(currentFilters[key]) !== JSON.stringify(viewFilters[key])) {
+        if (
+          JSON.stringify(currentFilters[key]) !==
+          JSON.stringify(viewFilters[key])
+        ) {
           return true
         }
       }
@@ -165,7 +188,10 @@ export function useTableConfiguration({
       // Check sorting
       const normalizedCurrentSorting = currentSorting || undefined
       const normalizedViewSorting = viewSorting || undefined
-      if (JSON.stringify(normalizedCurrentSorting) !== JSON.stringify(normalizedViewSorting)) {
+      if (
+        JSON.stringify(normalizedCurrentSorting) !==
+        JSON.stringify(normalizedViewSorting)
+      ) {
         return true
       }
 
@@ -175,7 +201,10 @@ export function useTableConfiguration({
       }
 
       // Check visible columns
-      if (JSON.stringify(currentVisibleColumns) !== JSON.stringify(viewVisibleColumns)) {
+      if (
+        JSON.stringify(currentVisibleColumns) !==
+        JSON.stringify(viewVisibleColumns)
+      ) {
         return true
       }
 
@@ -185,26 +214,34 @@ export function useTableConfiguration({
       }
     } else {
       // Check against defaults
-      if (Object.keys(currentFilters).length > 0) return true
-      if (currentSorting !== null) return true
-      if (currentSearch !== "") return true
+      if (Object.keys(currentFilters).length > 0) {
+        return true
+      }
+      if (currentSorting !== null) {
+        return true
+      }
+      if (currentSearch !== "") {
+        return true
+      }
 
       if (apiColumns) {
         const currentVisibleSet = new Set(currentVisibleColumns)
         const defaultVisibleSet = new Set(
           apiColumns
-            .filter(col => col.default_visible)
-            .map(col => col.field)
+            .filter((col) => col.default_visible)
+            .map((col) => col.field)
         )
 
-        if (currentVisibleSet.size !== defaultVisibleSet.size ||
-          [...currentVisibleSet].some(field => !defaultVisibleSet.has(field))) {
+        if (
+          currentVisibleSet.size !== defaultVisibleSet.size ||
+          [...currentVisibleSet].some((field) => !defaultVisibleSet.has(field))
+        ) {
           return true
         }
 
         const defaultOrder = apiColumns
           .sort((a, b) => (a.default_order ?? 500) - (b.default_order ?? 500))
-          .map(col => col.field)
+          .map((col) => col.field)
 
         if (JSON.stringify(columnOrder) !== JSON.stringify(defaultOrder)) {
           return true
@@ -213,7 +250,13 @@ export function useTableConfiguration({
     }
 
     return false
-  }, [currentActiveView, visibleColumns, columnOrder, currentConfiguration, apiColumns])
+  }, [
+    currentActiveView,
+    visibleColumns,
+    columnOrder,
+    currentConfiguration,
+    apiColumns,
+  ])
 
   // Debounce configuration change detection
   useEffect(() => {
@@ -231,10 +274,13 @@ export function useTableConfiguration({
     }
 
     setSearchParams((prev) => {
-      const keysToDelete = Array.from(prev.keys()).filter(key =>
-        key.startsWith(queryPrefix + "_") || key === queryPrefix + "_q" || key === queryPrefix + "_order"
+      const keysToDelete = Array.from(prev.keys()).filter(
+        (key) =>
+          key.startsWith(queryPrefix + "_") ||
+          key === queryPrefix + "_q" ||
+          key === queryPrefix + "_order"
       )
-      keysToDelete.forEach(key => prev.delete(key))
+      keysToDelete.forEach((key) => prev.delete(key))
 
       if (currentActiveView?.configuration) {
         const viewConfig = currentActiveView.configuration

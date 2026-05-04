@@ -24,6 +24,7 @@ Medusa uses [OpenTelemetry](https://opentelemetry.io/) for instrumentation and r
 - Workflow executions
 - Query usages
 - Database queries and operations
+- Cache operations
 
 ---
 
@@ -74,6 +75,8 @@ export function register() {
       http: true,
       workflows: true,
       query: true,
+      db: true,
+      cache: true,
     },
   })
 }
@@ -127,7 +130,12 @@ The `NodeSDKConfiguration` properties are accepted since Medusa v2.5.1.
           name: "db",
           type: "`boolean`",
           description: "Whether to trace database queries and operations."
-        }
+        },
+        {
+          name: "cache",
+          type: "`boolean`",
+          description: "Whether to trace cache operations."
+        },
       ]
     },
     {

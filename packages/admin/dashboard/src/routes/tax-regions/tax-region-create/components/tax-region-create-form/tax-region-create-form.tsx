@@ -90,7 +90,7 @@ export const TaxRegionCreateForm = ({ parentId }: TaxRegionCreateFormProps) => {
             values.rate?.value === ""
               ? undefined
               : parseFloat(values.rate.value!),
-          code: values.code,
+          code: values.code ?? "",
         }
       : undefined
 

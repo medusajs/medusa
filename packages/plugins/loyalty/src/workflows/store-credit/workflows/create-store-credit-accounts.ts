@@ -6,7 +6,6 @@ import {
 } from "@medusajs/framework/workflows-sdk";
 import { ModuleCreateStoreCreditAccount } from "../../../types/store-credit";
 import { createStoreCreditAccountsStep } from "../steps/create-store-credit-accounts";
-import { generateCode } from "../../../utils/code-generator";
 
 /**
  * This step validates the input for creating store credit accounts. It throws an
