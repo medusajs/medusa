@@ -15,6 +15,7 @@ import {
   remapProductResponse,
   remapVariantResponse,
 } from "../../../helpers"
+import { retrieveProductVariantMutationQueryConfig } from "../../query-config"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.SelectParams>,
@@ -57,7 +58,9 @@ export const POST = async (
     entity: "product",
     idOrFilter: productId,
     scope: req.scope,
-    fields: remapKeysForProduct(req.queryConfig.fields ?? []),
+    fields: remapKeysForProduct(
+      retrieveProductVariantMutationQueryConfig.defaults
+    ),
   })
 
   res.status(200).json({ product: remapProductResponse(product) })

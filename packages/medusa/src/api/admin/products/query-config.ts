@@ -104,10 +104,55 @@ export const defaultAdminProductFields = [
 ]
 
 /**
+ * Default fields for admin products returned from variant mutations.
+ */
+export const defaultAdminProductVariantMutationFields = [
+  "id",
+  "title",
+  "subtitle",
+  "status",
+  "external_id",
+  "description",
+  "handle",
+  "is_giftcard",
+  "discountable",
+  "thumbnail",
+  "collection_id",
+  "type_id",
+  "weight",
+  "length",
+  "height",
+  "width",
+  "hs_code",
+  "origin_country",
+  "mid_code",
+  "material",
+  "created_at",
+  "updated_at",
+  "deleted_at",
+  "metadata",
+  "*type",
+  "*collection",
+  "*options",
+  "*options.values",
+  "*tags",
+  "*images",
+]
+
+/**
  * Query configuration for retrieving a single product.
  */
 export const retrieveProductQueryConfig = {
   defaults: defaultAdminProductFields,
+  isList: false,
+  entity: Entities.product,
+}
+
+/**
+ * Query configuration for retrieving a single product after variant mutations.
+ */
+export const retrieveProductVariantMutationQueryConfig = {
+  defaults: defaultAdminProductVariantMutationFields,
   isList: false,
   entity: Entities.product,
 }
