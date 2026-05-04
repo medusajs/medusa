@@ -15,6 +15,7 @@ import {
   remapProductResponse,
   remapVariantResponse,
 } from "../../../helpers"
+import { defaultAdminProductVariantRouteFields } from "../../query-config"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.SelectParams>,
@@ -57,7 +58,7 @@ export const POST = async (
     entity: "product",
     idOrFilter: productId,
     scope: req.scope,
-    fields: remapKeysForProduct(req.queryConfig.fields ?? []),
+    fields: remapKeysForProduct(defaultAdminProductVariantRouteFields),
   })
 
   res.status(200).json({ product: remapProductResponse(product) })
@@ -79,7 +80,7 @@ export const DELETE = async (
     entity: "product",
     idOrFilter: productId,
     scope: req.scope,
-    fields: remapKeysForProduct(req.queryConfig.fields ?? []),
+    fields: remapKeysForProduct(defaultAdminProductVariantRouteFields),
   })
 
   res.status(200).json({

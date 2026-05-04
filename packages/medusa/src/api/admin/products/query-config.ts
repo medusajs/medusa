@@ -104,6 +104,16 @@ export const defaultAdminProductFields = [
 ]
 
 /**
+ * Lightweight default fields for admin products when refetching a parent product
+ * from variant routes. This intentionally excludes variants and their nested
+ * relations to avoid expensive product expansion.
+ */
+export const defaultAdminProductVariantRouteFields =
+  defaultAdminProductFields.filter(
+    (field) => !field.startsWith("*variants") && !field.startsWith("variants.")
+  )
+
+/**
  * Query configuration for retrieving a single product.
  */
 export const retrieveProductQueryConfig = {
