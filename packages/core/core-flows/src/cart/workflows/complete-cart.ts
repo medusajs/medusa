@@ -56,12 +56,6 @@ export type CompleteCartWorkflowInput = {
    * The ID of the cart to complete.
    */
   id: string
-  /**
-   * Whether to allow completing a cart with no items.
-   * Defaults to `true` to preserve backward compatibility.
-   * Set to `false` to validate that the cart has at least one item.
-   */
-  allow_empty_cart?: boolean
 }
 
 export type CompleteCartWorkflowOutput = {
@@ -345,15 +339,7 @@ export const completeCartWorkflow = createWorkflow(
       return orderCart?.data?.order_id
     })
 
-    when(
-      "validate-cart-items",
-      { input },
-      ({ input }) => {
-        return input.allow_empty_cart === false
-      }
-    ).then(() => {
-      validateCartItemsStep({ cart: cartData.data })
-    })
+    validateCartItemsStep({ cart: cartData.data })
 
     // this needs to be before the validation step
     const paymentSessions = validateCartPaymentsStep({ cart: cartData.data })
