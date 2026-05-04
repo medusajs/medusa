@@ -341,6 +341,17 @@ describe("validateAndTransformQuery", () => {
         "metadata.children.id",
         "metadata.product.id",
       ],
+      allowed: [
+        "id",
+        "title",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
       isList: true,
     }
 
@@ -351,6 +362,51 @@ describe("validateAndTransformQuery", () => {
     expect(mockRequest.listConfig).toEqual(
       expect.objectContaining({
         select: queryConfig.defaults,
+      })
+    )
+
+    mockRequest = {
+      restrictedFields: new RestrictedFields(),
+      query: {
+        fields: "title,*",
+      },
+    } as unknown as MedusaRequest
+
+    queryConfig = {
+      defaults: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
+      allowed: [
+        "id",
+        "title",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
+      isList: true,
+    }
+
+    middleware = validateAndTransformQuery(createFindParams(), queryConfig)
+
+    await middleware(mockRequest, mockResponse, nextFunction)
+
+    expect(mockRequest.listConfig).toEqual(
+      expect.objectContaining({
+        select: [
+          "title",
+          ...queryConfig.defaults
+        ],
       })
     )
   })

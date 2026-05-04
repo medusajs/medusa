@@ -182,5 +182,5 @@
     "validator": "^13.15.20",
     "@changesets/assemble-release-plan@^6.0.9": "patch:@changesets/assemble-release-plan@npm:^6.0.9#.yarn/patches/@changesets-assemble-release-plan-npm-6.0.9-e01af97ef4.patch"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@4.14.1"
 }
