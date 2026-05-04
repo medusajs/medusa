@@ -320,6 +320,41 @@ describe("validateAndTransformQuery", () => {
     )
   })
 
+  it("should transform the input query taking into account the wildcard", async () => {
+    let mockRequest = {
+      restrictedFields: new RestrictedFields(),
+      query: {
+        fields: "*",
+      },
+    } as unknown as MedusaRequest
+    const mockResponse = {} as MedusaResponse
+    const nextFunction: MedusaNextFunction = jest.fn()
+
+    let queryConfig: any = {
+      defaults: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+      ],
+      isList: true,
+    }
+
+    let middleware = validateAndTransformQuery(createFindParams(), queryConfig)
+
+    await middleware(mockRequest, mockResponse, nextFunction)
+
+    expect(mockRequest.listConfig).toEqual(
+      expect.objectContaining({
+        select: queryConfig.defaults,
+      })
+    )
+  })
+
   it(`should transform the input and manage the allowed fields and relations properly without error`, async () => {
     const restrictedFields = new RestrictedFields()
     let mockRequest = {
