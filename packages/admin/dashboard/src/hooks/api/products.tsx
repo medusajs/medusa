@@ -234,10 +234,13 @@ export const useDeleteVariant = (
     mutationFn: () => sdk.admin.product.deleteVariant(productId, variantId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
-      queryClient.invalidateQueries({ queryKey: variantsQueryKeys.details() })
+      queryClient.invalidateQueries({
+        queryKey: variantsQueryKeys.detail(variantId),
+      })
       queryClient.invalidateQueries({
         queryKey: productsQueryKeys.detail(productId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
