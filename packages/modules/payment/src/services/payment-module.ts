@@ -970,7 +970,7 @@ export default class PaymentModuleService
       sharedContext
     )
 
-    const cancelData = await this.paymentProviderService_.cancelPayment(
+    const { data } = await this.paymentProviderService_.cancelPayment(
       payment.provider_id,
       {
         data: payment.data!,
@@ -981,7 +981,7 @@ export default class PaymentModuleService
     )
 
     await this.paymentService_.update(
-      { id: paymentId, canceled_at: new Date(), data: cancelData.data },
+      { id: paymentId, canceled_at: new Date(), data: data },
       sharedContext
     )
 
