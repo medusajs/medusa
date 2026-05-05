@@ -27,7 +27,7 @@ export const generatedEditDates = {
   "app/deployments/troubleshooting/page.mdx": "2025-10-17T14:44:22.894Z",
   "app/emails/page.mdx": "2026-04-10T11:40:04.389Z",
   "app/emails/react-email/page.mdx": "2026-03-27T09:46:46.277Z",
-  "app/user/page.mdx": "2025-12-17T12:03:18.968Z",
+  "app/user/page.mdx": "2026-05-05T14:32:49.451Z",
   "app/deployments/access/page.mdx": "2026-04-08T16:20:22.886Z",
   "app/projects/prerequisites/page.mdx": "2026-04-21T09:12:30.125Z",
   "app/storefront/page.mdx": "2026-04-08T16:19:50.391Z",
