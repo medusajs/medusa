@@ -39057,10 +39057,10 @@ await refundPaymentsWorkflow(container)
         note: "Customer requested refund", // optional note
         metadata: { // optional custom data
           reason: "damaged_goods",
-          return_id: "ret_456"
-        }
-      }
-    ]
+          return_id: "ret_456",
+        },
+      },
+    ],
   })
 ```
 
@@ -39074,8 +39074,8 @@ const refund = await paymentModuleService.refundPayment({
   note: "Customer requested refund",
   metadata: {
     reason: "damaged_goods",
-    return_id: "ret_456"
-  }
+    return_id: "ret_456",
+  },
 })
 ```
 
