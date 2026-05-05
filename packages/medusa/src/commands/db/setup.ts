@@ -1,3 +1,4 @@
+import { Logger } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { initializeContainer } from "../../loaders"
 import { dbCreate } from "./create"
@@ -12,7 +13,7 @@ const main = async function ({
   executeAllLinks,
   executeSafeLinks,
 }) {
-  let logger
+  let logger: Logger | undefined
 
   try {
     let container = await initializeContainer(directory, {

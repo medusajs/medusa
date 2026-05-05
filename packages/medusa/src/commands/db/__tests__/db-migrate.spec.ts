@@ -1,10 +1,10 @@
 import { MedusaContainer } from "@medusajs/types"
-import { initializeContainer } from "../../../../loaders"
-import main from "../../migrate"
+import { initializeContainer } from "../../../loaders"
+import main from "../migrate"
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
-jest.mock("../../../../loaders", () => ({
+jest.mock("../../../loaders", () => ({
   initializeContainer: jest.fn(),
 }))
 
@@ -34,12 +34,12 @@ jest.mock("@medusajs/framework/utils", () => ({
   isDefined: jest.fn().mockReturnValue(false),
 }))
 
-jest.mock("../../../utils", () => ({
+jest.mock("../../utils", () => ({
   ensureDbExists: jest.fn().mockResolvedValue(undefined),
   isPgstreamEnabled: jest.fn().mockResolvedValue(false),
 }))
 
-jest.mock("../../sync-links", () => ({
+jest.mock("../sync-links", () => ({
   syncLinks: jest.fn().mockResolvedValue(undefined),
 }))
 

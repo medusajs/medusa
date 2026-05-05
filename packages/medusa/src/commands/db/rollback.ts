@@ -6,6 +6,7 @@ import {
   MedusaError,
   mergePluginModules,
 } from "@medusajs/framework/utils"
+import { Logger } from "@medusajs/types"
 import { join } from "path"
 import { initializeContainer } from "../../loaders"
 import { ensureDbExists } from "../utils"
@@ -15,7 +16,7 @@ const TERMINAL_SIZE = process.stdout.columns
 const main = async function ({ directory, modules }) {
   process.env.MEDUSA_WORKER_MODE = "server"
 
-  let logger
+  let logger: Logger | undefined
 
   try {
     const container = await initializeContainer(directory)
