@@ -1,1 +1,5 @@
+---
+"@medusajs/core-flows": patch
+---
+
 feat(@medusajs/core-flows): support min/max quantity in rules object for price list creation
