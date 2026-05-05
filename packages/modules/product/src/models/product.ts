@@ -31,9 +31,11 @@ const Product = model
     discountable: model.boolean().default(true),
     external_id: model.text().nullable(),
     metadata: model.json().nullable(),
-    variants: model.hasMany(() => ProductVariant, {
-      mappedBy: "product",
-    }),
+    variants: model
+      .hasMany(() => ProductVariant, {
+        mappedBy: "product",
+      })
+      .searchable(),
     type: model
       .belongsTo(() => ProductType, {
         mappedBy: "products",

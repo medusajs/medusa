@@ -45,3 +45,6 @@ properties:
     description: The price list's prices.
     items:
       $ref: ./AdminCreatePriceListPrice.yaml
+  metadata:
+    type: object
+    description: Key-value pairs of custom data.

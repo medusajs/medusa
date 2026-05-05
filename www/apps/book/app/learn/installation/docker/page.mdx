@@ -143,7 +143,7 @@ services:
       - medusa_network
 
   # Storefront
-  # This service runs the Next.js storefront.
+  # This service runs the Next.js Starter Storefront
   storefront:
     build: .
     container_name: medusa_storefront
@@ -179,7 +179,7 @@ You define four services in this file:
 - `postgres`: The PostgreSQL database service that stores your Medusa application's data.
 - `redis`: The Redis service that stores session data.
 - `medusa`: The Medusa service that runs the server and the admin dashboard. It connects to the PostgreSQL and Redis services.
-- `storefront`: The Next.js storefront service. It connects to the Medusa service.
+- `storefront`: The Next.js Starter Storefront service. It connects to the Medusa service.
     - If you don't want to use the storefront, you can remove the `apps/storefront` directory and the `storefront` service from the `docker-compose.yml` file.
 
 The `env_file` paths are relative to the project root: `apps/backend/.env` for the backend and `apps/storefront/.env` for the storefront.
@@ -284,7 +284,7 @@ Apply the same LF line endings requirement mentioned in the previous step to thi
 #!/bin/sh
 cd /server/apps/storefront
 
-echo "Starting Next.js storefront development server..."
+echo "Starting Next.js Starter Storefront development server..."
 pnpm dev
 ```
   </CodeTab>
@@ -293,7 +293,7 @@ pnpm dev
 #!/bin/sh
 cd /server/apps/storefront
 
-echo "Starting Next.js storefront development server..."
+echo "Starting Next.js Starter Storefront development server..."
 yarn dev
 ```
   </CodeTab>
@@ -302,7 +302,7 @@ yarn dev
 #!/bin/sh
 cd /server/apps/storefront
 
-echo "Starting Next.js storefront development server..."
+echo "Starting Next.js Starter Storefront development server..."
 npm run dev
 ```
   </CodeTab>
@@ -335,7 +335,7 @@ FROM node:20-alpine
 
 WORKDIR /server
 
-RUN npm install -g pnpm@10.11.1
+RUN npm install pnpm@10.11.1 -g
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json .npmrc ./
 COPY apps/backend/package.json ./apps/backend/

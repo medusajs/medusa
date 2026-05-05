@@ -1,12 +1,12 @@
 {
-	"id": 67190,
+	"id": 67408,
 	"name": "analytics-provider",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 67191,
+			"id": 67409,
 			"name": "AbstractAnalyticsProviderService",
 			"variant": "declaration",
 			"kind": 128,
@@ -25,7 +25,7 @@
 			},
 			"children": [
 				{
-					"id": 67192,
+					"id": 67410,
 					"name": "identifier",
 					"variant": "declaration",
 					"kind": 1024,
@@ -88,7 +88,7 @@
 							"fileName": "abstract-analytics-provider.ts",
 							"line": 65,
 							"character": 9,
-							"url": "https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/utils/src/analytics/abstract-analytics-provider.ts#L65"
+							"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/core/utils/src/analytics/abstract-analytics-provider.ts#L65"
 						}
 					],
 					"type": {
@@ -97,21 +97,21 @@
 					}
 				},
 				{
-					"id": 67193,
+					"id": 67411,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 67194,
+							"id": 67412,
 							"name": "AbstractAnalyticsProviderService",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 67191,
+								"target": 67409,
 								"name": "AbstractAnalyticsProviderService",
 								"package": "@medusajs/utils"
 							}
@@ -119,7 +119,7 @@
 					]
 				},
 				{
-					"id": 67197,
+					"id": 67415,
 					"name": "track",
 					"variant": "declaration",
 					"kind": 2048,
@@ -129,12 +129,12 @@
 							"fileName": "abstract-analytics-provider.ts",
 							"line": 96,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/utils/src/analytics/abstract-analytics-provider.ts#L96"
+							"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/core/utils/src/analytics/abstract-analytics-provider.ts#L96"
 						}
 					],
 					"signatures": [
 						{
-							"id": 67198,
+							"id": 67416,
 							"name": "track",
 							"variant": "signature",
 							"kind": 4096,
@@ -188,12 +188,12 @@
 									"fileName": "abstract-analytics-provider.ts",
 									"line": 96,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/utils/src/analytics/abstract-analytics-provider.ts#L96"
+									"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/core/utils/src/analytics/abstract-analytics-provider.ts#L96"
 								}
 							],
 							"parameters": [
 								{
-									"id": 67199,
+									"id": 67417,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -246,7 +246,7 @@
 					}
 				},
 				{
-					"id": 67200,
+					"id": 67418,
 					"name": "identify",
 					"variant": "declaration",
 					"kind": 2048,
@@ -256,12 +256,12 @@
 							"fileName": "abstract-analytics-provider.ts",
 							"line": 120,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/utils/src/analytics/abstract-analytics-provider.ts#L120"
+							"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/core/utils/src/analytics/abstract-analytics-provider.ts#L120"
 						}
 					],
 					"signatures": [
 						{
-							"id": 67201,
+							"id": 67419,
 							"name": "identify",
 							"variant": "signature",
 							"kind": 4096,
@@ -315,12 +315,12 @@
 									"fileName": "abstract-analytics-provider.ts",
 									"line": 120,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/utils/src/analytics/abstract-analytics-provider.ts#L120"
+									"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/core/utils/src/analytics/abstract-analytics-provider.ts#L120"
 								}
 							],
 							"parameters": [
 								{
-									"id": 67202,
+									"id": 67420,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -377,20 +377,20 @@
 				{
 					"title": "Constructors",
 					"children": [
-						67193
+						67411
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						67192
+						67410
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						67197,
-						67200
+						67415,
+						67418
 					]
 				}
 			],
@@ -399,7 +399,7 @@
 					"fileName": "abstract-analytics-provider.ts",
 					"line": 53,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/1cbd983356e34ccf3398f26599c6a0f77568cf9e/packages/core/utils/src/analytics/abstract-analytics-provider.ts#L53"
+					"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/core/utils/src/analytics/abstract-analytics-provider.ts#L53"
 				}
 			],
 			"implementedTypes": [
@@ -419,45 +419,45 @@
 		{
 			"title": "Classes",
 			"children": [
-				67191
+				67409
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"67190": {
+		"67408": {
 			"sourceFileName": "../../../../packages/core/utils/src/analytics/abstract-analytics-provider.ts",
 			"qualifiedName": ""
 		},
-		"67191": {
+		"67409": {
 			"sourceFileName": "../../../../packages/core/utils/src/analytics/abstract-analytics-provider.ts",
 			"qualifiedName": "AbstractAnalyticsProviderService"
 		},
-		"67192": {
+		"67410": {
 			"sourceFileName": "../../../../packages/core/utils/src/analytics/abstract-analytics-provider.ts",
 			"qualifiedName": "AbstractAnalyticsProviderService.identifier"
 		},
-		"67197": {
+		"67415": {
 			"sourceFileName": "../../../../packages/core/utils/src/analytics/abstract-analytics-provider.ts",
 			"qualifiedName": "AbstractAnalyticsProviderService.track"
 		},
-		"67198": {
+		"67416": {
 			"sourceFileName": "../../../../packages/core/utils/src/analytics/abstract-analytics-provider.ts",
 			"qualifiedName": "AbstractAnalyticsProviderService.track"
 		},
-		"67199": {
+		"67417": {
 			"sourceFileName": "../../../../packages/core/utils/src/analytics/abstract-analytics-provider.ts",
 			"qualifiedName": "data"
 		},
-		"67200": {
+		"67418": {
 			"sourceFileName": "../../../../packages/core/utils/src/analytics/abstract-analytics-provider.ts",
 			"qualifiedName": "AbstractAnalyticsProviderService.identify"
 		},
-		"67201": {
+		"67419": {
 			"sourceFileName": "../../../../packages/core/utils/src/analytics/abstract-analytics-provider.ts",
 			"qualifiedName": "AbstractAnalyticsProviderService.identify"
 		},
-		"67202": {
+		"67420": {
 			"sourceFileName": "../../../../packages/core/utils/src/analytics/abstract-analytics-provider.ts",
 			"qualifiedName": "data"
 		}
@@ -467,7 +467,7 @@
 			"1": "../../../../packages/core/utils/src/analytics/abstract-analytics-provider.ts"
 		},
 		"reflections": {
-			"1": 67190
+			"1": 67408
 		}
 	}
 }
