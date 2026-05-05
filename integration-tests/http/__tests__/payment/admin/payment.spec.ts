@@ -436,6 +436,47 @@ medusaIntegrationTestRunner({
           }),
         ])
       })
+
+      it("should allow refund slightly exceeding captured amount within currency epsilon", async () => {
+        const payment = order.payment_collections[0].payments[0]
+
+        const refundReason = (
+          await api.post(
+            `/admin/refund-reasons`,
+            { label: "test", code: "test" },
+            adminHeaders
+          )
+        ).data.refund_reason
+
+        // Capture with sub-cent precision amount (more decimals than USD supports)
+        await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          { amount: 87.957975 },
+          adminHeaders
+        )
+
+        // 87.96 > 87.957975 but the difference (0.002025) is within USD epsilon (0.01)
+        const response = await api.post(
+          `/admin/payments/${payment.id}/refund`,
+          {
+            amount: 87.96,
+            refund_reason_id: refundReason.id,
+          },
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.payment).toEqual(
+          expect.objectContaining({
+            id: payment.id,
+            refunds: [
+              expect.objectContaining({
+                amount: 87.96,
+              }),
+            ],
+          })
+        )
+      })
     })
   },
 })
