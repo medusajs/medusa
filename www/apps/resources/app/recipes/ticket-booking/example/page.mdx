@@ -93,19 +93,19 @@ npx create-medusa-app@latest
 
 You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose Yes.
 
-Afterward, the installation process will start, which will install the Medusa application in a directory with your project's name, and the Next.js Starter Storefront in a separate directory with the `{project-name}-storefront` name.
-
-<Note title="Why is the storefront installed separately?">
-
-The Medusa application is composed of a headless Node.js server and an admin dashboard. The storefront is installed or custom-built separately and connects to the Medusa application through its REST endpoints, called [API routes](!docs!/learn/fundamentals/api-routes). Learn more in [Medusa's Architecture documentation](!docs!/learn/introduction/architecture).
-
-</Note>
+the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
 
 Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
 
 <Note title="Ran into Errors?">
 
 Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
+
+</Note>
+
+<Note>
+
+In this guide, all file paths of backend customizations are relative to the `apps/backend` directory of your Medusa project.
 
 </Note>
 
@@ -848,7 +848,7 @@ export const CreateVenueSchema = z.object({
   address: z.string().optional(),
   rows: z.array(z.object({
     row_number: z.string(),
-    row_type: z.nativeEnum(RowType),
+    row_type: z.enum(RowType),
     seat_count: z.number(),
   })),
 })
@@ -2320,7 +2320,7 @@ export const CreateTicketProductSchema = z.object({
   venue_id: z.string().min(1, "Venue ID is required"),
   dates: z.array(z.string()).min(1, "At least one date is required"),
   variants: z.array(z.object({
-    row_type: z.nativeEnum(RowType),
+    row_type: z.enum(RowType),
     seat_count: z.number().min(1, "Seat count must be at least 1"),
     prices: z.array(z.object({
       currency_code: z.string().min(1, "Currency code is required"),

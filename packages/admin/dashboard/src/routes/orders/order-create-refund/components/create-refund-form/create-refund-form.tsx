@@ -181,7 +181,7 @@ export const CreateRefundForm = ({ order }: CreateRefundFormProps) => {
                     payment!.currency_code
                   )}
                 </span>
-                <span> - </span>
+                <span>&nbsp;-&nbsp;</span>
                 <span>(#{payment!.id.substring(23)})</span>
               </div>
             )}

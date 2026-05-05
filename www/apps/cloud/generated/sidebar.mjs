@@ -41,6 +41,14 @@ export const generatedSidebars = [
             "path": "/comparison",
             "title": "Cloud vs Self Hosting",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Command Palette",
+            "path": "/command-palette",
+            "children": []
           }
         ]
       },
@@ -113,6 +121,30 @@ export const generatedSidebars = [
                 "type": "link",
                 "title": "Environment Variables",
                 "path": "/environments/environment-variables",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Subdomains",
+                "path": "/environments/subdomains",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Custom Domains",
+                "path": "/environments/custom-domains",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "ref",
+                "title": "Monitoring",
+                "path": "/monitoring",
                 "children": []
               }
             ]
@@ -230,7 +262,11 @@ export const generatedSidebars = [
             "isPathHref": true,
             "type": "link",
             "title": "Loyalty",
-            "path": "/loyalty-plugin",
+            "path": "https://docs.medusajs.com/resources/commerce-modules/loyalty",
+            "badge": {
+              "text": "Published",
+              "variant": "blue"
+            },
             "children": []
           },
           {
@@ -317,6 +353,56 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Usage",
             "path": "/usage",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Performance",
+            "path": "/monitoring",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Servers",
+                "path": "/monitoring/servers",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Workers",
+                "path": "/monitoring/workers",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "HTTP",
+                "path": "/monitoring/http",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "category",
+        "title": "Networking",
+        "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "IP Addresses",
+            "path": "/ip-addresses",
             "children": []
           }
         ]

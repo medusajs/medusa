@@ -167,8 +167,24 @@ jobs:
           GIT_OWNER: ${{ github.repository_owner }}
           GIT_REPO: medusa
 
+      - name: Get Previous Release Version
+        id: prev-release
+        if: ${{ github.event_name == 'release' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PREV_TAG=$(gh release list --repo ${{ github.repository }} --limit 2 --json tagName | jq -r '.[1].tagName')
+          PREV_VERSION="${PREV_TAG#v}"
+          echo "version=$PREV_VERSION" >> $GITHUB_OUTPUT
+
       - name: Generate API Reference
-        run: yarn openapi:generate
+        run: |
+          PREV_VERSION="${{ steps.prev-release.outputs.version }}"
+          if [ -n "$PREV_VERSION" ]; then
+            yarn openapi:generate --archive-version=$PREV_VERSION
+          else
+            yarn openapi:generate
+          fi
 
       - name: Run prep script
         run: yarn prep

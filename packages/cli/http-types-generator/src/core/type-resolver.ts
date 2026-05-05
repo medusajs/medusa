@@ -89,11 +89,15 @@ export class TypeResolver {
     const hasZodSchemaLeak =
       initialPropNames.has("parse") &&
       initialPropNames.has("safeParse") &&
-      initialPropNames.has("_output")
+      // _output = Zod v3 leak indicator; _zod = Zod v4 leak indicator
+      (initialPropNames.has("_output") || initialPropNames.has("_zod"))
     const hasCircularLazyIssue =
       hasZodSchemaLeak ||
       (properties.length > 0 &&
-        properties.every((p) => p.name === "$and" || p.name === "$or"))
+        properties.every((p) => p.name === "$and" || p.name === "$or")) ||
+      // Zod v4: TypeScript may fail to evaluate complex merged schema output types,
+      // returning a type with 0 properties. Fall back to baseFieldsType if available.
+      (properties.length === 0 && baseFieldsType !== undefined)
 
     let hasBaseFilterable = initialPropNames.has("$and")
 
@@ -169,7 +173,7 @@ export class TypeResolver {
           zodSymbolName === "ZodOptional" ||
           zodSymbolName === "ZodNullable" ||
           zodSymbolName === "ZodDefault" ||
-          zodSymbolName === "ZodEffects"
+          zodSymbolName === "ZodPipe" // transform/preprocess
       }
 
       const nonNullableType = this.checker.getNonNullableType(propType)

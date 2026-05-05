@@ -12,7 +12,6 @@ import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { sdk } from "../../../../../lib/client"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { se } from "date-fns/locale"
 import { useEffect } from "react"
 
 type ProductShippingProfileFormProps = {

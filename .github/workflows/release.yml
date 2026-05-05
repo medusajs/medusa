@@ -33,8 +33,33 @@ jobs:
 
       - name: Build packages
         run: yarn build
-
-      - name: Create Release Pull Request
+      - name: Create Release Pull Request or Publish packages
+        id: changesets
         uses: changesets/action@v1
+        with:
+          version: yarn version
+          commit: "Chore: Release"
+          title: "Chore: Release"
+          createGithubReleases: false
+          publish: yarn changeset publish
         env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Trigger draft release generation
+        if: steps.changesets.outputs.published == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const packages = JSON.parse('${{ steps.changesets.outputs.publishedPackages }}')
+            const version = packages[0]?.version ?? ''
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'draft-release.yml',
+              ref: 'develop',
+              inputs: {
+                version
+              }
+            })

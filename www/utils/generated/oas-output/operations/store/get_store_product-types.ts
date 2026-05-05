@@ -605,6 +605,20 @@
  *       externalDocs:
  *         url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
  *         description: Learn more in the Serve Translations in Storefront guide.
+ *   - name: external_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: external_id
+ *           description: Filter by a product type's external ID.
+ *         - type: array
+ *           description: Filter by product type external IDs.
+ *           items:
+ *             type: string
+ *             title: external_id
+ *             description: A product type's external ID.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

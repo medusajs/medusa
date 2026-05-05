@@ -1561,14 +1561,14 @@ export default class ProductModuleService
       (product): product is UpdateProductInput => !!product.id
     )
     const forCreate = input.filter(
-      (product): product is ProductTypes.CreateProductDTO => !product.id
+      (product) => !product.id
     )
 
     let created: ProductTypes.ProductDTO[] = []
     let updated: InferEntityType<typeof Product>[] = []
 
     if (forCreate.length) {
-      created = await this.createProducts(forCreate, sharedContext)
+      created = await this.createProducts(forCreate as ProductTypes.CreateProductDTO[], sharedContext)
     }
     if (forUpdate.length) {
       updated = await this.updateProducts_(forUpdate, sharedContext)

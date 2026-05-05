@@ -4,7 +4,7 @@ import {
   ReceiptPercent,
   XCircle,
 } from "@medusajs/icons"
-import { AdminOrderLineItem } from "@medusajs/types"
+import { AdminOrderLinePreview } from "@medusajs/types"
 import { Badge, Input, Text, toast, Tooltip } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
@@ -20,7 +20,7 @@ import {
 } from "../../../../../hooks/api/order-edits"
 
 type OrderEditItemProps = {
-  item: AdminOrderLineItem
+  item: AdminOrderLinePreview
   currencyCode: string
   orderId: string
 }
@@ -77,7 +77,9 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
         await updateOriginalItem({ quantity, itemId: item.id })
       }
     } catch (e) {
-      toast.error(e.message)
+      toast.error(
+        e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+      )
     }
   }
 
@@ -94,7 +96,9 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
         })
       }
     } catch (e) {
-      toast.error(e.message)
+      toast.error(
+        e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+      )
     }
   }
 
@@ -108,11 +112,16 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
         await undoAction(updateItemAction.id) // Remove action that updated items quantity to fulfilled quantity which makes it "removed"
       }
     } catch (e) {
-      toast.error(e.message)
+      toast.error(
+        e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+      )
     }
   }
 
   const onDuplicate = async () => {
+    if (!item.variant_id) {
+      return
+    }
     try {
       await addItems({
         items: [
@@ -123,7 +132,9 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
         ],
       })
     } catch (e) {
-      toast.error(e.message)
+      toast.error(
+        e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+      )
     }
   }
 

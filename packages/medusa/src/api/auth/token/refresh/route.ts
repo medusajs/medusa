@@ -16,7 +16,8 @@ export const POST = async (
   const service: IAuthModuleService = req.scope.resolve(Modules.AUTH)
 
   const authIdentity = await service.retrieveAuthIdentity(
-    req.auth_context.auth_identity_id
+    req.auth_context.auth_identity_id,
+    { relations: ["provider_identities"] }
   )
 
   const { http } = req.scope.resolve(
@@ -27,6 +28,7 @@ export const POST = async (
     {
       authIdentity,
       actorType: req.auth_context.actor_type,
+      authProvider: req.auth_context.auth_provider,
       container: req.scope,
     },
     {

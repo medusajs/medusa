@@ -38,7 +38,7 @@ const ProductEditVariantSchema = z.object({
   mid_code: z.string().optional(),
   hs_code: z.string().optional(),
   origin_country: z.string().optional(),
-  options: z.record(z.string()),
+  options: z.record(z.string(), z.string()),
 })
 
 // TODO: Either pass option ID or make the backend handle options constraints differently to handle the lack of IDs
@@ -420,7 +420,7 @@ export const ProductEditVariantForm = ({
                       {t("fields.countryOfOrigin")}
                     </Form.Label>
                     <Form.Control>
-                      <CountrySelect {...field} />
+                      <CountrySelect {...field} allowClear />
                     </Form.Control>
                     <Form.ErrorMessage />
                   </Form.Item>

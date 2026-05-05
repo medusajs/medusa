@@ -2,7 +2,8 @@ import path from "path"
 import execute, { VerboseOptions } from "./execute.js"
 import logMessage from "./log-message.js"
 import ProcessManager from "./process-manager.js"
-import { existsSync, rmSync } from "fs"
+import { existsSync, readFileSync, rmSync, writeFileSync } from "fs"
+import { parse as parseYaml } from "yaml"
 
 export type PackageManagerType = "npm" | "yarn" | "pnpm"
 
@@ -170,6 +171,61 @@ export default class PackageManager {
     })
   }
 
+  private applyYarnWorkspaceChanges(directory: string): void {
+    writeFileSync(path.join(directory, "yarn.lock"), "")
+    writeFileSync(
+      path.join(directory, ".yarnrc.yml"),
+      "nodeLinker: node-modules\n"
+    )
+  }
+
+  private applyNpmWorkspaceChanges(packageJson: Record<string, unknown>): void {
+    // npm's flat hoisting can install ajv v6 where v8 is expected, causing
+    // "Cannot find module 'ajv/dist/core'" at runtime. The `dist/core` export
+    // only exists in ajv v8+, so we force all transitive resolutions to v8.
+    packageJson.overrides = {
+      ...(packageJson.overrides as Record<string, unknown>),
+      ajv: "^8.0.0",
+    }
+  }
+
+  async transformWorkspaceConfig(directory: string): Promise<void> {
+    if (this.packageManager === "pnpm") {
+      return
+    }
+
+    const workspaceYamlPath = path.join(directory, "pnpm-workspace.yaml")
+    if (!existsSync(workspaceYamlPath)) {
+      return
+    }
+
+    const yamlContent = readFileSync(workspaceYamlPath, "utf-8")
+    const workspacePackages: string[] = parseYaml(yamlContent)?.packages ?? []
+
+    const packageJsonPath = path.join(directory, "package.json")
+    const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"))
+    packageJson.workspaces = workspacePackages
+
+    if (packageJson.scripts) {
+      const pm = this.packageManager!
+      packageJson.scripts = Object.fromEntries(
+        Object.entries(packageJson.scripts as Record<string, string>).map(
+          ([key, value]) => [key, value.replace(/\bpnpm\b/g, pm)]
+        )
+      )
+    }
+
+    if (this.packageManager === "yarn") {
+      this.applyYarnWorkspaceChanges(directory)
+    } else if (this.packageManager === "npm") {
+      this.applyNpmWorkspaceChanges(packageJson)
+    }
+
+    writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
+
+    rmSync(workspaceYamlPath, { force: true })
+  }
+
   async removeLockFiles(directory: string): Promise<void> {
     const lockFiles: Record<PackageManagerType, string[]> = {
       npm: ["yarn.lock", "pnpm-lock.yaml", ".yarn"],
@@ -193,29 +249,55 @@ export default class PackageManager {
     }
   }
 
-  async installDependencies(execOptions: Record<string, unknown>) {
+  async installDependencies(
+    execOptions: Record<string, unknown>,
+    installOptions?: {
+      installLegacyPeerDeps?: boolean
+    }
+  ) {
     if (!this.packageManager) {
       await this.setPackageManager(execOptions)
     }
 
-    // Remove lock files from other package managers
     if (execOptions.cwd && typeof execOptions.cwd === "string") {
+      await this.transformWorkspaceConfig(execOptions.cwd)
       await this.removeLockFiles(execOptions.cwd)
     }
 
     const commands: Record<PackageManagerType, string> = {
       yarn: "yarn",
       pnpm: "pnpm install",
-      npm: "npm install",
+      npm: `npm install${
+        installOptions?.installLegacyPeerDeps ? " --legacy-peer-deps" : ""
+      }`,
     }
 
     const command = commands[this.packageManager || "npm"]
 
     await this.processManager.runProcess({
       process: async () => {
-        await execute([command, execOptions], {
-          verbose: this.verbose,
-        })
+        try {
+          await execute([command, execOptions], {
+            verbose: this.verbose,
+          })
+        } catch (error) {
+          const errorStr =
+            typeof error === "string"
+              ? error
+              : (error as any)?.stderr ||
+                (error as any)?.message ||
+                String(error)
+          const packageManagerConflictMatch = errorStr.match(
+            /This project is configured to use (\w+) because (.+) has a "packageManager" field/
+          )
+          if (this.packageManager === "pnpm" && packageManagerConflictMatch) {
+            const conflictingFile = packageManagerConflictMatch[2]
+            throw new Error(
+              `Cannot install with pnpm because ${conflictingFile} has a "packageManager" field that specifies a different package manager. Consider removing that field from ${conflictingFile}, or create your Medusa project in a different directory.`
+            )
+          }
+          throw error
+        }
 
         // For npm, run npm ci after npm install to validate installation
         if (this.packageManager === "npm") {

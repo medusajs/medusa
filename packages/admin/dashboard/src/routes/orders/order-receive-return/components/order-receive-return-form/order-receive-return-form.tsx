@@ -1,6 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ArrowRight } from "@medusajs/icons"
-import { AdminOrder, AdminReturn } from "@medusajs/types"
+import {
+  AdminOrder,
+  AdminOrderLineItem,
+  AdminOrderPreview,
+  AdminReturn,
+} from "@medusajs/types"
 import { Alert, Button, Input, Switch, Text, toast } from "@medusajs/ui"
 import { useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
@@ -21,11 +26,11 @@ import {
 } from "../../../../../hooks/api/returns"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { ReceiveReturnSchema } from "./constants"
-import DismissedQuantity from "./dismissed-quantity"
+import DismissedQuantity, { DismissedQuantityForm } from "./dismissed-quantity"
 
 type OrderAllocateItemsFormProps = {
   order: AdminOrder
-  preview: AdminOrder
+  preview: AdminOrderPreview
   orderReturn: AdminReturn
 }
 
@@ -41,7 +46,7 @@ export function OrderReceiveReturnForm({
    * Items on the preview order that are part of the return we are receiving currently.
    */
   const previewItems = useMemo(() => {
-    const idsMap = {}
+    const idsMap: Record<string, boolean> = {}
 
     orderReturn.items.forEach((i) => (idsMap[i.item_id] = true))
 
@@ -72,7 +77,7 @@ export function OrderReceiveReturnForm({
   )
 
   const { stock_location } = useStockLocation(
-    orderReturn.location_id,
+    orderReturn.location_id ?? "",
     undefined,
     {
       enabled: !!orderReturn.location_id,
@@ -80,7 +85,7 @@ export function OrderReceiveReturnForm({
   )
 
   const itemsMap = useMemo(() => {
-    const ret = {}
+    const ret: Record<string, AdminOrderLineItem> = {}
     order.items.forEach((i) => (ret[i.id] = i))
     return ret
   }, [order.items])
@@ -110,12 +115,12 @@ export function OrderReceiveReturnForm({
 
         form.setValue(
           `items.${index}.quantity`,
-          receivedAction?.details.quantity,
+          receivedAction?.details?.quantity as number,
           { shouldTouch: true, shouldDirty: true }
         )
         form.setValue(
           `items.${index}.dismissed_quantity`,
-          dismissedAction?.details.quantity,
+          dismissedAction?.details?.quantity as number,
           { shouldTouch: true, shouldDirty: true }
         )
       })
@@ -133,12 +138,11 @@ export function OrderReceiveReturnForm({
 
       toast.success(t("general.success"), {
         description: t("orders.returns.receive.toast.success"),
-        dismissLabel: t("actions.close"),
       })
-    } catch (e) {
+    } catch (e: unknown) {
       toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
+        description:
+          e instanceof Error ? e.message : t("errorBoundary.defaultTitle"),
       })
     }
   })
@@ -156,7 +160,7 @@ export function OrderReceiveReturnForm({
     if (typeof value === "number" && value < 0) {
       form.setValue(
         `items.${index}.quantity`,
-        item.detail.return_received_quantity,
+        item?.detail?.return_received_quantity,
         { shouldTouch: true, shouldDirty: true }
       )
 
@@ -165,12 +169,12 @@ export function OrderReceiveReturnForm({
       return
     }
 
-    if (typeof value === "number" && value > item.quantity) {
+    if (typeof value === "number" && item && value > item.quantity) {
       // reset value in the form and notify the user to be aware that we didn't chang anything
 
       form.setValue(
         `items.${index}.quantity`,
-        item.detail.return_received_quantity,
+        item.detail?.return_received_quantity,
         { shouldTouch: true, shouldDirty: true }
       )
 
@@ -189,12 +193,19 @@ export function OrderReceiveReturnForm({
 
         await updateReceiveItem({ actionId: action.id, quantity: value })
       } else {
-        if (typeof value === "number" && value > 0 && value <= item.quantity) {
+        if (
+          typeof value === "number" &&
+          value > 0 &&
+          item &&
+          value <= item.quantity
+        ) {
           await addReceiveItems({ items: [{ id: item.id, quantity: value }] })
         }
       }
     } catch (e) {
-      toast.error(e.message)
+      toast.error(
+        e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+      )
     }
   }
 
@@ -204,7 +215,9 @@ export function OrderReceiveReturnForm({
         await cancelReceiveReturn()
       }
     } catch (e) {
-      toast.error(e.message)
+      toast.error(
+        e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+      )
     }
   }
 
@@ -262,7 +275,7 @@ export function OrderReceiveReturnForm({
 
                   <div className="flex flex-1 flex-row items-center gap-2">
                     <DismissedQuantity
-                      form={form}
+                      form={form as unknown as DismissedQuantityForm}
                       item={item}
                       index={ind}
                       returnId={orderReturn.id}
@@ -279,7 +292,7 @@ export function OrderReceiveReturnForm({
                                 min={0}
                                 max={item.quantity}
                                 type="number"
-                                value={value}
+                                value={value ?? 0}
                                 className="bg-ui-bg-field-component text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                                 onChange={(e) => {
                                   const value =
@@ -292,7 +305,11 @@ export function OrderReceiveReturnForm({
                                 {...field}
                                 onBlur={() => {
                                   field.onBlur()
-                                  handleQuantityChange(item.id, value, ind)
+                                  handleQuantityChange(
+                                    item.id,
+                                    value ?? null,
+                                    ind
+                                  )
                                 }}
                               />
                             </Form.Control>

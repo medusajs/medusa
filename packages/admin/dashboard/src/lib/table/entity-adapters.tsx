@@ -13,7 +13,7 @@ export const orderColumnAdapter: ColumnAdapter<HttpTypes.AdminOrder> = {
       return "center"
     }
     return "left"
-  }
+  },
 }
 
 export const productColumnAdapter: ColumnAdapter<HttpTypes.AdminProduct> = {
@@ -56,16 +56,25 @@ export const productColumnAdapter: ColumnAdapter<HttpTypes.AdminProduct> = {
   },
 
   transformCellValue: (_value, row, column) => {
-    if (column.field === "variants_count" || column.computed?.type === "count") {
+    if (
+      column.field === "variants_count" ||
+      column.computed?.type === "count"
+    ) {
       const count = Array.isArray(row.variants) ? row.variants.length : 0
-      return `${count} ${count === 1 ? 'variant' : 'variants'}`
+      return `${count} ${count === 1 ? "variant" : "variants"}`
     }
 
-    if (column.field === "product_display" || column.computed?.type === "product_info") {
+    if (
+      column.field === "product_display" ||
+      column.computed?.type === "product_info"
+    ) {
       return null
     }
 
-    if (column.field === "sales_channels_display" || column.computed?.type === "sales_channels_list") {
+    if (
+      column.field === "sales_channels_display" ||
+      column.computed?.type === "sales_channels_list"
+    ) {
       return null
     }
 
@@ -74,7 +83,7 @@ export const productColumnAdapter: ColumnAdapter<HttpTypes.AdminProduct> = {
     }
 
     return null
-  }
+  },
 }
 
 export const customerColumnAdapter: ColumnAdapter<HttpTypes.AdminCustomer> = {
@@ -102,27 +111,29 @@ export const customerColumnAdapter: ColumnAdapter<HttpTypes.AdminCustomer> = {
     }
 
     return null
-  }
+  },
 }
 
-export const inventoryColumnAdapter: ColumnAdapter<HttpTypes.AdminInventoryItem> = {
-  getColumnAlignment: (column) => {
-    if (column.field === "stocked_quantity") {
-      return "right"
-    }
-    if (column.field === "reserved_quantity") {
-      return "right"
-    }
-    if (column.field === "available_quantity") {
-      return "right"
-    }
-    if (column.semantic_type === "status") {
-      return "center"
-    }
+// eslint-disable-next-line max-len
+export const inventoryColumnAdapter: ColumnAdapter<HttpTypes.AdminInventoryItem> =
+  {
+    getColumnAlignment: (column) => {
+      if (column.field === "stocked_quantity") {
+        return "right"
+      }
+      if (column.field === "reserved_quantity") {
+        return "right"
+      }
+      if (column.field === "available_quantity") {
+        return "right"
+      }
+      if (column.semantic_type === "status") {
+        return "center"
+      }
 
-    return "left"
+      return "left"
+    },
   }
-}
 
 export const entityAdapters = {
   orders: orderColumnAdapter,
@@ -133,6 +144,8 @@ export const entityAdapters = {
 
 export type EntityType = keyof typeof entityAdapters
 
-export function getEntityAdapter<TData = any>(entity: string): ColumnAdapter<TData> | undefined {
+export function getEntityAdapter<TData = any>(
+  entity: string
+): ColumnAdapter<TData> | undefined {
   return entityAdapters[entity as EntityType] as ColumnAdapter<TData>
 }

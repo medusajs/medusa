@@ -11,7 +11,7 @@ import { refetchShippingOption } from "../helpers"
 import { MedusaError } from "@medusajs/framework/utils"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<HttpTypes.SelectParams>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetShippingOptionParams>,
   res: MedusaResponse<HttpTypes.AdminShippingOptionResponse>
 ) => {
   const shippingOption = await refetchShippingOption(
@@ -33,7 +33,7 @@ export const GET = async (
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     HttpTypes.AdminUpdateShippingOption,
-    HttpTypes.SelectParams
+    HttpTypes.AdminGetShippingOptionParams
   >,
   res: MedusaResponse<HttpTypes.AdminShippingOptionResponse>
 ) => {

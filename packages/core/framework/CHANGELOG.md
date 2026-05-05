@@ -1,5 +1,71 @@
 # @medusajs/framework
 
+## 2.14.2
+
+### Patch Changes
+
+- [#15137](https://github.com/medusajs/medusa/pull/15137) [`be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0`](https://github.com/medusajs/medusa/commit/be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0) Thanks [@saheersk](https://github.com/saheersk)! - fix(medusa,framework): preserve app_metadata and user_metadata across token refresh
+
+- [#15202](https://github.com/medusajs/medusa/pull/15202) [`7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23`](https://github.com/medusajs/medusa/commit/7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23) Thanks [@rnagulapalle](https://github.com/rnagulapalle)! - fix(framework): preserve rawBody for text and urlencoded body parsers
+
+- Updated dependencies [[`aa407641ce6ddcd2e27352315b0f7b911a2c0acf`](https://github.com/medusajs/medusa/commit/aa407641ce6ddcd2e27352315b0f7b911a2c0acf), [`a9617312ef55be2be8ac5823cc990dd5d6e72c4c`](https://github.com/medusajs/medusa/commit/a9617312ef55be2be8ac5823cc990dd5d6e72c4c), [`d29b9a1d80580d4b5dce926387c465260936e5ec`](https://github.com/medusajs/medusa/commit/d29b9a1d80580d4b5dce926387c465260936e5ec), [`a0e57e419cd3e597526460fdbfed7e3e4842aa9b`](https://github.com/medusajs/medusa/commit/a0e57e419cd3e597526460fdbfed7e3e4842aa9b)]:
+  - @medusajs/types@2.14.2
+  - @medusajs/modules-sdk@2.14.2
+  - @medusajs/orchestration@2.14.2
+  - @medusajs/utils@2.14.2
+  - @medusajs/workflows-sdk@2.14.2
+  - @medusajs/cli@2.14.2
+  - @medusajs/deps@2.14.2
+  - @medusajs/telemetry@2.14.2
+
+## 2.14.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/cli@2.14.1
+  - @medusajs/modules-sdk@2.14.1
+  - @medusajs/orchestration@2.14.1
+  - @medusajs/types@2.14.1
+  - @medusajs/utils@2.14.1
+  - @medusajs/workflows-sdk@2.14.1
+  - @medusajs/deps@2.14.1
+  - @medusajs/telemetry@2.14.1
+
+## 2.14.0
+
+### Patch Changes
+
+- [#15110](https://github.com/medusajs/medusa/pull/15110) [`0929b8d192833e10b6b91795f1ffc478938c3fb7`](https://github.com/medusajs/medusa/commit/0929b8d192833e10b6b91795f1ffc478938c3fb7) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(framework): fix plugin build not outputting server assets
+
+- [#14309](https://github.com/medusajs/medusa/pull/14309) [`843dbfe7c8f27b732486c7a8da7b6d63f2fdf967`](https://github.com/medusajs/medusa/commit/843dbfe7c8f27b732486c7a8da7b6d63f2fdf967) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(): upgrade zod to latest
+
+- Updated dependencies [[`1a28af3d7412466022dc941c425a06c762a43d75`](https://github.com/medusajs/medusa/commit/1a28af3d7412466022dc941c425a06c762a43d75), [`15085e1adb9c50743ca07d2da94f23cc09b6852a`](https://github.com/medusajs/medusa/commit/15085e1adb9c50743ca07d2da94f23cc09b6852a), [`843dbfe7c8f27b732486c7a8da7b6d63f2fdf967`](https://github.com/medusajs/medusa/commit/843dbfe7c8f27b732486c7a8da7b6d63f2fdf967), [`67499a8aa6b3b53cbdecb5be9fcc358b4e466696`](https://github.com/medusajs/medusa/commit/67499a8aa6b3b53cbdecb5be9fcc358b4e466696), [`965adfe2fc15a024270ac384f819479e8b274e10`](https://github.com/medusajs/medusa/commit/965adfe2fc15a024270ac384f819479e8b274e10), [`9e145bfb27cb5792f7b8d1331f2b076fb00355d9`](https://github.com/medusajs/medusa/commit/9e145bfb27cb5792f7b8d1331f2b076fb00355d9), [`eeed5a11f7ab1110038fa02d0f6cb1e3ca18cf3d`](https://github.com/medusajs/medusa/commit/eeed5a11f7ab1110038fa02d0f6cb1e3ca18cf3d), [`923a869a7d462c2e0399619ac2b35c16132e079c`](https://github.com/medusajs/medusa/commit/923a869a7d462c2e0399619ac2b35c16132e079c), [`9e1e7082c3437ee2ae01d6752b624d4b4d905604`](https://github.com/medusajs/medusa/commit/9e1e7082c3437ee2ae01d6752b624d4b4d905604), [`c18e1f49a88c3b6a426171afeaf6f7691e8c5bde`](https://github.com/medusajs/medusa/commit/c18e1f49a88c3b6a426171afeaf6f7691e8c5bde), [`b94f7ae1f5f66dfca7f73c7ee8d53afdcbf26ee5`](https://github.com/medusajs/medusa/commit/b94f7ae1f5f66dfca7f73c7ee8d53afdcbf26ee5), [`d9af2f5efba391f612ea9f6183702756c3fa4732`](https://github.com/medusajs/medusa/commit/d9af2f5efba391f612ea9f6183702756c3fa4732), [`32533eb829d904d4c1a89c841f06d9c209460ac7`](https://github.com/medusajs/medusa/commit/32533eb829d904d4c1a89c841f06d9c209460ac7), [`2ae3978edb454efb0b647889071bd2b8349299f0`](https://github.com/medusajs/medusa/commit/2ae3978edb454efb0b647889071bd2b8349299f0), [`a92ca32b93eaf7f5a8e1fc8b2bbb01763867f6c1`](https://github.com/medusajs/medusa/commit/a92ca32b93eaf7f5a8e1fc8b2bbb01763867f6c1)]:
+  - @medusajs/types@2.14.0
+  - @medusajs/utils@2.14.0
+  - @medusajs/workflows-sdk@2.14.0
+  - @medusajs/cli@2.14.0
+  - @medusajs/modules-sdk@2.14.0
+  - @medusajs/orchestration@2.14.0
+  - @medusajs/deps@2.14.0
+  - @medusajs/telemetry@2.14.0
+
+## 2.13.6
+
+### Patch Changes
+
+- [#15005](https://github.com/medusajs/medusa/pull/15005) [`2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d`](https://github.com/medusajs/medusa/commit/2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update glob version
+
+- Updated dependencies [[`5b655f6d7c24323bd84dc1b684938725873a33ac`](https://github.com/medusajs/medusa/commit/5b655f6d7c24323bd84dc1b684938725873a33ac), [`7c5e5e37f632716e5c6846c12d0dee7efe1e0b96`](https://github.com/medusajs/medusa/commit/7c5e5e37f632716e5c6846c12d0dee7efe1e0b96), [`2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d`](https://github.com/medusajs/medusa/commit/2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d), [`62e0760a2ad032c9f7ef219968d667193bf3c4a1`](https://github.com/medusajs/medusa/commit/62e0760a2ad032c9f7ef219968d667193bf3c4a1)]:
+  - @medusajs/types@2.13.6
+  - @medusajs/cli@2.13.6
+  - @medusajs/utils@2.13.6
+  - @medusajs/deps@2.13.6
+  - @medusajs/modules-sdk@2.13.6
+  - @medusajs/orchestration@2.13.6
+  - @medusajs/workflows-sdk@2.13.6
+  - @medusajs/telemetry@2.13.6
+
 ## 2.13.5
 
 ### Patch Changes

@@ -36,7 +36,9 @@ import {
   MathBN,
   MedusaContext,
   MedusaError,
+  mergeMetadata,
   ModulesSdkUtils,
+  normalizeCurrencyCode,
   PriceListType,
   PricingRuleOperator,
   promiseAll,
@@ -959,6 +961,10 @@ export default class PricingModuleService
         delete (entry as CreatePricesDTO).rules
       }
 
+      if (isDefined(entry.currency_code)) {
+        entry.currency_code = normalizeCurrencyCode(entry.currency_code)!
+      }
+
       const entryHash = hashPrice(entry)
 
       // We want to keep the existing rules as they might already have ids, but any other data should come from the updated input
@@ -1453,12 +1459,22 @@ export default class PricingModuleService
       )
     }
 
+    const existingByIdMap = new Map(existingPriceLists.map((p) => [p.id, p]))
+
     const normalizedData = this.normalizePriceListDate(data).map(
       (priceList) => {
         const entry: Partial<ServiceTypes.CreatePriceListDTO> = {
           ...priceList,
           rules: undefined,
           price_list_rules: undefined,
+        }
+
+        if (isPresent(priceList.metadata)) {
+          const existing = existingByIdMap.get(priceList.id as string)
+          entry.metadata = mergeMetadata(
+            existing?.metadata ?? {},
+            priceList.metadata as Record<string, unknown>
+          )
         }
 
         if (typeof priceList.rules === "object") {
@@ -1815,7 +1831,7 @@ const hashPrice = (
   const parts: string[] = []
 
   if ("currency_code" in price) {
-    parts.push(`cc:${price.currency_code ?? ""}`)
+    parts.push(`cc:${normalizeCurrencyCode(price.currency_code ?? "")}`)
   }
   if ("price_set_id" in price) {
     parts.push(`ps:${price.price_set_id ?? ""}`)
@@ -1868,8 +1884,8 @@ const buildPreNormalizationPriceConstraintsFromData = (
 
     const constraint: any = {}
 
-    if (price.currency_code !== undefined) {
-      constraint.currency_code = price.currency_code
+    if (!!price.currency_code) {
+      constraint.currency_code = normalizeCurrencyCode(price.currency_code)
     }
     if ("price_set_id" in price && price.price_set_id !== undefined) {
       constraint.price_set_id = price.price_set_id

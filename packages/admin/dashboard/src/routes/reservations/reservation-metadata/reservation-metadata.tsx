@@ -10,8 +10,12 @@ import { RouteDrawer } from "../../../components/modals"
 export const ReservationMetadata = () => {
   const { id } = useParams()
 
-  const { reservation, isPending, isError, error } = useReservationItem(id)
-  const { mutateAsync, isPending: isMutating } = useUpdateReservationItem(id)
+  const { reservation, isPending, isError, error } = useReservationItem(
+    id ?? ""
+  )
+  const { mutateAsync, isPending: isMutating } = useUpdateReservationItem(
+    id ?? ""
+  )
 
   if (isError) {
     throw error

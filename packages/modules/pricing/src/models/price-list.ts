@@ -22,6 +22,7 @@ const PriceList = model
     price_list_rules: model.hasMany(() => PriceListRule, {
       mappedBy: "price_list",
     }),
+    metadata: model.json().nullable(),
   })
   .cascades({
     delete: ["price_list_rules", "prices"],
