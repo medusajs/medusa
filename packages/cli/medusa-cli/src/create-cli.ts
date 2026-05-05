@@ -14,7 +14,10 @@ const handlerP =
   (...args) => {
     Promise.resolve(fn(...args)).then(
       () => process.exit(0),
-      (err) => console.log(err)
+      (err) => {
+        console.error(err)
+        process.exit(1)
+      }
     )
   }
 

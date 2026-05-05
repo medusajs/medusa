@@ -15,10 +15,11 @@ const TERMINAL_SIZE = process.stdout.columns
 const main = async function ({ directory, modules }) {
   process.env.MEDUSA_WORKER_MODE = "server"
 
-  const container = await initializeContainer(directory)
-  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+  let logger
 
   try {
+    const container = await initializeContainer(directory)
+    logger = container.resolve(ContainerRegistrationKeys.LOGGER)
     /**
      * Setup
      */
@@ -54,16 +55,20 @@ const main = async function ({ directory, modules }) {
     logger.info("Migrations reverted")
 
     process.exit()
-  } catch (error) {
-    logger.log(new Array(TERMINAL_SIZE).join("-"))
-    if (error.code && error.code === MedusaError.Codes.UNKNOWN_MODULES) {
-      logger.error(error.message)
-      const modulesList = error.allModules.map(
-        (name: string) => `          - ${name}`
-      )
-      logger.error(`Available modules:\n${modulesList.join("\n")}`)
+  } catch (error: any) {
+    if (logger) {
+      logger.log(new Array(TERMINAL_SIZE).join("-"))
+      if (error.code && error.code === MedusaError.Codes.UNKNOWN_MODULES) {
+        logger.error(error.message)
+        const modulesList = error.allModules.map(
+          (name: string) => `          - ${name}`
+        )
+        logger.error(`Available modules:\n${modulesList.join("\n")}`)
+      } else {
+        logger.error(error.message, error)
+      }
     } else {
-      logger.error(error.message, error)
+      console.error(error)
     }
     process.exit(1)
   }
