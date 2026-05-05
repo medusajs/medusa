@@ -15,7 +15,7 @@ export const metadata = {
 
 # {metadata.title}
 
-The `create-medusa-app` CLI tool simplifies the process of creating a new Medusa project. It creates a monorepo containing your Medusa backend application and, optionally, a Next.js storefront. It also allows you to setup a [Medusa plugin project](#create-a-medusa-plugin-project).
+The `create-medusa-app` CLI tool simplifies the process of creating a new Medusa project. It creates a monorepo containing your Medusa backend application and, optionally, a Next.js Starter Storefront. It also allows you to setup a [Medusa plugin project](#create-a-medusa-plugin-project).
 
 <Prerequisites items={[
   {
@@ -339,7 +339,7 @@ my-medusa-store/
 │   │   ├── src/
 │   │   ├── package.json
 │   │   └── medusa-config.ts
-│   └── storefront/       # Next.js storefront (if --with-nextjs-starter is used)
+│   └── storefront/       # Next.js Starter Storefront (if --with-nextjs-starter is used)
 │       ├── src/
 │       ├── package.json
 │       └── next.config.js
@@ -347,7 +347,7 @@ my-medusa-store/
 └── pnpm-workspace.yaml   # Workspace configuration
 ```
 
-Your Medusa backend will be located in the `apps/backend` directory, and the optional Next.js storefront in `apps/storefront`.
+Your Medusa backend will be located in the `apps/backend` directory, and the optional Next.js Starter Storefront in `apps/storefront`.
 
 ---
 
