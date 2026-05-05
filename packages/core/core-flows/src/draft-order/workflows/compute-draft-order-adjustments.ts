@@ -8,7 +8,6 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import type {
-  AdditionalData,
   OrderChangeDTO,
   OrderDTO,
   PromotionDTO,
@@ -68,11 +67,7 @@ export interface ComputeDraftOrderAdjustmentsWorkflowInput {
  */
 export const computeDraftOrderAdjustmentsWorkflow = createWorkflow(
   computeDraftOrderAdjustmentsWorkflowId,
-  function (
-    input: WorkflowData<
-      ComputeDraftOrderAdjustmentsWorkflowInput & AdditionalData
-    >
-  ) {
+  function (input: WorkflowData<ComputeDraftOrderAdjustmentsWorkflowInput>) {
     acquireLockStep({
       key: input.order_id,
       timeout: 2,
@@ -108,7 +103,6 @@ export const computeDraftOrderAdjustmentsWorkflow = createWorkflow(
       {
         order,
         orderChange,
-        additional_data: input.additional_data,
       },
       {
         resultValidator: promotionContextResult,

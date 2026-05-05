@@ -6,7 +6,7 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import type { AdditionalData, OrderDTO } from "@medusajs/framework/types"
+import type { OrderDTO } from "@medusajs/framework/types"
 import {
   getActionsToComputeFromPromotionsStep,
   getPromotionCodesToApply,
@@ -86,11 +86,7 @@ export interface RefreshDraftOrderAdjustmentsWorkflowInput {
  */
 export const refreshDraftOrderAdjustmentsWorkflow = createWorkflow(
   refreshDraftOrderAdjustmentsWorkflowId,
-  function (
-    input: WorkflowData<
-      RefreshDraftOrderAdjustmentsWorkflowInput & AdditionalData
-    >
-  ) {
+  function (input: WorkflowData<RefreshDraftOrderAdjustmentsWorkflowInput>) {
     acquireLockStep({
       key: input.order.id,
       timeout: 2,
@@ -103,7 +99,6 @@ export const refreshDraftOrderAdjustmentsWorkflow = createWorkflow(
         order: input.order,
         promo_codes: input.promo_codes,
         action: input.action,
-        additional_data: input.additional_data,
       },
       {
         resultValidator: promotionContextResult,

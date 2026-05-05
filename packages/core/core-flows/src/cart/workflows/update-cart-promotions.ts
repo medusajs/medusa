@@ -1,4 +1,3 @@
-import { AdditionalData } from "@medusajs/framework/types"
 import { PromotionActions } from "@medusajs/framework/utils"
 import {
   createHook,
@@ -88,7 +87,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
     name: updateCartPromotionsWorkflowId,
     idempotent: false,
   },
-  (input: WorkflowData<UpdateCartPromotionsWorkflowInput & AdditionalData>) => {
+  (input: WorkflowData<UpdateCartPromotionsWorkflowInput>) => {
     const fetchCart = when("should-fetch-cart", { input }, ({ input }) => {
       return !input.cart
     }).then(() => {
@@ -133,7 +132,6 @@ export const updateCartPromotionsWorkflow = createWorkflow(
         cart,
         action,
         promo_codes,
-        additional_data: input.additional_data,
       },
       {
         resultValidator: promotionContextResult,

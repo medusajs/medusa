@@ -1,5 +1,4 @@
 import {
-  AdditionalData,
   OrderChangeDTO,
   OrderDTO,
   PromotionDTO,
@@ -85,11 +84,7 @@ export const computeAdjustmentsForPreviewWorkflowId =
  */
 export const computeAdjustmentsForPreviewWorkflow = createWorkflow(
   computeAdjustmentsForPreviewWorkflowId,
-  function (
-    input: WorkflowData<
-      ComputeAdjustmentsForPreviewWorkflowInput & AdditionalData
-    >
-  ) {
+  function (input: WorkflowData<ComputeAdjustmentsForPreviewWorkflowInput>) {
     const previewedOrder = previewOrderChangeStep(input.order.id)
 
     const setPromotionContext = createHook(
@@ -98,7 +93,6 @@ export const computeAdjustmentsForPreviewWorkflow = createWorkflow(
         order: input.order,
         orderChange: input.orderChange,
         previewedOrder,
-        additional_data: input.additional_data,
       },
       {
         resultValidator: promotionContextResult,
