@@ -134,8 +134,8 @@ AI agents should persist the active organization, project, and environment so su
 ```bash
 mcloud use \
   --organization org_123 \
-  --project my-store \
-  --environment production
+  --project proj_123 \
+  --environment env_123
 ```
 
 If you only have names instead of IDs or handles, look them up first:
@@ -396,13 +396,13 @@ After fixing the underlying issue, AI agents have two options. They are not inte
 
 ```bash
 # After fixing an environment variable
-mcloud environments redeploy production
+mcloud environments redeploy env_123
 
 # After pushing a fix to the tracked branch
-mcloud environments trigger-build production
+mcloud environments trigger-build env_123
 
 # Verify the new build is running
-mcloud deployments list --environment production --limit 5 --json \
+mcloud deployments list --environment env_123 --limit 5 --json \
   | jq '.[] | {id, backend_status, commit_hash, updated_at}'
 ```
 
@@ -453,10 +453,10 @@ mcloud environments create \
   --branch develop
 
 # Inspect an environment's current state
-mcloud environments get staging --json | jq '{id, name, type, status, external_id}'
+mcloud environments get env_123 --json | jq '{id, name, type, status, external_id}'
 
 # Delete an environment without prompting (production environments are protected)
-mcloud environments delete feature-branch --yes
+mcloud environments delete env_123 --yes
 ```
 
 `environments delete` returns a non-zero exit code on production environments. Always check the `type` field via `environments get --json` before attempting a delete in an automated workflow.
