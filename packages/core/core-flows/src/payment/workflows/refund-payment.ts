@@ -47,7 +47,14 @@ export type RefundPaymentWorkflowInput = {
 }
 
 /**
- * This step validates that an order refund credit line can be issued
+ * This step validates that the refund amount does not exceed the captured amount for a payment.
+ * The validation accounts for currency decimal precision to handle rounding issues.
+ *
+ * @example
+ * validateRefundPaymentExceedsCapturedAmountStep({
+ *   payment: paymentData,
+ *   refundAmount: 100.50
+ * })
  */
 export const validateRefundPaymentExceedsCapturedAmountStep = createStep(
   "validate-refund-payment-exceeds-captured-amount",
