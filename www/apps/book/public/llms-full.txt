@@ -13872,6 +13872,27 @@ export default Post
 
 In this example, the `title` property is searchable.
 
+### Searchable Relationship Properties
+
+You can also make relationship properties searchable by adding the `searchable` method to relationship definitions like `hasMany`, `hasOne`, `belongsTo`, or `manyToMany`.
+
+For example:
+
+```ts highlights={relationshipSearchableHighlights}
+import { model } from "@medusajs/framework/utils"
+
+const Product = model.define("product", {
+  variants: model.hasMany(() => ProductVariant, {
+    mappedBy: "product",
+  }).searchable(),
+  // ...
+})
+
+export default Product
+```
+
+When a relationship property is marked as searchable, the related records' searchable text properties can be queried when using the `q` filter.
+
 ### Search Example
 
 If you pass a `q` filter to the `listPosts` method:
@@ -14222,6 +14243,37 @@ const Product = model.define("product", {
 The `cascades` method accepts an object. Its key is the operation’s name, such as `delete`. The value is an array of relationship property names that the operation is cascaded to.
 
 In the example above, when a store is deleted, its associated products are also deleted.
+
+***
+
+## Searchable Relationships
+
+You can make relationship properties searchable by adding the `searchable` method to any relationship definition (`hasMany`, `hasOne`, `belongsTo`, or `manyToMany`).
+
+When a relationship property is marked as searchable, the related records' searchable text properties can be queried when using the `q` filter in service methods like `list{ModelName}s`.
+
+For example:
+
+```ts highlights={searchableRelationshipHighlights}
+import { model } from "@medusajs/framework/utils"
+
+const Store = model.define("store", {
+  id: model.id().primaryKey(),
+  products: model.hasMany(() => Product, {
+    mappedBy: "store",
+  }).searchable(),
+})
+
+const Product = model.define("product", {
+  id: model.id().primaryKey(),
+  title: model.text().searchable(),
+  store: model.belongsTo(() => Store, {
+    mappedBy: "products",
+  }),
+})
+```
+
+In this example, when you search for stores using the `q` filter, the search will include matching product titles from the related products.
 
 
 # Migrations
@@ -26236,7 +26288,7 @@ services:
       - medusa_network
 
   # Storefront
-  # This service runs the Next.js storefront.
+  # This service runs the Next.js Starter Storefront
   storefront:
     build: .
     container_name: medusa_storefront
@@ -26272,7 +26324,7 @@ You define four services in this file:
 - `postgres`: The PostgreSQL database service that stores your Medusa application's data.
 - `redis`: The Redis service that stores session data.
 - `medusa`: The Medusa service that runs the server and the admin dashboard. It connects to the PostgreSQL and Redis services.
-- `storefront`: The Next.js storefront service. It connects to the Medusa service.
+- `storefront`: The Next.js Starter Storefront service. It connects to the Medusa service.
   - If you don't want to use the storefront, you can remove the `apps/storefront` directory and the `storefront` service from the `docker-compose.yml` file.
 
 The `env_file` paths are relative to the project root: `apps/backend/.env` for the backend and `apps/storefront/.env` for the storefront.
@@ -26369,7 +26421,7 @@ Apply the same LF line endings requirement mentioned in the previous step to thi
 #!/bin/sh
 cd /server/apps/storefront
 
-echo "Starting Next.js storefront development server..."
+echo "Starting Next.js Starter Storefront development server..."
 pnpm dev
 ```
 
@@ -26379,7 +26431,7 @@ pnpm dev
 #!/bin/sh
 cd /server/apps/storefront
 
-echo "Starting Next.js storefront development server..."
+echo "Starting Next.js Starter Storefront development server..."
 yarn dev
 ```
 
@@ -26389,7 +26441,7 @@ yarn dev
 #!/bin/sh
 cd /server/apps/storefront
 
-echo "Starting Next.js storefront development server..."
+echo "Starting Next.js Starter Storefront development server..."
 npm run dev
 ```
 
@@ -26416,7 +26468,7 @@ FROM node:20-alpine
 
 WORKDIR /server
 
-RUN npm install -g pnpm@10.11.1
+RUN npm install pnpm@10.11.1 -g
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json .npmrc ./
 COPY apps/backend/package.json ./apps/backend/
@@ -44518,8 +44570,8 @@ Each transaction includes:
 - `amount`: The transaction amount in the smallest currency unit.
   - If `type` is `credit`, the amount is added to the balance.
   - If `type` is `debit`, the amount is subtracted from the balance
-- `reference`: The name of the table that triggered the transaction (e.g. `order`, `refund`, `promotion`, etc...)
-- `reference_id`: The ID of the record in the reference table that triggered the transaction (e.g. `order_123`, `refund_456`, etc...)
+- `reference`: The name of the table that triggered the transaction (for example, `order`, `refund`, `promotion`, etc...)
+- `reference_id`: The ID of the record in the reference table that triggered the transaction (for example, `order_123`, `refund_456`, etc...)
 
 ***
 
@@ -134910,6 +134962,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [POST /admin/payment-collections](undefined/api/admin#payment-collections_postpaymentcollections)
 - [DELETE /admin/payment-collections/{id}](undefined/api/admin#payment-collections_deletepaymentcollectionsid)
 - [POST /admin/payment-collections/{id}/mark-as-paid](undefined/api/admin#payment-collections_postpaymentcollectionsidmarkaspaid)
+- [POST /admin/payment-collections/{id}/payment-sessions](undefined/api/admin#payment-collections_postpaymentcollectionsidpaymentsessions)
 - [GET /admin/payments](undefined/api/admin#payments_getpayments)
 - [GET /admin/payments/payment-providers](undefined/api/admin#payments_getpaymentspaymentproviders)
 - [GET /admin/payments/{id}](undefined/api/admin#payments_getpaymentsid)
@@ -135115,7 +135168,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [POST /admin/workflows-executions/{workflow_id}/steps/success](undefined/api/admin#workflows-executions_postworkflowsexecutionsworkflow_idstepssuccess)
 - [GET /admin/workflows-executions/{workflow_id}/subscribe](undefined/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idsubscribe)
 - [GET /admin/workflows-executions/{workflow_id}/{transaction_id}](undefined/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idtransaction_id)
-- [GET /admin/workflows-executions/{workflow_id}/{transaction_id}/{step_id}/subscribe](undefined/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idtransaction_idstep_idsubscribe)
+- [GET /admin/workflows-executions/{workflow_id}/{transaction_id}/subscribe](undefined/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idtransaction_idsubscribe)
 - [POST /auth/session](undefined/api/admin#auth_postsession)
 - [DELETE /auth/session](undefined/api/admin#auth_deletesession)
 - [POST /auth/token/refresh](undefined/api/admin#auth_postadminauthtokenrefresh)
