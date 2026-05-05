@@ -43,15 +43,16 @@ export const generatedEditDates = {
   "app/cli/commands/environments/page.mdx": "2026-04-29T08:40:05.024Z",
   "app/cli/commands/login/page.mdx": "2026-04-29T09:10:36.671Z",
   "app/cli/commands/logout/page.mdx": "2026-04-23T11:41:28.947Z",
-  "app/cli/commands/logs/page.mdx": "2026-04-29T08:11:19.390Z",
+  "app/cli/commands/logs/page.mdx": "2026-05-05T08:47:16.247Z",
   "app/cli/commands/organizations/page.mdx": "2026-04-29T08:40:45.304Z",
   "app/cli/commands/projects/page.mdx": "2026-04-29T08:48:24.177Z",
   "app/cli/commands/signup/page.mdx": "2026-04-24T07:15:31.040Z",
-  "app/cli/page.mdx": "2026-04-29T08:35:18.127Z",
+  "app/cli/page.mdx": "2026-05-05T10:42:00.594Z",
   "app/cli/commands/deployments/page.mdx": "2026-04-29T08:11:42.521Z",
   "app/cli/commands/use/page.mdx": "2026-04-29T08:11:05.829Z",
   "app/cli/commands/variables/page.mdx": "2026-04-29T08:49:19.211Z",
   "app/cli/commands/version/page.mdx": "2026-04-29T08:21:59.586Z",
   "app/cli/commands/whoami/page.mdx": "2026-04-29T08:27:22.781Z",
-  "app/access-keys/page.mdx": "2026-04-29T09:09:42.629Z"
+  "app/access-keys/page.mdx": "2026-04-29T09:09:42.629Z",
+  "app/cli/agents/page.mdx": "2026-05-05T10:47:21.287Z"
 }

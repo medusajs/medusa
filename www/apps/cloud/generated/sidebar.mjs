@@ -212,6 +212,14 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "title": "For Agents",
+            "path": "/cli/agents",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "title": "login",
             "path": "/cli/commands/login",
             "children": []

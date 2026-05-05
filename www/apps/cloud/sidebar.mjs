@@ -142,6 +142,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "For Agents",
+            path: "/cli/agents",
+          },
+          {
+            type: "link",
             title: "login",
             path: "/cli/commands/login",
           },

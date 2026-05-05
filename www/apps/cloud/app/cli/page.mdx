@@ -12,6 +12,12 @@ export const metadata = {
 
 In this guide, you'll learn about the Medusa Cloud CLI, how to install it, and how to use it to manage your Cloud resources from the terminal.
 
+<Note title="AI Agents">
+
+If you're an AI agent, or you want to manage Cloud resources through an AI agent, see [Cloud CLI for AI Agents](./agents/page.mdx) instead.
+
+</Note>
+
 ## What is the Medusa Cloud CLI?
 
 The Medusa Cloud CLI (`mcloud`) is a command-line tool for managing your Cloud resources (organizations, projects, environments, logs, and more) directly from your terminal. It provides the same capabilities as the Cloud dashboard but in a scriptable, AI-friendly form.
@@ -24,7 +30,7 @@ Use the CLI when you want to:
 
 ---
 
-## Prerequisites
+## Install the Cloud CLI
 
 <Prerequisites items={[
   {
@@ -32,10 +38,6 @@ Use the CLI when you want to:
     link: "https://nodejs.org/en/download"
   }
 ]} />
-
----
-
-## Install
 
 Install the CLI globally using npm or your preferred package manager:
 
@@ -74,6 +76,16 @@ mcloud login --token sk_123ABC
 ```
 
 See the [login command](./commands/login/page.mdx) for more details on access keys and non-interactive authentication.
+
+### Sign Up
+
+If you don't have a Cloud account yet, sign up directly from the CLI:
+
+```bash
+mcloud signup
+```
+
+This will open a browser window where you can create your account. After signing up, return to the terminal and run `mcloud login` to authenticate.
 
 ---
 

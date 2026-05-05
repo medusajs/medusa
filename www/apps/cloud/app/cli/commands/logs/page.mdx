@@ -243,7 +243,7 @@ stream new log lines continuously with `--follow`.
       </Table.Cell>
       <Table.Cell>
 
-      Filter log lines to those belonging to a specific deployment.
+      Filter log lines by deployment or build ID. When a build ID is passed, the CLI resolves it to that build's latest deployment.
 
       </Table.Cell>
       <Table.Cell>
@@ -494,8 +494,8 @@ Alternatively, if you're looking for HTTP calls that resulted in 500 or other er
 ## Fetch Logs for a Specific Deployment
 
 When a deployment fails, query the logs for that deployment directly using
-its ID. Find the deployment ID from [`mcloud deployments list`](../deployments/page.mdx#deployments-list) or the Cloud
-dashboard.
+its ID. Find the build or deployment ID from [`mcloud deployments list`](../deployments/page.mdx#deployments-list) or the Cloud
+dashboard. Pass a build ID and the CLI resolves it to that build's latest deployment automatically.
 
 <Note title="Tip">
 
