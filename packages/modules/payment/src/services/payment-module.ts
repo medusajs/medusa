@@ -41,7 +41,9 @@ import {
 } from "@medusajs/framework/types"
 import {
   BigNumber,
+  defaultCurrencies,
   EmitEvents,
+  getEpsilonFromDecimalPrecision,
   InjectManager,
   InjectTransactionManager,
   isPresent,
@@ -861,6 +863,7 @@ export default class PaymentModuleService
       {
         select: [
           "id",
+          "currency_code",
           "data",
           "provider_id",
           "payment_collection_id",
@@ -912,7 +915,17 @@ export default class PaymentModuleService
 
     const totalRefundedAmount = MathBN.add(refundedAmount, data.amount)
 
-    if (MathBN.lt(capturedAmount, totalRefundedAmount)) {
+    const upperCurCode = payment.currency_code?.toUpperCase() as string
+    const currencyEpsilon = getEpsilonFromDecimalPrecision(
+      defaultCurrencies[upperCurCode]?.decimal_digits
+    )
+
+    if (
+      MathBN.lt(
+        MathBN.sub(capturedAmount, totalRefundedAmount),
+        -currencyEpsilon
+      )
+    ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `You cannot refund more than what is captured on the payment.`

@@ -1,6 +1,8 @@
 import { BigNumberInput, PaymentDTO } from "@medusajs/framework/types"
 import {
   BigNumber,
+  defaultCurrencies,
+  getEpsilonFromDecimalPrecision,
   MathBN,
   MedusaError,
   PaymentEvents,
@@ -78,7 +80,17 @@ export const validateRefundPaymentExceedsCapturedAmountStep = createStep(
 
     const totalRefundedAmount = MathBN.add(refundedAmount, refundAmount)
 
-    if (MathBN.lt(capturedAmount, totalRefundedAmount)) {
+    const upperCurCode = payment.currency_code?.toUpperCase() as string
+    const currencyEpsilon = getEpsilonFromDecimalPrecision(
+      defaultCurrencies[upperCurCode]?.decimal_digits
+    )
+
+    if (
+      MathBN.lt(
+        MathBN.sub(capturedAmount, totalRefundedAmount),
+        -currencyEpsilon
+      )
+    ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `You are not allowed to refund more than the captured amount`
