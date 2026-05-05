@@ -47,7 +47,7 @@ export const generatedEditDates = {
   "app/commerce-modules/payment/module-options/page.mdx": "2025-09-01T15:08:25.818Z",
   "app/commerce-modules/payment/payment/page.mdx": "2025-05-20T07:51:40.709Z",
   "app/commerce-modules/payment/payment-collection/page.mdx": "2025-09-01T15:10:39.107Z",
-  "app/commerce-modules/payment/payment-flow/page.mdx": "2025-05-20T07:51:40.708Z",
+  "app/commerce-modules/payment/payment-flow/page.mdx": "2026-05-05T13:12:57.102Z",
   "app/commerce-modules/payment/payment-provider/stripe/page.mdx": "2025-11-24T07:47:55.273Z",
   "app/commerce-modules/payment/payment-provider/page.mdx": "2025-05-20T07:51:40.708Z",
   "app/commerce-modules/payment/payment-session/page.mdx": "2025-05-20T07:51:40.709Z",
