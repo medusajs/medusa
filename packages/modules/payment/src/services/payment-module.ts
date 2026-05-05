@@ -926,6 +926,7 @@ export default class PaymentModuleService
         created_by: data.created_by,
         note: data.note,
         refund_reason_id: data.refund_reason_id,
+        metadata: data.metadata,
       },
       sharedContext
     )

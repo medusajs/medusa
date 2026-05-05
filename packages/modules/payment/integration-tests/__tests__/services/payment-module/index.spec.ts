@@ -944,6 +944,34 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             )
           })
 
+          it("should persist metadata passed when refunding a payment", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            const refundedPayment = await service.refundPayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+              metadata: { reason: "customer-request", ticket_id: "42" },
+            })
+
+            expect(refundedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-2",
+                refunds: [
+                  expect.objectContaining({
+                    amount: 100,
+                    metadata: {
+                      reason: "customer-request",
+                      ticket_id: "42",
+                    },
+                  }),
+                ],
+              })
+            )
+          })
+
           it("should fully refund a payment through two refunds", async () => {
             await service.capturePayment({
               amount: 100,
