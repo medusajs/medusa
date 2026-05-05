@@ -103,6 +103,11 @@ export const PriceListPricesEditForm = ({
 
   const handleOpenQuantityPricesModal = ({ field }: { field: string }) => {
     const parts = field.split(".")
+
+    if (parts.length < 6) {
+      return
+    }
+
     const productId = parts[1]
     const variantId = parts[3]
     const type = parts[4]

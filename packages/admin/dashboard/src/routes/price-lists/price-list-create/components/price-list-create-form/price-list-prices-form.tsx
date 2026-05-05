@@ -78,20 +78,26 @@ export const PriceListPricesForm = ({
 
   const handleOpenQuantityPricesModal = ({ field }: { field: string }) => {
     const parts = field.split(".")
+
+    if (parts.length < 6) {
+      return
+    }
+
     const productId = parts[1]
     const variantId = parts[3]
     const type = parts[4]
     const code = parts[5]
 
-    const currencyCode =
-      type === "region_prices"
-        ? regions.find((r) => r.id === code)?.currency_code ?? code
-        : code
+    const isRegion = type === "region_prices"
+
+    const currencyCode = isRegion
+      ? regions.find((r) => r.id === code)?.currency_code ?? code
+      : code
 
     setEditingCell({
       variantId,
       currencyCode,
-      regionId: type === "region_prices" ? code : undefined,
+      regionId: isRegion ? code : undefined,
       productId,
     })
     setIsOpen(QUANTITY_PRICE_MODAL_ID, true)

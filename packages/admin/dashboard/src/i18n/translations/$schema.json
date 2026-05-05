@@ -193,6 +193,9 @@
         },
         "noMoreData": {
           "type": "string"
+        },
+        "quantityPrice": {
+          "type": "string"
         }
       },
       "required": [

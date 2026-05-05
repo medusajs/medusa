@@ -129,7 +129,7 @@ const ConditionalConditionItem = ({
               <CurrencyInput
                 className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover focus-visible:bg-ui-bg-field-component-hover"
                 placeholder={formatValue({
-                  value: "1000",
+                  value: "10",
                   decimalScale: currency.decimal_digits,
                 })}
                 decimalScale={currency.decimal_digits}
@@ -161,7 +161,7 @@ const ConditionalConditionItem = ({
               <CurrencyInput
                 className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover focus-visible:bg-ui-bg-field-component-hover"
                 placeholder={formatValue({
-                  value: "1000",
+                  value: "10",
                   decimalScale: currency.decimal_digits,
                 })}
                 decimalScale={currency.decimal_digits}

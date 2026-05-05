@@ -10,6 +10,7 @@ import {
   PriceListUpdateProductsSchema,
   PriceListUpdateProductVariantsSchema,
   PriceListUpdateCurrencyPrice,
+  PriceListUpdateRegionPrice,
 } from "./schemas"
 
 const getValues = (priceList: HttpTypes.AdminPriceList) => {
@@ -87,19 +88,21 @@ const extractPricesFromVariants = (
       throw json({ message: "Currency code not found" }, 400)
     }
 
-    const rules: Record<string, string> =
-      priceType === "region" ? { region_id: id } : {}
+    const rules: Record<string, string> = {}
+    if (priceType === "region") {
+      rules.region_id = id
+    }
+    if (price.min_quantity) {
+      rules.min_quantity = price.min_quantity.toString()
+    }
+    if (price.max_quantity) {
+      rules.max_quantity = price.max_quantity.toString()
+    }
 
     return {
       amount: castNumber(price.amount!),
       currency_code: currencyCode,
       variant_id: variantId,
-      min_quantity: price.min_quantity
-        ? castNumber(price.min_quantity)
-        : undefined,
-      max_quantity: price.max_quantity
-        ? castNumber(price.max_quantity)
-        : undefined,
       rules: Object.keys(rules).length > 0 ? rules : undefined,
     }
   }
@@ -241,11 +244,17 @@ export function convertToPriceArray(
         region_prices: variantRegionPrices,
       } = variant || {}
 
-      const processCurrencyPrices = (currencyPricesMap: any) => {
+      const processCurrencyPrices = (
+        currencyPricesMap:
+          | Record<string, PriceListUpdateCurrencyPrice[] | undefined>
+          | undefined
+      ) => {
         for (const [currencyCode, currencyPrices] of Object.entries(
           currencyPricesMap || {}
         )) {
-          ;((currencyPrices as any[]) || []).forEach((currencyPrice: any) => {
+          ;(
+            (currencyPrices as PriceListUpdateCurrencyPrice[] | undefined) || []
+          ).forEach((currencyPrice: PriceListUpdateCurrencyPrice) => {
             if (
               currencyPrice?.amount !== "" &&
               typeof currencyPrice?.amount !== "undefined"
@@ -270,11 +279,17 @@ export function convertToPriceArray(
       processCurrencyPrices(variantCurrencyPrices)
       processCurrencyPrices(variant.conditional_currency_prices)
 
-      const processRegionPrices = (regionPricesMap: any) => {
+      const processRegionPrices = (
+        regionPricesMap:
+          | Record<string, PriceListUpdateRegionPrice[] | undefined>
+          | undefined
+      ) => {
         for (const [regionId, regionPrices] of Object.entries(
           regionPricesMap || {}
         )) {
-          ;((regionPrices as any[]) || []).forEach((regionPrice: any) => {
+          ;(
+            (regionPrices as PriceListUpdateRegionPrice[] | undefined) || []
+          ).forEach((regionPrice: PriceListUpdateRegionPrice) => {
             if (
               regionPrice?.amount !== "" &&
               typeof regionPrice?.amount !== "undefined"
@@ -355,10 +370,14 @@ export function comparePrices(
             variant_id: newPrice.variantId,
             currency_code: newPrice.currencyCode,
             amount: newPrice.amount,
-            min_quantity: newPrice.minQuantity,
-            max_quantity: newPrice.maxQuantity,
             rules: {
               ...(newPrice.regionId ? { region_id: newPrice.regionId } : {}),
+              ...(newPrice.minQuantity
+                ? { min_quantity: newPrice.minQuantity.toString() }
+                : {}),
+              ...(newPrice.maxQuantity
+                ? { max_quantity: newPrice.maxQuantity.toString() }
+                : {}),
             },
           })
         }
@@ -370,10 +389,14 @@ export function comparePrices(
         variant_id: newPrice.variantId,
         currency_code: newPrice.currencyCode,
         amount: newPrice.amount,
-        min_quantity: newPrice.minQuantity,
-        max_quantity: newPrice.maxQuantity,
         rules: {
           ...(newPrice.regionId ? { region_id: newPrice.regionId } : {}),
+          ...(newPrice.minQuantity
+            ? { min_quantity: newPrice.minQuantity.toString() }
+            : {}),
+          ...(newPrice.maxQuantity
+            ? { max_quantity: newPrice.maxQuantity.toString() }
+            : {}),
         },
       })
     }
