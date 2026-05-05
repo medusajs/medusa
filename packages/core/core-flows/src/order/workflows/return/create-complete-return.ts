@@ -402,7 +402,7 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
         "calculated_price.calculated_amount",
         "calculated_price.is_calculated_price_tax_inclusive",
         "service_zone.fulfillment_set.location.id",
-        "service_zone.fulfillment_set.location.address.*"
+        "service_zone.fulfillment_set.location.address.*",
       ],
       variables: returnShippingOptionsVariables,
       list: false,
