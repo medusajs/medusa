@@ -27587,6 +27587,24 @@ To get started with the Cloud CLI with AI agents, copy the following prompt to y
 Fetch https://docs.medusajs.com/cloud/cli/agents and set up the Medusa Cloud CLI.
 ```
 
+You can also install the instructions in that document as a skill in your agent:
+
+### Claude Code
+
+```bash
+claude # start claude code
+/plugin marketplace add medusajs/medusa-agent-skills
+/plugin install medusa-cloud@medusa
+```
+
+### Other AI Agents
+
+```bash
+npx skills add medusajs/medusa-agent-skills
+# choose the following skill:
+# - using-medusa-cloud
+```
+
 See the [Agentic Deployment with Cloud CLI guide](https://docs.medusajs.com/cloud/cli/agents/index.html.md) guide for more details.
 
 

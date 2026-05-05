@@ -1,3 +1,8 @@
+import { 
+  CodeTab,
+  CodeTabs,
+} from "docs-ui"
+
 export const metadata = {
   title: `Agentic Deployment with Cloud CLI`,
 }
@@ -32,5 +37,28 @@ To get started with the Cloud CLI with AI agents, copy the following prompt to y
 ```markdown title="Prompt"
 Fetch https://docs.medusajs.com/cloud/cli/agents and set up the Medusa Cloud CLI.
 ```
+
+You can also install the instructions in that document as a skill in your agent:
+
+<CodeTabs group="agent-skills">
+  <CodeTab label="Claude Code" value="claude-code">
+
+```bash
+claude # start claude code
+/plugin marketplace add medusajs/medusa-agent-skills
+/plugin install medusa-cloud@medusa
+```
+
+  </CodeTab>
+  <CodeTab label="Other AI Agents" value="skills-command">
+
+```bash
+npx skills add medusajs/medusa-agent-skills
+# choose the following skill:
+# - using-medusa-cloud
+```
+
+  </CodeTab>
+</CodeTabs>
 
 See the [Agentic Deployment with Cloud CLI guide](!cloud!/cli/agents) guide for more details.
