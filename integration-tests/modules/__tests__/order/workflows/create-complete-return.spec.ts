@@ -506,25 +506,30 @@ medusaIntegrationTestRunner({
               },
             ],
           }
+
+        const query = container.resolve(ContainerRegistrationKeys.QUERY)
           
-        await createAndCompleteReturnOrderWorkflow(container).run({
+        const {result : returned} = await createAndCompleteReturnOrderWorkflow(container).run({
           input: createReturnOrderData,
           throwOnError: true,
+        })  
+        
+        const { data: returns } = await query.graph({
+          entity: "return",
+          filters: {
+            id: returned.id,
+          },
+          fields: [ 
+            "fulfillments.delivery_address.address_1", 
+            "fulfillments.delivery_address.city",
+            "fulfillments.delivery_address.country_code",
+            "fulfillments.delivery_address.postal_code",
+            "fulfillments.delivery_address.phone",
+          ],
         })
+        const fulfillment = returns[0].fulfillments[0]
 
-        const remoteQuery = container.resolve(
-          ContainerRegistrationKeys.REMOTE_QUERY
-        )
-        const fulfillmentQueryObject = remoteQueryObjectFromString({
-          entryPoint: "fulfillments",
-          variables: {},
-          fields: ["id", "delivery_address.*"],
-        })
-
-        const fulfillments = await remoteQuery(fulfillmentQueryObject)
-        const returnFulfillment = fulfillments[fulfillments.length - 1]
-
-        expect(returnFulfillment.delivery_address).toEqual(
+        expect(fulfillment.delivery_address).toEqual(
           expect.objectContaining({
             address_1: "Test",
             city: "Test",
