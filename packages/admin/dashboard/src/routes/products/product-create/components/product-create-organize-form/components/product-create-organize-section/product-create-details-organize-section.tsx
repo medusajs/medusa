@@ -94,10 +94,13 @@ export const ProductCreateOrganizationSection = ({
                 <Form.Control>
                   <Combobox
                     {...field}
+                    value={field.value || ""}
+                    onChange={(value) => field.onChange(value || "")}
                     options={types.options}
                     searchValue={types.searchValue}
                     onSearchValueChange={types.onSearchValueChange}
                     fetchNextPage={types.fetchNextPage}
+                    allowClear
                   />
                 </Form.Control>
                 <Form.ErrorMessage />
@@ -117,10 +120,13 @@ export const ProductCreateOrganizationSection = ({
                 <Form.Control>
                   <Combobox
                     {...field}
+                    value={field.value || ""}
+                    onChange={(value) => field.onChange(value || "")}
                     options={collections.options}
                     searchValue={collections.searchValue}
                     onSearchValueChange={collections.onSearchValueChange}
                     fetchNextPage={collections.fetchNextPage}
+                    allowClear
                   />
                 </Form.Control>
                 <Form.ErrorMessage />

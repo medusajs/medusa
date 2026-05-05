@@ -29,6 +29,7 @@ export const defaultSchema = `
     id: ID
     amount: Float
     currency_code: String
+    price_list_id: String
   }
 
   type SalesChannel @Listeners(values: ["${Modules.SALES_CHANNEL}.sales-channel.created", "${Modules.SALES_CHANNEL}.sales-channel.updated", "${Modules.SALES_CHANNEL}.sales-channel.deleted"]) {
