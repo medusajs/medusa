@@ -1,3 +1,4 @@
+import { AdditionalData } from "@medusajs/framework/types"
 import { PromotionActions } from "@medusajs/framework/utils"
 import {
   createHook,
@@ -22,6 +23,7 @@ import {
 } from "../steps"
 import { updateCartPromotionsStep } from "../steps/update-cart-promotions"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
+import { promotionContextResult } from "../utils/schemas"
 import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 
 /**
@@ -48,11 +50,11 @@ export type UpdateCartPromotionsWorkflowInput = {
     | PromotionActions.ADD
     | PromotionActions.REMOVE
     | PromotionActions.REPLACE
-    /**
-     * Wether to force the refresh of the cart payment collection. If the caller doesn't refresh it explicitly,
-     * you should probably set this property to true.
-     */
-    force_refresh_payment_collection?: boolean
+  /**
+   * Wether to force the refresh of the cart payment collection. If the caller doesn't refresh it explicitly,
+   * you should probably set this property to true.
+   */
+  force_refresh_payment_collection?: boolean
 }
 
 export const updateCartPromotionsWorkflowId = "update-cart-promotions"
@@ -79,13 +81,14 @@ export const updateCartPromotionsWorkflowId = "update-cart-promotions"
  * Update a cart's applied promotions to add, replace, or remove them.
  *
  * @property hooks.validate - This hook is executed before all operations. You can consume this hook to perform any custom validation. If validation fails, you can throw an error to stop the workflow execution.
+ * @property hooks.setPromotionContext - This hook is executed after the cart is fetched and before promotion rules are evaluated. You can consume this hook to return any custom context useful for promotion rule evaluation. The returned object is merged on top of the cart context (consumer values win on key conflict).
  */
 export const updateCartPromotionsWorkflow = createWorkflow(
   {
     name: updateCartPromotionsWorkflowId,
     idempotent: false,
   },
-  (input: WorkflowData<UpdateCartPromotionsWorkflowInput>) => {
+  (input: WorkflowData<UpdateCartPromotionsWorkflowInput & AdditionalData>) => {
     const fetchCart = when("should-fetch-cart", { input }, ({ input }) => {
       return !input.cart
     }).then(() => {
@@ -124,6 +127,20 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       return data.input.action || PromotionActions.ADD
     })
 
+    const setPromotionContext = createHook(
+      "setPromotionContext",
+      {
+        cart,
+        action,
+        promo_codes,
+        additional_data: input.additional_data,
+      },
+      {
+        resultValidator: promotionContextResult,
+      }
+    )
+    const setPromotionContextResult = setPromotionContext.getResult()
+
     const promotionCodesToApply = getPromotionCodesToApply({
       cart: cart,
       promo_codes,
@@ -133,6 +150,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
     const actions = getActionsToComputeFromPromotionsStep({
       computeActionContext: cart,
       promotionCodesToApply,
+      setPromotionContextResult,
     })
 
     const {
@@ -173,7 +191,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
     })
 
     return new WorkflowResponse(void 0, {
-      hooks: [validate],
+      hooks: [validate, setPromotionContext] as const,
     })
   }
 )

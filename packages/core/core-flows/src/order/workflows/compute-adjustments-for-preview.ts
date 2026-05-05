@@ -1,19 +1,23 @@
 import {
+  AdditionalData,
   OrderChangeDTO,
   OrderDTO,
   PromotionDTO,
 } from "@medusajs/framework/types"
 import { ChangeActionType } from "@medusajs/framework/utils"
 import {
+  createHook,
   createWorkflow,
   transform,
   when,
   WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import {
   getActionsToComputeFromPromotionsStep,
   prepareAdjustmentsFromPromotionActionsStep,
 } from "../../cart"
+import { promotionContextResult } from "../../cart/utils/schemas"
 import { previewOrderChangeStep } from "../steps/preview-order-change"
 import { createOrderChangeActionsWorkflow } from "./create-order-change-actions"
 import {
@@ -76,11 +80,31 @@ export const computeAdjustmentsForPreviewWorkflowId =
  * @summary
  *
  * Compute adjustments for an order edit, exchange, claim, or return.
+ *
+ * @property hooks.setPromotionContext - This hook is executed before promotion rules are evaluated for the previewed order. You can consume this hook to return any custom context that should be merged on top of the order context when evaluating promotion rules (e.g. `company.id`, `custom_tier`).
  */
 export const computeAdjustmentsForPreviewWorkflow = createWorkflow(
   computeAdjustmentsForPreviewWorkflowId,
-  function (input: WorkflowData<ComputeAdjustmentsForPreviewWorkflowInput>) {
+  function (
+    input: WorkflowData<
+      ComputeAdjustmentsForPreviewWorkflowInput & AdditionalData
+    >
+  ) {
     const previewedOrder = previewOrderChangeStep(input.order.id)
+
+    const setPromotionContext = createHook(
+      "setPromotionContext",
+      {
+        order: input.order,
+        orderChange: input.orderChange,
+        previewedOrder,
+        additional_data: input.additional_data,
+      },
+      {
+        resultValidator: promotionContextResult,
+      }
+    )
+    const setPromotionContextResult = setPromotionContext.getResult()
 
     when(
       { order: input.order, orderChange: input.orderChange },
@@ -107,6 +131,7 @@ export const computeAdjustmentsForPreviewWorkflow = createWorkflow(
         options: {
           skip_usage_limit_checks: true,
         },
+        setPromotionContextResult,
       })
 
       const { lineItemAdjustmentsToCreate, shippingMethodAdjustmentsToCreate } =
@@ -202,6 +227,10 @@ export const computeAdjustmentsForPreviewWorkflow = createWorkflow(
       )
 
       deleteOrderChangeActionsStep({ ids: allActionIds })
+    })
+
+    return new WorkflowResponse(void 0, {
+      hooks: [setPromotionContext] as const,
     })
   }
 )
