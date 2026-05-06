@@ -37,11 +37,14 @@ describe("refundPaymentsStep", () => {
 
     const { result } = await workflow(container).run()
 
-    expect(result).toEqual([{ id: "pay_1" }, { id: "pay_2" }])
+    expect(result).toEqual({
+      refunded_payments: [{ id: "pay_1" }, { id: "pay_2" }],
+      failed_refunds: [],
+    })
     expect(refundPayment).toHaveBeenCalledTimes(2)
   })
 
-  it("fails the workflow when any refund operation fails", async () => {
+  it("returns successful refunds and failed refund details on partial failure", async () => {
     const refundPayment = jest
       .fn()
       .mockResolvedValueOnce({ id: "pay_1" })
@@ -61,7 +64,18 @@ describe("refundPaymentsStep", () => {
       return new WorkflowResponse(result)
     })
 
-    await expect(workflow(container).run()).rejects.toThrow("provider failed")
+    const { result } = await workflow(container).run()
+
+    expect(result).toEqual({
+      refunded_payments: [{ id: "pay_1" }],
+      failed_refunds: [
+        {
+          payment_id: "pay_2",
+          amount: 20,
+          error: "provider failed",
+        },
+      ],
+    })
     expect(refundPayment).toHaveBeenCalledTimes(2)
   })
 })

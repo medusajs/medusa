@@ -35,6 +35,15 @@ export type RefundPaymentsStepInput = {
   metadata?: Record<string, unknown>
 }[]
 
+type RefundPaymentsStepOutput = {
+  refunded_payments: PaymentDTO[]
+  failed_refunds: {
+    payment_id: string
+    amount: BigNumberInput
+    error: string
+  }[]
+}
+
 export const refundPaymentsStepId = "refund-payments-step"
 /**
  * This step refunds one or more payments.
@@ -46,14 +55,49 @@ export const refundPaymentsStep = createStep(
       Modules.PAYMENT
     )
 
-    const promises: Promise<PaymentDTO>[] = []
+    const promises: Promise<
+      | { refunded_payment: PaymentDTO; failed_refund?: never }
+      | {
+          refunded_payment?: never
+          failed_refund: {
+            payment_id: string
+            amount: BigNumberInput
+            error: string
+          }
+        }
+    >[] = []
 
     for (const refundInput of input) {
-      promises.push(paymentModule.refundPayment(refundInput))
+      promises.push(
+        paymentModule
+          .refundPayment(refundInput)
+          .then((refundedPayment) => ({ refunded_payment: refundedPayment }))
+          .catch((error: unknown) => ({
+            failed_refund: {
+              payment_id: refundInput.payment_id,
+              amount: refundInput.amount,
+              error: error instanceof Error ? error.message : String(error),
+            },
+          }))
+      )
     }
 
-    const refundedPayments = await promiseAll(promises)
+    const results = await promiseAll(promises)
 
-    return new StepResponse(refundedPayments)
+    const output: RefundPaymentsStepOutput = {
+      refunded_payments: [],
+      failed_refunds: [],
+    }
+
+    for (const result of results) {
+      if (result.refunded_payment) {
+        output.refunded_payments.push(result.refunded_payment)
+        continue
+      }
+
+      output.failed_refunds.push(result.failed_refund)
+    }
+
+    return new StepResponse(output)
   }
 )
