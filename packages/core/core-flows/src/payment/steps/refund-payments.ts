@@ -1,12 +1,9 @@
 import {
   BigNumberInput,
   IPaymentModuleService,
-  Logger,
   PaymentDTO,
 } from "@medusajs/framework/types"
 import {
-  ContainerRegistrationKeys,
-  isObject,
   Modules,
   promiseAll,
 } from "@medusajs/framework/utils"
@@ -45,27 +42,18 @@ export const refundPaymentsStepId = "refund-payments-step"
 export const refundPaymentsStep = createStep(
   refundPaymentsStepId,
   async (input: RefundPaymentsStepInput, { container }) => {
-    const logger = container.resolve<Logger>(ContainerRegistrationKeys.LOGGER)
     const paymentModule = container.resolve<IPaymentModuleService>(
       Modules.PAYMENT
     )
 
-    const promises: Promise<PaymentDTO | void>[] = []
+    const promises: Promise<PaymentDTO>[] = []
 
     for (const refundInput of input) {
-      promises.push(
-        paymentModule.refundPayment(refundInput).catch((e) => {
-          logger.error(
-            `Error was thrown trying to cancel payment - ${refundInput.payment_id} - ${e}`
-          )
-        })
-      )
+      promises.push(paymentModule.refundPayment(refundInput))
     }
 
-    const successfulRefunds = (await promiseAll(promises)).filter((payment) =>
-      isObject(payment)
-    )
+    const refundedPayments = await promiseAll(promises)
 
-    return new StepResponse(successfulRefunds)
+    return new StepResponse(refundedPayments)
   }
 )
