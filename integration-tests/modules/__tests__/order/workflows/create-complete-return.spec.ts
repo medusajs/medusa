@@ -491,7 +491,7 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it("should populate delivery_address on the return fulfillment with the stock location's address", async() => {
+      it("should populate delivery_address on the return fulfillment with the stock location's address", async () => {
         const order = await createOrderFixture({ container, product })
         const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
           {
@@ -509,7 +509,7 @@ medusaIntegrationTestRunner({
 
         const query = container.resolve(ContainerRegistrationKeys.QUERY)
           
-        const {result : returned} = await createAndCompleteReturnOrderWorkflow(container).run({
+        const { result : returned } = await createAndCompleteReturnOrderWorkflow(container).run({
           input: createReturnOrderData,
           throwOnError: true,
         })  
