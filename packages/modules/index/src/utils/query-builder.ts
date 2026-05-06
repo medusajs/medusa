@@ -988,7 +988,7 @@ export class QueryBuilder {
       innerQueryBuilder.orderBy(`${rootAlias}.id`, "ASC")
     }
 
-    // Count query to estimate the number of results in parallel
+    // Count query to get the exact number of results in parallel
     let countQuery: Knex.Raw | undefined
     if (hasCount) {
       const estimateQuery = innerQueryBuilder.clone()
@@ -997,8 +997,7 @@ export class QueryBuilder {
       estimateQuery.clearCounters()
 
       countQuery = this.knex.raw(
-        `SELECT count_estimate(?) AS estimate_count`,
-        estimateQuery.toQuery()
+        `SELECT COUNT(*) AS estimate_count FROM (${estimateQuery.toQuery()}) AS count_subquery`
       )
     }
 
