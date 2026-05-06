@@ -23,15 +23,15 @@ export interface GetActionsToComputeFromPromotionsStepInput {
    */
   options?: ComputeActionOptions
   /**
-   * The result of the `setPromotionContext` hook, forwarded by the calling
+   * The result of the `additional_promotion_context` hook, forwarded by the calling
    * workflow. Its keys are merged on top of `computeActionContext` before
    * promotion rules are evaluated, so consumers can extend the rule evaluation
    * context with arbitrary attributes (e.g. `company.id`, "custom_tier").
    *
-   * Values from `setPromotionContextResult` take precedence over values on
+   * Values from `additional_promotion_context` take precedence over values on
    * `computeActionContext` when keys conflict.
    */
-  setPromotionContextResult?: Record<string, unknown>
+  additional_promotion_context?: Record<string, unknown>
 }
 
 export const getActionsToComputeFromPromotionsStepId =
@@ -61,7 +61,7 @@ export const getActionsToComputeFromPromotionsStep = createStep(
       computeActionContext,
       promotionCodesToApply = [],
       options,
-      setPromotionContextResult,
+      additional_promotion_context: setPromotionContextResult,
     } = data
 
     const promotionService = container.resolve<IPromotionModuleService>(

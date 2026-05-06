@@ -125,7 +125,7 @@ export const computeAdjustmentsForPreviewWorkflow = createWorkflow(
         options: {
           skip_usage_limit_checks: true,
         },
-        setPromotionContextResult,
+        additional_promotion_context: setPromotionContextResult,
       })
 
       const { lineItemAdjustmentsToCreate, shippingMethodAdjustmentsToCreate } =

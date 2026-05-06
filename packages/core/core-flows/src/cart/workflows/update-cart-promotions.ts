@@ -148,7 +148,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
     const actions = getActionsToComputeFromPromotionsStep({
       computeActionContext: cart,
       promotionCodesToApply,
-      setPromotionContextResult,
+      additional_promotion_context: setPromotionContextResult,
     })
 
     const {

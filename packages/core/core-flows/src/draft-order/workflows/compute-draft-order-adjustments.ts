@@ -172,7 +172,7 @@ export const computeDraftOrderAdjustmentsWorkflow = createWorkflow(
       const actions = getActionsToComputeFromPromotionsStep({
         computeActionContext: actionsToComputeItemsInput,
         promotionCodesToApply: orderPromotions,
-        setPromotionContextResult,
+        additional_promotion_context: setPromotionContextResult,
       })
 
       const { lineItemAdjustmentsToCreate } =

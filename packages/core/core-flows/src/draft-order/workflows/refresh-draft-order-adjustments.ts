@@ -115,7 +115,7 @@ export const refreshDraftOrderAdjustmentsWorkflow = createWorkflow(
     const actions = getActionsToComputeFromPromotionsStep({
       computeActionContext: input.order as any,
       promotionCodesToApply,
-      setPromotionContextResult,
+      additional_promotion_context: setPromotionContextResult,
     })
 
     const {
