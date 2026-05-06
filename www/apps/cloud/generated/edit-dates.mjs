@@ -27,7 +27,7 @@ export const generatedEditDates = {
   "app/deployments/troubleshooting/page.mdx": "2025-10-17T14:44:22.894Z",
   "app/emails/page.mdx": "2026-04-10T11:40:04.389Z",
   "app/emails/react-email/page.mdx": "2026-03-27T09:46:46.277Z",
-  "app/user/page.mdx": "2026-05-05T14:32:49.451Z",
+  "app/user/page.mdx": "2026-05-06T10:12:12.165Z",
   "app/deployments/access/page.mdx": "2026-04-08T16:20:22.886Z",
   "app/projects/prerequisites/page.mdx": "2026-04-21T09:12:30.125Z",
   "app/storefront/page.mdx": "2026-04-08T16:19:50.391Z",
@@ -39,5 +39,6 @@ export const generatedEditDates = {
   "app/monitoring/http/page.mdx": "2026-04-22T14:42:22.622Z",
   "app/monitoring/page.mdx": "2026-04-17T09:53:24.133Z",
   "app/monitoring/servers/page.mdx": "2026-04-17T09:52:51.174Z",
-  "app/monitoring/workers/page.mdx": "2026-04-17T09:52:32.919Z"
+  "app/monitoring/workers/page.mdx": "2026-04-17T09:52:32.919Z",
+  "app/navigation/page.mdx": "2026-05-06T10:14:13.715Z"
 }
