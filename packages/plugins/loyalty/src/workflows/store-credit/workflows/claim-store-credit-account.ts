@@ -84,7 +84,28 @@ export const validateClaimStoreCreditAccountInputStep = createStep(
   }
 );
 
-const validateSourceStoreCreditAccountsStep = createStep(
+/**
+ * This step validates that the source store credit account can be claimed by the customer. It checks that
+ * the source account is not already owned by the customer, that it does not belong to another customer, and
+ * that it has a balance greater than 0. It throws an error if any of these conditions are not met.
+ * 
+ * @example
+ * validateSourceStoreCreditAccountsStep({
+ *   sourceStoreCreditAccount: {
+ *     id: "sca_123",
+ *     customer_id: null,
+ *     balance: 1000,
+ *     // other store credit account properties...
+ *   },
+ *   targetStoreCreditAccount: {
+ *     id: "sca_456",
+ *     customer_id: "cust_123",
+ *     balance: 500,
+ *     // other store credit account properties...
+ *   },
+ * })
+ */
+export const validateSourceStoreCreditAccountsStep = createStep(
   "validate-source-store-credit-account",
   async function (args: {
     sourceStoreCreditAccount: ModuleStoreCreditAccount;

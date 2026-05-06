@@ -65,7 +65,7 @@ export async function middleware(request: NextRequest) {
   if (isNewUser) {
     response.cookies.set(AB_DISTINCT_ID_COOKIE, distinctId, {
       maxAge: 60 * 60 * 24 * 90, // 90 days
-      httpOnly: true,
+      httpOnly: false, // readable by client-side PostHog bootstrap
       sameSite: "lax",
     })
   }
@@ -73,7 +73,7 @@ export async function middleware(request: NextRequest) {
   if (!request.cookies.get(AB_AI_COOKIE)?.value) {
     response.cookies.set(AB_AI_COOKIE, variant, {
       maxAge: 60 * 60 * 24 * 90, // 90 days
-      httpOnly: true,
+      httpOnly: false, // readable by client-side PostHog bootstrap
       sameSite: "lax",
     })
   }
