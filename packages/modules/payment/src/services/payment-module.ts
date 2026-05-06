@@ -981,7 +981,7 @@ export default class PaymentModuleService
     )
 
     await this.paymentService_.update(
-      { id: paymentId, canceled_at: new Date(), data: data },
+      { id: paymentId, canceled_at: new Date(), data },
       sharedContext
     )
 
