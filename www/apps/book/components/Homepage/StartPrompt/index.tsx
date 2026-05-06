@@ -4,9 +4,23 @@ import { CheckMini, SquareTwoStack } from "@medusajs/icons"
 import clsx from "clsx"
 import { CopyButton, HeadlineTags } from "docs-ui"
 import HomepageEdges from "../Edges"
+import HomepageStartPromptClaudeIcon from "./Icons/Claude"
+import HomepageStartPromptCodexIcon from "./Icons/Codex"
+import HomepageStartPromptCopilotIcon from "./Icons/Copilot"
+import HomepageStartPromptCursorIcon from "./Icons/Cursor"
+import HomepageStartPromptGeminiCliIcon from "./Icons/GeminiCli"
+import HomepageStartPromptOpenCodeIcon from "./Icons/OpenCode"
 
-const PROMPT =
-  "Fetch https://docs.medusajs.com/start and set up a Medusa store"
+const PROMPT = "Fetch https://docs.medusajs.com/start and set up a Medusa store"
+
+const agents = [
+  { icon: HomepageStartPromptClaudeIcon },
+  { icon: HomepageStartPromptCursorIcon },
+  { icon: HomepageStartPromptCodexIcon },
+  { icon: HomepageStartPromptCopilotIcon },
+  { icon: HomepageStartPromptGeminiCliIcon },
+  { icon: HomepageStartPromptOpenCodeIcon },
+]
 
 const HomepageStartPrompt = () => {
   return (
@@ -22,7 +36,7 @@ const HomepageStartPrompt = () => {
             "AI Agents",
             {
               text: "Learn more",
-              link: "/learn/introduction/build-with-llms-ai/agentic-skills",
+              link: "/start",
             },
           ]}
           className="!justify-start"
@@ -31,8 +45,8 @@ const HomepageStartPrompt = () => {
           Get started with your AI agent.
         </h2>
         <p className="txt-large text-medusa-fg-base">
-          Use this prompt with any AI coding agent to install and
-          deploy a Medusa-powered ecommerce store.
+          Use this prompt with any AI agent to install and deploy a
+          Medusa-powered ecommerce store.
         </p>
       </div>
       <div
@@ -59,15 +73,29 @@ const HomepageStartPrompt = () => {
               "transition-colors duration-100"
             )}
           >
-            {({ isCopied }) =>
-              isCopied ? (
+            {({ isCopied }) => {
+              return isCopied ? (
                 <CheckMini className="text-medusa-fg-interactive" />
               ) : (
                 <SquareTwoStack />
               )
-            }
+            }}
           </CopyButton>
           <HomepageEdges />
+        </div>
+
+        <div className="flex items-center gap-0 flex-wrap">
+          {agents.map(({ icon: Icon }, index) => (
+            <div
+              key={index}
+              className={clsx(
+                "flex items-center px-0.25 py-0.5",
+                "text-medusa-fg-subtle"
+              )}
+            >
+              <Icon />
+            </div>
+          ))}
         </div>
       </div>
     </div>

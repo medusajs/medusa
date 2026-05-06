@@ -38,8 +38,11 @@ export async function GET(req: NextRequest, { params }: Params) {
   const filePath = path.join(basePath, ...slug, "page.mdx")
   const mdContentFilePath = path.join(basePath, ...slug, "_md-content.mdx")
   // An `_md-content.mdx` file overrides the `page.mdx` file if it exists.
-  const existingPath = existsSync(mdContentFilePath) ? 
-    mdContentFilePath : existsSync(filePath) ? filePath : null
+  const existingPath = existsSync(mdContentFilePath)
+    ? mdContentFilePath
+    : existsSync(filePath)
+      ? filePath
+      : null
 
   if (!existingPath) {
     return notFound()
@@ -73,14 +76,11 @@ export async function GET(req: NextRequest, { params }: Params) {
     await client.shutdown()
   }
 
-  return new NextResponse(
-    cleanMdContent,
-    {
-      headers: {
-        "content-type": "text/markdown",
-        "cache-control": "public, max-age=3600, must-revalidate",
-      },
-      status: 200,
-    }
-  )
+  return new NextResponse(cleanMdContent, {
+    headers: {
+      "content-type": "text/markdown",
+      "cache-control": "public, max-age=3600, must-revalidate",
+    },
+    status: 200,
+  })
 }
