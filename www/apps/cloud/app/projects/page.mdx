@@ -1,4 +1,4 @@
-import { Prerequisites, InlineIcon, getOsShortcut, Kbd } from "docs-ui"
+import { Prerequisites, InlineIcon, getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
 import { ChevronUpDown } from "@medusajs/icons"
 
 export const metadata = {
@@ -179,8 +179,26 @@ Learn more in the [Access Deployment](../deployments/access/page.mdx) guide.
 
 To open a project's dashboard:
 
-1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-2. Open the project's dashboard by clicking on the project card in the organization's dashboard.
+<Tabs defaultValue="classic">
+  <TabsList>
+    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
+    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
+  </TabsList>
+  <TabsContentWrapper>
+    <TabsContent value="classic">
+
+    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
+    2. Click on the project card in the organization's dashboard.
+
+    </TabsContent>
+    <TabsContent value="global-sidebar">
+
+    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
+    2. Click on the project name in the sidebar.
+
+    </TabsContent>
+  </TabsContentWrapper>
+</Tabs>
 
 When you open a project's dashboard, its name will be shown at the top left next to the [organization switcher](../organizations/page.mdx#organization-switcher).
 
@@ -211,10 +229,28 @@ The project's name at the top left of the dashboard is also a project switcher.
 
 To switch to a different project:
 
-1. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch project" /> icon next to the project's name at the top left of the Cloud dashboard, next to the organization name.
-2. Choose the project you want to switch to from the dropdown.
+<Tabs defaultValue="classic">
+  <TabsList>
+    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
+    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
+  </TabsList>
+  <TabsContentWrapper>
+    <TabsContent value="classic">
 
-![Project switcher at the top left of the Cloud dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1767787268/Cloud/CleanShot_2026-01-07_at_14.00.01_2x_hylol3.png)
+    1. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch project" /> icon next to the project's name at the top left of the Cloud dashboard, next to the organization name.
+    2. Choose the project you want to switch to from the dropdown.
+
+    ![Project switcher at the top left of the Cloud dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1767787268/Cloud/CleanShot_2026-01-07_at_14.00.01_2x_hylol3.png)
+
+    </TabsContent>
+    <TabsContent value="global-sidebar">
+
+    1. Click on the current project's name at the top of the sidebar to go back to the organization's dashboard.
+    2. Click on the project name in the sidebar.
+
+    </TabsContent>
+  </TabsContentWrapper>
+</Tabs>
 
 This will change the view to the selected project, and you'll see its details, environments, and settings.
 

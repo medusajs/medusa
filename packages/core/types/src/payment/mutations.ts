@@ -187,6 +187,11 @@ export interface CreateRefundDTO {
    * a user's ID.
    */
   created_by?: string
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown>
 }
 
 /**
