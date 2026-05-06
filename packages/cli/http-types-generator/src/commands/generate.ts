@@ -142,11 +142,21 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
     for (const schema of schemas) {
       totalSchemas++
 
-      // Apply name registry override
+      // Apply name registry override (pass domain so DOMAIN_SCOPED_OVERRIDES take effect)
       const httpTypeName =
         schema.httpTypeName !== schema.exportName
           ? schema.httpTypeName // already set via @http-type-name annotation
-          : NameRegistry.resolveHttpTypeName(schema.exportName)
+          : NameRegistry.resolveHttpTypeName(schema.exportName, mapping.domain)
+
+      // Skip when the registry maps this export to "skip" (e.g. single-item select params
+      // that duplicate a list params schema, or embedded schemas used within payloads)
+      if (httpTypeName === "skip") {
+        skippedSchemas++
+        if (verbose) {
+          console.log(chalk.gray(`  Skip  ${schema.exportName}`))
+        }
+        continue
+      }
 
       const targetFile = NameClassifier.classify(schema.exportName)
       if (targetFile === "skip") {

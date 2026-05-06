@@ -410,6 +410,24 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               })
             )
           })
+
+          it("should not reset currency_code to empty string when updating other fields", async () => {
+            await service.updatePaymentCollections("pay-col-id-2", {
+              amount: 9,
+            })
+
+            const collection = await service.retrievePaymentCollection(
+              "pay-col-id-2"
+            )
+
+            expect(collection).toEqual(
+              expect.objectContaining({
+                id: "pay-col-id-2",
+                amount: 9,
+                currency_code: "usd",
+              })
+            )
+          })
         })
 
         describe("complete", () => {
@@ -926,6 +944,34 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             )
           })
 
+          it("should persist metadata passed when refunding a payment", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            const refundedPayment = await service.refundPayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+              metadata: { reason: "customer-request", ticket_id: "42" },
+            })
+
+            expect(refundedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-2",
+                refunds: [
+                  expect.objectContaining({
+                    amount: 100,
+                    metadata: {
+                      reason: "customer-request",
+                      ticket_id: "42",
+                    },
+                  }),
+                ],
+              })
+            )
+          })
+
           it("should fully refund a payment through two refunds", async () => {
             await service.capturePayment({
               amount: 100,
@@ -1016,6 +1062,51 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             const error = await service
               .refundPayment({
                 amount: 60,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "You cannot refund more than what is captured on the payment."
+            )
+          })
+
+          it("should allow refund slightly exceeding captured amount within currency epsilon", async () => {
+            // USD has 2 decimal digits, so epsilon = 0.01
+            // Provider captures 87.957975 (sub-cent precision), user requests refund for 87.96
+            // Difference is 0.002025 which is within epsilon → refund should succeed
+            await service.capturePayment({
+              amount: 87.957975,
+              payment_id: "pay-id-1",
+            })
+
+            const refundedPayment = await service.refundPayment({
+              amount: 87.96,
+              payment_id: "pay-id-1",
+            })
+
+            expect(refundedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-1",
+                refunds: [
+                  expect.objectContaining({
+                    amount: 87.96,
+                  }),
+                ],
+              })
+            )
+          })
+
+          it("should throw if refund exceeds captured amount beyond currency epsilon", async () => {
+            // USD epsilon = 0.01; refunding 0.02 more than captured should still throw
+            await service.capturePayment({
+              amount: 87.957975,
+              payment_id: "pay-id-1",
+            })
+
+            const error = await service
+              .refundPayment({
+                amount: 87.98,
                 payment_id: "pay-id-1",
               })
               .catch((e) => e)

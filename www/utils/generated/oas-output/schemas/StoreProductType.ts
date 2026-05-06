@@ -38,6 +38,10 @@
  *     type: string
  *     title: value
  *     description: The type's value.
+ *   external_id:
+ *     type: string
+ *     title: external_id
+ *     description: The type's external ID used to link it with external systems.
  * 
 */
 

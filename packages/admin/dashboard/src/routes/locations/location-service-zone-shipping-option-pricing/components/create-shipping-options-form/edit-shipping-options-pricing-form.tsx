@@ -165,7 +165,7 @@ export function EditShippingOptionsPricingForm({
         amount: castNumber(rule.amount),
         rules: buildShippingOptionPriceRules(rule),
       }))
-    )
+    ) as PriceRecord[]
 
     /**
      * TODO: If we try to update an existing region price the API throws an error.
@@ -195,7 +195,7 @@ export function EditShippingOptionsPricingForm({
         amount: castNumber(rule.amount),
         rules: buildShippingOptionPriceRules(rule),
       }))
-    )
+    ) as PriceRecord[]
 
     const allPrices = [
       ...currencyPrices,
@@ -359,6 +359,10 @@ const getDefaultValues = (prices: HttpTypes.AdminShippingOptionPrice[]) => {
         (r) => r.attribute === REGION_ID_ATTRIBUTE
       )?.value
 
+      if (!regionId) {
+        return
+      }
+
       region_prices[regionId] = price.amount
       return
     }
@@ -367,6 +371,10 @@ const getDefaultValues = (prices: HttpTypes.AdminShippingOptionPrice[]) => {
       const regionId = price.price_rules.find(
         (r) => r.attribute === REGION_ID_ATTRIBUTE
       )?.value
+
+      if (!regionId) {
+        return
+      }
 
       if (!conditional_region_prices[regionId]) {
         conditional_region_prices[regionId] = []

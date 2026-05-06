@@ -3,6 +3,7 @@ export type CloudAnnouncement = {
   title: string
   subtitle?: string
   link_url?: string
-  published_at?: Date
-  created_at: Date
+  published_at?: string
+  created_at: string
+  type: "feature" | "incident" | "version"
 }

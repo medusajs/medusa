@@ -5,63 +5,77 @@ on:
     types: [opened]
   issue_comment:
     types: [created]
+  workflow_dispatch:
+    inputs:
+      skip_triaged:
+        description: 'Skip issues that already have triage labels (type: bug, requires-more, requires-team, good-first-issue, help-wanted, feedback)'
+        required: false
+        default: true
+        type: boolean
 
 jobs:
-  triage:
-    if: |
-      false && (
-        github.event_name == 'issues' ||
-        (github.event_name == 'issue_comment' && github.event.issue.pull_request == null && github.event.comment.user.type != 'Bot')
-      )
+  # Runs only on workflow_dispatch: collects all open non-bot issues for the matrix below
+  get-open-issues:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      issues: write
-      discussions: write
-      id-token: write
+      issues: read
+    outputs:
+      matrix: ${{ steps.get-issues.outputs.matrix }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-
-      - name: Generate GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@v1
-        with:
-          app-id: ${{ secrets.MEDUSA_APP_ID }}
-          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
-
-      - name: Triage issue
-        uses: anthropics/claude-code-action@v1
+      - name: Get open issues
+        id: get-issues
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          github_token: ${{ steps.app-token.outputs.token }}
-          base_branch: develop
-          show_full_output: true
-          plugin_marketplaces: "https://github.com/medusajs/medusa-agent-skills.git"
-          plugins: "medusa-dev@medusa"
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SKIP_TRIAGED="${{ inputs.skip_triaged }}"
+          matrix=$(gh issue list --repo ${{ github.repository }} --state open --limit 500 --json number,author,labels \
+            --jq "[.[] | select(
+              .author.is_bot == false and
+              (if \"$SKIP_TRIAGED\" == \"true\" then
+                ([.labels[].name] | (
+                  contains([\"type: bug\"]) or
+                  contains([\"requires-more\"]) or
+                  contains([\"requires-team\"]) or
+                  contains([\"good-first-issue\"]) or
+                  contains([\"help-wanted\"]) or
+                  contains([\"feedback\"])
+                )) | not
+              else true end)
+            ) | {number: .number}]")
 
-          prompt: |
-            ISSUE NUMBER: ${{ github.event.issue.number }}
-            ISSUE TITLE: ${{ github.event.issue.title }}
-            ISSUE BODY: ${{ github.event.issue.body }}
-            ISSUE AUTHOR: ${{ github.event.issue.user.login }}
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
-            Note: all scripts are located in the root `scripts/` directory and should be run as `bash scripts/<script>.sh`.
+  # Runs on workflow_dispatch: triages every open issue in parallel
+  triage-all:
+    needs: get-open-issues
+    if: needs.get-open-issues.outputs.matrix != '[]' && needs.get-open-issues.outputs.matrix != ''
+    strategy:
+      matrix:
+        issue: ${{ fromJson(needs.get-open-issues.outputs.matrix) }}
+      max-parallel: 5
+      fail-fast: false
+    uses: ./.github/workflows/triage-issue-action.yml
+    with:
+      issue_number: '${{ matrix.issue.number }}'
+    secrets:
+      MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
+      MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
-            /triaging-issues ${{ github.event.issue.number }} "${{ github.event.issue.title }}" "${{ github.event.issue.body }}" "${{ github.event.issue.user.login }}"
-
-          claude_args: >-
-            --allowedTools
-            "Bash(bash scripts/get_issue.sh:*),
-            Bash(bash scripts/get_comments.sh:*),
-            Bash(bash scripts/get_labels.sh:*),
-            Bash(bash scripts/add_comment.sh:*),
-            Bash(bash scripts/labels.sh:*),
-            Bash(bash scripts/close_issue.sh:*),
-            Bash(bash scripts/convert_to_discussion.sh:*),
-            Bash(bash scripts/search_issues.sh:*),
-            Bash(gh search issues:*)"
+  # Runs on issues/issue_comment events: triages a single issue
+  triage:
+    if: |
+      (github.event_name == 'issues' &&
+       github.event.issue.user.type != 'Bot') ||
+      (github.event_name == 'issue_comment' &&
+       github.event.issue.pull_request == null &&
+       github.event.comment.user.type != 'Bot' &&
+       contains(github.event.comment.body, '@medusajs-bot triage'))
+    uses: ./.github/workflows/triage-issue-action.yml
+    with:
+      issue_number: '${{ github.event.issue.number }}'
+    secrets:
+      MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
+      MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}

@@ -36,6 +36,7 @@ import {
   MathBN,
   MedusaContext,
   MedusaError,
+  mergeMetadata,
   ModulesSdkUtils,
   normalizeCurrencyCode,
   PriceListType,
@@ -1458,12 +1459,22 @@ export default class PricingModuleService
       )
     }
 
+    const existingByIdMap = new Map(existingPriceLists.map((p) => [p.id, p]))
+
     const normalizedData = this.normalizePriceListDate(data).map(
       (priceList) => {
         const entry: Partial<ServiceTypes.CreatePriceListDTO> = {
           ...priceList,
           rules: undefined,
           price_list_rules: undefined,
+        }
+
+        if (isPresent(priceList.metadata)) {
+          const existing = existingByIdMap.get(priceList.id as string)
+          entry.metadata = mergeMetadata(
+            existing?.metadata ?? {},
+            priceList.metadata as Record<string, unknown>
+          )
         }
 
         if (typeof priceList.rules === "object") {

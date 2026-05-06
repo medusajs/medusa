@@ -136,7 +136,7 @@ export const PriceListEditForm = ({ priceList }: PriceListEditFormProps) => {
                     </Form.Label>
                     <Form.Control>
                       <Select
-                          dir={direction}
+                        dir={direction}
                         {...field}
                         onValueChange={onChange}
                       >

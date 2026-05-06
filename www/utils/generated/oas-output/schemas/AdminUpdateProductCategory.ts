@@ -37,6 +37,10 @@
  *     type: number
  *     title: rank
  *     description: The product category's rank among other categories.
+ *   external_id:
+ *     type: string
+ *     title: external_id
+ *     description: The product category's external ID used to link it with external systems.
  * x-schemaName: AdminUpdateProductCategory
  * 
 */

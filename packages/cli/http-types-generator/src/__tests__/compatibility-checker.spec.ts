@@ -197,6 +197,55 @@ describe("CompatibilityChecker.check", () => {
     })
   })
 
+  describe("@http-validation-ignore tag", () => {
+    it("ignores extra HTTP-only fields tagged with @http-validation-ignore", () => {
+      const result = runCheck(
+        `interface ZodShape { name: string }`,
+        "ZodShape",
+        `export interface HttpType {
+          name: string;
+          /** @http-validation-ignore */
+          extra?: string
+        }`,
+        "HttpType"
+      )
+      expect(result.passed).toBe(true)
+      expect(result.extraFields).toHaveLength(0)
+    })
+
+    it("ignores type mismatches for fields tagged with @http-validation-ignore", () => {
+      const result = runCheck(
+        `interface ZodShape { name: string; count: number }`,
+        "ZodShape",
+        `export interface HttpType {
+          name: string;
+          /** @http-validation-ignore */
+          count: string
+        }`,
+        "HttpType"
+      )
+      expect(result.passed).toBe(true)
+      expect(result.typeMismatchFields).toHaveLength(0)
+    })
+
+    it("still reports fields without the tag", () => {
+      const result = runCheck(
+        `interface ZodShape { name: string }`,
+        "ZodShape",
+        `export interface HttpType {
+          name: string;
+          /** @http-validation-ignore */
+          ignored?: string;
+          extra?: string
+        }`,
+        "HttpType"
+      )
+      expect(result.passed).toBe(false)
+      expect(result.extraFields.map((f) => f.fieldName)).toContain("extra")
+      expect(result.extraFields.map((f) => f.fieldName)).not.toContain("ignored")
+    })
+  })
+
   describe("type not found", () => {
     it("fails with 'type not found' when the HTTP type doesn't exist", () => {
       const result = runCheck(

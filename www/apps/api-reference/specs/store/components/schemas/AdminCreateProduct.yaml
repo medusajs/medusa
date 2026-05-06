@@ -3,7 +3,6 @@ description: The product's details.
 x-schemaName: AdminCreateProduct
 required:
   - title
-  - options
 properties:
   title:
     type: string

@@ -110,8 +110,25 @@ export function load(app: Application) {
       const namespace = findNamespace(namespaces)
 
       if (namespace) {
+        // Save original parent before addChild changes it
+        const originalParent = reflection.parent
+
+        // Single entry point: reflection is a direct project child
         context.project.removeChild(reflection)
-        namespace?.addChild(reflection)
+
+        // Multiple entry points: reflection may be a child of a Module
+        // (not project), so project.removeChild is a no-op — remove manually
+        if (originalParent && !originalParent.isProject()) {
+          const parentDecl = originalParent as DeclarationReflection
+          if (parentDecl.children) {
+            const idx = parentDecl.children.indexOf(reflection)
+            if (idx !== -1) {
+              parentDecl.children.splice(idx, 1)
+            }
+          }
+        }
+
+        namespace.addChild(reflection)
       }
     }
   )
@@ -131,6 +148,15 @@ export function load(app: Application) {
         context.project.removeChild(namespace)
       }
     })
+
+    // Remove entry-point Module reflections that had all their children moved
+    // to path namespaces (they would otherwise generate empty module pages)
+    const emptyModules = (context.project.children || []).filter(
+      (child) =>
+        child.kind === ReflectionKind.Module &&
+        (!child.children || child.children.length === 0)
+    )
+    emptyModules.forEach((mod) => context.project.removeChild(mod))
   })
 }
 

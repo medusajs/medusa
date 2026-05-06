@@ -66,6 +66,7 @@ export const AdminPostOrderEditsUpdateItemQuantityReqSchema = z.object({
   unit_price: z.number().nullish(),
   compare_at_unit_price: z.number().nullish(),
   internal_note: z.string().nullish().optional(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 
 export type AdminPostOrderEditsUpdateItemQuantityReqSchemaType = z.infer<

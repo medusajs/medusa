@@ -20,9 +20,6 @@ export type AdminGetOrdersOrderParamsType = z.infer<
   typeof AdminGetOrdersOrderParams
 >
 
-/**
- * Parameters used to filter and configure the pagination of the retrieved order.
- */
 export const AdminGetOrdersParams = createFindParams({
   limit: 15,
   offset: 0,
@@ -164,6 +161,7 @@ export const AdminPostClaimItemsReqSchema = z.object({
       reason: z.nativeEnum(ClaimReason).optional(),
       description: z.string().optional(),
       internal_note: z.string().optional(),
+      metadata: z.record(z.string(), z.unknown()).nullish(),
     })
   ),
 })
@@ -212,4 +210,6 @@ export type AdminPostClaimsConfirmRequestReqSchemaType = z.infer<
 
 export const AdminDeleteClaimItemActionSchema = createSelectParams()
 
-export type AdminDeleteClaimItemActionSchemaType = z.infer<typeof AdminDeleteClaimItemActionSchema>
+export type AdminDeleteClaimItemActionSchemaType = z.infer<
+  typeof AdminDeleteClaimItemActionSchema
+>

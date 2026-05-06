@@ -25,9 +25,6 @@ export type AdminGetOrdersOrderParamsType = z.infer<
   typeof AdminGetOrdersOrderParams
 >
 
-/**
- * Parameters used to filter and configure the pagination of the retrieved order.
- */
 export const AdminGetOrdersParams = createFindParams({
   limit: 15,
   offset: 0,

@@ -6,7 +6,11 @@ import { PencilSquare, ThumbnailBadge } from "@medusajs/icons"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 
 type VariantMediaSectionProps = {
-  variant: HttpTypes.AdminProductVariant
+  variant: Omit<HttpTypes.AdminProductVariant, "images"> & {
+    images?: (HttpTypes.AdminProductImage & {
+      variants?: HttpTypes.AdminProductVariant[]
+    })[]
+  }
 }
 
 export const VariantMediaSection = ({ variant }: VariantMediaSectionProps) => {
@@ -14,7 +18,7 @@ export const VariantMediaSection = ({ variant }: VariantMediaSectionProps) => {
 
   // show only variant scoped images
   const media = (variant.images || []).filter((image) =>
-    image.variants?.some((variant) => variant.id === variant.id)
+    image.variants?.some((imageVariant) => imageVariant.id === variant.id)
   )
 
   return (

@@ -22,9 +22,7 @@ import { updateCartPromotionsStep } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = updateCartPromotionsStep({
-      "id": "id_BZTMWYozRRVr0Ic9MirY"
-    })
+    const data = updateCartPromotionsStep({})
   }
 )
 ```
@@ -32,4 +30,4 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"UpdateCartPromotionStepInput","type":"[UpdateCartPromotionStepInput](../../../../interfaces/core_flows.UpdateCartPromotionStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of the promotion codes to apply on a cart.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the cart to update promotions for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"promo_codes","type":"`string`[]","description":"The promotion codes to apply on the cart.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"action","type":"[ADD](../../../../../utils/PromotionUtils/enums/utils.PromotionUtils.PromotionActions/page.mdx#add) \\| [REMOVE](../../../../../utils/PromotionUtils/enums/utils.PromotionUtils.PromotionActions/page.mdx#remove) \\| [REPLACE](../../../../../utils/PromotionUtils/enums/utils.PromotionUtils.PromotionActions/page.mdx#replace)","description":"Whether to add, remove, or replace promotion codes.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="updateCartPromotionsStep"/>
+<TypeList types={[{"name":"UpdateCartPromotionStepInput","type":"[UpdateCartPromotionStepInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.UpdateCartPromotionStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"UpdateCartPromotionStepInput","type":"`object`","description":"The details of the promotion codes to apply on a cart.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="updateCartPromotionsStep"/>

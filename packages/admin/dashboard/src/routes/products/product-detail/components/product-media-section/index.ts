@@ -1,1 +1,1 @@
-export * from "./product-media-section";
+export * from "./product-media-section"

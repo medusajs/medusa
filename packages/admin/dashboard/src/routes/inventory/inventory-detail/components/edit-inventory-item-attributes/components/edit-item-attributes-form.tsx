@@ -4,7 +4,7 @@ import { Button, Input, toast } from "@medusajs/ui"
 import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { InventoryTypes } from "@medusajs/types"
+import { AdminInventoryItem } from "@medusajs/types"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
@@ -15,7 +15,7 @@ import { KeyboundForm } from "../../../../../../components/utilities/keybound-fo
 import { useUpdateInventoryItem } from "../../../../../../hooks/api/inventory"
 
 type EditInventoryItemAttributeFormProps = {
-  item: InventoryTypes.InventoryItemDTO
+  item: AdminInventoryItem
 }
 
 const EditInventoryItemAttributesSchema = z.object({
@@ -29,7 +29,7 @@ const EditInventoryItemAttributesSchema = z.object({
   origin_country: z.string().optional(),
 })
 
-const getDefaultValues = (item: InventoryTypes.InventoryItemDTO) => {
+const getDefaultValues = (item: AdminInventoryItem) => {
   return {
     height: item.height ?? undefined,
     width: item.width ?? undefined,
@@ -56,13 +56,19 @@ export const EditInventoryItemAttributesForm = ({
   const { mutateAsync, isPending: isLoading } = useUpdateInventoryItem(item.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    await mutateAsync(values, {
-      onSuccess: () => {
-        toast.success(t("inventory.toast.updateItem"))
-        handleSuccess()
+    await mutateAsync(
+      {
+        ...values,
+        origin_country: values.origin_country || null,
       },
-      onError: (error) => toast.error(error.message),
-    })
+      {
+        onSuccess: () => {
+          toast.success(t("inventory.toast.updateItem"))
+          handleSuccess()
+        },
+        onError: (error) => toast.error(error.message),
+      }
+    )
   })
 
   return (
@@ -244,7 +250,7 @@ export const EditInventoryItemAttributesForm = ({
                     {t("fields.countryOfOrigin")}
                   </Form.Label>
                   <Form.Control>
-                    <CountrySelect {...field} />
+                    <CountrySelect {...field} allowClear />
                   </Form.Control>
                   <Form.ErrorMessage />
                 </Form.Item>

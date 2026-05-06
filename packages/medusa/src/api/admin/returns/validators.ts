@@ -23,9 +23,6 @@ export const AdminGetReturnParams = createSelectParams()
 
 export type AdminGetReturnParamsType = z.infer<typeof AdminGetReturnParams>
 
-/**
- * Parameters used to filter and configure the pagination of the retrieved order.
- */
 export const AdminGetOrdersParams = createFindParams({
   limit: 15,
   offset: 0,

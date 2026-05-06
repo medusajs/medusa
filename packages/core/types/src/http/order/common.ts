@@ -1071,7 +1071,7 @@ export interface BaseOrderChange {
   declined_at: Date | null
 
   /**
-   * The canceled by of the order change
+   * The ID of the user that canceled the order change
    */
   canceled_by: string | null
 
@@ -1079,6 +1079,11 @@ export interface BaseOrderChange {
    * When the order change was canceled
    */
   canceled_at: Date | null
+
+  /**
+   * The ID of the user that created the order change
+   */
+  created_by: string | null
 
   /**
    * When the order change was created

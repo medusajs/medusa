@@ -10,9 +10,15 @@ export const metadata = {
 
 # {metadata.title}
 
-The Medusa application is made up of a Node.js server and an admin dashboard. The storefront is installed and hosted separately from the Medusa application. You have the flexibility to choose the frontend tech stack that you and your team are proficient in, and implement unique design systems and user experience.
+<Note>
 
-Our Next.js Starter Storefront is a good place to start building your storefront. The Next.js Starter Storefront provides rich commerce features and a sleek design. Developers and businesses can use it as-is or build on top of it to tailor it for the business's unique use case, design, and customer experience.
+Since Medusa v2.14.0, the Next.js Starter storefront is installed in a monorepo with the Medusa application when using `create-medusa-app`. The [standalone Next.js Starter Storefront](https://github.com/medusajs/nextjs-starter-medusa) is now deprecated.
+
+</Note>
+
+The Medusa application is made up of a Node.js server and an admin dashboard. The storefront is hosted separately from the Medusa application. You have the flexibility to choose the frontend tech stack that you and your team are proficient in, and implement unique design systems and user experience.
+
+The Next.js Starter Storefront is a good place to start building your storefront. It provides rich commerce features and a sleek design. Developers and businesses can use it as-is or build on top of it to tailor it for the business's unique use case, design, and customer experience.
 
 <Note>
 
@@ -45,11 +51,13 @@ If you don't have a Medusa application installed, run the following command to i
 npx create-medusa-app@latest --with-nextjs-starter
 ```
 
-You'll be asked for the project's name, then the installation will start. The Medusa application will be installed in the `{project-name}` directory, and the Next.js will be installed in a separate `{project-name}-storefront` directory.
+You'll be asked for the project's name, then the installation will start.
+
+The command will create a `{project-name}` directory that holds a monorepository. The Medusa backend will be installed in the `apps/backend` directory, and the Next.js Starter storefront will be installed in the `apps/storefront` directory.
 
 Once the installation is done, the Medusa Admin dashboard will open in your default browser at `http://localhost:9000/app`, and the Next.js Starter storefront will be running at `http://localhost:8000`.
 
-For other information related to the Medusa application's installation, refer to [this documentation](!docs!/learn/installation).
+For other information related to the Medusa application's installation, refer to the [Installation guide](!docs!/learn/installation).
 
 ### Approach 2: Install separately
 
@@ -63,35 +71,58 @@ For other information related to the Medusa application's installation, refer to
     link: "https://git-scm.com/downloads"
   },
   {
+    text: "An existing Medusa monorepo with the backend running.",
+  },
+  {
     text: "At least one region in the Medusa application.",
   },
 ]} />
 
-If you already have a Medusa application installed with at least one region, you can install the Next.js Starter storefront with the following steps:
+If you already have a Medusa monorepo installed and want to add the Next.js Starter storefront to it, follow these steps.
 
-1. Clone the [Next.js Starter](https://github.com/medusajs/nextjs-starter-medusa):
+1. From the root of your monorepo, clone the [DTC Starter](https://github.com/medusajs/dtc-starter) into a temporary directory to extract the storefront:
 
 ```bash
-git clone https://github.com/medusajs/nextjs-starter-medusa my-medusa-storefront
+git clone https://github.com/medusajs/dtc-starter.git --depth=1 dtc-temp
 ```
 
-2. Change to the `my-medusa-storefront` directory, install the dependencies, and rename the template environment variable file:
+2. Copy the storefront into your project's `apps` directory, then remove the temporary clone:
+
+```bash
+cp -r dtc-temp/apps/storefront apps/storefront
+rm -rf dtc-temp
+```
+
+3. Make sure your workspace configuration includes the `apps/storefront` directory. If your `pnpm-workspace.yaml` or the `workspaces` field in `package.json` already uses a glob like `apps/*`, no change is needed. Otherwise, add it explicitly:
+
+```yaml title="pnpm-workspace.yaml"
+packages:
+  - 'apps/*'
+```
+
+4. From the monorepo root, install the dependencies:
 
 ```bash npm2yarn
-cd my-medusa-storefront
 npm install
-mv .env.template .env.local
 ```
 
-3. Set the Medusa application's publishable API key in the `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` environment variable. You can retrieve the publishable API key from the Medusa Admin dashboard by going to Settings -> Publishable API Keys
+5. Create the storefront's environment file from its template:
 
 ```bash
+cp apps/storefront/.env.template apps/storefront/.env.local
+```
+
+6. In `apps/storefront/.env.local`, set the URL of your Medusa backend and your publishable API key. You can retrieve the publishable API key from the Medusa Admin dashboard by going to **Settings** > **API Key Management**:
+
+```bash title="apps/storefront/.env.local"
+NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://localhost:9000
 NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_123...
 ```
 
-4. While the Medusa application is running, start the Next.js Starter storefront:
+7. While the Medusa application is running, start the Next.js Starter storefront from the `apps/storefront` directory:
 
 ```bash npm2yarn
+cd apps/storefront
 npm run dev
 ```
 

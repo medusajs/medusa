@@ -1,5 +1,5 @@
 import { OperatorMap } from "../../../dal"
-import { FindParams } from "../../common"
+import { FindParams, SelectParams } from "../../common"
 
 export interface AdminShippingProfileListParams extends FindParams {
   /**
@@ -39,3 +39,5 @@ export interface AdminShippingProfileListParams extends FindParams {
    */
   $or?: AdminShippingProfileListParams[]
 }
+
+export interface AdminGetShippingProfileParams extends SelectParams {}

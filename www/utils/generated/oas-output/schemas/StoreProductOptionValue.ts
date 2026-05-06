@@ -4,8 +4,8 @@
  * description: The product option value's details.
  * x-schemaName: StoreProductOptionValue
  * required:
- *   - value
  *   - id
+ *   - value
  * properties:
  *   id:
  *     type: string

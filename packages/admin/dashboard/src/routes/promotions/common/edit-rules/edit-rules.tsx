@@ -22,7 +22,7 @@ export const EditRules = () => {
   ]
 
   if (!allowedParams.includes(params.ruleType!)) {
-    throw "invalid page"
+    throw new Error("invalid page")
   }
 
   const { t } = useTranslation()
