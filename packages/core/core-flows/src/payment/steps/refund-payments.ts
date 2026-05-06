@@ -1,9 +1,11 @@
 import {
   BigNumberInput,
   IPaymentModuleService,
+  Logger,
   PaymentDTO,
 } from "@medusajs/framework/types"
 import {
+  ContainerRegistrationKeys,
   Modules,
   promiseAll,
 } from "@medusajs/framework/utils"
@@ -51,6 +53,7 @@ export const refundPaymentsStepId = "refund-payments-step"
 export const refundPaymentsStep = createStep(
   refundPaymentsStepId,
   async (input: RefundPaymentsStepInput, { container }) => {
+    const logger = container.resolve<Logger>(ContainerRegistrationKeys.LOGGER)
     const paymentModule = container.resolve<IPaymentModuleService>(
       Modules.PAYMENT
     )
@@ -72,13 +75,20 @@ export const refundPaymentsStep = createStep(
         paymentModule
           .refundPayment(refundInput)
           .then((refundedPayment) => ({ refunded_payment: refundedPayment }))
-          .catch((error: unknown) => ({
-            failed_refund: {
-              payment_id: refundInput.payment_id,
-              amount: refundInput.amount,
-              error: error instanceof Error ? error.message : String(error),
-            },
-          }))
+          .catch((error: unknown) => {
+            const message =
+              error instanceof Error ? error.message : String(error)
+            logger.error(
+              `Refund failed for payment ${refundInput.payment_id} (amount ${String(refundInput.amount)}): ${message}`
+            )
+            return {
+              failed_refund: {
+                payment_id: refundInput.payment_id,
+                amount: refundInput.amount,
+                error: message,
+              },
+            }
+          })
       )
     }
 

@@ -1,6 +1,11 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { AdminShippingOption } from "@medusajs/types"
-import { ModuleRegistrationName, Modules, ProductStatus } from "@medusajs/utils"
+import {
+  ModuleRegistrationName,
+  Modules,
+  PaymentEvents,
+  ProductStatus,
+} from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -1270,54 +1275,76 @@ medusaIntegrationTestRunner({
             return originalRefundPayment(data, sharedContext)
           })
 
-        // Cancel the order
-        const cancelResponse = await api.post(
-          `/admin/orders/${order.id}/cancel`,
-          {},
-          adminHeaders
-        )
+        const eventBus = container.resolve(Modules.EVENT_BUS)
+        const refundFailedSubscriber = jest.fn()
+        eventBus.subscribe(PaymentEvents.REFUND_FAILED, refundFailedSubscriber)
 
-        expect(cancelResponse.status).toBe(200)
-
-        // Restore the mock
-        jest.restoreAllMocks()
-
-        // Get the canceled order with credit lines and summary
-        const canceledOrder = (
-          await api.get(
-            `/admin/orders/${order.id}?fields=*credit_lines.amount,*payment_collections.payments.amount,*payment_collections.payments.captures.amount,*payment_collections.payments.refunds.amount`,
+        try {
+          // Cancel the order
+          const cancelResponse = await api.post(
+            `/admin/orders/${order.id}/cancel`,
+            {},
             adminHeaders
           )
-        ).data.order
 
-        expect(canceledOrder.status).toBe("canceled")
+          expect(cancelResponse.status).toBe(200)
 
-        // Only the first payment (50) was successfully refunded
-        // The second payment (30) refund failed, so it should NOT be in credit lines
-        const totalCreditLineAmount = canceledOrder.credit_lines.reduce(
-          (sum, cl) => sum + cl.amount,
-          0
-        )
+          await new Promise((resolve) => setTimeout(resolve, 100))
 
-        // Credit line should only reflect the successful refund (50), not both (50 + 30)
-        expect(totalCreditLineAmount).toBe(50)
-        expect(canceledOrder.summary.credit_line_total).toBe(50)
-
-        // Verify only the first payment has a refund record
-        const originalPaymentAfter =
-          canceledOrder.payment_collections[0].payments.find(
-            (p) => p.id === payment.id
+          expect(refundFailedSubscriber).toHaveBeenCalledTimes(1)
+          expect(refundFailedSubscriber.mock.calls[0][0].data).toEqual(
+            expect.objectContaining({
+              payment_id: payment2.id,
+              error: "Refund failed at payment provider",
+            })
           )
-        const payment2After =
-          canceledOrder.payment_collections[0].payments.find(
-            (p) => p.id === payment2.id
+          expect(
+            Number(refundFailedSubscriber.mock.calls[0][0].data.amount)
+          ).toBe(30)
+
+          // Get the canceled order with credit lines and summary
+          const canceledOrder = (
+            await api.get(
+              `/admin/orders/${order.id}?fields=*credit_lines.amount,*payment_collections.payments.amount,*payment_collections.payments.captures.amount,*payment_collections.payments.refunds.amount`,
+              adminHeaders
+            )
+          ).data.order
+
+          expect(canceledOrder.status).toBe("canceled")
+
+          // Only the first payment (50) was successfully refunded
+          // The second payment (30) refund failed, so it should NOT be in credit lines
+          const totalCreditLineAmount = canceledOrder.credit_lines.reduce(
+            (sum, cl) => sum + cl.amount,
+            0
           )
 
-        expect(originalPaymentAfter.refunds).toHaveLength(1)
-        expect(originalPaymentAfter.refunds[0].amount).toBe(50)
+          // Credit line should only reflect the successful refund (50), not both (50 + 30)
+          expect(totalCreditLineAmount).toBe(50)
+          expect(canceledOrder.summary.credit_line_total).toBe(50)
 
-        // The failed payment should have no refund records
-        expect(payment2After.refunds).toHaveLength(0)
+          // Verify only the first payment has a refund record
+          const originalPaymentAfter =
+            canceledOrder.payment_collections[0].payments.find(
+              (p) => p.id === payment.id
+            )
+          const payment2After =
+            canceledOrder.payment_collections[0].payments.find(
+              (p) => p.id === payment2.id
+            )
+
+          expect(originalPaymentAfter.refunds).toHaveLength(1)
+          expect(originalPaymentAfter.refunds[0].amount).toBe(50)
+
+          // The failed payment should have no refund records
+          expect(payment2After.refunds).toHaveLength(0)
+        } finally {
+          eventBus.unsubscribe(
+            PaymentEvents.REFUND_FAILED,
+            refundFailedSubscriber
+          )
+          jest.restoreAllMocks()
+        }
       })
     })
 
