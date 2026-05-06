@@ -6,7 +6,6 @@ import {
   FlagSettings,
   IIndexService,
   ILinkMigrationsPlanner,
-  ILockingModule,
   InternalModuleDeclaration,
   LoadedModule,
   Logger,
@@ -554,8 +553,9 @@ async function MedusaApp_({
 
     let executedResolutions: [any, string[]][] = [] // [moduleResolution, migration names[]]
 
-    const lockService = sharedContainer?.resolve<ILockingModule>(Modules.LOCKING, {
-      allowUnregistered: true,
+    const lockKnex = ModulesSdkUtils.createPgConnection({
+      ...dbData,
+      pool: { min: 1, max: 1 },
     })
 
     const run = async (
@@ -585,11 +585,9 @@ async function MedusaApp_({
 
       const lockKey = `db-module-migration:${migrationOptions.moduleKey}`
 
-      if (lockService) {
-        await lockService.acquire(lockKey, { expire: 60 * 60 })
-      }
+      await lockKnex.transaction(async (trx) => {
+        await trx.raw(`SELECT pg_advisory_xact_lock(hashtext(?))`, [lockKey])
 
-      try {
         if (action === "revert") {
           await MedusaModule.migrateDown(migrationOptions, migrationNames)
         } else if (action === "run") {
@@ -605,11 +603,7 @@ async function MedusaApp_({
         } else {
           await MedusaModule.migrateGenerate(migrationOptions)
         }
-      } finally {
-        if (lockService) {
-          await lockService.release(lockKey)
-        }
-      }
+      })
     }
 
     const concurrency = parseInt(process.env.DB_MIGRATION_CONCURRENCY ?? "1")
@@ -641,6 +635,8 @@ async function MedusaApp_({
         )
       }
       throw error
+    } finally {
+      await lockKnex.destroy()
     }
   }
 
@@ -686,7 +682,7 @@ async function MedusaApp_({
     }
     options.database.debug ??= sharedResourcesConfig?.database?.debug
 
-    return getMigrationPlanner(options, linkModules, sharedContainer_)
+    return getMigrationPlanner(options, linkModules)
   }
 
   const indexModule = sharedContainer_.resolve(Modules.INDEX, {

@@ -1,8 +1,6 @@
 import {
   ILinkMigrationsPlanner,
-  ILockingModule,
   LinkMigrationsPlannerAction,
-  MedusaContainer,
   ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
   PlannerActionLinkDescriptor,
@@ -18,7 +16,6 @@ import {
   DALUtils,
   executeWithConcurrency,
   ModulesSdkUtils,
-  Modules,
   normalizeMigrationSQL,
 } from "@medusajs/framework/utils"
 import { generateEntity } from "../utils"
@@ -56,16 +53,12 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
    */
   protected tableName = "link_module_migrations"
 
-  #container?: MedusaContainer
-
   constructor(
     joinerConfig: ModuleJoinerConfig[],
-    options?: ModuleServiceInitializeOptions,
-    container?: MedusaContainer
+    options?: ModuleServiceInitializeOptions
   ) {
     this.#dbConfig = ModulesSdkUtils.loadDatabaseConfig("link_modules", options)
     this.#schema = options?.database?.schema ?? "public"
-    this.#container = container
     this.#linksEntities = joinerConfig
       .map((config) => {
         if (config.isReadOnlyLink) {
@@ -520,9 +513,13 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
   async executePlan(actionPlan: LinkMigrationsPlannerAction[]): Promise<void> {
     const orm = await this.createORM()
 
-    const lockService = this.#container?.resolve<ILockingModule>(Modules.LOCKING, {
-      allowUnregistered: true,
-    })
+    // Separate single-connection ORM used exclusively to hold advisory locks.
+    const lockOrm = await DALUtils.mikroOrmCreateConnection(
+      { ...this.#dbConfig, pool: { min: 1, max: 1 } },
+      [],
+      ""
+    )
+    const lockConn = lockOrm.em.getDriver().getConnection()
 
     try {
       const concurrency = parseInt(process.env.DB_MIGRATION_CONCURRENCY ?? "1")
@@ -531,28 +528,30 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
           return async () => {
             const lockKey = `db-link-migration:${action.tableName}`
 
-            if (lockService) {
-              await lockService.acquire(lockKey, { expire: 60 * 60 })
-            }
+            await lockConn.execute("BEGIN")
+            await lockConn.execute(
+              `SELECT pg_advisory_xact_lock(hashtext('${lockKey}'))`
+            )
 
             try {
               switch (action.action) {
                 case "delete":
-                  return await this.dropLinkTable(orm, action.tableName)
+                  await this.dropLinkTable(orm, action.tableName)
+                  break
                 case "create":
-                  return await this.createLinkTable(orm, action)
+                  await this.createLinkTable(orm, action)
+                  break
                 case "update":
-                  const sql = `SET LOCAL search_path TO "${this.#schema}"; \n\n${
-                    action.sql
-                  }`
-                  return await orm.em.getDriver().getConnection().execute(sql)
+                  const sql = `SET LOCAL search_path TO "${
+                    this.#schema
+                  }"; \n\n${action.sql}`
+                  await orm.em.getDriver().getConnection().execute(sql)
+                  break
                 default:
-                  return
+                  break
               }
             } finally {
-              if (lockService) {
-                await lockService.release(lockKey)
-              }
+              await lockConn.execute("COMMIT")
             }
           }
         }),
@@ -560,6 +559,7 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
       )
     } finally {
       await orm.close(true)
+      await lockOrm.close(true)
     }
   }
 }
