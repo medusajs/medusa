@@ -1,5 +1,12 @@
 import type { BigNumberInput, PaymentDTO } from "@medusajs/framework/types"
-import { isDefined, MathBN, MedusaError } from "@medusajs/framework/utils"
+import {
+  BigNumber,
+  defaultCurrencies,
+  getEpsilonFromDecimalPrecision,
+  isDefined,
+  MathBN,
+  MedusaError,
+} from "@medusajs/framework/utils"
 import {
   createStep,
   createWorkflow,
@@ -60,19 +67,39 @@ export const validatePaymentsRefundStep = createStep(
 
     for (const payment of payments) {
       const capturedAmount = (payment.captures || []).reduce(
-        (acc, capture) => MathBN.sum(acc, capture.amount),
+        (captureAmount, next) => {
+          const amountAsBigNumber = new BigNumber(
+            next.raw_amount as BigNumberInput
+          )
+          return MathBN.add(captureAmount, amountAsBigNumber)
+        },
         MathBN.convert(0)
       )
 
       const refundedAmount = (payment.refunds || []).reduce(
-        (acc, capture) => MathBN.sum(acc, capture.amount),
+        (refundAmount, next) => {
+          const amountAsBigNumber = new BigNumber(
+            next.raw_amount as BigNumberInput
+          )
+          return MathBN.add(refundAmount, amountAsBigNumber)
+        },
         MathBN.convert(0)
       )
 
-      const refundableAmount = MathBN.sub(capturedAmount, refundedAmount)
       const amountToRefund = paymentIdAmountMap.get(payment.id)!
+      const totalRefundedAmount = MathBN.add(refundedAmount, amountToRefund)
 
-      if (MathBN.gt(amountToRefund, refundableAmount)) {
+      const upperCurCode = payment.currency_code?.toUpperCase() as string
+      const currencyEpsilon = getEpsilonFromDecimalPrecision(
+        defaultCurrencies[upperCurCode]?.decimal_digits
+      )
+
+      if (
+        MathBN.lt(
+          MathBN.sub(capturedAmount, totalRefundedAmount),
+          -currencyEpsilon
+        )
+      ) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Payment with id ${payment.id} is trying to refund amount greater than the refundable amount`
@@ -144,8 +171,10 @@ export const refundPaymentsWorkflow = createWorkflow(
         "currency_code",
         "refunds.id",
         "refunds.amount",
+        "refunds.raw_amount",
         "captures.id",
         "captures.amount",
+        "captures.raw_amount",
         "payment_collection.order.id",
         "payment_collection.order.currency_code",
       ],
