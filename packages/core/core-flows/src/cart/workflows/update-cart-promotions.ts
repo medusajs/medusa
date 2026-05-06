@@ -80,7 +80,7 @@ export const updateCartPromotionsWorkflowId = "update-cart-promotions"
  * Update a cart's applied promotions to add, replace, or remove them.
  *
  * @property hooks.validate - This hook is executed before all operations. You can consume this hook to perform any custom validation. If validation fails, you can throw an error to stop the workflow execution.
- * @property hooks.setPromotionContext - This hook is executed after the cart is fetched and before promotion rules are evaluated. You can consume this hook to return any custom context useful for promotion rule evaluation. The returned object is merged on top of the cart context (consumer values win on key conflict).
+ * @property hooks.setPromotionContext - This hook is executed after the cart is fetched and before promotion rules are evaluated. You can consume this hook to add custom rules that determine whether a promotion is applied. The returned object is merged on top of the cart context, allowing you to override existing context.
  */
 export const updateCartPromotionsWorkflow = createWorkflow(
   {
