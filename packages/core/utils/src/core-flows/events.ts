@@ -943,13 +943,11 @@ export const PaymentEvents = {
    *
    * @eventPayload
    * ```ts
-   * [
-   *   {
-   *     payment_id, // the ID of the payment whose refund failed
-   *     amount, // the amount that failed to refund
-   *     error, // error message returned while attempting the refund
-   *   }
-   * ]
+   * {
+   *   payment_id, // the ID of the payment whose refund failed
+   *   amount, // the amount that failed to refund
+   *   error, // error message returned while attempting the refund
+   * }
    * ```
    */
   REFUND_FAILED: "payment.refund.failed",
