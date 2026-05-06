@@ -262,6 +262,100 @@ medusaIntegrationTestRunner({
         )
       })
 
+      it("should not apply the promotion when the hook supplies the attribute but with a non-matching value", async () => {
+        const promotion = await promotionModuleService.createPromotions({
+          code: "B2B_DISCOUNT_WRONG_VALUE",
+          type: PromotionType.STANDARD,
+          status: PromotionStatus.ACTIVE,
+          rules: [
+            {
+              attribute: "company_id",
+              operator: "eq",
+              values: ["comp_acme"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "across",
+            value: 500,
+            apply_to_quantity: 1,
+            currency_code: "usd",
+          },
+        })
+
+        const cart = await cartModuleService.createCarts({
+          currency_code: "usd",
+          items: [
+            {
+              unit_price: 2000,
+              quantity: 1,
+              title: "Test item",
+            } as any,
+          ],
+        })
+
+        // Hook supplies company_id but with a value that does not satisfy the rule.
+        setPromotionContextHook = () =>
+          new StepResponse({ company_id: "comp_other" })
+
+        const response = await api.post(
+          `/store/carts/${cart.id}/promotions`,
+          { promo_codes: [promotion.code] },
+          storeHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.cart.items[0].adjustments).toEqual([])
+      })
+
+      it("should use the hook context value over the existing cart attribute when keys conflict", async () => {
+        const promotion = await promotionModuleService.createPromotions({
+          code: "EMAIL_DISCOUNT_OVERRIDE",
+          type: PromotionType.STANDARD,
+          status: PromotionStatus.ACTIVE,
+          rules: [
+            {
+              attribute: "email",
+              operator: "eq",
+              values: ["cart@example.com"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "across",
+            value: 300,
+            apply_to_quantity: 1,
+            currency_code: "usd",
+          },
+        })
+
+        const cart = await cartModuleService.createCarts({
+          currency_code: "usd",
+          email: "cart@example.com",
+          items: [
+            {
+              unit_price: 2000,
+              quantity: 1,
+              title: "Test item",
+            } as any,
+          ],
+        })
+
+        setPromotionContextHook = () =>
+          new StepResponse({ email: "hook@example.com" })
+
+        const response = await api.post(
+          `/store/carts/${cart.id}/promotions`,
+          { promo_codes: [promotion.code] },
+          storeHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.cart.items[0].adjustments).toEqual([])
+      })
+
       it("should reject a non-object response from the hook", async () => {
         const cart = await cartModuleService.createCarts({
           currency_code: "usd",
