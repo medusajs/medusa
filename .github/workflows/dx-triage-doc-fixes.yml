@@ -60,12 +60,13 @@ jobs:
         uses: anthropics/claude-code-base-action@beta
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,mcp__linear-server__*,Bash(git diff:*,git status:*,ls:*,find:*,cat:*)"
+          allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,mcp__linear-server__list_teams,mcp__linear-server__list_issues,mcp__linear-server__get_issue,mcp__linear-server__list_issue_statuses,Bash(git diff:*,git status:*,ls:*,find:*,cat:*)"
           max_turns: 50
           mcp_config: |
             {
               "mcpServers": {
                 "linear-server": {
+                  "type": "http",
                   "url": "https://mcp.linear.app/mcp",
                   "headers": {
                     "Authorization": "Bearer ${{ secrets.LINEAR_API_KEY }}"
