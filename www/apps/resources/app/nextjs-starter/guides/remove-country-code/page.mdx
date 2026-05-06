@@ -975,6 +975,40 @@ export async function updateRegion(countryCode: string, currentPath: string) {
 
 You update the function to set the country code cookie using the `setCountryCode` utility instead of relying on the URL, and you remove the country code from the redirect URL.
 
+### g. Update Checkout Pages
+
+You'll also need to update the checkout pages in the `(checkout)` directory to retrieve the country code from cookies.
+
+In checkout pages like `src/app/(checkout)/checkout/page.tsx` and other checkout-related files, add the following import at the top:
+
+```tsx title="src/app/(checkout)/checkout/page.tsx"
+import { getCountryCode } from "@lib/data/cookies"
+```
+
+Then, update the component to retrieve the country code using the `getCountryCode` utility instead of from the URL params:
+
+```tsx title="src/app/(checkout)/checkout/page.tsx"
+export default async function CheckoutPage() {
+  const countryCode = await getCountryCode()
+
+  if (!countryCode) {
+    notFound()
+  }
+
+  // Use countryCode as needed in your checkout logic
+  // ...
+}
+```
+
+For checkout components that use navigation or redirect after completing steps (such as the "continue to delivery" button), ensure they don't include the country code in the URLs they navigate to. For example, if you have a component that redirects to a delivery or shipping page, update it to use paths without the country code prefix:
+
+```tsx
+// Instead of: router.push(`/${countryCode}/checkout/delivery`)
+router.push('/checkout/delivery')
+```
+
+Apply similar updates to all checkout-related pages and components in the `(checkout)` directory, ensuring they retrieve the country code from cookies and don't include it in URLs.
+
 ---
 
 ## Test Your Changes

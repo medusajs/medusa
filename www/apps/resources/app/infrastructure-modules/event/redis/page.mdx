@@ -66,6 +66,65 @@ module.exports = defineConfig({
 })
 ```
 
+## Complete Configuration Example
+
+Here's a complete `medusa-config.ts` file showing how to configure the Redis Event Module with all common options:
+
+```ts title="medusa-config.ts"
+import { defineConfig, Modules } from "@medusajs/framework/utils"
+
+export default defineConfig({
+  projectConfig: {
+    databaseUrl: process.env.DATABASE_URL,
+    http: {
+      storeCors: process.env.STORE_CORS,
+      adminCors: process.env.ADMIN_CORS,
+      authCors: process.env.AUTH_CORS,
+    },
+  },
+  modules: [
+    {
+      resolve: "@medusajs/medusa/event-bus-redis",
+      options: { 
+        redisUrl: process.env.EVENTS_REDIS_URL,
+        queueName: "medusa-events",
+        queueOptions: {
+          defaultJobOptions: {
+            removeOnComplete: 100,
+            removeOnFail: 50,
+          },
+        },
+        workerOptions: {
+          concurrency: 5,
+          stalledInterval: 30000,
+          maxStalledCount: 1,
+        },
+        jobOptions: {
+          removeOnComplete: {
+            age: 3600, // 1 hour
+            count: 1000,
+          },
+          removeOnFail: {
+            age: 3600, // 1 hour  
+            count: 1000,
+          },
+          attempts: 3,
+          backoff: {
+            type: 'exponential',
+            delay: 2000,
+          },
+        },
+        redisOptions: {
+          retryDelayOnFailover: 100,
+          enableReadyCheck: false,
+          maxRetriesPerRequest: null,
+        },
+      },
+    },
+  ],
+})
+```
+
 ### Environment Variables
 
 Make sure to add the following environment variables:
