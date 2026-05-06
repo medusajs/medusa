@@ -34,6 +34,11 @@ export const sidebar = [
             title: "Command Palette",
             path: "/command-palette",
           },
+          {
+            type: "link",
+            title: "Navigation Styles",
+            path: "/navigation",
+          }
         ],
       },
       {
@@ -176,7 +181,11 @@ export const sidebar = [
           {
             type: "link",
             title: "Loyalty",
-            path: "/loyalty-plugin",
+            path: "https://docs.medusajs.com/resources/commerce-modules/loyalty",
+            badge: {
+              text: "Published",
+              variant: "blue",
+            },
           },
           {
             type: "link",

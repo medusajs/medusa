@@ -144,6 +144,7 @@ export const cancelOrderWorkflow = createWorkflow(
         "payment_collections.payments.amount",
         "payment_collections.payments.refunds.id",
         "payment_collections.payments.refunds.amount",
+        "payment_collections.payments.refunds.raw_amount",
         "payment_collections.payments.captures.id",
         "payment_collections.payments.captures.amount",
         "payment_collections.payments.captures.raw_amount",
@@ -196,20 +197,39 @@ export const cancelOrderWorkflow = createWorkflow(
       }
     )
 
-    const refundedCapturesQuery = useQueryGraphStep({
-      entity: "captures",
+    const refundedPaymentRefundsQuery = useQueryGraphStep({
+      entity: "refunds",
       fields: ["raw_amount"],
       filters: { payment_id: refundedPaymentIds },
-    }).config({ name: "get-refunded-captures" })
+    }).config({ name: "get-refunded-payment-refunds" })
 
     const creditLineAmount = transform(
-      { refundedCapturesQuery },
-      ({ refundedCapturesQuery }) => {
-        const captures = refundedCapturesQuery.data
-        return captures.reduce(
-          (acc, capture) => MathBN.sum(acc, capture.raw_amount),
+      { order, refundedPaymentIds, refundedPaymentRefundsQuery },
+      ({ order, refundedPaymentIds, refundedPaymentRefundsQuery }) => {
+        const refundedIds = new Set(refundedPaymentIds)
+
+        const totalRefundedAfter = refundedPaymentRefundsQuery.data.reduce(
+          (acc, refund) => MathBN.sum(acc, refund.raw_amount),
           MathBN.convert(0)
         )
+
+        const totalRefundedBefore = deepFlatMap(
+          order,
+          "payment_collections.payments",
+          ({ payments }) => payments
+        )
+          .filter((payment) => refundedIds.has(payment.id))
+          .reduce(
+            (acc, payment) =>
+              (payment.refunds || []).reduce(
+                (inner, refund) =>
+                  MathBN.sum(inner, refund.raw_amount ?? refund.amount),
+                acc
+              ),
+            MathBN.convert(0)
+          )
+
+        return MathBN.sub(totalRefundedAfter, totalRefundedBefore)
       }
     )
 

@@ -18,7 +18,7 @@ In this chapter, you'll learn how to install and run a Medusa application.
 
 ## Create Medusa Application Locally
 
-A Medusa application is made up of a Node.js server and a Vite admin dashboard. You can optionally install the [Next.js Starter Storefront](!resources!/nextjs-starter) separately either while installing the Medusa application or at a later point.
+A Medusa application is made up of a Node.js server and a Vite admin dashboard. You can optionally install the [Next.js Starter Storefront](!resources!/nextjs-starter) either while installing the Medusa application or at a later point.
 
 <Note>
 
@@ -40,6 +40,12 @@ While this is the recommended way to create a Medusa application, you can altern
     link: "https://www.postgresql.org/download/"
   }
 ]} />
+
+<Note title="Installations with Next.js Starter Storefront">
+
+If you choose to install the Next.js Starter Storefront, it currently doesn't support Node v25+. Make sure to downgrade to Node v24 LTS or lower before installing the Medusa application with the storefront.
+
+</Note>
 
 To create a Medusa application, use the `create-medusa-app` command:
 
@@ -77,23 +83,17 @@ npx create-medusa-app@latest my-medusa-store
 
 Where `my-medusa-store` is the name of the project's directory and PostgreSQL database created for the project. When you run the command, you'll be asked whether you want to install the Next.js Starter Storefront.
 
-<Note title="Installations with Next.js Starter Storefront">
-
-If you choose to install the Next.js Starter Storefront, note that it currently doesn't support Node v25+. Make sure to downgrade to Node v24 LTS or lower before installing the Medusa application with the storefront.
-
-</Note>
-
 <Note>
 
 To customize the default installation behavior, such as specify a database URL, refer to the [create-medusa-app reference](!resources!/create-medusa-app).
 
 </Note>
 
-After answering the prompts, the command installs the Medusa application in a directory with your project name, and sets up a PostgreSQL database that the application connects to.
+After answering the prompts, the command installs the Medusa application in a monorepository with your project name, and sets up a PostgreSQL database that the application connects to. The backend (with the admin dashboard) is installed in the `apps/backend` directory of the monorepository.
 
-If you chose to install the storefront with the Medusa application, the storefront is installed in a separate directory named `{project-name}-storefront`.
+If you chose to install the storefront with the Medusa application, the storefront is installed in the monorepository under the `apps/storefront` directory.
 
-![Directory structure overview after Medusa installation showing the main project folder containing the Medusa backend application and admin dashboard, alongside the separate storefront directory for the customer-facing Next.js application](https://res.cloudinary.com/dza7lstvk/image/upload/v1745856132/Medusa%20Resources/installation-dirs_x8jux4.jpg)
+![Directory structure overview after Medusa installation showing the main project folder containing the Medusa backend application and admin dashboard, alongside the separate storefront directory for the customer-facing Next.js application](https://res.cloudinary.com/dza7lstvk/image/upload/v1776755371/Medusa%20Book/installation-dirs_h2sqhy.jpg)
 
 ### Successful Installation Result
 
@@ -130,7 +130,7 @@ If you can't find your error reported anywhere, please open a [GitHub issue](htt
 
 ## Run Medusa Application in Development
 
-To run the Medusa application in development, change to your application's directory and run the following command:
+To run the Medusa application in development, change to the `backend` application's directory and run the following command:
 
 ```bash npm2yarn
 npm run dev
@@ -138,11 +138,11 @@ npm run dev
 
 This runs your Medusa server at `http://localhost:9000`, and the Medusa Admin dashboard `http://localhost:9000/app`.
 
-![Diagram showcasing the server and application running when you start the Medusa application](https://res.cloudinary.com/dza7lstvk/image/upload/v1745856966/Medusa%20Resources/start-overview_aetplx.jpg)
+![Diagram showcasing the server and application running when you start the Medusa application](https://res.cloudinary.com/dza7lstvk/image/upload/v1776755500/Medusa%20Book/start-overview_hqjexd.jpg)
 
 <Note title="Tip">
 
-For details on starting and configuring the Next.js Starter Storefront, refer to [this documentation](!resources!/nextjs-starter).
+For details on starting and configuring the Next.js Starter Storefront, refer to [the Next.js Starter Storefront documentation](!resources!/nextjs-starter).
 
 </Note>
 
@@ -248,7 +248,7 @@ Help me integrate the custom reviews API into my Next.js storefront. Show produc
 
 Aside from creating an admin user in the admin dashboard, you can create a user with Medusa's CLI tool.
 
-Run the following command in your Medusa application's directory to create a new admin user:
+Run the following command in your Medusa application's directory (`apps/backend`) to create a new admin user:
 
 ```bash npx2yarn
 npx medusa user -e admin@medusajs.com -p supersecret
@@ -262,7 +262,7 @@ You can then use the user's credentials to log into the Medusa Admin application
 
 ## Project Files
 
-Your Medusa application's project will have the following files and directories:
+Your Medusa application's project (`apps/backend`) will have the following files and directories:
 
 ![A diagram of the directories overview](https://res.cloudinary.com/dza7lstvk/image/upload/v1732803813/Medusa%20Book/medusa-dir-overview_v7ks0j.jpg)
 
@@ -287,19 +287,21 @@ This file holds your [Medusa configurations](../configurations/medusa-config/pag
 
 The `.medusa` directory holds types and other files that are generated by Medusa when you run the `build` command. Don't modify any files or commit them to your repository.
 
+See [Automatically Generated Types](../fundamentals/generated-types/page.mdx) for more information on generated types.
+
 ---
 
 ## Configure Medusa Application
 
 By default, your Medusa application is equipped with the basic configuration to start your development.
 
-If you run into issues with configurations, such as CORS configurations, or need to make changes to the default configuration, refer to [this guide on all available configurations](../configurations/medusa-config/page.mdx).
+If you run into issues with configurations, such as CORS configurations, or need to make changes to the default configuration, refer to the [Medusa Configuration](../configurations/medusa-config/page.mdx) guide.
 
 ---
 
 ## Update Medusa Application
 
-Refer to [this documentation](../update/page.mdx) to learn how to update your Medusa project.
+Refer to the [Update Medusa](../update/page.mdx) guide to learn how to update your Medusa project.
 
 ---
 

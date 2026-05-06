@@ -11,6 +11,7 @@ import { EOL } from "os"
 import path from "path"
 import BackendHmrFeatureFlag from "../feature-flags/backend-hmr"
 import { initializeContainer } from "../loaders"
+import { promptClaudeCodePlugin } from "../utils/claude-code-plugin"
 
 const defaultConfig = {
   padding: 5,
@@ -231,7 +232,7 @@ export default async function ({ types, directory }) {
     },
   }
 
-  process.on("SIGINT", () => {
+  process.on("SIGINT", async () => {
     const configStore = new Store()
     const hasPrompted = configStore.getConfig("star.prompted") ?? false
     if (!hasPrompted) {
@@ -247,6 +248,7 @@ export default async function ({ types, directory }) {
 
       configStore.setConfig("star.prompted", true)
     }
+    await promptClaudeCodePlugin()
     process.exit(0)
   })
 

@@ -1,0 +1,30 @@
+type: object
+description: The details of an entity.
+x-schemaName: AdminEntityInfo
+required:
+  - name
+  - pluralName
+  - module
+  - propertyCount
+  - hasOverrides
+properties:
+  name:
+    type: string
+    title: name
+    description: The entity's name.
+  pluralName:
+    type: string
+    title: pluralName
+    description: The entity's plural name.
+  module:
+    type: string
+    title: module
+    description: The module the entity belongs to.
+  propertyCount:
+    type: number
+    title: propertyCount
+    description: The number of properties the entity has.
+  hasOverrides:
+    type: boolean
+    title: hasOverrides
+    description: Whether the entity has overrides.

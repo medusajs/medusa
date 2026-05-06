@@ -12,8 +12,8 @@ export const SalesChannelMetadata = () => {
     isPending,
     isError,
     error,
-  } = useSalesChannel(id)
-  const { mutateAsync, isPending: isMutating } = useUpdateSalesChannel(id)
+  } = useSalesChannel(id ?? "")
+  const { mutateAsync, isPending: isMutating } = useUpdateSalesChannel(id ?? "")
 
   if (isError) {
     throw error

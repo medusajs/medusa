@@ -65,7 +65,7 @@ export const usePromotionRules = (
   query?: HttpTypes.AdminGetPromotionRuleParams,
   options?: Omit<
     UseQueryOptions<
-      HttpTypes.AdminGetPromotionRuleParams,
+      HttpTypes.AdminPromotionRuleListResponse,
       FetchError,
       HttpTypes.AdminPromotionRuleListResponse,
       QueryKey

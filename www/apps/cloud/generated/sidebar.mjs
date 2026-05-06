@@ -49,6 +49,14 @@ export const generatedSidebars = [
             "title": "Command Palette",
             "path": "/command-palette",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Navigation Styles",
+            "path": "/navigation",
+            "children": []
           }
         ]
       },
@@ -262,7 +270,11 @@ export const generatedSidebars = [
             "isPathHref": true,
             "type": "link",
             "title": "Loyalty",
-            "path": "/loyalty-plugin",
+            "path": "https://docs.medusajs.com/resources/commerce-modules/loyalty",
+            "badge": {
+              "text": "Published",
+              "variant": "blue"
+            },
             "children": []
           },
           {

@@ -420,7 +420,7 @@ export const ProductEditVariantForm = ({
                       {t("fields.countryOfOrigin")}
                     </Form.Label>
                     <Form.Control>
-                      <CountrySelect {...field} />
+                      <CountrySelect {...field} allowClear />
                     </Form.Control>
                     <Form.ErrorMessage />
                   </Form.Item>

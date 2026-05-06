@@ -22,6 +22,7 @@ export default async function generate(
   try {
     if (references.includes("core-flows")) {
       await import("@medusajs/core-flows")
+      // @ts-ignore - loyalty-plugin may not be built in CI
       await import("@medusajs/loyalty-plugin/workflows")
     }
   } catch (e) {

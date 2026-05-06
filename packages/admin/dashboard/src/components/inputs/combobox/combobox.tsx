@@ -199,7 +199,9 @@ const ComboboxImpl = <T extends Value = string>(
     setOpen(open)
   }
 
-  const hasValue = selectedValues?.length > 0
+  const hasValue = isArrayValue
+    ? selectedValues?.length > 0
+    : !!selectedValues
 
   const showTag = hasValue && isArrayValue
   const showSelected = showTag && !searchValue && !open
