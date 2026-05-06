@@ -1,6 +1,6 @@
 ---
 "@medusajs/dashboard": patch
-"@medusajs/product": patch
+"@medusajs/product": minor
 ---
 
 fix(product, dashboard): align product and variant volumetric attributes data types
