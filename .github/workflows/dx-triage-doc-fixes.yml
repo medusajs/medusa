@@ -77,7 +77,7 @@ jobs:
           prompt: |
             IMPORTANT: Only make file changes using the Write and Edit tools. Never use git commands to stage, commit, or push files.
 
-            IMPORTANT: To load the writing-docs skill, use the Skill tool directly with skill='writing-docs'. Do NOT spawn a sub-agent or use the Task tool to load it.
+            IMPORTANT: To load the writing-docs skill, use the Skill tool directly with skill='writing-docs'. Do NOT spawn a sub-agent or use the Task tool to load it. Do NOT use any Linear MCP tools to search for the writing-docs skill — it is a local skill loaded via the Skill tool only.
 
             You are fixing Medusa documentation based on feedback issues from the DX team triage inbox in Linear.
 
