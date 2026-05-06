@@ -2,4 +2,4 @@
 "@medusajs/core-flows": patch
 ---
 
-fix(core-flows): fail refundPaymentsStep when any refund fails
+fix(core-flows): emit failed-refund event while preserving partial-success refunds
