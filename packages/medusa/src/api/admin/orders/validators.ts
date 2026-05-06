@@ -57,7 +57,6 @@ const AdminGetOrdersParamsBase = createFindParams({
     status: z
       .union([z.string(), z.array(z.string()), createOperatorMap()])
       .optional(),
-    name: z.union([z.string(), z.array(z.string())]).optional(),
     sales_channel_id: z.array(z.string()).optional(),
     region_id: z.union([z.string(), z.array(z.string())]).optional(),
     customer_id: z.union([z.string(), z.array(z.string())]).optional(),
@@ -120,6 +119,10 @@ export const OrderCreateShipment = z.object({
 })
 export const AdminOrderCreateShipment = WithAdditionalData(OrderCreateShipment)
 
+export const AdminMarkOrderFulfillmentAsDelivered = z.object({
+  no_notification: z.boolean().optional(),
+})
+
 export type AdminOrderCancelFulfillmentType = z.infer<
   typeof OrderCancelFulfillment
 >
@@ -143,12 +146,6 @@ export const AdminOrderChangesParams = createSelectParams().merge(
 
 export type AdminOrderChangesType = z.infer<typeof AdminOrderChangesParams>
 
-export type AdminMarkOrderFulfillmentDeliveredType = z.infer<
-  typeof AdminMarkOrderFulfillmentDelivered
->
-
-export const AdminMarkOrderFulfillmentDelivered = z.object({})
-
 export type AdminTransferOrderType = z.infer<typeof AdminTransferOrder>
 export const AdminTransferOrder = z.object({
   customer_id: z.string(),
@@ -156,11 +153,6 @@ export const AdminTransferOrder = z.object({
   internal_note: z.string().optional(),
   update_order_email: z.boolean().optional(),
 })
-
-export type AdminCancelOrderTransferRequestType = z.infer<
-  typeof AdminCancelOrderTransferRequest
->
-export const AdminCancelOrderTransferRequest = z.object({})
 
 export type AdminUpdateOrderType = z.infer<typeof AdminUpdateOrder>
 export const AdminUpdateOrder = z.object({

@@ -1,46 +1,3 @@
-interface AdminUpsertStockLocationAddress {
-  /**
-   * The first line of the address.
-   */
-  address_1: string
-  /**
-   * The second line of the address.
-   */
-  address_2?: string
-  /**
-   * The company name associated with the address.
-   */
-  company?: string
-  /**
-   * The country code of the address.
-   *
-   * @example
-   * "us"
-   */
-  country_code: string
-  /**
-   * The city of the address.
-   */
-  city?: string
-  /**
-   * The phone number of the address.
-   */
-  phone?: string
-  /**
-   * The postal or zip code of the address.
-   */
-  postal_code?: string
-  /**
-   * The lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state of the address.
-   */
-  province?: string
-
-  /**
-   * Custom key-value pairs that can be added to the address.
-   */
-  metadata?: Record<string, unknown>
-}
-
 export interface AdminCreateStockLocation {
   /**
    * The name of the stock location.
@@ -50,7 +7,7 @@ export interface AdminCreateStockLocation {
    * The ID of the address to associate with the stock location.
    * If you provide an `address`, you don't need to provide this property.
    */
-  address_id?: string
+  address_id?: string | null
   /**
    * The address to create or update for the stock location.
    * If you provide an `address_id`, you don't need
@@ -60,7 +17,7 @@ export interface AdminCreateStockLocation {
   /**
    * Custom key-value pairs that can be added to the stock location.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminUpdateStockLocation {
@@ -72,7 +29,7 @@ export interface AdminUpdateStockLocation {
    * The ID of the address to associate with the stock location.
    * If you provide an `address`, you don't need to provide this property.
    */
-  address_id?: string
+  address_id?: string | null
   /**
    * The address to create or update for the stock location.
    * If you provide an `address_id`, you don't need
@@ -111,4 +68,16 @@ export interface AdminCreateStockLocationFulfillmentSet {
    * The type of the fulfillment set.
    */
   type: string
+}
+
+export interface AdminUpsertStockLocationAddress {
+  country_code: string
+  address_1: string
+  metadata?: Record<string, unknown> | null | undefined
+  address_2?: string | null | undefined
+  company?: string | null | undefined
+  city?: string | null | undefined
+  phone?: string | null | undefined
+  postal_code?: string | null | undefined
+  province?: string | null | undefined
 }

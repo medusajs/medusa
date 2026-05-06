@@ -1,4 +1,4 @@
-import { getCleanMd, PLAINTEXT_DOC_MESSAGE } from "docs-utils"
+import { getCleanMd, addExtraToMd } from "docs-utils"
 import { existsSync, readFileSync } from "fs"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
@@ -25,13 +25,18 @@ export async function GET(req: NextRequest, { params }: Params) {
       "utf-8"
     )
 
-    return new NextResponse(homepageFile + PLAINTEXT_DOC_MESSAGE, {
-      headers: {
-        "content-type": "text/markdown",
-        "cache-control": "public, max-age=3600, must-revalidate",
-      },
-      status: 200,
-    })
+    return new NextResponse(
+      addExtraToMd(homepageFile, {
+        baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "",
+      }),
+      {
+        headers: {
+          "content-type": "text/markdown",
+          "cache-control": "public, max-age=3600, must-revalidate",
+        },
+        status: 200,
+      }
+    )
   }
 
   // keep this so that Vercel keeps the files in deployment
@@ -83,11 +88,14 @@ export async function GET(req: NextRequest, { params }: Params) {
       host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     })
 
+    const urlObj = new URL(req.url)
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL || ""}${process.env.NEXT_PUBLIC_BASE_PATH || ""}${urlObj.pathname}`
+
     client.capture({
       distinctId: "anonymous",
       event: "md_content_requested_agents",
       properties: {
-        $current_url: req.url,
+        $current_url: url,
         $raw_user_agent: req.headers.get("user-agent") || undefined,
       },
     })
@@ -95,13 +103,18 @@ export async function GET(req: NextRequest, { params }: Params) {
     await client.shutdown()
   }
 
-  return new NextResponse(cleanMdContent + PLAINTEXT_DOC_MESSAGE, {
-    headers: {
-      "content-type": "text/markdown",
-      "cache-control": "public, max-age=3600, must-revalidate",
-    },
-    status: 200,
-  })
+  return new NextResponse(
+    addExtraToMd(cleanMdContent, {
+      baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "",
+    }),
+    {
+      headers: {
+        "content-type": "text/markdown",
+        "cache-control": "public, max-age=3600, must-revalidate",
+      },
+      status: 200,
+    }
+  )
 }
 
 const getCleanMd_ = unstable_cache(

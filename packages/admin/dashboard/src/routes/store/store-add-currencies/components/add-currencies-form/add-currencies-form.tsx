@@ -33,7 +33,7 @@ type AddCurrenciesFormProps = {
 
 const AddCurrenciesSchema = zod.object({
   currencies: zod.array(zod.string()).min(1),
-  pricePreferences: zod.record(zod.boolean()),
+  pricePreferences: zod.record(zod.string(), zod.boolean()),
 })
 
 const PAGE_SIZE = 50
@@ -64,16 +64,13 @@ export const AddCurrenciesForm = ({
   const form = useForm<zod.infer<typeof AddCurrenciesSchema>>({
     defaultValues: {
       currencies: [],
-      pricePreferences: pricePreferences?.reduce(
-        (acc, curr) => {
-          if (curr.value) {
-            acc[curr.value] = curr.is_tax_inclusive
-          }
+      pricePreferences: pricePreferences?.reduce((acc, curr) => {
+        if (curr.value) {
+          acc[curr.value] = curr.is_tax_inclusive
+        }
 
-          return acc
-        },
-        {} as Record<string, boolean>
-      ),
+        return acc
+      }, {} as Record<string, boolean>),
     },
     resolver: zodResolver(AddCurrenciesSchema),
   })

@@ -13,8 +13,8 @@ export const POST = async (
   })
 
   res.json({
-    created: output.result.created,
-    updated: output.result.updated,
+    created: output.result.created as HttpTypes.AdminInventoryLevel[],
+    updated: output.result.updated as HttpTypes.AdminInventoryLevel[],
     deleted: output.result.deleted,
   })
 }

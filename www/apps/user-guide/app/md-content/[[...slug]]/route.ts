@@ -1,4 +1,4 @@
-import { getCleanMd, PLAINTEXT_DOC_MESSAGE } from "docs-utils"
+import { addExtraToMd, getCleanMd } from "docs-utils"
 import { existsSync } from "fs"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
@@ -69,11 +69,14 @@ export async function GET(req: NextRequest, { params }: Params) {
       host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     })
 
+    const urlObj = new URL(req.url)
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL || ""}${process.env.NEXT_PUBLIC_BASE_PATH || ""}${urlObj.pathname}`
+
     client.capture({
       distinctId: "anonymous",
       event: "md_content_requested_agents",
       properties: {
-        $current_url: req.url,
+        $current_url: url,
         $raw_user_agent: req.headers.get("user-agent") || undefined,
       },
     })
@@ -81,13 +84,19 @@ export async function GET(req: NextRequest, { params }: Params) {
     await client.shutdown()
   }
 
-  return new NextResponse(cleanMdContent + PLAINTEXT_DOC_MESSAGE, {
-    headers: {
-      "Content-Type": "text/markdown",
-      "Cache-Control": "public, max-age=3600, must-revalidate",
-    },
-    status: 200,
-  })
+  return new NextResponse(
+    addExtraToMd(cleanMdContent, {
+      baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "",
+      basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
+    }),
+    {
+      headers: {
+        "Content-Type": "text/markdown",
+        "Cache-Control": "public, max-age=3600, must-revalidate",
+      },
+      status: 200,
+    }
+  )
 }
 
 const getCleanMd_ = unstable_cache(

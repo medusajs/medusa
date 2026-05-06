@@ -69,6 +69,10 @@ post:
         schema:
           $ref: ../components/schemas/StoreCartAddPromotion.yaml
   x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/store_carts_{id}_promotions/post.js
     - lang: Shell
       label: cURL
       source:
@@ -161,6 +165,10 @@ delete:
             https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
   x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/store_carts_{id}_promotions/delete.js
     - lang: Shell
       label: cURL
       source:

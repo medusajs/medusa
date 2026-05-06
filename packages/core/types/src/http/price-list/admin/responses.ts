@@ -1,5 +1,5 @@
 import { DeleteResponse, PaginatedResponse } from "../../common"
-import { AdminPrice } from "../../pricing"
+import { AdminPrice } from "../../price-preference"
 import { AdminPriceList } from "./entities"
 
 export interface AdminPriceListResponse {

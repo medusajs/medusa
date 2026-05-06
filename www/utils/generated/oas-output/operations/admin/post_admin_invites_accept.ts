@@ -12,7 +12,7 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminInviteAccept"
+ *         $ref: "#/components/schemas/AdminGetInviteAcceptParams"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK

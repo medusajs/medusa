@@ -40,6 +40,8 @@ In some cases, you may need to access your Cloud project's database directly, su
 
 Medusa gives you read access to your Cloud project's database, which is useful when you need to export data, perform analytics, or troubleshoot issues.
 
+### Get Read-Only Connection String
+
 To get the read-only connection string for an environment's database:
 
 <Note title="Tip">
@@ -52,10 +54,8 @@ You can access the database settings from the [command palette](../command-palet
 2. In the project's dashboard, click on the name of the environment. For example, "Production".
 3. In the environment's dashboard, click on the "Settings" tab.
 4. Choose the "Storage" tab from the sidebar.
-5. In the "Database connection string" section, copy the read-only connection string in the code block.
-
-![Read-only connection string in Storage settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1755271713/Cloud/CleanShot_2025-08-15_at_18.27.58_2x_fqlync.png)
-
+5. In the "Database read-only connection string" section, copy the read-only connection string in the code block.
+  
 Then, you can connect to your database using a PostgreSQL client. For example, using the `psql` command-line tool:
 
 ```bash
@@ -63,6 +63,45 @@ psql "postgresql://..."
 ```
 
 After connecting to the database, you can run SQL queries to interact with your data.
+
+### Get Write Connection String
+
+All environments have a read-only connection string by default. This allows you to connect to the database and query data, but it doesn't allow you to modify the data or database schema. This is a security measure to prevent accidental changes to your database.
+
+For advanced use cases where you need write access to your environment's database, such as importing data or performing maintenance tasks, Medusa allows organization owners to enable database write access.
+
+<Note title="Important" type="warning">
+
+Database write access should be used with caution as it allows direct modification of your database outside of your application. Only enable this feature if you understand the implications and need direct write access for specific tasks.
+
+</Note>
+
+To enable database write access for an environment:
+
+<Note title="Tip">
+
+You can access the database settings from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, then select **Storage**.
+
+</Note>
+
+1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
+2. In the project's dashboard, click on the name of the environment. For example, "Production".
+3. In the environment's dashboard, click on the "Settings" tab.
+4. Choose the "Storage" tab from the sidebar.
+5. In the "Database write-access connection string" section, toggle the switch to enable write access.
+6. Once enabled, copy the write connection string from the code block that appears.
+
+<Note title="Permission Requirements">
+
+Only organization owners can enable or disable database write access. If you can see the option to toggle write access, but it's disabled, contact your organization's owner to request access.
+
+</Note>
+
+Then, you can connect to your database using a PostgreSQL client with the write connection string. For example, using the `psql` command-line tool:
+
+```bash
+psql "postgresql://..."
+```
 
 ---
 

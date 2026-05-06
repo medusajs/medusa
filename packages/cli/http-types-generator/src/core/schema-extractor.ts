@@ -31,6 +31,13 @@ export interface ExtractedSchema {
   hasFindParamsInChain: boolean
   /** Whether the schema's call chain includes `createSelectParams()` (but NOT createFindParams) */
   hasSelectParamsInChain: boolean
+  /**
+   * For schemas created with `createBatchBody(createValidator, updateValidator, deleteValidator?)`:
+   * maps each batch property name (`create`, `update`, `delete`) to the resolved `_output` type
+   * of the corresponding argument schema. Used by the compatibility checker to compare element
+   * types correctly when TypeScript resolves them as `unknown` due to the non-generic signature.
+   */
+  batchBodyArgOutputTypes?: Map<string, ts.Type>
   /** The source node for diagnostic reporting */
   node: ts.VariableDeclaration
 }
@@ -46,6 +53,15 @@ export class SchemaExtractor {
   private static readonly ADDITIONAL_DATA_WRAPPERS = new Set([
     "WithAdditionalData",
   ])
+
+  /**
+   * Property names produced by `createBatchBody`, in argument order.
+   */
+  private static readonly BATCH_BODY_PROP_NAMES = [
+    "create",
+    "update",
+    "delete",
+  ] as const
 
   constructor(private readonly checker: ts.TypeChecker) {}
 
@@ -164,6 +180,8 @@ export class SchemaExtractor {
         }
       }
 
+      const batchBodyArgOutputTypes = this.extractBatchBodyArgOutputTypes(decl)
+
       results.push({
         exportName,
         httpTypeName,
@@ -172,6 +190,7 @@ export class SchemaExtractor {
         baseFieldsType,
         hasFindParamsInChain,
         hasSelectParamsInChain,
+        batchBodyArgOutputTypes,
         node: decl,
       })
     })
@@ -246,6 +265,80 @@ export class SchemaExtractor {
     const callee = initializer.expression
     const calleeName = ts.isIdentifier(callee) ? callee.text : ""
     return SchemaExtractor.ADDITIONAL_DATA_WRAPPERS.has(calleeName)
+  }
+
+  /**
+   * Detects `createBatchBody(arg1, arg2, [arg3])` calls and resolves the `_output`
+   * type of each argument schema. Returns a map of property name → element output type,
+   * or `undefined` if the initializer is not a `createBatchBody` call.
+   *
+   * `createBatchBody` uses non-generic `z.ZodType` parameters, so TypeScript resolves
+   * the array element types as `unknown`. We recover the concrete types by inspecting
+   * the actual argument types at the call site.
+   */
+  private extractBatchBodyArgOutputTypes(
+    decl: ts.VariableDeclaration
+  ): Map<string, ts.Type> | undefined {
+    const initializer = decl.initializer
+    if (!initializer || !ts.isCallExpression(initializer)) {
+      return undefined
+    }
+    const callee = initializer.expression
+    if (!ts.isIdentifier(callee) || callee.text !== "createBatchBody") {
+      return undefined
+    }
+
+    const args = initializer.arguments
+    if (args.length < 2) {
+      return undefined
+    }
+
+    const result = new Map<string, ts.Type>()
+    const propNames = SchemaExtractor.BATCH_BODY_PROP_NAMES
+
+    // Resolve types from explicit call arguments
+    for (let i = 0; i < Math.min(args.length, propNames.length); i++) {
+      const argNode = args[i]
+      const argSchemaType = this.checker.getTypeAtLocation(argNode)
+      const argOutputType = TsHelpers.getZodOutputType(
+        this.checker,
+        argSchemaType
+      )
+      if (argOutputType) {
+        result.set(propNames[i], argOutputType)
+      }
+    }
+
+    // For missing arguments, fall back to the function's default parameter values.
+    // e.g. createBatchBody(create, update) omits deleteValidator which defaults to z.string()
+    if (args.length < propNames.length) {
+      const calleeType = this.checker.getTypeAtLocation(callee)
+      const callSignatures = calleeType.getCallSignatures()
+      if (callSignatures.length > 0) {
+        const params = callSignatures[0].getParameters()
+        for (let i = args.length; i < propNames.length; i++) {
+          const paramDecl = params[i]?.valueDeclaration
+          if (
+            paramDecl &&
+            ts.isParameter(paramDecl) &&
+            paramDecl.initializer
+          ) {
+            const defaultSchemaType = this.checker.getTypeAtLocation(
+              paramDecl.initializer
+            )
+            const defaultOutputType = TsHelpers.getZodOutputType(
+              this.checker,
+              defaultSchemaType
+            )
+            if (defaultOutputType) {
+              result.set(propNames[i], defaultOutputType)
+            }
+          }
+        }
+      }
+    }
+
+    return result.size > 0 ? result : undefined
   }
 
   /**

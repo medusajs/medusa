@@ -190,7 +190,10 @@ export class Compiler {
   }> {
     const ts = await this.#loadTSCompiler()
     const filesToCompile = tsConfig.fileNames.filter((fileName) => {
-      return !chunksToIgnore.some((chunk) => fileName.includes(`${chunk}`))
+      const relativeFileName = path.relative(this.#projectRoot, fileName)
+      return !chunksToIgnore.some((chunk) =>
+        relativeFileName.includes(`${chunk}`)
+      )
     })
 
     /**
@@ -423,7 +426,7 @@ export class Compiler {
    */
   async buildPluginBackend(tsConfig: tsStatic.ParsedCommandLine) {
     const tracker = this.#trackDuration()
-    const dist = ".medusa/server"
+    const dist = this.#pluginsDistFolder
     this.#logger.info("Compiling plugin source...")
 
     /**

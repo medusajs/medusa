@@ -25,7 +25,7 @@ medusaIntegrationTestRunner({
       baseCollection = (
         await api.post(
           "/admin/collections",
-          { title: "test-collection" },
+          { title: "test-collection", external_id: "ext-collection-01" },
           adminHeaders
         )
       ).data.collection
@@ -58,6 +58,7 @@ medusaIntegrationTestRunner({
           expect(response.data.collection).toEqual(
             expect.objectContaining({
               id: baseCollection.id,
+              external_id: "ext-collection-01",
               created_at: expect.any(String),
               updated_at: expect.any(String),
             })
@@ -66,6 +67,24 @@ medusaIntegrationTestRunner({
       })
 
       describe("/store/collections", () => {
+        it('lists collections matching external_id search param', async () => {
+          const response = await api.get("/store/collections?external_id=ext-collection-01", storeHeaders)
+
+          expect(response.data).toEqual({
+            collections: [
+              expect.objectContaining({
+                id: baseCollection.id,
+                external_id: "ext-collection-01",
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+              }),
+            ],
+            count: 1,
+            limit: 10,
+            offset: 0,
+          })
+        });
+
         it("lists collections", async () => {
           const response = await api.get("/store/collections", storeHeaders)
 
@@ -83,6 +102,7 @@ medusaIntegrationTestRunner({
               }),
               expect.objectContaining({
                 id: baseCollection.id,
+                external_id: "ext-collection-01",
                 created_at: expect.any(String),
                 updated_at: expect.any(String),
               }),

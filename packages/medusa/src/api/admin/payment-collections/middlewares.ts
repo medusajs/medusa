@@ -9,6 +9,7 @@ import { Entities } from "./query-config"
 import {
   AdminCreatePaymentCollection,
   AdminGetPaymentCollectionParams,
+  AdminInitializePaymentSession,
   AdminMarkPaymentCollectionPaid,
 } from "./validators"
 
@@ -61,6 +62,17 @@ export const adminPaymentCollectionsMiddlewares: MiddlewareRoute[] = [
     matcher:
       "/admin/payment-collections/:id/payment-sessions/:session_id/authorize",
     middlewares: [
+      validateAndTransformQuery(
+        AdminGetPaymentCollectionParams,
+        queryConfig.retrievePaymentCollectionTransformQueryConfig
+      ),
+    ]
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/payment-collections/:id/payment-sessions",
+    middlewares: [
+      validateAndTransformBody(AdminInitializePaymentSession),
       validateAndTransformQuery(
         AdminGetPaymentCollectionParams,
         queryConfig.retrievePaymentCollectionTransformQueryConfig

@@ -1,4 +1,4 @@
-import { useState, ReactNode } from "react"
+import { useState } from "react"
 import { Container, Button } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { DataTable } from "../../data-table"
@@ -13,14 +13,13 @@ type DataTableActionProps = {
   label: string
   disabled?: boolean
 } & (
-    | {
+  | {
       to: string
     }
-    | {
+  | {
       onClick: () => void
     }
-  )
-
+)
 
 export interface ConfigurableDataTableProps<TData> {
   adapter: TableAdapter<TData>
@@ -104,10 +103,15 @@ export function ConfigurableDataTable<TData>({
   const fetchResult = adapter.useData(requiredFields, searchParams)
 
   const columnAdapter = adapter.columnAdapter || getEntityAdapter(entity)
-  const generatedColumns = useConfigurableTableColumns(entity, apiColumns || [], columnAdapter)
-  const columns = (adapter.getColumns && apiColumns)
-    ? adapter.getColumns(apiColumns)
-    : generatedColumns
+  const generatedColumns = useConfigurableTableColumns(
+    entity,
+    apiColumns || [],
+    columnAdapter
+  )
+  const columns =
+    adapter.getColumns && apiColumns
+      ? adapter.getColumns(apiColumns)
+      : generatedColumns
 
   if (fetchResult.isError) {
     throw fetchResult.error
@@ -124,7 +128,7 @@ export function ConfigurableDataTable<TData>({
             filters: currentConfiguration.filters || {},
             sorting: currentConfiguration.sorting || null,
             search: currentConfiguration.search || "",
-          }
+          },
         })
       } else {
         await createView.mutateAsync({
@@ -137,7 +141,7 @@ export function ConfigurableDataTable<TData>({
             filters: currentConfiguration.filters || {},
             sorting: currentConfiguration.sorting || null,
             search: currentConfiguration.search || "",
-          }
+          },
         })
       }
     } catch (_) {
@@ -146,7 +150,9 @@ export function ConfigurableDataTable<TData>({
   }
 
   const handleUpdateExisting = async () => {
-    if (!activeView) return
+    if (!activeView) {
+      return
+    }
 
     try {
       await updateView.mutateAsync({
@@ -157,7 +163,7 @@ export function ConfigurableDataTable<TData>({
           filters: currentConfiguration.filters || {},
           sorting: currentConfiguration.sorting || null,
           search: currentConfiguration.search || "",
-        }
+        },
       })
     } catch (_) {
       // Error is handled by the hook
@@ -204,7 +210,9 @@ export function ConfigurableDataTable<TData>({
         pageSize={pageSize}
         isLoading={fetchResult.isLoading || isLoadingColumns}
         layout={layout}
-        heading={heading || entityName || (entity ? t(`${entity}.domain` as any) : "")}
+        heading={
+          heading || entityName || (entity ? t(`${entity}.domain` as any) : "")
+        }
         subHeading={subHeading}
         enableColumnVisibility={isViewConfigEnabled}
         initialColumnVisibility={visibleColumns}
@@ -216,11 +224,13 @@ export function ConfigurableDataTable<TData>({
         currentColumns={currentColumns}
         filterBarContent={filterBarContent}
         rowHref={adapter.getRowHref as ((row: any) => string) | undefined}
-        emptyState={adapter.emptyState || {
-          empty: {
-            heading: t(`${entity}.list.noRecordsMessage` as any),
+        emptyState={
+          adapter.emptyState || {
+            empty: {
+              heading: t(`${entity}.list.noRecordsMessage` as any),
+            },
           }
-        }}
+        }
         prefix={queryPrefix}
         actions={actions}
         enableFilterMenu={false}
