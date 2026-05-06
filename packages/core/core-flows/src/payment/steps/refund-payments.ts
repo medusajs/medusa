@@ -75,12 +75,11 @@ export const refundPaymentsStep = createStep(
         paymentModule
           .refundPayment(refundInput)
           .then((refundedPayment) => ({ refunded_payment: refundedPayment }))
-          .catch((error: unknown) => {
-            const message =
-              error instanceof Error ? error.message : String(error)
+          .catch((e: unknown) => {
             logger.error(
-              `Refund failed for payment ${refundInput.payment_id} (amount ${String(refundInput.amount)}): ${message}`
+              `Error was thrown trying to refund payment - ${refundInput.payment_id} - ${e}`
             )
+            const message = e instanceof Error ? e.message : String(e)
             return {
               failed_refund: {
                 payment_id: refundInput.payment_id,
