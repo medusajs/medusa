@@ -1,6 +1,8 @@
 import {
   ILinkMigrationsPlanner,
+  ILockingModule,
   LinkMigrationsPlannerAction,
+  MedusaContainer,
   ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
   PlannerActionLinkDescriptor,
@@ -16,6 +18,7 @@ import {
   DALUtils,
   executeWithConcurrency,
   ModulesSdkUtils,
+  Modules,
   normalizeMigrationSQL,
 } from "@medusajs/framework/utils"
 import { generateEntity } from "../utils"
@@ -53,12 +56,16 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
    */
   protected tableName = "link_module_migrations"
 
+  #container?: MedusaContainer
+
   constructor(
     joinerConfig: ModuleJoinerConfig[],
-    options?: ModuleServiceInitializeOptions
+    options?: ModuleServiceInitializeOptions,
+    container?: MedusaContainer
   ) {
     this.#dbConfig = ModulesSdkUtils.loadDatabaseConfig("link_modules", options)
     this.#schema = options?.database?.schema ?? "public"
+    this.#container = container
     this.#linksEntities = joinerConfig
       .map((config) => {
         if (config.isReadOnlyLink) {
@@ -513,23 +520,39 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
   async executePlan(actionPlan: LinkMigrationsPlannerAction[]): Promise<void> {
     const orm = await this.createORM()
 
+    const lockService = this.#container?.resolve<ILockingModule>(Modules.LOCKING, {
+      allowUnregistered: true,
+    })
+
     try {
       const concurrency = parseInt(process.env.DB_MIGRATION_CONCURRENCY ?? "1")
       await executeWithConcurrency(
         actionPlan.map((action) => {
           return async () => {
-            switch (action.action) {
-              case "delete":
-                return await this.dropLinkTable(orm, action.tableName)
-              case "create":
-                return await this.createLinkTable(orm, action)
-              case "update":
-                const sql = `SET LOCAL search_path TO "${this.#schema}"; \n\n${
-                  action.sql
-                }`
-                return await orm.em.getDriver().getConnection().execute(sql)
-              default:
-                return
+            const lockKey = `db-link-migration:${action.tableName}`
+
+            if (lockService) {
+              await lockService.acquire(lockKey, { expire: 60 * 60 })
+            }
+
+            try {
+              switch (action.action) {
+                case "delete":
+                  return await this.dropLinkTable(orm, action.tableName)
+                case "create":
+                  return await this.createLinkTable(orm, action)
+                case "update":
+                  const sql = `SET LOCAL search_path TO "${this.#schema}"; \n\n${
+                    action.sql
+                  }`
+                  return await orm.em.getDriver().getConnection().execute(sql)
+                default:
+                  return
+              }
+            } finally {
+              if (lockService) {
+                await lockService.release(lockKey)
+              }
             }
           }
         }),

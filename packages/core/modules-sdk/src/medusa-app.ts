@@ -6,6 +6,7 @@ import {
   FlagSettings,
   IIndexService,
   ILinkMigrationsPlanner,
+  ILockingModule,
   InternalModuleDeclaration,
   LoadedModule,
   Logger,
@@ -552,6 +553,11 @@ async function MedusaApp_({
     }
 
     let executedResolutions: [any, string[]][] = [] // [moduleResolution, migration names[]]
+
+    const lockService = sharedContainer?.resolve<ILockingModule>(Modules.LOCKING, {
+      allowUnregistered: true,
+    })
+
     const run = async (
       { resolution: moduleResolution },
       migrationNames?: string[]
@@ -577,20 +583,32 @@ async function MedusaApp_({
         cwd,
       }
 
-      if (action === "revert") {
-        await MedusaModule.migrateDown(migrationOptions, migrationNames)
-      } else if (action === "run") {
-        const ranMigrationsResult = await MedusaModule.migrateUp(
-          migrationOptions
-        )
+      const lockKey = `db-module-migration:${migrationOptions.moduleKey}`
 
-        // Store for revert if anything goes wrong later
-        executedResolutions.push([
-          moduleResolution,
-          ranMigrationsResult?.map((r) => r.name) ?? [],
-        ])
-      } else {
-        await MedusaModule.migrateGenerate(migrationOptions)
+      if (lockService) {
+        await lockService.acquire(lockKey, { expire: 60 * 60 })
+      }
+
+      try {
+        if (action === "revert") {
+          await MedusaModule.migrateDown(migrationOptions, migrationNames)
+        } else if (action === "run") {
+          const ranMigrationsResult = await MedusaModule.migrateUp(
+            migrationOptions
+          )
+
+          // Store for revert if anything goes wrong later
+          executedResolutions.push([
+            moduleResolution,
+            ranMigrationsResult?.map((r) => r.name) ?? [],
+          ])
+        } else {
+          await MedusaModule.migrateGenerate(migrationOptions)
+        }
+      } finally {
+        if (lockService) {
+          await lockService.release(lockKey)
+        }
       }
     }
 
@@ -668,7 +686,7 @@ async function MedusaApp_({
     }
     options.database.debug ??= sharedResourcesConfig?.database?.debug
 
-    return getMigrationPlanner(options, linkModules)
+    return getMigrationPlanner(options, linkModules, sharedContainer_)
   }
 
   const indexModule = sharedContainer_.resolve(Modules.INDEX, {

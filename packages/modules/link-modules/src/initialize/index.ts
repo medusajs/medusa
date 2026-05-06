@@ -4,6 +4,7 @@ import {
   ILinkModule,
   InternalModuleDeclaration,
   LinkModuleDefinition,
+  MedusaContainer,
   ModuleExports,
   ModuleJoinerConfig,
   ModuleServiceInitializeCustomDataLayerOptions,
@@ -193,7 +194,8 @@ export const initialize = async (
  */
 export function getMigrationPlanner(
   options: ModuleServiceInitializeOptions,
-  pluginLinksDefinition?: ModuleJoinerConfig[]
+  pluginLinksDefinition?: ModuleJoinerConfig[],
+  container?: MedusaContainer
 ) {
   const modulesLoadedKeys = MedusaModule.getLoadedModules().map(
     (mod) => Object.keys(mod)[0]
@@ -239,5 +241,5 @@ export function getMigrationPlanner(
     }
   }
 
-  return new MigrationsExecutionPlanner(allLinksToLoad, options)
+  return new MigrationsExecutionPlanner(allLinksToLoad, options, container)
 }
