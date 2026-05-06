@@ -13,6 +13,9 @@ import ProductVariant from "./product-variant"
  */
 const Product = model
   .define("Product", {
+    /**
+     * The product's ID.
+     */
     id: model.id({ prefix: "prod" }).primaryKey(),
     /**
      * The product's display title.
