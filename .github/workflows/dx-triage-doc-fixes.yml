@@ -66,6 +66,7 @@ jobs:
             {
               "mcpServers": {
                 "linear-server": {
+                  "type": "http",
                   "url": "https://mcp.linear.app/mcp",
                   "headers": {
                     "Authorization": "Bearer ${{ secrets.LINEAR_API_KEY }}"
