@@ -425,11 +425,10 @@ moduleIntegrationTestRunner<IProductModuleService>({
               discountable: productBefore.discountable,
               thumbnail: images[0].url,
               status: productBefore.status,
-              // TODO: Notice how the weight/length/height/width are strings, not respecting the ProductDTO typings
-              weight: "101",
-              length: "201",
-              height: "301",
-              width: "401",
+              weight: 101,
+              length: 201,
+              height: 301,
+              width: 401,
               images: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),

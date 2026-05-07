@@ -6,6 +6,7 @@ import {
   ContainerRegistrationKeys,
   getResolvedPlugins,
 } from "@medusajs/framework/utils"
+import { WorkflowLoader } from "@medusajs/framework/workflows"
 import { MedusaContainer } from "@medusajs/types"
 import { runMigrationScripts } from "../db/run-scripts"
 
@@ -17,6 +18,10 @@ jest.mock("@medusajs/framework", () => ({
 
 jest.mock("@medusajs/framework/links", () => ({
   LinkLoader: jest.fn(),
+}))
+
+jest.mock("@medusajs/framework/workflows", () => ({
+  WorkflowLoader: jest.fn(),
 }))
 
 jest.mock("@medusajs/framework/migrations", () => ({
@@ -99,6 +104,11 @@ describe("runMigrationScripts", () => {
       ensureMigrationsTable: jest.fn().mockResolvedValue(undefined),
       getPendingMigrations: jest.fn().mockResolvedValue([]),
       run: jest.fn().mockResolvedValue(undefined),
+    }))
+
+    // WorkflowLoader mock
+    ;(WorkflowLoader as jest.Mock).mockImplementation(() => ({
+      load: jest.fn().mockResolvedValue(undefined),
     }))
   })
 
@@ -226,6 +236,98 @@ describe("runMigrationScripts", () => {
       })
 
       expect(MedusaModule.clearInstances).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe("WorkflowLoader", () => {
+    it("instantiates WorkflowLoader with the resolved plugin workflow paths", async () => {
+      const plugins = [
+        { resolve: "/app" },
+        { resolve: "/plugins/my-plugin" },
+      ]
+      ;(getResolvedPlugins as jest.Mock).mockResolvedValue(plugins)
+
+      const container = buildContainer()
+
+      await runMigrationScripts({
+        directory: "/app",
+        container,
+        logger: mockLogger as any,
+      })
+
+      expect(WorkflowLoader).toHaveBeenCalledTimes(1)
+      const [paths, resolvedContainer] = (WorkflowLoader as jest.Mock).mock
+        .calls[0]
+      expect(paths).toEqual(["/app/workflows", "/plugins/my-plugin/workflows"])
+      expect(resolvedContainer).toBe(container)
+    })
+
+    it("calls WorkflowLoader.load() to register workflow hooks", async () => {
+      const container = buildContainer()
+      const mockLoad = jest.fn().mockResolvedValue(undefined)
+      ;(WorkflowLoader as jest.Mock).mockImplementation(() => ({
+        load: mockLoad,
+      }))
+
+      await runMigrationScripts({
+        directory: "/app",
+        container,
+        logger: mockLogger as any,
+      })
+
+      expect(mockLoad).toHaveBeenCalledTimes(1)
+    })
+
+    it("loads WorkflowLoader after MedusaAppLoader so module registrations are available", async () => {
+      const callOrder: string[] = []
+
+      ;(MedusaAppLoader as jest.Mock).mockImplementation(() => ({
+        load: jest.fn().mockImplementation(async () => {
+          callOrder.push("MedusaAppLoader.load")
+          return {
+            onApplicationPrepareShutdown: jest.fn().mockResolvedValue(undefined),
+            onApplicationShutdown: jest.fn().mockResolvedValue(undefined),
+            onApplicationStart: jest.fn().mockImplementation(async () => {
+              callOrder.push("onApplicationStart")
+            }),
+          }
+        }),
+      }))
+
+      ;(WorkflowLoader as jest.Mock).mockImplementation(() => ({
+        load: jest.fn().mockImplementation(async () => {
+          callOrder.push("WorkflowLoader.load")
+        }),
+      }))
+
+      const container = buildContainer()
+
+      await runMigrationScripts({
+        directory: "/app",
+        container,
+        logger: mockLogger as any,
+      })
+
+      const appStartIdx = callOrder.indexOf("onApplicationStart")
+      const wfLoaderIdx = callOrder.indexOf("WorkflowLoader.load")
+      expect(appStartIdx).toBeGreaterThanOrEqual(0)
+      expect(wfLoaderIdx).toBeGreaterThan(appStartIdx)
+    })
+
+    it("produces no workflow paths when there are no plugins", async () => {
+      ;(getResolvedPlugins as jest.Mock).mockResolvedValue([])
+
+      const container = buildContainer()
+
+      await runMigrationScripts({
+        directory: "/app",
+        container,
+        logger: mockLogger as any,
+      })
+
+      expect(WorkflowLoader).toHaveBeenCalledTimes(1)
+      const [paths] = (WorkflowLoader as jest.Mock).mock.calls[0]
+      expect(paths).toEqual([])
     })
   })
 })

@@ -5,6 +5,7 @@ import {
   TabsList,
   TabsTrigger,
   Link,
+  Prerequisites
 } from "docs-ui"
 
 export const metadata = {
@@ -17,7 +18,18 @@ The Medusa documentation provides a remote Model Context Protocol (MCP) server t
 
 Medusa hosts a Streamable HTTP MCP server at `https://docs.medusajs.com/mcp` that you can add to AI agents supporting MCP server connections.
 
+This MCP server is available for [Cloud](!cloud!) users only. It requires authenticating with Medusa Cloud to use it.
+
 ## Connect to the Medusa MCP Server
+
+<Prerequisites
+  items={[
+    {
+      text: "Cloud account",
+      link: "!cloud!"
+    }
+  ]}
+/>
 
 ### Claude Code
 
@@ -26,6 +38,15 @@ To connect to the Medusa MCP server in Claude Code, run the following command in
 ```sh
 claude mcp add --transport http medusa https://docs.medusajs.com/mcp
 ```
+
+Then, start Claude Code and authenticate with your Medusa Cloud account:
+
+```sh
+claude
+/mcp
+```
+
+Then, select the `medusa` MCP server and choose "Authenticate". This will open a browser window where you can log into your Medusa Cloud account to authenticate.
 
 ### Cursor
 
@@ -43,6 +64,12 @@ To manually connect to the Medusa MCP server in Cursor, add the following to you
 }
 ```
 
+Then, to authenticate with your Medusa Cloud account:
+
+1. Go to Settings -> Tools & MCP in Cursor.
+2. Click the "Connect" button next to the Medusa MCP server.
+3. Log into your Medusa Cloud account in the opened browser window to authenticate.
+
 ### VS Code
 
 <Link href="https://vscode.dev/redirect/mcp/install?name=medusa&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fdocs.medusajs.com%2Fmcp%22%7D" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Medusa MCP server to VSCode.
@@ -59,6 +86,8 @@ To manually connect to the Medusa MCP server in VSCode, add the following to you
   }
 }
 ```
+
+Then, once you start the MCP server connection, you will be prompted to authenticate with your Medusa Cloud account in a browser window. Log in to authenticate and start using the Medusa MCP server in VSCode.
 
 ---
 
