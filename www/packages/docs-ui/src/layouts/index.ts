@@ -1,4 +1,5 @@
 export * from "./barebone"
+export * from "./main-content"
 export * from "./root"
 export * from "./tight"
 export * from "./wide"

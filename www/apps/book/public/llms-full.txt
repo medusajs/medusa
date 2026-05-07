@@ -27556,19 +27556,65 @@ Bloom helps you design your store, implement custom features, integrate third-pa
 Go to [Bloom](https://bloom.chat/) to get started. You'll start with free credits to try out Bloom's features and upgrade your plan as needed.
 
 
+# Agentic Deployment with Cloud CLI
+
+In this guide, you'll learn how the [Cloud CLI](https://docs.medusajs.com/cloud/cli/index.html.md) supports deployment and debugging through AI agents.
+
+## What is the Cloud CLI?
+
+The Cloud CLI is a command-line interface tool that allows you to manage resources in your applications deployed on [Cloud](https://docs.medusajs.com/cloud/index.html.md). You can view logs, manage deployments, and perform various operations to ensure your application runs smoothly.
+
+***
+
+## Using the Cloud CLI with AI Agents
+
+The Cloud CLI is designed to optimize your agentic development. By combining the Cloud CLI with AI agents, you can automate deployment processes and debug issues more efficiently. AI agents can analyze logs, identify potential issues, and even suggest fixes, making it easier for you to maintain your application.
+
+The Cloud CLI optimizes your agentic development workflow by:
+
+- Providing a scriptable interface to manage your Cloud resources.
+- Allowing AI agents to interact with your Cloud environment for tasks like fetching logs, managing deployments, and more.
+- Enabling automation of routine tasks in CI/CD pipelines.
+- Integrating with AI agents to enhance debugging and deployment processes.
+
+***
+
+## Get Started with the Cloud CLI
+
+To get started with the Cloud CLI with AI agents, copy the following prompt to your agent to get started:
+
+```markdown title="Prompt"
+Fetch https://docs.medusajs.com/cloud/cli/agents and set up the Medusa Cloud CLI.
+```
+
+You can also install the instructions in that document as a skill in your agent:
+
+### Claude Code
+
+```bash
+claude # start claude code
+/plugin marketplace add medusajs/medusa-agent-skills
+/plugin install medusa-cloud@medusa
+```
+
+### Other AI Agents
+
+```bash
+npx skills add medusajs/medusa-agent-skills
+# choose the following skill:
+# - using-medusa-cloud
+```
+
+See the [Agentic Deployment with Cloud CLI guide](https://docs.medusajs.com/cloud/cli/agents/index.html.md) guide for more details.
+
+
 # Medusa MCP Remote Server
 
 The Medusa documentation provides a remote Model Context Protocol (MCP) server that allows you to find information from the Medusa documentation right in your IDEs or AI tools, such as Cursor.
 
 Medusa hosts a Streamable HTTP MCP server at `https://docs.medusajs.com/mcp` that you can add to AI agents supporting MCP server connections.
 
-This MCP server is available for [Cloud](https://docs.medusajs.com/cloud/index.html.md) users only. It requires authenticating with Medusa Cloud to use it.
-
 ## Connect to the Medusa MCP Server
-
-### Prerequisites
-
-- [Cloud account](https://docs.medusajs.com/cloud/index.html.md)
 
 ### Claude Code
 
@@ -27577,15 +27623,6 @@ To connect to the Medusa MCP server in Claude Code, run the following command in
 ```sh
 claude mcp add --transport http medusa https://docs.medusajs.com/mcp
 ```
-
-Then, start Claude Code and authenticate with your Medusa Cloud account:
-
-```sh
-claude
-/mcp
-```
-
-Then, select the `medusa` MCP server and choose "Authenticate". This will open a browser window where you can log into your Medusa Cloud account to authenticate.
 
 ### Cursor
 
@@ -27603,12 +27640,6 @@ To manually connect to the Medusa MCP server in Cursor, add the following to you
 }
 ```
 
-Then, to authenticate with your Medusa Cloud account:
-
-1. Go to Settings -> Tools & MCP in Cursor.
-2. Click the "Connect" button next to the Medusa MCP server.
-3. Log into your Medusa Cloud account in the opened browser window to authenticate.
-
 ### VS Code
 
 <Link href="https://vscode.dev/redirect/mcp/install?name=medusa&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fdocs.medusajs.com%2Fmcp%22%7D" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Medusa MCP server to VSCode.
@@ -27625,8 +27656,6 @@ To manually connect to the Medusa MCP server in VSCode, add the following to you
   }
 }
 ```
-
-Then, once you start the MCP server connection, you will be prompted to authenticate with your Medusa Cloud account in a browser window. Log in to authenticate and start using the Medusa MCP server in VSCode.
 
 ***
 
@@ -27670,10 +27699,11 @@ By levaging AI assistants in your Medusa development workflow, you can:
 
 Medusa provides various tools and integrations to help you leverage AI assistants and LLMs in your commerce development workflow:
 
+- [Cloud CLI](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/cloud-cli/index.html.md): Command-line interface for managing Medusa Cloud resources and deployments.
+- [Medusa Agent Skills](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/agentic-skills/index.html.md): Collection of skills for AI agents to assist you in building features, fixing bugs, and more.
+- [MCP Remote Server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md): Find information from the docs when building features with AI agents like Claude Code.
 - [Bloom](https://bloom.chat/): AI-powered commerce assistant by Medusa to help you build and manage your store.
-- [Medusa Agent Skills](#): Collection of skills for AI agents to assist you in building features, fixing bugs, and more.
-- [MCP Remote Server](#): Find information from the docs when building features with AI agents like Claude Code.
-- [AI-Friendly Documentation](#): Docs with an AI assistant and content optimized for humans and LLMs alike.
+- [AI-Friendly Documentation](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/ai-friendly-docs/index.html.md): Docs with an AI assistant and content optimized for humans and LLMs alike.
 
 
 # From Medusa v1 to v2: Conceptual Differences
