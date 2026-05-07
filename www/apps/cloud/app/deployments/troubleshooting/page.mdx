@@ -6,6 +6,32 @@ export const metadata = {
 
 In this guide, you'll find solutions to common issues that may arise when deploying your Medusa applications on Cloud.
 
+## Access Logs
+
+When a deployment fails, you can see the [build](../../logs/page.mdx#view-build-logs-on-cloud) and [runtime logs](../../logs/page.mdx#view-runtime-logs-on-cloud) of your deployment to understand the cause of the failure.
+
+Alternatively, you can install the [Medusa Cloud CLI](../../cli/page.mdx) and use it to check logs from your terminal or with the help of AI agents like Claude Code.
+
+For example:
+
+```bash
+# Install the CLI
+npm install @medusajs/mc -g
+
+# Login
+mcloud login
+
+# Check logs of the latest deployment in the environment
+mcloud logs --organization org_123 --project proj_123 --environment env_123
+
+# Check logs of a specific deployment
+mcloud logs --organization org_123 --project proj_123 --environment env_123 --deployment-id deploy_123
+```
+
+See the [Medusa Cloud CLI](../../cli/page.mdx) guide for more details on how to use the CLI to manage your Cloud resources and deployments.
+
+---
+
 ## Files Not Found After Deployment
 
 Before deploying your Medusa application on Cloud, Medusa runs the `build` script defined in your `package.json` file, then copies only the output of the [build process](!docs!/learn/build), which is the `.medusa/server` directory.
@@ -41,6 +67,5 @@ You can replace `npm run postbuild` with the appropriate command for your packag
 
 To troubleshoot other Cloud deployment issues, you can:
 
-- [Check the build and runtime logs of your deployment](../../logs/page.mdx).
 - [Refer to Medusa's troubleshooting guides](!resources!/troubleshooting).
 - Contact support for help.
