@@ -165,6 +165,19 @@ function prepareFulfillmentData({
 
   const reservationItemMap = buildReservationsMap(reservations)
 
+  let locationId: string | undefined | null = input.location_id
+
+  if (!locationId) {
+    locationId = shippingOption.service_zone.fulfillment_set.location?.id
+  }
+
+  if (!locationId) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Cannot create fulfillment without stock location, either provide a location or you should link the shipping option ${shippingOption.id} to a stock location.`
+    )
+  }
+
   // Note: If any of the items require shipping, we enable fulfillment
   // unless explicitly set to not require shipping by the item in the request
   const someItemsRequireShipping = fulfillableItems.length
@@ -178,7 +191,7 @@ function prepareFulfillmentData({
   const fulfillmentItems = fulfillableItems
     .map((i) => {
       const orderItem = orderItemsMap.get(i.id)! as OrderItemWithVariantDTO
-      const reservations = reservationItemMap.get(i.id)
+      const allReservations = reservationItemMap.get(i.id)
 
       if (
         orderItem.requires_shipping &&
@@ -192,7 +205,8 @@ function prepareFulfillmentData({
         )
       }
 
-      if (!reservations?.length) {
+      // No reservations at all → non-managed inventory item, emit a placeholder.
+      if (!allReservations?.length) {
         return [
           {
             line_item_id: i.id,
@@ -205,8 +219,27 @@ function prepareFulfillmentData({
         ] as FulfillmentWorkflow.CreateFulfillmentItemWorkflowDTO[]
       }
 
+      // Reservations may be split across locations when no single
+      // location had enough stock at reservation time. A fulfillment
+      // belongs to a single location, so only consume reservations at
+      // that location here. Reservations at other locations are
+      // consumed by separate fulfillments.
+      const locationReservations = allReservations.filter(
+        (r) => r.location_id === locationId
+      )
+
+      if (!locationReservations.length) {
+        const otherLocations = Array.from(
+          new Set(allReservations.map((r) => r.location_id))
+        )
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Item ${orderItem.id} has no inventory reserved at location ${locationId}. Reservations exist at: ${otherLocations.join(", ")}.`
+        )
+      }
+
       // if line item is from a managed variant, create a fulfillment item for each reservation item
-      return reservations.map((r) => {
+      return locationReservations.map((r) => {
         const iItem = orderItem?.variant?.inventory_items.find(
           (ii) => ii.inventory.id === r.inventory_item_id
         )
@@ -228,19 +261,6 @@ function prepareFulfillmentData({
       })
     })
     .flat()
-
-  let locationId: string | undefined | null = input.location_id
-
-  if (!locationId) {
-    locationId = shippingOption.service_zone.fulfillment_set.location?.id
-  }
-
-  if (!locationId) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Cannot create fulfillment without stock location, either provide a location or you should link the shipping option ${shippingOption.id} to a stock location.`
-    )
-  }
 
   const shippingAddress = order.shipping_address ?? { id: undefined }
   delete shippingAddress.id
@@ -269,6 +289,7 @@ function prepareInventoryUpdate({
   input,
   inputItemsMap,
   itemsList,
+  fulfillment,
 }) {
   const toDelete: string[] = []
   const toUpdate: {
@@ -287,16 +308,18 @@ function prepareInventoryUpdate({
   )
 
   const reservationMap = buildReservationsMap(reservations)
+  const fulfillmentLocationId: string | undefined =
+    fulfillment?.location_id ?? input.location_id
 
   const allItems = itemsList ?? order.items
   const itemsToFulfill = allItems.filter((i) => i.id in inputItemsMap)
 
   // iterate over items that are being fulfilled
   for (const item of itemsToFulfill) {
-    const reservations = reservationMap.get(item.id)
+    const allReservations = reservationMap.get(item.id)
     const orderItem = orderItemsMap.get(item.id)! as OrderItemWithVariantDTO
 
-    if (!reservations?.length) {
+    if (!allReservations?.length) {
       if (item.variant?.manage_inventory) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -304,6 +327,25 @@ function prepareInventoryUpdate({
         )
       }
       continue
+    }
+
+    // Reservations may be split across locations. Only consume the
+    // ones at the fulfillment's location; the rest stay reserved
+    // until separate fulfillments at their respective locations.
+    const reservations = fulfillmentLocationId
+      ? allReservations.filter(
+          (r) => r.location_id === fulfillmentLocationId
+        )
+      : allReservations
+
+    if (!reservations.length) {
+      const otherLocations = Array.from(
+        new Set(allReservations.map((r) => r.location_id))
+      )
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Item ${item.id} has no inventory reserved at location ${fulfillmentLocationId}. Reservations exist at: ${otherLocations.join(", ")}.`
+      )
     }
 
     const inputQuantity = inputItemsMap[item.id]?.quantity ?? item.quantity
@@ -332,7 +374,7 @@ function prepareInventoryUpdate({
 
       inventoryAdjustment.push({
         inventory_item_id: reservation.inventory_item_id,
-        location_id: input.location_id ?? reservation.location_id,
+        location_id: reservation.location_id,
         adjustment: MathBN.mult(adjustemntQuantity, -1),
       })
 
@@ -342,7 +384,7 @@ function prepareInventoryUpdate({
         toUpdate.push({
           id: reservation.id,
           quantity: remainingReservationQuantity,
-          location_id: input.location_id ?? reservation.location_id,
+          location_id: reservation.location_id,
         })
       }
     })
@@ -559,6 +601,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         input,
         inputItemsMap,
         itemsList: input.items_list,
+        fulfillment,
       },
       prepareInventoryUpdate
     )
