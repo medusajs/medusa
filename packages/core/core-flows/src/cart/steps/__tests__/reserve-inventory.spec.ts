@@ -283,13 +283,16 @@ describe("reserveInventoryStep", () => {
     expect(inputs[0].quantity.toString()).toBe("3")
   })
 
-  it("multiplies by required_quantity when splitting", async () => {
+  it("keeps each location's split quantity a whole multiple of required_quantity", async () => {
     const createReservationItems = jest.fn(async (items: any[]) =>
       items.map((it, i) => ({ id: `res_${i}`, ...it }))
     )
 
-    // Need a total of 3 * 2 = 6 units; sl_a has 4, sl_b has 5.
-    // Greedy: take 4 from sl_a, 2 from sl_b.
+    // Need 2 line-item units × required_quantity 3 = 6 raw units.
+    // sl_a holds 4 raw (1 whole unit fits, 1 remainder), sl_b holds 5
+    // raw (1 whole unit fits, 2 remainder). The split must take 1 unit
+    // (3 raw) from each location — never 4@sl_a + 2@sl_b, which would
+    // produce reservations that can't be fulfilled in integer units.
     const container = buildContainer({
       inventoryLevels: [
         {
@@ -324,8 +327,63 @@ describe("reserveInventoryStep", () => {
     const inputs = createReservationItems.mock.calls[0][0]
     expect(inputs).toHaveLength(2)
     expect(inputs[0].location_id).toBe("sl_a")
-    expect(inputs[0].quantity.toString()).toBe("4")
+    expect(inputs[0].quantity.toString()).toBe("3")
     expect(inputs[1].location_id).toBe("sl_b")
-    expect(inputs[1].quantity.toString()).toBe("2")
+    expect(inputs[1].quantity.toString()).toBe("3")
+  })
+
+  it("falls back when no single location can hold a whole line-item unit even though aggregate looks sufficient", async () => {
+    // required_quantity 5, line-item quantity 1 → 5 raw needed.
+    // sl_a has 4 raw, sl_b has 4 raw. Aggregate (8) ≥ 5, but no
+    // location can hold a single whole unit (each needs 5). The step
+    // must not silently emit a sub-required_quantity reservation; it
+    // falls back to a single full-quantity reservation against the
+    // first candidate so the inventory module raises its canonical
+    // insufficient-inventory error.
+    const createReservationItems: jest.Mock<any, any> = jest.fn(
+      async (_input: any) => {
+        throw new Error("Not enough stock available")
+      }
+    )
+
+    const container = buildContainer({
+      inventoryLevels: [
+        {
+          inventory_item_id: "ii_1",
+          location_id: "sl_a",
+          stocked_quantity: 4,
+          reserved_quantity: 0,
+        },
+        {
+          inventory_item_id: "ii_1",
+          location_id: "sl_b",
+          stocked_quantity: 4,
+          reserved_quantity: 0,
+        },
+      ],
+      createReservationItems,
+    })
+
+    try {
+      await runReserve(container, {
+        items: [
+          {
+            id: "li_1",
+            inventory_item_id: "ii_1",
+            required_quantity: 5,
+            allow_backorder: false,
+            quantity: 1,
+            location_ids: ["sl_a", "sl_b"],
+          },
+        ],
+      })
+    } catch {
+      // expected
+    }
+
+    const inputs = createReservationItems.mock.calls[0][0]
+    expect(inputs).toHaveLength(1)
+    expect(inputs[0].location_id).toBe("sl_a")
+    expect(inputs[0].quantity.toString()).toBe("5")
   })
 })

@@ -174,11 +174,16 @@ async function buildReservationInputs(
       continue
     }
 
-    // Greedy-fill across the candidate locations, in order.
-    let remaining: BigNumberInput = totalNeeded
+    // Greedy-fill in **line-item units** (not raw inventory units) so
+    // each location's allocation is always a whole multiple of
+    // `required_quantity`. Allocating raw units directly would produce
+    // reservations that can't be cleanly consumed at fulfillment time
+    // (e.g. with required_quantity=3 a 4-unit allocation can't be
+    // mapped to an integer number of line-item units).
+    let remainingUnits: BigNumberInput = item.quantity
     const splitEntries: InventoryTypes.CreateReservationItemInput[] = []
     for (const locationId of item.location_ids) {
-      if (MathBN.lte(remaining, 0)) {
+      if (MathBN.lte(remainingUnits, 0)) {
         break
       }
 
@@ -189,18 +194,30 @@ async function buildReservationInputs(
         continue
       }
 
-      const take = MathBN.lte(available, remaining) ? available : remaining
+      // How many whole line-item units fit at this location given the
+      // required_quantity multiplier. Compute the largest multiple of
+      // required_quantity that is ≤ available, then divide.
+      const remainder = MathBN.mod(available, item.required_quantity)
+      const usable = MathBN.sub(available, remainder)
+      if (MathBN.lte(usable, 0)) {
+        continue
+      }
+      const availableUnits = MathBN.div(usable, item.required_quantity)
+
+      const takeUnits = MathBN.lte(availableUnits, remainingUnits)
+        ? availableUnits
+        : remainingUnits
       splitEntries.push({
         line_item_id: item.id,
         inventory_item_id: item.inventory_item_id,
-        quantity: take,
+        quantity: MathBN.mult(takeUnits, item.required_quantity),
         allow_backorder: item.allow_backorder,
         location_id: locationId,
       })
-      remaining = MathBN.sub(remaining, take)
+      remainingUnits = MathBN.sub(remainingUnits, takeUnits)
     }
 
-    if (MathBN.gt(remaining, 0)) {
+    if (MathBN.gt(remainingUnits, 0)) {
       // The aggregated availability across the candidate locations isn't
       // enough to cover the line item. Fall back to a single reservation
       // at the first candidate location for the full needed quantity so
