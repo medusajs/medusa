@@ -1277,11 +1277,17 @@ medusaIntegrationTestRunner({
 
         const eventBus = container.resolve(Modules.EVENT_BUS)
         const refundFailedSubscriber = jest.fn()
+        const refundFailedEventHandler = (event) => {
+          refundFailedSubscriber(event)
+          resolveRefundFailedEvent(event)
+        }
+        let resolveRefundFailedEvent
         const refundFailedEventPromise = new Promise<any>((resolve) => {
-          eventBus.subscribe(PaymentEvents.REFUND_FAILED, (event) => {
-            refundFailedSubscriber(event)
-            resolve(event)
-          })
+          resolveRefundFailedEvent = resolve
+          eventBus.subscribe(
+            PaymentEvents.REFUND_FAILED,
+            refundFailedEventHandler
+          )
         })
 
         try {
@@ -1298,12 +1304,14 @@ medusaIntegrationTestRunner({
 
           expect(refundFailedSubscriber).toHaveBeenCalledTimes(1)
           expect(refundFailedEvent.data).toEqual(
-            expect.objectContaining({
-              payment_id: payment2.id,
-              error: "Refund failed at payment provider",
-            })
+            expect.arrayContaining([
+              expect.objectContaining({
+                payment_id: payment2.id,
+                error: "Refund failed at payment provider",
+              }),
+            ])
           )
-          expect(Number(refundFailedEvent.data.amount)).toBe(30)
+          expect(Number(refundFailedEvent.data[0].amount)).toBe(30)
 
           // Get the canceled order with credit lines and summary
           const canceledOrder = (
@@ -1344,7 +1352,7 @@ medusaIntegrationTestRunner({
         } finally {
           eventBus.unsubscribe(
             PaymentEvents.REFUND_FAILED,
-            refundFailedSubscriber
+            refundFailedEventHandler
           )
           jest.restoreAllMocks()
         }
