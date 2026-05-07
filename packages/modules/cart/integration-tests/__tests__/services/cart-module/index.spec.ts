@@ -3291,5 +3291,124 @@ moduleIntegrationTestRunner<ICartModuleService>({
         },
       })
     })
+
+    describe("cart updated_at on child mutations", () => {
+      it("should bump cart.updated_at when a line item is added", async () => {
+        const [createdCart] = await service.createCarts([
+          { currency_code: "eur" },
+        ])
+
+        // Wait long enough that the new updated_at is visibly later than created_at.
+        await new Promise((resolve) => setTimeout(resolve, 10))
+
+        await service.addLineItems(createdCart.id, [
+          { quantity: 1, unit_price: 100, title: "test" },
+        ])
+
+        const cart = await service.retrieveCart(createdCart.id)
+
+        expect(new Date(cart.updated_at).getTime()).toBeGreaterThan(
+          new Date(createdCart.updated_at).getTime()
+        )
+      })
+
+      it("should bump cart.updated_at when a line item quantity is updated", async () => {
+        const [createdCart] = await service.createCarts([
+          { currency_code: "eur" },
+        ])
+
+        const [item] = await service.addLineItems(createdCart.id, [
+          { quantity: 1, unit_price: 100, title: "test" },
+        ])
+
+        const cartAfterAdd = await service.retrieveCart(createdCart.id)
+
+        await new Promise((resolve) => setTimeout(resolve, 10))
+
+        await service.updateLineItems(item.id, { quantity: 5 })
+
+        const cartAfterUpdate = await service.retrieveCart(createdCart.id)
+
+        expect(new Date(cartAfterUpdate.updated_at).getTime()).toBeGreaterThan(
+          new Date(cartAfterAdd.updated_at).getTime()
+        )
+      })
+
+      it("should bump cart.updated_at when line items are updated via the array-with-ids overload", async () => {
+        const [createdCart] = await service.createCarts([
+          { currency_code: "eur" },
+        ])
+
+        const [item] = await service.addLineItems(createdCart.id, [
+          { quantity: 1, unit_price: 100, title: "test" },
+        ])
+
+        const cartAfterAdd = await service.retrieveCart(createdCart.id)
+
+        await new Promise((resolve) => setTimeout(resolve, 10))
+
+        await service.updateLineItems([{ id: item.id, quantity: 5 }])
+
+        const cartAfterUpdate = await service.retrieveCart(createdCart.id)
+
+        expect(new Date(cartAfterUpdate.updated_at).getTime()).toBeGreaterThan(
+          new Date(cartAfterAdd.updated_at).getTime()
+        )
+      })
+
+      it("should bump cart.updated_at when a shipping method is added", async () => {
+        const [createdCart] = await service.createCarts([
+          { currency_code: "eur" },
+        ])
+
+        await new Promise((resolve) => setTimeout(resolve, 10))
+
+        await service.addShippingMethods(createdCart.id, [
+          { name: "test", amount: 100 },
+        ])
+
+        const cart = await service.retrieveCart(createdCart.id)
+
+        expect(new Date(cart.updated_at).getTime()).toBeGreaterThan(
+          new Date(createdCart.updated_at).getTime()
+        )
+      })
+
+      it("should bump updated_at on every cart referenced by a bulk line item update", async () => {
+        const [cartA, cartB] = await service.createCarts([
+          { currency_code: "eur" },
+          { currency_code: "eur" },
+        ])
+
+        await new Promise((resolve) => setTimeout(resolve, 10))
+
+        await service.addLineItems([
+          {
+            quantity: 1,
+            unit_price: 100,
+            title: "a",
+            cart_id: cartA.id,
+          },
+          {
+            quantity: 1,
+            unit_price: 100,
+            title: "b",
+            cart_id: cartB.id,
+          },
+        ])
+
+        const [refreshedA, refreshedB] = await Promise.all([
+          service.retrieveCart(cartA.id),
+          service.retrieveCart(cartB.id),
+        ])
+
+        expect(new Date(refreshedA.updated_at).getTime()).toBeGreaterThan(
+          new Date(cartA.updated_at).getTime()
+        )
+        expect(new Date(refreshedB.updated_at).getTime()).toBeGreaterThan(
+          new Date(cartB.updated_at).getTime()
+        )
+      })
+    })
   },
 })

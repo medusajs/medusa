@@ -328,7 +328,9 @@ export default class CartModuleService
     }
 
     if (lineItemsToCreate.length) {
-      await this.addLineItemsBulk_(lineItemsToCreate, sharedContext)
+      // Direct create — newly-created carts already have a fresh `updated_at`
+      // from the cart insert, so we skip the bump that `addLineItemsBulk_` adds.
+      await this.lineItemService_.create(lineItemsToCreate, sharedContext)
     }
 
     const fullCarts = await this.cartService_.list(
@@ -514,7 +516,14 @@ export default class CartModuleService
     data: CreateLineItemDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<InferEntityType<typeof LineItem>[]> {
-    return await this.lineItemService_.create(data, sharedContext)
+    const items = await this.lineItemService_.create(data, sharedContext)
+
+    await this.bumpCartUpdatedAt_(
+      data.map((d) => d.cart_id),
+      sharedContext
+    )
+
+    return items
   }
 
   // @ts-ignore
@@ -565,8 +574,10 @@ export default class CartModuleService
       )
     } else if (Array.isArray(lineItemIdOrDataOrSelector) && !data) {
       // We received an array of data including the ids
-      const items = await this.lineItemService_.update(
-        lineItemIdOrDataOrSelector,
+      const items = await this.updateLineItemsBulk_(
+        lineItemIdOrDataOrSelector as (Partial<CartTypes.UpdateLineItemDTO> & {
+          id: string
+        })[],
         sharedContext
       )
 
@@ -605,7 +616,24 @@ export default class CartModuleService
       sharedContext
     )
 
+    await this.bumpCartUpdatedAt_(item.cart_id, sharedContext)
+
     return item
+  }
+
+  @InjectTransactionManager()
+  protected async updateLineItemsBulk_(
+    data: (Partial<CartTypes.UpdateLineItemDTO> & { id: string })[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<InferEntityType<typeof LineItem>[]> {
+    const items = await this.lineItemService_.update(data, sharedContext)
+
+    await this.bumpCartUpdatedAt_(
+      items.map((item) => item.cart_id),
+      sharedContext
+    )
+
+    return items
   }
 
   @InjectTransactionManager()
@@ -614,6 +642,7 @@ export default class CartModuleService
     @MedusaContext() sharedContext: Context = {}
   ): Promise<InferEntityType<typeof LineItem>[]> {
     let toUpdate: UpdateLineItemDTO[] = []
+    const cartIds = new Set<string>()
     for (const { selector, data } of updates) {
       const items = await this.lineItemService_.list(
         { ...selector },
@@ -626,10 +655,15 @@ export default class CartModuleService
           ...data,
           id: item.id,
         })
+        cartIds.add(item.cart_id)
       })
     }
 
-    return await this.lineItemService_.update(toUpdate, sharedContext)
+    const updated = await this.lineItemService_.update(toUpdate, sharedContext)
+
+    await this.bumpCartUpdatedAt_(Array.from(cartIds), sharedContext)
+
+    return updated
   }
 
   // @ts-ignore
@@ -785,10 +819,17 @@ export default class CartModuleService
     data: CartTypes.CreateShippingMethodDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<InferEntityType<typeof ShippingMethod>[]> {
-    return await this.shippingMethodService_.create(
+    const methods = await this.shippingMethodService_.create(
       data as unknown as CreateShippingMethodDTO[],
       sharedContext
     )
+
+    await this.bumpCartUpdatedAt_(
+      data.map((d) => d.cart_id),
+      sharedContext
+    )
+
+    return methods
   }
 
   async addLineItemAdjustments(
@@ -1564,5 +1605,23 @@ export default class CartModuleService
     ])
 
     return result
+  }
+
+  @InjectTransactionManager()
+  protected async bumpCartUpdatedAt_(
+    cartIds: string | string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const ids = Array.isArray(cartIds) ? cartIds : [cartIds]
+    const uniqueIds = Array.from(new Set(ids.filter(Boolean)))
+    if (!uniqueIds.length) {
+      return
+    }
+
+    const now = new Date()
+    await this.cartService_.update(
+      uniqueIds.map((id) => ({ id, updated_at: now })),
+      sharedContext
+    )
   }
 }
