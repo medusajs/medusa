@@ -61,7 +61,7 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,mcp__linear-server__list_teams,mcp__linear-server__list_issues,mcp__linear-server__get_issue,mcp__linear-server__list_issue_statuses,Bash(git diff:*,git status:*,ls:*,find:*,cat:*)"
-          max_turns: 50
+          max_turns: 80
           mcp_config: |
             {
               "mcpServers": {
@@ -77,7 +77,8 @@ jobs:
           prompt: |
             IMPORTANT: Only make file changes using the Write and Edit tools. Never use git commands to stage, commit, or push files.
 
-            IMPORTANT: To load the writing-docs skill, use the Skill tool directly with skill='writing-docs'. Do NOT spawn a sub-agent or use the Task tool to load it.
+            IMPORTANT: Before making any documentation changes, read the writing-docs guidelines by reading this file using the Read tool: .claude/skills/writing-docs/SKILL.md
+            Then read whichever reference files the skill instructs you to load for the relevant project (book, resources, user-guide, ui, or cloud). Do NOT use any MCP tools or sub-agents to load these files — use the Read tool only.
 
             You are fixing Medusa documentation based on feedback issues from the DX team triage inbox in Linear.
 
@@ -101,8 +102,6 @@ jobs:
             - Fixing it would require API design decisions, new feature work, or large architectural rewrites — only fix self-contained doc edits (incorrect code samples, misleading prose, missing explanations, outdated examples)
 
             ## Step 3 — Fix each qualifying issue
-
-            Load the /writing-docs skill before making any changes.
 
             For each qualifying issue:
             1. Identify the relevant doc file from the page path or URL mentioned in the issue

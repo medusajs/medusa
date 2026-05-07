@@ -1,0 +1,542 @@
+import { Table, Note, CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `projects Command - Medusa Cloud CLI Reference`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to manage your Cloud projects using the CLI.
+
+## projects list
+
+List all projects in an organization.
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud projects list --organization org_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123
+
+  mcloud projects list
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) to list projects from.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## projects get
+
+Retrieve a single project by its ID or handle. This is useful if you want to get more details about the project, such as its status or region.
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud projects get <project> --organization org_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123
+
+  mcloud projects get <project>
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+Returns the following information:
+
+<CodeTabs group="cli-output">
+  <CodeTab label="Plaintext" value="plaintext">
+
+  ```bash
+  ID:            <project-id>
+  Name:          My Store
+  Handle:        <project-handle>
+  Status:        ready
+  Region:        us-east-1
+  Repository:    myuser/my-repo
+  Root path:     /apps/backend
+  Organization:  <organization-id>
+  Created at:    2026-04-01T09:44:35.065Z
+  ```
+
+  </CodeTab>
+  <CodeTab label="JSON (--json)" value="json">
+
+  ```json
+  {
+    "id": "<project-id>",
+    "name": "My Store",
+    "handle": "<project-handle>",
+    "region": "us-east-1",
+    "repository": "myuser/my-repo",
+    "root_path": "/apps/backend",
+    "status": "ready",
+    "created_at": "2024-10-10T08:24:32.382Z",
+    "updated_at": "2024-10-11T08:24:32.382Z",
+    "metadata": null,
+    "builds": [],
+    "environments": [
+      {
+        "id": "<environment-id>",
+        "project_id": "<project-id>",
+        "handle": "<environment-handle>",
+        "name": "Production",
+        "type": "production",
+        "default_subdomain": "trusting-soft-form",
+        "custom_subdomain": "acme",
+        "default_domain": "trusting-soft-form.medusajs.app",
+        "custom_domain": "acme.com",
+        "created_at": "2024-10-10T08:24:32.382Z",
+        "updated_at": "2024-10-10T08:24:32.382Z",
+        "deleted_at": null,
+        "external_id": "main",
+        "status": "ready",
+        "metadata": null,
+        "builds": [],
+        "deployments": [],
+        "variables": [],
+        "configuration": {
+          "read_replica_database_url": "postgresql://<user>:<password>@<host>/<database>?channel_binding=require&sslmode=require",
+          "tent_handle": "<tent-handle>",
+          "s3_file_url": "https://s3.us-east-1.amazonaws.com/<bucket>",
+          "s3_endpoint": "https://s3.us-east-1.amazonaws.com",
+          "upstash_external_id": "<upstash-id>"
+        },
+        "rules": null,
+        "active_deployment": null
+      }
+    ]
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `project`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The ID or handle of the project to retrieve.
+
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) to get the project from.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## projects delete
+
+Delete a project by its ID or handle.
+
+<Note type="warning">
+
+Deleting a project is irreversible and removes all associated environments,
+deployments, and resources.
+
+</Note>
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud projects delete <project> --organization org_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123
+
+  mcloud projects delete <project>
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `project`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The ID or handle of the project to delete.
+
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) to get the project from.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-y`, `--yes`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip the confirmation prompt. Use this in scripts and pipelines where
+      interactive input is not possible.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Find Project IDs and Handles
+
+Commands that operate on projects require a project ID or handle. You can either:
+
+- Use the interactive selector in [mcloud use](../use/page.mdx#set-the-active-context) to set an active project for the current context. Once set, you can omit the `--project` flag from all subsequent commands;
+- Or use `projects list --json` to get machine-readable project data. Pipe the output to `jq` to extract IDs or handles for use in subsequent commands. This is useful if you want to set the active project through an AI agent, script, or CI/CD pipeline.
+
+For example, to set the first project in the list as the active project:
+
+<CodeTabs group="os">
+  <CodeTab label="macOS / Linux" value="unix">
+
+  ```bash
+  PROJECT_HANDLE=$(
+    mcloud projects list --json \
+      | jq -r '.[0].handle'
+  )
+  mcloud use --project "$PROJECT_HANDLE"
+  ```
+
+  </CodeTab>
+  <CodeTab label="Windows (PowerShell)" value="powershell">
+
+  ```powershell
+  $PROJECT_HANDLE = (
+    mcloud projects list --json |
+    jq -r '.[0].handle'
+  )
+  mcloud use --project $PROJECT_HANDLE
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+To set a project by name as the active project:
+
+<CodeTabs group="os">
+  <CodeTab label="macOS / Linux" value="unix">
+
+  ```bash
+  PROJECT_HANDLE=$(
+    mcloud projects list --json \
+      | jq -r '.[] | select(.name == "My Store") | .handle'
+  )
+  mcloud use --project "$PROJECT_HANDLE"
+  ```
+
+  </CodeTab>
+  <CodeTab label="Windows (PowerShell)" value="powershell">
+
+  ```powershell
+  $PROJECT_HANDLE = (
+    mcloud projects list --json |
+    jq -r '.[] | select(.name == "My Store") | .handle'
+  )
+  mcloud use --project $PROJECT_HANDLE
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+Once set, you can omit the `--project` flag from all subsequent commands.
+
+---
+
+## Delete a Project Without Confirmation
+
+In automated cleanup scripts, use `--yes` to skip the interactive
+confirmation prompt:
+
+<Note type="warning">
+
+Deleting a project is irreversible and removes all associated environments,
+deployments, and resources.
+
+</Note>
+
+```bash
+mcloud projects delete old-project --yes
+```
