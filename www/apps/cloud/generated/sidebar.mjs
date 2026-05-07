@@ -49,6 +49,14 @@ export const generatedSidebars = [
             "title": "Command Palette",
             "path": "/command-palette",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Navigation Styles",
+            "path": "/navigation",
+            "children": []
           }
         ]
       },

@@ -1959,21 +1959,6 @@ export default class ProductModuleService
         productData.thumbnail = productData.images[0].url
       }
 
-      // TODO: these props are typed as number, the model expect a string, the API expect number etc
-      // There is some inconsistency here, we should fix it
-      if ("weight" in productData) {
-        productData.weight = productData.weight?.toString() as any
-      }
-      if ("length" in productData) {
-        productData.length = productData.length?.toString() as any
-      }
-      if ("height" in productData) {
-        productData.height = productData.height?.toString() as any
-      }
-      if ("width" in productData) {
-        productData.width = productData.width?.toString() as any
-      }
-
       if (productData.images?.length) {
         productData.images = productData.images.map((image, index) =>
           (image as { rank?: number }).rank != null

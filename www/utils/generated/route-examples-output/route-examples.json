@@ -464,6 +464,9 @@
   "POST /admin/payment-collections/{id}/mark-as-paid": {
     "js-sdk": "sdk.admin.paymentCollection.markAsPaid(\"paycol_123\", {\n  order_id: \"order_123\"\n})\n.then(({ payment_collection }) => {\n  console.log(payment_collection)\n})"
   },
+  "POST /admin/payment-collections/{id}/payment-sessions": {
+    "js-sdk": "sdk.admin.paymentCollection.createPaymentSession(\"paycol_123\", {\n  provider_id: \"pp_stripe_stripe\"\n})\n.then(({ payment_collection }) => {\n  console.log(payment_collection)\n})"
+  },
   "GET /admin/plugins": {
     "js-sdk": "sdk.admin.plugin.list()\n.then(({ plugins }) => {\n  console.log(plugins)\n})"
   },

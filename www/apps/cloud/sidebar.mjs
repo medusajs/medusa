@@ -34,6 +34,11 @@ export const sidebar = [
             title: "Command Palette",
             path: "/command-palette",
           },
+          {
+            type: "link",
+            title: "Navigation Styles",
+            path: "/navigation",
+          }
         ],
       },
       {
