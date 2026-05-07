@@ -1304,14 +1304,12 @@ medusaIntegrationTestRunner({
 
           expect(refundFailedSubscriber).toHaveBeenCalledTimes(1)
           expect(refundFailedEvent.data).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({
-                payment_id: payment2.id,
-                error: "Refund failed at payment provider",
-              }),
-            ])
+            expect.objectContaining({
+              payment_id: payment2.id,
+              error: "Refund failed at payment provider",
+            })
           )
-          expect(Number(refundFailedEvent.data[0].amount)).toBe(30)
+          expect(Number(refundFailedEvent.data.amount)).toBe(30)
 
           // Get the canceled order with credit lines and summary
           const canceledOrder = (
