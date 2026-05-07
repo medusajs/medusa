@@ -11,7 +11,8 @@ import HomepageStartPromptCursorIcon from "./Icons/Cursor"
 import HomepageStartPromptGeminiCliIcon from "./Icons/GeminiCli"
 import HomepageStartPromptOpenCodeIcon from "./Icons/OpenCode"
 
-const PROMPT = "Fetch https://docs.medusajs.com/start and set up a Medusa store"
+const PROMPT =
+  "Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud"
 
 const agents = [
   { icon: HomepageStartPromptClaudeIcon },
