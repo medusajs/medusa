@@ -975,6 +975,19 @@ export async function updateRegion(countryCode: string, currentPath: string) {
 
 You update the function to set the country code cookie using the `setCountryCode` utility instead of relying on the URL, and you remove the country code from the redirect URL.
 
+### c. Update Checkout Components
+
+The checkout flow also needs to handle country code removal from URLs. You need to update checkout-related components to remove country code prefixes from navigation URLs.
+
+In checkout components that handle the "Continue to delivery" button or similar navigation actions, update any hardcoded URLs or redirects to remove the country code prefix. For example, if you have checkout step navigation buttons in `src/modules/checkout/` components, ensure they navigate to paths like `/checkout/delivery` instead of `/${countryCode}/checkout/delivery`.
+
+The specific files to update depend on your checkout implementation, but common locations include:
+- Checkout step navigation components  
+- Form submission handlers that redirect after completion
+- Back/Continue buttons in checkout flows
+
+Ensure all checkout navigation uses the updated URL structure without country code prefixes.
+
 ---
 
 ## Test Your Changes

@@ -66,6 +66,72 @@ module.exports = defineConfig({
 })
 ```
 
+### Complete Configuration Example
+
+Here's a comprehensive example showing all available configuration options:
+
+```ts title="medusa-config.ts"
+import { defineConfig, Modules } from "@medusajs/framework/utils"
+
+module.exports = defineConfig({
+  projectConfig: {
+    databaseUrl: process.env.DATABASE_URL,
+    http: {
+      storeCors: process.env.STORE_CORS!,
+      adminCors: process.env.ADMIN_CORS!,
+      authCors: process.env.AUTH_CORS!,
+      jwtSecret: process.env.JWT_SECRET || "supersecret",
+      cookieSecret: process.env.COOKIE_SECRET || "supersecret",
+    },
+  },
+  modules: [
+    {
+      resolve: "@medusajs/medusa/event-bus-redis",
+      options: {
+        redisUrl: process.env.EVENTS_REDIS_URL,
+        queueName: "medusa-events",
+        redisOptions: {
+          // Redis connection options
+          retryDelayOnFailover: 100,
+          maxRetriesPerRequest: 3,
+          lazyConnect: true,
+        },
+        queueOptions: {
+          // BullMQ queue options
+          defaultJobOptions: {
+            removeOnComplete: 100,
+            removeOnFail: 50,
+          },
+        },
+        workerOptions: {
+          // BullMQ worker options
+          concurrency: 5,
+          stalledInterval: 30000,
+          maxStalledCount: 1,
+        },
+        jobOptions: {
+          // Default job options
+          attempts: 3,
+          backoff: {
+            type: 'exponential',
+            delay: 2000,
+          },
+          removeOnComplete: {
+            age: 3600, // 1 hour
+            count: 1000,
+          },
+          removeOnFail: {
+            age: 3600, // 1 hour  
+            count: 1000,
+          },
+        },
+      },
+    },
+    // ... other modules
+  ],
+})
+```
+
 ### Environment Variables
 
 Make sure to add the following environment variables:

@@ -29,6 +29,19 @@ npx medusa db:generate blog
 
 This generates a migration file under the `migrations` directory of the Blog Module. You can then run it to reflect the changes in the database as mentioned in [this section](#run-the-migration).
 
+<Warning>
+
+**Data Loss Risk**: When generating migrations for existing modules with data model changes, MikroORM may create destructive migrations that drop and recreate tables, causing data loss. Always:
+
+1. **Backup your database** before running any migration
+2. **Review the generated migration file** carefully before running it
+3. **Test migrations on development data** first
+4. Consider writing [custom migrations manually](#write-a-migration-manually) for complex schema changes that preserve data
+
+If you encounter data loss issues, you may need to write custom data migration scripts or manual migrations that preserve existing data during schema changes.
+
+</Warning>
+
 ---
 
 ## Write a Migration Manually

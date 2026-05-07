@@ -314,7 +314,8 @@ for (const product of products) {
   for (const variant of product.variants) {
     // @ts-ignore
     const calculatedPrice = variant.calculated_price as CalculatedPriceSet
-    const hasOriginalPrice = calculatedPrice?.original_amount
+    const hasOriginalPrice = calculatedPrice?.original_amount && 
+      calculatedPrice.original_amount !== calculatedPrice.calculated_amount
     const originalPrice = hasOriginalPrice ? calculatedPrice.original_amount : 
     calculatedPrice.calculated_amount
     const salePrice = hasOriginalPrice ? calculatedPrice.calculated_amount : 
@@ -351,7 +352,7 @@ For each product, you:
     - In Medusa, a product variant's inventory is tracked by stock locations that are associated with sales channels. So, you must retrieve the product's sales channel that matches the requested country code to check the availability of each variant. Learn more in the [Product Variant Inventory](../../../commerce-modules/product/variant-inventory/page.mdx) guide.
 - For each variant, you:
     - Retrieve the variant's price and sale price.
-        - If the `calculated_price.original_amount` is different than `calculated_price.calculated_amount`, the variant is on sale and the `calculated_price.calculated_amount` is the sale price.
+        - If the `calculated_price.original_amount` exists and is different than `calculated_price.calculated_amount`, the variant is on sale and the `calculated_price.calculated_amount` is the sale price.
         - Otherwise, the `calculated_price.calculated_amount` is the regular price.
     - Check the variant's availability.
         - If the variant's `manage_inventory` property is disabled, the variant is always in stock.
