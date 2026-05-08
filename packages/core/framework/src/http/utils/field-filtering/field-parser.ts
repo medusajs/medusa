@@ -25,21 +25,25 @@ export class FieldParser {
     if (isDefined(fields)) {
       const customFields = fields.split(",").filter(Boolean)
       const shouldReplaceDefaultFields = this.shouldReplaceDefaults(customFields)
+      const hasWildcard = customFields.some((field) => field === "*")
 
-      if (shouldReplaceDefaultFields) {
+      if (shouldReplaceDefaultFields && !hasWildcard) {
         allFields = new Set(customFields.map((f) => f.replace(/^[+ -]/, "")))
       } else {
-        this.applyFieldModifiers(customFields, allFields)
+        if (hasWildcard) {
+          for (const reqField of allFields) {
+            if (reqField === "*" || reqField.includes(".") || reqField.startsWith("*")) {
+              allFields.delete(reqField)
+            }
+          }
+        }
+        this.applyFieldModifiers(
+          customFields.filter((field) => field !== "*"),
+          allFields
+        )
       }
 
       allFields.add("id")
-
-      if (allFields.has("*")) {
-        allFields.delete("*")
-        defaults.forEach((field) => {
-          allFields.add(field)
-        })
-      }
     }
 
     this.extractStarFields(allFields, starFields)
@@ -78,12 +82,21 @@ export class FieldParser {
         allFields.add(field.trim().replace(/^\+/, ""))
       } else if (field.startsWith("-")) {
         const fieldName = field.replace(/^-/, "")
+
         for (const reqField of allFields) {
-          const reqFieldName = reqField.replace(/^\*/, "")
-          if (
-            reqFieldName === fieldName ||
-            reqFieldName.startsWith(fieldName + ".")
-          ) {
+          const isWildcard = reqField === "*"
+          const reqFieldName = isWildcard
+            ? "*"
+            : reqField.replace(/^\*/, "")
+
+          const shouldDelete = reqFieldName === fieldName ||
+            (
+              fieldName === "*"
+                ? !reqField.includes(".") && !reqField.startsWith("*")
+                : reqFieldName.startsWith(fieldName + ".")
+            )
+
+          if (shouldDelete) {
             allFields.delete(reqField)
           }
         }

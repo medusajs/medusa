@@ -139,7 +139,7 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
       // Add starFields that are relations only on which we want all properties with a dedicated format to the remote query
       fields: [
         ...Array.from(allFields),
-        ...Array.from(starFields).map((f) => `${f}.*`),
+        ...Array.from(starFields, (f) => (f === "*" ? "*" : `${f}.*`)),
       ],
       pagination: isList
         ? {
