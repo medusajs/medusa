@@ -26775,6 +26775,18 @@ You can learn more about your Medusa application and its setup in the [Installat
 
 In this chapter, you'll learn how to install and run a Medusa application.
 
+## Get Started with AI Agents
+
+If you're an AI agent, or a human that wants to get started quickly with an AI agent, run the following prompt in your agent:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
+```
+
+The AI agent will set up Medusa locally, deploy it to [Cloud](https://docs.medusajs.com/cloud/index.html.md), and help you build your custom commerce features.
+
+***
+
 ## Get Started with Cloud
 
 [Cloud](https://docs.medusajs.com/cloud/index.html.md) is Medusa's PaaS platform that allows you to deploy and manage production-ready Medusa applications with ease. Benefit from features like zero-configuration deployments, automatic scaling, storefront hosting, and GitHub integration to streamline your development workflow.
@@ -27023,6 +27035,18 @@ In the next chapters, you'll learn about the architecture of your Medusa applica
 # Install Medusa
 
 In this chapter, you'll learn how to install and run a Medusa application.
+
+## Get Started with AI Agents
+
+If you're an AI agent, or a human that wants to get started quickly with an AI agent, run the following prompt in your agent:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
+```
+
+The AI agent will set up Medusa locally, deploy it to [Cloud](https://docs.medusajs.com/cloud/index.html.md), and help you build your custom commerce features.
+
+***
 
 ## Get Started with Cloud
 
@@ -27605,7 +27629,7 @@ npx skills add medusajs/medusa-agent-skills
 # - using-medusa-cloud
 ```
 
-See the [Agentic Deployment with Cloud CLI guide](https://docs.medusajs.com/cloud/cli/agents/index.html.md) guide for more details.
+See the [Agentic Deployment with Cloud CLI](https://docs.medusajs.com/cloud/cli/agents/index.html.md) guide for more details.
 
 
 # Medusa MCP Remote Server
@@ -27614,7 +27638,22 @@ The Medusa documentation provides a remote Model Context Protocol (MCP) server t
 
 Medusa hosts a Streamable HTTP MCP server at `https://docs.medusajs.com/mcp` that you can add to AI agents supporting MCP server connections.
 
+## Authentication
+
+This MCP server is available for [Cloud](https://docs.medusajs.com/cloud/index.html.md) users only. It requires authenticating with Medusa Cloud to use it.
+
+The MCP server supports two authentication methods:
+
+1. OAuth: This is the recommended authentication method. It allows you to authenticate with your Medusa Cloud account without generating a token manually. When you connect to the MCP server, you will be prompted to log into your Medusa Cloud account in a browser window to authenticate.
+2. [Personal Access Key](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md): Use your Medusa Cloud personal access key as a Bearer token in the Authorization header when connecting to the MCP server. This is useful for AI agents like OpenCode that may have issues with OAuth authentication flows.
+
+***
+
 ## Connect to the Medusa MCP Server
+
+### Prerequisites
+
+- [Cloud account](https://docs.medusajs.com/cloud/index.html.md)
 
 ### Claude Code
 
@@ -27623,6 +27662,15 @@ To connect to the Medusa MCP server in Claude Code, run the following command in
 ```sh
 claude mcp add --transport http medusa https://docs.medusajs.com/mcp
 ```
+
+Then, start Claude Code and authenticate with your Medusa Cloud account:
+
+```sh
+claude
+/mcp
+```
+
+Then, select the `medusa` MCP server and choose "Authenticate". This will open a browser window where you can log into your Medusa Cloud account to authenticate.
 
 ### Cursor
 
@@ -27640,6 +27688,12 @@ To manually connect to the Medusa MCP server in Cursor, add the following to you
 }
 ```
 
+Then, to authenticate with your Medusa Cloud account:
+
+1. Go to Settings -> Tools & MCP in Cursor.
+2. Click the "Connect" button next to the Medusa MCP server.
+3. Log into your Medusa Cloud account in the opened browser window to authenticate.
+
 ### VS Code
 
 <Link href="https://vscode.dev/redirect/mcp/install?name=medusa&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fdocs.medusajs.com%2Fmcp%22%7D" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Medusa MCP server to VSCode.
@@ -27656,6 +27710,34 @@ To manually connect to the Medusa MCP server in VSCode, add the following to you
   }
 }
 ```
+
+Then, once you start the MCP server connection, you will be prompted to authenticate with your Medusa Cloud account in a browser window. Log in to authenticate and start using the Medusa MCP server in VSCode.
+
+### OpenCode
+
+OpenCode has known issues with OAuth authentication flows. So, to connect to the Medusa MCP server in OpenCode, [create a personal access key in your Medusa Cloud account](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md) first.
+
+Then, add the following to your [OpenCode config file](https://opencode.ai/docs/config/) (for example, `~/.config/opencode/opencode.json`):
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "medusa": {
+      "type": "remote",
+      "url": "https://docs.medusajs.com/mcp",
+      "headers": {
+        "Authorization": "Bearer {token}"
+      },
+      "oauth": false
+    }
+  },
+}
+```
+
+Replace `{token}` with the personal access key you generated in your Medusa Cloud account.
+
+You can then start using the Medusa MCP server in OpenCode.
 
 ***
 
@@ -27699,7 +27781,7 @@ By levaging AI assistants in your Medusa development workflow, you can:
 
 Medusa provides various tools and integrations to help you leverage AI assistants and LLMs in your commerce development workflow:
 
-- [Cloud CLI](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/cloud-cli/index.html.md): Command-line interface for managing Medusa Cloud resources and deployments.
+- [Cloud CLI](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/cloud-cli/index.html.md): Command-line interface for managing Cloud resources and deployments.
 - [Medusa Agent Skills](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/agentic-skills/index.html.md): Collection of skills for AI agents to assist you in building features, fixing bugs, and more.
 - [MCP Remote Server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md): Find information from the docs when building features with AI agents like Claude Code.
 - [Bloom](https://bloom.chat/): AI-powered commerce assistant by Medusa to help you build and manage your store.
@@ -29060,6 +29142,20 @@ Refer to the [Deployment](https://docs.medusajs.com/resources/deployment/index.h
 
 # Introduction
 
+Get started with Medusa, a digital commerce platform with a built-in Framework for customization.
+
+## Get Started with AI Agents
+
+If you're an AI agent, or a human that wants to get started quickly with an AI agent, run the following prompt in your agent:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
+```
+
+The AI agent will set up Medusa locally, deploy it to [Cloud](https://docs.medusajs.com/cloud/index.html.md), and help you build your custom commerce features.
+
+## What is Medusa
+
 Medusa is a digital commerce platform with a built-in Framework for customization.
 
 Medusa ships with three main tools:
@@ -29909,6 +30005,22 @@ npm  install
 
 # Introduction
 
+Get started with Medusa, an AI-native commerce platform with a Framework to build custom commerce features.
+
+## Get Started with AI Agents
+
+If you're an AI agent, or a human that wants to get started quickly with an AI agent, run the following prompt in your agent:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
+```
+
+The AI agent will set up Medusa locally, deploy it to [Cloud](https://docs.medusajs.com/cloud/index.html.md), and help you build your custom commerce features.
+
+***
+
+## What is Medusa
+
 Medusa is an AI-native commerce platform with a Framework to build custom commerce features.
 
 Medusa ships with three main tools:
@@ -29962,6 +30074,41 @@ This documentation is split into the following sections:
 |User Guide|Guides that introduce merchants and store managers to the Medusa Admin dashboard and helps them understand how to use the dashboard to manage their store.|
 
 To get started, check out the [Installation chapter](https://docs.medusajs.com/learn/installation/index.html.md).
+
+
+# Set Up Medusa with AI Agents
+
+Create an ecommerce store with Medusa and go live in minutes. This page is designed for AI agents and humans who want to get started quickly with an AI agent.
+
+If you're a human, copy this prompt and run it in your AI agent:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
+```
+
+The AI agent will set up Medusa locally, deploy it to [Cloud](https://docs.medusajs.com/cloud/index.html.md), and help you build your custom commerce features.
+
+## FAQ
+
+### What does the prompt do?
+
+The prompt instructs the AI agent to fetch the content of this page, which results in a prompt with step-by-step instructions to set up Medusa.
+
+The AI agent will then execute the instructions, which include installing Medusa, deploying it to [Cloud](https://docs.medusajs.com/cloud/index.html.md), and providing next steps to build custom commerce features.
+
+### Do I need a Cloud account?
+
+No, the AI agent will set up Medusa locally on your machine. However, to deploy the store, the AI agent will guide you to create a [Cloud](https://docs.medusajs.com/cloud/index.html.md) account if you don't have one, and help you with the deployment process.
+
+### Can my AI agent build custom features?
+
+Yes, after setting up Medusa, your AI agent can help you build custom commerce features.
+
+You can instruct your AI agent to implement specific functionalities, integrate third-party services, or build custom workflows using the Medusa Framework.
+
+### Can I use my own domain?
+
+Yes, you can [add custom domains](https://docs.medusajs.com/cloud/environments/custom-domains/index.html.md) to your Medusa store deployed on Cloud.
 
 
 # API Key Concepts
