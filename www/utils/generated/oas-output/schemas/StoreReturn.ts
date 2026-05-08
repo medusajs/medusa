@@ -9,6 +9,7 @@
  *   - display_id
  *   - created_at
  *   - order_id
+ *   - requested_at
  *   - canceled_at
  *   - created_by
  *   - received_at
@@ -72,6 +73,10 @@
  *     type: string
  *     title: created_by
  *     description: The ID of the user that created the return.
+ *   requested_at:
+ *     type: string
+ *     title: requested_at
+ *     description: The date the return was requested.
  * 
 */
 

@@ -7,19 +7,21 @@ import { CloudAnnouncement } from "types"
 const mockAnnouncements: CloudAnnouncement[] = [
   {
     id: "ann-1",
+    type: "version",
     title: "New Feature A",
     subtitle: "Feature A is now available",
     link_url: "https://example.com/feature-a",
-    published_at: new Date("2024-02-01"),
-    created_at: new Date("2024-02-01"),
+    published_at: "2024-02-01",
+    created_at: "2024-02-01",
   },
   {
     id: "ann-2",
+    type: "version",
     title: "Improvement B",
     subtitle: "Improvement B details",
     link_url: "https://example.com/improvement-b",
-    published_at: new Date("2024-01-15"),
-    created_at: new Date("2024-01-15"),
+    published_at: "2024-01-15",
+    created_at: "2024-01-15",
   },
 ]
 
@@ -145,18 +147,21 @@ describe("render", () => {
     const manyAnnouncements: CloudAnnouncement[] = [
       {
         id: "ann-1",
+        type: "version",
         title: "Ann 1",
-        created_at: new Date("2024-02-01"),
+        created_at: "2024-02-01",
       },
       {
         id: "ann-2",
+        type: "version",
         title: "Ann 2",
-        created_at: new Date("2024-01-15"),
+        created_at: "2024-01-15",
       },
       {
         id: "ann-3",
+        type: "version",
         title: "Ann 3",
-        created_at: new Date("2024-01-01"),
+        created_at: "2024-01-01",
       },
     ]
     mockGetAnnouncements.mockResolvedValue(manyAnnouncements)

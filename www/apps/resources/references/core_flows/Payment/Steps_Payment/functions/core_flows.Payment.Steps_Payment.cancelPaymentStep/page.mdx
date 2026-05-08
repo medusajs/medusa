@@ -22,9 +22,7 @@ import { cancelPaymentStep } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = cancelPaymentStep({
-      "paymentIds": "{value}"
-    })
+    const data = cancelPaymentStep({})
   }
 )
 ```
@@ -32,4 +30,4 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"CancelPaymentStepInput","type":"[CancelPaymentStepInput](../../../../types/core_flows.CancelPaymentStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to cancel one or more payments.","expandable":false,"children":[{"name":"paymentIds","type":"`string` \\| `string`[]","description":"The ID(s) of the payment(s) to cancel.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="cancelPaymentStep"/>
+<TypeList types={[{"name":"CancelPaymentStepInput","type":"[CancelPaymentStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.CancelPaymentStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CancelPaymentStepInput","type":"`object`","description":"The data to cancel one or more payments.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="cancelPaymentStep"/>

@@ -1,0 +1,33 @@
+---
+slug: /references/medusa-workflows/validateClaimStoreCreditAccountInputStep
+sidebar_label: validateClaimStoreCreditAccountInputStep
+sidebar_description: ""
+tags:
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# validateClaimStoreCreditAccountInputStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `validateClaimStoreCreditAccountInputStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates the input for claiming a store credit account. It throws an
+error if the code or customer ID is missing, or if the customer does not have a
+registered account.
+
+## Example
+
+```ts
+const data = validateClaimStoreCreditAccountInputStep({
+  input: { code: "SC-XXXX", customer_id: "cust_123" },
+  customer: {
+    has_account: true
+    // other customer properties...
+  },
+})
+```
+
+## Input
+
+<TypeList types={[{"name":"ValidateClaimStoreCreditAccountInputStepInput","type":"[ValidateClaimStoreCreditAccountInputStepInput](../../../../plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.ValidateClaimStoreCreditAccountInputStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ValidateClaimStoreCreditAccountInputStepInput","type":"`object`","description":"Input to validate that a store credit account claim request is valid.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validateClaimStoreCreditAccountInputStep"/>

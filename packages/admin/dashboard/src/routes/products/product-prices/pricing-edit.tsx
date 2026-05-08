@@ -12,6 +12,7 @@ import { useUpdateProductVariantsBatch } from "../../../hooks/api/products"
 import { useRegions } from "../../../hooks/api/regions"
 import { castNumber } from "../../../lib/cast-number"
 import { VariantPricingForm } from "../common/variant-pricing-form"
+import { ExtendedVariantPrice } from "../../product-variants/product-variant-detail/constants"
 
 export const UpdateVariantPricesSchema = zod.object({
   variants: zod.array(
@@ -44,10 +45,10 @@ export const PricingEdit = ({
       return {}
     }
 
-    return regions.reduce((acc, reg) => {
+    return regions.reduce((acc: Record<string, string>, reg) => {
       acc[reg.id] = reg.currency_code
       return acc
-    }, {})
+    }, {} as Record<string, string>)
   }, [regions])
 
   const variants = variantId
@@ -73,8 +74,8 @@ export const PricingEdit = ({
   })
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    const reqData = values.variants.map((variant, ind) => ({
-      id: variants[ind].id,
+    const reqData = values.variants.filter(Boolean).map((variant, ind) => ({
+      id: variants![ind].id,
       prices: Object.entries(variant.prices || {})
         .filter(
           ([_, value]) => value !== "" && typeof value !== "undefined" // deleted cells
@@ -87,17 +88,19 @@ export const PricingEdit = ({
             ? regionsCurrencyMap[regionId]
             : currencyCodeOrRegionId
 
-          let existingId = undefined
+          let existingId: string | undefined = undefined
 
           if (regionId) {
             existingId = variants?.[ind]?.prices?.find(
-              (p) => p.rules["region_id"] === regionId
+              (p) =>
+                (p as ExtendedVariantPrice).rules?.["region_id"] === regionId
             )?.id
           } else {
             existingId = variants?.[ind]?.prices?.find(
               (p) =>
                 p.currency_code === currencyCode &&
-                Object.keys(p.rules ?? {}).length === 0
+                Object.keys((p as ExtendedVariantPrice).rules ?? {}).length ===
+                  0
             )?.id
           }
 

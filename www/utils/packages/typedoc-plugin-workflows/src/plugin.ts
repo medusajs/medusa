@@ -13,7 +13,7 @@ import {
   SignatureReflection,
 } from "typedoc"
 import ts, { SyntaxKind, VariableStatement } from "typescript"
-import { WorkflowManager, WorkflowDefinition } from "@medusajs/orchestration"
+import { WorkflowManager, WorkflowDefinition } from "@medusajs/framework/orchestration"
 import Helper, { WORKFLOW_AS_STEP_SUFFIX } from "./utils/helper.js"
 import {
   findReflectionInNamespaces,

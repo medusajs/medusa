@@ -6,12 +6,12 @@ import { Form } from "../../common/form"
 
 interface HeadlessControllerProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > extends Omit<ControllerProps<TFieldValues, TName>, "render"> {}
 
 interface SwitchBoxProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > extends HeadlessControllerProps<TFieldValues, TName> {
   label: string
   description: string
@@ -32,7 +32,7 @@ interface SwitchBoxProps<
  */
 export const SwitchBox = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
   label,
   description,

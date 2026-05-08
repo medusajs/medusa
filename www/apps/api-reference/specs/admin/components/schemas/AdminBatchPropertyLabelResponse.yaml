@@ -1,0 +1,41 @@
+type: object
+description: The response of managing property labels.
+x-schemaName: AdminBatchPropertyLabelResponse
+required:
+  - created
+  - updated
+  - deleted
+properties:
+  created:
+    type: array
+    description: The created property labels.
+    items:
+      $ref: ./AdminPropertyLabel.yaml
+  updated:
+    type: array
+    description: The updated property labels.
+    items:
+      $ref: ./AdminPropertyLabel.yaml
+  deleted:
+    type: array
+    description: The deleted property labels.
+    items:
+      type: object
+      description: Details of a deleted property label.
+      required:
+        - id
+        - object
+        - deleted
+      properties:
+        id:
+          type: string
+          title: id
+          description: The ID of the deleted property label.
+        object:
+          type: string
+          title: object
+          description: The type of the deleted object.
+        deleted:
+          type: boolean
+          title: deleted
+          description: Indicates if the property label was deleted.

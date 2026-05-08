@@ -57,7 +57,6 @@ const AdminGetOrdersParamsBase = createFindParams({
     status: z
       .union([z.string(), z.array(z.string()), createOperatorMap()])
       .optional(),
-    name: z.union([z.string(), z.array(z.string())]).optional(),
     sales_channel_id: z.array(z.string()).optional(),
     region_id: z.union([z.string(), z.array(z.string())]).optional(),
     customer_id: z.union([z.string(), z.array(z.string())]).optional(),
@@ -119,6 +118,10 @@ export const OrderCreateShipment = z.object({
   metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 export const AdminOrderCreateShipment = WithAdditionalData(OrderCreateShipment)
+
+export const AdminMarkOrderFulfillmentAsDelivered = z.object({
+  no_notification: z.boolean().optional(),
+})
 
 export type AdminOrderCancelFulfillmentType = z.infer<
   typeof OrderCancelFulfillment

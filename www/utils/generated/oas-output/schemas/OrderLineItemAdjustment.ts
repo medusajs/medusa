@@ -6,6 +6,7 @@
  * required:
  *   - item
  *   - item_id
+ *   - version
  *   - id
  *   - amount
  *   - order_id
@@ -56,6 +57,10 @@
  *     format: date-time
  *     title: updated_at
  *     description: The date the adjustment was updated.
+ *   version:
+ *     type: number
+ *     title: version
+ *     description: The adjustment's version.
  * 
 */
 
