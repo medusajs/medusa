@@ -32,6 +32,7 @@ export const adminPriceListRemoteQueryFields = [
   "metadata",
   "price_list_rules.value",
   "price_list_rules.attribute",
+  ...adminPriceListPriceQueryFields.map((field) => `prices.${field}`),
 ]
 
 export const retrivePriceListPriceQueryConfig = {
