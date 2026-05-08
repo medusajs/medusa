@@ -1,0 +1,36 @@
+---
+slug: /references/medusa-workflows/validateSourceStoreCreditAccountsStep
+sidebar_label: validateSourceStoreCreditAccountsStep
+sidebar_description: ""
+tags:
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# validateSourceStoreCreditAccountsStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `validateSourceStoreCreditAccountsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that the source store credit account can be claimed by the customer. It checks that
+the source account is not already owned by the customer, that it does not belong to another customer, and
+that it has a balance greater than 0. It throws an error if any of these conditions are not met.
+
+## Example
+
+```ts
+validateSourceStoreCreditAccountsStep({
+  sourceStoreCreditAccount: {
+    id: "sca_123",
+    customer_id: null,
+    balance: 1000,
+    // other store credit account properties...
+  },
+  targetStoreCreditAccount: {
+    id: "sca_456",
+    customer_id: "cust_123",
+    balance: 500,
+    // other store credit account properties...
+  },
+})
+```

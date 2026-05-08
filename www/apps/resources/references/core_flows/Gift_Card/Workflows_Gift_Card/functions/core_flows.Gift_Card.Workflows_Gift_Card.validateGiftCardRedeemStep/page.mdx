@@ -1,0 +1,38 @@
+---
+slug: /references/medusa-workflows/validateGiftCardRedeemStep
+sidebar_label: validateGiftCardRedeemStep
+sidebar_description: ""
+tags:
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# validateGiftCardRedeemStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `validateGiftCardRedeemStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that a gift card can be redeemed. It throws an error if the
+gift card is already redeemed or already has an associated store credit account.
+
+## Example
+
+```ts
+const data = validateGiftCardRedeemStep({
+  giftCard: {
+    id: "gc_123",
+    status: GiftCardStatus.ACTIVE,
+    // other gift card properties...
+  },
+  giftCardStoreCreditAccount: {
+    id: "sca_123",
+    balance: 100,
+    // other store credit account properties...
+  },
+  input: { gift_card_id: "gc_123" },
+})
+```
+
+## Input
+
+<TypeList types={[{"name":"ValidateGiftCardRedeemStepInput","type":"[ValidateGiftCardRedeemStepInput](../../../../plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.ValidateGiftCardRedeemStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ValidateGiftCardRedeemStepInput","type":"`object`","description":"Input to validate that a gift card is eligible for redemption.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validateGiftCardRedeemStep"/>

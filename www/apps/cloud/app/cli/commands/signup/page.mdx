@@ -1,0 +1,94 @@
+import { Table, Note } from "docs-ui"
+
+export const metadata = {
+  title: `signup Command - Medusa Cloud CLI Reference`,
+}
+
+# {metadata.title}
+
+Open Cloud in your browser to create a new account.
+
+```bash
+mcloud signup
+```
+
+Running the command without options opens a browser window pointing to the
+Cloud sign-up page.
+
+## Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `--skip-browser`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the Cloud sign-up URL to the terminal instead of opening a
+      browser. Use this on headless servers or in environments where a
+      browser cannot be launched.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Sign Up from a Headless Environment
+
+On remote servers or in containerized environments where no browser is
+available, use `--skip-browser` to get the sign-up URL and open it manually
+in your local browser:
+
+```bash
+mcloud signup --skip-browser
+```
+
+The command prints a URL. Copy it and open it in any browser to complete the
+sign-up process.
+
+<Note>
+
+After creating your account, run `mcloud login` to authenticate the CLI with
+your new credentials.
+
+</Note>

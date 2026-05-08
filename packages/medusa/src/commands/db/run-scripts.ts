@@ -1,6 +1,7 @@
 import { MedusaAppLoader } from "@medusajs/framework"
 import { LinkLoader } from "@medusajs/framework/links"
 import { MigrationScriptsMigrator } from "@medusajs/framework/migrations"
+import { WorkflowLoader } from "@medusajs/framework/workflows"
 import {
   ContainerRegistrationKeys,
   getResolvedPlugins,
@@ -45,7 +46,7 @@ export async function runMigrationScripts({
 
     mergePluginModules(configModule, plugins)
 
-    const resources = await loadResources(plugins, logger)
+    const resources = await loadResources(plugins, logger, container)
     onApplicationPrepareShutdown = resources.onApplicationPrepareShutdown
     onApplicationShutdown = resources.onApplicationShutdown
 
@@ -85,7 +86,8 @@ export async function runMigrationScripts({
 
 async function loadResources(
   plugins: any,
-  logger: Logger
+  logger: Logger,
+  container: MedusaContainer
 ): Promise<{
   onApplicationPrepareShutdown: () => Promise<void>
   onApplicationShutdown: () => Promise<void>
@@ -104,11 +106,25 @@ async function loadResources(
   )
   await new LinkLoader(linksSourcePaths, logger).load()
 
-  const medusaAppResources = await new MedusaAppLoader().load()
+  // Pass the existing container so that registrations (e.g. ContainerRegistrationKeys.QUERY)
+  // are made on the same container that migration scripts will resolve from.
+  // Without this, `useQueryGraphStep` fails with AwilixResolutionError because
+  // `query` is registered in a separate MedusaAppLoader container instance.
+  const medusaAppResources = await new MedusaAppLoader({ container }).load()
   const onApplicationPrepareShutdown =
     medusaAppResources.onApplicationPrepareShutdown
   const onApplicationShutdown = medusaAppResources.onApplicationShutdown
   await medusaAppResources.onApplicationStart()
+
+  // Load workflow hooks from all plugins (including the app directory,
+  // which getResolvedPlugins already includes as a plugin entry).
+  // Without this, workflow hooks defined in src/workflows/ are never
+  // registered during `medusa db:migrate`, causing them to silently
+  // skip execution even though the workflows themselves run successfully.
+  const workflowsSourcePaths = plugins.map((plugin) =>
+    join(plugin.resolve, "workflows")
+  )
+  await new WorkflowLoader(workflowsSourcePaths, container).load()
 
   return {
     onApplicationPrepareShutdown,

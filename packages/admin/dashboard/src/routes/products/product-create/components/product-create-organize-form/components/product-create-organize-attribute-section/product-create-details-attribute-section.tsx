@@ -29,7 +29,7 @@ export const ProductCreateAttributeSection = ({
                   {t("products.fields.countryOrigin.label")}
                 </Form.Label>
                 <Form.Control>
-                  <CountrySelect {...field} />
+                  <CountrySelect {...field} allowClear />
                 </Form.Control>
               </Form.Item>
             )

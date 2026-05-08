@@ -308,7 +308,7 @@ export default class RegionModuleService
     return regions.map((region) =>
       removeUndefined({
         ...region,
-        currency_code: normalizeCurrencyCode(region.currency_code ?? ""),
+        currency_code: region.currency_code ? normalizeCurrencyCode(region.currency_code) : undefined,
         name: region.name?.trim(),
         countries: region.countries?.map((country) => country.toLowerCase()),
       })

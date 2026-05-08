@@ -1,0 +1,28 @@
+---
+slug: /references/medusa-workflows/validateStoreCreditAccountInputStep
+sidebar_label: validateStoreCreditAccountInputStep
+sidebar_description: ""
+tags:
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# validateStoreCreditAccountInputStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `validateStoreCreditAccountInputStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates the input for creating store credit accounts. It throws an
+error if no input is provided or if any entry is missing a currency code.
+
+## Example
+
+```ts
+const data = validateStoreCreditAccountInputStep([
+  { customer_id: "cust_123", currency_code: "usd" },
+])
+```
+
+## Input
+
+<TypeList types={[{"name":"ModuleCreateStoreCreditAccount[]","type":"[ModuleCreateStoreCreditAccount](../../../../../store_credit/types/store_credit.ModuleCreateStoreCreditAccount/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"currency_code","type":"`string`","description":"The three-letter ISO currency code for the account.","optional":false,"defaultValue":"","example":"usd","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"The unique code for the account. If not provided, one is auto-generated.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_id","type":"`string`","description":"The ID of the customer to associate with the account.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"Custom key-value pairs to attach to the account.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validateStoreCreditAccountInputStep"/>

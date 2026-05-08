@@ -5,10 +5,6 @@ import {
 } from "@medusajs/framework/http"
 import { HttpTypes } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
-import {
-  AdminCreatePropertyLabelType,
-  AdminPropertyLabelListParamsType,
-} from "./validators"
 
 /**
  * List property labels.
@@ -16,7 +12,7 @@ import {
  * @featureFlag view_configurations
  */
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminPropertyLabelListParamsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminPropertyLabelListParams>,
   res: MedusaResponse<HttpTypes.AdminPropertyLabelListResponse>
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
@@ -42,7 +38,7 @@ export const GET = async (
  * @featureFlag view_configurations
  */
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCreatePropertyLabelType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminCreatePropertyLabel>,
   res: MedusaResponse<HttpTypes.AdminPropertyLabelResponse>
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)

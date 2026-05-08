@@ -30,8 +30,14 @@ export type PriceListCreateRegionPriceSchema = z.infer<
 >
 
 const PriceListCreateProductVariantSchema = z.object({
-  currency_prices: z.record(z.string(), PriceListCreateCurrencyPriceSchema.optional()),
-  region_prices: z.record(z.string(), PriceListCreateRegionPriceSchema.optional()),
+  currency_prices: z.record(
+    z.string(),
+    PriceListCreateCurrencyPriceSchema.optional()
+  ),
+  region_prices: z.record(
+    z.string(),
+    PriceListCreateRegionPriceSchema.optional()
+  ),
 })
 
 export type PriceListCreateProductVariantSchema = z.infer<
@@ -79,8 +85,14 @@ export type PriceListUpdateRegionPrice = z.infer<
 export const PriceListUpdateProductVariantsSchema = z.record(
   z.string(),
   z.object({
-    currency_prices: z.record(z.string(), PriceListUpdateCurrencyPriceSchema.optional()),
-    region_prices: z.record(z.string(), PriceListUpdateRegionPriceSchema.optional()),
+    currency_prices: z.record(
+      z.string(),
+      PriceListUpdateCurrencyPriceSchema.optional()
+    ),
+    region_prices: z.record(
+      z.string(),
+      PriceListUpdateRegionPriceSchema.optional()
+    ),
   })
 )
 

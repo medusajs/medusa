@@ -55,7 +55,6 @@ export const Search = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
-
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
 

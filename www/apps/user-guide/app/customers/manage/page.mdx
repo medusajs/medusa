@@ -9,7 +9,7 @@ products:
 ---
 
 import { EllipsisHorizontal, ArrowUpRightOnBox, EllipsisVertical } from "@medusajs/icons"
-import { Table } from "docs-ui"
+import { Table, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Manage Customers in Medusa Admin`,
@@ -208,6 +208,28 @@ To delete a customer address:
 3. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon in its row.
 4. Choose Delete from the dropdown.
 5. In the pop-up, enter the address name and click the "Delete" button.
+
+---
+
+## View Customer's Store Credits
+
+<Prerequisites
+  items={[
+    {
+      text: "Loyalty plugin installed",
+      link: "!resources!/commerce-modules/store-credit#1-install-the-loyalty-plugin",
+    },
+  ]}
+/>
+
+If you have the Loyalty plugin installed, customers can have [store credit accounts](../../loyalty/store-credits/page.mdx). These accounts allow you to credit customers manually, or when you issue a refund for an order. Customers can then apply the store credit balance at checkout.
+
+To view a customer's store credit accounts:
+
+1. Go to the customer's details page.
+2. In the "Store Credits" section, you can see all store credit accounts linked to the customer, along with their current balance and currency.
+
+By clicking on an account, you can view its details and transaction history, and credit the account. See the [Manage Store Credits](../../loyalty/store-credits/manage/page.mdx) guide for more details.
 
 ---
 

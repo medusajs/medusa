@@ -24,7 +24,7 @@ export const inventoryItemLevelsQueryKeys = queryKeysFactory(
 )
 
 export const useInventoryItems = (
-  query?: HttpTypes.AdminInventoryItemParams,
+  query?: HttpTypes.AdminInventoryItemsParams,
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminInventoryItemListResponse,

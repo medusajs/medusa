@@ -11,7 +11,6 @@ import {
   ContainerRegistrationKeys,
   MedusaError,
 } from "@medusajs/framework/utils"
-import { AdminUpdatePropertyLabelType } from "../validators"
 
 /**
  * Get a property label by ID.
@@ -49,7 +48,7 @@ export const GET = async (
  * @featureFlag view_configurations
  */
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminUpdatePropertyLabelType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminUpdatePropertyLabel>,
   res: MedusaResponse<HttpTypes.AdminPropertyLabelResponse>
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)

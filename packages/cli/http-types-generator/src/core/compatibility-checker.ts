@@ -42,10 +42,17 @@ export interface CheckPair {
   hasFindParams: boolean
   /** Whether the Zod schema uses createSelectParams() (but not createFindParams). */
   hasSelectParams: boolean
+  /**
+   * For schemas created with `createBatchBody(createValidator, updateValidator, deleteValidator?)`:
+   * maps each batch property name (`create`, `update`, `delete`) to the resolved `_output` type
+   * of the corresponding argument schema. This is needed because `createBatchBody` is non-generic
+   * (parameters typed as `z.ZodType`), so TypeScript resolves the array element types as `unknown`.
+   */
+  batchBodyArgOutputTypes?: Map<string, ts.Type>
 }
 
 /**
- * Zod schema method and internal property names that may leak into resolved TypeScript types.
+ * Zod v4 schema method and internal property names that may leak into resolved TypeScript types.
  */
 const ZOD_INTERNAL_NAMES = new Set([
   "parse",
@@ -54,10 +61,12 @@ const ZOD_INTERNAL_NAMES = new Set([
   "safeParseAsync",
   "refine",
   "superRefine",
+  "overwrite",
   "transform",
   "default",
   "describe",
   "optional",
+  "nonoptional",
   "nullable",
   "array",
   "or",
@@ -66,26 +75,38 @@ const ZOD_INTERNAL_NAMES = new Set([
   "pipe",
   "readonly",
   "catch",
+  "prefault",
   "preprocess",
   "merge",
-  "augment",
   "extend",
   "pick",
   "omit",
   "partial",
   "required",
-  "deepPartial",
   "keyof",
   "strip",
   "strict",
   "passthrough",
-  "setKey",
-  "nonstrict",
   "shape",
   "spa",
   "description",
   "isOptional",
   "isNullable",
+  "check",
+  "clone",
+  "register",
+  "encode",
+  "decode",
+  "encodeAsync",
+  "decodeAsync",
+  "safeEncode",
+  "safeDecode",
+  "safeEncodeAsync",
+  "safeDecodeAsync",
+  "toJSONSchema",
+  "meta",
+  "type",
+  "def",
 ])
 
 /**
@@ -239,6 +260,7 @@ export class CompatibilityChecker {
         lenient,
         hasFindParams,
         hasSelectParams,
+        batchBodyArgOutputTypes: pair.batchBodyArgOutputTypes,
       })
 
     const passed =
@@ -269,6 +291,7 @@ export class CompatibilityChecker {
     lenient = false,
     hasFindParams = false,
     hasSelectParams = false,
+    batchBodyArgOutputTypes,
   }: {
     checker: ts.TypeChecker
     zodType: ts.Type
@@ -276,6 +299,7 @@ export class CompatibilityChecker {
     lenient?: boolean
     hasFindParams?: boolean
     hasSelectParams?: boolean
+    batchBodyArgOutputTypes?: Map<string, ts.Type>
   }): {
     missingFields: FieldDiff[]
     typeMismatchFields: FieldDiff[]
@@ -300,24 +324,73 @@ export class CompatibilityChecker {
         continue
       }
 
-      const zodPropType = checker.getTypeOfSymbol(zodProp)
+      const rawPropType = checker.getTypeOfSymbol(zodProp)
 
-      if (
-        zodPropType.getProperty("_output") !== undefined ||
-        zodPropType.getProperty("_input") !== undefined
-      ) {
-        continue
-      }
-
-      const callSigs = zodPropType.getCallSignatures()
+      // Skip callable properties whose return type is a Zod schema (Zod method leaks).
+      const callSigs = rawPropType.getCallSignatures()
       if (callSigs.length > 0) {
         const retType = checker.getReturnTypeOfSignature(callSigs[0])
         if (
           retType.getProperty("_output") !== undefined ||
-          retType.getProperty("_input") !== undefined
+          retType.getProperty("_input") !== undefined ||
+          retType.getProperty("_zod") !== undefined
         ) {
           continue
         }
+      }
+
+      // In Zod v4, the resolved object _output type may contain raw Zod schema types
+      // (instead of plain TS types) for properties. Resolve them to their output types
+      // so we can compare them correctly against the HTTP type.
+      let zodPropType = rawPropType
+      if (
+        rawPropType.getProperty("_output") !== undefined ||
+        rawPropType.getProperty("_input") !== undefined ||
+        rawPropType.getProperty("_zod") !== undefined
+      ) {
+        const innerOutput = TsHelpers.getZodOutputType(checker, rawPropType)
+        if (!innerOutput) {
+          continue // Can't resolve — likely a Zod method leak, skip
+        }
+        zodPropType = innerOutput
+      }
+
+      // For createBatchBody schemas, TypeScript resolves array element types as `unknown`
+      // because createBatchBody is non-generic. Use the AST-resolved arg output types instead.
+      const batchElemType = batchBodyArgOutputTypes?.get(name)
+      if (batchElemType !== undefined) {
+        const httpProp = httpProps.get(name)
+        if (httpProp && TsHelpers.hasHttpValidationIgnoreTag(httpProp)) {
+          continue
+        }
+        if (!httpProp) {
+          missingFields.push({
+            fieldName: name,
+            expectedType:
+              TsHelpers.typeToDisplayString(checker, batchElemType) +
+              "[] | undefined",
+          })
+          continue
+        }
+        const httpPropType = checker.getTypeOfSymbol(httpProp)
+        const httpNonNull = checker.getNonNullableType(httpPropType)
+        if (checker.isArrayType(httpNonNull)) {
+          const httpElemArgs = checker.getTypeArguments(
+            httpNonNull as ts.TypeReference
+          )
+          const httpElem = httpElemArgs[0]
+          if (httpElem && checker.isTypeAssignableTo(batchElemType, httpElem)) {
+            continue
+          }
+        }
+        typeMismatchFields.push({
+          fieldName: name,
+          expectedType:
+            TsHelpers.typeToDisplayString(checker, batchElemType) +
+            "[] | undefined",
+          actualType: TsHelpers.typeToDisplayString(checker, httpPropType),
+        })
+        continue
       }
 
       const httpProp = httpProps.get(name)
@@ -333,6 +406,10 @@ export class CompatibilityChecker {
           fieldName: name,
           expectedType: TsHelpers.typeToDisplayString(checker, zodPropType),
         })
+        continue
+      }
+
+      if (TsHelpers.hasHttpValidationIgnoreTag(httpProp)) {
         continue
       }
 
@@ -390,8 +467,11 @@ export class CompatibilityChecker {
       ) {
         continue
       }
+      const httpProp = httpProps.get(name)!
+      if (TsHelpers.hasHttpValidationIgnoreTag(httpProp)) {
+        continue
+      }
       if (!zodProps.has(name)) {
-        const httpProp = httpProps.get(name)!
         const httpPropType = checker.getTypeOfSymbol(httpProp)
         extraFields.push({
           fieldName: name,

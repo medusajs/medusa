@@ -4,7 +4,10 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { CreatedAtCell } from "../../../../../components/table/table-cells/common/created-at-cell"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
-import { TextCell, TextHeader } from "../../../../../components/table/table-cells/common/text-cell"
+import {
+  TextCell,
+  TextHeader,
+} from "../../../../../components/table/table-cells/common/text-cell"
 import { ReservationActions } from "./reservation-actions"
 
 /**
@@ -26,9 +29,7 @@ export const useReservationTableColumn = ({ sku }: { sku: string }) => {
         id: "sku",
         header: () => <TextHeader text={t("fields.sku")} />,
         cell: () => {
-          return (
-            <TextCell text={sku} />
-          )
+          return <TextCell text={sku} />
         },
       }),
       columnHelper.accessor("line_item.order_id", {
@@ -40,9 +41,7 @@ export const useReservationTableColumn = ({ sku }: { sku: string }) => {
             return <PlaceholderCell />
           }
 
-          return (
-            <TextCell text={orderId} />
-          )
+          return <TextCell text={orderId} />
         },
       }),
       columnHelper.accessor("description", {
@@ -54,9 +53,7 @@ export const useReservationTableColumn = ({ sku }: { sku: string }) => {
             return <PlaceholderCell />
           }
 
-          return (
-            <TextCell text={description} />
-          )
+          return <TextCell text={description} />
         },
       }),
       columnHelper.accessor("location.name", {
@@ -68,9 +65,7 @@ export const useReservationTableColumn = ({ sku }: { sku: string }) => {
             return <PlaceholderCell />
           }
 
-          return (
-            <TextCell text={location} />
-          )
+          return <TextCell text={location} />
         },
       }),
       columnHelper.accessor("created_at", {

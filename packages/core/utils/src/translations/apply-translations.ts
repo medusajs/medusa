@@ -33,6 +33,10 @@ function gatherIds(object: Record<string, any>, gatheredIds: Set<string>) {
   })
 }
 
+function isEmptyStringTranslation(value: unknown): boolean {
+  return typeof value === "string" && value.trim() === ""
+}
+
 function applyTranslation(
   object: Record<string, any>,
   entityIdToTranslation: Map<string, Record<string, any>>
@@ -48,7 +52,8 @@ function applyTranslation(
     if (hasTranslation) {
       if (
         key in translation &&
-        typeof object[key] === typeof translation[key]
+        typeof object[key] === typeof translation[key] &&
+        !isEmptyStringTranslation(translation[key])
       ) {
         object[key] = translation[key]
         return
