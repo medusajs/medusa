@@ -361,7 +361,9 @@ describe("validateAndTransformQuery", () => {
 
     expect(mockRequest.listConfig).toEqual(
       expect.objectContaining({
-        select: queryConfig.defaults,
+        select: expect.arrayContaining(
+          queryConfig.defaults.filter((s) => !s.includes("."))
+        ),
       })
     )
 
@@ -403,10 +405,104 @@ describe("validateAndTransformQuery", () => {
 
     expect(mockRequest.listConfig).toEqual(
       expect.objectContaining({
-        select: [
+        select: expect.arrayContaining([
           "title",
-          ...queryConfig.defaults
-        ],
+          ...queryConfig.defaults.filter((s) => !s.includes("."))
+        ]),
+      })
+    )
+
+    mockRequest = {
+      restrictedFields: new RestrictedFields(),
+      query: {
+        fields: "-*,+title",
+      },
+    } as unknown as MedusaRequest
+
+    queryConfig = {
+      defaults: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id"
+      ],
+      allowed: [
+        "id",
+        "title",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+        "*variants"
+      ],
+      isList: true,
+    }
+
+    middleware = validateAndTransformQuery(createFindParams(), queryConfig)
+
+    await middleware(mockRequest, mockResponse, nextFunction)
+
+    expect(mockRequest.listConfig).toEqual(
+      expect.objectContaining({
+        select: expect.arrayContaining([
+          "id",
+          "title",
+          ...queryConfig.defaults.filter((s) => s.includes("."))
+        ]),
+      })
+    )
+
+    mockRequest = {
+      restrictedFields: new RestrictedFields(),
+      query: {
+        fields: "-*,title",
+      },
+    } as unknown as MedusaRequest
+
+    queryConfig = {
+      defaults: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id"
+      ],
+      allowed: [
+        "id",
+        "title",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "metadata.id",
+        "metadata.parent.id",
+        "metadata.children.id",
+        "metadata.product.id",
+        "*variants"
+      ],
+      isList: true,
+    }
+
+    middleware = validateAndTransformQuery(createFindParams(), queryConfig)
+
+    await middleware(mockRequest, mockResponse, nextFunction)
+
+    expect(mockRequest.listConfig).toEqual(
+      expect.objectContaining({
+        select: expect.arrayContaining([
+          "title",
+          "id",
+          "*"
+        ])
       })
     )
   })

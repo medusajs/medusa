@@ -115,7 +115,9 @@ export class FieldParser {
     starFields: Set<string>
   ): void {
     allFields.forEach((field) => {
-      if (field.startsWith("*") || field.endsWith(".*")) {
+      if (field !== "*" && (
+        field.startsWith("*") || field.endsWith(".*")
+      )) {
         starFields.add(field.replace(/(^\*|\.\*$)/, ""))
         allFields.delete(field)
       }
