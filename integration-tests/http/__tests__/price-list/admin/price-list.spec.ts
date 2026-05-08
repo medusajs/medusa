@@ -202,6 +202,29 @@ medusaIntegrationTestRunner({
           expect(response.data.price_list).not.toHaveProperty("prices")
         })
 
+        it("returns a price list by :id with price variant ids", async () => {
+          const response = await api.get(
+            `/admin/price-lists/${pricelist1.id}?fields=prices.*`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.price_list.prices).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                amount: 100,
+                currency_code: "usd",
+                variant_id: product1.variants[0].id,
+              }),
+              expect.objectContaining({
+                amount: 80,
+                currency_code: "usd",
+                variant_id: product1.variants[0].id,
+              }),
+            ])
+          )
+        })
+
         it("returns a list of price lists", async () => {
           const response = await api.get("/admin/price-lists", adminHeaders)
 
@@ -214,6 +237,35 @@ medusaIntegrationTestRunner({
               }),
               expect.objectContaining({
                 id: pricelist2.id,
+              }),
+            ])
+          )
+        })
+
+        it("returns a list of price lists with price variant ids", async () => {
+          const response = await api.get(
+            "/admin/price-lists?fields=prices.*",
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+
+          const priceList = response.data.price_lists.find(
+            (priceList) => priceList.id === pricelist1.id
+          )
+
+          expect(priceList).toBeDefined()
+          expect(priceList?.prices).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                amount: 100,
+                currency_code: "usd",
+                variant_id: product1.variants[0].id,
+              }),
+              expect.objectContaining({
+                amount: 80,
+                currency_code: "usd",
+                variant_id: product1.variants[0].id,
               }),
             ])
           )
