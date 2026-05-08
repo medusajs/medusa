@@ -287,6 +287,9 @@ export const createCompleteReturnValidationStep = createStep(
   }
 )
 
+/**
+ * The ID of the workflow that creates and completes a return from the storefront.
+ */
 export const createAndCompleteReturnOrderWorkflowId =
   "create-complete-return-order"
 /**
