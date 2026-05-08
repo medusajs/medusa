@@ -25,16 +25,12 @@ import { useDataTable } from "../../../../../hooks/use-data-table"
 import { queryClient } from "../../../../../lib/query-client"
 import { useCurrenciesTableColumns } from "../../../common/hooks/use-currencies-table-columns"
 import { useCurrenciesTableQuery } from "../../../common/hooks/use-currencies-table-query"
+import { AddCurrenciesSchema } from "./add-currencies-form.schema"
 
 type AddCurrenciesFormProps = {
   store: HttpTypes.AdminStore
   pricePreferences: HttpTypes.AdminPricePreference[]
 }
-
-const AddCurrenciesSchema = zod.object({
-  currencies: zod.array(zod.string()).min(1),
-  pricePreferences: zod.record(zod.string(), zod.boolean()),
-})
 
 const PAGE_SIZE = 50
 const PREFIX = "ac"
