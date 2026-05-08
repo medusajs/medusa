@@ -12,7 +12,7 @@ export const metadata = {
 
 # {metadata.title}
 
-This guide is written for AI agents that manage Medusa Cloud resources through the Cloud CLI. It covers best practices, working principles, and common workflows for using the CLI in an agentic development context.
+This guide is written for AI agents that manage Cloud resources through the Cloud CLI. It covers best practices, working principles, and common workflows for using the CLI in an agentic development context.
 
 If you're a human user, copy the following instructions to your agent to get started:
 
@@ -86,7 +86,7 @@ If the version is below `v22`, ask the user to upgrade Node.js (for example, via
 Install `@medusajs/mcloud` globally with the user's preferred package manager:
 
 ```bash npm2yarn
-npm install -g @medusajs/mcloud
+npm install @medusajs/mcloud -g
 ```
 
 Verify the install:
@@ -99,7 +99,7 @@ A successful version string confirms the CLI is on `PATH`. If the command is not
 
 ### 4. Log In or Sign Up
 
-Ask the user whether they already have a Medusa Cloud account.
+Ask the user whether they already have a Cloud account.
 
 If yes, run [`mcloud login`](../commands/login/page.mdx) to authenticate. The CLI opens a browser to complete the flow:
 

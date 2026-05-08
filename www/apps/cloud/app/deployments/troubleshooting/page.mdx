@@ -10,13 +10,13 @@ In this guide, you'll find solutions to common issues that may arise when deploy
 
 When a deployment fails, you can see the [build](../../logs/page.mdx#view-build-logs-on-cloud) and [runtime logs](../../logs/page.mdx#view-runtime-logs-on-cloud) of your deployment to understand the cause of the failure.
 
-Alternatively, you can install the [Medusa Cloud CLI](../../cli/page.mdx) and use it to check logs from your terminal or with the help of AI agents like Claude Code.
+Alternatively, you can install the [Cloud CLI](../../cli/page.mdx) and use it to check logs from your terminal or with the help of AI agents like Claude Code.
 
 For example:
 
 ```bash
 # Install the CLI
-npm install @medusajs/mc -g
+npm install @medusajs/mcloud -g
 
 # Login
 mcloud login
@@ -28,7 +28,7 @@ mcloud logs --organization org_123 --project proj_123 --environment env_123
 mcloud logs --organization org_123 --project proj_123 --environment env_123 --deployment-id deploy_123
 ```
 
-See the [Medusa Cloud CLI](../../cli/page.mdx) guide for more details on how to use the CLI to manage your Cloud resources and deployments.
+See the [Cloud CLI](../../cli/page.mdx) guide for more details on how to use the CLI to manage your Cloud resources and deployments.
 
 ---
 

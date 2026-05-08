@@ -1117,7 +1117,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install the Cloud CLI
-        run: npm install -g @medusajs/mcloud
+        run: npm install @medusajs/mcloud -g
 
       - name: Create Cloud environment
         run: |
@@ -1133,7 +1133,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install the Cloud CLI
-        run: npm install -g @medusajs/mcloud
+        run: npm install @medusajs/mcloud -g
 
       - name: Delete Cloud environment
         run: |
