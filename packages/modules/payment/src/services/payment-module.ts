@@ -984,15 +984,18 @@ export default class PaymentModuleService
       sharedContext
     )
 
-    await this.paymentProviderService_.cancelPayment(payment.provider_id, {
-      data: payment.data!,
-      context: {
-        idempotency_key: payment.id,
-      },
-    })
+    const { data } = await this.paymentProviderService_.cancelPayment(
+      payment.provider_id,
+      {
+        data: payment.data!,
+        context: {
+          idempotency_key: payment.id,
+        },
+      }
+    )
 
     await this.paymentService_.update(
-      { id: paymentId, canceled_at: new Date() },
+      { id: paymentId, canceled_at: new Date(), data },
       sharedContext
     )
 
