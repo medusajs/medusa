@@ -369,6 +369,15 @@ export const defaultCurrencies: Record<string, Currency> = {
     code: "GHS",
     name_plural: "Ghanaian cedis",
   },
+  GMD: {
+    symbol: "D",
+    name: "Gambian Dalasi",
+    symbol_native: "D",
+    decimal_digits: 2,
+    rounding: 0,
+    code: "GMD",
+    name_plural: "Gambian dalasis",
+  },
   GNF: {
     symbol: "FG",
     name: "Guinean Franc",
@@ -1078,7 +1087,7 @@ export const defaultCurrencies: Record<string, Currency> = {
     decimal_digits: 0,
     rounding: 0,
     code: "XPF",
-    name_plural: "CFP francs"
+    name_plural: "CFP francs",
   },
   YER: {
     symbol: "YR",
