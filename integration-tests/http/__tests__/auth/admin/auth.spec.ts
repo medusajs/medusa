@@ -1,4 +1,5 @@
 import { generateResetPasswordTokenWorkflow } from "@medusajs/core-flows"
+import { IAuthModuleService } from "@medusajs/framework/types"
 import { AuthWorkflowEvents, Modules } from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import jwt from "jsonwebtoken"
@@ -495,6 +496,130 @@ medusaIntegrationTestRunner({
 
       expect(decodedOriginalToken.iat).toBeLessThan(decodedRefreshedToken.iat)
       expect(decodedOriginalToken.exp).toBeLessThan(decodedRefreshedToken.exp)
+    })
+
+    it("should preserve custom app_metadata fields on token refresh", async () => {
+      // Register a new identity via emailpass
+      const signup = await api.post("/auth/user/emailpass/register", {
+        email: "custom-meta@medusa.js",
+        password: "secret_password",
+      })
+      expect(signup.status).toEqual(200)
+
+      // Add custom fields to the auth identity's app_metadata
+      const authModule: IAuthModuleService = container.resolve(Modules.AUTH)
+      const { auth_identity_id } = jwt.decode(signup.data.token) as any
+      await authModule.updateAuthIdentities({
+        id: auth_identity_id,
+        app_metadata: { is_verified: true, custom_role: "manager" },
+      })
+
+      // Login to get a fresh token that reflects the updated app_metadata
+      const login = await api.post("/auth/user/emailpass", {
+        email: "custom-meta@medusa.js",
+        password: "secret_password",
+      })
+      expect(login.status).toEqual(200)
+
+      const loginDecoded = jwt.decode(login.data.token) as any
+      expect(loginDecoded.app_metadata).toMatchObject({
+        is_verified: true,
+        custom_role: "manager",
+      })
+
+      // Refresh the token and verify custom fields are not stripped
+      const refresh = await api.post(
+        "/auth/token/refresh",
+        {},
+        { headers: { authorization: `Bearer ${login.data.token}` } }
+      )
+      expect(refresh.status).toEqual(200)
+
+      const refreshDecoded = jwt.decode(refresh.data.token) as any
+      expect(refreshDecoded.app_metadata).toMatchObject({
+        is_verified: true,
+        custom_role: "manager",
+      })
+    })
+
+    it("should include auth_provider in the JWT and preserve it on token refresh", async () => {
+      // Register and log in via emailpass
+      await api.post("/auth/user/emailpass/register", {
+        email: "provider-test@medusa.js",
+        password: "secret_password",
+      })
+
+      const login = await api.post("/auth/user/emailpass", {
+        email: "provider-test@medusa.js",
+        password: "secret_password",
+      })
+      expect(login.status).toEqual(200)
+
+      // Initial token should carry auth_provider so refresh can resolve user_metadata
+      const loginDecoded = jwt.decode(login.data.token) as any
+      expect(loginDecoded.auth_provider).toEqual("emailpass")
+
+      // Refresh — auth_provider must be forwarded so provider identity is resolved
+      const refresh = await api.post(
+        "/auth/token/refresh",
+        {},
+        { headers: { authorization: `Bearer ${login.data.token}` } }
+      )
+      expect(refresh.status).toEqual(200)
+
+      const refreshDecoded = jwt.decode(refresh.data.token) as any
+      expect(refreshDecoded.auth_provider).toEqual("emailpass")
+    })
+
+    it("should preserve user_metadata from the provider identity on token refresh", async () => {
+      // Register via emailpass to get an auth identity with a provider identity
+      const signup = await api.post("/auth/user/emailpass/register", {
+        email: "user-meta@medusa.js",
+        password: "secret_password",
+      })
+      expect(signup.status).toEqual(200)
+
+      // Seed user_metadata directly on the provider identity (simulates what an
+      // OIDC/Auth0 provider would set in validateCallback)
+      const authModule: IAuthModuleService = container.resolve(Modules.AUTH)
+      const { auth_identity_id } = jwt.decode(signup.data.token) as any
+      const authIdentity = await authModule.retrieveAuthIdentity(
+        auth_identity_id,
+        { relations: ["provider_identities"] }
+      )
+      const providerIdentityId = authIdentity.provider_identities![0].id
+      await authModule.updateProviderIdentities({
+        id: providerIdentityId,
+        user_metadata: { email: "user-meta@medusa.js", roles: ["editor"] },
+      })
+
+      // Login to get a fresh token that includes the user_metadata
+      const login = await api.post("/auth/user/emailpass", {
+        email: "user-meta@medusa.js",
+        password: "secret_password",
+      })
+      expect(login.status).toEqual(200)
+
+      const loginDecoded = jwt.decode(login.data.token) as any
+      expect(loginDecoded.user_metadata).toEqual({
+        email: "user-meta@medusa.js",
+        roles: ["editor"],
+      })
+
+      // Refresh — user_metadata must survive because provider_identities is
+      // now eagerly loaded and auth_provider is forwarded from the JWT claim
+      const refresh = await api.post(
+        "/auth/token/refresh",
+        {},
+        { headers: { authorization: `Bearer ${login.data.token}` } }
+      )
+      expect(refresh.status).toEqual(200)
+
+      const refreshDecoded = jwt.decode(refresh.data.token) as any
+      expect(refreshDecoded.user_metadata).toEqual({
+        email: "user-meta@medusa.js",
+        roles: ["editor"],
+      })
     })
   },
 })

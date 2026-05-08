@@ -6890,6 +6890,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "loaded": true,
                   "isPathHref": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/validateSourceStoreCreditAccountsStep",
+                  "title": "validateSourceStoreCreditAccountsStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/validateStoreCreditAccountInputStep",
                   "title": "validateStoreCreditAccountInputStep",
                   "description": "",

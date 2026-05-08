@@ -1,3 +1,5 @@
+import { Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
+
 export const metadata = {
   title: `Preview Environments`,
 }
@@ -78,8 +80,27 @@ Similar to long-lived environments, you can open a preview environment's dashboa
 
 To open a preview environment's dashboard:
 
-1. Go to its [project's dashboard](../../projects/page.mdx#open-project-dashboard).
-2. In the "Previews" card, click on the preview environment you want to view.
+
+<Tabs defaultValue="classic">
+  <TabsList>
+    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
+    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
+  </TabsList>
+  <TabsContentWrapper>
+    <TabsContent value="classic">
+
+    1. Go to its [project's dashboard](../../projects/page.mdx#open-project-dashboard).
+    2. In the "Previews" card, click on the preview environment you want to view.
+
+    </TabsContent>
+    <TabsContent value="global-sidebar">
+
+    1. Go to its [project's dashboard](../../projects/page.mdx#open-project-dashboard).
+    2. Click on the preview environment name in the sidebar.
+
+    </TabsContent>
+  </TabsContentWrapper>
+</Tabs>
 
 Then, you can manage the preview environment just like any other long-lived environment. You can [manage its environment variables](../environment-variables/page.mdx) and [import/export its database dump](../../database/page.mdx).
 

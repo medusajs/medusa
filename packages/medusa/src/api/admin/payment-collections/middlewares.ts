@@ -9,6 +9,7 @@ import { Entities } from "./query-config"
 import {
   AdminCreatePaymentCollection,
   AdminGetPaymentCollectionParams,
+  AdminInitializePaymentSession,
   AdminMarkPaymentCollectionPaid,
 } from "./validators"
 
@@ -44,6 +45,23 @@ export const adminPaymentCollectionsMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/payment-collections/:id/mark-as-paid",
     middlewares: [
       validateAndTransformBody(AdminMarkPaymentCollectionPaid),
+      validateAndTransformQuery(
+        AdminGetPaymentCollectionParams,
+        queryConfig.retrievePaymentCollectionTransformQueryConfig
+      ),
+    ],
+    policies: [
+      {
+        resource: Entities.payment_collection,
+        operation: PolicyOperation.update,
+      },
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/payment-collections/:id/payment-sessions",
+    middlewares: [
+      validateAndTransformBody(AdminInitializePaymentSession),
       validateAndTransformQuery(
         AdminGetPaymentCollectionParams,
         queryConfig.retrievePaymentCollectionTransformQueryConfig
