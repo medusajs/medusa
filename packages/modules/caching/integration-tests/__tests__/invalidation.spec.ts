@@ -223,6 +223,45 @@ moduleIntegrationTestRunner<ICachingModuleService>({
 
           expect(cachedList).toBeNull()
         })
+
+        it("should invalidate filtered lists when an entity not in the cached list is updated (regression for #14903)", async () => {
+          const listQuery = {
+            entity: "product",
+            filters: { status: "published" },
+            includes: ["id", "title", "status"],
+          }
+
+          // Cached list reflects the published-only view; prod_3 is a draft
+          // and was filtered out, so it never appears here.
+          const publishedProducts = [
+            { id: "prod_1", title: "Product 1", status: "published" },
+            { id: "prod_2", title: "Product 2", status: "published" },
+          ]
+
+          const listKey = await service.computeKey(listQuery)
+
+          await service.set({
+            key: listKey,
+            data: publishedProducts,
+          })
+
+          // prod_3 transitions draft -> published. It was not in the cached
+          // list, so without the list:* wildcard invalidation the stale
+          // response would survive until TTL.
+          await mockEventBus.emit(
+            [
+              {
+                name: "product.updated",
+                data: { id: "prod_3", status: "published" },
+              },
+            ],
+            {}
+          )
+
+          const cachedList = await service.get({ key: listKey })
+
+          expect(cachedList).toBeNull()
+        })
       })
 
       describe("Nested Entity Caching", () => {
