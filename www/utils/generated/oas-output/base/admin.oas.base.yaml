@@ -11,10 +11,13 @@ tags:
       API keys can be used for authentication or resource-scoping.
 
 
-      A secret API key can be used to authenticate admin users.  A publishable API key can be used to scope client requests to one or more sales channels.
+      A secret API key can be used to authenticate admin users.  A publishable
+      API key can be used to scope client requests to one or more sales
+      channels.
 
 
-      These API routes allow admin users to manage both publishable and secret API keys.
+      These API routes allow admin users to manage both publishable and secret
+      API keys.
     externalDocs:
       description: Learn more about the API Key Module
       url: https://docs.medusajs.com/resources/commerce-modules/api-key
@@ -29,7 +32,8 @@ tags:
       start and end dates.
 
 
-      These API routes allow admin users to manage campaigns, their conditions, and promotions that belong to them.
+      These API routes allow admin users to manage campaigns, their conditions,
+      and promotions that belong to them.
     externalDocs:
       description: Learn more about campaigns.
       url: https://docs.medusajs.com/resources/commerce-modules/promotion/campaign
@@ -41,7 +45,8 @@ tags:
       is defective or incorrect.
 
 
-      Using these API routes, admin users manage order claims, their items, and more.
+      Using these API routes, admin users manage order claims, their items, and
+      more.
     x-associatedSchema:
       $ref: "#/components/schemas/AdminClaim"
     externalDocs:
@@ -53,7 +58,8 @@ tags:
       purposes. For example, a summer collection.
 
 
-      These API routes allow admin users to manage collections and the products in them.
+      These API routes allow admin users to manage collections and the products
+      in them.
     x-associatedSchema:
       $ref: "#/components/schemas/AdminCollection"
   - name: Currencies
@@ -62,7 +68,8 @@ tags:
       with at least one currency.
 
 
-      Currencies are defined by the Currency Module. Currency API Routes allow admins to list and update currencies.
+      Currencies are defined by the Currency Module. Currency API Routes allow
+      admins to list and update currencies.
     externalDocs:
       description: Learn more about the Currency Module
       url: https://docs.medusajs.com/resources/commerce-modules/currency
@@ -74,10 +81,12 @@ tags:
       segregation and marketing purposes.
 
 
-      For example, you can provide different prices for specific customers by creating a price list conditioned to their group.
+      For example, you can provide different prices for specific customers by
+      creating a price list conditioned to their group.
 
 
-      These API routes allow admin users to manage groups and the customers in them.
+      These API routes allow admin users to manage groups and the customers in
+      them.
     externalDocs:
       description: Learn more about the Customer Module
       url: https://docs.medusajs.com/resources/commerce-modules/customer
@@ -144,7 +153,8 @@ tags:
       "shipping" or "pick up".
 
 
-      All fulfillment-related configurations in a store are related to a fulfillment set.
+      All fulfillment-related configurations in a store are related to a
+      fulfillment set.
 
 
       These API routes allow admin users to manage fulfillment sets.
@@ -170,22 +180,24 @@ tags:
       A gift card is a prepaid card that can be used to pay for items during
       checkout.
 
-      Gift cards can be purchased by customers, or created by admin users. When a gift card is redeemed, its amount is added to the customer's store credit account, which can then be used to pay for items during checkout.
+      Gift cards can be purchased by customers, or created by admin users. When
+      a gift card is redeemed, its amount is added to the customer's store
+      credit account, which can then be used to pay for items during checkout.
 
-      These API routes allow admin users to manage gift cards, transfer gift cards between customers, and more.
+      These API routes allow admin users to manage gift cards, transfer gift
+      cards between customers, and more.
 
       <Note>
 
-      Gift Card routes are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
+      Gift Card routes are only available through the [Loyalty
+      Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
 
       </Note>
     x-associatedSchema:
       $ref: "#/components/schemas/AdminGiftCard"
   - name: Index
-    description: >
-      The Index Module is a tool to perform high-performance queries across
-      modules, for example, to filter linked modules.
-
+    description: |
+      The Index Module is a tool to perform high-performance queries across modules, for example, to filter linked modules.
       The Index Module is currently experimental and is hidden behind a feature flag. Learn more about it and how to enable it in the [Index Module guide](https://docs.medusajs.com/learn/fundamentals/module-links/index-module).
   - name: Inventory Items
     description: |
@@ -214,7 +226,8 @@ tags:
       A locale is a language that content is translated into for customers to
       view in a storefront.
 
-      Medusa installs locales by default. These API routes allow admin users to retrieve and view locales.
+      Medusa installs locales by default. These API routes allow admin users to
+      retrieve and view locales.
     externalDocs:
       description: Learn more about locales and translations.
       url: https://docs.medusajs.com/resources/commerce-modules/translation/concepts
@@ -247,13 +260,15 @@ tags:
       methods, and more.
 
 
-      Changes made by an order edit are only applied on the order once they're confirmed.
+      Changes made by an order edit are only applied on the order once they're
+      confirmed.
 
 
       The order's previous version is retained due to versioning.
 
 
-      These API routes allow admin users to make edits to an order and manage those edits.
+      These API routes allow admin users to make edits to an order and manage
+      those edits.
     externalDocs:
       description: Learn more about the Order Module
       url: https://docs.medusajs.com/resources/commerce-modules/order
@@ -278,7 +293,8 @@ tags:
       Every purchase or request for payment starts with a payment collection.
 
 
-      A payment collection holds the payment sessions used to authorize the payment amount, and the payments to be captured / refunded.
+      A payment collection holds the payment sessions used to authorize the
+      payment amount, and the payments to be captured / refunded.
 
 
       These API routes allow admin users to manage payment collections.
@@ -293,7 +309,8 @@ tags:
       then be captured or refunded.
 
 
-      A payment is created from the payment session that was authorized, and it belongs to the payment session's collection.
+      A payment is created from the payment session that was authorized, and it
+      belongs to the payment session's collection.
 
 
       These API routes allow admin users to manage payments.
@@ -307,9 +324,11 @@ tags:
       A plugin is a package of reusable Medusa customizations that you can
       install in any Medusa application.
 
-      Plugins can be used to add new functionality, such as wishlists, or integrate third-party services, such as payment providers.
+      Plugins can be used to add new functionality, such as wishlists, or
+      integrate third-party services, such as payment providers.
 
-      These API routes allow admin users to retrieve plugins installed in their Medusa application.
+      These API routes allow admin users to retrieve plugins installed in their
+      Medusa application.
     externalDocs:
       description: Learn more about plugins.
       url: https://docs.medusajs.com/learn/fundamentals/plugins
@@ -321,7 +340,8 @@ tags:
       rules are satisfied.
 
 
-      Price lists are useful for sales or special prices for special conditions, such as applying prices for a set of customers.
+      Price lists are useful for sales or special prices for special conditions,
+      such as applying prices for a set of customers.
 
 
       These API routes allow admin users to manage price lists.
@@ -336,7 +356,8 @@ tags:
       for a context, such as a region or currency code.
 
 
-      These API routes allow admin users to manage whether a region or currency is tax inclusive.
+      These API routes allow admin users to manage whether a region or currency
+      is tax inclusive.
     externalDocs:
       description: Learn more about tax-inclusiveness and the role of a price preference.
       url: https://docs.medusajs.com/resources/commerce-modules/pricing/tax-inclusive-pricing
@@ -347,10 +368,12 @@ tags:
       Products can be categorized into categories.
 
 
-      Categories are nested and their heirarchy can be managed, giving admin users flexibility in how they categorize their products.
+      Categories are nested and their heirarchy can be managed, giving admin
+      users flexibility in how they categorize their products.
 
 
-      These API routes allow admin users to manage categories and the products in them.
+      These API routes allow admin users to manage categories and the products
+      in them.
     externalDocs:
       description: Learn more about the Product Module
       url: https://docs.medusajs.com/resources/commerce-modules/product
@@ -388,7 +411,9 @@ tags:
       A product variant is a saleable form of the product.
 
 
-      Each variant has different option values. For example, a "Shirt" product may have a  "Blue" variant and a "Green" variant. Customers choose from these variants when they buy the product.
+      Each variant has different option values. For example, a "Shirt" product
+      may have a  "Blue" variant and a "Green" variant. Customers choose from
+      these variants when they buy the product.
 
 
       These API routes allow admin users to manage product variants.
@@ -406,7 +431,8 @@ tags:
       A product can be organized into categories or collections.
 
 
-      A product can have many options, and variants for each of these options' values.
+      A product can have many options, and variants for each of these options'
+      values.
 
 
       These API routes allow admin users to manage products.
@@ -421,13 +447,16 @@ tags:
       methods, or the entire order.
 
 
-      Promotions have different types, such as a `standard` promotion that just discounts an amount, or a `buyget` promotion to enforce a "buy X get Y" promotion.
+      Promotions have different types, such as a `standard` promotion that just
+      discounts an amount, or a `buyget` promotion to enforce a "buy X get Y"
+      promotion.
 
 
       A promotion has rules to restrict how and when they're applied.
 
 
-      Promotions belong to a campaign, which sets conditions on the promotion such as when it starts and ends.
+      Promotions belong to a campaign, which sets conditions on the promotion
+      such as when it starts and ends.
 
 
       These API routes allow admin users to manage promotions.
@@ -436,6 +465,9 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/promotion/concepts
     x-associatedSchema:
       $ref: "#/components/schemas/AdminPromotion"
+  - name: Property Labels
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminPropertyLabel"
   - name: Refund Reasons
     description: >
       A refund reason is a possible reason used when issuing a refund to the
@@ -451,7 +483,8 @@ tags:
       store serves customers in.
 
 
-      These API routes allow admin users to manage regions, their providers, and more.
+      These API routes allow admin users to manage regions, their providers, and
+      more.
     externalDocs:
       description: Learn more about the Region Module.
       url: https://docs.medusajs.com/resources/commerce-modules/region
@@ -462,7 +495,9 @@ tags:
       A reservation is unavailable quantity of an inventory item in a location.
 
 
-      A reservation is created automatically for variants in an order whose `manage_inventory` is enabled. Admin users can also create reservations manually.
+      A reservation is created automatically for variants in an order whose
+      `manage_inventory` is enabled. Admin users can also create reservations
+      manually.
 
 
       These API routes allow admin users to manage reservations.
@@ -485,7 +520,9 @@ tags:
       Admin users create a return when a customer returns an item to them.
 
 
-      Returns can also be created by customers through the storefront, and admins will be able to manage them and make refunds, if necessary. Refunds are made through the [Payment API Routes](#payment)
+      Returns can also be created by customers through the storefront, and
+      admins will be able to manage them and make refunds, if necessary. Refunds
+      are made through the [Payment API Routes](#payment)
 
 
       These API routes allow admin users to manage returns.
@@ -500,7 +537,8 @@ tags:
       example, a webshop or a mobile app.
 
 
-      These API routes allow admins to manage sales channels and the products available in them.
+      These API routes allow admins to manage sales channels and the products
+      available in them.
     externalDocs:
       description: Learn more about the Sales Channel Module.
       url: https://docs.medusajs.com/resources/commerce-modules/sales-channel
@@ -523,10 +561,12 @@ tags:
       A shipping option is a way of shipping an item to or from the customer.
 
 
-      Shipping options are associated with the fulfillment provider used to handle their fulfillment.
+      Shipping options are associated with the fulfillment provider used to
+      handle their fulfillment.
 
 
-      Shipping options can be restricted geographically by service zones, and by custom rules, such as an item's weight or the customer's group.
+      Shipping options can be restricted geographically by service zones, and by
+      custom rules, such as an item's weight or the customer's group.
 
 
       These API routes allow admins to manage shipping options.
@@ -553,13 +593,16 @@ tags:
       A stock location is where stock-kept items (products) are kept.
 
 
-      Stock locations are linked to fulfillment providers used to fulfill items from this location.
+      Stock locations are linked to fulfillment providers used to fulfill items
+      from this location.
 
 
-      A stock location is also link to a fulfillment set, indicating where an item is fulfilled from  when an order is placed.
+      A stock location is also link to a fulfillment set, indicating where an
+      item is fulfilled from  when an order is placed.
 
 
-      These API routes allow admin users to manage stock locations and their linked data.
+      These API routes allow admin users to manage stock locations and their
+      linked data.
     externalDocs:
       description: Learn more about stock locations.
       url: https://docs.medusajs.com/resources/commerce-modules/stock-location/concepts
@@ -571,13 +614,17 @@ tags:
       customer. They hold the customer's store credit balance,  including their
       credit and debit amounts.
 
-      Store credit accounts allow you to build features that let customers pay for items using their store credit balance, such as gift cards or loyalty points.
+      Store credit accounts allow you to build features that let customers pay
+      for items using their store credit balance, such as gift cards or loyalty
+      points.
 
-      These API routes allow admin users to manage store credit accounts, their transactions, and more.
+      These API routes allow admin users to manage store credit accounts, their
+      transactions, and more.
 
       <Note>
 
-      Store Credit Account routes are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
+      Store Credit Account routes are only available for Cloud users using the
+      [Loyalty Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
 
       </Note>
     x-associatedSchema:
@@ -588,7 +635,9 @@ tags:
       store, such as supported currencies or default sales channel.
 
 
-      By default, the Medusa application has one default store. There are no API routes to create more stores. Instead, you'd have  to handle that customization manually.
+      By default, the Medusa application has one default store. There are no API
+      routes to create more stores. Instead, you'd have  to handle that
+      customization manually.
 
 
       These API routes allow admin users to manage their store.
@@ -602,7 +651,8 @@ tags:
       A tax provider is a third-party integration or custom logic used to
       calculate taxes for a cart or an order.
 
-      These API routes allow admin users to manage tax providers installed in their Medusa application.
+      These API routes allow admin users to manage tax providers installed in
+      their Medusa application.
     externalDocs:
       description: Learn more about the Tax Module Providers
       url: https://docs.medusajs.com/resources/commerce-modules/tax/tax-provider
@@ -614,7 +664,8 @@ tags:
       taxable item's price, such as line items or shipping methods.
 
 
-      Each tax region has a default tax rate. You can create tax rates that override the default using tax rules.
+      Each tax region has a default tax rate. You can create tax rates that
+      override the default using tax rules.
 
 
       These API routes allow admin users to manage tax rates and their rules.
@@ -643,7 +694,8 @@ tags:
       A translation is a localized version of content in a specific locale. For
       example, a product description in French.
 
-      These API routes allow admin users to manage translations for different locales and resources.
+      These API routes allow admin users to manage translations for different
+      locales and resources.
     externalDocs:
       description: Learn more about the Translation Module.
       url: https://docs.medusajs.com/resources/commerce-modules/translation
@@ -655,7 +707,8 @@ tags:
       installed file module provider.
 
 
-      You can upload public files, such as product images, or private files, such as CSV files used to import products.
+      You can upload public files, such as product images, or private files,
+      such as CSV files used to import products.
     externalDocs:
       description: Check out available file module providers.
       url: https://docs.medusajs.com/resources/infrastructure-modules/file
@@ -665,7 +718,8 @@ tags:
       as an admin user.
 
 
-      An admin user can invite other users to join their team. Once they accept the invite, they'll become admin users as well.
+      An admin user can invite other users to join their team. Once they accept
+      the invite, they'll become admin users as well.
 
 
       These API routes allow admin users to manage their team.
@@ -681,7 +735,8 @@ tags:
       application.
 
 
-      Depending on the workflow engine you use, executions may only be retained for a short while, or only until the Medusa application is restarted.
+      Depending on the workflow engine you use, executions may only be retained
+      for a short while, or only until the Medusa application is restarted.
     externalDocs:
       description: Check out available Workflow Engine Modules
       url: https://docs.medusajs.com/resources/infrastructure-modules/workflow-engine

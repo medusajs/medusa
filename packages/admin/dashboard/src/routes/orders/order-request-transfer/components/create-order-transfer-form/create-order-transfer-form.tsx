@@ -45,7 +45,9 @@ export function CreateOrderTransferForm({
       sdk.admin.customer.list({ ...params, has_account: true }),
     getOptions: (data) =>
       data.customers.map((item) => ({
-        label: `${item.first_name || ""} ${item.last_name || ""} (${item.email})`,
+        label: `${item.first_name || ""} ${item.last_name || ""} (${
+          item.email
+        })`,
         value: item.id,
       })),
   })

@@ -159,6 +159,12 @@ const nextConfig = {
       basePath: false,
       permanent: true,
     },
+    {
+      source: "/cloud/loyalty-plugin",
+      destination: "/resources/commerce-modules/loyalty",
+      basePath: false,
+      permanent: true,
+    },
   ],
   rewrites: async () => {
     return {

@@ -21,11 +21,7 @@ import { deleteExchangesStep } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = deleteExchangesStep({
-      "ids": [
-        "id_FcQy1eCeB2WpKMa9tyr"
-      ]
-    })
+    const data = deleteExchangesStep({})
   }
 )
 ```
@@ -33,7 +29,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"DeleteOrderExchangesInput","type":"[DeleteOrderExchangesInput](../../../../types/core_flows.DeleteOrderExchangesInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of deleting one or more exchanges.","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"The IDs of the exchanges to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteExchangesStep"/>
+<TypeList types={[{"name":"DeleteOrderExchangesInput","type":"[DeleteOrderExchangesInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.DeleteOrderExchangesInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeleteOrderExchangesInput","type":"`object`","description":"The details of deleting one or more exchanges.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteExchangesStep"/>
 
 ## Output
 

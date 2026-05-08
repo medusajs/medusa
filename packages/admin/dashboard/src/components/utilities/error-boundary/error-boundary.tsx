@@ -35,21 +35,27 @@ export const ErrorBoundary = () => {
   if (process.env.NODE_ENV === "development") {
     console.error(error)
     const fileDetails = errorStack?.split("\n")[1]?.trim()
-    const filename = fileDetails?.match(/([^\/\\?]+)(?:\?[^:]*)?:\d+:\d+\)/)?.[1] || "unknown"
-    const lineno = fileDetails?.match(/(?:\?[^:]*)?:(\d+):\d+\)/)?.[1] || "unknown"
-    const colno = fileDetails?.match(/(?:\?[^:]*)?:\d+:(\d+)\)/)?.[1] || "unknown"
-    window.parent.postMessage({
-      data: {
-        type: "RUNTIME_ERROR",
-        level: "error",
-        message: errorMessage,
-        stack: errorStack,
-        logged_at: new Date().toISOString(),
-        filename,
-        lineno,
-        colno,
-      }
-    }, "*")
+    const filename =
+      fileDetails?.match(/([^/\\?]+)(?:\?[^:]*)?:\d+:\d+\)/)?.[1] || "unknown"
+    const lineno =
+      fileDetails?.match(/(?:\?[^:]*)?:(\d+):\d+\)/)?.[1] || "unknown"
+    const colno =
+      fileDetails?.match(/(?:\?[^:]*)?:\d+:(\d+)\)/)?.[1] || "unknown"
+    window.parent.postMessage(
+      {
+        data: {
+          type: "RUNTIME_ERROR",
+          level: "error",
+          message: errorMessage,
+          stack: errorStack,
+          logged_at: new Date().toISOString(),
+          filename,
+          lineno,
+          colno,
+        },
+      },
+      "*"
+    )
   }
 
   let title: string
@@ -75,9 +81,11 @@ export const ErrorBoundary = () => {
   }
 
   const handleCopyError = () => {
-    const errorText = `Error: ${errorMessage}\n\n${errorStack || "No stack trace available"}`
+    const errorText = `Error: ${errorMessage}\n\n${
+      errorStack || "No stack trace available"
+    }`
     const success = copy(errorText)
-    
+
     if (success) {
       toast.success("Error details copied to clipboard")
     } else {
@@ -103,21 +111,14 @@ export const ErrorBoundary = () => {
           </div>
         </div>
         {isDevelopment && errorMessage && (
-          <div className="bg-ui-bg-disabled border-ui-border-subtle max-w-3xl overflow-scroll max-h-[400px] rounded-lg border p-4">
+          <div className="bg-ui-bg-disabled border-ui-border-subtle max-h-[400px] max-w-3xl overflow-scroll rounded-lg border p-4">
             <div className="flex flex-col gap-y-4">
               <div className="flex items-center justify-between">
-                <Text
-                  size="small"
-                  weight="plus"
-                  className="text-ui-fg-base"
-                >
+                <Text size="small" weight="plus" className="text-ui-fg-base">
                   Error Details (Development Mode)
                 </Text>
                 <Tooltip content="Copy error details">
-                  <IconButton
-                    onClick={handleCopyError}
-                    variant="transparent"
-                  >
+                  <IconButton onClick={handleCopyError} variant="transparent">
                     <SquareTwoStack className="text-ui-fg-muted" />
                   </IconButton>
                 </Tooltip>
@@ -125,7 +126,7 @@ export const ErrorBoundary = () => {
               <div>
                 <Text
                   size="xsmall"
-                  className="text-ui-fg-subtle font-mono break-words"
+                  className="text-ui-fg-subtle break-words font-mono"
                 >
                   {errorMessage}
                 </Text>

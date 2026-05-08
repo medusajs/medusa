@@ -1,4 +1,4 @@
-import { useCallback } from "react"
+import { RefObject, useCallback } from "react"
 import { FieldValues, Path, PathValue } from "react-hook-form"
 
 import { DataGridBulkUpdateCommand, DataGridMatrix } from "../models"
@@ -8,6 +8,7 @@ type UseDataGridClipboardEventsOptions<
   TData,
   TFieldValues extends FieldValues
 > = {
+  containerRef: RefObject<HTMLDivElement>
   matrix: DataGridMatrix<TData, TFieldValues>
   isEditing: boolean
   anchor: DataGridCoordinates | null
@@ -26,6 +27,7 @@ export const useDataGridClipboardEvents = <
   TData,
   TFieldValues extends FieldValues
 >({
+  containerRef,
   matrix,
   anchor,
   rangeEnd,
@@ -40,6 +42,29 @@ export const useDataGridClipboardEvents = <
         return
       }
 
+      const container = containerRef.current
+      if (e.defaultPrevented || !container) {
+        return
+      }
+
+      const activeElement = document.activeElement
+      if (activeElement && !container.contains(activeElement)) {
+        return
+      }
+
+      const selection = window.getSelection()
+      if (selection && !selection.isCollapsed) {
+        const selectionInsideGrid =
+          !!selection.anchorNode &&
+          !!selection.focusNode &&
+          container.contains(selection.anchorNode) &&
+          container.contains(selection.focusNode)
+
+        if (!selectionInsideGrid) {
+          return
+        }
+      }
+
       e.preventDefault()
 
       const fields = matrix.getFieldsInSelection(anchor, rangeEnd)
@@ -50,13 +75,13 @@ export const useDataGridClipboardEvents = <
           if (typeof value === "object" && value !== null) {
             return JSON.stringify(value)
           }
-          return `${value}` ?? ""
+          return value == null ? "" : `${value}`
         })
         .join("\t")
 
       e.clipboardData?.setData("text/plain", text)
     },
-    [isEditing, anchor, rangeEnd, matrix, getSelectionValues]
+    [isEditing, anchor, rangeEnd, containerRef, matrix, getSelectionValues]
   )
 
   const handlePasteEvent = useCallback(

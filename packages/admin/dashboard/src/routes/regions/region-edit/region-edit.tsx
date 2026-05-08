@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
 import { RouteDrawer } from "../../../components/modals"
-import { usePaymentProviders } from "../../../hooks/api/payments"
 import { useRegion } from "../../../hooks/api/regions"
 import { useStore } from "../../../hooks/api/store"
 import { currencies } from "../../../lib/data/currencies"

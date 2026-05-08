@@ -1,4 +1,4 @@
-import { getCleanMd, PLAINTEXT_DOC_MESSAGE } from "docs-utils"
+import { addExtraToMd, getCleanMd } from "docs-utils"
 import { existsSync } from "fs"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
@@ -87,13 +87,19 @@ export async function GET(req: NextRequest, { params }: Params) {
     await client.shutdown()
   }
 
-  return new NextResponse(cleanMdContent + PLAINTEXT_DOC_MESSAGE, {
-    headers: {
-      "Content-Type": "text/markdown",
-      "Cache-Control": "public, max-age=3600, must-revalidate",
-    },
-    status: 200,
-  })
+  return new NextResponse(
+    addExtraToMd(cleanMdContent, {
+      baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "",
+      basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
+    }),
+    {
+      headers: {
+        "Content-Type": "text/markdown",
+        "Cache-Control": "public, max-age=3600, must-revalidate",
+      },
+      status: 200,
+    }
+  )
 }
 
 const getCleanMd_ = unstable_cache(

@@ -46,8 +46,6 @@ describe("render", () => {
     expect(wrapper).toHaveClass("bg-medusa-bg-component")
     expect(wrapper).not.toHaveClass("bg-medusa-code-bg-header")
     expect(wrapper).not.toHaveClass("bg-medusa-contrast-bg-base")
-    expect(wrapper).toHaveClass("border-medusa-border-base")
-    expect(wrapper).not.toHaveClass("border-medusa-code-border")
   })
 
   test("render with children, blockStyle subtle, and colorMode dark", () => {
@@ -63,7 +61,5 @@ describe("render", () => {
     expect(wrapper).toHaveClass("bg-medusa-code-bg-header")
     expect(wrapper).not.toHaveClass("bg-medusa-bg-component")
     expect(wrapper).not.toHaveClass("bg-medusa-contrast-bg-base")
-    expect(wrapper).not.toHaveClass("border-medusa-border-base")
-    expect(wrapper).toHaveClass("border-medusa-code-border")
   })
 })

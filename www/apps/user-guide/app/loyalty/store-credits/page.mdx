@@ -1,0 +1,38 @@
+---
+sidebar_autogenerate_exclude: true
+sidebar_label: "Store Credits Overview"
+tags:
+  - user guide
+  - store credit
+products:
+  - store credit
+---
+
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Store Credits in Medusa Admin`,
+}
+
+# {metadata.title}
+
+<Prerequisites
+  items={[
+    {
+      text: "Loyalty plugin installed",
+      link: "!resources!/commerce-modules/store-credit#1-install-the-loyalty-plugin",
+    },
+  ]}
+/>
+
+Store credit accounts are balance accounts you create and link to customers. You can add funds to a customer's store credit account, and they can apply the balance at checkout. Each account has a currency and tracks all credit and debit transactions.
+
+You can view all store credit accounts in the **Store Credits** section. From there, you can also create and manage store credit accounts. See the [Manage Store Credits](./manage/page.mdx) guide for more details.
+
+You can also view a customer's store credit accounts directly from their details page in the **Customers** section.
+
+---
+
+## Manage Store Credits
+
+- [Manage Store Credits](./manage/page.mdx)

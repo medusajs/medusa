@@ -18,11 +18,7 @@ import { deleteOrderLineItems } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = deleteOrderLineItems({
-      "ids": [
-        "id_eenHJVs8CBRQO"
-      ]
-    })
+    const data = deleteOrderLineItems({})
   }
 )
 ```
@@ -30,7 +26,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"DeleteOrderLineItemsStepInput","type":"[DeleteOrderLineItemsStepInput](../../../../interfaces/core_flows.DeleteOrderLineItemsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of deleting order line items.","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"The IDs of the order line items to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteOrderLineItems"/>
+<TypeList types={[{"name":"DeleteOrderLineItemsStepInput","type":"[DeleteOrderLineItemsStepInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.DeleteOrderLineItemsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeleteOrderLineItemsStepInput","type":"`object`","description":"The details of deleting order line items.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteOrderLineItems"/>
 
 ## Output
 
