@@ -74,10 +74,10 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
-            "title": "Bloom",
-            "path": "/learn/introduction/build-with-llms-ai/bloom",
+            "title": "Cloud CLI",
+            "path": "/learn/introduction/build-with-llms-ai/cloud-cli",
             "children": [],
-            "chapterTitle": "2.2. Bloom",
+            "chapterTitle": "2.2. Cloud CLI",
             "number": "2.2."
           },
           {
@@ -104,11 +104,21 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "title": "Bloom",
+            "path": "/learn/introduction/build-with-llms-ai/bloom",
+            "children": [],
+            "chapterTitle": "2.5. Bloom",
+            "number": "2.5."
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "title": "AI-Friendly Docs",
             "path": "/learn/introduction/build-with-llms-ai/ai-friendly-docs",
             "children": [],
-            "chapterTitle": "2.5. AI-Friendly Docs",
-            "number": "2.5."
+            "chapterTitle": "2.6. AI-Friendly Docs",
+            "number": "2.6."
           }
         ],
         "chapterTitle": "2. Agentic Development",

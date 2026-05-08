@@ -1,3 +1,4 @@
+import { refundPaymentsWorkflow } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { ClaimType } from "@medusajs/utils"
 import {
@@ -476,6 +477,50 @@ medusaIntegrationTestRunner({
             ],
           })
         )
+      })
+
+      it("refundPaymentsWorkflow allows refund slightly exceeding captured amount within currency epsilon", async () => {
+        const payment = order.payment_collections[0].payments[0]
+
+        await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          { amount: 87.957975 },
+          adminHeaders
+        )
+
+        const { result } = await refundPaymentsWorkflow(container).run({
+          input: [{ payment_id: payment.id, amount: 87.96 }],
+        })
+
+        expect(result).toEqual([
+          expect.objectContaining({
+            id: payment.id,
+            refunds: expect.arrayContaining([
+              expect.objectContaining({ amount: 87.96 }),
+            ]),
+          }),
+        ])
+      })
+
+      it("refundPaymentsWorkflow rejects refund exceeding captured amount beyond currency epsilon", async () => {
+        const payment = order.payment_collections[0].payments[0]
+
+        await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          { amount: 87.957975 },
+          adminHeaders
+        )
+
+        // 87.98 - 87.957975 = 0.022025, which is beyond USD epsilon (0.01)
+        await expect(
+          refundPaymentsWorkflow(container).run({
+            input: [{ payment_id: payment.id, amount: 87.98 }],
+          })
+        ).rejects.toMatchObject({
+          message: expect.stringContaining(
+            "is trying to refund amount greater than the refundable amount"
+          ),
+        })
       })
     })
   },

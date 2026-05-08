@@ -1,0 +1,52 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `version Command - Medusa Cloud CLI Reference`,
+}
+
+# {metadata.title}
+
+Print the installed version of the Cloud CLI along with the Node.js and platform metadata.
+
+```bash
+mcloud version
+```
+
+Use this command to confirm which version is installed before reporting bugs or comparing behavior across machines.
+
+Alternatively, you can also use the `--version` flag, if you don't need to pass any other flags:
+
+```bash
+mcloud --version
+```
+
+## Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

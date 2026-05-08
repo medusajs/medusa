@@ -3065,6 +3065,171 @@ medusaIntegrationTestRunner({
           })
         })
 
+        describe("empty cart validation", () => {
+          it("should fail to complete an empty cart via the store endpoint", async () => {
+            const emptyCart = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  shipping_address: shippingAddressData,
+                },
+                storeHeadersWithCustomer
+              )
+            ).data.cart
+
+            const paymentCollection = (
+              await api.post(
+                `/store/payment-collections`,
+                { cart_id: emptyCart.id },
+                storeHeaders
+              )
+            ).data.payment_collection
+
+            await api.post(
+              `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+              { provider_id: "pp_system_default" },
+              storeHeaders
+            )
+
+            const error = await api
+              .post(
+                `/store/carts/${emptyCart.id}/complete`,
+                {},
+                storeHeaders
+              )
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(400)
+            expect(error.response.data.message).toEqual(
+              "Cannot complete a cart with no items"
+            )
+          })
+
+          it("should successfully complete a cart with items (regression guard)", async () => {
+            const cartWithItems = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  shipping_address: shippingAddressData,
+                  items: [
+                    { variant_id: product.variants[0].id, quantity: 1 },
+                  ],
+                },
+                storeHeadersWithCustomer
+              )
+            ).data.cart
+
+            const stockLocation = (
+              await api.post(
+                `/admin/stock-locations`,
+                { name: "test location regression" },
+                adminHeaders
+              )
+            ).data.stock_location
+
+            await api.post(
+              `/admin/stock-locations/${stockLocation.id}/sales-channels`,
+              { add: [salesChannel.id] },
+              adminHeaders
+            )
+
+            const fulfillmentSets = (
+              await api.post(
+                `/admin/stock-locations/${stockLocation.id}/fulfillment-sets?fields=*fulfillment_sets`,
+                {
+                  name: `Test-regression-${shippingProfile.id}`,
+                  type: "test-type",
+                },
+                adminHeaders
+              )
+            ).data.stock_location.fulfillment_sets
+
+            const fulfillmentSet = (
+              await api.post(
+                `/admin/fulfillment-sets/${fulfillmentSets[0].id}/service-zones`,
+                {
+                  name: `Test-regression-${shippingProfile.id}`,
+                  geo_zones: [{ type: "country", country_code: "US" }],
+                },
+                adminHeaders
+              )
+            ).data.fulfillment_set
+
+            await api.post(
+              `/admin/stock-locations/${stockLocation.id}/fulfillment-providers`,
+              { add: ["manual_test-provider"] },
+              adminHeaders
+            )
+
+            const shippingOption = (
+              await api.post(
+                `/admin/shipping-options`,
+                {
+                  name: `Test shipping regression ${fulfillmentSet.id}`,
+                  service_zone_id: fulfillmentSet.service_zones[0].id,
+                  shipping_profile_id: shippingProfile.id,
+                  provider_id: "manual_test-provider",
+                  price_type: "flat",
+                  type: {
+                    label: "Test type",
+                    description: "Test description",
+                    code: "test-code",
+                  },
+                  prices: [{ currency_code: "usd", amount: 1000 }],
+                  rules: [],
+                },
+                adminHeaders
+              )
+            ).data.shipping_option
+
+            await api.post(
+              `/store/carts/${cartWithItems.id}/shipping-methods`,
+              { option_id: shippingOption.id },
+              storeHeaders
+            )
+
+            const paymentCollection = (
+              await api.post(
+                `/store/payment-collections`,
+                { cart_id: cartWithItems.id },
+                storeHeaders
+              )
+            ).data.payment_collection
+
+            await api.post(
+              `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+              { provider_id: "pp_system_default" },
+              storeHeaders
+            )
+
+            const response = await api.post(
+              `/store/carts/${cartWithItems.id}/complete`,
+              {},
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.type).toEqual("order")
+            expect(response.data.order).toEqual(
+              expect.objectContaining({
+                id: expect.any(String),
+                currency_code: "usd",
+                items: expect.arrayContaining([
+                  expect.objectContaining({
+                    quantity: 1,
+                  }),
+                ]),
+              })
+            )
+          })
+        })
+
         describe("shipping validation", () => {
           it("should fail to complete the cart if no shipping method is selected and items require shipping", async () => {
             const cart = (
