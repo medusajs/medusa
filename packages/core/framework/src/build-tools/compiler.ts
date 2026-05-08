@@ -6,6 +6,25 @@ import path from "path"
 import type tsStatic from "typescript"
 
 /**
+ * Returns true when a relative file path should be excluded from compilation.
+ * Matches against path segments so that a chunk like "test" only skips files
+ * inside a directory named exactly "test/", not files whose name contains the
+ * substring "test" (e.g. "reset-test-vendor-password.ts").
+ */
+export function shouldIgnoreFile(
+  relativeFileName: string,
+  chunksToIgnore: string[]
+): boolean {
+  const relativeSegments = relativeFileName.split(path.sep)
+  return chunksToIgnore.some((chunk) => {
+    const chunkSegments = chunk.split("/")
+    return relativeSegments.some((_, i) =>
+      chunkSegments.every((seg, j) => relativeSegments[i + j] === seg)
+    )
+  })
+}
+
+/**
  * The compiler exposes the opinionated APIs for compiling Medusa
  * applications and plugins. You can perform the following
  * actions.
@@ -191,9 +210,7 @@ export class Compiler {
     const ts = await this.#loadTSCompiler()
     const filesToCompile = tsConfig.fileNames.filter((fileName) => {
       const relativeFileName = path.relative(this.#projectRoot, fileName)
-      return !chunksToIgnore.some((chunk) =>
-        relativeFileName.includes(`${chunk}`)
-      )
+      return !shouldIgnoreFile(relativeFileName, chunksToIgnore)
     })
 
     /**
