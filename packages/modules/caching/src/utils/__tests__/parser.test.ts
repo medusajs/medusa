@@ -112,7 +112,6 @@ describe("CacheInvalidationParser", () => {
       expect(entities[0]).toEqual({
         type: "Product",
         id: "prod_123",
-        isInArray: false,
       })
     })
 
@@ -132,12 +131,10 @@ describe("CacheInvalidationParser", () => {
       expect(entities).toContainEqual({
         type: "Product",
         id: "prod_123",
-        isInArray: false,
       })
       expect(entities).toContainEqual({
         type: "ProductCollection",
         id: "col_456",
-        isInArray: false,
       })
     })
 
@@ -165,17 +162,14 @@ describe("CacheInvalidationParser", () => {
       expect(entities).toContainEqual({
         type: "Product",
         id: "prod_123",
-        isInArray: false,
       })
       expect(entities).toContainEqual({
         type: "ProductVariant",
         id: "var_789",
-        isInArray: true,
       })
       expect(entities).toContainEqual({
         type: "ProductVariant",
         id: "var_790",
-        isInArray: true,
       })
     })
 
@@ -214,32 +208,26 @@ describe("CacheInvalidationParser", () => {
       expect(entities).toContainEqual({
         type: "Order",
         id: "order_123",
-        isInArray: false,
       })
       expect(entities).toContainEqual({
         type: "OrderItem",
         id: "item_456",
-        isInArray: true,
       })
       expect(entities).toContainEqual({
         type: "ProductVariant",
         id: "var_789",
-        isInArray: false,
       })
       expect(entities).toContainEqual({
         type: "Product",
         id: "prod_123",
-        isInArray: false,
       })
       expect(entities).toContainEqual({
         type: "ProductCollection",
         id: "col_456",
-        isInArray: false,
       })
       expect(entities).toContainEqual({
         type: "Customer",
         id: "cus_789",
-        isInArray: false,
       })
     })
 
@@ -274,7 +262,6 @@ describe("CacheInvalidationParser", () => {
       expect(entities[0]).toEqual({
         type: "Product",
         id: "prod_123",
-        isInArray: false,
       })
     })
   })
