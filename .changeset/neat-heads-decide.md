@@ -2,4 +2,4 @@
 "@medusajs/framework": patch
 ---
 
-fix(framework): expand "\*" wildcard into default fields before parsing
+fix(framework): allow passing "\*" wildcard as field in API requests to retrieve all entity's fields without relations
