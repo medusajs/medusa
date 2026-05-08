@@ -1,0 +1,115 @@
+import { Note, InlineIcon } from "docs-ui"
+import { ShieldCheck, CommandLine, EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Access Keys`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to create and manage access keys to authenticate with Cloud APIs.
+
+## What are Access Keys?
+
+Access keys are API credentials that allow you to authenticate with Cloud services programmatically. They provide secure access to your Cloud resources without requiring interactive login.
+
+Access keys are useful when using the [Medusa Cloud CLI](../cli/page.mdx) in non-interactive environments such as CI/CD pipelines, server scripts, or when you want to avoid opening a browser for authentication.
+
+Cloud supports two types of access keys:
+
+- **Organization Access Keys**: Provide access to organization-level resources and settings.
+- **Personal Access Keys**: Provide access to your personal account resources and any organizations you belong to.
+
+---
+
+## Manage Organization Access Keys
+
+Organization access keys allow API access to organization-level resources such as projects, environments, and billing information. These keys can be managed by any organization member.
+
+To manage organization access keys:
+
+1. [Open your organization's settings](../organizations/page.mdx#view-organization-settings).
+2. Click on the **Org Access Keys** tab in the sidebar.
+
+From this page, you can view all organization access keys, including their names, redacted key previews, and creation dates.
+
+### Create Organization Access Key
+
+To create a new organization access key:
+
+1. In the Organization Access Keys page, click **Create Access Key**.
+2. In the modal that appears, enter a **Name** for your access key. Choose a descriptive name that helps you identify the key's purpose.
+3. Click **Create**.
+
+After creation, the full access key token will be displayed with a copy button. Make sure to copy and store this token before closing the modal, as it won't be shown again.
+
+### Rename Organization Access Key
+
+To rename an existing organization access key:
+
+1. In the Organization Access Keys table, find the key you want to rename.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> button in the key's row.
+3. Select **Rename** from the dropdown menu.
+4. Enter the new name and click **Save**.
+
+### Delete Organization Access Key
+
+<Note type="warning">
+
+Deleting an access key will immediately revoke API access for any applications or scripts using that key. This action cannot be undone.
+
+</Note>
+
+To delete an organization access key:
+
+1. In the Organization Access Keys table, find the key you want to delete.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> button in the key's row.
+3. Select **Delete** from the dropdown menu.
+4. Confirm the deletion in the popup.
+
+---
+
+## Manage Personal Access Keys
+
+Personal access keys provide API access to your individual account resources and all organizations you have access to. These keys are private to your account and can only be managed by you.
+
+To access your personal access keys:
+
+1. [Open your organization's settings](../organizations/page.mdx#view-organization-settings).
+2. Click on the **Personal Access Keys** tab in the sidebar.
+
+From this page, you can view all your personal access keys, including their names, redacted key previews, and creation dates.
+
+### Create Personal Access Key
+
+To create a new personal access key:
+
+1. In the Personal Access Keys page, click **Create Access Key**.
+2. In the modal that appears, enter a **Name** for your access key. Choose a descriptive name that helps you identify the key's purpose.
+3. Click **Create**.
+
+After creation, the full access key token will be displayed with a copy button. Make sure to copy and store this token before closing the modal, as it won't be shown again.
+
+### Rename Personal Access Key
+
+To rename an existing personal access key:
+
+1. In the Personal Access Keys table, find the key you want to rename.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> button in the key's row.
+3. Select **Rename** from the dropdown menu.
+4. Enter the new name and click **Save**.
+
+### Delete Personal Access Key
+
+<Note type="warning">
+
+Deleting an access key will immediately revoke API access for any applications or scripts using that key. This action cannot be undone.
+
+</Note>
+
+To delete a personal access key:
+
+1. In the Personal Access Keys table, find the key you want to delete.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> button in the key's row.
+3. Select **Delete** from the dropdown menu.
+4. Confirm the deletion in the confirmation dialog.
