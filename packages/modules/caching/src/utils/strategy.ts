@@ -52,10 +52,6 @@ export class DefaultCacheStrategy implements ICachingStrategy {
         return
       } finally {
         const eventName = data.name
-        const operation = eventName.split(".").pop() as
-          | "created"
-          | "updated"
-          | "deleted"
         const entityType = eventName.split(".").slice(-2).shift()!
 
         const eventData = data.data as
@@ -78,7 +74,6 @@ export class DefaultCacheStrategy implements ICachingStrategy {
 
             const tags_ = await this.computeTags(item, {
               entities: [entityReference],
-              operation,
             })
             tags.push(...tags_)
           }
@@ -103,7 +98,6 @@ export class DefaultCacheStrategy implements ICachingStrategy {
     input: object,
     options?: {
       entities?: EntityReference[]
-      operation?: "created" | "updated" | "deleted"
     }
   ): Promise<string[]> {
     // Parse the input object to identify entities
