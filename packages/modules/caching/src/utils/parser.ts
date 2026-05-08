@@ -183,10 +183,7 @@ export class CacheInvalidationParser {
   /**
    * Build invalidation events based on parsed entities
    */
-  buildInvalidationEvents(
-    entities: EntityReference[],
-    operation: "created" | "updated" | "deleted" = "updated"
-  ): InvalidationEvent[] {
+  buildInvalidationEvents(entities: EntityReference[]): InvalidationEvent[] {
     const events: InvalidationEvent[] = []
     const processedEntities = new Set<string>()
 

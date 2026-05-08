@@ -462,34 +462,10 @@ describe("CacheInvalidationParser", () => {
       ])
     })
 
-    it("should include simplified cache keys for created operation", () => {
+    it("should invalidate list caches when entity was not in any cached array (regression for #14903)", () => {
       const entities: EntityReference[] = [{ type: "Product", id: "prod_123" }]
 
-      const events = parser.buildInvalidationEvents(entities, "created")
-
-      const productEvent = events[0]
-      expect(productEvent.cacheKeys).toEqual([
-        "Product:prod_123",
-        "Product:list:*",
-      ])
-    })
-
-    it("should include simplified cache keys for deleted operation", () => {
-      const entities: EntityReference[] = [{ type: "Product", id: "prod_123" }]
-
-      const events = parser.buildInvalidationEvents(entities, "deleted")
-
-      const productEvent = events[0]
-      expect(productEvent.cacheKeys).toEqual([
-        "Product:prod_123",
-        "Product:list:*",
-      ])
-    })
-
-    it("should invalidate list caches on updated operation even when entity was not in any cached array (regression for #14903)", () => {
-      const entities: EntityReference[] = [{ type: "Product", id: "prod_123" }]
-
-      const events = parser.buildInvalidationEvents(entities, "updated")
+      const events = parser.buildInvalidationEvents(entities)
 
       const productEvent = events[0]
       expect(productEvent.cacheKeys).toEqual([

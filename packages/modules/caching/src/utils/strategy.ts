@@ -117,8 +117,7 @@ export class DefaultCacheStrategy implements ICachingStrategy {
 
     // Build invalidation events to get comprehensive cache keys
     const events = this.#cacheInvalidationParser.buildInvalidationEvents(
-      entities_,
-      options?.operation
+      entities_
     )
 
     // Collect all unique cache keys from all events as tags
