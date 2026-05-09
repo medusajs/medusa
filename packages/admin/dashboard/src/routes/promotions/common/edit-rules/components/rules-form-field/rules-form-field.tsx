@@ -399,7 +399,7 @@ export const RulesFormField = ({
 
             {index < fields.length - 1 && (
               <div className="relative px-6 py-3">
-                <div className="border-ui-border-strong absolute bottom-0 left-[40px] top-0 z-[-1] w-px bg-[linear-gradient(var(--border-strong)_33%,rgba(255,255,255,0)_0%)] bg-[length:1px_3px] bg-repeat-y"></div>
+                <div className="border-ui-border-strong absolute bottom-0 left-[40px] top-0 z-[-1] w-px bg-[linear-gradient(var(--border-strong)_33%,rgba(255,255,255,0)_0%)] bg-[length:1px_3px] bg-repeat-y rtl:right-[40px] rtl:left-auto"></div>
 
                 <Badge size="2xsmall" className=" text-xs">
                   {t("promotions.form.and")}
@@ -431,7 +431,7 @@ export const RulesFormField = ({
           <Button
             type="button"
             variant="transparent"
-            className="text-ui-fg-muted hover:text-ui-fg-subtle ml-2 inline-block"
+            className="text-ui-fg-muted hover:text-ui-fg-subtle ml-2 inline-block rtl:mr-2 rtl:ml-0"
             onClick={() => {
               const indicesToRemove = fields
                 .map((field: any, index) => {
