@@ -108,7 +108,7 @@ const Inner = ({
   const combinedRed = useCombinedRefs(inputRef, ref)
 
   return (
-    <div className="relative flex size-full items-center">
+    <div className="relative flex size-full items-center" dir="ltr">
       <span
         className="txt-compact-small text-ui-fg-muted pointer-events-none absolute left-0 w-fit min-w-4"
         aria-hidden

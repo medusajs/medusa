@@ -32,7 +32,7 @@ export const MoneyAmountCell = ({
         className
       )}
     >
-      <span className="truncate">{formatted}</span>
+      <span className="truncate" dir="ltr">{formatted}</span>
     </div>
   )
 }
