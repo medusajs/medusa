@@ -170,7 +170,7 @@ export const OrderEditCreateForm = ({
             />
 
             {/* SEND NOTIFICATION*/}
-            <div className="bg-ui-bg-field mt-8 rounded-lg border py-2 pl-2 pr-4">
+            <div className="bg-ui-bg-field mt-8 rounded-lg border py-2 pl-2 pr-4 rtl:pl-4 rtl:pr-2">
               <Form.Field
                 control={form.control}
                 name="send_notification"
@@ -178,7 +178,7 @@ export const OrderEditCreateForm = ({
                   return (
                     <Form.Item>
                       <div className="flex items-center">
-                        <Form.Control className="mr-4 self-start">
+                        <Form.Control className="mr-4 self-start rtl:ml-4 rtl:mr-0">
                           <Switch
                             dir="ltr"
                             className="mt-[2px] rtl:rotate-180"

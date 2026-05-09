@@ -239,7 +239,7 @@ export function OrderReceiveReturnForm({
                 </div>
               )}
             </div>
-            <span className="text-ui-fg-muted txt-small text-right">
+            <span className="text-ui-fg-muted txt-small text-right" dir="ltr">
               {t("orders.returns.receive.itemsLabel")}
             </span>
           </div>
@@ -294,6 +294,7 @@ export function OrderReceiveReturnForm({
                                 type="number"
                                 value={value ?? 0}
                                 className="bg-ui-bg-field-component text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                dir="ltr"
                                 onChange={(e) => {
                                   const value =
                                     e.target.value === ""
