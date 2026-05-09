@@ -40,8 +40,14 @@
     "items_other": "{{count}} פריטים",
     "countSelected": "{{count}} נבחרו",
     "countOfTotalSelected": "{{count}} מתוך {{total}} נבחרו",
+    "fullList": "הכל",
+    "original": "מקורי",
+    "selectAll": "בחר הכל",
+    "unselectAll": "בטל בחירת הכל",
+    "remaining": "נותר",
     "plusCount": "+ {{count}}",
     "plusCountMore": "+ {{count}} נוספים",
+    "noRecordsMessageFiltered": "אין רשומות התואמות את המסננים",
     "areYouSure": "האם אתה בטוח?",
     "areYouSureDescription": "אתה עומד למחוק את ה{{entity}} {{title}}. פעולה זו אינה ניתנת לביטול.",
     "noRecordsFound": "לא נמצאו רשומות",
@@ -138,7 +144,11 @@
     "hide": "הסתר",
     "export": "ייצא",
     "import": "ייבא",
-    "cannotUndo": "פעולה זו אינה ניתנת לביטול"
+    "cannotUndo": "פעולה זו אינה ניתנת לביטול",
+    "saveChanges": "שמור שינויים",
+    "saveAndClose": "שמור וסגור",
+    "editVariantImages": "ערוך תמונות וריאנט",
+    "editImages": "ערוך תמונות"
   },
   "operators": {
     "in": "ב"
@@ -335,7 +345,10 @@
       "true": "נכון",
       "false": "שקר"
     },
-    "addFilter": "הוסף מסנן"
+    "addFilter": "הוסף מסנן",
+    "collapse": {
+      "all": "כווץ הכל"
+    }
   },
   "errorBoundary": {
     "badRequestTitle": "400 - בקשה שגויה",
@@ -2838,7 +2851,9 @@
     "from": "מ",
     "to": "אל",
     "beaware": "שים לב",
-    "loading": "טוען"
+    "loading": "טוען",
+    "selectValue": "בחר ערך",
+    "selectValues": "בחר ערכים"
   },
   "fields": {
     "amount": "סכום",
@@ -2996,7 +3011,14 @@
     "startDate": "תאריך התחלה",
     "endDate": "תאריך סיום",
     "draft": "טיוטה",
-    "values": "ערכים"
+    "values": "ערכים",
+    "reference": "הפניה",
+    "reference_id": "מזהה הפניה",
+    "enabledInStore": "מופעל בחנות",
+    "isReturn": "החזרה",
+    "promotionCode": "קוד קידום מכירות",
+    "serviceZone": "אזור שירות",
+    "creditTotal": "סך שורות זיכוי"
   },
   "dateTime": {
     "years_one": "שנה",
@@ -3013,5 +3035,11 @@
     "minutes_other": "דקות",
     "seconds_one": "שנייה",
     "seconds_other": "שניות"
+  },
+  "auth": {
+    "login": {
+      "authenticationFailed": "האימות נכשל",
+      "cloud": "התחבר עם Medusa Cloud"
+    }
   }
 }
