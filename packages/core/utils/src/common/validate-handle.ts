@@ -13,8 +13,10 @@
  * isValidHandle("-product") // false (leading hyphen)
  */
 export const isValidHandle = (value: string): boolean => {
+  if (!value || value.length === 0) return false
+
   // Allow any letter from any language (\p{L}), numbers (\p{N}), and hyphens
   // Must start and end with letter/number, cannot have consecutive hyphens
   // Matches behavior of WordPress, WooCommerce, and modern ecommerce platforms
-  return /^[\p{L}\p{N}]+(?:-[\p{L}\p{N}]+)*$/u.test(value)
+  return /^[\p{L}\p{N}]+(?:-[\p{L}\p{N}]+)*$/u.test(value.toLowerCase())
 }

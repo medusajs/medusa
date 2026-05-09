@@ -1,5 +1,3 @@
-import { kebabCase } from "./to-kebab-case"
-
 /**
  * Helper method to create a to be URL friendly "handle" from
  * a string value.
@@ -9,12 +7,11 @@ import { kebabCase } from "./to-kebab-case"
  * - Removes all unallowed characters like a '"%$ and so on.
  */
 export const toHandle = (value: string): string => {
-  return kebabCase(
-    value
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-  )
-    .replace(/[^a-z0-9A-Z-]/g, "")
-    .replace(/-{2,}/g, "-")
+  return value
+    .toLowerCase()                          // Normalize to lowercase
+    .replace(/ß/g, 'ss')                    // Convert German eszett to ss
+    .replace(/[^\p{L}\p{N}\s_-]/gu, '')     // Remove all characters except Unicode letters, numbers, spaces, underscores, and hyphens
+    .replace(/[\s_]+/g, '-')                // Replace spaces and underscores with single hyphens
+    .replace(/-+/g, '-')                    // Collapse multiple consecutive hyphens into one
+    .replace(/^-|-$/g, '')                  // Trim leading and trailing hyphens
 }
