@@ -578,12 +578,12 @@ const Cost = ({
     <Text size="small" leading="compact">
       {label} {tooltip}
     </Text>
-    <div className="text-right">
+    <div className="text-right" dir="ltr">
       <Text size="small" leading="compact">
         {secondaryValue}
       </Text>
     </div>
-    <div className="text-right">
+    <div className="text-right" dir="ltr">
       <Text size="small" leading="compact">
         {value}
       </Text>
@@ -654,7 +654,7 @@ const CostBreakdown = ({
       />
 
       {isShippingOpen && (
-        <div className="flex flex-col gap-1 pl-5">
+        <div className="flex flex-col gap-1 pl-5 rtl:pr-5 rtl:pl-0">
           {(order.shipping_methods || [])
             .sort((m1, m2) =>
               (m1.created_at as string).localeCompare(m2.created_at as string)
@@ -705,14 +705,14 @@ const CostBreakdown = ({
             )}
           </div>
 
-          <div className="text-right">
+          <div className="text-right" dir="ltr">
             <Text size="small" leading="compact">
               {getLocaleAmount(order.original_tax_total, order.currency_code)}
             </Text>
           </div>
         </div>
         {isTaxOpen && (
-          <div className="flex flex-col gap-1 pl-5">
+          <div className="flex flex-col gap-1 pl-5 rtl:pr-5 rtl:pl-0">
             {Object.entries(taxCodes).map(([code, { total, rate }]) => {
               return (
                 <div
