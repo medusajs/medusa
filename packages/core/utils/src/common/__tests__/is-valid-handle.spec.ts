@@ -81,11 +81,31 @@ describe("isValidHandle", function () {
       { input: "   ", isValid: false },
       { input: "hello\nworld", isValid: false },
       { input: "hello\tworld", isValid: false },
-      
+
       // Multiple segments
       { input: "a-b-c-d-e", isValid: true },
       { input: "123-456-789", isValid: true },
       { input: "a-1-b-2-c-3", isValid: true },
+
+      // English / Latin - valid cases
+      { input: "hello-world", isValid: true },
+      { input: "my-article-123", isValid: true },
+      { input: "a-1", isValid: true },
+      { input: "123", isValid: true },
+      { input: "123-456", isValid: true },
+      { input: "café-resume", isValid: true },
+
+      // English / Latin - invalid cases (uppercase ASCII)
+      { input: "Hello-World", isValid: false },
+      { input: "MyProduct", isValid: false },
+      { input: "PRODUCT-123", isValid: false },
+      { input: "Product-Name", isValid: false },
+
+      // Case-less scripts (Persian, Arabic, Japanese, Chinese)
+      { input: "کتاب-فارسی", isValid: true },
+      { input: "الكتاب-العربي", isValid: true },
+      { input: "私の-製品", isValid: true },
+      { input: "我的-产品", isValid: true }
     ]
 
     const failures: Array<{ input: string; expected: boolean; received: boolean }> = []
@@ -105,7 +125,7 @@ describe("isValidHandle", function () {
     if (failures.length > 0) {
       throw new Error(
         `Found ${failures.length} failing test case(s):\n` +
-        failures.map(f => 
+        failures.map(f =>
           `  "${f.input}" → expected ${f.expected}, got ${f.received}`
         ).join('\n')
       )
@@ -118,7 +138,7 @@ describe("isValidHandle", function () {
   it("should handle very long slugs", function () {
     const longSlug = "a".repeat(100)
     expect(isValidHandle(longSlug)).toEqual(true)
-    
+
     const longSlugWithHyphens = Array(50).fill("segment").join("-")
     expect(isValidHandle(longSlugWithHyphens)).toEqual(true)
   })

@@ -141,12 +141,6 @@ describe("toHandle and isValidHandle", function () {
       { input: "გამარჯობა-სამყარო", output: "გამარჯობა-სამყარო" },
 
       // Edge cases
-      { input: "", output: "" },
-      { input: "-", output: "" },
-      { input: "--", output: "" },
-      { input: "   ", output: "" },
-      { input: "___", output: "" },
-      { input: "@#$%", output: "" },
       { input: "hello\nworld", output: "hello-world" },
       { input: "hello\tworld", output: "hello-world" },
       { input: "a", output: "a" },
@@ -197,30 +191,70 @@ describe("toHandle and isValidHandle", function () {
   })
 
   it("should validate cleaned handles", function () {
-  // All cleaned outputs should be valid handles
-  const handles = [
-    "hello-world",
-    "cafe-resume", 
-    "strasse-munchen",
-    "سلام-دنیا",
-    "你好-世界",
-    "안녕하세요-세계",
-    "привет-мир",
-    "αβγ-δεζ",
-    "a",
-    "1",
-    "a-1-b-2",
-  ]
-  
-  handles.forEach(handle => {
-    expect(isValidHandle(handle)).toBe(true)
+    // All cleaned outputs should be valid handles
+    const handles = [
+      "hello-world",
+      "cafe-resume",
+      "strasse-munchen",
+      "سلام-دنیا",
+      "你好-世界",
+      "안녕하세요-세계",
+      "привет-мир",
+      "αβγ-δεζ",
+      "a",
+      "1",
+      "a-1-b-2",
+    ]
+
+    handles.forEach(handle => {
+      expect(isValidHandle(handle)).toBe(true)
+    })
+
+    // These should be invalid
+    expect(isValidHandle("")).toBe(false)
+    expect(isValidHandle("-")).toBe(false)
+    expect(isValidHandle("hello--world")).toBe(false)
+    expect(isValidHandle("-hello")).toBe(false)
+    expect(isValidHandle("hello-")).toBe(false)
   })
-  
-  // These should be invalid
-  expect(isValidHandle("")).toBe(false)
-  expect(isValidHandle("-")).toBe(false)
-  expect(isValidHandle("hello--world")).toBe(false)
-  expect(isValidHandle("-hello")).toBe(false)
-  expect(isValidHandle("hello-")).toBe(false)
-})
+
+  it("should generate fallback handles for empty or invalid inputs", () => {
+    // Empty string should generate fallback
+    const result1 = toHandle("")
+    expect(result1).toMatch(/^product-[a-z0-9]{6}$/)
+    expect(isValidHandle(result1)).toBe(true)
+
+    // Only special characters should generate fallback
+    const result2 = toHandle("-")
+    expect(result2).toMatch(/^product-[a-z0-9]{6}$/)
+    expect(isValidHandle(result2)).toBe(true)
+
+    const result3 = toHandle("--")
+    expect(result3).toMatch(/^product-[a-z0-9]{6}$/)
+    expect(isValidHandle(result3)).toBe(true)
+
+    // Only spaces/underscores should generate fallback
+    const result4 = toHandle("   ")
+    expect(result4).toMatch(/^product-[a-z0-9]{6}$/)
+    expect(isValidHandle(result4)).toBe(true)
+
+    const result5 = toHandle("___")
+    expect(result5).toMatch(/^product-[a-z0-9]{6}$/)
+    expect(isValidHandle(result5)).toBe(true)
+
+    // Only special characters should generate fallback
+    const result6 = toHandle("@#$%")
+    expect(result6).toMatch(/^product-[a-z0-9]{6}$/)
+    expect(isValidHandle(result6)).toBe(true)
+  })
+
+  it("should ensure fallback handles are unique (called multiple times)", () => {
+    const handles = new Set()
+    for (let i = 0; i < 10; i++) {
+      const handle = toHandle("")
+      handles.add(handle)
+    }
+    // Should have multiple unique handles (very unlikely to have collisions)
+    expect(handles.size).toBeGreaterThan(1)
+  })
 })
