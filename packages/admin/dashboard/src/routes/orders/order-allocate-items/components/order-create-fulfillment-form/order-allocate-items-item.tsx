@@ -109,7 +109,7 @@ export function OrderAllocateItemsItem({
                   </span>
                 )}
                 {hasInventoryKit && (
-                  <Component className="text-ui-fg-muted ml-2 overflow-visible pt-[2px]" />
+                  <Component className="text-ui-fg-muted ml-2 rtl:mr-2 rtl:ml-0 overflow-visible pt-[2px]" />
                 )}
               </div>
               <Text as="div" className="text-ui-fg-subtle txt-small">
@@ -172,7 +172,7 @@ export function OrderAllocateItemsItem({
           <div className="flex items-center gap-3">
             <div className="bg-ui-border-strong block h-[12px] w-[1px]" />
 
-            <div className="text-ui-fg-subtle txt-small mr-2 flex flex-row items-center gap-2">
+            <div className="text-ui-fg-subtle txt-small mr-2 rtl:ml-2 rtl:mr-0 flex flex-row items-center gap-2">
               <Form.Field
                 control={form.control}
                 name={
@@ -191,6 +191,7 @@ export function OrderAllocateItemsItem({
                       <Form.Control>
                         <Input
                           className="bg-ui-bg-base txt-small w-[46px] rounded-lg text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                          dir="ltr"
                           type="number"
                           {...field}
                           disabled={!locationId}
@@ -282,7 +283,7 @@ export function OrderAllocateItemsItem({
                       {location?.available_quantity || "-"}
                       {location?.available_quantity &&
                         quantityField[`${item.id}-${i.id}`] && (
-                          <span className="text-ui-fg-error txt-small ml-1">
+                          <span className="text-ui-fg-error txt-small ml-1 rtl:mr-1 rtl:ml-0">
                             -{quantityField[`${item.id}-${i.id}`]}
                           </span>
                         )}
@@ -306,7 +307,7 @@ export function OrderAllocateItemsItem({
                 <div className="flex items-center gap-3">
                   <div className="bg-ui-border-strong block h-[12px] w-[1px]" />
 
-                  <div className="text-ui-fg-subtle txt-small mr-1 flex flex-row items-center gap-2">
+                  <div className="text-ui-fg-subtle txt-small mr-1 rtl:ml-1 rtl:mr-0 flex flex-row items-center gap-2">
                     <Form.Field
                       control={form.control}
                       name={`quantity.${item.id}-${i.id}`}
@@ -321,6 +322,7 @@ export function OrderAllocateItemsItem({
                             <Form.Control>
                               <Input
                                 className="bg-ui-bg-base txt-small w-[46px] rounded-lg text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                dir="ltr"
                                 type="number"
                                 {...field}
                                 disabled={!locationId}
