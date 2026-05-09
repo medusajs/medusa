@@ -83,7 +83,7 @@ export const JsonViewSection = ({ data }: JsonViewSectionProps) => {
             </div>
           </div>
           <Drawer.Body className="flex flex-1 flex-col overflow-hidden px-[5px] py-0 pb-[5px]">
-            <div className="bg-ui-contrast-bg-subtle flex-1 overflow-auto rounded-b-[4px] rounded-t-lg p-3">
+            <div className="bg-ui-contrast-bg-subtle flex-1 overflow-auto rounded-b-[4px] rounded-t-lg p-3" dir="ltr">
               <Suspense
                 fallback={<div className="flex size-full flex-col"></div>}
               >
