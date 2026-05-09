@@ -1086,7 +1086,8 @@
       "itemSubtotal": "סכום ביניים פריטים",
       "shippingSubtotal": "סכום ביניים משלוח",
       "discountSubtotal": "סכום ביניים הנחה",
-      "taxTotal": "סך מס"
+      "taxTotal": "סך מס",
+      "totalAfterDiscount": "סה\"כ לאחר הנחה"
     },
     "transfer": {
       "title": "העבר בעלות",
@@ -1127,7 +1128,8 @@
       "createRefundWrongQuantity": "הכמות צריכה להיות מספר בין 1 ל{{number}}",
       "refundAmount": "החזר {{amount}}",
       "paymentLink": "העתק קישור תשלום עבור {{amount}}",
-      "selectPaymentToRefund": "בחר תשלום להחזר"
+      "selectPaymentToRefund": "בחר תשלום להחזר",
+      "totalStoreCreditRefunds": "סך החזרי קרדיט בחנות"
     },
     "edits": {
       "title": "ערוך הזמנה",
@@ -1255,6 +1257,9 @@
       "outboundShippingHint": "בחר את השיטה שברצונך להשתמש בה.",
       "refundAmount": "הפרש משוער",
       "activeChangeError": "יש שינוי פעיל בהזמנה זו. יש לסיים או לבטל את השינוי הקודם.",
+      "carryOverPromotion": "העבר מבצעים",
+      "carryOverPromotionHint": "החל את מבצעי ההזמנה על פריטי התביעה",
+      "carryOverPromotionTooltip": "ניתן להעביר רק מבצעים מסוג קבוע עם הקצאה של כל אחד ומבצעים מסוג אחוז עם הקצאה של כל אחד או על פני כל הפריטים לפריטי תביעה יוצאים.",
       "actions": {
         "cancelClaim": {
           "successToast": "התביעה בוטלה בהצלחה."
@@ -1288,6 +1293,9 @@
       "outboundShippingHint": "בחר את השיטה שברצונך להשתמש בה.",
       "refundAmount": "הפרש משוער",
       "activeChangeError": "יש שינוי פעיל בהזמנה זו. יש לסיים או לבטל את השינוי הקודם.",
+      "carryOverPromotion": "העבר מבצעים",
+      "carryOverPromotionHint": "החל את מבצעי ההזמנה על פריטי ההחלפה",
+      "carryOverPromotionTooltip": "ניתן להעביר רק מבצעים מסוג קבוע עם הקצאה של כל אחד ומבצעים מסוג אחוז עם הקצאה של כל אחד או על פני כל הפריטים לפריטי החלפה יוצאים.",
       "actions": {
         "cancelExchange": {
           "successToast": "ההחלפה בוטלה בהצלחה."
@@ -1323,7 +1331,8 @@
       "consistsOf": "מורכב מ{{num}} פריטי מלאי",
       "requires": "דורש {{num}} לכל וריאנט",
       "toast": {
-        "created": "הפריטים הוקצו בהצלחה"
+        "created": "הפריטים הוקצו בהצלחה",
+        "error": "הקצאת הפריטים הבאים נכשלה: {{items}}"
       },
       "error": {
         "quantityNotAllocated": "יש פריטים שלא הוקצו."
@@ -1335,7 +1344,9 @@
       "addTracking": "הוסף מספר מעקב",
       "sendNotification": "שלח התראה",
       "sendNotificationHint": "הודע ללקוח על משלוח זה.",
-      "toastCreated": "משלוח נוצר בהצלחה."
+      "toastCreated": "משלוח נוצר בהצלחה.",
+      "trackingUrl": "כתובת URL למעקב",
+      "labelUrl": "כתובת URL לתווית"
     },
     "fulfillment": {
       "cancelWarning": "אתה עומד לבטל מימוש. פעולה זו אינה ניתנת לביטול.",
@@ -1378,7 +1389,10 @@
         "partiallyReturned": "הוחזר חלקית",
         "returned": "הוחזר",
         "canceled": "בוטל",
-        "requiresAction": "דורש פעולה"
+        "requiresAction": "דורש פעולה",
+        "awaitingPickup": "ממתין לאיסוף",
+        "awaitingShipping": "ממתין למשלוח",
+        "awaitingDelivery": "ממתין למסירה"
       },
       "toast": {
         "created": "המימוש נוצר בהצלחה",
@@ -1486,6 +1500,43 @@
         }
       }
     },
+    "giftCardsStoreCreditLines": "כרטיסי מתנה וקווי אשראי",
+    "creditLines": {
+      "title": "קווי אשראי",
+      "total": "סכום כל קווי האשראי",
+      "creditOrDebit": "זיכוי / חיוב",
+      "createCreditLine": "צור קו אשראי",
+      "createCreditLineSuccess": "קו האשראי נוצר בהצלחה",
+      "createCreditLineError": "שגיאה ביצירת קו האשראי",
+      "createCreditLineDescription": "צור קו אשראי בסכום {{amount}}",
+      "operation": "פעולה",
+      "credit": "זיכוי",
+      "creditDescription": "מוסיף סכום חיובי להזמנה",
+      "debit": "חיוב",
+      "debitDescription": "מפחית סכום שלילי מההזמנה"
+    },
+    "balanceSettlement": {
+      "title": "הסדרת יתרה",
+      "settlementType": "סוג הסדרה",
+      "settlementTypes": {
+        "paymentMethod": "שיטת תשלום",
+        "paymentMethodDescription": "החזר סכום לשיטת התשלום",
+        "creditLine": "קרדיט בחנות",
+        "creditLineDescription": "החזר סכום כקרדיט בחנות"
+      }
+    },
+    "export": {
+      "header": "ייצא רשימת הזמנות",
+      "description": "ייצא את רשימת ההזמנות לקובץ CSV.",
+      "success": {
+        "title": "הייצוא החל",
+        "description": "תקבל התראה כאשר הייצוא יהיה מוכן."
+      },
+      "filters": {
+        "title": "מסננים",
+        "description": "המסננים הבאים יוחלו על הייצוא."
+      }
+    },
     "fields": {
       "displayId": "מספר תצוגה",
       "refundableAmount": "סכום להחזר",
@@ -1494,6 +1545,14 @@
   },
   "draftOrders": {
     "domain": "טיוטות הזמנות",
+    "list": {
+      "noRecordsMessage": "לא נמצאו הזמנות טיוטה",
+      "description": "צור הזמנת טיוטה חדשה כדי להתחיל.",
+      "filtered": {
+        "heading": "לא נמצאו תוצאות",
+        "description": "אין הזמנות טיוטה התואמות את קריטריוני הסינון שלך."
+      }
+    },
     "deleteWarning": "אתה עומד למחוק את טיוטת ההזמנה {{id}}. פעולה זו אינה ניתנת לביטול.",
     "paymentLinkLabel": "קישור תשלום",
     "cartIdLabel": "מספר עגלה",
