@@ -728,7 +728,7 @@ export const DataGridRoot = <
                             width: header.getSize(),
                             ...getCommonPinningStyles(header.column),
                           }}
-                          className="bg-ui-bg-base txt-compact-small-plus flex items-center border-b border-r px-4 py-2.5"
+                          className="bg-ui-bg-base txt-compact-small-plus flex items-center border-b border-r rtl:border-l rtl:border-r-0 px-4 py-2.5"
                         >
                           {header.isPlaceholder
                             ? null
@@ -902,7 +902,7 @@ const DataGridHeader = ({
         </div>
       )}
       {headerContent}
-      <div className="ml-auto flex items-center gap-x-2">
+      <div className="ml-auto rtl:mr-auto rtl:ml-0 flex items-center gap-x-2">
         {errorCount > 0 && (
           <Button
             size="small"
@@ -966,7 +966,7 @@ const DataGridCell = <TData,>({
       data-row-index={rowIndex}
       data-column-index={columnIndex}
       className={clx(
-        "relative flex items-stretch border-b border-r p-0 outline-none"
+        "relative flex items-stretch border-b border-r rtl:border-l rtl:border-r-0 p-0 outline-none"
       )}
       tabIndex={-1}
     >
@@ -980,7 +980,7 @@ const DataGridCell = <TData,>({
           <div
             onMouseDown={onDragToFillStart}
             className={clx(
-              "bg-ui-fg-interactive absolute bottom-0 right-0 z-[3] size-1.5 cursor-ns-resize",
+              "bg-ui-fg-interactive absolute bottom-0 right-0 rtl:left-0 rtl:right-auto z-[3] size-1.5 cursor-ns-resize",
               {
                 "cursor-nwse-resize": multiColumnSelection,
               }
@@ -1136,7 +1136,7 @@ const DataGridRowSkeleton = ({
             key={`skeleton-cell-${vc.index}`}
             role="gridcell"
             style={{ width: vc.size }}
-            className="relative flex items-center border-b border-r p-0 outline-none"
+            className="relative flex items-center border-b border-r rtl:border-l rtl:border-r-0 p-0 outline-none"
           >
             <div className="flex h-full w-full items-center px-4">
               <div className="bg-ui-bg-component h-4 w-3/4 animate-pulse rounded" />
