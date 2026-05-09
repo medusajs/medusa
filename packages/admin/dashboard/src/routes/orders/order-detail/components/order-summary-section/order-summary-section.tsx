@@ -1028,7 +1028,7 @@ const ReturnBreakdownWithDamages = ({
 
           {item?.note && (
             <Tooltip content={item.note}>
-              <DocumentText className="text-ui-tag-neutral-icon ml-1 inline" />
+              <DocumentText className="text-ui-tag-neutral-icon ml-1 inline rtl:mr-1 rtl:ml-0" />
             </Tooltip>
           )}
 
@@ -1046,7 +1046,7 @@ const ReturnBreakdownWithDamages = ({
         <Text size="small" leading="compact" className="text-ui-fg-muted">
           {t(`orders.returns.damagedItemReceived`)}
 
-          <span className="ml-2">
+          <span className="ml-2 rtl:mr-2 rtl:ml-0">
             <ReturnInfoPopover orderReturn={orderReturn} />
           </span>
         </Text>
@@ -1106,7 +1106,7 @@ const ReturnBreakdown = ({
 
             {item?.note && (
               <Tooltip content={item.note}>
-                <DocumentText className="text-ui-tag-neutral-icon ml-1 inline" />
+                <DocumentText className="text-ui-tag-neutral-icon ml-1 inline rtl:mr-1 rtl:ml-0" />
               </Tooltip>
             )}
 
@@ -1124,7 +1124,7 @@ const ReturnBreakdown = ({
           {orderReturn && isRequested && (
             <Text size="small" leading="compact" className="text-ui-fg-muted">
               {getRelativeDate(orderReturn.created_at)}
-              <span className="ml-2">
+              <span className="ml-2 rtl:mr-2 rtl:ml-0">
                 <ReturnInfoPopover orderReturn={orderReturn} />
               </span>
             </Text>
@@ -1134,7 +1134,7 @@ const ReturnBreakdown = ({
             <Text size="small" leading="compact" className="text-ui-fg-muted">
               {t(`orders.returns.itemReceived`)}
 
-              <span className="ml-2">
+              <span className="ml-2 rtl:mr-2 rtl:ml-0">
                 <ReturnInfoPopover orderReturn={orderReturn} />
               </span>
             </Text>
