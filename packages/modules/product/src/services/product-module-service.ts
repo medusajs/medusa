@@ -44,7 +44,6 @@ import {
   partitionArray,
   ProductStatus,
   removeUndefined,
-  toHandle,
 } from "@medusajs/framework/utils"
 import { EntityManager } from "@mikro-orm/core"
 import { ProductRepository } from "../repositories"
@@ -1948,7 +1947,7 @@ export default class ProductModuleService
 
     for (const productData of normalizedProducts) {
       if (!productData.handle && productData.title) {
-        productData.handle = toHandle(productData.title)
+        productData.handle = kebabCase(productData.title)
       }
 
       if (!productData.status) {
