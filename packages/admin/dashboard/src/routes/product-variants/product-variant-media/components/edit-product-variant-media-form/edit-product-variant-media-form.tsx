@@ -255,7 +255,7 @@ export const EditProductVariantMediaForm = ({
                 onClick={() => setIsSidebarOpen(false)}
               >
                 <div
-                  className="bg-ui-bg-base border-ui-border-base absolute right-0 top-0 h-full w-80 border-l"
+                  className="bg-ui-bg-base border-ui-border-base absolute right-0 top-0 h-full w-80 border-l rtl:left-0 rtl:right-auto rtl:border-r rtl:border-l-0"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="border-ui-border-base border-b p-4">
@@ -264,7 +264,7 @@ export const EditProductVariantMediaForm = ({
                         <h3 className="ui-fg-base text-sm font-medium">
                           {t("products.media.availableImages")}
                         </h3>
-                        <p className="text-ui-fg-muted mt-1 pr-2 text-xs">
+                        <p className="text-ui-fg-muted mt-1 pr-2 text-xs rtl:pl-2 rtl:pr-0">
                           {t("products.media.selectToAdd")}
                         </p>
                       </div>
@@ -372,14 +372,14 @@ const MediaGridItem = ({
       )}
     >
       {isThumbnail && (
-        <div className="absolute left-2 top-2">
+        <div className="absolute left-2 top-2 rtl:right-2 rtl:left-auto">
           <Tooltip content={t("products.media.thumbnailTooltip")}>
             <ThumbnailBadge />
           </Tooltip>
         </div>
       )}
       <div
-        className={clx("transition-fg absolute right-2 top-2 opacity-0", {
+        className={clx("transition-fg absolute right-2 top-2 opacity-0 rtl:left-2 rtl:right-auto", {
           "group-focus-within:opacity-100 group-hover:opacity-100 group-focus:opacity-100":
             !checked,
           "opacity-100": checked,

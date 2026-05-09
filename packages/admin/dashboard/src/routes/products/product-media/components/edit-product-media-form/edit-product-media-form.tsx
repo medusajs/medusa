@@ -253,7 +253,7 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
                 </div>
               </div>
             </DndContext>
-            <div className="bg-ui-bg-base overflow-auto border-b px-6 py-4 lg:border-b-0 lg:border-l">
+            <div className="bg-ui-bg-base overflow-auto border-b px-6 py-4 lg:border-b-0 lg:border-l rtl:lg:border-r rtl:lg:border-l-0">
               <UploadMediaFormItem form={form} append={append} />
             </div>
           </div>
@@ -388,7 +388,7 @@ const MediaGridItem = ({
       ref={setNodeRef}
     >
       {media.isThumbnail && (
-        <div className="absolute left-2 top-2">
+        <div className="absolute left-2 top-2 rtl:right-2 rtl:left-auto">
           <Tooltip content={t("products.media.thumbnailTooltip")}>
             <ThumbnailBadge />
           </Tooltip>
@@ -403,7 +403,7 @@ const MediaGridItem = ({
         {...listeners}
       />
       <div
-        className={clx("transition-fg absolute right-2 top-2 opacity-0", {
+        className={clx("transition-fg absolute right-2 top-2 opacity-0 rtl:left-2 rtl:right-auto", {
           "group-focus-within:opacity-100 group-hover:opacity-100 group-focus:opacity-100":
             !isDragging && !checked,
           "opacity-100": checked,
@@ -436,12 +436,12 @@ export const MediaGridItemOverlay = ({
   return (
     <div className="shadow-elevation-card-rest hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus bg-ui-bg-subtle-hover group relative aspect-square h-auto max-w-full cursor-grabbing overflow-hidden rounded-lg outline-none">
       {media.isThumbnail && (
-        <div className="absolute left-2 top-2">
+        <div className="absolute left-2 top-2 rtl:right-2 rtl:left-auto">
           <ThumbnailBadge />
         </div>
       )}
       <div
-        className={clx("transition-fg absolute right-2 top-2 opacity-0", {
+        className={clx("transition-fg absolute right-2 top-2 opacity-0 rtl:left-2 rtl:right-auto", {
           "opacity-100": checked,
         })}
       >
