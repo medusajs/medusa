@@ -906,6 +906,7 @@
       "updateLevel": "רמת המלאי עודכנה בהצלחה.",
       "updateItem": "פריט המלאי עודכן בהצלחה."
     },
+    "levelDeleted": "רמת המלאי נמחקה בהצלחה.",
     "stock": {
       "title": "עדכן רמות מלאי",
       "description": "עדכן את רמות המלאי במלאי עבור פריטי המלאי שנבחרו.",
@@ -1597,7 +1598,10 @@
   "stockLocations": {
     "domain": "מיקומים ומשלוחים",
     "list": {
-      "description": "נהל את מיקומי המלאי ואפשרויות המשלוח של החנות שלך."
+      "description": "נהל את מיקומי המלאי ואפשרויות המשלוח של החנות שלך.",
+      "noRecordsMessage": "אין רשומות",
+      "noRecordsMessageEmpty": "לא נמצאו מיקומים",
+      "noRecordsMessageFiltered": "לא נמצאו מיקומים התואמים את המסננים"
     },
     "create": {
       "header": "צור מיקום מלאי",
@@ -1610,7 +1614,8 @@
       "successToast": "המיקום {{name}} עודכן בהצלחה."
     },
     "delete": {
-      "confirmation": "אתה עומד למחוק את מיקום המלאי \"{{name}}\". פעולה זו אינה ניתנת לביטול."
+      "confirmation": "אתה עומד למחוק את מיקום המלאי \"{{name}}\". פעולה זו אינה ניתנת לביטול.",
+      "successToast": "המיקום \"{{name}}\" נמחק בהצלחה."
     },
     "fulfillmentProviders": {
       "header": "ספקי מימוש",
@@ -1643,6 +1648,10 @@
       "shippingProfiles": {
         "label": "פרופילי משלוח",
         "description": "קבץ מוצרים לפי דרישות משלוח"
+      },
+      "shippingOptionTypes": {
+        "label": "סוגי אפשרויות משלוח",
+        "description": "קבץ אפשרויות משלוח לפי סוגים"
       }
     },
     "salesChannels": {
@@ -1760,7 +1769,8 @@
         },
         "provider": "ספק מימוש",
         "profile": "פרופיל משלוח",
-        "fulfillmentOption": "אפשרות מימוש"
+        "fulfillmentOption": "אפשרות מימוש",
+        "type": "סוג אפשרות משלוח"
       }
     },
     "serviceZones": {
@@ -1975,7 +1985,8 @@
           "productCollection": "אוספי מוצרים",
           "productTag": "תגיות מוצר",
           "productType": "סוגי מוצרים",
-          "customerGroup": "קבוצות לקוחות"
+          "customerGroup": "קבוצות לקוחות",
+          "shippingOption": "אפשרויות משלוח"
         },
         "operators": {
           "in": "בתוך",
@@ -1987,14 +1998,16 @@
           "productCollection": "חפש אוספי מוצרים",
           "productTag": "חפש תגיות מוצר",
           "productType": "חפש סוגי מוצרים",
-          "customerGroup": "חפש קבוצות לקוחות"
+          "customerGroup": "חפש קבוצות לקוחות",
+          "shippingOption": "חפש אפשרויות משלוח"
         },
         "tags": {
           "product": "מוצר",
           "productCollection": "אוסף מוצרים",
           "productTag": "תגית מוצר",
           "productType": "סוג מוצר",
-          "customerGroup": "קבוצת לקוחות"
+          "customerGroup": "קבוצת לקוחות",
+          "shippingOption": "אפשרות משלוח"
         },
         "modal": {
           "header": "הוסף יעדים"
@@ -2561,6 +2574,11 @@
     "removeCurrencyWarning_one": "אתה עומד להסיר {{count}} מטבע מהחנות שלך. ודא שהסרת את כל המחירים המשתמשים במטבע לפני ההמשך.",
     "removeCurrencyWarning_other": "אתה עומד להסיר {{count}} מטבעות מהחנות שלך. ודא שהסרת את כל המחירים המשתמשים במטבעות לפני ההמשך.",
     "currencyAlreadyAdded": "המטבע כבר נוסף לחנות שלך.",
+    "defaultLocale": "לוקאל ברירת מחדל",
+    "locales": "לוקאלים",
+    "removeLocaleWarning_one": "אתה עומד להסיר {{count}} לוקאל מהחנות שלך. כל תרגום שמשתמש בלוקאל זה יוסר.",
+    "removeLocaleWarning_other": "אתה עומד להסיר {{count}} לוקאלים מהחנות שלך. כל תרגום שמשתמש בלוקאלים אלה יוסר.",
+    "localeAlreadyAdded": "הלוקאל כבר נוסף לחנות שלך.",
     "edit": {
       "header": "ערוך חנות"
     },
@@ -2568,7 +2586,9 @@
       "update": "החנות עודכנה בהצלחה",
       "currenciesUpdated": "מטבעות עודכנו בהצלחה",
       "currenciesRemoved": "מטבעות הוסרו מהחנות בהצלחה",
-      "updatedTaxInclusivitySuccessfully": "תמחור כולל מס עודכן בהצלחה"
+      "updatedTaxInclusivitySuccessfully": "תמחור כולל מס עודכן בהצלחה",
+      "localesUpdated": "לוקאלים עודכנו בהצלחה",
+      "localesRemoved": "לוקאלים הוסרו מהחנות בהצלחה"
     }
   },
   "regions": {
@@ -3201,6 +3221,122 @@
     "login": {
       "authenticationFailed": "האימות נכשל",
       "cloud": "התחבר עם Medusa Cloud"
+    }
+  },
+  "translations": {
+    "domain": "תרגומים",
+    "settings": {
+      "header": "נהל ישויות הניתנות לתרגום",
+      "successToast": "ההגדרות עודכנו בהצלחה"
+    },
+    "actions": {
+      "manage": "נהל תרגומים",
+      "manageEntities": "נהל ישויות",
+      "manageLocales": "נהל לוקאלים"
+    },
+    "subtitle": "נהל תרגומים של הנתונים שלך ב-Medusa",
+    "list": {
+      "metrics": "{{translated}} מתוך {{total}} תרגומים"
+    },
+    "edit": {
+      "successToast": "התרגומים עודכנו בהצלחה",
+      "unsavedChanges": {
+        "title": "תרגומים שלא נשמרו",
+        "description": "אל תאבד את עבודתך. יש לך שינויים שטרם נשמרו"
+      }
+    },
+    "bulk": {
+      "header": "עורך תרגומים מרוכז",
+      "mainColumn": "לוקאל"
+    },
+    "activeLocales": {
+      "heading": "שפות",
+      "subtitle": "תרגומים פעילים",
+      "noLocalesTip": "הגדר לפחות שפה אחת כדי להתחיל לתרגם את הנתונים שלך",
+      "noLocalesTipConfigureAction": "הגדר"
+    },
+    "completion": {
+      "heading": "שדות מתורגמים",
+      "translated": "מתורגם",
+      "toTranslate": "חסר",
+      "footer": "שפות"
+    }
+  },
+  "views": {
+    "save": "שמור",
+    "saveAsNew": "שמור כתצוגה חדשה",
+    "updateDefaultForEveryone": "עדכן ברירת מחדל לכולם",
+    "updateViewName": "עדכן תצוגה",
+    "prompts": {
+      "updateDefault": {
+        "title": "עדכן תצוגת ברירת מחדל",
+        "description": "פעולה זו תעדכן את תצוגת ברירת המחדל לכל המשתמשים. האם אתה בטוח?",
+        "confirmText": "עדכן לכולם",
+        "cancelText": "ביטול"
+      },
+      "updateView": {
+        "title": "עדכן תצוגה",
+        "description": "האם אתה בטוח שברצונך לעדכן את \"{{name}}\"?",
+        "confirmText": "עדכן",
+        "cancelText": "ביטול"
+      }
+    }
+  },
+  "refundReasons": {
+    "domain": "סיבות החזר כספי",
+    "subtitle": "נהל סיבות להנפקת החזרים כספיים.",
+    "calloutHint": "נהל את הסיבות לקטלוג החזרים כספיים.",
+    "editReason": "ערוך סיבת החזר כספי",
+    "create": {
+      "header": "הוסף סיבת החזר כספי",
+      "subtitle": "ציין את הסיבות הנפוצות ביותר להחזרים כספיים.",
+      "hint": "צור סיבת החזר כספי חדשה לקטלוג החזרים כספיים.",
+      "successToast": "סיבת ההחזר הכספי {{label}} נוצרה בהצלחה."
+    },
+    "edit": {
+      "header": "ערוך סיבת החזר כספי",
+      "subtitle": "ערוך את ערך סיבת ההחזר הכספי.",
+      "successToast": "סיבת ההחזר הכספי {{label}} עודכנה בהצלחה."
+    },
+    "delete": {
+      "confirmation": "אתה עומד למחוק את סיבת ההחזר הכספי \"{{label}}\". פעולה זו אינה ניתנת לביטול.",
+      "successToast": "סיבת ההחזר הכספי נמחקה בהצלחה."
+    },
+    "fields": {
+      "label": {
+        "label": "תווית",
+        "placeholder": "מחווה של רצון טוב"
+      },
+      "code": {
+        "label": "קוד",
+        "placeholder": "gesture_of_goodwill"
+      },
+      "description": {
+        "label": "תיאור",
+        "placeholder": "הלקוח חווה חוויית קנייה גרועה"
+      }
+    }
+  },
+  "shippingOptionTypes": {
+    "domain": "סוגי אפשרויות משלוח",
+    "subtitle": "ארגן את אפשרויות המשלוח שלך לפי סוגים.",
+    "create": {
+      "header": "צור סוג אפשרות משלוח",
+      "hint": "צור סוג אפשרות משלוח חדש לקטלוג אפשרויות המשלוח שלך.",
+      "successToast": "סוג אפשרות המשלוח {{label}} נוצר בהצלחה."
+    },
+    "edit": {
+      "header": "ערוך סוג אפשרות משלוח",
+      "successToast": "סוג אפשרות המשלוח {{label}} עודכן בהצלחה."
+    },
+    "delete": {
+      "confirmation": "אתה עומד למחוק את סוג אפשרות המשלוח \"{{label}}\". פעולה זו אינה ניתנת לביטול.",
+      "successToast": "סוג אפשרות המשלוח \"{{label}}\" נמחק בהצלחה."
+    },
+    "fields": {
+      "label": "תווית",
+      "code": "קוד",
+      "description": "תיאור"
     }
   }
 }
