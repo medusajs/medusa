@@ -706,6 +706,7 @@ const OrderActivityItem = ({
                 size="small"
                 leading="compact"
                 className="text-ui-fg-subtle text-right"
+                dir="ltr"
               >
                 {getRelativeDate(timestamp)}
               </Text>
@@ -739,7 +740,7 @@ const OrderActivityCollapsible = ({
             <div className="border-ui-border-strong w-px flex-1 bg-[linear-gradient(var(--border-strong)_33%,rgba(255,255,255,0)_0%)] bg-[length:1px_3px] bg-right bg-repeat-y" />
           </div>
           <div className="pb-4">
-            <RadixCollapsible.Trigger className="text-left">
+            <RadixCollapsible.Trigger className="text-left rtl:text-right">
               <Text
                 size="small"
                 leading="compact"

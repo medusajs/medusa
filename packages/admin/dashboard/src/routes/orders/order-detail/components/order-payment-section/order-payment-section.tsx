@@ -96,14 +96,14 @@ const Refund = ({
 
   const RefundNoteIndicator = refund.note && (
     <Tooltip content={refund.note}>
-      <DocumentText className="text-ui-tag-neutral-icon ml-1 inline" />
+      <DocumentText className="text-ui-tag-neutral-icon ml-1 inline rtl:mr-1 rtl:ml-0" />
     </Tooltip>
   )
 
   return (
     <div className="bg-ui-bg-subtle text-ui-fg-subtle grid grid-cols-[1fr_1fr_1fr_20px] items-center gap-x-4 px-6 py-4">
       <div className="flex flex-row">
-        <div className="self-center pr-3">
+        <div className="self-center pr-3 rtl:pl-3 rtl:pr-0">
           <ArrowDownRightMini className="text-ui-fg-muted" />
         </div>
         <div>
