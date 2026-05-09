@@ -192,9 +192,19 @@ export class Compiler {
     const filesToCompile = tsConfig.fileNames.filter((fileName) => {
       const relativeFileName = path.relative(this.#projectRoot, fileName)
 
-      const segments = relativeFileName.split(path.sep)
+      const normalizedFile = relativeFileName.split(path.sep).join("/")
 
-      return !chunksToIgnore.some((chunk) => segments.includes(chunk))
+      return !chunksToIgnore.some((chunk) => {
+        const normalizedChunk = chunk.split(/[\\/]/).join("/")
+
+        if (!normalizedChunk.includes("/")) {
+          // single-segment: match against path segments only
+          return normalizedFile.split("/").includes(normalizedChunk)
+        }
+
+        // multi-segment: match as a path prefix
+        return normalizedFile.startsWith(normalizedChunk + "/")
+      })
     })
 
     /**
