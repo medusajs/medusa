@@ -61,8 +61,8 @@ export const CreateRefundForm = ({ order }: CreateRefundFormProps) => {
   const form = useForm<zod.infer<typeof CreateRefundSchema>>({
     defaultValues: {
       amount: {
-        value: paymentAmount.toFixed(currency.decimal_digits),
-        float: paymentAmount,
+        value: (Math.round(paymentAmount * Math.pow(10, currency.decimal_digits)) / Math.pow(10, currency.decimal_digits)).toFixed(currency.decimal_digits),
+        float: Math.round(paymentAmount * Math.pow(10, currency.decimal_digits)) / Math.pow(10, currency.decimal_digits),
       },
     },
     resolver: zodResolver(CreateRefundSchema),
@@ -79,9 +79,11 @@ export const CreateRefundForm = ({ order }: CreateRefundFormProps) => {
     const normalizedAmount =
       pendingAmount < 0 ? pendingAmount * -1 : pendingAmount
 
+    const roundedAmount = Math.round(normalizedAmount * Math.pow(10, currency.decimal_digits)) / Math.pow(10, currency.decimal_digits)
+
     form.setValue("amount", {
-      value: normalizedAmount.toFixed(currency.decimal_digits),
-      float: normalizedAmount,
+      value: roundedAmount.toFixed(currency.decimal_digits),
+      float: roundedAmount,
     })
   }, [payment?.id || ""])
 
