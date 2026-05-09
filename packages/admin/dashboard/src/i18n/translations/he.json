@@ -536,7 +536,14 @@
         "description": "הוסף מדיה למוצר כדי להציג אותו בחנות שלך.",
         "action": "הוסף מדיה"
       },
-      "successToast": "המדיה עודכנה בהצלחה."
+      "successToast": "המדיה עודכנה בהצלחה.",
+      "manageImageVariants": "נהל גרסאות משויכות",
+      "fileTooLarge": "קובץ אחד או יותר חורגים מגודל הקובץ המקסימלי של {{size}}: {{name}}",
+      "variantImages": "תמונות גרסה",
+      "showAvailableImages": "הצג תמונות זמינות",
+      "availableImages": "בחר תמונות",
+      "selectToAdd": "הוסף תמונות מוצר לגרסה. כדי להוסיף תמונות חדשות, הוסף אותן למוצר תחילה.",
+      "removeSelected": "הסר נבחרים"
     },
     "discountableHint": "כאשר לא מסומן, הנחות לא יחולו על מוצר זה.",
     "noSalesChannels": "לא זמין באף ערוץ מכירות",
@@ -728,6 +735,30 @@
           "header": "נכשל במחיקת מוצר"
         }
       }
+    },
+    "variantMedia": {
+      "label": "מדיה של גרסה",
+      "manageVariants": "נהל גרסאות",
+      "addToMultipleVariants": "הוסף למספר גרסאות",
+      "manageVariantsDescription": "נהל גרסאות משויכות לתמונה",
+      "successToast": "גרסאות התמונה עודכנו בהצלחה.",
+      "emptyState": {
+        "header": "אין מדיה עדיין",
+        "description": "הוסף מדיה לגרסה כדי להציג אותה בחנות שלך.",
+        "action": "הוסף מדיה"
+      }
+    },
+    "columns": {
+      "product_display": "מוצר",
+      "variants_count": "גרסאות",
+      "sales_channels_display": "ערוצי מכירה",
+      "collection": "קולקציה",
+      "status": "סטטוס",
+      "thumbnail": "תמונה ממוזערת",
+      "title": "כותרת",
+      "handle": "ידית URL",
+      "created_at": "נוצר",
+      "updated_at": "עודכן"
     }
   },
   "collections": {
