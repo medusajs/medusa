@@ -204,6 +204,7 @@ export const ReturnCreateForm = ({
 
   useEffect(() => {
     const existingItemsMap: Record<string, boolean> = {}
+    const appendedItemIds = new Set<string>()
 
     previewItems.forEach((i) => {
       const ind = items.findIndex((field) => field.item_id === i.id)
@@ -232,7 +233,8 @@ export const ReturnCreateForm = ({
               | undefined,
           })
         }
-      } else {
+      } else if (!appendedItemIds.has(i.id)) {
+        appendedItemIds.add(i.id)
         append({ item_id: i.id, quantity: i.detail.return_requested_quantity })
       }
     })
