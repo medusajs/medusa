@@ -10,7 +10,7 @@ import {
 } from "@medusajs/deps/mikro-orm/postgresql"
 import { EventEmitter } from "events"
 import { access, mkdir, rename, writeFile } from "fs/promises"
-import { dirname, join } from "path"
+import { basename, dirname, join } from "path"
 import { readDir } from "../common"
 import { CustomDBMigrator } from "../dal/mikro-orm/custom-db-migrator"
 
@@ -203,13 +203,18 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
     })
 
     /**
-     * We assume all JSON files are snapshot files in this directory
+     * Only consider files that start with ".snapshot-" but do not match
+     * the expected module snapshot name. This handles legacy snapshot
+     * file naming while avoiding full-DB snapshots written by MikroORM
+     * directly (e.g. ".snapshot-<dbname>.json").
      */
+    const expectedName = basename(snapshotPath)
     const snapshotFile = entries.find(
       (entry) =>
         entry.isFile() &&
         entry.name.endsWith(".json") &&
-        entry.name.startsWith(".snapshot-")
+        entry.name.startsWith(".snapshot-") &&
+        entry.name !== expectedName
     )
 
     if (snapshotFile) {
