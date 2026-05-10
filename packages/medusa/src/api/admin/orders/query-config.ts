@@ -109,6 +109,7 @@ export const listTransformQueryConfig = {
   defaultLimit: 20,
   isList: true,
   entity: Entities.order,
+  nonSortableFields: ["total", "fulfillment_status", "payment_status"],
 }
 
 export const retrieveOrderChangesTransformQueryConfig = {

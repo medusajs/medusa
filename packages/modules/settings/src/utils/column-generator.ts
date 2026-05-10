@@ -23,6 +23,7 @@ import {
   getEntityOverride,
   getFieldFilterRules,
   getFieldOrdering,
+  getNonSortableFields,
 } from "./entity-overrides"
 import {
   buildFilterConfig,
@@ -103,6 +104,7 @@ export function generateEntityColumns(
   const defaultVisibleFields = getDefaultVisibleFields(entity.name, override)
   const fieldOrdering = getFieldOrdering(entity.name, override)
   const additionalTypes = getAdditionalTypes(entity.name, override)
+  const nonSortableFields = getNonSortableFields(entity.name, override)
 
   const schemaTypeMap = entityDiscovery.getSchemaTypeMap()
   const columns: ViewConfigurationColumn[] = []
@@ -118,7 +120,9 @@ export function generateEntityColumns(
     filterRules,
     defaultVisibleFields,
     fieldOrdering,
-    propertyLabels
+    propertyLabels,
+    "",
+    nonSortableFields
   )
 
   // Process additional types (e.g., OrderDetail for Order)
@@ -134,7 +138,9 @@ export function generateEntityColumns(
         filterRules,
         defaultVisibleFields,
         fieldOrdering,
-        propertyLabels
+        propertyLabels,
+        "",
+        nonSortableFields
       )
     }
   }
@@ -200,7 +206,8 @@ function processEntityType(
   defaultVisibleFields: string[],
   fieldOrdering: Record<string, number>,
   propertyLabels?: Map<string, PropertyLabel>,
-  parentPath: string = ""
+  parentPath: string = "",
+  nonSortableFields: string[] = []
 ): void {
   const type = schemaTypeMap[typeName] as GraphQLObjectType | undefined
   if (!type || !type.getFields) {
@@ -245,7 +252,7 @@ function processEntityType(
         name: label?.label || formatFieldName(fieldName),
         description: label?.description || undefined,
         field: fullPath,
-        sortable: !parentPath, // Only top-level fields are sortable
+        sortable: !parentPath && !nonSortableFields.includes(fullPath),
         hideable: true,
         default_visible: defaultVisibleFields.includes(fullPath),
         data_type: dataType,

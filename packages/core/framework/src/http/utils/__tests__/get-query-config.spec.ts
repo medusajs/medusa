@@ -208,6 +208,57 @@ describe("prepareListQuery", () => {
       })
     })
 
+    it("should throw error when order field is in nonSortableFields", async () => {
+      const validated: RequestQueryFields = {
+        order: "total",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        isList: true,
+        nonSortableFields: ["total", "fulfillment_status", "payment_status"],
+      }
+
+      await expect(
+        prepareListQuery(validated, queryConfig)
+      ).rejects.toThrow("Order field total is not sortable")
+    })
+
+    it("should throw error for descending sort on a nonSortableField", async () => {
+      const validated: RequestQueryFields = {
+        order: "-fulfillment_status",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        isList: true,
+        nonSortableFields: ["total", "fulfillment_status", "payment_status"],
+      }
+
+      await expect(
+        prepareListQuery(validated, queryConfig)
+      ).rejects.toThrow("Order field fulfillment_status is not sortable")
+    })
+
+    it("should allow order field that is not in nonSortableFields", async () => {
+      const validated: RequestQueryFields = {
+        order: "created_at",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        isList: true,
+        nonSortableFields: ["total", "fulfillment_status", "payment_status"],
+      }
+
+      const result = await prepareListQuery(validated, queryConfig)
+
+      expect(result.listConfig.order).toEqual({ created_at: "ASC" })
+    })
+
     it("should throw error when order field is not in allowed fields", async () => {
       const validated: RequestQueryFields = {
         order: "restricted_field",

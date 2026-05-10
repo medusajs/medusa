@@ -50,6 +50,7 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
     defaultLimit = 50,
     isList,
     entity,
+    nonSortableFields = [],
   } = queryConfig
   const {
     order,
@@ -120,6 +121,13 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Order field ${orderField} is not valid`
+      )
+    }
+
+    if (nonSortableFields.includes(orderField)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Order field ${orderField} is not sortable`
       )
     }
   }

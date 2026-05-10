@@ -454,6 +454,12 @@ export type QueryConfig<TEntity> = {
   allowed?: string[]
   defaultLimit?: number
   /**
+   * Fields that cannot be used for sorting. Requests that attempt to sort by these fields
+   * will receive an INVALID_DATA error. Use this for computed or virtual fields that are
+   * not backed by database columns (e.g. `total`, `fulfillment_status`, `payment_status`).
+   */
+  nonSortableFields?: string[]
+  /**
    * If the route that will use that configuration is supposed to return a list of entities. This
    * will change the configuration that will be created on req.listConfig and req.queryConfig (among
    * other things it will include pagination and sorting)

@@ -181,6 +181,42 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
           expect(columnIds).toContain("currency_code")
         })
 
+        it("should mark Order computed fields as non-sortable", async () => {
+          const columns = await service.generateEntityColumns("Order")
+
+          expect(columns).not.toBeNull()
+
+          const totalColumn = columns!.find((c) => c.id === "total")
+          const paymentStatusColumn = columns!.find(
+            (c) => c.id === "payment_status"
+          )
+          const fulfillmentStatusColumn = columns!.find(
+            (c) => c.id === "fulfillment_status"
+          )
+
+          expect(totalColumn).toBeDefined()
+          expect(paymentStatusColumn).toBeDefined()
+          expect(fulfillmentStatusColumn).toBeDefined()
+
+          expect(totalColumn!.sortable).toBe(false)
+          expect(paymentStatusColumn!.sortable).toBe(false)
+          expect(fulfillmentStatusColumn!.sortable).toBe(false)
+        })
+
+        it("should keep real Order DB columns as sortable", async () => {
+          const columns = await service.generateEntityColumns("Order")
+
+          expect(columns).not.toBeNull()
+
+          const createdAt = columns!.find((c) => c.id === "created_at")
+          const status = columns!.find((c) => c.id === "status")
+          const currencyCode = columns!.find((c) => c.id === "currency_code")
+
+          expect(createdAt!.sortable).toBe(true)
+          expect(status!.sortable).toBe(true)
+          expect(currencyCode!.sortable).toBe(true)
+        })
+
         it("should handle entity lookup with different cases", async () => {
           const columns1 = await service.generateEntityColumns("product")
           const columns2 = await service.generateEntityColumns("Product")

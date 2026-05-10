@@ -42,6 +42,12 @@ export interface EntityOverride {
    * Note: Computed columns can also be defined in the ComputedColumnRegistry.
    */
   computedColumns?: ComputedColumnDefinition[]
+
+  /**
+   * Fields that cannot be sorted. These are typically computed or virtual fields
+   * not backed by actual database columns (e.g. `total`, `fulfillment_status`).
+   */
+  nonSortableFields?: string[]
 }
 
 /**
@@ -54,6 +60,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
     excludePrefixes: ["raw_"],
     excludeFields: ["order_change"],
     additionalTypes: ["OrderDetail"],
+    nonSortableFields: ["total", "fulfillment_status", "payment_status"],
     defaultVisibleFields: [
       "display_id",
       "created_at",
@@ -190,6 +197,10 @@ export class EntityOverrideRegistry {
           ...(existing.computedColumns || []),
           ...(override.computedColumns || []),
         ],
+        nonSortableFields: [
+          ...(existing.nonSortableFields || []),
+          ...(override.nonSortableFields || []),
+        ],
       })
     } else {
       this.overrides.set(entityName, override)
@@ -321,6 +332,19 @@ export function getAdditionalTypes(
 ): string[] {
   const resolvedOverride = override ?? getEntityOverride(entityName)
   return resolvedOverride?.additionalTypes || []
+}
+
+/**
+ * Get fields that cannot be sorted for an entity.
+ * @param entityName - The entity name (used if override is not provided)
+ * @param override - Optional pre-resolved override to use instead of looking up by entity name
+ */
+export function getNonSortableFields(
+  entityName: string,
+  override?: EntityOverride
+): string[] {
+  const resolvedOverride = override ?? getEntityOverride(entityName)
+  return resolvedOverride?.nonSortableFields || []
 }
 
 /**
