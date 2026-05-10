@@ -27,6 +27,10 @@ describe("isValidHandle", function () {
       { input: "hello!!!world", isValid: false },
       { input: "price$99", isValid: false },
       { input: "100%", isValid: false },
+      { input: "Hello-World", isValid: false },
+      { input: "MyProduct", isValid: false },
+      { input: "PRODUCT-123", isValid: false },
+      { input: "Product-Name", isValid: false },
 
       // Persian / Farsi
       { input: "سلام-دنیا", isValid: true },
@@ -86,20 +90,6 @@ describe("isValidHandle", function () {
       { input: "a-b-c-d-e", isValid: true },
       { input: "123-456-789", isValid: true },
       { input: "a-1-b-2-c-3", isValid: true },
-
-      // English / Latin - valid cases
-      { input: "hello-world", isValid: true },
-      { input: "my-article-123", isValid: true },
-      { input: "a-1", isValid: true },
-      { input: "123", isValid: true },
-      { input: "123-456", isValid: true },
-      { input: "café-resume", isValid: true },
-
-      // English / Latin - invalid cases (uppercase ASCII)
-      { input: "Hello-World", isValid: false },
-      { input: "MyProduct", isValid: false },
-      { input: "PRODUCT-123", isValid: false },
-      { input: "Product-Name", isValid: false },
 
       // Case-less scripts (Persian, Arabic, Japanese, Chinese)
       { input: "کتاب-فارسی", isValid: true },

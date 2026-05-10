@@ -2,18 +2,12 @@
  * Helper method to create a URL-friendly "handle" from a string value.
  *
  * - Converts the value to lowercase
- * - Normalizes Unicode characters and removes diacritics (accents)
  * - Preserves letters from any language (Persian, Arabic, Japanese, Chinese, Korean, Russian, etc.)
  * - Removes special characters (apostrophes, punctuation, symbols, etc.)
  * - Replaces spaces and underscores with hyphens
  * - Collapses multiple hyphens into a single hyphen
  * - Falls back to a random suffix if the result is empty
  *
- * @example
- * toHandle("My Product") // "my-product"
- * toHandle("کتاب فارسی") // "کتاب-فارسی"
- * toHandle("Women's Shoes") // "womens-shoes"
- * toHandle("café") // "cafe"
  */
 export const toHandle = (value: string): string => {
 
