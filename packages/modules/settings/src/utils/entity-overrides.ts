@@ -44,13 +44,6 @@ export interface EntityOverride {
   computedColumns?: ComputedColumnDefinition[]
 
   /**
-   * Fields that should be displayed as columns but cannot be filtered on.
-   * These are typically computed or virtual fields derived at query time
-   * (e.g. `payment_status`, `fulfillment_status`).
-   */
-  nonFilterableFields?: string[]
-
-  /**
    * Fields that cannot be sorted. These are typically computed or virtual fields
    * not backed by actual database columns (e.g. `total`, `fulfillment_status`).
    */
@@ -67,7 +60,6 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
     excludePrefixes: ["raw_"],
     excludeFields: ["order_change"],
     additionalTypes: ["OrderDetail"],
-    nonFilterableFields: ["payment_status", "fulfillment_status"],
     nonSortableFields: ["total", "fulfillment_status", "payment_status"],
     defaultVisibleFields: [
       "display_id",
@@ -205,10 +197,6 @@ export class EntityOverrideRegistry {
           ...(existing.computedColumns || []),
           ...(override.computedColumns || []),
         ],
-        nonFilterableFields: [
-          ...(existing.nonFilterableFields || []),
-          ...(override.nonFilterableFields || []),
-        ],
         nonSortableFields: [
           ...(existing.nonSortableFields || []),
           ...(override.nonSortableFields || []),
@@ -344,19 +332,6 @@ export function getAdditionalTypes(
 ): string[] {
   const resolvedOverride = override ?? getEntityOverride(entityName)
   return resolvedOverride?.additionalTypes || []
-}
-
-/**
- * Get fields that cannot be filtered for an entity.
- * @param entityName - The entity name (used if override is not provided)
- * @param override - Optional pre-resolved override to use instead of looking up by entity name
- */
-export function getNonFilterableFields(
-  entityName: string,
-  override?: EntityOverride
-): string[] {
-  const resolvedOverride = override ?? getEntityOverride(entityName)
-  return resolvedOverride?.nonFilterableFields || []
 }
 
 /**

@@ -23,7 +23,6 @@ import {
   getEntityOverride,
   getFieldFilterRules,
   getFieldOrdering,
-  getNonFilterableFields,
   getNonSortableFields,
 } from "./entity-overrides"
 import {
@@ -105,7 +104,6 @@ export function generateEntityColumns(
   const defaultVisibleFields = getDefaultVisibleFields(entity.name, override)
   const fieldOrdering = getFieldOrdering(entity.name, override)
   const additionalTypes = getAdditionalTypes(entity.name, override)
-  const nonFilterableFields = getNonFilterableFields(entity.name, override)
   const nonSortableFields = getNonSortableFields(entity.name, override)
 
   const schemaTypeMap = entityDiscovery.getSchemaTypeMap()
@@ -122,7 +120,6 @@ export function generateEntityColumns(
     filterRules,
     defaultVisibleFields,
     fieldOrdering,
-    nonFilterableFields,
     propertyLabels,
     "",
     nonSortableFields
@@ -209,7 +206,6 @@ function processEntityType(
   filterRules: FieldFilterRules,
   defaultVisibleFields: string[],
   fieldOrdering: Record<string, number>,
-  nonFilterableFields: string[] = [],
   propertyLabels?: Map<string, PropertyLabel>,
   parentPath: string = "",
   nonSortableFields: string[] = []
@@ -268,17 +264,15 @@ function processEntityType(
         category: parentPath
           ? "relationship"
           : semanticTypeToCategory(semanticType),
-        filter: nonFilterableFields.includes(fullPath)
-          ? { enabled: false }
-          : buildFilterConfig(
-              fieldName,
-              dataType,
-              false,
-              semanticType,
-              isEnumType(underlyingType)
-                ? underlyingType.getValues().map((v: any) => v.value)
-                : undefined
-            ),
+        filter: buildFilterConfig(
+          fieldName,
+          dataType,
+          false,
+          semanticType,
+          isEnumType(underlyingType)
+            ? underlyingType.getValues().map((v: any) => v.value)
+            : undefined
+        ),
         source: { module: entity.module, entity: entity.name },
         custom_label: hasCustomLabel,
         label_id: label?.id,
