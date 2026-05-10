@@ -74,7 +74,7 @@ medusaIntegrationTestRunner({
 
           expect(response.response.status).toBe(400)
           expect(response.response.data.message).toBe(
-            "Order field total is not sortable"
+            "Field total is not sortable"
           )
         })
 
@@ -85,7 +85,7 @@ medusaIntegrationTestRunner({
 
           expect(response.response.status).toBe(400)
           expect(response.response.data.message).toBe(
-            "Order field total is not sortable"
+            "Field total is not sortable"
           )
         })
 
@@ -96,7 +96,7 @@ medusaIntegrationTestRunner({
 
           expect(response.response.status).toBe(400)
           expect(response.response.data.message).toBe(
-            "Order field fulfillment_status is not sortable"
+            "Field fulfillment_status is not sortable"
           )
         })
 
@@ -107,7 +107,7 @@ medusaIntegrationTestRunner({
 
           expect(response.response.status).toBe(400)
           expect(response.response.data.message).toBe(
-            "Order field payment_status is not sortable"
+            "Field payment_status is not sortable"
           )
         })
 
@@ -118,7 +118,7 @@ medusaIntegrationTestRunner({
 
           expect(response.response.status).toBe(400)
           expect(response.response.data.message).toBe(
-            "Order field payment_status is not sortable"
+            "Field payment_status is not sortable"
           )
         })
       })

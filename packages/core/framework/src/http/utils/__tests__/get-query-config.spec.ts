@@ -222,7 +222,7 @@ describe("prepareListQuery", () => {
 
       await expect(
         prepareListQuery(validated, queryConfig)
-      ).rejects.toThrow("Order field total is not sortable")
+      ).rejects.toThrow("Field total is not sortable")
     })
 
     it("should throw error for descending sort on a nonSortableField", async () => {
@@ -239,7 +239,7 @@ describe("prepareListQuery", () => {
 
       await expect(
         prepareListQuery(validated, queryConfig)
-      ).rejects.toThrow("Order field fulfillment_status is not sortable")
+      ).rejects.toThrow("Field fulfillment_status is not sortable")
     })
 
     it("should allow order field that is not in nonSortableFields", async () => {

@@ -127,7 +127,7 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
     if (nonSortableFields.includes(orderField)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Order field ${orderField} is not sortable`
+        `Field ${orderField} is not sortable`
       )
     }
   }

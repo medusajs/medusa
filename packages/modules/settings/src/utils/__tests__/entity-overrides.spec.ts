@@ -63,21 +63,21 @@ describe("entity-overrides", () => {
       )
     })
 
-    it("should not duplicate nonSortableFields on re-registration", () => {
+    it("should accumulate nonSortableFields across registrations", () => {
       const registry = new EntityOverrideRegistry()
 
       registry.register("Order", {
-        nonSortableFields: ["total"],
+        nonSortableFields: ["extra_computed"],
       })
 
       const override = registry.get("Order")
-      const totalOccurrences = override?.nonSortableFields?.filter(
-        (f) => f === "total"
-      ).length
 
-      // "total" was already in BUILTIN_ENTITY_OVERRIDES and is merged in — deduplication
-      // is not strictly required by the interface but count should stay bounded
-      expect(totalOccurrences).toBeGreaterThanOrEqual(1)
+      // The built-in fields are still present
+      expect(override?.nonSortableFields).toContain("total")
+      expect(override?.nonSortableFields).toContain("fulfillment_status")
+      expect(override?.nonSortableFields).toContain("payment_status")
+      // The newly registered field is also present
+      expect(override?.nonSortableFields).toContain("extra_computed")
     })
 
     it("BUILTIN_ENTITY_OVERRIDES should define nonSortableFields for Order", () => {
