@@ -23,6 +23,7 @@ import {
   getEntityOverride,
   getFieldFilterRules,
   getFieldOrdering,
+  getNonFilterableFields,
   getNonSortableFields,
 } from "./entity-overrides"
 import {
@@ -104,6 +105,7 @@ export function generateEntityColumns(
   const defaultVisibleFields = getDefaultVisibleFields(entity.name, override)
   const fieldOrdering = getFieldOrdering(entity.name, override)
   const additionalTypes = getAdditionalTypes(entity.name, override)
+  const nonFilterableFields = getNonFilterableFields(entity.name, override)
   const nonSortableFields = getNonSortableFields(entity.name, override)
 
   const schemaTypeMap = entityDiscovery.getSchemaTypeMap()
@@ -120,6 +122,7 @@ export function generateEntityColumns(
     filterRules,
     defaultVisibleFields,
     fieldOrdering,
+    nonFilterableFields,
     propertyLabels,
     "",
     nonSortableFields
@@ -206,6 +209,7 @@ function processEntityType(
   filterRules: FieldFilterRules,
   defaultVisibleFields: string[],
   fieldOrdering: Record<string, number>,
+  nonFilterableFields: string[],
   propertyLabels?: Map<string, PropertyLabel>,
   parentPath: string = "",
   nonSortableFields: string[] = []
@@ -248,6 +252,18 @@ function processEntityType(
 
       processedFields.add(fullPath)
 
+      const filter = nonFilterableFields.includes(fullPath)
+        ? { enabled: false }
+        : buildFilterConfig(
+            fieldName,
+            dataType,
+            false,
+            semanticType,
+            isEnumType(underlyingType)
+              ? underlyingType.getValues().map((v: any) => v.value)
+              : undefined
+          )
+
       columns.push({
         id: fullPath,
         name: label?.label || formatFieldName(fieldName),
@@ -264,15 +280,7 @@ function processEntityType(
         category: parentPath
           ? "relationship"
           : semanticTypeToCategory(semanticType),
-        filter: buildFilterConfig(
-          fieldName,
-          dataType,
-          false,
-          semanticType,
-          isEnumType(underlyingType)
-            ? underlyingType.getValues().map((v: any) => v.value)
-            : undefined
-        ),
+        filter,
         source: { module: entity.module, entity: entity.name },
         custom_label: hasCustomLabel,
         label_id: label?.id,
@@ -316,14 +324,17 @@ function processEntityType(
 
             processedFields.add(nestedPath)
 
-            const filter = buildFilterConfig(
-              relatedFieldName,
-              dataType,
-              false,
-              semanticType
-            )
+            const filter = nonFilterableFields.includes(nestedPath)
+              ? { enabled: false }
+              : buildFilterConfig(
+                  relatedFieldName,
+                  dataType,
+                  false,
+                  semanticType
+                )
 
-            // Add relationship filter config for the id field
+            // Note: nested .id paths in nonFilterableFields produce
+            // { enabled: false, relationship: {...} }; not currently reachable.
             if (shouldIncludeRelationship && relatedFieldName === "id") {
               const relationshipFilter = getRelationshipFilterConfig(
                 entity.name,

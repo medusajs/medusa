@@ -21,7 +21,7 @@ columns in the `Order` table and cannot be used as sort keys at the database lev
 
 - `@medusajs/framework`: `prepareListQuery` now checks `nonSortableFields` after stripping the
   descending prefix (`-`). Requests that attempt to sort by a blocked field receive a clear
-  `400 INVALID_DATA` response (`Order field total is not sortable`) instead of propagating to
+  `400 INVALID_DATA` response (`Field total is not sortable`) instead of propagating to
   the ORM.
 
 - `@medusajs/medusa`: `listTransformQueryConfig` for `GET /admin/orders` sets

@@ -814,7 +814,34 @@ With these changes, the `LocalizedClientLink` component now creates links withou
 
 ---
 
-## 7. Update Server Functions to Use Country Code from Cookie
+## 7. Update Checkout Components
+
+The checkout flow components also need to be updated to handle URLs without country codes. This includes forms and buttons that redirect to other checkout steps.
+
+### Update Checkout Navigation
+
+In checkout components that handle navigation between steps (such as shipping, payment, and review), ensure that any redirect URLs or form actions don't include the country code prefix.
+
+For example, if you have checkout step components that redirect to delivery or payment URLs, update them to use the new URL structure:
+
+```tsx
+// Before: redirect(`/${countryCode}/checkout/delivery`)
+// After: redirect(`/checkout/delivery`)
+```
+
+### Update Form Actions in Checkout
+
+If your checkout forms have action URLs that include country codes, update them to the new structure. This is particularly important for:
+
+- Shipping address forms
+- Payment method selection
+- Order review and confirmation
+
+Look for any hardcoded URLs in checkout components and remove the country code prefix.
+
+---
+
+## 8. Update Server Functions to Use Country Code from Cookie
 
 Finally, you'll update the server functions in the Next.js Starter Storefront to retrieve the country code from the cookie instead of receiving it as a parameter.
 

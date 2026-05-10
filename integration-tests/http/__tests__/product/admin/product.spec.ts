@@ -955,7 +955,6 @@ medusaIntegrationTestRunner({
         })
 
         it("should return products filtered by external_id", async () => {
-
           const newProduct = (
             await api.post(
               "/admin/products",
@@ -2002,10 +2001,10 @@ medusaIntegrationTestRunner({
 
           expect(updatedProduct).toEqual(
             expect.objectContaining({
-              weight: "20",
+              weight: 20,
               length: null,
-              width: "100",
-              height: "100",
+              width: 100,
+              height: 100,
             })
           )
 
@@ -2019,10 +2018,10 @@ medusaIntegrationTestRunner({
 
           expect(updatedProduct).toEqual(
             expect.objectContaining({
-              weight: "20",
+              weight: 20,
               length: null,
-              width: "100",
-              height: "100",
+              width: 100,
+              height: 100,
               categories: expect.arrayContaining([
                 expect.objectContaining({
                   id: pantsCategory.id,
@@ -2042,9 +2041,9 @@ medusaIntegrationTestRunner({
           expect(updatedProduct).toEqual(
             expect.objectContaining({
               weight: null,
-              length: "20",
-              width: "50",
-              height: "100",
+              length: 20,
+              width: 50,
+              height: 100,
               categories: expect.arrayContaining([
                 expect.objectContaining({
                   id: pantsCategory.id,
@@ -3439,10 +3438,7 @@ medusaIntegrationTestRunner({
           // The remaining inventory item should also be deleted since it
           // was only associated with this product's variant
           const item2Response = await api
-            .get(
-              `/admin/inventory-items/${inventoryItem2.id}`,
-              adminHeaders
-            )
+            .get(`/admin/inventory-items/${inventoryItem2.id}`, adminHeaders)
             .catch((err) => err.response)
 
           expect(item2Response.status).toEqual(404)
