@@ -212,19 +212,14 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
       ignoreMissing: true,
     })
 
-    /**
-     * Only consider files that start with ".snapshot-" but do not match
-     * the expected module snapshot name. This handles legacy snapshot
-     * file naming while avoiding full-DB snapshots written by MikroORM
-     * directly (e.g. ".snapshot-<dbname>.json").
-     */
+    // Legacy module snapshots used `.snapshot-<module>.json`;
+    // new format is `.snapshot-medusa-<module>.json`.
+    // Only match the exact legacy filename to avoid picking up
+    // full-DB snapshots written by MikroORM (.snapshot-<databaseName>.json).
     const expectedName = basename(snapshotPath)
+    const legacyName = expectedName.replace(/^\.snapshot-medusa-/, ".snapshot-")
     const snapshotFile = entries.find(
-      (entry) =>
-        entry.isFile() &&
-        entry.name.endsWith(".json") &&
-        entry.name.startsWith(".snapshot-") &&
-        entry.name !== expectedName
+      (entry) => entry.isFile() && entry.name === legacyName
     )
 
     if (snapshotFile) {
