@@ -2,4 +2,4 @@
 "@medusajs/workflows-sdk": patch
 ---
 
-fix(workflow-sdk): cap WorkflowData recursion depth to avoid TS excesive stack depth error
+fix(workflows-sdk): flatten WorkflowData type to remove recursive expansion that caused TS excessive stack depth errors in large consumer codebases
