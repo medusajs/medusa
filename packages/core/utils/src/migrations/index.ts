@@ -206,7 +206,10 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
      * We assume all JSON files are snapshot files in this directory
      */
     const snapshotFile = entries.find(
-      (entry) => entry.isFile() && entry.name.endsWith(".json")
+      (entry) =>
+        entry.isFile() &&
+        entry.name.endsWith(".json") &&
+        entry.name.startsWith(".snapshot-")
     )
 
     if (snapshotFile) {
