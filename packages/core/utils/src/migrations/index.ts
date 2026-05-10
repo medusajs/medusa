@@ -84,7 +84,8 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
     const migrator = connection.getMigrator()
 
     try {
-      await this.migrateSnapshotFile(migrator["snapshotPath"])
+      await this.
+      (migrator["snapshotPath"])
       await this.ensureSnapshot(migrator["snapshotPath"])
       const migrationResult = await migrator.createMigration()
       const code = migrationResult.code
