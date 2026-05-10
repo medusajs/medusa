@@ -3,4 +3,4 @@
 "@medusajs/dashboard": patch
 ---
 
-fix(currencies): add GMD to supported currencies
+fix(utils, dashboard): add GMD to supported currencies
