@@ -1357,6 +1357,54 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               },
             ])
           })
+          
+          it("should not return price list prices when price list have rules but no context is loaded", async() => {
+            await createPriceLists(service)
+
+            const priceSetsResult = await service.calculatePrices(
+              { id: ["price-set-EUR", "price-set-PLN"] },
+              {
+                context: {
+                  currency_code: "pln",
+                },
+              }
+            )
+
+            expect(priceSetsResult).toEqual([
+              {
+                id: "price-set-PLN",
+                is_calculated_price_price_list: false,
+                is_calculated_price_tax_inclusive: false,
+                calculated_amount: 1000,
+                raw_calculated_amount: {
+                  value: "1000",
+                  precision: 20,
+                },
+                is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
+                original_amount: 1000,
+                raw_original_amount: {
+                  value: "1000",
+                  precision: 20,
+                },
+                currency_code: "pln",
+                calculated_price: {
+                  id: "price-PLN",
+                  price_list_id: null,
+                  price_list_type: null,
+                  min_quantity: 1,
+                  max_quantity: 10,
+                },
+                original_price: {
+                  id: "price-PLN",
+                  price_list_id: null,
+                  price_list_type: null,
+                  min_quantity: 1,
+                  max_quantity: 10,
+                },
+              }
+            ])
+          })
 
           it("should return price list prices when price list dont have any rules", async () => {
             await createPriceLists(service, {}, {})

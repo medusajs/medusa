@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { AdminFulfillment, AdminOrder } from "@medusajs/types"
 import { Button, clx, Heading, Input, Switch, toast } from "@medusajs/ui"
 import { useFieldArray, useForm } from "react-hook-form"
 
@@ -14,10 +13,14 @@ import {
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateOrderShipment } from "../../../../../hooks/api"
 import { CreateShipmentSchema } from "./constants"
+import {
+  ExtendedOrderFulfillment,
+  ExtendedOrder,
+} from "../../../order-detail/constants"
 
 type OrderCreateFulfillmentFormProps = {
-  order: AdminOrder
-  fulfillment: AdminFulfillment
+  order: ExtendedOrder
+  fulfillment?: ExtendedOrderFulfillment
 }
 
 export function OrderCreateShipmentForm({
@@ -28,7 +31,7 @@ export function OrderCreateShipmentForm({
   const { handleSuccess } = useRouteModal()
 
   const { mutateAsync: createShipment, isPending: isMutating } =
-    useCreateOrderShipment(order.id, fulfillment?.id)
+    useCreateOrderShipment(order.id, fulfillment?.id ?? "")
 
   const form = useForm<zod.infer<typeof CreateShipmentSchema>>({
     defaultValues: {
@@ -53,10 +56,13 @@ export function OrderCreateShipmentForm({
 
     await createShipment(
       {
-        items: fulfillment?.items?.map((i) => ({
-          id: i.line_item_id,
-          quantity: i.quantity,
-        })),
+        items:
+          fulfillment?.items
+            ?.filter((i) => !!i.line_item_id)
+            .map((i) => ({
+              id: i.line_item_id!,
+              quantity: i.quantity,
+            })) || [],
         labels: [...addedLabels, ...(fulfillment?.labels || [])],
         no_notification: !data.send_notification,
       },

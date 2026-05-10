@@ -2,12 +2,11 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { AdminGetPaymentParamsType } from "../validators"
 import { refetchPayment } from "../helpers"
 import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminGetPaymentParamsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetPaymentParams>,
   res: MedusaResponse<HttpTypes.AdminPaymentResponse>
 ) => {
   const payment = await refetchPayment(

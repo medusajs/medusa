@@ -14,11 +14,14 @@ export const GET = async (
   req: RequestWithContext<HttpTypes.StoreProductListParams>,
   res: MedusaResponse<HttpTypes.StoreProductListResponse>
 ) => {
+  const filterableFields: HttpTypes.StoreProductListParams =
+    req.filterableFields
+
   if (FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key)) {
     // TODO: These filters are not supported by the index engine yet
     if (
-      isPresent(req.filterableFields.tags) ||
-      isPresent(req.filterableFields.categories)
+      isPresent(filterableFields.tag_id) ||
+      isPresent(filterableFields.category_id)
     ) {
       return await getProducts(req, res)
     }

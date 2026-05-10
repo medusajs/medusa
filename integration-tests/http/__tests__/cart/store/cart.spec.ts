@@ -1,4 +1,5 @@
 import {
+  addToCartWorkflow,
   createCartCreditLinesWorkflow,
   updateCartsStep,
 } from "@medusajs/core-flows"
@@ -1477,6 +1478,283 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should update the correct line item when multiple items exist for the same variant with different metadata", async () => {
+          // Add same variant with different metadata to create two separate line items
+          await api.post(
+            `/store/carts/${cart.id}/line-items`,
+            {
+              variant_id: product.variants[0].id,
+              quantity: 1,
+              metadata: { engraving: "Hello" },
+            },
+            storeHeaders
+          )
+
+          let response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
+
+          // Cart should have 2 items: original (qty 1, no metadata) and new (qty 1, with metadata)
+          expect(response.data.cart.items).toHaveLength(2)
+
+          // Now add the same variant again with the engraving metadata — should update that specific item
+          response = await api.post(
+            `/store/carts/${cart.id}/line-items`,
+            {
+              variant_id: product.variants[0].id,
+              quantity: 2,
+              metadata: { engraving: "Hello" },
+            },
+            storeHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          // Should still be 2 items, not 3
+          expect(response.data.cart.items).toHaveLength(2)
+          expect(response.data.cart.items).toEqual(
+            expect.arrayContaining([
+              // Original item without metadata should remain qty 1
+              expect.objectContaining({
+                variant_id: product.variants[0].id,
+                quantity: 1,
+              }),
+              // Metadata item should be updated to qty 3 (1 + 2)
+              expect.objectContaining({
+                variant_id: product.variants[0].id,
+                quantity: 3,
+                metadata: { engraving: "Hello" },
+              }),
+            ])
+          )
+        })
+
+        it("should create a new line item when adding same variant with custom price that differs from existing custom price item", async () => {
+          const variantId = product.variants[0].id
+
+          // Use the workflow directly to add an item with a custom unit_price
+          await addToCartWorkflow(appContainer).run({
+            input: {
+              cart_id: cart.id,
+              items: [
+                {
+                  variant_id: variantId,
+                  quantity: 1,
+                  unit_price: 999,
+                },
+              ],
+            },
+          })
+
+          let response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
+
+          // Should have 2 items: original (variant price) + custom price item
+          expect(response.data.cart.items).toHaveLength(2)
+
+          // Add another item with the same variant but a different custom price
+          await addToCartWorkflow(appContainer).run({
+            input: {
+              cart_id: cart.id,
+              items: [
+                {
+                  variant_id: variantId,
+                  quantity: 1,
+                  unit_price: 500,
+                },
+              ],
+            },
+          })
+
+          response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
+
+          // Should now have 3 items: original + custom price 999 + custom price 500
+          expect(response.data.cart.items).toHaveLength(3)
+          expect(response.data.cart.items).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                variant_id: variantId,
+                unit_price: 999,
+                quantity: 1,
+              }),
+              expect.objectContaining({
+                variant_id: variantId,
+                unit_price: 500,
+                quantity: 1,
+              }),
+            ])
+          )
+        })
+
+        it("should update quantity when adding same variant with matching custom price", async () => {
+          const variantId = product.variants[0].id
+
+          // Add an item with a custom unit_price
+          await addToCartWorkflow(appContainer).run({
+            input: {
+              cart_id: cart.id,
+              items: [
+                {
+                  variant_id: variantId,
+                  quantity: 1,
+                  unit_price: 999,
+                },
+              ],
+            },
+          })
+
+          let response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
+
+          expect(response.data.cart.items).toHaveLength(2)
+
+          // Add same variant with the same custom price — should update quantity
+          await addToCartWorkflow(appContainer).run({
+            input: {
+              cart_id: cart.id,
+              items: [
+                {
+                  variant_id: variantId,
+                  quantity: 2,
+                  unit_price: 999,
+                },
+              ],
+            },
+          })
+
+          response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
+
+          // Should still be 2 items, custom price item quantity updated to 3
+          expect(response.data.cart.items).toHaveLength(2)
+          expect(response.data.cart.items).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                variant_id: variantId,
+                unit_price: 999,
+                quantity: 3,
+              }),
+            ])
+          )
+        })
+
+        it("should create a new line item when adding same variant with same metadata but different custom price", async () => {
+          const variantId = product.variants[0].id
+          const metadata = { note: "gift" }
+
+          // Add item with custom price and metadata
+          await addToCartWorkflow(appContainer).run({
+            input: {
+              cart_id: cart.id,
+              items: [
+                {
+                  variant_id: variantId,
+                  quantity: 1,
+                  unit_price: 999,
+                  metadata,
+                },
+              ],
+            },
+          })
+
+          let response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
+
+          expect(response.data.cart.items).toHaveLength(2)
+
+          // Add same variant with same metadata but different custom price
+          // Should create a new line item, not update the existing one
+          await addToCartWorkflow(appContainer).run({
+            input: {
+              cart_id: cart.id,
+              items: [
+                {
+                  variant_id: variantId,
+                  quantity: 1,
+                  unit_price: 500,
+                  metadata,
+                },
+              ],
+            },
+          })
+
+          response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
+
+          // Should have 3 items: original + custom price 999 + custom price 500
+          expect(response.data.cart.items).toHaveLength(3)
+          expect(response.data.cart.items).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                variant_id: variantId,
+                unit_price: 999,
+                quantity: 1,
+                metadata: { note: "gift" },
+              }),
+              expect.objectContaining({
+                variant_id: variantId,
+                unit_price: 500,
+                quantity: 1,
+                metadata: { note: "gift" },
+              }),
+            ])
+          )
+        })
+
+        it("should accumulate quantity when adding same variant with same metadata and same custom price", async () => {
+          const variantId = product.variants[0].id
+          const metadata = { note: "gift" }
+
+          // Add item with custom price and metadata
+          await addToCartWorkflow(appContainer).run({
+            input: {
+              cart_id: cart.id,
+              items: [
+                {
+                  variant_id: variantId,
+                  quantity: 1,
+                  unit_price: 999,
+                  metadata,
+                },
+              ],
+            },
+          })
+
+          let response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
+
+          // Should have 2 items: original + custom price with metadata
+          expect(response.data.cart.items).toHaveLength(2)
+
+          // Add same variant with same metadata and same custom price at the same time
+          // Should accumulate quantity on the existing line item, not create a duplicate
+          await addToCartWorkflow(appContainer).run({
+            input: {
+              cart_id: cart.id,
+              items: [
+                {
+                  variant_id: variantId,
+                  quantity: 2,
+                  unit_price: 999,
+                  metadata,
+                },
+                {
+                  variant_id: variantId,
+                  quantity: 1,
+                  unit_price: 999,
+                  metadata,
+                },
+              ],
+            },
+          })
+
+          response = await api.get(`/store/carts/${cart.id}`, storeHeaders)
+
+          // Should still have 2 items, with the custom price item's quantity accumulated
+          expect(response.data.cart.items).toHaveLength(2)
+          expect(response.data.cart.items).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                variant_id: variantId,
+                unit_price: 999,
+                quantity: 4,
+                metadata: { note: "gift" },
+              }),
+            ])
+          )
+        })
+
         describe("with sale price lists", () => {
           beforeEach(async () => {
             await api.post(
@@ -2784,6 +3062,171 @@ medusaIntegrationTestRunner({
                 ])
               )
             })
+          })
+        })
+
+        describe("empty cart validation", () => {
+          it("should fail to complete an empty cart via the store endpoint", async () => {
+            const emptyCart = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  shipping_address: shippingAddressData,
+                },
+                storeHeadersWithCustomer
+              )
+            ).data.cart
+
+            const paymentCollection = (
+              await api.post(
+                `/store/payment-collections`,
+                { cart_id: emptyCart.id },
+                storeHeaders
+              )
+            ).data.payment_collection
+
+            await api.post(
+              `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+              { provider_id: "pp_system_default" },
+              storeHeaders
+            )
+
+            const error = await api
+              .post(
+                `/store/carts/${emptyCart.id}/complete`,
+                {},
+                storeHeaders
+              )
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(400)
+            expect(error.response.data.message).toEqual(
+              "Cannot complete a cart with no items"
+            )
+          })
+
+          it("should successfully complete a cart with items (regression guard)", async () => {
+            const cartWithItems = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  shipping_address: shippingAddressData,
+                  items: [
+                    { variant_id: product.variants[0].id, quantity: 1 },
+                  ],
+                },
+                storeHeadersWithCustomer
+              )
+            ).data.cart
+
+            const stockLocation = (
+              await api.post(
+                `/admin/stock-locations`,
+                { name: "test location regression" },
+                adminHeaders
+              )
+            ).data.stock_location
+
+            await api.post(
+              `/admin/stock-locations/${stockLocation.id}/sales-channels`,
+              { add: [salesChannel.id] },
+              adminHeaders
+            )
+
+            const fulfillmentSets = (
+              await api.post(
+                `/admin/stock-locations/${stockLocation.id}/fulfillment-sets?fields=*fulfillment_sets`,
+                {
+                  name: `Test-regression-${shippingProfile.id}`,
+                  type: "test-type",
+                },
+                adminHeaders
+              )
+            ).data.stock_location.fulfillment_sets
+
+            const fulfillmentSet = (
+              await api.post(
+                `/admin/fulfillment-sets/${fulfillmentSets[0].id}/service-zones`,
+                {
+                  name: `Test-regression-${shippingProfile.id}`,
+                  geo_zones: [{ type: "country", country_code: "US" }],
+                },
+                adminHeaders
+              )
+            ).data.fulfillment_set
+
+            await api.post(
+              `/admin/stock-locations/${stockLocation.id}/fulfillment-providers`,
+              { add: ["manual_test-provider"] },
+              adminHeaders
+            )
+
+            const shippingOption = (
+              await api.post(
+                `/admin/shipping-options`,
+                {
+                  name: `Test shipping regression ${fulfillmentSet.id}`,
+                  service_zone_id: fulfillmentSet.service_zones[0].id,
+                  shipping_profile_id: shippingProfile.id,
+                  provider_id: "manual_test-provider",
+                  price_type: "flat",
+                  type: {
+                    label: "Test type",
+                    description: "Test description",
+                    code: "test-code",
+                  },
+                  prices: [{ currency_code: "usd", amount: 1000 }],
+                  rules: [],
+                },
+                adminHeaders
+              )
+            ).data.shipping_option
+
+            await api.post(
+              `/store/carts/${cartWithItems.id}/shipping-methods`,
+              { option_id: shippingOption.id },
+              storeHeaders
+            )
+
+            const paymentCollection = (
+              await api.post(
+                `/store/payment-collections`,
+                { cart_id: cartWithItems.id },
+                storeHeaders
+              )
+            ).data.payment_collection
+
+            await api.post(
+              `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+              { provider_id: "pp_system_default" },
+              storeHeaders
+            )
+
+            const response = await api.post(
+              `/store/carts/${cartWithItems.id}/complete`,
+              {},
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.type).toEqual("order")
+            expect(response.data.order).toEqual(
+              expect.objectContaining({
+                id: expect.any(String),
+                currency_code: "usd",
+                items: expect.arrayContaining([
+                  expect.objectContaining({
+                    quantity: 1,
+                  }),
+                ]),
+              })
+            )
           })
         })
 

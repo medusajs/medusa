@@ -41,16 +41,6 @@ export const StoreGetProductVariantsParamsFields = z.object({
   deleted_at: createOperatorMap().optional(),
 })
 
-export type StoreGetProductVariantsParamsType = z.infer<
-  typeof StoreGetProductVariantsParams
->
-export const StoreGetProductVariantsParams = createFindParams({
-  offset: 0,
-  limit: 50,
-})
-  .merge(StoreGetProductVariantsParamsFields)
-  .merge(applyAndAndOrOperators(StoreGetProductVariantsParamsFields))
-
 export const StoreGetProductsParamsFields = z
   .object({
     region_id: z.string().optional(),

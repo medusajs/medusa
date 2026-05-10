@@ -113,6 +113,7 @@ medusaIntegrationTestRunner({
               description: "test",
               title: "test price list",
               status: "active",
+              metadata: null,
               starts_at: expect.any(String),
               ends_at: expect.any(String),
               created_at: expect.any(String),

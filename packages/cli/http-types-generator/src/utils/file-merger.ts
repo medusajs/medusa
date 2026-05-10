@@ -167,8 +167,15 @@ export class FileMerger {
   }
 
   /**
-   * Scans `content` for `export interface Name ...` blocks and returns a map
-   * from interface name to the full block text.
+   * Scans `content` for interface and type alias declarations and returns a map
+   * from name to the full block text.
+   *
+   * Matches all four forms so that hand-written declarations are never
+   * duplicated by the generator regardless of their export/keyword variant:
+   *   - `export interface Foo { ... }`
+   *   - `export type Foo = { ... }`
+   *   - `interface Foo { ... }`       (non-exported, e.g. internal helpers)
+   *   - `type Foo = { ... }`          (non-exported type alias)
    */
   private extractInterfaceBlocks(content: string): Map<string, string> {
     const blocks = new Map<string, string>()
@@ -176,7 +183,7 @@ export class FileMerger {
     let i = 0
 
     while (i < lines.length) {
-      const m = lines[i].match(/^export\s+interface\s+(\w+)/)
+      const m = lines[i].match(/^(?:export\s+)?(?:interface|type)\s+(\w+)/)
       if (m) {
         const name = m[1]
         let block = ""

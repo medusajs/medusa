@@ -3,14 +3,14 @@ import { Heading, Text } from "@medusajs/ui"
 import { Fragment } from "react"
 import { useTranslation } from "react-i18next"
 
-const translationKeyMap = {
+const translationKeyMap: Record<string, string> = {
   spend: "spend",
   usage: "usage",
   use_by_attribute: "useByAttribute",
 }
 
 const getTranslationKey = (budget: AdminCampaign["budget"]) => {
-  const translationKey = translationKeyMap[budget?.type] || "-"
+  const translationKey = translationKeyMap[budget?.type as string] || "-"
 
   if (budget?.type === "use_by_attribute") {
     if (budget?.attribute === "customer_id") {

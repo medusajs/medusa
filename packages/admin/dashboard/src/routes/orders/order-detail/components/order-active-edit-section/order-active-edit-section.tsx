@@ -8,13 +8,12 @@ import {
   useConfirmOrderEdit,
 } from "../../../../../hooks/api/order-edits"
 import { useMemo } from "react"
-import { HttpTypes } from "@medusajs/types"
+import { AdminOrderLinePreview, HttpTypes } from "@medusajs/types"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { useNavigate } from "react-router-dom"
 
 type OrderActiveEditSectionProps = {
   order: HttpTypes.AdminOrder
-  quantity: number
 }
 
 function EditItem({
@@ -61,11 +60,11 @@ export const OrderActiveEditSection = ({
   const { mutateAsync: cancelOrderEdit } = useCancelOrderEdit(order.id)
   const { mutateAsync: confirmOrderEdit } = useConfirmOrderEdit(order.id)
 
-  const isPending = orderPreview.order_change?.status === "pending"
+  const isPending = orderPreview?.order_change?.status === "pending"
 
   const [addedItems, removedItems] = useMemo(() => {
-    const added = []
-    const removed = []
+    const added: { item: AdminOrderLinePreview; quantity: number }[] = []
+    const removed: { item: AdminOrderLinePreview; quantity: number }[] = []
 
     const orderLookupMap = new Map(order.items!.map((i) => [i.id, i]))
 
@@ -101,7 +100,9 @@ export const OrderActiveEditSection = ({
 
       toast.success(t("orders.edits.toast.confirmedSuccessfully"))
     } catch (e) {
-      toast.error(e.message)
+      toast.error(
+        e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+      )
     }
   }
 
@@ -111,7 +112,9 @@ export const OrderActiveEditSection = ({
 
       toast.success(t("orders.edits.toast.canceledSuccessfully"))
     } catch (e) {
-      toast.error(e.message)
+      toast.error(
+        e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+      )
     }
   }
 
@@ -140,7 +143,7 @@ export const OrderActiveEditSection = ({
             </Heading>
           </div>
 
-          {/*ADDED ITEMS*/}
+          {/* ADDED ITEMS*/}
           {!!addedItems.length && (
             <div className="txt-small text-ui-fg-subtle flex flex-row px-6 py-4">
               <span className="flex-1 font-medium">{t("labels.added")}</span>
@@ -153,7 +156,7 @@ export const OrderActiveEditSection = ({
             </div>
           )}
 
-          {/*REMOVED ITEMS*/}
+          {/* REMOVED ITEMS*/}
           {!!removedItems.length && (
             <div className="txt-small text-ui-fg-subtle flex flex-row px-6 py-4">
               <span className="flex-1 font-medium">{t("labels.removed")}</span>
