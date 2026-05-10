@@ -12,7 +12,7 @@ import { inventoryItemsQueryKeys } from "./inventory.tsx"
 export const useCreateOrderEdit = (
   orderId: string,
   options?: UseMutationOptions<
-    HttpTypes.AdminOrderEditPreviewResponse,
+    HttpTypes.AdminOrderEditResponse,
     FetchError,
     HttpTypes.AdminInitiateOrderEditRequest
   >
@@ -113,7 +113,7 @@ export const useConfirmOrderEdit = (
 
 export const useCancelOrderEdit = (
   orderId: string,
-  options?: UseMutationOptions<any, FetchError, any>
+  options?: UseMutationOptions<any, FetchError, void>
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.orderEdit.cancelRequest(orderId),

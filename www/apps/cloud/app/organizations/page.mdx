@@ -1,4 +1,4 @@
-import { InlineIcon, getOsShortcut, Kbd } from "docs-ui"
+import { InlineIcon, getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
 import { Plus, EllipsisHorizontal, ChevronUpDown } from "@medusajs/icons"
 
 export const metadata = {
@@ -51,8 +51,6 @@ To switch to a different organization:
 
 This will change the view to the selected organization, and you'll see its projects, resources, and settings.
 
-![Organization switcher at the top left of the Cloud dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1749733300/Cloud/CleanShot_2025-06-12_at_16.00.18_2x_yqui1n.png)
-
 ---
 
 ## View Organization Settings
@@ -65,9 +63,28 @@ You can also navigate to an organization's settings from the [command palette](.
 
 </Note>
 
-1. If you're in a different organization, [switch to the organization](#switch-organization) whose settings you want to view.
-2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](#switch-organization) at the top left of the Cloud dashboard.
-3. Choose "Organization Settings" from the dropdown.
+
+<Tabs defaultValue="classic">
+  <TabsList>
+    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
+    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
+  </TabsList>
+  <TabsContentWrapper>
+    <TabsContent value="classic">
+
+    1. If you're in a different organization, [switch to the organization](#switch-organization) whose settings you want to view.
+    2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](#switch-organization) at the top left of the Cloud dashboard.
+    3. Choose "Organization Settings" from the dropdown.
+
+    </TabsContent>
+    <TabsContent value="global-sidebar">
+
+    1. If you're in a different organization, [switch to the organization](#switch-organization) whose settings you want to view.
+    2. Click on Settings in the sidebar.
+
+    </TabsContent>
+  </TabsContentWrapper>
+</Tabs>
 
 This will open a new window where you can view and manage an organization's settings.
 

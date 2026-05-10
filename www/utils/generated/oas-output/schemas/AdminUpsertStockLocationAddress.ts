@@ -4,8 +4,8 @@
  * description: The details of the stock location address to create.
  * x-schemaName: AdminUpsertStockLocationAddress
  * required:
- *   - address_1
  *   - country_code
+ *   - address_1
  * properties:
  *   address_1:
  *     type: string

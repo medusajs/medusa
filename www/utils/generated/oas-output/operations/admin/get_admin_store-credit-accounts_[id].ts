@@ -4,7 +4,6 @@
  * summary: Get a Store Credit Account
  * description: Retrieve a store credit account by its ID. You can expand the store credit account's relations or select the fields that should be returned.
  * x-authenticated: true
- * x-ignoreCleanup: true
  * parameters:
  *   - name: id
  *     in: path
@@ -380,6 +379,14 @@
  *             type: string
  *             title: code
  *             description: A store credit account code.
+ *   - name: with_deleted
+ *     in: query
+ *     description: Whether to include deleted records in the result.
+ *     required: false
+ *     schema:
+ *       type: boolean
+ *       title: with_deleted
+ *       description: Whether to include deleted records in the result.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -412,9 +419,9 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-badges:
- *   - text: Cloud
+ *   - text: Loyalty Plugin
  *     description: |
- *       This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+ *       This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/store-credit).
  * 
 */
 

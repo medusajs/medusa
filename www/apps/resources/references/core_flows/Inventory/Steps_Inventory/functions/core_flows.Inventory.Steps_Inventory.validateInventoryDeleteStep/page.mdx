@@ -18,12 +18,7 @@ import { validateInventoryDeleteStep } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = validateInventoryDeleteStep({
-      "inventory_items": [{
-        "id": "id_2wzZfQfkH4KdVdpIMm",
-        "reserved_quantity": 25
-      }]
-    })
+    const data = validateInventoryDeleteStep({})
   }
 )
 ```
@@ -31,4 +26,4 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"ValidateInventoryDeleteStepInput","type":"[ValidateInventoryDeleteStepInput](../../../../interfaces/core_flows.ValidateInventoryDeleteStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"inventory_items","type":"`object`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reserved_quantity","type":"[BigNumberInput](../../../../../types/types/types.BigNumberInput/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validateInventoryDeleteStep"/>
+<TypeList types={[{"name":"ValidateInventoryDeleteStepInput","type":"[ValidateInventoryDeleteStepInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidateInventoryDeleteStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ValidateInventoryDeleteStepInput","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validateInventoryDeleteStep"/>

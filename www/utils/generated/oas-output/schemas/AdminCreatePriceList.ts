@@ -47,6 +47,9 @@
  *     description: The price list's prices.
  *     items:
  *       $ref: "#/components/schemas/AdminCreatePriceListPrice"
+ *   metadata:
+ *     type: object
+ *     description: Key-value pairs of custom data.
  * 
 */
 

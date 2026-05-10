@@ -2,14 +2,12 @@ import { HttpTypes } from "@medusajs/types"
 import { useQueryParams } from "../../use-query-params"
 
 type UseShippingOptionTableQueryProps = {
-  regionId: string
   isReturn?: boolean
   pageSize?: number
   prefix?: string
 }
 
 export const useShippingOptionTableQuery = ({
-  regionId,
   pageSize = 10,
   prefix,
 }: UseShippingOptionTableQueryProps) => {
@@ -31,8 +29,8 @@ export const useShippingOptionTableQuery = ({
     offset,
     order,
     q,
-    admin_only,
-    is_return,
+    // admin_only,
+    // is_return,
     created_at,
     updated_at,
     stock_location_id,

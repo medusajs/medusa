@@ -202,8 +202,11 @@ export const NavItem = ({
                   </NavItemTooltip>
                 </li>
                 {items.map((item) => {
+                  // eslint-disable-next-line react-hooks/rules-of-hooks
                   const { t: itemT } = useTranslation(item.translationNs as any)
-                  const itemLabel: string = item.translationNs ? itemT(item.label) : item.label
+                  const itemLabel: string = item.translationNs
+                    ? itemT(item.label)
+                    : item.label
 
                   return (
                     <li key={item.to} className="flex h-7 items-center">

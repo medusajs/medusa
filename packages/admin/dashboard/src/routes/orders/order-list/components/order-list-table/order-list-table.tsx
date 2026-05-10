@@ -8,8 +8,6 @@ import { useOrders } from "../../../../../hooks/api/orders"
 import { useOrderTableColumns } from "../../../../../hooks/table/columns/use-order-table-columns"
 import { useOrderTableQuery } from "../../../../../hooks/table/query/use-order-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
-import { ConfigurableOrderListTable } from "./configurable-order-list-table"
 
 import { DEFAULT_FIELDS } from "../../const"
 import { useOrderTableFilters } from "../../../../../hooks/table/filters"
@@ -19,12 +17,6 @@ const PAGE_SIZE = 20
 export const OrderListTable = () => {
   const { t } = useTranslation()
   const location = useLocation()
-  const isViewConfigEnabled = useFeatureFlag("view_configurations")
-
-  // If feature flag is enabled, use the new configurable table
-  if (isViewConfigEnabled) {
-    return <ConfigurableOrderListTable />
-  }
 
   const { searchParams, raw } = useOrderTableQuery({
     pageSize: PAGE_SIZE,

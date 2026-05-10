@@ -21,11 +21,7 @@ import { cancelOrdersStep } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = cancelOrdersStep({
-      "orderIds": [
-        "{value}"
-      ]
-    })
+    const data = cancelOrdersStep({})
   }
 )
 ```
@@ -33,7 +29,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"CancelOrdersStepInput","type":"[CancelOrdersStepInput](../../../../types/core_flows.CancelOrdersStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of canceling the orders.","expandable":false,"children":[{"name":"orderIds","type":"`string`[]","description":"The IDs of the orders to cancel.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"canceled_by","type":"`string`","description":"The ID of the user canceling the orders.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="cancelOrdersStep"/>
+<TypeList types={[{"name":"CancelOrdersStepInput","type":"[CancelOrdersStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.CancelOrdersStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CancelOrdersStepInput","type":"`object`","description":"The details of canceling the orders.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="cancelOrdersStep"/>
 
 ## Output
 
