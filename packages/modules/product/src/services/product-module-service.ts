@@ -44,7 +44,7 @@ import {
   partitionArray,
   ProductStatus,
   removeUndefined,
-  toHandle
+  toHandle,
 } from "@medusajs/framework/utils"
 import { EntityManager } from "@mikro-orm/core"
 import { ProductRepository } from "../repositories"
