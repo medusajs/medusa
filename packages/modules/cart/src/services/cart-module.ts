@@ -79,7 +79,8 @@ export default class CartModuleService
     ShippingMethodAdjustment: { dto: CartTypes.ShippingMethodAdjustmentDTO }
     ShippingMethodTaxLine: { dto: CartTypes.ShippingMethodTaxLineDTO }
   }>(generateMethodForModels)
-  implements ICartModuleService {
+  implements ICartModuleService
+{
   protected baseRepository_: DAL.RepositoryService
   protected cartService_: ModulesSdkTypes.IMedusaInternalService<
     InferEntityType<typeof Cart>
@@ -419,15 +420,16 @@ export default class CartModuleService
         { select: ["id"] },
         sharedContext
       )
-      toUpdate.push(
-        ...carts.map((cart) => ({
+
+      toUpdate = carts.map((cart) => {
+        return {
           ...data,
           id: cart.id,
           ...(data?.currency_code
             ? { currency_code: normalizeCurrencyCode(data.currency_code) }
             : {}),
-        }))
-      )
+        }
+      })
     }
 
     const result = await this.cartService_.update(toUpdate, sharedContext)
@@ -576,11 +578,11 @@ export default class CartModuleService
     const toUpdate = Array.isArray(lineItemIdOrDataOrSelector)
       ? lineItemIdOrDataOrSelector
       : [
-        {
-          selector: lineItemIdOrDataOrSelector,
-          data: data,
-        } as CartTypes.UpdateLineItemWithSelectorDTO,
-      ]
+          {
+            selector: lineItemIdOrDataOrSelector,
+            data: data,
+          } as CartTypes.UpdateLineItemWithSelectorDTO,
+        ]
 
     items = await this.updateLineItemsWithSelector_(
       toUpdate as CartTypes.UpdateLineItemWithSelectorDTO[],
