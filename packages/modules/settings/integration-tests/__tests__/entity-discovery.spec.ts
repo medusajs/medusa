@@ -732,6 +732,58 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
           })
         })
 
+        describe("nonFilterableFields", function () {
+          it("should disable filtering on Order's payment_status and fulfillment_status", async () => {
+            const columns = await service.generateEntityColumns("Order")
+
+            expect(columns).not.toBeNull()
+
+            const paymentStatus = columns!.find(
+              (c) => c.id === "payment_status"
+            )
+            expect(paymentStatus).toBeDefined()
+            expect(paymentStatus?.filter?.enabled).toBe(false)
+            expect(paymentStatus?.filter?.operators).toBeUndefined()
+
+            const fulfillmentStatus = columns!.find(
+              (c) => c.id === "fulfillment_status"
+            )
+            expect(fulfillmentStatus).toBeDefined()
+            expect(fulfillmentStatus?.filter?.enabled).toBe(false)
+            expect(fulfillmentStatus?.filter?.operators).toBeUndefined()
+          })
+
+          it("should keep the column itself visible and sortable when filtering is disabled", async () => {
+            const columns = await service.generateEntityColumns("Order")
+
+            expect(columns).not.toBeNull()
+
+            const paymentStatus = columns!.find(
+              (c) => c.id === "payment_status"
+            )
+            expect(paymentStatus?.default_visible).toBe(true)
+            expect(paymentStatus?.sortable).toBe(true)
+
+            const fulfillmentStatus = columns!.find(
+              (c) => c.id === "fulfillment_status"
+            )
+            expect(fulfillmentStatus?.default_visible).toBe(true)
+            expect(fulfillmentStatus?.sortable).toBe(true)
+          })
+
+          it("should keep filtering enabled on other Order scalar fields", async () => {
+            const columns = await service.generateEntityColumns("Order")
+
+            expect(columns).not.toBeNull()
+
+            const status = columns!.find((c) => c.id === "status")
+            expect(status?.filter?.enabled).toBe(true)
+
+            const total = columns!.find((c) => c.id === "total")
+            expect(total?.filter?.enabled).toBe(true)
+          })
+        })
+
         describe("Customer entity overrides", function () {
           it("should generate columns for Customer entity", async () => {
             const columns = await service.generateEntityColumns("Customer")
@@ -905,6 +957,20 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
 
             expect(merged?.additionalTypes).toContain("OrderDetail")
             expect(merged?.additionalTypes).toContain("OrderSummary")
+          })
+
+          it("should concatenate nonFilterableFields when extending an existing override", () => {
+            const registry = getEntityOverrideRegistry()
+
+            registry.register("Order", {
+              nonFilterableFields: ["custom_computed_field"],
+            })
+
+            const merged = registry.get("Order")
+
+            expect(merged?.nonFilterableFields).toContain("payment_status")
+            expect(merged?.nonFilterableFields).toContain("fulfillment_status")
+            expect(merged?.nonFilterableFields).toContain("custom_computed_field")
           })
         })
 

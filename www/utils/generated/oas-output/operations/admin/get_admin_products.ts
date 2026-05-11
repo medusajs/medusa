@@ -146,20 +146,6 @@
  *       type: boolean
  *       title: is_giftcard
  *       description: Filter by whether a product is a gift card.
- *   - name: tags
- *     in: query
- *     description: Filter by associated tags to retrieve their products.
- *     required: false
- *     schema:
- *       description: Filter by associated tags to retrieve their products.
- *       properties:
- *         value:
- *           type: array
- *           description: Filter by tag values.
- *           items:
- *             type: string
- *             title: value
- *             description: A tag's value.
  *   - name: type_id
  *     in: query
  *     required: false
@@ -1054,6 +1040,20 @@
  *             type: string
  *             title: external_id
  *             description: The external ID.
+ *   - name: tag_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: tag_id
+ *           description: Filter by the product's tag ID.
+ *         - type: array
+ *           description: Filter by tag IDs.
+ *           items:
+ *             type: string
+ *             title: tag_id
+ *             description: The tag ID.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
