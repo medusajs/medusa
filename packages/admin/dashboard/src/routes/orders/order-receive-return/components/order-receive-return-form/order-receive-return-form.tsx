@@ -239,7 +239,7 @@ export function OrderReceiveReturnForm({
                 </div>
               )}
             </div>
-            <span className="text-ui-fg-muted txt-small text-right" dir="ltr">
+            <span className="text-ui-fg-muted txt-small text-right">
               {t("orders.returns.receive.itemsLabel")}
             </span>
           </div>
