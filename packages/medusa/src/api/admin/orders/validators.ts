@@ -70,9 +70,26 @@ const AdminGetOrdersParamsBase = createFindParams({
 type AdminGetOrdersParamsInput = z.infer<typeof AdminGetOrdersParamsBase>
 
 const AdminGetOrdersParamsTransform = (v: AdminGetOrdersParamsInput) => {
-  const { total, ...rest } = v
+  const { total, order, ...rest } = v as AdminGetOrdersParamsInput & {
+    order?: string
+  }
+
+  // Strip unsortable computed fields from the order parameter.
+  // fulfillment_status and payment_status are computed in the
+  // getOrdersListWorkflow after the DB query (via aggregate-status
+  // helpers). They don't exist as database columns, so passing them
+  // to MikroORM causes "Trying to order by not existing property".
+  let order_ = order
+  if (order) {
+    const field = order.replace(/^-/, "")
+    if (field === "fulfillment_status" || field === "payment_status") {
+      order_ = undefined
+    }
+  }
+
   return {
     ...rest,
+    ...(order_ ? { order: order_ } : {}),
     ...(total ? { summary: { totals: { current_order_total: total } } } : {}),
   }
 }
