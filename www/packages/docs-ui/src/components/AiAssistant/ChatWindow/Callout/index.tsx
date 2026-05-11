@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useState } from "react"
 import { Card } from "../../../Card"
 import { useChat } from "@kapaai/react-sdk"
 import { useAiAssistant } from "../../../../providers/AiAssistant"
@@ -8,6 +8,8 @@ import { useMedusaSuggestions } from "../../../../hooks/use-medusa-suggestions"
 import { useAnalytics } from "../../../../providers/Analytics"
 import { DocsTrackingEvents } from "../../../../constants"
 import clsx from "clsx"
+import { XMark } from "@medusajs/icons"
+import { Button } from "../../../Button"
 
 type AiAssistantChatWindowCalloutProps = {
   className?: string
@@ -19,6 +21,7 @@ export const AiAssistantChatWindowCallout = ({
   const { conversation } = useChat()
   const { loading } = useAiAssistant()
   const { track } = useAnalytics()
+  const [dismissed, setDismissed] = useState(false)
 
   const lastQuestion = conversation.getLatestCompleted()?.question
 
@@ -26,13 +29,13 @@ export const AiAssistantChatWindowCallout = ({
     keywords: lastQuestion || "",
   })
 
-  if (loading || !matchedCallout) {
+  if (loading || !matchedCallout || dismissed) {
     return null
   }
 
   return (
     <div className={clsx("px-docs_1 pt-docs_1", className)}>
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center relative">
         <Card
           {...matchedCallout}
           type="bloom"
@@ -49,6 +52,14 @@ export const AiAssistantChatWindowCallout = ({
             })
           }}
         />
+        <Button
+          variant="transparent-clear"
+          className="!p-[6.5px] rounded-docs_sm absolute top-0 right-0"
+          onClick={() => setDismissed(true)}
+          aria-label="Dismiss Bloom AI suggestion"
+        >
+          <XMark className="text-medusa-fg-muted" height={12} width={12} />
+        </Button>
       </div>
     </div>
   )

@@ -309,7 +309,7 @@ module.exports = {
       width: {
         toc: "221px",
         "sidebar-xs": "calc(100% - 20px)",
-        "ai-assistant": "500px"
+        "ai-assistant": "600px"
       },
       maxWidth: {
         // sidebar
@@ -346,7 +346,7 @@ module.exports = {
         "modal-md": "752px",
         "modal-lg": "640px",
         // ai-assistant
-        "ai-assistant": "500px"
+        "ai-assistant": "600px"
       },
       minWidth: {
         xl: "1419px",
