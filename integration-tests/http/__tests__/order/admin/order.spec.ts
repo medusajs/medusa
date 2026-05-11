@@ -478,6 +478,47 @@ medusaIntegrationTestRunner({
           order.billing_address.city
         )
       })
+
+      it("should not error when sorting by fulfillment_status (computed field)", async () => {
+        const response = await api.get(
+          `/admin/orders?order=fulfillment_status`,
+          adminHeaders
+        )
+
+        expect(response.status).toBe(200)
+        expect(response.data.orders).toBeDefined()
+      })
+
+      it("should not error when sorting by payment_status (computed field)", async () => {
+        const response = await api.get(
+          `/admin/orders?order=-payment_status`,
+          adminHeaders
+        )
+
+        expect(response.status).toBe(200)
+        expect(response.data.orders).toBeDefined()
+      })
+
+      it("should not error when sorting by total (computed field)", async () => {
+        const response = await api.get(
+          `/admin/orders?order=total`,
+          adminHeaders
+        )
+
+        expect(response.status).toBe(200)
+        expect(response.data.orders).toBeDefined()
+      })
+
+      it("should not error when sorting by a valid database column", async () => {
+        const response = await api.get(
+          `/admin/orders?order=created_at`,
+          adminHeaders
+        )
+
+        expect(response.status).toBe(200)
+        expect(response.data.orders).toBeDefined()
+        expect(response.data.orders).toHaveLength(1)
+      })
     })
 
     describe("POST /orders/:id", () => {
