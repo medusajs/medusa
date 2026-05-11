@@ -95,7 +95,7 @@ describe("isValidHandle", function () {
       { input: "کتاب-فارسی", isValid: true },
       { input: "الكتاب-العربي", isValid: true },
       { input: "私の-製品", isValid: true },
-      { input: "我的-产品", isValid: true }
+      { input: "我的-产品", isValid: true },
     ]
 
     const failures: Array<{ input: string; expected: boolean; received: boolean }> = []

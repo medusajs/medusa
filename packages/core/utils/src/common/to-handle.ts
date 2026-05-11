@@ -10,7 +10,6 @@
  *
  */
 export const toHandle = (value: string): string => {
-
   let handle = value
     .toLowerCase()                          // Normalize to lowercase
     .replace(/ß/g, "ss")                    // Convert German eszett to ss
@@ -18,11 +17,8 @@ export const toHandle = (value: string): string => {
     .replace(/[\s_]+/g, "-")                // Replace spaces and underscores with single hyphens
     .replace(/-+/g, "-")                    // Collapse multiple consecutive hyphens into one
     .replace(/^-|-$/g, "")                  // Trim leading and trailing hyphens
-
   if (!handle) {
     handle = `product-${Math.random().toString(36).substring(2, 8)}`
   }
-
   return handle
-
 }
