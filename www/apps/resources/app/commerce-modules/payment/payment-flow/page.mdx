@@ -263,7 +263,6 @@ await refundPaymentsWorkflow(container)
       {
         payment_id: "pay_123",
         amount: 1000, // refund amount
-        reason_id: "rr_123", // optional refund reason
         note: "Customer requested refund", // optional note
         metadata: { // optional custom data
           reason: "damaged_goods",
@@ -295,6 +294,6 @@ const refund = await paymentModuleService.refundPayment({
 
 <Note>
 
-The `metadata` field is available since Medusa [v2.14.3](https://github.com/medusajs/medusa/releases/tag/v2.14.3).
+The `metadata` property is available since Medusa [v2.15.0](https://github.com/medusajs/medusa/releases/tag/v2.15.0).
 
 </Note>
