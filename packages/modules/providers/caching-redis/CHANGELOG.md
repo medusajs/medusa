@@ -1,5 +1,12 @@
 # @medusajs/caching-redis
 
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.1
+
 ## 2.15.0
 
 ### Patch Changes

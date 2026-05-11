@@ -1,5 +1,14 @@
 # @medusajs/modules-sdk
 
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/orchestration@2.15.1
+  - @medusajs/utils@2.15.1
+  - @medusajs/deps@2.15.1
+
 ## 2.15.0
 
 ### Patch Changes
