@@ -717,6 +717,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "loaded": true,
                   "isPathHref": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/steps/validateCartItemsStep",
+                  "title": "validateCartItemsStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/steps/validateCartPaymentsStep",
                   "title": "validateCartPaymentsStep",
                   "description": "",
