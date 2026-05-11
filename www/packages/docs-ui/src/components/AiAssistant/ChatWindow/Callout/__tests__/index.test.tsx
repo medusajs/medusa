@@ -27,6 +27,20 @@ vi.mock("@/providers/Analytics", () => ({
     track: mockTrack,
   }),
 }))
+vi.mock("@/components/Button", () => ({
+  Button: ({
+    onClick,
+    children,
+    ...props
+  }: React.ButtonHTMLAttributes<HTMLButtonElement> & { children: React.ReactNode }) => (
+    <button onClick={onClick} {...props}>
+      {children}
+    </button>
+  ),
+}))
+vi.mock("@medusajs/icons", () => ({
+  XMark: () => <span data-testid="xmark-icon">✕</span>,
+}))
 
 import { AiAssistantChatWindowCallout } from "../index"
 import { DocsTrackingEvents } from "../../../../../constants"
@@ -115,5 +129,76 @@ describe("interactions", () => {
         },
       },
     })
+  })
+})
+
+describe("dismiss", () => {
+  const mockCardProps = {
+    title: "Test Card",
+    text: "This is a test card.",
+    href: "https://example.com",
+    icon: () => <div>Icon</div>,
+  }
+
+  test("should show dismiss button when callout is visible", () => {
+    mockUseMedusaSuggestions.mockReturnValueOnce(mockCardProps)
+
+    const { container } = render(<AiAssistantChatWindowCallout />)
+
+    // The callout card should be visible
+    expect(container.querySelector("[data-testid='card']")).toBeInTheDocument()
+
+    // The dismiss button must be present with the expected aria-label
+    const dismissButton = container.querySelector(
+      "[aria-label='Dismiss Bloom AI suggestion']"
+    )
+    expect(dismissButton).toBeInTheDocument()
+  })
+
+  test("should hide callout when dismiss button is clicked", () => {
+    mockUseMedusaSuggestions.mockReturnValueOnce(mockCardProps)
+
+    const { container } = render(<AiAssistantChatWindowCallout />)
+
+    // Card is initially visible
+    expect(container.querySelector("[data-testid='card']")).toBeInTheDocument()
+
+    // Click the dismiss button
+    const dismissButton = container.querySelector(
+      "[aria-label='Dismiss Bloom AI suggestion']"
+    ) as HTMLButtonElement
+    expect(dismissButton).toBeInTheDocument()
+    fireEvent.click(dismissButton)
+
+    // Callout must no longer be rendered after dismissal
+    expect(container.firstChild).toBeNull()
+  })
+
+  test("should reset dismissed state when question changes", () => {
+    mockUseMedusaSuggestions.mockReturnValue(mockCardProps)
+
+    const { container, rerender } = render(<AiAssistantChatWindowCallout />)
+
+    // Dismiss the callout
+    const dismissButton = container.querySelector(
+      "[aria-label='Dismiss Bloom AI suggestion']"
+    ) as HTMLButtonElement
+    fireEvent.click(dismissButton)
+    expect(container.firstChild).toBeNull()
+
+    // Simulate a new question arriving by overriding the conversation mock
+    AiAssistantMocks.mockUseChat.mockReturnValueOnce({
+      ...AiAssistantMocks.defaultUseChatReturn,
+      conversation: {
+        ...AiAssistantMocks.mockConversation,
+        getLatestCompleted: () => ({ question: "new question after dismiss" }),
+      },
+    })
+
+    rerender(<AiAssistantChatWindowCallout />)
+
+    // After the question changes, useEffect resets dismissed to false
+    // and the callout reappears for the new question
+    expect(container.querySelector("[data-testid='card']")).toBeInTheDocument()
   })
 })
