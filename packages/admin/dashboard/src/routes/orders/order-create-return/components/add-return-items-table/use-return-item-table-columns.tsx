@@ -71,7 +71,7 @@ export const useReturnItemTableColumns = (currencyCode: string) => {
       }),
       columnHelper.accessor("quantity", {
         header: () => (
-          <div className="flex size-full items-center overflow-hidden text-right" dir="ltr">
+          <div className="flex size-full items-center overflow-hidden text-right">
             <span className="truncate">{t("fields.quantity")}</span>
           </div>
         ),
