@@ -2,10 +2,23 @@ import type { CartWorkflowDTO } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
+/**
+ * The input for the validate cart items step.
+ *
+ * @since 2.14.3
+ */
 export interface ValidateCartItemsStepInput {
+  /**
+   * The cart to validate.
+   */
   cart: CartWorkflowDTO
 }
 
+/**
+ * The ID of the validate cart items step.
+ *
+ * @since 2.14.3
+ */
 export const validateCartItemsStepId = "validate-cart-items"
 /**
  * This step validates that a cart has at least one line item before
@@ -16,6 +29,8 @@ export const validateCartItemsStepId = "validate-cart-items"
  * validateCartItemsStep({
  *   cart
  * })
+ *
+ * @since 2.14.3
  */
 export const validateCartItemsStep = createStep(
   validateCartItemsStepId,
