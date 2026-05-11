@@ -63,24 +63,19 @@ export const CreateRefundForm = ({ order }: CreateRefundFormProps) => {
   const direction = useDocumentDirection()
   const decimalDigits = getDecimalDigits(order.currency_code)
 
-  // Mirrors getStylizedAmount's rounding so the form's default matches
-  // the value shown on the "Refund <amount>" button that opens it.
+  // Uses toLocaleString to match getStylizedAmount's rounding and keep the button and form in sync.
   const getRoundedAmount = (amount: number) =>
-    Number(
-      amount.toLocaleString("en-US", {
-        minimumFractionDigits: decimalDigits,
-        maximumFractionDigits: decimalDigits,
-        useGrouping: false,
-      })
-    )
-
-  const roundedPaymentAmount = getRoundedAmount(paymentAmount)
+    amount.toLocaleString("en-US", {
+      minimumFractionDigits: decimalDigits,
+      maximumFractionDigits: decimalDigits,
+      useGrouping: false,
+    })
 
   const form = useForm<zod.infer<typeof CreateRefundSchema>>({
     defaultValues: {
       amount: {
-        value: roundedPaymentAmount.toFixed(decimalDigits),
-        float: roundedPaymentAmount,
+        value: getRoundedAmount(paymentAmount),
+        float: paymentAmount,
       },
     },
     resolver: zodResolver(CreateRefundSchema),
@@ -97,11 +92,9 @@ export const CreateRefundForm = ({ order }: CreateRefundFormProps) => {
     const normalizedAmount =
       pendingAmount < 0 ? pendingAmount * -1 : pendingAmount
 
-    const roundedAmount = getRoundedAmount(normalizedAmount)
-
     form.setValue("amount", {
-      value: roundedAmount.toFixed(decimalDigits),
-      float: roundedAmount,
+      value: getRoundedAmount(normalizedAmount),
+      float: normalizedAmount,
     })
   }, [payment?.id || ""])
 
