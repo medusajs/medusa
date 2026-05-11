@@ -304,6 +304,36 @@ medusaIntegrationTestRunner({
         })
       })
 
+      it("should not error when sorting by fulfillment_status (computed field)", async () => {
+        const response = await api.get(
+          `/admin/orders?order=fulfillment_status`,
+          adminHeaders
+        )
+
+        expect(response.status).toBe(200)
+        expect(response.data.orders).toBeDefined()
+      })
+
+      it("should not error when sorting by payment_status (computed field)", async () => {
+        const response = await api.get(
+          `/admin/orders?order=payment_status`,
+          adminHeaders
+        )
+
+        expect(response.status).toBe(200)
+        expect(response.data.orders).toBeDefined()
+      })
+
+      it("should not error when sorting by fulfillment_status in descending order", async () => {
+        const response = await api.get(
+          `/admin/orders?order=-fulfillment_status`,
+          adminHeaders
+        )
+
+        expect(response.status).toBe(200)
+        expect(response.data.orders).toBeDefined()
+      })
+
       it("should search orders by billing address", async () => {
         let response = await api.get(
           `/admin/orders?fields=+billing_address.address_1,+billing_address.address_2`,
