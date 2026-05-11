@@ -20,7 +20,10 @@ import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useRefundPayment, useRefundReasons } from "../../../../../hooks/api"
 import { currencies } from "../../../../../lib/data/currencies"
 import { formatCurrency } from "../../../../../lib/format-currency"
-import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
+import {
+  getDecimalDigits,
+  getLocaleAmount,
+} from "../../../../../lib/money-amount-helpers"
 import { getPaymentsFromOrder } from "../../../../../lib/orders"
 import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
 import { formatProvider } from "../../../../../lib/format-provider.ts"
@@ -58,14 +61,25 @@ export const CreateRefundForm = ({ order }: CreateRefundFormProps) => {
   )
 
   const direction = useDocumentDirection()
-  const roundedPaymentAmount =
-    Math.round(paymentAmount * Math.pow(10, currency.decimal_digits)) /
-    Math.pow(10, currency.decimal_digits)
+  const decimalDigits = getDecimalDigits(order.currency_code)
+
+  // Mirrors getStylizedAmount's rounding so the form's default matches
+  // the value shown on the "Refund <amount>" button that opens it.
+  const getRoundedAmount = (amount: number) =>
+    Number(
+      amount.toLocaleString("en-US", {
+        minimumFractionDigits: decimalDigits,
+        maximumFractionDigits: decimalDigits,
+        useGrouping: false,
+      })
+    )
+
+  const roundedPaymentAmount = getRoundedAmount(paymentAmount)
 
   const form = useForm<zod.infer<typeof CreateRefundSchema>>({
     defaultValues: {
       amount: {
-        value: roundedPaymentAmount.toFixed(currency.decimal_digits),
+        value: roundedPaymentAmount.toFixed(decimalDigits),
         float: roundedPaymentAmount,
       },
     },
@@ -83,10 +97,10 @@ export const CreateRefundForm = ({ order }: CreateRefundFormProps) => {
     const normalizedAmount =
       pendingAmount < 0 ? pendingAmount * -1 : pendingAmount
 
-    const roundedAmount = Math.round(normalizedAmount * Math.pow(10, currency.decimal_digits)) / Math.pow(10, currency.decimal_digits)
+    const roundedAmount = getRoundedAmount(normalizedAmount)
 
     form.setValue("amount", {
-      value: roundedAmount.toFixed(currency.decimal_digits),
+      value: roundedAmount.toFixed(decimalDigits),
       float: roundedAmount,
     })
   }, [payment?.id || ""])
