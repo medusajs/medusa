@@ -62,7 +62,7 @@ export const CodeBlockHeader = ({
           </div>
         )}
       </div>
-      {!hideActions && <CodeBlockActions {...actionsProps} />}
+      {!hideActions && <CodeBlockActions {...actionsProps} codeBlockStyle={blockStyle} />}
     </CodeBlockHeaderWrapper>
   )
 }

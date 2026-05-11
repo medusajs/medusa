@@ -1,5 +1,25 @@
 # @medusajs/dashboard
 
+## 2.15.0
+
+### Patch Changes
+
+- [#15164](https://github.com/medusajs/medusa/pull/15164) [`e86b075cb60fe721b256c1a4921892a30c918efd`](https://github.com/medusajs/medusa/commit/e86b075cb60fe721b256c1a4921892a30c918efd) Thanks [@Anexus5919](https://github.com/Anexus5919)! - fix(dashboard): auto-select currency row when its tax-inclusive toggle is enabled
+
+- [#14762](https://github.com/medusajs/medusa/pull/14762) [`34f326d729aa9e1bafd6ef644ccb47621bf2a14e`](https://github.com/medusajs/medusa/commit/34f326d729aa9e1bafd6ef644ccb47621bf2a14e) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(product, dashboard): align product and variant volumetric attributes data types
+
+- [#14853](https://github.com/medusajs/medusa/pull/14853) [`4aa09402d73767b71c276460d64be7d3ce6281ca`](https://github.com/medusajs/medusa/commit/4aa09402d73767b71c276460d64be7d3ce6281ca) Thanks [@biocodersin](https://github.com/biocodersin)! - fix(dashboard): fix incorrect routing for settings entities in admin global search
+
+- [#15286](https://github.com/medusajs/medusa/pull/15286) [`cf84d11241a8857efa6b284e578413e1ce8d47ef`](https://github.com/medusajs/medusa/commit/cf84d11241a8857efa6b284e578413e1ce8d47ef) Thanks [@dugynoo](https://github.com/dugynoo)! - fix(dashboard): refresh Czech (cs) translations
+
+- [#14943](https://github.com/medusajs/medusa/pull/14943) [`deb8872f8bc9dc509e5233549292bcd5c80527d7`](https://github.com/medusajs/medusa/commit/deb8872f8bc9dc509e5233549292bcd5c80527d7) Thanks [@LukasKri](https://github.com/LukasKri)! - feat(dashboard): add copy action for Original translations on translations edit page
+
+- Updated dependencies []:
+  - @medusajs/js-sdk@2.15.0
+  - @medusajs/admin-shared@2.15.0
+  - @medusajs/icons@2.15.0
+  - @medusajs/ui@4.1.10
+
 ## 2.14.2
 
 ### Patch Changes

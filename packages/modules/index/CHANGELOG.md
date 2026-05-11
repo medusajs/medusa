@@ -1,5 +1,14 @@
 # @medusajs/index
 
+## 2.15.0
+
+### Patch Changes
+
+- [#15176](https://github.com/medusajs/medusa/pull/15176) [`ae7bbaed1011e1a74f814c6c01c0da483f300338`](https://github.com/medusajs/medusa/commit/ae7bbaed1011e1a74f814c6c01c0da483f300338) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(index,modules-sdk,): introduce locking to avoid race conditions in distributed systems for migrations, links and index partition creation
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.0
+
 ## 2.14.2
 
 ### Patch Changes

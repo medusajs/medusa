@@ -1,5 +1,14 @@
 # @medusajs/file-s3
 
+## 2.15.0
+
+### Patch Changes
+
+- [#15109](https://github.com/medusajs/medusa/pull/15109) [`45a03cd92ce04ffe8301fb2217cff5e46722bf47`](https://github.com/medusajs/medusa/commit/45a03cd92ce04ffe8301fb2217cff5e46722bf47) Thanks [@aayushbaluni](https://github.com/aayushbaluni)! - fix(file-s3): encode URL path segments individually to preserve directory separators
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.0
+
 ## 2.14.2
 
 ### Patch Changes

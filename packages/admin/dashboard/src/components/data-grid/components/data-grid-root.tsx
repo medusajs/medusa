@@ -476,6 +476,7 @@ export const DataGridRoot = <
     TData,
     TFieldValues
   >({
+    containerRef,
     matrix,
     isEditing,
     anchor,

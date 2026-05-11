@@ -1,5 +1,18 @@
 # @medusajs/product
 
+## 2.15.0
+
+### Minor Changes
+
+- [#14762](https://github.com/medusajs/medusa/pull/14762) [`34f326d729aa9e1bafd6ef644ccb47621bf2a14e`](https://github.com/medusajs/medusa/commit/34f326d729aa9e1bafd6ef644ccb47621bf2a14e) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(product, dashboard): align product and variant volumetric attributes data types
+
+### Patch Changes
+
+- [#13930](https://github.com/medusajs/medusa/pull/13930) [`5a7b0142367491236167477e613de763f10b7e32`](https://github.com/medusajs/medusa/commit/5a7b0142367491236167477e613de763f10b7e32) Thanks [@bqst](https://github.com/bqst)! - feat(product): add SKU search support to admin API
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.0
+
 ## 2.14.2
 
 ### Patch Changes

@@ -1129,6 +1129,27 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             )
           })
 
+          it("should persist the data returned by the payment provider on cancel", async () => {
+            const providerData = { canceled: true, provider_cancel_id: "ext-cancel-123" }
+
+            jest
+              .spyOn(
+                (service as any).paymentProviderService_,
+                "cancelPayment"
+              )
+              .mockResolvedValueOnce({ data: providerData })
+
+            const payment = await service.cancelPayment("pay-id-2")
+
+            expect(payment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-2",
+                canceled_at: expect.any(Date),
+                data: providerData,
+              })
+            )
+          })
+
           // TODO: revisit when totals are implemented
           // it("should throw if trying to cancel a captured payment", async () => {
           //   await service.capturePayment({ payment_id: "pay-id-2", amount: 100 })

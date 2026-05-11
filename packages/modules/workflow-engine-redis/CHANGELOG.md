@@ -1,5 +1,14 @@
 # @medusajs/workflow-engine-redis
 
+## 2.15.0
+
+### Patch Changes
+
+- [#15334](https://github.com/medusajs/medusa/pull/15334) [`a843721b150cf0fa32cebf4d6ecb75476391e666`](https://github.com/medusajs/medusa/commit/a843721b150cf0fa32cebf4d6ecb75476391e666) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(workflow-engine-redis): fix flaky tests by isolating job and queues between specs
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.0
+
 ## 2.14.2
 
 ### Patch Changes
