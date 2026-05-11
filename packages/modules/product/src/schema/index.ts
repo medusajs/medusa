@@ -104,7 +104,6 @@ type ProductCollection {
   title: String!
   handle: String!
   metadata: JSON
-  products: [Product]
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime
