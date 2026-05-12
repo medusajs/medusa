@@ -256,6 +256,13 @@ export interface NumericalComparisonOperator {
 }
 
 /**
+ * Safe compound suffixes that don't cause regressions.
+ * Using the full UncountableRules would break common words like "price" (ends with "rice")
+ * and "email" (ends with "mail").
+ */
+type SafeCompoundSuffixes = "info"
+
+/**
  * The keywords that does not have a plural form
  */
 type UncountableRules =
@@ -373,7 +380,7 @@ export type Pluralize<Singular extends string> =
     ? PluralizationSpecialRules[Lowercase<Singular>]
     : Lowercase<Singular> extends UncountableRules
     ? Singular
-    : Lowercase<Singular> extends `${string}${UncountableRules}`
+    : Lowercase<Singular> extends `${string}${SafeCompoundSuffixes}`
     ? Singular
     : Singular extends `${string}ss`
     ? `${Singular}es`
