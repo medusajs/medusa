@@ -2,9 +2,11 @@ import { useState } from "react"
 import { FileType, FileUpload } from "../../../../components/common/file-upload"
 import { Hint } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-
-const SUPPORTED_FORMATS = ["text/csv"]
-const SUPPORTED_FORMATS_FILE_EXTENSIONS = [".csv"]
+import {
+  isCsvFile,
+  SUPPORTED_FORMATS,
+  SUPPORTED_FORMATS_FILE_EXTENSIONS,
+} from "./upload-import-validation"
 
 export const UploadImport = ({
   onUploaded,
@@ -15,9 +17,7 @@ export const UploadImport = ({
   const [error, setError] = useState<string>()
 
   const hasInvalidFiles = (fileList: FileType[]) => {
-    const invalidFile = fileList.find(
-      (f) => !SUPPORTED_FORMATS.includes(f.file.type)
-    )
+    const invalidFile = fileList.find((f) => !isCsvFile(f.file))
 
     if (invalidFile) {
       setError(
