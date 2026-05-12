@@ -64,4 +64,10 @@ describe("Pluralize", () => {
     expectTypeOf<Pluralize<"CountryCompanyInfo">>().toEqualTypeOf<"CountryCompanyInfo">()
     expectTypeOf<Pluralize<"SoftInfo">>().toEqualTypeOf<"SoftInfo">()
   })
+
+  test("pluralize common words with suffix false positives", () => {
+    expectTypeOf<Pluralize<"Price">>().toEqualTypeOf<"Prices">()
+    expectTypeOf<Pluralize<"Email">>().toEqualTypeOf<"Emails">()
+    expectTypeOf<Pluralize<"Metadata">>().toEqualTypeOf<"Metadatas">()
+  })
 })
