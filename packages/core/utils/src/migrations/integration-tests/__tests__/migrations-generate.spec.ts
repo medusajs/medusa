@@ -3,9 +3,10 @@ import { join } from "path"
 import { setTimeout } from "timers/promises"
 
 import { FileSystem } from "../../../common"
-import { DmlEntity, mikroORMEntityBuilder, model } from "../../../dml"
+import { DmlEntity, mikroORMEntityBuilder, model, toMikroOrmEntities } from "../../../dml"
 import { defineMikroOrmCliConfig } from "../../../modules-sdk"
 import { BigNumber } from "../../../totals/big-number"
+import { mikroOrmCreateConnection } from "../../../dal"
 import { Migrations } from "../../index"
 
 jest.setTimeout(30000)
@@ -172,6 +173,35 @@ describe("Generate migrations", () => {
     expect(await fs.exists(run2.fileName))
 
     expect(run1.fileName).not.toEqual(run2.fileName)
+  })
+
+  test("snapshot file is named after the module name, not the database name", async () => {
+    const User = model.define("User", {
+      id: model.id().primaryKey(),
+      email: model.text().unique(),
+    })
+
+    /**
+     * Simulate what buildGenerateMigrationScript does: pass snapshotName
+     * derived from the module key so the snapshot is always named after
+     * the module, never after the runtime database name.
+     */
+    const moduleKey = "my-custom-module"
+    const orm = await mikroOrmCreateConnection(
+      {
+        clientUrl: `postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${dbName}`,
+        snapshotName: `.snapshot-${moduleKey}`,
+      },
+      toMikroOrmEntities([User]),
+      fs.basePath
+    )
+
+    const migrations = new Migrations(orm)
+    await migrations.generate()
+
+    expect(await fs.exists(`.snapshot-${moduleKey}.json`)).toBeTruthy()
+    // Must not fall back to a DB-name-based snapshot
+    expect(await fs.exists(`.snapshot-${dbName}.json`)).toBeFalsy()
   })
 
   test("rename existing snapshot file to the new filename", async () => {
