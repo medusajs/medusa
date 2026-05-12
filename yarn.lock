@@ -3757,9 +3757,9 @@ __metadata:
   resolution: "@medusajs/icons@workspace:packages/design-system/icons"
   dependencies:
     "@medusajs/toolbox": 2.14.2
-    react: ^19.2.5
+    react: ^18.3.1 || ^19.0.0
   peerDependencies:
-    react: ^19.2.5
+    react: ^18.3.1 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -24551,10 +24551,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^19.2.5":
-  version: 19.2.5
-  resolution: "react@npm:19.2.5"
-  checksum: 4b5f231dbef92886f602533c9ce3bde04d99f0e71dfb5d794c43e02726efaad0421c08688f75fc98a6d6e1dc017372e1af7abbfecdc86a79968f461675931a7a
+"react@npm:^18.3.1 || ^19.0.0":
+  version: 19.2.6
+  resolution: "react@npm:19.2.6"
+  checksum: 66afde33b9a9ee87b1e1cae39d8e7e040d1262e719524fd70660c4d4ce79929c532ac19fc3df5a911edaf02768fdf2c49de4ede1ba99bc6aad72796e0e26e798
   languageName: node
   linkType: hard
 
