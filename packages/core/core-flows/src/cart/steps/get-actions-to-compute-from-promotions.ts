@@ -1,7 +1,7 @@
 import {
   ComputeActionContext,
   ComputeActionOptions,
-  IPromotionModuleService
+  IPromotionModuleService,
 } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
@@ -22,6 +22,16 @@ export interface GetActionsToComputeFromPromotionsStepInput {
    * The options to configure how the actions are computed.
    */
   options?: ComputeActionOptions
+  /**
+   * The result of the `additional_promotion_context` hook, forwarded by the calling
+   * workflow. Its keys are merged on top of `computeActionContext` before
+   * promotion rules are evaluated, so consumers can extend the rule evaluation
+   * context with arbitrary attributes (e.g. `company.id`, "custom_tier").
+   *
+   * Values from `additional_promotion_context` take precedence over values on
+   * `computeActionContext` when keys conflict.
+   */
+  additional_promotion_context?: Record<string, unknown>
 }
 
 export const getActionsToComputeFromPromotionsStepId =
@@ -47,16 +57,25 @@ export const getActionsToComputeFromPromotionsStepId =
 export const getActionsToComputeFromPromotionsStep = createStep(
   getActionsToComputeFromPromotionsStepId,
   async (data: GetActionsToComputeFromPromotionsStepInput, { container }) => {
-    const { computeActionContext, promotionCodesToApply = [], options } = data
+    const {
+      computeActionContext,
+      promotionCodesToApply = [],
+      options,
+      additional_promotion_context: setPromotionContextResult,
+    } = data
 
-    
     const promotionService = container.resolve<IPromotionModuleService>(
       Modules.PROMOTION
     )
-    
+
+    const mergedContext: ComputeActionContext = {
+      ...computeActionContext,
+      ...(setPromotionContextResult ?? {}),
+    }
+
     const actionsToCompute = await promotionService.computeActions(
       promotionCodesToApply,
-      computeActionContext,
+      mergedContext,
       options
     )
 

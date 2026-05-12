@@ -1,4 +1,4 @@
-import { InlineIcon, getOsShortcut, Kbd } from "docs-ui"
+import { InlineIcon, getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
 import { EllipsisHorizontal, ChevronUpDown } from "@medusajs/icons"
 
 export const metadata = {
@@ -143,9 +143,30 @@ On the environment's dashboard, you can view its details, logs, and settings. Yo
 
 To open an environment's dashboard:
 
-1. Make sure you're viewing the [correct organization's dashboard in Cloud](../../organizations/page.mdx#switch-organization).
-2. Click on the project that contains the environment you want to view.
-3. In the project's dashboard, click on the environment you want to view.
+
+<Tabs defaultValue="classic">
+  <TabsList>
+    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
+    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
+  </TabsList>
+  <TabsContentWrapper>
+    <TabsContent value="classic">
+
+    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../../organizations/page.mdx#switch-organization).
+    2. Click on the project that contains the environment you want to view.
+    3. In the project's dashboard, click on the environment you want to view.
+
+    </TabsContent>
+    <TabsContent value="global-sidebar">
+
+    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../../organizations/page.mdx#switch-organization).
+    2. Click on the project in the sidebar.
+    3. Click on **Overview** in the sidebar under the project.
+    4. Click on the environment you want to view in the updated sidebar.
+
+    </TabsContent>
+  </TabsContentWrapper>
+</Tabs>
 
 This will open the environment's dashboard. You can see the environment's name at the top of the Cloud dashboard.
 
@@ -175,10 +196,28 @@ The environment's name at the top of the dashboard is also an environment switch
 
 To switch to a different environment:
 
-1. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch environment" /> icon next to the environment's name at the top of the Cloud dashboard.
-2. Choose the environment you want to switch to from the dropdown.
+<Tabs defaultValue="classic">
+  <TabsList>
+    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
+    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
+  </TabsList>
+  <TabsContentWrapper>
+    <TabsContent value="classic">
 
-![Environment switcher dropdown at the top of the dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1767788275/Cloud/CleanShot_2026-01-07_at_14.17.45_2x_nkemhm.png)
+    1. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch environment" /> icon next to the environment's name at the top of the Cloud dashboard.
+    2. Choose the environment you want to switch to from the dropdown.
+
+    ![Environment switcher dropdown at the top of the dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1767788275/Cloud/CleanShot_2026-01-07_at_14.17.45_2x_nkemhm.png)
+
+    </TabsContent>
+    <TabsContent value="global-sidebar">
+
+    1. Click on the current environment's name at the top of the sidebar to go back to the project's dashboard.
+    2. Click on the environment name in the sidebar.
+
+    </TabsContent>
+  </TabsContentWrapper>
+</Tabs>
 
 This will change the view to the selected environment, and you'll see its details, logs, and settings.
 

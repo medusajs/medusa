@@ -1,0 +1,502 @@
+import { 
+  Prerequisites, 
+  Note, 
+  Table,
+  CodeTab,
+  CodeTabs,
+} from "docs-ui"
+
+export const metadata = {
+  title: `Cloud CLI for AI Agents`,
+}
+
+# {metadata.title}
+
+This guide is written for AI agents that manage Cloud resources through the Cloud CLI. It covers best practices, working principles, and common workflows for using the CLI in an agentic development context.
+
+If you're a human user, copy the following instructions to your agent to get started:
+
+```markdown title="Prompt"
+Fetch https://docs.medusajs.com/cloud/cli/agents and set up the Medusa Cloud CLI.
+```
+
+You can also install the instructions in this document as a skill in your agent:
+
+<CodeTabs group="agent-skills">
+  <CodeTab label="Claude Code" value="claude-code">
+
+```bash
+claude # start claude code
+/plugin marketplace add medusajs/medusa-agent-skills
+/plugin install medusa-cloud@medusa
+```
+
+  </CodeTab>
+  <CodeTab label="Other AI Agents" value="skills-command">
+
+```bash
+npx skills add medusajs/medusa-agent-skills
+# choose the following skill:
+# - using-medusa-cloud
+```
+
+  </CodeTab>
+</CodeTabs>
+
+## Working Principles
+
+AI agents should follow these defaults whenever they operate the CLI:
+
+- **Always pass `--json` when parsing output.** The plaintext output is for human readers and may change without warning; machine-readable JSON is stable and structured.
+- **Confirm context before acting.** Run [`mcloud whoami`](../commands/whoami/page.mdx) before any state change so you know which organization, project, and environment you'll affect.
+- **Set context once, not per command.** Use [`mcloud use`](../commands/use/page.mdx) to persist organization, project, and environment, then drop the flags from subsequent commands.
+- **Read before you write.** Run a `get` or `list` before any `delete`, `redeploy`, or `trigger-build` to verify you're targeting the right resource.
+- **Use `--yes` for irreversible operations.** [`mcloud projects delete`](../commands/projects/page.mdx#projects-delete) and [`mcloud environments delete`](../commands/environments/page.mdx#environments-delete) require confirmation in interactive mode and refuse to run without `--yes` in non-interactive mode.
+- **Production environments cannot be deleted.** [`mcloud environments delete`](../commands/environments/page.mdx#environments-delete) errors on production environments by design. Do not attempt to bypass it.
+- **Pipe to `jq` for extraction.** Avoid string-parsing JSON; pipe `--json` output into `jq` for structured access.
+
+---
+
+## Set Up the CLI
+
+AI agents should run this one-time setup before any other CLI work, then never repeat it on the same machine. Skip the steps whose checks already pass.
+
+### 1. Check Whether the CLI Is Already Installed
+
+Before doing anything else, check whether the CLI is already on the system:
+
+```bash
+mcloud --version
+```
+
+If the command exits with `0` and prints a version string, the CLI is installed. Skip the rest of this section and move on to [Confirm Authentication and Context](#confirm-authentication-and-context). If the command is not found, continue to the next step.
+
+### 2. Verify Node.js Version
+
+The CLI requires Node.js v22 or later. Check the installed version:
+
+```bash
+node --version
+```
+
+If the version is below `v22`, ask the user to upgrade Node.js (for example, via [nvm](https://github.com/nvm-sh/nvm) or [the official installer](https://nodejs.org/en/download)) and rerun the check before continuing. Do not attempt to upgrade Node.js without authorization.
+
+### 3. Install the Cloud CLI
+
+Install `@medusajs/mcloud` globally with the user's preferred package manager:
+
+```bash npm2yarn
+npm install @medusajs/mcloud -g
+```
+
+Verify the install:
+
+```bash
+mcloud --version
+```
+
+A successful version string confirms the CLI is on `PATH`. If the command is not found, ask the user to check their global npm bin directory is on `PATH` or to reinstall with a different package manager.
+
+### 4. Log In or Sign Up
+
+Ask the user whether they already have a Cloud account.
+
+If yes, run [`mcloud login`](../commands/login/page.mdx) to authenticate. The CLI opens a browser to complete the flow:
+
+```bash
+mcloud login
+```
+
+If no, run [`mcloud signup`](../commands/signup/page.mdx) to open the sign-up page. After the user creates an account, run `mcloud login`:
+
+```bash
+mcloud signup
+mcloud login
+```
+
+For non-interactive environments (CI, headless containers, restricted shells), skip the browser flow entirely and use an access key instead:
+
+```bash
+export MCLOUD_TOKEN=<access-key>
+```
+
+When `MCLOUD_TOKEN` is set, the CLI uses it on every command and `mcloud login` is rejected. See the [login command reference](../commands/login/page.mdx#non-interactive-authentication) for personal vs organization access keys.
+
+### 5. Confirm the Setup
+
+Run [`mcloud whoami`](../commands/whoami/page.mdx) to verify authentication, then move on to setting the active context:
+
+```bash
+mcloud whoami --json
+```
+
+---
+
+## Confirm Authentication and Context
+
+Before running any command that mutates state, AI agents should verify the active identity and scope:
+
+```bash
+mcloud whoami --json
+```
+
+The response includes the auth kind, expiry (for JWT-based auth), and the active organization, project, and environment. Inspect `auth.kind` and `organization.id` to assert the CLI is ready to use:
+
+```bash
+mcloud whoami --json | jq -e '.auth.kind != "none" and .organization.id != null'
+```
+
+Exit code `0` means authenticated and scoped; on a non-zero exit, stop and ask the user to authenticate or set the active context.
+
+<Note title="Authentication precedence">
+
+If `MCLOUD_TOKEN` is set, it overrides any credentials stored on disk and `mcloud login` is rejected. To switch accounts, unset the variable first.
+
+</Note>
+
+---
+
+## Set the Active Context Programmatically
+
+AI agents should persist the active organization, project, and environment so subsequent commands can run without `--organization`, `--project`, or `--environment` flags. Pass values directly when running non-interactively:
+
+```bash
+mcloud use \
+  --organization org_123 \
+  --project proj_123 \
+  --environment env_123
+```
+
+If you only have names instead of IDs or handles, look them up first:
+
+```bash
+# Resolve organization ID by name
+ORGANIZATION_ID=$(
+  mcloud organizations list --json \
+    | jq -r '.[] | select(.name == "My Organization") | .id'
+)
+
+# Resolve project handle by name
+PROJECT_HANDLE=$(
+  mcloud projects list --organization "$ORGANIZATION_ID" --json \
+    | jq -r '.[] | select(.name == "My Store") | .handle'
+)
+
+# Resolve environment handle by name
+ENVIRONMENT_HANDLE=$(
+  mcloud environments list --organization "$ORGANIZATION_ID" --project "$PROJECT_HANDLE" --json \
+    | jq -r '.[] | select(.name == "Production") | .handle'
+)
+
+mcloud use \
+  --organization "$ORGANIZATION_ID" \
+  --project "$PROJECT_HANDLE" \
+  --environment "$ENVIRONMENT_HANDLE"
+```
+
+To clear the active context (for example, before switching to a different account or organization), pass `--clear`:
+
+```bash
+mcloud use --clear
+```
+
+<Note type="warning">
+
+`mcloud use` without flags is interactive (it requires a TTY) and will not work inside CI runners, Docker `RUN` steps, or piped input. Always pass flags instead of relying on the interactive picker.
+
+</Note>
+
+---
+
+## Inspect Deployments
+
+The deployment table returned by [`mcloud deployments list`](../commands/deployments/page.mdx#deployments-list) carries two computed status fields per row that AI agents should route on:
+
+- `backend_status`: lifecycle of the backend (build + rollout)
+- `storefront_status`: lifecycle of the storefront
+
+Both fields use the same value set: `created`, `building`, `built`, `deploying`, `deployed`, `build-failed`, `deployment-failed`, `timed-out` (backend only), `canceled`, and `idle`. See the full reference in the [deployments command guide](../commands/deployments/page.mdx#deployment-and-build-statuses).
+
+Use `--json` and `jq` to filter for the relevant deployments:
+
+```bash
+# Most recent failed deployment for the active environment
+mcloud deployments list --json \
+  | jq -r '[.[] | select(.backend_status == "build-failed" or .backend_status == "deployment-failed")][0].id'
+
+# All deployments for a specific commit
+mcloud deployments list --commit a1b2c3d --json | jq '.'
+
+# Only preview deployments
+mcloud deployments list --environment-type preview --json | jq '.'
+```
+
+For one specific deployment, use [`mcloud deployments get`](../commands/deployments/page.mdx#deployments-get):
+
+```bash
+mcloud deployments get bld_01ABC123 --json
+```
+
+---
+
+## Debug a Failed Deployment
+
+The right log source depends on the failure mode. AI agents should route on `backend_status` (or `storefront_status`):
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        `backend_status`
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        What failed
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Where to look
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `build-failed`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Build step (Docker, dependencies, compilation).
+
+      </Table.Cell>
+      <Table.Cell>
+
+      [`mcloud deployments build-logs`](../commands/deployments/page.mdx#deployments-build-logs)
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `deployment-failed`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Rollout step (the build succeeded but the runtime crashed).
+
+      </Table.Cell>
+      <Table.Cell>
+
+      [`mcloud logs --deployment <id>`](../commands/logs/page.mdx)
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `timed-out`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Build or rollout exceeded the time budget.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Both: `build-logs` first, then runtime `logs`.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Build Failure Recipe
+
+```bash
+# Find the most recent build-failed deployment
+DEPLOYMENT_ID=$(
+  mcloud deployments list --json \
+    | jq -r '[.[] | select(.backend_status == "build-failed")][0].id'
+)
+
+# Inspect deployment metadata (commit, environment, timestamps)
+mcloud deployments get "$DEPLOYMENT_ID" --json
+
+# Read the build output
+mcloud deployments build-logs "$DEPLOYMENT_ID"
+
+# For storefront build failures, pass --type storefront
+mcloud deployments build-logs "$DEPLOYMENT_ID" --type storefront
+```
+
+`build-logs` returns a `build_status` field (`created`, `in-progress`, `succeeded`, `failed`, `timed-out`, `canceled`). When `failed`, check the build's `metadata.failed_docker_layer` (visible via `mcloud deployments get --json`) to identify the failing layer.
+
+### Deployment Failure Recipe
+
+When the build succeeded but the rollout failed, the build logs won't help. Read the runtime logs scoped to that deployment instead. The `--deployment` flag accepts both deployment IDs (`depl_...`) and build IDs (anything else); the CLI resolves a build ID to its latest deployment automatically.
+
+```bash
+# Find the most recent deployment-failed deployment
+DEPLOYMENT_ID=$(
+  mcloud deployments list --json \
+    | jq -r '[.[] | select(.backend_status == "deployment-failed")][0].id'
+)
+
+# Read the runtime logs for that specific deployment
+mcloud logs --deployment "$DEPLOYMENT_ID" --limit 1000
+
+# Filter to error-level lines only
+mcloud logs --deployment "$DEPLOYMENT_ID" --search error --limit 1000
+
+# Filter by HTTP status (5xx)
+mcloud logs --deployment "$DEPLOYMENT_ID" --metadata status=500 --limit 1000
+
+# Machine-readable: pipe to jq for structured analysis
+mcloud logs --deployment "$DEPLOYMENT_ID" --json | jq '.[] | {timestamp, source, message}'
+```
+
+<Note>
+
+`--follow` cannot be combined with `--json`. To process logs in a script, use a bounded time window with `--from`/`--to` and `--json`.
+
+</Note>
+
+---
+
+## Rerun a Deployment
+
+After fixing the underlying issue, AI agents have two options. They are not interchangeable:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Command
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        What it does
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        When to use
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      [`mcloud environments redeploy <env>`](../commands/environments/page.mdx#environments-redeploy)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Re-runs the **active deployment's existing build**.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The fix is environment-side (variable change, infra issue) and the build itself is fine.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [`mcloud environments trigger-build <env>`](../commands/environments/page.mdx#environments-trigger-build)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Starts a **new build from the tracked branch**.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The fix is in the source code that's already on the tracked branch.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+`redeploy` requires the environment to have an active deployment. If it doesn't, run `trigger-build` first to create one.
+
+```bash
+# After fixing an environment variable
+mcloud environments redeploy env_123
+
+# After pushing a fix to the tracked branch
+mcloud environments trigger-build env_123
+
+# Verify the new build is running
+mcloud deployments list --environment env_123 --limit 5 --json \
+  | jq '.[] | {id, backend_status, commit_hash, updated_at}'
+```
+
+---
+
+## Manage Environment Variables
+
+Environment variables are scoped to a single environment. AI agents should pass `--reveal` to print plaintext secret values only when the user has explicitly asked to see them.
+
+```bash
+# List all variables (secrets masked)
+mcloud variables list --json
+
+# Get a single variable by key (requires active project and environment)
+mcloud variables get DATABASE_URL --json
+
+# Get a single variable by ID (works without project/environment context)
+mcloud variables get var_01XYZ --json
+
+# Reveal a secret value when explicitly requested
+mcloud variables get STRIPE_SECRET_KEY --reveal --json | jq -r '.value'
+```
+
+<Note type="warning">
+
+Avoid passing `--reveal` unless the user explicitly asked to see the secret value. The plaintext value is captured by terminal scrollback, log aggregators, and process listings.
+
+</Note>
+
+To replicate a Cloud environment's variables locally, export them to a `.env` file:
+
+```bash
+mcloud variables list --reveal --json \
+  | jq -r '.[] | "\(.key)=\(.value)"' \
+  > .env
+```
+
+---
+
+## Manage Environments
+
+Use this flow when creating a preview environment for a feature branch or tearing down environments after a pull request closes:
+
+```bash
+# Create a long-lived environment that tracks a branch
+mcloud environments create \
+  --name "Staging" \
+  --branch develop
+
+# Inspect an environment's current state
+mcloud environments get env_123 --json | jq '{id, name, type, status, external_id}'
+
+# Delete an environment without prompting (production environments are protected)
+mcloud environments delete env_123 --yes
+```
+
+`environments delete` returns a non-zero exit code on production environments. Always check the `type` field via `environments get --json` before attempting a delete in an automated workflow.
+
+---
+
+## Common Pitfalls
+
+- **TTY-only commands.** `mcloud login` (browser flow), `mcloud use` (without flags), and any delete command without `--yes` require an interactive TTY. They will error in CI runners, Docker `RUN` steps, or piped input.
+- **`MCLOUD_TOKEN` precedence.** When `MCLOUD_TOKEN` is set, file-based credentials are ignored and `mcloud login` is rejected. To switch accounts, `unset MCLOUD_TOKEN` first.
+- **Personal vs organization access keys.** A personal access key requires `--organization` (or an organization in the active context); an organization access key is already scoped to one organization. See the [login reference](../commands/login/page.mdx#non-interactive-authentication) for details.
+- **`organizations list` requires personal auth.** Organization access keys cannot list organizations and the command will return 401. Use a personal access key or browser login to enumerate organizations.
+- **Build IDs vs deployment IDs.** `mcloud logs --deployment` accepts both. IDs that start with `depl` are deployments; everything else is treated as a build ID and resolved to the build's latest deployment. Other commands (`deployments get`, `deployments build-logs`, `environments redeploy`) take build IDs only.
+- **`--json` and `--follow` are incompatible.** Streaming logs with `--follow` always prints plaintext. For programmatic ingestion, use bounded time windows with `--from`/`--to` and `--json`.
