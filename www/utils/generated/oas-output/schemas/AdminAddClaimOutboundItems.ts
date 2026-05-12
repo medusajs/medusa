@@ -11,7 +11,7 @@
  *       type: object
  *       description: An item's details.
  *       required:
- *         - id
+ *         - variant_id
  *         - quantity
  *       properties:
  *         quantity:
@@ -22,25 +22,17 @@
  *           type: string
  *           title: internal_note
  *           description: A note viewed only by admin users.
- *         id:
- *           type: string
- *           title: id
- *           description: The item's ID.
- *         reason:
- *           type: string
- *           description: The item's reason.
- *           enum:
- *             - missing_item
- *             - wrong_item
- *             - production_failure
- *             - other
- *         description:
- *           type: string
- *           title: description
- *           description: The item's description.
  *         metadata:
  *           type: object
  *           description: Key-value pairs of custom data.
+ *         variant_id:
+ *           type: string
+ *           title: variant_id
+ *           description: The ID of the product variant to send to the customer.
+ *         unit_price:
+ *           type: number
+ *           title: unit_price
+ *           description: The item's unit price.
  * 
 */
 

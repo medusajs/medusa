@@ -30,7 +30,7 @@ If you use this workflow in another, you must acquire a lock before running it a
 
 :::
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/core/core-flows/src/draft-order/workflows/compute-draft-order-adjustments.ts#L64" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/core-flows/src/draft-order/workflows/compute-draft-order-adjustments.ts#L68" />
 
 ## Examples
 
@@ -143,8 +143,36 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"computeDraftOrderAdjustmentsWorkflow","steps":[{"type":"step","name":"acquireLockStep","description":"This step acquires a lock for a given key. Learn more about locks in the [Locking Module](https://docs.medusajs.com/resources/infrastructure-modules/locking)\nguide.","link":"../../../../Locking/Steps_Locking/functions/core_flows.Locking.Steps_Locking.acquireLockStep/page.mdx","depth":1},{"type":"when","condition":"toDeleteActions.length > 0","depth":"2","steps":[{"type":"step","name":"deleteOrderChangeActionsStep","description":"This step deletes order change actions.","link":"../../../../Order/Steps_Order/functions/core_flows.Order.Steps_Order.deleteOrderChangeActionsStep/page.mdx","depth":2}]},{"type":"step","name":"previewOrderChangeStep","description":"This step retrieves a preview of an order change.","link":"../../../../Order/Steps_Order/functions/core_flows.Order.Steps_Order.previewOrderChangeStep/page.mdx","depth":3},{"type":"when","condition":"!!order.promotions?.length","depth":"5","steps":[{"type":"step","name":"getActionsToComputeFromPromotionsStep","description":"This step retrieves the actions to compute based on the promotions\napplied on items and shipping methods.\n\n:::tip\n\nYou can use the [retrieveCartStep](../../../../Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.retrieveCartStep/page.mdx) to retrieve items and shipping methods' details.\n\n:::","link":"../../../../Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.getActionsToComputeFromPromotionsStep/page.mdx","depth":5},{"type":"step","name":"prepareAdjustmentsFromPromotionActionsStep","description":"This step prepares the line item or shipping method adjustments using\nactions computed by the Promotion Module.","link":"../../../../Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.prepareAdjustmentsFromPromotionActionsStep/page.mdx","depth":5}]},{"type":"step","name":"releaseLockStep","description":"This step releases a lock for a given key. Learn more about locks in the [Locking Module](https://docs.medusajs.com/resources/infrastructure-modules/locking)\nguide.","link":"../../../../Locking/Steps_Locking/functions/core_flows.Locking.Steps_Locking.releaseLockStep/page.mdx","depth":6}]}} />
+<WorkflowDiagram workflow={{"name":"computeDraftOrderAdjustmentsWorkflow","steps":[{"type":"step","name":"acquireLockStep","description":"This step acquires a lock for a given key. Learn more about locks in the [Locking Module](https://docs.medusajs.com/resources/infrastructure-modules/locking)\nguide.","link":"../../../../Locking/Steps_Locking/functions/core_flows.Locking.Steps_Locking.acquireLockStep/page.mdx","depth":1},{"type":"hook","name":"setPromotionContext","description":"This hook is executed before promotion rules are evaluated for the draft order. You can consume this hook to return any custom context that should be merged on top of the order context when evaluating promotion rules (e.g. `company.id`, `custom_tier`).","link":"#setPromotionContext","depth":2},{"type":"when","condition":"toDeleteActions.length > 0","depth":"3","steps":[{"type":"step","name":"deleteOrderChangeActionsStep","description":"This step deletes order change actions.","link":"../../../../Order/Steps_Order/functions/core_flows.Order.Steps_Order.deleteOrderChangeActionsStep/page.mdx","depth":3}]},{"type":"step","name":"previewOrderChangeStep","description":"This step retrieves a preview of an order change.","link":"../../../../Order/Steps_Order/functions/core_flows.Order.Steps_Order.previewOrderChangeStep/page.mdx","depth":4},{"type":"when","condition":"!!order.promotions?.length","depth":"6","steps":[{"type":"step","name":"getActionsToComputeFromPromotionsStep","description":"This step retrieves the actions to compute based on the promotions\napplied on items and shipping methods.\n\n:::tip\n\nYou can use the [retrieveCartStep](../../../../Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.retrieveCartStep/page.mdx) to retrieve items and shipping methods' details.\n\n:::","link":"../../../../Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.getActionsToComputeFromPromotionsStep/page.mdx","depth":6},{"type":"step","name":"prepareAdjustmentsFromPromotionActionsStep","description":"This step prepares the line item or shipping method adjustments using\nactions computed by the Promotion Module.","link":"../../../../Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.prepareAdjustmentsFromPromotionActionsStep/page.mdx","depth":6}]},{"type":"step","name":"releaseLockStep","description":"This step releases a lock for a given key. Learn more about locks in the [Locking Module](https://docs.medusajs.com/resources/infrastructure-modules/locking)\nguide.","link":"../../../../Locking/Steps_Locking/functions/core_flows.Locking.Steps_Locking.releaseLockStep/page.mdx","depth":7}]}} />
 
 ## Input
 
 <TypeList types={[{"name":"ComputeDraftOrderAdjustmentsWorkflowInput","type":"[ComputeDraftOrderAdjustmentsWorkflowInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.ComputeDraftOrderAdjustmentsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ComputeDraftOrderAdjustmentsWorkflowInput","type":"`object`","description":"The details of the draft order to refresh the adjustments for.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="computeDraftOrderAdjustmentsWorkflow"/>
+
+## Hooks
+
+Hooks allow you to inject custom functionalities into the workflow. You'll receive data from the workflow, as well as additional data sent through an HTTP request.
+
+Learn more about [Hooks](https://docs.medusajs.com/learn/fundamentals/workflows/workflow-hooks) and [Additional Data](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).
+
+### setPromotionContext
+
+This hook is executed before promotion rules are evaluated for the draft order. You can consume this hook to return any custom context that should be merged on top of the order context when evaluating promotion rules (e.g. `company.id`, `custom_tier`).
+
+#### Example
+
+```ts
+import { computeDraftOrderAdjustmentsWorkflow } from "@medusajs/medusa/core-flows"
+
+computeDraftOrderAdjustmentsWorkflow.hooks.setPromotionContext(
+  (async ({}, { container }) => {
+    //TODO
+  })
+)
+```
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Draft_Order.Workflows_Draft_Order/page.mdx#__type)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="setPromotionContext"/>
