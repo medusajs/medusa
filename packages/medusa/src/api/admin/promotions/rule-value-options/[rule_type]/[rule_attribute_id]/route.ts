@@ -73,10 +73,16 @@ export const GET = async (
     ENTITIES_SUPPORTED_BY_INDEX_ENGINE.includes(queryConfig.entryPoint)
 
   if (useIndexEngine) {
+    // TODO: Remove once we implement search by relations in a similar way to query.graph
+    const filters = { ...filterableFields }
+    if (!!filters.q) {
+      filters.variants = filters.variants ?? {}
+    }
+
     const { data, metadata } = await query.index({
       entity: queryConfig.entryPoint,
       fields,
-      filters: filterableFields,
+      filters,
       pagination: req.queryConfig.pagination,
     })
 
@@ -85,13 +91,14 @@ export const GET = async (
       value: r[queryConfig.valueAttr],
     }))
 
-    return res.json({
+    res.json({
       values,
       count: metadata!.estimate_count,
       estimate_count: metadata!.estimate_count,
       offset: metadata!.skip,
       limit: metadata!.take,
     })
+    return
   }
 
   const { data, metadata } = await query.graph({
