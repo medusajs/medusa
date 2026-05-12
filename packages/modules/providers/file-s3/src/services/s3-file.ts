@@ -162,8 +162,13 @@ export class S3FileService extends AbstractFileProviderService {
       throw e
     }
 
+    const encodedKey = fileKey
+      .split("/")
+      .map(encodeURIComponent)
+      .join("/")
+
     return {
-      url: `${this.config_.fileUrl}/${encodeURIComponent(fileKey)}`,
+      url: `${this.config_.fileUrl}/${encodedKey}`,
       key: fileKey,
     }
   }
@@ -201,15 +206,20 @@ export class S3FileService extends AbstractFileProviderService {
       },
     })
 
+    const encodedKey = fileKey
+      .split("/")
+      .map(encodeURIComponent)
+      .join("/")
+
     const promise = upload.done().then(() => ({
-      url: `${this.config_.fileUrl}/${fileKey}`,
+      url: `${this.config_.fileUrl}/${encodedKey}`,
       key: fileKey,
     }))
 
     return {
       writeStream: pass,
       promise,
-      url: `${this.config_.fileUrl}/${fileKey}`,
+      url: `${this.config_.fileUrl}/${encodedKey}`,
       fileKey,
     }
   }

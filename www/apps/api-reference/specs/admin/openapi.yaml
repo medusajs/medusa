@@ -997,6 +997,8 @@ paths:
     $ref: paths/admin_payment-collections_{id}.yaml
   /admin/payment-collections/{id}/mark-as-paid:
     $ref: paths/admin_payment-collections_{id}_mark-as-paid.yaml
+  /admin/payment-collections/{id}/payment-sessions:
+    $ref: paths/admin_payment-collections_{id}_payment-sessions.yaml
   /admin/payments:
     $ref: paths/admin_payments.yaml
   /admin/payments/payment-providers:
@@ -1247,9 +1249,9 @@ paths:
     $ref: paths/admin_workflows-executions_{workflow_id}_subscribe.yaml
   /admin/workflows-executions/{workflow_id}/{transaction_id}:
     $ref: paths/admin_workflows-executions_{workflow_id}_{transaction_id}.yaml
-  /admin/workflows-executions/{workflow_id}/{transaction_id}/{step_id}/subscribe:
+  /admin/workflows-executions/{workflow_id}/{transaction_id}/subscribe:
     $ref: >-
-      paths/admin_workflows-executions_{workflow_id}_{transaction_id}_{step_id}_subscribe.yaml
+      paths/admin_workflows-executions_{workflow_id}_{transaction_id}_subscribe.yaml
   /auth/session:
     $ref: paths/auth_session.yaml
   /auth/token/refresh:

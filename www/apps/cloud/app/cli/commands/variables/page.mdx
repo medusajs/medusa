@@ -1,0 +1,483 @@
+import { Table, Note, CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `variables Command - Medusa Cloud CLI Reference`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to inspect the [environment variables](../../../environments/environment-variables/page.mdx) of a Cloud environment using the CLI.
+
+## variables list
+
+List all environment variables for a Cloud environment.
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud variables list \
+    --organization org_123 \
+    --project proj_123 \
+    --environment env_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+  mcloud variables list
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) that the environment belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-or-handle>`, `--project <id-or-handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID or handle of the project](../projects/page.mdx#find-project-ids-and-handles) that the environment belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-e <handle>`, `--environment <handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [handle of the environment](../environments/page.mdx#find-environment-handles) to list variables from.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the environment in the [active context](../use/page.mdx), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--reveal`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print secret values in plain text instead of masking them.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--limit <number>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Maximum number of variables to return. Minimum: `1`, maximum: `500`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `200`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--offset <number>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Pagination offset.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `0`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## variables get
+
+Retrieve a single variable by its ID (`var_...`) or by its key. Looking up by key requires `--project` and `--environment` (or the equivalent values in the [active context](../use/page.mdx)) so the CLI knows which environment to search.
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud variables get ADMIN_CORS \
+    --organization org_123 \
+    --project proj_123 \
+    --environment env_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+  mcloud variables get ADMIN_CORS
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+You can also fetch a variable by ID without setting the active environment:
+
+```bash
+mcloud variables get var_01XYZ
+```
+
+This returns the variable's details, similar to the following:
+
+<CodeTabs group="cli-output">
+  <CodeTab label="Plaintext" value="plaintext">
+
+  ```bash
+  ID:               var_123
+  Key:              ADMIN_CORS
+  Value:            https://admin.mystore.com
+  Secret:           no
+  Scope:            runtime
+  Environment:      env_123
+  Last updated by:  enduser_123
+  Created at:       Dec 16, 2025, 10:33 AM GMT+2
+  Updated at:       Feb 17, 2026, 4:15 PM GMT+2
+  ```
+
+  </CodeTab>
+  <CodeTab label="JSON (--json)" value="json">
+
+  ```json
+  {
+    "id": "var_123",
+    "organization_id": "org_123",
+    "entity_id": "env_123",
+    "key": "ADMIN_CORS",
+    "value": "https://admin.mystore.com",
+    "is_secret": false,
+    "is_build": false,
+    "is_runtime": true,
+    "last_updated_by": "enduser_123",
+    "created_at": "2025-12-16T08:33:00.000Z",
+    "updated_at": "2026-02-17T14:15:00.000Z"
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `variable`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Variable ID (`var_...`) or key. When passing a key, you must also provide `--project` and `--environment` (or set them in the [active context](../use/page.mdx)).
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) that the variable belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-or-handle>`, `--project <id-or-handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID or handle of the project](../projects/page.mdx#find-project-ids-and-handles) that the variable belongs to. Required when looking up by key.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Conditional
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-e <handle>`, `--environment <handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [handle of the environment](../environments/page.mdx#find-environment-handles) that the variable belongs to. Required when looking up by key.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Conditional
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the environment in the [active context](../use/page.mdx), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--reveal`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the secret value in plain text instead of masking it.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Reveal Secret Values
+
+By default, the CLI masks values for variables marked as secrets. Pass `--reveal` to print the plaintext value:
+
+<Note type="warning">
+
+Avoid `--reveal` on shared terminals or in shell history. The plaintext value is printed to standard output, which is captured by terminal scrollback, log aggregators, and process listings.
+
+</Note>
+
+```bash
+mcloud variables get DATABASE_URL --reveal
+```
+
+---
+
+## Export Variables to a `.env` File
+
+Use `--json` and `jq` to extract variables and write them to a local `.env` file. This is useful for replicating a Cloud environment's variables to a local development environment:
+
+```bash
+mcloud variables list --reveal --json \
+  | jq -r '.[] | "\(.key)=\(.value)"' \
+  > .env
+```

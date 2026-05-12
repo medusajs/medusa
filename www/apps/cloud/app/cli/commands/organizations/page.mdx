@@ -1,0 +1,399 @@
+import { Table, Note, CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `organizations Command - Medusa Cloud CLI Reference`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to manage your Cloud organizations using the CLI.
+
+## organizations list
+
+List all organizations your account has access to.
+
+<Note>
+
+If you're authenticated with an access key, you must be using
+a personal access key to use this command. Organization access keys do not have
+permissions to list organizations for a user.
+
+</Note>
+
+```bash
+mcloud organizations list
+```
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## organizations get
+
+Retrieve a single organization by its ID. Returns the organization's metadata, subscription details, and members.
+
+```bash
+mcloud organizations get <organization>
+```
+
+Returns the following information:
+
+<CodeTabs group="cli-output">
+  <CodeTab label="Plaintext" value="plaintext">
+
+  ```bash
+  ID:              <organization-id>
+  Name:            My Organization
+  Legal name:      My Organization, Inc.
+  Billing email:   billing@example.com
+  VAT number:      DE123456789
+  Status:          active
+  Account holder:  owner@example.com
+  Created at:      2024-10-10T08:24:32.382Z
+
+  Subscription:
+    Plan:            Pro (plan_01ABC)
+    Status:          active
+    Current period:  Apr 22, 2026, 5:10 PM GMT+3 → May 22, 2026, 5:10 PM GMT+3
+
+  Members (3):
+    ID                EMAIL                NAME             CREATED
+    mem_01ABC         alice@example.com    Alice Example    Aug 30, 2024, 12:07 PM GMT+3
+    mem_01DEF         bob@example.com      Bob Example      Aug 30, 2024, 12:10 PM GMT+3
+    mem_01GHI         carol@example.com    Carol Example    Aug 30, 2024, 12:15 PM GMT+3
+  ```
+
+  </CodeTab>
+  <CodeTab label="JSON (--json)" value="json">
+
+  ```json
+  {
+    "id": "<organization-id>",
+    "name": "My Organization",
+    "billing_email": "billing@example.com",
+    "status": "active",
+    "created_by": "<user-id>",
+    "created_at": "2024-10-10T08:24:32.382Z",
+    "metadata": {
+      "notification_preferences": {
+        "email": false
+      }
+    },
+    "members": [
+      {
+        "id": "mem_01ABC",
+        "user_id": "<user-id>",
+        "organization_id": "<organization-id>",
+        "created_at": "2024-08-30T09:07:00.000Z",
+        "metadata": null,
+        "user": {
+          "id": "<user-id>",
+          "first_name": "Alice",
+          "last_name": "Example",
+          "email": "alice@example.com",
+          "memberships": [],
+          "created_at": "2024-08-30T09:07:00.000Z",
+          "updated_at": "2024-08-30T09:07:00.000Z",
+          "metadata": null
+        },
+        "role": "admin"
+      }
+    ],
+    "invites": [
+      {
+        "id": "meminv_01ABC",
+        "email": "invited@example.com",
+        "organization_id": "<organization-id>",
+        "expires_at": "2026-02-20T10:44:39.965Z",
+        "created_at": "2026-02-13T10:44:39.972Z",
+        "updated_at": "2026-02-13T10:44:39.972Z",
+        "deleted_at": null,
+        "role": "admin"
+      }
+    ],
+    "orders": [],
+    "subscription": {
+      "id": "sub_01ABC",
+      "organization_id": "<organization-id>",
+      "is_active": true,
+      "current_period_start": "2026-04-22T14:10:18.508Z",
+      "current_period_end": "2026-05-22T14:10:18.508Z",
+      "plan": {
+        "id": "plan_01ABC",
+        "name": "Pro",
+        "handle": "pro",
+        "type": "default",
+        "price": {
+          "amount": 0,
+          "currency_code": "USD"
+        },
+        "features": [
+          {
+            "id": "pfeat_01ABC",
+            "value": 500,
+            "price": {
+              "amount": 0,
+              "currency_code": "USD"
+            },
+            "supports_addons": true,
+            "plan_id": "plan_01ABC",
+            "feature_id": "feat_01ABC",
+            "scope": "organization",
+            "handle": "projects",
+            "type": "feature"
+          }
+        ],
+        "trials": [],
+        "metadata": {}
+      },
+      "plan_id": "plan_01ABC",
+      "started_at": "2024-10-10T08:24:32.382Z",
+      "canceled_at": null,
+      "grace_period_days": 14,
+      "created_at": "2024-10-10T08:24:32.382Z",
+      "updated_at": "2026-04-22T14:17:51.544Z",
+      "metadata": null
+    },
+    "account_holder": {
+      "id": "acchld_01ABC",
+      "provider_id": "pp_stripe_stripe",
+      "external_id": "<stripe-customer-id>",
+      "email": "owner@example.com",
+      "data": {
+        "id": "<stripe-customer-id>",
+        "name": "My Organization",
+        "email": "owner@example.com",
+        "phone": null,
+        "object": "customer",
+        "address": null,
+        "balance": 0,
+        "created": 1749634671,
+        "currency": null,
+        "discount": null,
+        "livemode": true,
+        "metadata": {},
+        "shipping": null,
+        "delinquent": false,
+        "tax_exempt": "none",
+        "test_clock": null,
+        "description": null,
+        "default_source": null,
+        "invoice_prefix": "<invoice-prefix>",
+        "invoice_settings": {
+          "footer": null,
+          "custom_fields": null,
+          "rendering_options": null,
+          "default_payment_method": null
+        },
+        "preferred_locales": [],
+        "next_invoice_sequence": 1
+      },
+      "metadata": null,
+      "created_at": "2024-10-10T08:24:32.382Z",
+      "updated_at": "2024-10-10T08:24:32.382Z",
+      "deleted_at": null
+    },
+    "payment_accounts": []
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `organization`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The ID of the organization to retrieve.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Override the organization in the [active context](../use/page.mdx#set-the-active-context). The argument and this flag must match.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Find Organization ID
+
+Commands that operate on organizations require an organization ID. You can either:
+
+- Use the interactive selector in [mcloud use](../use/page.mdx#set-the-active-context) to set an active organization for the current context. Once set, you can omit the `--organization` flag from all subsequent commands;
+- Or use `organizations list --json` to get machine-readable organization data. Pipe the output to `jq` to extract IDs for use in subsequent commands. This is useful if you want to set the active organization through an AI agent, script, or CI/CD pipeline.
+
+For example, to set the first organization in the list as the active organization:
+
+<CodeTabs group="os">
+  <CodeTab label="macOS / Linux" value="unix">
+
+  ```bash
+  ORGANIZATION_ID=$(
+    mcloud organizations list --json \
+      | jq -r '.[0].id'
+  )
+  mcloud use --organization "$ORGANIZATION_ID"
+  ```
+
+  </CodeTab>
+  <CodeTab label="Windows (PowerShell)" value="powershell">
+
+  ```powershell
+  $ORGANIZATION_ID = (
+    mcloud organizations list --json |
+    jq -r '.[0].id'
+  )
+  mcloud use --organization $ORGANIZATION_ID
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+To set the active organization to the ID of an organization by its name:
+
+<CodeTabs group="os">
+  <CodeTab label="macOS / Linux" value="unix">
+
+  ```bash
+  ORGANIZATION_ID=$(
+    mcloud organizations list --json \
+      | jq -r '.[] | select(.name == "My Organization") | .id'
+  )
+  mcloud use --organization "$ORGANIZATION_ID"
+  ```
+
+  </CodeTab>
+  <CodeTab label="Windows (PowerShell)" value="powershell">
+
+  ```powershell
+  $ORGANIZATION_ID = (
+    mcloud organizations list --json |
+    jq -r '.[] | select(.name == "My Organization") | .id'
+  )
+  mcloud use --organization $ORGANIZATION_ID
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+Once set, you can omit the `--organization` flag from all subsequent commands.
