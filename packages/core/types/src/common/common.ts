@@ -373,6 +373,8 @@ export type Pluralize<Singular extends string> =
     ? PluralizationSpecialRules[Lowercase<Singular>]
     : Lowercase<Singular> extends UncountableRules
     ? Singular
+    : Lowercase<Singular> extends `${string}${UncountableRules}`
+    ? Singular
     : Singular extends `${string}ss`
     ? `${Singular}es`
     : Singular extends `${infer R}sis`

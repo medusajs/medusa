@@ -59,4 +59,10 @@ describe("Pluralize", () => {
     expectTypeOf<Pluralize<"tooth">>().toEqualTypeOf<"teeth">()
     expectTypeOf<Pluralize<"foot">>().toEqualTypeOf<"feet">()
   })
+
+  test("pluralize compound words ending with uncountable suffix", () => {
+    expectTypeOf<Pluralize<"CountryCompanyInfo">>().toEqualTypeOf<"CountryCompanyInfo">()
+    expectTypeOf<Pluralize<"SoftInfo">>().toEqualTypeOf<"SoftInfo">()
+    expectTypeOf<Pluralize<"Metadata">>().toEqualTypeOf<"Metadata">()
+  })
 })
