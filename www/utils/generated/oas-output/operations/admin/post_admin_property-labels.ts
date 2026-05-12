@@ -4,7 +4,6 @@
  * summary: Create Property Label
  * description: Create a property label.
  * x-authenticated: true
- * parameters: []
  * security:
  *   - api_token: []
  *   - cookie_auth: []

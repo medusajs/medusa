@@ -583,6 +583,21 @@ function buildLocalCommands(cli, isLocalProject) {
         })
       ),
     })
+    .command({
+      command: `mcloud [args..]`,
+      desc: `Run mcloud CLI commands through Medusa CLI.`,
+      builder: (builder) =>
+        builder.parserConfiguration({
+          "unknown-options-as-args": true,
+          "halt-at-non-option": false,
+        }),
+      handler: handlerP(
+        getCommandHandler(`mcloud`, async (args, cmd) => {
+          cmd(args)
+          return new Promise((resolve) => {})
+        })
+      ),
+    })
 }
 
 function isLocalMedusaProject() {

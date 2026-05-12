@@ -1,6 +1,7 @@
 import {
   Context,
   Event,
+  ILockingModule,
   IndexTypes,
   QueryGraphFunction,
   RemoteQueryFunction,
@@ -15,6 +16,7 @@ import {
   InjectTransactionManager,
   isDefined,
   MedusaContext,
+  Modules,
   toMikroORMEntity,
   unflattenObjectKeys,
 } from "@medusajs/framework/utils"
@@ -32,7 +34,11 @@ type InjectedDependencies = {
   manager: EntityManager
   [ContainerRegistrationKeys.QUERY]: RemoteQueryFunction
   baseRepository: BaseRepository
+  [Modules.LOCKING]?: ILockingModule
 }
+
+const CREATE_PARTITIONS_LOCK_KEY = "index-module:create-partitions"
+const CREATE_PARTITIONS_LOCK_TIMEOUT = 300
 
 export class PostgresProvider implements IndexTypes.StorageProvider {
   #isReady_: Promise<boolean>
@@ -61,6 +67,7 @@ export class PostgresProvider implements IndexTypes.StorageProvider {
     },
     moduleOptions: IndexTypes.IndexModuleOptions
   ) {
+    this.container_ = container
     this.manager_ = container.manager
     this.query_ = container.query
     this.moduleOptions_ = moduleOptions
@@ -78,12 +85,19 @@ export class PostgresProvider implements IndexTypes.StorageProvider {
       initalizedNok = reject
     })
 
-    await createPartitions(
-      this.schemaObjectRepresentation_,
-      this.manager_.fork()
-    )
-      .then(initalizedOk)
-      .catch(initalizedNok)
+    const locking = this.container_[Modules.LOCKING]
+
+    const run = () =>
+      createPartitions(this.schemaObjectRepresentation_, this.manager_.fork())
+
+    // Serialize partition DDL across instances
+    const work = locking
+      ? locking.execute(CREATE_PARTITIONS_LOCK_KEY, run, {
+          timeout: CREATE_PARTITIONS_LOCK_TIMEOUT,
+        })
+      : run()
+
+    await work.then(initalizedOk).catch(initalizedNok)
   }
 
   protected static parseData<

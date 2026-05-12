@@ -36,7 +36,7 @@ export const generatedEditDates = {
   "app/learn/fundamentals/data-models/manage-relationships/page.mdx": "2025-04-25T14:16:41.124Z",
   "app/learn/fundamentals/modules/remote-query/page.mdx": "2024-07-21T21:20:24+02:00",
   "app/learn/fundamentals/modules/options/page.mdx": "2025-03-18T15:12:34.510Z",
-  "app/learn/fundamentals/data-models/relationships/page.mdx": "2025-07-16T09:51:22.141Z",
+  "app/learn/fundamentals/data-models/relationships/page.mdx": "2026-05-05T08:32:00.880Z",
   "app/learn/fundamentals/workflows/compensation-function/page.mdx": "2025-04-24T13:16:00.941Z",
   "app/learn/fundamentals/modules/service-factory/page.mdx": "2025-07-31T13:27:53.791Z",
   "app/learn/fundamentals/modules/module-links/page.mdx": "2024-09-30T08:43:53.126Z",
@@ -114,14 +114,14 @@ export const generatedEditDates = {
   "app/learn/configurations/ts-aliases/page.mdx": "2025-07-23T15:32:18.008Z",
   "app/learn/production/worker-mode/page.mdx": "2025-10-13T10:33:27.403Z",
   "app/learn/fundamentals/module-links/read-only/page.mdx": "2025-10-15T15:42:22.610Z",
-  "app/learn/fundamentals/data-models/properties/page.mdx": "2026-01-20T08:54:20.528Z",
+  "app/learn/fundamentals/data-models/properties/page.mdx": "2026-05-06T13:45:31.175Z",
   "app/learn/fundamentals/framework/page.mdx": "2025-06-26T14:26:22.120Z",
   "app/learn/fundamentals/api-routes/retrieve-custom-links/page.mdx": "2025-07-14T10:24:32.582Z",
   "app/learn/fundamentals/workflows/errors/page.mdx": "2025-04-25T14:26:25.000Z",
   "app/learn/fundamentals/api-routes/override/page.mdx": "2025-12-22T12:56:06.558Z",
   "app/learn/fundamentals/module-links/index/page.mdx": "2025-05-23T07:57:58.958Z",
   "app/learn/fundamentals/module-links/index-module/page.mdx": "2026-01-20T15:21:00.723Z",
-  "app/learn/introduction/build-with-llms-ai/page.mdx": "2026-04-29T13:49:54.501Z",
+  "app/learn/introduction/build-with-llms-ai/page.mdx": "2026-05-05T10:49:20.724Z",
   "app/learn/installation/docker/page.mdx": "2026-04-21T08:13:24.486Z",
   "app/learn/fundamentals/generated-types/page.mdx": "2026-01-06T06:38:15.719Z",
   "app/learn/introduction/from-v1-to-v2/page.mdx": "2025-10-29T11:55:11.531Z",
@@ -145,5 +145,6 @@ export const generatedEditDates = {
   "app/learn/introduction/build-with-llms-ai/agentic-skills/page.mdx": "2026-04-29T13:34:27.727Z",
   "app/learn/introduction/build-with-llms-ai/ai-friendly-docs/page.mdx": "2026-04-29T13:21:17.313Z",
   "app/learn/introduction/build-with-llms-ai/bloom/page.mdx": "2026-04-29T13:20:11.886Z",
-  "app/learn/introduction/build-with-llms-ai/mcp-server/page.mdx": "2026-04-29T13:20:57.178Z"
+  "app/learn/introduction/build-with-llms-ai/mcp-server/page.mdx": "2026-05-08T09:08:15.103Z",
+  "app/learn/introduction/build-with-llms-ai/cloud-cli/page.mdx": "2026-05-05T11:18:36.186Z"
 }
