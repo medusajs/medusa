@@ -72,10 +72,10 @@ export class ConfigManager {
   protected buildHttpConfig(
     projectConfig: Partial<ConfigModule["projectConfig"]>,
     options?: {
-      throwOnError?: boolean
+      throwOnValidationError?: boolean
     }
   ): ConfigModule["projectConfig"]["http"] {
-    const { throwOnError = true } = options ?? {}
+    const { throwOnValidationError = true } = options ?? {}
     const http = (projectConfig.http ??
       {}) as ConfigModule["projectConfig"]["http"]
 
@@ -91,7 +91,7 @@ export class ConfigManager {
     http.jwtPublicKey = http?.jwtPublicKey ?? process.env.JWT_PUBLIC_KEY
 
     if (
-      throwOnError &&
+      throwOnValidationError &&
       http?.jwtPublicKey &&
       ((http.jwtVerifyOptions && !http.jwtVerifyOptions.algorithms?.length) ||
         (http.jwtOptions && !http.jwtOptions.algorithm))
@@ -102,7 +102,7 @@ export class ConfigManager {
     }
 
     if (!http.jwtSecret) {
-      if (throwOnError) {
+      if (throwOnValidationError) {
         this.rejectErrors(
           `http.jwtSecret not found.${
             this.#isProduction ? "" : "Using default 'supersecret'."
@@ -117,7 +117,7 @@ export class ConfigManager {
       process.env.COOKIE_SECRET)!
 
     if (!http.cookieSecret) {
-      if (throwOnError) {
+      if (throwOnValidationError) {
         this.rejectErrors(
           `http.cookieSecret not found.${
             this.#isProduction ? "" : " Using default 'supersecret'."
@@ -139,7 +139,7 @@ export class ConfigManager {
   protected normalizeProjectConfig(
     config: Partial<ConfigModule>,
     options?: {
-      throwOnError?: boolean
+      throwOnValidationError?: boolean
     }
   ): ConfigModule["projectConfig"] {
     const projConfig = config?.projectConfig ?? {}
@@ -153,7 +153,7 @@ export class ConfigManager {
     }
 
     outputConfig.http = this.buildHttpConfig(projConfig, {
-      throwOnError: options?.throwOnError,
+      throwOnValidationError: options?.throwOnValidationError,
     })
 
     let workerMode = outputConfig?.workerMode!
@@ -182,16 +182,16 @@ export class ConfigManager {
   loadConfig({
     projectConfig = {},
     baseDir,
-    throwOnError = true,
+    throwOnValidationError = true,
   }: {
     projectConfig: Partial<ConfigModule>
     baseDir: string
-    throwOnError?: boolean
+    throwOnValidationError?: boolean
   }): ConfigModule {
     this.#baseDir = baseDir
 
     const normalizedProjectConfig = this.normalizeProjectConfig(projectConfig, {
-      throwOnError,
+      throwOnValidationError,
     })
 
     this.#config = {
