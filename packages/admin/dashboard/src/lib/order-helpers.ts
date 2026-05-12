@@ -35,7 +35,8 @@ export const getOrderPaymentStatus = (
     ],
     canceled: [t("orders.payment.status.canceled"), "red"],
     requires_action: [t("orders.payment.status.requiresAction"), "orange"],
-  }[status] as [string, "red" | "orange" | "green"]
+    chargeback: ["Chargeback", "red"],
+  }[status] as [string, "red" | "orange" | "green" | "blue"]
 
   return { label, color }
 }
