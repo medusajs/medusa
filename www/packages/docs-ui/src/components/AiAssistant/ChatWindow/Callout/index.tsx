@@ -9,8 +9,6 @@ import { useAnalytics } from "../../../../providers/Analytics"
 import { DocsTrackingEvents } from "../../../../constants"
 import clsx from "clsx"
 import { XMark } from "@medusajs/icons"
-import { Button } from "../../../Button"
-
 type AiAssistantChatWindowCalloutProps = {
   className?: string
 }
@@ -61,14 +59,13 @@ export const AiAssistantChatWindowCallout = ({
               })
             }}
           />
-          <Button
-            variant="transparent-clear"
-            className="!p-[6.5px] rounded-docs_sm absolute top-0 right-0"
+          <button
+            className="absolute top-docs_0.5 right-docs_0.75 cursor-pointer bg-transparent border-0 outline-none text-medusa-tag-blue-text hover:opacity-80 transition-opacity"
             onClick={() => setDismissed(true)}
             aria-label="Dismiss Bloom AI suggestion"
           >
-            <XMark className="text-medusa-fg-muted" height={12} width={12} />
-          </Button>
+            <XMark height={12} width={12} />
+          </button>
         </div>
       </div>
     </div>
