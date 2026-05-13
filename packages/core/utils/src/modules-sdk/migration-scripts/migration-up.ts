@@ -35,7 +35,7 @@ export function buildMigrationScript({ moduleName, pathToMigrations }) {
 
     const dbData = loadDatabaseConfig(moduleName, options)!
     const orm = await mikroOrmCreateConnection(
-      { ...dbData, snapshot: false, pool: { min: 0 } },
+      { ...dbData, snapshot: false },
       [],
       pathToMigrations
     )
