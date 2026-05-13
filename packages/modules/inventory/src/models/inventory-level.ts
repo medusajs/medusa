@@ -14,6 +14,12 @@ const InventoryLevel = model
     }),
     available_quantity: model.bigNumber().computed(),
   })
+  .checks([
+    {
+      name: "inventory_level_reserved_quantity_non_negative",
+      expression: (columns) => `${columns.reserved_quantity} >= 0`,
+    },
+  ])
   .indexes([
     {
       name: "IDX_inventory_level_inventory_item_id",
