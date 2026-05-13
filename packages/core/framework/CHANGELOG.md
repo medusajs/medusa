@@ -1,5 +1,21 @@
 # @medusajs/framework
 
+## 2.15.2
+
+### Patch Changes
+
+- [#15383](https://github.com/medusajs/medusa/pull/15383) [`2b21d15640ae459386b0acea4c83804c6f502b9d`](https://github.com/medusajs/medusa/commit/2b21d15640ae459386b0acea4c83804c6f502b9d) Thanks [@peterlgh7](https://github.com/peterlgh7)! - builds should fail if medusa-config throws
+
+- Updated dependencies [[`9990b69ab76f1a575c6a68875627d16764cc1564`](https://github.com/medusajs/medusa/commit/9990b69ab76f1a575c6a68875627d16764cc1564)]:
+  - @medusajs/utils@2.15.2
+  - @medusajs/cli@2.15.2
+  - @medusajs/modules-sdk@2.15.2
+  - @medusajs/orchestration@2.15.2
+  - @medusajs/workflows-sdk@2.15.2
+  - @medusajs/types@2.15.2
+  - @medusajs/deps@2.15.2
+  - @medusajs/telemetry@2.15.2
+
 ## 2.15.1
 
 ### Patch Changes

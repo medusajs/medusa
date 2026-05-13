@@ -1,5 +1,7 @@
 # @medusajs/admin-shared
 
+## 2.15.2
+
 ## 2.15.1
 
 ## 2.15.0
