@@ -22815,7 +22815,7 @@
 							"fileName": "product/service.ts",
 							"line": 88,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L88"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L88"
 						}
 					],
 					"signatures": [
@@ -22870,7 +22870,7 @@
 									"fileName": "product/service.ts",
 									"line": 88,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L88"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L88"
 								}
 							],
 							"parameters": [
@@ -22995,7 +22995,7 @@
 							"fileName": "product/service.ts",
 							"line": 148,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L148"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L148"
 						}
 					],
 					"signatures": [
@@ -23090,7 +23090,7 @@
 									"fileName": "product/service.ts",
 									"line": 148,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L148"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L148"
 								}
 							],
 							"parameters": [
@@ -23222,7 +23222,7 @@
 							"fileName": "product/service.ts",
 							"line": 211,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L211"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L211"
 						}
 					],
 					"signatures": [
@@ -23317,7 +23317,7 @@
 									"fileName": "product/service.ts",
 									"line": 211,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L211"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L211"
 								}
 							],
 							"parameters": [
@@ -23458,13 +23458,13 @@
 							"fileName": "product/service.ts",
 							"line": 235,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L235"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L235"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 252,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L252"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L252"
 						}
 					],
 					"signatures": [
@@ -23507,7 +23507,7 @@
 									"fileName": "product/service.ts",
 									"line": 235,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L235"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L235"
 								}
 							],
 							"parameters": [
@@ -23619,7 +23619,7 @@
 									"fileName": "product/service.ts",
 									"line": 252,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L252"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L252"
 								}
 							],
 							"parameters": [
@@ -23699,13 +23699,13 @@
 							"fileName": "product/service.ts",
 							"line": 275,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L275"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L275"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 292,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L292"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L292"
 						}
 					],
 					"signatures": [
@@ -23748,7 +23748,7 @@
 									"fileName": "product/service.ts",
 									"line": 275,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L275"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L275"
 								}
 							],
 							"parameters": [
@@ -23860,7 +23860,7 @@
 									"fileName": "product/service.ts",
 									"line": 292,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L292"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L292"
 								}
 							],
 							"parameters": [
@@ -23940,13 +23940,13 @@
 							"fileName": "product/service.ts",
 							"line": 313,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L313"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L313"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 337,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L337"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L337"
 						}
 					],
 					"signatures": [
@@ -23989,7 +23989,7 @@
 									"fileName": "product/service.ts",
 									"line": 313,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L313"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L313"
 								}
 							],
 							"parameters": [
@@ -24114,7 +24114,7 @@
 									"fileName": "product/service.ts",
 									"line": 337,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L337"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L337"
 								}
 							],
 							"parameters": [
@@ -24218,7 +24218,7 @@
 							"fileName": "product/service.ts",
 							"line": 353,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L353"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L353"
 						}
 					],
 					"signatures": [
@@ -24270,7 +24270,7 @@
 									"fileName": "product/service.ts",
 									"line": 353,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L353"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L353"
 								}
 							],
 							"parameters": [
@@ -24349,7 +24349,7 @@
 							"fileName": "product/service.ts",
 							"line": 376,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L376"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L376"
 						}
 					],
 					"signatures": [
@@ -24451,7 +24451,7 @@
 									"fileName": "product/service.ts",
 									"line": 376,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L376"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L376"
 								}
 							],
 							"typeParameters": [
@@ -24622,7 +24622,7 @@
 							"fileName": "product/service.ts",
 							"line": 398,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L398"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L398"
 						}
 					],
 					"signatures": [
@@ -24690,7 +24690,7 @@
 									"fileName": "product/service.ts",
 									"line": 398,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L398"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L398"
 								}
 							],
 							"typeParameters": [
@@ -24861,7 +24861,7 @@
 							"fileName": "product/service.ts",
 							"line": 439,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L439"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L439"
 						}
 					],
 					"signatures": [
@@ -24916,7 +24916,7 @@
 									"fileName": "product/service.ts",
 									"line": 439,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L439"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L439"
 								}
 							],
 							"parameters": [
@@ -25041,7 +25041,7 @@
 							"fileName": "product/service.ts",
 							"line": 499,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L499"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L499"
 						}
 					],
 					"signatures": [
@@ -25136,7 +25136,7 @@
 									"fileName": "product/service.ts",
 									"line": 499,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L499"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L499"
 								}
 							],
 							"parameters": [
@@ -25268,7 +25268,7 @@
 							"fileName": "product/service.ts",
 							"line": 562,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L562"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L562"
 						}
 					],
 					"signatures": [
@@ -25363,7 +25363,7 @@
 									"fileName": "product/service.ts",
 									"line": 562,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L562"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L562"
 								}
 							],
 							"parameters": [
@@ -25504,13 +25504,13 @@
 							"fileName": "product/service.ts",
 							"line": 582,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L582"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L582"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 600,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L600"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L600"
 						}
 					],
 					"signatures": [
@@ -25553,7 +25553,7 @@
 									"fileName": "product/service.ts",
 									"line": 582,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L582"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L582"
 								}
 							],
 							"parameters": [
@@ -25665,7 +25665,7 @@
 									"fileName": "product/service.ts",
 									"line": 600,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L600"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L600"
 								}
 							],
 							"parameters": [
@@ -25745,13 +25745,13 @@
 							"fileName": "product/service.ts",
 							"line": 625,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L625"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L625"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 645,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L645"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L645"
 						}
 					],
 					"signatures": [
@@ -25794,7 +25794,7 @@
 									"fileName": "product/service.ts",
 									"line": 625,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L625"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L625"
 								}
 							],
 							"parameters": [
@@ -25906,7 +25906,7 @@
 									"fileName": "product/service.ts",
 									"line": 645,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L645"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L645"
 								}
 							],
 							"parameters": [
@@ -25986,13 +25986,13 @@
 							"fileName": "product/service.ts",
 							"line": 666,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L666"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L666"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 690,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L690"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L690"
 						}
 					],
 					"signatures": [
@@ -26035,7 +26035,7 @@
 									"fileName": "product/service.ts",
 									"line": 666,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L666"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L666"
 								}
 							],
 							"parameters": [
@@ -26160,7 +26160,7 @@
 									"fileName": "product/service.ts",
 									"line": 690,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L690"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L690"
 								}
 							],
 							"parameters": [
@@ -26264,7 +26264,7 @@
 							"fileName": "product/service.ts",
 							"line": 709,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L709"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L709"
 						}
 					],
 					"signatures": [
@@ -26307,7 +26307,7 @@
 									"fileName": "product/service.ts",
 									"line": 709,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L709"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L709"
 								}
 							],
 							"parameters": [
@@ -26386,7 +26386,7 @@
 							"fileName": "product/service.ts",
 							"line": 735,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L735"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L735"
 						}
 					],
 					"signatures": [
@@ -26480,7 +26480,7 @@
 									"fileName": "product/service.ts",
 									"line": 735,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L735"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L735"
 								}
 							],
 							"typeParameters": [
@@ -26643,7 +26643,7 @@
 							"fileName": "product/service.ts",
 							"line": 760,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L760"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L760"
 						}
 					],
 					"signatures": [
@@ -26703,7 +26703,7 @@
 									"fileName": "product/service.ts",
 									"line": 760,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L760"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L760"
 								}
 							],
 							"typeParameters": [
@@ -26866,7 +26866,7 @@
 							"fileName": "product/service.ts",
 							"line": 780,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L780"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L780"
 						}
 					],
 					"signatures": [
@@ -26909,7 +26909,7 @@
 									"fileName": "product/service.ts",
 									"line": 780,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L780"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L780"
 								}
 							],
 							"parameters": [
@@ -27034,7 +27034,7 @@
 							"fileName": "product/service.ts",
 							"line": 819,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L819"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L819"
 						}
 					],
 					"signatures": [
@@ -27121,7 +27121,7 @@
 									"fileName": "product/service.ts",
 									"line": 819,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L819"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L819"
 								}
 							],
 							"parameters": [
@@ -27253,7 +27253,7 @@
 							"fileName": "product/service.ts",
 							"line": 860,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L860"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L860"
 						}
 					],
 					"signatures": [
@@ -27340,7 +27340,7 @@
 									"fileName": "product/service.ts",
 									"line": 860,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L860"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L860"
 								}
 							],
 							"parameters": [
@@ -27481,13 +27481,13 @@
 							"fileName": "product/service.ts",
 							"line": 880,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L880"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L880"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 898,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L898"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L898"
 						}
 					],
 					"signatures": [
@@ -27530,7 +27530,7 @@
 									"fileName": "product/service.ts",
 									"line": 880,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L880"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L880"
 								}
 							],
 							"parameters": [
@@ -27642,7 +27642,7 @@
 									"fileName": "product/service.ts",
 									"line": 898,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L898"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L898"
 								}
 							],
 							"parameters": [
@@ -27722,13 +27722,13 @@
 							"fileName": "product/service.ts",
 							"line": 923,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L923"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L923"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 943,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L943"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L943"
 						}
 					],
 					"signatures": [
@@ -27771,7 +27771,7 @@
 									"fileName": "product/service.ts",
 									"line": 923,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L923"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L923"
 								}
 							],
 							"parameters": [
@@ -27883,7 +27883,7 @@
 									"fileName": "product/service.ts",
 									"line": 943,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L943"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L943"
 								}
 							],
 							"parameters": [
@@ -27963,13 +27963,13 @@
 							"fileName": "product/service.ts",
 							"line": 964,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L964"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L964"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 988,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L988"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L988"
 						}
 					],
 					"signatures": [
@@ -28012,7 +28012,7 @@
 									"fileName": "product/service.ts",
 									"line": 964,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L964"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L964"
 								}
 							],
 							"parameters": [
@@ -28137,7 +28137,7 @@
 									"fileName": "product/service.ts",
 									"line": 988,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L988"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L988"
 								}
 							],
 							"parameters": [
@@ -28241,7 +28241,7 @@
 							"fileName": "product/service.ts",
 							"line": 1007,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1007"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1007"
 						}
 					],
 					"signatures": [
@@ -28284,7 +28284,7 @@
 									"fileName": "product/service.ts",
 									"line": 1007,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1007"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1007"
 								}
 							],
 							"parameters": [
@@ -28363,7 +28363,7 @@
 							"fileName": "product/service.ts",
 							"line": 1033,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1033"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1033"
 						}
 					],
 					"signatures": [
@@ -28457,7 +28457,7 @@
 									"fileName": "product/service.ts",
 									"line": 1033,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1033"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1033"
 								}
 							],
 							"typeParameters": [
@@ -28620,7 +28620,7 @@
 							"fileName": "product/service.ts",
 							"line": 1058,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1058"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1058"
 						}
 					],
 					"signatures": [
@@ -28680,7 +28680,7 @@
 									"fileName": "product/service.ts",
 									"line": 1058,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1058"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1058"
 								}
 							],
 							"typeParameters": [
@@ -28843,7 +28843,7 @@
 							"fileName": "product/service.ts",
 							"line": 1100,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1100"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1100"
 						}
 					],
 					"signatures": [
@@ -28898,7 +28898,7 @@
 									"fileName": "product/service.ts",
 									"line": 1100,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1100"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1100"
 								}
 							],
 							"parameters": [
@@ -29023,7 +29023,7 @@
 							"fileName": "product/service.ts",
 							"line": 1161,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1161"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1161"
 						}
 					],
 					"signatures": [
@@ -29118,7 +29118,7 @@
 									"fileName": "product/service.ts",
 									"line": 1161,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1161"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1161"
 								}
 							],
 							"parameters": [
@@ -29250,7 +29250,7 @@
 							"fileName": "product/service.ts",
 							"line": 1224,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1224"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1224"
 						}
 					],
 					"signatures": [
@@ -29345,7 +29345,7 @@
 									"fileName": "product/service.ts",
 									"line": 1224,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1224"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1224"
 								}
 							],
 							"parameters": [
@@ -29486,13 +29486,13 @@
 							"fileName": "product/service.ts",
 							"line": 1252,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1252"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1252"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 1272,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1272"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1272"
 						}
 					],
 					"signatures": [
@@ -29535,7 +29535,7 @@
 									"fileName": "product/service.ts",
 									"line": 1252,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1252"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1252"
 								}
 							],
 							"parameters": [
@@ -29647,7 +29647,7 @@
 									"fileName": "product/service.ts",
 									"line": 1272,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1272"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1272"
 								}
 							],
 							"parameters": [
@@ -29727,13 +29727,13 @@
 							"fileName": "product/service.ts",
 							"line": 1297,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1297"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1297"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 1315,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1315"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1315"
 						}
 					],
 					"signatures": [
@@ -29776,7 +29776,7 @@
 									"fileName": "product/service.ts",
 									"line": 1297,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1297"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1297"
 								}
 							],
 							"parameters": [
@@ -29888,7 +29888,7 @@
 									"fileName": "product/service.ts",
 									"line": 1315,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1315"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1315"
 								}
 							],
 							"parameters": [
@@ -29968,13 +29968,13 @@
 							"fileName": "product/service.ts",
 							"line": 1336,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1336"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1336"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 1360,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1360"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1360"
 						}
 					],
 					"signatures": [
@@ -30017,7 +30017,7 @@
 									"fileName": "product/service.ts",
 									"line": 1336,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1336"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1336"
 								}
 							],
 							"parameters": [
@@ -30142,7 +30142,7 @@
 									"fileName": "product/service.ts",
 									"line": 1360,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1360"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1360"
 								}
 							],
 							"parameters": [
@@ -30246,7 +30246,7 @@
 							"fileName": "product/service.ts",
 							"line": 1379,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1379"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1379"
 						}
 					],
 					"signatures": [
@@ -30289,7 +30289,7 @@
 									"fileName": "product/service.ts",
 									"line": 1379,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1379"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1379"
 								}
 							],
 							"parameters": [
@@ -30368,7 +30368,7 @@
 							"fileName": "product/service.ts",
 							"line": 1405,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1405"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1405"
 						}
 					],
 					"signatures": [
@@ -30462,7 +30462,7 @@
 									"fileName": "product/service.ts",
 									"line": 1405,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1405"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1405"
 								}
 							],
 							"typeParameters": [
@@ -30633,7 +30633,7 @@
 							"fileName": "product/service.ts",
 							"line": 1430,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1430"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1430"
 						}
 					],
 					"signatures": [
@@ -30693,7 +30693,7 @@
 									"fileName": "product/service.ts",
 									"line": 1430,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1430"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1430"
 								}
 							],
 							"typeParameters": [
@@ -30856,7 +30856,7 @@
 							"fileName": "product/service.ts",
 							"line": 1472,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1472"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1472"
 						}
 					],
 					"signatures": [
@@ -30911,7 +30911,7 @@
 									"fileName": "product/service.ts",
 									"line": 1472,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1472"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1472"
 								}
 							],
 							"parameters": [
@@ -31036,7 +31036,7 @@
 							"fileName": "product/service.ts",
 							"line": 1529,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1529"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1529"
 						}
 					],
 					"signatures": [
@@ -31131,7 +31131,7 @@
 									"fileName": "product/service.ts",
 									"line": 1529,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1529"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1529"
 								}
 							],
 							"parameters": [
@@ -31263,7 +31263,7 @@
 							"fileName": "product/service.ts",
 							"line": 1591,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1591"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1591"
 						}
 					],
 					"signatures": [
@@ -31358,7 +31358,7 @@
 									"fileName": "product/service.ts",
 									"line": 1591,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1591"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1591"
 								}
 							],
 							"parameters": [
@@ -31499,13 +31499,13 @@
 							"fileName": "product/service.ts",
 							"line": 1615,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1615"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1615"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 1633,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1633"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1633"
 						}
 					],
 					"signatures": [
@@ -31548,7 +31548,7 @@
 									"fileName": "product/service.ts",
 									"line": 1615,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1615"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1615"
 								}
 							],
 							"parameters": [
@@ -31660,7 +31660,7 @@
 									"fileName": "product/service.ts",
 									"line": 1633,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1633"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1633"
 								}
 							],
 							"parameters": [
@@ -31740,13 +31740,13 @@
 							"fileName": "product/service.ts",
 							"line": 1654,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1654"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1654"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 1678,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1678"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1678"
 						}
 					],
 					"signatures": [
@@ -31789,7 +31789,7 @@
 									"fileName": "product/service.ts",
 									"line": 1654,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1654"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1654"
 								}
 							],
 							"parameters": [
@@ -31914,7 +31914,7 @@
 									"fileName": "product/service.ts",
 									"line": 1678,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1678"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1678"
 								}
 							],
 							"parameters": [
@@ -32018,7 +32018,7 @@
 							"fileName": "product/service.ts",
 							"line": 1697,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1697"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1697"
 						}
 					],
 					"signatures": [
@@ -32061,7 +32061,7 @@
 									"fileName": "product/service.ts",
 									"line": 1697,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1697"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1697"
 								}
 							],
 							"parameters": [
@@ -32140,7 +32140,7 @@
 							"fileName": "product/service.ts",
 							"line": 1723,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1723"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1723"
 						}
 					],
 					"signatures": [
@@ -32234,7 +32234,7 @@
 									"fileName": "product/service.ts",
 									"line": 1723,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1723"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1723"
 								}
 							],
 							"typeParameters": [
@@ -32405,7 +32405,7 @@
 							"fileName": "product/service.ts",
 							"line": 1750,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1750"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1750"
 						}
 					],
 					"signatures": [
@@ -32465,7 +32465,7 @@
 									"fileName": "product/service.ts",
 									"line": 1750,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1750"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1750"
 								}
 							],
 							"typeParameters": [
@@ -32628,7 +32628,7 @@
 							"fileName": "product/service.ts",
 							"line": 1792,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1792"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1792"
 						}
 					],
 					"signatures": [
@@ -32683,7 +32683,7 @@
 									"fileName": "product/service.ts",
 									"line": 1792,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1792"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1792"
 								}
 							],
 							"parameters": [
@@ -32808,7 +32808,7 @@
 							"fileName": "product/service.ts",
 							"line": 1852,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1852"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1852"
 						}
 					],
 					"signatures": [
@@ -32903,7 +32903,7 @@
 									"fileName": "product/service.ts",
 									"line": 1852,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1852"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1852"
 								}
 							],
 							"parameters": [
@@ -33035,7 +33035,7 @@
 							"fileName": "product/service.ts",
 							"line": 1915,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1915"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1915"
 						}
 					],
 					"signatures": [
@@ -33130,7 +33130,7 @@
 									"fileName": "product/service.ts",
 									"line": 1915,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1915"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1915"
 								}
 							],
 							"parameters": [
@@ -33271,13 +33271,13 @@
 							"fileName": "product/service.ts",
 							"line": 1947,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1947"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1947"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 1969,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1969"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1969"
 						}
 					],
 					"signatures": [
@@ -33320,7 +33320,7 @@
 									"fileName": "product/service.ts",
 									"line": 1947,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1947"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1947"
 								}
 							],
 							"parameters": [
@@ -33432,7 +33432,7 @@
 									"fileName": "product/service.ts",
 									"line": 1969,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1969"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1969"
 								}
 							],
 							"parameters": [
@@ -33512,13 +33512,13 @@
 							"fileName": "product/service.ts",
 							"line": 1995,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1995"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1995"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 2013,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2013"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2013"
 						}
 					],
 					"signatures": [
@@ -33561,7 +33561,7 @@
 									"fileName": "product/service.ts",
 									"line": 1995,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L1995"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L1995"
 								}
 							],
 							"parameters": [
@@ -33673,7 +33673,7 @@
 									"fileName": "product/service.ts",
 									"line": 2013,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2013"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2013"
 								}
 							],
 							"parameters": [
@@ -33753,13 +33753,13 @@
 							"fileName": "product/service.ts",
 							"line": 2034,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2034"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2034"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 2058,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2058"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2058"
 						}
 					],
 					"signatures": [
@@ -33802,7 +33802,7 @@
 									"fileName": "product/service.ts",
 									"line": 2034,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2034"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2034"
 								}
 							],
 							"parameters": [
@@ -33927,7 +33927,7 @@
 									"fileName": "product/service.ts",
 									"line": 2058,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2058"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2058"
 								}
 							],
 							"parameters": [
@@ -34031,7 +34031,7 @@
 							"fileName": "product/service.ts",
 							"line": 2077,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2077"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2077"
 						}
 					],
 					"signatures": [
@@ -34074,7 +34074,7 @@
 									"fileName": "product/service.ts",
 									"line": 2077,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2077"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2077"
 								}
 							],
 							"parameters": [
@@ -34153,7 +34153,7 @@
 							"fileName": "product/service.ts",
 							"line": 2103,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2103"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2103"
 						}
 					],
 					"signatures": [
@@ -34247,7 +34247,7 @@
 									"fileName": "product/service.ts",
 									"line": 2103,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2103"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2103"
 								}
 							],
 							"typeParameters": [
@@ -34418,7 +34418,7 @@
 							"fileName": "product/service.ts",
 							"line": 2128,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2128"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2128"
 						}
 					],
 					"signatures": [
@@ -34478,7 +34478,7 @@
 									"fileName": "product/service.ts",
 									"line": 2128,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2128"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2128"
 								}
 							],
 							"typeParameters": [
@@ -34641,7 +34641,7 @@
 							"fileName": "product/service.ts",
 							"line": 2149,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2149"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2149"
 						}
 					],
 					"signatures": [
@@ -34684,7 +34684,7 @@
 									"fileName": "product/service.ts",
 									"line": 2149,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2149"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2149"
 								}
 							],
 							"parameters": [
@@ -34724,7 +34724,7 @@
 																"fileName": "product/service.ts",
 																"line": 2150,
 																"character": 12,
-																"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2150"
+																"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2150"
 															}
 														],
 														"type": {
@@ -34743,7 +34743,7 @@
 																"fileName": "product/service.ts",
 																"line": 2150,
 																"character": 30,
-																"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2150"
+																"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2150"
 															}
 														],
 														"type": {
@@ -34766,7 +34766,7 @@
 														"fileName": "product/service.ts",
 														"line": 2150,
 														"character": 10,
-														"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2150"
+														"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2150"
 													}
 												]
 											}
@@ -34826,7 +34826,7 @@
 																"fileName": "product/service.ts",
 																"line": 2152,
 																"character": 15,
-																"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2152"
+																"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2152"
 															}
 														],
 														"type": {
@@ -34848,7 +34848,7 @@
 														"fileName": "product/service.ts",
 														"line": 2152,
 														"character": 13,
-														"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2152"
+														"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2152"
 													}
 												]
 											}
@@ -34872,7 +34872,7 @@
 							"fileName": "product/service.ts",
 							"line": 2161,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2161"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2161"
 						}
 					],
 					"signatures": [
@@ -34906,7 +34906,7 @@
 									"fileName": "product/service.ts",
 									"line": 2161,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2161"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2161"
 								}
 							],
 							"parameters": [
@@ -34946,7 +34946,7 @@
 																"fileName": "product/service.ts",
 																"line": 2162,
 																"character": 12,
-																"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2162"
+																"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2162"
 															}
 														],
 														"type": {
@@ -34965,7 +34965,7 @@
 																"fileName": "product/service.ts",
 																"line": 2162,
 																"character": 30,
-																"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2162"
+																"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2162"
 															}
 														],
 														"type": {
@@ -34988,7 +34988,7 @@
 														"fileName": "product/service.ts",
 														"line": 2162,
 														"character": 10,
-														"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2162"
+														"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2162"
 													}
 												]
 											}
@@ -35048,7 +35048,7 @@
 							"fileName": "product/service.ts",
 							"line": 2200,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2200"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2200"
 						}
 					],
 					"signatures": [
@@ -35103,7 +35103,7 @@
 									"fileName": "product/service.ts",
 									"line": 2200,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2200"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2200"
 								}
 							],
 							"parameters": [
@@ -35228,7 +35228,7 @@
 							"fileName": "product/service.ts",
 							"line": 2263,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2263"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2263"
 						}
 					],
 					"signatures": [
@@ -35323,7 +35323,7 @@
 									"fileName": "product/service.ts",
 									"line": 2263,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2263"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2263"
 								}
 							],
 							"parameters": [
@@ -35455,7 +35455,7 @@
 							"fileName": "product/service.ts",
 							"line": 2326,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2326"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2326"
 						}
 					],
 					"signatures": [
@@ -35550,7 +35550,7 @@
 									"fileName": "product/service.ts",
 									"line": 2326,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2326"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2326"
 								}
 							],
 							"parameters": [
@@ -35691,13 +35691,13 @@
 							"fileName": "product/service.ts",
 							"line": 2351,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2351"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2351"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 2370,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2370"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2370"
 						}
 					],
 					"signatures": [
@@ -35740,7 +35740,7 @@
 									"fileName": "product/service.ts",
 									"line": 2351,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2351"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2351"
 								}
 							],
 							"parameters": [
@@ -35852,7 +35852,7 @@
 									"fileName": "product/service.ts",
 									"line": 2370,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2370"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2370"
 								}
 							],
 							"parameters": [
@@ -35932,13 +35932,13 @@
 							"fileName": "product/service.ts",
 							"line": 2394,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2394"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2394"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 2413,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2413"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2413"
 						}
 					],
 					"signatures": [
@@ -35981,7 +35981,7 @@
 									"fileName": "product/service.ts",
 									"line": 2394,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2394"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2394"
 								}
 							],
 							"parameters": [
@@ -36093,7 +36093,7 @@
 									"fileName": "product/service.ts",
 									"line": 2413,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2413"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2413"
 								}
 							],
 							"parameters": [
@@ -36173,13 +36173,13 @@
 							"fileName": "product/service.ts",
 							"line": 2432,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2432"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2432"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 2457,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2457"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2457"
 						}
 					],
 					"signatures": [
@@ -36222,7 +36222,7 @@
 									"fileName": "product/service.ts",
 									"line": 2432,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2432"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2432"
 								}
 							],
 							"parameters": [
@@ -36347,7 +36347,7 @@
 									"fileName": "product/service.ts",
 									"line": 2457,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2457"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2457"
 								}
 							],
 							"parameters": [
@@ -36451,7 +36451,7 @@
 							"fileName": "product/service.ts",
 							"line": 2477,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2477"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2477"
 						}
 					],
 					"signatures": [
@@ -36494,7 +36494,7 @@
 									"fileName": "product/service.ts",
 									"line": 2477,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2477"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2477"
 								}
 							],
 							"parameters": [
@@ -36573,7 +36573,7 @@
 							"fileName": "product/service.ts",
 							"line": 2503,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2503"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2503"
 						}
 					],
 					"signatures": [
@@ -36667,7 +36667,7 @@
 									"fileName": "product/service.ts",
 									"line": 2503,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2503"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2503"
 								}
 							],
 							"typeParameters": [
@@ -36830,7 +36830,7 @@
 							"fileName": "product/service.ts",
 							"line": 2528,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2528"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2528"
 						}
 					],
 					"signatures": [
@@ -36890,7 +36890,7 @@
 									"fileName": "product/service.ts",
 									"line": 2528,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2528"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2528"
 								}
 							],
 							"typeParameters": [
@@ -37053,7 +37053,7 @@
 							"fileName": "product/service.ts",
 							"line": 2570,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2570"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2570"
 						}
 					],
 					"signatures": [
@@ -37108,7 +37108,7 @@
 									"fileName": "product/service.ts",
 									"line": 2570,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2570"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2570"
 								}
 							],
 							"parameters": [
@@ -37233,7 +37233,7 @@
 							"fileName": "product/service.ts",
 							"line": 2630,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2630"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2630"
 						}
 					],
 					"signatures": [
@@ -37328,7 +37328,7 @@
 									"fileName": "product/service.ts",
 									"line": 2630,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2630"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2630"
 								}
 							],
 							"parameters": [
@@ -37460,7 +37460,7 @@
 							"fileName": "product/service.ts",
 							"line": 2693,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2693"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2693"
 						}
 					],
 					"signatures": [
@@ -37555,7 +37555,7 @@
 									"fileName": "product/service.ts",
 									"line": 2693,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2693"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2693"
 								}
 							],
 							"parameters": [
@@ -37696,13 +37696,13 @@
 							"fileName": "product/service.ts",
 							"line": 2718,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2718"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2718"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 2737,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2737"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2737"
 						}
 					],
 					"signatures": [
@@ -37745,7 +37745,7 @@
 									"fileName": "product/service.ts",
 									"line": 2718,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2718"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2718"
 								}
 							],
 							"parameters": [
@@ -37857,7 +37857,7 @@
 									"fileName": "product/service.ts",
 									"line": 2737,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2737"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2737"
 								}
 							],
 							"parameters": [
@@ -37937,13 +37937,13 @@
 							"fileName": "product/service.ts",
 							"line": 2761,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2761"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2761"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 2780,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2780"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2780"
 						}
 					],
 					"signatures": [
@@ -37986,7 +37986,7 @@
 									"fileName": "product/service.ts",
 									"line": 2761,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2761"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2761"
 								}
 							],
 							"parameters": [
@@ -38098,7 +38098,7 @@
 									"fileName": "product/service.ts",
 									"line": 2780,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2780"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2780"
 								}
 							],
 							"parameters": [
@@ -38178,13 +38178,13 @@
 							"fileName": "product/service.ts",
 							"line": 2799,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2799"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2799"
 						},
 						{
 							"fileName": "product/service.ts",
 							"line": 2824,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2824"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2824"
 						}
 					],
 					"signatures": [
@@ -38227,7 +38227,7 @@
 									"fileName": "product/service.ts",
 									"line": 2799,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2799"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2799"
 								}
 							],
 							"parameters": [
@@ -38352,7 +38352,7 @@
 									"fileName": "product/service.ts",
 									"line": 2824,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2824"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2824"
 								}
 							],
 							"parameters": [
@@ -38456,7 +38456,7 @@
 							"fileName": "product/service.ts",
 							"line": 2844,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2844"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2844"
 						}
 					],
 					"signatures": [
@@ -38499,7 +38499,7 @@
 									"fileName": "product/service.ts",
 									"line": 2844,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2844"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2844"
 								}
 							],
 							"parameters": [
@@ -38578,7 +38578,7 @@
 							"fileName": "product/service.ts",
 							"line": 2870,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2870"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2870"
 						}
 					],
 					"signatures": [
@@ -38672,7 +38672,7 @@
 									"fileName": "product/service.ts",
 									"line": 2870,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2870"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2870"
 								}
 							],
 							"typeParameters": [
@@ -38835,7 +38835,7 @@
 							"fileName": "product/service.ts",
 							"line": 2895,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2895"
+							"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2895"
 						}
 					],
 					"signatures": [
@@ -38895,7 +38895,7 @@
 									"fileName": "product/service.ts",
 									"line": 2895,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L2895"
+									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L2895"
 								}
 							],
 							"typeParameters": [
@@ -39133,7 +39133,7 @@
 					"fileName": "product/service.ts",
 					"line": 51,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/types/src/product/service.ts#L51"
+					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/types/src/product/service.ts#L51"
 				}
 			],
 			"extendedTypes": [
