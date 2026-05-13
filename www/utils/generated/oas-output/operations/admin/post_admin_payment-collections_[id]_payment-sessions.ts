@@ -3,7 +3,8 @@
  * operationId: PostPaymentCollectionsIdPaymentSessions
  * summary: Initialize Payment Session in Payment Collection
  * x-sidebar-summary: Initialize Payment Session
- * description: Initialize a Payment Session in a payment collection. This is useful for orders placed outside the checkout flow, such as draft orders, or when a payment session needs to be re-initialized for an existing payment collection.
+ * description: Initialize a Payment Session in a payment collection. This is useful for orders placed outside the checkout flow, such as draft orders, or when a payment session needs to be
+ *   re-initialized for an existing payment collection.
  * x-authenticated: true
  * parameters:
  *   - name: id
