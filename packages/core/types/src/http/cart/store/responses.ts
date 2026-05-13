@@ -7,18 +7,6 @@ export interface StoreCartResponse {
    * The cart's details.
    */
   cart: StoreCart
-  skipped_promo_codes?: {
-    /**
-     * The promotion code that was not applied.
-     */
-    code: string
-    /**
-     * The reason the promotion code was skipped.
-     * - `promotion_limit_exceeded`: the promotion's usage limit has been reached.
-     * - `campaign_budget_exceeded`: the promotion's campaign budget has been exhausted.
-     */
-    reason: "promotion_limit_exceeded" | "campaign_budget_exceeded"
-  }[]
 }
 
 export type StoreCompleteCartResponse =

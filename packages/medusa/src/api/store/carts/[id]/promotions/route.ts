@@ -11,7 +11,7 @@ export const POST = async (
   const we = req.scope.resolve(Modules.WORKFLOW_ENGINE)
   const payload = req.validatedBody
 
-  const { result } = await we.run(updateCartPromotionsWorkflowId, {
+  await we.run(updateCartPromotionsWorkflowId, {
     input: {
       promo_codes: payload.promo_codes,
       cart_id: req.params.id,
@@ -29,7 +29,7 @@ export const POST = async (
     req.queryConfig.fields
   )
 
-  res.status(200).json({ cart, skipped_promo_codes: result?.skipped_promo_codes })
+  res.status(200).json({ cart })
 }
 
 export const DELETE = async (

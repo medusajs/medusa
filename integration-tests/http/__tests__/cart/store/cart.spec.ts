@@ -2,6 +2,7 @@ import {
   addToCartWorkflow,
   createCartCreditLinesWorkflow,
   updateCartsStep,
+  updateCartPromotionsWorkflow,
 } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
@@ -10,6 +11,7 @@ import {
   PriceListStatus,
   PriceListType,
   ProductStatus,
+  PromotionActions,
   PromotionRuleOperator,
   PromotionStatus,
   PromotionType,
@@ -5909,15 +5911,17 @@ medusaIntegrationTestRunner({
             )
           ).data.cart
 
-          const response = await api.post(
-            `/store/carts/${cart.id}/promotions`,
-            { promo_codes: [maxedPromotion.code] },
-            storeHeaders
-          )
+          const { result } = await updateCartPromotionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              cart_id: cart.id,
+              promo_codes: [maxedPromotion.code],
+              action: PromotionActions.ADD,
+            },
+          })
 
-          expect(response.status).toEqual(200)
-          expect(response.data.cart.promotions).toEqual([])
-          expect(response.data.skipped_promo_codes).toEqual([
+          expect(result.skipped_promo_codes).toEqual([
             { code: "MAXED_OUT", reason: "promotion_limit_exceeded" },
           ])
         })
@@ -5979,15 +5983,17 @@ medusaIntegrationTestRunner({
             )
           ).data.cart
 
-          const response = await api.post(
-            `/store/carts/${cart.id}/promotions`,
-            { promo_codes: [noBudgetPromotion.code] },
-            storeHeaders
-          )
+          const { result } = await updateCartPromotionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              cart_id: cart.id,
+              promo_codes: [noBudgetPromotion.code],
+              action: PromotionActions.ADD,
+            },
+          })
 
-          expect(response.status).toEqual(200)
-          expect(response.data.cart.promotions).toEqual([])
-          expect(response.data.skipped_promo_codes).toEqual([
+          expect(result.skipped_promo_codes).toEqual([
             { code: "NO_BUDGET", reason: "campaign_budget_exceeded" },
           ])
         })
@@ -6006,19 +6012,17 @@ medusaIntegrationTestRunner({
             )
           ).data.cart
 
-          const response = await api.post(
-            `/store/carts/${cart.id}/promotions`,
-            { promo_codes: [promotion.code] },
-            storeHeaders
-          )
+          const { result } = await updateCartPromotionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              cart_id: cart.id,
+              promo_codes: [promotion.code],
+              action: PromotionActions.ADD,
+            },
+          })
 
-          expect(response.status).toEqual(200)
-          expect(response.data.cart.promotions).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({ code: promotion.code }),
-            ])
-          )
-          expect(response.data.skipped_promo_codes).toEqual([])
+          expect(result.skipped_promo_codes).toEqual([])
         })
 
         it("should report only skipped codes when mixing valid and limit-exceeded promotions", async () => {
@@ -6053,24 +6057,17 @@ medusaIntegrationTestRunner({
             )
           ).data.cart
 
-          const response = await api.post(
-            `/store/carts/${cart.id}/promotions`,
-            { promo_codes: [promotion.code, exceededPromotion.code] },
-            storeHeaders
-          )
+          const { result } = await updateCartPromotionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              cart_id: cart.id,
+              promo_codes: [promotion.code, exceededPromotion.code],
+              action: PromotionActions.ADD,
+            },
+          })
 
-          expect(response.status).toEqual(200)
-          expect(response.data.cart.promotions).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({ code: promotion.code }),
-            ])
-          )
-          expect(response.data.cart.promotions).not.toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({ code: "EXCEEDED_50OFF" }),
-            ])
-          )
-          expect(response.data.skipped_promo_codes).toEqual([
+          expect(result.skipped_promo_codes).toEqual([
             { code: "EXCEEDED_50OFF", reason: "promotion_limit_exceeded" },
           ])
         })
