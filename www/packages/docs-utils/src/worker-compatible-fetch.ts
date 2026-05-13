@@ -3,7 +3,7 @@ type Options<T> = {
   responseTransformer: (response: Response) => Promise<T>
   fallbackAction: () => Promise<T>
   /**
-   * When provided, overrides the default URL-based check.
+   * When enabled, overrides the default URL-based check.
    * Pass `process.env.CF_PAGES === "1"` for routes that always receive
    * an HTTP URL but should only fetch remotely on Cloudflare.
    */

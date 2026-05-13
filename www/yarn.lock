@@ -3378,15 +3378,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/icons@npm:2.15.0":
-  version: 2.15.0
-  resolution: "@medusajs/icons@npm:2.15.0"
-  peerDependencies:
-    react: ^19.2.5
-  checksum: 31b0e60df6a9a3579365ce20fbab953fbb1ab421188a79feee94e34dd9065e83c570621f4a6e33c3a5739fd822496f9c06cb6d9cfc470e6f0f9f6a8f8e596969
-  languageName: node
-  linkType: hard
-
 "@medusajs/icons@npm:2.15.1":
   version: 2.15.1
   resolution: "@medusajs/icons@npm:2.15.1"
@@ -3405,36 +3396,6 @@ __metadata:
   peerDependencies:
     tailwindcss: ^3.4.3
   checksum: 5e3ca365b7c84c141e49f702e631e0fd196935d3d0cf066740629639125b91c2fc566099f8fc73418fbf9b80ed897fd62ee806ea5e2054b4aeab3e3588d2751d
-  languageName: node
-  linkType: hard
-
-"@medusajs/ui@npm:4.1.10":
-  version: 4.1.10
-  resolution: "@medusajs/ui@npm:4.1.10"
-  dependencies:
-    "@dnd-kit/core": ^6.1.0
-    "@dnd-kit/sortable": ^8.0.0
-    "@dnd-kit/utilities": ^3.2.2
-    "@medusajs/icons": 2.15.0
-    "@radix-ui/react-dialog": 1.1.4
-    "@radix-ui/react-dismissable-layer": 1.1.4
-    "@tanstack/react-table": 8.20.5
-    clsx: ^1.2.1
-    copy-to-clipboard: ^3.3.3
-    cva: 1.0.0-beta.1
-    lodash.isequal: ^4.5.0
-    prism-react-renderer: ^2.0.6
-    prismjs: ^1.30.0
-    radix-ui: 1.1.2
-    react-aria: ^3.33.1
-    react-currency-input-field: ^3.6.11
-    react-stately: ^3.31.1
-    sonner: ^1.5.0
-    tailwind-merge: ^2.2.1
-  peerDependencies:
-    react: ^18.3.1
-    react-dom: ^18.3.1
-  checksum: aa92deee61f8791dee1146260af94cd6f89bb19589f0868e198bdb10d98b95559468bf20e1221697d15ee0bc4d8b159856fc1a9e863a7bf7d9645ec92a031904
   languageName: node
   linkType: hard
 
@@ -8540,8 +8501,8 @@ __metadata:
     "@aws-sdk/client-s3": ^3
     "@mdx-js/loader": ^3.1.0
     "@mdx-js/react": ^3.1.0
-    "@medusajs/icons": 2.15.0
-    "@medusajs/ui": 4.1.10
+    "@medusajs/icons": 2.15.1
+    "@medusajs/ui": 4.1.11
     "@next/bundle-analyzer": 15.5.18
     "@next/mdx": 15.5.18
     "@opennextjs/cloudflare": 1.19.9

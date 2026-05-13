@@ -19,7 +19,7 @@ async function copyDir(src: string, dest: string): Promise<void> {
       await copyDir(srcPath, destPath)
     } else if (
       entry.isFile() &&
-      entry.name === "page.mdx" || entry.name === "_md-content.mdx"
+      (entry.name === "page.mdx" || entry.name === "_md-content.mdx")
     ) {
       await fs.copyFile(srcPath, destPath)
     }
