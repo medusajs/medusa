@@ -317,7 +317,7 @@ const config = {
           remarkPlugins: [
             [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
           ],
-          showLastUpdateTime: true,
+          showLastUpdateTime: false,
           // breadcrumbs: false,
           async sidebarItemsGenerator({
             defaultSidebarItemsGenerator,

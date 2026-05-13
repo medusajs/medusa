@@ -5,9 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "dev:monorepo": "yarn dev -p 3000",
+    "dev:wrangler": "wrangler pages dev .vercel/output/static --port 3000",
     "build": "next build",
+    "build:cf": "node scripts/pregenerate-specs.mjs && next build && npx @cloudflare/next-on-pages",
     "build:dev": "NODE_ENV=test next build",
-    "build:prod": "NEXT_PUBLIC_ENV=production next build",
+    "build:prod": "node scripts/pregenerate-specs.mjs && NEXT_PUBLIC_ENV=production next build && npx @cloudflare/next-on-pages",
     "start": "next start",
     "start:monorepo": "yarn start -p 3000",
     "lint": "next lint --fix"
@@ -53,9 +55,12 @@
     "yaml": "^2.3.1"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.12",
     "@next/bundle-analyzer": "^14.1.3",
     "@types/jsdom": "^21.1.1",
-    "types": "*"
+    "types": "*",
+    "vercel": "34.4.0",
+    "wrangler": "4.9.0"
   },
   "engines": {
     "node": ">=18.17.0"

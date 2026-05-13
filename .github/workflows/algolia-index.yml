@@ -1,0 +1,25 @@
+name: Index API Reference to Algolia
+
+on:
+  workflow_dispatch:
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn install --immutable
+        working-directory: www
+      - name: Run Algolia indexing
+        run: node scripts/index-algolia.mjs
+        working-directory: www/apps/api-reference
+        env:
+          NEXT_PUBLIC_ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_WRITE_API_KEY: ${{ secrets.ALGOLIA_WRITE_API_KEY }}
+          NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME: ${{ secrets.API_ALGOLIA_INDEX_NAME }}
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.API_REFERENCE_URL }}
+          NEXT_PUBLIC_BASE_PATH: /v1/api
