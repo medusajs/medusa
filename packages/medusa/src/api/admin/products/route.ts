@@ -14,6 +14,15 @@ import {
 import IndexEngineFeatureFlag from "../../../feature-flags/index-engine"
 import { remapKeysForProduct, remapProductResponse } from "./helpers"
 
+/**
+ * Retrieve a list of products for admin access. Supports both regular query 
+ * and index engine for enhanced filtering and search capabilities.
+ * 
+ * @param req - The authenticated request containing list parameters
+ * @param res - The response object
+ * 
+ * @see {@link https://docs.medusajs.com/api/admin#products_getproducts | API Reference}
+ */
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminProductListParams>,
   res: MedusaResponse<HttpTypes.AdminProductListResponse>
@@ -106,6 +115,14 @@ async function getProductsWithIndexEngine(
   })
 }
 
+/**
+ * Create a new product with the provided data.
+ * 
+ * @param req - The authenticated request containing product creation data and additional data
+ * @param res - The response object containing the created product
+ * 
+ * @see {@link https://docs.medusajs.com/api/admin#products_postproducts | API Reference}
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     HttpTypes.AdminCreateProduct & AdditionalData,

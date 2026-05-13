@@ -10,6 +10,15 @@ import IndexEngineFeatureFlag from "../../../feature-flags/index-engine"
 import { wrapVariantsWithInventoryQuantityForSalesChannel } from "../../utils/middlewares"
 import { RequestWithContext, wrapProductsWithTaxPrices } from "./helpers"
 
+/**
+ * Retrieve a list of products for store access. Supports both regular query 
+ * and index engine for enhanced filtering and search capabilities.
+ * 
+ * @param req - The store request containing list parameters and context
+ * @param res - The response object containing products with tax prices and inventory quantities
+ * 
+ * @see {@link https://docs.medusajs.com/api/store#products_getproducts | API Reference}
+ */
 export const GET = async (
   req: RequestWithContext<HttpTypes.StoreProductListParams>,
   res: MedusaResponse<HttpTypes.StoreProductListResponse>

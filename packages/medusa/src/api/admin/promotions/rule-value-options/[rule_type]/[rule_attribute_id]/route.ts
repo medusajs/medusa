@@ -28,13 +28,18 @@ import IndexEngineFeatureFlag from "../../../../../../feature-flags/index-engine
 */
 const ENTITIES_SUPPORTED_BY_INDEX_ENGINE = ["product"]
 
-/*
-  This endpoint returns all the potential values for rules (promotion rules, target rules and buy rules)
-  given an attribute of a rule. The response for different rule_attributes are returned uniformly
-  as an array of labels and values.
-  Eg. If the rule_attribute requested is "currency_code" for "rules" rule type, we return currencies
-  from the currency module.
-*/
+/**
+ * Retrieve available rule value options for promotion rules based on rule type and attribute.
+ * Returns potential values for rules (promotion rules, target rules and buy rules) given 
+ * an attribute of a rule. Supports both index engine and graph query methods.
+ * 
+ * @param req - The authenticated request containing rule type and attribute parameters
+ * @param res - The response object containing the rule value options
+ * 
+ * @example
+ * If the rule_attribute requested is "currency_code" for "rules" rule type, 
+ * returns currencies from the currency module.
+ */
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminGetPromotionsRuleValueParams>,
   res: MedusaResponse<HttpTypes.AdminRuleValueOptionsListResponse>
