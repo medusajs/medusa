@@ -199,8 +199,8 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
    */
   protected async migrateSnapshotFile(snapshotPath: string): Promise<void> {
     // If the expected snapshot already exists, no rename needed — running the
-    // rename would incorrectly overwrite it with a stale full-DB snapshot
-    // (e.g. .snapshot-<databaseName>.json) left by db:migrate.
+    // rename would incorrectly overwrite it with an incorrect snapshot file,
+    // leading to side effects when generating migrations
     const alreadyExists = await access(snapshotPath)
       .then(() => true)
       .catch(() => false)
