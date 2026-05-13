@@ -8,6 +8,7 @@ import { H2, Hr } from "docs-ui"
 export default async function PricingPage() {
   if (
     process.env.NEXT_PUBLIC_ENV === "CI" ||
+    process.env.NEXT_PUBLIC_ENV === "preview" ||
     process.env.NEXT_PUBLIC_VERCEL_ENV === "preview"
   ) {
     return (

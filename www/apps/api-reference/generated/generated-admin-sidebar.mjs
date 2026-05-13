@@ -623,6 +623,24 @@ const generatedgeneratedAdminSidebarSidebar = {
     },
     {
       "type": "category",
+      "title": "Property Labels",
+      "children": [
+        {
+          "type": "link",
+          "path": "property-labels_propertylabel_schema",
+          "title": "PropertyLabel Object",
+          "loaded": true,
+          "badge": {
+            "variant": "neutral",
+            "text": "Schema"
+          }
+        }
+      ],
+      "loaded": false,
+      "showLoadingIfEmpty": true
+    },
+    {
+      "type": "category",
       "title": "Refund Reasons",
       "children": [
         {
