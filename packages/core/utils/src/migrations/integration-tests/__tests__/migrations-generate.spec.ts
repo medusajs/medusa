@@ -3,11 +3,22 @@ import { join } from "path"
 import { setTimeout } from "timers/promises"
 
 import { FileSystem } from "../../../common"
-import { DmlEntity, mikroORMEntityBuilder, model, toMikroOrmEntities } from "../../../dml"
+import {
+  DmlEntity,
+  mikroORMEntityBuilder,
+  model,
+  toMikroOrmEntities,
+} from "../../../dml"
 import { defineMikroOrmCliConfig } from "../../../modules-sdk"
 import { BigNumber } from "../../../totals/big-number"
 import { mikroOrmCreateConnection } from "../../../dal"
 import { Migrations } from "../../index"
+
+class TestMigrations extends Migrations {
+  async callMigrateSnapshotFile(snapshotPath: string) {
+    return this.migrateSnapshotFile(snapshotPath)
+  }
+}
 
 jest.setTimeout(30000)
 
@@ -139,7 +150,7 @@ describe("Generate migrations", () => {
   })
 
   test("generate new file when entities are added", async () => {
-    function run(entities: DmlEntity<any, any>[]) {
+    async function run(entities: DmlEntity<any, any>[]) {
       const config = defineMikroOrmCliConfig(moduleName, {
         entities,
         dbName: dbName,
@@ -204,13 +215,14 @@ describe("Generate migrations", () => {
     expect(await fs.exists(`.snapshot-${dbName}.json`)).toBeFalsy()
   })
 
-  test("rename existing snapshot file to the new filename", async () => {
-    await fs.createJson(".snapshot-foo.json", {
+  test("rename existing snapshot file to the new filename (plugins)", async () => {
+    // Legacy snapshot name: no medusa- prefix, matching the module name
+    await fs.createJson(".snapshot-my-test-generate.json", {
       tables: [],
       namespaces: [],
     })
 
-    function run(entities: DmlEntity<any, any>[]) {
+    async function run(entities: DmlEntity<any, any>[]) {
       const config = defineMikroOrmCliConfig(moduleName, {
         entities,
         dbName: dbName,
@@ -232,7 +244,7 @@ describe("Generate migrations", () => {
 
     const run1 = await run([User])
     expect(await fs.exists(run1.fileName))
-    expect(await fs.exists(".snapshot-foo.json")).toBeFalsy()
+    expect(await fs.exists(".snapshot-my-test-generate.json")).toBeFalsy()
     expect(
       await fs.exists(".snapshot-medusa-my-test-generate.json")
     ).toBeTruthy()
@@ -248,5 +260,80 @@ describe("Generate migrations", () => {
     expect(await fs.exists(run2.fileName))
 
     expect(run1.fileName).not.toEqual(run2.fileName)
+  })
+})
+
+describe("migrateSnapshotFile", () => {
+  const snapshotFs = new FileSystem(join(__dirname, "./migrations-snapshot"))
+
+  beforeEach(async () => {
+    await snapshotFs.cleanup()
+  })
+
+  afterEach(async () => {
+    await snapshotFs.cleanup()
+  })
+
+  test("preserves correct module snapshot when a DB-name snapshot also exists", async () => {
+    const moduleSnapshotName = ".snapshot-my-module.json"
+    const dbSnapshotName = ".snapshot-medusa-my-module.json"
+
+    await snapshotFs.createJson(moduleSnapshotName, {
+      tables: ["user"],
+      namespaces: [],
+    })
+    await snapshotFs.createJson(dbSnapshotName, {
+      tables: ["user", "order", "cart"],
+      namespaces: [],
+    })
+
+    const migrations = new TestMigrations({})
+    await migrations.callMigrateSnapshotFile(
+      join(snapshotFs.basePath, moduleSnapshotName)
+    )
+
+    // Module snapshot must be untouched
+    const content = await snapshotFs.contentsJson(moduleSnapshotName)
+    expect(content.tables).toEqual(["user"])
+
+    // DB-name snapshot must still exist (not deleted or renamed)
+    expect(await snapshotFs.exists(dbSnapshotName)).toBeTruthy()
+  })
+
+  test("does not rename a DB-name snapshot to the module snapshot name", async () => {
+    const moduleSnapshotName = ".snapshot-my-module.json"
+    const dbSnapshotName = ".snapshot-medusa-my-module.json"
+
+    await snapshotFs.createJson(dbSnapshotName, {
+      tables: ["user", "order", "cart"],
+      namespaces: [],
+    })
+
+    const migrations = new TestMigrations({})
+    await migrations.callMigrateSnapshotFile(
+      join(snapshotFs.basePath, moduleSnapshotName)
+    )
+
+    // DB-name snapshot must NOT have been renamed to the module snapshot name
+    expect(await snapshotFs.exists(moduleSnapshotName)).toBeFalsy()
+    expect(await snapshotFs.exists(dbSnapshotName)).toBeTruthy()
+  })
+
+  test("renames legacy plugin snapshot (no medusa- prefix) to the new plugin snapshot name (with medusa- prefix)", async () => {
+    const legacySnapshotName = ".snapshot-my-module.json"
+    const newSnapshotName = ".snapshot-medusa-my-module.json"
+
+    await snapshotFs.createJson(legacySnapshotName, {
+      tables: ["user"],
+      namespaces: [],
+    })
+
+    const migrations = new TestMigrations({})
+    await migrations.callMigrateSnapshotFile(
+      join(snapshotFs.basePath, newSnapshotName)
+    )
+
+    expect(await snapshotFs.exists(newSnapshotName)).toBeTruthy()
+    expect(await snapshotFs.exists(legacySnapshotName)).toBeFalsy()
   })
 })
