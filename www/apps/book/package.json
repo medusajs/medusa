@@ -17,7 +17,7 @@
     "test:agent-docs": "npx vitest run --config vitest.config.ts",
     "preview": "yarn build:cloudflare && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare deploy",
-    "upload": "yarn build:cloudflare && opennextjs-cloudflare upload",
+    "upload": "opennextjs-cloudflare upload",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
