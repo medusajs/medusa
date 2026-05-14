@@ -1,6 +1,6 @@
-import { existsSync, readFileSync } from "fs"
 import { NextResponse } from "next/server"
-import path from "path"
+
+export const runtime = "edge"
 
 type DownloadParams = {
   params: {
@@ -8,19 +8,21 @@ type DownloadParams = {
   }
 }
 
-export function GET(request: Request, { params }: DownloadParams) {
+export async function GET(request: Request, { params }: DownloadParams) {
   const { area } = params
-  const filePath = path.join(process.cwd(), "specs", area, "openapi.full.yaml")
+  const { origin } = new URL(request.url)
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
 
-  if (!existsSync(filePath)) {
+  const specRes = await fetch(
+    `${origin}${basePath}/specs/${area}/openapi.full.yaml`
+  )
+  if (!specRes.ok) {
     return new NextResponse(null, {
       status: 404,
     })
   }
 
-  const fileContent = readFileSync(filePath)
-
-  return new Response(fileContent, {
+  return new Response(specRes.body, {
     headers: {
       "Content-Type": "application/x-yaml",
       "Content-Disposition": `attachment; filename="openapi.yaml"`,

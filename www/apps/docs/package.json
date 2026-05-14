@@ -6,8 +6,9 @@
     "docusaurus": "docusaurus",
     "dev": "docusaurus clear && docusaurus start",
     "dev:monorepo": "yarn dev --port 3001",
+    "dev:wrangler": "wrangler pages dev --port 3000",
     "build": "docusaurus build",
-    "build:prod": "docusaurus build --out-dir build/v1",
+    "build:prod": "docusaurus build --out-dir build/v1 && cp _redirects build/_redirects",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -76,7 +77,8 @@
     "@types/react-dom": "^18.2.0",
     "@types/react-transition-group": "^4.4.6",
     "swc-loader": "^0.2.3",
-    "typescript": "~5.2.2"
+    "typescript": "~5.2.2",
+    "wrangler": "4.9.0"
   },
   "engines": {
     "node": ">=18.0"

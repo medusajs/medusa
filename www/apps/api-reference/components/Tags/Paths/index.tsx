@@ -43,7 +43,7 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
   }>(
     !Object.keys(paths).length
       ? getLinkWithBasePath(
-          `/tag?tagName=${tagSlugName}&area=${area}`,
+          `/tag/${area}?tagName=${tagSlugName}`,
           process.env.NEXT_PUBLIC_BASE_PATH
         )
       : null,
