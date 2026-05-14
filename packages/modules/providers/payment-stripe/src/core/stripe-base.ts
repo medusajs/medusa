@@ -94,6 +94,10 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
   ): Partial<Stripe.PaymentIntentCreateParams> {
     const res = {} as Partial<Stripe.PaymentIntentCreateParams>
 
+    const paymentMethodTypes =
+      (extra?.payment_method_types as string[] | undefined) ??
+      (this.paymentIntentOptions.payment_method_types as string[] | undefined)
+
     res.description = (extra?.payment_description ??
       this.options_?.paymentDescription) as string
 
@@ -106,13 +110,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
       (extra?.setup_future_usage as "off_session" | "on_session" | undefined) ??
       this.paymentIntentOptions.setup_future_usage
 
-    res.payment_method_configuration =
-      (extra?.payment_method_configuration as string | undefined) ??
-      this.options_?.paymentMethodConfiguration
-
-    res.payment_method_types =
-      (extra?.payment_method_types as string[]) ??
-      (this.paymentIntentOptions.payment_method_types as string[])
+    res.payment_method_types = paymentMethodTypes
 
     res.payment_method_data =
       extra?.payment_method_data as Stripe.PaymentIntentCreateParams.PaymentMethodData
@@ -135,6 +133,12 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
 
     // @ts-expect-error - Need to update Stripe SDK
     res.shared_payment_token = extra?.shared_payment_token as string | undefined
+
+    if (!paymentMethodTypes?.length) {
+      res.payment_method_configuration =
+        (extra?.payment_method_configuration as string | undefined) ??
+        this.options_?.paymentMethodConfiguration
+    }
 
     return res
   }
