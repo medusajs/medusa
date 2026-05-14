@@ -1,5 +1,5 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
+  "$schema": "../../node_modules/wrangler/config-schema.json",
   "name": "medusa-docs-ui",
   "main": ".open-next/worker.js",
   "compatibility_date": "2024-12-30",
