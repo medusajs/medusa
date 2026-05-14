@@ -296,17 +296,17 @@ export default class AuthModuleService
 
   @InjectManager()
   async startAuthMfa(
-    data: AuthTypes.StartAuthMfaDTO,
+    data: AuthTypes.AuthMfaStartDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<AuthTypes.StartAuthMfaResponse> {
+  ): Promise<AuthTypes.AuthMfaStartResponse> {
     return await this.startAuthMfa_(data, sharedContext)
   }
 
   @InjectTransactionManager()
   protected async startAuthMfa_(
-    data: AuthTypes.StartAuthMfaDTO,
+    data: AuthTypes.AuthMfaStartDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<AuthTypes.StartAuthMfaResponse> {
+  ): Promise<AuthTypes.AuthMfaStartResponse> {
     await this.authIdentityService_.retrieve(
       data.auth_identity_id,
       {},
@@ -322,7 +322,7 @@ export default class AuthModuleService
 
   @InjectManager()
   async verifyAuthMfa(
-    data: AuthTypes.VerifyAuthMfaDTO,
+    data: AuthTypes.AuthMfaVerifyDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthTypes.AuthMfaDTO> {
     return await this.verifyAuthMfa_(data, sharedContext)
@@ -330,7 +330,7 @@ export default class AuthModuleService
 
   @InjectTransactionManager()
   protected async verifyAuthMfa_(
-    data: AuthTypes.VerifyAuthMfaDTO,
+    data: AuthTypes.AuthMfaVerifyDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthTypes.AuthMfaDTO> {
     const factor = await this.authMfaFactorService_.retrieve(
@@ -410,10 +410,10 @@ export default class AuthModuleService
   ): Promise<AuthTypes.AuthMfaChallengeDTO> {
     const challenge = await this.retrieveMfaChallenge_(data.id)
 
-    this.assertMfaChallengeCanBeVerified_(challenge, data.provider)
+    this.assertMfaChallengeCanBeVerified_(challenge, data.method)
 
     const valid = await this.authMfaProviderService_.verify(
-      data.provider,
+      data.method,
       {
         auth_identity_id: challenge.auth_identity_id!,
         code: data.code,
@@ -457,20 +457,30 @@ export default class AuthModuleService
       {},
       sharedContext
     )
-    const valid = await this.authMfaProviderService_.verify(
-      data.provider,
-      {
-        auth_identity_id: factor.auth_identity_id,
-        code: data.code,
-      },
-      sharedContext
-    )
 
-    if (!valid) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Invalid MFA verification code"
+    if (this.getMfaDisablePolicy_() === "challenge") {
+      if (!data.method || !data.code) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "MFA verification code is required to disable MFA"
+        )
+      }
+
+      const valid = await this.authMfaProviderService_.verify(
+        data.method,
+        {
+          auth_identity_id: factor.auth_identity_id,
+          code: data.code,
+        },
+        sharedContext
       )
+
+      if (!valid) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Invalid MFA verification code"
+        )
+      }
     }
 
     const disabledFactor = await this.authMfaFactorService_.update(
@@ -596,7 +606,6 @@ export default class AuthModuleService
 
     return {
       success: true,
-      mfa_required: true,
       mfa_challenge: mfaChallenge,
     }
   }
@@ -604,7 +613,7 @@ export default class AuthModuleService
   protected async getAvailableMfaChallengeMethods_(
     authIdentityId: string,
     sharedContext: Context = {}
-  ): Promise<AuthTypes.AuthMfaProvider[]> {
+  ): Promise<AuthTypes.AuthMfaChallengeMethod[]> {
     const factors = await this.authMfaFactorService_.list(
       {
         auth_identity_id: authIdentityId,
@@ -624,7 +633,7 @@ export default class AuthModuleService
       return factorMethods
     }
 
-    const methods: AuthTypes.AuthMfaProvider[] = []
+    const methods: AuthTypes.AuthMfaChallengeMethod[] = []
 
     for (const method of factorMethods) {
       const canVerify =
@@ -677,7 +686,7 @@ export default class AuthModuleService
 
   protected assertMfaChallengeCanBeVerified_(
     challenge: AuthTypes.AuthMfaChallengeDTO,
-    provider: AuthTypes.AuthMfaProvider
+    method: AuthTypes.AuthMfaChallengeMethod
   ): void {
     if (challenge.completed_at) {
       throw new MedusaError(
@@ -701,13 +710,11 @@ export default class AuthModuleService
     }
 
     if (
-      !(challenge.methods as unknown as AuthTypes.AuthMfaProvider[]).includes(
-        provider
-      )
+      !challenge.methods.includes(method)
     ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `MFA challenge does not support provider "${provider}"`
+        `MFA challenge does not support method "${method}"`
       )
     }
   }
@@ -737,6 +744,19 @@ export default class AuthModuleService
       ttlSeconds,
       maxAttempts,
     }
+  }
+
+  protected getMfaDisablePolicy_(): "challenge" | "session" {
+    const policy = this.moduleOptions_.mfa?.disable_policy ?? "session"
+
+    if (policy !== "challenge" && policy !== "session") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        'MFA disable policy must be either "challenge" or "session"'
+      )
+    }
+
+    return policy
   }
 
   protected async retrieveMfaChallenge_(

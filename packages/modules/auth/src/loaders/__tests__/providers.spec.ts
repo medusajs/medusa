@@ -47,7 +47,7 @@ describe("providers loader - MFA", () => {
     )
   })
 
-  it("returns a helpful error when an MFA provider id is unknown", async () => {
+  it("returns a helpful error when an MFA method id is unknown", async () => {
     await loadProviders({
       container,
       options: {},
@@ -60,7 +60,7 @@ describe("providers loader - MFA", () => {
         auth_identity_id: "auth-id",
         provider: "unknown",
       })
-    ).rejects.toThrow("Unable to retrieve the MFA provider with id: unknown")
+    ).rejects.toThrow("Unable to retrieve the MFA method with id: unknown")
 
     expect(logger.error).toHaveBeenCalledWith(
       expect.stringContaining("AwilixResolutionError"),

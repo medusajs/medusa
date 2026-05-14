@@ -37,8 +37,8 @@ class TestMfaProvider {
   }
 
   async start(
-    data: AuthTypes.StartAuthMfaDTO
-  ): Promise<AuthTypes.StartAuthMfaResponse> {
+    data: AuthTypes.AuthMfaStartDTO
+  ): Promise<AuthTypes.AuthMfaStartResponse> {
     return {
       mfa: {
         id: "test-mfa-factor",
@@ -54,7 +54,7 @@ class TestMfaProvider {
   }
 
   async verifySetup(
-    data: AuthTypes.VerifyAuthMfaDTO
+    data: AuthTypes.AuthMfaVerifyDTO
   ): Promise<AuthTypes.AuthMfaDTO> {
     return {
       id: data.id,
@@ -118,6 +118,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           otpauth_url: expect.stringContaining("otpauth://totp/"),
           secret: expect.any(String),
         })
+        expect(setup.otpauth_url).toContain("Medusa%3AAuthenticator%20app")
         expect(setup.mfa).not.toHaveProperty("secret")
         expect(setup.mfa).not.toHaveProperty("provider_metadata")
 
@@ -213,7 +214,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         expect(codes).toHaveLength(2)
 
         const storedCodes = await MikroOrmWrapper.forkManager().execute(
-          "select code_hash, used_at from auth_mfa_recovery_code where auth_identity_id = ?",
+          "select * from auth_mfa_recovery_code where auth_identity_id = ? and deleted_at is null",
           ["test-id"]
         )
 
@@ -222,12 +223,18 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           codes[0]
         )
         expect(storedCodes.every((code) => !("salt" in code))).toBe(true)
-        expect(storedCodes.every((code) => code.used_at === null)).toBe(true)
 
         await service.useAuthMfaRecoveryCode({
           auth_identity_id: "test-id",
           code: codes[0],
         })
+
+        const remainingCodes = await MikroOrmWrapper.forkManager().execute(
+          "select id from auth_mfa_recovery_code where auth_identity_id = ? and deleted_at is null",
+          ["test-id"]
+        )
+
+        expect(remainingCodes).toHaveLength(1)
 
         await expect(
           service.useAuthMfaRecoveryCode({
@@ -255,8 +262,35 @@ moduleIntegrationTestRunner<IAuthModuleService>({
 
         const factor = await service.disableAuthMfa({
           id: setup.mfa.id,
-          provider: "totp",
+          method: "totp",
           code,
+        })
+
+        expect(factor).toEqual(
+          expect.objectContaining({
+            id: setup.mfa.id,
+            status: "disabled",
+          })
+        )
+      })
+
+      it("disables MFA factors without an MFA challenge by default", async () => {
+        const setup = await service.startAuthMfa({
+          auth_identity_id: "test-id",
+          provider: "totp",
+        })
+        const code = generateTotpCode({
+          secret: setup.secret,
+          timestamp: Date.now(),
+        })
+
+        await service.verifyAuthMfa({
+          id: setup.mfa.id,
+          code,
+        })
+
+        const factor = await service.disableAuthMfa({
+          id: setup.mfa.id,
         })
 
         expect(factor).toEqual(
@@ -321,7 +355,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         ).rejects.toThrow("Auth identity does not have any enabled MFA methods")
       })
 
-      it("completes an MFA challenge with a valid provider code", async () => {
+      it("completes an MFA challenge with a valid method code", async () => {
         const setup = await service.startAuthMfa({
           auth_identity_id: "test-id",
           provider: "totp",
@@ -341,7 +375,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
 
         const completed = await service.verifyAuthMfaChallenge({
           id: challenge.id,
-          provider: "totp",
+          method: "totp",
           code,
         })
 
@@ -356,7 +390,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         await expect(
           service.verifyAuthMfaChallenge({
             id: challenge.id,
-            provider: "totp",
+            method: "totp",
             code,
           })
         ).rejects.toThrow("MFA challenge has already been completed")
@@ -383,7 +417,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         await expect(
           service.verifyAuthMfaChallenge({
             id: challenge.id,
-            provider: "totp",
+            method: "totp",
             code: "000000",
           })
         ).rejects.toThrow("Invalid MFA challenge code")
@@ -391,7 +425,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         await expect(
           service.verifyAuthMfaChallenge({
             id: challenge.id,
-            provider: "totp",
+            method: "totp",
             code: "000000",
           })
         ).rejects.toThrow("MFA challenge has too many failed attempts")
@@ -399,7 +433,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         await expect(
           service.verifyAuthMfaChallenge({
             id: challenge.id,
-            provider: "totp",
+            method: "totp",
             code,
           })
         ).rejects.toThrow("MFA challenge has too many failed attempts")
@@ -428,10 +462,49 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         await expect(
           service.verifyAuthMfaChallenge({
             id: challenge.id,
-            provider: "totp",
+            method: "totp",
             code,
           })
         ).rejects.toThrow("MFA challenge has expired")
+      })
+    })
+  },
+})
+
+moduleIntegrationTestRunner<IAuthModuleService>({
+  moduleName: Modules.AUTH,
+  moduleOptions: {
+    mfa: {
+      encryption_key: "test-mfa-encryption-key",
+      disable_policy: "challenge",
+    },
+  },
+  testSuite: ({ service }) => {
+    describe("AuthModuleService - challenge MFA disable policy", () => {
+      beforeEach(async () => {
+        await createAuthIdentities(service)
+      })
+
+      it("requires an MFA challenge when disabling MFA factors", async () => {
+        const setup = await service.startAuthMfa({
+          auth_identity_id: "test-id",
+          provider: "totp",
+        })
+        const code = generateTotpCode({
+          secret: setup.secret,
+          timestamp: Date.now(),
+        })
+
+        await service.verifyAuthMfa({
+          id: setup.mfa.id,
+          code,
+        })
+
+        await expect(
+          service.disableAuthMfa({
+            id: setup.mfa.id,
+          })
+        ).rejects.toThrow("MFA verification code is required to disable MFA")
       })
     })
   },
@@ -495,7 +568,6 @@ moduleIntegrationTestRunner<IAuthModuleService>({
             }),
           })
         )
-        expect(result.mfa_required).toBeUndefined()
         expect(result.mfa_challenge).toBeUndefined()
       })
 
@@ -532,7 +604,6 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         expect(result).toEqual(
           expect.objectContaining({
             success: true,
-            mfa_required: true,
             mfa_challenge: expect.objectContaining({
               auth_identity_id: initial.authIdentity!.id,
               actor_type: "user",

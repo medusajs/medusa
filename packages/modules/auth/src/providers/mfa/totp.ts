@@ -7,7 +7,7 @@ import {
 import { MedusaError } from "@medusajs/framework/utils"
 import { AuthMfaFactor } from "@models"
 import { TotpMfaProviderOptions } from "@types"
-import { SetupAuthMfaProvider } from "../../services/mfa-provider"
+import { AuthMfaProvider } from "../../services/mfa-provider"
 import { decryptSecret, encryptSecret } from "../../utils/mfa"
 import {
   generateTotpSecret,
@@ -29,7 +29,7 @@ type TotpConfig = {
   window: number
 }
 
-export class TotpMfaProvider implements SetupAuthMfaProvider {
+export class TotpMfaProvider implements AuthMfaProvider {
   static identifier = "totp"
 
   readonly method = TotpMfaProvider.identifier
@@ -65,9 +65,9 @@ export class TotpMfaProvider implements SetupAuthMfaProvider {
   }
 
   async start(
-    data: AuthTypes.StartAuthMfaDTO,
+    data: AuthTypes.AuthMfaStartDTO,
     sharedContext: Context = {}
-  ): Promise<AuthTypes.StartAuthMfaResponse> {
+  ): Promise<AuthTypes.AuthMfaStartResponse> {
     const totpConfig = this.getTotpConfig_()
     const issuer = data.issuer ?? totpConfig.issuer
     const existingFactors = await this.authMfaFactorService_.list(
@@ -110,7 +110,7 @@ export class TotpMfaProvider implements SetupAuthMfaProvider {
       secret,
       otpauth_url: generateTotpUri({
         issuer,
-        accountName: data.auth_identity_id,
+        accountName: data.label ?? data.auth_identity_id,
         secret,
         digits: totpConfig.digits,
         period: totpConfig.period,
@@ -119,7 +119,7 @@ export class TotpMfaProvider implements SetupAuthMfaProvider {
   }
 
   async verifySetup(
-    data: AuthTypes.VerifyAuthMfaDTO,
+    data: AuthTypes.AuthMfaVerifyDTO,
     sharedContext: Context = {}
   ): Promise<AuthTypes.AuthMfaDTO> {
     const factor = await this.authMfaFactorService_.retrieve(

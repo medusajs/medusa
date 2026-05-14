@@ -16,7 +16,7 @@ type InjectedDependencies = {
 export class RecoveryCodeMfaProvider implements RecoveryCodeAuthMfaProvider {
   static identifier = "recovery_code"
 
-  readonly method = RecoveryCodeMfaProvider.identifier
+  readonly method = RecoveryCodeMfaProvider.identifier as "recovery_code"
 
   protected authMfaRecoveryCodeService_: ModulesSdkTypes.IMedusaInternalService<
     typeof AuthMfaRecoveryCode
@@ -33,7 +33,6 @@ export class RecoveryCodeMfaProvider implements RecoveryCodeAuthMfaProvider {
     const [code] = await this.authMfaRecoveryCodeService_.list(
       {
         auth_identity_id: data.auth_identity_id,
-        used_at: null,
       },
       { select: ["id"] },
       sharedContext
@@ -83,7 +82,6 @@ export class RecoveryCodeMfaProvider implements RecoveryCodeAuthMfaProvider {
     const recoveryCodes = await this.authMfaRecoveryCodeService_.list(
       {
         auth_identity_id: data.auth_identity_id,
-        used_at: null,
       },
       { select: ["id", "code_hash"] },
       sharedContext
@@ -102,13 +100,7 @@ export class RecoveryCodeMfaProvider implements RecoveryCodeAuthMfaProvider {
       return false
     }
 
-    await this.authMfaRecoveryCodeService_.update(
-      {
-        id: recoveryCode.id,
-        used_at: new Date(),
-      },
-      sharedContext
-    )
+    await this.authMfaRecoveryCodeService_.delete(recoveryCode.id, sharedContext)
 
     return true
   }

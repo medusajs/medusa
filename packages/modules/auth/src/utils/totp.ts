@@ -1,6 +1,14 @@
-import crypto from "node:crypto"
+import { createBase32Plugin, generateSecret } from "@otplib/core"
+import { crypto } from "@otplib/plugin-crypto-node"
+import { generateSync, verifySync } from "@otplib/totp"
+import { generateTOTP } from "@otplib/uri"
 
 const BASE32_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
+const base32 = createBase32Plugin({
+  name: "medusa-base32",
+  encode: encodeBase32,
+  decode: decodeBase32,
+})
 
 export type TotpOptions = {
   secret: string
@@ -15,7 +23,11 @@ export type TotpOptions = {
  * Creates a Base32-encoded shared secret suitable for authenticator apps.
  */
 export function generateTotpSecret(size = 20): string {
-  return encodeBase32(crypto.randomBytes(size))
+  return generateSecret({
+    crypto,
+    base32,
+    length: size,
+  })
 }
 
 /**
@@ -27,22 +39,14 @@ export function generateTotpCode({
   period = 30,
   timestamp = Date.now(),
 }: TotpOptions): string {
-  const counter = Math.floor(timestamp / 1000 / period)
-  const key = decodeBase32(secret)
-  const counterBuffer = Buffer.alloc(8)
-
-  counterBuffer.writeUInt32BE(Math.floor(counter / 0x100000000), 0)
-  counterBuffer.writeUInt32BE(counter & 0xffffffff, 4)
-
-  const hmac = crypto.createHmac("sha1", key).update(counterBuffer).digest()
-  const offset = hmac[hmac.length - 1] & 0xf
-  const binary =
-    ((hmac[offset] & 0x7f) << 24) |
-    ((hmac[offset + 1] & 0xff) << 16) |
-    ((hmac[offset + 2] & 0xff) << 8) |
-    (hmac[offset + 3] & 0xff)
-
-  return String(binary % 10 ** digits).padStart(digits, "0")
+  return generateSync({
+    secret,
+    crypto,
+    base32,
+    digits,
+    period,
+    epoch: Math.floor(timestamp / 1000),
+  })
 }
 
 /**
@@ -60,20 +64,16 @@ export function verifyTotpCode({
     return false
   }
 
-  for (let offset = -window; offset <= window; offset++) {
-    const candidate = generateTotpCode({
-      secret,
-      digits,
-      period,
-      timestamp: timestamp + offset * period * 1000,
-    })
-
-    if (timingSafeEqual(candidate, code)) {
-      return true
-    }
-  }
-
-  return false
+  return verifySync({
+    secret,
+    crypto,
+    base32,
+    token: code,
+    digits,
+    period,
+    epoch: Math.floor(timestamp / 1000),
+    epochTolerance: window * period,
+  }).valid
 }
 
 /**
@@ -92,22 +92,17 @@ export function generateTotpUri({
   digits?: number
   period?: number
 }): string {
-  const label = `${issuer}:${accountName}`
-  const params = new URLSearchParams({
-    secret,
+  return generateTOTP({
     issuer,
-    algorithm: "SHA1",
-    digits: String(digits),
-    period: String(period),
+    label: accountName,
+    secret,
+    algorithm: "sha1",
+    digits,
+    period,
   })
-
-  return `otpauth://totp/${encodeURIComponent(label)}?${params.toString()}`
 }
 
-/**
- * Encodes random secret bytes using the RFC 4648 Base32 alphabet without padding.
- */
-function encodeBase32(buffer: Buffer): string {
+function encodeBase32(buffer: Uint8Array): string {
   let bits = 0
   let value = 0
   let output = ""
@@ -131,10 +126,7 @@ function encodeBase32(buffer: Buffer): string {
   return output
 }
 
-/**
- * Decodes a Base32 TOTP secret, accepting whitespace and optional padding.
- */
-function decodeBase32(secret: string): Buffer {
+function decodeBase32(secret: string): Uint8Array {
   const normalized = secret
     .replace(/=+$/g, "")
     .replace(/\s+/g, "")
@@ -160,19 +152,5 @@ function decodeBase32(secret: string): Buffer {
     }
   }
 
-  return Buffer.from(bytes)
-}
-
-/**
- * Compares generated and submitted codes without leaking timing differences.
- */
-function timingSafeEqual(left: string, right: string): boolean {
-  const leftBuffer = Buffer.from(left)
-  const rightBuffer = Buffer.from(right)
-
-  if (leftBuffer.length !== rightBuffer.length) {
-    return false
-  }
-
-  return crypto.timingSafeEqual(leftBuffer, rightBuffer)
+  return Uint8Array.from(bytes)
 }

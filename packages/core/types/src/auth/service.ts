@@ -6,12 +6,12 @@ import {
   AuthenticationResponse,
   AuthMfaChallengeDTO,
   AuthMfaDTO,
-  StartAuthMfaResponse,
+  AuthMfaStartResponse,
   AuthIdentityDTO,
   UseAuthMfaRecoveryCodeDTO,
   CreateAuthIdentityDTO,
   CreateAuthMfaChallengeDTO,
-  StartAuthMfaDTO,
+  AuthMfaStartDTO,
   CreateProviderIdentityDTO,
   DisableAuthMfaDTO,
   FilterableAuthIdentityProps,
@@ -23,7 +23,7 @@ import {
   UpdateAuthIdentityDTO,
   UpdateProviderIdentityDTO,
   VerifyAuthMfaChallengeDTO,
-  VerifyAuthMfaDTO,
+  AuthMfaVerifyDTO,
 } from "./common"
 
 /**
@@ -164,15 +164,15 @@ export interface IAuthModuleService extends IModuleService {
    * provider.
    */
   startAuthMfa(
-    data: StartAuthMfaDTO,
+    data: AuthMfaStartDTO,
     sharedContext?: Context
-  ): Promise<StartAuthMfaResponse>
+  ): Promise<AuthMfaStartResponse>
 
   /**
    * This method verifies a pending MFA setup.
    */
   verifyAuthMfa(
-    data: VerifyAuthMfaDTO,
+    data: AuthMfaVerifyDTO,
     sharedContext?: Context
   ): Promise<AuthMfaDTO>
 

@@ -20,7 +20,6 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const service: IAuthModuleService = req.scope.resolve(Modules.AUTH)
 
   const authData = {
-    actor_type,
     url: req.url,
     headers: req.headers,
     query: req.query,
@@ -28,15 +27,10 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     protocol: req.protocol,
   } as AuthenticationInput
 
-  const { success, error, authIdentity, mfa_required, mfa_challenge } =
-    await service.validateCallback(auth_provider, authData)
-
-  if (success && mfa_required && mfa_challenge) {
-    return res.status(200).json({
-      mfa_required,
-      mfa_challenge,
-    })
-  }
+  const { success, error, authIdentity } = await service.validateCallback(
+    auth_provider,
+    authData
+  )
 
   if (success && authIdentity) {
     const { http } = config.projectConfig

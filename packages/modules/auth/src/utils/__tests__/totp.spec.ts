@@ -1,4 +1,4 @@
-import { generateTotpCode, verifyTotpCode } from "../totp"
+import { generateTotpCode, generateTotpUri, verifyTotpCode } from "../totp"
 
 describe("TOTP utilities", () => {
   const secret = "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ"
@@ -47,5 +47,17 @@ describe("TOTP utilities", () => {
         window: 1,
       })
     ).toBe(false)
+  })
+
+  it("percent-encodes the otpauth issuer and label", () => {
+    const uri = generateTotpUri({
+      issuer: "Medusa Cloud",
+      accountName: "test@example.com",
+      secret,
+    })
+
+    expect(uri).toContain("otpauth://totp/Medusa%20Cloud:test%40example.com")
+    expect(uri).toContain("issuer=Medusa%20Cloud")
+    expect(uri).not.toContain("Medusa+Cloud")
   })
 })

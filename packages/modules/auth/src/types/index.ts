@@ -17,6 +17,8 @@ export const AuthMfaIdentifiersRegistrationName =
 
 export const AuthMfaProviderRegistrationPrefix = "mfa_"
 
+export type AuthMfaDisablePolicy = "challenge" | "session"
+
 export type AuthModuleOptions = Partial<ModuleServiceInitializeOptions> & {
   /**
    * Providers to be registered
@@ -60,6 +62,10 @@ export type AuthModuleOptions = Partial<ModuleServiceInitializeOptions> & {
      * Number of failed verification attempts allowed for an MFA challenge.
      */
     challenge_max_attempts?: number
+    /**
+     * Policy used when disabling MFA. Defaults to "session".
+     */
+    disable_policy?: AuthMfaDisablePolicy
     /**
      * Additional MFA providers to register.
      */

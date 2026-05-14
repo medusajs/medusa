@@ -1,7 +1,9 @@
 import { BaseFilterable } from "../../dal"
 import { AuthIdentityDTO } from "./auth-identity"
 
-export type AuthMfaProvider = "totp" | "recovery_code" | (string & {})
+export type AuthMfaProvider = "totp" | (string & {})
+
+export type AuthMfaChallengeMethod = AuthMfaProvider | "recovery_code"
 
 export type AuthMfaStatus = "pending" | "enabled" | "disabled"
 
@@ -18,7 +20,6 @@ export type AuthMfaRecoveryCodeDTO = {
   id: string
   auth_identity_id?: string
   auth_identity?: AuthIdentityDTO
-  used_at?: Date | null
 }
 
 export type AuthMfaChallengeDTO = {
@@ -27,7 +28,7 @@ export type AuthMfaChallengeDTO = {
   auth_identity?: AuthIdentityDTO
   actor_type?: string | null
   auth_provider?: string | null
-  methods: AuthMfaProvider[]
+  methods: AuthMfaChallengeMethod[]
   expires_at: Date
   attempts: number
   max_attempts: number
@@ -35,7 +36,7 @@ export type AuthMfaChallengeDTO = {
   metadata?: Record<string, unknown> | null
 }
 
-export type StartAuthMfaDTO = {
+export type AuthMfaStartDTO = {
   auth_identity_id: string
   provider: AuthMfaProvider
   label?: string | null
@@ -43,13 +44,13 @@ export type StartAuthMfaDTO = {
   metadata?: Record<string, unknown> | null
 }
 
-export type StartAuthMfaResponse = {
+export type AuthMfaStartResponse = {
   mfa: AuthMfaDTO
   secret?: string
   otpauth_url?: string
 }
 
-export type VerifyAuthMfaDTO = {
+export type AuthMfaVerifyDTO = {
   id: string
   code: string
 }
@@ -63,14 +64,14 @@ export type CreateAuthMfaChallengeDTO = {
 
 export type VerifyAuthMfaChallengeDTO = {
   id: string
-  provider: AuthMfaProvider
+  method: AuthMfaChallengeMethod
   code: string
 }
 
 export type DisableAuthMfaDTO = {
   id: string
-  provider: AuthMfaProvider
-  code: string
+  method?: AuthMfaChallengeMethod
+  code?: string
 }
 
 export type GenerateAuthMfaRecoveryCodesDTO = {

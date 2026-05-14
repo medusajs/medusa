@@ -5,14 +5,7 @@ import {
 } from "@medusajs/framework/http"
 import { validateScopeProviderAssociation } from "./utils/validate-scope-provider-association"
 import { validateToken } from "./utils/validate-token"
-import {
-  AuthMfaStartRequest,
-  AuthMfaDisableRequest,
-  AuthMfaGenerateRecoveryCodesRequest,
-  AuthMfaVerifyChallengeRequest,
-  AuthMfaVerifyRequest,
-  ResetPasswordRequest,
-} from "./validators"
+import { ResetPasswordRequest } from "./validators"
 
 export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -29,48 +22,6 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/auth/token/refresh",
     middlewares: [authenticate("*", "bearer", { allowUnregistered: true })],
-  },
-  {
-    method: ["POST"],
-    matcher: "/auth/mfa/challenges/:id/verify",
-    middlewares: [validateAndTransformBody(AuthMfaVerifyChallengeRequest)],
-  },
-  {
-    method: ["GET"],
-    matcher: "/auth/mfa/factors",
-    middlewares: [authenticate("*", ["session", "bearer"])],
-  },
-  {
-    method: ["POST"],
-    matcher: "/auth/mfa/factors",
-    middlewares: [
-      authenticate("*", ["session", "bearer"]),
-      validateAndTransformBody(AuthMfaStartRequest),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/auth/mfa/factors/:id/verify",
-    middlewares: [
-      authenticate("*", ["session", "bearer"]),
-      validateAndTransformBody(AuthMfaVerifyRequest),
-    ],
-  },
-  {
-    method: ["DELETE"],
-    matcher: "/auth/mfa/factors/:id",
-    middlewares: [
-      authenticate("*", ["session", "bearer"]),
-      validateAndTransformBody(AuthMfaDisableRequest),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/auth/mfa/recovery-codes",
-    middlewares: [
-      authenticate("*", ["session", "bearer"]),
-      validateAndTransformBody(AuthMfaGenerateRecoveryCodesRequest),
-    ],
   },
   {
     method: ["POST"],

@@ -18,12 +18,6 @@ export type AuthenticationResponse = {
   authIdentity?: AuthIdentityDTO
 
   /**
-   * Whether the authenticated identity must complete an MFA challenge before
-   * receiving a token.
-   */
-  mfa_required?: boolean
-
-  /**
    * The MFA challenge to complete before issuing a token.
    */
   mfa_challenge?: AuthMfaChallengeDTO

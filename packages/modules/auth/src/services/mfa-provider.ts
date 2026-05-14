@@ -1,10 +1,8 @@
 import { AuthTypes, Context, Logger } from "@medusajs/framework/types"
 import { AuthMfaProviderRegistrationPrefix } from "@types"
 
-export type AuthMfaProviderMethod = "totp" | "recovery_code" | (string & {})
-
-export interface AuthMfaProvider {
-  method: AuthMfaProviderMethod
+export interface IAuthMfaProvider {
+  method: AuthTypes.AuthMfaChallengeMethod
 
   canVerifyForAuthIdentity(
     data: { auth_identity_id: string },
@@ -20,19 +18,23 @@ export interface AuthMfaProvider {
   ): Promise<boolean>
 }
 
-export interface SetupAuthMfaProvider extends AuthMfaProvider {
+export interface AuthMfaProvider extends IAuthMfaProvider {
+  method: AuthTypes.AuthMfaProvider
+
   start(
-    data: AuthTypes.StartAuthMfaDTO,
+    data: AuthTypes.AuthMfaStartDTO,
     sharedContext?: Context
-  ): Promise<AuthTypes.StartAuthMfaResponse>
+  ): Promise<AuthTypes.AuthMfaStartResponse>
 
   verifySetup(
-    data: AuthTypes.VerifyAuthMfaDTO,
+    data: AuthTypes.AuthMfaVerifyDTO,
     sharedContext?: Context
   ): Promise<AuthTypes.AuthMfaDTO>
 }
 
-export interface RecoveryCodeAuthMfaProvider extends AuthMfaProvider {
+export interface RecoveryCodeAuthMfaProvider extends IAuthMfaProvider {
+  method: "recovery_code"
+
   generateCodes(
     data: { auth_identity_id: string; count: number },
     sharedContext?: Context
@@ -41,7 +43,7 @@ export interface RecoveryCodeAuthMfaProvider extends AuthMfaProvider {
 
 type InjectedDependencies = {
   logger?: Logger
-  [key: `${typeof AuthMfaProviderRegistrationPrefix}${string}`]: AuthMfaProvider
+  [key: `${typeof AuthMfaProviderRegistrationPrefix}${string}`]: IAuthMfaProvider
 }
 
 export default class AuthMfaProviderService {
@@ -55,23 +57,25 @@ export default class AuthMfaProviderService {
       : (console as unknown as Logger)
   }
 
-  protected retrieveProviderRegistration(method: string): AuthMfaProvider {
+  protected retrieveProviderRegistration(
+    method: string
+  ): IAuthMfaProvider {
     try {
       return this.dependencies[
         `${AuthMfaProviderRegistrationPrefix}${method}`
-      ] as AuthMfaProvider
+      ] as IAuthMfaProvider
     } catch (err) {
       if (err.name === "AwilixResolutionError") {
         const errMessage = `
-Unable to retrieve the MFA provider with id: ${method}
-Please make sure that the provider is registered in the container and it is configured correctly in your project configuration file.`
+Unable to retrieve the MFA method with id: ${method}
+Please make sure that the method is registered in the container and it is configured correctly in your project configuration file.`
 
         this.#logger.error(`AwilixResolutionError: ${err.message}`, err)
 
         throw new Error(errMessage)
       }
 
-      const errMessage = `Unable to retrieve the MFA provider with id: ${method}, the following error occurred: ${err.message}`
+      const errMessage = `Unable to retrieve the MFA method with id: ${method}, the following error occurred: ${err.message}`
       this.#logger.error(errMessage)
 
       throw new Error(errMessage)
@@ -101,12 +105,12 @@ Please make sure that the provider is registered in the container and it is conf
 
   async start(
     method: string,
-    data: AuthTypes.StartAuthMfaDTO,
+    data: AuthTypes.AuthMfaStartDTO,
     sharedContext?: Context
-  ): Promise<AuthTypes.StartAuthMfaResponse> {
+  ): Promise<AuthTypes.AuthMfaStartResponse> {
     const provider = this.retrieveProviderRegistration(method)
 
-    if (!this.isSetupProvider_(provider)) {
+    if (!this.isAuthMfaProvider_(provider)) {
       throw new Error(`MFA provider "${method}" does not support setup`)
     }
 
@@ -115,12 +119,12 @@ Please make sure that the provider is registered in the container and it is conf
 
   async verifySetup(
     method: string,
-    data: AuthTypes.VerifyAuthMfaDTO,
+    data: AuthTypes.AuthMfaVerifyDTO,
     sharedContext?: Context
   ): Promise<AuthTypes.AuthMfaDTO> {
     const provider = this.retrieveProviderRegistration(method)
 
-    if (!this.isSetupProvider_(provider)) {
+    if (!this.isAuthMfaProvider_(provider)) {
       throw new Error(
         `MFA provider "${method}" does not support setup verification`
       )
@@ -138,21 +142,21 @@ Please make sure that the provider is registered in the container and it is conf
 
     if (!this.isRecoveryCodeProvider_(provider)) {
       throw new Error(
-        `MFA provider "${method}" does not support recovery code generation`
+        `MFA method "${method}" does not support recovery code generation`
       )
     }
 
     return await provider.generateCodes(data, sharedContext)
   }
 
-  protected isSetupProvider_(
-    provider: AuthMfaProvider
-  ): provider is SetupAuthMfaProvider {
+  protected isAuthMfaProvider_(
+    provider: IAuthMfaProvider
+  ): provider is AuthMfaProvider {
     return "start" in provider && "verifySetup" in provider
   }
 
   protected isRecoveryCodeProvider_(
-    provider: AuthMfaProvider
+    provider: IAuthMfaProvider
   ): provider is RecoveryCodeAuthMfaProvider {
     return "generateCodes" in provider
   }

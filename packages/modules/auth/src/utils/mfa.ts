@@ -48,9 +48,9 @@ export function decryptSecret(payload: string, encryptionKey: string): string {
 
 export function generateRecoveryCode(): string {
   return crypto
-    .randomBytes(10)
+    .randomBytes(16)
     .toString("hex")
-    .match(/.{1,5}/g)!
+    .match(/.{1,4}/g)!
     .join("-")
 }
 

@@ -8,7 +8,6 @@ export const AuthMfaRecoveryCode = model
       mappedBy: "mfa_recovery_codes",
     }),
     code_hash: model.text(),
-    used_at: model.dateTime().nullable(),
   })
   .indexes([
     {
