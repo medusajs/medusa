@@ -10,7 +10,7 @@ import {
 } from "@medusajs/deps/mikro-orm/postgresql"
 import { EventEmitter } from "events"
 import { access, mkdir, rename, writeFile } from "fs/promises"
-import { dirname, join } from "path"
+import { basename, dirname, join } from "path"
 import { readDir } from "../common"
 import { CustomDBMigrator } from "../dal/mikro-orm/custom-db-migrator"
 
@@ -198,19 +198,34 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
    * the first one will be used.
    */
   protected async migrateSnapshotFile(snapshotPath: string): Promise<void> {
+    // If the expected snapshot already exists, no rename needed — running the
+    // rename would incorrectly overwrite it with an incorrect snapshot file,
+    // leading to side effects when generating migrations
+    const alreadyExists = await access(snapshotPath)
+      .then(() => true)
+      .catch(() => false)
+    if (alreadyExists) {
+      return
+    }
+
     const entries = await readDir(dirname(snapshotPath), {
       ignoreMissing: true,
     })
 
-    /**
-     * We assume all JSON files are snapshot files in this directory
-     */
+    // Only rename the exact known legacy filename (`.snapshot-<module>.json`
+    // renamed to `.snapshot-medusa-<module>.json` for plugin:db:generate users).
+    // Matching any `.json` file risks picking up full-DB snapshots.
+    const expectedName = basename(snapshotPath)
+    const legacyName = expectedName.replace(/^\.snapshot-medusa-/, ".snapshot-")
     const snapshotFile = entries.find(
-      (entry) => entry.isFile() && entry.name.endsWith(".json")
+      (entry) => entry.isFile() && entry.name === legacyName
     )
 
     if (snapshotFile) {
-      const absoluteName = join(snapshotFile.parentPath || snapshotFile.path, snapshotFile.name)
+      const absoluteName = join(
+        snapshotFile.parentPath || snapshotFile.path,
+        snapshotFile.name
+      )
 
       if (absoluteName !== snapshotPath) {
         await rename(absoluteName, snapshotPath)
