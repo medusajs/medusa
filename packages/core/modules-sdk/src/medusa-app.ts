@@ -552,6 +552,12 @@ async function MedusaApp_({
     }
 
     let executedResolutions: [any, string[]][] = [] // [moduleResolution, migration names[]]
+
+    const lockKnex = ModulesSdkUtils.createPgConnection({
+      ...dbData,
+      pool: { min: 1, max: 1 },
+    })
+
     const run = async (
       { resolution: moduleResolution },
       migrationNames?: string[]
@@ -577,21 +583,27 @@ async function MedusaApp_({
         cwd,
       }
 
-      if (action === "revert") {
-        await MedusaModule.migrateDown(migrationOptions, migrationNames)
-      } else if (action === "run") {
-        const ranMigrationsResult = await MedusaModule.migrateUp(
-          migrationOptions
-        )
+      const lockKey = `db-module-migration:${migrationOptions.moduleKey}`
 
-        // Store for revert if anything goes wrong later
-        executedResolutions.push([
-          moduleResolution,
-          ranMigrationsResult?.map((r) => r.name) ?? [],
-        ])
-      } else {
-        await MedusaModule.migrateGenerate(migrationOptions)
-      }
+      await lockKnex.transaction(async (trx) => {
+        await trx.raw(`SELECT pg_advisory_xact_lock(hashtext(?))`, [lockKey])
+
+        if (action === "revert") {
+          await MedusaModule.migrateDown(migrationOptions, migrationNames)
+        } else if (action === "run") {
+          const ranMigrationsResult = await MedusaModule.migrateUp(
+            migrationOptions
+          )
+
+          // Store for revert if anything goes wrong later
+          executedResolutions.push([
+            moduleResolution,
+            ranMigrationsResult?.map((r) => r.name) ?? [],
+          ])
+        } else {
+          await MedusaModule.migrateGenerate(migrationOptions)
+        }
+      })
     }
 
     const concurrency = parseInt(process.env.DB_MIGRATION_CONCURRENCY ?? "1")
@@ -623,6 +635,8 @@ async function MedusaApp_({
         )
       }
       throw error
+    } finally {
+      await lockKnex.destroy()
     }
   }
 

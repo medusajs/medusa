@@ -1,5 +1,44 @@
 # @medusajs/index
 
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies [[`2b21d15640ae459386b0acea4c83804c6f502b9d`](https://github.com/medusajs/medusa/commit/2b21d15640ae459386b0acea4c83804c6f502b9d)]:
+  - @medusajs/framework@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- [#15131](https://github.com/medusajs/medusa/pull/15131) [`d784e637bd0762033601b8503633871dba779bfb`](https://github.com/medusajs/medusa/commit/d784e637bd0762033601b8503633871dba779bfb) Thanks [@ranma-dev](https://github.com/ranma-dev)! - fix(index): bug in index module that returned no results for a custom module with more than one entity linked to the same parent
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- [#15176](https://github.com/medusajs/medusa/pull/15176) [`ae7bbaed1011e1a74f814c6c01c0da483f300338`](https://github.com/medusajs/medusa/commit/ae7bbaed1011e1a74f814c6c01c0da483f300338) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(index,modules-sdk,): introduce locking to avoid race conditions in distributed systems for migrations, links and index partition creation
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.0
+
+## 2.14.2
+
+### Patch Changes
+
+- [#15249](https://github.com/medusajs/medusa/pull/15249) [`650938944e2b5b6fbe3f044b8ced8d260b6742a0`](https://github.com/medusajs/medusa/commit/650938944e2b5b6fbe3f044b8ced8d260b6742a0) Thanks [@srindom](https://github.com/srindom)! - feat(index, medusa): resolve `price_list_id` filter on `GET /admin/products` natively through the index engine.
+
+  - `@medusajs/index`: the default schema now exposes `price_list_id` on `Price`. On upgrade, existing index-engine users will trigger a one-time re-sync of the `Price` entity (driven by the existing schema-change detection); during that window, `price_list_id` filters served from the index may return incomplete results.
+  - `@medusajs/medusa`: `getProductsWithIndexEngine` now translates `price_list_id` into the nested filter `variants.prices.price_list_id`, and `maybeApplyPriceListsFilter` skips its in-JS variant-id expansion when the index engine path will handle the filter (i.e. `index_engine` flag enabled and no `tags`/`categories` filters forcing the non-index fallback).
+
+  For users with the `index_engine` feature flag enabled and large price lists this removes the multi-second middleware overhead on the price-list detail page.
+
+- Updated dependencies [[`be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0`](https://github.com/medusajs/medusa/commit/be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0), [`7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23`](https://github.com/medusajs/medusa/commit/7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23)]:
+  - @medusajs/framework@2.14.2
+
 ## 2.14.1
 
 ### Patch Changes

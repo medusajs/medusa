@@ -10,8 +10,12 @@ import { RouteDrawer } from "../../../components/modals"
 export const CategoriesMetadata = () => {
   const { id } = useParams()
 
-  const { product_category, isPending, isError, error } = useProductCategory(id)
-  const { mutateAsync, isPending: isMutating } = useUpdateProductCategory(id)
+  const { product_category, isPending, isError, error } = useProductCategory(
+    id ?? ""
+  )
+  const { mutateAsync, isPending: isMutating } = useUpdateProductCategory(
+    id ?? ""
+  )
 
   if (isError) {
     throw error

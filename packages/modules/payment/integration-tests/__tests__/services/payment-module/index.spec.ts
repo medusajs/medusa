@@ -944,6 +944,34 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             )
           })
 
+          it("should persist metadata passed when refunding a payment", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            const refundedPayment = await service.refundPayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+              metadata: { reason: "customer-request", ticket_id: "42" },
+            })
+
+            expect(refundedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-2",
+                refunds: [
+                  expect.objectContaining({
+                    amount: 100,
+                    metadata: {
+                      reason: "customer-request",
+                      ticket_id: "42",
+                    },
+                  }),
+                ],
+              })
+            )
+          })
+
           it("should fully refund a payment through two refunds", async () => {
             await service.capturePayment({
               amount: 100,
@@ -1042,6 +1070,51 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               "You cannot refund more than what is captured on the payment."
             )
           })
+
+          it("should allow refund slightly exceeding captured amount within currency epsilon", async () => {
+            // USD has 2 decimal digits, so epsilon = 0.01
+            // Provider captures 87.957975 (sub-cent precision), user requests refund for 87.96
+            // Difference is 0.002025 which is within epsilon → refund should succeed
+            await service.capturePayment({
+              amount: 87.957975,
+              payment_id: "pay-id-1",
+            })
+
+            const refundedPayment = await service.refundPayment({
+              amount: 87.96,
+              payment_id: "pay-id-1",
+            })
+
+            expect(refundedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-1",
+                refunds: [
+                  expect.objectContaining({
+                    amount: 87.96,
+                  }),
+                ],
+              })
+            )
+          })
+
+          it("should throw if refund exceeds captured amount beyond currency epsilon", async () => {
+            // USD epsilon = 0.01; refunding 0.02 more than captured should still throw
+            await service.capturePayment({
+              amount: 87.957975,
+              payment_id: "pay-id-1",
+            })
+
+            const error = await service
+              .refundPayment({
+                amount: 87.98,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "You cannot refund more than what is captured on the payment."
+            )
+          })
         })
 
         describe("cancel", () => {
@@ -1052,6 +1125,27 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               expect.objectContaining({
                 id: "pay-id-2",
                 canceled_at: expect.any(Date),
+              })
+            )
+          })
+
+          it("should persist the data returned by the payment provider on cancel", async () => {
+            const providerData = { canceled: true, provider_cancel_id: "ext-cancel-123" }
+
+            jest
+              .spyOn(
+                (service as any).paymentProviderService_,
+                "cancelPayment"
+              )
+              .mockResolvedValueOnce({ data: providerData })
+
+            const payment = await service.cancelPayment("pay-id-2")
+
+            expect(payment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-2",
+                canceled_at: expect.any(Date),
+                data: providerData,
               })
             )
           })

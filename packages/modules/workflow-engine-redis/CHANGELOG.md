@@ -1,5 +1,35 @@
 # @medusajs/workflow-engine-redis
 
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies [[`2b21d15640ae459386b0acea4c83804c6f502b9d`](https://github.com/medusajs/medusa/commit/2b21d15640ae459386b0acea4c83804c6f502b9d)]:
+  - @medusajs/framework@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- [#15334](https://github.com/medusajs/medusa/pull/15334) [`a843721b150cf0fa32cebf4d6ecb75476391e666`](https://github.com/medusajs/medusa/commit/a843721b150cf0fa32cebf4d6ecb75476391e666) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(workflow-engine-redis): fix flaky tests by isolating job and queues between specs
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.0
+
+## 2.14.2
+
+### Patch Changes
+
+- Updated dependencies [[`be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0`](https://github.com/medusajs/medusa/commit/be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0), [`7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23`](https://github.com/medusajs/medusa/commit/7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23)]:
+  - @medusajs/framework@2.14.2
+
 ## 2.14.1
 
 ### Patch Changes

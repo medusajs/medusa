@@ -1,5 +1,34 @@
 # @medusajs/types
 
+## 2.15.2
+
+## 2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- [#15273](https://github.com/medusajs/medusa/pull/15273) [`f57b942b8bbd385f32203965e2f54a3964e812eb`](https://github.com/medusajs/medusa/commit/f57b942b8bbd385f32203965e2f54a3964e812eb) Thanks [@Metbcy](https://github.com/Metbcy)! - fix(core-flows, payment, types): expose `metadata` on refund creation through `refundPaymentsWorkflow`
+
+  The `Refund` data model supports a `metadata` field, but it was not exposed on
+  `CreateRefundDTO`, `RefundPaymentsStepInput`, or `RefundPaymentsWorkflowInput`,
+  making it impossible to set metadata on a refund created via
+  `refundPaymentsWorkflow`. This adds the optional field to all three types and
+  threads it through `PaymentModuleService.refundPayment` so the value reaches
+  the underlying refund row.
+
+## 2.14.2
+
+### Patch Changes
+
+- [#15169](https://github.com/medusajs/medusa/pull/15169) [`aa407641ce6ddcd2e27352315b0f7b911a2c0acf`](https://github.com/medusajs/medusa/commit/aa407641ce6ddcd2e27352315b0f7b911a2c0acf) Thanks [@GBreg19](https://github.com/GBreg19)! - feat(medusa,js-sdk,types): add POST /admin/payment-collections/:id/payment-sessions route
+
+- [#15223](https://github.com/medusajs/medusa/pull/15223) [`a9617312ef55be2be8ac5823cc990dd5d6e72c4c`](https://github.com/medusajs/medusa/commit/a9617312ef55be2be8ac5823cc990dd5d6e72c4c) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(types): fixes to some HTTP types
+
+- [#15238](https://github.com/medusajs/medusa/pull/15238) [`d29b9a1d80580d4b5dce926387c465260936e5ec`](https://github.com/medusajs/medusa/commit/d29b9a1d80580d4b5dce926387c465260936e5ec) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(pricing,medusa,dashboard,types): add metadata support for price lists
+
+- [#15189](https://github.com/medusajs/medusa/pull/15189) [`a0e57e419cd3e597526460fdbfed7e3e4842aa9b`](https://github.com/medusajs/medusa/commit/a0e57e419cd3e597526460fdbfed7e3e4842aa9b) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa,types,loyalty-plugin): remove unused parameter + export step
+
 ## 2.14.1
 
 ## 2.14.0

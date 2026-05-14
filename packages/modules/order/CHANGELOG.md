@@ -1,5 +1,37 @@
 # @medusajs/order
 
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies [[`2b21d15640ae459386b0acea4c83804c6f502b9d`](https://github.com/medusajs/medusa/commit/2b21d15640ae459386b0acea4c83804c6f502b9d)]:
+  - @medusajs/framework@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- [#15174](https://github.com/medusajs/medusa/pull/15174) [`fdec6f0358bedfcbfe6b78fb0294b1b2c639cc02`](https://github.com/medusajs/medusa/commit/fdec6f0358bedfcbfe6b78fb0294b1b2c639cc02) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(workflows-sdk): flatten WorkflowData type to remove recursive expansion that caused TS excessive stack depth errors in large consumer codebases. Add missing fields to order schema
+
+- [#15329](https://github.com/medusajs/medusa/pull/15329) [`15c938bef93e30fe62f59a78d09cdf412fb92f5a`](https://github.com/medusajs/medusa/commit/15c938bef93e30fe62f59a78d09cdf412fb92f5a) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(order): fix regression on order.items.metadata showing null when line item metadata is set
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.0
+
+## 2.14.2
+
+### Patch Changes
+
+- Updated dependencies [[`be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0`](https://github.com/medusajs/medusa/commit/be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0), [`7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23`](https://github.com/medusajs/medusa/commit/7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23)]:
+  - @medusajs/framework@2.14.2
+
 ## 2.14.1
 
 ### Patch Changes

@@ -419,7 +419,7 @@ export interface BaseProductListParams
   /**
    * Filter by the product's tag(s).
    */
-  tags?: string | string[]
+  tag_id?: string | string[]
   /**
    * Filter by the product's type(s).
    */

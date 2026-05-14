@@ -710,6 +710,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateAndReturnShippingMethodsDataStep/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateCartItemsStep",
+    "newSlug": "/references/medusa-workflows/steps/validateCartItemsStep",
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateCartItemsStep/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateCartPaymentsStep",
     "newSlug": "/references/medusa-workflows/steps/validateCartPaymentsStep",
     "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateCartPaymentsStep/page.mdx"
@@ -3853,6 +3858,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.validateClaimStoreCreditAccountInputStep",
     "newSlug": "/references/medusa-workflows/validateClaimStoreCreditAccountInputStep",
     "filePath": "/www/apps/resources/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.validateClaimStoreCreditAccountInputStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.validateSourceStoreCreditAccountsStep",
+    "newSlug": "/references/medusa-workflows/validateSourceStoreCreditAccountsStep",
+    "filePath": "/www/apps/resources/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.validateSourceStoreCreditAccountsStep/page.mdx"
   },
   {
     "origSlug": "/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.validateStoreCreditAccountInputStep",

@@ -14,11 +14,14 @@ export const GET = async (
   req: RequestWithContext<HttpTypes.StoreProductListParams>,
   res: MedusaResponse<HttpTypes.StoreProductListResponse>
 ) => {
+  const filterableFields: HttpTypes.StoreProductListParams =
+    req.filterableFields
+
   if (FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key)) {
     // TODO: These filters are not supported by the index engine yet
     if (
-      isPresent(req.filterableFields.tags) ||
-      isPresent(req.filterableFields.categories)
+      isPresent(filterableFields.tag_id) ||
+      isPresent(filterableFields.category_id)
     ) {
       return await getProducts(req, res)
     }
@@ -61,6 +64,11 @@ async function getProductsWithIndexEngine(
     filters["sales_channels"]["id"] = salesChannelIds
 
     delete filters.sales_channel_id
+  }
+
+  // TODO: Remove once we implement search by relations in a similar way to query.graph
+  if (isPresent(filters.q)) {
+    filters["variants"] ??= {}
   }
 
   const { data: products = [], metadata } = await query.index(

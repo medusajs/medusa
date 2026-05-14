@@ -5,7 +5,7 @@ import {
 import { HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
+  FeatureFlag,
 } from "@medusajs/framework/utils"
 import {
   ruleQueryConfigurations,
@@ -16,6 +16,17 @@ import {
   ApplicationMethodTargetTypeValues,
   RuleTypeValues,
 } from "@medusajs/types"
+import IndexEngineFeatureFlag from "../../../../../../feature-flags/index-engine"
+
+/*
+  Entry points that exist as top-level types in the Index module's default schema
+  (packages/modules/index/src/utils/default-schema.ts). Only `product` qualifies
+  today; the other entry points this endpoint may receive (product_category,
+  product_collection, product_type, product_tag, region, currency, customer_group,
+  country, sales_channel, shipping_option_type) are not top-level types in the
+  index, so they keep using query.graph.
+*/
+const ENTITIES_SUPPORTED_BY_INDEX_ENGINE = ["product"]
 
 /*
   This endpoint returns all the potential values for rules (promotion rules, target rules and buy rules)
@@ -30,7 +41,6 @@ export const GET = async (
 ) => {
   const { rule_type: ruleType, rule_attribute_id: ruleAttributeId } = req.params
   const queryConfig = ruleQueryConfigurations[ruleAttributeId]
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const filterableFields = req.filterableFields
 
   if (filterableFields.value) {
@@ -55,26 +65,58 @@ export const GET = async (
     delete filterableFields.application_method_target_type
   }
 
-  const { rows, metadata } = await remoteQuery(
-    remoteQueryObjectFromString({
-      entryPoint: queryConfig.entryPoint,
-      variables: {
-        filters: filterableFields,
-        ...req.queryConfig.pagination,
-      },
-      fields: [queryConfig.labelAttr, queryConfig.valueAttr],
-    })
-  )
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+  const fields = [queryConfig.labelAttr, queryConfig.valueAttr]
 
-  const values = rows.map((r) => ({
+  const useIndexEngine =
+    FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key) &&
+    ENTITIES_SUPPORTED_BY_INDEX_ENGINE.includes(queryConfig.entryPoint)
+
+  if (useIndexEngine) {
+    // TODO: Remove once we implement search by relations in a similar way to query.graph
+    const filters = { ...filterableFields }
+    if (!!filters.q) {
+      filters.variants = filters.variants ?? {}
+    }
+
+    const { data, metadata } = await query.index({
+      entity: queryConfig.entryPoint,
+      fields,
+      filters,
+      pagination: req.queryConfig.pagination,
+    })
+
+    const values = data.map((r) => ({
+      label: r[queryConfig.labelAttr],
+      value: r[queryConfig.valueAttr],
+    }))
+
+    res.json({
+      values,
+      count: metadata!.estimate_count,
+      estimate_count: metadata!.estimate_count,
+      offset: metadata!.skip,
+      limit: metadata!.take,
+    })
+    return
+  }
+
+  const { data, metadata } = await query.graph({
+    entity: queryConfig.entryPoint,
+    fields,
+    filters: filterableFields,
+    pagination: req.queryConfig.pagination,
+  })
+
+  const values = data.map((r) => ({
     label: r[queryConfig.labelAttr],
     value: r[queryConfig.valueAttr],
   }))
 
   res.json({
     values,
-    count: metadata.count,
-    offset: metadata.skip,
-    limit: metadata.take,
+    count: metadata!.count,
+    offset: metadata!.skip,
+    limit: metadata!.take,
   })
 }

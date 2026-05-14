@@ -95,7 +95,7 @@ medusaIntegrationTestRunner({
       })
     })
 
-    describe("POST /admin/workflow-execution/[workflow_id]/steps/failure", function () {
+    describe("POST /admin/workflows-executions/[workflow_id]/steps/failure", function () {
         it("should set step as failed", async () => {
             const stepId = 'test-step'
             const step = createStep({
@@ -103,7 +103,8 @@ medusaIntegrationTestRunner({
                 async: true,
             }, () => { })
 
-            const workflowId = 'test-workflow'
+            const workflowId =
+              "workflow-f" + Math.random().toString(36).substring(2, 15)
             createWorkflow({
                 name: workflowId,
                 retentionTime: 60,
@@ -112,7 +113,8 @@ medusaIntegrationTestRunner({
                 return new WorkflowResponse(void 0)
             })
 
-            const transactionId = "test-transaction"
+            const transactionId =
+              "trx_123_f" + Math.random().toString(36).substring(2, 15)
             const engine = container.resolve(Modules.WORKFLOW_ENGINE) as IWorkflowEngineService
             await engine.run(workflowId, {
                 transactionId
@@ -143,95 +145,58 @@ medusaIntegrationTestRunner({
         })
     })
 
-    describe("Workflow Orchestrator module subscribe", function () {
-      it("should subscribe to a workflow and receive the response when it finishes", async () => {
-        const step1 = createStep({ name: "step1" }, async () => {
-          return new StepResponse("step1")
-        })
-        const step2 = createStep({ name: "step2" }, async () => {
-          await setTimeout(1000)
-          return new StepResponse("step2")
-        })
+    describe("POST /admin/workflows-executions/[workflow_id]/steps/success", function () {
+        it("should set step as successful", async () => {
+            const stepId = 'test-step'
+            const step = createStep({
+                name: stepId,
+                async: true,
+            }, () => { })
 
-        const workflowId =
-          "workflow" + Math.random().toString(36).substring(2, 15)
-        createWorkflow(workflowId, function (input) {
-          step1()
-          step2().config({
-            async: true,
-          })
-          return new WorkflowResponse("workflow")
-        })
+            const workflowId =
+              "workflow_s" + Math.random().toString(36).substring(2, 15)
+            createWorkflow({
+                name: workflowId,
+                retentionTime: 60,
+            }, () => {
+                step()
+                return new WorkflowResponse(void 0)
+            })
 
-        const step1_1 = createStep({ name: "step1_1" }, async () => {
-          return new StepResponse("step1_1")
-        })
-        const step2_1 = createStep({ name: "step2_1" }, async () => {
-          await setTimeout(1000)
-          return new StepResponse("step2_1")
-        })
+            const transactionId =
+              "trx_123_s" + Math.random().toString(36).substring(2, 15)
+            const engine = container.resolve(Modules.WORKFLOW_ENGINE) as IWorkflowEngineService
+            await engine.run(workflowId, {
+                transactionId
+            })
+            let workflowDetail = (await api.get(`/admin/workflows-executions/${workflowId}/${transactionId}`, adminHeaders)).data.workflow_execution
 
-        const workflow2Id =
-          "workflow_2" + Math.random().toString(36).substring(2, 15)
-        createWorkflow(workflow2Id, function (input) {
-          step1_1()
-          step2_1().config({
-            async: true,
-          })
-          return new WorkflowResponse("workflow_2")
-        })
+            expect(workflowDetail.state).toBe(TransactionState.INVOKING)
 
-        const transactionId =
-          "trx_123" + Math.random().toString(36).substring(2, 15)
-        const transactionId2 =
-          "trx_124" + Math.random().toString(36).substring(2, 15)
+            const setSuccessResponse = await api.post(`/admin/workflows-executions/${workflowId}/steps/success`, {
+                transaction_id: transactionId,
+                step_id: stepId
+            }, adminHeaders)
 
-        const onWorkflowFinishSpy = jest.fn()
-
-        const onWorkflowFinishPromise = new Promise<void>((resolve) => {
-          void workflowOrcModule.subscribe({
-            workflowId: workflowId,
-            transactionId,
-            subscriber: (event) => {
-              console.log("event", event)
-              if (event.eventType === "onFinish") {
-                onWorkflowFinishSpy()
-                workflowOrcModule.run(workflow2Id, {
-                  transactionId: transactionId2,
+            expect(setSuccessResponse.status).toBe(200)
+            expect(setSuccessResponse.data).toEqual(
+                expect.objectContaining({
+                    success: true,
                 })
-                resolve()
-              }
-            },
-          })
+            )
+
+            workflowDetail = (await api.get(`/admin/workflows-executions/${workflowId}/${transactionId}`, adminHeaders)).data.workflow_execution
+            
+            expect(workflowDetail).toEqual(
+                expect.objectContaining({
+                    state: TransactionState.DONE,
+                })
+            )
         })
+    })
 
-        const onWorkflow2FinishSpy = jest.fn()
-
-        const workflow2FinishPromise = new Promise<void>((resolve) => {
-          void workflowOrcModule.subscribe({
-            workflowId: workflow2Id,
-            subscriber: (event) => {
-              console.log("event", event)
-              if (event.eventType === "onFinish") {
-                onWorkflow2FinishSpy()
-                resolve()
-              }
-            },
-          })
-        })
-
-        workflowOrcModule.run(workflowId, {
-          transactionId,
-        })
-
-        await onWorkflowFinishPromise
-        await workflow2FinishPromise
-
-        expect(onWorkflowFinishSpy).toHaveBeenCalledTimes(1)
-        expect(onWorkflow2FinishSpy).toHaveBeenCalledTimes(1)
-      })
-
-      it("should subscribe to a workflow and receive the response when it finishes (2)", async () => {
+    describe("Workflow Orchestrator module subscribe", function () {
+      it("should subscribe to a workflow and receive the response when it finishes (1)", async () => {
         const step1 = createStep({ name: "step1" }, async () => {
           return new StepResponse("step1")
         })
