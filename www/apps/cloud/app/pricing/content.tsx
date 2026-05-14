@@ -9,7 +9,8 @@ export default async function PricingPage() {
   if (
     process.env.NEXT_PUBLIC_ENV === "CI" ||
     process.env.NEXT_PUBLIC_ENV === "preview" ||
-    process.env.NEXT_PUBLIC_VERCEL_ENV === "preview"
+    process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" ||
+    process.env.CLOUDFLARE_ENV !== "production"
   ) {
     return (
       <div>Pricing page is not available in the CI / Preview environment.</div>
