@@ -31,26 +31,22 @@ function generateSchemaFromObject(obj) {
 
   const properties = {}
   const required = []
-  const localPluralBaseKeys = new Set()
-
-  Object.keys(obj).forEach((key) => {
-    const baseKey = getBaseKey(key)
-    if (baseKey) {
-      localPluralBaseKeys.add(baseKey)
-    }
-  })
+  const localePluralBaseKeys = new Set()
 
   Object.entries(obj).forEach(([key, value]) => {
-    if (getBaseKey(key)) return
+    const baseKey = getBaseKey(key)
+    if (baseKey) {
+      if (!localePluralBaseKeys.has(baseKey)) {
+        localePluralBaseKeys.add(baseKey)
+        ALL_PLURAL_FORMS.forEach((form) => {
+          properties[`${baseKey}_${form}`] = { type: "string" }
+        })
+      }
+      return
+    }
 
     properties[key] = generateSchemaFromObject(value)
     required.push(key)
-  })
-
-  localPluralBaseKeys.forEach((baseKey) => {
-    ALL_PLURAL_FORMS.forEach((form) => {
-      properties[`${baseKey}_${form}`] = { type: "string" }
-    })
   })
 
   return {
