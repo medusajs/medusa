@@ -8,12 +8,12 @@ export const StoreAddLocales = () => {
   const isEnabled = useFeatureFlag("translation")
   const navigate = useNavigate()
 
+  const { store, isPending, isError, error } = useStore()
+
   if (!isEnabled) {
     navigate(-1)
     return null
   }
-
-  const { store, isPending, isError, error } = useStore()
 
   const ready = !!store && !isPending
 

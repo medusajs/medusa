@@ -19,7 +19,7 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/AdminBatchInventoryItemLocationsLevel.yaml
+          $ref: ../components/schemas/AdminBatchInventoryItemLocationLevels.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS SDK

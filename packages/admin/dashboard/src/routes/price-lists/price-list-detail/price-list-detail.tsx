@@ -17,7 +17,12 @@ export const PriceListDetails = () => {
 
   if (isLoading || !price_list) {
     return (
-      <TwoColumnPageSkeleton mainSections={2} sidebarSections={1} showJSON />
+      <TwoColumnPageSkeleton
+        mainSections={2}
+        sidebarSections={1}
+        showJSON
+        showMetadata
+      />
     )
   }
 
@@ -35,6 +40,7 @@ export const PriceListDetails = () => {
       }}
       data={price_list}
       showJSON
+      showMetadata
     >
       <TwoColumnPage.Main>
         <PriceListGeneralSection priceList={price_list} />

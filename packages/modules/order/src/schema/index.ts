@@ -409,8 +409,8 @@ type OrderClaimItem {
   metadata: JSON
   created_at: DateTime
   updated_at: DateTime
-  item: OrderLineItem
-  claim: OrderClaim
+  item: OrderLineItem!
+  claim: OrderClaim!
 }
 
 type OrderClaimItemImage {
@@ -434,8 +434,8 @@ type OrderExchangeItem {
   metadata: JSON
   created_at: DateTime
   updated_at: DateTime
-  exchange: OrderExchange
-  item: OrderLineItem
+  exchange: OrderExchange!
+  item: OrderLineItem!
 }
 
 type OrderClaim {

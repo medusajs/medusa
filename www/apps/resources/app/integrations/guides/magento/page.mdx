@@ -78,19 +78,19 @@ npx create-medusa-app@latest
 
 You'll be asked for the project's name. You can also optionally choose to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx).
 
-Afterward, the installation process will start, which will install the Medusa application in a directory with your project's name. If you chose to install the Next.js starter, it'll be installed in a separate directory with the `{project-name}-storefront` name.
-
-<Note title="Why is the storefront installed separately?">
-
-The Medusa application is composed of a headless Node.js server and an admin dashboard. The storefront is installed or custom-built separately and connects to the Medusa application through its REST endpoints, called [API routes](!docs!/learn/fundamentals/api-routes). Refer to the [Medusa Architecture](!docs!/learn/introduction/architecture) documentation to learn more.
-
-</Note>
+Afterward, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory. If you chose to install the Next.js Starter Storefront, it'll be in the `apps/storefront` directory.
 
 Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
 
 <Note title="Ran into Errors?">
 
 Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
+
+</Note>
+
+<Note>
+
+In this guide, all file paths of backend customizations are relative to the `apps/backend` directory of your Medusa project.
 
 </Note>
 
@@ -142,7 +142,7 @@ If you've installed your Medusa project before v2.3.1, you must install [yalc](h
 
 </Note>
 
-Run the following command in the Medusa application's directory to install the plugin:
+Run the following command in the `apps/backend` directory to install the plugin:
 
 ```bash title="Medusa application"
 npx medusa plugin:add medusa-plugin-magento
@@ -1013,7 +1013,7 @@ const {
     })
 
     if (productData.id) {
-      productsToUpdate.set(existingProduct.id, productData)
+      productsToUpdate.set(existingProduct.id, productData as UpsertProductDTO)
     } else {
       productsToCreate.set(productData.external_id!, productData)
     }

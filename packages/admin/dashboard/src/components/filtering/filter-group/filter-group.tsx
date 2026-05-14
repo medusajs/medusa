@@ -22,7 +22,7 @@ export const FilterGroup = ({ filters }: FilterGroupProps) => {
   const availableKeys = filterKeys.filter((key) => !searchParams.get(key))
 
   return (
-    <div className="flex items-center flex-wrap gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       {hasMore && <AddFilterMenu availableKeys={availableKeys} />}
       {isClearable && (
         <Button variant="transparent" size="small">
@@ -40,9 +40,7 @@ type AddFilterMenuProps = {
 const AddFilterMenu = ({ availableKeys }: AddFilterMenuProps) => {
   const direction = useDocumentDirection()
   return (
-    <DropdownMenu
-      dir={direction}
-    >
+    <DropdownMenu dir={direction}>
       <DropdownMenu.Trigger asChild>
         <Button variant="secondary" size="small">
           Add filter

@@ -15,27 +15,30 @@ export class TsHelpers {
   /**
    * Returns true if the given TypeScript type looks like a Zod schema,
    * by checking for the presence of the `_input` and `_output` branded properties
-   * that all Zod types expose.
+   * that all Zod types expose (v3), or the `_zod` internal property (v4).
    */
   static isZodType(type: ts.Type): boolean {
     const inputProp = type.getProperty("_input")
     const outputProp = type.getProperty("_output")
-    return !!(inputProp && outputProp)
+    if (inputProp && outputProp) return true
+    // Zod v4: _zod is the primary internal property on all schema types
+    return !!type.getProperty("_zod")
   }
 
   /**
-   * Returns true if the top-level Zod type IS a ZodEffects (i.e., has a `.transform()`
-   * applied at the outermost level). This is different from checking if the type string
-   * _contains_ "ZodEffects", which would also match ZodObject schemas whose shape
-   * contains ZodEffects-wrapped fields (e.g., via `z.preprocess()`).
+   * Returns true if the top-level Zod type IS a ZodPipe (produced by
+   * `.transform()` or `z.preprocess()`) applied at the outermost level.
+   * This is different from checking if the type string _contains_ "ZodPipe",
+   * which would also match schemas whose shape contains such fields.
    */
   static isZodEffects(checker: ts.TypeChecker, type: ts.Type): boolean {
     const symbol = type.getSymbol()
     if (symbol) {
-      return symbol.getName() === "ZodEffects"
+      const name = symbol.getName()
+      if (name === "ZodPipe") return true
     }
     const typeStr = checker.typeToString(type)
-    return typeStr.trimStart().startsWith("ZodEffects<")
+    return typeStr.trimStart().startsWith("ZodPipe<")
   }
 
   /**
@@ -187,6 +190,23 @@ export class TsHelpers {
       }
     }
     return values
+  }
+
+  /**
+   * Returns true if the given symbol has a `@http-validation-ignore` JSDoc tag.
+   * Properties with this tag are excluded from compatibility validation.
+   */
+  static hasHttpValidationIgnoreTag(symbol: ts.Symbol): boolean {
+    const decl = symbol.valueDeclaration
+    if (!decl) {
+      return false
+    }
+    for (const tag of ts.getJSDocTags(decl)) {
+      if (tag.tagName.text === "http-validation-ignore") {
+        return true
+      }
+    }
+    return false
   }
 
   /**

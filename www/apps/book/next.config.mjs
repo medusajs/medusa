@@ -248,10 +248,69 @@ const nextConfig = {
           destination: `${process.env.NEXT_PUBLIC_CLOUD_URL || "https://localhost:3001"}/cloud/:path*`,
           basePath: false,
         },
+        // MCP OAuth discovery — RFC 9728 path-component variants (strip /mcp suffix)
+        {
+          source: "/.well-known/oauth-protected-resource/mcp",
+          destination: `${
+            process.env.NEXT_MCP_BASE_URL || "http://localhost:3001"
+          }/.well-known/oauth-protected-resource`,
+          basePath: false,
+        },
+        {
+          source: "/.well-known/oauth-authorization-server/mcp",
+          destination: `${
+            process.env.NEXT_MCP_BASE_URL || "http://localhost:3001"
+          }/.well-known/oauth-authorization-server`,
+          basePath: false,
+        },
+        {
+          source: "/.well-known/openid-configuration/mcp",
+          destination: `${
+            process.env.NEXT_MCP_BASE_URL || "http://localhost:3001"
+          }/.well-known/openid-configuration`,
+          basePath: false,
+        },
+        // MCP OAuth discovery — standard paths
+        {
+          source: "/.well-known/oauth-protected-resource",
+          destination: `${
+            process.env.NEXT_MCP_BASE_URL || "http://localhost:3001"
+          }/.well-known/oauth-protected-resource`,
+          basePath: false,
+        },
+        {
+          source: "/.well-known/oauth-authorization-server",
+          destination: `${
+            process.env.NEXT_MCP_BASE_URL || "http://localhost:3001"
+          }/.well-known/oauth-authorization-server`,
+          basePath: false,
+        },
+        {
+          source: "/.well-known/openid-configuration",
+          destination: `${
+            process.env.NEXT_MCP_BASE_URL || "http://localhost:3001"
+          }/.well-known/openid-configuration`,
+          basePath: false,
+        },
+        // MCP Dynamic Client Registration
+        {
+          source: "/register",
+          destination: `${
+            process.env.NEXT_MCP_BASE_URL || "http://localhost:3001"
+          }/oauth/register`,
+          basePath: false,
+        },
+        {
+          source: "/oauth/register",
+          destination: `${
+            process.env.NEXT_MCP_BASE_URL || "http://localhost:3001"
+          }/oauth/register`,
+          basePath: false,
+        },
         {
           source: "/mcp",
           destination:
-            process.env.NEXT_MCP_SERVER_URL || "https://localhost:3001/mcp",
+            process.env.NEXT_MCP_SERVER_URL || "http://localhost:3001/mcp",
           basePath: false,
         },
       ],
