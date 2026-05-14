@@ -8503,8 +8503,9 @@ __metadata:
     "@mdx-js/react": ^3.1.0
     "@medusajs/icons": 2.15.2
     "@medusajs/ui": 4.1.12
-    "@next/bundle-analyzer": 15.3.9
-    "@next/mdx": 15.3.9
+    "@next/bundle-analyzer": 15.5.18
+    "@next/mdx": 15.5.18
+    "@opennextjs/cloudflare": 1.19.9
     "@react-hook/resize-observer": ^2.0.2
     "@readme/openapi-parser": ^2.5.0
     "@types/jsdom": ^27.0.0
@@ -8942,7 +8943,8 @@ __metadata:
     "@mdx-js/loader": ^3.1.0
     "@mdx-js/react": ^3.1.0
     "@medusajs/icons": 2.15.2
-    "@next/mdx": 15.3.9
+    "@next/mdx": 15.5.18
+    "@opennextjs/cloudflare": ^1.19.9
     "@stefanprobst/rehype-extract-toc": ^3.0.0
     "@types/mdx": ^2.0.13
     "@types/node": ^20
@@ -9000,7 +9002,8 @@ __metadata:
     "@mdx-js/loader": ^3.1.0
     "@mdx-js/react": ^3.1.0
     "@medusajs/icons": 2.15.2
-    "@next/mdx": 15.3.9
+    "@next/mdx": 15.5.18
+    "@opennextjs/cloudflare": ^1.19.9
     "@stefanprobst/rehype-extract-toc": ^3.0.0
     "@types/mdx": ^2.0.13
     "@types/node": ^20
@@ -9453,7 +9456,8 @@ __metadata:
     "@mdx-js/loader": ^3.1.0
     "@mdx-js/react": ^3.1.0
     "@medusajs/icons": 2.15.2
-    "@next/mdx": 15.3.9
+    "@next/mdx": 15.5.18
+    "@opennextjs/cloudflare": ^1.19.9
     "@sanity/client": ^7.11.0
     "@stefanprobst/rehype-extract-toc": ^3.0.0
     "@types/mdx": ^2.0.13
@@ -10623,7 +10627,7 @@ __metadata:
     "@kapaai/react-sdk": ^0.9.0
     "@medusajs/icons": 2.15.2
     "@medusajs/ui": 4.1.12
-    "@next/third-parties": 15.3.9
+    "@next/third-parties": 15.5.18
     "@react-hook/resize-observer": ^1.2.6
     "@segment/analytics-next": ^1.75.0
     "@types/react": 19.2.9
@@ -17650,8 +17654,9 @@ __metadata:
     "@mdx-js/loader": ^3.1.0
     "@mdx-js/react": ^3.1.0
     "@medusajs/icons": 2.15.2
-    "@next/bundle-analyzer": 15.3.9
-    "@next/mdx": 15.3.9
+    "@next/bundle-analyzer": 15.5.18
+    "@next/mdx": 15.5.18
+    "@opennextjs/cloudflare": ^1.19.9
     "@stefanprobst/rehype-extract-toc": ^3.0.0
     "@types/mdx": ^2.0.13
     "@types/node": ^20
@@ -19831,7 +19836,8 @@ turbo@latest:
     "@medusajs/icons": 2.15.2
     "@medusajs/ui": 4.1.12
     "@medusajs/ui-preset": 2.15.2
-    "@next/mdx": 15.3.9
+    "@next/mdx": 15.5.18
+    "@opennextjs/cloudflare": ^1.19.9
     "@stefanprobst/rehype-extract-toc": ^3.0.0
     "@types/mdx": ^2.0.13
     "@types/node": ^20
@@ -20228,7 +20234,8 @@ turbo@latest:
     "@mdx-js/loader": ^3.1.0
     "@mdx-js/react": ^3.1.0
     "@medusajs/icons": 2.15.2
-    "@next/mdx": 15.3.9
+    "@next/mdx": 15.5.18
+    "@opennextjs/cloudflare": ^1.19.9
     "@stefanprobst/rehype-extract-toc": ^3.0.0
     "@types/mdx": ^2.0.13
     "@types/node": ^20
