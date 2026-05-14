@@ -64,6 +64,7 @@
     "react-aria": "^3.33.1",
     "react-currency-input-field": "^3.6.11",
     "react-stately": "^3.31.1",
+    "recharts": "^2.12.0",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.2.1"
   },
