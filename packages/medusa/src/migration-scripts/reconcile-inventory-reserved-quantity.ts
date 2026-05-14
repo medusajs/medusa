@@ -55,10 +55,7 @@ const findMismatchedReservedQuantitiesStep = createStep(
 
 const reconcileReservedQuantitiesStep = createStep(
   "reconcile-reserved-quantities",
-  async (
-    { rows }: { rows: InventoryLevelMismatch[] },
-    { container }
-  ) => {
+  async ({ rows }: { rows: InventoryLevelMismatch[] }, { container }) => {
     if (!rows.length) {
       return new StepResponse(0, [])
     }
@@ -131,7 +128,5 @@ export default async function reconcileInventoryReservedQuantity({
 
   await reconcileInventoryReservedQuantityWorkflow(container).run({})
 
-  logger.info(
-    "Finished reconciliation of inventory_level.reserved_quantity."
-  )
+  logger.info("Finished reconciliation of inventory_level.reserved_quantity.")
 }

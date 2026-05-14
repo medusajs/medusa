@@ -615,9 +615,6 @@ medusaIntegrationTestRunner({
         })
 
         // Scenario 1: a single soft-delete + restore cycle must leave reserved_quantity unchanged.
-        // This fails because restoreReservationItems_ calls super.listReservationItems without
-        // including soft-deleted records, so the quantity adjustment is skipped and reserved_quantity
-        // stays at 0 instead of returning to 5.
         it("should restore reserved_quantity to its pre-deletion value after a soft-delete/restore cycle", async () => {
           const before = await getLevel()
           expect(before.reserved_quantity).toBe(5)
@@ -631,17 +628,12 @@ medusaIntegrationTestRunner({
           await inventoryService.restoreReservationItems([reservationId])
 
           const afterRestore = await getLevel()
-          // This assertion currently FAILS: reserved_quantity remains 0 because
-          // restoreReservationItems_ lists reservation items before restoring them,
-          // but the soft-delete filter excludes them from the list result, so no
-          // quantity adjustment is applied on the way back up.
+
           expect(afterRestore.reserved_quantity).toBe(5)
           expect(afterRestore.available_quantity).toBe(5)
         })
 
-        // Scenario 2: multiple delete/restore cycles compound the missing increment,
-        // eventually driving reserved_quantity below zero with no visible reservations —
-        // exactly the state the customer reported (In Stock: 4, Reserved: -32, Available: 36).
+        // Scenario 2: multiple delete/restore cycles don't cause negative reserved_quantity
         it("should not accumulate negative reserved_quantity across repeated soft-delete/restore cycles", async () => {
           for (let i = 0; i < 3; i++) {
             await inventoryService.softDeleteReservationItems([reservationId])
@@ -658,9 +650,7 @@ medusaIntegrationTestRunner({
           expect(reservations.data.reservations).toHaveLength(0)
 
           const level = await getLevel()
-          // This assertion currently FAILS: each restore cycle skips the +5 increment
-          // (see Scenario 1), so each full cycle nets -5. After 3 cycles + 1 final
-          // delete the actual value is -20 (3 skipped restores × -5, plus 1 final -5).
+
           expect(level.reserved_quantity).toBe(0)
           expect(level.available_quantity).toBe(10)
         })
