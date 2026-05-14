@@ -2,6 +2,7 @@ import {
   addToCartWorkflow,
   createCartCreditLinesWorkflow,
   updateCartsStep,
+  updateCartPromotionsWorkflow,
 } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
@@ -10,6 +11,7 @@ import {
   PriceListStatus,
   PriceListType,
   ProductStatus,
+  PromotionActions,
   PromotionRuleOperator,
   PromotionStatus,
   PromotionType,
@@ -5877,6 +5879,197 @@ medusaIntegrationTestRunner({
               ]),
             })
           )
+        })
+
+        it("should return promotion_limit_exceeded when promotion has reached its usage limit", async () => {
+          const promotionModuleService = appContainer.resolve(Modules.PROMOTION)
+          const maxedPromotion = await promotionModuleService.createPromotions({
+            code: "MAXED_OUT",
+            type: PromotionType.STANDARD,
+            status: PromotionStatus.ACTIVE,
+            limit: 0,
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              allocation: "across",
+              value: 500,
+              apply_to_quantity: 1,
+              currency_code: "usd",
+            },
+          })
+
+          cart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const { result } = await updateCartPromotionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              cart_id: cart.id,
+              promo_codes: [maxedPromotion.code],
+              action: PromotionActions.ADD,
+            },
+          })
+
+          expect(result.skipped_promo_codes).toEqual([
+            { code: "MAXED_OUT", reason: "promotion_limit_exceeded" },
+          ])
+        })
+
+        it("should return campaign_budget_exceeded when the campaign budget is exhausted", async () => {
+          const promotionModuleService = appContainer.resolve(Modules.PROMOTION)
+
+          const campaign = (
+            await api.post(
+              `/admin/campaigns`,
+              {
+                name: "Exhausted Campaign",
+                campaign_identifier: "exhausted-campaign",
+                budget: {
+                  type: "usage",
+                  limit: 1,
+                },
+              },
+              adminHeaders
+            )
+          ).data.campaign
+
+          await promotionModuleService.updateCampaigns({
+            id: campaign.id,
+            budget: { used: 1 },
+          })
+
+          const noBudgetPromotion = (
+            await api.post(
+              `/admin/promotions`,
+              {
+                code: "NO_BUDGET",
+                type: PromotionType.STANDARD,
+                status: PromotionStatus.ACTIVE,
+                campaign_id: campaign.id,
+                application_method: {
+                  type: "fixed",
+                  target_type: "items",
+                  allocation: "across",
+                  value: 500,
+                  currency_code: "usd",
+                  apply_to_quantity: 1,
+                },
+              },
+              adminHeaders
+            )
+          ).data.promotion
+
+          cart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const { result } = await updateCartPromotionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              cart_id: cart.id,
+              promo_codes: [noBudgetPromotion.code],
+              action: PromotionActions.ADD,
+            },
+          })
+
+          expect(result.skipped_promo_codes).toEqual([
+            { code: "NO_BUDGET", reason: "campaign_budget_exceeded" },
+          ])
+        })
+
+        it("should return an empty skipped_promo_codes array when all promotions are applied successfully", async () => {
+          cart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const { result } = await updateCartPromotionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              cart_id: cart.id,
+              promo_codes: [promotion.code],
+              action: PromotionActions.ADD,
+            },
+          })
+
+          expect(result.skipped_promo_codes).toEqual([])
+        })
+
+        it("should report only skipped codes when mixing valid and limit-exceeded promotions", async () => {
+          const promotionModuleService = appContainer.resolve(Modules.PROMOTION)
+          const exceededPromotion = await promotionModuleService.createPromotions(
+            {
+              code: "EXCEEDED_50OFF",
+              type: PromotionType.STANDARD,
+              status: PromotionStatus.ACTIVE,
+              limit: 0,
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "across",
+                value: 500,
+                apply_to_quantity: 1,
+                currency_code: "usd",
+              },
+            }
+          )
+
+          cart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const { result } = await updateCartPromotionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              cart_id: cart.id,
+              promo_codes: [promotion.code, exceededPromotion.code],
+              action: PromotionActions.ADD,
+            },
+          })
+
+          expect(result.skipped_promo_codes).toEqual([
+            { code: "EXCEEDED_50OFF", reason: "promotion_limit_exceeded" },
+          ])
         })
       })
 

@@ -32,20 +32,6 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Get PR info
-        id: pr-info
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          pr_data=$(gh pr view ${{ inputs.pr_number }} --json title,author \
-            --jq '{title: .title, author: .author.login}')
-          {
-            echo "title<<EOF"
-            echo "$pr_data" | jq -r '.title'
-            echo "EOF"
-            echo "author=$(echo "$pr_data" | jq -r '.author')"
-          } >> $GITHUB_OUTPUT
-
       - name: Generate GitHub App token
         id: app-token
         uses: actions/create-github-app-token@v1
@@ -69,13 +55,12 @@ jobs:
 
           prompt: |
             PR NUMBER: ${{ inputs.pr_number }}
-            PR TITLE: ${{ steps.pr-info.outputs.title }}
-            PR AUTHOR: ${{ steps.pr-info.outputs.author }}
             TRIGGER REASON: ${{ inputs.trigger_reason }}
 
             Note: all scripts are located in the root `scripts/` directory and should be run as `bash scripts/<script>.sh`.
 
-            /reviewing-prs ${{ inputs.pr_number }} "${{ steps.pr-info.outputs.title }}" "${{ steps.pr-info.outputs.author }}"
+            Start by running `bash scripts/get_pr.sh ${{ inputs.pr_number }}` to retrieve the PR title and author, then run:
+            /reviewing-prs ${{ inputs.pr_number }} "<title from get_pr.sh>" "<author from get_pr.sh>"
 
             At the very end of your comment, add a small note in italics: "_Triggered by: ${{ inputs.trigger_reason }}_"
 
@@ -90,5 +75,4 @@ jobs:
             Bash(bash scripts/labels.sh:*),
             Bash(bash scripts/get_labels.sh:*),
             Bash(bash scripts/get_issue.sh:*),
-            Bash(bash scripts/close_issue.sh:*),
             Read"
