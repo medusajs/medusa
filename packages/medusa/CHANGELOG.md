@@ -1,5 +1,68 @@
 # Change Log
 
+## 2.15.2
+
+### Patch Changes
+
+- [#15383](https://github.com/medusajs/medusa/pull/15383) [`2b21d15640ae459386b0acea4c83804c6f502b9d`](https://github.com/medusajs/medusa/commit/2b21d15640ae459386b0acea4c83804c6f502b9d) Thanks [@peterlgh7](https://github.com/peterlgh7)! - builds should fail if medusa-config throws
+
+- [#15386](https://github.com/medusajs/medusa/pull/15386) [`5e8fc904fe00d8c89b6615cfbbdbde66531d2337`](https://github.com/medusajs/medusa/commit/5e8fc904fe00d8c89b6615cfbbdbde66531d2337) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(medusa): enable index when querying products via promotion attribute values and enable sku search in products entrypoint
+
+- Updated dependencies [[`370676c2a737fb3b558a745ad452a2c9d4ae6de5`](https://github.com/medusajs/medusa/commit/370676c2a737fb3b558a745ad452a2c9d4ae6de5), [`2b21d15640ae459386b0acea4c83804c6f502b9d`](https://github.com/medusajs/medusa/commit/2b21d15640ae459386b0acea4c83804c6f502b9d)]:
+  - @medusajs/locking-redis@2.15.2
+  - @medusajs/framework@2.15.2
+  - @medusajs/event-bus-redis@2.15.2
+  - @medusajs/core-flows@2.15.2
+  - @medusajs/analytics@2.15.2
+  - @medusajs/api-key@2.15.2
+  - @medusajs/auth@2.15.2
+  - @medusajs/cache-inmemory@2.15.2
+  - @medusajs/cache-redis@2.15.2
+  - @medusajs/caching@2.15.2
+  - @medusajs/cart@2.15.2
+  - @medusajs/currency@2.15.2
+  - @medusajs/customer@2.15.2
+  - @medusajs/event-bus-local@2.15.2
+  - @medusajs/file@2.15.2
+  - @medusajs/fulfillment@2.15.2
+  - @medusajs/index@2.15.2
+  - @medusajs/inventory@2.15.2
+  - @medusajs/link-modules@2.15.2
+  - @medusajs/locking@2.15.2
+  - @medusajs/notification@2.15.2
+  - @medusajs/order@2.15.2
+  - @medusajs/payment@2.15.2
+  - @medusajs/pricing@2.15.2
+  - @medusajs/product@2.15.2
+  - @medusajs/promotion@2.15.2
+  - @medusajs/analytics-local@2.15.2
+  - @medusajs/analytics-posthog@2.15.2
+  - @medusajs/auth-emailpass@2.15.2
+  - @medusajs/auth-github@2.15.2
+  - @medusajs/auth-google@2.15.2
+  - @medusajs/caching-redis@2.15.2
+  - @medusajs/file-local@2.15.2
+  - @medusajs/file-s3@2.15.2
+  - @medusajs/fulfillment-manual@2.15.2
+  - @medusajs/locking-postgres@2.15.2
+  - @medusajs/notification-local@2.15.2
+  - @medusajs/notification-sendgrid@2.15.2
+  - @medusajs/payment-stripe@2.15.2
+  - @medusajs/rbac@2.15.2
+  - @medusajs/region@2.15.2
+  - @medusajs/sales-channel@2.15.2
+  - @medusajs/settings@2.15.2
+  - @medusajs/stock-location@2.15.2
+  - @medusajs/store@2.15.2
+  - @medusajs/tax@2.15.2
+  - @medusajs/translation@2.15.2
+  - @medusajs/user@2.15.2
+  - @medusajs/workflow-engine-inmemory@2.15.2
+  - @medusajs/workflow-engine-redis@2.15.2
+  - @medusajs/draft-order@2.15.2
+  - @medusajs/admin-bundler@2.15.2
+  - @medusajs/telemetry@2.15.2
+
 ## 2.15.1
 
 ### Patch Changes

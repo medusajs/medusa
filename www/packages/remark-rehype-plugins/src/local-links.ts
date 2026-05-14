@@ -4,7 +4,7 @@ import type { LocalLinkOptions, UnistNode, UnistTree } from "types"
 import { fixLinkUtil } from "./index.js"
 
 export function localLinksRehypePlugin(options: LocalLinkOptions): Transformer {
-  const { filePath, basePath } = options || {}
+  const { filePath, basePath, r2BaseUrl } = options || {}
   return async (tree, file) => {
     if (!file.cwd) {
       return
@@ -25,28 +25,36 @@ export function localLinksRehypePlugin(options: LocalLinkOptions): Transformer {
       ""
     )
     const appsPath = basePath || path.join(file.cwd, "app")
+
+    const nodesToProcess: { node: UnistNode; type: "a" | "link" }[] = []
     visit(tree as UnistTree, ["element", "link"], (node: UnistNode) => {
       if (node.tagName === "a") {
-        if (!node.properties?.href?.match(/page\.mdx?/)) {
-          return
+        if (node.properties?.href?.match(/page\.mdx?/)) {
+          nodesToProcess.push({ node, type: "a" })
         }
-
-        node.properties.href = fixLinkUtil({
-          currentPageFilePath,
-          linkedPath: node.properties.href,
-          appsPath,
-        })
       } else if (node.type === "link") {
-        if (!node.url?.match(/page\.mdx?/)) {
-          return
+        if (node.url?.match(/page\.mdx?/)) {
+          nodesToProcess.push({ node, type: "link" })
         }
-
-        node.url = fixLinkUtil({
-          currentPageFilePath,
-          linkedPath: node.url,
-          appsPath,
-        })
       }
     })
+
+    for (const { node, type } of nodesToProcess) {
+      if (type === "a") {
+        node.properties!.href = await fixLinkUtil({
+          currentPageFilePath,
+          linkedPath: node.properties!.href,
+          appsPath,
+          r2BaseUrl,
+        })
+      } else {
+        node.url = await fixLinkUtil({
+          currentPageFilePath,
+          linkedPath: node.url!,
+          appsPath,
+          r2BaseUrl,
+        })
+      }
+    }
   }
 }

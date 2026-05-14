@@ -75,7 +75,8 @@ const withMDX = mdx({
           },
           useBaseUrl:
             process.env.NODE_ENV === "production" ||
-            process.env.VERCEL_ENV === "production",
+            process.env.VERCEL_ENV === "production" ||
+            !!process.env.CLOUDFLARE_ENV,
         },
       ],
       [localLinksRehypePlugin],
@@ -125,20 +126,28 @@ const nextConfig = {
     return {
       beforeFiles: [
         {
+          source: "/index.html.md",
+          destination: "/md-content",
+        },
+        {
+          source: "/index.md",
+          destination: "/md-content",
+        },
+        {
+          source: "/:path*/index.html.md",
+          destination: "/md-content/:path*",
+        },
+        {
+          source: "/:path*/index.md",
+          destination: "/md-content/:path*",
+        },
+        {
+          source: "/:path*.md",
+          destination: "/md-content/:path*",
+        },
+        {
           source:
-            "/:path((?!resources|api|ui|user-guide|cloud).*)index.html.md",
-          destination: "/md-content/:path*",
-        },
-        {
-          source: "/:path((?!resources|api|ui|user-guide|cloud).*)index.md",
-          destination: "/md-content/:path*",
-        },
-        {
-          source: "/:path((?!resources|api|ui|user-guide|cloud).*).md",
-          destination: "/md-content/:path*",
-        },
-        {
-          source: "/:path((?!resources|api|ui|user-guide|cloud|md-content).+)/",
+            "/:first((?!resources|api|ui|user-guide|cloud|md-content)[^/]+)/:rest*/",
           has: [
             {
               type: "header",
@@ -146,7 +155,7 @@ const nextConfig = {
               value: ".*(text/markdown|text/plain).*",
             },
           ],
-          destination: "/md-content/:path",
+          destination: "/md-content/:first/:rest*",
         },
         {
           source: "/",
@@ -160,7 +169,8 @@ const nextConfig = {
           destination: "/md-content",
         },
         {
-          source: "/:path((?!resources|api|ui|user-guide|cloud|md-content).+)",
+          source:
+            "/:first((?!resources|api|ui|user-guide|cloud|md-content)[^/]+)/:rest*",
           has: [
             {
               type: "header",
@@ -168,7 +178,7 @@ const nextConfig = {
               value: ".*(text/markdown|text/plain).*",
             },
           ],
-          destination: "/md-content/:path",
+          destination: "/md-content/:first/:rest*",
         },
       ],
       fallback: [
@@ -334,11 +344,16 @@ const nextConfig = {
 
     return catchBadRedirects(result)
   },
+  outputFileTracingRoot: new URL("../../", import.meta.url).pathname,
   outputFileTracingIncludes: {
     "/md\\-content/\\[\\.\\.\\.slug\\]": ["./app/**/*.mdx"],
   },
   outputFileTracingExcludes: {
-    "*": ["node_modules/@medusajs/icons"],
+    "*": [
+      "node_modules/@medusajs/icons",
+      "../**/.open-next/**",
+      "../!(book)/.next/**",
+    ],
   },
   experimental: {
     optimizePackageImports: ["@medusajs/icons", "@medusajs/ui"],
