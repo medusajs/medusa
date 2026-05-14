@@ -1,5 +1,14 @@
 # @medusajs/utils
 
+## 2.15.2
+
+### Patch Changes
+
+- [#15382](https://github.com/medusajs/medusa/pull/15382) [`9990b69ab76f1a575c6a68875627d16764cc1564`](https://github.com/medusajs/medusa/commit/9990b69ab76f1a575c6a68875627d16764cc1564) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(utils): disable generating snapshots on running migrations
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.2
+
 ## 2.15.1
 
 ### Patch Changes
