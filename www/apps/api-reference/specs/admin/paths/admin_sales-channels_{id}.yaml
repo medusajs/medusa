@@ -138,9 +138,9 @@ post:
     - name: sales-channel.updated
       payload: |-
         ```ts
-        [{
+        {
           id, // The ID of the sales channel
-        }]
+        }
         ```
       description: Emitted when sales channels are updated.
       deprecated: false
@@ -195,9 +195,9 @@ delete:
     - name: sales-channel.deleted
       payload: |-
         ```ts
-        [{
+        {
           id, // The ID of the sales channel
-        }]
+        }
         ```
       description: Emitted when sales channels are deleted.
       deprecated: false

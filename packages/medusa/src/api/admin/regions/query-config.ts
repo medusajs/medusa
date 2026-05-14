@@ -1,3 +1,7 @@
+export enum Entities {
+  region = "region",
+}
+
 export const defaultAdminRegionFields = [
   "id",
   "name",
@@ -13,10 +17,12 @@ export const defaultAdminRegionFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminRegionFields,
   isList: false,
+  entity: Entities.region,
 }
 
 export const listTransformQueryConfig = {
   defaults: defaultAdminRegionFields,
   defaultLimit: 20,
   isList: true,
+  entity: Entities.region,
 }

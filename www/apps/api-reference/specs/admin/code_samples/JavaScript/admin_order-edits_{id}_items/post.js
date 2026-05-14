@@ -8,7 +8,7 @@ export const sdk = new Medusa({
   },
 })
 
-sdk.admin.orderEdit.addItems("ordch_123", {
+sdk.admin.orderEdit.addItems("order_123", {
   items: [
     {
       variant_id: "variant_123",

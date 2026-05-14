@@ -444,5 +444,162 @@ describe("load internal", () => {
       expect(moduleService).toBeInstanceOf(ModuleServiceWithProvider)
       expect(provider).toBeInstanceOf(ModuleServiceWithProviderProvider2)
     })
+
+    describe("schemaOnly mode", () => {
+      test("should only register __joinerConfig when schemaOnly is true", async () => {
+        const { ModuleService } = ModuleWithJoinerConfigFixtures
+
+        const moduleResolution: ModuleResolution = {
+          resolutionPath: join(
+            __dirname,
+            "../__fixtures__/module-with-joiner-config"
+          ),
+          moduleDeclaration: {
+            scope: "internal",
+          },
+          definition: {
+            key: "module-schema-only-test",
+            label: "Module schema only test",
+            defaultPackage: false,
+            defaultModuleDeclaration: {
+              scope: "internal",
+            },
+          },
+        }
+
+        const container = createMedusaContainer()
+        await loadInternalModule({
+          container: container,
+          resolution: moduleResolution,
+          logger: console as any,
+          schemaOnly: true,
+        })
+
+        const registeredModule = container.resolve<{
+          __joinerConfig?: () => Record<string, unknown>
+        }>(moduleResolution.definition.key)
+
+        // Should NOT be an instance of the full ModuleService
+        expect(registeredModule).not.toBeInstanceOf(ModuleService)
+
+        // Should have __joinerConfig registered
+        expect(registeredModule).toHaveProperty("__joinerConfig")
+        expect(typeof registeredModule.__joinerConfig).toBe("function")
+
+        // __joinerConfig should return the expected config
+        const joinerConfig = registeredModule.__joinerConfig!()
+        expect(joinerConfig).toEqual(
+          expect.objectContaining({
+            serviceName: "module-service",
+            primaryKeys: ["id"],
+          })
+        )
+      })
+
+      test("should not instantiate the full module service when schemaOnly is true", async () => {
+        const moduleResolution: ModuleResolution = {
+          resolutionPath: join(
+            __dirname,
+            "../__fixtures__/module-with-providers"
+          ),
+          moduleDeclaration: {
+            scope: "internal",
+          },
+          definition: {
+            key: "module-schema-only-no-instance",
+            label: "Module schema only no instance",
+            defaultPackage: false,
+            defaultModuleDeclaration: {
+              scope: "internal",
+            },
+          },
+          options: {
+            providers: [
+              {
+                resolve: join(
+                  __dirname,
+                  "../__fixtures__/module-with-providers/provider-1"
+                ),
+                id: "provider-schema-only",
+                options: {
+                  api_key: "test",
+                },
+              },
+            ],
+          },
+        }
+
+        const container = createMedusaContainer()
+        await loadInternalModule({
+          container: container,
+          resolution: moduleResolution,
+          logger: console as any,
+          schemaOnly: true,
+        })
+
+        const registeredModule = container.resolve(
+          moduleResolution.definition.key
+        )
+
+        // Should NOT be an instance of the full ModuleService
+        expect(registeredModule).not.toBeInstanceOf(ModuleServiceWithProvider)
+
+        // Should only have __joinerConfig
+        expect(registeredModule).toHaveProperty("__joinerConfig")
+
+        // Should NOT have other service methods/properties
+        expect(registeredModule).not.toHaveProperty("container")
+      })
+
+      test("should not register providers when schemaOnly is true", async () => {
+        const moduleResolution: ModuleResolution = {
+          resolutionPath: join(
+            __dirname,
+            "../__fixtures__/module-with-providers"
+          ),
+          moduleDeclaration: {
+            scope: "internal",
+          },
+          definition: {
+            key: "module-schema-only-no-providers",
+            label: "Module schema only no providers",
+            defaultPackage: false,
+            defaultModuleDeclaration: {
+              scope: "internal",
+            },
+          },
+          options: {
+            providers: [
+              {
+                resolve: join(
+                  __dirname,
+                  "../__fixtures__/module-with-providers/provider-1"
+                ),
+                id: "provider-schema-only-test",
+                options: {
+                  api_key: "test",
+                },
+              },
+            ],
+          },
+        }
+
+        const container = createMedusaContainer()
+        await loadInternalModule({
+          container: container,
+          resolution: moduleResolution,
+          logger: console as any,
+          schemaOnly: true,
+        })
+
+        // Provider should NOT be registered in the container
+        const providerKey = getProviderRegistrationKey({
+          providerId: "provider-schema-only-test",
+          providerIdentifier: ModuleServiceWithProviderProvider1.identifier,
+        })
+
+        expect(container.hasRegistration(providerKey)).toBe(false)
+      })
+    })
   })
 })

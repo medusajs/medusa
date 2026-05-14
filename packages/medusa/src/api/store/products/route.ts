@@ -14,11 +14,14 @@ export const GET = async (
   req: RequestWithContext<HttpTypes.StoreProductListParams>,
   res: MedusaResponse<HttpTypes.StoreProductListResponse>
 ) => {
+  const filterableFields: HttpTypes.StoreProductListParams =
+    req.filterableFields
+
   if (FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key)) {
     // TODO: These filters are not supported by the index engine yet
     if (
-      isPresent(req.filterableFields.tags) ||
-      isPresent(req.filterableFields.categories)
+      isPresent(filterableFields.tag_id) ||
+      isPresent(filterableFields.category_id)
     ) {
       return await getProducts(req, res)
     }
@@ -63,6 +66,11 @@ async function getProductsWithIndexEngine(
     delete filters.sales_channel_id
   }
 
+  // TODO: Remove once we implement search by relations in a similar way to query.graph
+  if (isPresent(filters.q)) {
+    filters["variants"] ??= {}
+  }
+
   const { data: products = [], metadata } = await query.index(
     {
       entity: "product",
@@ -75,6 +83,7 @@ async function getProductsWithIndexEngine(
       cache: {
         enable: true,
       },
+      locale: req.locale,
     }
   )
 
@@ -86,6 +95,7 @@ async function getProductsWithIndexEngine(
   }
 
   await wrapProductsWithTaxPrices(req, products)
+
   res.json({
     products,
     count: metadata!.estimate_count,
@@ -130,6 +140,7 @@ async function getProducts(
       cache: {
         enable: true,
       },
+      locale: req.locale,
     }
   )
 
@@ -141,6 +152,7 @@ async function getProducts(
   }
 
   await wrapProductsWithTaxPrices(req, products)
+
   res.json({
     products,
     count: metadata!.count,

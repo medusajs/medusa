@@ -14,7 +14,12 @@ import { customerGroupsQueryKeys } from "./customer-groups"
 import { productsQueryKeys } from "./products"
 
 const PRICE_LISTS_QUERY_KEY = "price-lists" as const
+const PRICE_LIST_PRICES_QUERY_KEY = "price-list-prices" as const
+
 export const priceListsQueryKeys = queryKeysFactory(PRICE_LISTS_QUERY_KEY)
+export const priceListPricesQueryKeys = queryKeysFactory(
+  PRICE_LIST_PRICES_QUERY_KEY
+)
 
 export const usePriceList = (
   id: string,
@@ -31,7 +36,7 @@ export const usePriceList = (
 ) => {
   const { data, ...rest } = useQuery({
     queryFn: () => sdk.admin.priceList.retrieve(id, query),
-    queryKey: priceListsQueryKeys.detail(id),
+    queryKey: priceListsQueryKeys.detail(id, query),
     ...options,
   })
 
@@ -124,6 +129,25 @@ export const useDeletePriceList = (
   })
 }
 
+export const usePriceListPrices = (
+  id: string,
+  query?: HttpTypes.AdminPriceListPriceListParams,
+  options?: UseQueryOptions<
+    HttpTypes.AdminPriceListPriceListResponse,
+    FetchError,
+    HttpTypes.AdminPriceListPriceListResponse,
+    QueryKey
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: () => sdk.admin.priceList.prices(id, query),
+    queryKey: priceListPricesQueryKeys.detail(id, query),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
 export const useBatchPriceListPrices = (
   id: string,
   query?: HttpTypes.AdminPriceListParams,
@@ -141,6 +165,9 @@ export const useBatchPriceListPrices = (
         queryKey: priceListsQueryKeys.detail(id),
       })
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
+      queryClient.invalidateQueries({
+        queryKey: priceListPricesQueryKeys.detail(id),
+      })
 
       options?.onSuccess?.(data, variables, context)
     },

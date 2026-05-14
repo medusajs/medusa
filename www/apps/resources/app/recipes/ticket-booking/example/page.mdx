@@ -87,25 +87,25 @@ By following this tutorial, you will learn how to:
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
 You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose Yes.
 
-Afterward, the installation process will start, which will install the Medusa application in a directory with your project's name, and the Next.js Starter Storefront in a separate directory with the `{project-name}-storefront` name.
-
-<Note title="Why is the storefront installed separately?">
-
-The Medusa application is composed of a headless Node.js server and an admin dashboard. The storefront is installed or custom-built separately and connects to the Medusa application through its REST endpoints, called [API routes](!docs!/learn/fundamentals/api-routes). Learn more in [Medusa's Architecture documentation](!docs!/learn/introduction/architecture).
-
-</Note>
+the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
 
 Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
 
 <Note title="Ran into Errors?">
 
 Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
+
+</Note>
+
+<Note>
+
+In this guide, all file paths of backend customizations are relative to the `apps/backend` directory of your Medusa project.
 
 </Note>
 
@@ -462,7 +462,7 @@ Refer to the [Migrations documentation](!docs!/learn/fundamentals/modules#5-gene
 
 Medusa's CLI tool can generate the migrations for you. To generate a migration for the Ticket Booking Module, run the following command in your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate ticketBooking
 ```
 
@@ -470,7 +470,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -572,7 +572,7 @@ After defining links, you need to sync them to the database. This creates the ne
 
 To sync the links to the database, run the migrations command again in the Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -831,18 +831,24 @@ Refer to the [API routes](!docs!/learn/fundamentals/api-routes) documentation to
 
 Create the file `src/api/admin/venues/route.ts` with the following content:
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 ```ts title="src/api/admin/venues/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { createVenueWorkflow } from "../../../workflows/create-venue"
 import { RowType } from "../../../modules/ticket-booking/models/venue-row"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const CreateVenueSchema = z.object({
   name: z.string(),
   address: z.string().optional(),
   rows: z.array(z.object({
     row_number: z.string(),
-    row_type: z.nativeEnum(RowType),
+    row_type: z.enum(RowType),
     seat_count: z.number(),
   })),
 })
@@ -882,7 +888,7 @@ import {
   defineMiddlewares, 
   validateAndTransformBody,
 } from "@medusajs/framework/http"
-import { CreateTicketProductSchema } from "./admin/ticket-products/route"
+import { CreateVenueSchema } from "./admin/venues/route"
 
 export default defineMiddlewares({
   routes: [
@@ -2307,14 +2313,14 @@ import {
   createTicketProductWorkflow,
 } from "../../../workflows/create-ticket-product"
 import { RowType } from "../../../modules/ticket-booking/models/venue-row"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const CreateTicketProductSchema = z.object({
   name: z.string().min(1, "Name is required"),
   venue_id: z.string().min(1, "Venue ID is required"),
   dates: z.array(z.string()).min(1, "At least one date is required"),
   variants: z.array(z.object({
-    row_type: z.nativeEnum(RowType),
+    row_type: z.enum(RowType),
     seat_count: z.number().min(1, "Seat count must be at least 1"),
     prices: z.array(z.object({
       currency_code: z.string().min(1, "Currency code is required"),
@@ -3236,7 +3242,7 @@ const handleStep2Submit = async () => {
       
       return price
     }).filter((price) => price.amount > 0), // Only include prices > 0
-  }))
+  })).filter((variant) => variant.seat_count > 0) // Only create variants for row types with seats
 
   setIsLoading(true)
   try {
@@ -3499,15 +3505,13 @@ You can edit the associated Medusa product to add images, descriptions, and othe
 
 ---
 
-## Step 10: Validate Cart Before Checkout
+## Step 10: Validate Ticket on Add to Cart
 
-In this step, you'll add custom validation to core cart operations that ensures a seat isn't purchased more than once for the same date.
+In this step, you'll add custom validation to the core add-to-cart operation that ensures a seat isn't purchased more than once for the same date.
 
-Medusa implements cart operations in workflows. Specifically, you'll focus on the `addToCartWorkflow` and `completeCartWorkflow`. Medusa allows you to inject custom logic into workflows using [hooks](!docs!/learn/fundamentals/workflows/workflow-hooks).
+Medusa implements cart operations in workflows. Specifically, you'll focus on the `addToCartWorkflow`. Medusa allows you to inject custom logic into workflows using [hooks](!docs!/learn/fundamentals/workflows/workflow-hooks).
 
 A workflow hook is a point in a workflow where you can inject custom functionality as a step function.
-
-#### Add to Cart Validation Hook
 
 To consume the `validate` hook of the `addToCartWorkflow` that holds the add-to-cart logic, create the file `src/workflows/hooks/add-to-cart-validation.ts` with the following content:
 
@@ -3606,91 +3610,7 @@ In the step function, you:
 
 If the hook throws an error, the add-to-cart operation will be aborted and the error message will be returned to the client.
 
-#### Complete Cart Validation Hook
-
-Next, to consume the `validate` hook of the `completeCartWorkflow` that holds the checkout logic, create the file `src/workflows/hooks/complete-cart-validation.ts` with the following content:
-
-```ts title="src/workflows/hooks/complete-cart-validation.ts"
-import { completeCartWorkflow } from "@medusajs/medusa/core-flows"
-import { MedusaError } from "@medusajs/framework/utils"
-
-completeCartWorkflow.hooks.validate(
-  async ({ cart }, { container }) => {
-    const query = container.resolve("query")
-
-    const { data: items } = await query.graph({
-      entity: "line_item",
-      fields: ["id", "variant_id", "metadata", "quantity"],
-      filters: {
-        id: cart.items.map((item) => item.id).filter(Boolean) as string[],
-      },
-    })
-    // Get the product variant to check if it's a ticket product variant
-    const { data: productVariants } = await query.graph({
-      entity: "product_variant",
-      fields: ["id", "product_id", "ticket_product_variant.purchases.*"],
-      filters: {
-        id: items.map((item) => item.variant_id).filter(Boolean) as string[],
-      },
-    })
-
-    // Check for duplicate seats within the cart
-    const seatDateCombinations = new Set<string>()
-    
-    for (const item of items) {
-      if (item.quantity !== 1) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA, 
-          "You can only purchase one ticket for a seat."
-        )
-      }
-      const productVariant = productVariants.find(
-        (variant) => variant.id === item.variant_id
-      )
-
-      if (!productVariant || !item.metadata?.seat_number) {continue}
-
-      if (!item.metadata?.show_date) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA, 
-          `Show date is required for seat ${item.metadata?.seat_number} in product ${productVariant.product_id}`
-        )
-      }
-
-      // Create a unique key for seat and date combination
-      const seatDateKey = `${item.metadata?.seat_number}-${item.metadata?.show_date}`
-      
-      // Check if this seat-date combination already exists in the cart
-      if (seatDateCombinations.has(seatDateKey)) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA, 
-          `Duplicate seat ${item.metadata?.seat_number} found for show date ${item.metadata?.show_date} in cart`
-        )
-      }
-      
-      // Add to the set to track this combination
-      seatDateCombinations.add(seatDateKey)
-
-      // Check if seat has already been purchased
-      const existingPurchase = productVariant.ticket_product_variant?.purchases.find(
-        (purchase) => purchase?.seat_number === item.metadata?.seat_number 
-          && purchase?.show_date === item.metadata?.show_date
-      )
-
-      if (existingPurchase) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA, 
-          `Seat ${item.metadata?.seat_number} has already been purchased for show date ${item.metadata?.show_date}`
-        )
-      }
-    }
-  }
-)
-```
-
-Similar to the previous hook, you consume the `validate` hook of the `completeCartWorkflow` to validate that no seat is purchased more than once for the same date.
-
-You can test out both hooks when you [customize the storefront](./storefront/page.mdx).
+You can test out the hook when you [customize the storefront](./storefront/page.mdx).
 
 ---
 
@@ -3707,45 +3627,79 @@ The custom workflow that completes the cart has the following steps:
     name: "completeCartWithTicketsWorkflow",
     steps: [
       {
+        type: "step",
+        name: "acquireLockStep",
+        description: "Acquire a lock on the cart to prevent concurrent modifications",
+        link: "/references/medusa-workflows/steps/acquireLockStep",
+        depth: 1,
+      },
+      {
         type: "workflow",
         name: "completeCartWorkflow",
         description: "Complete the cart using Medusa's default completeCartWorkflow",
-        depth: 1,
+        depth: 2,
         link: "/references/medusa-workflows/completeCartWorkflow"
       },
       {
         type: "step",
         name: "useQueryGraphStep",
         description: "Retrieve the cart details",
-        depth: 2,
+        depth: 3,
         link: "/references/helper-steps/useQueryGraphStep"
       },
       {
         type: "step",
-        name: "createTicketPurchasesStep",
-        description: "Create ticket purchases for each ticket product variant in the cart",
-        depth: 3,
+        name: "useQueryGraphStep",
+        description: "Retrieve existing ticket purchases to ensure idempotency",
+        depth: 4,
+        link: "/references/helper-steps/useQueryGraphStep"
       },
       {
-        type: "step",
-        name: "createRemoteLinkStep",
-        description: "Create links between the order and ticket purchases",
-        depth: 4,
-        link: "/references/helper-steps/createRemoteLinkStep"
+        type: "when",
+        condition: "existingLinks.length === 0",
+        steps: [
+          {
+            type: "step",
+            name: "validateTicketOrderStep",
+            description: "Validate that the ticket order can be processed",
+            depth: 1,
+          },
+          {
+            type: "step",
+            name: "createTicketPurchasesStep",
+            description: "Create ticket purchases for each ticket product variant in the cart",
+            depth: 2,
+          },
+          {
+            type: "step",
+            name: "createRemoteLinkStep",
+            description: "Create links between the order and ticket purchases",
+            depth: 3,
+            link: "/references/helper-steps/createRemoteLinkStep"
+          },
+        ],
+        depth: 5
       },
       {
         type: "step",
         name: "useQueryGraphStep",
         description: "Retrieve the order details",
-        depth: 5,
+        depth: 6,
         link: "/references/helper-steps/useQueryGraphStep"
+      },
+      {
+        type: "step",
+        name: "releaseLockStep",
+        description: "Release the lock on the cart",
+        depth: 7,
+        link: "/references/medusa-workflows/steps/releaseLockStep"
       }
     ]
   }}
   hideLegend
 />
 
-You only need to implement the `createTicketPurchasesStep` step, as the other steps and workflows are provided by Medusa.
+You only need to implement the `createTicketPurchasesStep` and `validateTicketOrderStep` steps, as the other steps and workflows are provided by Medusa.
 
 #### createTicketPurchasesStep
 
@@ -3840,18 +3794,135 @@ In the step function, you prepare the ticket purchases to be created, create the
 
 In the compensation function, you delete the created ticket purchases if an error occurs in the workflow.
 
+#### validateTicketOrderStep
+
+The `validateTicketOrderStep` validates that the tickets can be purchased based on their availability.
+
+To create the step, create the file `src/workflows/steps/validate-ticket-order.ts` with the following content:
+
+```ts title="src/workflows/steps/validate-ticket-order.ts"
+import { MedusaError } from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { cancelOrderWorkflow } from "@medusajs/medusa/core-flows"
+
+export type ValidateTicketOrderStepInput = {
+  items: {
+    id: string
+    variant_id: string
+    metadata: Record<string, unknown>
+    quantity: number
+    variant?: {
+      id: string
+      product_id: string
+      ticket_product_variant?: {
+        purchases?: {
+          seat_number: string
+          show_date: Date
+        }[]
+      }
+    }
+  }[]
+  order_id: string
+}
+
+export const validateTicketOrderStep = createStep(
+  "validate-ticket-order",
+  async ({ items, order_id }: ValidateTicketOrderStepInput, { container }) => {
+    // Check for duplicate seats within the cart
+    const seatDateCombinations = new Set<string>()
+    
+    for (const item of items) {
+      if (item.quantity !== 1) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA, 
+          "You can only purchase one ticket for a seat."
+        )
+      }
+
+      if (!item.variant || !item.metadata?.seat_number) {continue}
+
+      if (!item.metadata?.show_date) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA, 
+          `Show date is required for seat ${item.metadata?.seat_number} in product ${item.variant.product_id}`
+        )
+      }
+
+      // Create a unique key for seat and date combination
+      const seatDateKey = `${item.metadata?.seat_number}-${item.metadata?.show_date}`
+      
+      // Check if this seat-date combination already exists in the cart
+      if (seatDateCombinations.has(seatDateKey)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA, 
+          `Duplicate seat ${item.metadata?.seat_number} found for show date ${item.metadata?.show_date} in cart`
+        )
+      }
+      
+      // Add to the set to track this combination
+      seatDateCombinations.add(seatDateKey)
+
+      // Check if seat has already been purchased
+      const existingPurchase = item.variant.ticket_product_variant?.purchases?.find(
+        (purchase) => purchase?.seat_number === item.metadata?.seat_number 
+          && purchase?.show_date === item.metadata?.show_date
+      )
+
+      if (existingPurchase) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA, 
+          `Seat ${item.metadata?.seat_number} has already been purchased for show date ${item.metadata?.show_date}`
+        )
+      }
+    }
+
+    return new StepResponse({ validated: true }, order_id)
+  },
+  async (order_id, { container, context }) => {
+    if (!order_id) {return}
+
+    cancelOrderWorkflow(container).run({
+      input: {
+        order_id,
+      },
+      context,
+      container,
+    })
+  }
+)
+```
+
+The `validateTicketOrderStep` accepts the cart items and order ID as input.
+
+In the step function, you validate that:
+
+1. No seat is purchased more than once for the same date within the cart.
+2. No seat has already been purchased for the same date.
+
+If any validation fails, you throw an error to abort the workflow.
+
+The step also has a compensation function that cancels the order if an error occurs later in the workflow. This is important to ensure that if ticket purchase creation fails, the order is not left in a completed state.
+
 #### Custom Complete Cart Workflow
 
 You can now create the custom workflow that completes the cart and creates ticket purchases.
 
 Create the file `src/workflows/complete-cart-with-tickets.ts` with the following content:
 
-```ts title="src/workflows/complete-cart-with-tickets.ts"
-import { createWorkflow, transform, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
-import { completeCartWorkflow, createRemoteLinkStep, useQueryGraphStep } from "@medusajs/medusa/core-flows"
+```ts title="src/workflows/complete-cart-with-tickets.ts" collapsibleLines="1-14" expandButtonLabel="Show Imports"
+import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
+import { 
+  completeCartWorkflow, 
+  createRemoteLinkStep, 
+  acquireLockStep, 
+  releaseLockStep, 
+  useQueryGraphStep,
+} from "@medusajs/medusa/core-flows"
 import { createTicketPurchasesStep, CreateTicketPurchasesStepInput } from "./steps/create-ticket-purchases"
 import { TICKET_BOOKING_MODULE } from "../modules/ticket-booking"
 import { Modules } from "@medusajs/framework/utils"
+import ticketPurchaseOrderLink from "../links/ticket-purchase-order"
+import { validateTicketOrderStep, ValidateTicketOrderStepInput } from "./steps/validate-ticket-order"
 
 export type CompleteCartWithTicketsWorkflowInput = {
   cart_id: string
@@ -3860,7 +3931,11 @@ export type CompleteCartWithTicketsWorkflowInput = {
 export const completeCartWithTicketsWorkflow = createWorkflow(
   "complete-cart-with-tickets",
   (input: CompleteCartWithTicketsWorkflowInput) => {
-    // Step 1: Complete the cart using Medusa's workflow
+    acquireLockStep({
+      key: input.cart_id,
+      timeout: 2,
+      ttl: 10,
+    })
     const order = completeCartWorkflow.runAsStep({
       input: {
         id: input.cart_id,
@@ -3876,7 +3951,9 @@ export const completeCartWithTicketsWorkflow = createWorkflow(
         "items.variant.options.option.*",
         "items.variant.ticket_product_variant.*",
         "items.variant.ticket_product_variant.ticket_product.*",
+        "items.variant.ticket_product_variant.purchases.*",
         "items.metadata",
+        "items.quantity",
       ],
       filters: {
         id: input.cart_id,
@@ -3886,31 +3963,40 @@ export const completeCartWithTicketsWorkflow = createWorkflow(
       },
     })
 
-    // Step 2: Create ticket purchases for ticket products
-    const ticketPurchases = createTicketPurchasesStep({
-      order_id: order.id,
-      cart: carts[0],
-    } as unknown as CreateTicketPurchasesStepInput)
+    const { data: existingLinks } = useQueryGraphStep({
+      entity: ticketPurchaseOrderLink.entryPoint,
+      fields: ["ticket_purchase.id"],
+      filters: { order_id: order.id },
+    }).config({ name: "retrieve-existing-links" })
 
-    // Step 3: Link ticket purchases to the order
-    const linkData = transform({
-      order,
-      ticketPurchases,
-    }, (data) => {
-      return data.ticketPurchases.map((purchase) => ({
-        [TICKET_BOOKING_MODULE]: {
-          ticket_purchase_id: purchase.id,
-        },
-        [Modules.ORDER]: {
-          order_id: data.order.id,
-        },
-      }))
+    when({ existingLinks }, (data) => data.existingLinks.length === 0)
+    .then(() => {
+      validateTicketOrderStep({
+        items: carts[0].items,
+        order_id: order.id,
+      } as unknown as ValidateTicketOrderStepInput)
+      const ticketPurchases = createTicketPurchasesStep({
+        order_id: order.id,
+        cart: carts[0],
+      } as unknown as CreateTicketPurchasesStepInput)
+  
+      const linkData = transform({
+        order,
+        ticketPurchases,
+      }, (data) => {
+        return data.ticketPurchases.map((purchase) => ({
+          [TICKET_BOOKING_MODULE]: {
+            ticket_purchase_id: purchase.id,
+          },
+          [Modules.ORDER]: {
+            order_id: data.order.id,
+          },
+        }))
+      })
+  
+      createRemoteLinkStep(linkData)
     })
 
-    // Step 4: Create remote links
-    createRemoteLinkStep(linkData)
-
-    // Step 5: Fetch order details
     const { data: refetchedOrder } = useQueryGraphStep({
       entity: "order",
       fields: [
@@ -3934,6 +4020,10 @@ export const completeCartWithTicketsWorkflow = createWorkflow(
       },
     }).config({ name: "refetch-order" })
 
+    releaseLockStep({
+      key: input.cart_id,
+    })
+
     return new WorkflowResponse({
       order: refetchedOrder[0],
     })
@@ -3945,11 +4035,17 @@ The `completeCartWithTicketsWorkflow` accepts the cart ID as input.
 
 In the workflow function, you:
 
-1. Complete the cart using Medusa's `completeCartWorkflow`.
-2. Retrieve the cart details using the `useQueryGraphStep`.
-3. Create ticket purchases for each ticket product variant in the cart using the `createTicketPurchasesStep`.
-4. Create links between the order and the created ticket purchases using the `createRemoteLinkStep`.
-5. Retrieve the order details using the `useQueryGraphStep`.
+1. Acquire a lock on the cart to prevent concurrent modifications using the `acquireLockStep`.
+2. Complete the cart using Medusa's `completeCartWorkflow`.
+3. Retrieve the cart details using the `useQueryGraphStep`.
+4. Retrieve existing ticket purchases linked to the order to ensure idempotency using the `useQueryGraphStep`.
+    - This is important because if the workflow is retried, you don't want to create duplicate ticket purchases.
+5. Use `when` to check that there are no existing links between the order and ticket purchases. If so, you:
+    1. Validate that the ticket order can be processed using the `validateTicketOrderStep`.
+    2. Create ticket purchases for each ticket product variant in the cart using the `createTicketPurchasesStep`.
+    3. Create links between the order and the created ticket purchases using the `createRemoteLinkStep`.
+6. Retrieve the order details using the `useQueryGraphStep`.
+7. Release the lock on the cart using the `releaseLockStep`.
 
 Finally, you return the order details.
 
@@ -4127,7 +4223,7 @@ Create the file `src/api/store/ticket-products/[id]/seats/route.ts` with the fol
 ```ts title="src/api/store/ticket-products/[id]/seats/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const GetTicketProductSeatsSchema = z.object({
   date: z.string(),

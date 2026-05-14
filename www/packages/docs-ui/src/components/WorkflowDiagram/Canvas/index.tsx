@@ -10,7 +10,10 @@ import {
 import React, { useEffect, useRef, useState } from "react"
 import { ArrowPathMini, MinusMini, PlusMini } from "@medusajs/icons"
 import { DropdownMenu, Text } from "@medusajs/ui"
-import { createNodeClusters, getNextCluster } from "../../../utils"
+import {
+  createNodeClusters,
+  getNextCluster,
+} from "@/utils/workflow-diagram-utils"
 import { WorkflowDiagramCanvasDepth } from "./Depth"
 import { WorkflowDiagramCommonProps } from "../../.."
 
@@ -160,7 +163,10 @@ export const WorkflowDiagramCanvas = ({
             </button>
             <div>
               <DropdownMenu>
-                <DropdownMenu.Trigger className="disabled:text-medusa-fg-disabled transition-fg hover:bg-medusa-bg-base-hover active:bg-medusa-bg-base-pressed focus-visible:bg-medusa-bg-base-pressed flex w-[50px] items-center justify-center border-r p-docs_0.25 outline-none">
+                <DropdownMenu.Trigger
+                  className="disabled:text-medusa-fg-disabled transition-fg hover:bg-medusa-bg-base-hover active:bg-medusa-bg-base-pressed focus-visible:bg-medusa-bg-base-pressed flex w-[50px] items-center justify-center border-r p-docs_0.25 outline-none"
+                  data-testid="zoom-percentage-dropdown-trigger"
+                >
                   <Text
                     as="span"
                     size="xsmall"

@@ -1,6 +1,7 @@
 import { ConfigModule } from "@medusajs/framework/config"
 import { ApiLoader } from "@medusajs/framework/http"
 import { MedusaContainer, PluginDetails } from "@medusajs/framework/types"
+import { FeatureFlag } from "@medusajs/framework/utils"
 import { Express } from "express"
 import { join } from "path"
 import qs from "qs"
@@ -23,6 +24,12 @@ export default async ({ app, container, plugins }: Options) => {
     }
     next()
   })
+
+  // Store the initial router stack length before loading API resources for HMR
+  if (FeatureFlag.isFeatureEnabled("backend_hmr")) {
+    const initialStackLength = (app as any)._router?.stack?.length ?? 0
+    ;(global as any).__MEDUSA_HMR_INITIAL_STACK_LENGTH__ = initialStackLength
+  }
 
   const sourcePaths: string[] = []
 

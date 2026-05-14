@@ -3,6 +3,7 @@ slug: /references/medusa-workflows/processPaymentWorkflow
 sidebar_label: processPaymentWorkflow
 sidebar_description: Process a payment based on a webhook event.
 tags:
+  - locking
   - workflow
 ---
 
@@ -19,7 +20,13 @@ capture the payment, or authorize the payment session. It's used when a
 You can use this workflow within your own customizations or custom workflows, allowing you
 to process a payment in your custom flows based on a webhook action.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/147ce2fdc35366e591f552404ec949f6a5b92a11/packages/core/core-flows/src/payment/workflows/process-payment.ts#L39" />
+:::note
+
+If you use this workflow in another, you must acquire a lock before running it and release the lock after. Learn more in the [Locking Operations in Workflows](https://docs.medusajs.com/learn/fundamentals/workflows/locks#locks-in-nested-workflows) guide.
+
+:::
+
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/core-flows/src/payment/workflows/process-payment.ts#L43" />
 
 ## Examples
 
@@ -125,6 +132,8 @@ import { processPaymentWorkflow } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
+    // Acquire lock from nested workflow here
+    // acquireLockStep({  key: cartId,  timeout: THIRTY_SECONDS,  ttl: TWO_MINUTES,  })
     const result = processPaymentWorkflow
       .runAsStep({
         input: {
@@ -135,6 +144,8 @@ const myWorkflow = createWorkflow(
           }
         }
       })
+    // Release lock here
+    // releaseLockStep({ key: cartId })
   }
 )
 ```
@@ -142,9 +153,13 @@ const myWorkflow = createWorkflow(
     </CodeTab>
   </CodeTabs>
 
+## Steps
+
+<WorkflowDiagram workflow={{"name":"processPaymentWorkflow","steps":[{"type":"when","condition":"{\n      return !!cartId\n    }","depth":"1","steps":[{"type":"step","name":"acquireLockStep","description":"This step acquires a lock for a given key. Learn more about locks in the [Locking Module](https://docs.medusajs.com/resources/infrastructure-modules/locking)\nguide.","link":"../../../../Locking/Steps_Locking/functions/core_flows.Locking.Steps_Locking.acquireLockStep/page.mdx","depth":1}]},{"type":"when","condition":"{\n      return !!cartId\n    }","depth":"5","steps":[{"type":"step","name":"releaseLockStep","description":"This step releases a lock for a given key. Learn more about locks in the [Locking Module](https://docs.medusajs.com/resources/infrastructure-modules/locking)\nguide.","link":"../../../../Locking/Steps_Locking/functions/core_flows.Locking.Steps_Locking.releaseLockStep/page.mdx","depth":5}]}]}} />
+
 ## Input
 
-<TypeList types={[{"name":"ProcessPaymentWorkflowInput","type":"[ProcessPaymentWorkflowInput](../../../../interfaces/core_flows.ProcessPaymentWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to process a payment from a webhook action.","expandable":false,"children":[{"name":"action","type":"[PaymentActions](../../../../../types/types/types.PaymentActions/page.mdx)","description":"The action that was performed so that Medusa can handle it internally.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"[WebhookActionData](../../../../../types/interfaces/types.WebhookActionData/page.mdx)","description":"The webhook action's details.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"session_id","type":"`string`","description":"The ID of the payment session in Medusa.\nMake sure to store this ID in the third-party payment provider\nto be able to retrieve the payment session later.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberValue](../../../../../types/types/types.BigNumberValue/page.mdx)","description":"The amount to be captured or authorized (based on the action's type.)","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="processPaymentWorkflow"/>
+<TypeList types={[{"name":"ProcessPaymentWorkflowInput","type":"[ProcessPaymentWorkflowInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.ProcessPaymentWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"action","type":"[PaymentActions](../../../../../types/types/types.PaymentActions/page.mdx)","description":"The action that was performed so that Medusa can handle it internally.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"[WebhookActionData](../../../../../types/interfaces/types.WebhookActionData/page.mdx)","description":"The webhook action's details.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"session_id","type":"`string`","description":"The ID of the payment session in Medusa.\nMake sure to store this ID in the third-party payment provider\nto be able to retrieve the payment session later.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberValue](../../../../../types/types/types.BigNumberValue/page.mdx)","description":"The amount to be captured or authorized (based on the action's type.)","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="processPaymentWorkflow"/>
 
 ## Emitted Events
 

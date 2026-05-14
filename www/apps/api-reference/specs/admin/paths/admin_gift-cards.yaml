@@ -5,7 +5,6 @@ get:
     Retrieve a list of gift cards. The gift cards can be filtered by fields such
     as `id`. The gift cards can also be sorted or paginated.
   x-authenticated: true
-  x-ignoreCleanup: true
   parameters:
     - name: id
       in: query
@@ -174,6 +173,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: created_at
     - name: updated_at
       in: query
       description: Filter by a gift card's update date.
@@ -313,6 +313,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: updated_at
     - name: limit
       in: query
       description: Limit the number of items returned in the list.
@@ -394,6 +395,14 @@ get:
         items:
           type: object
         title: $or
+    - name: with_deleted
+      in: query
+      description: The gift card's with deleted.
+      required: false
+      schema:
+        type: boolean
+        title: with_deleted
+        description: The gift card's with deleted.
   security:
     - api_token: []
     - cookie_auth: []
@@ -425,37 +434,16 @@ get:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-badges:
-    - text: Cloud
+    - text: Loyalty Plugin
       description: >
-        This API route is only available in [Medusa
-        Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+        This API route is only available through the [Loyalty
+        Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
 post:
   operationId: PostGiftCards
   summary: Create Gift Card
   description: Create a gift card.
   x-authenticated: true
   x-ignoreCleanup: true
-  parameters:
-    - name: fields
-      in: query
-      description: >-
-        Comma-separated fields that should be included in the returned data.
-
-        if a field is prefixed with `+` it will be added to the default fields,
-        using `-` will remove it from the default fields.
-
-        without prefix it will replace the entire default fields.
-      required: false
-      schema:
-        type: string
-        title: fields
-        description: >-
-          Comma-separated fields that should be included in the returned data.
-          If a field is prefixed with `+` it will be added to the default
-          fields, using `-` will remove it from the default fields. Without
-          prefix it will replace the entire default fields.
-        externalDocs:
-          url: '#select-fields-and-relations'
   security:
     - api_token: []
     - cookie_auth: []

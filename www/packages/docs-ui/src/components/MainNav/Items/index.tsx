@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { useMainNav } from "../../.."
+import { useMainNav } from "../../../providers/MainNav"
 import clsx from "clsx"
 import { MainNavItemLink } from "./Link"
 import { MainNavItemDropdown } from "./Dropdown"
@@ -16,7 +16,7 @@ export const MainNavItems = ({ className }: MainNavItemsProps) => {
   return (
     <ul
       className={clsx(
-        "hidden lg:flex justify-start gap-docs_1 items-center",
+        "hidden lg:flex justify-start gap-docs_0.5 items-center",
         "my-docs_0.75",
         className
       )}

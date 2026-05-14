@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { usePagination } from "../../providers"
+import { usePagination } from "../../providers/Pagination"
 import clsx from "clsx"
 import { PaginationCard } from "./Card"
 

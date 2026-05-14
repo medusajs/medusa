@@ -6,7 +6,7 @@ products:
   - product
 ---
 
-import { CodeTabs, CodeTab } from "docs-ui"
+import { CodeTabs, CodeTab, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Show Products in Storefront`,
@@ -29,15 +29,12 @@ Learn how to install and configure the JS SDK in the [JS SDK documentation](../.
 <CodeTabs group="store-request">
   <CodeTab label="React" value="react">
 
-export const highlights = [
-  ["17"], ["18"], ["19"], ["20"], ["21"]
-]
-
-  ```tsx highlights={highlights}
+  ```tsx highlights={[["18"], ["19"], ["20"], ["21"], ["22"]]}
   "use client" // include with Next.js 13+
 
   import { useEffect, useState } from "react"
   import { HttpTypes } from "@medusajs/types"
+  import { sdk } from "@/lib/sdk"
 
   export default function Products() {
     const [loading, setLoading] = useState(true)
@@ -224,3 +221,82 @@ sdk.store.product.list({
 ```
 
 The result will be products sorted by title in descending order.
+
+---
+
+## Retrieve Translations for Products
+
+<Prerequisites
+  items={[
+    {
+      text: "Translation Module Configured",
+      link: "/commerce-modules/translation#configure-translation-module",
+    }
+  ]}
+/>
+
+By default, Medusa returns the product's original content (such as title and description).
+
+If you support [localization](../../localization/page.mdx) in your storefront, you can set the locale to retrieve product information with based on the customer's preferred language.
+
+You can set the locale using one of the following methods:
+
+- Use the JS SDK's `setLocale` method. The JS SDK will automatically include the locale in subsequent requests.
+- Pass the `locale` query parameter to the [List Products API route](!api!/store#products_getproducts).
+- Set the `x-medusa-locale` header in the API request to the [List Products API route](!api!/store#products_getproducts).
+
+For example:
+
+<CodeTabs group="localized-products">
+  <CodeTab label="Using JS SDK" value="js-sdk">
+
+```ts
+sdk.setLocale("fr-FR")
+sdk.store.product.list()
+.then(({ products: dataProducts, count }) => {
+  // TODO set products...
+})
+```
+
+  </CodeTab>
+  <CodeTab label="Using Query Parameter" value="query-param">
+
+```bash
+curl "http://localhost:9000/store/products?locale=fr-FR" \
+-H 'x-publishable-api-key: {your_publishable_api_key}'
+```
+
+  </CodeTab>
+  <CodeTab label="Using Header" value="header">
+
+```bash
+curl "http://localhost:9000/store/products" \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
+-H "x-medusa-locale: fr-FR"
+```
+
+  </CodeTab>
+</CodeTabs>
+
+The returned products will have the same structure as described in the [products schema](!api!/store#products_product_schema), but their fields like `title` and `description` will be in the specified locale:
+
+```json
+{
+  "products": [
+    {
+      "id": "prod_123",
+      "title": "Chemise Exemple",
+      "description": "Ceci est une description en français.",
+      // other product fields...
+    }
+  ]
+}
+```
+
+If translations aren't available for the selected locale, or no locale is selected, the product's original content is returned.
+
+### Retrieve in Server-Side Environments
+
+For server-side environments (such as server components or server actions in Next.js), you can set the locale using cookies to persist the selected locale across requests.
+
+Learn more in the [Storefront Localization](../../localization/page.mdx#set-locale-in-server-environments) guide.

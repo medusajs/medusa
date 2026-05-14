@@ -24,7 +24,7 @@ export const getOrderPaymentStatus = (
     ],
     awaiting: [t("orders.payment.status.awaiting"), "orange"],
     captured: [t("orders.payment.status.captured"), "green"],
-    refunded: [t("orders.payment.status.refunded"), "green"],
+    refunded: [t("orders.payment.status.refunded"), "red"],
     partially_refunded: [
       t("orders.payment.status.partiallyRefunded"),
       "orange",

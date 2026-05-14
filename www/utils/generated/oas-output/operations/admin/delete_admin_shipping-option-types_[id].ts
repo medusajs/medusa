@@ -65,9 +65,9 @@
  *   - name: shipping-option-type.deleted
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the shipping option type
- *       }]
+ *       }
  *       ```
  *     description: Emitted when shipping option types are deleted.
  *     deprecated: false

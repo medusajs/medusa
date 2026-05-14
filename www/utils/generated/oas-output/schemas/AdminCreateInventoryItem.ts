@@ -62,6 +62,11 @@
  *     externalDocs:
  *       url: https://docs.medusajs.com/api/admin#manage-metadata
  *       description: Learn how to manage metadata
+ *   location_levels:
+ *     type: array
+ *     description: The inventory item's location levels.
+ *     items:
+ *       $ref: "#/components/schemas/AdminBatchCreateInventoryItemLocationLevels"
  * 
 */
 

@@ -1,10 +1,15 @@
+import type { Writable } from "stream"
 import { Readable } from "stream"
-import { IModuleService } from "../modules-sdk"
-import { FileDTO, FilterableFileProps, UploadFileUrlDTO } from "./common"
 import { FindConfig } from "../common"
+import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
-import { IFileProvider } from "./provider"
+import { FileDTO, FilterableFileProps, UploadFileUrlDTO } from "./common"
 import { CreateFileDTO, GetUploadFileUrlDTO } from "./mutations"
+import {
+  IFileProvider,
+  ProviderFileResultDTO,
+  ProviderUploadStreamDTO,
+} from "./provider"
 
 export interface IFileModuleService extends IModuleService {
   /**
@@ -203,4 +208,14 @@ export interface IFileModuleService extends IModuleService {
    * contents.toString('utf-8')
    */
   getAsBuffer(id: string, sharedContext?: Context): Promise<Buffer>
+
+  /**
+   * Get a writeable stream to upload a file.
+   */
+  getUploadStream(fileData: ProviderUploadStreamDTO): Promise<{
+    writeStream: Writable
+    promise: Promise<ProviderFileResultDTO>
+    url: string
+    fileKey: string
+  }>
 }

@@ -66,6 +66,16 @@ export interface PromotionDTO {
   is_tax_inclusive?: boolean
 
   /**
+   * The maximum number of times this promotion can be used across all orders.
+   */
+  limit?: number | null
+
+  /**
+   * The number of times this promotion has been used in completed orders.
+   */
+  used?: number
+
+  /**
    * The associated application method.
    */
   application_method?: ApplicationMethodDTO
@@ -124,6 +134,11 @@ export interface CreatePromotionDTO {
   is_tax_inclusive?: boolean
 
   /**
+   * The maximum number of times this promotion can be used.
+   */
+  limit?: number | null
+
+  /**
    * The associated application method.
    */
   application_method: CreateApplicationMethodDTO
@@ -172,6 +187,11 @@ export interface UpdatePromotionDTO {
    * Whether the promotion is tax inclusive.
    */
   is_tax_inclusive?: boolean
+
+  /**
+   * The maximum number of times this promotion can be used.
+   */
+  limit?: number | null
 
   /**
    * The status of the promotion:

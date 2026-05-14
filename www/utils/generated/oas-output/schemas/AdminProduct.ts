@@ -8,10 +8,9 @@
  *   - type
  *   - options
  *   - images
- *   - length
  *   - title
- *   - status
  *   - id
+ *   - status
  *   - created_at
  *   - updated_at
  *   - subtitle
@@ -21,6 +20,7 @@
  *   - is_giftcard
  *   - width
  *   - weight
+ *   - length
  *   - height
  *   - origin_country
  *   - hs_code
@@ -173,6 +173,11 @@
  *     description: The date the product was deleted.
  *   shipping_profile:
  *     $ref: "#/components/schemas/AdminShippingProfile"
+ *   translations:
+ *     type: array
+ *     description: The product's translations.
+ *     items:
+ *       $ref: "#/components/schemas/AdminTranslation"
  * 
 */
 

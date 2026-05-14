@@ -1,6 +1,6 @@
 import { HttpTypes, SelectParams } from "@medusajs/types"
-import { Client, FetchError } from "../client"
-import { ClientHeaders } from "../types"
+import { Client, FetchError } from "../client.js"
+import { ClientHeaders } from "../types.js"
 
 export class Product {
   /**

@@ -16,6 +16,7 @@ import {
 
 export type DataGridColumnType =
   | "text"
+  | "multiline-text"
   | "number"
   | "boolean"
   | "togglable-number"
@@ -104,7 +105,7 @@ export interface DataGridCellContainerProps extends PropsWithChildren<{}> {
 }
 
 export type DataGridCellSnapshot<
-  TFieldValues extends FieldValues = FieldValues,
+  TFieldValues extends FieldValues = FieldValues
 > = {
   field: string
   value: PathValue<TFieldValues, Path<TFieldValues>>

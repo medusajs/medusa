@@ -24,6 +24,7 @@ import { prepareShippingMethod } from "../../utils/prepare-shipping-method"
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 import { updateOrderTaxLinesWorkflow } from "../update-tax-lines"
 import { fetchShippingOptionForOrderWorkflow } from "../fetch-shipping-option"
+import { getTranslatedShippingOptionsStep } from "../../../common/steps/get-translated-shipping-option"
 
 /**
  * The data to validate that a shipping method can be created for a claim.
@@ -162,7 +163,14 @@ export const createClaimShippingMethodWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["id", "status", "region_id", "currency_code", "canceled_at"],
+      fields: [
+        "id",
+        "status",
+        "region_id",
+        "currency_code",
+        "canceled_at",
+        "locale",
+      ],
       variables: { id: orderClaim.order_id },
       list: false,
       throw_if_key_not_found: true,
@@ -227,12 +235,17 @@ export const createClaimShippingMethodWorkflow = createWorkflow(
       return [shippingOption]
     })
 
+    const translatedShippingOptions = getTranslatedShippingOptionsStep({
+      shippingOptions: shippingOptions,
+      locale: order.locale!,
+    })
+
     createClaimShippingMethodValidationStep({ order, orderClaim, orderChange })
 
     const shippingMethodInput = transform(
       {
         relatedEntity: orderClaim,
-        shippingOptions,
+        shippingOptions: translatedShippingOptions,
         customPrice: input.custom_amount,
         orderChange,
         input,

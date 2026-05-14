@@ -2,15 +2,16 @@
 
 import Link from "next/link"
 import React, { useMemo } from "react"
-import { MarkdownIcon } from "../../Icons/Markdown"
-import { useAiAssistant, useSiteConfig } from "../../../providers"
+import { useSiteConfig } from "@/providers/SiteConfig"
+import { useAiAssistant } from "@/providers/AiAssistant"
 import { usePathname } from "next/navigation"
-import { BroomSparkle } from "@medusajs/icons"
+import { BroomSparkle, MarkdownSolid } from "@medusajs/icons"
 import { useChat } from "@kapaai/react-sdk"
+import { ContentMenuSection } from "../Section"
 
 export const ContentMenuActions = () => {
   const {
-    config: { baseUrl, basePath },
+    config: { baseUrl, basePath, features, contentMenuSections },
   } = useSiteConfig()
   const pathname = usePathname()
   const { setChatOpened } = useAiAssistant()
@@ -19,7 +20,7 @@ export const ContentMenuActions = () => {
     () => isGeneratingAnswer || isPreparingAnswer,
     [isGeneratingAnswer, isPreparingAnswer]
   )
-  const pageUrl = `${baseUrl}${basePath}${pathname}`
+  const pageUrl = `${baseUrl}${basePath}${pathname}`.replace(/\/$/, "")
 
   const handleAiAssistantClick = () => {
     if (loading) {
@@ -30,21 +31,32 @@ export const ContentMenuActions = () => {
   }
 
   return (
-    <div className="flex flex-col gap-docs_0.5">
-      <Link
-        className="flex items-center gap-docs_0.5 text-medusa-fg-subtle text-x-small-plus hover:text-medusa-fg-base"
-        href={`${pageUrl}/index.html.md`}
-      >
-        <MarkdownIcon width={15} height={15} />
-        View as Markdown
-      </Link>
-      <button
-        className="appearance-none p-0 flex items-center gap-docs_0.5 text-medusa-fg-subtle text-x-small-plus hover:text-medusa-fg-base"
-        onClick={handleAiAssistantClick}
-      >
-        <BroomSparkle width={15} height={15} />
-        Explain with AI Assistant
-      </button>
-    </div>
+    <ContentMenuSection
+      title="Shortcuts"
+      hideChildrenDivider={
+        !contentMenuSections?.products && !contentMenuSections?.whatsNew
+      }
+    >
+      <div className="flex flex-col gap-docs_0.5 p-docs_1">
+        <Link
+          className="flex items-center gap-docs_0.5 text-medusa-fg-subtle text-x-small-plus hover:text-medusa-fg-base"
+          href={`${pageUrl}/index.html.md`}
+          data-testid="markdown-link"
+        >
+          <MarkdownSolid width={15} height={15} />
+          View as Markdown
+        </Link>
+        {features?.aiAssistant && (
+          <button
+            className="appearance-none p-0 flex items-center gap-docs_0.5 text-medusa-fg-subtle text-x-small-plus hover:text-medusa-fg-base"
+            onClick={handleAiAssistantClick}
+            data-testid="ai-assistant-button"
+          >
+            <BroomSparkle width={15} height={15} />
+            Explain this page
+          </button>
+        )}
+      </div>
+    </ContentMenuSection>
   )
 }

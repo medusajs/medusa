@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import {
   createFindParams,
   createOperatorMap,
@@ -23,9 +23,6 @@ export const AdminGetReturnParams = createSelectParams()
 
 export type AdminGetReturnParamsType = z.infer<typeof AdminGetReturnParams>
 
-/**
- * Parameters used to filter and configure the pagination of the retrieved order.
- */
 export const AdminGetOrdersParams = createFindParams({
   limit: 15,
   offset: 0,
@@ -48,7 +45,7 @@ export const AdminPostReturnsReqSchema = z.object({
   description: z.string().optional(),
   internal_note: z.string().optional(),
   no_notification: z.boolean().optional(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 export type AdminPostReturnsReqSchemaType = z.infer<
   typeof AdminPostReturnsReqSchema
@@ -57,7 +54,7 @@ export type AdminPostReturnsReqSchemaType = z.infer<
 export const AdminPostReturnsReturnReqSchema = z.object({
   location_id: z.string().optional(),
   no_notification: z.boolean().optional(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 export type AdminPostReturnsReturnReqSchemaType = z.infer<
   typeof AdminPostReturnsReturnReqSchema
@@ -67,7 +64,7 @@ export const AdminPostOrderExchangesReqSchema = z.object({
   order_id: z.string(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 export type AdminPostOrderExchangesReqSchemaType = z.infer<
   typeof AdminPostOrderExchangesReqSchema
@@ -76,7 +73,7 @@ export type AdminPostOrderExchangesReqSchemaType = z.infer<
 export const AdminPostReceiveReturnsReqSchema = z.object({
   internal_note: z.string().optional(),
   description: z.string().optional(),
-  metadata: z.record(z.unknown()).nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 export type AdminPostReceiveReturnsReqSchemaType = z.infer<
   typeof AdminPostReceiveReturnsReqSchema
@@ -107,7 +104,7 @@ export const AdminPostReturnsShippingReqSchema = z.object({
   custom_amount: z.number().optional(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 export type AdminPostReturnsShippingReqSchemaType = z.infer<
@@ -117,7 +114,7 @@ export type AdminPostReturnsShippingReqSchemaType = z.infer<
 export const AdminPostReturnsShippingActionReqSchema = z.object({
   custom_amount: z.number().nullish().optional(),
   internal_note: z.string().nullish().optional(),
-  metadata: z.record(z.unknown()).nullish().optional(),
+  metadata: z.record(z.string(), z.unknown()).nullish().optional(),
 })
 
 export type AdminPostReturnsShippingActionReqSchemaType = z.infer<
@@ -132,7 +129,7 @@ export const AdminPostReturnsRequestItemsReqSchema = z.object({
       description: z.string().optional(),
       internal_note: z.string().optional(),
       reason_id: z.string().optional(),
-      metadata: z.record(z.unknown()).optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
     })
   ),
 })
@@ -160,7 +157,7 @@ export const AdminPostReturnsRequestItemsActionReqSchema = z.object({
   quantity: z.number().optional(),
   internal_note: z.string().nullish().optional(),
   reason_id: z.string().nullish().optional(),
-  metadata: z.record(z.unknown()).nullish().optional(),
+  metadata: z.record(z.string(), z.unknown()).nullish().optional(),
 })
 
 export type AdminPostReturnsRequestItemsActionReqSchemaType = z.infer<

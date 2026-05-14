@@ -1,5 +1,61 @@
 # @medusajs/icons
 
+## 2.15.2
+
+## 2.15.1
+
+## 2.15.0
+
+## 2.14.2
+
+## 2.14.1
+
+## 2.14.0
+
+### Patch Changes
+
+- [#14791](https://github.com/medusajs/medusa/pull/14791) [`9757a6a8d19b3e819c43ae5a29f35c65fdce9c34`](https://github.com/medusajs/medusa/commit/9757a6a8d19b3e819c43ae5a29f35c65fdce9c34) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(icons): upgrade React to v19
+
+## 2.13.6
+
+## 2.13.5
+
+## 2.13.4
+
+## 2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- [#14700](https://github.com/medusajs/medusa/pull/14700) [`873571a7c9471a28732ac7fad70ff66c28571a0e`](https://github.com/medusajs/medusa/commit/873571a7c9471a28732ac7fad70ff66c28571a0e) Thanks [@fPolic](https://github.com/fPolic)! - fix(icons): default viewBox
+
+## 2.13.1
+
+## 2.13.0
+
+### Minor Changes
+
+- [`a31e72c31c5235240cead2d04e39e5927688eec7`](https://github.com/medusajs/medusa/commit/a31e72c31c5235240cead2d04e39e5927688eec7) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Minor bump
+
+## 2.12.6
+
+## 2.12.5
+
+## 2.12.4
+
+## 2.12.3
+
+### Patch Changes
+
+- [#14297](https://github.com/medusajs/medusa/pull/14297) [`a43eb11d6565d19e82cf2b06e262ab509214b3d4`](https://github.com/medusajs/medusa/commit/a43eb11d6565d19e82cf2b06e262ab509214b3d4) Thanks [@fPolic](https://github.com/fPolic)! - chore(icons): sync new icons
+
+## 2.12.2
+
+## 2.12.1
+
+## 2.12.0
+
 ## 2.11.3
 
 ### Patch Changes

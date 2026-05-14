@@ -7,9 +7,16 @@ import {
   FetchInput,
   FetchStreamResponse,
   Logger,
-} from "./types"
+} from "./types.js"
 
+/**
+ * The header name used for the publishable API key.
+ */
 export const PUBLISHABLE_KEY_HEADER = "x-publishable-api-key"
+/**
+ * The storage key used for storing the locale in localStorage.
+ */
+export const LOCALE_STORAGE_KEY = "medusa_locale"
 
 // We want to explicitly retrieve the base URL instead of relying on relative paths that differ in behavior between browsers.
 const getBaseUrl = (passedBaseUrl: string) => {
@@ -93,6 +100,9 @@ const normalizeResponse = async (resp: Response, reqHeaders: Headers) => {
   return isJsonRequest ? await resp.json() : resp
 }
 
+/**
+ * Error class for HTTP fetch operations that includes status information.
+ */
 export class FetchError extends Error {
   status: number | undefined
   statusText: string | undefined
@@ -104,6 +114,9 @@ export class FetchError extends Error {
   }
 }
 
+/**
+ * The main HTTP client for the Medusa JS SDK.
+ */
 export class Client {
   public fetch_: ClientFetch
   private config: Config
@@ -111,6 +124,18 @@ export class Client {
 
   private DEFAULT_JWT_STORAGE_KEY = "medusa_auth_token"
   private token = ""
+
+  private locale_ = ""
+
+  get locale() {
+    if (hasStorage("localStorage")) {
+      const storedLocale = window.localStorage.getItem(LOCALE_STORAGE_KEY)
+      if (storedLocale) {
+        return storedLocale
+      }
+    }
+    return this.locale_
+  }
 
   constructor(config: Config) {
     this.config = { ...config, baseUrl: getBaseUrl(config.baseUrl) }
@@ -126,7 +151,26 @@ export class Client {
       debug: config.debug ? logger.debug : () => {},
     }
 
+    if (hasStorage("localStorage")) {
+      this.locale_ = window.localStorage.getItem(LOCALE_STORAGE_KEY) || ""
+    }
+
     this.fetch_ = this.initClient()
+  }
+
+  setLocale(locale: string) {
+    if (!window) {
+      this.logger.warn(
+        "setLocale is not available in the server environment. Please set the locale directly through the 'x-medusa-locale' header."
+      )
+      return
+    }
+
+    if (hasStorage("localStorage")) {
+      window.localStorage.setItem(LOCALE_STORAGE_KEY, locale)
+    }
+
+    this.locale_ = locale
   }
 
   /**
@@ -162,17 +206,26 @@ export class Client {
     const abortController = new AbortController()
     const abortFunc = abortController.abort.bind(abortController)
 
-    let res = await this.fetch_(input, {
+    const fetchPromise = this.fetch_(input, {
       ...init,
       signal: abortController.signal,
       headers: { ...init?.headers, accept: "text/event-stream" },
     })
 
-    if (res.ok) {
-      return { stream: events(res, abortController.signal), abort: abortFunc }
-    }
+    return {
+      stream: (async function* () {
+        const res = await fetchPromise
 
-    return { stream: null, abort: abortFunc }
+        if (!res.ok) {
+          const error = new Error(`Stream failed with status ${res.status}`)
+          error.name = "HttpError"
+          throw error
+        }
+
+        yield* events(res, abortController.signal)
+      })(),
+      abort: abortFunc
+    }
   }
 
   async setToken(token: string) {
@@ -225,11 +278,18 @@ export class Client {
     return async (input: FetchInput, init?: FetchArgs) => {
       // We always want to fetch the up-to-date JWT token before firing off a request.
       const headers = new Headers(defaultHeaders)
+
+      if (this.locale) {
+        headers.set("x-medusa-locale", this.locale)
+      }
+
       const customHeaders = {
+        "x-medusa-locale": this.locale,
         ...this.config.globalHeaders,
         ...(await this.getJwtHeader_()),
         ...init?.headers,
       }
+
       // We use `headers.set` in order to ensure headers are overwritten in a case-insensitive manner.
       Object.entries(customHeaders).forEach(([key, value]) => {
         if (value === null) {

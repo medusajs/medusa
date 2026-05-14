@@ -2,11 +2,15 @@
 
 import clsx from "clsx"
 import React from "react"
-import { Link, Tooltip } from "@/components"
+import { Link } from "@/components/Link"
+import { Tooltip } from "@/components/Tooltip"
 import { ExclamationCircle, PlaySolid } from "@medusajs/icons"
 import { GITHUB_ISSUES_LINK } from "@/constants"
 import { CodeBlockCopyAction } from "./Copy"
 import { CodeBlockAskAiAction } from "./AskAi"
+import { useSiteConfig } from "../../../providers/SiteConfig"
+import { CodeBlockBloomAction } from "./Bloom"
+import { CodeBlockStyle } from ".."
 
 export type CodeBlockActionsProps = {
   source: string
@@ -20,6 +24,7 @@ export type CodeBlockActionsProps = {
   noReport?: boolean
   noCopy?: boolean
   noAskAi?: boolean
+  codeBlockStyle?: CodeBlockStyle
 }
 
 export const CodeBlockActions = ({
@@ -34,7 +39,10 @@ export const CodeBlockActions = ({
   noReport = false,
   noCopy = false,
   noAskAi = false,
+  codeBlockStyle = "loud",
 }: CodeBlockActionsProps) => {
+  const { productView } = useSiteConfig()
+
   const iconClassName = [
     "text-medusa-contrast-fg-secondary",
     "group-hover:text-medusa-contrast-fg-primary",
@@ -130,7 +138,12 @@ export const CodeBlockActions = ({
             </Link>
           </Tooltip>
         )}
-        {!noCopy && <CodeBlockCopyAction source={source} inHeader={inHeader} />}
+        {!noCopy && productView !== "bloom" && (
+          <CodeBlockCopyAction source={source} inHeader={inHeader} codeBlockStyle={codeBlockStyle} />
+        )}
+        {productView === "bloom" && (
+          <CodeBlockBloomAction source={source} inHeader={inHeader} />
+        )}
       </div>
     </div>
   )

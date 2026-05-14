@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import type { OpenAPI } from "types"
 import { capitalize, usePrevious, useSidebar } from "docs-ui"
 import { createContext, useContext, useEffect, useMemo, useState } from "react"

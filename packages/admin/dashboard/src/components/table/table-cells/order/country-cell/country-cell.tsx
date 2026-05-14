@@ -3,11 +3,11 @@ import ReactCountryFlag from "react-country-flag"
 import { PlaceholderCell } from "../../common/placeholder-cell"
 import { HttpTypes } from "@medusajs/types"
 
-export const CountryCell = ({
-  country,
-}: {
-  country?: HttpTypes.AdminRegionCountry | null
-}) => {
+type Country = Omit<HttpTypes.AdminRegionCountry, "id"> & {
+  id?: string
+}
+
+export const CountryCell = ({ country }: { country?: Country | null }) => {
   if (!country) {
     return <PlaceholderCell />
   }

@@ -23,7 +23,7 @@ Instead of you writing the migration manually, the Medusa CLI tool provides a [d
 
 For example, assuming you have a `blog` Module, you can generate a migration for it by running the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate blog
 ```
 
@@ -87,7 +87,7 @@ This command also syncs module links. If you don't want that, use the `--skip-li
 
 </Note>
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -99,7 +99,7 @@ This reflects the changes in the database as implemented in the migration's `up`
 
 To rollback or revert the last migration you ran for a module, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:rollback blog
 ```
 
@@ -125,7 +125,7 @@ To learn more about the Medusa CLI's database commands, refer to [this CLI refer
 
 In some use cases, you may need to perform data migration after updates to the database. For example, after you added a `Site` data model to the Blog Module, you want to assign all existing posts and authors to a default site. Another example is updating data stored in a third-party system.
 
-In those scenarios, you can instead create a data migration script. They are asynchronous function that the Medusa application executes once when you run the `npx medusa db:migrate command`.
+In those scenarios, you can instead create a data migration script. They are asynchronous function that the Medusa application executes once when you run migrations.
 
 ### How to Create a Data Migration Script
 
@@ -173,7 +173,7 @@ In the function, you first ensure that the Blog Module is installed to avoid err
 
 To test out the data migration script, run the migration command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -182,3 +182,201 @@ Medusa will run any pending migrations and migration scripts, including your scr
 If the script runs successfully, Medusa won't run the script again.
 
 If there are errors in the script, you'll receive an error in the migration script logs. Medusa will keep running the script every time you run the migration command until it runs successfully.
+
+---
+
+## Migration Examples
+
+The following section provides examples of writing migrations for common database changes.
+
+### Example: Migration with Relationship
+
+Consider you have a module with two data models: `Author` and `Post`. An author can have multiple posts, so there's a one-to-many relationship between the two models:
+
+```ts
+import { model } from "@medusajs/framework/utils"
+
+const Post = model.define("post", {
+  id: model.id().primaryKey(),
+  title: model.text(),
+  author: model.belongsTo(() => Author, {
+    mappedBy: "posts",
+  }),
+})
+
+const Author = model.define("author", {
+  id: model.id().primaryKey(),
+  name: model.text(),
+  posts: model.hasMany(() => Post, {
+    mappedBy: "author",
+  }),
+})
+```
+
+To create a migration that reflects this relationship in the database, you can create a migration file as follows:
+
+```ts title="src/modules/blog/migrations/Migration202507021200_create_author_and_post.ts"
+import { Migration } from "@medusajs/framework/mikro-orm/migrations"
+
+export class Migration20251230112505 extends Migration {
+
+  override async up(): Promise<void> {
+    this.addSql(`create table if not exists "author" ("id" text not null, "name" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "author_pkey" primary key ("id"));`)
+    this.addSql(`CREATE INDEX IF NOT EXISTS "IDX_author_deleted_at" ON "author" ("deleted_at") WHERE deleted_at IS NULL;`)
+
+    this.addSql(`create table if not exists "post" ("id" text not null, "title" text not null, "author_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "post_pkey" primary key ("id"));`)
+    this.addSql(`CREATE INDEX IF NOT EXISTS "IDX_post_author_id" ON "post" ("author_id") WHERE deleted_at IS NULL;`)
+    this.addSql(`CREATE INDEX IF NOT EXISTS "IDX_post_deleted_at" ON "post" ("deleted_at") WHERE deleted_at IS NULL;`)
+
+    this.addSql(`alter table if exists "post" add constraint "post_author_id_foreign" foreign key ("author_id") references "author" ("id") on update cascade;`)
+  }
+
+  override async down(): Promise<void> {
+    this.addSql(`alter table if exists "post" drop constraint if exists "post_author_id_foreign";`)
+
+    this.addSql(`drop table if exists "author" cascade;`)
+
+    this.addSql(`drop table if exists "post" cascade;`)
+  }
+
+}
+```
+
+In this migration, the `up` method creates the `author` and `post` tables, including the foreign key constraint that establishes the relationship between them. The `down` method removes the foreign key constraint and drops both tables.
+
+### Example: Migration to Add a New Column
+
+Consider you have an existing `Post` data model, and you added a new `published_at` column to it.
+
+You can create a migration file to add this new column as follows:
+
+```ts title="src/modules/blog/migrations/Migration202507021300_add_published_at_to_post.ts"
+import { Migration } from "@medusajs/framework/mikro-orm/migrations"
+
+export class Migration20251230113025 extends Migration {
+
+  override async up(): Promise<void> {
+    this.addSql(`alter table if exists "post" add column if not exists "published_at" timestamptz null;`)
+  }
+
+  override async down(): Promise<void> {
+    this.addSql(`alter table if exists "post" drop column if exists "published_at";`)
+  }
+
+}
+```
+
+In this migration, the `up` method adds the `published_at` column to the `post` table, while the `down` method removes it.
+
+### Example: Migration to Remove a Column
+
+Consider you have an existing `Post` data model, and you removed the `published_at` column from it.
+
+You can create a migration file to remove this column as follows:
+
+```ts title="src/modules/blog/migrations/Migration202507021400_remove_published_at_from_post.ts"
+import { Migration } from "@medusajs/framework/mikro-orm/migrations"
+
+export class Migration20251230113125 extends Migration {
+
+  override async up(): Promise<void> {
+    this.addSql(`alter table if exists "post" drop column if exists "published_at";`)
+  }
+
+  override async down(): Promise<void> {
+    this.addSql(`alter table if exists "post" add column if not exists "published_at" timestamptz null;`)
+  }
+
+}
+```
+
+In this migration, the `up` method removes the `published_at` column from the `post` table, while the `down` method adds it back.
+
+### Example: Migration to Rename a Column
+
+Consider you have an existing `Post` data model with a `title` column, and you renamed it to `headline`.
+
+You can create a migration file to rename this column as follows:
+
+```ts title="src/modules/blog/migrations/Migration202507021500_rename_title_to_headline_in_post.ts"
+import { Migration } from "@medusajs/framework/mikro-orm/migrations"
+
+export class Migration20251230113214 extends Migration {
+
+  override async up(): Promise<void> {
+    this.addSql(`alter table if exists "post" rename column "title" to "headline";`)
+  }
+
+  override async down(): Promise<void> {
+    this.addSql(`alter table if exists "post" rename column "headline" to "title";`)
+  }
+
+}
+```
+
+In this migration, the `up` method renames the `title` column to `headline` in the `post` table, while the `down` method renames it back to `title`.
+
+### Example: Migration to Create an Index
+
+Consider you have an existing `Post` data model, and add an index on the `headline` column to improve query performance:
+
+export const indexHighlights = [
+  ["6", "index", "Define the index on the 'headline' column"],
+]
+
+```ts title="src/modules/blog/models/post.ts" highlights={indexHighlights}
+import { model } from "@medusajs/framework/utils"
+import { Author } from "./author"
+
+export const Post = model.define("post", {
+  id: model.id().primaryKey(),
+  headline: model.text().index(),
+  author: model.belongsTo(() => Author, {
+    mappedBy: "posts",
+  }),
+})
+```
+
+You can create a migration file to create this index as follows:
+
+```ts title="src/modules/blog/migrations/Migration202507021600_create_index_on_headline_in_post.ts"
+import { Migration } from "@medusajs/framework/mikro-orm/migrations"
+
+export class Migration20251230113322 extends Migration {
+
+  override async up(): Promise<void> {
+    this.addSql(`CREATE INDEX IF NOT EXISTS "IDX_post_headline" ON "post" ("headline") WHERE deleted_at IS NULL;`)
+  }
+
+  override async down(): Promise<void> {
+    this.addSql(`drop index if exists "IDX_post_headline";`)
+  }
+
+}
+```
+
+In this migration, the `up` method creates an index on the `headline` column of the `post` table, while the `down` method removes the index.
+
+### Example: Migration to Drop an Index
+
+Consider you have an existing `Post` data model with an index on the `headline` column, and you decide to remove this index.
+
+You can create a migration file to drop this index as follows:
+
+```ts title="src/modules/blog/migrations/Migration202507021700_drop_index_on_headline_in_post.ts"
+import { Migration } from "@medusajs/framework/mikro-orm/migrations"
+
+export class Migration20251230113350 extends Migration {
+
+  override async up(): Promise<void> {
+    this.addSql(`drop index if exists "IDX_post_headline";`)
+  }
+
+  override async down(): Promise<void> {
+    this.addSql(`CREATE INDEX IF NOT EXISTS "IDX_post_headline" ON "post" ("headline") WHERE deleted_at IS NULL;`)
+  }
+
+}
+```
+
+In this migration, the `up` method drops the index on the `headline` column of the `post` table, while the `down` method recreates the index.

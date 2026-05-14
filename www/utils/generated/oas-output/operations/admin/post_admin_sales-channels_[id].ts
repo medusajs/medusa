@@ -91,9 +91,9 @@
  *   - name: sales-channel.updated
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the sales channel
- *       }]
+ *       }
  *       ```
  *     description: Emitted when sales channels are updated.
  *     deprecated: false

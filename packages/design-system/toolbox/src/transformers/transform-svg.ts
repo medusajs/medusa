@@ -11,13 +11,47 @@ type TransformArgs = {
   fixed?: boolean
 }
 
+function ensureViewBox(code: string) {
+  if (/viewBox\s*=/.test(code)) {
+    return code
+  }
+
+  const svgTagMatch = code.match(/<svg\b[^>]*>/i)
+  if (!svgTagMatch) {
+    return code
+  }
+
+  const svgTag = svgTagMatch[0]
+  const widthMatch = svgTag.match(/\bwidth\s*=\s*["']([^"']+)["']/i)
+  const heightMatch = svgTag.match(/\bheight\s*=\s*["']([^"']+)["']/i)
+
+  if (!widthMatch || !heightMatch) {
+    return code
+  }
+
+  const width = Number.parseFloat(widthMatch[1])
+  const height = Number.parseFloat(heightMatch[1])
+
+  if (!Number.isFinite(width) || !Number.isFinite(height)) {
+    return code
+  }
+
+  const viewBox = `0 0 ${width} ${height}`
+
+  return code.replace(/<svg\b([^>]*?)>/i, (_match, attrs) => {
+    return `<svg${attrs} viewBox="${viewBox}">`
+  })
+}
+
 export async function transformSvg({
   code,
   componentName,
   fixed = false,
 }: TransformArgs) {
+  const codeWithViewBox = ensureViewBox(code)
+
   return await transform(
-    code,
+    codeWithViewBox,
     {
       typescript: true,
       replaceAttrValues: !fixed

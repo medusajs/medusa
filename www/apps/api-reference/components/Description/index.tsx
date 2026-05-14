@@ -1,5 +1,6 @@
 "use server"
 
+import React from "react"
 import type { OpenAPI } from "types"
 import Section from "../Section"
 import MDXContentServer from "../MDXContent/Server"

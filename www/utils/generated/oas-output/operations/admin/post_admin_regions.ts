@@ -84,9 +84,9 @@
  *   - name: region.created
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the region
- *       }]
+ *       }
  *       ```
  *     description: Emitted when regions are created.
  *     deprecated: false

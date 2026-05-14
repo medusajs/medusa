@@ -4,13 +4,14 @@ import Product from "./product"
 const ProductCategory = model
   .define("ProductCategory", {
     id: model.id({ prefix: "pcat" }).primaryKey(),
-    name: model.text().searchable(),
-    description: model.text().searchable().default(""),
+    name: model.text().searchable().translatable(),
+    description: model.text().searchable().translatable().default(""),
     handle: model.text().searchable(),
     mpath: model.text(),
     is_active: model.boolean().default(false),
     is_internal: model.boolean().default(false),
     rank: model.number().default(0),
+    external_id: model.text().nullable(),
     metadata: model.json().nullable(),
     parent_category: model
       .belongsTo(() => ProductCategory, {

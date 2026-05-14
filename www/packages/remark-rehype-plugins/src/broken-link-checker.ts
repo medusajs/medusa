@@ -175,7 +175,7 @@ function componentChecker({
 
     const itemJsVar = estreeToJs(attribute.value.data.estree)
 
-    if (!itemJsVar) {
+    if (!itemJsVar || "name" in itemJsVar) {
       return
     }
 
@@ -217,7 +217,7 @@ function checkLink({
   currentPageFilePath: string
   options: BrokenLinkCheckerOptions
 }) {
-  if (!link || typeof link !== "string") {
+  if (!link || typeof link !== "string" || link === "/" || link === "#") {
     return
   }
   // try to remove hash

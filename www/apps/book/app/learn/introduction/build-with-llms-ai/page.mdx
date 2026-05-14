@@ -1,14 +1,14 @@
 import { 
-  InlineIcon,
-  Tabs,
-  TabsContent,
-  TabsContentWrapper,
-  TabsList,
-  TabsTrigger,
-  Button,
-  Link
+  BloomIcon,
+  CodeTab,
+  CodeTabs,
+  CardList
 } from "docs-ui"
-import { AiAssistent, AiAssistentLuminosity } from "@medusajs/icons"
+import { 
+  Book,
+  CommandLineSolid,
+  Robot,
+} from "@medusajs/icons"
 
 export const metadata = {
   title: `${pageNumber} Build with AI Assistants and LLMs`,
@@ -16,124 +16,64 @@ export const metadata = {
 
 # {metadata.title}
 
-In this chapter, you'll learn how you can use AI assistants and LLMs effectively in your Medusa development.
+In the next chapters, you'll learn how to power up your ecommerce development and store with AI assistants and Large Language Models (LLMs). These tools can help you build your store faster, get assistance in your development, and even learn Medusa interactively.
 
-## AI Assistant in Documentation
+## What Makes Medusa AI-Friendly?
 
-The Medusa documentation is equipped with an AI Assistant that can answer your questions and help you build customizations with Medusa.
+Medusa's architecture and customization capabilities make it an ideal platform for leveraging AI assistants and LLMs in your commerce development workflow.
 
-### Open the AI Assistant
+A common issue with traditional commerce platforms is that they aren't built to support AI assistants and LLMs, leading to unreliable implementations, security risks, and AI not understanding the platform's architecture. This is often due to hacky workarounds, rigid architecture, or lack of protected yet flexible customization capabilities.
 
-To open the AI Assistant, either:
-
-- Use the keyboard shortcut `Ctrl + I` for Windows/Linux, or `Cmd + I` for macOS.
-- Click the <InlineIcon Icon={AiAssistent} alt="AI Assistant" /> icon in the top right corner of the documentation.
-
-You can then ask the AI Assistant any questions about Medusa, such as:
-
-- What is a workflow?
-- How to create a product review module?
-- How to update Medusa?
-- How to fix this error?
-
-The AI Assistant will provide you with relevant documentation links, code snippets, and explanations to help you with your development.
-
-### Ask About Code Snippets
-
-While browsing the documentation, you'll find a <InlineIcon Icon={AiAssistentLuminosity} alt="AI Assistant" /> icon in the header of code snippets. You can click this icon to ask the AI Assistant about the code snippet.
-
-The AI Assistant will analyze the code and provide explanations, usage examples, and any additional information you need to understand how the code works.
-
-### Ask About Documentation Pages
-
-If you need more help understanding a specific documentation page, you can click the "Explain with AI Assistant" link in the page's right sidebar. This will open the AI Assistant and provide context about the current page, allowing you to ask questions related to the content.
-
-### Formatting and Code Blocks
-
-In your questions to the AI Assistant, you can format code blocks by wrapping them in triple backticks (```). For example:
-
-~~~markdown
-```
-console.log("Hello, World!")
-```
-~~~
-
-You can add new lines using the `Shift + Enter` shortcut.
+On the other hand, Medusa's architecture, Framework, and AI tools support developers and non-technical store owners in using AI assistants to build stores efficiently and securely, and go live faster. With Medusa, you can leverage AI assistants and LLMs to build your store, get assistance in your development, and even learn Medusa interactively.
 
 ---
 
-## MCP Remote Server
+## What Can You Build with Medusa and AI Assistants?
 
-The Medusa documentation provides a remote Model Context Protocol (MCP) server that allows you to find information from the Medusa documentation right in your IDEs or AI tools, such as Cursor.
+By levaging AI assistants in your Medusa development workflow, you can:
 
-Medusa hosts a Streamable HTTP MCP server available at `https://docs.medusajs.com/mcp`. you can add it to AI agents that support connecting to MCP servers.
-
-<Tabs defaultValue="cursor">
-  <TabsList>
-    <TabsTrigger value="cursor">Cursor</TabsTrigger>
-    <TabsTrigger value="vscode">VSCode</TabsTrigger>
-    <TabsTrigger value="claude-code">Claude Code</TabsTrigger>
-  </TabsList>
-  <TabsContentWrapper className="mt-1">
-    <TabsContent value="cursor">
-
-      <Link href="cursor://anysphere.cursor-deeplink/mcp/install?name=medusa&config=eyJ1cmwiOiJodHRwczovL2RvY3MubWVkdXNhanMuY29tL21jcCJ9" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Medusa MCP server to Cursor.
-
-      To manually connect to the Medusa MCP server in Cursor, add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://docs.cursor.com/context/model-context-protocol):
-
-```json
-{
-  "mcpServers": {
-    "medusa": {
-      "url": "https://docs.medusajs.com/mcp"
-    }
-  }
-}
-```
-
-      
-    </TabsContent>
-    <TabsContent value="vscode">
-
-      <Link href="https://vscode.dev/redirect/mcp/install?name=medusa&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fdocs.medusajs.com%2Fmcp%22%7D" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Medusa MCP server to VSCode.
-
-      To manually connect to the Medusa MCP server in VSCode, add the following to your `.vscode/mcp.json` file in your workspace:
-
-```json
-{
-  "servers": {
-    "medusa": {
-      "type": "http",
-      "url": "https://docs.medusajs.com/mcp"
-    }
-  }
-}
-```
-
-      Learn more in the [VSCode documentation](https://code.visualstudio.com/docs/copilot/chat/mcp-servers).
-
-    </TabsContent>
-    <TabsContent value="claude-code">
-      To manually connect to the Medusa MCP server in Claude Code, run the following command in your terminal:
-
-```sh
-claude mcp add --transport http medusa https://docs.medusajs.com/mcp
-```
-
-</TabsContent>
-  </TabsContentWrapper>
-</Tabs>
+1. Build unique features in your store that are tailored to your business needs efficiently, without worrying about the complexities of the platform's architecture.
+2. Get assistance in your development, such as debugging issues, optimizing performance, deployment, and more.
+3. Build storefronts that follow best practices for commerce and provide a great user experience.
 
 ---
 
-## Plain Text Documentation
+## AI Tools and Integrations for Commerce Development
 
-The Medusa documentation is available in plain text format, which allows LLMs and AI tools to easily parse and understand the content.
+Medusa provides various tools and integrations to help you leverage AI assistants and LLMs in your commerce development workflow:
 
-You can access the following plain text documentation files:
-
-- [llms.txt](https://docs.medusajs.com/llms.txt) - Contains a short structure of links to important documentation pages.
-- [llms-full.txt](https://docs.medusajs.com/llms-full.txt) - Contains the full documentation content, including all pages and sections.
-- **Markdown version of any page** - You can access the Markdown version of any documentation page by appending `/index.html.md` to the page URL. For example, the plain text content of the current page is available at [https://docs.medusajs.com/learn/introduction/build-with-llms-ai/index.html.md](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/index.html.md).
-
-You can provide these files to your AI tools or LLM editors like [Cursor](https://docs.cursor.com/context/@-symbols/@-docs). This will help them understand the Medusa documentation and provide better assistance when building customizations or answering questions.
+<CardList
+  items={[
+    {
+      title: "Cloud CLI",
+      text: "Command-line interface for managing Cloud resources and deployments.",
+      href: "/learn/introduction/build-with-llms-ai/cloud-cli",
+      icon: CommandLineSolid
+    },
+    {
+      title: "Medusa Agent Skills",
+      text: "Collection of skills for AI agents to assist you in building features, fixing bugs, and more.",
+      href: "/learn/introduction/build-with-llms-ai/agentic-skills",
+      icon: Book
+    },
+    {
+      title: "MCP Remote Server",
+      text: "Find information from the docs when building features with AI agents like Claude Code.",
+      href: "/learn/introduction/build-with-llms-ai/mcp-server",
+      icon: CommandLineSolid
+    },
+    {
+      title: "Bloom",
+      text: "AI-powered commerce assistant by Medusa to help you build and manage your store.",
+      href: "https://bloom.chat/",
+      icon: BloomIcon,
+    },
+    {
+      title: "AI-Friendly Documentation",
+      text: "Docs with an AI assistant and content optimized for humans and LLMs alike.",
+      href: "/learn/introduction/build-with-llms-ai/ai-friendly-docs",
+      icon: Robot
+    }
+  ]}
+  itemsPerRow={1}
+/>

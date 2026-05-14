@@ -1,3 +1,4 @@
+import React from "react"
 import type { OpenAPI } from "types"
 import TagOperationParameters from "../../Parameters"
 import { DetailsSummary } from "docs-ui"

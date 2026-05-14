@@ -20,7 +20,13 @@ and retrieve their correct pricing after a cart update. This workflow is used by
 
 You can use this workflow within your own customizations or custom workflows, allowing you to refresh the cart's shipping method after making updates to the cart.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/147ce2fdc35366e591f552404ec949f6a5b92a11/packages/core/core-flows/src/cart/workflows/refresh-cart-shipping-methods.ts#L54" />
+:::note
+
+If you use this workflow in another, you must acquire a lock before running it and release the lock after. Learn more in the [Locking Operations in Workflows](https://docs.medusajs.com/learn/fundamentals/workflows/locks#locks-in-nested-workflows) guide.
+
+:::
+
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/core-flows/src/cart/workflows/refresh-cart-shipping-methods.ts#L54" />
 
 ## Examples
 
@@ -114,12 +120,16 @@ import { refreshCartShippingMethodsWorkflow } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
+    // Acquire lock from nested workflow here
+    // acquireLockStep({  key: cart.id,  timeout: 2,  ttl: 10,  })
     const result = refreshCartShippingMethodsWorkflow
       .runAsStep({
         input: {
           cart_id: "cart_123",
         }
       })
+    // Release lock here
+    // releaseLockStep({ key: cart.id })
   }
 )
 ```
@@ -133,7 +143,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"RefreshCartShippingMethodsWorkflowInput & AdditionalData","type":"[RefreshCartShippingMethodsWorkflowInput](../../../../types/core_flows.RefreshCartShippingMethodsWorkflowInput/page.mdx) & [AdditionalData](../../../../../types/HttpTypes/types/types.HttpTypes.AdditionalData/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"RefreshCartShippingMethodsWorkflowInput","type":"[RefreshCartShippingMethodsWorkflowInput](../../../../types/core_flows.RefreshCartShippingMethodsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of the cart to refresh.","expandable":false,"children":[{"name":"cart_id","type":"`string`","description":"The cart's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"`any`","description":"The Cart reference.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"AdditionalData","type":"[AdditionalData](../../../../../types/HttpTypes/types/types.HttpTypes.AdditionalData/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"additional_data","type":"`Record<string, unknown>`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\n\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="refreshCartShippingMethodsWorkflow"/>
+<TypeList types={[{"name":"RefreshCartShippingMethodsWorkflowInput & AdditionalData","type":"[RefreshCartShippingMethodsWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.RefreshCartShippingMethodsWorkflowInput/page.mdx) & [AdditionalData](../../../../../types/HttpTypes/types/types.HttpTypes.AdditionalData/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"RefreshCartShippingMethodsWorkflowInput","type":"[RefreshCartShippingMethodsWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.RefreshCartShippingMethodsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"RefreshCartShippingMethodsWorkflowInput","type":"`object`","description":"The details of the cart to refresh.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"AdditionalData","type":"[AdditionalData](../../../../../types/HttpTypes/types/types.HttpTypes.AdditionalData/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"additional_data","type":"`Record<string, unknown>`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\n\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="refreshCartShippingMethodsWorkflow"/>
 
 ## Hooks
 
@@ -151,7 +161,7 @@ This hook is executed before all operations. You can consume this hook to perfor
 import { refreshCartShippingMethodsWorkflow } from "@medusajs/medusa/core-flows"
 
 refreshCartShippingMethodsWorkflow.hooks.validate(
-  (async ({ input, cart }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -161,4 +171,4 @@ refreshCartShippingMethodsWorkflow.hooks.validate(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Cart.Workflows_Cart/page.mdx#__type-13)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"input","type":"[RefreshCartShippingMethodsWorkflowInput](../../../../types/core_flows.RefreshCartShippingMethodsWorkflowInput/page.mdx) & [AdditionalData](../../../../../types/HttpTypes/types/types.HttpTypes.AdditionalData/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"cart_id","type":"`string`","description":"The cart's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"`any`","description":"The Cart reference.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"additional_data","type":"`Record<string, unknown>`","description":"Additional data that can be passed through the `additional_data` property in HTTP requests.\n\nLearn more in [this documentation](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"cart","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validate"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Cart.Workflows_Cart/page.mdx#__type-12)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validate"/>

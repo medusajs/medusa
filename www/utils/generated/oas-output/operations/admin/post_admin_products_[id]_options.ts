@@ -103,9 +103,9 @@
  *   - name: product-option.created
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the product option
- *       }]
+ *       }
  *       ```
  *     description: Emitted when product options are created.
  *     deprecated: false

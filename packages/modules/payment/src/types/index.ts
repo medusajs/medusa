@@ -27,3 +27,10 @@ export type PaymentModuleOptions = Partial<ModuleServiceInitializeOptions> & {
     options?: Record<string, unknown>
   }[]
 }
+
+declare module "@medusajs/types" {
+  interface ModuleOptions {
+    "@medusajs/payment": PaymentModuleOptions
+    "@medusajs/medusa/payment": PaymentModuleOptions
+  }
+}

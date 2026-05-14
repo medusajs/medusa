@@ -129,7 +129,7 @@ export const createOrUpdateOrderPaymentCollectionWorkflow = createWorkflow(
         return (
           !!existingPaymentCollection?.id &&
           !shouldRecreate &&
-          MathBN.gt(amountPending, 0)
+          MathBN.gte(amountPending, 0)
         )
       }
     ).then(() => {

@@ -259,12 +259,6 @@ To import products:
         2. To remove the uploaded file, click the <InlineIcon Icon={EllipsisHorizontal} alt="trash" /> icon, and choose Delete from the dropdown.
 4. Once you’re done, click the Import button.
 
-<Note>
-
-If you face any errors or difficulties, please contact your technical support team as this could be an issue in the [storage integration](!resources!/infrastructure-modules/file) used.
-
-</Note>
-
 ![Import Products Form](https://res.cloudinary.com/dza7lstvk/image/upload/v1739878759/User%20Guide/Screenshot_2025-02-18_at_1.39.01_PM_ctovne.png)
 
 This starts the import process which may take some time.
@@ -278,8 +272,18 @@ To check whether the import is in progress, finished, or failed:
 
 The text on the import item will explain the current state of the import.
 
-<Note>
+### Troubleshooting Import Errors
 
-If the product import fails, please contact your technical support to check the error logs.
+If the import fails, either during parsing of the CSV file or import process, make sure that:
+
+1. The [storage integration](!resources!/infrastructure-modules/file) is correctly set up in your Medusa application.
+2. The CSV file follows the [required format](#csv-file-format).
+3. All IDs provided in the CSV file (such as for collections, categories, tags, sales channels, shipping profiles, etc...) exist in your Medusa application.
+
+You can also refer to the server logs of your Medusa application to get more information about the error.
+
+<Note title="Cloud User?">
+
+Learn more about troubleshooting in the [Logs guide](!cloud!/logs).
 
 </Note>

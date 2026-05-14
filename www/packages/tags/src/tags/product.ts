@@ -108,6 +108,10 @@ export const product = [
     "path": "https://docs.medusajs.com/resources/integrations/guides/payload"
   },
   {
+    "title": "Integrate Strapi",
+    "path": "https://docs.medusajs.com/resources/integrations/guides/strapi"
+  },
+  {
     "title": "Build Wishlist Plugin",
     "path": "https://docs.medusajs.com/resources/plugins/guides/wishlist"
   },

@@ -52,6 +52,10 @@ export const admin = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/invite"
   },
   {
+    "title": "locale",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/locale"
+  },
+  {
     "title": "notification",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/notification"
   },
@@ -166,6 +170,10 @@ export const admin = [
   {
     "title": "taxRegion",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/taxRegion"
+  },
+  {
+    "title": "translation",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/translation"
   },
   {
     "title": "upload",

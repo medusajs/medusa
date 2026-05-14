@@ -1,22 +1,104 @@
-If you are experiencing connection issues when trying to access your Medusa application from a storefront or the admin dashboard, it is most likely due to Cross-Origin Resource Sharing (CORS) issues.
+If you're experiencing connection issues when trying to access your Medusa application's API routes from the storefront, admin dashboard, or any client application, it's most likely due to a Cross-Origin Resource Sharing (CORS) error.
 
-You might see a log in your browser console, that looks like this:
+To verify it's a CORS error, check your [browser's console](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Tools_and_setup/What_are_browser_developer_tools). You should see an error similar to the following:
 
-![CORS error log](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003322/Medusa%20Docs/Other/jnHK115_udgf2n.png)
+```bash
+Access to fetch at 'http://localhost:9000/store/products' from origin 'http://localhost:8000' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+```
 
-In your `medusa-config.ts`, ensure that you've configured your CORS settings correctly:
+## Why this Error Occurred
+
+This error occurs when you try to access the Medusa server's API routes from a domain that isn't configured in the application's CORS settings. By default, Medusa only allows requests from specific origins to ensure security.
+
+---
+
+## How to Fix It
+
+### Verify Your CORS Settings
+
+Medusa has three CORS settings that you can configure in your `medusa-config.ts` file:
+
+1. [http.storeCors](!docs!/learn/configurations/medusa-config#httpstorecors): Allowed origins for requests to routes starting with `/store`. By default, it's set to `http://localhost:8000` for local development.
+2. [http.adminCors](!docs!/learn/configurations/medusa-config#httpadmincors): Allowed origins for requests to routes starting with `/admin`. By default, it's set to `http://localhost:9000` for local development.
+3. [http.authCors](!docs!/learn/configurations/medusa-config#httpauthcors): Allowed origins for requests to routes starting with `/auth`. By default, it's set to `http://localhost:8000,http://localhost:9000` for local development.
+
+If your storefront or admin are hosted at different domains or ports, or if you're accessing Medusa's API routes from a different origin (such as an additional storefront), you'll need to update the CORS settings accordingly. You can add additional origins by separating them with commas.
+
+For example, set the following environment variables in your `.env` file or in [Cloud](!cloud!/environments/environment-variables):
+
+```env
+STORE_CORS=http://localhost:8000,http://my-custom-store.com
+ADMIN_CORS=http://localhost:9000,http://my-custom-admin.com
+AUTH_CORS=http://localhost:8000,http://localhost:9000,http://my-custom-store.com,http://my-custom-admin.com
+```
+
+Then use the environment variables in your `medusa-config.ts` file:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
   projectConfig: {
     http: {
-      storeCors: process.env.STORE_CORS || "http://localhost:8000",
-      adminCors: process.env.ADMIN_CORS || "http://localhost:9000",
-      authCors: process.env.AUTH_CORS || "http://localhost:8000,http://localhost:9000",
+      storeCors: process.env.STORE_CORS,
+      adminCors: process.env.ADMIN_CORS,
+      authCors: process.env.AUTH_CORS,
     },
     // ...
   },
 })
 ```
 
-Learn more about these configurations in [this documentation](!docs!/learn/configurations/medusa-config#http).
+### Apply CORS for Custom Route Prefix
+
+Medusa applies its CORS settings to routes starting with `/store`, `/admin`, and `/auth`. If you've created a route whose path doesn't start with one of these prefixes, you must manually handle CORS for that route.
+
+For example, if you create a custom route at `/custom-routes`, add a middleware to handle CORS for that route:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/framework/http"
+import type { 
+  MedusaNextFunction, 
+  MedusaRequest, 
+  MedusaResponse, 
+} from "@medusajs/framework/http"
+import { ConfigModule } from "@medusajs/framework/types"
+import { parseCorsOrigins } from "@medusajs/framework/utils"
+import cors from "cors"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/custom-routes*",
+      middlewares: [
+        (
+          req: MedusaRequest, 
+          res: MedusaResponse, 
+          next: MedusaNextFunction
+        ) => {
+          const configModule: ConfigModule =
+            req.scope.resolve("configModule")
+
+          return cors({
+            origin: parseCorsOrigins(
+              // Use the appropriate CORS setting for your custom route
+              configModule.projectConfig.http.storeCors
+            ),
+            credentials: true,
+          })(req, res, next)
+        },
+      ],
+    },
+  ],
+})
+```
+
+Make sure to:
+
+- Update the `matcher` property to match your custom route path.
+- Pass the appropriate CORS setting for your custom route to `parseCorsOrigins`.
+
+---
+
+## Additional Resources
+
+- [Medusa Configuration Options](!docs!/learn/configurations/medusa-config)
+- [CORS for Custom Routes](!docs!/learn/fundamentals/api-routes/cors#cors-in-custom-routes)

@@ -114,6 +114,28 @@ However, before choosing self-hosting, it's important to understand the challeng
     </Table.Row>
     <Table.Row>
       <Table.Cell>
+        [Storefront](#storefront)
+      </Table.Cell>
+      <Table.Cell>
+        Requires separate deployment and manual configuration to connect to the backend.
+      </Table.Cell>
+      <Table.Cell>
+        Deploy storefront alongside your backend with zero configuration and automatic environment setup.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [Email](#email)
+      </Table.Cell>
+      <Table.Cell>
+        Requires setting up and managing your own email infrastructure or third-party service.
+      </Table.Cell>
+      <Table.Cell>
+        Built-in email sending service with monitoring and domain verification.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
         [Data Backup](#data-backup)
       </Table.Cell>
       <Table.Cell>
@@ -162,7 +184,7 @@ When you deploy your Medusa application on Cloud, you deploy it from your own Gi
 
 ### Self-Hosting: Manual Configurations
 
-When you **self-host**, you must manually configure the server for production. You also need to configure database connections, event services, locking mechanisms, and other [Infrastructure Modules](!resources!/infrastructure-modules) that your Medusa application may use.
+When you **self-host**, you must manually configure the server for production. You also need to configure database connections, storefront hosting, email services, event services, locking mechanisms, and other [Infrastructure Modules](!resources!/infrastructure-modules) that your Medusa application may use.
 
 There may also be platform-specific configurations, adding another layer of complexity that will slow down your time to launch. You'll also need to maintain these configurations over time as Medusa updates are released.
 
@@ -172,7 +194,8 @@ On **Cloud**, Medusa offers:
 
 - Pre-configured environments optimized for Medusa applications with no configuration required on your end.
 - Automated setup and management of infrastructure components.
-- Integrated services like [PostgreSQL](../database/page.mdx), [Redis](../redis/page.mdx), and [S3](../s3/page.mdx).
+Integrated services like [PostgreSQL](../database/page.mdx), [Redis](../redis/page.mdx), [S3](../s3/page.mdx), and [Medusa Emails](../emails/page.mdx) that work out-of-the-box.
+- [Storefront deployment](../storefront/page.mdx) alongside your Medusa application with zero configuration and automatic environment setup.
 
 All of these features are available out-of-the-box in your Cloud projects. By using Cloud, you can reduce the time and effort required to get your application up and running, allowing you to focus on building and shipping features.
 
@@ -256,7 +279,9 @@ Cloud users benefit from these optimizations without any additional effort or co
 
 ### Self-Hosting: Slower Developer Experience
 
-When you **self-host**, you may miss out on features like code previews and push-to-deploy, making it difficult to review and ship changes quickly. You'll also find it challenging to reproduce production issues, as you'll need to set up staging environments manually, adding to the complexity.
+When you **self-host**, you may miss out on features like code previews and push-to-deploy, making it difficult to review and ship changes quickly.
+
+You'll also find it challenging to reproduce production issues, as you'll need to set up staging environments manually, adding to the complexity.
 
 ### Cloud: Enhanced Developer Experience
 
@@ -265,8 +290,67 @@ Medusa enhances the developer experience on **Cloud** by providing features like
 - GitHub integration for [push-to-deploy](../deployments/page.mdx#how-are-deployments-created).
 - [Preview environments](../environments/preview/page.mdx) to test changes in pull requests before merging.
 - [Staging environments](../environments/page.mdx) to test new features and reproduce issues in a production-like setting.
+- [Storefront deployment](../storefront/page.mdx) alongside your Medusa application with aligned configurations across environments. You can preview changes in your storefront while previewing backend changes.
 
 By using Cloud, you streamline your development workflow and reduce the time and effort required to manage and ship features.
+
+---
+
+## Storefront
+
+### Self-Hosting: Separate Deployment and Manual Configuration
+
+When you **self-host**, you need to deploy your storefront separately from your Medusa application. This requires:
+
+- Setting up a separate hosting environment for your frontend in a separate provider like Vercel or Netlify.
+- Manually configuring URLs, API keys, and CORS settings to connect the storefront to the backend.
+- Managing different deployments for each environment (production, staging, previews), and ensuring they connect to the correct backend instances.
+- Setting up SSL certificates and custom domains independently.
+- Configuring CDN and performance optimizations manually.
+
+This separation adds complexity and increases the chances of configuration errors that can affect your application's functionality. Without proper configuration, you may compromise on developer experience as you won't have integrated previews or staging environments.
+
+### Cloud: End-to-End Deployment with Zero Configuration
+
+On **Cloud**, Medusa allows you to deploy your [storefront](../storefront/page.mdx) alongside your Medusa application, enabling you to host and manage both backend and frontend in a single platform. Medusa provides:
+
+- **Zero-configuration deployment**: Automatically configures URLs, API keys, and CORS settings to ensure seamless connectivity between your storefront and backend.
+- **Environment-specific storefronts**: Deploys separate storefront instances for production, staging, and preview environments, with each automatically connected to the corresponding backend.
+- **Framework agnostic**: [supports various frontend frameworks](../storefront/page.mdx#supported-storefront-frameworks) like Next.js and Tanstack Start.
+- **Custom domains and SSL**: Set up custom domains with automatically provisioned and renewed SSL certificates.
+- **Global CDN**: Storefronts are served via a global Content Delivery Network, ensuring fast load times for customers worldwide.
+
+By using Cloud's storefront hosting, you reduce deployment complexity and ensure all components of your commerce application work together seamlessly. You also enhance the developer experience with integrated previews and staging environments.
+
+---
+
+## Email
+
+### Self-Hosting: Complex Email Infrastructure Setup
+
+When you **self-host**, sending transactional and marketing emails requires:
+
+- Setting up and managing your own email infrastructure or integrating a third-party email service provider.
+- Manually configuring notification module providers like SendGrid, Mailgun, or AWS SES.
+- Managing email authentication records (SPF, DKIM, DMARC) in your DNS settings.
+- Monitoring email deliverability, open rates, and bounce rates manually or through separate analytics tools.
+- Handling email sending limits and managing costs as your volume grows.
+- Troubleshooting delivery issues without built-in monitoring tools.
+
+This setup requires technical expertise and ongoing maintenance to ensure reliable email delivery.
+
+### Cloud: Built-in Email Service with Zero Configuration
+
+On **Cloud**, Medusa provides [Medusa Emails](../emails/page.mdx), a built-in email sending service that works out-of-the-box with zero configuration. Medusa Emails offers:
+
+- **Instant setup**: Available by default for all Cloud projects without manual configuration or provider setup.
+- **Email monitoring**: Track email delivery rates, open rates, click rates, bounce rates, and complaint rates through the Cloud dashboard.
+- **Domain verification**: Verify your own email sender domains to send emails from branded addresses.
+- **Organization-wide management**: Monitor email activity across all projects in your organization from a centralized dashboard.
+- **Detailed email tracking**: View individual email event histories and preview email content as it was sent to recipients.
+- **Plan-based limits**: Different sending limits based on your [plan](../pricing/page.mdx), with the flexibility to scale as needed.
+
+By using Medusa Emails, you eliminate the need to set up and manage email infrastructure, allowing you to focus on building and sending effective email communications to your customers.
 
 ---
 

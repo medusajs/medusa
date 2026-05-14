@@ -41,6 +41,16 @@ medusaIntegrationTestRunner({
       it("should not load endpoint when feature flag is disabled", async () => {
         expect(api.get("/custom")).rejects.toThrow()
       })
+
+      it("should return 404 (not 400) for POST route with middleware when feature flag is disabled", async () => {
+        const { response } = await api
+          .post("/custom", {
+            invalid: "test",
+          })
+          .catch((e) => e)
+
+        expect(response.status).toBe(404)
+      })
     })
   },
 })

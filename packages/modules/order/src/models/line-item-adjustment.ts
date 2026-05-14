@@ -4,6 +4,7 @@ import { OrderLineItem } from "./line-item"
 const _OrderLineItemAdjustment = model
   .define("OrderLineItemAdjustment", {
     id: model.id({ prefix: "ordliadj" }).primaryKey(),
+    version: model.number().default(1),
     description: model.text().nullable(),
     promotion_id: model.text().nullable(),
     code: model.text().nullable(),

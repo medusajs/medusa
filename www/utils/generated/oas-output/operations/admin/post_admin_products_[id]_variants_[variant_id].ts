@@ -102,9 +102,9 @@
  *   - name: product-variant.updated
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the product variant
- *       }]
+ *       }
  *       ```
  *     description: Emitted when product variants are updated.
  *     deprecated: false

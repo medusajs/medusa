@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { useColorMode } from "@/providers"
+import { useColorMode } from "@/providers/ColorMode"
 
 export type ThemeImageProps = {
   light: string

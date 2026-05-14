@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { useMainNav } from "../../../../providers"
+import { useMainNav } from "../../../../providers/MainNav"
 import Link from "next/link"
 import { TriangleRightMini } from "@medusajs/icons"
 import clsx from "clsx"
@@ -57,7 +57,7 @@ export const MainNavMobileMainMenu = ({
             {item.type === "dropdown" && (
               <>
                 <span>{item.title}</span>
-                <TriangleRightMini />
+                <TriangleRightMini data-testid="triangle-icon" />
               </>
             )}
           </li>

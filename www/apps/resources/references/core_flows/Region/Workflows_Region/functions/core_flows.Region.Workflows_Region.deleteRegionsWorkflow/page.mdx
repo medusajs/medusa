@@ -21,7 +21,7 @@ This workflow deletes one or more regions. It's used by the
 You can use this workflow within your own customizations or custom workflows, allowing you
 to delete regions in your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/147ce2fdc35366e591f552404ec949f6a5b92a11/packages/core/core-flows/src/region/workflows/delete-regions.ts#L33" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/core-flows/src/region/workflows/delete-regions.ts#L33" />
 
 ## Examples
 
@@ -130,11 +130,11 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"deleteRegionsWorkflow","steps":[{"type":"step","name":"deleteRegionsStep","description":"This step deletes one or more regions.","link":"../../../Steps_Region/functions/core_flows.Region.Steps_Region.deleteRegionsStep/page.mdx","depth":1},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record.\n\nLearn more in the [Remote Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/remote-link#cascade-delete-linked-records)","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.removeRemoteLinkStep/page.mdx","depth":2},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":3}]}} />
+<WorkflowDiagram workflow={{"name":"deleteRegionsWorkflow","steps":[{"type":"step","name":"deleteRegionsStep","description":"This step deletes one or more regions.","link":"../../../Steps_Region/functions/core_flows.Region.Steps_Region.deleteRegionsStep/page.mdx","depth":1},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record if cascade deletion is enabled.\n\nLearn more in the [Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/link#cascade-delete-linked-records)","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.removeRemoteLinkStep/page.mdx","depth":2},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":3}]}} />
 
 ## Input
 
-<TypeList types={[{"name":"DeleteRegionsWorkflowInput","type":"[DeleteRegionsWorkflowInput](../../../../types/core_flows.DeleteRegionsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteRegionsWorkflow"/>
+<TypeList types={[{"name":"DeleteRegionsWorkflowInput","type":"[DeleteRegionsWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRegionsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeleteRegionsWorkflowInput","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteRegionsWorkflow"/>
 
 ## Emitted Events
 
@@ -175,18 +175,18 @@ Emitted when regions are deleted.
 </Table.Cell>
       <Table.Cell>
 ```ts blockStyle="inline"
-[{
+{
   id, // The ID of the region
-}]
+}
 ```
 </Table.Cell>
       <Table.Cell>
 <CopyGeneratedSnippetButton tooltipText="Copy subscriber for event" type="subscriber" options={{
         event: "region.deleted",
         payload: `\`\`\`ts
-[{
+{
   id, // The ID of the region
-}]
+}
 \`\`\``
         }}/>
 </Table.Cell>

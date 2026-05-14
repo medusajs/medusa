@@ -1,6 +1,6 @@
 import React from "react"
 import clsx from "clsx"
-import { Button, ButtonProps } from "@/components"
+import { Button, ButtonProps } from "@/components/Button"
 
 export type ModalFooterProps = {
   actions?: ButtonProps[]

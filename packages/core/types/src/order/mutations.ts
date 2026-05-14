@@ -139,6 +139,11 @@ export interface CreateOrderDTO {
   currency_code?: string
 
   /**
+   * The locale of the order.
+   */
+  locale?: string | null
+
+  /**
    * The associated shipping address's ID.
    */
   shipping_address_id?: string
@@ -235,6 +240,11 @@ export interface UpdateOrderDTO {
   is_draft_order?: boolean
 
   /**
+   * The locale of the order.
+   */
+  locale?: string | null
+
+  /**
    * The items of the order.
    */
   items?: CreateOrderLineItemDTO[]
@@ -301,6 +311,11 @@ export interface CreateOrderAdjustmentDTO {
    * Whether the adjustment is tax inclusive.
    */
   is_tax_inclusive?: boolean
+
+  /**
+   * The version of the adjustment.
+   */
+  version?: number
 }
 
 /**
@@ -825,6 +840,13 @@ export interface CreateOrderShippingMethodAdjustmentDTO {
    * The associated provider's ID.
    */
   provider_id?: string
+
+  /**
+   * The version of the adjustment.
+   *
+   * @since 2.13.7
+   */
+  version?: number
 }
 
 /**
@@ -902,6 +924,11 @@ export interface CreateOrderChangeDTO {
    * The internal note of the order change.
    */
   internal_note?: string | null
+
+  /**
+   * Whether to carry over promotions (apply promotions to outbound exchange items).
+   */
+  carry_over_promotions?: boolean | null
 
   /**
    * The user or customer that requested the order change.
@@ -1011,6 +1038,11 @@ export interface UpdateOrderChangeDTO {
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null
+
+  /**
+   * Whether to carry over promotions to outbound exchange items.
+   */
+  carry_over_promotions?: boolean | null
 }
 
 /**
@@ -2206,7 +2238,7 @@ export interface CreateOrderReturnReasonDTO {
   /**
    * The associated parent return reason's ID.
    */
-  parent_return_reason_id?: string
+  parent_return_reason_id?: string | null
 
   /**
    * Holds custom data in key-value pairs.

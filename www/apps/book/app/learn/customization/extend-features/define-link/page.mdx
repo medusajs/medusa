@@ -13,17 +13,11 @@ export const metadata = {
 
 In this chapter, you'll learn how to define a module link between a brand defined in the [custom Brand Module](../../custom-features/module/page.mdx), and a product defined in the [Product Module](!resources!/commerce-modules/product) that's available in your Medusa application out-of-the-box.
 
-Modules are [isolated](../../../fundamentals/modules/isolation/page.mdx) from other resources, ensuring that they're integrated into the Medusa application without side effects. However, you may need to associate data models of different modules, or you're trying to extend data models from Commerce Modules with custom properties. To do that, you define module links.
+Modules are [isolated](../../../fundamentals/modules/isolation/page.mdx) from other resources, ensuring that they're integrated into the Medusa application without side effects. However, you may need to build relations between data models of different modules, or you're trying to extend data models from [Commerce Modules](!resources!/commerce-modules) with custom properties. To do that, you define module links.
 
-A module link forms an association between two data models of different modules while maintaining module isolation. You can then manage and query linked records of the data models using Medusa's Modules SDK.
+A [module link](../../../fundamentals/module-links/page.mdx) forms an association between two data models of different modules while maintaining module isolation. You can then manage and query linked records of the data models using Medusa's Modules SDK.
 
 In this chapter, you'll define a module link between the `Brand` data model of the Brand Module, and the `Product` data model of the Product Module. In later chapters, you'll manage and retrieve linked product and brand records.
-
-<Note>
-
-Learn more about module links in [this chapters](../../../fundamentals/module-links/page.mdx).
-
-</Note>
 
 <Prerequisites
   items={[
@@ -78,7 +72,7 @@ So, in the above code snippet, you define a link between the `Product` and `Bran
 
 A module link is represented in the database as a table that stores the IDs of linked records. So, after defining the link, run the following command to create the module link's table in the database:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 

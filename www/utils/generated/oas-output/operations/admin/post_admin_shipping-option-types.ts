@@ -86,9 +86,9 @@
  *   - name: shipping-option-type.created
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the shipping option type
- *       }]
+ *       }
  *       ```
  *     description: Emitted when shipping option types are created.
  *     deprecated: false

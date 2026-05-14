@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/file-local",
-  "version": "2.11.3",
+  "version": "2.15.2",
   "description": "Local filesystem file storage for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -21,14 +21,15 @@
   "license": "MIT",
   "scripts": {
     "test": "../../../../node_modules/.bin/jest --passWithNoTests src",
+    "test:integration": "../../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/[^/]*\\.spec\\.ts\"",
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build ./tsconfig.json",
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.11.3"
+    "@medusajs/framework": "2.15.2"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.11.3"
+    "@medusajs/framework": "2.15.2"
   },
   "keywords": [
     "medusa-plugin",

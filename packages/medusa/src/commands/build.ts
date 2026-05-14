@@ -1,6 +1,7 @@
 import { Compiler } from "@medusajs/framework/build-tools"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { initializeContainer } from "../loaders"
+import { generateTypes } from "./utils/generate-types"
 
 export default async function build({
   directory,
@@ -11,8 +12,20 @@ export default async function build({
 }) {
   const container = await initializeContainer(directory, {
     skipDbConnection: true,
+    throwOnValidationError: false,
   })
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+
+  try {
+    await generateTypes({
+      directory,
+      container,
+      logger,
+    })
+  } catch (error) {
+    logger.error("Error generating types", error)
+    process.exit(1)
+  }
 
   logger.info("Starting build...")
   const compiler = new Compiler(directory, logger)
@@ -32,7 +45,9 @@ export default async function build({
   promises.push(compiler.buildAppFrontend(adminOnly, tsConfig, bundler))
   const responses = await Promise.all(promises)
 
-  if (responses.every((response) => response === true)) {
+  const buildSucceeded = responses.every((response) => response === true)
+
+  if (buildSucceeded) {
     process.exit(0)
   } else {
     process.exit(1)

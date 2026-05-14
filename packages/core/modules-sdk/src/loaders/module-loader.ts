@@ -11,17 +11,26 @@ export const moduleLoader = async ({
   logger,
   migrationOnly,
   loaderOnly,
+  schemaOnly,
 }: {
   container: MedusaContainer
   moduleResolutions: Record<string, ModuleResolution>
   logger: Logger
   migrationOnly?: boolean
   loaderOnly?: boolean
+  schemaOnly?: boolean
 }): Promise<void> => {
   const resolutions = Object.values(moduleResolutions ?? {})
   const results = await promiseAll(
     resolutions.map((resolution) =>
-      loadModule(container, resolution, logger!, migrationOnly, loaderOnly)
+      loadModule(
+        container,
+        resolution,
+        logger!,
+        migrationOnly,
+        loaderOnly,
+        schemaOnly
+      )
     )
   )
 
@@ -41,7 +50,8 @@ async function loadModule(
   resolution: ModuleResolution,
   logger: Logger,
   migrationOnly?: boolean,
-  loaderOnly?: boolean
+  loaderOnly?: boolean,
+  schemaOnly?: boolean
 ): Promise<{ error?: Error } | void> {
   const modDefinition = resolution.definition
 
@@ -85,5 +95,6 @@ async function loadModule(
     logger,
     migrationOnly,
     loaderOnly,
+    schemaOnly,
   })
 }

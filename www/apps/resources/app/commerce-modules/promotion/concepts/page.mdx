@@ -86,6 +86,28 @@ The Medusa Admin UI may not provide a way to create each of these promotion exam
 
 ---
 
+## Promotion Limits
+
+<Note>
+
+The `limit` property is available since [Medusa v2.12.0](https://github.com/medusajs/medusa/releases/tag/v2.12.0).
+
+</Note>
+
+A promotion can have usage limits to restrict how many times it can be used.
+
+There are three ways to limit a promotion's usage:
+
+1. By setting its `limit` property: This limits the total number of times the promotion can be used across all orders.
+2. By setting the [global budget on the promotion's campaign](../campaign/page.mdx#global-budgets): This limits the total spend or usage across all promotions in the campaign.
+3. By setting the [attribute-based budget on the promotion's campaign](../campaign/page.mdx#attribute-based-budgets): This limits the total spend or usage for specific attributes across all promotions in the campaign. For example, limiting the budget for a specific customer group.
+
+All budgets are applied on the promotion. Once a budget is exhausted, the promotion can no longer be applied.
+
+For example, if a promotion has a `limit` of `10` and its campaign has a global budget of `$1000`, the promotion can only be used `10` times or until the total discount given reaches `$1000`, whichever comes first.
+
+---
+
 ## Promotion Rules
 
 A promotion can be restricted by a set of rules, each rule is represented by the [PromotionRule data model](/references/promotion/models/PromotionRule).

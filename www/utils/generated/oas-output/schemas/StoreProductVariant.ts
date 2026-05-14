@@ -120,9 +120,13 @@
  *     type: string
  *     title: thumbnail
  *     description: The variant's thumbnail.
+ *   images:
+ *     type: array
+ *     description: The variant's images.
+ *     items:
+ *       $ref: "#/components/schemas/BaseProductImage"
  * required:
  *   - options
- *   - length
  *   - title
  *   - id
  *   - created_at
@@ -130,6 +134,7 @@
  *   - thumbnail
  *   - width
  *   - weight
+ *   - length
  *   - height
  *   - origin_country
  *   - hs_code
@@ -138,10 +143,10 @@
  *   - deleted_at
  *   - manage_inventory
  *   - allow_backorder
+ *   - sku
  *   - ean
  *   - upc
  *   - barcode
- *   - sku
  * 
 */
 

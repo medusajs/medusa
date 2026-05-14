@@ -1,5 +1,6 @@
 import { PromotionActions } from "@medusajs/framework/utils"
 import {
+  createHook,
   createWorkflow,
   parallelize,
   WorkflowData,
@@ -11,6 +12,7 @@ import {
   getPromotionCodesToApply,
   prepareAdjustmentsFromPromotionActionsStep,
 } from "../../cart"
+import { promotionContextResult } from "../../cart/utils/schemas"
 import { createDraftOrderLineItemAdjustmentsStep } from "../steps/create-draft-order-line-item-adjustments"
 import { createDraftOrderShippingMethodAdjustmentsStep } from "../steps/create-draft-order-shipping-method-adjustments"
 import { removeDraftOrderLineItemAdjustmentsStep } from "../steps/remove-draft-order-line-item-adjustments"
@@ -51,6 +53,10 @@ export interface RefreshDraftOrderAdjustmentsWorkflowInput {
    * - Replace the existing promo codes with the new ones.
    */
   action: PromotionActions
+  /**
+   * The version of the order change to refresh the adjustments for.
+   */
+  version?: number
 }
 
 /**
@@ -75,6 +81,8 @@ export interface RefreshDraftOrderAdjustmentsWorkflowInput {
  * @summary
  *
  * Refresh the promotions in a draft order.
+ *
+ * @property hooks.setPromotionContext - This hook is executed before promotion rules are evaluated for the draft order. You can consume this hook to return any custom context that should be merged on top of the order context when evaluating promotion rules (e.g. `company.id`, `custom_tier`).
  */
 export const refreshDraftOrderAdjustmentsWorkflow = createWorkflow(
   refreshDraftOrderAdjustmentsWorkflowId,
@@ -85,6 +93,19 @@ export const refreshDraftOrderAdjustmentsWorkflow = createWorkflow(
       ttl: 10,
     })
 
+    const setPromotionContext = createHook(
+      "setPromotionContext",
+      {
+        order: input.order,
+        promo_codes: input.promo_codes,
+        action: input.action,
+      },
+      {
+        resultValidator: promotionContextResult,
+      }
+    )
+    const setPromotionContextResult = setPromotionContext.getResult()
+
     const promotionCodesToApply = getPromotionCodesToApply({
       cart: input.order,
       promo_codes: input.promo_codes,
@@ -92,8 +113,9 @@ export const refreshDraftOrderAdjustmentsWorkflow = createWorkflow(
     })
 
     const actions = getActionsToComputeFromPromotionsStep({
-      cart: input.order as any,
+      computeActionContext: input.order as any,
       promotionCodesToApply,
+      additional_promotion_context: setPromotionContextResult,
     })
 
     const {
@@ -114,6 +136,7 @@ export const refreshDraftOrderAdjustmentsWorkflow = createWorkflow(
       createDraftOrderLineItemAdjustmentsStep({
         lineItemAdjustmentsToCreate: lineItemAdjustmentsToCreate,
         order_id: input.order.id,
+        version: input.version,
       }),
       createDraftOrderShippingMethodAdjustmentsStep({
         shippingMethodAdjustmentsToCreate: shippingMethodAdjustmentsToCreate,
@@ -129,6 +152,8 @@ export const refreshDraftOrderAdjustmentsWorkflow = createWorkflow(
       key: input.order.id,
     })
 
-    return new WorkflowResponse(void 0)
+    return new WorkflowResponse(void 0, {
+      hooks: [setPromotionContext] as const,
+    })
   }
 )

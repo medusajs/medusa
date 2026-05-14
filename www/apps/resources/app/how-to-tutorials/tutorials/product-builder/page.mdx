@@ -78,25 +78,25 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 Start by installing the Medusa application on your machine with the following command:
 
-```bash
+```bash npx2yarnExec
 npx create-medusa-app@latest
 ```
 
 You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose Yes.
 
-Afterward, the installation process will start, which will install the Medusa application in a directory with your project's name, and the Next.js Starter Storefront in a separate directory with the `{project-name}-storefront` name.
-
-<Note title="Why is the storefront installed separately?">
-
-The Medusa application is composed of a headless Node.js server and an admin dashboard. The storefront is installed or custom-built separately and connects to the Medusa application through its REST endpoints, called [API routes](!docs!/learn/fundamentals/api-routes). Learn more in [Medusa's Architecture documentation](!docs!/learn/introduction/architecture).
-
-</Note>
+Afterward, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
 
 Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
 
 <Note title="Ran into Errors?">
 
 Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
+
+</Note>
+
+<Note>
+
+In this guide, all file paths of backend customizations are relative to the `apps/backend` directory of your Medusa project.
 
 </Note>
 
@@ -398,9 +398,9 @@ Refer to the [Migrations documentation](!docs!/learn/fundamentals/modules#5-gene
 
 </Note>
 
-Medusa's CLI tool can generate the migrations for you. To generate a migration for the Product Builder Module, run the following command in your Medusa application's directory:
+Medusa's CLI tool can generate the migrations for you. To generate a migration for the Product Builder Module, run the following command in the `apps/backend` directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:generate productBuilder
 ```
 
@@ -408,7 +408,7 @@ The `db:generate` command of the Medusa CLI accepts the name of the module to ge
 
 Then, to reflect these migrations on the database, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -517,9 +517,9 @@ Similarly to the previous links, you define a link between the `ProductBuilderAd
 
 After defining links, you need to sync them to the database. This creates the necessary tables to store the links.
 
-To sync the links to the database, run the migrations command again in the Medusa application's directory:
+To sync the links to the database, run the migrations command again in the `apps/backend` directory:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -1829,7 +1829,7 @@ import {
   AuthenticatedMedusaRequest, 
   MedusaResponse,
 } from "@medusajs/framework"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { upsertProductBuilderWorkflow } from "../../../../../workflows/upsert-product-builder"
 
 export const UpsertProductBuilderSchema = z.object({
@@ -1999,11 +1999,11 @@ export const getComplementaryProductsRouteHighlights = [
 ```ts title="src/api/admin/products/complementary/route.ts" highlights={getComplementaryProductsRouteHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
 import { createFindParams } from "@medusajs/medusa/api/utils/validators"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const GetComplementaryProductsSchema = z.object({
   exclude_product_id: z.string(),
-}).merge(createFindParams())
+}).extend(createFindParams().shape)
 
 export const GET = async (
   req: MedusaRequest,
@@ -3183,12 +3183,10 @@ Alongside the variant options like color and size, which are already available i
 
 <Note title="Reminder" forceMultiline>
 
-The Next.js Starter Storefront was installed in a separate directory from Medusa. The directory's name is `{your-project}-storefront`.
-
-So, if your Medusa application's directory is `medusa-product-builder`, you can find the storefront by going back to the parent directory and changing to the `medusa-product-builder-storefront` directory:
+The Next.js Starter Storefront is available in the `apps/storefront` directory of your project:
 
 ```bash
-cd ../medusa-product-builder-storefront # change based on your project name
+cd apps/storefront
 ```
 
 </Note>
@@ -4324,16 +4322,23 @@ The workflow will have the following steps:
       },
       {
         type: "step",
+        name: "acquireLockStep",
+        description: "Acquires a lock on the cart to prevent concurrent modifications.",
+        link: "/references/medusa-workflows/steps/acquireLockStep",
+        depth: 2,
+      },
+      {
+        type: "step",
         name: "addToCartWorkflow",
         description: "Adds the product to the cart.",
-        depth: 2
+        depth: 3
       },
       {
         type: "step",
         name: "useQueryGraphStep",
         description: "Get cart with items details.",
         link: "/references/helper-steps/useQueryGraphStep",
-        depth: 3
+        depth: 4
       },
       {
         type: "when",
@@ -4353,14 +4358,21 @@ The workflow will have the following steps:
             depth: 2
           },
         ],
-        depth: 4
+        depth: 5
       },
       {
         type: "step",
         name: "useQueryGraphStep",
         description: "Get updated cart details.",
         link: "/references/helper-steps/useQueryGraphStep",
-        depth: 5
+        depth: 6
+      },
+      {
+        type: "step",
+        name: "releaseLockStep",
+        description: "Releases the lock on the cart.",
+        link: "/references/medusa-workflows/steps/releaseLockStep",
+        depth: 7
       }
     ]
   }}
@@ -4531,18 +4543,27 @@ You can now implement the workflow that adds products with builder configuration
 Create the file `src/workflows/add-product-builder-to-cart.ts` with the following content:
 
 export const addToCartWorkflowHighlights = [
-  ["24", "validateProductBuilderConfigurationStep", "Validate user selections."],
+  ["32", "validateProductBuilderConfigurationStep", "Validate user selections."],
+  ["39", "acquireLockStep", "Acquire lock on cart."]
 ]
 
-```ts title="src/workflows/add-product-builder-to-cart.ts" collapsibleLines="1-9" expandButtonLabel="Show Imports" highlights={addToCartWorkflowHighlights}
+```ts title="src/workflows/add-product-builder-to-cart.ts" collapsibleLines="1-17" expandButtonLabel="Show Imports" highlights={addToCartWorkflowHighlights}
 import { 
   createWorkflow, 
   WorkflowResponse,
   transform,
   when,
 } from "@medusajs/framework/workflows-sdk"
-import { addToCartWorkflow, useQueryGraphStep } from "@medusajs/medusa/core-flows"
-import { validateProductBuilderConfigurationStep } from "./steps/validate-product-builder-configuration"
+import { 
+  addToCartWorkflow, 
+  updateLineItemInCartWorkflow, 
+  useQueryGraphStep, 
+  acquireLockStep, 
+  releaseLockStep,
+} from "@medusajs/medusa/core-flows"
+import { 
+  validateProductBuilderConfigurationStep,
+} from "./steps/validate-product-builder-configuration"
 
 type AddProductBuilderToCartInput = {
   cart_id: string
@@ -4565,6 +4586,12 @@ export const addProductBuilderToCartWorkflow = createWorkflow(
       addon_variants: input.addon_variants,
     })
 
+    acquireLockStep({
+      key: input.cart_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     // TODO add main, complementary, and addon product variants to the cart
   }
 )
@@ -4572,7 +4599,7 @@ export const addProductBuilderToCartWorkflow = createWorkflow(
 
 The workflow accepts the cart, product, variant, and builder configuration information as input.
 
-So far, you only validate the product builder configuration using the step you created earlier. If the validation fails, the workflow will stop executing.
+So far, you validate the product builder configuration using the step you created earlier. If the validation fails, the workflow will stop executing. You also acquire a lock on the cart to prevent concurrent modifications.
 
 Next, you need to add the main product variant to the cart. Replace the `TODO` with the following:
 
@@ -4749,12 +4776,16 @@ const { data: updatedCart } = useQueryGraphStep({
   },
 }).config({ name: "get-final-cart" })
 
+releaseLockStep({
+  key: input.cart_id,
+})
+
 return new WorkflowResponse({
   cart: updatedCart[0],
 })
 ```
 
-You retrieve the final cart details after all items have been added, and you return the updated cart.
+You retrieve the final cart details after all items have been added. Then, you release the lock on the cart and return the updated cart in the workflow response.
 
 ### b. Create API Route
 
@@ -4771,13 +4802,13 @@ export const addToCartApiHighlights = [
 ```ts title="src/api/store/carts/[id]/product-builder/route.ts" highlights={addToCartApiHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { addProductBuilderToCartWorkflow } from "../../../../../workflows/add-product-builder-to-cart"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const AddBuilderProductSchema = z.object({
   product_id: z.string(),
   variant_id: z.string(),
   quantity: z.number().optional().default(1),
-  custom_field_values: z.record(z.any()).optional().default({}),
+  custom_field_values: z.record(z.string(), z.any()).optional().default({}),
   complementary_product_variants: z.array(z.string()).optional().default([]),
   addon_variants: z.array(z.string()).optional().default([]),
 })
@@ -5507,8 +5538,6 @@ You also need to update the components that use the `Item` component to pass the
 In `src/modules/cart/templates/items.tsx`, replace the `return` statement with the following:
 
 export const itemsTemplateHighlights = [
-  ["13", "className"],
-  ["17", "className"],
   ["34", "cartItems", "Pass new prop"]
 ]
 
@@ -5636,12 +5665,7 @@ You calculate the total items by summing the quantities of the `filteredItems`, 
 
 Finally, in the `return` statement, replace all usages of `cartState.items` with `filteredItems`, and remove the children element of the `DeleteButton` for better styling:
 
-export const cartDropdownHighlights = [
-  ["6", "filteredItems"], ["9", "filteredItems"],
-  ["21"], ["22"], ["23"], ["24"], ["25"]
-]
-
-```tsx title="src/modules/layout/components/cart-dropdown/index.tsx" badgeLabel="Storefront" badgeColor="blue" highlights={cartDropdownHighlights}
+```tsx title="src/modules/layout/components/cart-dropdown/index.tsx" badgeLabel="Storefront" badgeColor="blue" highlights={[["6"], ["9"], ["21"], ["22"], ["23"], ["24"], ["25"]]}
 return (
   <div
     // ...
@@ -5714,19 +5738,33 @@ The workflow to remove a product with builder configurations from the cart has t
         depth: 1
       },
       {
+        type: "step",
+        name: "acquireLockStep",
+        description: "Acquire a lock on the cart to prevent concurrent modifications.",
+        link: "/references/medusa-workflows/steps/acquireLockStep",
+        depth: 2,
+      },
+      {
         type: "workflow",
         name: "deleteLineItemsWorkflow",
         description: "Delete line items from the cart.",
         link: "/references/medusa-workflows/deleteLineItemsWorkflow",
-        depth: 2,
+        depth: 3,
       },
       {
         type: "step",
         name: "useQueryGraphStep",
         description: "Retrieve the updated cart details.",
         link: "/references/helper-steps/useQueryGraphStep",
-        depth: 3
+        depth: 4
       },
+      {
+        type: "step",
+        name: "releaseLockStep",
+        description: "Release the lock on the cart.",
+        link: "/references/medusa-workflows/steps/releaseLockStep",
+        depth: 5,
+      }
     ]
   }}
   hideLegend
@@ -5737,20 +5775,27 @@ Medusa provides all of these steps, so you can create the workflow without needi
 Create the file `src/workflows/remove-product-builder-from-cart.ts` with the following content:
 
 export const removeProductBuilderFromCartWorkflowHighlights = [
-  ["17", "carts", "Retrieve cart."],
-  ["29", "itemsToRemove", "Identify items to remove."],
-  ["43", "relatedItems", "Identify addon items to remove."],
-  ["60", "deleteLineItemsWorkflow", "Delete line items from cart."],
-  ["65", "updatedCart", "Retrieve updated cart."]
+  ["22", "carts", "Retrieve cart."],
+  ["33", "acquireLockStep", "Acquire lock on cart."],
+  ["40", "itemsToRemove", "Identify items to remove."],
+  ["51", "relatedItems", "Identify addon items to remove."],
+  ["68", "deleteLineItemsWorkflow", "Delete line items from cart."],
+  ["73", "updatedCart", "Retrieve updated cart."],
+  ["84", "releaseLockStep", "Release lock on cart."],
 ]
 
-```ts title="src/workflows/remove-product-builder-from-cart.ts" highlights={removeProductBuilderFromCartWorkflowHighlights}
+```ts title="src/workflows/remove-product-builder-from-cart.ts" highlights={removeProductBuilderFromCartWorkflowHighlights} collapsibleLines="1-12" expandButtonLabel="Show Imports"
 import { 
   createWorkflow, 
   WorkflowResponse,
   transform,
 } from "@medusajs/framework/workflows-sdk"
-import { deleteLineItemsWorkflow, useQueryGraphStep } from "@medusajs/medusa/core-flows"
+import { 
+  deleteLineItemsWorkflow, 
+  useQueryGraphStep, 
+  acquireLockStep, 
+  releaseLockStep,
+} from "@medusajs/medusa/core-flows"
 
 type RemoveProductBuilderFromCartInput = {
   cart_id: string
@@ -5763,7 +5808,7 @@ export const removeProductBuilderFromCartWorkflow = createWorkflow(
     // Step 1: Get current cart with all items
     const { data: carts } = useQueryGraphStep({
       entity: "cart",
-      fields: ["*", "items.*", "items.metadata"],
+      fields: ["*", "items.*"],
       filters: {
         id: input.cart_id,
       },
@@ -5772,18 +5817,21 @@ export const removeProductBuilderFromCartWorkflow = createWorkflow(
       },
     })
 
+    acquireLockStep({
+      key: input.cart_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     // Step 2: Remove line item and its addons
     const itemsToRemove = transform({
       input,
-      carts,
+      currentCart: carts,
     }, (data) => {
-      const cart = data.carts[0]
-      const targetLineItem = cart.items.find(
-        (item: any) => item.id === data.input.line_item_id
-      )
+      const cart = data.currentCart[0]
+      const targetLineItem = cart.items.find((item: any) => item.id === data.input.line_item_id)
       const lineItemIdsToRemove = [data.input.line_item_id]
-      const isBuilderItem = 
-        targetLineItem?.metadata?.is_builder_main_product === true
+      const isBuilderItem = targetLineItem?.metadata?.is_builder_main_product === true
       
       if (targetLineItem && isBuilderItem) {
         // Find all related addon items
@@ -5820,6 +5868,10 @@ export const removeProductBuilderFromCartWorkflow = createWorkflow(
       },
     }).config({ name: "get-updated-cart" })
 
+    releaseLockStep({
+      key: input.cart_id,
+    })
+
     return new WorkflowResponse({
       cart: updatedCart[0],
     })
@@ -5831,10 +5883,12 @@ This workflow receives the IDs of the cart and the line item to remove.
 
 In the workflow, you:
 
+- Acquire a lock on the cart to prevent concurrent modifications.
 - Retrieve the cart details with its items.
 - Prepare the line items to remove by identifying the main product and its related addons.
 - Remove the line items from the cart.
 - Retrieve the updated cart details.
+- Release the lock on the cart.
 
 You return the cart details in the response.
 
@@ -5929,7 +5983,6 @@ Then, pass an `isBuilderConfigItem` prop to the `DeleteButton` component, and up
 
 export const deleteButtonHighlights = [
   ["3", "isBuilderConfigItem", "New prop to determine if item belongs to a product with builder configurations."],
-  ["6"],
   ["12", "removeBuilderLineItem", "Use when the line item belongs to a product with builder configurations."],
 ]
 

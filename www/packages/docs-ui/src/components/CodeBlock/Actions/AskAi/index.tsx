@@ -1,11 +1,12 @@
 "use client"
 
 import React from "react"
-import { useAiAssistant, useSiteConfig } from "../../../../providers"
+import { useAiAssistant } from "../../../../providers/AiAssistant"
 import clsx from "clsx"
 import { Tooltip } from "../../../Tooltip"
-import Image from "next/image"
 import { useChat } from "@kapaai/react-sdk"
+import { BloomIcon } from "../../../Icons"
+import { useSiteConfig } from "../../../../providers/SiteConfig"
 
 export type CodeBlockCopyActionProps = {
   source: string
@@ -17,8 +18,12 @@ export const CodeBlockAskAiAction = ({
   inHeader,
 }: CodeBlockCopyActionProps) => {
   const { setChatOpened, loading } = useAiAssistant()
-  const { submitQuery } = useChat()
   const { config } = useSiteConfig()
+  const { submitQuery } = useChat()
+
+  if (!config.features?.aiAssistant) {
+    return null
+  }
 
   const handleClick = () => {
     if (loading) {
@@ -30,7 +35,7 @@ export const CodeBlockAskAiAction = ({
 
   return (
     <Tooltip
-      text="Ask AI"
+      text="Ask Bloom"
       tooltipClassName="font-base"
       className={clsx("group")}
       innerClassName={clsx(
@@ -43,16 +48,13 @@ export const CodeBlockAskAiAction = ({
         className={clsx(
           !inHeader && "p-[6px]",
           inHeader && "p-[4.5px]",
-          "cursor-pointer"
+          "cursor-pointer",
+          "text-medusa-contrast-fg-secondary group-hover:text-medusa-contrast-fg-primary",
+          "group-focus:text-medusa-contrast-fg-primary"
         )}
         onClick={handleClick}
       >
-        <Image
-          src={`${config.basePath}/images/ai-assistent-luminosity.png`}
-          width={15}
-          height={15}
-          alt="Ask AI"
-        />
+        <BloomIcon />
       </span>
     </Tooltip>
   )

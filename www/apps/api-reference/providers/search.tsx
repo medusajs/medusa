@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { usePageLoading, SearchProvider as UiSearchProvider } from "docs-ui"
 import { config } from "../config"
 import basePathUrl from "../utils/base-path-url"

@@ -33,7 +33,6 @@ export const DELETE = async (
 ) => {
   const { id } = req.params
 
-
   const { result } = await removeDraftOrderPromotionsWorkflow(req.scope).run({
     input: {
       ...req.validatedBody,

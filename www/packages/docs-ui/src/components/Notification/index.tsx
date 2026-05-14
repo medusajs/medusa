@@ -4,7 +4,7 @@ import {
   NotificationContextType,
   NotificationItemType,
   useNotifications,
-} from "@/providers"
+} from "@/providers/Notification"
 import React from "react"
 import { NotificationItem } from "./Item"
 // @ts-expect-error can't install the types package because it doesn't support React v19

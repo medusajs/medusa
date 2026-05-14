@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { applyAndAndOrOperators } from "../../utils/common-validators"
 import {
   createFindParams,
@@ -14,6 +14,7 @@ export const StoreProductTypesParamsFields = z.object({
   q: z.string().optional(),
   id: z.union([z.string(), z.array(z.string())]).optional(),
   value: z.union([z.string(), z.array(z.string())]).optional(),
+  external_id: z.union([z.string(), z.array(z.string())]).optional(),
   created_at: createOperatorMap().optional(),
   updated_at: createOperatorMap().optional(),
   deleted_at: createOperatorMap().optional(),

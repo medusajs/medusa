@@ -5,7 +5,7 @@ import ProductVariantProductImage from "./product-variant-product-image"
 const ProductVariant = model
   .define("ProductVariant", {
     id: model.id({ prefix: "variant" }).primaryKey(),
-    title: model.text().searchable(),
+    title: model.text().searchable().translatable(),
     sku: model.text().searchable().nullable(),
     barcode: model.text().searchable().nullable(),
     ean: model.text().searchable().nullable(),
@@ -15,11 +15,11 @@ const ProductVariant = model
     hs_code: model.text().nullable(),
     origin_country: model.text().nullable(),
     mid_code: model.text().nullable(),
-    material: model.text().nullable(),
-    weight: model.number().nullable(),
-    length: model.number().nullable(),
-    height: model.number().nullable(),
-    width: model.number().nullable(),
+    material: model.text().translatable().nullable(),
+    weight: model.float().nullable(),
+    length: model.float().nullable(),
+    height: model.float().nullable(),
+    width: model.float().nullable(),
     metadata: model.json().nullable(),
     variant_rank: model.number().default(0).nullable(),
     /**

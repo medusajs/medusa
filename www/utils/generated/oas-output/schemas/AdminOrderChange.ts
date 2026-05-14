@@ -9,9 +9,9 @@
  *   - return_order
  *   - exchange
  *   - actions
- *   - status
  *   - id
  *   - version
+ *   - status
  *   - metadata
  *   - created_at
  *   - updated_at
@@ -28,6 +28,7 @@
  *   - declined_at
  *   - canceled_by
  *   - canceled_at
+ *   - created_by
  * properties:
  *   id:
  *     type: string
@@ -139,6 +140,14 @@
  *     format: date-time
  *     title: updated_at
  *     description: The date the order change was updated.
+ *   carry_over_promotions:
+ *     type: boolean
+ *     title: carry_over_promotions
+ *     description: Whether promotions from the original order should be carried over to the order change (specifically, exchanges).
+ *   created_by:
+ *     type: string
+ *     title: created_by
+ *     description: The ID of the user that created the order change.
  * 
 */
 

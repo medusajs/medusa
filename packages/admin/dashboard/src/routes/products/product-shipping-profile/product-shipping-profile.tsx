@@ -4,15 +4,17 @@ import { useParams } from "react-router-dom"
 
 import { RouteDrawer } from "../../../components/modals"
 import { useProduct } from "../../../hooks/api/products"
-import { PRODUCT_DETAIL_FIELDS } from "../product-detail/constants"
 import { ProductShippingProfileForm } from "./components/product-organization-form"
+import { ExtendedProduct } from "../product-detail/constants"
 
 export const ProductShippingProfile = () => {
   const { id } = useParams()
   const { t } = useTranslation()
 
   const { product, isLoading, isError, error } = useProduct(id!, {
-    fields: PRODUCT_DETAIL_FIELDS,
+    // TODO: Remove exclusion once we avoid including unnecessary relations by default in the query config
+    fields:
+      "*shipping_profile,-type,-collection,-options,-tags,-images,-variants,-sales_channels",
   })
 
   if (isError) {
@@ -27,7 +29,7 @@ export const ProductShippingProfile = () => {
         </RouteDrawer.Title>
       </RouteDrawer.Header>
       {!isLoading && product && (
-        <ProductShippingProfileForm product={product} />
+        <ProductShippingProfileForm product={product as ExtendedProduct} />
       )}
     </RouteDrawer>
   )

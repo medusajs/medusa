@@ -2,7 +2,7 @@
 
 import clsx from "clsx"
 import React from "react"
-import { CollapsibleReturn } from "../../../../hooks"
+import { CollapsibleReturn } from "../../../../hooks/use-collapsible"
 import { Button } from "@medusajs/ui"
 
 export type CodeBlockCollapsibleButtonProps = {
@@ -33,6 +33,7 @@ export const CodeBlockCollapsibleButton = ({
             type === "start" && "rounded-t-docs_DEFAULT rounded-b-none",
             className
           )}
+          data-testid="collapsible-button-start"
           onClick={() => setCollapsed(false)}
         >
           {expandButtonLabel}
@@ -47,6 +48,7 @@ export const CodeBlockCollapsibleButton = ({
             "rounded-t-none rounded-b-docs_DEFAULT",
             className
           )}
+          data-testid="collapsible-button-end"
           onClick={() => setCollapsed(false)}
         >
           {expandButtonLabel}

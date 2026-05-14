@@ -14,6 +14,7 @@ medusaIntegrationTestRunner({
   env: {},
   testSuite: ({ dbConnection, getContainer, api }) => {
     let pricelist1
+    let pricelist1Prices
     let pricelist2
     let region1
     let product1
@@ -93,6 +94,10 @@ medusaIntegrationTestRunner({
         )
       ).data.price_list
 
+      pricelist1Prices = await api
+        .get(`/admin/price-lists/${pricelist1.id}/prices`, adminHeaders)
+        .then((res) => res.data.prices)
+
       pricelist2 = (
         await api.post(
           "/admin/price-lists",
@@ -134,7 +139,7 @@ medusaIntegrationTestRunner({
           })
 
           const response = await api.post(
-            "/admin/price-lists",
+            "/admin/price-lists?fields=prices.*,prices.price_set.*,prices.price_set.variant.*",
             payload,
             adminHeaders
           )
@@ -189,34 +194,12 @@ medusaIntegrationTestRunner({
               status: pricelist1.status,
               starts_at: pricelist1.starts_at,
               ends_at: pricelist1.ends_at,
-              prices: expect.arrayContaining([
-                expect.objectContaining({
-                  id: expect.any(String),
-                  amount: 100,
-                  currency_code: "usd",
-                  // BREAKING: Min and max quantity are returned as string
-                  min_quantity: 1,
-                  max_quantity: 100,
-                  variant_id: product1.variants[0].id,
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                  // BREAKING: `variant` and `variants` are not returned as part of the prices
-                }),
-                expect.objectContaining({
-                  id: expect.any(String),
-                  amount: 80,
-                  currency_code: "usd",
-                  min_quantity: 101,
-                  max_quantity: 500,
-                  variant_id: product1.variants[0].id,
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                }),
-              ]),
               created_at: expect.any(String),
               updated_at: expect.any(String),
             })
           )
+          // BREAKING: Prices are not returned as part of the price list if not specified in fields
+          expect(response.data.price_list).not.toHaveProperty("prices")
         })
 
         it("returns a list of price lists", async () => {
@@ -367,22 +350,6 @@ medusaIntegrationTestRunner({
               status: "draft",
               starts_at: "2022-09-01T00:00:00.000Z",
               ends_at: "2022-12-31T00:00:00.000Z",
-              prices: expect.arrayContaining([
-                expect.objectContaining({
-                  amount: 100,
-                  currency_code: "usd",
-                  id: expect.any(String),
-                  max_quantity: 100,
-                  min_quantity: 1,
-                }),
-                expect.objectContaining({
-                  amount: 80,
-                  currency_code: "usd",
-                  id: expect.any(String),
-                  max_quantity: 500,
-                  min_quantity: 101,
-                }),
-              ]),
               rules: {
                 "customer.groups.id": [customerGroup1.id],
               },
@@ -393,11 +360,12 @@ medusaIntegrationTestRunner({
         })
 
         it("updates the amount and currency of a price in the price list", async () => {
+          const priceToUpdate = pricelist1Prices.find((p) => p.amount === 80)
           const payload = {
             // BREAKING: Updates of prices happen through the batch endpoint, and doing it through the price list update endpoint is no longer supported
             update: [
               {
-                id: pricelist1.prices.find((p) => p.amount === 80).id,
+                id: priceToUpdate.id,
                 amount: 250,
                 currency_code: "eur",
                 variant_id: product1.variants[0].id,
@@ -411,27 +379,29 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
           const response = await api.get(
-            `/admin/price-lists/${pricelist1.id}`,
+            `/admin/price-lists/${pricelist1.id}/prices`,
             adminHeaders
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data.price_list.prices).toEqual([
-            expect.objectContaining({
-              amount: 100,
-              currency_code: "usd",
-              id: expect.any(String),
-              max_quantity: 100,
-              min_quantity: 1,
-            }),
-            expect.objectContaining({
-              amount: 250,
-              currency_code: "eur",
-              id: expect.any(String),
-              max_quantity: 500,
-              min_quantity: 101,
-            }),
-          ])
+          expect(response.data.prices).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                amount: 100,
+                currency_code: "usd",
+                id: expect.any(String),
+                max_quantity: 100,
+                min_quantity: 1,
+              }),
+              expect.objectContaining({
+                amount: 250,
+                currency_code: "eur",
+                id: expect.any(String),
+                max_quantity: 500,
+                min_quantity: 101,
+              }),
+            ])
+          )
         })
       })
 
@@ -470,13 +440,13 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
           const response = await api.get(
-            `/admin/price-lists/${pricelist1.id}`,
+            `/admin/price-lists/${pricelist1.id}/prices`,
             adminHeaders
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data.price_list.prices.length).toEqual(5)
-          expect(response.data.price_list.prices).toEqual(
+          expect(response.data.prices.length).toEqual(5)
+          expect(response.data.prices).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 id: expect.any(String),
@@ -484,7 +454,12 @@ medusaIntegrationTestRunner({
                 currency_code: "usd",
                 min_quantity: 1,
                 max_quantity: 100,
-                variant_id: product1.variants[0].id,
+                price_set: expect.objectContaining({
+                  id: expect.any(String),
+                  variant: {
+                    id: product1.variants[0].id,
+                  },
+                }),
               }),
               expect.objectContaining({
                 id: expect.any(String),
@@ -492,13 +467,23 @@ medusaIntegrationTestRunner({
                 currency_code: "usd",
                 min_quantity: 101,
                 max_quantity: 500,
-                variant_id: product1.variants[0].id,
+                price_set: expect.objectContaining({
+                  id: expect.any(String),
+                  variant: {
+                    id: product1.variants[0].id,
+                  },
+                }),
               }),
               expect.objectContaining({
                 id: expect.any(String),
                 amount: 45,
                 currency_code: "usd",
-                variant_id: product1.variants[0].id,
+                price_set: expect.objectContaining({
+                  id: expect.any(String),
+                  variant: {
+                    id: product1.variants[0].id,
+                  },
+                }),
                 min_quantity: 1001,
                 max_quantity: 2000,
               }),
@@ -506,7 +491,12 @@ medusaIntegrationTestRunner({
                 id: expect.any(String),
                 amount: 35,
                 currency_code: "usd",
-                variant_id: product1.variants[0].id,
+                price_set: expect.objectContaining({
+                  id: expect.any(String),
+                  variant: {
+                    id: product1.variants[0].id,
+                  },
+                }),
                 min_quantity: 2001,
                 max_quantity: 3000,
               }),
@@ -514,7 +504,12 @@ medusaIntegrationTestRunner({
                 id: expect.any(String),
                 amount: 25,
                 currency_code: "usd",
-                variant_id: product1.variants[0].id,
+                price_set: expect.objectContaining({
+                  id: expect.any(String),
+                  variant: {
+                    id: product1.variants[0].id,
+                  },
+                }),
                 min_quantity: 3001,
                 max_quantity: 4000,
               }),
@@ -551,13 +546,13 @@ medusaIntegrationTestRunner({
           )
 
           const response = await api.get(
-            `/admin/price-lists/${pricelist1.id}`,
+            `/admin/price-lists/${pricelist1.id}/prices`,
             adminHeaders
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data.price_list.prices.length).toEqual(2)
-          expect(response.data.price_list.prices).toEqual(
+          expect(response.data.prices.length).toEqual(2)
+          expect(response.data.prices).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 id: expect.any(String),
@@ -565,7 +560,12 @@ medusaIntegrationTestRunner({
                 currency_code: "usd",
                 min_quantity: 1,
                 max_quantity: 100,
-                variant_id: product1.variants[0].id,
+                price_set: expect.objectContaining({
+                  id: expect.any(String),
+                  variant: {
+                    id: product1.variants[0].id,
+                  },
+                }),
               }),
               expect.objectContaining({
                 id: expect.any(String),
@@ -573,7 +573,12 @@ medusaIntegrationTestRunner({
                 currency_code: "usd",
                 min_quantity: 101,
                 max_quantity: 500,
-                variant_id: product1.variants[0].id,
+                price_set: expect.objectContaining({
+                  id: expect.any(String),
+                  variant: {
+                    id: product1.variants[0].id,
+                  },
+                }),
               }),
             ])
           )
@@ -605,13 +610,13 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
           const response = await api.get(
-            `/admin/price-lists/${pricelist1.id}`,
+            `/admin/price-lists/${pricelist1.id}/prices`,
             adminHeaders
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data.price_list.prices.length).toEqual(4)
-          expect(response.data.price_list.prices).toEqual(
+          expect(response.data.prices.length).toEqual(4)
+          expect(response.data.prices).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 id: expect.any(String),
@@ -619,7 +624,12 @@ medusaIntegrationTestRunner({
                 currency_code: "usd",
                 min_quantity: 1,
                 max_quantity: 100,
-                variant_id: product1.variants[0].id,
+                price_set: expect.objectContaining({
+                  id: expect.any(String),
+                  variant: {
+                    id: product1.variants[0].id,
+                  },
+                }),
               }),
               expect.objectContaining({
                 id: expect.any(String),
@@ -627,20 +637,40 @@ medusaIntegrationTestRunner({
                 currency_code: "usd",
                 min_quantity: 101,
                 max_quantity: 500,
-                variant_id: product1.variants[0].id,
+                price_set: expect.objectContaining({
+                  id: expect.any(String),
+                  variant: {
+                    id: product1.variants[0].id,
+                  },
+                }),
               }),
               expect.objectContaining({
                 id: expect.any(String),
                 amount: 100,
                 currency_code: "eur",
-                rules: { region_id: region1.id },
-                variant_id: product1.variants[0].id,
+                price_rules: expect.arrayContaining([
+                  expect.objectContaining({
+                    attribute: "region_id",
+                    value: region1.id,
+                  }),
+                ]),
+                price_set: expect.objectContaining({
+                  id: expect.any(String),
+                  variant: {
+                    id: product1.variants[0].id,
+                  },
+                }),
               }),
               expect.objectContaining({
                 id: expect.any(String),
                 amount: 200,
                 currency_code: "eur",
-                variant_id: product1.variants[0].id,
+                price_set: expect.objectContaining({
+                  id: expect.any(String),
+                  variant: {
+                    id: product1.variants[0].id,
+                  },
+                }),
               }),
             ])
           )
@@ -680,41 +710,48 @@ medusaIntegrationTestRunner({
           )
 
           const response = await api.get(
-            `/admin/price-lists/${pricelist1.id}`,
+            `/admin/price-lists/${pricelist1.id}/prices`,
             adminHeaders
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data.price_list.prices.length).toEqual(0)
+          expect(response.data.prices.length).toEqual(0)
         })
       })
 
       describe("DELETE /admin/price-lists/:id/prices/batch", () => {
         // BREAKING: The batch method signature changed
         it("Deletes several prices associated with a price list", async () => {
+          const priceToDelete = pricelist1Prices.find((p) => p.amount === 100)
           await api.post(
             `/admin/price-lists/${pricelist1.id}/prices/batch`,
             {
-              delete: [pricelist1.prices[0].id],
+              delete: [priceToDelete.id],
             },
             adminHeaders
           )
 
           const response = await api.get(
-            `/admin/price-lists/${pricelist1.id}`,
+            `/admin/price-lists/${pricelist1.id}/prices`,
             adminHeaders
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data.price_list.prices).toEqual([
-            expect.objectContaining({
-              amount: 80,
-              currency_code: "usd",
-              min_quantity: 101,
-              max_quantity: 500,
-              variant_id: product1.variants[0].id,
-            }),
-          ])
+          expect(response.data.prices).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                amount: 80,
+                currency_code: "usd",
+                min_quantity: 101,
+                max_quantity: 500,
+                price_set: expect.objectContaining({
+                  variant: expect.objectContaining({
+                    id: product1.variants[0].id,
+                  }),
+                }),
+              }),
+            ])
+          )
         })
       })
 

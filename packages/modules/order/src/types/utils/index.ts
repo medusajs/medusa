@@ -1,7 +1,11 @@
 import {
   BigNumberInput,
   CreateOrderCreditLineDTO,
+  LineItemAdjustmentDTO,
+  LineItemTaxLineDTO,
   OrderCreditLineDTO,
+  OrderShippingMethodAdjustmentDTO,
+  OrderShippingMethodTaxLineDTO,
 } from "@medusajs/framework/types"
 
 export type VirtualOrder = {
@@ -13,10 +17,14 @@ export type VirtualOrder = {
     return_id?: string
     claim_id?: string
     exchange_id?: string
+    is_tax_inclusive?: boolean
 
     unit_price: BigNumberInput
     compare_at_unit_price: BigNumberInput | null
     quantity: BigNumberInput
+    metadata?: Record<string, unknown> | null
+    adjustments?: (LineItemAdjustmentDTO & { version: number })[]
+    tax_lines?: LineItemTaxLineDTO[]
 
     detail: {
       id?: string
@@ -24,7 +32,6 @@ export type VirtualOrder = {
       return_id?: string
       claim_id?: string
       exchange_id?: string
-
       item_id?: string
       unit_price?: BigNumberInput
       compare_at_unit_price?: BigNumberInput | null
@@ -36,7 +43,7 @@ export type VirtualOrder = {
       return_received_quantity: BigNumberInput
       return_dismissed_quantity: BigNumberInput
       written_off_quantity: BigNumberInput
-      metadata?: Record<string, unknown>
+      metadata?: Record<string, unknown> | null
     }
   }[]
 
@@ -56,6 +63,8 @@ export type VirtualOrder = {
     }
 
     amount: BigNumberInput
+    adjustments?: (OrderShippingMethodAdjustmentDTO & { version: number })[]
+    tax_lines?: OrderShippingMethodTaxLineDTO[]
   }[]
 
   credit_lines: (OrderCreditLineDTO | CreateOrderCreditLineDTO)[]
@@ -74,6 +83,7 @@ export type VirtualOrder = {
   total: BigNumberInput
 
   customer_id?: string
+  email?: string
 
   transactions?: OrderTransaction[]
   metadata?: Record<string, unknown>

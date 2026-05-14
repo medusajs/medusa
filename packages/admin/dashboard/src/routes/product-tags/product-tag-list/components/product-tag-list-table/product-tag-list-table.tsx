@@ -1,4 +1,4 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
+import { GlobeEurope, PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Button, Container, Heading } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
@@ -16,6 +16,7 @@ import { useProductTagTableQuery } from "../../../../../hooks/table/query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useDeleteProductTagAction } from "../../../common/hooks/use-delete-product-tag-action"
 import { productTagListLoader } from "../../loader"
+import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 
 const PAGE_SIZE = 20
 
@@ -88,6 +89,7 @@ const ProductTagRowActions = ({
 }) => {
   const { t } = useTranslation()
   const handleDelete = useDeleteProductTagAction({ productTag })
+  const isTranslationsEnabled = useFeatureFlag("translation")
 
   return (
     <ActionMenu
@@ -101,6 +103,19 @@ const ProductTagRowActions = ({
             },
           ],
         },
+        ...(isTranslationsEnabled
+          ? [
+              {
+                actions: [
+                  {
+                    icon: <GlobeEurope />,
+                    label: t("translations.actions.manage"),
+                    to: `/settings/translations/edit?reference=product_tag&reference_id=${productTag.id}`,
+                  },
+                ],
+              },
+            ]
+          : []),
         {
           actions: [
             {

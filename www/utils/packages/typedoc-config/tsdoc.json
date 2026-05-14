@@ -73,6 +73,10 @@
     {
       "tagName": "@workflowEvent",
       "syntaxKind": "block"
+    },
+    {
+      "tagName": "@workflowLock",
+      "syntaxKind": "block"
     }
   ]
 }

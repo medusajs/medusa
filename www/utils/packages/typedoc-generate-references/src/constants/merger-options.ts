@@ -6,7 +6,6 @@ import { modules } from "./references.js"
 import {
   customModuleServiceNames,
   customModuleTitles,
-  dmlModules,
 } from "./references-details.js"
 import { AllowedProjectDocumentsOption, FormattingOptionsType } from "types"
 import { kebabToCamel, kebabToPascal, kebabToSnake, kebabToTitle } from "utils"
@@ -35,13 +34,12 @@ const allowedProjectDocuments: AllowedProjectDocumentsOption = {
   },
 }
 
-modules.forEach((module) => {
+const modifiedModules = [...modules, "loyalty", "store-credit"]
+
+modifiedModules.forEach((module) => {
   allowedProjectDocuments[module] = {
     ...commonAllowedDocuments,
   }
-})
-
-dmlModules.forEach((module) => {
   allowedProjectDocuments[`${module}-models`] = {
     ...commonAllowedDocuments,
   }
@@ -92,7 +90,7 @@ const mergerOptions: Partial<TypeDocOptions> = {
     },
 
     // modules config
-    ...modules.reduce((obj, moduleName) => {
+    ...modifiedModules.reduce((obj, moduleName) => {
       const snakeCaseModuleName = kebabToSnake(moduleName)
       const camelCaseModuleName = kebabToCamel(moduleName)
       const titleModuleName = Object.hasOwn(customModuleTitles, moduleName)
@@ -104,7 +102,6 @@ const mergerOptions: Partial<TypeDocOptions> = {
       )
         ? customModuleServiceNames[moduleName]
         : `I${kebabToPascal(moduleName)}ModuleService`
-      const isDmlModule = dmlModules.includes(moduleName)
 
       const customModuleConfig: FormattingOptionsType = {}
 
@@ -175,23 +172,15 @@ You should only use the methods in this reference when implementing complex cust
             slug: `/references/${moduleName}/models/{{alias}}`,
             sidebar_label: "{{alias}}",
           },
-          reflectionDescription: !isDmlModule
-            ? `This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the ${titleModuleName} Module.`
-            : `This documentation provides a reference to the {{alias}} data model. It belongs to the ${titleModuleName} Module.`,
+          reflectionDescription: `This documentation provides a reference to the {{alias}} data model. It belongs to the ${titleModuleName} Module.`,
           reflectionTitle: {
             kind: false,
             typeParameters: false,
             suffix: `- ${titleModuleName} Module Data Models Reference`,
           },
-          reflectionGroups: isDmlModule
-            ? {
-                Variables: true,
-              }
-            : {
-                Constructors: false,
-                Functions: false,
-                Methods: false,
-              },
+          reflectionGroups: {
+            Variables: true,
+          },
           internalType: "model-ref",
         },
         [`^modules/${snakeCaseModuleName}_models`]: {
@@ -203,11 +192,9 @@ You should only use the methods in this reference when implementing complex cust
           reflectionTitle: {
             fullReplacement: `${titleModuleName} Module Data Models Reference`,
           },
-          reflectionGroupRename: isDmlModule
-            ? {
-                Variables: "Data Models",
-              }
-            : {},
+          reflectionGroupRename: {
+            Variables: "Data Models",
+          },
           internalType: "model-ref",
         },
       } as FormattingOptionsType)

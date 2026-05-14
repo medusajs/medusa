@@ -29,6 +29,8 @@ export default [
       "**/public",
       "**/.eslintrc.js",
       "**/generated",
+      "**/__tests__",
+      "**/__mocks__",
     ],
   },
   ...compat.extends(

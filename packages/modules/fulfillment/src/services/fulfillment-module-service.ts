@@ -35,7 +35,6 @@ import {
   ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/framework/utils"
-import { isObject } from "@medusajs/utils"
 import {
   Fulfillment,
   FulfillmentProvider,
@@ -1282,6 +1281,7 @@ export default class FulfillmentModuleService
       },
       sharedContext
     )
+
     const existingShippingOptions = new Map(
       shippingOptions.map((s) => [s.id, s])
     )
@@ -1295,15 +1295,15 @@ export default class FulfillmentModuleService
     const updatedRuleIds: string[] = []
     const existingRuleIds: string[] = []
 
-    const optionTypeDeletedIds: string[] = []
-
     dataArray.forEach((shippingOption) => {
       const existingShippingOption = existingShippingOptions.get(
         shippingOption.id
       )! // Guaranteed to exist since the validation above have been performed
 
-      if (isObject(shippingOption.type) && !("id" in shippingOption.type)) {
-        optionTypeDeletedIds.push(existingShippingOption.type.id)
+      // `type_id` doesn't exist on the entity/table, `type_id` argument is mapped to `shipping_option_type_id`
+      if (shippingOption.type_id) {
+        shippingOption.shipping_option_type_id = shippingOption.type_id
+        delete shippingOption.type_id
       }
 
       if (!shippingOption.rules) {

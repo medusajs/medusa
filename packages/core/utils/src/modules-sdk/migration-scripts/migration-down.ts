@@ -23,10 +23,11 @@ export function buildRevertMigrationScript({ moduleName, pathToMigrations }) {
   return async function ({
     options,
     logger,
+    migrationNames,
   }: Pick<
     LoaderOptions<ModulesSdkTypes.ModuleServiceInitializeOptions>,
     "options" | "logger"
-  > = {}) {
+  > & { migrationNames?: string[] }) {
     logger ??= console as unknown as Logger
 
     logger.info(new Array(TERMINAL_SIZE).join("-"))
@@ -34,7 +35,11 @@ export function buildRevertMigrationScript({ moduleName, pathToMigrations }) {
     logger.info(`MODULE: ${moduleName}`)
 
     const dbData = loadDatabaseConfig(moduleName, options)!
-    const orm = await mikroOrmCreateConnection(dbData, [], pathToMigrations)
+    const orm = await mikroOrmCreateConnection(
+      { ...dbData, snapshot: false },
+      [],
+      pathToMigrations
+    )
     const migrations = new Migrations(orm)
 
     migrations.on("reverting", (migration) => {
@@ -48,7 +53,10 @@ export function buildRevertMigrationScript({ moduleName, pathToMigrations }) {
     })
 
     try {
-      const result = await migrations.revert()
+      const revertOptions = migrationNames?.length
+        ? { step: migrationNames.length }
+        : undefined
+      const result = await migrations.revert(revertOptions as any)
       if (result.length) {
         logger.info("Reverted successfully")
       } else {

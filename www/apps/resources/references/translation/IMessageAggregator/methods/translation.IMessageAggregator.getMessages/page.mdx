@@ -1,0 +1,15 @@
+---
+displayed_sidebar: translationReference
+---
+
+import { TypeList } from "docs-ui"
+
+# getMessages
+
+## Parameters
+
+<TypeList types={[{"name":"format","type":"[MessageAggregatorFormat](../../../interfaces/translation.MessageAggregatorFormat/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"groupBy","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"sortBy","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"internal","type":"`boolean`","description":"will prevent the info log to be displayed about those events","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getMessages"/>
+
+## Returns
+
+<TypeList types={[{"name":"Record","type":"`Record<string, [Message](../../../types/translation.Message/page.mdx)[]>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"Message[]","type":"[Message](../../../types/translation.Message/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"name","type":"`string`","description":"The event's name.","optional":false,"defaultValue":"","example":"user.created","expandable":false,"children":[]},{"name":"data","type":"TData","description":"The data payload that subscribers receive. For example, the ID or IDs of the created user. (e.g. &#123; id: \"123\" &#125; or &#123; ids: [\"123\", \"456\"] &#125;)","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"[EventMetadata](../../../types/translation.EventMetadata/page.mdx)","description":"Additional meadata to pass with the event.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"eventGroupId","type":"`string`","description":"The ID of the event's group. Grouped events are useful when you have distributed transactions\nwhere you need to explicitly group, release and clear events upon lifecycle events of a transaction.\n\nWhen set, you must release the grouped events using the Event Module's `releaseGroupedEvents` method to emit the events.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"options","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getMessages"/>

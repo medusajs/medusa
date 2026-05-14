@@ -1,14 +1,38 @@
-import {
-  LoaderOptions,
-  ModuleProvider,
-  ModulesSdkTypes,
-} from "@medusajs/framework/types"
 import { asFunction, asValue, Lifetime } from "@medusajs/framework/awilix"
 import { moduleProviderLoader } from "@medusajs/framework/modules-sdk"
+import { LoaderOptions, ModulesSdkTypes } from "@medusajs/framework/types"
 import {
   AuthIdentifiersRegistrationName,
+  AuthModuleOptions,
   AuthProviderRegistrationPrefix,
 } from "@types"
+import { MedusaCloudAuthService } from "../providers/medusa-cloud-auth"
+
+const validateCloudOptions = (options: AuthModuleOptions["cloud"]) => {
+  const {
+    oauth_authorize_endpoint,
+    oauth_token_endpoint,
+    environment_handle,
+    sandbox_handle,
+    api_key,
+    callback_url,
+  } = options ?? {}
+
+  if (!environment_handle && !sandbox_handle) {
+    return false
+  }
+
+  if (
+    !oauth_authorize_endpoint ||
+    !oauth_token_endpoint ||
+    !api_key ||
+    !callback_url
+  ) {
+    return false
+  }
+
+  return true
+}
 
 const registrationFn = async (klass, container, pluginOptions) => {
   container.register({
@@ -33,8 +57,16 @@ export default async ({
   (
     | ModulesSdkTypes.ModuleServiceInitializeOptions
     | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
-  ) & { providers: ModuleProvider[] }
+  ) &
+    AuthModuleOptions
 >): Promise<void> => {
+  if (validateCloudOptions(options?.cloud) && !options?.cloud?.disabled) {
+    await registrationFn(MedusaCloudAuthService, container, {
+      options: options?.cloud,
+      id: "cloud",
+    })
+  }
+
   await moduleProviderLoader({
     container,
     providers: options?.providers || [],

@@ -61,9 +61,9 @@
  *   - name: user.deleted
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the user
- *       }]
+ *       }
  *       ```
  *     description: Emitted when users are deleted.
  *     deprecated: false

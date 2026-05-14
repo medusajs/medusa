@@ -21,6 +21,7 @@ medusaIntegrationTestRunner({
           "/admin/product-tags",
           {
             value: "test1",
+            external_id: "ext-test-01",
           },
           adminHeaders
         )
@@ -46,6 +47,7 @@ medusaIntegrationTestRunner({
           expect.arrayContaining([
             expect.objectContaining({
               value: "test1",
+              external_id: "ext-test-01",
             }),
             expect.objectContaining({
               value: "test2",
@@ -63,6 +65,17 @@ medusaIntegrationTestRunner({
           expect.arrayContaining([expect.objectContaining({ value: "test1" })])
         )
       })
+
+
+      it("returns a list of product tags matching external_id search param", async () => {
+        const res = await api.get("/admin/product-tags?external_id[]=ext-test-01", adminHeaders)
+
+        expect(res.status).toEqual(200)
+        expect(res.data.product_tags.length).toEqual(1)
+        expect(res.data.product_tags).toEqual(
+          expect.arrayContaining([expect.objectContaining({ value: "test1", external_id: "ext-test-01" })])
+        )
+      })      
     })
     // BREAKING: Removed a test that filtered tags by discount condition id, which is no longer supported
   },

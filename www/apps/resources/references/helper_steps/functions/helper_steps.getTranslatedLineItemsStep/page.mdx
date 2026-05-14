@@ -1,0 +1,41 @@
+---
+slug: /references/helper-steps/getTranslatedLineItemsStep
+sidebar_label: getTranslatedLineItemsStep
+---
+
+import { TypeList } from "docs-ui"
+
+# getTranslatedLineItemsStep - Helper Steps API Reference
+
+This documentation provides a reference to the `getTranslatedLineItemsStep` step. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step translates cart line items based on their associated variant and product IDs.
+It fetches translations for the product (title, description, subtitle) and variant (title),
+then applies them to the corresponding line item fields.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { getTranslatedLineItemsStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = getTranslatedLineItemsStep({
+      "items": "{value}",
+      "variants": [
+        "{value}"
+      ],
+      "locale": "{value}"
+    })
+  }
+)
+```
+  
+
+## Input
+
+<TypeList types={[{"name":"GetTranslatedLineItemsStepInput","type":"[GetTranslatedLineItemsStepInput](../../interfaces/helper_steps.GetTranslatedLineItemsStepInput/page.mdx)&#60;T&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="getTranslatedLineItemsStep"/>
+
+## Output
+
+<TypeList types={[{"name":"T[]","type":"T[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="getTranslatedLineItemsStep"/>

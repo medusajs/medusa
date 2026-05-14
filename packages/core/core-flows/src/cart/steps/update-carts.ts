@@ -1,5 +1,6 @@
 import {
   ICartModuleService,
+  UpdateAddressDTO,
   UpdateCartDTO,
   UpdateCartWorkflowInputDTO,
 } from "@medusajs/framework/types"
@@ -29,6 +30,13 @@ export const updateCartsStep = createStep(
   async (data: UpdateCartsStepInput, { container }) => {
     const cartModule = container.resolve<ICartModuleService>(Modules.CART)
 
+    if (!data.length) {
+      return new StepResponse([], {
+        cartsBeforeUpdate: [],
+        addressesBeforeUpdate: [],
+      })
+    }
+
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data, {
       requiredFields: [
         "id",
@@ -46,16 +54,52 @@ export const updateCartsStep = createStep(
       { select: selects, relations }
     )
 
+    // Since service factory udpate method will correctly keep the reference to the addresses,
+    // but won't update its fields, we do this separately
+    const addressesInput = data
+      .flatMap((cart) => [cart.shipping_address, cart.billing_address])
+      .filter((address) => !!address)
+    let addressesToUpdateIds: string[] = []
+    const addressesToUpdate = addressesInput.filter(
+      (address): address is UpdateAddressDTO => {
+        if ("id" in address && !!address.id) {
+          addressesToUpdateIds.push(address.id as string)
+          return true
+        }
+        return false
+      }
+    )
+    const addressesBeforeUpdate = await cartModule.listAddresses({
+      id: addressesToUpdate.map((address) => address.id),
+    })
+    if (addressesToUpdate.length) {
+      await cartModule.updateAddresses(addressesToUpdate)
+    }
+
     const updatedCart = await cartModule.updateCarts(data)
 
-    return new StepResponse(updatedCart, cartsBeforeUpdate)
+    return new StepResponse(updatedCart, {
+      cartsBeforeUpdate,
+      addressesBeforeUpdate,
+    })
   },
-  async (cartsBeforeUpdate, { container }) => {
-    if (!cartsBeforeUpdate) {
+  async (dataToCompensate, { container }) => {
+    if (!dataToCompensate) {
       return
     }
 
+    const { cartsBeforeUpdate, addressesBeforeUpdate } = dataToCompensate
+
     const cartModule = container.resolve<ICartModuleService>(Modules.CART)
+
+    const addressesToUpdate: UpdateAddressDTO[] = []
+    for (const address of addressesBeforeUpdate) {
+      addressesToUpdate.push({
+        ...address,
+        metadata: address.metadata ?? undefined,
+      })
+    }
+    await cartModule.updateAddresses(addressesToUpdate)
 
     const dataToUpdate: UpdateCartDTO[] = []
 

@@ -33,7 +33,7 @@ type AddCurrenciesFormProps = {
 
 const AddCurrenciesSchema = zod.object({
   currencies: zod.array(zod.string()).min(1),
-  pricePreferences: zod.record(zod.boolean()),
+  pricePreferences: zod.record(zod.string(), zod.boolean()),
 })
 
 const PAGE_SIZE = 50
@@ -64,23 +64,20 @@ export const AddCurrenciesForm = ({
   const form = useForm<zod.infer<typeof AddCurrenciesSchema>>({
     defaultValues: {
       currencies: [],
-      pricePreferences: pricePreferences?.reduce(
-        (acc, curr) => {
-          if (curr.value) {
-            acc[curr.value] = curr.is_tax_inclusive
-          }
+      pricePreferences: pricePreferences?.reduce((acc, curr) => {
+        if (curr.value) {
+          acc[curr.value] = curr.is_tax_inclusive
+        }
 
-          return acc
-        },
-        {} as Record<string, boolean>
-      ),
+        return acc
+      }, {} as Record<string, boolean>),
     },
     resolver: zodResolver(AddCurrenciesSchema),
   })
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
-  const { setValue, watch } = form
+  const { setValue, watch, getValues } = form
   const pricePreferenceValues = watch("pricePreferences")
 
   const updater: OnChangeFn<RowSelectionState> = (fn) => {
@@ -105,7 +102,23 @@ export const AddCurrenciesForm = ({
     [setValue]
   )
 
-  const columns = useColumns(pricePreferenceValues, setPricePreferences)
+  const selectRow = useCallback(
+    (code: string) => {
+      const current = getValues("currencies") ?? []
+      if (!current.includes(code)) {
+        setValue("currencies", [...current, code], {
+          shouldDirty: true,
+          shouldTouch: true,
+        })
+      }
+      setRowSelection((prev) =>
+        prev[code] ? prev : { ...prev, [code]: true }
+      )
+    },
+    [getValues, setValue]
+  )
+
+  const columns = useColumns(pricePreferenceValues, setPricePreferences, selectRow)
 
   const { table } = useDataTable({
     data: currencies ?? [],
@@ -224,7 +237,8 @@ const columnHelper = createColumnHelper<HttpTypes.AdminCurrency>()
 
 const useColumns = (
   pricePreferences: Record<string, boolean>,
-  setPricePreferences: any
+  setPricePreferences: any,
+  selectRow: (code: string) => void
 ) => {
   const { t } = useTranslation()
   const base = useCurrenciesTableColumns()
@@ -275,7 +289,7 @@ const useColumns = (
       }),
       ...base,
       columnHelper.display({
-        id: "select",
+        id: "is_tax_inclusive",
         header: () => (
           <div className="whitespace-nowrap">
             {t("fields.taxInclusivePricing")}
@@ -296,6 +310,9 @@ const useColumns = (
                     ...pricePreferences,
                     [row.original.code]: val,
                   })
+                  if (val && !row.getIsSelected()) {
+                    selectRow(row.original.code)
+                  }
                 }}
               />
             </div>
@@ -303,6 +320,6 @@ const useColumns = (
         },
       }),
     ],
-    [t, base, pricePreferences, setPricePreferences]
+    [t, base, pricePreferences, setPricePreferences, selectRow]
   )
 }

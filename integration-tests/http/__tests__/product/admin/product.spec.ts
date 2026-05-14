@@ -1,4 +1,5 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { Modules } from "@medusajs/framework/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -953,6 +954,100 @@ medusaIntegrationTestRunner({
           ])
         })
 
+        it("should return products filtered by external_id", async () => {
+          const newProduct = (
+            await api.post(
+              "/admin/products",
+              getProductFixture({
+                title: "Test saleschannel",
+                external_id: "test-external-id",
+                shipping_profile_id: shippingProfile.id,
+              }),
+              adminHeaders
+            )
+          ).data.product
+
+          const res = await api.get(
+            `/admin/products?external_id[]=test-external-id`,
+            adminHeaders
+          )
+
+          expect(res.status).toEqual(200)
+          expect(res.data.products.length).toEqual(1)
+          expect(res.data.products).toEqual([
+            expect.objectContaining({
+              id: newProduct.id,
+            }),
+          ])
+        })
+
+
+
+        it("returns a list of products filtered by variants[sku]", async () => {
+          const productWithSku = await api.post(
+            "/admin/products",
+            getProductFixture({
+              title: "Product with SKU",
+              shipping_profile_id: shippingProfile.id,
+              variants: [
+                {
+                  title: "Test variant",
+                  sku: "SKU1234567890123",
+                  prices: [{ currency_code: "usd", amount: 100 }],
+                  options: {
+                    size: "large",
+                    color: "green",
+                  },
+                },
+              ],
+            }),
+            adminHeaders
+          )
+
+          await api.post(
+            "/admin/products",
+            getProductFixture({
+              title: "Product with different SKU",
+              shipping_profile_id: shippingProfile.id,
+              variants: [
+                {
+                  title: "Test variant 2",
+                  sku: "SKU9876543210987",
+                  prices: [{ currency_code: "usd", amount: 150 }],
+                  options: {
+                    size: "large",
+                    color: "green",
+                  },
+                },
+              ],
+            }),
+            adminHeaders
+          )
+
+          const response = await api
+            .get("/admin/products?variants[sku]=SKU1234567890123", adminHeaders)
+            .catch((err) => {
+              console.log(err)
+            })
+
+          expect(response.status).toEqual(200)
+          expect(response.data.products).toHaveLength(1)
+          expect(response.data.products).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: productWithSku.data.product.id,
+                title: "Product with SKU",
+                variants: expect.arrayContaining([
+                  expect.objectContaining({
+                    sku: "SKU1234567890123",
+                  }),
+                ]),
+              }),
+            ])
+          )
+        })
+
+
         it("returns a list of products filtered by variants[ean]", async () => {
           const productWithEan = await api.post(
             "/admin/products",
@@ -1383,6 +1478,47 @@ medusaIntegrationTestRunner({
             }),
           ])
         })
+
+        it('should get product variants filtered by sku', async () => {
+          const payload = {
+            title: "Test product - 1",
+            handle: "test-1",
+            options: [{ title: "size", values: ["x", "l"] }],
+            shipping_profile_id: shippingProfile.id,
+            variants: [
+              {
+                title: "Custom inventory 1",
+                prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "x" },
+                sku: "sku-123",
+              },
+              {
+                title: "Custom inventory 2",
+                prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "l" },
+                sku: "sku-456",
+              },
+            ],
+          }
+
+          const product = (
+            await api.post(`/admin/products`, payload, adminHeaders)
+          ).data.product
+
+          const variants = (
+            await api.get(
+              `/admin/products/${product.id}/variants?sku=sku-123`,
+              adminHeaders
+            )
+          ).data.variants
+
+          expect(variants).toEqual([
+            expect.objectContaining({
+              title: "Custom inventory 1",
+              product_id: product.id,
+            }),
+          ])
+        });
 
         it("should get product variants filtered by manage_inventory", async () => {
           const payload = {
@@ -1865,10 +2001,10 @@ medusaIntegrationTestRunner({
 
           expect(updatedProduct).toEqual(
             expect.objectContaining({
-              weight: "20",
+              weight: 20,
               length: null,
-              width: "100",
-              height: "100",
+              width: 100,
+              height: 100,
             })
           )
 
@@ -1882,10 +2018,10 @@ medusaIntegrationTestRunner({
 
           expect(updatedProduct).toEqual(
             expect.objectContaining({
-              weight: "20",
+              weight: 20,
               length: null,
-              width: "100",
-              height: "100",
+              width: 100,
+              height: 100,
               categories: expect.arrayContaining([
                 expect.objectContaining({
                   id: pantsCategory.id,
@@ -1905,9 +2041,9 @@ medusaIntegrationTestRunner({
           expect(updatedProduct).toEqual(
             expect.objectContaining({
               weight: null,
-              length: "20",
-              width: "50",
-              height: "100",
+              length: 20,
+              width: 50,
+              height: 100,
               categories: expect.arrayContaining([
                 expect.objectContaining({
                   id: pantsCategory.id,
@@ -2353,6 +2489,125 @@ medusaIntegrationTestRunner({
                 }),
               ]),
             })
+          )
+        })
+
+        it("should update variant to manage_inventory false and unlink inventory items", async () => {
+          const inventoryItem1 = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "inventory-item-1" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          const inventoryItem2 = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "inventory-item-2" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          const createPayload = {
+            title: "Test product with inventory",
+            handle: "test-product-inventory",
+            options: [{ title: "size", values: ["large"] }],
+            shipping_profile_id: shippingProfile.id,
+            variants: [
+              {
+                title: "Variant with inventory",
+                prices: [{ currency_code: "usd", amount: 100 }],
+                manage_inventory: true,
+                options: { size: "large" },
+                inventory_items: [
+                  {
+                    inventory_item_id: inventoryItem1.id,
+                    required_quantity: 5,
+                  },
+                  {
+                    inventory_item_id: inventoryItem2.id,
+                    required_quantity: 10,
+                  },
+                ],
+              },
+            ],
+          }
+
+          const createdProduct = (
+            await api.post("/admin/products", createPayload, {
+              ...adminHeaders,
+              params: {
+                fields:
+                  "variants.inventory_items.*,variants.inventory_items.inventory.*",
+              },
+            })
+          ).data.product
+
+          const variantWithInventory = createdProduct.variants[0]
+
+          expect(variantWithInventory.manage_inventory).toBe(true)
+          expect(variantWithInventory.inventory_items).toHaveLength(2)
+          expect(variantWithInventory.inventory_items).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                inventory_item_id: inventoryItem1.id,
+                required_quantity: 5,
+              }),
+              expect.objectContaining({
+                inventory_item_id: inventoryItem2.id,
+                required_quantity: 10,
+              }),
+            ])
+          )
+
+          const updatePayload = {
+            variants: [
+              {
+                id: variantWithInventory.id,
+                manage_inventory: false,
+              },
+            ],
+          }
+
+          const updatedProduct = (
+            await api.post(
+              `/admin/products/${createdProduct.id}`,
+              updatePayload,
+              {
+                ...adminHeaders,
+                params: {
+                  fields:
+                    "variants.inventory_items.*,variants.inventory_items.inventory.*",
+                },
+              }
+            )
+          ).data.product
+
+          const updatedVariant = updatedProduct.variants.find(
+            (v) => v.id === variantWithInventory.id
+          )
+
+          expect(updatedVariant.manage_inventory).toBe(false)
+          expect(updatedVariant.inventory_items).toHaveLength(0)
+          expect(updatedVariant.inventory_items).toEqual([])
+
+          const inventoryItem1Response = await api.get(
+            `/admin/inventory-items/${inventoryItem1.id}`,
+            adminHeaders
+          )
+          const inventoryItem2Response = await api.get(
+            `/admin/inventory-items/${inventoryItem2.id}`,
+            adminHeaders
+          )
+
+          expect(inventoryItem1Response.status).toEqual(200)
+          expect(inventoryItem2Response.status).toEqual(200)
+          expect(inventoryItem1Response.data.inventory_item.id).toBe(
+            inventoryItem1.id
+          )
+          expect(inventoryItem2Response.data.inventory_item.id).toBe(
+            inventoryItem2.id
           )
         })
 
@@ -3086,6 +3341,107 @@ medusaIntegrationTestRunner({
           expect(item2Response.data.inventory_item).toEqual(
             expect.objectContaining({ id: inventoryItem2.id })
           )
+        })
+
+        it("successfully deletes a product when a linked inventory item was already deleted", async () => {
+          const stockLocation = (
+            await api.post(
+              `/admin/stock-locations`,
+              { name: "loc" },
+              adminHeaders
+            )
+          ).data.stock_location
+
+          const inventoryItem1 = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "inventory-orphan-1" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          const inventoryItem2 = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "inventory-orphan-2" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          await api.post(
+            `/admin/inventory-items/${inventoryItem1.id}/location-levels`,
+            {
+              location_id: stockLocation.id,
+              stocked_quantity: 10,
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/inventory-items/${inventoryItem2.id}/location-levels`,
+            {
+              location_id: stockLocation.id,
+              stocked_quantity: 5,
+            },
+            adminHeaders
+          )
+
+          const productWithInventory = (
+            await api.post(
+              `/admin/products`,
+              {
+                title: "Product with orphan link",
+                handle: "product-orphan-link",
+                options: [{ title: "size", values: ["m"] }],
+                shipping_profile_id: shippingProfile.id,
+                variants: [
+                  {
+                    title: "Variant with orphan inventory link",
+                    prices: [{ currency_code: "usd", amount: 100 }],
+                    manage_inventory: true,
+                    options: { size: "m" },
+                    inventory_items: [
+                      {
+                        inventory_item_id: inventoryItem1.id,
+                        required_quantity: 1,
+                      },
+                      {
+                        inventory_item_id: inventoryItem2.id,
+                        required_quantity: 1,
+                      },
+                    ],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          // Delete one inventory item directly via the module service,
+          // bypassing the workflow that would clean up the link.
+          // This creates an orphan link (variant still references a
+          // deleted inventory item).
+          const inventoryModule = getContainer().resolve(Modules.INVENTORY)
+          await inventoryModule.deleteInventoryItems(inventoryItem1.id)
+
+          // Deleting the product should succeed despite the orphan link
+          const response = await api.delete(
+            `/admin/products/${productWithInventory.id}`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data).toEqual(
+            expect.objectContaining({ deleted: true })
+          )
+
+          // The remaining inventory item should also be deleted since it
+          // was only associated with this product's variant
+          const item2Response = await api
+            .get(`/admin/inventory-items/${inventoryItem2.id}`, adminHeaders)
+            .catch((err) => err.response)
+
+          expect(item2Response.status).toEqual(404)
         })
 
         it("should throw if product that has a reservation is being deleted", async () => {

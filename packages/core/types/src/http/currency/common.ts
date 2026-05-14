@@ -1,21 +1,21 @@
 export interface BaseCurrency {
   /**
    * The currency's code.
-   * 
+   *
    * @example
    * usd
    */
   code: string
   /**
    * The currency's symbol.
-   * 
+   *
    * @example
    * $
    */
   symbol: string
   /**
    * The currency's symbol in its native language or country.
-   * 
+   *
    * @example
    * $
    */

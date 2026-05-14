@@ -73,9 +73,22 @@ export const processPaymentWorkflow = createWorkflow(
     const cartId = transform(
       { cartPaymentCollection },
       ({ cartPaymentCollection }) => {
-        return cartPaymentCollection.data[0].cart_id
+        return cartPaymentCollection.data[0]?.cart_id
       }
     )
+
+    const { data: order } = useQueryGraphStep({
+        entity: "order_cart",
+        fields: ["id"],
+        filters: {
+          cart_id: cartId
+        },
+        options: {
+            isList: false
+        }
+      }).config({
+        name: "cart-order-query",
+      })
 
     when("lock-cart-when-available", { cartId }, ({ cartId }) => {
       return !!cartId
@@ -158,8 +171,8 @@ export const processPaymentWorkflow = createWorkflow(
       })
     })
 
-    when({ cartPaymentCollection }, ({ cartPaymentCollection }) => {
-      return !!cartPaymentCollection.data.length
+    when({ cartPaymentCollection, order }, ({ cartPaymentCollection, order }) => {
+      return !!cartPaymentCollection.data.length && !order
     }).then(() => {
       completeCartAfterPaymentStep({
         cart_id: cartPaymentCollection.data[0].cart_id,

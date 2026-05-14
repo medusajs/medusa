@@ -19,6 +19,11 @@ export const storeSidebar = [
         children: [
           {
             type: "link",
+            path: "/commerce-modules/store/locales",
+            title: "Locales",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/store/links-to-other-modules",
             title: "Link to Modules",
           },

@@ -8,7 +8,7 @@ products:
     - product
 ---
 
-import { EllipsisVertical, TaxExclusive, TaxInclusive, ArrowUpRightOnBox } from "@medusajs/icons"
+import { EllipsisVertical, TaxExclusive, TaxInclusive, ArrowUpRightOnBox, EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
   title: `Manage Product Variants in Medusa Admin`,
@@ -83,6 +83,28 @@ To edit a product variant's general details:
     - You can modify allowing backorders, enabling or disabling customers from purchasing the variant even if it's out of stock.
     - You can edit the variant's attributes, including the variant's weight, height, width, length, MID code, HS code, and country of origin.
 5. Once you're done, click the "Save" button.
+
+---
+
+## Manage Product Variant's Translations
+
+<Note>
+
+Locales are available from [Medusa v2.12.3](https://github.com/medusajs/medusa/releases/tag/v2.12.3). If you don't see the translation management in your Medusa Admin, request your technical team to [upgrade your Medusa application](!docs!/learn/update).
+
+</Note>
+
+Product variants can be translated to locales (languages) [supported by your store](../../settings/store/page.mdx#manage-store-locales). You can either manage translations [in bulk](../../settings/translations/page.mdx), or manage translations for an individual product variant from its details page.
+
+To manage translations for the product:
+
+1. Go to its product's details page.
+2. In the Variants section, click on the <InlineIcon Icon={EllipsisVertical} alt="three-dots" /> in its row.
+3. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in the first section's header.
+4. Choose "Manage translations" from the dropdown.
+5. In the [bulk editor](../../tips/bulk-editor/page.mdx) that opens, you can view and edit translations for the product's title and material in each locale supported by your store.
+    - To edit text with multi-line support, double click the respective cell to open a larger text area.
+6. Once you're done editing, click the Save button to apply the changes.
 
 ---
 

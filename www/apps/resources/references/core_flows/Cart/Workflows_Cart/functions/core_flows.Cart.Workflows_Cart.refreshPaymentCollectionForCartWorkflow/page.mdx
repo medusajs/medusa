@@ -25,7 +25,13 @@ payment collection after an update.
 You can use this workflow within your own customizations or custom workflows, allowing you to refresh the cart's payment collection after making updates to it in your
 custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/147ce2fdc35366e591f552404ec949f6a5b92a11/packages/core/core-flows/src/cart/workflows/refresh-payment-collection.ts#L58" />
+:::note
+
+If you use this workflow in another, you must acquire a lock before running it and release the lock after. Learn more in the [Locking Operations in Workflows](https://docs.medusajs.com/learn/fundamentals/workflows/locks#locks-in-nested-workflows) guide.
+
+:::
+
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/core-flows/src/cart/workflows/refresh-payment-collection.ts#L58" />
 
 ## Examples
 
@@ -119,12 +125,16 @@ import { refreshPaymentCollectionForCartWorkflow } from "@medusajs/medusa/core-f
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
+    // Acquire lock from nested workflow here
+    // acquireLockStep({  key: cart.id,  timeout: 2,  ttl: 10,  })
     const result = refreshPaymentCollectionForCartWorkflow
       .runAsStep({
         input: {
           cart_id: "cart_123",
         }
       })
+    // Release lock here
+    // releaseLockStep({ key: cart.id })
   }
 )
 ```
@@ -138,7 +148,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"RefreshPaymentCollectionForCartWorklowInput","type":"[RefreshPaymentCollectionForCartWorklowInput](../../../../types/core_flows.RefreshPaymentCollectionForCartWorklowInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of the cart to refresh.","expandable":false,"children":[{"name":"cart_id","type":"`string`","description":"The cart's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"`any`","description":"The Cart reference.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="refreshPaymentCollectionForCartWorkflow"/>
+<TypeList types={[{"name":"RefreshPaymentCollectionForCartWorklowInput","type":"[RefreshPaymentCollectionForCartWorklowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.RefreshPaymentCollectionForCartWorklowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"RefreshPaymentCollectionForCartWorklowInput","type":"`object`","description":"The details of the cart to refresh.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="refreshPaymentCollectionForCartWorkflow"/>
 
 ## Hooks
 
@@ -156,7 +166,7 @@ This hook is executed before all operations. You can consume this hook to perfor
 import { refreshPaymentCollectionForCartWorkflow } from "@medusajs/medusa/core-flows"
 
 refreshPaymentCollectionForCartWorkflow.hooks.validate(
-  (async ({ input, cart }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -166,4 +176,4 @@ refreshPaymentCollectionForCartWorkflow.hooks.validate(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Cart.Workflows_Cart/page.mdx#__type-14)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"input","type":"[RefreshPaymentCollectionForCartWorklowInput](../../../../types/core_flows.RefreshPaymentCollectionForCartWorklowInput/page.mdx)","description":"The details of the cart to refresh.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"cart_id","type":"`string`","description":"The cart's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"`any`","description":"The Cart reference.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"cart","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validate"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Cart.Workflows_Cart/page.mdx#__type-13)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validate"/>

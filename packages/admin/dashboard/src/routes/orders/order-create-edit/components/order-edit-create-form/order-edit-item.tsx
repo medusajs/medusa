@@ -1,6 +1,11 @@
-import { ArrowUturnLeft, DocumentSeries, XCircle } from "@medusajs/icons"
-import { AdminOrderLineItem } from "@medusajs/types"
-import { Badge, Input, Text, toast } from "@medusajs/ui"
+import {
+  ArrowUturnLeft,
+  DocumentSeries,
+  ReceiptPercent,
+  XCircle,
+} from "@medusajs/icons"
+import { AdminOrderLinePreview } from "@medusajs/types"
+import { Badge, Input, Text, toast, Tooltip } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
@@ -15,7 +20,7 @@ import {
 } from "../../../../../hooks/api/order-edits"
 
 type OrderEditItemProps = {
-  item: AdminOrderLineItem
+  item: AdminOrderLinePreview
   currencyCode: string
   orderId: string
 }
@@ -45,6 +50,10 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
     return !!updateAction && item.quantity === item.detail.fulfilled_quantity
   }, [item])
 
+  const appliedPromoCodes = useMemo(() => {
+    return (item.adjustments || []).map((adjustment) => adjustment.code)
+  }, [item])
+
   /**
    * HANDLERS
    */
@@ -68,7 +77,9 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
         await updateOriginalItem({ quantity, itemId: item.id })
       }
     } catch (e) {
-      toast.error(e.message)
+      toast.error(
+        e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+      )
     }
   }
 
@@ -85,7 +96,9 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
         })
       }
     } catch (e) {
-      toast.error(e.message)
+      toast.error(
+        e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+      )
     }
   }
 
@@ -99,11 +112,16 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
         await undoAction(updateItemAction.id) // Remove action that updated items quantity to fulfilled quantity which makes it "removed"
       }
     } catch (e) {
-      toast.error(e.message)
+      toast.error(
+        e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+      )
     }
   }
 
   const onDuplicate = async () => {
+    if (!item.variant_id) {
+      return
+    }
     try {
       await addItems({
         items: [
@@ -114,7 +132,9 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
         ],
       })
     } catch (e) {
-      toast.error(e.message)
+      toast.error(
+        e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+      )
     }
   }
 
@@ -166,11 +186,12 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
           )}
         </div>
 
-        <div className="flex flex-1 justify-between">
+        <div className="flex flex-1 items-center justify-between">
           <div className="flex flex-grow items-center gap-2">
             <Input
               className="bg-ui-bg-base txt-small w-[67px] rounded-lg [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               type="number"
+              step="any"
               disabled={item.detail.fulfilled_quantity === item.quantity}
               min={item.detail.fulfilled_quantity}
               defaultValue={item.quantity}
@@ -186,6 +207,22 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
             <Text className="txt-small text-ui-fg-subtle">
               {t("fields.qty")}
             </Text>
+
+            {appliedPromoCodes.length > 0 && (
+              <div className="flex flex-shrink pt-[2px]">
+                <Tooltip
+                  content={
+                    <span className="text-pretty">
+                      {appliedPromoCodes.map((code) => (
+                        <div key={code}>{code}</div>
+                      ))}
+                    </span>
+                  }
+                >
+                  <ReceiptPercent className="text-ui-fg-subtle font-normal" />
+                </Tooltip>
+              </div>
+            )}
           </div>
 
           <div className="text-ui-fg-subtle txt-small mr-2 flex flex-shrink-0">

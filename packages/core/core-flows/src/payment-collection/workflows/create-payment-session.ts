@@ -136,7 +136,11 @@ export const createPaymentSessionsWorkflow = createWorkflow(
         }
       )
 
-      const accountHolder = createPaymentAccountHolderStep(accountHolderInput)
+      const accountHolder = createPaymentAccountHolderStep(
+        accountHolderInput
+      ).config({
+        noCompensation: true,
+      })
 
       return { paymentCustomer, accountHolder, existingAccountHolder }
     })

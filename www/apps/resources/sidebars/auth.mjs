@@ -47,7 +47,7 @@ export const authSidebar = [
       {
         type: "category",
         title: "Server Guides",
-        autogenerate_tags: "auth+server",
+        autogenerate_tags: "server+auth",
         autogenerate_as_ref: true,
         sort_sidebar: "alphabetize",
         description:

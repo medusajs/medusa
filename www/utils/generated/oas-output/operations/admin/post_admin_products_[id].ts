@@ -91,9 +91,9 @@
  *   - name: product.updated
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the product
- *       }]
+ *       }
  *       ```
  *     description: Emitted when products are updated.
  *     deprecated: false

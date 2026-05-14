@@ -28,14 +28,10 @@ Our Cloud offering automatically provisions a Redis instance and configures the 
 Add the module into the `modules` property of the exported object in `medusa-config.ts`:
 
 export const highlights = [
-  ["12", "url", "The Redis connection URL."]
+  ["8", "redisUrl", "The Redis connection URL."]
 ]
 
 ```ts title="medusa-config.ts" highlights={highlights}
-import { Modules } from "@medusajs/framework/utils"
-
-// ...
-
 module.exports = defineConfig({
   // ...
   modules: [
@@ -43,7 +39,8 @@ module.exports = defineConfig({
       resolve: "@medusajs/medusa/workflow-engine-redis",
       options: {
         redis: {
-          url: process.env.WE_REDIS_URL,
+          redisUrl: process.env.WE_REDIS_URL,
+          // ...other Redis options
         },
       },
     },
@@ -67,14 +64,13 @@ WE_REDIS_URL=<YOUR_REDIS_URL>
       <Table.HeaderCell>Option</Table.HeaderCell>
       <Table.HeaderCell>Description</Table.HeaderCell>
       <Table.HeaderCell>Required</Table.HeaderCell>
-      <Table.HeaderCell>Default</Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
     <Table.Row>
       <Table.Cell>
       
-      `url`
+      `url` (Deprecated v2.12.2+, use `redisUrl` instead)
       
       </Table.Cell>
       <Table.Cell>
@@ -87,53 +83,21 @@ WE_REDIS_URL=<YOUR_REDIS_URL>
       No. If not provided, you must provide the `pubsub` option.
       
       </Table.Cell>
-      <Table.Cell>
-      
-      \-
-      
-      </Table.Cell>
     </Table.Row>
     <Table.Row>
       <Table.Cell>
       
-      `options`
+      `redisUrl` (v2.12.2+)
       
       </Table.Cell>
       <Table.Cell>
       
-      An object of Redis options. Refer to the [Redis API Reference](https://redis.github.io/ioredis/index.html#RedisOptions) for details on accepted properties.
+      A string indicating the Redis connection URL.
       
       </Table.Cell>
       <Table.Cell>
       
-      No
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      \-
-      
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-      
-      `queueName`
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      The name of the queue used to keep track of retries and timeouts.
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      No
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      `medusa-workflows`
+      No. If not provided, you must provide the `pubsub` option.
       
       </Table.Cell>
     </Table.Row>
@@ -156,9 +120,214 @@ WE_REDIS_URL=<YOUR_REDIS_URL>
       No. If not provided, you must provide the `url` option.
       
       </Table.Cell>
+    </Table.Row>
+    <Table.Row>
       <Table.Cell>
       
-      \-
+      `queueName`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The name of the queue used to keep track of retries and timeouts for workflow executions.
+
+      Default: `medusa-workflows`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `jobQueueName`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The name of the queue used to keep track of retries and timeouts for scheduled jobs.
+
+      Default: `medusa-workflows-jobs`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `options` (deprecated v2.12.2+, use `redisOptions` instead)
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of Redis options. Refer to the [Redis API Reference](https://redis.github.io/ioredis/index.html#RedisOptions) for details on accepted properties.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `redisOptions` (v2.12.2+)
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of Redis options. Refer to the [Redis API Reference](https://redis.github.io/ioredis/index.html#RedisOptions) for details on accepted properties.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `queueOptions` (v2.12.2+)
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of options to pass to all BullMQ instances. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v5.QueueOptions.html) for allowed properties.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `workerOptions` (v2.12.2+)
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of options to pass to all BullMQ worker instances. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v5.WorkerOptions.html) for allowed properties.
+
+      You can instead set options per worker using the `mainWorkerOptions`, `jobWorkerOptions`, and `cleanerWorkerOptions` options.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `mainQueueOptions` (v2.12.2+)
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of options to pass to the main BullMQ queue instance for workflows. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v5.QueueOptions.html) for allowed properties.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `mainWorkerOptions` (v2.12.2+)
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of options to pass to the main BullMQ worker instance for workflows. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v5.WorkerOptions.html) for allowed properties.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `jobQueueOptions` (v2.12.2+)
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of options to pass to the main BullMQ workflow queue instance for scheduled jobs. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v5.QueueOptions.html) for allowed properties.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `jobWorkerOptions` (v2.12.2+)
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of options to pass to the main BullMQ workflow worker instance for scheduled jobs. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v5.WorkerOptions.html) for allowed properties.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `cleanerQueueOptions` (v2.12.2+)
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of options to pass to the BullMQ cleaner queue instance. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v5.QueueOptions.html) for allowed properties.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `cleanerWorkerOptions` (v2.12.2+)
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of options to pass to the BullMQ cleaner worker instance. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v5.WorkerOptions.html) for allowed properties.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
       
       </Table.Cell>
     </Table.Row>

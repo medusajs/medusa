@@ -61,7 +61,7 @@ class DmlGenerator extends AbstractGenerator {
         )
 
         this.generatorEventManager.emit(GeneratorEvent.FINISHED_GENERATE_EVENT)
-        console.log(`[DML] Finished generating OAS for ${file.fileName}.`)
+        console.log(`[DML] Finished generating DML for ${file.fileName}.`)
       })
     )
   }
@@ -71,7 +71,7 @@ class DmlGenerator extends AbstractGenerator {
    * and is an API file.
    *
    * @param fileName - The file path to check
-   * @returns Whether the OAS generator can run on this file.
+   * @returns Whether the DML generator can run on this file.
    */
   isFileIncluded(fileName: string): boolean {
     return (

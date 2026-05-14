@@ -74,6 +74,10 @@ export const updateProductVariantsStep = createStep(
         )
       }
 
+      if (!data.product_variants.length) {
+        return new StepResponse([], [])
+      }
+
       const prevData = await service.listProductVariants({
         id: data.product_variants.map((p) => p.id) as string[],
       })

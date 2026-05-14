@@ -1,0 +1,129 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Translation Concepts`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about the key concepts related to the Translation Module, including locales and translations.
+
+<Prerequisites
+  items={[
+    {
+      text: "Translation Module Configured",
+      link: "/commerce-modules/translation#configure-translation-module",
+    },
+  ]}
+/>
+
+## Locales
+
+The [Locale data model](/references/translation/models/Locale) represents a language that resources can be translated into.
+
+Its `code` property follows the [IETF BCP 47 standard](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1). For example, `en-US` represents American English, while `fr-FR` represents French (France).
+
+Locales are automatically populated in your Medusa application the first time the Translation Module is used.
+
+### Default Locale
+
+The Translation Module doesn't enforce a default locale. If a resource doesn't have a translation in the requested locale, it will fall back to the original value stored in the resource's data model.
+
+---
+
+## Translations
+
+The [Translation data model](/references/translation/models/Translation) represents a translated value for a specific resource in a specific locale.
+
+The data model has the following properties to associate the translation with the resource:
+
+- `reference_id`: The ID of the resource being translated (for example, the ID of the product being translated).
+- `reference`: The name of the table where the resource is stored (for example, `product` when translating a product).
+
+The locale of the translation is indicated by the `locale_code` property, which follows the same [IETF BCP 47 standard](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1) as the [Locale](#locales) data model.
+
+A resource may have only one translation per locale. For example, a product can have only one translation in `fr-FR` and another translation in `es-ES`.
+
+The actual translated values are stored in the `translations` property, which is a JSON object where each key represents a field of the resource being translated, and the value is the translated text.
+
+For example, a translation for a product to French (`fr-FR`) may look like this:
+
+```json
+{
+  "reference_id": "prod_123",
+  "reference": "product",
+  "locale_code": "fr-FR",
+  "translations": {
+    "title": "Produit Exemple",
+    "description": "Ceci est une description en français."
+  }
+}
+```
+
+Each key in the `translations` object corresponds to a property in the product resource, such as `title` and `description`, with their respective translated values.
+
+---
+
+## Retrieve Translations in Medusa
+
+<Note>
+
+To retrieve translations for the storefront, refer to the [Serve Translations in the Storefront](../storefront/page.mdx) guide.
+
+</Note>
+
+You can retrieve translations for a resource on the Medusa server using [Query](!docs!/learn/fundamentals/module-links/query). You can filter translations by `reference_id` and `locale_code` to get the specific translation you need.
+
+For example:
+
+```ts
+const { data: translations } = await query.graph({
+  entity: "translation",
+  fields: ["reference_id", "locale_code", "translations"],
+  filters: {
+    reference_id: "prod_123",
+    locale_code: "fr-FR",
+  },
+})
+
+console.log(translations)
+// Output:
+// [{
+//   reference_id: "prod_123",
+//   locale_code: "fr-FR",
+//   translations: {
+//     title: "Produit Exemple",
+//     description: "Ceci est une description en français."
+//   }
+// }]
+```
+
+In this example, you retrieve the translation records of a product with the ID `prod_123` in French (`fr-FR`).
+
+If you've enabled the [Caching Module](../../../infrastructure-modules/caching/page.mdx) in your Medusa application, you can also cache translation queries to improve performance:
+
+```ts
+const { data: translations } = await query.graph({
+  entity: "translation",
+  fields: ["reference_id", "locale_code", "translations"],
+  filters: {
+    reference_id: "prod_123",
+    locale_code: "fr-FR",
+  },
+}, {
+  cache: {
+    enable: true,
+  },
+})
+
+console.log(translations)
+// Output:
+// [{
+//   reference_id: "prod_123",
+//   locale_code: "fr-FR",
+//   translations: {
+//     title: "Produit Exemple",
+//     description: "Ceci est une description en français."
+//   }
+// }]
+```

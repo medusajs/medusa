@@ -74,9 +74,9 @@
  *   - name: invite.resent
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the invite
- *       }]
+ *       }
  *       ```
  *     description: |-
  *       Emitted when invites should be resent because their token was

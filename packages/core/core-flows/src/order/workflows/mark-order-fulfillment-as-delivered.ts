@@ -27,6 +27,7 @@ import {
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderIsCancelled,
 } from "../utils/order-validation"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 
 type OrderItemWithVariantDTO = OrderLineItemDTO & {
   variant?: ProductVariantDTO & {
@@ -168,8 +169,7 @@ function prepareRegisterDeliveryData({
         const iitem = iitems.find(
           (i) => i.inventory.id === fitem.inventory_item_id
         )
-        if(iitem)
-          quantity = MathBN.div(quantity, iitem.required_quantity)
+        if (iitem) quantity = MathBN.div(quantity, iitem.required_quantity)
       }
 
       return {
@@ -192,6 +192,12 @@ export type MarkOrderFulfillmentAsDeliveredWorkflowInput = {
    * The ID of the fulfillment to mark as delivered.
    */
   fulfillmentId: string
+  /**
+   * Whether to notify the customer about the delivery.
+   *
+   * @since 2.13.7
+   */
+  no_notification?: boolean
 }
 
 export const markOrderFulfillmentAsDeliveredWorkflowId =
@@ -258,15 +264,28 @@ export const markOrderFulfillmentAsDeliveredWorkflow = createWorkflow(
       prepareRegisterDeliveryData
     )
 
+    acquireLockStep({
+      key: orderId,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const deliveredFulfillment = markFulfillmentAsDeliveredWorkflow.runAsStep({
       input: { id: fulfillment.id },
+    })
+
+    releaseLockStep({
+      key: orderId,
     })
 
     registerOrderDeliveryStep(deliveryData)
 
     emitEventStep({
       eventName: FulfillmentWorkflowEvents.DELIVERY_CREATED,
-      data: { id: deliveredFulfillment.id },
+      data: {
+        id: deliveredFulfillment.id,
+        no_notification: input.no_notification,
+      },
     })
 
     return new WorkflowResponse(void 0)

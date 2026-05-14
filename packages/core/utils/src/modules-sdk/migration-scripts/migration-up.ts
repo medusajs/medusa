@@ -34,7 +34,11 @@ export function buildMigrationScript({ moduleName, pathToMigrations }) {
     logger.info(`MODULE: ${moduleName}`)
 
     const dbData = loadDatabaseConfig(moduleName, options)!
-    const orm = await mikroOrmCreateConnection(dbData, [], pathToMigrations)
+    const orm = await mikroOrmCreateConnection(
+      { ...dbData, snapshot: false },
+      [],
+      pathToMigrations
+    )
     const migrations = new Migrations(orm)
 
     migrations.on("migrating", (migration) => {
@@ -51,6 +55,7 @@ export function buildMigrationScript({ moduleName, pathToMigrations }) {
       } else {
         logger.info(`Skipped. Database is up-to-date for module.`)
       }
+      return result
     } catch (error) {
       logger.error(`Failed with error ${error.message}`, error)
       throw new MedusaError(MedusaError.Types.DB_ERROR, error.message)

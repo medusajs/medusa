@@ -1,7 +1,9 @@
 import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import {
+  InfiniteData,
   QueryKey,
+  UseInfiniteQueryOptions,
   UseMutationOptions,
   UseQueryOptions,
   useMutation,
@@ -10,6 +12,7 @@ import {
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { useInfiniteList } from "../use-infinite-list"
 
 const TAGS_QUERY_KEY = "tags" as const
 export const productTagsQueryKeys = queryKeysFactory(TAGS_QUERY_KEY)
@@ -55,6 +58,35 @@ export const useProductTags = (
   })
 
   return { ...data, ...rest }
+}
+
+export const useInfiniteProductTags = (
+  query?: Omit<HttpTypes.AdminProductTagListParams, "offset" | "limit"> & {
+    limit?: number
+  },
+  options?: Omit<
+    UseInfiniteQueryOptions<
+      HttpTypes.AdminProductTagListResponse,
+      FetchError,
+      InfiniteData<HttpTypes.AdminProductTagListResponse, number>,
+      HttpTypes.AdminProductTagListResponse,
+      QueryKey,
+      number
+    >,
+    "queryFn" | "queryKey" | "initialPageParam" | "getNextPageParam"
+  >
+) => {
+  return useInfiniteList<
+    HttpTypes.AdminProductTagListResponse,
+    HttpTypes.AdminProductTagListParams,
+    FetchError,
+    QueryKey
+  >({
+    queryKey: (params) => productTagsQueryKeys.list(params),
+    queryFn: (params) => sdk.admin.productTag.list(params),
+    query,
+    options,
+  })
 }
 
 export const useCreateProductTag = (

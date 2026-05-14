@@ -45,3 +45,10 @@ export type MedusaCloudEmailOptions = {
   environment_handle?: string
   sandbox_handle?: string
 }
+
+declare module "@medusajs/types" {
+  interface ModuleOptions {
+    "@medusajs/notification": NotificationModuleOptions
+    "@medusajs/medusa/notification": NotificationModuleOptions
+  }
+}

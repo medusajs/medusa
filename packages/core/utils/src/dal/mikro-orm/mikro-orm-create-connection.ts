@@ -7,6 +7,9 @@ import { CustomDBMigrator } from "./custom-db-migrator"
 
 type FilterDef = Parameters<typeof MikroORMFilter>[0]
 
+const expectedMigrationsImportStatement =
+  'import { Migration } from "@medusajs/framework/mikro-orm/migrations"'
+
 export class CustomTsMigrationGenerator extends TSMigrationGenerator {
   // TODO: temporary fix to drop unique constraint before creating unique index
   private dropUniqueConstraintBeforeUniqueIndex(
@@ -41,7 +44,17 @@ export class CustomTsMigrationGenerator extends TSMigrationGenerator {
       diff.up.unshift(sql)
     }
 
-    return super.generateMigrationFile(className, diff)
+    let migrationFileContent = super.generateMigrationFile(className, diff)
+    migrationFileContent = migrationFileContent
+      .replace(
+        'import { Migration } from "@mikro-orm/migrations"',
+        expectedMigrationsImportStatement
+      )
+      .replace(
+        "import { Migration } from '@mikro-orm/migrations'",
+        expectedMigrationsImportStatement
+      )
+    return migrationFileContent
   }
 
   createStatement(sql: string, padLeft: number): string {
@@ -61,6 +74,7 @@ export async function mikroOrmCreateConnection(
   database: ModuleServiceInitializeOptions["database"] & {
     connection?: any
     snapshotName?: string
+    snapshot?: boolean
     filters?: Record<string, Filter>
   },
   entities: any[],
@@ -100,6 +114,13 @@ export async function mikroOrmCreateConnection(
     useBatchUpdates: true,
     implicitTransactions: false,
     ignoreUndefinedInQuery: true,
+    // Introduced in MikroORM 6.5.0: when enabled, MikroORM auto-joins referenced entities
+    // (e.g. INNER JOINs PaymentSession when querying Payment) to apply their global filters
+    // (e.g. softDeletable). For non-nullable FKs this uses INNER JOIN, silently excluding
+    // owning entities (e.g. Payment) when the referenced entity (e.g. PaymentSession) is
+    // soft-deleted. Medusa was designed around MikroORM 6.4.x where this didn't exist, so
+    // we disable it to preserve the expected behavior.
+    autoJoinRefsForFilters: false,
     batchSize: 100,
     metadataCache: {
       enabled: true,
@@ -111,6 +132,7 @@ export async function mikroOrmCreateConnection(
       disableForeignKeys: false,
       path: pathToMigrations,
       snapshotName: database.snapshotName,
+      snapshot: database.snapshot,
       generator: CustomTsMigrationGenerator,
       silent: !(
         database.debug ??

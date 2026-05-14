@@ -493,6 +493,25 @@
           "default": "false",
           "mappedType": "boolean"
         },
+        "limit": {
+          "name": "limit",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "used": {
+          "name": "used",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "0",
+          "mappedType": "integer"
+        },
         "type": {
           "name": "type",
           "type": "text",
@@ -750,7 +769,8 @@
           "nullable": true,
           "enumItems": [
             "each",
-            "across"
+            "across",
+            "once"
           ],
           "mappedType": "enum"
         },

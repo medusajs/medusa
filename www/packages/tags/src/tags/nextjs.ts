@@ -4,6 +4,10 @@ export const nextjs = [
     "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/category-images"
   },
   {
+    "title": "Customer Tiers",
+    "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/customer-tiers"
+  },
+  {
     "title": "First-Purchase Discount",
     "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/first-purchase-discounts"
   },

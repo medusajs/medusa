@@ -1,7 +1,7 @@
 import clsx from "clsx"
 import React from "react"
 
-type RadioItemProps = React.DetailedHTMLProps<
+export type RadioItemProps = React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
 > & {
@@ -30,6 +30,7 @@ export const RadioItem = ({ className, checked, ...props }: RadioItemProps) => {
             "w-[6px] h-[6px] bg-medusa-bg-base dark:bg-medusa-fg-on-color absolute top-1/2 left-1/2 rounded-full",
             "-translate-x-1/2 -translate-y-1/2 shadow-details-contrast-on-bg-interactive"
           )}
+          data-testid="radio-item-checked-indicator"
         />
       )}
     </div>

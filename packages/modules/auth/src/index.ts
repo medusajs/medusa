@@ -1,3 +1,4 @@
+import "./types"
 import { AuthModuleService } from "@services"
 import loadProviders from "./loaders/providers"
 import { Module, Modules } from "@medusajs/framework/utils"

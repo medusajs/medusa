@@ -1,3 +1,4 @@
+import React from "react"
 import type { OpenAPI } from "types"
 import TagOperationParametersDescription from "../../Description"
 import clsx from "clsx"
@@ -26,6 +27,7 @@ const TagOperationParametersDefault = ({
         !expandable && "w-full pl-1",
         className
       )}
+      data-testid="default"
     >
       {name && (
         <TagOperationParametersName

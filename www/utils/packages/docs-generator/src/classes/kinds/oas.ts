@@ -135,6 +135,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     },
   ]
   readonly RESPONSE_TYPE_NAMES = ["MedusaResponse"]
+  readonly LOCALIZED_ROUTES = ["store/"]
 
   /**
    * This map collects tags of all the generated OAS, then, once the generation process finishes,
@@ -159,7 +160,7 @@ class OasKindGenerator extends FunctionKindGenerator {
 
     this.tags = new Map()
     this.oasSchemaHelper = new OasSchemaHelper()
-    this.schemaFactory = new SchemaFactory()
+    this.schemaFactory = new SchemaFactory({ checker: this.checker })
     this.typesHelper = new TypesHelper({
       checker: this.checker,
     })
@@ -348,6 +349,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       node,
       tagName,
       methodName,
+      oasPath,
     })
 
     oas.parameters?.push(...queryParameters)
@@ -582,6 +584,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       node,
       tagName,
       methodName,
+      oasPath,
       forUpdate: true,
     })
 
@@ -1170,6 +1173,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     node,
     tagName,
     methodName,
+    oasPath,
     forUpdate = false,
   }: {
     /**
@@ -1184,6 +1188,10 @@ class OasKindGenerator extends FunctionKindGenerator {
      * The tag's name.
      */
     tagName?: string
+    /**
+     * The OAS path.
+     */
+    oasPath: string
     /**
      * Whether the request parameters are retrieved for update purposes only.
      */
@@ -1200,6 +1208,30 @@ class OasKindGenerator extends FunctionKindGenerator {
   } {
     const queryParameters: OpenAPIV3.ParameterObject[] = []
     let requestSchema: OpenApiSchema | undefined
+    const isLocalizedRoute = this.LOCALIZED_ROUTES.some((route) =>
+      oasPath.startsWith(route)
+    )
+
+    if (isLocalizedRoute) {
+      queryParameters.push(
+        this.getParameterObject({
+          type: "query",
+          name: "locale",
+          description:
+            "The locale in BCP 47 format to retrieve localized content.",
+          required: false,
+          schema: {
+            type: "string",
+            example: "en-US",
+            externalDocs: {
+              url: "https://docs.medusajs.com/resources/commerce-modules/translation/storefront",
+              description:
+                "Learn more in the Serve Translations in Storefront guide.",
+            },
+          },
+        })
+      )
+    }
 
     if (
       !node.parameters[0].type ||
@@ -1340,6 +1372,22 @@ class OasKindGenerator extends FunctionKindGenerator {
           type: "string",
           externalDocs: {
             url: "https://docs.medusajs.com/api/store#publishable-api-key",
+          },
+        },
+      }),
+      this.getParameterObject({
+        type: "header",
+        name: "x-medusa-locale",
+        description:
+          "The locale in BCP 47 format to retrieve localized content.",
+        required: false,
+        schema: {
+          type: "string",
+          example: "en-US",
+          externalDocs: {
+            url: "https://docs.medusajs.com/resources/commerce-modules/translation/storefront",
+            description:
+              "Learn more in the Serve Translations in Storefront guide.",
           },
         },
       }),
@@ -1501,17 +1549,30 @@ class OasKindGenerator extends FunctionKindGenerator {
     const typeAsString =
       zodObjectTypeName || this.checker.typeToString(itemType)
 
-    const schemaFromFactory = this.schemaFactory.tryGetSchema(
-      itemType.symbol?.getName() ||
-        itemType.aliasSymbol?.getName() ||
-        title ||
-        typeAsString,
-      {
-        title: title || typeAsString,
-        description,
-      },
-      rest.context
-    )
+    const schemaFromFactory =
+      this.schemaFactory.tryGetSchema({
+        name:
+          itemType.symbol?.getName() ||
+          itemType.aliasSymbol?.getName() ||
+          title ||
+          typeAsString,
+        additionalData: {
+          title: title || typeAsString,
+          description,
+        },
+        context: rest.context,
+        type: itemType,
+      }) ||
+      this.schemaFactory.tryGetSchema({
+        // remove type arguments from name
+        name: typeAsString.replace(/<.*>$/, ""),
+        additionalData: {
+          title: title || typeAsString,
+          description,
+        },
+        context: rest.context,
+        type: itemType,
+      })
 
     if (schemaFromFactory) {
       return schemaFromFactory
@@ -2512,11 +2573,14 @@ class OasKindGenerator extends FunctionKindGenerator {
         false
 
       const schemaNameChanged =
-        oldSchemaObj!["x-schemaName"] !== newSchemaObj?.["x-schemaName"]
+        !!newSchemaObj?.["x-schemaName"] &&
+        oldSchemaObj!["x-schemaName"] !== newSchemaObj["x-schemaName"]
       wasUpdated = requiredChanged || schemaNameChanged
     }
     oldSchemaObj!.required = newSchemaObj?.required
-    oldSchemaObj!["x-schemaName"] = newSchemaObj?.["x-schemaName"]
+    if (newSchemaObj?.["x-schemaName"]) {
+      oldSchemaObj!["x-schemaName"] = newSchemaObj?.["x-schemaName"]
+    }
 
     return {
       schema: oldSchemaObj,

@@ -1,3 +1,4 @@
+import React from "react"
 import type { OpenAPI } from "types"
 import dynamic from "next/dynamic"
 import type { TagOperationParametersObjectProps } from "./Types/Object"
@@ -109,11 +110,13 @@ const TagOperationParameters = ({
         isRequired={isRequired}
       />
     )
-
-    return <></>
   }
 
-  return <div className={className}>{getElement()}</div>
+  return (
+    <div className={className} data-testid="parameters">
+      {getElement()}
+    </div>
+  )
 }
 
 export default TagOperationParameters

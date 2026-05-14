@@ -105,9 +105,9 @@
  *   - name: product-collection.created
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the product collection
- *       }]
+ *       }
  *       ```
  *     description: Emitted when product collections are created.
  *     deprecated: false

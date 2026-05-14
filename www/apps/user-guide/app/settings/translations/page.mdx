@@ -1,0 +1,124 @@
+---
+sidebar_position: 2
+sidebar_label: "Manage Translations"
+tags:
+    - user guide
+    - translation
+products:
+    - translation
+---
+
+import { BarsArrowDown, Collapse } from "@medusajs/icons"
+import { Prerequisites, InlineIcon } from "docs-ui"
+
+export const metadata = {
+  title: `Manage Translations in Medusa Admin`,
+}
+
+# {metadata.title}
+
+In this guide, you’ll learn how to manage translations of resources like products in the Medusa Admin.
+
+<Note>
+
+Translations are available from [Medusa v2.12.3](https://github.com/medusajs/medusa/releases/tag/v2.12.3). If you don't see the locale settings in your Medusa Admin, request your technical team to [upgrade your Medusa application](!docs!/learn/update).
+
+</Note>
+
+## Translations Overview
+
+Medusa allows you to translate various resources in your store, such as product titles and descriptions, into multiple locales (languages) supported by your store.
+
+<Note title="Tip">
+
+You can set supported locales for your store in the [Store](../store/page.mdx#manage-store-locales) settings page.
+
+</Note>
+
+Then, in the storefront, customers can view content in their preferred language based on the available locales.
+
+### View and Manage Translations
+
+You can view and manage translations in the Medusa Admin dashboard by going to Settings → Translations. This page allows you to manage translations of core and custom resources in bulk.
+
+Alternatively, you can manage translations for individual resources directly from their respective pages (for example, from a product's detail page).
+
+![Translations settings page](https://res.cloudinary.com/dza7lstvk/image/upload/v1768905062/User%20Guide/CleanShot_2026-01-20_at_12.30.45_2x_cp0fpt.png)
+
+---
+
+## Manage Translations in Bulk
+
+In the Translations settings page, you can view and manage translations in bulk for various core and custom resources in your store, including products and variants.
+
+<Note>
+
+Refer to the [Translation Module](!resources!/commerce-modules/translation#supported-module-translations) guide for a list of core resources that support translations out-of-the-box.
+
+</Note>
+
+For example, to manage product translations in bulk:
+
+1. Go to Settings → Translations.
+2. Click on the Edit button in the "Products" row.
+3. This will open a [bulk editor](../../tips/bulk-editor/page.mdx) where you can view and edit translations for product titles, descriptions, subtitles, and more in each [locale supported in your store](../store/page.mdx#manage-store-locales).
+    - You can switch between locales using the Locales dropdown at the top of the bulk editor.
+    - You can click the "Save Changes" button at any time to save your progress without closing the bulk editor.
+4. Once you're done editing, click the "Save and close" button to apply the changes.
+
+Customers will then see the translated content in the storefront based on their selected locale.
+
+---
+
+### Manage Translatable Resources
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.13.0+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.13.0"
+    },
+    {
+      text: "Translation Module Configured",
+      link: "!resources!/commerce-modules/translation#configure-translation-module",
+    },
+    {
+      text: "For custom resources: Enable translations for custom data models",
+      link: "!resources!/commerce-modules/translation/custom-data-models",
+    }
+  ]}
+/>
+
+Admin users can configure which resources are translatable in the Translations settings page. They can also configure which fields are translatable for each resource.
+
+To manage translatable resources and their fields:
+
+1. Go to Settings → Translations.
+2. Click on the Manage button at the top-end of the first section.
+3. In the side window that opens, you can:
+    - Enable or disable translations for each resource, such as products.
+    - For each resource, you can expand it to configure which fields are translatable.
+    - To select all resources and their fields, click the "Select All" button at the top.
+    - To view only selected resources, click the "Selected" button. You can toggle back to view all resources by clicking the "Full list" button.
+    - You can toggle alphabetical sorting between ascending and descending order by clicking the <InlineIcon Icon={BarsArrowDown} alt="sort" /> button at the top.
+    - You can collapse all expanded resources by clicking the <InlineIcon Icon={Collapse} alt="collapse" /> button at the top.
+4. Once you're done, click the "Save" button to apply the changes.
+
+![Form to manage translatable resources and their fields](https://res.cloudinary.com/dza7lstvk/image/upload/v1768904818/User%20Guide/CleanShot_2026-01-20_at_12.26.31_2x_fa1gnr.png)
+
+---
+
+## View Translation Statistics
+
+Each resource row in the Translations settings page displays how many fields have been translated out of the total translatable fields for that resource.
+
+The "Translated fields" section also shows a general progress bar of how many fields have been translated across all resources and locales in your store. You can use this summary to track your overall translation progress.
+
+![Translation statistics in Translated fields section](https://res.cloudinary.com/dza7lstvk/image/upload/v1768905110/User%20Guide/CleanShot_2026-01-20_at_12.31.18_2x_swg6zy.png)
+
+There are two charts in this section:
+
+1. A progress bar showing the overall translation progress across all resources and locales.
+2. A bar chart showing the number of translated fields per locale.
+
+These charts help you visualize your translation efforts and identify which locales may need more attention.

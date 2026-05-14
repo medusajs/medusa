@@ -1,10 +1,18 @@
 import React, { useEffect, useMemo, useRef } from "react"
 import clsx from "clsx"
-import { ArrowUpCircleSolid, LightBulb, LightBulbSolid } from "@medusajs/icons"
-import { useAiAssistant, useIsBrowser } from "../../../../providers"
+import {
+  ArrowUpCircleSolid,
+  LightBulb,
+  LightBulbSolid,
+  StopCircleSolid,
+} from "@medusajs/icons"
+import { useAiAssistant } from "@/providers/AiAssistant"
+import { useAnalytics } from "@/providers/Analytics"
+import { useIsBrowser } from "@/providers/BrowserProvider"
 import { useChat, useDeepThinking } from "@kapaai/react-sdk"
-import { useAiAssistantChatNavigation } from "../../../../hooks"
+import { useAiAssistantChatNavigation } from "../../../../hooks/use-ai-assistant-chat-navigation"
 import { Tooltip } from "../../../Tooltip"
+import { DocsTrackingEvents } from "../../../../constants"
 
 type AiAssistantChatWindowInputProps = {
   chatWindowRef: React.RefObject<HTMLDivElement | null>
@@ -15,7 +23,8 @@ export const AiAssistantChatWindowInput = ({
 }: AiAssistantChatWindowInputProps) => {
   const { chatOpened, inputRef, loading, setChatOpened, isCaptchaLoaded } =
     useAiAssistant()
-  const { submitQuery, conversation } = useChat()
+  const { submitQuery, conversation, stopGeneration } = useChat()
+  const { track } = useAnalytics()
   const { active, toggle } = useDeepThinking()
   const { isBrowser } = useIsBrowser()
   const { searchQuery, searchQueryType } = useMemo(() => {
@@ -37,7 +46,20 @@ export const AiAssistantChatWindowInput = ({
     overrideQuestion?: string
   ) => {
     e?.preventDefault()
+    if (loading) {
+      // stop the generation
+      stopGeneration()
+      return
+    }
+
     submitQuery(overrideQuestion || question)
+    if (!conversation.length) {
+      track({
+        event: {
+          event: DocsTrackingEvents.AI_ASSISTANT_START_CHAT,
+        },
+      })
+    }
     setQuestion("")
   }
 
@@ -193,10 +215,10 @@ export const AiAssistantChatWindowInput = ({
               "appearance-none p-0 text-medusa-fg-base disabled:text-medusa-fg-disabled",
               "transition-colors"
             )}
-            disabled={!question || loading || !isCaptchaLoaded}
+            disabled={!isCaptchaLoaded || (!question && !loading)}
             type="submit"
           >
-            <ArrowUpCircleSolid />
+            {loading ? <StopCircleSolid /> : <ArrowUpCircleSolid />}
           </button>
         </div>
       </form>

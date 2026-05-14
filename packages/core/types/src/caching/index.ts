@@ -13,7 +13,7 @@ type Providers = (string | {
 })[]
 
 /**
- * @since v2.11.0
+ * @since 2.11.0
  */
 export interface ICachingModuleService extends IModuleService {
   // Static trace methods
@@ -47,7 +47,7 @@ export interface ICachingModuleService extends IModuleService {
    * To retrieve by key:
    * 
    * ```ts
-   * const data = await cacheModuleService.get({
+   * const data = await cachingModuleService.get({
    *   key: "products", // this key would typically be a hash
    * }) as { id: string; title: string; }
    * ```
@@ -55,7 +55,7 @@ export interface ICachingModuleService extends IModuleService {
    * To retrieve by tags:
    * 
    * ```ts
-   * const data = await cacheModuleService.get({
+   * const data = await cachingModuleService.get({
    *   tags: ["Product:list:*"],
    * }) as { id: string; title: string; }[]
    * ```
@@ -63,7 +63,7 @@ export interface ICachingModuleService extends IModuleService {
    * To retrieve by key from specific providers:
    * 
    * ```ts
-   * const data = await cacheModuleService.get({
+   * const data = await cachingModuleService.get({
    *   key: "products", // this key would typically be a hash
    *   providers: ["caching-redis", "caching-memcached"]
    * }) as { id: string; title: string; }
@@ -106,8 +106,8 @@ export interface ICachingModuleService extends IModuleService {
    * 
    * ```ts
    * const data = { id: "prod_123", title: "Product 123" }
-   * const key = await cacheModuleService.computeKey(data)
-   * await cacheModuleService.set({
+   * const key = await cachingModuleService.computeKey(data)
+   * await cachingModuleService.set({
    *   key,
    *   data
    * })
@@ -123,8 +123,8 @@ export interface ICachingModuleService extends IModuleService {
    * 
    * ```ts
    * const data = [{ id: "prod_123", title: "Product 123" }]
-   * const key = await cacheModuleService.computeKey(data)
-   * await cacheModuleService.set({
+   * const key = await cachingModuleService.computeKey(data)
+   * await cachingModuleService.set({
    *   key,
    *   data,
    *   tags: [`Product:${data[0].id}`, "Product:list:*"]
@@ -135,8 +135,8 @@ export interface ICachingModuleService extends IModuleService {
    * 
    * ```ts
    * const data = [{ id: "prod_123", title: "Product 123" }]
-   * const key = await cacheModuleService.computeKey(data)
-   * await cacheModuleService.set({
+   * const key = await cachingModuleService.computeKey(data)
+   * await cachingModuleService.set({
    *   key,
    *   data,
    *   options: { autoInvalidate: false }
@@ -149,8 +149,8 @@ export interface ICachingModuleService extends IModuleService {
    * 
    * ```ts
    * const data = { id: "prod_123", title: "Product 123" }
-   * const key = await cacheModuleService.computeKey(data)
-   * await cacheModuleService.set({
+   * const key = await cachingModuleService.computeKey(data)
+   * await cachingModuleService.set({
    *   key,
    *   data,
    *   providers: [
@@ -224,7 +224,7 @@ export interface ICachingModuleService extends IModuleService {
    * To invalidate cache by key:
    * 
    * ```ts
-   * await cacheModuleService.clear({
+   * await cachingModuleService.clear({
    *  key: "products" // this key would typically be a hash
    * })
    * ```
@@ -234,7 +234,7 @@ export interface ICachingModuleService extends IModuleService {
    * To invalidate cache by tags:
    * 
    * ```ts
-   * await cacheModuleService.clear({
+   * await cachingModuleService.clear({
    *  tags: ["Product:list:*"]
    * })
    * ```
@@ -244,7 +244,7 @@ export interface ICachingModuleService extends IModuleService {
    * To invalidate only the cache data that were set to automatically invalidate:
    * 
    * ```ts
-   * await cacheModuleService.clear({
+   * await cachingModuleService.clear({
    *  tags: ["Product:list:*"],
    *  options: { autoInvalidate: true }
    * })
@@ -263,7 +263,7 @@ export interface ICachingModuleService extends IModuleService {
    * To invalidate cache from specific providers:
    * 
    * ```ts
-   * await cacheModuleService.clear({
+   * await cachingModuleService.clear({
    *  key: "products",
    *  providers: ["caching-redis", "caching-memcached"]
    * })
@@ -311,7 +311,7 @@ export interface ICachingModuleService extends IModuleService {
    * @returns The computed cache key.
    * 
    * @example
-   * const key = await cacheModuleService.computeKey({
+   * const key = await cachingModuleService.computeKey({
    *   id: "prod_123",
    *   title: "Product 123"
    * })
@@ -327,7 +327,7 @@ export interface ICachingModuleService extends IModuleService {
    * @returns An array of computed cache tags.
    * 
    * @example
-   * const tags = await cacheModuleService.computeTags({
+   * const tags = await cachingModuleService.computeTags({
    *   products: [{ id: "prod_123" }, { id: "prod_456" }],
    * }, {
    *   operation: "updated"

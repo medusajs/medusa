@@ -18,13 +18,13 @@ This documentation provides a reference to the `deleteUsersWorkflow`. It belongs
 This workflow deletes one or more users. It's used by other workflows
 like [removeUserAccountWorkflow](../core_flows.User.Workflows_User.removeUserAccountWorkflow/page.mdx). If you use this workflow directly,
 you must also remove the association to the auth identity using the
-setAuthAppMetadataStep. Learn more about auth identities in
+[setAuthAppMetadataStep](../../../../Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.setAuthAppMetadataStep/page.mdx). Learn more about auth identities in
 [this documentation](https://docs.medusajs.com/resources/commerce-modules/auth/auth-identity-and-actor-types).
 
 You can use this workflow within your customizations or your own custom workflows, allowing you to
 delete users within your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/147ce2fdc35366e591f552404ec949f6a5b92a11/packages/core/core-flows/src/user/workflows/delete-users.ts#L35" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/core-flows/src/user/workflows/delete-users.ts#L35" />
 
 ## Examples
 
@@ -133,7 +133,7 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"deleteUsersWorkflow","steps":[{"type":"step","name":"deleteUsersStep","description":"This step deletes one or more users.","link":"../../../Steps_User/functions/core_flows.User.Steps_User.deleteUsersStep/page.mdx","depth":1},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record.\n\nLearn more in the [Remote Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/remote-link#cascade-delete-linked-records)","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.removeRemoteLinkStep/page.mdx","depth":2},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"deleteUsersWorkflow","steps":[{"type":"step","name":"deleteUsersStep","description":"This step deletes one or more users.","link":"../../../Steps_User/functions/core_flows.User.Steps_User.deleteUsersStep/page.mdx","depth":1},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record if cascade deletion is enabled.\n\nLearn more in the [Link documentation](https://docs.medusajs.com/learn/fundamentals/module-links/link#cascade-delete-linked-records)","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.removeRemoteLinkStep/page.mdx","depth":2},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":2}]}} />
 
 ## Input
 
@@ -178,18 +178,18 @@ Emitted when users are deleted.
 </Table.Cell>
       <Table.Cell>
 ```ts blockStyle="inline"
-[{
+{
   id, // The ID of the user
-}]
+}
 ```
 </Table.Cell>
       <Table.Cell>
 <CopyGeneratedSnippetButton tooltipText="Copy subscriber for event" type="subscriber" options={{
         event: "user.deleted",
         payload: `\`\`\`ts
-[{
+{
   id, // The ID of the user
-}]
+}
 \`\`\``
         }}/>
 </Table.Cell>

@@ -1,0 +1,11 @@
+---
+displayed_sidebar: translationReference
+---
+
+import { TypeList } from "docs-ui"
+
+# UpdateTranslationDataDTO
+
+The attributes to update in translations matching a selector.
+
+<TypeList types={[{"name":"reference_id","type":"`string`","description":"The ID of the data model being translated.","optional":true,"defaultValue":"","example":"\"prod_123\"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"The name of the table that the translation belongs to.","optional":true,"defaultValue":"","example":"\"product\"","expandable":false,"children":[]},{"name":"locale_code","type":"`string`","description":"The BCP 47 language tag code for this translation.","optional":true,"defaultValue":"","example":"\"en-US\"","expandable":false,"children":[]},{"name":"translations","type":"`Record<string, unknown>`","description":"The translated fields as key-value pairs.","optional":true,"defaultValue":"","example":"{ * \"title\": \"Product Title\", * \"description\": \"Product Description\", * }","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="UpdateTranslationDataDTO"/>

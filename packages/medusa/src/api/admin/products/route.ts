@@ -74,6 +74,21 @@ async function getProductsWithIndexEngine(
     delete filters.sales_channel_id
   }
 
+  if (isPresent(filters.price_list_id)) {
+    const priceListIds = filters.price_list_id
+
+    filters["variants"] ??= {}
+    filters["variants"]["prices"] ??= {}
+    filters["variants"]["prices"]["price_list_id"] = priceListIds
+
+    delete filters.price_list_id
+  }
+
+  // TODO: Remove once we implement search by relations in a similar way to query.graph
+  if (isPresent(filters.q)) {
+    filters["variants"] ??= {}
+  }
+
   const { data: products, metadata } = await query.index({
     entity: "product",
     fields: req.queryConfig.fields ?? [],

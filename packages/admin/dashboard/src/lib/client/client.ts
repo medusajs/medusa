@@ -8,7 +8,7 @@ export const sdk = new Medusa({
   baseUrl: backendUrl,
   auth: {
     type: authType,
-    jwtTokenStorageKey
+    jwtTokenStorageKey,
   },
 })
 

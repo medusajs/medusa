@@ -4,7 +4,6 @@
  * summary: Get a Gift Card
  * description: Retrieve a gift card by its ID. You can expand the gift card's relations or select the fields that should be returned.
  * x-authenticated: true
- * x-ignoreCleanup: true
  * parameters:
  *   - name: id
  *     in: path
@@ -12,20 +11,6 @@
  *     required: true
  *     schema:
  *       type: string
- *   - name: fields
- *     in: query
- *     description: |-
- *       Comma-separated fields that should be included in the returned data.
- *       if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
- *       without prefix it will replace the entire default fields.
- *     required: false
- *     schema:
- *       type: string
- *       title: fields
- *       description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
- *         fields. Without prefix it will replace the entire default fields.
- *       externalDocs:
- *         url: "#select-fields-and-relations"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -58,9 +43,9 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-badges:
- *   - text: Cloud
+ *   - text: Loyalty Plugin
  *     description: |
- *       This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+ *       This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
  * 
 */
 

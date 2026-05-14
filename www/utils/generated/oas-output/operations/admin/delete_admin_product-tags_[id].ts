@@ -64,9 +64,9 @@
  *   - name: product-tag.deleted
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the product tag
- *       }]
+ *       }
  *       ```
  *     description: Emitted when product tags are deleted.
  *     deprecated: false

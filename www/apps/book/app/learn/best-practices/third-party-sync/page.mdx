@@ -1,0 +1,924 @@
+export const metadata = {
+  title: `${pageNumber} Best Practices for Third-Party Syncing`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn about best practices for syncing data between Medusa and third-party systems.
+
+## Common Issues with Third-Party Syncing Implementation
+
+Syncing data between Medusa and external systems is a common use case for commerce applications. For example, if your commerce ecosystem includes an external CMS or inventory management system, you may need to sync product data between Medusa and these systems.
+
+However, how you implement third-party syncing can significantly impact performance and memory usage. Syncing large amounts of data without proper handling can lead to issues like:
+
+- Out-of-memory (OOM) errors.
+- Slow syncs that block the event loop and degrade application performance.
+- Application crashes in production.
+
+This chapter covers best practices to avoid these issues when syncing data between Medusa and third-party systems. These best practices are general programming patterns that aren't Medusa-specific, but they're essential for building robust third-party syncs.
+
+---
+
+## How to Sync Data Between Systems
+
+Before diving into best practices, it's important to understand the general approach for syncing data between Medusa and third-party systems. Third-party syncing typically involves two main steps:
+
+1. Define the syncing logic in a [workflow](../../fundamentals/workflows/page.mdx).
+2. Execute the workflow from either a [scheduled job](../../fundamentals/scheduled-jobs/page.mdx) or a [subscriber](../../fundamentals/events-and-subscribers/page.mdx).
+
+### Define Syncing Logic in a Workflow
+
+[Workflows](../../fundamentals/workflows/page.mdx) are special functions designed for long-running, asynchronous tasks. They provide features like [compensation](../../fundamentals/workflows/compensation-function/page.mdx), [retries](../../fundamentals/workflows/retry-failed-steps/page.mdx), and [async execution](../../fundamentals/workflows/long-running-workflow/page.mdx) that are essential for reliable data syncing.
+
+When defining your syncing logic, such as pushing product data to a third-party service or pulling inventory data into Medusa, you should define a workflow that encapsulates this logic.
+
+Medusa also exposes [built-in workflows](!resources!/medusa-workflows-reference) for common commerce operations, like creating or updating products, that you can leverage in your syncing logic.
+
+For example, you can use Medusa's built-in [batchProductsWorkflow](!resources!/references/medusa-workflows/batchProductsWorkflow) to create or update products in batches:
+
+```ts title="src/jobs/sync-products.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { batchProductsWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function syncProductsJob(container: MedusaContainer) {
+  // ...
+  await batchProductsWorkflow(container).run({
+    input: {
+      create: productsToCreate,
+      update: productsToUpdate,
+    },
+  })
+}
+```
+
+### Execute Workflows from Scheduled Jobs or Subscribers
+
+After defining your syncing logic in a workflow, or choosing a Medusa workflow to use, you need to execute it based on your syncing requirements:
+
+- [Scheduled Jobs](../../fundamentals/scheduled-jobs/page.mdx): Use scheduled jobs for periodic syncs, such as syncing products daily or inventory hourly. Scheduled jobs run at specified intervals and can trigger your workflow to perform the sync.
+- [Subscribers](../../fundamentals/events-and-subscribers/page.mdx): Use subscribers for event-driven syncs, such as syncing data when a product is updated in Medusa or when an order is placed. Subscribers listen for specific events and can trigger your workflow in response.
+
+If you've set up [server and worker instances](../../production/worker-mode/page.mdx), the worker will handle the execution. So, the syncing execution won't block the main server process.
+
+<Note title="Tip">
+
+[Cloud](!cloud!) creates server and worker instances for your project automatically, so you don't need to set this up manually.
+
+</Note>
+
+In the scheduled job or subscriber, you retrieve the data to be synced from the third-party service or from Medusa itself. Then, you execute the workflow, passing it the data to be synced.
+
+For example, the following scheduled job fetches products from a third-party service and syncs them to Medusa using a workflow:
+
+```ts title="src/jobs/sync-products.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { batchProductsWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function syncProductsJob(container: MedusaContainer) {
+  const productStream = streamProductsFromApi()
+  const batchedProducts = batchProducts(productStream, 50)
+
+  for await (const batch of batchedProducts) {
+    const { 
+      productsToCreate, 
+      productsToUpdate,
+    } = await prepareProducts(batch)
+    
+    await batchProductsWorkflow(container).run({
+      input: {
+        create: productsToCreate,
+        update: productsToUpdate,
+      },
+    })
+  }
+}
+```
+
+You'll learn about best practices for implementing the data fetching, batching, and preparation logic in the next sections.
+
+---
+
+## Syncing Best Practices
+
+The following sections cover best practices for implementing third-party syncing in a way that minimizes memory usage, maximizes performance, and ensures reliability.
+
+<Details summaryContent="Full Scheduled Job Code">
+
+The following sections take snippets from this complete example of a high-performance, memory-efficient product synchronization job that incorporates all the best practices discussed:
+
+```ts title="src/jobs/sync-products.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { ContainerRegistrationKeys, MedusaError, Modules } from "@medusajs/framework/utils"
+import { batchProductsWorkflow } from "@medusajs/medusa/core-flows"
+import { Readable } from "stream"
+import { parser } from "stream-json"
+import { pick } from "stream-json/filters/Pick"
+import { streamArray } from "stream-json/streamers/StreamArray"
+import { chain } from "stream-chain"
+
+const API_FETCH_SIZE = 200
+const PROCESS_BATCH_SIZE = 50
+const MAX_RETRIES = 3
+const RETRY_DELAY_MS = 1000
+const FETCH_TIMEOUT_MS = 30000
+
+async function fetchWithRetry(
+  url: string,
+  retries = MAX_RETRIES
+): Promise<Response> {
+  let lastError: Error | null = null
+
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
+
+      const response = await fetch(url, {
+        signal: controller.signal,
+        // Keep connection alive for efficiency with multiple requests
+        headers: {
+          "Connection": "keep-alive",
+        },
+      })
+
+      clearTimeout(timeoutId)
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+      }
+
+      return response
+    } catch (error: any) {
+      lastError = error
+      const isRetryable =
+        error.code === "UND_ERR_SOCKET" ||
+        error.code === "ECONNREFUSED" ||
+        error.code === "ECONNRESET" ||
+        error.code === "ETIMEDOUT" ||
+        error.name === "AbortError"
+
+      if (isRetryable && attempt < retries) {
+        // Exponential backoff: 1s → 2s → 4s
+        const delay = RETRY_DELAY_MS * Math.pow(2, attempt - 1)
+        await new Promise((resolve) => setTimeout(resolve, delay))
+      } else {
+        break
+      }
+    }
+  }
+
+  throw lastError
+}
+
+/**
+ * Streams products from the external API using incremental JSON parsing
+ * Products are yielded one by one as they're parsed from the response stream
+ */
+async function* streamProductsFromApi() {
+  let offset = 0
+  let hasMore = true
+
+  while (hasMore) {
+    const url = `https://third-party-api.com/products?limit=${API_FETCH_SIZE}&offset=${offset}`
+
+    const response = await fetchWithRetry(url)
+
+    // Convert web ReadableStream to Node.js Readable
+    const nodeStream = Readable.fromWeb(response.body as any)
+
+    // Create a streaming JSON parser pipeline that:
+    // 1. Parses JSON incrementally
+    // 2. Picks only the "products" array
+    // 3. Streams each array item individually
+    const pipeline = chain([
+      nodeStream,
+      parser(),
+      pick({ filter: "products" }),
+      streamArray(),
+    ])
+
+    let productCount = 0
+
+    // Yield each product as it's parsed - memory stays constant
+    try {
+      for await (const { value } of pipeline) {
+        yield value
+        productCount++
+
+        // Yield to event loop periodically to prevent blocking
+        if (productCount % 100 === 0) {
+          await new Promise((resolve) => setImmediate(resolve))
+        }
+      }
+    } catch (streamError: any) {
+      // Handle stream errors (socket closed mid-stream)
+      if (streamError.code === "UND_ERR_SOCKET" || streamError.code === "ECONNRESET") {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          `Stream interrupted after ${productCount} products: ${streamError.message}`
+        )
+      }
+      throw streamError
+    }
+
+    // If the products are less than expected, there are no more products
+    if (productCount < API_FETCH_SIZE) {
+      hasMore = false
+    } else {
+      offset += productCount
+    }
+  }
+}
+
+/**
+ * Collects products into batches of the specified size
+ */
+async function* batchProducts(
+  products: AsyncGenerator,
+  batchSize: number
+): AsyncGenerator<any[]> {
+  let batch: any[] = []
+
+  for await (const product of products) {
+    batch.push(product)
+
+    if (batch.length >= batchSize) {
+      yield batch
+      // Release reference for GC
+      batch = []
+    }
+  }
+
+  // Yield remaining products
+  if (batch.length > 0) {
+    yield batch
+  }
+}
+
+export default async function syncProductsJob(container: MedusaContainer) {
+  const query = container.resolve(ContainerRegistrationKeys.QUERY)
+  const workflowEngine = container.resolve(Modules.WORKFLOW_ENGINE)
+
+  let totalCreated = 0
+  let totalUpdated = 0
+  let batchNumber = 0
+
+  // Stream products from API and process in batches
+  // Memory stays constant - we only hold PROCESS_BATCH_SIZE products at a time
+  const productStream = streamProductsFromApi()
+  const batchedProducts = batchProducts(productStream, PROCESS_BATCH_SIZE)
+
+  for await (const batch of batchedProducts) {
+    batchNumber++
+
+    // Extract external IDs from this batch to look up in Medusa
+    const externalIds = batch.map((p) => p.id)
+
+    // Query Medusa for products matching these external IDs
+    const { data: existingProducts } = await query.graph(
+      {
+        entity: "product",
+        fields: ["id", "updated_at", "external_id"],
+        filters: {
+          external_id: externalIds,
+        },
+      }
+    )
+
+    // Build a map for quick lookup
+    const existingByExternalId = new Map(
+      existingProducts.map((p) => [p.external_id, { 
+        id: p.id, 
+        updatedAt: p.updated_at,
+      }])
+    )
+
+    const productsToCreate: any[] = []
+    const productsToUpdate: any[] = []
+
+    for (const externalProduct of batch) {
+      const existing = existingByExternalId.get(externalProduct.id)
+
+      if (existing) {
+        // Product exists - prepare update
+        productsToUpdate.push({
+          id: existing.id,
+          title: externalProduct.title,
+          description: externalProduct.description ?? undefined,
+          metadata: {
+            external_id: externalProduct.id,
+            last_synced: new Date().toISOString(),
+          },
+        })
+      } else {
+        // New product - prepare create
+        productsToCreate.push({
+          title: externalProduct.title,
+          description: externalProduct.description ?? undefined,
+          handle: externalProduct.handle,
+          status: "draft",
+          metadata: {
+            external_id: externalProduct.id,
+            last_synced: new Date().toISOString(),
+          },
+          options: [
+            {
+              title: "Default",
+              values: ["Default"],
+            },
+          ],
+          variants: externalProduct.variants.map((v) => ({
+            title: v.title ?? "Default Variant",
+            sku: v.sku ?? undefined,
+            options: {
+              Default: "Default",
+            },
+            prices: [
+              {
+                amount: v.price,
+                currency_code: "usd",
+              },
+            ],
+          })),
+        })
+      }
+    }
+
+    // Execute batch workflow for this batch
+    if (productsToCreate.length > 0 || productsToUpdate.length > 0) {
+      await batchProductsWorkflow(container).run({
+        input: {
+          create: productsToCreate,
+          update: productsToUpdate,
+        },
+      })
+
+      totalCreated += productsToCreate.length
+      totalUpdated += productsToUpdate.length
+    }
+    // Yield to event loop between batches
+    await new Promise((resolve) => setImmediate(resolve))
+  }
+}
+
+export const config = {
+  name: "sync-products",
+  schedule: "0 0 * * *", // Run at midnight every day
+}
+```
+
+</Details>
+
+### Stream Data from External APIs
+
+When retrieving data from external APIs using `fetch`, the common approach is to fetch the data and load it entirely into memory using `response.json()`. For example:
+
+```ts
+const response = await fetch("https://third-party-api.com/products")
+// Load entire response into memory
+const data = await response.json()
+```
+
+However, this can lead to high memory usage and performance issues, especially with large datasets.
+
+Instead, process data in streams or batches. This approach allows you to handle large datasets without loading everything into memory at once. You can use libraries like [stream-json](https://www.npmjs.com/package/stream-json) to parse JSON data incrementally as it's received.
+
+![Diagram showcasing object in memory when loading entire JSON response vs streaming JSON parsing](https://res.cloudinary.com/dza7lstvk/image/upload/v1764761087/Medusa%20Book/stream-vs-full_iz2fyv.jpg)
+
+First, install the `stream-json` library in your Medusa project:
+
+```bash npm2yarn
+npm install stream-json @types/stream-json
+```
+
+Then, use it in your scheduled job or subscriber to stream and parse JSON data from the third-party service:
+
+export const streamDataHighlights = [
+  ["19", "nodeStream", "Create a Node.js Readable stream from the response body"],
+  ["25", "pipeline", "Set up a streaming JSON parser pipeline"],
+  ["36", "for await", "Yield each product one at a time as it's parsed"],
+]
+
+```ts title="src/jobs/sync-products.ts" highlights={streamDataHighlights}
+import { Readable } from "stream"
+import { parser } from "stream-json"
+import { pick } from "stream-json/filters/Pick"
+import { streamArray } from "stream-json/streamers/StreamArray"
+import { chain } from "stream-chain"
+
+const API_FETCH_SIZE = 200
+
+async function* streamProductsFromApi() {
+  let offset = 0
+  let hasMore = true
+  
+  while (hasMore) {
+    const url = `https://third-party-api.com/products?limit=${API_FETCH_SIZE}&offset=${offset}`
+    // TODO: Add retry with exponential backoff
+    const response = await fetch(url)
+    
+    // Convert web ReadableStream to Node.js Readable
+    const nodeStream = Readable.fromWeb(response.body as any)
+
+    // Create a streaming JSON parser pipeline that:
+    // 1. Parses JSON incrementally
+    // 2. Picks only the "products" array
+    // 3. Streams each array item individually
+    const pipeline = chain([
+      nodeStream,
+      parser(),
+      pick({ filter: "products" }),
+      streamArray(),
+    ])
+
+    let productCount = 0
+
+    try {
+      // Yield each product one at a time
+      for await (const { value } of pipeline) {
+        yield value
+        productCount++
+
+        // TODO: Yield to event loop periodically to prevent blocking
+      }
+    } catch (streamError: any) {
+      // TODO: Handle stream errors
+    }
+
+    // If the products are less than expected, there are no more products
+    if (productCount < API_FETCH_SIZE) {
+      hasMore = false
+    } else {
+      offset += productCount
+    }
+  }
+}
+
+export default async function syncProductsJob(container: MedusaContainer) {
+  const productStream = streamProductsFromApi()
+  // ...
+}
+```
+
+In the above snippet, you set up a streaming JSON parser that processes the API response incrementally. Instead of loading the entire response into memory, the parser yields each product one at a time.
+
+This approach significantly reduces memory usage, as you only hold JSON tokens and the current product being parsed, rather than the entire dataset.
+
+#### Handle Stream Errors
+
+When working with streams, it's important to handle potential errors that may occur during streaming, such as network interruptions. Catch these errors and implement retry logic or error reporting as needed.
+
+For example:
+
+```ts title="src/jobs/sync-products.ts"
+async function* streamProductsFromApi() {
+  // Initial setup...
+  while (hasMore) {
+    // Setup pipeline...
+    try {
+      for await (const { value } of pipeline) {
+        yield value
+        // ...
+      }
+    } catch (streamError: any) {
+      // Handle stream errors (socket closed mid-stream)
+      if (
+        streamError.code === "UND_ERR_SOCKET" || 
+        streamError.code === "ECONNRESET"
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          `Stream interrupted after ${productCount} products: ${streamError.message}`
+        )
+      }
+      throw streamError
+    }
+    // Update pagination...
+  }
+}
+
+export default async function syncProductsJob(container: MedusaContainer) {
+  // Initial setup...
+
+  const productStream = streamProductsFromApi()
+  // sync products...
+}
+```
+
+In the above snippet, you catch stream errors and check for specific error codes that indicate transient network issues. You can then decide how to handle these errors, such as retrying the fetch or logging the error.
+
+### Retrieve Only Necessary Fields
+
+A common performance pitfall when syncing data is retrieving more fields than necessary from third-party services or Medusa's [Query](../../fundamentals/module-links/query/page.mdx). This leads to increased data size, slower performance, and higher memory usage.
+
+When retrieving data from third-party services or with Medusa's Query, only request the necessary fields. Then, to efficiently group existing data for updates, use a [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) for quick lookups.
+
+For example, don't retrieve all product fields like this:
+
+```ts
+// DON'T
+const { data: existingProducts } = await query.graph(
+  {
+    entity: "product",
+    fields: ["*"],
+    filters: {
+      external_id: externalIds,
+    },
+  }
+)
+```
+
+Instead, only request the fields you need:
+
+export const fieldsHighlights = [
+  ["19", "fields", "Request only necessary fields from Medusa"],
+  ["27", "Map", "Build a map for quick lookups by external ID"],
+]
+
+```ts title="src/jobs/sync-products.ts" highlights={fieldsHighlights}
+export default async function syncProductsJob(container: MedusaContainer) {
+  const query = container.resolve(ContainerRegistrationKeys.QUERY)
+  
+  // Initial setup...
+
+  const productStream = streamProductsFromApi()
+  const batchedProducts = batchProducts(productStream, PROCESS_BATCH_SIZE)
+
+  for await (const batch of batchedProducts) {
+    // Increment data...
+
+    // Extract external IDs from this batch to look up in Medusa
+    const externalIds = batch.map((p) => p.id)
+
+    // Query Medusa for products matching these external IDs
+    const { data: existingProducts } = await query.graph(
+      {
+        entity: "product",
+        fields: ["id", "updated_at", "external_id"],
+        filters: {
+          external_id: externalIds,
+        },
+      }
+    )
+
+    // Build a map for quick lookup
+    const existingByExternalId = new Map(
+      existingProducts.map((p) => [p.external_id, { 
+        id: p.id, 
+        updatedAt: p.updated_at,
+      }])
+    )
+
+    // Process batch and sync to Medusa...
+  }
+}
+```
+
+In the above snippet, after retrieving a batch of products from the external API, you query Medusa's products to find existing products that match the external IDs. You only request the necessary fields for this operation.
+
+Then, you build a map `existingByExternalId` that enables efficient lookups when determining whether to create or update products.
+
+This approach minimizes the amount of data transferred and processed, leading to better performance and lower memory usage.
+
+### Use Async Generators
+
+[Async generators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncGenerator) are a powerful feature in JavaScript that allow you to define asynchronous iterators. They're particularly useful for processing large datasets incrementally, as they enable you to yield data items one at a time without loading everything into memory.
+
+When retrieving large datasets from third-party services, use async generators to yield data items one at a time. This allows you to process data incrementally without loading everything into memory.
+
+![Diagram showcasing how batches are loaded into memories one at a time with async generators](https://res.cloudinary.com/dza7lstvk/image/upload/v1764761706/Medusa%20Book/async-gen-batches_ne09bs.jpg)
+
+For example:
+
+export const asyncGeneratorHighlights = [
+  ["1", "streamProductsFromApi", "Async generator to stream products from API"],
+  ["9", "yield", "Yield one product at a time from the API"],
+  ["21", "batchProducts", "Async generator to batch products"],
+  ["31", "yield batch", "Yield batches of products for processing"],
+]
+
+```ts title="src/jobs/sync-products.ts" highlights={asyncGeneratorHighlights}
+async function* streamProductsFromApi() {
+  // Initial setup...
+
+  while (hasMore) {
+    // Setup pipeline...
+
+    try {
+      for await (const { value } of pipeline) {
+        yield value // Yield one product at a time
+
+        // TODO: Yield to event loop periodically to prevent blocking...
+      }
+    } catch (streamError: any) {
+      // Handle stream errors...
+    }
+
+    // Update pagination...
+  }
+}
+
+async function* batchProducts(
+  products: AsyncGenerator,
+  batchSize: number
+): AsyncGenerator<any[]> {
+  let batch: any[] = []
+
+  for await (const product of products) {
+    batch.push(product)
+
+    if (batch.length >= batchSize) {
+      yield batch
+      // Release reference for GC
+      batch = []
+    }
+  }
+
+  // Yield remaining products
+  if (batch.length > 0) {
+    yield batch
+  }
+}
+
+export default async function syncProductsJob(container: MedusaContainer) {
+  // Initial setup...
+
+  const productStream = streamProductsFromApi()
+  const batchedProducts = batchProducts(productStream, PROCESS_BATCH_SIZE)
+
+  for await (const batch of batchedProducts) {
+    // Process batch and sync to Medusa...
+  }
+}
+```
+
+In the above snippet, you define two async generators:
+
+1. `streamProductsFromApi`: Yields individual products from the third-party service one at a time.
+2. `batchProducts`: Takes an async generator of products and yields them in batches of a specified size.
+
+Then, in your scheduled job, you consume these generators using [for await...of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of) loops to process product batches incrementally.
+
+This approach keeps memory usage low, as you only hold the current product or batch in memory at any given time.
+
+#### Release References for Garbage Collection
+
+When using async generators, it's important to release references to processed data to allow for [garbage collection](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Memory_management#garbage_collection). This keeps memory usage low, especially when processing large datasets.
+
+For example, the `batchProducts` generator demonstrates this:
+
+```ts title="src/jobs/sync-products.ts" highlights={[["13"]]}
+async function* batchProducts(
+  products: AsyncGenerator,
+  batchSize: number
+): AsyncGenerator<any[]> {
+  let batch: any[] = []
+
+  for await (const product of products) {
+    batch.push(product)
+
+    if (batch.length >= batchSize) {
+      yield batch
+      // Release reference for GC
+      batch = []
+    }
+  }
+
+  // Yield remaining products
+  if (batch.length > 0) {
+    yield batch
+  }
+}
+```
+
+### Handle Backpressure
+
+Backpressure is a mechanism that manages the flow of data between producers (API fetches) and consumers (data processing workflows). Without proper backpressure handling, fast API fetches can overwhelm the processing workflow, leading to high memory usage and potential crashes.
+
+Handle backpressure by controlling the pace at which data is processed. One effective way to do this in JavaScript is using `for await...of` loops, which naturally provide backpressure by waiting for each iteration to complete before fetching the next item.
+
+![Diagram showcasing timeline from start to end of scheduled job execution where batches are fetched and synced one at a time](https://res.cloudinary.com/dza7lstvk/image/upload/v1764762095/Medusa%20Book/timeline-backpressure_rtwwzt.jpg)
+
+For example, you can implement backpressure handling in your scheduled job:
+
+```ts title="src/jobs/sync-products.ts" highlights={[["7"]]}
+export default async function syncProductsJob(container: MedusaContainer) {
+  // Initial setup...
+
+  const productStream = streamProductsFromApi()
+  const batchedProducts = batchProducts(productStream, PROCESS_BATCH_SIZE)
+
+  for await (const batch of batchedProducts) {
+    // Process batch and sync to Medusa...
+    // The next batch won't be fetched until processing of the current batch is complete
+  }
+}
+```
+
+In the above snippet, the `for await...of` loop processes each batch of products. This ensures that the next batch isn't fetched until the current batch has been fully processed, effectively implementing backpressure.
+
+This approach keeps memory usage controlled and prevents the system from being overwhelmed by incoming data, ensuring stability during large data syncs.
+
+### Retry Errors with Exponential Backoff
+
+Errors can occur during data syncing due to transient network issues, rate limiting, or temporary unavailability of third-party services. To improve reliability, implement retry logic with exponential backoff for transient errors.
+
+For example, implement a custom function that fetches data with retry logic, then use it to fetch data from the third-party service:
+
+export const retryHighlights = [
+  ["1", "MAX_RETRIES", "Maximum number of retry attempts"],
+  ["2", "RETRY_DELAY_MS", "Base delay for retries"],
+  ["4", "fetchWithRetry", "Function to fetch with retry logic"],
+  ["13", "fetch", "Fetch data from API"],
+  ["22", "isRetryable", "Check if error is retryable"],
+  ["31", "delay", "Calculate exponential backoff delay"],
+]
+
+```ts title="src/jobs/sync-products.ts" highlights={retryHighlights}
+const MAX_RETRIES = 3
+const RETRY_DELAY_MS = 1000
+
+async function fetchWithRetry(
+  url: string,
+  retries = MAX_RETRIES
+): Promise<Response> {
+  let lastError: Error | null = null
+
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      // TODO: Add request timeout...
+      const response = await fetch(url)
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+      }
+
+      return response
+    } catch (error: any) {
+      lastError = error
+      const isRetryable =
+        error.code === "UND_ERR_SOCKET" ||
+        error.code === "ECONNREFUSED" ||
+        error.code === "ECONNRESET" ||
+        error.code === "ETIMEDOUT" ||
+        error.name === "AbortError"
+
+      if (isRetryable && attempt < retries) {
+        // Exponential backoff: 1s → 2s → 4s
+        const delay = RETRY_DELAY_MS * Math.pow(2, attempt - 1)
+        await new Promise((resolve) => setTimeout(resolve, delay))
+      } else {
+        break
+      }
+    }
+  }
+
+  throw lastError
+}
+
+async function* streamProductsFromApi() {
+  // Initial setup...
+
+  while (hasMore) {
+    const url = `https://third-party-api.com/products?limit=${API_FETCH_SIZE}&offset=${offset}`
+
+    const response = await fetchWithRetry(url)
+    // TODO Setup pipeline...
+  }
+}
+
+export default async function syncProductsJob(container: MedusaContainer) {
+  // Initial setup...
+
+  const productStream = streamProductsFromApi()
+  // Process and sync products...
+}
+```
+
+In the above snippet, the `fetchWithRetry` function attempts to fetch a URL multiple times if a retryable error occurs. It uses exponential backoff to increase the delay between retries, reducing the load on the third-party service.
+
+This approach improves the reliability of your data syncing process by handling transient errors gracefully.
+
+### Set Request Timeouts
+
+When making API calls to third-party services, always set request timeouts. This prevents the event loop from being blocked indefinitely if the third-party service is unresponsive.
+
+For example, set a request timeout on a `fetch` call using the `AbortController`:
+
+export const timeoutHighlights = [
+  ["1", "FETCH_TIMEOUT_MS", "Timeout duration for fetch requests"],
+  ["11", "AbortController", "Create an `AbortController` for request timeout"],
+  ["12", "setTimeout", "Set a timeout to abort the request"],
+  ["22", "clearTimeout", "Clear the timeout on successful response"],
+]
+
+```ts title="src/jobs/sync-products.ts" highlights={timeoutHighlights}
+const FETCH_TIMEOUT_MS = 30000
+
+async function fetchWithRetry(
+  url: string,
+  retries = MAX_RETRIES
+): Promise<Response> {
+  const lastError: Error | null = null
+
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
+
+      const response = await fetch(url, {
+        signal: controller.signal,
+        // Keep connection alive for efficiency with multiple requests
+        headers: {
+          "Connection": "keep-alive",
+        },
+      })
+
+      clearTimeout(timeoutId)
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+      }
+
+      return response
+    } catch (error: any) {
+      // Retry logic with exponential backoff...
+    }
+  }
+
+  throw lastError
+}
+
+async function* streamProductsFromApi() {
+  // initial setup...
+
+  while (hasMore) {
+    const url = `https://third-party-api.com/products?limit=${API_FETCH_SIZE}&offset=${offset}`
+
+    const response = await fetchWithRetry(url)
+    // Setup streaming pipeline...
+  }
+}
+
+export default async function syncProductsJob(container: MedusaContainer) {
+  // Initial setup...
+
+  const productStream = streamProductsFromApi()
+  // Process and sync products...
+}
+```
+
+In the above snippet, an `AbortController` sets a timeout for the `fetch` request. If the request takes longer than the specified timeout, it's aborted, preventing indefinite blocking of the event loop.
+
+This approach ensures that your application remains responsive even when third-party services are slow or unresponsive.
+
+### Yield to the Event Loop
+
+When processing large amounts of data in loops, periodically yield control back to the event loop. This prevents blocking the event loop for extended periods, which can lead to unresponsiveness in your application. For example, it may prevent other scheduled jobs or subscribers from executing.
+
+Yield to the event loop using [setImmediate](https://nodejs.org/api/timers.html#timers_setimmediate_callback_args). For example:
+
+export const yieldHighlights = [
+  ["11", "productCount", "Count of processed products"],
+  ["15", "setImmediate", "Yield to event loop every 100 products"],
+]
+
+```ts title="src/jobs/sync-products.ts" highlights={yieldHighlights}
+async function* streamProductsFromApi() {
+  // Initial setup...
+  
+  while (hasMore) {
+    // Setup pipeline...
+
+    try {
+      // Yield each product one at a time
+      for await (const { value } of pipeline) {
+        yield value
+        productCount++
+
+        // Yield to event loop periodically to prevent blocking
+        if (productCount % 100 === 0) {
+          await new Promise((resolve) => setImmediate(resolve))
+        }
+      }
+    } catch (streamError: any) {
+      // Handle stream errors...
+    }
+
+    // If the products are less than expected, there are no more products
+    if (productCount < API_FETCH_SIZE) {
+      hasMore = false
+    } else {
+      offset += productCount
+    }
+  }
+}
+
+export default async function syncProductsJob(container: MedusaContainer) {
+  const productStream = streamProductsFromApi()
+  // Process and sync products...
+}
+```
+
+In the above snippet, the code yields to the event loop every 100 products processed. This allows other tasks in the event loop to execute, improving overall responsiveness.

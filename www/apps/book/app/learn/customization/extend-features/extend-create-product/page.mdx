@@ -22,7 +22,7 @@ So, in this chapter, to extend the create product flow and associate a brand wit
 
 <Note>
 
-To learn more about the `additional_data` property and the API routes that accept additional data, refer to [this chapter](../../../fundamentals/api-routes/additional-data/page.mdx).
+To learn more about the `additional_data` property and the API routes that accept additional data, refer to the [Additional Data](../../../fundamentals/api-routes/additional-data/page.mdx) chapter.
 
 </Note>
 
@@ -43,13 +43,7 @@ To learn more about the `additional_data` property and the API routes that accep
 
 ## 1. Consume the productsCreated Hook
 
-A workflow hook is a point in a workflow where you can inject a step to perform a custom functionality. Consuming a workflow hook allows you to extend the features of a workflow and, consequently, the API route that uses it.
-
-<Note>
-
-Learn more about the workflow hooks in [this chapter](../../../fundamentals/workflows/workflow-hooks/page.mdx).
-
-</Note>
+A [workflow hook](../../../fundamentals/workflows/workflow-hooks/page.mdx) is a point in a workflow where you can inject a step to perform a custom functionality. Consuming a workflow hook allows you to extend the features of a workflow and, consequently, the API route that uses it.
 
 The [createProductsWorkflow](!resources!/references/medusa-workflows/createProductsWorkflow) used in the [Create Product API route](!api!/admin#products_postproducts) has a `productsCreated` hook that runs after the product is created. You'll consume this hook to link the created product with the brand specified in the request parameters.
 
@@ -98,13 +92,7 @@ In the step, if a brand ID is passed in `additional_data`, you resolve the Brand
 
 ### Link Brand to Product
 
-Next, you want to create a link between the created products and the brand. To do so, you use Link, which is a class from the Modules SDK that provides methods to manage linked records.
-
-<Note>
-
-Learn more about Link in [this chapter](../../../fundamentals/module-links/link/page.mdx).
-
-</Note>
+Next, you want to create a link between the created products and the brand. To do so, you use [Link](../../../fundamentals/module-links/link/page.mdx), which is a class from the Modules SDK that provides methods to manage linked records.
 
 To use Link in the `productsCreated` hook, replace the `TODO` with the following:
 
@@ -139,7 +127,7 @@ logger.info("Linked brand to products")
 return new StepResponse(links, links)
 ```
 
-You resolve Link from the container. Then you loop over the created products to assemble an array of links to be created. After that, you pass the array of links to Link's `create` method, which will link the product and brand records.
+You resolve Link from the container. Then, you loop over the created products to assemble an array of links to be created. After that, you pass the array of links to Link's `create` method, which will link the product and brand records.
 
 Each property in the link object is the name of a module, and its value is an object having a `{model_name}_id` property, where `{model_name}` is the snake-case name of the module's data model. Its value is the ID of the record to be linked. The link object's properties must be set in the same order as the link configurations passed to `defineLink`.
 
@@ -182,7 +170,7 @@ You configure the properties accepted in `additional_data` in the `src/api/middl
 
 ```ts title="src/api/middlewares.ts"
 import { defineMiddlewares } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 // ...
 

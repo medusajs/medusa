@@ -12,6 +12,7 @@ import {
   transform,
 } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep, useQueryGraphStep } from "../../../common"
+import { acquireLockStep, releaseLockStep } from "../../../locking"
 import { deleteOrderChangesStep, deleteOrderShippingMethods } from "../../steps"
 import {
   throwIfIsCancelled,
@@ -102,6 +103,12 @@ export const cancelBeginOrderEditWorkflow = createWorkflow(
   function (
     input: WorkflowData<CancelBeginOrderEditWorkflowInput>
   ): WorkflowData<void> {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const orderResult = useQueryGraphStep({
       entity: "order",
       fields: fieldsToRefreshOrderEdit,
@@ -160,5 +167,9 @@ export const cancelBeginOrderEditWorkflow = createWorkflow(
         data: eventData,
       })
     )
+
+    releaseLockStep({
+      key: input.order_id,
+    })
   }
 )

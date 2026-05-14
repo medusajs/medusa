@@ -8,13 +8,19 @@ In this guide, you'll learn how to allow your production storefront to send requ
 
 ## Cloud and Storefront Hosting Overview
 
-Cloud only hosts Medusa applications. It doesn't support hosting your storefronts. Instead, you can use hosting providers like [Vercel](https://vercel.com/) to host your storefronts.
+Cloud supports hosting your storefront alongside your Medusa backend and admin dashboard when your project is set up in a monorepo structure. This allows you to deploy and manage both backend and frontend on a single platform with zero configuration.
 
-If you're using the [Next.js Starter Storefront](!resources!/nextjs-starter), you can follow the [Deploy to Vercel](!resources!/deployment/storefront/vercel) guide to deploy your storefront.
+The [Project Prerequisites](../projects/prerequisites/page.mdx#prerequisites-for-medusa-application-with-storefront) guide explains how to set up your Medusa application and storefront in a monorepo structure. You can then [create a project](../projects/page.mdx) that includes both the Medusa application and storefront code.
+
+### When to Host Storefront Externally
+
+If you can't set up your Medusa application and storefront in a monorepo structure, you can host your storefront externally using any hosting provider of your choice, such as Vercel, Netlify, or AWS.
+
+This guide explains how to configure your externally hosted storefront to communicate with your Medusa backend on Cloud.
 
 To send requests from your production storefront, you need to add some configurations both to it and the Medusa application deployed on Cloud. Otherwise, you'll receive an error when trying to send requests from the storefront.
 
-This guide lists the changes to make in your Medusa application and storefront to allow sending requests from the storefront. While the guide uses the Next.js Starter Storefront as an example, the steps are generally similar for any storefront.
+The following sections list the changes to make in your Medusa application and storefront to allow sending requests from the storefront. While the guide uses the Next.js Starter Storefront as an example, the steps are generally similar for any storefront.
 
 ---
 
@@ -22,8 +28,8 @@ This guide lists the changes to make in your Medusa application and storefront t
 
 To allow your production storefront to access your Medusa application on Cloud, you need to set two Cross-Origin Resource Sharing (CORS) environment variables in your Medusa application:
 
-- `STORE_CORS`: The URLs of storefronts that can access your Medusa server's `/store` API routes. This is a comma-separated list of URLs that is typically used as the value of the [http.storeCors](!docs!/learn/configurations/medusa-config#httpstorecors) configuration.
-- `AUTH_CORS`: The URLs of the clients (storefront and admin) that can access the Medusa server's `/auth` API routes. This is a comma-separated list of URLs that is typically used as the value of the [http.authCors](!docs!/learn/configurations/medusa-config#httpauthcors) configuration.
+- `STORE_CORS`: The URLs of storefronts that can access your Medusa backend's `/store` API routes. This is a comma-separated list of URLs that is typically used as the value of the [http.storeCors](!docs!/learn/configurations/medusa-config#httpstorecors) configuration.
+- `AUTH_CORS`: The URLs of the clients (storefront and admin) that can access the Medusa backend's `/auth` API routes. This is a comma-separated list of URLs that is typically used as the value of the [http.authCors](!docs!/learn/configurations/medusa-config#httpauthcors) configuration.
 
 For example, if your storefront is hosted at `https://my-storefront.com`, you can [set the following environment variables in your production environment](../environments/environment-variables/page.mdx#add-environment-variables):
 

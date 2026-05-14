@@ -64,7 +64,12 @@ export const validateToken = () => {
         provider: auth_provider,
       },
       {
-        select: ["provider_metadata", "auth_identity_id", "entity_id"],
+        select: [
+          "provider_metadata",
+          "auth_identity_id",
+          "entity_id",
+          "user_metadata",
+        ],
       }
     )
 
@@ -77,6 +82,7 @@ export const validateToken = () => {
       auth_identity_id: providerIdentity.auth_identity_id!,
       actor_id: providerIdentity.entity_id,
       app_metadata: {},
+      user_metadata: providerIdentity.user_metadata ?? {},
     }
 
     return next()

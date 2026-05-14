@@ -1,0 +1,100 @@
+post:
+  operationId: PostTranslationsBatch
+  summary: Manage Translations
+  description: >-
+    Manage translations in bulk by creating, updating, or deleting multiple
+    translations in a single request. You can manage translations for various
+    resources such as products, product variants, categories, and more.
+  x-authenticated: true
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          description: The translations to be created, updated, or deleted in bulk.
+          properties:
+            create:
+              type: array
+              description: The translations to create.
+              items:
+                $ref: ../components/schemas/AdminCreateTranslation.yaml
+            update:
+              type: array
+              description: The translations to update.
+              items:
+                $ref: ../components/schemas/AdminUpdateTranslation.yaml
+            delete:
+              type: array
+              description: The translations to delete.
+              items:
+                type: string
+                title: delete
+                description: The ID of a translation to delete.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/admin_translations_batch/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_translations_batch/post.sh
+  tags:
+    - Translations
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminTranslationsBatchResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: batchTranslationsWorkflow
+  x-events:
+    - name: translation.created
+      payload: |-
+        ```ts
+        {
+          id, // The ID of the translation
+        }
+        ```
+      description: Emitted when translations are created.
+      deprecated: false
+      since: 2.12.3
+    - name: translation.updated
+      payload: |-
+        ```ts
+        {
+          id, // The ID of the translation
+        }
+        ```
+      description: Emitted when translations are updated.
+      deprecated: false
+      since: 2.12.3
+    - name: translation.deleted
+      payload: |-
+        ```ts
+        {
+          id, // The ID of the translation
+        }
+        ```
+      description: Emitted when translations are deleted.
+      deprecated: false
+      since: 2.12.3
+  x-since: 2.12.3
+  x-featureFlag: translation

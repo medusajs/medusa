@@ -1,4 +1,9 @@
-import { z, ZodEffects, ZodNullable, ZodObject, ZodOptional } from "zod"
+import {
+  z,
+  type ZodNullable,
+  type ZodObject,
+  type ZodOptional,
+} from "@medusajs/framework/zod"
 
 /**
  * Wraps the original schema to a function to accept and merge
@@ -6,7 +11,7 @@ import { z, ZodEffects, ZodNullable, ZodObject, ZodOptional } from "zod"
  */
 export const WithAdditionalData = <T extends ZodObject<any, any>>(
   originalSchema: T,
-  modifyCallback?: (schema: T) => ZodObject<any, any> | ZodEffects<any, any>
+  modifyCallback?: (schema: T) => ZodObject<any, any>
 ) => {
   return (
     additionalDataValidator?: ZodOptional<ZodNullable<ZodObject<any, any>>>
@@ -15,7 +20,7 @@ export const WithAdditionalData = <T extends ZodObject<any, any>>(
 
     if (!additionalDataValidator) {
       schema = originalSchema.extend({
-        additional_data: z.record(z.unknown()).nullish(),
+        additional_data: z.record(z.string(), z.unknown()).nullish(),
       })
     } else {
       schema = originalSchema.extend({

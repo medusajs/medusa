@@ -1,8 +1,4 @@
-import {
-  ChangeActionType,
-  OrderChangeStatus,
-  PromotionActions,
-} from "@medusajs/framework/utils"
+import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
 import {
   createWorkflow,
   transform,
@@ -24,8 +20,8 @@ import {
 import { updateDraftOrderShippingMethodStep } from "../steps/update-draft-order-shipping-metod"
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
-import { refreshDraftOrderAdjustmentsWorkflow } from "./refresh-draft-order-adjustments"
 import { acquireLockStep, releaseLockStep } from "../../locking"
+import { computeDraftOrderAdjustmentsWorkflow } from "./compute-draft-order-adjustments"
 
 export const updateDraftOrderShippingMethodWorkflowId =
   "update-draft-order-shipping-method"
@@ -126,33 +122,6 @@ export const updateDraftOrderShippingMethodWorkflow = createWorkflow(
       },
     })
 
-    const refetchedOrder = useRemoteQueryStep({
-      entry_point: "orders",
-      fields: draftOrderFieldsForRefreshSteps,
-      variables: { id: input.order_id },
-      list: false,
-      throw_if_key_not_found: true,
-    }).config({ name: "refetched-order-query" })
-
-    const appliedPromoCodes = transform(
-      refetchedOrder,
-      (refetchedOrder) =>
-        refetchedOrder.promotions?.map((promotion) => promotion.code) ?? []
-    )
-
-    when(
-      appliedPromoCodes,
-      (appliedPromoCodes) => appliedPromoCodes.length > 0
-    ).then(() => {
-      refreshDraftOrderAdjustmentsWorkflow.runAsStep({
-        input: {
-          order: refetchedOrder,
-          promo_codes: appliedPromoCodes,
-          action: PromotionActions.REPLACE,
-        },
-      })
-    })
-
     const orderChangeActionInput = transform(
       { order, orderChange, data: input.data, before, after },
       ({ order, orderChange, data, before, after }) => {
@@ -176,6 +145,31 @@ export const updateDraftOrderShippingMethodWorkflow = createWorkflow(
 
     createOrderChangeActionsWorkflow.runAsStep({
       input: [orderChangeActionInput as any],
+    })
+
+    const refetchedOrder = useRemoteQueryStep({
+      entry_point: "orders",
+      fields: draftOrderFieldsForRefreshSteps,
+      variables: { id: input.order_id },
+      list: false,
+      throw_if_key_not_found: true,
+    }).config({ name: "refetched-order-query" })
+
+    const appliedPromoCodes = transform(
+      refetchedOrder,
+      (refetchedOrder) =>
+        refetchedOrder.promotions?.map((promotion) => promotion.code) ?? []
+    )
+
+    when(
+      appliedPromoCodes,
+      (appliedPromoCodes) => appliedPromoCodes.length > 0
+    ).then(() => {
+      computeDraftOrderAdjustmentsWorkflow.runAsStep({
+        input: {
+          order_id: input.order_id,
+        },
+      })
     })
 
     releaseLockStep({

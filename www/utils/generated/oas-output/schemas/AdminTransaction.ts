@@ -7,7 +7,6 @@
  *   - account
  *   - id
  *   - account_id
- *   - transaction_group_id
  *   - type
  *   - amount
  *   - metadata
@@ -22,10 +21,6 @@
  *     type: string
  *     title: account_id
  *     description: The ID of the store credit account that the transaction belongs to.
- *   transaction_group_id:
- *     type: string
- *     title: transaction_group_id
- *     description: The ID of the transaction group that the transaction belongs to.
  *   type:
  *     type: string
  *     description: The transaction's type.

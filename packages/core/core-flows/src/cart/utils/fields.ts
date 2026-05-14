@@ -1,13 +1,22 @@
 // Always ensure that cartFieldsForPricingContext is present in cartFieldsForRefreshSteps
+
+import { fieldsForPricingContext } from "../../common/utils/fields"
+
 // Always ensure that cartFieldsForCalculateShippingOptionsPrices is present in cartFieldsForRefreshSteps
+/**
+ * Fields required when fetching cart data for refresh steps in cart workflows
+ */
 export const cartFieldsForRefreshSteps = [
   "id",
   "email",
   "currency_code",
   "quantity",
   "subtotal",
+  "original_item_total",
   "item_total",
+  "locale",
   "total",
+  "original_item_subtotal",
   "item_subtotal",
   "shipping_subtotal",
   "region_id",
@@ -22,6 +31,7 @@ export const cartFieldsForRefreshSteps = [
   "items.product.categories.id",
   "items.product.tags.id",
   "items.product.type_id",
+  "items.product.weight",
   "items.variant.id",
   "items.variant.product.id",
   "items.variant.weight",
@@ -47,11 +57,15 @@ export const cartFieldsForRefreshSteps = [
   "payment_collection.payment_sessions.id",
 ]
 
+/**
+ * Complete set of cart fields including all related entities for full cart representation
+ */
 export const completeCartFields = [
   "metadata",
   "id",
   "currency_code",
   "email",
+  "locale",
   "created_at",
   "updated_at",
   "completed_at",
@@ -129,22 +143,14 @@ export const completeCartFields = [
   "items.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
 ]
 
-export const cartFieldsForPricingContext = [
-  "id",
-  "sales_channel_id",
-  "currency_code",
-  "region_id",
-  "shipping_address.city",
-  "shipping_address.country_code",
-  "shipping_address.province",
-  "shipping_address.postal_code",
-  "item_total",
-  "total",
-  "customer.id",
-  "email",
-  "customer.groups.id",
-]
+/**
+ * Cart fields required for pricing context calculations
+ */
+export const cartFieldsForPricingContext = [...fieldsForPricingContext]
 
+/**
+ * Product variant fields including related product data and inventory information
+ */
 export const productVariantsFields = [
   "id",
   "title",
@@ -183,9 +189,12 @@ export const productVariantsFields = [
   "inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
 ]
 
-// ensure that at least these fields are present when fetching cart for caluclating shipping options prices
+/**
+ * Required fields when fetching cart for calculating shipping option prices
+ */
 export const cartFieldsForCalculateShippingOptionsPrices = [
   "id",
+  "locale",
   "items.*",
   "items.variant.id",
   "items.variant.product.id",
@@ -198,5 +207,6 @@ export const cartFieldsForCalculateShippingOptionsPrices = [
   "items.product.collection_id",
   "items.product.categories.id",
   "items.product.tags.id",
+  "items.product.weight",
   "shipping_address.*",
 ]

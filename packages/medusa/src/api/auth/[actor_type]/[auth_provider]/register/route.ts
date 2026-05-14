@@ -1,3 +1,4 @@
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import {
   AuthenticationInput,
   ConfigModule,
@@ -8,7 +9,6 @@ import {
   MedusaError,
   Modules,
 } from "@medusajs/framework/utils"
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { generateJwtTokenForAuthIdentity } from "../../../utils/generate-jwt-token"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
@@ -35,11 +35,12 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   if (success && authIdentity) {
     const { http } = config.projectConfig
 
-    const token = generateJwtTokenForAuthIdentity(
+    const token = await generateJwtTokenForAuthIdentity(
       {
         authIdentity,
         actorType: actor_type,
         authProvider: auth_provider,
+        container: req.scope,
       },
       {
         secret: http.jwtSecret!,

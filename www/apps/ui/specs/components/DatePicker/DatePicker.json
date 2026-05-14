@@ -229,15 +229,21 @@
       "tsType": {
         "name": "signature",
         "type": "function",
-        "raw": "(e: FocusEvent&#60;Element, Element&#62;) => void",
+        "raw": "(e: FocusEvent&#60;Element&#62;) => void",
         "signature": {
           "arguments": [
             {
               "name": "e",
               "type": {
                 "name": "FocusEvent",
-                "elements": [],
-                "raw": "FocusEvent&#60;Element, Element&#62;"
+                "elements": [
+                  {
+                    "name": "Element"
+                  },
+                  {
+                    "name": "Element"
+                  }
+                ]
               },
               "rest": false
             }
@@ -254,15 +260,21 @@
       "tsType": {
         "name": "signature",
         "type": "function",
-        "raw": "(e: FocusEvent&#60;Element, Element&#62;) => void",
+        "raw": "(e: FocusEvent&#60;Element&#62;) => void",
         "signature": {
           "arguments": [
             {
               "name": "e",
               "type": {
                 "name": "FocusEvent",
-                "elements": [],
-                "raw": "FocusEvent&#60;Element, Element&#62;"
+                "elements": [
+                  {
+                    "name": "Element"
+                  },
+                  {
+                    "name": "Element"
+                  }
+                ]
               },
               "rest": false
             }
@@ -309,8 +321,8 @@
               "name": "e",
               "type": {
                 "name": "KeyboardEvent",
-                "elements": [],
-                "raw": "KeyboardEvent"
+                "raw": "KeyboardEvent",
+                "elements": []
               },
               "rest": false
             }
@@ -334,8 +346,8 @@
               "name": "e",
               "type": {
                 "name": "KeyboardEvent",
-                "elements": [],
-                "raw": "KeyboardEvent"
+                "raw": "KeyboardEvent",
+                "elements": []
               },
               "rest": false
             }
@@ -473,5 +485,8 @@
         ]
       }
     }
-  }
+  },
+  "composes": [
+    "Omit"
+  ]
 }

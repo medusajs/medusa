@@ -23,7 +23,7 @@ by the [Delete User Admin API Route](https://docs.medusajs.com/api/admin#users\_
 You can use this workflow within your customizations or your own custom workflows, allowing you to
 delete users within your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/147ce2fdc35366e591f552404ec949f6a5b92a11/packages/core/core-flows/src/user/workflows/remove-user-account.ts#L41" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/38cddd189b5b59cb3213757d1b9c42405899c224/packages/core/core-flows/src/user/workflows/remove-user-account.ts#L41" />
 
 ## Examples
 
@@ -136,7 +136,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"RemoveUserAccountWorkflowInput","type":"[RemoveUserAccountWorkflowInput](../../../../types/core_flows.RemoveUserAccountWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The data to remove a user account.","expandable":false,"children":[{"name":"userId","type":"`string`","description":"The ID of the user to remove.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="removeUserAccountWorkflow"/>
+<TypeList types={[{"name":"RemoveUserAccountWorkflowInput","type":"[RemoveUserAccountWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.RemoveUserAccountWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"RemoveUserAccountWorkflowInput","type":"`object`","description":"The data to remove a user account.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="removeUserAccountWorkflow"/>
 
 ## Output
 
@@ -181,18 +181,18 @@ Emitted when users are deleted.
 </Table.Cell>
       <Table.Cell>
 ```ts blockStyle="inline"
-[{
+{
   id, // The ID of the user
-}]
+}
 ```
 </Table.Cell>
       <Table.Cell>
 <CopyGeneratedSnippetButton tooltipText="Copy subscriber for event" type="subscriber" options={{
         event: "user.deleted",
         payload: `\`\`\`ts
-[{
+{
   id, // The ID of the user
-}]
+}
 \`\`\``
         }}/>
 </Table.Cell>

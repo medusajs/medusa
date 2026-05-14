@@ -5,12 +5,14 @@ import { InstantSearch, SearchBox } from "react-instantsearch"
 import clsx from "clsx"
 import { SearchEmptyQueryBoundary } from "./EmptyQueryBoundary"
 import { SearchSuggestions, type SearchSuggestionType } from "./Suggestions"
-import { AlgoliaProps, useSearch } from "@/providers"
+import { AlgoliaProps, useSearch } from "@/providers/Search"
 import { SearchHitsWrapper } from "./Hits"
-import { SpinnerLoading } from "@/components"
-import { useSearchNavigation, type OptionType } from "@/hooks"
+import { SpinnerLoading } from "@/components/Loading/Spinner"
+import { useSearchNavigation } from "@/hooks/use-search-navigation"
+import { OptionType } from "@/hooks/use-select"
 import { SearchFooter } from "./Footer"
 import { SearchFilters } from "./Filters"
+import { SearchCallout } from "./Callout"
 
 export type SearchProps = {
   algolia: AlgoliaProps
@@ -111,6 +113,7 @@ export const Search = ({
           <SearchEmptyQueryBoundary
             fallback={<SearchSuggestions suggestions={suggestions} />}
           >
+            <SearchCallout />
             <SearchHitsWrapper
               configureProps={{}}
               checkInternalPattern={checkInternalPattern}

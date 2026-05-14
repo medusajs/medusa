@@ -12,7 +12,7 @@ import {
 } from "./components/variant-inventory-section"
 import { VariantMediaSection } from "./components/variant-media-section"
 import { VariantPricesSection } from "./components/variant-prices-section"
-import { VARIANT_DETAIL_FIELDS } from "./constants"
+import { ExtendedVariant, VARIANT_DETAIL_FIELDS } from "./constants"
 import { variantLoader } from "./loader"
 
 export const ProductVariantDetail = () => {
@@ -61,24 +61,26 @@ export const ProductVariantDetail = () => {
       }}
     >
       <TwoColumnPage.Main>
-        <VariantGeneralSection variant={variant} />
-        <VariantMediaSection variant={variant} />
+        <VariantGeneralSection variant={variant as ExtendedVariant} />
+        <VariantMediaSection variant={variant as ExtendedVariant} />
         {!variant.manage_inventory ? (
           <InventorySectionPlaceholder />
         ) : (
           <VariantInventorySection
-            inventoryItems={variant.inventory_items.map((i) => {
-              return {
-                ...i.inventory,
-                required_quantity: i.required_quantity,
-                variant,
-              }
-            })}
+            inventoryItems={(variant.inventory_items ?? [])
+              .filter((i) => i.inventory)
+              .map((i) => {
+                return {
+                  ...i.inventory!,
+                  required_quantity: i.required_quantity,
+                  variant,
+                }
+              })}
           />
         )}
       </TwoColumnPage.Main>
       <TwoColumnPage.Sidebar>
-        <VariantPricesSection variant={variant} />
+        <VariantPricesSection variant={variant as ExtendedVariant} />
       </TwoColumnPage.Sidebar>
     </TwoColumnPage>
   )

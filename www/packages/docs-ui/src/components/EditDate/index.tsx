@@ -7,8 +7,11 @@ type EditDateProps = {
 }
 
 export const EditDate = ({ date }: EditDateProps) => {
-  const today = new Date(date)
+  const today = new Date()
   const dateObj = new Date(date)
+  if (isNaN(dateObj.getTime())) {
+    return <></>
+  }
   const formattedDate = dateObj.toString()
   const dateMatch = DATE_REGEX.exec(formattedDate)
 
@@ -18,7 +21,7 @@ export const EditDate = ({ date }: EditDateProps) => {
 
   return (
     <>
-      <span className="text-compact-small-plus">
+      <span className="text-compact-small-plus" data-testid="edit-date">
         Edited {dateMatch.groups.month} {dateObj.getDate()}
         {dateObj.getFullYear() !== today.getFullYear()
           ? `, ${dateObj.getFullYear()}`

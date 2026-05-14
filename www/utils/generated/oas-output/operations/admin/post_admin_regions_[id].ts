@@ -87,9 +87,9 @@
  *   - name: region.updated
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the region
- *       }]
+ *       }
  *       ```
  *     description: Emitted when regions are updated.
  *     deprecated: false

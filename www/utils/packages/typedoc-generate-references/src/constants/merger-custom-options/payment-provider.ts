@@ -33,7 +33,7 @@ As you implement your Payment Module Provider, it can be useful to refer to an e
 If you need to refer to an existing implementation as an example, check the [Stripe Payment Module Provider in the Medusa repository](https://github.com/medusajs/medusa/tree/develop/packages/modules/providers/payment-stripe).`,
       `## Understanding Payment Module Provider Implementation
 
-The Payment Module Provider handles processing payment with a third-party provirder. However, it's not responsible for managing payment concepts within Medusa, such as payment sessions or collections. These concepts are handled by the Payment Module which uses your Payment Module Provider within core operations.
+The Payment Module Provider handles processing payment with a third-party provider. However, it's not responsible for managing payment concepts within Medusa, such as payment sessions or collections. These concepts are handled by the Payment Module which uses your Payment Module Provider within core operations.
 
 For example, when the merchant captures an order's payment, the Payment Module uses the Payment Module Provider to capture the payment, the makes updates to the \`Payment\` record associated with the order. So, you only have to implement the third-party payment processing logic in your Payment Module Provider.
 `,

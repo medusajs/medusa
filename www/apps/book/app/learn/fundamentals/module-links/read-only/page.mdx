@@ -576,7 +576,7 @@ You can also create a `listAndCount` method to retrieve the posts with paginatio
 Now, you can use Query to retrieve a product and its linked post from the CMS:
 
 export const queryHighlights = [
-  ["3", `"cms_post"`, "The `alias` of the virtual data model in the link configuration."]
+  ["3", `"cms_post.*"`, "The `alias` of the virtual data model in the link configuration."]
 ]
 
 ```ts highlights={queryHighlights}

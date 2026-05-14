@@ -6,7 +6,7 @@ import {
   PromotionStatus,
   PromotionType,
 } from "@medusajs/framework/utils"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { applyAndAndOrOperators } from "../../utils/common-validators"
 import {
   createFindParams,
@@ -175,16 +175,35 @@ export const CreatePromotion = z
     campaign: CreateCampaign.optional(),
     application_method: AdminCreateApplicationMethod,
     rules: z.array(AdminCreatePromotionRule).optional(),
+    limit: z.number().int().min(1).nullable().optional(),
   })
   .strict()
 
 export const AdminCreatePromotion = WithAdditionalData(
   CreatePromotion,
   (schema) => {
-    return schema.refine(promoRefinement, {
-      message:
-        "Buyget promotions require at least one buy rule and quantities to be defined",
-    })
+    return schema
+      .refine(promoRefinement, {
+        message:
+          "Buyget promotions require at least one buy rule and quantities to be defined",
+      })
+      .refine(
+        (data) => {
+          // Automatic promotions cannot have a limit
+          if (
+            data.is_automatic &&
+            data.limit !== null &&
+            data.limit !== undefined
+          ) {
+            return false
+          }
+          return true
+        },
+        {
+          message: "Automatic promotions cannot have a usage limit",
+          path: ["limit"],
+        }
+      )
   }
 )
 
@@ -198,15 +217,34 @@ export const UpdatePromotion = z
     status: z.nativeEnum(PromotionStatus).optional(),
     campaign_id: z.string().nullish(),
     application_method: AdminUpdateApplicationMethod.optional(),
+    limit: z.number().int().min(1).nullable().optional(),
   })
   .strict()
 
 export const AdminUpdatePromotion = WithAdditionalData(
   UpdatePromotion,
   (schema) => {
-    return schema.refine(promoRefinement, {
-      message:
-        "Buyget promotions require at least one buy rule and quantities to be defined",
-    })
+    return schema
+      .refine(promoRefinement, {
+        message:
+          "Buyget promotions require at least one buy rule and quantities to be defined",
+      })
+      .refine(
+        (data) => {
+          // Automatic promotions cannot have a limit
+          if (
+            data.is_automatic &&
+            data.limit !== null &&
+            data.limit !== undefined
+          ) {
+            return false
+          }
+          return true
+        },
+        {
+          message: "Automatic promotions cannot have a usage limit",
+          path: ["limit"],
+        }
+      )
   }
 )

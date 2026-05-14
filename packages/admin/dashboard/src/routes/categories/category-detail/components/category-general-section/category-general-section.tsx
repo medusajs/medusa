@@ -1,10 +1,11 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
+import { GlobeEurope, PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, StatusBadge, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeleteProductCategoryAction } from "../../../common/hooks/use-delete-product-category-action"
 import { getIsActiveProps, getIsInternalProps } from "../../../common/utils"
+import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 
 type CategoryGeneralSectionProps = {
   category: HttpTypes.AdminProductCategory
@@ -14,6 +15,7 @@ export const CategoryGeneralSection = ({
   category,
 }: CategoryGeneralSectionProps) => {
   const { t } = useTranslation()
+  const isTranslationsEnabled = useFeatureFlag("translation")
 
   const activeProps = getIsActiveProps(category.is_active, t)
   const internalProps = getIsInternalProps(category.is_internal, t)
@@ -44,6 +46,19 @@ export const CategoryGeneralSection = ({
                   },
                 ],
               },
+              ...(isTranslationsEnabled
+                ? [
+                    {
+                      actions: [
+                        {
+                          label: t("translations.actions.manage"),
+                          to: `/settings/translations/edit?reference=product_category&reference_id=${category.id}`,
+                          icon: <GlobeEurope />,
+                        },
+                      ],
+                    },
+                  ]
+                : []),
               {
                 actions: [
                   {

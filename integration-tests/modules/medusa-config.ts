@@ -39,7 +39,12 @@ module.exports = defineConfig({
   admin: {
     disable: true,
   },
-  plugins: [],
+  plugins: [
+    {
+      resolve: "@medusajs/loyalty-plugin",
+      options: {},
+    },
+  ],
   projectConfig: {
     databaseUrl: DB_URL,
     databaseType: "postgres",
@@ -188,6 +193,10 @@ module.exports = defineConfig({
     {
       key: "brand",
       resolve: "src/modules/brand",
+    },
+    {
+      key: Modules.RBAC,
+      resolve: "@medusajs/rbac",
     },
   ],
 })

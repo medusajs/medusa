@@ -20,6 +20,10 @@ export interface CreateDraftOrderLineItemAdjustmentsStepInput {
    * The line item adjustments to create.
    */
   lineItemAdjustmentsToCreate: CreateLineItemAdjustmentDTO[]
+  /**
+   * The version of the order change to create the line item adjustments for.
+   */
+  version?: number
 }
 
 /**
@@ -43,7 +47,7 @@ export const createDraftOrderLineItemAdjustmentsStep = createStep(
     data: CreateDraftOrderLineItemAdjustmentsStepInput,
     { container }
   ) {
-    const { lineItemAdjustmentsToCreate = [], order_id } = data
+    const { lineItemAdjustmentsToCreate = [], order_id, version } = data
 
     if (!lineItemAdjustmentsToCreate?.length) {
       return new StepResponse(void 0, [])
@@ -65,6 +69,7 @@ export const createDraftOrderLineItemAdjustmentsStep = createStep(
     const lineItemAdjustments = await service.createOrderLineItemAdjustments(
       filteredAdjustments.map((adjustment) => ({
         ...adjustment,
+        version,
         order_id,
       }))
     )

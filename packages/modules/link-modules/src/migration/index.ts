@@ -6,18 +6,18 @@ import {
   PlannerActionLinkDescriptor,
 } from "@medusajs/framework/types"
 
-import {
-  arrayDifference,
-  DALUtils,
-  ModulesSdkUtils,
-  normalizeMigrationSQL,
-  promiseAll,
-} from "@medusajs/framework/utils"
 import { EntitySchema, MikroORM } from "@medusajs/framework/mikro-orm/core"
 import {
   DatabaseSchema,
   PostgreSqlDriver,
 } from "@medusajs/framework/mikro-orm/postgresql"
+import {
+  arrayDifference,
+  DALUtils,
+  executeWithConcurrency,
+  ModulesSdkUtils,
+  normalizeMigrationSQL,
+} from "@medusajs/framework/utils"
 import { generateEntity } from "../utils"
 
 /**
@@ -195,7 +195,7 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
       
       INSERT INTO "${
         this.tableName
-      }" (table_name, link_descriptor) VALUES (?, ?);
+      }" (table_name, link_descriptor) VALUES (?, ?) ON CONFLICT DO NOTHING;
 
       ${sql}
     `,
@@ -513,22 +513,53 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
   async executePlan(actionPlan: LinkMigrationsPlannerAction[]): Promise<void> {
     const orm = await this.createORM()
 
-    await promiseAll(
-      actionPlan.map(async (action) => {
-        switch (action.action) {
-          case "delete":
-            return await this.dropLinkTable(orm, action.tableName)
-          case "create":
-            return await this.createLinkTable(orm, action)
-          case "update":
-            const sql = `SET LOCAL search_path TO "${this.#schema}"; \n\n${
-              action.sql
-            }`
-            return await orm.em.getDriver().getConnection().execute(sql)
-          default:
-            return
-        }
-      })
-    ).finally(() => orm.close(true))
+    // Separate single-connection ORM used exclusively to hold advisory locks.
+    const lockOrm = await DALUtils.mikroOrmCreateConnection(
+      { ...this.#dbConfig, pool: { min: 1, max: 1 } },
+      [],
+      ""
+    )
+    const lockConn = lockOrm.em.getDriver().getConnection()
+
+    try {
+      const concurrency = parseInt(process.env.DB_MIGRATION_CONCURRENCY ?? "1")
+      await executeWithConcurrency(
+        actionPlan.map((action) => {
+          return async () => {
+            const lockKey = `db-link-migration:${action.tableName}`
+
+            await lockConn.execute("BEGIN")
+            await lockConn.execute(
+              `SELECT pg_advisory_xact_lock(hashtext('${lockKey}'))`
+            )
+
+            try {
+              switch (action.action) {
+                case "delete":
+                  await this.dropLinkTable(orm, action.tableName)
+                  break
+                case "create":
+                  await this.createLinkTable(orm, action)
+                  break
+                case "update":
+                  const sql = `SET LOCAL search_path TO "${
+                    this.#schema
+                  }"; \n\n${action.sql}`
+                  await orm.em.getDriver().getConnection().execute(sql)
+                  break
+                default:
+                  break
+              }
+            } finally {
+              await lockConn.execute("COMMIT")
+            }
+          }
+        }),
+        concurrency
+      )
+    } finally {
+      await orm.close(true)
+      await lockOrm.close(true)
+    }
   }
 }

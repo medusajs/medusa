@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import MethodLabel from "@/components/MethodLabel"
 import type { OpenAPI } from "types"
 import TagsOperationCodeSectionResponses from "./Responses"
@@ -27,7 +28,10 @@ const TagOperationCodeSection = ({
   className,
 }: TagOperationCodeSectionProps) => {
   return (
-    <div className={clsx("mt-2 flex flex-col gap-2", className)}>
+    <div
+      className={clsx("mt-2 flex flex-col gap-2", className)}
+      data-testid="code-section"
+    >
       <div
         className={clsx(
           "bg-medusa-bg-subtle border-medusa-border-base px-0.75 rounded border py-0.5",
@@ -36,7 +40,10 @@ const TagOperationCodeSection = ({
       >
         <div className={clsx("flex w-[calc(100%-36px)] gap-1")}>
           <MethodLabel method={method} className="h-fit" />
-          <code className="text-medusa-fg-base =break-words break-all">
+          <code
+            className="text-medusa-fg-base =break-words break-all"
+            data-testid="endpoint-path"
+          >
             {endpointPath}
           </code>
         </div>
@@ -44,7 +51,7 @@ const TagOperationCodeSection = ({
           <SquareTwoStack className="text-medusa-fg-muted" />
         </CopyButton>
       </div>
-      {operation["x-codeSamples"] && (
+      {operation["x-codeSamples"] && operation["x-codeSamples"].length > 0 && (
         <TagOperationCodeSectionRequestSamples
           codeSamples={operation["x-codeSamples"]}
         />

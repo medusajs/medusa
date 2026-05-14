@@ -1,3 +1,5 @@
+import { CodeTab, CodeTabs } from "docs-ui"
+
 export const metadata = {
   title: `${pageNumber} Add Columns to a Link Table`,
 }
@@ -97,9 +99,12 @@ For example:
 
 <Note>
 
-Learn more about Link, how to resolve it, and its methods in [this chapter](../link/page.mdx).
+Refer to the [Link](../link/page.mdx) chapter to learn how to import and use the `link` instance.
 
 </Note>
+
+<CodeTabs group="link">
+  <CodeTab label="Link" value="link">
 
 ```ts
 await link.create({
@@ -116,6 +121,50 @@ await link.create({
   },
 })
 ```
+
+  </CodeTab>
+  <CodeTab label="createRemoteLinksStep" value="createRemoteLinksStep">
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+import { BLOG_MODULE } from "../modules/blog"
+import { createRemoteLinksStep } from "@medusajs/medusa/core-flows"
+import { 
+  createWorkflow,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
+
+export const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    // ...
+    const linkData = transform({
+      // TODO pass input data
+    }, () => {
+      return [
+        {
+          [Modules.PRODUCT]: {
+            product_id: "123",
+          },
+          [BLOG_MODULE]: {
+            post_id: "321",
+          },
+          data: {
+            metadata: {
+              test: true,
+            },
+          },
+        },
+      ]
+    })
+    createRemoteLinksStep(linkData)
+    // ...
+  }
+)
+```
+
+  </CodeTab>
+</CodeTabs>
 
 ---
 
@@ -189,6 +238,9 @@ So, to update the value of a custom column in a created link, use the `create` m
 
 For example:
 
+<CodeTabs group="link">
+  <CodeTab label="Link" value="link">
+
 ```ts
 await link.create({
   [Modules.PRODUCT]: {
@@ -204,3 +256,47 @@ await link.create({
   },
 })
 ```
+
+  </CodeTab>
+  <CodeTab label="updateRemoteLinksStep" value="updateRemoteLinksStep">
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+import { BLOG_MODULE } from "../modules/blog"
+import { updateRemoteLinksStep } from "@medusajs/medusa/core-flows"
+import { 
+  createWorkflow,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
+
+export const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    // ...
+    const linkData = transform({
+      // TODO pass input data
+    }, () => {
+      return [
+        {
+          [Modules.PRODUCT]: {
+            product_id: "123",
+          },
+          [BLOG_MODULE]: {
+            post_id: "321",
+          },
+          data: {
+            metadata: {
+              test: false,
+            },
+          },
+        },
+      ]
+    })
+    updateRemoteLinksStep(linkData)
+    // ...
+  }
+)
+```
+
+  </CodeTab>
+</CodeTabs>

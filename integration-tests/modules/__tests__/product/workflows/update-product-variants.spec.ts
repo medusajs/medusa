@@ -27,6 +27,25 @@ medusaIntegrationTestRunner({
           })
         })
 
+        describe("invocation", () => {
+          it("should not call listProductVariants when update array is empty", async () => {
+            const workflow = updateProductVariantsWorkflow(appContainer)
+            const listProductVariantsSpy = jest.spyOn(
+              service,
+              "listProductVariants"
+            )
+
+            const { result } = await workflow.run({
+              input: { product_variants: [] },
+              throwOnError: false,
+            })
+
+            expect(result).toHaveLength(0)
+
+            expect(listProductVariantsSpy).not.toHaveBeenCalled()
+            listProductVariantsSpy.mockRestore()
+          })
+        })
         describe("compensation", () => {
           it("should revert the updated variants using product_variants if the hook fails", async () => {
             const workflow = updateProductVariantsWorkflow(appContainer)

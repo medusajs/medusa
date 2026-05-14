@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import {
   applyAndAndOrOperators,
   booleanString,
@@ -26,6 +26,7 @@ export const AdminProductCategoriesParamsFields = z.object({
   description: z.union([z.string(), z.array(z.string())]).optional(),
   handle: z.union([z.string(), z.array(z.string())]).optional(),
   parent_category_id: z.union([z.string(), z.array(z.string())]).optional(),
+  external_id: z.union([z.string(), z.array(z.string()), z.null()]).optional(),
   include_ancestors_tree: booleanString().optional(),
   include_descendants_tree: booleanString().optional(),
   is_internal: booleanString().optional(),
@@ -53,7 +54,8 @@ export const CreateProductCategory = z
     is_internal: z.boolean().optional(),
     is_active: z.boolean().optional(),
     parent_category_id: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    external_id: z.string().nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
     rank: z.number().nonnegative().optional(),
   })
   .strict()
@@ -74,7 +76,8 @@ export const UpdateProductCategory = z
     is_internal: z.boolean().optional(),
     is_active: z.boolean().optional(),
     parent_category_id: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    external_id: z.string().nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
     rank: z.number().nonnegative().optional(),
   })
   .strict()

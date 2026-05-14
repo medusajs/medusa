@@ -1,7 +1,8 @@
 "use client"
 
 import React from "react"
-import { useCurrentLearningPath, usePageScrollManager } from "../../hooks"
+import { useCurrentLearningPath } from "../../hooks/use-current-learning-path"
+import { usePageScrollManager } from "../../hooks/use-page-scroll-manager"
 
 type HooksLoaderProps = {
   options?: {

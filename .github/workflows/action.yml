@@ -6,8 +6,7 @@ on:
       - v1.x
   pull_request:
     branches:
-      - develop
-      - v1.x
+      - "**"
 
 jobs:
   setup:
@@ -43,8 +42,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
+          include-hidden-files: true
           path: |
             packages/**/dist
+            packages/plugins/*/.medusa/server
             integration-tests/**/dist
             !packages/**/node_modules
           retention-days: 1

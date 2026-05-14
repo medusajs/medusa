@@ -1,10 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { PencilSquare } from "@medusajs/icons"
+import { InformationCircleSolid, PencilSquare } from "@medusajs/icons"
 import {
   AdminClaim,
+  AdminInventoryLevel,
   AdminOrder,
   AdminOrderPreview,
-  InventoryLevelDTO,
 } from "@medusajs/types"
 import {
   Alert,
@@ -15,6 +15,7 @@ import {
   Switch,
   Text,
   toast,
+  Tooltip,
   usePrompt,
 } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
@@ -50,12 +51,14 @@ import {
   useUpdateClaimInboundShipping,
   useUpdateClaimOutboundShipping,
 } from "../../../../../hooks/api/claims"
+import { useUpdateOrderChange } from "../../../../../hooks/api/orders"
 import { useUpdateReturn } from "../../../../../hooks/api/returns"
 import { sdk } from "../../../../../lib/client"
 import { currencies } from "../../../../../lib/data/currencies"
 import { ReturnShippingPlaceholder } from "../../../common/placeholders"
 import { ClaimOutboundSection } from "./claim-outbound-section"
 import { ItemPlaceholder } from "./item-placeholder"
+import { ExtendedVariant } from "../../../../product-variants/product-variant-detail/constants.ts"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -99,7 +102,7 @@ export const ClaimCreateForm = ({
     })
 
   const [inventoryMap, setInventoryMap] = useState<
-    Record<string, InventoryLevelDTO[]>
+    Record<string, AdminInventoryLevel[]>
   >({})
 
   /**
@@ -148,6 +151,15 @@ export const ClaimCreateForm = ({
   const { mutateAsync: removeInboundItem, isPending: isRemovingInboundItem } =
     useRemoveClaimInboundItem(claim.id, order.id)
 
+  const { mutateAsync: updateOrderChange } = useUpdateOrderChange(
+    preview?.order_change?.id!,
+    {
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    }
+  )
+
   const isRequestLoading =
     isConfirming ||
     isCanceling ||
@@ -183,6 +195,14 @@ export const ClaimCreateForm = ({
     () => new Map(order?.items?.map((i) => [i.id, i])),
     [order.items]
   )
+
+  const hasPromotions = useMemo(() => {
+    return (
+      (order as any).promotions &&
+      Array.isArray((order as any).promotions) &&
+      (order as any).promotions.length > 0
+    )
+  }, [order])
 
   /**
    * FORM
@@ -228,6 +248,8 @@ export const ClaimCreateForm = ({
           : "",
         location_id: orderReturn?.location_id,
         send_notification: false,
+        carry_over_promotions:
+          preview?.order_change?.carry_over_promotions ?? false,
       })
     },
     resolver: zodResolver(ClaimCreateSchema),
@@ -517,7 +539,7 @@ export const ClaimCreateForm = ({
 
   useEffect(() => {
     const getInventoryMap = async () => {
-      const ret: Record<string, InventoryLevelDTO[]> = {}
+      const ret: Record<string, AdminInventoryLevel[]> = {}
 
       if (!inboundItems.length) {
         return ret
@@ -525,7 +547,7 @@ export const ClaimCreateForm = ({
 
       const variantIds = inboundItems
         .map((item) => item?.variant_id)
-        .filter(Boolean)
+        .filter(Boolean) as string[]
 
       const variants = (
         await sdk.admin.productVariant.list({
@@ -536,7 +558,8 @@ export const ClaimCreateForm = ({
 
       variants.forEach((variant) => {
         // TODO: fix this for inventory kits
-        ret[variant.id] = variant.inventory?.[0]?.location_levels || []
+        ret[variant.id] =
+          (variant as ExtendedVariant).inventory?.[0]?.location_levels || []
       })
 
       return ret
@@ -567,6 +590,16 @@ export const ClaimCreateForm = ({
       }
     }
   }, [])
+
+  /**
+   * For estimated difference show pending difference and subtract the total of inbound items (assume all items will be returned correctly)
+   * We don't include inbound total in the pending difference because it will be considered returned when the receive flow is completed
+   */
+  const estimatedDifference =
+    preview.summary.pending_difference -
+    inboundPreviewItems.reduce((acc, item) => {
+      return acc + item.total
+    }, 0)
 
   const inboundShippingTotal = useMemo(() => {
     const method = preview.shipping_methods.find(
@@ -825,7 +858,9 @@ export const ClaimCreateForm = ({
                       const action = item.actions?.find(
                         (act) => act.action === "RETURN_ITEM"
                       )
-                      acc = acc + (action?.amount || 0)
+
+                      // `RETURN_ITEM` action has amount
+                      acc = acc + Number((action as any)?.amount || 0)
 
                       return acc
                     }, 0) * -1,
@@ -845,7 +880,8 @@ export const ClaimCreateForm = ({
                       const action = item.actions?.find(
                         (act) => act.action === "ITEM_ADD"
                       )
-                      acc = acc + (action?.amount || 0)
+                      // `ITEM_ADD` action has amount
+                      acc = acc + Number((action as any)?.amount || 0)
 
                       return acc
                     }, 0),
@@ -914,7 +950,7 @@ export const ClaimCreateForm = ({
                           .symbol_native
                       }
                       code={order.currency_code}
-                      onValueChange={(value, _name, values) => {
+                      onValueChange={(_value, _name, values) => {
                         setCustomInboundShippingAmount({
                           value: values?.value ?? "",
                           float: values?.float ?? null,
@@ -987,7 +1023,7 @@ export const ClaimCreateForm = ({
                           .symbol_native
                       }
                       code={order.currency_code}
-                      onValueChange={(value, _name, values) => {
+                      onValueChange={(_value, _name, values) => {
                         setCustomOutboundShippingAmount({
                           value: values?.value ?? "",
                           float: values?.float ?? null,
@@ -1010,13 +1046,63 @@ export const ClaimCreateForm = ({
                   {t("orders.claims.refundAmount")}
                 </span>
                 <span className="txt-small font-medium">
-                  {getStylizedAmount(
-                    preview.summary.pending_difference,
-                    order.currency_code
-                  )}
+                  {getStylizedAmount(estimatedDifference, order.currency_code)}
                 </span>
               </div>
             </div>
+
+            {/* CARRY OVER PROMOTION */}
+            {hasPromotions && (
+              <div className="bg-ui-bg-field mt-4 rounded-lg border py-2 pl-2 pr-4">
+                <Form.Field
+                  control={form.control}
+                  name="carry_over_promotions"
+                  render={({ field: { onChange, value, ...field } }) => {
+                    return (
+                      <Form.Item>
+                        <div className="flex items-center">
+                          <Form.Control className="mr-4 self-start">
+                            <Switch
+                              dir="ltr"
+                              className="mt-[2px] rtl:rotate-180"
+                              checked={!!value}
+                              onCheckedChange={async (checked) => {
+                                onChange(checked)
+                                if (preview?.order_change?.id) {
+                                  await updateOrderChange({
+                                    carry_over_promotions: checked,
+                                  })
+                                }
+                              }}
+                              {...field}
+                            />
+                          </Form.Control>
+                          <div className="block">
+                            <Form.Label className="flex items-center gap-x-2">
+                              {t("orders.claims.carryOverPromotion")}
+                              <Form.Hint>
+                                <Tooltip
+                                  content={t(
+                                    "orders.claims.carryOverPromotionTooltip"
+                                  )}
+                                >
+                                  <InformationCircleSolid />
+                                </Tooltip>
+                              </Form.Hint>
+                            </Form.Label>
+                            <Form.Hint className="!mt-1">
+                              {t("orders.claims.carryOverPromotionHint")}
+                            </Form.Hint>
+                          </div>
+                        </div>
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )
+                  }}
+                />
+              </div>
+            )}
+
             {/* SEND NOTIFICATION*/}
             <div className="bg-ui-bg-field mt-8 rounded-lg border py-2 pl-2 pr-4">
               <Form.Field

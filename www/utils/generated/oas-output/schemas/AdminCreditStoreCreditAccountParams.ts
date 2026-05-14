@@ -1,0 +1,19 @@
+/**
+ * @schema AdminCreditStoreCreditAccountParams
+ * type: object
+ * description: The details of crediting a store credit account.
+ * x-schemaName: AdminCreditStoreCreditAccountParams
+ * required:
+ *   - amount
+ * properties:
+ *   amount:
+ *     type: number
+ *     title: amount
+ *     description: The amount to credit the store credit account with.
+ *   note:
+ *     type: string
+ *     title: note
+ *     description: An additional note to add to the store credit transaction.
+ * 
+*/
+

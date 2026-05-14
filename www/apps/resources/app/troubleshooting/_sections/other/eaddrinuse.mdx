@@ -8,7 +8,12 @@ address: '::',
 port: 9000
 ```
 
-This means that there's another process running at port `9000`. You need to either:
+This means that there's another process running at port `9000`. You need to either terminate the other process or change the port used by your Medusa application.
 
-- Change the default port used by the Medusa application. You can do that by setting the `PORT` environment variable to a new port. When you do this, make sure to change the port used in other apps that interact with your Medusa application, such as in your [admin](!docs!/learn/configurations/medusa-config#admin) or [storefront](../../../nextjs-starter/page.mdx#change-medusa-application-url).
-- Terminate other processes running on port `9000`.
+To change the default port used by the Medusa application, set the `PORT` environment variable before starting your application. For example, set it in `.env`:
+
+```shell
+PORT=9001
+```
+
+After changing the port, make sure to change the port used in other apps that interact with your Medusa server, such as in your [admin](!docs!/learn/configurations/medusa-config#admin) or [storefront](../../../nextjs-starter/page.mdx#change-medusa-application-url).

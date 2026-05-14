@@ -64,6 +64,10 @@ export interface NotificationDTO {
    */
   data: Record<string, unknown> | null
   /**
+   * Additional data specific to the provider or channel. For example, cc and bcc for emails.
+   */
+  provider_data?: Record<string, unknown> | null
+  /**
    * The event name, the workflow, or anything else that can help to identify what triggered the notification.
    */
   trigger_type?: string | null
@@ -147,6 +151,10 @@ export interface FilterableNotificationProps
    * Filter based on the recipient of the notification.
    */
   to?: string | string[] | OperatorMap<string | string[]>
+  /**
+   * Filter based on the recipient of the notification.
+   */
+  from?: string | string[] | OperatorMap<string | string[]>
   /**
    * Filter based on the channel through which the notification is sent, such as 'email' or 'sms'
    */

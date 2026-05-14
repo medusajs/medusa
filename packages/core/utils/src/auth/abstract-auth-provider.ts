@@ -176,7 +176,6 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    *     // authentication is successful, retrieve the identity
    *     const authIdentity = await authIdentityProviderService.retrieve({
    *       entity_id: data.body.email, // email or some ID
-   *       provider: this.provider
    *     })
    *
    *     return {
@@ -215,6 +214,16 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    *         error: "Incorrect credentials"
    *       }
    *     }
+   * 
+   *     // optional, useful for third-party providers that require a redirect URL
+   *     // to continue the authentication flow
+   *     // const stateKey = crypto.randomBytes(32).toString("hex")
+   *     // const state = {
+   *     //   callback_url: body?.callback_url ?? this.config_.callbackUrl,
+   *     // }
+   *     
+   *     // verify this later in the `validateCallback` method
+   *     // await authIdentityService.setState(stateKey, state)
    *
    *     return {
    *       success: true,
@@ -396,6 +405,16 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    *     authIdentityProviderService: AuthIdentityProviderService
    *   ): Promise<AuthenticationResponse> {
    *     const isAuthenticated = false
+   * 
+   *     // optional, useful for third-party providers that require a redirect URL
+   *     // to continue the authentication flow
+   *     // const stateKey = data.query?.state as string
+   *     // const state = await authIdentityService.getState(stateKey)
+   *     // if (!state) {
+   *     //   return { success: false, error: "No state provided, or session expired" }
+   *     // }
+   *     // // use callback URL with the third-party service
+   *     // const callbackUrl = state.callback_url
    *     // TODO perform custom logic to authenticate the user
    *     // ...
    *

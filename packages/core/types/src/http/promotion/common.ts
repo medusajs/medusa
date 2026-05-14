@@ -63,6 +63,8 @@ export interface BasePromotion {
   type?: PromotionTypeValues
   is_automatic?: boolean
   is_tax_inclusive?: boolean
+  limit?: number | null
+  used?: number
   application_method?: BaseApplicationMethod
   rules?: BasePromotionRule[]
   status?: PromotionStatusValues

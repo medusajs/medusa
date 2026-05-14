@@ -1,0 +1,73 @@
+export const metadata = {
+  title: `How to Clear Cached Data`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to clear cached data in Medusa.
+
+## Why Clear Cache?
+
+You should mainly cache data that isn't frequently changing, such as product details or categories. However, there are scenarios where you might need to clear the cache of that data manually.
+
+For example, if you've integrated a third-party system that updates product information outside of Medusa, or if you've cached data from the third-party system, Medusa won't be aware of changes made externally.
+
+In such cases, you should clear the cache in Medusa to ensure it fetches the most up-to-date information from the source rather than relying on outdated cached data.
+
+---
+
+## How to Clear Cache
+
+This section explains how to clear data cached by the Caching Module in Medusa.
+
+### Identify Cache Tags
+
+Before clearing the cache, identify the specific cache tags associated with the data you want to clear.
+
+When you cache entities with the [Query](!docs!/learn/fundamentals/module-links/query) or [Index Module](!docs!/learn/fundamentals/module-links/index-module), the Caching Module automatically generates tags based on the entity type and its ID:
+
+- `Entity:id`: Cache tag for a single record of an entity. For example, `Product:prod_123` caches a single product with the ID `prod_123`.
+- `Entity:list:*`: Cache tag for a list of records of an entity. For example, `Product:list:*` caches a list of products.
+
+To clear the cache for a specific product, use the `Product:{id}` tag. To clear the cache for all products, use the `Product:list:*` tag.
+
+Refer to the [Caching Module Concepts guide](../../concepts/page.mdx#caching-tags-convention) to learn more about cache tags.
+
+### Clear Cache with Caching Module Service
+
+To clear cached data, use the [clear](/references/caching-service#clear) method of the Caching Module's service. You can resolve the service in a workflow step, API route, subscriber, or scheduled job, then call the `clear` method with the identified cache tags.
+
+For example, to clear the cache for specific products in a workflow step:
+
+```ts
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+
+type ClearProductCacheInput = {
+  productId: string | string[]
+}
+
+export const clearProductCacheStep = createStep(
+  "clear-product-cache",
+  async ({ productId }: ClearProductCacheInput, { container }) => {
+    const cachingModuleService = container.resolve(Modules.CACHING)
+
+    const productIds = Array.isArray(productId) ? productId : [productId]
+
+    // Clear cache for all specified products
+    for (const id of productIds) {
+      if (id) {
+        await cachingModuleService.clear({
+          tags: [`Product:${id}`],
+        })
+      }
+    }
+
+    return new StepResponse({})
+  }
+)
+```
+
+In this example, the `clearProductCacheStep` step takes a `productId` (or an array of IDs) as input and clears the cache for each specified product using its cache tag.
+
+You can then use this step in a workflow to clear the cache whenever necessary, such as after receiving a webhook from a third-party system indicating that product data has changed.

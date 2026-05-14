@@ -36,7 +36,7 @@
   ],
   "dependencies": {
     "eslint": "^9.13.0",
-    "glob": "11.1.0",
+    "glob": "13.0.6",
     "minimatch": "^10.0.1",
     "utils": "*",
     "yaml": "^2.3.3"

@@ -30,7 +30,17 @@ export type ChangeActionType =
   | "CREDIT_LINE_ADD"
   | "PROMOTION_ADD"
   | "PROMOTION_REMOVE"
+  | "ITEM_ADJUSTMENTS_REPLACE"
+  | /**
+   * Replace shipping method adjustments.
+   *
+   * @since 2.13.7
+   */
+  "SHIPPING_ADJUSTMENTS_REPLACE"
 
+/**
+ * The order change's status.
+ */
 export type OrderChangeStatus =
   | "confirmed"
   | "declined"
@@ -129,6 +139,13 @@ export interface OrderShippingMethodAdjustmentDTO
    * The ID of the associated shipping method.
    */
   shipping_method_id: string
+
+  /**
+   * The version of the adjustment.
+   *
+   * @since 2.13.7
+   */
+  version: number
 }
 
 /**
@@ -146,6 +163,13 @@ export interface OrderLineItemAdjustmentDTO extends OrderAdjustmentLineDTO {
    * The ID of the associated line item.
    */
   item_id: string
+
+  /**
+   * The version of the adjustment.
+   *
+   * @since 2.13.7
+   */
+  version: number
 }
 
 /**
@@ -1133,6 +1157,11 @@ export interface OrderDTO {
   is_draft_order?: boolean
 
   /**
+   * The locale of the order.
+   */
+  locale?: string
+
+  /**
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null
@@ -2117,6 +2146,11 @@ export interface OrderChangeDTO {
   change_type?: "return" | "exchange" | "claim" | "edit" | "transfer"
 
   /**
+   * Whether to carry over promotions (apply promotions to outbound exchange items).
+   */
+  carry_over_promotions?: boolean | null
+
+  /**
    * The ID of the associated order
    */
   order_id: string
@@ -2309,6 +2343,11 @@ export interface OrderChangeActionDTO {
    * The internal note of the order change action
    */
   internal_note: string | null
+
+  /**
+   * The ordering of the order change action
+   */
+  ordering: number
 
   /**
    * When the order change action was created
@@ -3011,7 +3050,10 @@ export interface OrderPreviewDTO
   /**
    * The items of the order, along with changes on the items.
    */
-  items: (OrderLineItemDTO & { actions?: OrderChangeActionDTO[] })[]
+  items: (OrderLineItemDTO & { 
+    actions?: OrderChangeActionDTO[]
+    return_requested_total: number
+  })[]
   /**
    * The shipping methods of the order, along with changes on the shipping methods.
    */

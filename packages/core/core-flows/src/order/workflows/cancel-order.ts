@@ -8,6 +8,7 @@ import {
   deepFlatMap,
   MathBN,
   MedusaError,
+  OrderStatus,
   OrderWorkflowEvents,
   PaymentCollectionStatus,
 } from "@medusajs/framework/utils"
@@ -76,6 +77,13 @@ export const cancelValidateOrder = createStep(
 
     throwIfOrderIsCancelled({ order })
 
+    if (order.status === OrderStatus.COMPLETED) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `Cannot cancel a completed order. Please use the return process to handle refunds or exchanges.`
+      )
+    }
+
     const throwErrorIf = (
       arr: unknown[],
       pred: (obj: any) => boolean,
@@ -136,8 +144,10 @@ export const cancelOrderWorkflow = createWorkflow(
         "payment_collections.payments.amount",
         "payment_collections.payments.refunds.id",
         "payment_collections.payments.refunds.amount",
+        "payment_collections.payments.refunds.raw_amount",
         "payment_collections.payments.captures.id",
         "payment_collections.payments.captures.amount",
+        "payment_collections.payments.captures.raw_amount",
       ],
       filters: { id: input.order_id },
       options: { throwIfKeyNotFound: true },
@@ -164,40 +174,71 @@ export const cancelOrderWorkflow = createWorkflow(
       return uncapturedPayments.map((payment) => payment.id)
     })
 
-    const creditLineAmount = transform({ order }, ({ order }) => {
-      const payments = deepFlatMap(
-        order,
-        "payment_collections.payments",
-        ({ payments }) => payments
-      )
-
-      return payments.reduce(
-        (acc, payment) => MathBN.sum(acc, payment.amount),
-        MathBN.convert(0)
-      )
-    })
-
     const lineItemIds = transform({ order }, ({ order }) => {
       return order.items?.map((i) => i.id)
     })
 
-    parallelize(
-      createOrderRefundCreditLinesWorkflow.runAsStep({
-        input: {
-          order_id: order.id,
-          amount: creditLineAmount,
-        },
-      }),
-      deleteReservationsByLineItemsStep(lineItemIds),
-      cancelPaymentStep({ paymentIds: uncapturedPaymentIds }),
+    const [refundedPayments] = parallelize(
       refundCapturedPaymentsWorkflow.runAsStep({
         input: { order_id: order.id, created_by: input.canceled_by },
       }),
+      deleteReservationsByLineItemsStep(lineItemIds),
+      cancelPaymentStep({ paymentIds: uncapturedPaymentIds }),
       emitEventStep({
         eventName: OrderWorkflowEvents.CANCELED,
         data: { id: order.id },
       })
     )
+
+    const refundedPaymentIds = transform(
+      { refundedPayments },
+      ({ refundedPayments }) => {
+        return refundedPayments.map((payment) => payment.id)
+      }
+    )
+
+    const refundedPaymentRefundsQuery = useQueryGraphStep({
+      entity: "refunds",
+      fields: ["raw_amount"],
+      filters: { payment_id: refundedPaymentIds },
+    }).config({ name: "get-refunded-payment-refunds" })
+
+    const creditLineAmount = transform(
+      { order, refundedPaymentIds, refundedPaymentRefundsQuery },
+      ({ order, refundedPaymentIds, refundedPaymentRefundsQuery }) => {
+        const refundedIds = new Set(refundedPaymentIds)
+
+        const totalRefundedAfter = refundedPaymentRefundsQuery.data.reduce(
+          (acc, refund) => MathBN.sum(acc, refund.raw_amount),
+          MathBN.convert(0)
+        )
+
+        const totalRefundedBefore = deepFlatMap(
+          order,
+          "payment_collections.payments",
+          ({ payments }) => payments
+        )
+          .filter((payment) => refundedIds.has(payment.id))
+          .reduce(
+            (acc, payment) =>
+              (payment.refunds || []).reduce(
+                (inner, refund) =>
+                  MathBN.sum(inner, refund.raw_amount ?? refund.amount),
+                acc
+              ),
+            MathBN.convert(0)
+          )
+
+        return MathBN.sub(totalRefundedAfter, totalRefundedBefore)
+      }
+    )
+
+    createOrderRefundCreditLinesWorkflow.runAsStep({
+      input: {
+        order_id: order.id,
+        amount: creditLineAmount,
+      },
+    })
 
     const paymentCollectionids = transform({ order }, ({ order }) =>
       order.payment_collections?.map((pc) => pc.id)

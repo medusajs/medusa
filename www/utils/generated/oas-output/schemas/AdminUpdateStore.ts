@@ -31,6 +31,11 @@
  *     externalDocs:
  *       url: https://docs.medusajs.com/api/admin#manage-metadata
  *       description: Learn how to manage metadata
+ *   supported_locales:
+ *     type: array
+ *     description: The store's supported locales.
+ *     items:
+ *       $ref: "#/components/schemas/AdminUpdateStoreSupportedLocale"
  * 
 */
 

@@ -1,5 +1,7 @@
 import React from "react"
-import { CodeBlock, CodeBlockMetaFields, CodeTab, CodeTabs } from "../.."
+import { CodeBlock, CodeBlockMetaFields } from "@/components/CodeBlock"
+import { CodeTabs } from "@/components/CodeTabs"
+import { CodeTab } from "@/components/CodeTabs/Item"
 import convert from "npm-to-yarn"
 
 type Npm2YarnCodeProps = {
@@ -19,15 +21,6 @@ export const Npm2YarnCode = ({
 
   const tabs = [
     {
-      label: "npm",
-      value: "npm",
-      code: {
-        source: npmCode,
-        lang,
-        ...codeOptions,
-      },
-    },
-    {
       label: "yarn",
       value: "yarn",
       code: {
@@ -41,6 +34,15 @@ export const Npm2YarnCode = ({
       value: "pnpm",
       code: {
         source: pnpmCode,
+        lang,
+        ...codeOptions,
+      },
+    },
+    {
+      label: "npm",
+      value: "npm",
+      code: {
+        source: npmCode,
         lang,
         ...codeOptions,
       },

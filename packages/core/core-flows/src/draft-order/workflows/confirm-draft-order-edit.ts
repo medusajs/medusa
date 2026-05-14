@@ -1,15 +1,9 @@
-import { ChangeActionType, MathBN, OrderChangeStatus, } from "@medusajs/framework/utils"
-import { createWorkflow, transform, WorkflowResponse, } from "@medusajs/framework/workflows-sdk"
-import { BigNumberInput, OrderChangeDTO, OrderDTO, } from "@medusajs/framework/types"
-import { reserveInventoryStep } from "../../cart"
-import {
-  prepareConfirmInventoryInput,
-  requiredOrderFieldsForInventoryConfirmation,
-} from "../../cart/utils/prepare-confirm-inventory-input"
+import { OrderChangeStatus, } from "@medusajs/framework/utils"
+import { createWorkflow, WorkflowResponse, } from "@medusajs/framework/workflows-sdk"
+import { OrderChangeDTO, OrderDTO, } from "@medusajs/framework/types"
 import { useRemoteQueryStep } from "../../common"
 import { createOrUpdateOrderPaymentCollectionWorkflow, previewOrderChangeStep, } from "../../order"
 import { confirmOrderChanges } from "../../order/steps/confirm-order-changes"
-import { deleteReservationsByLineItemsStep } from "../../reservation"
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 
@@ -110,102 +104,6 @@ export const confirmDraftOrderEditWorkflow = createWorkflow(
       orderId: order.id,
       confirmed_by: input.confirmed_by,
     })
-
-    const orderItems = useRemoteQueryStep({
-      entry_point: "order",
-      fields: requiredOrderFieldsForInventoryConfirmation,
-      variables: { id: input.order_id },
-      list: false,
-      throw_if_key_not_found: true,
-    }).config({ name: "order-items-query" })
-
-    const { variants, items, toRemoveReservationLineItemIds } = transform(
-      { orderItems, previousOrderItems: order.items, orderPreview },
-      ({ orderItems, previousOrderItems, orderPreview }) => {
-        const allItems: any[] = []
-        const allVariants: any[] = []
-
-        const previousItemIds = (previousOrderItems || []).map(({ id }) => id)
-        const currentItemIds = orderItems.items.map(({ id }) => id)
-
-        const removedItemIds = previousItemIds.filter(
-          (id) => !currentItemIds.includes(id)
-        )
-
-        const updatedItemIds: string[] = []
-
-        orderItems.items.forEach((ordItem) => {
-          const itemAction = orderPreview.items?.find(
-            (item) =>
-              item.id === ordItem.id &&
-              item.actions?.find(
-                (a) =>
-                  a.action === ChangeActionType.ITEM_ADD ||
-                  a.action === ChangeActionType.ITEM_UPDATE
-              )
-          )
-
-          if (!itemAction) {
-            return
-          }
-
-          const unitPrice: BigNumberInput =
-            itemAction.raw_unit_price ?? itemAction.unit_price
-
-          const compareAtUnitPrice: BigNumberInput | undefined =
-            itemAction.raw_compare_at_unit_price ??
-            itemAction.compare_at_unit_price
-
-          const updateAction = itemAction.actions!.find(
-            (a) => a.action === ChangeActionType.ITEM_UPDATE
-          )
-
-          if (updateAction) {
-            updatedItemIds.push(ordItem.id)
-          }
-
-          const newQuantity: BigNumberInput =
-            itemAction.raw_quantity ?? itemAction.quantity
-
-          const reservationQuantity = MathBN.sub(
-            newQuantity,
-            ordItem.raw_fulfilled_quantity
-          )
-
-          allItems.push({
-            id: ordItem.id,
-            variant_id: ordItem.variant_id,
-            quantity: reservationQuantity,
-            unit_price: unitPrice,
-            compare_at_unit_price: compareAtUnitPrice,
-          })
-          allVariants.push(ordItem.variant)
-        })
-
-        return {
-          variants: allVariants,
-          items: allItems,
-          toRemoveReservationLineItemIds: [
-            ...removedItemIds,
-            ...updatedItemIds,
-          ],
-        }
-      }
-    )
-
-    const formatedInventoryItems = transform(
-      {
-        input: {
-          sales_channel_id: (orderItems as any).sales_channel_id,
-          variants,
-          items,
-        },
-      },
-      prepareConfirmInventoryInput
-    )
-
-    deleteReservationsByLineItemsStep(toRemoveReservationLineItemIds)
-    reserveInventoryStep(formatedInventoryItems)
 
     createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
       input: {

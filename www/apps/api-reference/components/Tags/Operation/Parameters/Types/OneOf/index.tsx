@@ -1,7 +1,7 @@
+import React, { useState } from "react"
 import type { OpenAPI } from "types"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
-import { useState } from "react"
 import type { TagOperationParametersDefaultProps } from "../Default"
 import type { TagsOperationParametersNestedProps } from "../../Nested"
 import type { TagOperationParametersProps } from "../.."
@@ -43,20 +43,13 @@ const TagOperationParamatersOneOf = ({
 }: TagOperationParamatersOneOfProps) => {
   const [activeTab, setActiveTab] = useState<number>(0)
 
+  if (!schema.oneOf) {
+    return null
+  }
+
   const getName = (item: OpenAPI.SchemaObject): string => {
     if (item.title) {
       return item.title
-    }
-
-    if (item.anyOf || item.allOf) {
-      // return the name of any of the items
-      const name = item.anyOf
-        ? item.anyOf.find((i) => i.title !== undefined)?.title
-        : item.allOf?.find((i) => i.title !== undefined)?.title
-
-      if (name) {
-        return name
-      }
     }
 
     return item.type || ""
@@ -84,6 +77,7 @@ const TagOperationParamatersOneOf = ({
                   ]
                 )}
                 onClick={() => setActiveTab(index)}
+                data-testid={"tab"}
               >
                 {getName(item)}
               </li>
@@ -91,14 +85,10 @@ const TagOperationParamatersOneOf = ({
           </ul>
         </div>
 
-        {schema.oneOf && (
-          <>
-            <TagOperationParameters
-              schemaObject={schema.oneOf[activeTab]}
-              topLevel={true}
-            />
-          </>
-        )}
+        <TagOperationParameters
+          schemaObject={schema.oneOf![activeTab]}
+          topLevel={true}
+        />
       </>
     )
   }

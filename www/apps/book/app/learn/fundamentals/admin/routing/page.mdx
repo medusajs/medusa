@@ -71,11 +71,12 @@ To fetch data with a route loader:
 For example, consider the following UI route created at `src/admin/routes/custom/page.tsx`:
 
 export const loaderHighlights = [
-  ["6", "loader", "Export a loader function to fetch products."],
-  ["15", "useLoaderData", "Access the data returned by the loader function in the route component."],
+  ["7", "loader", "Export a loader function to fetch products."],
+  ["16", "useLoaderData", "Access the data returned by the loader function in the route component."],
 ]
 
 ```tsx title="src/admin/routes/custom/page.tsx" highlights={loaderHighlights}
+import { defineRouteConfig } from "@medusajs/admin-sdk"
 import { Container, Heading } from "@medusajs/ui"
 import {
   useLoaderData,

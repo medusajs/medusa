@@ -76,7 +76,7 @@ You return in the response the retrieved brands and the pagination configuration
 
 <Note>
 
-Learn more about pagination with Query in [this chapter](../../../fundamentals/module-links/query/page.mdx#apply-pagination).
+Refer to the [Query](../../../fundamentals/module-links/query/page.mdx#apply-pagination) chapter to learn more about applying pagination when retrieving linked records.
 
 </Note>
 
@@ -138,7 +138,7 @@ By applying the above middleware, you can pass pagination configurations to `GET
 
 <Note>
 
-Learn more about using the `validateAndTransformQuery` middleware to configure Query in [this chapter](../../../fundamentals/module-links/query/page.mdx#request-query-configurations).
+Refer to the [Query](../../../fundamentals/module-links/query/page.mdx#request-query-configurations) chapter to learn more about using the `validateAndTransformQuery` middleware to configure Query.
 
 </Note>
 
@@ -176,7 +176,7 @@ You can now use the SDK to send requests to the Medusa server.
 
 <Note>
 
-Learn more about the JS SDK and its options in [this reference](!resources!/js-sdk).
+Refer to the [JS SDK Reference](!resources!/js-sdk) to learn more about the it, its options, and how to use it to send requests to Medusa's API routes.
 
 </Note>
 
@@ -188,7 +188,7 @@ You'll now add the UI route that shows the paginated list of brands. A UI route 
 
 <Note>
 
-Learn more about UI routes in [this chapter](../../../fundamentals/admin/ui-routes/page.mdx).
+Refer to the [UI Routes](../../../fundamentals/admin/ui-routes/page.mdx) chapter to learn more about UI routes.
 
 </Note>
 
@@ -197,10 +197,10 @@ So, to add the UI route at the `localhost:9000/app/brands` path, create the file
 ![Directory structure of the Medusa application after adding the UI route.](https://res.cloudinary.com/dza7lstvk/image/upload/v1733472011/Medusa%20Book/brands-admin-dir-overview-3_syytld.jpg)
 
 export const uiRouteHighlights = [
-  ["8", "BrandsPage", "The UI route that displays a new page."],
-  ["23", "defineRouteConfig", "Export config to add a link for the UI route in the sidebar."],
-  ["24", "label", "The sidebar item's label."],
-  ["25", "icon", "The sidebar item's icon."]
+  ["10", "BrandsPage", "The UI route that displays a new page."],
+  ["20", "defineRouteConfig", "Export config to add a link for the UI route in the sidebar."],
+  ["21", "label", "The sidebar item's label."],
+  ["22", "icon", "The sidebar item's icon."]
 ]
 
 ```tsx title="src/admin/routes/brands/page.tsx" highlights={uiRouteHighlights}

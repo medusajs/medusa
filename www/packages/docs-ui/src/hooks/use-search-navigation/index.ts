@@ -1,8 +1,8 @@
 "use client"
 
 import { useCallback, useEffect, useMemo } from "react"
-import { useSearch } from "@/providers"
-import { findNextSibling, findPrevSibling } from "@/utils"
+import { useSearch } from "../../providers/Search"
+import { findNextSibling, findPrevSibling } from "../../utils/dom-utils"
 import {
   useKeyboardShortcut,
   type useKeyboardShortcutOptions,

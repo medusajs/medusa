@@ -54,7 +54,7 @@ medusaIntegrationTestRunner({
             field: "display_id",
             data_type: "string",
             semantic_type: "identifier",
-            context: "order",
+            context: "both",
           })
 
           // Check for missing relationships

@@ -117,6 +117,11 @@ export interface CreateCartDTO {
   currency_code: string
 
   /**
+   * The locale code of the cart.
+   */
+  locale?: string
+
+  /**
    * The associated shipping address's ID.
    */
   shipping_address_id?: string
@@ -175,6 +180,11 @@ export interface UpdateCartDataDTO {
    * The currency code of the cart.
    */
   currency_code?: string
+
+  /**
+   * The locale code of the cart.
+   */
+  locale?: string | null
 
   /**
    * The associated shipping address's ID.

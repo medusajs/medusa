@@ -1,4 +1,5 @@
 import Medusa from "@medusajs/js-sdk"
+import { decodeToken } from "react-jwt"
 
 let MEDUSA_BACKEND_URL = "http://localhost:9000"
 
@@ -12,7 +13,7 @@ export const sdk = new Medusa({
   publishableKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
 })
 
-await sdk.auth.callback(
+const token = await sdk.auth.callback(
   "customer",
   "google",
   {
@@ -20,9 +21,20 @@ await sdk.auth.callback(
     state: "456"
   }
 )
-
 // all subsequent requests will use the token in the header
-const { customer } = await sdk.store.customer.create({
-  email: "customer@gmail.com",
-  password: "supersecret"
-})
+
+const decodedToken = decodeToken(token) as { actor_id: string, user_metadata: Record<string, unknown> }
+
+const shouldCreateCustomer = decodedToken.actor_id === ""
+
+if (shouldCreateCustomer) {
+  const { customer } = await sdk.store.customer.create({
+    email: decodedToken.user_metadata.email as string,
+  })
+
+  // refresh auth token
+  await sdk.auth.refresh()
+  // all subsequent requests will use the new token in the header
+} else {
+  // Customer already exists and is authenticated
+}

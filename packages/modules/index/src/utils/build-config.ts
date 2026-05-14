@@ -845,7 +845,9 @@ function processEntity(
           ]
           intermediateEntityObjectRepresentationRef.moduleConfig =
             intermediateEntityModule
-          if (!intermediateEntityObjectRepresentationRef.fields.includes("id")) {
+          if (
+            !intermediateEntityObjectRepresentationRef.fields.includes("id")
+          ) {
             intermediateEntityObjectRepresentationRef.fields.push("id")
           }
 
@@ -913,14 +915,14 @@ function processEntity(
           servicesEntityMap: servicesEntityMap,
         })?.isArray
 
-        const parentAlreadyExists = currentObjectRepresentationRef.parents.some(
+        const existingParent = currentObjectRepresentationRef.parents.find(
           (existingParent) =>
             existingParent.ref?.entity ===
               currentParentIntermediateRef.entity &&
             existingParent.targetProp === entityTargetPropertyNameInParent
         )
 
-        if (!parentAlreadyExists) {
+        if (!existingParent) {
           currentObjectRepresentationRef.parents.push({
             ref: currentParentIntermediateRef,
             inSchemaRef: parentObjectRepresentationRef,
@@ -928,6 +930,8 @@ function processEntity(
             inverseSideProp: parentPropertyNameWithinCurrentEntity?.name!,
             isList: entityTargetPropertyIsListInParent,
           })
+        } else if (!existingParent.inSchemaRef) {
+          existingParent.inSchemaRef = parentObjectRepresentationRef
         }
       }
     }
@@ -1185,7 +1189,10 @@ function buildSchemaFromFilterableLinks(
     const fieldType = fieldRef.type.toString()
     const isArray = fieldType.startsWith("[")
     let currentType = fieldType.replace(/\[|\]|\!/g, "")
-    const isEnum = currentType.endsWith("Enum")
+    const isEnum =
+      fieldRef.type?.ofType?.astNode?.kind ===
+      GraphQLUtils.Kind.ENUM_TYPE_DEFINITION
+
     if (isEnum) {
       currentType = "String"
     }

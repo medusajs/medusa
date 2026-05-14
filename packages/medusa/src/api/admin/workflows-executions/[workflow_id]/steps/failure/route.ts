@@ -9,11 +9,10 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 
-import { IWorkflowEngineService } from "@medusajs/framework/types"
-import { AdminCreateWorkflowsAsyncResponseType } from "../../../validators"
+import { HttpTypes, IWorkflowEngineService } from "@medusajs/framework/types"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCreateWorkflowsAsyncResponseType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminCreateWorkflowsAsyncResponse>,
   res: MedusaResponse<{ success: boolean }>
 ) => {
   const workflowEngineService: IWorkflowEngineService = req.scope.resolve(
@@ -45,6 +44,8 @@ export const POST = async (
       context: {
         requestId: req.requestId,
       },
+      throwOnError: false,
+      logOnError: true,
     },
   })
 

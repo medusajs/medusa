@@ -64,9 +64,9 @@
  *   - name: product-type.deleted
  *     payload: |-
  *       ```ts
- *       [{
+ *       {
  *         id, // The ID of the product type
- *       }]
+ *       }
  *       ```
  *     description: Emitted when product types are deleted.
  *     deprecated: false

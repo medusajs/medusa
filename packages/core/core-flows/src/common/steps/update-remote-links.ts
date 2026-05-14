@@ -8,9 +8,10 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const updateRemoteLinksStepId = "update-remote-links-step"
 /**
- * This step updates remote links between two records of linked data models.
+ * This step updates links between two records of linked data models. This is useful to update
+ * links with additional data such as metadata.
  *
- * Learn more in the [Remote Link documentation.](https://docs.medusajs.com/learn/fundamentals/module-links/remote-link#create-link).
+ * Learn more in the [Link documentation.](https://docs.medusajs.com/learn/fundamentals/module-links/link#update-links).
  *
  * @example
  * const data = updateRemoteLinksStep([
@@ -18,8 +19,8 @@ export const updateRemoteLinksStepId = "update-remote-links-step"
  *     [Modules.PRODUCT]: {
  *       product_id: "prod_321",
  *     },
- *     "helloModuleService": {
- *       my_custom_id: "mc_321",
+ *     blog: {
+ *       post_id: "post_321",
  *     },
  *     data: {
  *       metadata: {

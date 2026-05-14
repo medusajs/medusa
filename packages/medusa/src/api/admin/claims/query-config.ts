@@ -1,3 +1,7 @@
+export enum Entities {
+  order_claim = "order_claim",
+}
+
 export const defaultAdminClaimFields = [
   "id",
   "type",
@@ -22,10 +26,12 @@ export const defaultAdminDetailsClaimFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminDetailsClaimFields,
   isList: false,
+  entity: Entities.order_claim,
 }
 
 export const listTransformQueryConfig = {
   defaults: defaultAdminClaimFields,
   defaultLimit: 20,
   isList: true,
+  entity: Entities.order_claim,
 }
