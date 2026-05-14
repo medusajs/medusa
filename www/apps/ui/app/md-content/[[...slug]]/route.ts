@@ -1,5 +1,4 @@
-import { addExtraToMd, getCleanMd } from "docs-utils"
-import { existsSync } from "fs"
+import { addExtraToMd, getCleanMd, workerCompatibleFetch } from "docs-utils"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
@@ -12,25 +11,51 @@ import { colors as allColors } from "@/config/colors"
 import { PostHog } from "posthog-node"
 
 type Params = {
-  params: Promise<{ slug: string[] }>
+  params: Promise<{ slug?: string[] }>
 }
 
 export async function GET(req: NextRequest, { params }: Params) {
-  const { slug = ["/"] } = await params
+  const { slug: rawSlug } = await params
+  const slug = rawSlug?.filter(Boolean) ?? []
 
-  // keep this so that Vercel keeps the files in deployment
-  const basePath = path.join(process.cwd(), "app")
-  const componentSpecsPath = path.join(process.cwd(), "specs", "components")
-  const examplesPath = path.join(process.cwd(), "specs", "examples")
-  const filePath = path.join(basePath, ...slug, "page.mdx")
+  const origin = process.env.NEXT_PUBLIC_BASE_URL || new URL(req.url).origin
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
 
-  if (!existsSync(filePath)) {
+  const fileContent = await workerCompatibleFetch<string | null>({
+    url: `${origin}${basePath}/raw-mdx/${[...slug, "page.mdx"].join("/")}`,
+    responseTransformer: async (res) => {
+      return res.ok ? res.text() : null
+    },
+    fallbackAction: async () => {
+      try {
+        const { promises: fs } = await import("fs")
+        return await fs.readFile(
+          path.join(process.cwd(), "app", ...slug, "page.mdx"),
+          "utf-8"
+        )
+      } catch {
+        return null
+      }
+    },
+    useRemote: !!process.env.CLOUDFLARE_ENV,
+  })
+
+  if (!fileContent) {
     return notFound()
   }
 
+  const specsR2Base = process.env.UI_SPECS_R2_BASE_URL
+
   const cleanMdContent = await getCleanMd_(
-    filePath,
-    { examplesPath, specsPath: componentSpecsPath },
+    fileContent,
+    {
+      examplesPath: specsR2Base
+        ? `${specsR2Base}/specs/examples`
+        : path.join(process.cwd(), "specs", "examples"),
+      specsPath: specsR2Base
+        ? `${specsR2Base}/specs/components`
+        : path.join(process.cwd(), "specs", "components"),
+    },
     {
       after: [
         [addUrlToRelativeLink, { url: process.env.NEXT_PUBLIC_BASE_URL }],
@@ -79,7 +104,7 @@ export async function GET(req: NextRequest, { params }: Params) {
 
 const getCleanMd_ = unstable_cache(
   async (
-    filePath: string,
+    content: string,
     parserOptions: {
       examplesPath: string
       specsPath: string
@@ -89,7 +114,8 @@ const getCleanMd_ = unstable_cache(
     const iconNames = Object.keys(Icons).filter((name) => name !== "default")
 
     return getCleanMd({
-      file: filePath,
+      file: content,
+      type: "content",
       plugins,
       parserOptions: {
         ComponentExample: {

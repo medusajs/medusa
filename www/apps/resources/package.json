@@ -5,23 +5,30 @@
   "scripts": {
     "dev": "next dev",
     "dev:monorepo": "yarn dev -p 3003",
+    "dev:wrangler": "wrangler dev --port 3000",
     "build": "next build",
+    "build:cloudflare": "CF_PAGES=1 yarn prep && NEXT_PUBLIC_ENV=production opennextjs-cloudflare build",
     "start": "next start",
     "start:monorepo": "yarn start -p 3003",
     "lint": "next lint --fix",
     "lint:content": "eslint --no-config-lookup -c .content.eslintrc.mjs app/**/*.mdx --fix",
     "prep": "node ./scripts/prepare.mjs",
-    "prep:turbo": "npx turbo run prep"
+    "prep:turbo": "npx turbo run prep",
+    "upload:r2": "node ./scripts/upload-references-to-r2.mjs",
+    "preview": "yarn build:cloudflare && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare deploy",
+    "upload": "opennextjs-cloudflare upload",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
     "@medusajs/icons": "2.15.1",
-    "@next/mdx": "15.3.9",
+    "@next/mdx": "15.5.18",
     "@stefanprobst/rehype-extract-toc": "^3.0.0",
     "clsx": "^2.1.0",
     "docs-ui": "*",
-    "next": "15.3.9",
+    "next": "15.5.18",
     "next-mdx-remote-client": "2",
     "posthog-js": "^1.298.1",
     "posthog-node": "^5.29.0",
@@ -33,7 +40,9 @@
     "swr": "^2.3.6"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "15.3.9",
+    "@aws-sdk/client-s3": "^3",
+    "@next/bundle-analyzer": "15.5.18",
+    "@opennextjs/cloudflare": "^1.19.9",
     "@types/mdx": "^2.0.13",
     "@types/node": "^20",
     "@types/react": "19.2.9",
@@ -44,6 +53,7 @@
     "eslint": "^9.13.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react-hooks": "^5.0.0",
+    "mime-types": "^3",
     "postcss": "^8",
     "remark-rehype-plugins": "*",
     "tags": "*",
@@ -52,7 +62,8 @@
     "ts-node": "^10.9.2",
     "tsconfig": "*",
     "types": "*",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^4.90.0"
   },
   "engines": {
     "node": ">=20"
