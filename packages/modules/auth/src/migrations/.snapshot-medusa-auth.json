@@ -92,6 +92,284 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "auth_identity_id": {
+          "name": "auth_identity_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "provider": {
+          "name": "provider",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "provider_metadata": {
+          "name": "provider_metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "auth_mfa_factor",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_auth_mfa_factor_auth_identity_id",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_auth_mfa_factor_auth_identity_id\" ON \"auth_mfa_factor\" (auth_identity_id) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_auth_mfa_factor_auth_identity_provider_active",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_auth_mfa_factor_auth_identity_provider_active\" ON \"auth_mfa_factor\" (auth_identity_id, provider) WHERE deleted_at IS NULL AND status IN ('pending', 'enabled')"
+        },
+        {
+          "keyName": "IDX_auth_mfa_factor_deleted_at",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_auth_mfa_factor_deleted_at\" ON \"auth_mfa_factor\" (deleted_at) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "auth_mfa_factor_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "auth_mfa_factor_auth_identity_id_foreign": {
+          "constraintName": "auth_mfa_factor_auth_identity_id_foreign",
+          "columnNames": [
+            "auth_identity_id"
+          ],
+          "localTableName": "public.auth_mfa_factor",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.auth_identity",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "auth_identity_id": {
+          "name": "auth_identity_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "code_hash": {
+          "name": "code_hash",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "salt": {
+          "name": "salt",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "used_at": {
+          "name": "used_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "auth_mfa_recovery_code",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_auth_mfa_recovery_code_auth_identity_code_hash",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_auth_mfa_recovery_code_auth_identity_code_hash\" ON \"auth_mfa_recovery_code\" (auth_identity_id, code_hash) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_auth_mfa_recovery_code_auth_identity_id",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_auth_mfa_recovery_code_auth_identity_id\" ON \"auth_mfa_recovery_code\" (auth_identity_id) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_auth_mfa_recovery_code_deleted_at",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_auth_mfa_recovery_code_deleted_at\" ON \"auth_mfa_recovery_code\" (deleted_at) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "auth_mfa_recovery_code_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "auth_mfa_recovery_code_auth_identity_id_foreign": {
+          "constraintName": "auth_mfa_recovery_code_auth_identity_id_foreign",
+          "columnNames": [
+            "auth_identity_id"
+          ],
+          "localTableName": "public.auth_mfa_recovery_code",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.auth_identity",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "entity_id": {
           "name": "entity_id",
           "type": "text",

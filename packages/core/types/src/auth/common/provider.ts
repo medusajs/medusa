@@ -1,4 +1,5 @@
 import { AuthIdentityDTO } from "./auth-identity"
+import { AuthMfaChallengeDTO } from "./mfa"
 
 /**
  * @interface
@@ -15,6 +16,17 @@ export type AuthenticationResponse = {
    * The authenticated user's details.
    */
   authIdentity?: AuthIdentityDTO
+
+  /**
+   * Whether the authenticated identity must complete an MFA challenge before
+   * receiving a token.
+   */
+  mfa_required?: boolean
+
+  /**
+   * The MFA challenge to complete before issuing a token.
+   */
+  mfa_challenge?: AuthMfaChallengeDTO
 
   /**
    * If an error occurs during the authentication process,
@@ -42,6 +54,11 @@ export type AuthenticationResponse = {
  * or validating a callback.
  */
 export type AuthenticationInput = {
+  /**
+   * Actor type used to issue the token after authentication.
+   */
+  actor_type?: string
+
   /**
    * URL of the incoming authentication request.
    */
