@@ -91,7 +91,7 @@ const loadReferencesFile = unstable_cache(async (slug: string[]) => {
   // getFileSlugSync failures are now caught in fixLinkUtil, so fs unavailability
   // in Workers degrades gracefully to path-based URLs instead of throwing.
   const pluginOptions =
-    process.env.CF_PAGES === "1"
+    !!process.env.CLOUDFLARE_ENV
       ? {
           filePath: fileDetails.filePath,
           basePath: "/www/apps/resources",

@@ -5,7 +5,7 @@ export async function fetchMdxContent(
   baseUrl: string,
   filePathFromMap: string
 ): Promise<string | null> {
-  const isCloudflare = process.env.CF_PAGES === "1"
+  const isCloudflare = !!process.env.CLOUDFLARE_ENV
   // References files come from R2, so we need to fetch them directly from R2 instead of going through the app route
   if (filePathFromMap.includes("/references/")) {
     const r2Base = process.env.REFERENCES_R2_BASE_URL

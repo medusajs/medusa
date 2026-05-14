@@ -4,7 +4,7 @@ type Options<T> = {
   fallbackAction: () => Promise<T>
   /**
    * When enabled, overrides the default URL-based check.
-   * Pass `process.env.CF_PAGES === "1"` for routes that always receive
+   * Pass `!!process.env.CLOUDFLARE_ENV` for routes that always receive
    * an HTTP URL but should only fetch remotely on Cloudflare.
    */
   useRemote?: boolean

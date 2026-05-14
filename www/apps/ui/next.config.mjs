@@ -80,7 +80,7 @@ const withMDX = mdx({
           useBaseUrl:
             process.env.NODE_ENV === "production" ||
             process.env.VERCEL_ENV === "production" ||
-            process.env.CF_PAGES === "1",
+            !!process.env.CLOUDFLARE_ENV,
         },
       ],
       [localLinksRehypePlugin],

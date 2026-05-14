@@ -48,7 +48,7 @@ async function main() {
     ],
     after: [[addUrlToRelativeLink, { url: baseUrl }]],
   }
-  if (process.env.CF_PAGES === "1") {
+  if (process.env.CLOUDFLARE_ENV) {
     await copyMdxToPublic({
       srcDir: path.join(process.cwd(), "app"),
       destDir: path.join(process.cwd(), "public", "raw-mdx"),

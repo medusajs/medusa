@@ -20,6 +20,7 @@ export async function GET(req: NextRequest, { params }: Params) {
   const slug = rawSlug?.filter(Boolean) ?? []
   const origin = process.env.NEXT_PUBLIC_BASE_URL || new URL(req.url).origin
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
+  const isCloudflare = !!process.env.CLOUDFLARE_ENV
 
   const fileContent = await workerCompatibleFetch<string | null>({
     url: `${origin}${basePath}/raw-mdx/${[...slug, "page.mdx"].join("/")}`,
@@ -42,7 +43,7 @@ export async function GET(req: NextRequest, { params }: Params) {
         return null
       }
     },
-    useRemote: process.env.CF_PAGES === "1",
+    useRemote: isCloudflare,
   })
 
   if (!fileContent) {
@@ -76,7 +77,7 @@ export async function GET(req: NextRequest, { params }: Params) {
           useBaseUrl:
             process.env.NODE_ENV === "production" ||
             process.env.VERCEL_ENV === "production" ||
-            process.env.CF_PAGES === "1",
+            isCloudflare,
         },
       ],
       [localLinksRehypePlugin],

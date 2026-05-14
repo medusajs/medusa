@@ -37,7 +37,7 @@ export async function GET(req: NextRequest, { params }: Params) {
         return null
       }
     },
-    useRemote: process.env.CF_PAGES === "1",
+    useRemote: !!process.env.CLOUDFLARE_ENV,
   })
 
   if (!fileContent) {

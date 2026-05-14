@@ -5,7 +5,7 @@ export async function fetchRawMdx(
   origin: string,
   slug: string[]
 ): Promise<{ content: string; isOverride: boolean } | null> {
-  const isCloudflare = process.env.CF_PAGES === "1"
+  const isCloudflare = !!process.env.CLOUDFLARE_ENV
 
   // An `_md-content.mdx` file overrides `page.mdx` if it exists.
   const overrideContent = await workerCompatibleFetch<string | null>({
