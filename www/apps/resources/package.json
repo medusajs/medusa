@@ -16,7 +16,7 @@
     "prep:turbo": "npx turbo run prep",
     "upload:r2": "node ./scripts/upload-references-to-r2.mjs",
     "preview": "yarn build:cloudflare && opennextjs-cloudflare preview",
-    "deploy": "yarn build:cloudflare && opennextjs-cloudflare deploy",
+    "deploy": "opennextjs-cloudflare deploy",
     "upload": "yarn build:cloudflare && opennextjs-cloudflare upload",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
