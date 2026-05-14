@@ -19,12 +19,12 @@ export const GET = async (
 
   if (FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key)) {
     // TODO: These filters are not supported by the index engine yet
-    if (
-      isPresent(filterableFields.tag_id) ||
-      isPresent(filterableFields.category_id)
-    ) {
-      return await getProducts(req, res)
-    }
+    if (                                                  
+  isPresent(filterableFields.tags) || isPresent(filterableFields.categories) ||                                                                                                                                    
+  isPresent(filterableFields.tag_id) || isPresent(filterableFields.category_id)                                                                                                                                    
+) {                                                                                                                                                                                                                
+  return await getProducts(req, res)                                                                                                                                                                               
+}   
 
     return await getProductsWithIndexEngine(req, res)
   }
