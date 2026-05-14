@@ -13,7 +13,11 @@
     "start:monorepo": "yarn start -p 3004",
     "lint": "next lint --fix",
     "lint:content": "eslint --no-config-lookup -c .content.eslintrc.mjs app/**/*.mdx --fix",
-    "prep": "node ./scripts/prepare.mjs"
+    "prep": "node ./scripts/prepare.mjs",
+    "preview": "yarn build:cloudflare && opennextjs-cloudflare preview",
+    "deploy": "yarn build:cloudflare && opennextjs-cloudflare deploy",
+    "upload": "yarn build:cloudflare && opennextjs-cloudflare upload",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",

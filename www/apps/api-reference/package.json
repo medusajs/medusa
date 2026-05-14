@@ -15,7 +15,11 @@
     "lint": "next lint --fix",
     "prep": "node ./scripts/prepare.mjs",
     "upload:r2": "node ./scripts/upload-specs-to-r2.mjs",
-    "test": "vitest"
+    "test": "vitest",
+    "preview": "yarn build:cloudflare && opennextjs-cloudflare preview",
+    "deploy": "yarn build:cloudflare && opennextjs-cloudflare deploy",
+    "upload": "yarn build:cloudflare && opennextjs-cloudflare upload",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
