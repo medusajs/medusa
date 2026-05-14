@@ -3432,6 +3432,227 @@ medusaIntegrationTestRunner({
               "The cart items require shipping profiles that are not satisfied by the current shipping methods"
             )
           })
+
+          it("should fail to complete a multi-profile cart when the second shipping-method call wipes the first", async () => {
+            // Seed two stock locations, each with their own fulfillment set and shipping profile,
+            // then two products — one per profile. The customer adds one shipping method per
+            // profile via separate API calls. Because the current workflow removes ALL existing
+            // shipping methods before adding the new one, the second call silently wipes the first.
+            // At cart completion, validateShippingStep sees that profile A is no longer covered
+            // and should reject the request.
+
+            const [locationA, locationB] = await Promise.all([
+              api
+                .post(
+                  `/admin/stock-locations`,
+                  { name: "location-profile-a" },
+                  adminHeaders
+                )
+                .then((r) => r.data.stock_location),
+              api
+                .post(
+                  `/admin/stock-locations`,
+                  { name: "location-profile-b" },
+                  adminHeaders
+                )
+                .then((r) => r.data.stock_location),
+            ])
+
+            await Promise.all([
+              api.post(
+                `/admin/stock-locations/${locationA.id}/sales-channels`,
+                { add: [salesChannel.id] },
+                adminHeaders
+              ),
+              api.post(
+                `/admin/stock-locations/${locationB.id}/sales-channels`,
+                { add: [salesChannel.id] },
+                adminHeaders
+              ),
+            ])
+
+            const [profileA, profileB] = await Promise.all([
+              api
+                .post(
+                  `/admin/shipping-profiles`,
+                  { name: "profile-a", type: "default" },
+                  adminHeaders
+                )
+                .then((r) => r.data.shipping_profile),
+              api
+                .post(
+                  `/admin/shipping-profiles`,
+                  { name: "profile-b", type: "default" },
+                  adminHeaders
+                )
+                .then((r) => r.data.shipping_profile),
+            ])
+
+            const setupFulfillmentAndOption = async (
+              locationId: string,
+              profileId: string,
+              tag: string
+            ) => {
+              const fsData = (
+                await api.post(
+                  `/admin/stock-locations/${locationId}/fulfillment-sets?fields=*fulfillment_sets`,
+                  { name: `fs-${tag}`, type: "shipping" },
+                  adminHeaders
+                )
+              ).data.stock_location.fulfillment_sets
+
+              const fulfillmentSet = (
+                await api.post(
+                  `/admin/fulfillment-sets/${fsData[0].id}/service-zones`,
+                  {
+                    name: `zone-${tag}`,
+                    geo_zones: [{ type: "country", country_code: "US" }],
+                  },
+                  adminHeaders
+                )
+              ).data.fulfillment_set
+
+              await api.post(
+                `/admin/stock-locations/${locationId}/fulfillment-providers`,
+                { add: ["manual_test-provider"] },
+                adminHeaders
+              )
+
+              return api
+                .post(
+                  `/admin/shipping-options`,
+                  {
+                    name: `option-${tag}`,
+                    service_zone_id: fulfillmentSet.service_zones[0].id,
+                    shipping_profile_id: profileId,
+                    provider_id: "manual_test-provider",
+                    price_type: "flat",
+                    type: {
+                      label: "Test",
+                      description: "Test",
+                      code: `test-${tag}`,
+                    },
+                    prices: [{ currency_code: "usd", amount: 500 }],
+                    rules: [],
+                  },
+                  adminHeaders
+                )
+                .then((r) => r.data.shipping_option)
+            }
+
+            const [optionA, optionB] = await Promise.all([
+              setupFulfillmentAndOption(locationA.id, profileA.id, "a"),
+              setupFulfillmentAndOption(locationB.id, profileB.id, "b"),
+            ])
+
+            const [productA, productB] = await Promise.all([
+              api
+                .post(
+                  `/admin/products`,
+                  {
+                    title: "Product A",
+                    status: ProductStatus.PUBLISHED,
+                    options: [{ title: "Size", values: ["S"] }],
+                    variants: [
+                      {
+                        title: "S",
+                        sku: "sku-a",
+                        manage_inventory: false,
+                        options: { Size: "S" },
+                        prices: [{ amount: 1000, currency_code: "usd" }],
+                      },
+                    ],
+                    shipping_profile_id: profileA.id,
+                  },
+                  adminHeaders
+                )
+                .then((r) => r.data.product),
+              api
+                .post(
+                  `/admin/products`,
+                  {
+                    title: "Product B",
+                    status: ProductStatus.PUBLISHED,
+                    options: [{ title: "Size", values: ["S"] }],
+                    variants: [
+                      {
+                        title: "S",
+                        sku: "sku-b",
+                        manage_inventory: false,
+                        options: { Size: "S" },
+                        prices: [{ amount: 1000, currency_code: "usd" }],
+                      },
+                    ],
+                    shipping_profile_id: profileB.id,
+                  },
+                  adminHeaders
+                )
+                .then((r) => r.data.product),
+            ])
+
+            const multiProfileCart = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  shipping_address: shippingAddressData,
+                  items: [
+                    { variant_id: productA.variants[0].id, quantity: 1 },
+                    { variant_id: productB.variants[0].id, quantity: 1 },
+                  ],
+                },
+                storeHeadersWithCustomer
+              )
+            ).data.cart
+
+            // Add shipping method for profile A, then for profile B.
+            // With the current "remove all then add" behavior the second call
+            // silently removes the profile-A method, leaving the cart without
+            // coverage for profile A.
+            await api.post(
+              `/store/carts/${multiProfileCart.id}/shipping-methods`,
+              { option_id: optionA.id },
+              storeHeaders
+            )
+            await api.post(
+              `/store/carts/${multiProfileCart.id}/shipping-methods`,
+              { option_id: optionB.id },
+              storeHeaders
+            )
+
+            const paymentCollection = (
+              await api.post(
+                `/store/payment-collections`,
+                { cart_id: multiProfileCart.id },
+                storeHeaders
+              )
+            ).data.payment_collection
+
+            await api.post(
+              `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+              { provider_id: "pp_system_default" },
+              storeHeaders
+            )
+
+            const response = await api
+              .post(
+                `/store/carts/${multiProfileCart.id}/complete`,
+                {},
+                storeHeaders
+              )
+              .catch((e) => e)
+
+            // This assertion documents the current (broken) behavior.
+            // Once the workflow is fixed to do profile-scoped removal instead of
+            // removing all methods, this test should be updated to expect a 200
+            // and a successful order.
+            expect(response.response.status).toEqual(400)
+            expect(response.response.data.message).toEqual(
+              "The cart items require shipping profiles that are not satisfied by the current shipping methods"
+            )
+          })
         })
       })
 
