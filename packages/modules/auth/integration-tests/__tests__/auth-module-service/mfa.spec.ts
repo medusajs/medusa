@@ -118,7 +118,10 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           otpauth_url: expect.stringContaining("otpauth://totp/"),
           secret: expect.any(String),
         })
-        expect(setup.otpauth_url).toContain("Medusa%3AAuthenticator%20app")
+        expect(setup.otpauth_url).toContain(
+          "Medusa%20Test:Authenticator%20app"
+        )
+        expect(setup.otpauth_url).toContain("issuer=Medusa%20Test")
         expect(setup.mfa).not.toHaveProperty("secret")
         expect(setup.mfa).not.toHaveProperty("provider_metadata")
 
@@ -528,6 +531,10 @@ moduleIntegrationTestRunner<IAuthModuleService>({
       challenge_max_attempts: 2,
     },
   },
+  moduleDependencies: [Modules.CACHE],
+  injectedDependencies: {
+    [Modules.CACHE]: inMemoryCache,
+  },
   testSuite: ({ service }) => {
     describe("AuthModuleService - MFA authentication flow", () => {
       beforeEach(async () => {
@@ -546,6 +553,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
       })
 
       afterEach(() => {
+        mockCache.clear()
         jest.restoreAllMocks()
       })
 
