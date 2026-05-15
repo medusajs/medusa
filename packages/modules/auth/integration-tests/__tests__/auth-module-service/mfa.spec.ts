@@ -151,6 +151,26 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         ])
         expect(factors[0]).not.toHaveProperty("secret")
         expect(factors[0]).not.toHaveProperty("provider_metadata")
+      })
+
+      it("retrieves an MFA factor without exposing provider metadata", async () => {
+        const setup = await service.startAuthMfa({
+          auth_identity_id: "test-id",
+          provider: "totp",
+        })
+
+        const retrievedById = await service.retrieveAuthMfa(setup.mfa.id)
+
+        expect(retrievedById).toEqual(
+          expect.objectContaining({
+            id: setup.mfa.id,
+            auth_identity_id: "test-id",
+            provider: "totp",
+            status: "pending",
+          })
+        )
+        expect(retrievedById).not.toHaveProperty("secret")
+        expect(retrievedById).not.toHaveProperty("provider_metadata")
 
         const retrieved = await service.retrieveAuthMfa({
           id: setup.mfa.id,
