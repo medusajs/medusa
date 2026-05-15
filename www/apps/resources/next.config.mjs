@@ -281,8 +281,13 @@ const nextConfig = {
       },
     ])
   },
+  outputFileTracingRoot: new URL("../../", import.meta.url).pathname,
   outputFileTracingExcludes: {
-    "*": ["node_modules/@medusajs/icons"],
+    "*": [
+      "node_modules/@medusajs/icons",
+      "../**/.open-next/**",
+      "../!(resources)/.next/**",
+    ],
   },
   outputFileTracingIncludes: {
     "/md\\-content/\\[\\[\\.\\.\\.slug\\]\\]": ["./app/**/*.mdx"],
@@ -294,6 +299,14 @@ const nextConfig = {
   rewrites: async () => {
     return {
       beforeFiles: [
+        {
+          source: "/index.html.md",
+          destination: "/md-content",
+        },
+        {
+          source: "/index.md",
+          destination: "/md-content",
+        },
         {
           source: "/:path*/index.html.md",
           destination: "/md-content/:path*",
@@ -307,7 +320,7 @@ const nextConfig = {
           destination: "/md-content/:path*",
         },
         {
-          source: "/:path((?!md-content).+)/",
+          source: "/:first((?!md-content)[^/]+)/:rest*/",
           has: [
             {
               type: "header",
@@ -315,7 +328,7 @@ const nextConfig = {
               value: ".*(text/markdown|text/plain).*",
             },
           ],
-          destination: "/md-content/:path",
+          destination: "/md-content/:first/:rest*",
         },
         {
           source: "/",
@@ -329,7 +342,7 @@ const nextConfig = {
           destination: "/md-content",
         },
         {
-          source: "/:path((?!md-content).+)",
+          source: "/:first((?!md-content)[^/]+)/:rest*",
           has: [
             {
               type: "header",
@@ -337,7 +350,7 @@ const nextConfig = {
               value: ".*(text/markdown|text/plain).*",
             },
           ],
-          destination: "/md-content/:path",
+          destination: "/md-content/:first/:rest*",
         },
       ],
     }
