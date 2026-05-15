@@ -162,6 +162,21 @@ export interface IAuthModuleService extends IModuleService {
   /**
    * This method starts MFA setup for an auth identity using the requested MFA
    * provider.
+   * 
+   * @param {AuthMfaStartDTO} data - The data required to start MFA setup.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthMfaStartResponse>} The MFA setup response containing the configuration and setup details.
+   * @since 2.15.3
+   * 
+   * @example
+   * ```ts
+   * const mfaSetup = await authModuleService.startAuthMfa({
+   *   auth_identity_id: "authusr_123",
+   *   provider: "totp",
+   *   label: "My App",
+   *   issuer: "MyCompany"
+   * })
+   * ```
    */
   startAuthMfa(
     data: AuthMfaStartDTO,
@@ -170,6 +185,19 @@ export interface IAuthModuleService extends IModuleService {
 
   /**
    * This method verifies a pending MFA setup.
+   * 
+   * @param {AuthMfaVerifyDTO} data - The verification data including MFA configuration ID and code.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthMfaDTO>} The verified and enabled MFA configuration.
+   * @since 2.15.3
+   * 
+   * @example
+   * ```ts
+   * const mfaConfig = await authModuleService.verifyAuthMfa({
+   *   id: "mfa_123",
+   *   code: "123456"
+   * })
+   * ```
    */
   verifyAuthMfa(
     data: AuthMfaVerifyDTO,
@@ -179,6 +207,19 @@ export interface IAuthModuleService extends IModuleService {
   /**
    * This method creates an MFA challenge for an auth identity with enabled MFA
    * methods.
+   * 
+   * @param {CreateAuthMfaChallengeDTO} data - The data required to create an MFA challenge.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthMfaChallengeDTO>} The created MFA challenge.
+   * @since 2.15.3
+   * 
+   * @example
+   * ```ts
+   * const challenge = await authModuleService.createAuthMfaChallenge({
+   *   auth_identity_id: "authusr_123",
+   *   actor_type: "user"
+   * })
+   * ```
    */
   createAuthMfaChallenge(
     data: CreateAuthMfaChallengeDTO,
@@ -187,6 +228,20 @@ export interface IAuthModuleService extends IModuleService {
 
   /**
    * This method verifies an MFA challenge with one of the challenge's methods.
+   * 
+   * @param {VerifyAuthMfaChallengeDTO} data - The verification data including challenge ID, method, and code.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthMfaChallengeDTO>} The completed MFA challenge.
+   * @since 2.15.3
+   * 
+   * @example
+   * ```ts
+   * const completedChallenge = await authModuleService.verifyAuthMfaChallenge({
+   *   id: "challenge_123",
+   *   method: "totp",
+   *   code: "123456"
+   * })
+   * ```
    */
   verifyAuthMfaChallenge(
     data: VerifyAuthMfaChallengeDTO,
@@ -195,6 +250,20 @@ export interface IAuthModuleService extends IModuleService {
 
   /**
    * This method disables MFA for a configured method.
+   * 
+   * @param {DisableAuthMfaDTO} data - The data required to disable an MFA configuration.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthMfaDTO>} The disabled MFA configuration.
+   * @since 2.15.3
+   * 
+   * @example
+   * ```ts
+   * const disabledMfa = await authModuleService.disableAuthMfa({
+   *   id: "mfa_123",
+   *   method: "totp",
+   *   code: "123456"
+   * })
+   * ```
    */
   disableAuthMfa(
     data: DisableAuthMfaDTO,
@@ -203,6 +272,20 @@ export interface IAuthModuleService extends IModuleService {
 
   /**
    * This method lists configured MFA methods.
+   * 
+   * @param {FilterableAuthMfaProps} filters - The filters to apply on the retrieved MFA configurations.
+   * @param {FindConfig<AuthMfaDTO>} config - The configurations determining how the MFA configurations are retrieved.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthMfaDTO[]>} The list of MFA configurations.
+   * @since 2.15.3
+   * 
+   * @example
+   * ```ts
+   * const mfaConfigs = await authModuleService.listAuthMfa({
+   *   auth_identity_id: "authusr_123",
+   *   status: "enabled"
+   * })
+   * ```
    */
   listAuthMfa(
     filters?: FilterableAuthMfaProps,
@@ -213,6 +296,19 @@ export interface IAuthModuleService extends IModuleService {
   /**
    * This method creates a new set of single-use recovery codes for an auth
    * identity and invalidates any existing recovery codes.
+   * 
+   * @param {GenerateAuthMfaRecoveryCodesDTO} data - The data required to generate recovery codes.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<GenerateAuthMfaRecoveryCodesResponse>} The response containing generated recovery codes.
+   * @since 2.15.3
+   * 
+   * @example
+   * ```ts
+   * const { codes } = await authModuleService.generateAuthMfaRecoveryCodes({
+   *   auth_identity_id: "authusr_123",
+   *   count: 8
+   * })
+   * ```
    */
   generateAuthMfaRecoveryCodes(
     data: GenerateAuthMfaRecoveryCodesDTO,
@@ -221,6 +317,19 @@ export interface IAuthModuleService extends IModuleService {
 
   /**
    * This method uses a recovery code for an auth identity.
+   * 
+   * @param {UseAuthMfaRecoveryCodeDTO} data - The data required to use a recovery code.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the recovery code is successfully used.
+   * @since 2.15.3
+   * 
+   * @example
+   * ```ts
+   * await authModuleService.useAuthMfaRecoveryCode({
+   *   auth_identity_id: "authusr_123",
+   *   code: "recovery123"
+   * })
+   * ```
    */
   useAuthMfaRecoveryCode(
     data: UseAuthMfaRecoveryCodeDTO,
