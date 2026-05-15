@@ -151,6 +151,29 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         ])
         expect(factors[0]).not.toHaveProperty("secret")
         expect(factors[0]).not.toHaveProperty("provider_metadata")
+
+        const retrieved = await service.retrieveAuthMfa({
+          id: setup.mfa.id,
+          auth_identity_id: "test-id",
+        })
+
+        expect(retrieved).toEqual(
+          expect.objectContaining({
+            id: setup.mfa.id,
+            auth_identity_id: "test-id",
+            provider: "totp",
+            status: "pending",
+          })
+        )
+        expect(retrieved).not.toHaveProperty("secret")
+        expect(retrieved).not.toHaveProperty("provider_metadata")
+
+        await expect(
+          service.retrieveAuthMfa({
+            id: setup.mfa.id,
+            auth_identity_id: "test-id-1",
+          })
+        ).rejects.toThrow(`MFA factor with id "${setup.mfa.id}" was not found`)
       })
 
       it("enables a pending TOTP factor after a valid code", async () => {

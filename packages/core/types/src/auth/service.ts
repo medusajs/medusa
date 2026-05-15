@@ -6,6 +6,7 @@ import {
   AuthenticationResponse,
   AuthMfaChallengeDTO,
   AuthMfaDTO,
+  AuthMfaSelector,
   AuthMfaStartResponse,
   AuthIdentityDTO,
   UseAuthMfaRecoveryCodeDTO,
@@ -198,6 +199,15 @@ export interface IAuthModuleService extends IModuleService {
    */
   disableAuthMfa(
     data: DisableAuthMfaDTO,
+    sharedContext?: Context
+  ): Promise<AuthMfaDTO>
+
+  /**
+   * This method retrieves a configured MFA method.
+   */
+  retrieveAuthMfa(
+    selector: string | AuthMfaSelector,
+    config?: FindConfig<AuthMfaDTO>,
     sharedContext?: Context
   ): Promise<AuthMfaDTO>
 

@@ -16,6 +16,11 @@ export type AuthMfaDTO = {
   metadata?: Record<string, unknown> | null
 }
 
+export type AuthMfaSelector = {
+  id: string
+  auth_identity_id?: string
+}
+
 export type AuthMfaRecoveryCodeDTO = {
   id: string
   auth_identity_id?: string
