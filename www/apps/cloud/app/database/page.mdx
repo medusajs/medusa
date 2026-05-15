@@ -1,4 +1,5 @@
-import { getOsShortcut, Kbd } from "docs-ui"
+import { getOsShortcut, Kbd, InlineIcon } from "docs-ui"
+import { EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
   title: `Database`,
@@ -28,9 +29,72 @@ Medusa automatically configures the database for your environments on Cloud. So,
 
 ## Cloud Database Backups
 
-Medusa provides automatic backups for your environment databases on Cloud. These backups are retained for 14 days and allow you to restore your database to a previous state, if needed.
+Medusa provides automatic backups for your environment databases on Cloud. These backups are retained for 14 days and allow you to restore your database to a previous state if needed.
 
-If you need to restore a database backup, you can contact support to request a point-in-time recovery. This is useful if you accidentally delete data or need to revert changes made to the database.
+<Note>
+
+Database backups is available to the Launch, Scale, and Enterprise plans only. Learn how to upgrade in the [Manage Plans](../billing/plans/page.mdx#change-plan) guide.
+
+</Note>
+
+To access the database backups of an environment:
+
+<Note title="Tip">
+
+You can access the database settings from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, then select **Storage**.
+
+</Note>
+
+1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
+2. In the project's dashboard, click on the name of the environment. For example, "Production".
+3. In the environment's dashboard, click on the **Database & Storage** tab.
+4. In the sidebar, click **Database** and scroll down to the **Database Backups** section.
+
+The **Database Backups** section shows a table of available backups with the following columns:
+
+- **Generated At**: When the backup was created.
+- **Source**: The backup origin. **Scheduled** backups are created automatically; **manual** backups are triggered by you.
+- **Size**: The backup file size.
+
+### Download a Backup
+
+To download a backup to your device:
+
+1. In the **Database Backups** table, find the backup you want to download.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon and choose **Download**.
+
+This will start a download of the backup file to your device. It is a `.dump` file that you can restore to a PostgreSQL database using tools like `pg_restore`. For example:
+
+```bash
+pg_restore --no-acl --no-owner --no-privileges --clean --if-exists -d 'postgres://postgres:secret@localhost:5432/mydatabase' mybackup.dump
+```
+
+### Restore a Backup
+
+<Note type="warning">
+
+Restoring a backup replaces your current database with the backup data. This action is irreversible.
+
+</Note>
+
+To restore your database from a backup:
+
+1. In the **Database Backups** table, find the backup you want to restore.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon and choose **Restore**.
+3. In the confirmation dialog, type `restore` to confirm the action.
+4. Click **Restore backup** to confirm.
+
+Medusa notifies you when the restore completes or if an error occurs.
+
+<Note title="Tip">
+
+You can't restore a backup while a database import is in progress.
+
+</Note>
+
+### Trigger a Manual Backup
+
+A manual backup is triggered when you export a database dump from the environment settings. Learn how to do that in the [Import/Export Cloud Database Dumps](#importexport-cloud-database-dumps) section below.
 
 ---
 
@@ -52,9 +116,9 @@ You can access the database settings from the [command palette](../command-palet
 
 1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
 2. In the project's dashboard, click on the name of the environment. For example, "Production".
-3. In the environment's dashboard, click on the "Settings" tab.
-4. Choose the "Storage" tab from the sidebar.
-5. In the "Database read-only connection string" section, copy the read-only connection string in the code block.
+3. In the environment's dashboard, click on the **Database & Storage** tab.
+4. In the sidebar, click **Database**.
+5. In the **Database read-only connection string** section, copy the read-only connection string in the code block.
   
 Then, you can connect to your database using a PostgreSQL client. For example, using the `psql` command-line tool:
 
@@ -86,9 +150,9 @@ You can access the database settings from the [command palette](../command-palet
 
 1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
 2. In the project's dashboard, click on the name of the environment. For example, "Production".
-3. In the environment's dashboard, click on the "Settings" tab.
-4. Choose the "Storage" tab from the sidebar.
-5. In the "Database write-access connection string" section, toggle the switch to enable write access.
+3. In the environment's dashboard, click on the **Database & Storage** tab.
+4. In the sidebar, click **Database**.
+5. In the **Database write-access connection string** section, toggle the switch to enable write access.
 6. Once enabled, copy the write connection string from the code block that appears.
 
 <Note title="Permission Requirements">
@@ -119,8 +183,8 @@ You can access the database settings from the [command palette](../command-palet
 
 1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
 2. In the project's dashboard, click on the name of the environment. For example, "Production".
-3. In the environment's dashboard, click on the "Settings" tab.
-4. Choose the "Storage" tab from the sidebar and find the "Database dump" section.
+3. In the environment's dashboard, click on the **Database & Storage** tab.
+4. In the sidebar, click **Database** and find the **Database dump** section.
 
 ![Database dump section highlighted in the environment settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1750169625/Cloud/CleanShot_2025-06-17_at_17.13.21_2x_l7vw3w.png)
 
