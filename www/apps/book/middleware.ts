@@ -56,9 +56,7 @@ export async function middleware(request: NextRequest) {
 
   const response =
     variant === "ai"
-      ? NextResponse.rewrite(
-          new URL(AB_TEST_PAGES[pathname], request.url)
-        )
+      ? NextResponse.rewrite(new URL(AB_TEST_PAGES[pathname], request.url))
       : NextResponse.next()
 
   // Set cookies if needed

@@ -128,6 +128,10 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateAndReturnShippingMethodsDataStep"
   },
   {
+    "title": "validateCartItemsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateCartItemsStep"
+  },
+  {
     "title": "validateCartPaymentsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateCartPaymentsStep"
   },
@@ -1402,6 +1406,10 @@ export const step = [
   {
     "title": "validateClaimStoreCreditAccountInputStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateClaimStoreCreditAccountInputStep"
+  },
+  {
+    "title": "validateSourceStoreCreditAccountsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateSourceStoreCreditAccountsStep"
   },
   {
     "title": "validateStoreCreditAccountInputStep",

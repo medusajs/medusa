@@ -43,8 +43,8 @@ export const sidebars = [
           },
           {
             type: "link",
-            title: "Bloom",
-            path: "/learn/introduction/build-with-llms-ai/bloom",
+            title: "Cloud CLI",
+            path: "/learn/introduction/build-with-llms-ai/cloud-cli",
           },
           {
             type: "link",
@@ -55,6 +55,11 @@ export const sidebars = [
             type: "link",
             title: "Agentic Skills",
             path: "/learn/introduction/build-with-llms-ai/agentic-skills",
+          },
+          {
+            type: "link",
+            title: "Bloom",
+            path: "/learn/introduction/build-with-llms-ai/bloom",
           },
           {
             type: "link",

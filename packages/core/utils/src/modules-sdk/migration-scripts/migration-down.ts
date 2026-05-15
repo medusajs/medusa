@@ -35,7 +35,11 @@ export function buildRevertMigrationScript({ moduleName, pathToMigrations }) {
     logger.info(`MODULE: ${moduleName}`)
 
     const dbData = loadDatabaseConfig(moduleName, options)!
-    const orm = await mikroOrmCreateConnection(dbData, [], pathToMigrations)
+    const orm = await mikroOrmCreateConnection(
+      { ...dbData, snapshot: false },
+      [],
+      pathToMigrations
+    )
     const migrations = new Migrations(orm)
 
     migrations.on("reverting", (migration) => {

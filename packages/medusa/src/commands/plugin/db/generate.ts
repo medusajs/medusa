@@ -78,7 +78,10 @@ async function getEntitiesForModule(path: string) {
       (potentialEntity) => {
         return (
           DmlEntity.isDmlEntity(potentialEntity) ||
-          !!MetadataStorage.getMetadataFromDecorator(potentialEntity as any)
+          Object.hasOwn(
+            potentialEntity as object,
+            MetadataStorage.PATH_SYMBOL
+          )
         )
       }
     )
