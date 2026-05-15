@@ -4,14 +4,26 @@ import { Context } from "../shared-context"
 import {
   AuthenticationInput,
   AuthenticationResponse,
+  AuthMfaChallengeDTO,
+  AuthMfaDTO,
+  AuthMfaStartResponse,
   AuthIdentityDTO,
+  UseAuthMfaRecoveryCodeDTO,
   CreateAuthIdentityDTO,
+  CreateAuthMfaChallengeDTO,
+  AuthMfaStartDTO,
   CreateProviderIdentityDTO,
+  DisableAuthMfaDTO,
   FilterableAuthIdentityProps,
+  FilterableAuthMfaProps,
   FilterableProviderIdentityProps,
+  GenerateAuthMfaRecoveryCodesDTO,
+  GenerateAuthMfaRecoveryCodesResponse,
   ProviderIdentityDTO,
   UpdateAuthIdentityDTO,
   UpdateProviderIdentityDTO,
+  VerifyAuthMfaChallengeDTO,
+  AuthMfaVerifyDTO,
 } from "./common"
 
 /**
@@ -55,15 +67,15 @@ export interface IAuthModuleService extends IModuleService {
    * returns the data returned by the provider.
    *
    * Refer to [this guide](https://docs.medusajs.com/resources/commerce-modules/auth/authentication-route) to learn more about the authentication flows.
-   * 
+   *
    * @param {string} provider - The ID of the provider to register the user with.
    * @param {AuthenticationInput} providerData - The data to pass to the provider to register the user.
    * @returns {Promise<AuthenticationResponse>} The details of the registration result.
-   * 
+   *
    * @example
    * The following example is in the context of an API route, where
    * `req` is an instance of the `MedusaRequest` object:
-   * 
+   *
    * ```ts
    * const { success, authIdentity, location, error } =
    *   await authModuleService.register("emailpass", {
@@ -84,15 +96,15 @@ export interface IAuthModuleService extends IModuleService {
    * This method updates an auth identity's details using the provider that created it. It uses the `update` method of the
    * underlying provider, passing it the `providerData` parameter as a parameter. The method
    * returns the data returned by the provider.
-   * 
+   *
    * @param {string} provider - The ID of the provider to update the auth identity with.
    * @param {Record<string, unknown>} providerData - The data to pass to the provider to update the auth identity.
    * @returns {Promise<AuthenticationResponse>} The details of the update result.
-   * 
+   *
    * @example
    * The following example is in the context of an API route, where
    * `req` is an instance of the `MedusaRequest` object:
-   * 
+   *
    * ```ts
    * const { success, authIdentity, location, error } =
    *   await authModuleService.updateProvider("emailpass", {
@@ -146,6 +158,74 @@ export interface IAuthModuleService extends IModuleService {
     provider: string,
     providerData: AuthenticationInput
   ): Promise<AuthenticationResponse>
+
+  /**
+   * This method starts MFA setup for an auth identity using the requested MFA
+   * provider.
+   */
+  startAuthMfa(
+    data: AuthMfaStartDTO,
+    sharedContext?: Context
+  ): Promise<AuthMfaStartResponse>
+
+  /**
+   * This method verifies a pending MFA setup.
+   */
+  verifyAuthMfa(
+    data: AuthMfaVerifyDTO,
+    sharedContext?: Context
+  ): Promise<AuthMfaDTO>
+
+  /**
+   * This method creates an MFA challenge for an auth identity with enabled MFA
+   * methods.
+   */
+  createAuthMfaChallenge(
+    data: CreateAuthMfaChallengeDTO,
+    sharedContext?: Context
+  ): Promise<AuthMfaChallengeDTO>
+
+  /**
+   * This method verifies an MFA challenge with one of the challenge's methods.
+   */
+  verifyAuthMfaChallenge(
+    data: VerifyAuthMfaChallengeDTO,
+    sharedContext?: Context
+  ): Promise<AuthMfaChallengeDTO>
+
+  /**
+   * This method disables MFA for a configured method.
+   */
+  disableAuthMfa(
+    data: DisableAuthMfaDTO,
+    sharedContext?: Context
+  ): Promise<AuthMfaDTO>
+
+  /**
+   * This method lists configured MFA methods.
+   */
+  listAuthMfa(
+    filters?: FilterableAuthMfaProps,
+    config?: FindConfig<AuthMfaDTO>,
+    sharedContext?: Context
+  ): Promise<AuthMfaDTO[]>
+
+  /**
+   * This method creates a new set of single-use recovery codes for an auth
+   * identity and invalidates any existing recovery codes.
+   */
+  generateAuthMfaRecoveryCodes(
+    data: GenerateAuthMfaRecoveryCodesDTO,
+    sharedContext?: Context
+  ): Promise<GenerateAuthMfaRecoveryCodesResponse>
+
+  /**
+   * This method uses a recovery code for an auth identity.
+   */
+  useAuthMfaRecoveryCode(
+    data: UseAuthMfaRecoveryCodeDTO,
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method retrieves an auth identity by its ID.
