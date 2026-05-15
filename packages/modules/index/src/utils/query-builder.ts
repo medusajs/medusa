@@ -825,6 +825,91 @@ export class QueryBuilder {
     return result
   }
 
+  /**
+   * Build a correlated EXISTS subquery that probes whether the related entity
+   * referenced by `reachPath` has any row whose `document_tsv` matches the
+   * outer search term. Used by the search-reach optimization to traverse
+   * relations for text search WITHOUT inlining them as JOINs in the outer
+   * query (which would multiply rows and force a DISTINCT).
+   *
+   * Supports nested paths (e.g. "variants.options"). Returns `null` if the
+   * path cannot be resolved against the schema.
+   */
+  private buildSearchReachExists(
+    rootAlias: string,
+    rootKey: string,
+    reachPath: string
+  ): string | null {
+    const segments = reachPath.split(".").filter(Boolean)
+    if (!segments.length) {
+      return null
+    }
+
+    let parentAlias = rootAlias
+    let parentEntity = this.getEntity(rootKey, false)
+    if (!parentEntity) {
+      return null
+    }
+
+    let currentPath = rootKey
+    let fromClause = ""
+    let correlationCondition = ""
+    let leafAlias = ""
+    const joinClauses: string[] = []
+
+    for (let i = 0; i < segments.length; i++) {
+      const segment = segments[i]
+      currentPath = `${currentPath}.${segment}`
+      const childEntity = this.getEntity(currentPath, false)
+      if (!childEntity || !childEntity.ref?.alias) {
+        return null
+      }
+
+      const childTable = `cat_${normalizeTableName(childEntity.ref.entity)}`
+      const safeSeg = normalizeTableName(segment)
+      const childAlias = `__sr${i}_${safeSeg}`
+      const pivotAlias = `${childAlias}_ref`
+
+      const isInverse = !!(childEntity.isInverse || parentEntity!.isInverse)
+      const pivotName = isInverse
+        ? `${childEntity.ref.entity}${parentEntity!.ref.entity}`
+        : `${parentEntity!.ref.entity}${childEntity.ref.entity}`
+      const pivotTable = getPivotTableName(pivotName.toLowerCase())
+      const pivotParentSide = isInverse ? "child_id" : "parent_id"
+      const pivotChildSide = isInverse ? "parent_id" : "child_id"
+
+      if (i === 0) {
+        fromClause = `${pivotTable} AS ${pivotAlias}`
+        correlationCondition = `${pivotAlias}.${pivotParentSide} = ${parentAlias}.id`
+        joinClauses.push(
+          `JOIN ${childTable} AS ${childAlias} ON ${childAlias}.id = ${pivotAlias}.${pivotChildSide}`
+        )
+      } else {
+        joinClauses.push(
+          `JOIN ${pivotTable} AS ${pivotAlias} ON ${pivotAlias}.${pivotParentSide} = ${parentAlias}.id`
+        )
+        joinClauses.push(
+          `JOIN ${childTable} AS ${childAlias} ON ${childAlias}.id = ${pivotAlias}.${pivotChildSide}`
+        )
+      }
+
+      parentAlias = childAlias
+      parentEntity = childEntity
+      leafAlias = childAlias
+    }
+
+    if (!leafAlias) {
+      return null
+    }
+
+    return (
+      `SELECT 1 FROM ${fromClause} ${joinClauses.join(" ")} ` +
+      `WHERE ${correlationCondition} AND ${leafAlias}.${
+        this.#searchVectorColumnName
+      } @@ plainto_tsquery('simple', ?)`
+    )
+  }
+
   public buildQuery({
     hasPagination = true,
     hasCount = false,
@@ -949,7 +1034,7 @@ export class QueryBuilder {
     })
 
     if (hasTextSearch) {
-      const searchWhereParts = [
+      const searchWhereParts: string[] = [
         `${rootAlias}.${
           this.#searchVectorColumnName
         } @@ plainto_tsquery('simple', ?)`,
@@ -968,6 +1053,26 @@ export class QueryBuilder {
           )
         }),
       ]
+
+      // Append correlated EXISTS branches for searchReach paths that are not
+      // already joined (i.e. no real filter/sort caused the entity to be in
+      // joinParts). More performant because each EXISTS becomes a hashed/semi
+      // subplan and avoids the row-multiplication that an OR-on-join causes.
+      const reachPaths = this.rawConfig?.searchReach ?? []
+      for (const reachPath of reachPaths) {
+        if (!reachPath || aliasMapping[`${rootKey}.${reachPath}`]) {
+          // Already joined for filtering/sorting
+          continue
+        }
+        const existsSql = this.buildSearchReachExists(
+          rootAlias,
+          rootKey,
+          reachPath
+        )
+        if (existsSql) {
+          searchWhereParts.push(`EXISTS (${existsSql})`)
+        }
+      }
 
       innerQueryBuilder.whereRaw(
         `(${searchWhereParts.join(" OR ")})`,

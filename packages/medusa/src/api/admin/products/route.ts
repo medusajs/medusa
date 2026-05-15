@@ -84,10 +84,9 @@ async function getProductsWithIndexEngine(
     delete filters.price_list_id
   }
 
-  // TODO: Remove once we implement search by relations in a similar way to query.graph
-  if (isPresent(filters.q)) {
-    filters["variants"] ??= {}
-  }
+  // Enable text search to traverse into variants (e.g. SKU match) without
+  // forcing a filter join on variants
+  const searchReach = isPresent(filters.q) ? ["variants"] : undefined
 
   const { data: products, metadata } = await query.index({
     entity: "product",
@@ -95,6 +94,7 @@ async function getProductsWithIndexEngine(
     filters: filters,
     pagination: req.queryConfig.pagination,
     withDeleted: req.queryConfig.withDeleted,
+    searchReach,
   })
 
   res.json({

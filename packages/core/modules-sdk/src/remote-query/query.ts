@@ -260,6 +260,13 @@ export class Query {
   async index<const TEntry extends string>(
     queryOptions: RemoteQueryInput<TEntry> & {
       joinFilters?: RemoteQueryFilters<TEntry>
+      /**
+       * Relation paths (relative to `entity`) that the full-text `q` filter should
+       * also traverse via EXISTS subqueries against the related entity's
+       * `document_tsv` — without inflating the inner row stream. See
+       * `IndexQueryInput.searchReach` for details.
+       */
+      searchReach?: string[]
     },
     options?: RemoteJoinerOptions
   ): Promise<GraphResultSet<TEntry>> {
@@ -292,6 +299,7 @@ export class Query {
       joinFilters,
       pagination,
       idsOnly: true,
+      searchReach: queryOptions.searchReach,
     })) as unknown as GraphResultSet<TEntry>
 
     delete queryOptions.filters

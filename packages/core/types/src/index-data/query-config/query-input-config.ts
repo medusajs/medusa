@@ -50,6 +50,17 @@ export type IndexQueryInput<TEntry extends string> = {
    * Apply a `withDeleted` flag on the retrieved data to retrieve soft deleted items.
    */
   withDeleted?: boolean
+  /**
+   * Relation paths (relative to `entity`) that the full-text `q` filter should also
+   * traverse when matching. Each path is searched via a correlated EXISTS subquery
+   * against the related entity's `document_tsv`, without inflating the inner row
+   * stream. Paths that already appear in `filters` (i.e. a real filter join on the
+   * same relation) are skipped because the join handles the OR naturally.
+   *
+   * Example: `searchReach: ["variants"]` makes a `q` on `product` also match
+   * variant fields (e.g. SKU) without forcing a `filters.variants = {}` hack.
+   */
+  searchReach?: string[]
 }
 
 export type IndexQueryConfig<TEntry extends string> = {
@@ -64,6 +75,11 @@ export type IndexQueryConfig<TEntry extends string> = {
   joinFilters?: IndexFilters<TEntry>
   pagination?: Partial<IndexQueryInput<TEntry>["pagination"]>
   idsOnly?: boolean
+  /**
+   * Relation paths (relative to `entity`) that the full-text `q` filter should
+   * also traverse via EXISTS subqueries. See `IndexQueryInput.searchReach`.
+   */
+  searchReach?: string[]
 }
 
 export type QueryFunctionReturnPagination = {

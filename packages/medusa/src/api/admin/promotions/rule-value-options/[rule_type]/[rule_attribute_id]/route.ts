@@ -6,6 +6,7 @@ import { HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   FeatureFlag,
+  isPresent,
 } from "@medusajs/framework/utils"
 import {
   ruleQueryConfigurations,
@@ -73,17 +74,16 @@ export const GET = async (
     ENTITIES_SUPPORTED_BY_INDEX_ENGINE.includes(queryConfig.entryPoint)
 
   if (useIndexEngine) {
-    // TODO: Remove once we implement search by relations in a similar way to query.graph
-    const filters = { ...filterableFields }
-    if (!!filters.q) {
-      filters.variants = filters.variants ?? {}
-    }
+    // Enable text search to traverse into variants (e.g. SKU match) without
+    // forcing a filter join on variants
+    const searchReach = isPresent(filterableFields.q) ? ["variants"] : undefined
 
     const { data, metadata } = await query.index({
       entity: queryConfig.entryPoint,
       fields,
-      filters,
+      filters: filterableFields,
       pagination: req.queryConfig.pagination,
+      searchReach,
     })
 
     const values = data.map((r) => ({
