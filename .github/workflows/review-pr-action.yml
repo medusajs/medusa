@@ -15,7 +15,7 @@ on:
         required: true
       MEDUSA_APP_PRIVATE_KEY:
         required: true
-      CLAUDE_CODE_OAUTH_TOKEN:
+      CLAUDE_CODE_API_TOKEN:
         required: true
 
 jobs:
