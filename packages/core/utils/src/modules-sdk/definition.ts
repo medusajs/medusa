@@ -31,6 +31,7 @@ export const Modules = {
   TRANSLATION: "translation",
   RBAC: "rbac",
   BRAND: "brand",
+  ORGANIZATION: "organization",
 } as const
 
 export const MODULE_PACKAGE_NAMES = {
