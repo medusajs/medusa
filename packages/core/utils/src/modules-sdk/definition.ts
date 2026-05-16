@@ -34,6 +34,7 @@ export const Modules = {
   ORGANIZATION: "organization",
   SHOP: "shop",
   MATERIAL: "material",
+  PLATFORM_MAPPING: "platformMapping",
 } as const
 
 export const MODULE_PACKAGE_NAMES = {
@@ -68,6 +69,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.CACHING]: "@medusajs/medusa/caching",
   [Modules.TRANSLATION]: "@medusajs/medusa/translation",
   [Modules.RBAC]: "@medusajs/medusa/rbac",
+  [Modules.PLATFORM_MAPPING]: "@medusajs/platform-mapping",
 }
 
 export const REVERSED_MODULE_PACKAGE_NAMES = Object.entries(
