@@ -1,0 +1,89 @@
+[
+  {
+    "email": "john.doe@example.com",
+    "first_name": "John",
+    "last_name": "Doe",
+    "phone": "+1-555-0101",
+    "addresses": [
+      {
+        "first_name": "John",
+        "last_name": "Doe",
+        "address_1": "123 Maple Street",
+        "city": "Springfield",
+        "province": "Illinois",
+        "postal_code": "62701",
+        "country_code": "us",
+        "phone": "+1-555-0101"
+      }
+    ]
+  },
+  {
+    "email": "jane.smith@example.com",
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "phone": "+1-555-0102",
+    "addresses": [
+      {
+        "first_name": "Jane",
+        "last_name": "Smith",
+        "address_1": "456 Oak Avenue",
+        "city": "Austin",
+        "province": "Texas",
+        "postal_code": "78701",
+        "country_code": "us",
+        "phone": "+1-555-0102"
+      }
+    ]
+  },
+  {
+    "email": "alice.wong@example.com",
+    "first_name": "Alice",
+    "last_name": "Wong",
+    "phone": "+44-20-7946-0958",
+    "addresses": [
+      {
+        "first_name": "Alice",
+        "last_name": "Wong",
+        "address_1": "78 High Street",
+        "city": "London",
+        "postal_code": "SW1A 1AA",
+        "country_code": "gb",
+        "phone": "+44-20-7946-0958"
+      }
+    ]
+  },
+  {
+    "email": "bob.muller@example.com",
+    "first_name": "Bob",
+    "last_name": "Muller",
+    "phone": "+49-30-12345678",
+    "addresses": [
+      {
+        "first_name": "Bob",
+        "last_name": "Muller",
+        "address_1": "Unter den Linden 1",
+        "city": "Berlin",
+        "postal_code": "10117",
+        "country_code": "de",
+        "phone": "+49-30-12345678"
+      }
+    ]
+  },
+  {
+    "email": "carol.dubois@example.com",
+    "first_name": "Carol",
+    "last_name": "Dubois",
+    "phone": "+33-1-42-86-82-82",
+    "addresses": [
+      {
+        "first_name": "Carol",
+        "last_name": "Dubois",
+        "address_1": "12 Rue de Rivoli",
+        "city": "Paris",
+        "postal_code": "75001",
+        "country_code": "fr",
+        "phone": "+33-1-42-86-82-82"
+      }
+    ]
+  }
+]

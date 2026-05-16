@@ -1,0 +1,63 @@
+{
+  "name": "@medusajs/playground",
+  "version": "2.15.2",
+  "private": true,
+  "description": "Medusa playground for demo and development validation",
+  "scripts": {
+    "dev": "medusa develop",
+    "start": "medusa start",
+    "db:setup": "medusa db setup",
+    "db:migrate": "medusa db migrate",
+    "db:sync-links": "medusa db sync-links",
+    "seed": "medusa exec ./src/scripts/seed.ts",
+    "setup": "docker compose up -d && sleep 5 && yarn db:setup && yarn db:migrate && yarn db:sync-links && yarn seed",
+    "clean": "docker compose down -v && docker compose up -d"
+  },
+  "dependencies": {
+    "@medusajs/medusa": "workspace:*",
+    "@medusajs/framework": "workspace:*",
+    "@medusajs/core-flows": "workspace:*",
+    "@medusajs/admin-bundler": "workspace:*",
+    "@medusajs/utils": "workspace:*",
+    "@medusajs/file-local": "workspace:*",
+    "@medusajs/notification-local": "workspace:*",
+    "@medusajs/fulfillment-manual": "workspace:*",
+    "@medusajs/auth-emailpass": "workspace:*",
+    "@medusajs/workflow-engine-inmemory": "workspace:*",
+    "@medusajs/cache-inmemory": "workspace:*",
+    "@medusajs/event-bus-local": "workspace:*",
+    "@medusajs/api-key": "workspace:*",
+    "@medusajs/auth": "workspace:*",
+    "@medusajs/cart": "workspace:*",
+    "@medusajs/currency": "workspace:*",
+    "@medusajs/customer": "workspace:*",
+    "@medusajs/draft-order": "workspace:*",
+    "@medusajs/fulfillment": "workspace:*",
+    "@medusajs/inventory": "workspace:*",
+    "@medusajs/locking": "workspace:*",
+    "@medusajs/notification": "workspace:*",
+    "@medusajs/order": "workspace:*",
+    "@medusajs/payment": "workspace:*",
+    "@medusajs/pricing": "workspace:*",
+    "@medusajs/product": "workspace:*",
+    "@medusajs/promotion": "workspace:*",
+    "@medusajs/region": "workspace:*",
+    "@medusajs/sales-channel": "workspace:*",
+    "@medusajs/settings": "workspace:*",
+    "@medusajs/stock-location": "workspace:*",
+    "@medusajs/store": "workspace:*",
+    "@medusajs/tax": "workspace:*",
+    "@medusajs/translation": "workspace:*",
+    "@medusajs/user": "workspace:*",
+    "@medusajs/rbac": "workspace:*",
+    "express": "^4.21.0",
+    "pg": "8.16.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.11",
+    "typescript": "^5.6.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

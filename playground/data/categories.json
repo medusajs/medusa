@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Electronics",
+    "handle": "electronics",
+    "description": "Electronic devices and accessories",
+    "is_active": true
+  },
+  {
+    "name": "Clothing",
+    "handle": "clothing",
+    "description": "Apparel and fashion items",
+    "is_active": true
+  },
+  {
+    "name": "Home & Garden",
+    "handle": "home-garden",
+    "description": "Home decor and gardening supplies",
+    "is_active": true
+  },
+  {
+    "name": "Sports",
+    "handle": "sports",
+    "description": "Sports equipment and accessories",
+    "is_active": true
+  },
+  {
+    "name": "Books",
+    "handle": "books",
+    "description": "Physical and digital books",
+    "is_active": true
+  }
+]

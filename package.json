@@ -16,7 +16,8 @@
       "packages/admin/*",
       "packages/design-system/*",
       "packages/generated/*",
-      "integration-tests/**/*"
+      "integration-tests/**/*",
+      "playground"
     ]
   },
   "devDependencies": {

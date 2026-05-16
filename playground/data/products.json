@@ -1,0 +1,211 @@
+[
+  {
+    "title": "Wireless Bluetooth Headphones",
+    "handle": "wireless-bluetooth-headphones",
+    "description": "Premium over-ear headphones with active noise cancellation and 30-hour battery life.",
+    "subtitle": "Premium Audio Experience",
+    "is_giftcard": false,
+    "discountable": true,
+    "status": "published",
+    "category_handle": "electronics",
+    "options": [
+      {
+        "title": "Color",
+        "values": ["Black", "Silver", "Blue"]
+      }
+    ],
+    "variants": [
+      {
+        "title": "Black",
+        "sku": "WBH-BLK-001",
+        "prices": [
+          { "amount": 29900, "currency_code": "usd" },
+          { "amount": 27900, "currency_code": "eur" }
+        ],
+        "options": [{ "value": "Black" }]
+      },
+      {
+        "title": "Silver",
+        "sku": "WBH-SLV-001",
+        "prices": [
+          { "amount": 29900, "currency_code": "usd" },
+          { "amount": 27900, "currency_code": "eur" }
+        ],
+        "options": [{ "value": "Silver" }]
+      },
+      {
+        "title": "Blue",
+        "sku": "WBH-BLU-001",
+        "prices": [
+          { "amount": 30900, "currency_code": "usd" },
+          { "amount": 28900, "currency_code": "eur" }
+        ],
+        "options": [{ "value": "Blue" }]
+      }
+    ]
+  },
+  {
+    "title": "Classic Cotton T-Shirt",
+    "handle": "classic-cotton-t-shirt",
+    "description": "Soft, breathable 100% organic cotton t-shirt available in multiple sizes.",
+    "subtitle": "Everyday Essential",
+    "is_giftcard": false,
+    "discountable": true,
+    "status": "published",
+    "category_handle": "clothing",
+    "options": [
+      {
+        "title": "Size",
+        "values": ["S", "M", "L", "XL"]
+      },
+      {
+        "title": "Color",
+        "values": ["White", "Black", "Navy"]
+      }
+    ],
+    "variants": [
+      {
+        "title": "S / White",
+        "sku": "CCT-S-WHT-001",
+        "prices": [
+          { "amount": 2900, "currency_code": "usd" }
+        ],
+        "options": [{ "value": "S" }, { "value": "White" }]
+      },
+      {
+        "title": "M / White",
+        "sku": "CCT-M-WHT-001",
+        "prices": [
+          { "amount": 2900, "currency_code": "usd" }
+        ],
+        "options": [{ "value": "M" }, { "value": "White" }]
+      },
+      {
+        "title": "L / Black",
+        "sku": "CCT-L-BLK-001",
+        "prices": [
+          { "amount": 2900, "currency_code": "usd" }
+        ],
+        "options": [{ "value": "L" }, { "value": "Black" }]
+      },
+      {
+        "title": "XL / Navy",
+        "sku": "CCT-XL-NVY-001",
+        "prices": [
+          { "amount": 3200, "currency_code": "usd" }
+        ],
+        "options": [{ "value": "XL" }, { "value": "Navy" }]
+      }
+    ]
+  },
+  {
+    "title": "Ceramic Coffee Mug Set",
+    "handle": "ceramic-coffee-mug-set",
+    "description": "Set of 4 handcrafted ceramic mugs, microwave and dishwasher safe.",
+    "subtitle": "Morning Coffee Essential",
+    "is_giftcard": false,
+    "discountable": true,
+    "status": "published",
+    "category_handle": "home-garden",
+    "options": [
+      {
+        "title": "Color",
+        "values": ["Cream", "Sage", "Terracotta"]
+      }
+    ],
+    "variants": [
+      {
+        "title": "Cream",
+        "sku": "CCM-CRM-001",
+        "prices": [
+          { "amount": 4500, "currency_code": "usd" }
+        ],
+        "options": [{ "value": "Cream" }]
+      },
+      {
+        "title": "Sage",
+        "sku": "CCM-SGE-001",
+        "prices": [
+          { "amount": 4500, "currency_code": "usd" }
+        ],
+        "options": [{ "value": "Sage" }]
+      }
+    ]
+  },
+  {
+    "title": "Yoga Mat Premium",
+    "handle": "yoga-mat-premium",
+    "description": "Extra thick non-slip yoga mat with carrying strap, 6mm thickness.",
+    "subtitle": "Find Your Balance",
+    "is_giftcard": false,
+    "discountable": true,
+    "status": "published",
+    "category_handle": "sports",
+    "options": [
+      {
+        "title": "Color",
+        "values": ["Purple", "Teal", "Charcoal"]
+      }
+    ],
+    "variants": [
+      {
+        "title": "Purple",
+        "sku": "YMP-PRP-001",
+        "prices": [
+          { "amount": 5500, "currency_code": "usd" }
+        ],
+        "options": [{ "value": "Purple" }]
+      },
+      {
+        "title": "Teal",
+        "sku": "YMP-TL-001",
+        "prices": [
+          { "amount": 5500, "currency_code": "usd" }
+        ],
+        "options": [{ "value": "Teal" }]
+      }
+    ]
+  },
+  {
+    "title": "Programming TypeScript",
+    "handle": "programming-typescript",
+    "description": "Comprehensive guide to TypeScript programming by Boris Cherny.",
+    "subtitle": "Master TypeScript",
+    "is_giftcard": false,
+    "discountable": true,
+    "status": "published",
+    "category_handle": "books",
+    "options": [
+      {
+        "title": "Format",
+        "values": ["Hardcover", "Paperback", "E-book"]
+      }
+    ],
+    "variants": [
+      {
+        "title": "Hardcover",
+        "sku": "PTS-HC-001",
+        "prices": [
+          { "amount": 4999, "currency_code": "usd" }
+        ],
+        "options": [{ "value": "Hardcover" }]
+      },
+      {
+        "title": "Paperback",
+        "sku": "PTS-PB-001",
+        "prices": [
+          { "amount": 3499, "currency_code": "usd" }
+        ],
+        "options": [{ "value": "Paperback" }]
+      },
+      {
+        "title": "E-book",
+        "sku": "PTS-EB-001",
+        "prices": [
+          { "amount": 2499, "currency_code": "usd" }
+        ],
+        "options": [{ "value": "E-book" }]
+      }
+    ]
+  }
+]
