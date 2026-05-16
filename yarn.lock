@@ -3424,7 +3424,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/cli@2.15.2, @medusajs/cli@workspace:packages/cli/medusa-cli":
+"@medusajs/cli@2.15.2, @medusajs/cli@workspace:*, @medusajs/cli@workspace:packages/cli/medusa-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/cli@workspace:packages/cli/medusa-cli"
   dependencies:
@@ -4109,6 +4109,7 @@ __metadata:
     "@medusajs/auth-emailpass": "workspace:*"
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/cart": "workspace:*"
+    "@medusajs/cli": "workspace:*"
     "@medusajs/core-flows": "workspace:*"
     "@medusajs/currency": "workspace:*"
     "@medusajs/customer": "workspace:*"

@@ -7,9 +7,9 @@
     "medusa": "node ../node_modules/@medusajs/cli/cli.js",
     "dev": "yarn medusa develop",
     "start": "yarn medusa start",
-    "db:setup": "yarn medusa db setup",
-    "db:migrate": "yarn medusa db migrate",
-    "db:sync-links": "yarn medusa db sync-links",
+    "db:setup": "yarn medusa db:setup --db medusa_playground",
+    "db:migrate": "yarn medusa db:migrate",
+    "db:sync-links": "yarn medusa db:sync-links",
     "seed": "yarn medusa exec ./src/scripts/seed.ts",
     "setup": "docker compose up -d && sleep 5 && yarn db:setup && yarn db:migrate && yarn db:sync-links && yarn seed",
     "clean": "docker compose down -v && docker compose up -d"
