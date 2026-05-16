@@ -30,6 +30,7 @@ export const Modules = {
   CACHING: "caching",
   TRANSLATION: "translation",
   RBAC: "rbac",
+  BRAND: "brand",
 } as const
 
 export const MODULE_PACKAGE_NAMES = {

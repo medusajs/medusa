@@ -1,6 +1,6 @@
-import { Module } from "@medusajs/framework/utils"
+import { Module, Modules } from "@medusajs/framework/utils"
 import { BrandModuleService } from "./services/brand-module-service"
 
-export default Module("brand", {
+export default Module(Modules.BRAND, {
   service: BrandModuleService,
 })

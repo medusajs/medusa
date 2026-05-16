@@ -1,10 +1,4 @@
-import {
-  MedusaService,
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-} from "@medusajs/framework/utils"
-import { Context, DAL } from "@medusajs/framework/types"
+import { MedusaService } from "@medusajs/framework/utils"
 import Brand from "../models/brand"
 import { CreateBrandDTO, UpdateBrandDTO } from "../types"
 
