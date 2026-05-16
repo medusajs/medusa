@@ -34,7 +34,7 @@ export const Modules = {
   ORGANIZATION: "organization",
   SHOP: "shop",
   MATERIAL: "material",
-  PLATFORM_MAPPING: "platformMapping",
+  PLATFORM_MAPPING: "platform_mapping",
 } as const
 
 export const MODULE_PACKAGE_NAMES = {
@@ -69,6 +69,10 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.CACHING]: "@medusajs/medusa/caching",
   [Modules.TRANSLATION]: "@medusajs/medusa/translation",
   [Modules.RBAC]: "@medusajs/medusa/rbac",
+  [Modules.BRAND]: "@medusajs/brand",
+  [Modules.ORGANIZATION]: "@medusajs/organization",
+  [Modules.SHOP]: "@medusajs/shop",
+  [Modules.MATERIAL]: "@medusajs/material",
   [Modules.PLATFORM_MAPPING]: "@medusajs/platform-mapping",
 }
 
