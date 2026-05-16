@@ -35,6 +35,7 @@ export const Modules = {
   SHOP: "shop",
   MATERIAL: "material",
   PLATFORM_MAPPING: "platform_mapping",
+  CHANNEL_PRICE: "channel_price",
 } as const
 
 export const MODULE_PACKAGE_NAMES = {
@@ -74,6 +75,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.SHOP]: "@medusajs/shop",
   [Modules.MATERIAL]: "@medusajs/material",
   [Modules.PLATFORM_MAPPING]: "@medusajs/platform-mapping",
+  [Modules.CHANNEL_PRICE]: "@medusajs/channel-price",
 }
 
 export const REVERSED_MODULE_PACKAGE_NAMES = Object.entries(

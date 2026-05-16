@@ -1,0 +1,20 @@
+{
+  "name": "@medusajs/channel-price",
+  "version": "0.0.1",
+  "description": "Medusa Channel Price module for multi-channel pricing",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc --build",
+    "watch": "tsc --build --watch",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@medusajs/framework": "^2.0.0",
+    "@medusajs/utils": "^2.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  }
+}
