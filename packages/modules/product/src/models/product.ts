@@ -89,6 +89,48 @@ const Product = model
      */
     metadata: model.json().nullable(),
     /**
+     * China e-commerce: SPU code.
+     */
+    spu_code: model.text().nullable(),
+    /**
+     * China e-commerce: Brand ID.
+     */
+    brand_id: model.text().nullable(),
+    /**
+     * China e-commerce: Product brief/short description.
+     */
+    brief: model.text().nullable(),
+    /**
+     * China e-commerce: Unit of measurement.
+     */
+    unit: model.text().nullable(),
+    /**
+     * China e-commerce: Product type (normal, bind, combo, gift).
+     */
+    product_type: model
+      .enum(["normal", "bind", "combo", "gift"])
+      .default("normal"),
+    /**
+     * China e-commerce: Whether the product is serial number managed.
+     */
+    sn_managed: model.boolean().default(false),
+    /**
+     * China e-commerce: Scheduled publish time.
+     */
+    published_at: model.dateTime().nullable(),
+    /**
+     * China e-commerce: Scheduled unpublish time.
+     */
+    unpublished_at: model.dateTime().nullable(),
+    /**
+     * China e-commerce: Sort order for display.
+     */
+    sort_order: model.number().default(0),
+    /**
+     * China e-commerce: Visibility status (visible, hidden).
+     */
+    visibility: model.enum(["visible", "hidden"]).default("visible"),
+    /**
      * The product's variants.
      */
     variants: model
@@ -164,6 +206,12 @@ const Product = model
     {
       name: "IDX_product_status",
       on: ["status"],
+      unique: false,
+      where: "deleted_at IS NULL",
+    },
+    {
+      name: "IDX_product_spu_code",
+      on: ["spu_code"],
       unique: false,
       where: "deleted_at IS NULL",
     },
