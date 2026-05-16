@@ -26,6 +26,13 @@ const ProductVariant = model
      * @since 2.11.2
      */
     thumbnail: model.text().nullable(),
+    sku_code: model.text().nullable(),
+    unit: model.text().nullable(),
+    cost_price: model.float().nullable(),
+    market_price: model.float().nullable(),
+    alert_stock: model.number().nullable(),
+    purchase_limit: model.number().nullable(),
+    spec_info: model.text().nullable(),
     product: model
       .belongsTo(() => Product, {
         mappedBy: "variants",
@@ -78,6 +85,12 @@ const ProductVariant = model
     {
       name: "IDX_product_variant_upc_unique",
       on: ["upc"],
+      unique: true,
+      where: "deleted_at IS NULL",
+    },
+    {
+      name: "IDX_product_variant_sku_code_unique",
+      on: ["sku_code"],
       unique: true,
       where: "deleted_at IS NULL",
     },
