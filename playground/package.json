@@ -4,7 +4,7 @@
   "private": true,
   "description": "Medusa playground for demo and development validation",
   "scripts": {
-    "medusa": "node ../../node_modules/@medusajs/cli/cli.js",
+    "medusa": "node ../node_modules/@medusajs/cli/cli.js",
     "dev": "yarn medusa develop",
     "start": "yarn medusa start",
     "db:setup": "yarn medusa db setup",
