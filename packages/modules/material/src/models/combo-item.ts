@@ -4,8 +4,6 @@ import BasicMaterial from "./basic-material"
 const ComboItem = model
   .define("ComboItem", {
     id: model.id({ prefix: "combo" }).primaryKey(),
-    parent_material_id: model.text(),
-    child_material_id: model.text(),
     quantity: model.number().default(1),
     is_optional: model.boolean().default(false),
     sort_order: model.number().default(0),

@@ -1,6 +1,11 @@
-export type MaterialType = "finished" | "semi" | "normal" | "box" | "virtual"
-export type SalesType = "normal" | "combo" | "gift" | "choice" | "box" | "lucky_bag"
-export type SourceType = "local" | "api"
+export const MATERIAL_TYPE = ["finished", "semi", "normal", "box", "virtual"] as const
+export type MaterialType = (typeof MATERIAL_TYPE)[number]
+
+export const SALES_TYPE = ["normal", "combo", "gift", "choice", "box", "lucky_bag"] as const
+export type SalesType = (typeof SALES_TYPE)[number]
+
+export const SOURCE_TYPE = ["local", "api"] as const
+export type SourceType = (typeof SOURCE_TYPE)[number]
 
 export interface CreateBasicMaterialDTO {
   material_code: string
@@ -29,7 +34,7 @@ export interface CreateSalesMaterialDTO {
   sales_code: string
   sales_name: string
   sales_type?: SalesType
-  material_id?: string
+  basic_material_id?: string
   is_bound?: boolean
   customer_class_id?: string
   org_id?: string
