@@ -19,6 +19,8 @@ const InventoryItem = model
     title: model.text().searchable().nullable(),
     thumbnail: model.text().nullable(),
     metadata: model.json().nullable(),
+    alert_stock: model.number().nullable(),
+    stock_controlled: model.boolean().default(true),
     location_levels: model.hasMany(() => InventoryLevel, {
       mappedBy: "inventory_item",
     }),
