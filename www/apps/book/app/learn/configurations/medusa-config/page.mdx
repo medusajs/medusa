@@ -817,6 +817,12 @@ This configuration is not used for modules that also connect to Redis, such as t
 
 <Note>
 
+`REDIS_URL` is included in the `.env` template that the Medusa CLI scaffolds, but Redis session storage is not enabled automatically. To enable it, you must explicitly set `redisUrl: process.env.REDIS_URL` in `medusa-config.ts` (see the example below).
+
+</Note>
+
+<Note>
+
 You must first have Redis installed. You can refer to [Redis's installation guide](https://redis.io/docs/getting-started/installation/).
 
 </Note>
