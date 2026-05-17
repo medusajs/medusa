@@ -1,6 +1,7 @@
 import { defineMiddlewares } from "../utils/define-middlewares"
 import { adminApiKeyRoutesMiddlewares } from "./admin/api-keys/middlewares"
 import { adminBasicMaterialRoutesMiddlewares } from "./admin/basic-materials/middlewares"
+import { adminPlatformSyncTaskRoutesMiddlewares } from "./admin/platform-sync-tasks/middlewares"
 import { adminChannelPriceRoutesMiddlewares } from "./admin/channel-prices/middlewares"
 import { adminOrganizationRoutesMiddlewares } from "./admin/organizations/middlewares"
 import { adminStoreInventoryRoutesMiddlewares } from "./admin/store-inventories/middlewares"
@@ -114,6 +115,7 @@ export default defineMiddlewares([
   ...adminTranslationsRoutesMiddlewares,
   ...adminApiKeyRoutesMiddlewares,
   ...adminBasicMaterialRoutesMiddlewares,
+  ...adminPlatformSyncTaskRoutesMiddlewares,
   ...adminChannelPriceRoutesMiddlewares,
   ...adminOrganizationRoutesMiddlewares,
   ...adminStoreInventoryRoutesMiddlewares,
