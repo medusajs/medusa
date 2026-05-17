@@ -6,6 +6,7 @@ import {
   IAuthModuleService,
   IBrandModuleService,
   ICacheService,
+  IChannelPriceModuleService,
   ICachingModuleService,
   ICartModuleService,
   ICurrencyModuleService,
@@ -89,6 +90,7 @@ declare module "@medusajs/types" {
     [Modules.SETTINGS]: ISettingsModuleService
     [Modules.SHOP]: IShopModuleService
     [Modules.CACHING]: ICachingModuleService
+    [Modules.CHANNEL_PRICE]: IChannelPriceModuleService
     [Modules.INDEX]: IIndexService
     [Modules.TRANSLATION]: ITranslationModuleService
     [Modules.RBAC]: IRbacModuleService
