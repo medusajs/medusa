@@ -18,6 +18,7 @@ export const getLastPaymentStatus = (order: OrderDetailDTO) => {
     REQUIRES_ACTION: "requires_action",
     AUTHORIZED: "authorized",
     PARTIALLY_AUTHORIZED: "partially_authorized",
+    CHARGEBACK: "chargeback",
   }
 
   const upperCurCode = order.currency_code?.toUpperCase() as string
@@ -66,6 +67,10 @@ export const getLastPaymentStatus = (order: OrderDetailDTO) => {
 
   if (paymentStatus[PaymentStatus.REQUIRES_ACTION] > 0) {
     return PaymentStatus.REQUIRES_ACTION
+  }
+
+  if (paymentStatus[PaymentStatus.CHARGEBACK] > 0) {
+    return PaymentStatus.CHARGEBACK
   }
 
   if (paymentStatus[PaymentStatus.REFUNDED] > 0) {
