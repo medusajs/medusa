@@ -3,16 +3,13 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { MedusaError, Modules } from "@medusajs/framework/utils"
-import { PlatformMappingModuleService } from "@medusajs/platform-mapping/dist/services/platform-mapping-module-service"
 import { AdminUpdatePlatformSyncTaskType } from "../validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const platformMappingModule = req.scope.resolve(
-    Modules.PLATFORM_MAPPING
-  ) as PlatformMappingModuleService
+  const platformMappingModule = req.scope.resolve(Modules.PLATFORM_MAPPING)
   const platform_sync_task =
     await platformMappingModule.retrievePlatformSyncTask(
       req.params.id,
@@ -33,14 +30,12 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdatePlatformSyncTaskType>,
   res: MedusaResponse
 ) => {
-  const platformMappingModule = req.scope.resolve(
-    Modules.PLATFORM_MAPPING
-  ) as PlatformMappingModuleService
+  const platformMappingModule = req.scope.resolve(Modules.PLATFORM_MAPPING)
   const platform_sync_task =
-    await platformMappingModule.updatePlatformSyncTasks({
-      id: req.params.id,
-      ...req.validatedBody,
-    } as any)
+    await platformMappingModule.updatePlatformSyncTasks(
+      req.params.id,
+      req.validatedBody
+    )
 
   res.json({ platform_sync_task })
 }
@@ -49,9 +44,7 @@ export const DELETE = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const platformMappingModule = req.scope.resolve(
-    Modules.PLATFORM_MAPPING
-  ) as PlatformMappingModuleService
+  const platformMappingModule = req.scope.resolve(Modules.PLATFORM_MAPPING)
   await platformMappingModule.deletePlatformSyncTasks(req.params.id)
 
   res.status(200).json({

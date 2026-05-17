@@ -3,16 +3,13 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { Modules } from "@medusajs/framework/utils"
-import { PlatformMappingModuleService } from "@medusajs/platform-mapping/dist/services/platform-mapping-module-service"
 import { AdminCreatePlatformSyncTaskType } from "./validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const platformMappingModule = req.scope.resolve(
-    Modules.PLATFORM_MAPPING
-  ) as PlatformMappingModuleService
+  const platformMappingModule = req.scope.resolve(Modules.PLATFORM_MAPPING)
   const [platform_sync_tasks, count] =
     await platformMappingModule.listAndCountPlatformSyncTasks(
       req.filterableFields,
@@ -31,9 +28,7 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreatePlatformSyncTaskType>,
   res: MedusaResponse
 ) => {
-  const platformMappingModule = req.scope.resolve(
-    Modules.PLATFORM_MAPPING
-  ) as PlatformMappingModuleService
+  const platformMappingModule = req.scope.resolve(Modules.PLATFORM_MAPPING)
   const platform_sync_task =
     await platformMappingModule.createPlatformSyncTasks(req.validatedBody)
 
