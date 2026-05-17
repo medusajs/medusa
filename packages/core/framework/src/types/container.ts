@@ -16,6 +16,7 @@ import {
   IIndexService,
   IInventoryService,
   ILockingModule,
+  IMaterialModuleService,
   INotificationModuleService,
   IOrderModuleService,
   IPaymentModuleService,
@@ -82,6 +83,7 @@ declare module "@medusajs/types" {
     [Modules.FILE]: IFileModuleService
     [Modules.NOTIFICATION]: INotificationModuleService
     [Modules.LOCKING]: ILockingModule
+    [Modules.MATERIAL]: IMaterialModuleService
     [Modules.SETTINGS]: ISettingsModuleService
     [Modules.SHOP]: IShopModuleService
     [Modules.CACHING]: ICachingModuleService
