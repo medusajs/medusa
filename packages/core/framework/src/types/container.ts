@@ -19,6 +19,7 @@ import {
   IMaterialModuleService,
   INotificationModuleService,
   IOrderModuleService,
+  IOrganizationModuleService,
   IPaymentModuleService,
   IPricingModuleService,
   IProductModuleService,
@@ -77,6 +78,7 @@ declare module "@medusajs/types" {
     [Modules.WORKFLOW_ENGINE]: IWorkflowEngineService
     [Modules.REGION]: IRegionModuleService
     [Modules.ORDER]: IOrderModuleService
+    [Modules.ORGANIZATION]: IOrganizationModuleService
     [Modules.API_KEY]: IApiKeyModuleService
     [Modules.STORE]: IStoreModuleService
     [Modules.CURRENCY]: ICurrencyModuleService
