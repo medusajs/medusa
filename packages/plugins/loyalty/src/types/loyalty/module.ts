@@ -1,6 +1,22 @@
 import { CustomerDTO } from "@medusajs/framework/types";
 
 /**
+ * Options for configuring the Loyalty plugin in medusa-config.
+ */
+export type LoyaltyPluginOptions = {
+  /**
+   * The prefix added to generated gift card codes. Defaults to "GIFT".
+   * @example "GC" → GC-XXXX-XXXX-XXXX-XXXX
+   */
+  prefix?: string
+  /**
+   * The number of 4-character sections in a generated code. Defaults to 4.
+   * @example 3 → GIFT-XXXX-XXXX-XXXX
+   */
+  sections?: number
+}
+
+/**
  * The status of a gift card.
  */
 export enum GiftCardStatus {

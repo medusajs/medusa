@@ -5,7 +5,6 @@ import {
   OrderWorkflowEvents,
 } from "@medusajs/framework/utils";
 
-import { generateCode } from "../utils/code-generator";
 import { createGiftCardsWorkflow } from "../workflows/gift-cards/workflows/create-gift-cards";
 
 export default async function createGiftCardHandler({

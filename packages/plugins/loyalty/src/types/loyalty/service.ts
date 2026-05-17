@@ -5,6 +5,7 @@ import {
   IModuleService,
 } from "@medusajs/types";
 import {
+  LoyaltyPluginOptions,
   ModuleCreateGiftCard,
   ModuleGiftCard,
   ModuleUpdateGiftCard,
@@ -53,6 +54,9 @@ export interface ModuleGiftCardFilters
  * The main service interface for the Loyalty Module.
  */
 export interface ILoyaltyModuleService extends IModuleService {
+
+  getOptions(): LoyaltyPluginOptions
+
   /* Entity: GiftCards */
 
   /**
