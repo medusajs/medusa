@@ -1,5 +1,9 @@
 import { z } from "zod"
-import { createFindParams, createOperatorMap } from "../../utils/validators"
+import {
+  createFindParams,
+  createOperatorMap,
+  createSelectParams,
+} from "../../utils/validators"
 
 const MaterialType = z.enum(["finished", "semi", "normal", "box", "virtual"])
 const SourceType = z.enum(["local", "api"])
@@ -48,13 +52,14 @@ export const AdminUpdateBasicMaterial = z.object({
 
 export type AdminUpdateBasicMaterialType = z.infer<typeof AdminUpdateBasicMaterial>
 
-export const AdminGetBasicMaterialParams = createFindParams()
+export const AdminGetBasicMaterialParams = createSelectParams()
 
 export const AdminGetBasicMaterialsParams = createFindParams({
   limit: 50,
   offset: 0,
 }).merge(
   z.object({
+    q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string()), createOperatorMap()]).optional(),
     material_code: z.union([z.string(), z.array(z.string()), createOperatorMap()]).optional(),
     material_name: z.union([z.string(), z.array(z.string()), createOperatorMap()]).optional(),
@@ -65,5 +70,6 @@ export const AdminGetBasicMaterialsParams = createFindParams({
     org_id: z.union([z.string(), z.array(z.string()), createOperatorMap()]).optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
+    deleted_at: createOperatorMap().optional(),
   })
 )
