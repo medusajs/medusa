@@ -4,7 +4,9 @@
   "description": "Medusa Material module for basic and sales materials",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc --build",
     "watch": "tsc --build --watch",

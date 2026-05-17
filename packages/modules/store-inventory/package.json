@@ -4,7 +4,9 @@
   "description": "Medusa Store Inventory module for O2O store inventory",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc --build",
     "watch": "tsc --build --watch",

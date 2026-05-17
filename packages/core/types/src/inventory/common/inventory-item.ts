@@ -78,6 +78,14 @@ export interface InventoryItemDTO {
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null
+  /**
+   * The alert stock level of the inventory item.
+   */
+  alert_stock?: number | null
+  /**
+   * Whether the inventory item is stock controlled.
+   */
+  stock_controlled?: boolean
 
   /**
    * The creation date of the inventory item.

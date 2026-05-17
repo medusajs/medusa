@@ -4,7 +4,9 @@
   "description": "Medusa Shop module for multi-platform management",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc --build",
     "watch": "tsc --build --watch",

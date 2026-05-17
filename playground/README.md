@@ -79,6 +79,54 @@ The seed script creates:
 | Product Variants | 14 |
 | Customers | 5 |
 
+## China E-commerce Modules
+
+This playground includes China e-commerce adaptations with 7 new modules and extended Product/Variant/Inventory models.
+
+### New Modules
+
+| Module | Description |
+|--------|-------------|
+| **Brand** | Brand management with org association |
+| **Organization** | Multi-brand/department hierarchy |
+| **Shop** | Multi-platform shop management (Taobao, Douyin, JD, etc.) |
+| **Material** | Basic material + sales material + combo items |
+| **Platform Mapping** | Platform SKU mapping + sync task queue |
+| **Channel Price** | Multi-channel pricing (retail/wholesale/supply) |
+| **Store Inventory** | O2O store inventory management |
+
+### Extended Models
+
+| Model | New Fields |
+|-------|-----------|
+| **Product** | `spu_code`, `brand_id`, `brief`, `unit`, `product_type`, `sn_managed`, `published_at`, `unpublished_at`, `sort_order`, `visibility` |
+| **ProductVariant** | `sku_code`, `unit`, `cost_price`, `market_price`, `alert_stock`, `purchase_limit`, `spec_info` |
+| **InventoryItem** | `alert_stock`, `stock_controlled` |
+
+### Seed China E-commerce Data
+
+```bash
+yarn medusa exec scripts/seed-china.ts
+```
+
+This creates sample organizations, brands, shops, materials, platform SKUs, channel prices, and store inventory.
+
+### Admin API Routes
+
+All new modules expose CRUD admin API routes:
+
+| Route | Module |
+|-------|--------|
+| `POST /admin/brands` | Brand |
+| `POST /admin/organizations` | Organization |
+| `POST /admin/shops` | Shop |
+| `POST /admin/basic-materials` | Material |
+| `POST /admin/sales-materials` | Material |
+| `POST /admin/platform-skus` | Platform Mapping |
+| `POST /admin/platform-sync-tasks` | Platform Mapping |
+| `POST /admin/channel-prices` | Channel Price |
+| `POST /admin/store-inventories` | Store Inventory |
+
 ## Development Workflow
 
 When you modify code in `packages/` (e.g., a core module):

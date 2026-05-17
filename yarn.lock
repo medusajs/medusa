@@ -3364,6 +3364,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/brand@workspace:packages/modules/brand":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/brand@workspace:packages/modules/brand"
+  dependencies:
+    "@medusajs/framework": ^2.0.0
+    "@medusajs/utils": ^2.0.0
+    typescript: ^5.3.0
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/cache-inmemory@2.15.2, @medusajs/cache-inmemory@workspace:*, @medusajs/cache-inmemory@workspace:packages/modules/cache-inmemory":
   version: 0.0.0-use.local
   resolution: "@medusajs/cache-inmemory@workspace:packages/modules/cache-inmemory"
@@ -3421,6 +3431,16 @@ __metadata:
     "@medusajs/test-utils": 2.15.2
   peerDependencies:
     "@medusajs/framework": 2.15.2
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/channel-price@workspace:packages/modules/channel-price":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/channel-price@workspace:packages/modules/channel-price"
+  dependencies:
+    "@medusajs/framework": ^2.0.0
+    "@medusajs/utils": ^2.0.0
+    typescript: ^5.3.0
   languageName: unknown
   linkType: soft
 
@@ -3676,7 +3696,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/framework@2.15.2, @medusajs/framework@workspace:*, @medusajs/framework@workspace:packages/core/framework":
+"@medusajs/framework@2.15.2, @medusajs/framework@^2.0.0, @medusajs/framework@workspace:*, @medusajs/framework@workspace:packages/core/framework":
   version: 0.0.0-use.local
   resolution: "@medusajs/framework@workspace:packages/core/framework"
   dependencies:
@@ -3890,6 +3910,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/material@workspace:packages/modules/material":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/material@workspace:packages/modules/material"
+  dependencies:
+    "@medusajs/framework": ^2.0.0
+    "@medusajs/utils": ^2.0.0
+    typescript: ^5.3.0
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/medusa-oas-cli@2.15.2, @medusajs/medusa-oas-cli@workspace:packages/cli/oas/medusa-oas-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-oas-cli@workspace:packages/cli/oas/medusa-oas-cli"
@@ -4076,6 +4106,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/organization@workspace:packages/modules/organization":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/organization@workspace:packages/modules/organization"
+  dependencies:
+    "@medusajs/framework": ^2.0.0
+    "@medusajs/utils": ^2.0.0
+    typescript: ^5.3.0
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/payment-stripe@2.15.2, @medusajs/payment-stripe@workspace:packages/modules/providers/payment-stripe":
   version: 0.0.0-use.local
   resolution: "@medusajs/payment-stripe@workspace:packages/modules/providers/payment-stripe"
@@ -4096,6 +4136,16 @@ __metadata:
     stripe: 19.1.0
   peerDependencies:
     "@medusajs/framework": 2.15.2
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/platform-mapping@workspace:packages/modules/platform-mapping":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/platform-mapping@workspace:packages/modules/platform-mapping"
+  dependencies:
+    "@medusajs/framework": ^2.0.0
+    "@medusajs/utils": ^2.0.0
+    typescript: ^5.3.0
   languageName: unknown
   linkType: soft
 
@@ -4224,6 +4274,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/shop@workspace:packages/modules/shop":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/shop@workspace:packages/modules/shop"
+  dependencies:
+    "@medusajs/framework": ^2.0.0
+    "@medusajs/utils": ^2.0.0
+    typescript: ^5.3.0
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/stock-location@2.15.2, @medusajs/stock-location@workspace:*, @medusajs/stock-location@workspace:^, @medusajs/stock-location@workspace:packages/modules/stock-location":
   version: 0.0.0-use.local
   resolution: "@medusajs/stock-location@workspace:packages/modules/stock-location"
@@ -4232,6 +4292,16 @@ __metadata:
     "@medusajs/test-utils": 2.15.2
   peerDependencies:
     "@medusajs/framework": 2.15.2
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/store-inventory@workspace:packages/modules/store-inventory":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/store-inventory@workspace:packages/modules/store-inventory"
+  dependencies:
+    "@medusajs/framework": ^2.0.0
+    "@medusajs/utils": ^2.0.0
+    typescript: ^5.3.0
   languageName: unknown
   linkType: soft
 
@@ -4401,7 +4471,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@2.15.2, @medusajs/utils@workspace:*, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/core/utils":
+"@medusajs/utils@2.15.2, @medusajs/utils@^2.0.0, @medusajs/utils@workspace:*, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/core/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/core/utils"
   dependencies:
@@ -27729,7 +27799,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.9.3, typescript@npm:^5.6.2, typescript@npm:^5.7.3":
+"typescript@npm:5.9.3, typescript@npm:^5.3.0, typescript@npm:^5.6.2, typescript@npm:^5.7.3":
   version: 5.9.3
   resolution: "typescript@npm:5.9.3"
   bin:
@@ -27739,7 +27809,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@5.9.3#~builtin<compat/typescript>, typescript@patch:typescript@^5.6.2#~builtin<compat/typescript>, typescript@patch:typescript@^5.7.3#~builtin<compat/typescript>":
+"typescript@patch:typescript@5.9.3#~builtin<compat/typescript>, typescript@patch:typescript@^5.3.0#~builtin<compat/typescript>, typescript@patch:typescript@^5.6.2#~builtin<compat/typescript>, typescript@patch:typescript@^5.7.3#~builtin<compat/typescript>":
   version: 5.9.3
   resolution: "typescript@patch:typescript@npm%3A5.9.3#~builtin<compat/typescript>::version=5.9.3&hash=7ad353"
   bin:

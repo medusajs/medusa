@@ -55,9 +55,7 @@ export const validatePurchaseLimitStep = createStep(
       { select: ["id", "purchase_limit"] }
     )
 
-    const variantMap = new Map(
-      variants.map((v) => [v.id, v as typeof v & { purchase_limit?: number | null }])
-    )
+    const variantMap = new Map(variants.map((v) => [v.id, v]))
 
     for (const item of items) {
       const variant = variantMap.get(item.variant_id)

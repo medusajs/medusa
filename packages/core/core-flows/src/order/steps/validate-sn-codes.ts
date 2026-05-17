@@ -79,7 +79,7 @@ export const validateSnCodesStep = createStep(
         )
       }
 
-      const product = variant.product as ProductDTO | undefined | null
+      const product = variant.product
 
       if (product?.sn_managed) {
         const snCodes = item.sn_codes ?? []

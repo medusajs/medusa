@@ -137,6 +137,46 @@ export interface ProductDTO {
    */
   external_id: string | null
   /**
+   * The SPU code of the product.
+   */
+  spu_code?: string | null
+  /**
+   * The ID of the brand associated with the product.
+   */
+  brand_id?: string | null
+  /**
+   * A brief description of the product.
+   */
+  brief?: string | null
+  /**
+   * The unit of measurement for the product.
+   */
+  unit?: string | null
+  /**
+   * The type of the product.
+   */
+  product_type?: "normal" | "bind" | "combo" | "gift"
+  /**
+   * Whether the product is serial number managed.
+   */
+  sn_managed?: boolean
+  /**
+   * The date the product was published.
+   */
+  published_at?: string | Date | null
+  /**
+   * The date the product was unpublished.
+   */
+  unpublished_at?: string | Date | null
+  /**
+   * The sort order of the product.
+   */
+  sort_order?: number | null
+  /**
+   * The visibility of the product.
+   */
+  visibility?: "visible" | "hidden"
+  /**
    * When the product was created.
    */
   created_at: string | Date
@@ -148,10 +188,6 @@ export interface ProductDTO {
    * When the product was deleted.
    */
   deleted_at: string | Date
-  /**
-   * Whether the product is serial number managed.
-   */
-  sn_managed?: boolean
   /**
    * Holds custom data in key-value pairs.
    */
@@ -236,6 +272,34 @@ export interface ProductVariantDTO {
    * The width of the product variant.
    */
   width: number | null
+  /**
+   * The SKU code of the product variant.
+   */
+  sku_code?: string | null
+  /**
+   * The unit of measurement for the product variant.
+   */
+  unit?: string | null
+  /**
+   * The cost price of the product variant.
+   */
+  cost_price?: number | null
+  /**
+   * The market price of the product variant.
+   */
+  market_price?: number | null
+  /**
+   * The alert stock level of the product variant.
+   */
+  alert_stock?: number | null
+  /**
+   * The purchase limit of the product variant.
+   */
+  purchase_limit?: number | null
+  /**
+   * The specification info of the product variant.
+   */
+  spec_info?: string | null
   /**
    * The associated product options.
    *
@@ -1399,6 +1463,34 @@ export interface CreateProductVariantDTO {
    */
   width?: number | null
   /**
+   * The SKU code of the product variant.
+   */
+  sku_code?: string | null
+  /**
+   * The unit of measurement for the product variant.
+   */
+  unit?: string | null
+  /**
+   * The cost price of the product variant.
+   */
+  cost_price?: number | null
+  /**
+   * The market price of the product variant.
+   */
+  market_price?: number | null
+  /**
+   * The alert stock level of the product variant.
+   */
+  alert_stock?: number | null
+  /**
+   * The purchase limit of the product variant.
+   */
+  purchase_limit?: number | null
+  /**
+   * The specification info of the product variant.
+   */
+  spec_info?: string | null
+  /**
    * The options of the variant. Each key is an option's title, and value
    * is an option's value. If an option with the specified title doesn't exist,
    * a new one is created.
@@ -1499,6 +1591,34 @@ export interface UpdateProductVariantDTO {
    * The width of the product variant.
    */
   width?: number | null
+  /**
+   * The SKU code of the product variant.
+   */
+  sku_code?: string | null
+  /**
+   * The unit of measurement for the product variant.
+   */
+  unit?: string | null
+  /**
+   * The cost price of the product variant.
+   */
+  cost_price?: number | null
+  /**
+   * The market price of the product variant.
+   */
+  market_price?: number | null
+  /**
+   * The alert stock level of the product variant.
+   */
+  alert_stock?: number | null
+  /**
+   * The purchase limit of the product variant.
+   */
+  purchase_limit?: number | null
+  /**
+   * The specification info of the product variant.
+   */
+  spec_info?: string | null
   /**
    * The product variant options to associate with the product variant.
    */
