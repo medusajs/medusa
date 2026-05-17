@@ -77,5 +77,26 @@ export default defineConfig({
     [Modules.WORKFLOW_ENGINE]: {
       resolve: "@medusajs/workflow-engine-inmemory",
     },
+    [Modules.BRAND]: {
+      resolve: "@medusajs/brand",
+    },
+    [Modules.ORGANIZATION]: {
+      resolve: "@medusajs/organization",
+    },
+    [Modules.SHOP]: {
+      resolve: "@medusajs/shop",
+    },
+    [Modules.MATERIAL]: {
+      resolve: "@medusajs/material",
+    },
+    [Modules.PLATFORM_MAPPING]: {
+      resolve: "@medusajs/platform-mapping",
+    },
+    [Modules.CHANNEL_PRICE]: {
+      resolve: "@medusajs/channel-price",
+    },
+    [Modules.STORE_INVENTORY]: {
+      resolve: "@medusajs/store-inventory",
+    },
   },
 })
