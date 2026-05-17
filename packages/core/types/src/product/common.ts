@@ -149,6 +149,10 @@ export interface ProductDTO {
    */
   deleted_at: string | Date
   /**
+   * Whether the product is serial number managed.
+   */
+  sn_managed?: boolean
+  /**
    * Holds custom data in key-value pairs.
    */
   metadata?: MetadataType
