@@ -5,12 +5,14 @@ import { sdk } from "../../../lib/client"
 import { queryClient } from "../../../lib/query-client"
 import { INVENTORY_DETAIL_FIELDS } from "./constants"
 
+const inventoryDetailQueryParams = {
+  fields: INVENTORY_DETAIL_FIELDS,
+}
+
 const inventoryDetailQuery = (id: string) => ({
-  queryKey: inventoryItemsQueryKeys.detail(id),
+  queryKey: inventoryItemsQueryKeys.detail(id, inventoryDetailQueryParams),
   queryFn: async () =>
-    sdk.admin.inventoryItem.retrieve(id, {
-      fields: INVENTORY_DETAIL_FIELDS,
-    }),
+    sdk.admin.inventoryItem.retrieve(id, inventoryDetailQueryParams),
 })
 
 export const inventoryItemLoader = async ({ params }: LoaderFunctionArgs) => {
