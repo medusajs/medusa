@@ -4,6 +4,7 @@ import {
   IAnalyticsModuleService,
   IApiKeyModuleService,
   IAuthModuleService,
+  IBrandModuleService,
   ICacheService,
   ICachingModuleService,
   ICartModuleService,
@@ -25,6 +26,7 @@ import {
   IRegionModuleService,
   ISalesChannelModuleService,
   ISettingsModuleService,
+  IShopModuleService,
   IStockLocationService,
   IStoreModuleService,
   ITaxModuleService,
@@ -56,6 +58,7 @@ declare module "@medusajs/types" {
     [ContainerRegistrationKeys.LOGGER]: Logger
     [Modules.ANALYTICS]: IAnalyticsModuleService
     [Modules.AUTH]: IAuthModuleService
+    [Modules.BRAND]: IBrandModuleService
     [Modules.CACHE]: ICacheService
     [Modules.CART]: ICartModuleService
     [Modules.CUSTOMER]: ICustomerModuleService
@@ -80,6 +83,7 @@ declare module "@medusajs/types" {
     [Modules.NOTIFICATION]: INotificationModuleService
     [Modules.LOCKING]: ILockingModule
     [Modules.SETTINGS]: ISettingsModuleService
+    [Modules.SHOP]: IShopModuleService
     [Modules.CACHING]: ICachingModuleService
     [Modules.INDEX]: IIndexService
     [Modules.TRANSLATION]: ITranslationModuleService
