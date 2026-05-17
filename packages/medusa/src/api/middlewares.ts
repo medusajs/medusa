@@ -36,6 +36,7 @@ import { adminReservationRoutesMiddlewares } from "./admin/reservations/middlewa
 import { adminReturnReasonRoutesMiddlewares } from "./admin/return-reasons/middlewares"
 import { adminReturnRoutesMiddlewares } from "./admin/returns/middlewares"
 import { adminSalesChannelRoutesMiddlewares } from "./admin/sales-channels/middlewares"
+import { adminSalesMaterialRoutesMiddlewares } from "./admin/sales-materials/middlewares"
 import { adminShippingOptionRoutesMiddlewares } from "./admin/shipping-options/middlewares"
 import { adminShippingProfilesMiddlewares } from "./admin/shipping-profiles/middlewares"
 import { adminStockLocationRoutesMiddlewares } from "./admin/stock-locations/middlewares"
@@ -124,6 +125,7 @@ export default defineMiddlewares([
   ...adminShippingOptionRoutesMiddlewares,
   ...adminDraftOrderRoutesMiddlewares,
   ...adminSalesChannelRoutesMiddlewares,
+  ...adminSalesMaterialRoutesMiddlewares,
   ...adminStockLocationRoutesMiddlewares,
   ...adminShippingOptionTypeRoutesMiddlewares,
   ...adminProductTypeRoutesMiddlewares,
