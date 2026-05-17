@@ -1,6 +1,7 @@
 import { defineMiddlewares } from "../utils/define-middlewares"
 import { adminApiKeyRoutesMiddlewares } from "./admin/api-keys/middlewares"
 import { adminBasicMaterialRoutesMiddlewares } from "./admin/basic-materials/middlewares"
+import { adminStoreInventoryRoutesMiddlewares } from "./admin/store-inventories/middlewares"
 import { adminCampaignRoutesMiddlewares } from "./admin/campaigns/middlewares"
 import { adminClaimRoutesMiddlewares } from "./admin/claims/middlewares"
 import { adminCollectionRoutesMiddlewares } from "./admin/collections/middlewares"
@@ -111,6 +112,7 @@ export default defineMiddlewares([
   ...adminTranslationsRoutesMiddlewares,
   ...adminApiKeyRoutesMiddlewares,
   ...adminBasicMaterialRoutesMiddlewares,
+  ...adminStoreInventoryRoutesMiddlewares,
   ...hooksRoutesMiddlewares,
   ...adminStoreRoutesMiddlewares,
   ...adminCurrencyRoutesMiddlewares,
