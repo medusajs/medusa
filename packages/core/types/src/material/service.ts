@@ -4,6 +4,8 @@ import { Context } from "../shared-context"
 import {
   BasicMaterialDTO,
   FilterableBasicMaterialProps,
+  ComboItemDTO,
+  FilterableComboItemProps,
   SalesMaterialDTO,
   FilterableSalesMaterialProps,
 } from "./common"
@@ -87,6 +89,82 @@ export interface IMaterialModuleService extends IModuleService {
     config?: FindConfig<BasicMaterialDTO>,
     sharedContext?: Context
   ): Promise<[BasicMaterialDTO[], number]>
+
+  // ComboItem methods
+
+  /**
+   * This method creates combo items.
+   */
+  createComboItems(
+    data: unknown[],
+    sharedContext?: Context
+  ): Promise<ComboItemDTO[]>
+
+  /**
+   * This method creates a combo item.
+   */
+  createComboItems(
+    data: unknown,
+    sharedContext?: Context
+  ): Promise<ComboItemDTO>
+
+  /**
+   * This method updates a combo item.
+   */
+  updateComboItems(
+    id: string,
+    data: unknown,
+    sharedContext?: Context
+  ): Promise<ComboItemDTO>
+
+  /**
+   * This method updates combo items matching the specified filters.
+   */
+  updateComboItems(
+    selector: FilterableComboItemProps,
+    data: unknown,
+    sharedContext?: Context
+  ): Promise<ComboItemDTO[]>
+
+  /**
+   * This method deletes combo items by their IDs.
+   */
+  deleteComboItems(
+    ids: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  /**
+   * This method deletes a combo item by its ID.
+   */
+  deleteComboItems(id: string, sharedContext?: Context): Promise<void>
+
+  /**
+   * This method retrieves a combo item by its ID.
+   */
+  retrieveComboItem(
+    id: string,
+    config?: FindConfig<ComboItemDTO>,
+    sharedContext?: Context
+  ): Promise<ComboItemDTO>
+
+  /**
+   * This method retrieves a list of combo items.
+   */
+  listComboItems(
+    filters?: FilterableComboItemProps,
+    config?: FindConfig<ComboItemDTO>,
+    sharedContext?: Context
+  ): Promise<ComboItemDTO[]>
+
+  /**
+   * This method retrieves a paginated list of combo items along with the total count.
+   */
+  listAndCountComboItems(
+    filters?: FilterableComboItemProps,
+    config?: FindConfig<ComboItemDTO>,
+    sharedContext?: Context
+  ): Promise<[ComboItemDTO[], number]>
 
   // SalesMaterial methods
 

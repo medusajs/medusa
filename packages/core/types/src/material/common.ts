@@ -268,3 +268,69 @@ export interface FilterableSalesMaterialProps
    */
   sales_type?: SalesType | SalesType[]
 }
+
+/**
+ * The combo item details.
+ */
+export interface ComboItemDTO {
+  /**
+   * The ID of the combo item.
+   */
+  id: string
+
+  /**
+   * The quantity of the child material in the combo.
+   */
+  quantity?: number
+
+  /**
+   * Whether the combo item is optional.
+   */
+  is_optional?: boolean
+
+  /**
+   * The sort order of the combo item.
+   */
+  sort_order?: number
+
+  /**
+   * The parent material ID.
+   */
+  parent_material_id?: string
+
+  /**
+   * The child material ID.
+   */
+  child_material_id?: string
+
+  /**
+   * The created at of the combo item.
+   */
+  created_at: string
+
+  /**
+   * The updated at of the combo item.
+   */
+  updated_at: string
+}
+
+/**
+ * The filters to apply on the retrieved combo items.
+ */
+export interface FilterableComboItemProps
+  extends BaseFilterable<FilterableComboItemProps> {
+  /**
+   * The IDs to filter the combo items by.
+   */
+  id?: string | string[]
+
+  /**
+   * Filter combo items by their parent material IDs.
+   */
+  parent_material_id?: string | string[]
+
+  /**
+   * Filter combo items by their child material IDs.
+   */
+  child_material_id?: string | string[]
+}
