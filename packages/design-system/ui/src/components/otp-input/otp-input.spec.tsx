@@ -2,9 +2,9 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import * as React from "react"
 import { vi } from "vitest"
 
-import { CodeInput } from "./code-input"
+import { OtpInput } from "./otp-input"
 
-const ControlledCodeInput = ({
+const ControlledOtpInput = ({
   initialValue = "",
   onComplete,
 }: {
@@ -14,7 +14,7 @@ const ControlledCodeInput = ({
   const [value, setValue] = React.useState(initialValue)
 
   return (
-    <CodeInput
+    <OtpInput
       aria-label="Verification code"
       value={value}
       onChange={setValue}
@@ -23,16 +23,16 @@ const ControlledCodeInput = ({
   )
 }
 
-describe("CodeInput", () => {
+describe("OtpInput", () => {
   it("renders six inputs by default", () => {
-    render(<ControlledCodeInput />)
+    render(<ControlledOtpInput />)
 
     expect(screen.getByRole("group")).toBeInTheDocument()
     expect(screen.getAllByRole("textbox")).toHaveLength(6)
   })
 
   it("accepts only numeric values", () => {
-    render(<ControlledCodeInput />)
+    render(<ControlledOtpInput />)
 
     const [firstInput] = screen.getAllByRole("textbox")
 
@@ -44,7 +44,7 @@ describe("CodeInput", () => {
   it("fills the inputs when pasting a complete code", () => {
     const onComplete = vi.fn()
 
-    render(<ControlledCodeInput onComplete={onComplete} />)
+    render(<ControlledOtpInput onComplete={onComplete} />)
 
     const inputs = screen.getAllByRole("textbox")
 
@@ -66,7 +66,7 @@ describe("CodeInput", () => {
   })
 
   it("clears the previous input when backspacing from an empty input", () => {
-    render(<ControlledCodeInput initialValue="1" />)
+    render(<ControlledOtpInput initialValue="1" />)
 
     const inputs = screen.getAllByRole("textbox")
 

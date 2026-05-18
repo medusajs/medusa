@@ -1,28 +1,28 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
 
-import { CodeInput } from "./code-input"
+import { OtpInput } from "./otp-input"
 
-type CodeInputStoryProps = React.ComponentProps<typeof CodeInput>
+type OtpInputStoryProps = React.ComponentProps<typeof OtpInput>
 
-const CodeInputStory = (args: CodeInputStoryProps) => {
+const OtpInputStory = (args: OtpInputStoryProps) => {
   const [value, setValue] = React.useState(args.value ?? "")
 
-  return <CodeInput {...args} value={value} onChange={setValue} />
+  return <OtpInput {...args} value={value} onChange={setValue} />
 }
 
-const meta: Meta<typeof CodeInput> = {
-  title: "Components/CodeInput",
-  component: CodeInput,
+const meta: Meta<typeof OtpInput> = {
+  title: "Components/OtpInput",
+  component: OtpInput,
   parameters: {
     layout: "centered",
   },
-  render: (args) => <CodeInputStory {...args} />,
+  render: (args) => <OtpInputStory {...args} />,
 }
 
 export default meta
 
-type Story = StoryObj<typeof CodeInput>
+type Story = StoryObj<typeof OtpInput>
 
 export const Default: Story = {
   args: {

@@ -4,7 +4,7 @@ import * as React from "react"
 
 import { clx } from "@/utils/clx"
 
-interface CodeInputProps
+interface OtpInputProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
   /**
    * Whether the inputs should focus the first field on mount.
@@ -48,12 +48,12 @@ interface CodeInputProps
   value: string
 }
 
-const sanitizeCode = (value: string, length: number) => {
+const sanitizeOtp = (value: string, length: number) => {
   return value.replace(/\D/g, "").slice(0, length)
 }
 
 const getDigits = (value: string, length: number) => {
-  return sanitizeCode(value, length).padEnd(length, " ").split("")
+  return sanitizeOtp(value, length).padEnd(length, " ").split("")
 }
 
 const getWritableDigits = (value: string, length: number) => {
@@ -73,7 +73,7 @@ const getDigitGroups = (length: number, groupSize: number) => {
   )
 }
 
-const applyCodeAtIndex = (
+const applyOtpAtIndex = (
   digits: string[],
   index: number,
   value: string,
@@ -89,13 +89,13 @@ const applyCodeAtIndex = (
 }
 
 /**
- * A controlled segmented input for one-time codes, PINs, and short numeric verification codes.
+ * A controlled segmented input for one-time passwords, PINs, and short numeric verification codes.
  */
-const CodeInput = React.forwardRef<HTMLDivElement, CodeInputProps>(
+const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
   (
     {
       "aria-invalid": ariaInvalid,
-      "aria-label": ariaLabel = "Code",
+      "aria-label": ariaLabel = "One-time password",
       autoFocus,
       className,
       disabled,
@@ -124,7 +124,7 @@ const CodeInput = React.forwardRef<HTMLDivElement, CodeInputProps>(
     }
 
     const updateValue = (nextValue: string, nextFocusIndex?: number) => {
-      const sanitizedValue = sanitizeCode(nextValue, codeLength)
+      const sanitizedValue = sanitizeOtp(nextValue, codeLength)
 
       onChange(sanitizedValue)
 
@@ -139,7 +139,7 @@ const CodeInput = React.forwardRef<HTMLDivElement, CodeInputProps>(
 
     const handleChange = (index: number, rawValue: string) => {
       const nextDigits = getWritableDigits(value, codeLength)
-      const incoming = sanitizeCode(rawValue, codeLength)
+      const incoming = sanitizeOtp(rawValue, codeLength)
 
       if (!incoming) {
         nextDigits[index] = ""
@@ -147,7 +147,7 @@ const CodeInput = React.forwardRef<HTMLDivElement, CodeInputProps>(
         return
       }
 
-      applyCodeAtIndex(nextDigits, index, incoming, codeLength)
+      applyOtpAtIndex(nextDigits, index, incoming, codeLength)
 
       updateValue(
         nextDigits.join(""),
@@ -199,7 +199,7 @@ const CodeInput = React.forwardRef<HTMLDivElement, CodeInputProps>(
     ) => {
       event.preventDefault()
 
-      const pastedValue = sanitizeCode(
+      const pastedValue = sanitizeOtp(
         event.clipboardData.getData("text"),
         codeLength
       )
@@ -215,7 +215,7 @@ const CodeInput = React.forwardRef<HTMLDivElement, CodeInputProps>(
 
       const nextDigits = getWritableDigits(value, codeLength)
 
-      applyCodeAtIndex(nextDigits, index, pastedValue, codeLength)
+      applyOtpAtIndex(nextDigits, index, pastedValue, codeLength)
 
       updateValue(
         nextDigits.join(""),
@@ -288,7 +288,7 @@ const CodeInput = React.forwardRef<HTMLDivElement, CodeInputProps>(
     )
   }
 )
-CodeInput.displayName = "CodeInput"
+OtpInput.displayName = "OtpInput"
 
-export { CodeInput }
-export type { CodeInputProps }
+export { OtpInput }
+export type { OtpInputProps }
