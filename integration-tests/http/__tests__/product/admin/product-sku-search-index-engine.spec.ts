@@ -120,11 +120,7 @@ medusaIntegrationTestRunner({
       ]
 
       await waitForIndexedEntities(dbConnection, "Product", productIds)
-      await waitForIndexedEntities(
-        dbConnection,
-        "ProductVariant",
-        variantIds
-      )
+      await waitForIndexedEntities(dbConnection, "ProductVariant", variantIds)
     })
 
     afterAll(() => {
@@ -148,8 +144,7 @@ medusaIntegrationTestRunner({
       it("matches by variant SKU via the search-reach EXISTS subquery", async () => {
         // The product title has no occurrence of the SKU token, so the only
         // way this match can come back is via the EXISTS branch traversing
-        // into cat_productvariant. This is the path the customer-reported
-        // 11s queries used to walk and is the case we optimised.
+        // into cat_productvariant.
         const response = await api.get(
           "/admin/products?q=REACHBETA",
           adminHeaders
@@ -179,11 +174,7 @@ medusaIntegrationTestRunner({
       })
 
       it("returns an empty set when nothing in the catalog matches", async () => {
-        // Mirrors the customer-reported worst case: a junk token that
-        // matches neither product nor variant tsvector. Under the old
-        // OR-on-join plan this took 11s; here we just confirm semantic
-        // correctness (the empty result) — the speedup is verified
-        // separately via DB benchmarking.
+        // Junk token that matches neither product nor variant tsvector.
         const response = await api.get(
           "/admin/products?q=zzznosuchtermzzz",
           adminHeaders
@@ -222,9 +213,7 @@ medusaIntegrationTestRunner({
       })
 
       it("hydrates variant data on the matched product", async () => {
-        // The index engine returns matching ids; query.graph then hydrates
-        // relations. The perf fix only touches the id-finding query, but
-        // the response shape is what callers depend on — so guard it.
+        // The index engine returns matching ids; query.graph then hydrates relations.
         const response = await api.get(
           "/admin/products?q=REACHBETA",
           adminHeaders
