@@ -1,5 +1,6 @@
 "use client"
 
+import posthog from "posthog-js"
 import React, {
   createContext,
   useCallback,
@@ -51,6 +52,23 @@ export const AnalyticsProvider = ({
   reoDevKey,
   children,
 }: AnalyticsProviderProps) => {
+  useEffect(() => {
+    const getCookie = (name: string) => {
+      const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`))
+      return match ? decodeURIComponent(match[1]) : undefined
+    }
+
+    const userId = getCookie("mc_cloud_user_id")
+    const orgId = getCookie("mc_cloud_org_id")
+
+    if (userId) {
+      posthog.identify(userId)
+      if (orgId) {
+        posthog.group("organization", orgId)
+      }
+    }
+  }, [])
+
   const [eventsQueue, setEventsQueue] = useState<TrackedEvent[]>([])
   const { track: trackWithSegment } = useSegmentAnalytics({
     segmentWriteKey,
