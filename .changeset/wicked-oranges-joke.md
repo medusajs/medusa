@@ -5,4 +5,4 @@
 "@medusajs/medusa": patch
 ---
 
-fix(index,modules-sdk,types,medusa): introduce searchReach concept to make index module searche more performant
+fix(index,modules-sdk,types,medusa): introduce searchReach concept to make index module search more performant
