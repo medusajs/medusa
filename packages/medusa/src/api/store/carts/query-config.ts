@@ -49,6 +49,7 @@ export const defaultStoreCartFields = [
   "items.variant",
   "items.variant_id",
   "items.product_id",
+  "items.is_giftcard",
   "items.product.categories.id",
   "items.product.tags.id",
   "items.product.collection_id",
