@@ -12,7 +12,7 @@
     "db:sync-links": "yarn medusa db:sync-links",
     "seed": "yarn medusa exec ./scripts/seed.ts",
     "seed:china": "yarn medusa exec ./scripts/seed-china.ts",
-    "setup": "docker compose up -d && sleep 5 && yarn db:setup && yarn db:migrate && yarn db:sync-links && yarn seed",
+    "setup": "docker compose up -d && sleep 5 && yarn db:setup && yarn db:migrate && yarn db:sync-links && yarn seed:china",
     "clean": "docker compose down -v && docker compose up -d"
   },
   "dependencies": {

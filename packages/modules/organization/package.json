@@ -10,13 +10,15 @@
   "scripts": {
     "build": "tsc --build",
     "watch": "tsc --build --watch",
-    "test": "jest"
+    "test": "jest",
+    "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*.spec.ts\""
   },
   "dependencies": {
     "@medusajs/framework": "workspace:*",
     "@medusajs/utils": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.3.0"
+    "typescript": "^5.3.0",
+    "@medusajs/test-utils": "workspace:*"
   }
 }

@@ -1,11 +1,12 @@
 import { ExecArgs } from "@medusajs/framework/types"
+import { Logger } from "@medusajs/types"
 
 export default async function seedChina({ container }: ExecArgs) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve<Logger>("logger")
   logger.info("Starting China e-commerce seed...")
 
   // Seed Organization
-  const orgModule = container.resolve("organizationModuleService") as any
+  const orgModule = container.resolve("organization") as any
   const org = await orgModule.createOrganizations({
     name: "Main Operations",
     code: "OPS001",
@@ -14,7 +15,7 @@ export default async function seedChina({ container }: ExecArgs) {
   logger.info("Created organization: " + org.id)
 
   // Seed Brand
-  const brandModule = container.resolve("brandModuleService") as any
+  const brandModule = container.resolve("brand") as any
   const brand = await brandModule.createBrands({
     name: "Test Brand",
     slug: "test-brand",
@@ -23,7 +24,7 @@ export default async function seedChina({ container }: ExecArgs) {
   logger.info("Created brand: " + brand.id)
 
   // Seed Shop - Taobao
-  const shopModule = container.resolve("shopModuleService") as any
+  const shopModule = container.resolve("shop") as any
   const shopTaobao = await shopModule.createShops({
     shop_code: "TAOBAO_001",
     shop_name: "Test Taobao Shop",
@@ -42,7 +43,7 @@ export default async function seedChina({ container }: ExecArgs) {
   logger.info("Created Douyin shop: " + shopDouyin.id)
 
   // Seed Basic Material
-  const materialModule = container.resolve("materialModuleService") as any
+  const materialModule = container.resolve("material") as any
   const basicMaterial = await materialModule.createBasicMaterials({
     material_code: "BM001",
     material_name: "Test T-Shirt",
@@ -94,7 +95,7 @@ export default async function seedChina({ container }: ExecArgs) {
   logger.info("Created Douyin sales material: " + salesMaterialDouyin.id)
 
   // Seed Platform SKU - Taobao
-  const platformMappingModule = container.resolve("platformMappingModuleService") as any
+  const platformMappingModule = container.resolve("platform_mapping") as any
   const platformSkuTaobao = await platformMappingModule.createPlatformSkus({
     shop_id: shopTaobao.id,
     platform_type: "taobao",
@@ -135,7 +136,7 @@ export default async function seedChina({ container }: ExecArgs) {
   logger.info("Created platform sync task: " + syncTask.id)
 
   // Seed Channel Price - Taobao retail
-  const channelPriceModule = container.resolve("channelPriceModuleService") as any
+  const channelPriceModule = container.resolve("channel_price") as any
   const channelPriceRetail = await channelPriceModule.createChannelPrices({
     sales_material_id: salesMaterialTaobao.id,
     shop_id: shopTaobao.id,
@@ -160,7 +161,7 @@ export default async function seedChina({ container }: ExecArgs) {
   logger.info("Created wholesale channel price: " + channelPriceWholesale.id)
 
   // Seed Store Inventory
-  const storeInventoryModule = container.resolve("storeInventoryModuleService") as any
+  const storeInventoryModule = container.resolve("store_inventory") as any
   const storeInventory = await storeInventoryModule.createStoreInventories({
     location_id: "store_001",
     material_id: basicMaterial.id,
