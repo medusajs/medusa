@@ -39,6 +39,13 @@
     "@medusajs/framework": "2.15.2",
     "@medusajs/test-utils": "2.15.2"
   },
+  "dependencies": {
+    "@otplib/core": "^13.4.0",
+    "@otplib/plugin-crypto-node": "^13.4.0",
+    "@otplib/totp": "^13.4.0",
+    "@otplib/uri": "^13.4.0",
+    "scrypt-kdf": "^2.0.1"
+  },
   "peerDependencies": {
     "@medusajs/framework": "2.15.2"
   }
