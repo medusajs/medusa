@@ -117,10 +117,10 @@ export const createGiftCardsWorkflow = createWorkflow(
       }));
     });
 
-    updateGiftCardsWorkflow.runAsStep({
+    const redeemedGiftCards = updateGiftCardsWorkflow.runAsStep({
       input: updateGiftCardsInput,
     });
 
-    return new WorkflowResponse(giftCards);
+    return new WorkflowResponse(redeemedGiftCards);
   }
 );

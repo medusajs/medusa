@@ -5,7 +5,7 @@ import GiftCard from "./models/gift-card";
 class LoyaltyModuleService extends MedusaService({
   GiftCard,
 }) {
-  private options_: LoyaltyPluginOptions
+  private options_?: LoyaltyPluginOptions
 
   constructor(dependencies: Record<string, unknown>, options: LoyaltyPluginOptions = {}) {
     super(dependencies, options)
@@ -13,7 +13,7 @@ class LoyaltyModuleService extends MedusaService({
   }
 
   getOptions(): LoyaltyPluginOptions {
-    return this.options_
+    return this.options_ ?? {}
   }
 }
 
