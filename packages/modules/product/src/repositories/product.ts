@@ -5,7 +5,6 @@ import {
   arrayDifference,
   DALUtils,
   deepCopy,
-  isDefined,
   isPresent,
   MedusaError,
   mergeMetadata,
@@ -53,28 +52,6 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
     return Array.from(relationsToLoad)
   }
 
-  // We should probably fix the column types in the database to avoid this
-  // It would also match the types in ProductVariant, which are already numbers
-  static #correctUpdateDTOTypes(productToUpdate: {
-    weight?: string | number
-    length?: string | number
-    height?: string | number
-    width?: string | number
-  }) {
-    if (isDefined(productToUpdate.weight)) {
-      productToUpdate.weight = productToUpdate.weight?.toString()
-    }
-    if (isDefined(productToUpdate.length)) {
-      productToUpdate.length = productToUpdate.length?.toString()
-    }
-    if (isDefined(productToUpdate.height)) {
-      productToUpdate.height = productToUpdate.height?.toString()
-    }
-    if (isDefined(productToUpdate.width)) {
-      productToUpdate.width = productToUpdate.width?.toString()
-    }
-  }
-
   async deepUpdate(
     productsToUpdate: ({ id: string } & any)[],
     validateVariantOptions: (
@@ -88,7 +65,6 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
     const productIdsToUpdate: string[] = []
 
     productsToUpdate_.forEach((productToUpdate) => {
-      ProductRepository.#correctUpdateDTOTypes(productToUpdate)
       productIdsToUpdate.push(productToUpdate.id)
     })
 

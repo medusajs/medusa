@@ -862,39 +862,39 @@
         },
         "weight": {
           "name": "weight",
-          "type": "text",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "text"
+          "mappedType": "float"
         },
         "length": {
           "name": "length",
-          "type": "text",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "text"
+          "mappedType": "float"
         },
         "height": {
           "name": "height",
-          "type": "text",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "text"
+          "mappedType": "float"
         },
         "width": {
           "name": "width",
-          "type": "text",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "text"
+          "mappedType": "float"
         },
         "origin_country": {
           "name": "origin_country",
@@ -1755,39 +1755,39 @@
         },
         "weight": {
           "name": "weight",
-          "type": "integer",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "integer"
+          "mappedType": "float"
         },
         "length": {
           "name": "length",
-          "type": "integer",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "integer"
+          "mappedType": "float"
         },
         "height": {
           "name": "height",
-          "type": "integer",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "integer"
+          "mappedType": "float"
         },
         "width": {
           "name": "width",
-          "type": "integer",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "integer"
+          "mappedType": "float"
         },
         "metadata": {
           "name": "metadata",

@@ -717,6 +717,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "loaded": true,
                   "isPathHref": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/steps/validateCartItemsStep",
+                  "title": "validateCartItemsStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/steps/validateCartPaymentsStep",
                   "title": "validateCartPaymentsStep",
                   "description": "",
@@ -6883,6 +6892,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/validateClaimStoreCreditAccountInputStep",
                   "title": "validateClaimStoreCreditAccountInputStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/validateSourceStoreCreditAccountsStep",
+                  "title": "validateSourceStoreCreditAccountsStep",
                   "description": "",
                   "children": []
                 },

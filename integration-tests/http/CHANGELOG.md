@@ -1,5 +1,133 @@
 # integration-tests-http
 
+## 1.1.12
+
+### Patch Changes
+
+- Updated dependencies [[`9990b69ab76f1a575c6a68875627d16764cc1564`](https://github.com/medusajs/medusa/commit/9990b69ab76f1a575c6a68875627d16764cc1564), [`2b21d15640ae459386b0acea4c83804c6f502b9d`](https://github.com/medusajs/medusa/commit/2b21d15640ae459386b0acea4c83804c6f502b9d), [`5e8fc904fe00d8c89b6615cfbbdbde66531d2337`](https://github.com/medusajs/medusa/commit/5e8fc904fe00d8c89b6615cfbbdbde66531d2337)]:
+  - @medusajs/utils@2.15.2
+  - @medusajs/framework@2.15.2
+  - @medusajs/medusa@2.15.2
+  - @medusajs/modules-sdk@2.15.2
+  - @medusajs/event-bus-redis@2.15.2
+  - @medusajs/core-flows@2.15.2
+  - @medusajs/test-utils@2.15.2
+  - @medusajs/api-key@2.15.2
+  - @medusajs/auth@2.15.2
+  - @medusajs/cache-inmemory@2.15.2
+  - @medusajs/customer@2.15.2
+  - @medusajs/event-bus-local@2.15.2
+  - @medusajs/fulfillment@2.15.2
+  - @medusajs/inventory@2.15.2
+  - @medusajs/pricing@2.15.2
+  - @medusajs/product@2.15.2
+  - @medusajs/promotion@2.15.2
+  - @medusajs/fulfillment-manual@2.15.2
+  - @medusajs/region@2.15.2
+  - @medusajs/stock-location@2.15.2
+  - @medusajs/store@2.15.2
+  - @medusajs/tax@2.15.2
+  - @medusajs/translation@2.15.2
+  - @medusajs/user@2.15.2
+  - @medusajs/workflow-engine-inmemory@2.15.2
+  - @medusajs/loyalty-plugin@2.15.2
+
+## 1.1.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa@2.15.1
+  - @medusajs/test-utils@2.15.1
+  - @medusajs/api-key@2.15.1
+  - @medusajs/auth@2.15.1
+  - @medusajs/customer@2.15.1
+  - @medusajs/fulfillment@2.15.1
+  - @medusajs/inventory@2.15.1
+  - @medusajs/pricing@2.15.1
+  - @medusajs/product@2.15.1
+  - @medusajs/promotion@2.15.1
+  - @medusajs/region@2.15.1
+  - @medusajs/stock-location@2.15.1
+  - @medusajs/store@2.15.1
+  - @medusajs/tax@2.15.1
+  - @medusajs/translation@2.15.1
+  - @medusajs/user@2.15.1
+  - @medusajs/workflow-engine-inmemory@2.15.1
+  - @medusajs/loyalty-plugin@2.15.1
+  - @medusajs/core-flows@2.15.1
+  - @medusajs/framework@2.15.1
+  - @medusajs/modules-sdk@2.15.1
+  - @medusajs/utils@2.15.1
+  - @medusajs/cache-inmemory@2.15.1
+  - @medusajs/event-bus-local@2.15.1
+  - @medusajs/event-bus-redis@2.15.1
+  - @medusajs/fulfillment-manual@2.15.1
+
+## 1.1.10
+
+### Patch Changes
+
+- Updated dependencies [[`b1c4aeea58293e2c2ad0c72d15e9bf45e6168131`](https://github.com/medusajs/medusa/commit/b1c4aeea58293e2c2ad0c72d15e9bf45e6168131), [`7747d0510b24bcce5e68bf32236559d809dabdee`](https://github.com/medusajs/medusa/commit/7747d0510b24bcce5e68bf32236559d809dabdee), [`4a3f9ed2e076713f47d4fb2458dee528b36b864e`](https://github.com/medusajs/medusa/commit/4a3f9ed2e076713f47d4fb2458dee528b36b864e), [`75b23ffcdf5afeedb5321689cbd844342f218846`](https://github.com/medusajs/medusa/commit/75b23ffcdf5afeedb5321689cbd844342f218846), [`5a7b0142367491236167477e613de763f10b7e32`](https://github.com/medusajs/medusa/commit/5a7b0142367491236167477e613de763f10b7e32), [`436f549e326563cc3da4b7b142c12072fb89eed4`](https://github.com/medusajs/medusa/commit/436f549e326563cc3da4b7b142c12072fb89eed4), [`34f326d729aa9e1bafd6ef644ccb47621bf2a14e`](https://github.com/medusajs/medusa/commit/34f326d729aa9e1bafd6ef644ccb47621bf2a14e), [`4715ef174e9945600ef1082ddeb69ca0fdc5eaba`](https://github.com/medusajs/medusa/commit/4715ef174e9945600ef1082ddeb69ca0fdc5eaba), [`8539bc71a554ba0dd6bc48511aa980d93d3f2664`](https://github.com/medusajs/medusa/commit/8539bc71a554ba0dd6bc48511aa980d93d3f2664), [`6d0fd2fb38d56e76580b52d4e6ea74d34db2000e`](https://github.com/medusajs/medusa/commit/6d0fd2fb38d56e76580b52d4e6ea74d34db2000e), [`f57b942b8bbd385f32203965e2f54a3964e812eb`](https://github.com/medusajs/medusa/commit/f57b942b8bbd385f32203965e2f54a3964e812eb), [`667f3e213d847e2a44ba486522f9fb7b36c69e9a`](https://github.com/medusajs/medusa/commit/667f3e213d847e2a44ba486522f9fb7b36c69e9a), [`cd22b7df5120993f2311cf6fecc8f213c383f16b`](https://github.com/medusajs/medusa/commit/cd22b7df5120993f2311cf6fecc8f213c383f16b)]:
+  - @medusajs/medusa@2.15.0
+  - @medusajs/core-flows@2.15.0
+  - @medusajs/utils@2.15.0
+  - @medusajs/product@2.15.0
+  - @medusajs/pricing@2.15.0
+  - @medusajs/test-utils@2.15.0
+  - @medusajs/framework@2.15.0
+  - @medusajs/modules-sdk@2.15.0
+  - @medusajs/event-bus-redis@2.15.0
+  - @medusajs/loyalty-plugin@2.15.0
+  - @medusajs/api-key@2.15.0
+  - @medusajs/auth@2.15.0
+  - @medusajs/customer@2.15.0
+  - @medusajs/fulfillment@2.15.0
+  - @medusajs/inventory@2.15.0
+  - @medusajs/promotion@2.15.0
+  - @medusajs/region@2.15.0
+  - @medusajs/stock-location@2.15.0
+  - @medusajs/store@2.15.0
+  - @medusajs/tax@2.15.0
+  - @medusajs/translation@2.15.0
+  - @medusajs/user@2.15.0
+  - @medusajs/workflow-engine-inmemory@2.15.0
+  - @medusajs/cache-inmemory@2.15.0
+  - @medusajs/event-bus-local@2.15.0
+  - @medusajs/fulfillment-manual@2.15.0
+
+## 1.1.9
+
+### Patch Changes
+
+- Updated dependencies [[`aa407641ce6ddcd2e27352315b0f7b911a2c0acf`](https://github.com/medusajs/medusa/commit/aa407641ce6ddcd2e27352315b0f7b911a2c0acf), [`d29b9a1d80580d4b5dce926387c465260936e5ec`](https://github.com/medusajs/medusa/commit/d29b9a1d80580d4b5dce926387c465260936e5ec), [`650938944e2b5b6fbe3f044b8ced8d260b6742a0`](https://github.com/medusajs/medusa/commit/650938944e2b5b6fbe3f044b8ced8d260b6742a0), [`cce180c48ed1378847ab191f39adbcbbc325bfda`](https://github.com/medusajs/medusa/commit/cce180c48ed1378847ab191f39adbcbbc325bfda), [`0303d7f30b7c636037c1df496f39aa04c0556248`](https://github.com/medusajs/medusa/commit/0303d7f30b7c636037c1df496f39aa04c0556248), [`be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0`](https://github.com/medusajs/medusa/commit/be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0), [`7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23`](https://github.com/medusajs/medusa/commit/7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23), [`243e88510cd7bb4187169ee383519a9be7594854`](https://github.com/medusajs/medusa/commit/243e88510cd7bb4187169ee383519a9be7594854), [`bd162f7a93e326c73b9929918b5bb9e3a458cc77`](https://github.com/medusajs/medusa/commit/bd162f7a93e326c73b9929918b5bb9e3a458cc77), [`a0e57e419cd3e597526460fdbfed7e3e4842aa9b`](https://github.com/medusajs/medusa/commit/a0e57e419cd3e597526460fdbfed7e3e4842aa9b), [`e434f5f117d8a19752ff50b2f1a49a6af7164df1`](https://github.com/medusajs/medusa/commit/e434f5f117d8a19752ff50b2f1a49a6af7164df1)]:
+  - @medusajs/medusa@2.14.2
+  - @medusajs/pricing@2.14.2
+  - @medusajs/framework@2.14.2
+  - @medusajs/core-flows@2.14.2
+  - @medusajs/loyalty-plugin@2.14.2
+  - @medusajs/region@2.14.2
+  - @medusajs/test-utils@2.14.2
+  - @medusajs/modules-sdk@2.14.2
+  - @medusajs/utils@2.14.2
+  - @medusajs/event-bus-redis@2.14.2
+  - @medusajs/api-key@2.14.2
+  - @medusajs/auth@2.14.2
+  - @medusajs/cache-inmemory@2.14.2
+  - @medusajs/customer@2.14.2
+  - @medusajs/event-bus-local@2.14.2
+  - @medusajs/fulfillment@2.14.2
+  - @medusajs/inventory@2.14.2
+  - @medusajs/product@2.14.2
+  - @medusajs/promotion@2.14.2
+  - @medusajs/fulfillment-manual@2.14.2
+  - @medusajs/stock-location@2.14.2
+  - @medusajs/store@2.14.2
+  - @medusajs/tax@2.14.2
+  - @medusajs/translation@2.14.2
+  - @medusajs/user@2.14.2
+  - @medusajs/workflow-engine-inmemory@2.14.2
+
 ## 1.1.8
 
 ### Patch Changes

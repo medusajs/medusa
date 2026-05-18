@@ -58,14 +58,14 @@ async function runAnalyzeCloud(options: AnalyzeCloudOptions) {
     process.exit(2)
   }
 
-  console.error(chalk.green(`Building cloud docs prompt`))
+  console.log(chalk.green(`Building cloud docs prompt`))
 
   const builder = new CloudContextBuilder()
   const result = builder.build(payload)
 
   if (dryRun) {
-    console.error(chalk.cyan("Dry run — prompt preview:"))
-    console.error(result.claudePrompt.slice(0, 500) + "...")
+    console.log(chalk.cyan("Dry run — prompt preview:"))
+    console.log(result.claudePrompt.slice(0, 500) + "...")
     return
   }
 
@@ -73,7 +73,7 @@ async function runAnalyzeCloud(options: AnalyzeCloudOptions) {
 
   if (output) {
     writeFileSync(output, json)
-    console.error(chalk.green(`Analysis written to: ${output}`))
+    console.log(chalk.green(`Analysis written to: ${output}`))
   } else {
     process.stdout.write(json)
   }

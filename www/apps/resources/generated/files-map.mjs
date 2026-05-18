@@ -2936,6 +2936,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateAndReturnShippingMethodsDataStep"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateCartItemsStep/page.mdx",
+    "pathname": "/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateCartItemsStep"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateCartPaymentsStep/page.mdx",
     "pathname": "/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateCartPaymentsStep"
   },
@@ -3074,6 +3078,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.validateAndReturnShippingMethodsDataStepId/page.mdx",
     "pathname": "/references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.validateAndReturnShippingMethodsDataStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.validateCartItemsStepId/page.mdx",
+    "pathname": "/references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.validateCartItemsStepId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.validateCartPaymentsStepId/page.mdx",
@@ -7836,6 +7844,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.validateClaimStoreCreditAccountInputStep"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.validateSourceStoreCreditAccountsStep/page.mdx",
+    "pathname": "/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.validateSourceStoreCreditAccountsStep"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.validateStoreCreditAccountInputStep/page.mdx",
     "pathname": "/references/core_flows/Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.validateStoreCreditAccountInputStep"
   },
@@ -8622,6 +8634,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.UpdateStockLocationsWorkflowInput/page.mdx",
     "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.UpdateStockLocationsWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidateCartItemsStepInput/page.mdx",
+    "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidateCartItemsStepInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidateCartPaymentsStepInput/page.mdx",
@@ -13858,6 +13874,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/PaymentCollection/methods/js_sdk.admin.PaymentCollection.create/page.mdx",
     "pathname": "/references/js_sdk/admin/PaymentCollection/methods/js_sdk.admin.PaymentCollection.create"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/PaymentCollection/methods/js_sdk.admin.PaymentCollection.createPaymentSession/page.mdx",
+    "pathname": "/references/js_sdk/admin/PaymentCollection/methods/js_sdk.admin.PaymentCollection.createPaymentSession"
   },
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/PaymentCollection/methods/js_sdk.admin.PaymentCollection.delete/page.mdx",
@@ -22552,6 +22572,10 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminIndexSyncPayload"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminInitializePaymentSession/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminInitializePaymentSession"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminInitiateOrderEditRequest/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminInitiateOrderEditRequest"
   },
@@ -22710,6 +22734,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminOrderLineItem/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminOrderLineItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminOrderLinePreview/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminOrderLinePreview"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminOrderPreview/page.mdx",
