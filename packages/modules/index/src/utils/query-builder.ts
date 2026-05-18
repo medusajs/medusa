@@ -864,6 +864,14 @@ export class QueryBuilder {
       if (!childEntity || !childEntity.ref?.alias) {
         return null
       }
+      // Schema shortcuts collapse multiple intermediate hops into one logical
+      // relation. The pivot/join structure for those needs to be expanded the
+      // way buildQueryParts does it for joins. The EXISTS helper only handles
+      // direct (single-pivot) relations today — fail safe instead of emitting
+      // SQL that references a non-existent pivot table.
+      if (childEntity.shortCutOf) {
+        return null
+      }
 
       const childTable = `cat_${normalizeTableName(childEntity.ref.entity)}`
       const safeSeg = normalizeTableName(segment)
