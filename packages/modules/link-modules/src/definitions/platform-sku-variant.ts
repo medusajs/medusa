@@ -4,5 +4,5 @@ import ProductModule from "@medusajs/medusa/product"
 
 export default defineLink(
   { linkable: PlatformMappingModule.linkable.platformSku },
-  { linkable: ProductModule.linkable.variant }
+  { linkable: ProductModule.linkable.productVariant }
 )
