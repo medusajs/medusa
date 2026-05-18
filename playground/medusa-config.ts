@@ -4,6 +4,7 @@ import path from "path"
 export default defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL || "postgres://postgres:password@localhost:5432/medusa_playground",
+    redisUrl: process.env.REDIS_URL || "redis://localhost:6379",
     http: {
       storeCors: process.env.STORE_CORS || "http://localhost:8000",
       adminCors: process.env.ADMIN_CORS || "http://localhost:9000,http://localhost:5173",
