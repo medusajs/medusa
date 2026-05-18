@@ -3364,12 +3364,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/brand@workspace:packages/modules/brand":
+"@medusajs/brand@workspace:*, @medusajs/brand@workspace:packages/modules/brand":
   version: 0.0.0-use.local
   resolution: "@medusajs/brand@workspace:packages/modules/brand"
   dependencies:
-    "@medusajs/framework": ^2.0.0
-    "@medusajs/utils": ^2.0.0
+    "@medusajs/framework": "workspace:*"
+    "@medusajs/utils": "workspace:*"
     typescript: ^5.3.0
   languageName: unknown
   linkType: soft
@@ -3434,12 +3434,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/channel-price@workspace:packages/modules/channel-price":
+"@medusajs/channel-price@workspace:*, @medusajs/channel-price@workspace:packages/modules/channel-price":
   version: 0.0.0-use.local
   resolution: "@medusajs/channel-price@workspace:packages/modules/channel-price"
   dependencies:
-    "@medusajs/framework": ^2.0.0
-    "@medusajs/utils": ^2.0.0
+    "@medusajs/framework": "workspace:*"
+    "@medusajs/utils": "workspace:*"
     typescript: ^5.3.0
   languageName: unknown
   linkType: soft
@@ -3696,7 +3696,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/framework@2.15.2, @medusajs/framework@^2.0.0, @medusajs/framework@workspace:*, @medusajs/framework@workspace:packages/core/framework":
+"@medusajs/framework@2.15.2, @medusajs/framework@workspace:*, @medusajs/framework@workspace:packages/core/framework":
   version: 0.0.0-use.local
   resolution: "@medusajs/framework@workspace:packages/core/framework"
   dependencies:
@@ -3910,12 +3910,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/material@workspace:packages/modules/material":
+"@medusajs/material@workspace:*, @medusajs/material@workspace:packages/modules/material":
   version: 0.0.0-use.local
   resolution: "@medusajs/material@workspace:packages/modules/material"
   dependencies:
-    "@medusajs/framework": ^2.0.0
-    "@medusajs/utils": ^2.0.0
+    "@medusajs/framework": "workspace:*"
+    "@medusajs/utils": "workspace:*"
     typescript: ^5.3.0
   languageName: unknown
   linkType: soft
@@ -4106,12 +4106,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/organization@workspace:packages/modules/organization":
+"@medusajs/organization@workspace:*, @medusajs/organization@workspace:packages/modules/organization":
   version: 0.0.0-use.local
   resolution: "@medusajs/organization@workspace:packages/modules/organization"
   dependencies:
-    "@medusajs/framework": ^2.0.0
-    "@medusajs/utils": ^2.0.0
+    "@medusajs/framework": "workspace:*"
+    "@medusajs/utils": "workspace:*"
     typescript: ^5.3.0
   languageName: unknown
   linkType: soft
@@ -4139,12 +4139,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/platform-mapping@workspace:packages/modules/platform-mapping":
+"@medusajs/platform-mapping@workspace:*, @medusajs/platform-mapping@workspace:packages/modules/platform-mapping":
   version: 0.0.0-use.local
   resolution: "@medusajs/platform-mapping@workspace:packages/modules/platform-mapping"
   dependencies:
-    "@medusajs/framework": ^2.0.0
-    "@medusajs/utils": ^2.0.0
+    "@medusajs/framework": "workspace:*"
+    "@medusajs/utils": "workspace:*"
     typescript: ^5.3.0
   languageName: unknown
   linkType: soft
@@ -4157,8 +4157,10 @@ __metadata:
     "@medusajs/api-key": "workspace:*"
     "@medusajs/auth": "workspace:*"
     "@medusajs/auth-emailpass": "workspace:*"
+    "@medusajs/brand": "workspace:*"
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/cart": "workspace:*"
+    "@medusajs/channel-price": "workspace:*"
     "@medusajs/cli": "workspace:*"
     "@medusajs/core-flows": "workspace:*"
     "@medusajs/currency": "workspace:*"
@@ -4171,11 +4173,14 @@ __metadata:
     "@medusajs/fulfillment-manual": "workspace:*"
     "@medusajs/inventory": "workspace:*"
     "@medusajs/locking": "workspace:*"
+    "@medusajs/material": "workspace:*"
     "@medusajs/medusa": "workspace:*"
     "@medusajs/notification": "workspace:*"
     "@medusajs/notification-local": "workspace:*"
     "@medusajs/order": "workspace:*"
+    "@medusajs/organization": "workspace:*"
     "@medusajs/payment": "workspace:*"
+    "@medusajs/platform-mapping": "workspace:*"
     "@medusajs/pricing": "workspace:*"
     "@medusajs/product": "workspace:*"
     "@medusajs/promotion": "workspace:*"
@@ -4183,8 +4188,10 @@ __metadata:
     "@medusajs/region": "workspace:*"
     "@medusajs/sales-channel": "workspace:*"
     "@medusajs/settings": "workspace:*"
+    "@medusajs/shop": "workspace:*"
     "@medusajs/stock-location": "workspace:*"
     "@medusajs/store": "workspace:*"
+    "@medusajs/store-inventory": "workspace:*"
     "@medusajs/tax": "workspace:*"
     "@medusajs/translation": "workspace:*"
     "@medusajs/user": "workspace:*"
@@ -4274,12 +4281,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/shop@workspace:packages/modules/shop":
+"@medusajs/shop@workspace:*, @medusajs/shop@workspace:packages/modules/shop":
   version: 0.0.0-use.local
   resolution: "@medusajs/shop@workspace:packages/modules/shop"
   dependencies:
-    "@medusajs/framework": ^2.0.0
-    "@medusajs/utils": ^2.0.0
+    "@medusajs/framework": "workspace:*"
+    "@medusajs/utils": "workspace:*"
     typescript: ^5.3.0
   languageName: unknown
   linkType: soft
@@ -4295,12 +4302,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/store-inventory@workspace:packages/modules/store-inventory":
+"@medusajs/store-inventory@workspace:*, @medusajs/store-inventory@workspace:packages/modules/store-inventory":
   version: 0.0.0-use.local
   resolution: "@medusajs/store-inventory@workspace:packages/modules/store-inventory"
   dependencies:
-    "@medusajs/framework": ^2.0.0
-    "@medusajs/utils": ^2.0.0
+    "@medusajs/framework": "workspace:*"
+    "@medusajs/utils": "workspace:*"
     typescript: ^5.3.0
   languageName: unknown
   linkType: soft
@@ -4471,7 +4478,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@2.15.2, @medusajs/utils@^2.0.0, @medusajs/utils@workspace:*, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/core/utils":
+"@medusajs/utils@2.15.2, @medusajs/utils@workspace:*, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/core/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/core/utils"
   dependencies:

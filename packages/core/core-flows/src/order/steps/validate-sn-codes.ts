@@ -1,6 +1,5 @@
 import {
   IProductModuleService,
-  ProductDTO,
   ProductVariantDTO,
 } from "@medusajs/framework/types"
 import { MedusaError, Modules } from "@medusajs/framework/utils"
