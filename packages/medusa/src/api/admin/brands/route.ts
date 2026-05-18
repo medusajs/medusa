@@ -10,7 +10,7 @@ export const GET = async (
   res: MedusaResponse
 ) => {
   const brandModule = req.scope.resolve(Modules.BRAND)
-  const [brands, count] = await brandModule.listAndCount(
+  const [brands, count] = await brandModule.listAndCountBrands(
     req.filterableFields,
     req.queryConfig
   )
@@ -18,8 +18,8 @@ export const GET = async (
   res.json({
     brands,
     count,
-    offset: req.queryConfig.pagination?.offset || 0,
-    limit: req.queryConfig.pagination?.limit || 20,
+    offset: req.queryConfig.pagination?.skip || 0,
+    limit: req.queryConfig.pagination?.take || 20,
   })
 }
 

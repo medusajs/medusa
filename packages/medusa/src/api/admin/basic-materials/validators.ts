@@ -25,7 +25,7 @@ export const AdminCreateBasicMaterial = z.object({
   size: z.string().optional(),
   source: SourceType.optional(),
   org_id: z.string().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 export type AdminCreateBasicMaterialType = z.infer<typeof AdminCreateBasicMaterial>
@@ -47,7 +47,7 @@ export const AdminUpdateBasicMaterial = z.object({
   size: z.string().optional(),
   source: SourceType.optional(),
   org_id: z.string().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 export type AdminUpdateBasicMaterialType = z.infer<typeof AdminUpdateBasicMaterial>

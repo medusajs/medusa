@@ -6,7 +6,7 @@ export const AdminCreateBrand = z.object({
   logo_url: z.string().optional(),
   description: z.string().optional(),
   org_id: z.string().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 export type AdminCreateBrandType = z.infer<typeof AdminCreateBrand>
@@ -17,7 +17,7 @@ export const AdminUpdateBrand = z.object({
   logo_url: z.string().optional(),
   description: z.string().optional(),
   org_id: z.string().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 export type AdminUpdateBrandType = z.infer<typeof AdminUpdateBrand>

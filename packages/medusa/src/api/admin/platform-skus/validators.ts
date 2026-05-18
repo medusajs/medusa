@@ -20,11 +20,11 @@ export const AdminCreatePlatformSku = z.object({
   variant_id: z.string().optional(),
   platform_title: z.string().optional(),
   platform_price: z.number().optional(),
-  platform_properties: z.record(z.unknown()).optional(),
+  platform_properties: z.record(z.string(), z.unknown()).optional(),
   sync_status: z.enum(["pending", "success", "failed"]).optional(),
   mapping_status: z.enum(["unmapped", "mapped"]).optional(),
   listing_status: z.enum(["listed", "delisted"]).optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 export const AdminUpdatePlatformSku = AdminCreatePlatformSku.partial()

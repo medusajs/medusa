@@ -19,8 +19,8 @@ export const GET = async (
   res.json({
     platform_skus: platformSkus,
     count,
-    offset: req.queryConfig.pagination?.offset || 0,
-    limit: req.queryConfig.pagination?.limit || 20,
+    offset: req.queryConfig.pagination?.skip || 0,
+    limit: req.queryConfig.pagination?.take || 20,
   })
 }
 

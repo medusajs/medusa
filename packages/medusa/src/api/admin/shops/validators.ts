@@ -17,7 +17,7 @@ export const AdminCreateShop = z.object({
   platform_shop_id: z.string().optional(),
   org_id: z.string().optional(),
   status: z.enum(["active", "inactive"]).optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 export type AdminCreateShopType = z.infer<typeof AdminCreateShop>
@@ -29,7 +29,7 @@ export const AdminUpdateShop = z.object({
   platform_shop_id: z.string().optional(),
   org_id: z.string().optional(),
   status: z.enum(["active", "inactive"]).optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 export type AdminUpdateShopType = z.infer<typeof AdminUpdateShop>

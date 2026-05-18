@@ -23,7 +23,7 @@ export const AdminCreateSalesMaterial = z.object({
   tax_code: z.string().optional(),
   source: SourceType.optional(),
   status: StatusType.optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 export type AdminCreateSalesMaterialType = z.infer<typeof AdminCreateSalesMaterial>
@@ -42,7 +42,7 @@ export const AdminUpdateSalesMaterial = z.object({
   tax_code: z.string().optional(),
   source: SourceType.optional(),
   status: StatusType.optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 export type AdminUpdateSalesMaterialType = z.infer<typeof AdminUpdateSalesMaterial>

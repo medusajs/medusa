@@ -32,6 +32,7 @@ import {
   ISettingsModuleService,
   IShopModuleService,
   IStockLocationService,
+  IStoreInventoryModuleService,
   IStoreModuleService,
   ITaxModuleService,
   ITranslationModuleService,
@@ -76,6 +77,7 @@ declare module "@medusajs/types" {
     [Modules.TAX]: ITaxModuleService
     [Modules.FULFILLMENT]: IFulfillmentModuleService
     [Modules.STOCK_LOCATION]: IStockLocationService
+    [Modules.STORE_INVENTORY]: IStoreInventoryModuleService
     [Modules.USER]: IUserModuleService
     [Modules.WORKFLOW_ENGINE]: IWorkflowEngineService
     [Modules.REGION]: IRegionModuleService
