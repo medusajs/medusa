@@ -61,7 +61,7 @@ jobs:
     secrets:
       MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
       MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
-      anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+      CLAUDE_CODE_API_TOKEN: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
 
   # Runs on issues/issue_comment events: triages a single issue
   triage:
@@ -78,4 +78,4 @@ jobs:
     secrets:
       MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
       MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
-      anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+      CLAUDE_CODE_API_TOKEN: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
