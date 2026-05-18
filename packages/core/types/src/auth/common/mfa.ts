@@ -2,21 +2,21 @@ import { BaseFilterable } from "../../dal"
 import { AuthIdentityDTO } from "./auth-identity"
 
 /**
- * Supported MFA providers. Defaults to TOTP but allows string extensions.
+ * Supported multi-factor authentication (MFA) providers. Defaults to time-based one-time password (TOTP) but allows string extensions.
  * 
  * @since 2.15.3
  */
 export type AuthMfaProvider = "totp" | (string & {})
 
 /**
- * Methods available for MFA challenges, including providers and recovery codes.
+ * Methods available for multi-factor authentication (MFA) challenges, including providers and recovery codes.
  * 
  * @since 2.15.3
  */
 export type AuthMfaChallengeMethod = AuthMfaProvider | "recovery_code"
 
 /**
- * Status of an MFA setup for an authentication identity.
+ * Status of a multi-factor authentication (MFA) setup for an authentication identity.
  * 
  * @since 2.15.3
  */
@@ -29,35 +29,35 @@ export type AuthMfaStatus = "pending" | "enabled" | "disabled"
  */
 export type AuthMfaDTO = {
   /**
-   * The MFA configuration's ID.
+   * The multi-factor authentication (MFA) configuration's ID.
    */
   id: string
   /**
-   * The ID of the authentication identity this MFA belongs to.
+   * The ID of the authentication identity this multi-factor authentication (MFA) belongs to.
    */
   auth_identity_id?: string
   /**
-   * The authentication identity this MFA belongs to.
+   * The authentication identity this multi-factor authentication (MFA) belongs to.
    * 
    * @expandable
    */
   auth_identity?: AuthIdentityDTO
   /**
-   * The MFA provider used.
+   * The multi-factor authentication (MFA) provider used.
    */
   provider: AuthMfaProvider
   /**
-   * The status of this MFA configuration.
+   * The status of this multi-factor authentication (MFA) configuration.
    */
   status: AuthMfaStatus
   /**
-   * Additional metadata for the MFA configuration.
+   * Additional metadata for the multi-factor authentication (MFA) configuration.
    */
   metadata?: Record<string, unknown> | null
 }
 
 /**
- * MFA recovery code for emergency authentication bypassing.
+ * Multi-factor authentication (MFA) recovery code for emergency authentication bypassing.
  * 
  * @since 2.15.3
  */
@@ -79,13 +79,13 @@ export type AuthMfaRecoveryCodeDTO = {
 }
 
 /**
- * An active MFA challenge requiring user verification.
+ * An active multi-factor authentication (MFA) challenge requiring user verification.
  * 
  * @since 2.15.3
  */
 export type AuthMfaChallengeDTO = {
   /**
-   * The MFA challenge's ID.
+   * The multi-factor authentication (MFA) challenge's ID.
    */
   id: string
   /**
@@ -133,71 +133,71 @@ export type AuthMfaChallengeDTO = {
 }
 
 /**
- * Data required to start MFA setup for an authentication identity.
+ * Data required to start multi-factor authentication (MFA) setup for an authentication identity.
  * 
  * @since 2.15.3
  */
 export type AuthMfaStartDTO = {
   /**
-   * The ID of the authentication identity to set up MFA for.
+   * The ID of the authentication identity to set up multi-factor authentication (MFA) for.
    */
   auth_identity_id: string
   /**
-   * The MFA provider to use.
+   * The multi-factor authentication (MFA) provider to use.
    */
   provider: AuthMfaProvider
   /**
-   * Optional label for the MFA configuration.
+   * Optional label for the multi-factor authentication (MFA) configuration.
    */
   label?: string | null
   /**
-   * The issuer name for TOTP apps.
+   * The issuer name for time-based one-time password (TOTP) apps.
    */
   issuer?: string
   /**
-   * Additional metadata for the MFA setup.
+   * Additional metadata for the multi-factor authentication (MFA) setup.
    */
   metadata?: Record<string, unknown> | null
 }
 
 /**
- * Response data when starting MFA setup.
+ * Response data when starting multi-factor authentication (MFA) setup.
  * 
  * @since 2.15.3
  */
 export type AuthMfaStartResponse = {
   /**
-   * The created MFA configuration.
+   * The created multi-factor authentication (MFA) configuration.
    */
   mfa: AuthMfaDTO
   /**
-   * The secret key for manual TOTP app setup.
+   * The secret key for manual time-based one-time password (TOTP) app setup.
    */
   secret?: string
   /**
-   * The QR code URL for easy TOTP app setup.
+   * The QR code URL for easy time-based one-time password (TOTP) app setup.
    */
   otpauth_url?: string
 }
 
 /**
- * Data required to verify and enable an MFA configuration.
+ * Data required to verify and enable a multi-factor authentication (MFA) configuration.
  * 
  * @since 2.15.3
  */
 export type AuthMfaVerifyDTO = {
   /**
-   * The ID of the MFA configuration to verify.
+   * The ID of the multi-factor authentication (MFA) configuration to verify.
    */
   id: string
   /**
-   * The verification code from the MFA provider.
+   * The verification code from the multi-factor authentication (MFA) provider.
    */
   code: string
 }
 
 /**
- * Data required to create a new MFA challenge.
+ * Data required to create a new multi-factor authentication (MFA) challenge.
  * 
  * @since 2.15.3
  */
@@ -221,13 +221,13 @@ export type CreateAuthMfaChallengeDTO = {
 }
 
 /**
- * Data required to verify an MFA challenge.
+ * Data required to verify a multi-factor authentication (MFA) challenge.
  * 
  * @since 2.15.3
  */
 export type VerifyAuthMfaChallengeDTO = {
   /**
-   * The ID of the MFA challenge to verify.
+   * The ID of the multi-factor authentication (MFA) challenge to verify.
    */
   id: string
   /**
@@ -241,13 +241,13 @@ export type VerifyAuthMfaChallengeDTO = {
 }
 
 /**
- * Data required to disable an MFA configuration.
+ * Data required to disable a multi-factor authentication (MFA) configuration.
  * 
  * @since 2.15.3
  */
 export type DisableAuthMfaDTO = {
   /**
-   * The ID of the MFA configuration to disable.
+   * The ID of the multi-factor authentication (MFA) configuration to disable.
    */
   id: string
   /**
@@ -261,7 +261,7 @@ export type DisableAuthMfaDTO = {
 }
 
 /**
- * Data required to generate MFA recovery codes.
+ * Data required to generate multi-factor authentication (MFA) recovery codes.
  * 
  * @since 2.15.3
  */
@@ -277,7 +277,7 @@ export type GenerateAuthMfaRecoveryCodesDTO = {
 }
 
 /**
- * Response containing generated MFA recovery codes.
+ * Response containing generated multi-factor authentication (MFA) recovery codes.
  * 
  * @since 2.15.3
  */
@@ -289,7 +289,7 @@ export type GenerateAuthMfaRecoveryCodesResponse = {
 }
 
 /**
- * Data required to use an MFA recovery code.
+ * Data required to use a multi-factor authentication (MFA) recovery code.
  * 
  * @since 2.15.3
  */
@@ -305,14 +305,14 @@ export type UseAuthMfaRecoveryCodeDTO = {
 }
 
 /**
- * Filters available when retrieving MFA configurations.
+ * Filters available when retrieving multi-factor authentication (MFA) configurations.
  * 
  * @since 2.15.3
  */
 export interface FilterableAuthMfaProps
   extends BaseFilterable<FilterableAuthMfaProps> {
   /**
-   * Filter by MFA configuration IDs.
+   * Filter by multi-factor authentication (MFA) configuration IDs.
    */
   id?: string[]
   /**
@@ -320,11 +320,11 @@ export interface FilterableAuthMfaProps
    */
   auth_identity_id?: string
   /**
-   * Filter by MFA provider.
+   * Filter by multi-factor authentication (MFA) provider.
    */
   provider?: AuthMfaProvider
   /**
-   * Filter by MFA status.
+   * Filter by multi-factor authentication (MFA) status.
    */
   status?: AuthMfaStatus | AuthMfaStatus[]
 }

@@ -18,7 +18,7 @@ export type AuthenticationResponse = {
   authIdentity?: AuthIdentityDTO
 
   /**
-   * The MFA challenge to complete before issuing a token.
+   * The multi-factor authentication (MFA) challenge to complete before issuing a token.
    */
   mfa_challenge?: AuthMfaChallengeDTO
 

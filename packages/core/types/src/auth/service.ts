@@ -160,12 +160,11 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthenticationResponse>
 
   /**
-   * This method starts MFA setup for an auth identity using the requested MFA
-   * provider.
+   * This method starts multi-factor authentication (MFA) setup for an auth identity using the requested provider.
    * 
-   * @param {AuthMfaStartDTO} data - The data required to start MFA setup.
+   * @param {AuthMfaStartDTO} data - The data required to start multi-factor authentication (MFA) setup.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthMfaStartResponse>} The MFA setup response containing the configuration and setup details.
+   * @returns {Promise<AuthMfaStartResponse>} The multi-factor authentication (MFA) setup response containing the configuration and setup details.
    * @since 2.15.3
    * 
    * @example
@@ -184,11 +183,11 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthMfaStartResponse>
 
   /**
-   * This method verifies a pending MFA setup.
+   * This method verifies a pending multi-factor authentication (MFA) setup.
    * 
-   * @param {AuthMfaVerifyDTO} data - The verification data including MFA configuration ID and code.
+   * @param {AuthMfaVerifyDTO} data - The verification data including multi-factor authentication (MFA) configuration ID and code.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthMfaDTO>} The verified and enabled MFA configuration.
+   * @returns {Promise<AuthMfaDTO>} The verified and enabled multi-factor authentication (MFA) configuration.
    * @since 2.15.3
    * 
    * @example
@@ -205,12 +204,11 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthMfaDTO>
 
   /**
-   * This method creates an MFA challenge for an auth identity with enabled MFA
-   * methods.
+   * This method creates a multi-factor authentication (MFA) challenge for an auth identity with enabled multi-factor authentication (MFA) methods.
    * 
-   * @param {CreateAuthMfaChallengeDTO} data - The data required to create an MFA challenge.
+   * @param {CreateAuthMfaChallengeDTO} data - The data required to create a multi-factor authentication (MFA) challenge.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthMfaChallengeDTO>} The created MFA challenge.
+   * @returns {Promise<AuthMfaChallengeDTO>} The created multi-factor authentication (MFA) challenge.
    * @since 2.15.3
    * 
    * @example
@@ -227,11 +225,11 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthMfaChallengeDTO>
 
   /**
-   * This method verifies an MFA challenge with one of the challenge's methods.
+   * This method verifies a multi-factor authentication (MFA) challenge with one of the challenge's methods.
    * 
    * @param {VerifyAuthMfaChallengeDTO} data - The verification data including challenge ID, method, and code.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthMfaChallengeDTO>} The completed MFA challenge.
+   * @returns {Promise<AuthMfaChallengeDTO>} The completed multi-factor authentication (MFA) challenge.
    * @since 2.15.3
    * 
    * @example
@@ -249,11 +247,11 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthMfaChallengeDTO>
 
   /**
-   * This method disables MFA for a configured method.
+   * This method disables multi-factor authentication (MFA) for a configured method.
    * 
-   * @param {DisableAuthMfaDTO} data - The data required to disable an MFA configuration.
+   * @param {DisableAuthMfaDTO} data - The data required to disable a multi-factor authentication (MFA) configuration.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthMfaDTO>} The disabled MFA configuration.
+   * @returns {Promise<AuthMfaDTO>} The disabled multi-factor authentication (MFA) configuration.
    * @since 2.15.3
    * 
    * @example
@@ -271,12 +269,12 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthMfaDTO>
 
   /**
-   * This method lists configured MFA methods.
+   * This method lists configured multi-factor authentication (MFA) methods.
    * 
-   * @param {FilterableAuthMfaProps} filters - The filters to apply on the retrieved MFA configurations.
-   * @param {FindConfig<AuthMfaDTO>} config - The configurations determining how the MFA configurations are retrieved.
+   * @param {FilterableAuthMfaProps} filters - The filters to apply on the retrieved multi-factor authentication (MFA) configurations.
+   * @param {FindConfig<AuthMfaDTO>} config - The configurations determining how the multi-factor authentication (MFA) configurations are retrieved.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthMfaDTO[]>} The list of MFA configurations.
+   * @returns {Promise<AuthMfaDTO[]>} The list of multi-factor authentication (MFA) configurations.
    * @since 2.15.3
    * 
    * @example
