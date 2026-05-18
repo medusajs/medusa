@@ -161,8 +161,21 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthenticationResponse>
 
   /**
-   * This method starts MFA setup for an auth identity using the requested MFA
-   * provider.
+   * This method starts MFA setup for an auth identity using the requested MFA provider.
+   *
+   * @param {AuthMfaStartDTO} data - The data to start MFA setup.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthMfaStartResponse>} The MFA setup details including secret and OTP auth URL.
+   *
+   * @example
+   * const mfaSetup = await authModuleService.startAuthMfa({
+   *   auth_identity_id: "authusr_123",
+   *   provider: "totp",
+   *   label: "My App",
+   *   issuer: "MyCompany"
+   * })
+   *
+   * @since 2.15.3
    */
   startAuthMfa(
     data: AuthMfaStartDTO,
@@ -171,6 +184,18 @@ export interface IAuthModuleService extends IModuleService {
 
   /**
    * This method verifies a pending MFA setup.
+   *
+   * @param {AuthMfaVerifyDTO} data - The data to verify MFA setup.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthMfaDTO>} The verified MFA configuration.
+   *
+   * @example
+   * const mfa = await authModuleService.verifyAuthMfa({
+   *   id: "mfa_123",
+   *   code: "123456"
+   * })
+   *
+   * @since 2.15.3
    */
   verifyAuthMfa(
     data: AuthMfaVerifyDTO,
@@ -178,8 +203,20 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthMfaDTO>
 
   /**
-   * This method creates an MFA challenge for an auth identity with enabled MFA
-   * methods.
+   * This method creates an MFA challenge for an auth identity with enabled MFA methods.
+   *
+   * @param {CreateAuthMfaChallengeDTO} data - The data to create an MFA challenge.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthMfaChallengeDTO>} The created MFA challenge.
+   *
+   * @example
+   * const challenge = await authModuleService.createAuthMfaChallenge({
+   *   auth_identity_id: "authusr_123",
+   *   actor_type: "user",
+   *   auth_provider: "emailpass"
+   * })
+   *
+   * @since 2.15.3
    */
   createAuthMfaChallenge(
     data: CreateAuthMfaChallengeDTO,
