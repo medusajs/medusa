@@ -94,6 +94,7 @@ export const refreshCartShippingMethodsWorkflow = createWorkflow(
           "shipping_methods.shipping_option_id",
           "shipping_methods.data",
           "total",
+          "items.requires_shipping",
           "items.variant.product.shipping_profile.id",
         ],
         filters: { id: cartId },
