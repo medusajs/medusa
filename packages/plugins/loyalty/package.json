@@ -46,7 +46,8 @@
   "scripts": {
     "build": "medusa plugin:build",
     "dev": "medusa plugin:develop",
-    "prepare": "cross-env NODE_ENV=production yarn run build"
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --bail --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.spec\\.ts\""
   },
   "devDependencies": {
     "@medusajs/admin-sdk": "2.15.2",
@@ -58,8 +59,11 @@
     "@medusajs/ui": "4.1.12",
     "@medusajs/ui-preset": "2.15.2",
     "@swc/core": "1.5.7",
+    "@swc/jest": "^0.2.36",
+    "@types/jest": "^29.0.0",
     "@types/node": "^20.0.0",
     "cross-env": "^7.0.3",
+    "jest": "^29.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   },

@@ -33,9 +33,11 @@ export const createGiftCardsStep = createStep(
       PluginModule.LOYALTY
     );
 
+    const { prefix, sections } = module.getOptions();
+
     for (const giftCard of input) {
       if (!isPresent(giftCard.code)) {
-        const { prefix, sections } = module.getOptions()
+        
         giftCard.code = generateCode(prefix, sections)
       }
     }

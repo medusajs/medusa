@@ -8,7 +8,7 @@ class LoyaltyModuleService extends MedusaService({
   private options_: LoyaltyPluginOptions
 
   constructor(dependencies: Record<string, unknown>, options: LoyaltyPluginOptions = {}) {
-    super(...arguments)
+    super(dependencies, options)
     this.options_ = options
   }
 

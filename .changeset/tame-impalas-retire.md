@@ -1,6 +1,6 @@
 ---
-"@medusajs/core-flows": minor
-"@medusajs/loyalty-plugin": minor
+"@medusajs/core-flows": patch
+"@medusajs/loyalty-plugin": patch
 ---
 
-Gift-cards bug fix to exclude giftcards from tax calc and also adding an option for custom codes
+fix(@medusajs/loyalty-plugin): Gift-cards bug fix to exclude giftcards from tax calc and also adding an option for custom codes
