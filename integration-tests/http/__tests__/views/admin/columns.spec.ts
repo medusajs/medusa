@@ -181,6 +181,19 @@ medusaIntegrationTestRunner({
           const totalField = response.data.columns.find((c) => c.id === "total")
           expect(totalField?.default_order).toBe(700)
           expect(totalField?.category).toBe("metric")
+          // Computed fields are resolved after the DB query, so the list API
+          // cannot order by them - they must be reported as non-sortable.
+          expect(totalField?.sortable).toBe(false)
+
+          const paymentStatusField = response.data.columns.find(
+            (c) => c.id === "payment_status"
+          )
+          expect(paymentStatusField?.sortable).toBe(false)
+
+          const fulfillmentStatusField = response.data.columns.find(
+            (c) => c.id === "fulfillment_status"
+          )
+          expect(fulfillmentStatusField?.sortable).toBe(false)
 
           const createdAtField = response.data.columns.find(
             (c) => c.id === "created_at"

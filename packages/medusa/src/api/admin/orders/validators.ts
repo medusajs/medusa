@@ -69,10 +69,27 @@ const AdminGetOrdersParamsBase = createFindParams({
 
 type AdminGetOrdersParamsInput = z.infer<typeof AdminGetOrdersParamsBase>
 
+// Fields that exist on the Order GraphQL type but are computed after the
+// database query (no backing column), so the list query cannot order by
+// them without a MikroORM "not existing property" error.
+const NON_SORTABLE_ORDER_FIELDS = [
+  "total",
+  "payment_status",
+  "fulfillment_status",
+]
+
 const AdminGetOrdersParamsTransform = (v: AdminGetOrdersParamsInput) => {
-  const { total, ...rest } = v
+  const { total, order, ...rest } = v
+
+  const orderField = order?.startsWith("-") ? order.slice(1) : order
+  const sortableOrder =
+    orderField && NON_SORTABLE_ORDER_FIELDS.includes(orderField)
+      ? undefined
+      : order
+
   return {
     ...rest,
+    ...(sortableOrder ? { order: sortableOrder } : {}),
     ...(total ? { summary: { totals: { current_order_total: total } } } : {}),
   }
 }

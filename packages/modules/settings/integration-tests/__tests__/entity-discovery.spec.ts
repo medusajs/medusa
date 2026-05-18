@@ -753,7 +753,7 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
             expect(fulfillmentStatus?.filter?.operators).toBeUndefined()
           })
 
-          it("should keep the column itself visible and sortable when filtering is disabled", async () => {
+          it("should keep the column itself visible when filtering is disabled", async () => {
             const columns = await service.generateEntityColumns("Order")
 
             expect(columns).not.toBeNull()
@@ -762,13 +762,11 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
               (c) => c.id === "payment_status"
             )
             expect(paymentStatus?.default_visible).toBe(true)
-            expect(paymentStatus?.sortable).toBe(true)
 
             const fulfillmentStatus = columns!.find(
               (c) => c.id === "fulfillment_status"
             )
             expect(fulfillmentStatus?.default_visible).toBe(true)
-            expect(fulfillmentStatus?.sortable).toBe(true)
           })
 
           it("should keep filtering enabled on other Order scalar fields", async () => {
@@ -781,6 +779,57 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
 
             const total = columns!.find((c) => c.id === "total")
             expect(total?.filter?.enabled).toBe(true)
+          })
+        })
+
+        describe("nonSortableFields", function () {
+          it("should disable sorting on Order's computed total and status fields", async () => {
+            const columns = await service.generateEntityColumns("Order")
+
+            expect(columns).not.toBeNull()
+
+            const total = columns!.find((c) => c.id === "total")
+            expect(total).toBeDefined()
+            expect(total?.sortable).toBe(false)
+
+            const paymentStatus = columns!.find(
+              (c) => c.id === "payment_status"
+            )
+            expect(paymentStatus).toBeDefined()
+            expect(paymentStatus?.sortable).toBe(false)
+
+            const fulfillmentStatus = columns!.find(
+              (c) => c.id === "fulfillment_status"
+            )
+            expect(fulfillmentStatus).toBeDefined()
+            expect(fulfillmentStatus?.sortable).toBe(false)
+          })
+
+          it("should keep non-sortable columns visible and filterable where applicable", async () => {
+            const columns = await service.generateEntityColumns("Order")
+
+            expect(columns).not.toBeNull()
+
+            const total = columns!.find((c) => c.id === "total")
+            expect(total?.default_visible).toBe(true)
+            expect(total?.filter?.enabled).toBe(true)
+
+            const paymentStatus = columns!.find(
+              (c) => c.id === "payment_status"
+            )
+            expect(paymentStatus?.default_visible).toBe(true)
+          })
+
+          it("should keep sorting enabled on other Order scalar fields", async () => {
+            const columns = await service.generateEntityColumns("Order")
+
+            expect(columns).not.toBeNull()
+
+            const displayId = columns!.find((c) => c.id === "display_id")
+            expect(displayId?.sortable).toBe(true)
+
+            const createdAt = columns!.find((c) => c.id === "created_at")
+            expect(createdAt?.sortable).toBe(true)
           })
         })
 
@@ -971,6 +1020,21 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
             expect(merged?.nonFilterableFields).toContain("payment_status")
             expect(merged?.nonFilterableFields).toContain("fulfillment_status")
             expect(merged?.nonFilterableFields).toContain("custom_computed_field")
+          })
+
+          it("should concatenate nonSortableFields when extending an existing override", () => {
+            const registry = getEntityOverrideRegistry()
+
+            registry.register("Order", {
+              nonSortableFields: ["custom_computed_field"],
+            })
+
+            const merged = registry.get("Order")
+
+            expect(merged?.nonSortableFields).toContain("total")
+            expect(merged?.nonSortableFields).toContain("payment_status")
+            expect(merged?.nonSortableFields).toContain("fulfillment_status")
+            expect(merged?.nonSortableFields).toContain("custom_computed_field")
           })
         })
 

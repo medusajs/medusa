@@ -84,6 +84,38 @@ medusaIntegrationTestRunner({
         expect(response.data.orders).toEqual([])
       })
 
+      it.each([
+        "total",
+        "-total",
+        "payment_status",
+        "-payment_status",
+        "fulfillment_status",
+        "-fulfillment_status",
+      ])(
+        "should not error when ordering by non-sortable computed field '%s'",
+        async (order) => {
+          const response = await api.get(
+            `/admin/orders?order=${order}`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.orders).toHaveLength(1)
+          expect(response.data.orders[0].id).toEqual(seeder.order.id)
+        }
+      )
+
+      it("should still order by a valid sortable field", async () => {
+        const response = await api.get(
+          `/admin/orders?order=-display_id`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.orders).toHaveLength(1)
+        expect(response.data.orders[0].id).toEqual(seeder.order.id)
+      })
+
       it("should search orders by shipping address", async () => {
         let response = await api.get(
           `/admin/orders?fields=+shipping_address.address_1,+shipping_address.address_2`,
@@ -418,6 +450,42 @@ medusaIntegrationTestRunner({
             }
           }
         )
+      })
+
+      describe("sort by computed fields", () => {
+        it.each([
+          "total",
+          "-total",
+          "payment_status",
+          "-payment_status",
+          "fulfillment_status",
+          "-fulfillment_status",
+        ])(
+          "should not error when ordering by computed field '%s'",
+          async (orderParam) => {
+            const response = await api.get(
+              `/admin/orders?order=${orderParam}`,
+              adminHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.orders).toEqual([
+              expect.objectContaining({ id: order.id }),
+            ])
+          }
+        )
+
+        it("should still order by a valid column", async () => {
+          const response = await api.get(
+            `/admin/orders?order=-display_id`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.orders).toEqual([
+            expect.objectContaining({ id: order.id }),
+          ])
+        })
       })
 
       it("should return shipping_address when pagination included", async () => {
