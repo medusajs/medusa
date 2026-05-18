@@ -48,10 +48,22 @@ While this is the recommended way to create a Medusa application, you can altern
     link: "https://git-scm.com/downloads"
   },
   {
-    text: "PostgreSQL installed and running",
+    text: "PostgreSQL v15+ installed and running",
     link: "https://www.postgresql.org/download/"
   }
 ]} />
+
+<Note title="PostgreSQL Compatibility">
+
+Medusa supports PostgreSQL v15 and later. The recommended versions are:
+
+- **Local development**: PostgreSQL v15+ (v16 recommended for latest features)
+- **Docker**: PostgreSQL v15 (used in provided Docker Compose configuration)
+- **Cloud**: PostgreSQL v16 (used by Medusa Cloud infrastructure)
+
+All PostgreSQL features used by Medusa are compatible across these versions.
+
+</Note>
 
 <Note title="Installations with Next.js Starter Storefront">
 
