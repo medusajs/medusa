@@ -198,6 +198,7 @@ enum PaymentStatus {
   refunded
   canceled
   requires_action
+  chargeback
 }
 
 enum FulfillmentStatus {

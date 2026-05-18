@@ -36,4 +36,8 @@ export enum PaymentCollectionStatus {
    * The payment collection is completed.
    */
   COMPLETED = "completed",
+  /**
+   * The payment collection has a chargeback.
+   */
+  CHARGEBACK = "chargeback",
 }

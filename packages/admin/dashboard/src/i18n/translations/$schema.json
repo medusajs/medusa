@@ -4324,6 +4324,9 @@
                 },
                 "requiresAction": {
                   "type": "string"
+                },
+                "chargeback": {
+                  "type": "string"
                 }
               },
               "required": [
@@ -4336,7 +4339,8 @@
                 "partiallyCaptured",
                 "refunded",
                 "canceled",
-                "requiresAction"
+                "requiresAction",
+                "chargeback"
               ],
               "additionalProperties": false
             },

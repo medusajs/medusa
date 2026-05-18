@@ -2083,6 +2083,7 @@ export type PaymentStatus =
   | "refunded"
   | "canceled"
   | "requires_action"
+  | "chargeback"
 
 /**
  * The fulfillment's status.

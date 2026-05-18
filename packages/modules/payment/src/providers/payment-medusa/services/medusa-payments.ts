@@ -730,6 +730,26 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
             amount: getAmountFromSmallestUnit(intent.amount_received, currency),
           },
         }
+      case "charge.dispute.created":
+      case "charge.dispute.funds_withdrawn": {
+        const dispute = event.data.object as stripe.Dispute
+        const paymentIntentId = dispute.payment_intent as string | null
+
+        if (!paymentIntentId) {
+          return { action: PaymentActions.NOT_SUPPORTED }
+        }
+
+        const paymentIntent =
+          await this.stripeClient.paymentIntents.retrieve(paymentIntentId)
+
+        return {
+          action: PaymentActions.CHARGEBACK,
+          data: {
+            session_id: paymentIntent.metadata.session_id,
+            amount: getAmountFromSmallestUnit(dispute.amount, dispute.currency),
+          },
+        }
+      }
 
       default:
         return { action: PaymentActions.NOT_SUPPORTED }

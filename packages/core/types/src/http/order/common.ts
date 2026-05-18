@@ -701,6 +701,7 @@ type PaymentStatus =
   | "refunded"
   | "canceled"
   | "requires_action"
+  | "chargeback"
 
 type FulfillmentStatus =
   | "not_fulfilled"

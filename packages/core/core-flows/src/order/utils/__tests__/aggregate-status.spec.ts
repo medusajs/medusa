@@ -43,6 +43,31 @@ describe("Aggregate Order Status", () => {
 
     expect(
       getLastPaymentStatus({
+        payment_collections: [{ status: "chargeback" }],
+      } as any)
+    ).toEqual("chargeback")
+
+    expect(
+      getLastPaymentStatus({
+        payment_collections: [
+          { status: "chargeback" },
+          { status: "refunded" },
+          { status: "captured" },
+        ],
+      } as any)
+    ).toEqual("chargeback")
+
+    expect(
+      getLastPaymentStatus({
+        payment_collections: [
+          { status: "requires_action" },
+          { status: "chargeback" },
+        ],
+      } as any)
+    ).toEqual("requires_action")
+
+    expect(
+      getLastPaymentStatus({
         payment_collections: [
           { status: "awaiting" },
           { status: "awaiting" },

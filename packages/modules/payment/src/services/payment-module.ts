@@ -1023,6 +1023,10 @@ export default class PaymentModuleService
       sharedContext
     )
 
+    if (paymentCollection.status === PaymentCollectionStatus.CHARGEBACK) {
+      return
+    }
+
     const paymentSessions = paymentCollection.payment_sessions
     const captures = paymentCollection.payments
       .map((pay) => [...pay.captures])

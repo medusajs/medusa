@@ -59,6 +59,7 @@ export type PaymentActions =
   | "pending"
   | "requires_more"
   | "canceled"
+  | "chargeback"
   | "not_supported"
 
 /**

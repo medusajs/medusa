@@ -13,6 +13,7 @@ export type PaymentCollectionStatus =
   | "canceled"
   | "failed"
   | "completed"
+  | "chargeback"
 
 export type PaymentSessionStatus =
   | "authorized"

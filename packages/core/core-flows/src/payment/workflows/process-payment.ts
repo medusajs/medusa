@@ -1,7 +1,8 @@
 import type { WebhookActionResult } from "@medusajs/framework/types"
-import { PaymentActions } from "@medusajs/utils"
+import { PaymentActions, PaymentCollectionStatus } from "@medusajs/utils"
 import { createWorkflow, transform, when } from "@medusajs/workflows-sdk"
 import { useQueryGraphStep } from "../../common"
+import { updatePaymentCollectionStep } from "../../payment-collection"
 import { authorizePaymentSessionStep } from "../steps"
 import { completeCartAfterPaymentStep } from "../steps/complete-cart-after-payment"
 import { capturePaymentWorkflow } from "./capture-payment"
@@ -97,6 +98,25 @@ export const processPaymentWorkflow = createWorkflow(
         key: cartId,
         timeout: THIRTY_SECONDS,
         ttl: TWO_MINUTES,
+      })
+    })
+
+    when({ input, paymentSessionResult }, ({ input, paymentSessionResult }) => {
+      return (
+        input.action === PaymentActions.CHARGEBACK &&
+        !!input.data?.session_id &&
+        !!paymentSessionResult.data[0]?.payment_collection_id
+      )
+    }).then(() => {
+      updatePaymentCollectionStep({
+        selector: {
+          id: paymentSessionResult.data[0].payment_collection_id,
+        },
+        update: {
+          status: PaymentCollectionStatus.CHARGEBACK,
+        },
+      }).config({
+        name: "mark-payment-collection-chargeback",
       })
     })
 

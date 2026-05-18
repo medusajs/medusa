@@ -31,6 +31,10 @@ export enum PaymentActions {
    */
   CANCELED = "canceled",
   /**
+   * Payment received a chargeback.
+   */
+  CHARGEBACK = "chargeback",
+  /**
    * Received an event that is not processable.
    */
   NOT_SUPPORTED = "not_supported",

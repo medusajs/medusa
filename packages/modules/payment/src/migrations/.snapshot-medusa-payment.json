@@ -212,7 +212,8 @@
             "canceled",
             "failed",
             "partially_captured",
-            "completed"
+            "completed",
+            "chargeback"
           ],
           "mappedType": "enum"
         },

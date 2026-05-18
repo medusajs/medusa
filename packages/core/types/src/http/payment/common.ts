@@ -12,6 +12,7 @@ export type BasePaymentCollectionStatus =
   | "canceled"
   | "completed"
   | "failed"
+  | "chargeback"
 /**
  *
  * The status of a payment session.

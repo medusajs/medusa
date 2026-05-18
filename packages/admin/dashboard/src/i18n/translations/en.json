@@ -1156,7 +1156,8 @@
         "partiallyCaptured": "Partially captured",
         "refunded": "Refunded",
         "canceled": "Canceled",
-        "requiresAction": "Requires action"
+        "requiresAction": "Requires action",
+        "chargeback": "Chargeback"
       },
       "capturePayment": "Payment of {{amount}} will be captured.",
       "capturePaymentSuccess": "Payment of {{amount}} successfully captured",
