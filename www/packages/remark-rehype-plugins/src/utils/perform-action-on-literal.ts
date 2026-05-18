@@ -2,7 +2,12 @@ import { ExpressionJsVar, ExpressionJsVarLiteral } from "types"
 import { isExpressionJsVarLiteral, isExpressionJsVarObj } from "docs-utils"
 
 export const performActionOnLiteral = (
-  item: ExpressionJsVar[] | ExpressionJsVar,
+  item: ExpressionJsVar[] | ExpressionJsVar | {
+    // handle the case when the literal has a name property,
+    // such as for workflow diagram links
+    name: string
+    value?: ExpressionJsVar | ExpressionJsVar[]
+  },
   action: (item: ExpressionJsVarLiteral) => void
 ) => {
   if (Array.isArray(item)) {

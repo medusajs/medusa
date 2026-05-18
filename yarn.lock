@@ -3354,6 +3354,11 @@ __metadata:
   dependencies:
     "@medusajs/framework": 2.15.2
     "@medusajs/test-utils": 2.15.2
+    "@otplib/core": ^13.4.0
+    "@otplib/plugin-crypto-node": ^13.4.0
+    "@otplib/totp": ^13.4.0
+    "@otplib/uri": ^13.4.0
+    scrypt-kdf: ^2.0.1
   peerDependencies:
     "@medusajs/framework": 2.15.2
   languageName: unknown
@@ -5258,6 +5263,52 @@ __metadata:
   peerDependencies:
     "@opentelemetry/api": ^1.1.0
   checksum: 1774930abdad57a716662a3feffe8a7aca8e4494303356f04c3e958fddcdb1df29d464ca91db890e0501728b4fb6c4b578f3ecb83004bcdc9d7e81b739d24459
+  languageName: node
+  linkType: hard
+
+"@otplib/core@npm:13.4.0, @otplib/core@npm:^13.4.0":
+  version: 13.4.0
+  resolution: "@otplib/core@npm:13.4.0"
+  checksum: 9d3721df328d73a49829b838171aecc18dc54b820795dde3a8644e96d954734a895247790c3f27d1f8023e715dd1c5cbd8264df86dbffe8b401c28164ae0d525
+  languageName: node
+  linkType: hard
+
+"@otplib/hotp@npm:13.4.0":
+  version: 13.4.0
+  resolution: "@otplib/hotp@npm:13.4.0"
+  dependencies:
+    "@otplib/core": 13.4.0
+    "@otplib/uri": 13.4.0
+  checksum: 8bea65184989cc6b6999aadf3a821e7d4168393cb03ae0e3235cd3402f469f783fd09e3740be4b6368044c4705b439dcaa1ffa9fbfd4a6790e698e5b4a32aae9
+  languageName: node
+  linkType: hard
+
+"@otplib/plugin-crypto-node@npm:^13.4.0":
+  version: 13.4.0
+  resolution: "@otplib/plugin-crypto-node@npm:13.4.0"
+  dependencies:
+    "@otplib/core": 13.4.0
+  checksum: c931380b4a2da23d7e4344bf4d20e2d7b32097dbc7ffd1b41972ea83b8fc7c59f37e29853a7fefe19ef3a545d6e0e4f4643d2140f19507814120acf36a759031
+  languageName: node
+  linkType: hard
+
+"@otplib/totp@npm:^13.4.0":
+  version: 13.4.0
+  resolution: "@otplib/totp@npm:13.4.0"
+  dependencies:
+    "@otplib/core": 13.4.0
+    "@otplib/hotp": 13.4.0
+    "@otplib/uri": 13.4.0
+  checksum: a0cb4241ff5581e7e299f814303dcb883c509f17228c067cfc17c3c9f50203198d7c3b1ec8efd977b2587cc3bd7b36912b89c5ed8fd6303e587c48080be76449
+  languageName: node
+  linkType: hard
+
+"@otplib/uri@npm:13.4.0, @otplib/uri@npm:^13.4.0":
+  version: 13.4.0
+  resolution: "@otplib/uri@npm:13.4.0"
+  dependencies:
+    "@otplib/core": 13.4.0
+  checksum: ce818377dcf2e8b5fd2fa0aa39d23e4717ab22de9f2ec6ddfde8635db938dabaf3347d0aacbff06fad819de0838da5525679ffa68615a4fc7e4a8ace15cc120e
   languageName: node
   linkType: hard
 

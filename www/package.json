@@ -20,7 +20,21 @@
     "watch": "turbo run watch",
     "prep": "turbo run prep",
     "test": "turbo run test -- run",
-    "up:medusa": "yarn workspaces foreach -v --topological-dev --recursive exec yarn up @medusajs/icons @medusajs/ui @medusajs/ui-preset --exact"
+    "up:medusa": "yarn workspaces foreach -v --topological-dev --recursive exec yarn up @medusajs/icons @medusajs/ui @medusajs/ui-preset --exact",
+    "build:cf:book": "cd apps/book && npx @opennextjs/cloudflare@latest build",
+    "build:cf:resources": "cd apps/resources && npx @opennextjs/cloudflare@latest build",
+    "build:cf:api-reference": "cd apps/api-reference && npx @opennextjs/cloudflare@latest build",
+    "build:cf:ui": "cd apps/ui && npx @opennextjs/cloudflare@latest build",
+    "build:cf:user-guide": "cd apps/user-guide && npx @opennextjs/cloudflare@latest build",
+    "build:cf:cloud": "cd apps/cloud && npx @opennextjs/cloudflare@latest build",
+    "build:cf:bloom": "cd apps/bloom && npx @opennextjs/cloudflare@latest build",
+    "deploy:cf:book": "cd apps/book && npx @opennextjs/cloudflare@latest build && wrangler deploy",
+    "deploy:cf:resources": "cd apps/resources && npx @opennextjs/cloudflare@latest build && wrangler deploy",
+    "deploy:cf:api-reference": "cd apps/api-reference && npx @opennextjs/cloudflare@latest build && wrangler deploy",
+    "deploy:cf:ui": "cd apps/ui && npx @opennextjs/cloudflare@latest build && wrangler deploy",
+    "deploy:cf:user-guide": "cd apps/user-guide && npx @opennextjs/cloudflare@latest build && wrangler deploy",
+    "deploy:cf:cloud": "cd apps/cloud && npx @opennextjs/cloudflare@latest build && wrangler deploy",
+    "deploy:cf:bloom": "cd apps/bloom && npx @opennextjs/cloudflare@latest build && wrangler deploy"
   },
   "dependencies": {
     "autoprefixer": "10.4.14",
@@ -52,5 +66,8 @@
   },
   "engines": {
     "node": ">=18.17.0"
+  },
+  "resolutions": {
+    "esbuild": "^0.27.0"
   }
 }

@@ -1,5 +1,33 @@
 import { OpenAPI } from "types"
 import OpenAPIParser from "@readme/openapi-parser"
+import { workerCompatibleFetch } from "docs-utils"
+
+// @readme/openapi-parser uses Node.js https.get internally, which is not
+// available in Cloudflare Workers. Override the HTTP resolver to use
+// the global fetch() API instead.
+const fetchHttpResolver = {
+  order: 1,
+  canRead: /^https?:\/\//,
+  async read(file: { url: string }) {
+    const res = await workerCompatibleFetch<string>({
+      url: file.url,
+      responseTransformer: async (res) => {
+        if (!res.ok) throw new Error(`Failed to fetch ${file.url}: ${res.status}`)
+        return await res.text()
+      },
+      fallbackAction: async () => {
+        // In local development, we can read the spec directly from the filesystem
+        const { readFileSync, existsSync } = await import("fs")
+
+        if (!existsSync(file.url)) {
+          throw new Error(`Spec file not found: ${file.url}`)
+        }
+        return readFileSync(file.url, "utf-8")
+      },
+    })
+    return res
+  },
+}
 
 type Options = {
   basePath: string
@@ -45,6 +73,9 @@ export default async function dereference({
 
   // resolve references in paths
   document = (await OpenAPIParser.dereference(`${basePath}/`, document, {
+    resolve: {
+      http: fetchHttpResolver,
+    },
     parse: {
       text: {
         // This ensures that all files are parsed as expected

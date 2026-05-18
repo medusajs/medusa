@@ -230,7 +230,7 @@ jobs:
       - name: Generate release notes with Claude
         uses: anthropics/claude-code-base-action@beta
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
           prompt: ${{ steps.prompt.outputs.CLAUDE_PROMPT }}
           allowed_tools: "Skill,Read,Write,Bash(cat /tmp/commits.json,git show:*)"
           max_turns: 25
