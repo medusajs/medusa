@@ -2,7 +2,7 @@
 
 Thank you for considering contributing to Medusa! This document will outline how to submit changes to this repository and which conventions to follow. If you are ever in doubt about anything we encourage you to reach out either by submitting an issue here or reaching out [via Discord](https://discord.gg/xpCwq3Kfn8).
 
-If you're contributing to our documentation, make sure to also check out the [contribution guidelines on our documentation website](https://docs.medusajs.com/resources/contribution-guidelines/docs).
+If you're contributing to our documentation, make sure to also check out the [contribution guidelines on our documentation website](https://docs.medusajs.com/resources/contribution-guidelines/docs). If you're setting up a local fork to change Medusa's codebase, see the [code contribution guide](https://docs.medusajs.com/learn/resources/contribution-guidelines/code).
 
 ### Important
 
@@ -208,6 +208,14 @@ If you're using `pnpm`, use `pnpm.overrides` instead of `resolutions`:
 }
 ```
 
+When using `pnpm`, also add this entry to the test project's `.npmrc`:
+
+```text
+public-hoist-pattern[]=@medusajs/*
+```
+
+This keeps locally linked `@medusajs/*` packages visible to Medusa's dynamic package loading. Without it, pnpm can keep the linked packages inside its store layout and the test project may fail with module resolution errors at runtime.
+
 2. Every time you make a change in the forked Medusa repository, you need to build the packages where the modifications took place with `yarn build`. Some packages have a watch script, so you can execute `yarn watch` once and it will automatically build on changes:
 
 ```bash
@@ -223,6 +231,29 @@ rm -R node_modules && yarn && yarn dev
 # For pnpm
 rm -R node_modules && pnpm install && pnpm dev
 ```
+
+If you test dashboard changes with Vite aliases, put the CSS subpath alias before the catch-all dashboard alias:
+
+```ts
+resolve: {
+  alias: {
+    "@medusajs/dashboard/css": "../medusa/packages/admin/dashboard/src/index.css",
+    "@medusajs/dashboard": "../medusa/packages/admin/dashboard/src",
+  },
+}
+```
+
+Vite checks aliases in order. If `@medusajs/dashboard` appears first, it can catch the CSS import before the CSS-specific alias is applied.
+
+Use this table as a quick guide for the local rebuild loop:
+
+| What you changed | What to do next |
+| --- | --- |
+| Core packages, modules, workflows, or CLI packages | Run `yarn build` in the changed package or from the repository root, reinstall dependencies in the test project, and restart the dev server. |
+| Admin dashboard code | Build or watch the dashboard package, verify the Vite aliases, and keep the test project dev server running to use HMR. |
+| Admin dashboard CSS | Make sure `@medusajs/dashboard/css` is listed before `@medusajs/dashboard`, then restart the test project dev server if styles are not picked up. |
+| Plugin packages | Run the plugin build command, reinstall dependencies in the test project, and restart the dev server. |
+| Documentation only | Follow the [docs contribution guidelines](https://docs.medusajs.com/resources/contribution-guidelines/docs) and run the documentation prep commands described there. |
 
 ## Workflow
 

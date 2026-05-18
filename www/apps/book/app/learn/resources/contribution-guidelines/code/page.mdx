@@ -1,0 +1,170 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Code Contribution Guidelines`,
+}
+
+# {metadata.title}
+
+Use this guide when you want to work on Medusa's codebase from a local fork and test your changes in a local Medusa application.
+
+<Note>
+
+If you are contributing documentation only, follow the [docs contribution guidelines](../docs/page.mdx). If you are working on a large feature, open an issue or draft PR early so maintainers can confirm the approach before you spend significant time on the implementation.
+
+</Note>
+
+## Prerequisites
+
+<Prerequisites
+  items={[
+    {
+      text: "Node.js v20+",
+      link: "https://nodejs.org/en/download",
+    },
+    {
+      text: "Yarn v3+",
+      link: "https://v3.yarnpkg.com/getting-started/install",
+    },
+    {
+      text: "A fork of the Medusa repository",
+      link: "https://github.com/medusajs/medusa",
+    },
+    {
+      text: "A local Medusa application for testing",
+      link: "../../../installation/page.mdx",
+    },
+  ]}
+/>
+
+## Recommended Directory Layout
+
+The examples in this guide assume your fork and test app are sibling directories:
+
+```text
+.
+├── medusa
+├── test-project
+└── test-project_storefront
+```
+
+The storefront directory is optional, but it can be useful when you need to test flows end to end.
+
+## Link Local Packages
+
+In your test project's `package.json`, point the `@medusajs/*` packages you are changing to the matching packages in your local fork.
+
+For npm or Yarn, use `resolutions`:
+
+```json title="test-project/package.json"
+{
+  "dependencies": {
+    "@medusajs/framework": "file:../medusa/packages/core/framework",
+    "@medusajs/medusa": "file:../medusa/packages/medusa",
+    "@medusajs/utils": "file:../medusa/packages/core/utils"
+  },
+  "resolutions": {
+    "@medusajs/framework": "file:../medusa/packages/core/framework",
+    "@medusajs/medusa": "file:../medusa/packages/medusa",
+    "@medusajs/utils": "file:../medusa/packages/core/utils"
+  }
+}
+```
+
+For pnpm, use `pnpm.overrides`:
+
+```json title="test-project/package.json"
+{
+  "dependencies": {
+    "@medusajs/framework": "file:../medusa/packages/core/framework",
+    "@medusajs/medusa": "file:../medusa/packages/medusa",
+    "@medusajs/utils": "file:../medusa/packages/core/utils"
+  },
+  "pnpm": {
+    "overrides": {
+      "@medusajs/framework": "file:../medusa/packages/core/framework",
+      "@medusajs/medusa": "file:../medusa/packages/medusa",
+      "@medusajs/utils": "file:../medusa/packages/core/utils"
+    }
+  }
+}
+```
+
+If your change touches more packages, add those packages to the same sections.
+
+## pnpm Hoisting
+
+If you use pnpm in the test project, add the following to the test project's `.npmrc`:
+
+```text title="test-project/.npmrc"
+public-hoist-pattern[]=@medusajs/*
+```
+
+This makes locally linked `@medusajs/*` packages visible to Medusa's dynamic package loading. Without this setting, pnpm may keep packages inside its store layout and the app can fail at runtime with module resolution errors.
+
+After changing linked package paths or pnpm overrides, reinstall dependencies in the test project:
+
+```bash title="test-project"
+rm -rf node_modules
+pnpm install
+```
+
+## Dashboard HMR Aliases
+
+When testing changes to the admin dashboard with Vite aliases, put the CSS subpath alias before the catch-all dashboard alias:
+
+```ts title="test-project/vite.config.ts"
+resolve: {
+  alias: {
+    "@medusajs/dashboard/css": "../medusa/packages/admin/dashboard/src/index.css",
+    "@medusajs/dashboard": "../medusa/packages/admin/dashboard/src",
+  },
+}
+```
+
+The order matters because Vite checks aliases in order. If `@medusajs/dashboard` comes first, it can catch the CSS import before the CSS-specific alias is applied.
+
+## Build and Reinstall Loop
+
+Build the packages you changed in your Medusa fork:
+
+```bash title="medusa"
+yarn build
+```
+
+Some packages support watch mode:
+
+```bash title="medusa"
+yarn watch
+```
+
+Then reinstall and restart your test project so it picks up the newly built package output:
+
+```bash title="test-project"
+rm -rf node_modules
+pnpm install
+pnpm dev
+```
+
+Use the package manager that matches your test project.
+
+## What to Rebuild
+
+| What you changed | What to do next |
+| --- | --- |
+| Core packages such as `@medusajs/framework`, `@medusajs/utils`, modules, workflows, or the CLI | Run `yarn build` in the changed package or from the repository root, reinstall dependencies in the test project, and restart the dev server. |
+| Admin dashboard code | Build or watch the dashboard package, verify your Vite aliases, and keep the test project dev server running to use HMR. |
+| Admin dashboard CSS | Make sure the `@medusajs/dashboard/css` alias appears before `@medusajs/dashboard`, then restart the test project dev server if styles are not picked up. |
+| Plugin packages such as `draft-order` or `loyalty` | Run the plugin build command, reinstall dependencies in the test project, and restart the dev server. |
+| Documentation only | Follow the [docs contribution guidelines](../docs/page.mdx) and run the documentation prep commands described there. |
+
+## Open a PR
+
+Open your PR against the `develop` branch. Include:
+
+- what changed
+- why it changed
+- how you tested it
+- which issue it closes or relates to
+
+For larger changes, open a draft PR early so maintainers can confirm the local development workflow, package split, or testing strategy before the PR grows.
