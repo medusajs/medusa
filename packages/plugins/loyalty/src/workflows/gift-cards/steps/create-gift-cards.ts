@@ -37,7 +37,6 @@ export const createGiftCardsStep = createStep(
 
     for (const giftCard of input) {
       if (!isPresent(giftCard.code)) {
-        
         giftCard.code = generateCode(prefix, sections)
       }
     }
