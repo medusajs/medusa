@@ -24,42 +24,38 @@ export default async function seedChina({ container }: ExecArgs) {
 
   // Step 2: Create categories (idempotent by handle)
   logger.info("Creating product categories...")
-  const existingCategories = await productModule.listProductCategories()
-  const existingCategoryHandles = new Set(
-    existingCategories.map((c: any) => c.handle)
-  )
+  const categoryByHandle = new Map<string, string>()
 
-  const categoriesToCreate = categoriesData.filter(
-    (cat: any) => !existingCategoryHandles.has(cat.handle)
-  )
+  for (const cat of categoriesData as any[]) {
+    const existing = await productModule.listProductCategories({
+      handle: cat.handle,
+    })
+    if (existing.length > 0) {
+      logger.info(`Category already exists: ${cat.handle}`)
+      categoryByHandle.set(cat.handle, existing[0].id)
+      continue
+    }
 
-  let categories: any[] = existingCategories
-  if (categoriesToCreate.length > 0) {
-    const newCategories = await productModule.createProductCategories(
-      categoriesToCreate.map((cat: any) => ({
+    const [created] = await productModule.createProductCategories([
+      {
         name: cat.name,
         handle: cat.handle,
         description: cat.description,
         is_active: cat.is_active,
-      }))
-    )
-    categories = [...existingCategories, ...newCategories]
-    logger.info(`Created ${newCategories.length} categories`)
-  } else {
-    logger.info("All categories already exist, skipping")
+      },
+    ])
+    categoryByHandle.set(cat.handle, created.id)
+    logger.info(`Created category: ${cat.handle}`)
   }
-
-  const categoryByHandle = new Map(categories.map((c: any) => [c.handle, c.id]))
 
   // Step 3: Create products with variants (idempotent by handle / sku)
   logger.info("Creating products...")
-  const existingProducts = await productModule.listProducts()
-  const existingProductHandles = new Set(
-    existingProducts.map((p: any) => p.handle)
-  )
 
   for (const productInput of productsData as any[]) {
-    if (existingProductHandles.has(productInput.handle)) {
+    const existingProducts = await productModule.listProducts({
+      handle: productInput.handle,
+    })
+    if (existingProducts.length > 0) {
       logger.info(`Product already exists: ${productInput.handle}`)
       continue
     }
@@ -111,13 +107,12 @@ export default async function seedChina({ container }: ExecArgs) {
 
   // Step 4: Create customers (idempotent by email)
   logger.info("Creating customers...")
-  const existingCustomers = await customerModule.listCustomers()
-  const existingCustomerEmails = new Set(
-    existingCustomers.map((c: any) => c.email)
-  )
 
   for (const customerInput of customersData as any[]) {
-    if (existingCustomerEmails.has(customerInput.email)) {
+    const existing = await customerModule.listCustomers({
+      email: customerInput.email,
+    })
+    if (existing.length > 0) {
       logger.info(`Customer already exists: ${customerInput.email}`)
       continue
     }
