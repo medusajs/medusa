@@ -495,6 +495,38 @@ export default class AuthModuleService
   }
 
   @InjectManager()
+  async retrieveAuthMfa(
+    selector: string | AuthTypes.AuthMfaSelector,
+    config: FindConfig<AuthTypes.AuthMfaDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.AuthMfaDTO> {
+    const filters =
+      typeof selector === "string"
+        ? { id: [selector] }
+        : {
+            id: [selector.id],
+            auth_identity_id: selector.auth_identity_id,
+          }
+
+    const [factor] = await this.authMfaFactorService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    if (!factor) {
+      const id = typeof selector === "string" ? selector : selector.id
+
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `MFA factor with id "${id}" was not found`
+      )
+    }
+
+    return await this.serializeMfaFactor_(factor)
+  }
+
+  @InjectManager()
   async listAuthMfa(
     filters: AuthTypes.FilterableAuthMfaProps = {},
     config: FindConfig<AuthTypes.AuthMfaDTO> = {},
