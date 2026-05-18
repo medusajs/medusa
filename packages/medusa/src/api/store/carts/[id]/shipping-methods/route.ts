@@ -12,9 +12,20 @@ export const POST = async (
 ) => {
   const payload = req.validatedBody
 
+  const isMulti = "option_ids" in payload && Array.isArray(payload.option_ids)
+  const optionIds: string[] = isMulti
+    ? (payload as { option_ids: string[] }).option_ids
+    : [(payload as { option_id: string }).option_id]
+  const dataPerOption = (idx: number) => {
+    if (!isMulti || !Array.isArray(payload.data)) {
+      return payload.data
+    }
+    return (payload.data as Record<string, unknown>[])[idx]
+  }
+
   await addShippingMethodToCartWorkflow(req.scope).run({
     input: {
-      options: [{ id: payload.option_id, data: payload.data }],
+      options: optionIds.map((id, idx) => ({ id, data: dataPerOption(idx) })),
       cart_id: req.params.id,
       additional_data: payload.additional_data,
     },
