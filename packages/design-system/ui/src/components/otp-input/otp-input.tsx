@@ -108,7 +108,7 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
       separator = "-",
       value,
       ...props
-    },
+    }: OtpInputProps,
     ref
   ) => {
     const inputRefs = React.useRef<Array<HTMLInputElement | null>>([])

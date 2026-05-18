@@ -1,5 +1,5 @@
 ---
-"@medusajs/ui": minor
+"@medusajs/ui": patch
 ---
 
-Added a CodeInput component for segmented numeric verification codes.
+Added an OtpInput component for segmented numeric verification codes.
