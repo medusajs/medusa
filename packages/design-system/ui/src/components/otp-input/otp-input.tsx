@@ -4,6 +4,11 @@ import * as React from "react"
 
 import { clx } from "@/utils/clx"
 
+/**
+ * The props for the OtpInput component.
+ *
+ * @since 2.15.3
+ */
 interface OtpInputProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
   /**
@@ -90,6 +95,8 @@ const applyOtpAtIndex = (
 
 /**
  * A controlled segmented input for one-time passwords, PINs, and short numeric verification codes.
+ *
+ * @since 2.15.3
  */
 const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
   (
