@@ -3734,11 +3734,11 @@ medusaIntegrationTestRunner({
           ).data.product
 
           let updated = await api.post(
-            `/store/carts/${cart.id}/line-items?fields=+items.is_giftcard`,
+            `/store/carts/${cart.id}/line-items`,
             { variant_id: giftCardProduct.variants[0].id, quantity: 1 },
             storeHeaders
           )
-
+          console.log("updated cart with gift card item", JSON.stringify(updated.data.cart, null, 2));
           expect(updated.status).toEqual(200)
           expect(updated.data.cart).toEqual(
             expect.objectContaining({

@@ -3856,8 +3856,11 @@ __metadata:
     "@medusajs/ui": 4.1.12
     "@medusajs/ui-preset": 2.15.2
     "@swc/core": 1.5.7
+    "@swc/jest": ^0.2.36
+    "@types/jest": ^29.0.0
     "@types/node": ^20.0.0
     cross-env: ^7.0.3
+    jest: ^29.0.0
     ts-node: ^10.9.2
     typescript: ^5.7.3
   peerDependencies:
@@ -11853,6 +11856,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jest@npm:^29.0.0":
+  version: 29.5.14
+  resolution: "@types/jest@npm:29.5.14"
+  dependencies:
+    expect: ^29.0.0
+    pretty-format: ^29.0.0
+  checksum: 18e0712d818890db8a8dab3d91e9ea9f7f19e3f83c2e50b312f557017dc81466207a71f3ed79cf4428e813ba939954fa26ffa0a9a7f153181ba174581b1c2aed
+  languageName: node
+  linkType: hard
+
 "@types/js-yaml@npm:^4.0.9":
   version: 4.0.9
   resolution: "@types/js-yaml@npm:4.0.9"
@@ -17196,7 +17209,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expect@npm:^29.7.0":
+"expect@npm:^29.0.0, expect@npm:^29.7.0":
   version: 29.7.0
   resolution: "expect@npm:29.7.0"
   dependencies:
@@ -20263,7 +20276,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest@npm:^29.7.0":
+"jest@npm:^29.0.0, jest@npm:^29.7.0":
   version: 29.7.0
   resolution: "jest@npm:29.7.0"
   dependencies:
@@ -23775,7 +23788,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-format@npm:^29.7.0":
+"pretty-format@npm:^29.0.0, pretty-format@npm:^29.7.0":
   version: 29.7.0
   resolution: "pretty-format@npm:29.7.0"
   dependencies:
