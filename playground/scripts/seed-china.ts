@@ -1,9 +1,53 @@
 import { ExecArgs } from "@medusajs/framework/types"
 import { Logger } from "@medusajs/types"
+import { Modules } from "@medusajs/framework/utils"
 
 export default async function seedChina({ container }: ExecArgs) {
   const logger = container.resolve<Logger>("logger")
   logger.info("Starting China e-commerce seed...")
+
+  // Create admin user
+  const authService = container.resolve(Modules.AUTH)
+  const workflowService = container.resolve(Modules.WORKFLOW_ENGINE)
+
+  const adminEmail = "admin@example.com"
+  const adminPassword = "supersecret"
+
+  const { result: users } = await workflowService.run(
+    "create-users-workflow",
+    {
+      input: {
+        users: [
+          {
+            email: adminEmail,
+          },
+        ],
+      },
+    }
+  )
+
+  const user = users[0]
+
+  const { authIdentity, error } = await authService.register("emailpass", {
+    body: {
+      email: adminEmail,
+      password: adminPassword,
+    },
+  })
+
+  if (error) {
+    logger.error("Failed to create auth identity: " + error)
+    throw new Error(error)
+  }
+
+  await authService.updateAuthIdentities({
+    id: authIdentity!.id,
+    app_metadata: {
+      user_id: user.id,
+    },
+  })
+
+  logger.info("Admin user created: " + adminEmail + " / " + adminPassword)
 
   // Seed Organization
   const orgModule = container.resolve("organization") as any
@@ -197,6 +241,7 @@ export default async function seedChina({ container }: ExecArgs) {
 
   logger.info("")
   logger.info("=== China e-commerce seed complete! ===")
+  logger.info("Admin User: " + adminEmail + " / " + adminPassword)
   logger.info("Organization: " + org.id)
   logger.info("Brand: " + brand.id)
   logger.info("Taobao Shop: " + shopTaobao.id)
