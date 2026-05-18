@@ -60,6 +60,34 @@ const getWritableDigits = (value: string, length: number) => {
   return getDigits(value, length).map((digit) => (digit === " " ? "" : digit))
 }
 
+const getDigitGroups = (length: number, groupSize: number) => {
+  return Array.from({ length: Math.ceil(length / groupSize) }).map(
+    (_, groupIndex) => {
+      const start = groupIndex * groupSize
+
+      return {
+        start,
+        length: Math.min(groupSize, length - start),
+      }
+    }
+  )
+}
+
+const applyCodeAtIndex = (
+  digits: string[],
+  index: number,
+  value: string,
+  length: number
+) => {
+  value.split("").forEach((digit, offset) => {
+    if (index + offset < length) {
+      digits[index + offset] = digit
+    }
+  })
+
+  return digits
+}
+
 /**
  * A controlled segmented input for one-time codes, PINs, and short numeric verification codes.
  */
@@ -87,6 +115,7 @@ const CodeInput = React.forwardRef<HTMLDivElement, CodeInputProps>(
     const codeLength = Math.max(1, length)
     const digits = getDigits(value, codeLength)
     const safeGroupSize = Math.max(1, groupSize)
+    const digitGroups = getDigitGroups(codeLength, safeGroupSize)
 
     const focusInput = (index: number) => {
       const nextIndex = Math.min(Math.max(index, 0), codeLength - 1)
@@ -118,11 +147,7 @@ const CodeInput = React.forwardRef<HTMLDivElement, CodeInputProps>(
         return
       }
 
-      incoming.split("").forEach((digit, offset) => {
-        if (index + offset < codeLength) {
-          nextDigits[index + offset] = digit
-        }
-      })
+      applyCodeAtIndex(nextDigits, index, incoming, codeLength)
 
       updateValue(
         nextDigits.join(""),
@@ -190,15 +215,44 @@ const CodeInput = React.forwardRef<HTMLDivElement, CodeInputProps>(
 
       const nextDigits = getWritableDigits(value, codeLength)
 
-      pastedValue.split("").forEach((digit, offset) => {
-        if (index + offset < codeLength) {
-          nextDigits[index + offset] = digit
-        }
-      })
+      applyCodeAtIndex(nextDigits, index, pastedValue, codeLength)
 
       updateValue(
         nextDigits.join(""),
         Math.min(index + pastedValue.length, codeLength - 1)
+      )
+    }
+
+    const renderInput = (index: number) => {
+      return (
+        <input
+          key={index}
+          ref={(element) => {
+            inputRefs.current[index] = element
+          }}
+          aria-invalid={ariaInvalid}
+          aria-label={`${ariaLabel} ${index + 1}`}
+          autoComplete={index === 0 ? "one-time-code" : "off"}
+          autoFocus={autoFocus && index === 0}
+          className={clx(
+            "txt-compact-large font-mono text-ui-fg-base bg-ui-bg-field hover:bg-ui-bg-field-hover shadow-borders-base transition-fg relative -ml-px flex size-10 appearance-none items-center justify-center border-0 text-center outline-none first:ml-0 first:rounded-l-md last:rounded-r-md",
+            "focus-visible:z-10 focus-visible:shadow-borders-interactive-with-active",
+            "disabled:text-ui-fg-disabled disabled:!bg-ui-bg-disabled disabled:cursor-not-allowed",
+            "aria-[invalid=true]:!shadow-borders-error",
+            inputClassName
+          )}
+          disabled={disabled}
+          inputMode="numeric"
+          maxLength={codeLength}
+          onChange={(event) => handleChange(index, event.target.value)}
+          onFocus={(event) => event.target.select()}
+          onKeyDown={(event) => handleKeyDown(event, index)}
+          onPaste={(event) => handlePaste(event, index)}
+          pattern="[0-9]*"
+          readOnly={readOnly}
+          type="text"
+          value={digits[index].trim()}
+        />
       )
     }
 
@@ -211,63 +265,25 @@ const CodeInput = React.forwardRef<HTMLDivElement, CodeInputProps>(
         role="group"
         {...props}
       >
-        {Array.from({ length: Math.ceil(codeLength / safeGroupSize) }).map(
-          (_, groupIndex) => {
-            const start = groupIndex * safeGroupSize
-            const groupLength = Math.min(safeGroupSize, codeLength - start)
-
-            return (
-              <React.Fragment key={groupIndex}>
-                {groupIndex > 0 && separator && (
-                  <span
-                    aria-hidden="true"
-                    className="txt-compact-small-plus text-ui-fg-muted"
-                  >
-                    {separator}
-                  </span>
+        {digitGroups.map(({ start, length }, groupIndex) => {
+          return (
+            <React.Fragment key={groupIndex}>
+              {groupIndex > 0 && separator && (
+                <span
+                  aria-hidden="true"
+                  className="txt-compact-small-plus text-ui-fg-muted"
+                >
+                  {separator}
+                </span>
+              )}
+              <div className="flex">
+                {Array.from({ length }).map((_, offset) =>
+                  renderInput(start + offset)
                 )}
-                <div className="flex">
-                  {Array.from({ length: groupLength }).map((__, offset) => {
-                    const index = start + offset
-
-                    return (
-                      <input
-                        key={index}
-                        ref={(element) => {
-                          inputRefs.current[index] = element
-                        }}
-                        aria-invalid={ariaInvalid}
-                        aria-label={`${ariaLabel} ${index + 1}`}
-                        autoComplete={index === 0 ? "one-time-code" : "off"}
-                        autoFocus={autoFocus && index === 0}
-                        className={clx(
-                          "txt-compact-large font-mono text-ui-fg-base bg-ui-bg-field hover:bg-ui-bg-field-hover shadow-borders-base transition-fg relative -ml-px flex size-10 appearance-none items-center justify-center border-0 text-center outline-none first:ml-0 first:rounded-l-md last:rounded-r-md",
-                          "focus-visible:z-10 focus-visible:shadow-borders-interactive-with-active",
-                          "disabled:text-ui-fg-disabled disabled:!bg-ui-bg-disabled disabled:cursor-not-allowed",
-                          "aria-[invalid=true]:!shadow-borders-error",
-                          inputClassName
-                        )}
-                        disabled={disabled}
-                        inputMode="numeric"
-                        maxLength={codeLength}
-                        onChange={(event) =>
-                          handleChange(index, event.target.value)
-                        }
-                        onFocus={(event) => event.target.select()}
-                        onKeyDown={(event) => handleKeyDown(event, index)}
-                        onPaste={(event) => handlePaste(event, index)}
-                        pattern="[0-9]*"
-                        readOnly={readOnly}
-                        type="text"
-                        value={digits[index].trim()}
-                      />
-                    )
-                  })}
-                </div>
-              </React.Fragment>
-            )
-          }
-        )}
+              </div>
+            </React.Fragment>
+          )
+        })}
       </div>
     )
   }
