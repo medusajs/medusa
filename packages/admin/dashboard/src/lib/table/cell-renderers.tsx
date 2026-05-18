@@ -59,12 +59,12 @@ const StatusRenderer: CellRenderer = (value, row, column, t) => {
     return <ProductStatusCell status={row.status} />
   }
 
-  if (column.context === "payment" && t) {
+  if (column.field === "payment_status" && t) {
     const { label, color } = getOrderPaymentStatus(t, value)
     return <StatusBadge color={color}>{label}</StatusBadge>
   }
 
-  if (column.context === "fulfillment" && t) {
+  if (column.field === "fulfillment_status" && t) {
     const { label, color } = getOrderFulfillmentStatus(t, value)
     return <StatusBadge color={color}>{label}</StatusBadge>
   }
