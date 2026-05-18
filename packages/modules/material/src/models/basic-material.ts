@@ -9,7 +9,7 @@ const BasicMaterial = model
     material_code: model.text().unique(),
     material_name: model.text().searchable(),
     spu_code: model.text().nullable(),
-    material_type: model.enum(MATERIAL_TYPE).default("normal"),
+    material_type: model.enum([...MATERIAL_TYPE]).default("normal"),
     category_id: model.text().nullable(),
     sn_managed: model.boolean().default(false),
     stock_controlled: model.boolean().default(true),
@@ -20,7 +20,7 @@ const BasicMaterial = model
     o2o_enabled: model.boolean().default(false),
     color: model.text().nullable(),
     size: model.text().nullable(),
-    source: model.enum(SOURCE_TYPE).default("local"),
+    source: model.enum([...SOURCE_TYPE]).default("local"),
     org_id: model.text().nullable(),
     metadata: model.json().nullable(),
     sales_materials: model.hasMany(() => SalesMaterial, {

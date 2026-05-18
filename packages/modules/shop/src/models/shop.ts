@@ -15,7 +15,7 @@ const Shop = model
     id: model.id({ prefix: "shop" }).primaryKey(),
     shop_code: model.text().unique(),
     shop_name: model.text().searchable(),
-    platform_type: model.enum(PlatformType),
+    platform_type: model.enum([...PlatformType]),
     platform_shop_id: model.text().nullable(),
     org_id: model.text().nullable(),
     status: model.enum(["active", "inactive"]).default("active"),

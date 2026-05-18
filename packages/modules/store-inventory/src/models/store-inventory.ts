@@ -11,7 +11,7 @@ const StoreInventory = model
     share_stock: model.number().default(0),
     share_reserved: model.number().default(0),
     in_transit_stock: model.number().default(0),
-    store_mode: model.enum(STORE_MODE).default("normal"),
+    store_mode: model.enum([...STORE_MODE]).default("normal"),
     metadata: model.json().nullable(),
   })
   .indexes([

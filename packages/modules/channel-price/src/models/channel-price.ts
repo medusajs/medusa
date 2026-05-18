@@ -8,7 +8,7 @@ const ChannelPrice = model
     sales_material_id: model.text(),
     shop_id: model.text().nullable(),
     customer_class_id: model.text().nullable(),
-    price_type: model.enum(PRICE_TYPE),
+    price_type: model.enum([...PRICE_TYPE]),
     currency_code: model.text().default("CNY"),
     amount: model.float(),
     start_at: model.dateTime().nullable(),
