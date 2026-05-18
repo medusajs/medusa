@@ -1,10 +1,152 @@
 import { ExecArgs } from "@medusajs/framework/types"
 import { Logger } from "@medusajs/types"
 import { Modules } from "@medusajs/framework/utils"
+import { createDefaultsWorkflow } from "@medusajs/core-flows"
+import categoriesData from "../data/categories.json"
+import productsData from "../data/products.json"
+import customersData from "../data/customers.json"
 
 export default async function seedChina({ container }: ExecArgs) {
   const logger = container.resolve<Logger>("logger")
   logger.info("Starting China e-commerce seed...")
+
+  // ============================================================
+  // PART 1: Default Medusa seed data (idempotent)
+  // ============================================================
+
+  // Step 1: Create default store, region, currency, sales channel
+  logger.info("Creating default store infrastructure...")
+  await createDefaultsWorkflow(container).run()
+
+  // Resolve modules
+  const productModule = container.resolve(Modules.PRODUCT) as any
+  const customerModule = container.resolve(Modules.CUSTOMER) as any
+
+  // Step 2: Create categories (idempotent by handle)
+  logger.info("Creating product categories...")
+  const existingCategories = await productModule.listProductCategories()
+  const existingCategoryHandles = new Set(
+    existingCategories.map((c: any) => c.handle)
+  )
+
+  const categoriesToCreate = categoriesData.filter(
+    (cat: any) => !existingCategoryHandles.has(cat.handle)
+  )
+
+  let categories: any[] = existingCategories
+  if (categoriesToCreate.length > 0) {
+    const newCategories = await productModule.createProductCategories(
+      categoriesToCreate.map((cat: any) => ({
+        name: cat.name,
+        handle: cat.handle,
+        description: cat.description,
+        is_active: cat.is_active,
+      }))
+    )
+    categories = [...existingCategories, ...newCategories]
+    logger.info(`Created ${newCategories.length} categories`)
+  } else {
+    logger.info("All categories already exist, skipping")
+  }
+
+  const categoryByHandle = new Map(categories.map((c: any) => [c.handle, c.id]))
+
+  // Step 3: Create products with variants (idempotent by handle / sku)
+  logger.info("Creating products...")
+  const existingProducts = await productModule.listProducts()
+  const existingProductHandles = new Set(
+    existingProducts.map((p: any) => p.handle)
+  )
+
+  for (const productInput of productsData as any[]) {
+    if (existingProductHandles.has(productInput.handle)) {
+      logger.info(`Product already exists: ${productInput.handle}`)
+      continue
+    }
+
+    const categoryId = categoryByHandle.get(productInput.category_handle)
+
+    const [product] = await productModule.createProducts([
+      {
+        title: productInput.title,
+        handle: productInput.handle,
+        description: productInput.description,
+        subtitle: productInput.subtitle,
+        is_giftcard: productInput.is_giftcard,
+        discountable: productInput.discountable,
+        status: productInput.status,
+        categories: categoryId ? [{ id: categoryId }] : undefined,
+        options: productInput.options.map((opt: any) => ({
+          title: opt.title,
+          values: opt.values,
+        })),
+      },
+    ])
+
+    // Build option title -> option id map
+    const optionIdByTitle = new Map(
+      product.options.map((o: any) => [o.title, o.id])
+    )
+
+    // Create variants for the product
+    for (const variantInput of productInput.variants as any[]) {
+      const variantOptions: Record<string, string> = {}
+      for (let i = 0; i < variantInput.options.length; i++) {
+        const optTitle = productInput.options[i].title
+        variantOptions[optTitle] = variantInput.options[i].value
+      }
+
+      await productModule.createProductVariants([
+        {
+          product_id: product.id,
+          title: variantInput.title,
+          sku: variantInput.sku,
+          options: variantOptions,
+        },
+      ])
+    }
+
+    logger.info(`Created product: ${productInput.handle}`)
+  }
+
+  // Step 4: Create customers (idempotent by email)
+  logger.info("Creating customers...")
+  const existingCustomers = await customerModule.listCustomers()
+  const existingCustomerEmails = new Set(
+    existingCustomers.map((c: any) => c.email)
+  )
+
+  for (const customerInput of customersData as any[]) {
+    if (existingCustomerEmails.has(customerInput.email)) {
+      logger.info(`Customer already exists: ${customerInput.email}`)
+      continue
+    }
+
+    await customerModule.createCustomers([
+      {
+        email: customerInput.email,
+        first_name: customerInput.first_name,
+        last_name: customerInput.last_name,
+        phone: customerInput.phone,
+        addresses: customerInput.addresses.map((addr: any) => ({
+          first_name: addr.first_name,
+          last_name: addr.last_name,
+          address_1: addr.address_1,
+          city: addr.city,
+          province: addr.province || "",
+          postal_code: addr.postal_code,
+          country_code: addr.country_code,
+          phone: addr.phone,
+        })),
+      },
+    ])
+
+    logger.info(`Created customer: ${customerInput.email}`)
+  }
+
+  // ============================================================
+  // PART 2: China e-commerce seed data (idempotent)
+  // ============================================================
 
   // Create admin user (idempotent)
   const authService = container.resolve(Modules.AUTH)
