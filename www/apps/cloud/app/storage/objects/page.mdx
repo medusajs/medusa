@@ -1,0 +1,101 @@
+import { getOsShortcut, Kbd } from "docs-ui"
+
+export const metadata = {
+  title: `Object Storage`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about the managed object storage service that Medusa provides as part of your project environments on Cloud.
+
+## Managed Object Storage Service on Cloud
+
+Medusa offers a managed S3-compatible object storage service for your project environments on Cloud. Each environment has its own dedicated S3 bucket that is automatically provisioned when the environment is created.
+
+So, when you create a new project, Medusa creates a production S3 bucket for the production environment. If you create a staging environment, Medusa creates a separate S3 bucket for that environment as well.
+
+![Diagram showcasing S3 isolation between environments](https://res.cloudinary.com/dza7lstvk/image/upload/v1750230909/Cloud/s3-cloud_smrtfc.jpg)
+
+---
+
+## Configured S3 File Module Provider on Cloud
+
+Medusa automatically configures your Medusa application hosted on Cloud to use the [S3 File Module Provider](!resources!/infrastructure-modules/file/s3).
+
+So, you don't need to configure the S3 File Module Provider or set up S3 manually. Also, if you have the S3 File Module Provider configured in `medusa-config.ts`, remove it to avoid conflicts.
+
+<Note>
+
+If you're using a Medusa version before v2.7.0, contact support for assistance in configuring the S3 File Module Provider.
+
+</Note>
+
+### Access Object Storage Configurations
+
+Since Cloud is a managed service, you can't directly access your S3 bucket.
+
+You can, however, access the S3 bucket details of your environment. This is useful when setting remote patterns in your storefront to allow loading assets from the S3 bucket.
+
+To access the object storage details of an environment:
+
+<Note title="Tip">
+
+You can also navigate to a project's object storage details from the [command palette](../../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, select **Storage**, then choose a project.
+
+</Note>
+
+1. From the [organization's dashboard](../../organizations/page.mdx), click on the environment's project.
+2. In the project's dashboard, click on the name of the environment. For example, "Production".
+3. In the environment's dashboard, click on the **Storage** tab.
+4. In the sidebar, click **Objects**.
+
+### Object Storage Configuration
+
+When object storage is configured, the **Object storage** section displays:
+
+- Your full S3 file URL
+- Your S3 endpoint
+- Additional configuration details
+
+From the S3 file URL, you can extract the bucket name and region. For example, if your S3 file URL is `https://s3.eu-central-1.amazonaws.com/medusajs.cloud-data-prod-euc1-123`:
+
+- The bucket name is `medusajs.cloud-data-prod-euc1-123`.
+- The region is `eu-central-1`.
+
+![S3 bucket details in Storage settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1773824777/Cloud/CleanShot_2026-03-18_at_11.06.01_2x_imxylo.png)
+
+### Object Storage Not Available
+
+If object storage isn't configured for your environment, you'll see a message indicating that object storage is unavailable. This typically happens when:
+
+- The S3 file URL or endpoint isn't configured
+- Object storage hasn't been set up for the environment
+- There's a configuration issue with the storage service
+
+In this case, you may need to contact support or check your environment's configuration.
+
+### Override Object Storage Configurations
+
+If you need to override the default object storage configurations of your Cloud project, such as changing public access to assets, you can do so by setting up and managing your own S3 bucket externally.
+
+Then, configure the S3 File Module Provider in your `medusa-config.ts` file to connect to your external S3 instance. Refer to the [S3 File Module Provider documentation](!resources!/infrastructure-modules/file/s3) for more details on how to configure it.
+
+<Note title="Tip">
+
+To set the connection options of your external S3 instance, refer to the [Environment Variables](../../environments/environment-variables/page.mdx#add-environment-variables) guide to learn how to add environment variables. You can then use these variables in your `medusa-config.ts` file to connect to your S3 instance.
+
+</Note>
+
+---
+
+## Upload Files to Object Storage
+
+When you upload files through your Medusa application hosted on Cloud, such as product images or other assets, the files are stored in the S3 bucket associated with that application's environment.
+
+You can also upload files using Medusa's [Upload Files API route](!api!/admin#uploads_postuploads), or in a [custom API route that handles file upload](!docs!/learn/fundamentals/api-routes/parse-body#configure-file-uploads).
+
+---
+
+## Object Storage Privacy
+
+By default, the S3 bucket of your Cloud projects is private, but the files you upload to the bucket are publicly accessible. This is necessary for serving product images and other assets in your Medusa application.

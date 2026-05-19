@@ -341,9 +341,26 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
-            "title": "Database",
-            "path": "/database",
-            "children": []
+            "title": "Storage",
+            "path": "/storage",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Database",
+                "path": "/storage/database",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Objects",
+                "path": "/storage/objects",
+                "children": []
+              }
+            ]
           },
           {
             "loaded": true,
@@ -351,14 +368,6 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Redis",
             "path": "/redis",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "type": "link",
-            "title": "S3",
-            "path": "/s3",
             "children": []
           },
           {

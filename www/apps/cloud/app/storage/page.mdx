@@ -1,0 +1,57 @@
+export const metadata = {
+  title: `Storage`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about the managed storage services that Medusa provides as part of your project environments on Cloud.
+
+## Storage Overview
+
+Medusa provides comprehensive storage solutions for each of your environments on Cloud. Each environment has its own isolated storage resources, ensuring data security and development workflow separation.
+
+The storage system includes:
+
+- **Database Storage**: Managed PostgreSQL databases with automatic backups and connection management
+- **Object Storage**: Managed S3-compatible storage for files, images, and other assets
+
+Each project environment has dedicated storage resources that are entirely isolated from one another, allowing you to safely make or test changes without affecting other environments.
+
+---
+
+## Storage Sections
+
+Your environment's storage is organized into two main sections:
+
+### Database
+
+The database section provides access to:
+
+- Database connection strings (read and write access)
+- Database backup management and restore functionality  
+- Data dump import and export capabilities
+- Connection configuration and security settings
+
+Learn more in the [Database Storage guide](./database/page.mdx).
+
+### Objects
+
+The object storage section provides access to:
+
+- S3 bucket configuration and details
+- File storage endpoints and URLs
+- Object storage status and availability
+
+Learn more in the [Object Storage guide](./objects/page.mdx).
+
+---
+
+## Access Storage Settings
+
+You can access storage settings for any environment through multiple paths:
+
+1. **From the environment dashboard**: Navigate to your environment and click the **Storage** tab
+2. **From the command palette**: Press the keyboard shortcut, then select **Storage**
+3. **From the sidebar**: Navigate to an environment and find **Storage** in the sidebar
+
+The storage interface provides a unified view of all storage resources associated with your environment, making it easy to manage databases, backups, and object storage from a single location.

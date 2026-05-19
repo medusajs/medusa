@@ -9,7 +9,7 @@ export const generatedEditDates = {
   "app/database/page.mdx": "2026-05-15T09:27:23.867Z",
   "app/redis/page.mdx": "2026-04-17T09:45:49.836Z",
   "app/s3/page.mdx": "2026-05-15T09:27:28.262Z",
-  "app/logs/page.mdx": "2026-05-06T11:31:50.584Z",
+  "app/logs/page.mdx": "2026-05-19T01:03:00.265Z",
   "app/update-medusa/page.mdx": "2026-01-08T08:54:50.149Z",
   "app/connect-storefront/page.mdx": "2026-01-08T08:50:31.830Z",
   "app/environments/environment-variables/page.mdx": "2026-04-10T08:10:51.404Z",
@@ -24,7 +24,7 @@ export const generatedEditDates = {
   "app/comparison/page.mdx": "2026-01-08T09:11:35.592Z",
   "app/billing/plans/page.mdx": "2026-04-17T09:45:41.178Z",
   "app/cache/page.mdx": "2025-11-12T14:37:24.809Z",
-  "app/deployments/troubleshooting/page.mdx": "2025-10-17T14:44:22.894Z",
+  "app/deployments/troubleshooting/page.mdx": "2026-05-19T01:03:11.137Z",
   "app/emails/page.mdx": "2026-04-10T11:40:04.389Z",
   "app/emails/react-email/page.mdx": "2026-03-27T09:46:46.277Z",
   "app/user/page.mdx": "2026-05-06T10:12:12.165Z",
@@ -54,7 +54,7 @@ export const generatedEditDates = {
   "app/cli/commands/version/page.mdx": "2026-04-29T08:21:59.586Z",
   "app/cli/commands/whoami/page.mdx": "2026-04-29T08:27:22.781Z",
   "app/access-keys/page.mdx": "2026-04-29T09:09:42.629Z",
-  "app/cli/agents/page.mdx": "2026-05-05T10:47:21.287Z",
+  "app/cli/agents/page.mdx": "2026-05-19T01:02:44.588Z",
   "app/navigation/page.mdx": "2026-05-06T10:14:13.715Z",
   "public/raw-mdx/access-keys/page.mdx": "2026-05-12T10:49:54.264Z",
   "public/raw-mdx/billing/manage/page.mdx": "2026-05-12T10:49:54.265Z",
@@ -111,5 +111,8 @@ export const generatedEditDates = {
   "public/raw-mdx/storefront/page.mdx": "2026-05-12T10:49:54.289Z",
   "public/raw-mdx/update-medusa/page.mdx": "2026-05-12T10:49:54.290Z",
   "public/raw-mdx/usage/page.mdx": "2026-05-12T10:49:54.290Z",
-  "public/raw-mdx/user/page.mdx": "2026-05-12T10:49:54.291Z"
+  "public/raw-mdx/user/page.mdx": "2026-05-12T10:49:54.291Z",
+  "app/storage/database/page.mdx": "2026-05-19T01:01:45.395Z",
+  "app/storage/objects/page.mdx": "2026-05-19T01:02:16.097Z",
+  "app/storage/page.mdx": "2026-05-19T01:00:51.906Z"
 }

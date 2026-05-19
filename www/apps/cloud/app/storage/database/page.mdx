@@ -1,0 +1,239 @@
+import { getOsShortcut, Kbd, InlineIcon } from "docs-ui"
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Database Storage`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about the managed database storage service that Medusa provides as part of your project environments on Cloud.
+
+## Managed Database Service on Cloud
+
+Medusa provisions and manages databases for each of your environments on Cloud.
+
+Each project environment has a dedicated PostgreSQL database. These databases are entirely isolated from one another.
+
+This isolation allows you to safely make or test changes in environments without affecting one another, especially the production environment and its data.
+
+![Diagram showcasing isolation between environment databases](https://res.cloudinary.com/dza7lstvk/image/upload/v1750174759/Cloud/databases-cloud_hzjyrn.jpg)
+
+---
+
+## Cloud Database Configurations
+
+Medusa automatically configures the database for your environments on Cloud. So, you don't need to worry about setting up the database, configuring it with your Medusa application, or monitoring performance and availability on your end.
+
+---
+
+## Database Backups
+
+Medusa provides automatic backups for your environment databases on Cloud. These backups are retained for 14 days and allow you to restore your database to a previous state if needed.
+
+<Note>
+
+Database backups are available to the Launch, Scale, and Enterprise plans only. Learn how to upgrade in the [Manage Plans](../../billing/plans/page.mdx#change-plan) guide.
+
+</Note>
+
+To access the database backups of an environment:
+
+<Note title="Tip">
+
+You can access the database settings from the [command palette](../../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, then select **Storage**.
+
+</Note>
+
+1. From the [organization's dashboard](../../organizations/page.mdx), click on the environment's project.
+2. In the project's dashboard, click on the name of the environment. For example, "Production".
+3. In the environment's dashboard, click on the **Storage** tab.
+4. In the sidebar, click **Database** and scroll down to the **Database Backups** section.
+
+The **Database Backups** section shows a table of available backups with the following columns:
+
+- **Generated At**: When the backup was created.
+- **Source**: The backup origin. **Scheduled** backups are created automatically; **Manual** backups are triggered by you; **Other** backups may be created during maintenance operations.
+- **Size**: The backup file size.
+
+### Download a Backup
+
+To download a backup to your device:
+
+1. In the **Database Backups** table, find the backup you want to download.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon and choose **Download**.
+
+This will start a download of the backup file to your device. It's a `.dump` file that you can restore to a PostgreSQL database using tools like `pg_restore`. For example:
+
+```bash
+pg_restore --no-acl --no-owner --no-privileges --clean --if-exists -d 'postgres://postgres:secret@localhost:5432/mydatabase' mybackup.dump
+```
+
+### Restore a Backup
+
+<Note type="warning">
+
+Restoring a backup replaces your current database with the backup data. This action is irreversible.
+
+</Note>
+
+To restore your database from a backup:
+
+1. In the **Database Backups** table, find the backup you want to restore.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon and choose **Restore**.
+3. In the confirmation dialog, type `restore` to confirm the action.
+4. Click **Restore backup** to confirm.
+
+Medusa notifies you when the restore completes or if an error occurs.
+
+<Note title="Tip">
+
+You can't restore a backup while a database import is in progress.
+
+</Note>
+
+### Trigger a Manual Backup
+
+A manual backup is triggered when you export a database dump from the environment settings. Learn how to do that in the [Import/Export Database Dumps](#importexport-database-dumps) section below.
+
+---
+
+## Connect to Database
+
+In some cases, you may need to access your Cloud project's database directly, such as to export or import data.
+
+Medusa gives you read access to your Cloud project's database, which is useful when you need to export data, perform analytics, or troubleshoot issues.
+
+### Get Read-Only Connection String
+
+To get the read-only connection string for an environment's database:
+
+<Note title="Tip">
+
+You can access the database settings from the [command palette](../../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, then select **Storage**.
+
+</Note>
+
+1. From the [organization's dashboard](../../organizations/page.mdx), click on the environment's project.
+2. In the project's dashboard, click on the name of the environment. For example, "Production".
+3. In the environment's dashboard, click on the **Storage** tab.
+4. In the sidebar, click **Database**.
+5. In the **Database read-only connection string** section, copy the read-only connection string in the code block.
+  
+Then, you can connect to your database using a PostgreSQL client. For example, using the `psql` command-line tool:
+
+```bash
+psql "postgresql://..."
+```
+
+After connecting to the database, you can run SQL queries to interact with your data.
+
+### Get Write Connection String
+
+All environments have a read-only connection string by default. This allows you to connect to the database and query data, but it doesn't allow you to modify the data or database schema. This is a security measure to prevent accidental changes to your database.
+
+For advanced use cases where you need write access to your environment's database, such as importing data or performing maintenance tasks, Medusa allows organization owners to enable database write access.
+
+<Note title="Important" type="warning">
+
+Database write access should be used with caution as it allows direct modification of your database outside of your application. Only enable this feature if you understand the implications and need direct write access for specific tasks.
+
+</Note>
+
+To enable database write access for an environment:
+
+<Note title="Tip">
+
+You can access the database settings from the [command palette](../../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, then select **Storage**.
+
+</Note>
+
+1. From the [organization's dashboard](../../organizations/page.mdx), click on the environment's project.
+2. In the project's dashboard, click on the name of the environment. For example, "Production".
+3. In the environment's dashboard, click on the **Storage** tab.
+4. In the sidebar, click **Database**.
+5. In the **Database write-access connection string** section, toggle the switch to enable write access.
+6. Once enabled, copy the write connection string from the code block that appears.
+
+<Note title="Permission Requirements">
+
+Only organization owners can enable or disable database write access. If you can see the option to toggle write access, but it's disabled, contact your organization's owner to request access.
+
+</Note>
+
+Then, you can connect to your database using a PostgreSQL client with the write connection string. For example, using the `psql` command-line tool:
+
+```bash
+psql "postgresql://..."
+```
+
+---
+
+## Import/Export Database Dumps
+
+Medusa allows you to export and import database dumps for any environment on Cloud. This is useful for seeding the database with initial data, migrating from other hosting platforms, or debugging issues locally.
+
+To import or export a database dump for an environment:
+
+<Note title="Tip">
+
+You can access the database settings from the [command palette](../../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, then select **Storage**.
+
+</Note>
+
+1. From the [organization's dashboard](../../organizations/page.mdx), click on the environment's project.
+2. In the project's dashboard, click on the name of the environment. For example, "Production".
+3. In the environment's dashboard, click on the **Storage** tab.
+4. In the sidebar, click **Database** and find the **Database dump** section.
+
+![Database dump section highlighted in the environment settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1750169625/Cloud/CleanShot_2025-06-17_at_17.13.21_2x_l7vw3w.png)
+
+In this section, you can either:
+
+- **Import**: Upload a database dump file to import data into the environment's database. You can generate a database dump using `pg_dump`. For example:
+
+```bash
+pg_dump -Fc -d postgres://postgres:secret@localhost:5432/mydatabase -f mydata.dump
+```
+
+<Note>
+
+Make sure you're generating the database dump from PostgreSQL v16 and that [pg_dump](https://www.postgresql.org/docs/16/app-pgdump.html) is compatible with that version.
+
+</Note>
+
+<Note type="warning">
+
+For production environments, you'll see additional warnings when uploading database dumps to help prevent accidental data overwrites.
+
+</Note>
+
+- **Export**: Download the current database as a dump file. You'll then receive a notification once the export is ready for download. Then, you can restore the database dump locally using `pg_restore`. For example:
+
+```bash
+pg_restore --no-acl --no-owner --no-privileges --clean --if-exists -d 'postgres://postgres:secret@localhost:5432/mydatabase' mydata.dump
+```
+
+---
+
+## Change Preview Environment Database
+
+By default, when Medusa creates a [preview environment](../../environments/preview/page.mdx) on Cloud, it replicates the Production database. This allows you to test changes in a safe environment that mirrors production, without affecting the live data.
+
+Cloud also allows you to configure which environment's database to replicate the preview database from. For example, you can replicate the Staging environment's database instead of Production.
+
+Learn more in the [Preview Environments](../../environments/preview/page.mdx#manage-shared-previews-settings) guide.
+
+---
+
+## Running Migrations on Cloud
+
+Medusa automatically runs database migrations for every deployment on Cloud. This ensures that your database schema is always up-to-date with the latest changes in your Medusa application.
+
+When you deploy changes to an environment on Cloud, Medusa:
+
+1. Runs any [pending database migrations](!docs!/learn/fundamentals/data-models/write-migration).
+2. [Syncs links](!docs!/learn/fundamentals/module-links).
+3. [Runs pending data migration scripts](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts).
+
+So, if you define new database migrations in your module, define new links, or add data migration scripts, Medusa will apply those changes automatically when you deploy the changes to Cloud.

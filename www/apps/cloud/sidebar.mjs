@@ -224,18 +224,25 @@ export const sidebar = [
           },
           {
             type: "link",
-            title: "Database",
-            path: "/database",
+            title: "Storage",
+            path: "/storage",
+            children: [
+              {
+                type: "link",
+                title: "Database",
+                path: "/storage/database",
+              },
+              {
+                type: "link",
+                title: "Objects",
+                path: "/storage/objects",
+              },
+            ],
           },
           {
             type: "link",
             title: "Redis",
             path: "/redis",
-          },
-          {
-            type: "link",
-            title: "S3",
-            path: "/s3",
           },
           {
             type: "link",
