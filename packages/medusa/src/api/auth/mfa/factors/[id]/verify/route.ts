@@ -13,13 +13,9 @@ export const POST = async (
   const { id } = req.params
   const authService = req.scope.resolve<IAuthModuleService>(Modules.AUTH)
 
-  await authService.retrieveAuthMfa({
-    id,
-    auth_identity_id: req.auth_context.auth_identity_id,
-  })
-
   const verifiedFactor = await authService.verifyAuthMfa({
     id,
+    auth_identity_id: req.auth_context.auth_identity_id,
     code: req.validatedBody.code,
   })
 

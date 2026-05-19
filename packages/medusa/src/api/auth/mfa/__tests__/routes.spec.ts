@@ -285,9 +285,6 @@ describe("MFA auth routes", () => {
 
   it("verifies only factors owned by the authenticated auth identity", async () => {
     const authService = {
-      retrieveAuthMfa: jest.fn().mockResolvedValue({
-        id: "factor_1",
-      }),
       verifyAuthMfa: jest.fn().mockResolvedValue({
         id: "factor_1",
         status: "enabled",
@@ -302,12 +299,9 @@ describe("MFA auth routes", () => {
 
     await verifyFactor(req, res)
 
-    expect(authService.retrieveAuthMfa).toHaveBeenCalledWith({
-      id: "factor_1",
-      auth_identity_id: "auth_identity_1",
-    })
     expect(authService.verifyAuthMfa).toHaveBeenCalledWith({
       id: "factor_1",
+      auth_identity_id: "auth_identity_1",
       code: "123456",
     })
     expect(res.json).toHaveBeenCalledWith({
