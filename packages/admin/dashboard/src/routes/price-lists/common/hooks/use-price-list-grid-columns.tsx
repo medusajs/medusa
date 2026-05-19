@@ -67,7 +67,16 @@ export const usePriceListGridColumns = ({
         regions,
         pricePreferences,
         renderPriceCell: (code, context) => (
-          <DataGridQuantityPriceCell code={code} context={context} />
+          <DataGridQuantityPriceCell
+            code={code}
+            context={context}
+            getTieredFieldName={(field) =>
+              field
+                .replace("currency_prices", "conditional_currency_prices")
+                .replace("region_prices", "conditional_region_prices")
+                .replace(/\.0\.amount$/, "")
+            }
+          />
         ),
         isReadyOnly: (context) => {
           const entity = context.row.original

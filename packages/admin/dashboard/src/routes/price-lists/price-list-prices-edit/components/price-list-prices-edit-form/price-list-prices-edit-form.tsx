@@ -122,18 +122,20 @@ export const PriceListPricesEditForm = ({
       `products.${productId}.variants.${variantId}.${conditionalField}.${code}`
     )
 
-    const currencyCode = isRegion
-      ? regions.find((r) => r.id === code)?.currency_code ?? code
-      : code
+    const region = isRegion ? regions.find((r) => r.id === code) : undefined
+    const currencyCode = isRegion ? region?.currency_code ?? code : code
 
     const product = products.find((p) => p.id === productId)
+    const columnLabel = isRegion
+      ? region?.name ?? code
+      : currencyCode.toUpperCase()
 
     setSelectedPriceInfo({
       productId,
       variantId,
       currencyCode,
       regionId: isRegion ? code : undefined,
-      name: `${product?.title || "Product"} (${code})`,
+      name: `${product?.title || "Product"} (${columnLabel})`,
       prices: Array.isArray(prices) ? prices : prices ? [prices] : [],
     })
     setIsOpen(QUANTITY_PRICE_MODAL_ID, true)

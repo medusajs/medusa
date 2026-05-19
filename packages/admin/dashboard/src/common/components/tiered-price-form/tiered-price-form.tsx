@@ -33,7 +33,7 @@ export const TieredPriceForm = <T extends TieredPriceSchema>({
       prices:
         initialValues.length > 0
           ? initialValues
-          : [{ amount: "", [fieldConfig.min]: "", [fieldConfig.max]: "" }],
+          : [{ amount: "", [fieldConfig.min]: "", [fieldConfig.max]: null }],
     } as any,
     resolver: zodResolver(schema),
   })
@@ -47,7 +47,7 @@ export const TieredPriceForm = <T extends TieredPriceSchema>({
     append({
       amount: "",
       [fieldConfig.min]: "",
-      [fieldConfig.max]: "",
+      [fieldConfig.max]: null,
     } as any)
 
     setValue([...value, getRuleValue(fields.length)])

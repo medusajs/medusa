@@ -192,7 +192,7 @@ const Inner = ({
         {...rest}
         {...attributes}
         ref={combinedRef}
-        className="txt-compact-small w-full flex-1 cursor-default appearance-none bg-transparent pl-8 text-right outline-none"
+        className="txt-compact-small w-full flex-1 cursor-default appearance-none bg-transparent pl-[60px] text-right outline-none"
         value={localValue || undefined}
         onValueChange={handleValueChange}
         formatValueOnBlur

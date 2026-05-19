@@ -7,11 +7,13 @@ import { TieredPriceCell } from "../../table/table-cells/common/tiered-price-cel
 interface DataGridQuantityPriceCellProps<TData, TValue = any>
   extends DataGridCellProps<TData, TValue> {
   code: string
+  getTieredFieldName: (field: string) => string
 }
 
 export const DataGridQuantityPriceCell = <TData, TValue = any>({
   context,
   code,
+  getTieredFieldName,
 }: DataGridQuantityPriceCellProps<TData, TValue>) => {
   const { t } = useTranslation()
   const { onOpenQuantityPricesModal } = useQuantityPrice()
@@ -27,12 +29,7 @@ export const DataGridQuantityPriceCell = <TData, TValue = any>({
     <TieredPriceCell
       context={context}
       code={code}
-      getTieredFieldName={(field) => {
-        return field
-          .replace("currency_prices", "conditional_currency_prices")
-          .replace("region_prices", "conditional_region_prices")
-          .replace(/\.0\.amount$/, "")
-      }}
+      getTieredFieldName={getTieredFieldName}
       onOpenModal={handleOpenModal}
     />
   )

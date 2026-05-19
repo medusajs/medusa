@@ -1,9 +1,19 @@
+import { InformationCircleSolid } from "@medusajs/icons"
+import {
+  Badge,
+  CurrencyInput,
+  Divider,
+  Label,
+  Text,
+  Tooltip,
+} from "@medusajs/ui"
+import { Fragment, ReactNode } from "react"
 import { Control, useWatch, useFormContext } from "react-hook-form"
-import { useTranslation } from "react-i18next"
+import { Trans, useTranslation } from "react-i18next"
 import { z } from "zod"
-import { CurrencyInput, Divider } from "@medusajs/ui"
-import { Text } from "@medusajs/ui"
+import { castNumber } from "../../../../../lib/cast-number"
 import { CurrencyInfo } from "../../../../../lib/data/currencies"
+import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
 import { CreateShippingOptionSchemaType } from "../../../location-service-zone-shipping-option-create/components/create-shipping-options-form/schema"
 import {
   CondtionalPriceRuleSchema,
@@ -29,37 +39,106 @@ interface ConditionalPriceFormProps {
   variant: "create" | "update"
 }
 
-const ConditionalConditionTrigger = ({
+const ConditionContainer = ({ children }: { children: ReactNode }) => (
+  <div className="text-ui-fg-subtle txt-small flex flex-wrap items-center gap-1.5">
+    {children}
+  </div>
+)
+
+const ConditionDisplay = ({
   index,
   control,
+  currency,
 }: {
   index: number
   control: Control<ConditionalPriceFormSchemaType>
   currency: CurrencyInfo
 }) => {
-  const item = useWatch({
+  const { t, i18n } = useTranslation()
+
+  const gte = useWatch({
     control,
-    name: `prices.${index}`,
+    name: `prices.${index}.gte`,
   })
 
-  const { gte, lte } = item || {}
+  const lte = useWatch({
+    control,
+    name: `prices.${index}.lte`,
+  })
 
-  return (
-    <div className="flex min-h-7 items-center gap-x-1">
-      {gte && (
-        <Text size="small" weight="plus">
-          {gte}+
-        </Text>
-      )}
-      {gte && lte && <span>to</span>}
-      {lte && (
-        <Text size="small" weight="plus">
-          {lte}
-        </Text>
-      )}
-      {!gte && !lte && "—"}
-    </div>
-  )
+  const castGte = gte ? castNumber(gte) : undefined
+  const castLte = lte ? castNumber(lte) : undefined
+
+  if (!castGte && !castLte) {
+    return null
+  }
+
+  if (castGte && !castLte) {
+    return (
+      <ConditionContainer>
+        <Trans
+          i18n={i18n}
+          i18nKey="stockLocations.shippingOptions.conditionalPrices.summaries.greaterThan"
+          components={[
+            <Badge size="2xsmall" key="attribute" />,
+            <Badge size="2xsmall" key="gte" />,
+          ]}
+          values={{
+            attribute: t(
+              "stockLocations.shippingOptions.conditionalPrices.attributes.cartItemTotal"
+            ),
+            gte: getLocaleAmount(castGte, currency.code),
+          }}
+        />
+      </ConditionContainer>
+    )
+  }
+
+  if (!castGte && castLte) {
+    return (
+      <ConditionContainer>
+        <Trans
+          i18n={i18n}
+          i18nKey="stockLocations.shippingOptions.conditionalPrices.summaries.lessThan"
+          components={[
+            <Badge size="2xsmall" key="attribute" />,
+            <Badge size="2xsmall" key="lte" />,
+          ]}
+          values={{
+            attribute: t(
+              "stockLocations.shippingOptions.conditionalPrices.attributes.cartItemTotal"
+            ),
+            lte: getLocaleAmount(castLte, currency.code),
+          }}
+        />
+      </ConditionContainer>
+    )
+  }
+
+  if (castGte && castLte) {
+    return (
+      <ConditionContainer>
+        <Trans
+          i18n={i18n}
+          i18nKey="stockLocations.shippingOptions.conditionalPrices.summaries.range"
+          components={[
+            <Badge size="2xsmall" key="attribute" />,
+            <Badge size="2xsmall" key="gte" />,
+            <Badge size="2xsmall" key="lte" />,
+          ]}
+          values={{
+            attribute: t(
+              "stockLocations.shippingOptions.conditionalPrices.attributes.cartItemTotal"
+            ),
+            gte: getLocaleAmount(castGte, currency.code),
+            lte: getLocaleAmount(castLte, currency.code),
+          }}
+        />
+      </ConditionContainer>
+    )
+  }
+
+  return null
 }
 
 const ConditionalConditionItem = ({
@@ -178,7 +257,111 @@ const ConditionalConditionItem = ({
           />
         )}
       />
+      <ReadOnlyConditions index={index} control={control} currency={currency} />
     </>
+  )
+}
+
+const ReadOnlyConditions = ({
+  index,
+  control,
+  currency,
+}: {
+  index: number
+  control: Control<ConditionalPriceFormSchemaType>
+  currency: CurrencyInfo
+}) => {
+  const { t } = useTranslation()
+
+  const item = useWatch({
+    control,
+    name: `prices.${index}`,
+  })
+
+  if (item.eq == null && item.gt == null && item.lt == null) {
+    return null
+  }
+
+  return (
+    <div>
+      <Divider variant="dashed" />
+      <div className="flex items-center gap-x-1 px-3 pt-3">
+        <Text size="small" leading="compact" weight="plus">
+          {t(
+            "stockLocations.shippingOptions.conditionalPrices.customRules.label"
+          )}
+        </Text>
+        <Tooltip
+          content={t(
+            "stockLocations.shippingOptions.conditionalPrices.customRules.tooltip"
+          )}
+        >
+          <InformationCircleSolid className="text-ui-fg-muted" />
+        </Tooltip>
+      </div>
+      <div>
+        {item.eq != null && (
+          <div className="grid grid-cols-2 items-start gap-x-2 p-3">
+            <div className="flex h-8 items-center">
+              <Label weight="plus" size="small">
+                {t(
+                  "stockLocations.shippingOptions.conditionalPrices.customRules.eq"
+                )}
+              </Label>
+            </div>
+            <CurrencyInput
+              className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover focus-visible:bg-ui-bg-field-component-hover"
+              symbol={currency.symbol_native}
+              code={currency.code}
+              value={item.eq}
+              disabled
+            />
+          </div>
+        )}
+        {item.gt != null && (
+          <Fragment>
+            <Divider variant="dashed" />
+            <div className="grid grid-cols-2 items-start gap-x-2 p-3">
+              <div className="flex h-8 items-center">
+                <Label weight="plus" size="small">
+                  {t(
+                    "stockLocations.shippingOptions.conditionalPrices.customRules.gt"
+                  )}
+                </Label>
+              </div>
+              <CurrencyInput
+                className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover focus-visible:bg-ui-bg-field-component-hover"
+                symbol={currency.symbol_native}
+                code={currency.code}
+                value={item.gt}
+                disabled
+              />
+            </div>
+          </Fragment>
+        )}
+        {item.lt != null && (
+          <Fragment>
+            <Divider variant="dashed" />
+            <div className="grid grid-cols-2 items-start gap-x-2 p-3">
+              <div className="flex h-8 items-center">
+                <Label weight="plus" size="small">
+                  {t(
+                    "stockLocations.shippingOptions.conditionalPrices.customRules.lt"
+                  )}
+                </Label>
+              </div>
+              <CurrencyInput
+                className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover focus-visible:bg-ui-bg-field-component-hover"
+                symbol={currency.symbol_native}
+                code={currency.code}
+                value={item.lt}
+                disabled
+              />
+            </div>
+          </Fragment>
+        )}
+      </div>
+    </div>
   )
 }
 
@@ -239,9 +422,7 @@ export const ConditionalPriceForm = ({
           "stockLocations.shippingOptions.conditionalPrices.rules.lte"
         ),
       }}
-      renderConditionTrigger={(props) => (
-        <ConditionalConditionTrigger {...props} />
-      )}
+      renderConditionTrigger={(props) => <ConditionDisplay {...props} />}
       renderConditionItem={(props) => <ConditionalConditionItem {...props} />}
     />
   )
