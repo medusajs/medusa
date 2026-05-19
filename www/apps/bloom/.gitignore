@@ -27,7 +27,6 @@ yarn-error.log*
 
 # local env files
 .env*.local
-.dev.vars
 
 # vercel
 .vercel
@@ -35,8 +34,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# cloudflare
-.open-next
-.wrangler
-public/raw-mdx

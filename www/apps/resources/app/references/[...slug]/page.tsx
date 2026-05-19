@@ -1,8 +1,9 @@
 import { cache } from "react"
+import path from "path"
+import fs from "fs/promises"
 import { ReferenceMDX } from "../../../components/ReferenceMDX"
 import { Metadata } from "next"
-import { getFrontMatterFromString, workerCompatibleFetch } from "docs-utils"
-import path from "path"
+import { getFrontMatterFromString } from "docs-utils"
 
 type PageProps = {
   params: Promise<{
@@ -44,10 +45,12 @@ export async function generateMetadata({
 
 export type LoadedReferenceFile = {
   content: string
+  path: string
 }
 
 const loadReferencesFile = cache(
   async (slug: string[]): Promise<LoadedReferenceFile | undefined> => {
+    path.join(process.cwd(), "references")
     const monoRepoPath = path.resolve("..", "..", "..")
 
     const pathname = `/references/${slug.join("/")}`
@@ -60,34 +63,13 @@ const loadReferencesFile = cache(
     if (!fileDetails) {
       return undefined
     }
+    const fullPath = path.join(monoRepoPath, fileDetails.filePath)
 
-    const r2Base = process.env.NEXT_PUBLIC_REFERENCES_R2_BASE_URL
-    const fileContent = await workerCompatibleFetch<string | null>({
-      url: `${r2Base}/references/${fileDetails.filePath.replace(
-        /^.*\/references\//,
-        ""
-      )}`,
-      responseTransformer: async (res) => {
-        return res.ok ? res.text() : null
-      },
-      fallbackAction: async () => {
-        try {
-          const { promises: fs } = await import("fs")
-          const fullPath = path.join(monoRepoPath, fileDetails.filePath)
-          return await fs.readFile(fullPath, "utf-8")
-        } catch {
-          return null
-        }
-      },
-      useRemote: !!r2Base,
-    })
-
-    if (!fileContent) {
-      return undefined
-    }
+    const fileContent = await fs.readFile(fullPath, "utf-8")
 
     return {
       content: fileContent,
+      path: fullPath,
     }
   }
 )

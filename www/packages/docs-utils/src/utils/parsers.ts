@@ -8,14 +8,13 @@ import {
 import path from "path"
 import { readFileSync } from "fs"
 import type { Documentation } from "react-docgen"
-import { workerCompatibleFetch } from "../worker-compatible-fetch.js"
 
 export type ComponentParser<TOptions = any> = (
   node: UnistNodeWithData,
   index: number,
   parent: UnistTree,
   options?: TOptions
-) => VisitorResult | Promise<VisitorResult>
+) => VisitorResult
 
 export const parseCard: ComponentParser = (
   node: UnistNodeWithData,
@@ -574,12 +573,12 @@ export const parseWorkflowDiagram: ComponentParser = (
 
 export const parseComponentExample: ComponentParser<{
   examplesBasePath: string
-}> = async (
+}> = (
   node: UnistNodeWithData,
   index: number,
   parent: UnistTree,
   options
-): Promise<VisitorResult> => {
+): VisitorResult => {
   if (!options?.examplesBasePath) {
     return
   }
@@ -589,27 +588,10 @@ export const parseComponentExample: ComponentParser<{
     return
   }
 
-  const name = exampleName.value as string
-  const fileContent = await workerCompatibleFetch<string | null>({
-    url: `${options.examplesBasePath}/${name}.tsx`,
-    responseTransformer: async (res) => {
-      return res.ok ? res.text() : null
-    },
-    fallbackAction: async () => {
-      try {
-        return readFileSync(
-          path.join(options.examplesBasePath, `${name}.tsx`),
-          "utf-8"
-        )
-      } catch {
-        return null
-      }
-    },
-  })
-
-  if (!fileContent) {
-    return
-  }
+  const fileContent = readFileSync(
+    path.join(options.examplesBasePath, `${exampleName.value as string}.tsx`),
+    "utf-8"
+  )
 
   parent.children?.splice(index, 1, {
     type: "code",
@@ -619,14 +601,12 @@ export const parseComponentExample: ComponentParser<{
   return [SKIP, index]
 }
 
-export const parseComponentReference: ComponentParser<{
-  specsPath: string
-}> = async (
+export const parseComponentReference: ComponentParser<{ specsPath: string }> = (
   node: UnistNodeWithData,
   index: number,
   parent: UnistTree,
   options
-): Promise<VisitorResult> => {
+): VisitorResult => {
   if (!options?.specsPath) {
     return
   }
@@ -668,33 +648,16 @@ export const parseComponentReference: ComponentParser<{
     componentNames.push(mainComponent)
   }
 
-  const getComponentNodes = async (
-    componentName: string
-  ): Promise<UnistNode[]> => {
-    const componentSpecs = await workerCompatibleFetch<Documentation | null>({
-      url: `${options.specsPath}/${mainComponent}/${componentName}.json`,
-      responseTransformer: async (res) => {
-        return res.ok ? ((await res.json()) as Documentation) : null
-      },
-      fallbackAction: async () => {
-        try {
-          const componentSpecsFile = path.join(
-            options.specsPath,
-            mainComponent,
-            `${componentName}.json`
-          )
-          return JSON.parse(
-            readFileSync(componentSpecsFile, "utf-8")
-          ) as Documentation
-        } catch {
-          return null
-        }
-      },
-    })
+  const getComponentNodes = (componentName: string): UnistNode[] => {
+    const componentSpecsFile = path.join(
+      options.specsPath,
+      mainComponent,
+      `${componentName}.json`
+    )
 
-    if (!componentSpecs) {
-      return []
-    }
+    const componentSpecs: Documentation = JSON.parse(
+      readFileSync(componentSpecsFile, "utf-8")
+    )
 
     const componentNodes: UnistNode[] = [
       {
@@ -753,8 +716,11 @@ export const parseComponentReference: ComponentParser<{
     return componentNodes
   }
 
-  const nodeArrays = await Promise.all(componentNames.map(getComponentNodes))
-  parent.children?.splice(index, 1, ...nodeArrays.flat())
+  parent.children?.splice(
+    index,
+    1,
+    ...componentNames.flatMap(getComponentNodes)
+  )
 }
 
 export const parsePackageInstall: ComponentParser = (
