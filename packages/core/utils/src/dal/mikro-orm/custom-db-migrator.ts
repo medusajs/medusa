@@ -42,11 +42,11 @@ export class CustomDBMigrator extends BaseMigrator {
         const up = instance.up
         const down = instance.down
         instance.up = async function (...args) {
-          this.driver.execute(`SET LOCAL search_path TO ${customSchema}`)
+          await this.driver.execute(`SET LOCAL search_path TO ${customSchema}`)
           return up.bind(this)(...args)
         }
         instance.down = async function (...args) {
-          this.driver.execute(`SET LOCAL search_path TO ${customSchema}`)
+          await this.driver.execute(`SET LOCAL search_path TO ${customSchema}`)
           return down.bind(this)(...args)
         }
       }

@@ -47,19 +47,19 @@ const Product = model
     /**
      * The product's weight.
      */
-    weight: model.text().nullable(),
+    weight: model.float().nullable(),
     /**
      * The product's length.
      */
-    length: model.text().nullable(),
+    length: model.float().nullable(),
     /**
      * The product's height.
      */
-    height: model.text().nullable(),
+    height: model.float().nullable(),
     /**
      * The product's width.
      */
-    width: model.text().nullable(),
+    width: model.float().nullable(),
     /**
      * The product's country of origin.
      */
