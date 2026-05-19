@@ -5,29 +5,23 @@
   "scripts": {
     "dev": "yarn prep && next dev",
     "dev:monorepo": "yarn prep && yarn dev -p 3005",
-    "dev:wrangler": "wrangler dev --port 3000",
     "build": "yarn prep && next build",
-    "build:cloudflare": "CLOUDFLARE_ENV=production yarn prep && opennextjs-cloudflare build",
     "build:dev": "NODE_ENV=test yarn build",
     "start": "next start",
     "start:monorepo": "yarn start -p 3005",
     "lint": "next lint --fix",
     "lint:content": "eslint --no-config-lookup -c .content.eslintrc.mjs app/**/*.mdx --fix",
-    "prep": "node ./scripts/prepare.mjs",
-    "preview": "yarn build:cloudflare && wrangler dev --port 3000",
-    "deploy": "opennextjs-cloudflare deploy",
-    "upload": "yarn build:cloudflare && opennextjs-cloudflare upload",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+    "prep": "node ./scripts/prepare.mjs"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
-    "@medusajs/icons": "2.15.2",
-    "@next/mdx": "15.5.18",
+    "@medusajs/icons": "2.15.1",
+    "@next/mdx": "15.3.9",
     "@stefanprobst/rehype-extract-toc": "^3.0.0",
     "clsx": "^2.1.0",
     "docs-ui": "*",
-    "next": "15.5.18",
+    "next": "15.3.9",
     "posthog-js": "^1.298.1",
     "posthog-node": "^5.29.0",
     "react": "19.2.5",
@@ -40,7 +34,6 @@
     "slugify": "^1.6.6"
   },
   "devDependencies": {
-    "@opennextjs/cloudflare": "^1.19.9",
     "@types/mdx": "^2.0.13",
     "@types/node": "^20",
     "@types/react": "19.2.9",
@@ -55,8 +48,7 @@
     "tailwindcss": "^3.3.0",
     "tsconfig": "*",
     "types": "*",
-    "typescript": "^5",
-    "wrangler": "^4.90.0"
+    "typescript": "^5"
   },
   "engines": {
     "node": ">=20"
