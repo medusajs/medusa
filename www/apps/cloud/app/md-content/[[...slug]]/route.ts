@@ -1,4 +1,5 @@
-import { addExtraToMd, getCleanMd, workerCompatibleFetch } from "docs-utils"
+import { addExtraToMd, getCleanMd } from "docs-utils"
+import { existsSync } from "fs"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
@@ -12,45 +13,21 @@ import {
 import type { Plugin } from "unified"
 
 type Params = {
-  params: Promise<{ slug?: string[] }>
+  params: Promise<{ slug: string[] }>
 }
 
 export async function GET(req: NextRequest, { params }: Params) {
-  const { slug: rawSlug } = await params
-  const slug = rawSlug?.filter(Boolean) ?? []
-  const origin = process.env.NEXT_PUBLIC_BASE_URL || new URL(req.url).origin
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
-  const isCloudflare = !!process.env.CLOUDFLARE_ENV
+  const { slug = ["/"] } = await params
 
-  const fileContent = await workerCompatibleFetch<string | null>({
-    url: `${origin}${basePath}/raw-mdx/${[...slug, "page.mdx"].join("/")}`,
-    responseTransformer: async (res) => {
-      return res.ok ? res.text() : null
-    },
-    fallbackAction: async () => {
-      try {
-        const { promises: fs } = await import("fs")
-        // eslint-disable-next-line no-console
-        console.log(
-          "Attempting to read file from filesystem for slug:",
-          path.join(process.cwd(), "app", ...slug, "page.mdx")
-        )
-        return await fs.readFile(
-          path.join(process.cwd(), "app", ...slug, "page.mdx"),
-          "utf-8"
-        )
-      } catch {
-        return null
-      }
-    },
-    useRemote: isCloudflare,
-  })
+  // keep this so that Vercel keeps the files in deployment
+  const basePath = path.join(process.cwd(), "app")
+  const filePath = path.join(basePath, ...slug, "page.mdx")
 
-  if (!fileContent) {
+  if (!existsSync(filePath)) {
     return notFound()
   }
 
-  const cleanMdContent = await getCleanMd_(fileContent, {
+  const cleanMdContent = await getCleanMd_(filePath, {
     before: [
       [
         crossProjectLinksPlugin,
@@ -76,8 +53,7 @@ export async function GET(req: NextRequest, { params }: Params) {
           },
           useBaseUrl:
             process.env.NODE_ENV === "production" ||
-            process.env.VERCEL_ENV === "production" ||
-            isCloudflare,
+            process.env.VERCEL_ENV === "production",
         },
       ],
       [localLinksRehypePlugin],
@@ -127,8 +103,8 @@ export async function GET(req: NextRequest, { params }: Params) {
 }
 
 const getCleanMd_ = unstable_cache(
-  async (content: string, plugins?: { before?: Plugin[]; after?: Plugin[] }) =>
-    getCleanMd({ file: content, type: "content", plugins }),
+  async (filePath: string, plugins?: { before?: Plugin[]; after?: Plugin[] }) =>
+    getCleanMd({ file: filePath, plugins }),
   ["clean-md"],
   {
     revalidate: 3600,
