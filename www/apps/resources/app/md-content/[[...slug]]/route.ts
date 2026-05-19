@@ -1,7 +1,9 @@
 import { addExtraToMd, getCleanMd } from "docs-utils"
+import { existsSync } from "fs"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
+import path from "path"
 import {
   addUrlToRelativeLink,
   crossProjectLinksPlugin,
@@ -11,33 +13,32 @@ import type { Plugin } from "unified"
 import { filesMap } from "../../../generated/files-map.mjs"
 import { slugChanges } from "../../../generated/slug-changes.mjs"
 import { PostHog } from "posthog-node"
-import { fetchMdxContent } from "../../../utils/fetch-mdx-content"
 
 type Params = {
-  params: Promise<{ slug?: string[] }>
+  params: Promise<{ slug: string[] }>
 }
 
 export async function GET(req: NextRequest, { params }: Params) {
-  const { slug: rawSlug } = await params
-  const slug = rawSlug?.filter(Boolean) ?? []
-  const origin = process.env.NEXT_PUBLIC_BASE_URL || new URL(req.url).origin
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
+  const { slug = ["/"] } = await params
 
-  const filePathFromMap = await getFileFromMaps(`/${slug.join("/")}`)
+  // keep this so that Vercel keeps the files in deployment
+  path.join(process.cwd(), "app")
+  path.join(process.cwd(), "references")
 
+  const filePathFromMap = await getFileFromMaps(
+    `/${slug.join("/")}`.replace("//", "/")
+  )
   if (!filePathFromMap) {
     return notFound()
   }
 
-  const fileContent = await fetchMdxContent(
-    `${origin}${basePath}`,
-    filePathFromMap
-  )
-  if (!fileContent) {
+  const filePath = path.join(process.cwd(), "..", "..", "..", filePathFromMap)
+
+  if (!existsSync(filePath)) {
     return notFound()
   }
 
-  const cleanMdContent = await getCleanMd_(fileContent, {
+  const cleanMdContent = await getCleanMd_(filePath, {
     before: [
       [
         crossProjectLinksPlugin,
@@ -60,8 +61,7 @@ export async function GET(req: NextRequest, { params }: Params) {
           },
           useBaseUrl:
             process.env.NODE_ENV === "production" ||
-            process.env.VERCEL_ENV === "production" ||
-            !!process.env.CLOUDFLARE_ENV,
+            process.env.VERCEL_ENV === "production",
         },
       ],
       [localLinksRehypePlugin],
@@ -111,8 +111,8 @@ export async function GET(req: NextRequest, { params }: Params) {
 }
 
 const getCleanMd_ = unstable_cache(
-  async (content: string, plugins?: { before?: Plugin[]; after?: Plugin[] }) =>
-    getCleanMd({ file: content, type: "content", plugins }),
+  async (filePath: string, plugins?: { before?: Plugin[]; after?: Plugin[] }) =>
+    getCleanMd({ file: filePath, plugins }),
   ["clean-md"],
   {
     revalidate: 3600,

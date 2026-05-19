@@ -3,28 +3,28 @@ import { AuthIdentityDTO } from "./auth-identity"
 
 /**
  * Supported multi-factor authentication (MFA) providers. Defaults to time-based one-time password (TOTP) but allows string extensions.
- * 
+ *
  * @since 2.15.3
  */
 export type AuthMfaProvider = "totp" | (string & {})
 
 /**
  * Methods available for multi-factor authentication (MFA) challenges, including providers and recovery codes.
- * 
+ *
  * @since 2.15.3
  */
 export type AuthMfaChallengeMethod = AuthMfaProvider | "recovery_code"
 
 /**
  * Status of a multi-factor authentication (MFA) setup for an authentication identity.
- * 
+ *
  * @since 2.15.3
  */
 export type AuthMfaStatus = "pending" | "enabled" | "disabled"
 
 /**
  * Multi-factor authentication configuration for an authentication identity.
- * 
+ *
  * @since 2.15.3
  */
 export type AuthMfaDTO = {
@@ -38,7 +38,7 @@ export type AuthMfaDTO = {
   auth_identity_id?: string
   /**
    * The authentication identity this multi-factor authentication (MFA) belongs to.
-   * 
+   *
    * @expandable
    */
   auth_identity?: AuthIdentityDTO
@@ -57,8 +57,22 @@ export type AuthMfaDTO = {
 }
 
 /**
+ * Filter for selecting multi-factor authentication (MFA) configurations.
+ */
+export type AuthMfaSelector = {
+  /**
+   * The ID of the multi-factor authentication (MFA) configuration.
+   */
+  id: string
+  /**
+   * The ID of the authentication identity this multi-factor authentication (MFA) belongs to.
+   */
+  auth_identity_id?: string
+}
+
+/**
  * Multi-factor authentication (MFA) recovery code for emergency authentication bypassing.
- * 
+ *
  * @since 2.15.3
  */
 export type AuthMfaRecoveryCodeDTO = {
@@ -72,7 +86,7 @@ export type AuthMfaRecoveryCodeDTO = {
   auth_identity_id?: string
   /**
    * The authentication identity this recovery code belongs to.
-   * 
+   *
    * @expandable
    */
   auth_identity?: AuthIdentityDTO
@@ -80,7 +94,7 @@ export type AuthMfaRecoveryCodeDTO = {
 
 /**
  * An active multi-factor authentication (MFA) challenge requiring user verification.
- * 
+ *
  * @since 2.15.3
  */
 export type AuthMfaChallengeDTO = {
@@ -94,7 +108,7 @@ export type AuthMfaChallengeDTO = {
   auth_identity_id?: string
   /**
    * The authentication identity being challenged.
-   * 
+   *
    * @expandable
    */
   auth_identity?: AuthIdentityDTO
@@ -134,7 +148,7 @@ export type AuthMfaChallengeDTO = {
 
 /**
  * Data required to start multi-factor authentication (MFA) setup for an authentication identity.
- * 
+ *
  * @since 2.15.3
  */
 export type AuthMfaStartDTO = {
@@ -162,7 +176,7 @@ export type AuthMfaStartDTO = {
 
 /**
  * Response data when starting multi-factor authentication (MFA) setup.
- * 
+ *
  * @since 2.15.3
  */
 export type AuthMfaStartResponse = {
@@ -182,7 +196,7 @@ export type AuthMfaStartResponse = {
 
 /**
  * Data required to verify and enable a multi-factor authentication (MFA) configuration.
- * 
+ *
  * @since 2.15.3
  */
 export type AuthMfaVerifyDTO = {
@@ -198,7 +212,7 @@ export type AuthMfaVerifyDTO = {
 
 /**
  * Data required to create a new multi-factor authentication (MFA) challenge.
- * 
+ *
  * @since 2.15.3
  */
 export type CreateAuthMfaChallengeDTO = {
@@ -222,7 +236,7 @@ export type CreateAuthMfaChallengeDTO = {
 
 /**
  * Data required to verify a multi-factor authentication (MFA) challenge.
- * 
+ *
  * @since 2.15.3
  */
 export type VerifyAuthMfaChallengeDTO = {
@@ -242,7 +256,7 @@ export type VerifyAuthMfaChallengeDTO = {
 
 /**
  * Data required to disable a multi-factor authentication (MFA) configuration.
- * 
+ *
  * @since 2.15.3
  */
 export type DisableAuthMfaDTO = {
@@ -262,7 +276,7 @@ export type DisableAuthMfaDTO = {
 
 /**
  * Data required to generate multi-factor authentication (MFA) recovery codes.
- * 
+ *
  * @since 2.15.3
  */
 export type GenerateAuthMfaRecoveryCodesDTO = {
@@ -278,7 +292,7 @@ export type GenerateAuthMfaRecoveryCodesDTO = {
 
 /**
  * Response containing generated multi-factor authentication (MFA) recovery codes.
- * 
+ *
  * @since 2.15.3
  */
 export type GenerateAuthMfaRecoveryCodesResponse = {
@@ -290,7 +304,7 @@ export type GenerateAuthMfaRecoveryCodesResponse = {
 
 /**
  * Data required to use a multi-factor authentication (MFA) recovery code.
- * 
+ *
  * @since 2.15.3
  */
 export type UseAuthMfaRecoveryCodeDTO = {
@@ -306,7 +320,7 @@ export type UseAuthMfaRecoveryCodeDTO = {
 
 /**
  * Filters available when retrieving multi-factor authentication (MFA) configurations.
- * 
+ *
  * @since 2.15.3
  */
 export interface FilterableAuthMfaProps
