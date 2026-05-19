@@ -1,20 +1,22 @@
 import type { BigNumberInput, PaymentDTO } from "@medusajs/framework/types"
 import {
-  BigNumber,
-  defaultCurrencies,
-  getEpsilonFromDecimalPrecision,
   isDefined,
   MathBN,
   MedusaError,
+  PaymentEvents,
+  BigNumber,
+  defaultCurrencies,
+  getEpsilonFromDecimalPrecision,
 } from "@medusajs/framework/utils"
 import {
   createStep,
   createWorkflow,
   transform,
+  when,
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { useQueryGraphStep } from "../../common"
+import { emitEventStep, useQueryGraphStep } from "../../common"
 import { addOrderTransactionStep } from "../../order/steps/add-order-transaction"
 import { refundPaymentsStep } from "../steps/refund-payments"
 
@@ -189,11 +191,25 @@ export const refundPaymentsWorkflow = createWorkflow(
 
     validatePaymentsRefundStep({ payments, input })
 
-    const refundedPayments = refundPaymentsStep(input)
+    const refundPaymentsResult = refundPaymentsStep(input)
+
+    const refundedPayments = transform(
+      { refundPaymentsResult },
+      ({ refundPaymentsResult }) => refundPaymentsResult.refunded_payments
+    )
+
+    const failedRefunds = transform(
+      { refundPaymentsResult },
+      ({ refundPaymentsResult }) => refundPaymentsResult.failed_refunds
+    )
 
     const orderTransactionData = transform(
-      { payments, input },
-      ({ payments, input }) => {
+      { payments, input, refundedPayments },
+      ({ payments, input, refundedPayments }) => {
+        const refundedPaymentIds = new Set(
+          refundedPayments.map((payment) => payment.id)
+        )
+
         const paymentsMap: Record<
           string,
           PaymentDTO & {
@@ -206,6 +222,7 @@ export const refundPaymentsWorkflow = createWorkflow(
         }
 
         return input
+          .filter((paymentInput) => refundedPaymentIds.has(paymentInput.payment_id))
           .map((paymentInput) => {
             const payment = paymentsMap[paymentInput.payment_id]!
             const order = payment.payment_collection?.order
@@ -227,6 +244,15 @@ export const refundPaymentsWorkflow = createWorkflow(
     )
 
     addOrderTransactionStep(orderTransactionData)
+
+    when({ failedRefunds }, ({ failedRefunds }) => !!failedRefunds.length).then(
+      () => {
+        emitEventStep({
+          eventName: PaymentEvents.REFUND_FAILED,
+          data: failedRefunds,
+        })
+      }
+    )
 
     return new WorkflowResponse(refundedPayments)
   }

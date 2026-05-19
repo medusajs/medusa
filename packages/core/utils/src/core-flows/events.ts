@@ -938,6 +938,19 @@ export const PaymentEvents = {
    * ```
    */
   REFUNDED: "payment.refunded",
+  /**
+   * Emitted when a payment refund fails in a batch refund operation.
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   payment_id, // the ID of the payment whose refund failed
+   *   amount, // (number) the amount that failed to refund
+   *   error, // error message returned while attempting the refund
+   * }
+   * ```
+   */
+  REFUND_FAILED: "payment.refund.failed",
 } as const
 
 /**
