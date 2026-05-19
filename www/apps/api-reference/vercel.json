@@ -1,0 +1,10 @@
+{
+  "crons": [{
+    "path": "/api/algolia",
+    "schedule": "0 0 * * 4"
+  }],
+  "framework": "nextjs",
+  "installCommand": "yarn install",
+  "buildCommand": "turbo run build",
+  "outputDirectory": ".next"
+}
