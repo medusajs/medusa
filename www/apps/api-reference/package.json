@@ -16,7 +16,7 @@
     "prep": "node ./scripts/prepare.mjs",
     "upload:r2": "node ./scripts/upload-specs-to-r2.mjs",
     "test": "vitest",
-    "preview": "yarn build:cloudflare && opennextjs-cloudflare preview",
+    "preview": "yarn build:cloudflare && wrangler dev --port 3000",
     "deploy": "opennextjs-cloudflare deploy",
     "upload": "opennextjs-cloudflare upload",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"

@@ -7,7 +7,7 @@
     "dev:monorepo": "yarn dev -p 3001",
     "dev:wrangler": "wrangler dev --port 3000",
     "build": "next build",
-    "build:cloudflare": "CF_PAGES=1 node ./scripts/prepare.mjs && opennextjs-cloudflare build",
+    "build:cloudflare": "CLOUDFLARE_ENV=production node ./scripts/prepare.mjs && opennextjs-cloudflare build",
     "build:dev": "NODE_ENV=test next build",
     "start": "next start",
     "start:monorepo": "yarn start -p 3001",
@@ -15,7 +15,7 @@
     "lint:content": "eslint --no-config-lookup -c .content.eslint.mjs app/**/*.mdx --fix",
     "prep": "node ./scripts/prepare.mjs",
     "test:agent-docs": "npx vitest run --config vitest.config.ts",
-    "preview": "yarn build:cloudflare && opennextjs-cloudflare preview",
+    "preview": "yarn build:cloudflare && wrangler dev --port 3000",
     "deploy": "opennextjs-cloudflare deploy",
     "upload": "opennextjs-cloudflare upload",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
