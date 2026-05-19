@@ -4,7 +4,6 @@ import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
-import { STATUS_CODES } from "http"
 
 jest.setTimeout(60 * 1000)
 

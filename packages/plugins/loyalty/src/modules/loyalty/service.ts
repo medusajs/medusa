@@ -6,12 +6,11 @@ class LoyaltyModuleService extends MedusaService({
   GiftCard,
 }) {
   private options_?: LoyaltyPluginOptions
-
+  
   constructor(dependencies: Record<string, unknown>, options: LoyaltyPluginOptions = {}) {
     super(dependencies, options)
     this.options_ = options
   }
-
   getOptions(): LoyaltyPluginOptions {
     return this.options_ ?? {}
   }
