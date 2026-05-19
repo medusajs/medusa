@@ -1,8 +1,8 @@
-Currently, Medusa's query system doesn't support filtering by nested JSON properties in metadata fields using `query.graph`.
+Currently, Query doesn't support filtering by nested JSON properties in metadata fields using `query.graph`.
 
 ## Why This Limitation Exists
 
-Metadata fields in Medusa are stored as JSON/JSONB columns in PostgreSQL. While PostgreSQL supports querying JSON fields, Medusa's query abstraction layer doesn't currently expose this functionality through the standard filtering interface.
+Metadata fields in Medusa are stored as JSON/JSONB columns in PostgreSQL. While PostgreSQL supports querying JSON fields, Query's abstraction layer doesn't currently expose this functionality through the standard filtering interface.
 
 For example, this won't work:
 
@@ -25,36 +25,9 @@ const { data: orders } = await query.graph({
 
 ## Workarounds
 
-### Option 1: Promote Fields to First-Class Columns
+### Option 1: Filter After Retrieval
 
-For frequently queried metadata fields, consider adding them as proper database columns to your data model:
-
-```ts title="src/modules/order/models/order.ts"
-import { model } from "@medusajs/framework/utils"
-
-const Order = model.define("order", {
-  // ... other fields
-  carePlanId: model.text().nullable(),
-  isPreorder: model.boolean().default(false),
-  originalOrderId: model.text().nullable(),
-})
-```
-
-Then you can filter normally:
-
-```ts
-const { data: orders } = await query.graph({
-  entity: "order",
-  fields: ["id", "carePlanId"],
-  filters: {
-    carePlanId: "123",
-  },
-})
-```
-
-### Option 2: Filter After Retrieval
-
-For infrequent queries, retrieve the data first and filter in application code:
+For infrequent queries, retrieve the data with Query first, then filter the results in memory:
 
 ```ts
 const { data: orders } = await query.graph({
@@ -67,15 +40,13 @@ const filteredOrders = orders.filter(
 )
 ```
 
-<Note>
-
 This approach is less efficient for large datasets since all records are loaded into memory first.
 
-</Note>
+### Option 2: Use Module Service Directly
 
-### Option 3: Use Module Service Directly
+You can also bypass Query and use the module service directly to leverage PostgreSQL's JSONB querying capabilities. The downside to this approach is that you can't retrieve data across modules.
 
-Access the module's service directly and use its list methods with raw filter objects:
+For example, to filter orders by metadata using the Order Module Service:
 
 ```ts title="src/api/orders/custom-metadata-search/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
@@ -91,7 +62,6 @@ export const GET = async (
   )
 
   const orders = await orderModuleService.listOrders({
-    // This may work depending on the underlying ORM support
     metadata: {
       carePlanId: "123",
     },
@@ -101,26 +71,43 @@ export const GET = async (
 }
 ```
 
-<Note>
+You can also combine this with Query to retrieve related data across modules. For example:
 
-Direct service usage bypasses query.graph benefits like automatic relation loading and unified caching.
+```ts title="src/api/orders/custom-metadata-search/route.ts"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
+import { IOrderModuleService } from "@medusajs/framework/types"
 
-</Note>
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const orderModuleService: IOrderModuleService = req.scope.resolve(
+    Modules.ORDER
+  )
+  const query = req.scope.resolve("query")
 
----
+  // Step 1: Use the module service to get order IDs matching the metadata filter
+  const orderIds = await orderModuleService.listOrders({
+    metadata: {
+      carePlanId: "123",
+    },
+  }, {
+    select: ["id"]
+  })
 
-## When This Might Be Supported
+  // Step 2: Use Query to get related data for those orders
+  const { data: orders } = await query.graph({
+    entity: "order",
+    fields: ["id", "metadata", "customer.id"],
+    filters: {
+      id: orderIds.map((o) => o.id),
+    },
+  })
 
-Metadata filtering support depends on:
-
-- Enhanced query layer capabilities
-- PostgreSQL JSONB operator integration
-- Performance optimization for JSON queries
-
-For updates on this feature, monitor:
-
-- [Medusa GitHub discussions](https://github.com/medusajs/medusa/discussions)
-- [Medusa roadmap updates](https://github.com/medusajs/medusa/issues)
+  res.json({ orders })
+}
+```
 
 ---
 

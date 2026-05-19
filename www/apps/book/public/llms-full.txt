@@ -26857,7 +26857,7 @@ While this is the recommended way to create a Medusa application, you can altern
 
 - [Node.js v20+ (LTS versions only)](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
-- [PostgreSQL installed and running](https://www.postgresql.org/download/)
+- [PostgreSQL v15+ installed and running](https://www.postgresql.org/download/)
 
 If you choose to install the Next.js Starter Storefront, it currently doesn't support Node v25+. Make sure to downgrade to Node v24 LTS or lower before installing the Medusa application with the storefront.
 
@@ -53759,8 +53759,8 @@ Emitted when a payment is captured.
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
 - [capturePaymentWorkflow](https://docs.medusajs.com/references/medusa-workflows/capturePaymentWorkflow/index.html.md)
-- [processPaymentWorkflow](https://docs.medusajs.com/references/medusa-workflows/processPaymentWorkflow/index.html.md)
 - [markPaymentCollectionAsPaid](https://docs.medusajs.com/references/medusa-workflows/markPaymentCollectionAsPaid/index.html.md)
+- [processPaymentWorkflow](https://docs.medusajs.com/references/medusa-workflows/processPaymentWorkflow/index.html.md)
 
 ***
 
