@@ -8,6 +8,18 @@ import { NextFunction } from "express"
 import { MedusaRequest } from "@medusajs/framework/http"
 import IndexEngineFeatureFlag from "../../../../feature-flags/index-engine"
 
+/**
+ * Creates an Express middleware function that conditionally applies price list filtering to product queries.
+ * 
+ * When a price_list_id filter is present and the index engine is disabled or when tags/categories filters
+ * force a fallback, this middleware expands the price list filter into a variant ID filter for optimized querying.
+ * 
+ * @returns The middleware function that processes the request and applies price list filtering.
+ * 
+ * @example
+ * const middleware = maybeApplyPriceListsFilter()
+ * app.use('/admin/products', middleware)
+ */
 export function maybeApplyPriceListsFilter() {
   return async function applyPriceListsFilter(
     req: MedusaRequest,
