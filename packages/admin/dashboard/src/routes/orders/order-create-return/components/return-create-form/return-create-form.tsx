@@ -204,7 +204,6 @@ export const ReturnCreateForm = ({
 
   useEffect(() => {
     const existingItemsMap: Record<string, boolean> = {}
-    const appendedItemIds = new Set<string>()
 
     previewItems.forEach((i) => {
       const ind = items.findIndex((field) => field.item_id === i.id)
@@ -233,8 +232,7 @@ export const ReturnCreateForm = ({
               | undefined,
           })
         }
-      } else if (!appendedItemIds.has(i.id)) {
-        appendedItemIds.add(i.id)
+      } else {
         append({ item_id: i.id, quantity: i.detail.return_requested_quantity })
       }
     })
@@ -288,13 +286,19 @@ export const ReturnCreateForm = ({
   })
 
   const onItemsSelected = () => {
-    addReturnItem({
-      items: selectedItems.map((id) => ({
-        id,
-        quantity: 1,
-      })),
-    })
+    const existingItemIds = new Set(items.map((i) => i.item_id))
+    const newItems = selectedItems.filter((id) => !existingItemIds.has(id))
 
+    if (newItems.length) {
+      addReturnItem({
+        items: newItems.map((id) => ({
+          id,
+          quantity: 1,
+        })),
+      })
+    }
+
+    selectedItems = []
     setIsOpen("items", false)
   }
 
