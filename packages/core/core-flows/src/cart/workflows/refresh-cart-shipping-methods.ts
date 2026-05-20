@@ -159,6 +159,8 @@ export const refreshCartShippingMethodsWorkflow = createWorkflow(
 
           // Collect profile IDs still required by remaining cart items so that
           // shipping methods for profiles with no matching items can be dropped.
+          // Avoid clearing shipping methods for single-method carts.
+          const shouldCleanupOrphanProfiles = shippingMethods.length > 1
           const requiredProfileIds = new Set(
             (items as any[])
               .filter((item) => item.requires_shipping)
@@ -189,7 +191,11 @@ export const refreshCartShippingMethodsWorkflow = createWorkflow(
 
               // Remove shipping methods whose profile is no longer required by any remaining item.
               const profileId = shippingOption.shipping_profile_id
-              if (profileId && !requiredProfileIds.has(profileId)) {
+              if (
+                shouldCleanupOrphanProfiles &&
+                profileId &&
+                !requiredProfileIds.has(profileId)
+              ) {
                 return false
               }
 
