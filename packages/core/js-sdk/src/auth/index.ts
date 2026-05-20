@@ -1,6 +1,72 @@
-import { HttpTypes } from "@medusajs/types"
+import { AuthTypes, HttpTypes } from "@medusajs/types"
 import { Client } from "../client.js"
 import { ClientHeaders, Config } from "../types.js"
+
+export type AuthRedirectResponse = {
+  location: string
+}
+
+export type AuthMfaRequiredResponse = {
+  mfa_required: true
+  mfa_challenge: AuthTypes.AuthMfaChallengeDTO
+}
+
+export type AuthLoginResponse =
+  | string
+  | AuthRedirectResponse
+  | AuthMfaRequiredResponse
+
+export type AuthCallbackResponse = string | AuthMfaRequiredResponse
+
+export type AuthMfaListResponse = {
+  mfa_factors: AuthTypes.AuthMfaDTO[]
+}
+
+export type AuthMfaSetupResponse = {
+  mfa_factor: AuthTypes.AuthMfaDTO
+  secret?: string
+  otpauth_url?: string
+}
+
+export type AuthMfaFactorResponse = {
+  mfa_factor: AuthTypes.AuthMfaDTO
+}
+
+export type AuthMfaRecoveryCodesResponse = {
+  recovery_codes: string[]
+}
+
+export type AuthMfaStartPayload = {
+  provider: AuthTypes.AuthMfaProvider
+  label?: string | null
+  issuer?: string
+  metadata?: Record<string, unknown> | null
+}
+
+export type AuthMfaVerifyPayload = {
+  code: string
+}
+
+export type AuthMfaDisablePayload = {
+  method?: AuthTypes.AuthMfaChallengeMethod
+  code?: string
+}
+
+export type AuthMfaGenerateRecoveryCodesPayload = {
+  count?: number
+}
+
+export type AuthMfaVerifyChallengePayload = {
+  method: AuthTypes.AuthMfaChallengeMethod
+  code: string
+}
+
+type AuthProviderResponse = {
+  token?: string
+  location?: string
+  mfa_required?: true
+  mfa_challenge?: AuthTypes.AuthMfaChallengeDTO
+}
 
 export class Auth {
   private client: Client
@@ -9,6 +75,87 @@ export class Auth {
   constructor(client: Client, config: Config) {
     this.client = client
     this.config = config
+  }
+
+  mfa = {
+    list: async (headers?: ClientHeaders) => {
+      return await this.client.fetch<AuthMfaListResponse>("/auth/mfa/factors", {
+        headers,
+      })
+    },
+
+    start: async (body: AuthMfaStartPayload, headers?: ClientHeaders) => {
+      return await this.client.fetch<AuthMfaSetupResponse>(
+        "/auth/mfa/factors",
+        {
+          method: "POST",
+          body,
+          headers,
+        }
+      )
+    },
+
+    verify: async (
+      id: string,
+      body: AuthMfaVerifyPayload,
+      headers?: ClientHeaders
+    ) => {
+      return await this.client.fetch<AuthMfaFactorResponse>(
+        `/auth/mfa/factors/${id}/verify`,
+        {
+          method: "POST",
+          body,
+          headers,
+        }
+      )
+    },
+
+    disable: async (
+      id: string,
+      body?: AuthMfaDisablePayload,
+      headers?: ClientHeaders
+    ) => {
+      return await this.client.fetch<AuthMfaFactorResponse>(
+        `/auth/mfa/factors/${id}`,
+        {
+          method: "DELETE",
+          body: body ?? {},
+          headers,
+        }
+      )
+    },
+
+    generateRecoveryCodes: async (
+      body?: AuthMfaGenerateRecoveryCodesPayload,
+      headers?: ClientHeaders
+    ) => {
+      return await this.client.fetch<AuthMfaRecoveryCodesResponse>(
+        "/auth/mfa/recovery-codes",
+        {
+          method: "POST",
+          body: body ?? {},
+          headers,
+        }
+      )
+    },
+
+    verifyChallenge: async (
+      id: string,
+      body: AuthMfaVerifyChallengePayload,
+      headers?: ClientHeaders
+    ) => {
+      const { token } = await this.client.fetch<{ token: string }>(
+        `/auth/mfa/challenges/${id}/verify`,
+        {
+          method: "POST",
+          body,
+          headers,
+        }
+      )
+
+      await this.setToken_(token)
+      return token
+    },
   }
 
   /**
@@ -127,15 +274,20 @@ export class Auth {
     actor: string,
     method: string,
     payload: HttpTypes.AdminSignInWithEmailPassword | Record<string, unknown>
-  ) => {
-    // There will either be token or location returned from the backend.
-    const { token, location } = await this.client.fetch<{
-      token?: string
-      location?: string
-    }>(`/auth/${actor}/${method}`, {
-      method: "POST",
-      body: payload,
-    })
+  ): Promise<AuthLoginResponse> => {
+    // There will either be token, location, or MFA challenge returned from the backend.
+    const { token, location, mfa_challenge } =
+      await this.client.fetch<AuthProviderResponse>(`/auth/${actor}/${method}`, {
+        method: "POST",
+        body: payload,
+      })
+
+    if (mfa_challenge) {
+      return {
+        mfa_required: true,
+        mfa_challenge,
+      }
+    }
 
     // In the case of an oauth login, we return the redirect location to the caller.
     // They can decide if they do an immediate redirect or put it in an <a> tag.
@@ -143,8 +295,12 @@ export class Auth {
       return { location }
     }
 
-    await this.setToken_(token as string)
-    return token as string
+    if (!token) {
+      throw new Error("Unexpected authentication response")
+    }
+
+    await this.setToken_(token)
+    return token
   }
 
   /**
@@ -157,7 +313,7 @@ export class Auth {
    *
    * Learn more in the [JS SDK Authentication](https://docs.medusajs.com/resources/js-sdk/auth/overview) guide.
    *
-   * @param actor - The actor type. For example, `user` for admin user, or `customer` for customer.
+   * @param actor - The actor type. For example, `user` for admin user, or `customer`.
    * @param method - The authentication provider to use. For example, `google`.
    * @param query - The query parameters from the Oauth callback, which should be passed to the API route. This includes query parameters like
    * `code` and `state`.
@@ -189,14 +345,26 @@ export class Auth {
     actor: string,
     method: string,
     query?: Record<string, unknown>
-  ) => {
-    const { token } = await this.client.fetch<{ token: string }>(
-      `/auth/${actor}/${method}/callback`,
-      {
-        method: "GET",
-        query,
+  ): Promise<AuthCallbackResponse> => {
+    const { token, mfa_challenge } =
+      await this.client.fetch<AuthProviderResponse>(
+        `/auth/${actor}/${method}/callback`,
+        {
+          method: "GET",
+          query,
+        }
+      )
+
+    if (mfa_challenge) {
+      return {
+        mfa_required: true,
+        mfa_challenge,
       }
-    )
+    }
+
+    if (!token) {
+      throw new Error("Unexpected authentication callback response")
+    }
 
     await this.setToken_(token)
     return token
