@@ -122,38 +122,34 @@ export interface StoreUpdateCartLineItem {
   metadata?: Record<string, unknown> | null
 }
 
-interface StoreAddCartShippingMethodsBase {
-  /**
-   * Data useful for the associated fulfillment provider.
-   *
-   * Learn more in [this documentation](https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property).
-   */
-  data?: Record<string, unknown>
-}
-
 export type StoreAddCartShippingMethods =
-  | (StoreAddCartShippingMethodsBase & {
+  | {
       /**
        * The id of the chosen shipping option.
        */
       option_id: string
-    })
-  | (StoreAddCartShippingMethodsBase & {
       /**
-       * The ids of the chosen shipping options. Use this when adding shipping methods
-       * for multiple shipping profiles in a single request. When each option requires
-       * different fulfillment provider data, pass `data` as an array whose elements
-       * correspond positionally to `option_ids`.
-       */
-      option_ids: string[]
-      /**
-       * Data for the associated fulfillment providers. Either a single record applied
-       * to all options, or an array of records matched positionally to `option_ids`.
+       * Data useful for the associated fulfillment provider.
        *
        * Learn more in [this documentation](https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property).
        */
-      data?: Record<string, unknown> | Record<string, unknown>[]
-    })
+      data?: Record<string, unknown>
+    }
+  | {
+      /**
+       * The ids of the chosen shipping options. Use this when adding shipping methods
+       * for multiple shipping profiles in a single request.
+       */
+      option_ids: string[]
+      /**
+       * Data for the associated fulfillment providers, matched positionally to
+       * `option_ids`. Each entry is passed to its corresponding option's fulfillment
+       * provider.
+       *
+       * Learn more in [this documentation](https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property).
+       */
+      data?: Record<string, unknown>[]
+    }
 
 export interface StoreCompleteCart {
   idempotency_key?: string

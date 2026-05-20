@@ -95,12 +95,7 @@ export const StoreAddCartShippingMethods = z.union([
   }),
   z.object({
     option_ids: z.array(z.string()).min(1),
-    data: z
-      .union([
-        z.record(z.string(), z.unknown()),
-        z.array(z.record(z.string(), z.unknown())),
-      ])
-      .optional(),
+    data: z.array(z.record(z.string(), z.unknown())).optional(),
   }),
 ])
 
