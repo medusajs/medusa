@@ -161,6 +161,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       shippingMethodAdjustmentsToCreate,
       shippingMethodAdjustmentIdsToRemove,
       computedPromotionCodes,
+      skippedPromoCodes,
     } = prepareAdjustmentsFromPromotionActionsStep({ actions })
 
     parallelize(
@@ -192,8 +193,9 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       key: cartId,
     })
 
-    return new WorkflowResponse(void 0, {
-      hooks: [validate, setPromotionContext] as const,
-    })
+    return new WorkflowResponse(
+      { skipped_promo_codes: skippedPromoCodes },
+      { hooks: [validate, setPromotionContext] as const }
+    )
   }
 )

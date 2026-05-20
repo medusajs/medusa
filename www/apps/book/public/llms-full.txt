@@ -13872,6 +13872,27 @@ export default Post
 
 In this example, the `title` property is searchable.
 
+### Searchable Relationship Properties
+
+You can also make relationship properties searchable by adding the `searchable` method to relationship definitions like `hasMany`, `hasOne`, `belongsTo`, or `manyToMany`.
+
+For example:
+
+```ts highlights={relationshipSearchableHighlights}
+import { model } from "@medusajs/framework/utils"
+
+const Product = model.define("product", {
+  variants: model.hasMany(() => ProductVariant, {
+    mappedBy: "product",
+  }).searchable(),
+  // ...
+})
+
+export default Product
+```
+
+When a relationship property is marked as searchable, the related records' searchable text properties can be queried when using the `q` filter.
+
 ### Search Example
 
 If you pass a `q` filter to the `listPosts` method:
@@ -14222,6 +14243,37 @@ const Product = model.define("product", {
 The `cascades` method accepts an object. Its key is the operation’s name, such as `delete`. The value is an array of relationship property names that the operation is cascaded to.
 
 In the example above, when a store is deleted, its associated products are also deleted.
+
+***
+
+## Searchable Relationships
+
+You can make relationship properties searchable by adding the `searchable` method to any relationship definition (`hasMany`, `hasOne`, `belongsTo`, or `manyToMany`).
+
+When a relationship property is marked as searchable, the related records' searchable text properties can be queried when using the `q` filter in service methods like `list{ModelName}s`.
+
+For example:
+
+```ts highlights={searchableRelationshipHighlights}
+import { model } from "@medusajs/framework/utils"
+
+const Store = model.define("store", {
+  id: model.id().primaryKey(),
+  products: model.hasMany(() => Product, {
+    mappedBy: "store",
+  }).searchable(),
+})
+
+const Product = model.define("product", {
+  id: model.id().primaryKey(),
+  title: model.text().searchable(),
+  store: model.belongsTo(() => Store, {
+    mappedBy: "products",
+  }),
+})
+```
+
+In this example, when you search for stores using the `q` filter, the search will include matching product titles from the related products.
 
 
 # Migrations
@@ -26805,7 +26857,7 @@ While this is the recommended way to create a Medusa application, you can altern
 
 - [Node.js v20+ (LTS versions only)](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
-- [PostgreSQL installed and running](https://www.postgresql.org/download/)
+- [PostgreSQL v15+ installed and running](https://www.postgresql.org/download/)
 
 If you choose to install the Next.js Starter Storefront, it currently doesn't support Node v25+. Make sure to downgrade to Node v24 LTS or lower before installing the Medusa application with the storefront.
 
@@ -27640,12 +27692,12 @@ Medusa hosts a Streamable HTTP MCP server at `https://docs.medusajs.com/mcp` tha
 
 ## Authentication
 
-This MCP server is available for [Cloud](https://docs.medusajs.com/cloud/index.html.md) users only. It requires authenticating with Medusa Cloud to use it.
+This MCP server is available for [Cloud](https://docs.medusajs.com/cloud/index.html.md) users only. It requires authenticating with your Cloud account to use it.
 
 The MCP server supports two authentication methods:
 
-1. OAuth: This is the recommended authentication method. It allows you to authenticate with your Medusa Cloud account without generating a token manually. When you connect to the MCP server, you will be prompted to log into your Medusa Cloud account in a browser window to authenticate.
-2. [Personal Access Key](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md): Use your Medusa Cloud personal access key as a Bearer token in the Authorization header when connecting to the MCP server. This is useful for AI agents like OpenCode that may have issues with OAuth authentication flows.
+1. OAuth: This is the recommended authentication method. It allows you to authenticate with your Cloud account without generating a token manually. When you connect to the MCP server, you will be prompted to log into your Cloud account in a browser window to authenticate.
+2. [Personal Access Key](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md): Use your Cloud personal access key as a Bearer token in the Authorization header when connecting to the MCP server. This is useful for AI agents like OpenCode that may have issues with OAuth authentication flows.
 
 ***
 
@@ -27663,36 +27715,37 @@ To connect to the Medusa MCP server in Claude Code, run the following command in
 claude mcp add --transport http medusa https://docs.medusajs.com/mcp
 ```
 
-Then, start Claude Code and authenticate with your Medusa Cloud account:
+Then, start Claude Code and authenticate with your Cloud account:
 
 ```sh
 claude
 /mcp
 ```
 
-Then, select the `medusa` MCP server and choose "Authenticate". This will open a browser window where you can log into your Medusa Cloud account to authenticate.
+Then, select the `medusa` MCP server and choose "Authenticate". This will open a browser window where you can log into your Cloud account to authenticate.
 
 ### Cursor
 
-<Link href="cursor://anysphere.cursor-deeplink/mcp/install?name=medusa&config=eyJ1cmwiOiJodHRwczovL2RvY3MubWVkdXNhanMuY29tL21jcCJ9" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Medusa MCP server to Cursor.
+Cursor has known issues with OAuth authentication flows. So, to connect to the Medusa MCP server in Cursor, [create a personal access key in your Cloud account](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md) first.
 
-To manually connect to the Medusa MCP server in Cursor, add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://docs.cursor.com/context/model-context-protocol):
+Then, add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://cursor.com/docs/mcp):
 
-```json
+```json title=".cursor/mcp.json"
 {
   "mcpServers": {
     "medusa": {
-      "url": "https://docs.medusajs.com/mcp"
+      "url": "https://docs.medusajs.com/mcp",
+      "headers": {
+        "Authorization": "Bearer {token}"
+      }
     }
   }
 }
 ```
 
-Then, to authenticate with your Medusa Cloud account:
+Replace `{token}` with the personal access key you generated in your Cloud account.
 
-1. Go to Settings -> Tools & MCP in Cursor.
-2. Click the "Connect" button next to the Medusa MCP server.
-3. Log into your Medusa Cloud account in the opened browser window to authenticate.
+You can then start using the Medusa MCP server in Cursor.
 
 ### VS Code
 
@@ -27700,7 +27753,7 @@ Then, to authenticate with your Medusa Cloud account:
 
 To manually connect to the Medusa MCP server in VSCode, add the following to your `.vscode/mcp.json` file in your workspace:
 
-```json
+```json title=".vscode/mcp.json"
 {
   "servers": {
     "medusa": {
@@ -27711,15 +27764,15 @@ To manually connect to the Medusa MCP server in VSCode, add the following to you
 }
 ```
 
-Then, once you start the MCP server connection, you will be prompted to authenticate with your Medusa Cloud account in a browser window. Log in to authenticate and start using the Medusa MCP server in VSCode.
+Then, once you start the MCP server connection, you will be prompted to authenticate with your Cloud account in a browser window. Log in to authenticate and start using the Medusa MCP server in VSCode.
 
 ### OpenCode
 
-OpenCode has known issues with OAuth authentication flows. So, to connect to the Medusa MCP server in OpenCode, [create a personal access key in your Medusa Cloud account](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md) first.
+OpenCode has known issues with OAuth authentication flows. So, to connect to the Medusa MCP server in OpenCode, [create a personal access key in your Cloud account](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md) first.
 
 Then, add the following to your [OpenCode config file](https://opencode.ai/docs/config/) (for example, `~/.config/opencode/opencode.json`):
 
-```json
+```json title="~/.config/opencode/opencode.json"
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
@@ -27735,7 +27788,7 @@ Then, add the following to your [OpenCode config file](https://opencode.ai/docs/
 }
 ```
 
-Replace `{token}` with the personal access key you generated in your Medusa Cloud account.
+Replace `{token}` with the personal access key you generated in your Cloud account.
 
 You can then start using the Medusa MCP server in OpenCode.
 
@@ -39180,9 +39233,53 @@ You can then:
 
 - Complete the cart using the [completeCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/completeCartWorkflow/index.html.md) if you're using the Medusa application.
 - Capture the payment either using the [capturePaymentWorkflow](https://docs.medusajs.com/references/medusa-workflows/capturePaymentWorkflow/index.html.md) or [capturePayment method](https://docs.medusajs.com/references/payment/capturePayment/index.html.md).
-- Refund captured amounts using the [refundPaymentWorkflow](https://docs.medusajs.com/references/medusa-workflows/refundPaymentWorkflow/index.html.md) or [refundPayment method](https://docs.medusajs.com/references/payment/refundPayment/index.html.md).
+- Refund captured amounts using the [refundPaymentsWorkflow](https://docs.medusajs.com/references/medusa-workflows/refundPaymentsWorkflow/index.html.md) or [refundPayment method](https://docs.medusajs.com/references/payment/refundPayment/index.html.md).
 
-Some payment providers allow capturing the payment automatically once it’s authorized. In that case, you don’t need to do it manually.
+Some payment providers allow capturing the payment automatically once it's authorized. In that case, you don't need to do it manually.
+
+### Refund Payments
+
+If you need to refund a payment, use the `refundPaymentsWorkflow`:
+
+### Using Workflow
+
+```ts
+import { refundPaymentsWorkflow } from "@medusajs/medusa/core-flows"
+
+// ...
+
+await refundPaymentsWorkflow(container)
+  .run({
+    input: [
+      {
+        payment_id: "pay_123",
+        amount: 1000, // refund amount
+        note: "Customer requested refund", // optional note
+        metadata: { // optional custom data
+          reason: "damaged_goods",
+          return_id: "ret_456",
+        },
+      },
+    ],
+  })
+```
+
+### Using Service
+
+```ts
+const refund = await paymentModuleService.refundPayment({
+  payment_id: "pay_123",
+  amount: 1000,
+  refund_reason_id: "rr_123",
+  note: "Customer requested refund",
+  metadata: {
+    reason: "damaged_goods",
+    return_id: "ret_456",
+  },
+})
+```
+
+The `metadata` property is available since Medusa [v2.15.0](https://github.com/medusajs/medusa/releases/tag/v2.15.0).
 
 
 # Payment Module Provider
@@ -39568,6 +39665,8 @@ A [PriceList](https://docs.medusajs.com/references/pricing/models/PriceList/inde
 When the conditions are met, the prices in the price list can override the default prices in a price set. Learn more in the [Price Calculation](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/pricing/price-calculation/index.html.md) guide.
 
 A price list has optional `start_date` and `end_date` properties that indicate the date range in which a price list can be applied.
+
+You can store custom data in key-value pairs on a price list using the `metadata` property. This property is available since Medusa [v2.15.0](https://github.com/medusajs/medusa/releases/tag/v2.15.0).
 
 Its associated prices are represented by the [Price data model](#price-data-model).
 
@@ -52658,6 +52757,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [updateLineItemsStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateLineItemsStep/index.html.md)
 - [updateShippingMethodsStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateShippingMethodsStep/index.html.md)
 - [validateAndReturnShippingMethodsDataStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateAndReturnShippingMethodsDataStep/index.html.md)
+- [validateCartItemsStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateCartItemsStep/index.html.md)
 - [validateCartPaymentsStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateCartPaymentsStep/index.html.md)
 - [validateCartShippingOptionsPriceStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateCartShippingOptionsPriceStep/index.html.md)
 - [validateCartShippingOptionsStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateCartShippingOptionsStep/index.html.md)
@@ -53659,8 +53759,8 @@ Emitted when a payment is captured.
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
 - [capturePaymentWorkflow](https://docs.medusajs.com/references/medusa-workflows/capturePaymentWorkflow/index.html.md)
-- [processPaymentWorkflow](https://docs.medusajs.com/references/medusa-workflows/processPaymentWorkflow/index.html.md)
 - [markPaymentCollectionAsPaid](https://docs.medusajs.com/references/medusa-workflows/markPaymentCollectionAsPaid/index.html.md)
+- [processPaymentWorkflow](https://docs.medusajs.com/references/medusa-workflows/processPaymentWorkflow/index.html.md)
 
 ***
 
@@ -92600,7 +92700,8 @@ for (const product of products) {
   for (const variant of product.variants) {
     // @ts-ignore
     const calculatedPrice = variant.calculated_price as CalculatedPriceSet
-    const hasOriginalPrice = calculatedPrice?.original_amount
+    const hasOriginalPrice = calculatedPrice?.original_amount && 
+      calculatedPrice.original_amount !== calculatedPrice.calculated_amount
     const originalPrice = hasOriginalPrice ? calculatedPrice.original_amount : 
     calculatedPrice.calculated_amount
     const salePrice = hasOriginalPrice ? calculatedPrice.calculated_amount : 
@@ -133368,7 +133469,34 @@ With these changes, the `LocalizedClientLink` component now creates links withou
 
 ***
 
-## 7. Update Server Functions to Use Country Code from Cookie
+## 7. Update Checkout Components
+
+The checkout flow components also need to be updated to handle URLs without country codes. This includes forms and buttons that redirect to other checkout steps.
+
+### Update Checkout Navigation
+
+In checkout components that handle navigation between steps (such as shipping, payment, and review), ensure that any redirect URLs or form actions don't include the country code prefix.
+
+For example, if you have checkout step components that redirect to delivery or payment URLs, update them to use the new URL structure:
+
+```tsx
+// Before: redirect(`/${countryCode}/checkout/delivery`)
+// After: redirect(`/checkout/delivery`)
+```
+
+### Update Form Actions in Checkout
+
+If your checkout forms have action URLs that include country codes, update them to the new structure. This is particularly important for:
+
+- Shipping address forms
+- Payment method selection
+- Order review and confirmation
+
+Look for any hardcoded URLs in checkout components and remove the country code prefix.
+
+***
+
+## 8. Update Server Functions to Use Country Code from Cookie
 
 Finally, you'll update the server functions in the Next.js Starter Storefront to retrieve the country code from the cookie instead of receiving it as a parameter.
 

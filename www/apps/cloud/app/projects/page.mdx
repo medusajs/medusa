@@ -42,6 +42,10 @@ You can also start the project creation flow from the [command palette](../comma
 </Note>
 
 1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
+2. If you have no projects, you can create a project either by:
+  - Copying the "Start with AI Prompt" and using it with your AI agent, such as Claude Code. This will create a project locally, push it to a new GitHub repository, and assist you in deploying it to Cloud.
+  - Cloning an existing starter, as explained in the [Create Project from a Starter](#1-create-project-from-a-starter) section below.
+  - Clicking "Import" to create a project from an existing application, as explained in the [Create Project from an Existing Application](#2-create-project-from-an-existing-application) section below.
 2. Click on the **Create Project** button in your organization's dashboard.
 
 In the project-creation page, you can either [create from a starter](#1-create-project-from-a-starter) or [create from an existing application](#2-create-project-from-an-existing-application).
@@ -50,22 +54,29 @@ In the project-creation page, you can either [create from a starter](#1-create-p
 
 ## 1. Create Project from a Starter
 
-Medusa provides you with the following starters that you can use to quickly set up your ecommerce application:
+Medusa provides you with starter templates that you can use to quickly set up your ecommerce application. All templates include a storefront, backend, and admin dashboard. These templates include:
 
 - **DTC Starter**: Standard Medusa application with fully-fledged commerce features.
 - **B2B Starter**: Medusa application with powerful B2B and commerce features.
+- **Configurable product starter**: Medusa application with the configurable product feature. For example, customers can configure their product's attributes, and the price changes accordingly.
+- **Grounded starter**: Medusa application with a storefront having a modern design, ideal for designers, artists, and brands with a focus on aesthetics.
+- **Industrials B2B starter**: B2B Medusa application with features and a storefront tailored for industrial businesses, such as machinery, equipment, and supplies.
+- **Quiz-to-product starter:** Medusa application with a storefront that includes a quiz to help customers find the right product based on their preferences and needs.
+- **Essentials starter:** Medusa application with storefront suitable for fashion brands.
+- **Uncut Coffee starter:** Medusa application with a storefront that has bold visuals and immersive storytelling. Ideal for modern DTC brands.
 
-Both starters come with a pre-configured Medusa server, admin dashboard, and the Next.js Starter Storefront.
+### Browse and Select Templates
 
-To create a project from either of these starters:
+To create a project from a starter template:
 
 1. Click on the **Browse Starters** button at the top right of the [project creation page](#create-a-project).
+  - For each template, you can click on it to view more details, such as its features and the tech stack used in the storefront.
 2. Click the **Clone** button of the starter you want to use.
 3. In the Repository step, authenticate with your GitHub account if you haven't already.
-4. Choose a GitHub organization to clone the starter into in the "Organization" field.
+3. Choose a GitHub organization to clone the starter into in the "Organization" field.
     - If you don't see your organization, you can click the **Configure accessible organizations** link to manage accessible organizations in GitHub.
-5. In the "Repository name" field, enter a name for your new repository.
-6. Once you're done, click the **Continue** button.
+4. In the "Repository name" field, enter a name for your new repository.
+5. Once you're done, click the **Continue** button.
 
 The repository will be cloned and you'll move forward to the [Configure step](#configure-project-during-creation).
 
