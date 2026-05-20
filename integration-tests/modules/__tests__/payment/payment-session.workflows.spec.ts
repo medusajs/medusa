@@ -129,7 +129,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should create payment sessions when customer has no account_holder links (#15152)", async () => {
+        it("should create payment sessions when customer has no account_holder links)", async () => {
           const {
             data: [customerBefore],
           } = await query.graph({
