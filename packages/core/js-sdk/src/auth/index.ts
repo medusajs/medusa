@@ -2,62 +2,163 @@ import { AuthTypes, HttpTypes } from "@medusajs/types"
 import { Client } from "../client.js"
 import { ClientHeaders, Config } from "../types.js"
 
+/**
+ * Redirect response returned when an authentication provider requires the user
+ * to continue authentication on another page.
+ */
 export type AuthRedirectResponse = {
+  /**
+   * The URL to redirect the user to.
+   */
   location: string
 }
 
+/**
+ * Response returned when authentication succeeds but must be completed with
+ * a multi-factor authentication (MFA) challenge before issuing a token.
+ */
 export type AuthMfaRequiredResponse = {
+  /**
+   * Indicates that the client must complete the returned MFA challenge.
+   */
   mfa_required: true
+  /**
+   * The MFA challenge to complete.
+   */
   mfa_challenge: AuthTypes.AuthMfaChallengeDTO
 }
 
+/**
+ * Response returned from an authentication attempt.
+ */
 export type AuthLoginResponse =
   | string
   | AuthRedirectResponse
   | AuthMfaRequiredResponse
 
+/**
+ * Response returned from an authentication callback.
+ */
 export type AuthCallbackResponse = string | AuthMfaRequiredResponse
 
+/**
+ * Response containing the authenticated identity's MFA factors.
+ */
 export type AuthMfaListResponse = {
+  /**
+   * The MFA factors configured for the authenticated identity.
+   */
   mfa_factors: AuthTypes.AuthMfaDTO[]
 }
 
+/**
+ * Response returned when starting MFA setup.
+ */
 export type AuthMfaSetupResponse = {
+  /**
+   * The pending MFA factor.
+   */
   mfa_factor: AuthTypes.AuthMfaDTO
+  /**
+   * The setup secret. For TOTP, this can be entered manually in an
+   * authenticator app.
+   */
   secret?: string
+  /**
+   * The setup URI. For TOTP, this can be rendered as a QR code.
+   */
   otpauth_url?: string
 }
 
+/**
+ * Response containing a single MFA factor.
+ */
 export type AuthMfaFactorResponse = {
+  /**
+   * The MFA factor.
+   */
   mfa_factor: AuthTypes.AuthMfaDTO
 }
 
+/**
+ * Response containing newly generated MFA recovery codes.
+ */
 export type AuthMfaRecoveryCodesResponse = {
+  /**
+   * The recovery codes. These are only returned once and should be stored by
+   * the user.
+   */
   recovery_codes: string[]
 }
 
+/**
+ * Payload used to start MFA setup.
+ */
 export type AuthMfaStartPayload = {
+  /**
+   * The MFA provider to set up.
+   */
   provider: AuthTypes.AuthMfaProvider
+  /**
+   * Optional label for the MFA factor.
+   */
   label?: string | null
+  /**
+   * Optional issuer name. For TOTP, authenticator apps show this as the
+   * service name.
+   */
   issuer?: string
+  /**
+   * Optional metadata to store with the MFA factor.
+   */
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * Payload used to verify a pending MFA setup.
+ */
 export type AuthMfaVerifyPayload = {
+  /**
+   * The verification code from the MFA provider.
+   */
   code: string
 }
 
+/**
+ * Payload used to disable an MFA factor.
+ */
 export type AuthMfaDisablePayload = {
+  /**
+   * Optional challenge method used to authorize disabling MFA when configured.
+   */
   method?: AuthTypes.AuthMfaChallengeMethod
+  /**
+   * Optional verification code for the selected challenge method.
+   */
   code?: string
 }
 
+/**
+ * Payload used to generate recovery codes.
+ */
 export type AuthMfaGenerateRecoveryCodesPayload = {
+  /**
+   * Number of recovery codes to generate.
+   */
   count?: number
 }
 
+/**
+ * Payload used to verify an MFA challenge.
+ */
 export type AuthMfaVerifyChallengePayload = {
+  /**
+   * The MFA challenge method used for verification.
+   */
   method: AuthTypes.AuthMfaChallengeMethod
+  /**
+   * The verification code for the selected challenge method.
+   */
   code: string
 }
 
@@ -77,13 +178,50 @@ export class Auth {
     this.config = config
   }
 
+  /**
+   * Methods for managing and completing multi-factor authentication (MFA).
+   */
   mfa = {
+    /**
+     * This method retrieves the MFA factors configured for the authenticated
+     * identity. It sends a request to the
+     * [List MFA Factors](https://docs.medusajs.com/api/admin#auth_getmfa_factors)
+     * API route.
+     *
+     * @param headers - Headers to pass in the request.
+     * @returns The configured MFA factors.
+     *
+     * @tags auth
+     *
+     * @example
+     * const { mfa_factors } = await sdk.auth.mfa.list()
+     */
     list: async (headers?: ClientHeaders) => {
       return await this.client.fetch<AuthMfaListResponse>("/auth/mfa/factors", {
         headers,
       })
     },
 
+    /**
+     * This method starts MFA setup for the authenticated identity. It sends a
+     * request to the
+     * [Create MFA Factor](https://docs.medusajs.com/api/admin#auth_postmfa_factors)
+     * API route.
+     *
+     * @param body - The MFA setup details.
+     * @param headers - Headers to pass in the request.
+     * @returns The pending MFA factor and any setup details returned by the provider.
+     *
+     * @tags auth
+     *
+     * @example
+     * const setup = await sdk.auth.mfa.start({
+     *   provider: "totp",
+     *   label: "Authenticator app"
+     * })
+     *
+     * // Render setup.otpauth_url as a QR code or show setup.secret manually.
+     */
     start: async (body: AuthMfaStartPayload, headers?: ClientHeaders) => {
       return await this.client.fetch<AuthMfaSetupResponse>(
         "/auth/mfa/factors",
@@ -95,6 +233,23 @@ export class Auth {
       )
     },
 
+    /**
+     * This method verifies a pending MFA factor setup. It sends a request to the
+     * [Verify MFA Factor](https://docs.medusajs.com/api/admin#auth_postmfa_factorsidverify)
+     * API route.
+     *
+     * @param id - The ID of the MFA factor to verify.
+     * @param body - The verification details.
+     * @param headers - Headers to pass in the request.
+     * @returns The verified MFA factor.
+     *
+     * @tags auth
+     *
+     * @example
+     * const { mfa_factor } = await sdk.auth.mfa.verify("authmfa_123", {
+     *   code: "123456"
+     * })
+     */
     verify: async (
       id: string,
       body: AuthMfaVerifyPayload,
@@ -110,6 +265,22 @@ export class Auth {
       )
     },
 
+    /**
+     * This method disables an MFA factor for the authenticated identity. It
+     * sends a request to the
+     * [Delete MFA Factor](https://docs.medusajs.com/api/admin#auth_deletemfa_factorsid)
+     * API route.
+     *
+     * @param id - The ID of the MFA factor to disable.
+     * @param body - Optional verification details required by the server configuration.
+     * @param headers - Headers to pass in the request.
+     * @returns The disabled MFA factor.
+     *
+     * @tags auth
+     *
+     * @example
+     * const { mfa_factor } = await sdk.auth.mfa.disable("authmfa_123")
+     */
     disable: async (
       id: string,
       body?: AuthMfaDisablePayload,
@@ -125,6 +296,21 @@ export class Auth {
       )
     },
 
+    /**
+     * This method generates new recovery codes for the authenticated identity.
+     * It sends a request to the
+     * [Generate MFA Recovery Codes](https://docs.medusajs.com/api/admin#auth_postmfa_recovery-codes)
+     * API route.
+     *
+     * @param body - Optional recovery code generation details.
+     * @param headers - Headers to pass in the request.
+     * @returns The generated recovery codes.
+     *
+     * @tags auth
+     *
+     * @example
+     * const { recovery_codes } = await sdk.auth.mfa.generateRecoveryCodes()
+     */
     generateRecoveryCodes: async (
       body?: AuthMfaGenerateRecoveryCodesPayload,
       headers?: ClientHeaders
@@ -139,6 +325,35 @@ export class Auth {
       )
     },
 
+    /**
+     * This method verifies an MFA challenge returned from `sdk.auth.login` or
+     * `sdk.auth.callback`. It sends a request to the
+     * [Verify MFA Challenge](https://docs.medusajs.com/api/admin#auth_postmfa_challengesidverify)
+     * API route.
+     *
+     * If verification succeeds, the returned token is stored based on the SDK's
+     * auth configuration, matching `sdk.auth.login`.
+     *
+     * @param id - The ID of the MFA challenge to verify.
+     * @param body - The challenge verification details.
+     * @param headers - Headers to pass in the request.
+     * @returns The authentication JWT token.
+     *
+     * @tags auth
+     *
+     * @example
+     * const result = await sdk.auth.login("user", "emailpass", {
+     *   email: "user@example.com",
+     *   password: "secret"
+     * })
+     *
+     * if (typeof result === "object" && "mfa_challenge" in result) {
+     *   await sdk.auth.mfa.verifyChallenge(result.mfa_challenge.id, {
+     *     method: "totp",
+     *     code: "123456"
+     *   })
+     * }
+     */
     verifyChallenge: async (
       id: string,
       body: AuthMfaVerifyChallengePayload,
