@@ -99,6 +99,11 @@ export const troubleshootingSidebar = [
           },
           {
             type: "link",
+            path: "/troubleshooting/query/metadata-filtering",
+            title: "Metadata Filtering",
+          },
+          {
+            type: "link",
             path: "/troubleshooting/query/service-list",
             title: "service.list Error",
           },

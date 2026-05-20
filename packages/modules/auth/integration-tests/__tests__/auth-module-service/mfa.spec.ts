@@ -222,6 +222,25 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         expect(factor).not.toHaveProperty("provider_metadata")
       })
 
+      it("verifies setup only for factors owned by the auth identity", async () => {
+        const setup = await service.startAuthMfa({
+          auth_identity_id: "test-id",
+          provider: "totp",
+        })
+        const code = generateTotpCode({
+          secret: setup.secret,
+          timestamp: Date.now(),
+        })
+
+        await expect(
+          service.verifyAuthMfa({
+            id: setup.mfa.id,
+            auth_identity_id: "test-id-1",
+            code,
+          })
+        ).rejects.toThrow(`MFA factor with id "${setup.mfa.id}" was not found`)
+      })
+
       it("rejects invalid TOTP codes", async () => {
         const setup = await service.startAuthMfa({
           auth_identity_id: "test-id",
