@@ -425,9 +425,7 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
     descriptor: PlannerActionLinkDescriptor
   ) {
     await orm.em.getDriver().getConnection().execute(`
-      ALTER TABLE "${this.#schema}"."${oldName}" RENAME TO "${
-      this.#schema
-    }"."${newName}";
+      ALTER TABLE "${this.#schema}"."${oldName}" RENAME TO "${newName}";
       UPDATE "${this.#schema}"."${
       this.tableName
     }" SET table_name = '${newName}', link_descriptor = '${JSON.stringify(

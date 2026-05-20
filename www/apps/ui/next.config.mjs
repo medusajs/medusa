@@ -19,7 +19,6 @@ import {
 import bundleAnalyzer from "@next/bundle-analyzer"
 import withExtractedTableOfContents from "@stefanprobst/rehype-extract-toc"
 import { ExampleRegistry } from "./specs/examples.mjs"
-import { ComponentSpecsIndex } from "./generated/components-index.mjs"
 
 const withMDX = mdx({
   extension: /\.mdx?$/,
@@ -79,8 +78,7 @@ const withMDX = mdx({
           },
           useBaseUrl:
             process.env.NODE_ENV === "production" ||
-            process.env.VERCEL_ENV === "production" ||
-            !!process.env.CLOUDFLARE_ENV,
+            process.env.VERCEL_ENV === "production",
         },
       ],
       [localLinksRehypePlugin],
@@ -117,8 +115,6 @@ const withMDX = mdx({
         uiRehypePlugin,
         {
           exampleRegistry: ExampleRegistry,
-          specsIndex: ComponentSpecsIndex,
-          specsBaseUrl: process.env.UI_SPECS_R2_BASE_URL,
         },
       ],
     ],
@@ -140,7 +136,6 @@ const nextConfig = {
 
   transpilePackages: ["docs-ui"],
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/ui",
-  outputFileTracingRoot: new URL("../../", import.meta.url).pathname,
   outputFileTracingIncludes: {
     "/md\\-content/\\[\\[\\.\\.\\.slug\\]\\]": [
       "./app/**/*.mdx",
@@ -149,11 +144,7 @@ const nextConfig = {
     ],
   },
   outputFileTracingExcludes: {
-    "*": [
-      "node_modules/@medusajs/icons",
-      "../**/.open-next/**",
-      "../!(ui)/.next/**",
-    ],
+    "*": ["node_modules/@medusajs/icons"],
   },
   experimental: {
     optimizePackageImports: ["@medusajs/icons", "@medusajs/ui"],
@@ -161,14 +152,6 @@ const nextConfig = {
   rewrites: async () => {
     return {
       beforeFiles: [
-        {
-          source: "/index.html.md",
-          destination: "/md-content",
-        },
-        {
-          source: "/index.md",
-          destination: "/md-content",
-        },
         {
           source: "/:path*/index.html.md",
           destination: "/md-content/:path*",
@@ -182,7 +165,7 @@ const nextConfig = {
           destination: "/md-content/:path*",
         },
         {
-          source: "/:first((?!md-content)[^/]+)/:rest*/",
+          source: "/:path((?!md-content).+)/",
           has: [
             {
               type: "header",
@@ -190,7 +173,7 @@ const nextConfig = {
               value: ".*(text/markdown|text/plain).*",
             },
           ],
-          destination: "/md-content/:first/:rest*",
+          destination: "/md-content/:path",
         },
         {
           source: "/",
@@ -204,7 +187,7 @@ const nextConfig = {
           destination: "/md-content",
         },
         {
-          source: "/:first((?!md-content)[^/]+)/:rest*",
+          source: "/:path((?!md-content).+)",
           has: [
             {
               type: "header",
@@ -212,7 +195,7 @@ const nextConfig = {
               value: ".*(text/markdown|text/plain).*",
             },
           ],
-          destination: "/md-content/:first/:rest*",
+          destination: "/md-content/:path",
         },
       ],
     }
