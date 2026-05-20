@@ -59,25 +59,26 @@ Then, select the `medusa` MCP server and choose "Authenticate". This will open a
 
 ### Cursor
 
-<Link href="cursor://anysphere.cursor-deeplink/mcp/install?name=medusa&config=eyJ1cmwiOiJodHRwczovL2RvY3MubWVkdXNhanMuY29tL21jcCJ9" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Medusa MCP server to Cursor.
+Cursor has known issues with OAuth authentication flows. So, to connect to the Medusa MCP server in Cursor, [create a personal access key in your Cloud account](!cloud!/access-keys#manage-personal-access-keys) first.
 
-To manually connect to the Medusa MCP server in Cursor, add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://docs.cursor.com/context/model-context-protocol):
+Then, add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://cursor.com/docs/mcp):
 
 ```json title=".cursor/mcp.json"
 {
   "mcpServers": {
     "medusa": {
-      "url": "https://docs.medusajs.com/mcp"
+      "url": "https://docs.medusajs.com/mcp",
+      "headers": {
+        "Authorization": "Bearer {token}"
+      }
     }
   }
 }
 ```
 
-Then, to authenticate with your Cloud account:
+Replace `{token}` with the personal access key you generated in your Cloud account.
 
-1. Go to Settings -> Tools & MCP in Cursor.
-2. Click the "Connect" button next to the Medusa MCP server.
-3. Log into your Cloud account in the opened browser window to authenticate.
+You can then start using the Medusa MCP server in Cursor.
 
 ### VS Code
 

@@ -1960,6 +1960,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@medusajs/icons@npm:2.15.2":
+  version: 2.15.2
+  resolution: "@medusajs/icons@npm:2.15.2"
+  peerDependencies:
+    react: ^19.2.5
+  checksum: 246cd3e2ffc12291a91428e0a9a4bf79f119b7e7ebc91ef4bc6aa5d1ca37c491927e57ebc9b660af826eb023b141b329ea9f612f3f55730e34edec1d5dd901a3
+  languageName: node
+  linkType: hard
+
 "@medusajs/ui-preset@npm:2.15.1":
   version: 2.15.1
   resolution: "@medusajs/ui-preset@npm:2.15.1"
@@ -1969,6 +1978,18 @@ __metadata:
   peerDependencies:
     tailwindcss: ^3.4.3
   checksum: 5e3ca365b7c84c141e49f702e631e0fd196935d3d0cf066740629639125b91c2fc566099f8fc73418fbf9b80ed897fd62ee806ea5e2054b4aeab3e3588d2751d
+  languageName: node
+  linkType: hard
+
+"@medusajs/ui-preset@npm:2.15.2":
+  version: 2.15.2
+  resolution: "@medusajs/ui-preset@npm:2.15.2"
+  dependencies:
+    "@tailwindcss/forms": ^0.5.3
+    tailwindcss-animate: ^1.0.6
+  peerDependencies:
+    tailwindcss: ^3.4.3
+  checksum: 5d8964be3863d37be9e5d1e1770487da8ea6dc9f6a3d39d3d026b41b4e1c4970ae8089bd3d19d6cb30951fc770fa1df3cfee4dd04a42641f53fc4cd64daf0701
   languageName: node
   linkType: hard
 
@@ -16121,7 +16142,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tailwind@workspace:packages/tailwind"
   dependencies:
-    "@medusajs/ui-preset": 2.15.1
+    "@medusajs/ui-preset": 2.15.2
     tailwindcss-animate: ^1.0.7
   peerDependencies:
     docs-ui: "*"
@@ -16862,7 +16883,7 @@ turbo@latest:
   version: 0.0.0-use.local
   resolution: "types@workspace:packages/types"
   dependencies:
-    "@medusajs/icons": 2.15.1
+    "@medusajs/icons": 2.15.2
     "@types/node": ^20.11.20
     openapi-types: ^12.1.3
     rimraf: ^5.0.5
