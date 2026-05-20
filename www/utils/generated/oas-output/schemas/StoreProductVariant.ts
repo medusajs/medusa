@@ -128,26 +128,25 @@
  * required:
  *   - options
  *   - title
- *   - length
  *   - id
  *   - created_at
  *   - updated_at
  *   - thumbnail
  *   - width
  *   - weight
+ *   - length
  *   - height
  *   - origin_country
  *   - hs_code
  *   - mid_code
  *   - material
- *   - images
  *   - deleted_at
  *   - manage_inventory
  *   - allow_backorder
+ *   - sku
  *   - ean
  *   - upc
  *   - barcode
- *   - sku
  * 
 */
 

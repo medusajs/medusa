@@ -491,6 +491,56 @@ medusaIntegrationTestRunner({
         )
       })
 
+      it("should populate delivery_address on the return fulfillment with the stock location's address", async () => {
+        const order = await createOrderFixture({ container, product })
+        const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
+          {
+            order_id: order.id,
+            return_shipping: {
+              option_id: shippingOption.id,
+            },
+            items: [
+              {
+                id: order.items![0].id,
+                quantity: 1,
+              },
+            ],
+          }
+
+        const query = container.resolve(ContainerRegistrationKeys.QUERY)
+          
+        const { result : returned } = await createAndCompleteReturnOrderWorkflow(container).run({
+          input: createReturnOrderData,
+          throwOnError: true,
+        })  
+        
+        const { data: returns } = await query.graph({
+          entity: "return",
+          filters: {
+            id: returned.id,
+          },
+          fields: [ 
+            "fulfillments.delivery_address.address_1", 
+            "fulfillments.delivery_address.city",
+            "fulfillments.delivery_address.country_code",
+            "fulfillments.delivery_address.postal_code",
+            "fulfillments.delivery_address.phone",
+          ],
+        })
+        const fulfillment = returns[0].fulfillments[0]
+
+        expect(fulfillment.delivery_address).toEqual(
+          expect.objectContaining({
+            address_1: "Test",
+            city: "Test",
+            country_code: "US",
+            postal_code: "12345",
+            phone: "12345",
+          })
+        )
+        
+      })
+
       it("should fail when location is not linked", async () => {
         const order = await createOrderFixture({ container, product })
         const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =

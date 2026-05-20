@@ -8,6 +8,7 @@ import {
   RejectedFile,
 } from "../../../../../components/common/file-upload"
 import { Form } from "../../../../../components/common/form"
+import { formatFileSize } from "../../../../../lib/format-file-size"
 import { MediaSchema } from "../../../product-create/constants"
 import {
   EditProductMediaSchemaType,
@@ -53,7 +54,7 @@ export const UploadMediaFormItem = ({
         (f) => !SUPPORTED_FORMATS.includes(f?.file?.type)
       )
 
-      let hasInvalidFile = false;
+      let hasInvalidFile = false
 
       if (invalidFile) {
         form.setError("media", {
@@ -64,25 +65,32 @@ export const UploadMediaFormItem = ({
           }),
         })
 
-        hasInvalidFile = true;
+        hasInvalidFile = true
       }
 
-      const fileSizeRejections = rejectedFiles.filter((f) => f?.reason === "size")
+      const fileSizeRejections = rejectedFiles.filter(
+        (f) => f?.reason === "size"
+      )
 
       if (fileSizeRejections.length) {
-        const fileNames = "\n" + fileSizeRejections.slice(0, 5).map((f) => f.file.name).join("\n")
+        const fileNames =
+          "\n" +
+          fileSizeRejections
+            .slice(0, 5)
+            .map((f) => f.file.name)
+            .join("\n")
         form.setError("media", {
           type: "file_too_large",
           message: t("products.media.fileTooLarge", {
             name: fileNames,
-            size: "1MB",
+            size: formatFileSize(__MAX_UPLOAD_FILE_SIZE__ ?? 1024 * 1024),
           }),
         })
 
-        hasInvalidFile = true;
+        hasInvalidFile = true
       }
 
-      return hasInvalidFile;
+      return hasInvalidFile
     },
     [form, t]
   )

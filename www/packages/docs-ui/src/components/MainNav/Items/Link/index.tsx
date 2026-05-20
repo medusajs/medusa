@@ -22,7 +22,7 @@ export const MainNavItemLink = ({
     <LinkButton
       href={item.link}
       className={clsx(
-        "text-medusa-fg-subtle hover:bg-medusa-button-transparent-hover",
+        "hover:bg-medusa-button-transparent-hover",
         "rounded-docs_sm px-docs_0.5 py-docs_0.25",
         className
       )}

@@ -583,6 +583,21 @@ function buildLocalCommands(cli, isLocalProject) {
         })
       ),
     })
+    .command({
+      command: `mcloud [args..]`,
+      desc: `Run mcloud CLI commands through Medusa CLI.`,
+      builder: (builder) =>
+        builder.parserConfiguration({
+          "unknown-options-as-args": true,
+          "halt-at-non-option": false,
+        }),
+      handler: handlerP(
+        getCommandHandler(`mcloud`, async (args, cmd) => {
+          cmd(args)
+          return new Promise((resolve) => {})
+        })
+      ),
+    })
 }
 
 function isLocalMedusaProject() {
@@ -593,7 +608,7 @@ function isLocalMedusaProject() {
       `./package.json`
     ))
     // Draft order plugin can't have @medusajs/medusa as dependency,
-    // so we also check for @medusajs/cli 
+    // so we also check for @medusajs/cli
     inMedusaProject = !!(
       (dependencies &&
         (dependencies["@medusajs/medusa"] || dependencies["@medusajs/cli"])) ||

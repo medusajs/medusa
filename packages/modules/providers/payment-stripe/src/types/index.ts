@@ -38,6 +38,7 @@ export interface PaymentIntentOptions {
 
 export const ErrorCodes = {
   PAYMENT_INTENT_UNEXPECTED_STATE: "payment_intent_unexpected_state",
+  CHARGE_ALREADY_REFUNDED: "charge_already_refunded",
 }
 
 export const ErrorIntentStatus = {

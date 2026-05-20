@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation"
 import React, { createContext, useContext, useMemo } from "react"
 import { MenuItem, NavigationItem, NavigationItemDropdown } from "types"
 import { useSiteConfig } from "../SiteConfig"
+import { useSidebar } from "../Sidebar"
 
 export type MainNavContext = {
   navItems: NavigationItem[]
@@ -36,84 +37,56 @@ export const MainNavProvider = ({
   additionalMenuItems,
 }: MainNavProviderProps) => {
   const pathname = usePathname()
+  const { shownSidebar } = useSidebar()
   const { config } = useSiteConfig()
+  const currentUrl = useMemo(() => {
+    return `${config.baseUrl}${config.basePath}${pathname}`.replace(/\/$/, "")
+  }, [pathname, config.baseUrl, config.basePath])
 
-  const baseUrl = `${config.baseUrl}${config.basePath}`
-
-  const findActiveItem = (
-    items: NavigationItemDropdown["children"],
-    currentUrl: string
-  ) => {
-    let item: MenuItem | undefined
-    let fallbackIndex: number | undefined
-    items.some((childItem, index) => {
+  const dropdownHasActiveItem = (
+    items: NavigationItemDropdown["children"]
+  ): boolean => {
+    return items.some((childItem) => {
       if (childItem.type !== "link" && childItem.type !== "sub-menu") {
         return false
       }
 
+      if (
+        childItem.sidebar_id &&
+        shownSidebar?.sidebar_id === childItem.sidebar_id
+      ) {
+        return true
+      }
+
       if (childItem.type === "sub-menu") {
-        const activeChildRes = findActiveItem(childItem.items, currentUrl)
-        item = activeChildRes.item
-        fallbackIndex = activeChildRes.fallbackIndex
-        return !!item
+        return dropdownHasActiveItem(childItem.items)
       }
 
-      const isItemActive = currentUrl.startsWith(childItem.link)
-
-      if (!isItemActive) {
-        return false
-      }
-
-      if (childItem.useAsFallback && fallbackIndex === undefined) {
-        fallbackIndex = index
-        return false
-      }
-
-      item = childItem
-
-      return true
+      return currentUrl.startsWith(childItem.link)
     })
-
-    return {
-      item,
-      fallbackIndex,
-    }
   }
 
   const activeItemIndex = useMemo(() => {
-    const currentUrl = `${baseUrl}${pathname}`.replace(/\/$/, "")
-
-    let fallbackIndex: number | undefined
-
-    const index = navItems.findIndex((item, index) => {
-      if (item.type === "dropdown") {
-        const { item: activeChild, fallbackIndex: childFallbackIndex } =
-          findActiveItem(item.children, currentUrl)
-
-        if (activeChild) {
-          fallbackIndex = childFallbackIndex
-          return true
-        }
-
-        return item.link && currentUrl.startsWith(item.link)
+    const index = navItems.findIndex((item) => {
+      if (item.sidebar_id && shownSidebar?.sidebar_id === item.sidebar_id) {
+        return true
       }
 
-      if (item.project && item.project !== config.project.key) {
-        return false
+      let isItemActive = false
+
+      if (item.link) {
+        isItemActive = currentUrl.startsWith(item.link)
       }
 
-      const isItemActive = currentUrl.startsWith(item.link)
-
-      if (isItemActive && item.useAsFallback && fallbackIndex === undefined) {
-        fallbackIndex = index
-        return false
+      if (item.type === "dropdown" && !isItemActive) {
+        isItemActive = dropdownHasActiveItem(item.children)
       }
 
       return isItemActive
     })
 
-    return index !== -1 ? index : fallbackIndex
-  }, [navItems, pathname, baseUrl, config])
+    return index !== -1 ? index : undefined
+  }, [navItems, pathname, currentUrl, config, shownSidebar])
 
   const activeItem = useMemo(() => {
     if (activeItemIndex === undefined) {

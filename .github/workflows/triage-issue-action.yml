@@ -1,0 +1,67 @@
+name: Triage Issue (Reusable)
+
+on:
+  workflow_call:
+    inputs:
+      issue_number:
+        required: true
+        type: string
+    secrets:
+      MEDUSA_APP_ID:
+        required: true
+      MEDUSA_APP_PRIVATE_KEY:
+        required: true
+      CLAUDE_CODE_API_TOKEN:
+        required: true
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
+      - name: Triage issue
+        uses: anthropics/claude-code-action@v1
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        with:
+          anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+          github_token: ${{ steps.app-token.outputs.token }}
+          allowed_non_write_users: "*"
+          base_branch: develop
+          show_full_output: true
+          plugin_marketplaces: "https://github.com/medusajs/medusa-agent-skills.git"
+          plugins: "medusa-dev@medusa"
+
+          prompt: |
+            ISSUE NUMBER: ${{ inputs.issue_number }}
+
+            Note: all scripts are located in the root `scripts/` directory and should be run as `bash scripts/<script>.sh`. To search for issues, always use `bash scripts/search_issues.sh <query>` — do not use `gh search issues` directly.
+
+            Start by running `bash scripts/get_issue.sh ${{ inputs.issue_number }}` to retrieve the issue title and author, then run:
+            /triaging-issues ${{ inputs.issue_number }} "<title from get_issue.sh>" "<author from get_issue.sh>"
+
+          claude_args: >-
+            --allowedTools
+            "Bash(bash scripts/get_issue.sh:*),
+            Bash(bash scripts/get_comments.sh:*),
+            Bash(bash scripts/get_labels.sh:*),
+            Bash(bash scripts/get_linked_prs.sh:*),
+            Bash(bash scripts/add_comment.sh:*),
+            Bash(bash scripts/labels.sh:*),
+            Bash(bash scripts/close_issue.sh:*),
+            Bash(bash scripts/search_issues.sh:*)"

@@ -70,7 +70,7 @@ export const TranslationsEdit = () => {
       {ready && (
         <TranslationsEditForm
           translations={translations}
-          references={references}
+          references={references as { [key: string]: string; id: string }[]}
           entityType={reference!}
           availableLocales={store?.supported_locales ?? []}
           translatableFields={translation_settings[reference!]?.fields ?? []}

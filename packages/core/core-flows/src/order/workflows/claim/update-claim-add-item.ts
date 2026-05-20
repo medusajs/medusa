@@ -5,6 +5,7 @@ import {
   OrderDTO,
   OrderPreviewDTO,
   OrderWorkflow,
+  PromotionDTO,
 } from "@medusajs/framework/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
 import {
@@ -23,6 +24,8 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { computeAdjustmentsForPreviewWorkflow } from "../compute-adjustments-for-preview"
+import { fieldsToComputeAdjustmentsForPreview } from "../order-edit/utils/fields"
 import { refreshClaimShippingWorkflow } from "./refresh-shipping"
 
 /**
@@ -150,7 +153,11 @@ export const updateClaimAddItemWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["id", "status", "canceled_at", "items.*"],
+      fields: [
+        ...fieldsToComputeAdjustmentsForPreview,
+        "status",
+        "canceled_at",
+      ],
       variables: { id: orderClaim.order_id },
       list: false,
       throw_if_key_not_found: true,
@@ -158,7 +165,7 @@ export const updateClaimAddItemWorkflow = createWorkflow(
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
-      fields: ["id", "status", "version", "actions.*"],
+      fields: ["id", "status", "version", "actions.*", "claim_id", "carry_over_promotions"],
       variables: {
         filters: {
           order_id: orderClaim.order_id,
@@ -190,6 +197,20 @@ export const updateClaimAddItemWorkflow = createWorkflow(
     )
 
     updateOrderChangeActionsStep([updateData])
+
+    const orderWithPromotions = transform({ order }, ({ order }) => {
+      return {
+        ...order,
+        promotions: (order as any).promotions ?? [],
+      } as OrderDTO & { promotions: PromotionDTO[] }
+    })
+
+    computeAdjustmentsForPreviewWorkflow.runAsStep({
+      input: {
+        order: orderWithPromotions,
+        orderChange,
+      },
+    })
 
     const refreshArgs = transform(
       { orderChange, orderClaim },

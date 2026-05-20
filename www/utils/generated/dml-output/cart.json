@@ -84,7 +84,18 @@
 			"tax_lines": "The associated tax_lines.\n\n@expandable",
 			"cart": "The associated cart.\n\n@expandable",
 			"is_custom_price": "Whether the line item's price is custom.",
-			"is_giftcard": "Whether the line item is a giftcard."
+			"is_giftcard": "Whether the line item is a giftcard.",
+			"original_total": "The original total of the line item",
+			"original_subtotal": "The original subtotal of the line item",
+			"original_tax_total": "The original tax total of the line item",
+			"item_total": "The item total of the line item",
+			"item_subtotal": "The item subtotal of the line item",
+			"item_tax_total": "The item tax total of the line item",
+			"total": "The total of the line item",
+			"subtotal": "The subtotal of the line item",
+			"tax_total": "The tax total of the line item",
+			"discount_total": "The discount total of the line item",
+			"discount_tax_total": "The discount tax total of the line item"
 		},
 		"deprecated": {
 			"is_deprecated": false
@@ -135,7 +146,15 @@
 			"metadata": "Holds custom data in key-value pairs.",
 			"cart": "The associated cart.\n\n@expandable",
 			"tax_lines": "The associated tax_lines.\n\n@expandable",
-			"adjustments": "The associated adjustments.\n\n@expandable"
+			"adjustments": "The associated adjustments.\n\n@expandable",
+			"original_total": "The original total of the shipping method",
+			"original_subtotal": "The original subtotal of the shipping method",
+			"original_tax_total": "The original tax total of the shipping method",
+			"total": "The total of the shipping method",
+			"subtotal": "The subtotal of the shipping method",
+			"tax_total": "The tax total of the shipping method",
+			"discount_total": "The discount total of the shipping method",
+			"discount_tax_total": "The discount tax total of the shipping method"
 		},
 		"deprecated": {
 			"is_deprecated": false
@@ -157,7 +176,29 @@
 			"items": "The associated items.\n\n@expandable",
 			"shipping_methods": "The associated shipping_methods.\n\n@expandable",
 			"credit_lines": "The associated credit lines.\n\n@expandable",
-			"locale": "The locale of the cart"
+			"locale": "The locale of the cart",
+			"original_item_total": "The original item total of the cart\n\n@since 2.13.7",
+			"original_item_subtotal": "The original item subtotal of the cart\n\n@since 2.13.7",
+			"original_item_tax_total": "The original item tax total of the cart\n\n@since 2.13.7",
+			"item_total": "The item total of the cart\n\n@since 2.13.7",
+			"item_subtotal": "The item subtotal of the cart\n\n@since 2.13.7",
+			"item_tax_total": "The item tax total of the cart\n\n@since 2.13.7",
+			"original_total": "The original total of the cart\n\n@since 2.13.7",
+			"original_subtotal": "The original subtotal of the cart\n\n@since 2.13.7",
+			"original_tax_total": "The original tax total of the cart\n\n@since 2.13.7",
+			"total": "The total of the cart",
+			"subtotal": "The subtotal of the cart",
+			"tax_total": "The tax total of the cart",
+			"discount_total": "The discount total of the cart",
+			"discount_tax_total": "The discount tax total of the cart",
+			"gift_card_total": "The gift card total of the cart",
+			"gift_card_tax_total": "The gift card tax total of the cart",
+			"shipping_total": "The shipping total of the cart",
+			"shipping_subtotal": "The shipping subtotal of the cart",
+			"shipping_tax_total": "The shipping tax total of the cart",
+			"original_shipping_total": "The original shipping total of the cart",
+			"original_shipping_subtotal": "The original shipping subtotal of the cart",
+			"original_shipping_tax_total": "The original shipping tax total of the cart"
 		},
 		"deprecated": {
 			"is_deprecated": false

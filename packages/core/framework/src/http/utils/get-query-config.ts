@@ -135,7 +135,7 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
       withDeleted: with_deleted,
     },
     remoteQueryConfig: {
-      entity,
+      ...(!!entity ? { entity } : {}),
       // Add starFields that are relations only on which we want all properties with a dedicated format to the remote query
       fields: [
         ...Array.from(allFields),

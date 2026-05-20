@@ -116,6 +116,7 @@ The code snippets in this section assume that your forked Medusa project and the
     "@medusajs/telemetry": "file:../medusa/packages/medusa-telemetry",
     "@medusajs/settings": "file:../medusa/packages/modules/settings",
     "@medusajs/draft-order": "file:../medusa/packages/plugins/draft-order",
+    "@medusajs/loyalty-plugin": "file:../medusa/packages/plugins/loyalty",
     "@medusajs/deps": "file:../medusa/packages/deps",
     "@medusajs/caching-redis": "file:../medusa/packages/modules/providers/caching-redis",
     "@medusajs/caching": "file:../medusa/packages/modules/caching",
@@ -123,7 +124,7 @@ The code snippets in this section assume that your forked Medusa project and the
 }
 ```
 
-   If you're using `pnpm`, use `pnpm.overrides` instead of `resolutions`:
+If you're using `pnpm`, use `pnpm.overrides` instead of `resolutions`:
 
 ```json
 // test project package.json (for pnpm)
@@ -198,6 +199,7 @@ The code snippets in this section assume that your forked Medusa project and the
     "@medusajs/telemetry": "file:../medusa/packages/medusa-telemetry",
     "@medusajs/settings": "file:../medusa/packages/modules/settings",
     "@medusajs/draft-order": "file:../medusa/packages/plugins/draft-order",
+    "@medusajs/loyalty-plugin": "file:../medusa/packages/plugins/loyalty",
     "@medusajs/deps": "file:../medusa/packages/deps",
     "@medusajs/caching-redis": "file:../medusa/packages/modules/providers/caching-redis",
     "@medusajs/caching": "file:../medusa/packages/modules/caching",

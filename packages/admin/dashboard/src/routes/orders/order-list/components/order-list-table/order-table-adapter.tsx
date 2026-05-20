@@ -31,7 +31,8 @@ export function createOrderTableAdapter(): TableAdapter<HttpTypes.AdminOrder> {
           placeholderData: (previousData, previousQuery) => {
             // Only keep placeholder data if the fields haven't changed
             const prevFields =
-              previousQuery?.[previousQuery.length - 1]?.query?.fields
+              // @ts-ignore not sure what the expected type here is
+              previousQuery?.[previousQuery?.length - 1]?.query?.fields
             if (prevFields && prevFields !== fields) {
               // Fields changed, don't use placeholder data
               return undefined
@@ -80,7 +81,13 @@ const useOrderTableFilters = () => {
   // Until we migrate to the new DataTable component, we can't use `createDataTableFilterHelper` filter structure, since the identifier there is `id`
   // while the deprecated component expects `key`. Will be ready to migrate once SUP-2651 is done
   return useMemo(() => {
-    const filters: DataTableFilter[] = [...dateFilters]
+    const filters: DataTableFilter[] = [
+      filterHelper.accessor("total", {
+        label: t("fields.total"),
+        type: "number",
+      }),
+      ...dateFilters,
+    ]
 
     if (regions?.length) {
       filters.push(

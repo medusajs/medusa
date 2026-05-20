@@ -37,10 +37,10 @@ export interface AdminTaxRegionListParams
    */
   deleted_at?: string | OperatorMap<string>
   /**
-   * Filter by the ID of the user who created the tax region to 
+   * Filter by the ID of the user who created the tax region to
    * retrieve tax regions created by a specific user.
    */
-  created_by?: string | OperatorMap<string>
+  created_by?: string | string[]
 }
 
 export interface AdminTaxRegionParams extends SelectParams {}

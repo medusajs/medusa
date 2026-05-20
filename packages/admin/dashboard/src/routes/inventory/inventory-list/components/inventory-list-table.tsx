@@ -1,4 +1,3 @@
-import { InventoryTypes } from "@medusajs/types"
 import { Button, Container, Heading, Text } from "@medusajs/ui"
 
 import { RowSelectionState } from "@tanstack/react-table"
@@ -39,7 +38,7 @@ export const InventoryListTable = () => {
   const columns = useInventoryTableColumns()
 
   const { table } = useDataTable({
-    data: (inventory_items ?? []) as InventoryTypes.InventoryItemDTO[],
+    data: inventory_items,
     columns,
     count,
     enablePagination: true,

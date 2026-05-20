@@ -1,0 +1,118 @@
+Currently, Query doesn't support filtering by nested JSON properties in metadata fields using `query.graph`.
+
+## Why This Limitation Exists
+
+Metadata fields in Medusa are stored as JSON/JSONB columns in PostgreSQL. While PostgreSQL supports querying JSON fields, Query's abstraction layer doesn't currently expose this functionality through the standard filtering interface.
+
+For example, this won't work:
+
+```ts
+const { data: orders } = await query.graph({
+  entity: "order",
+  fields: ["id", "metadata"],
+  filters: {
+    // ❌ This doesn't work
+    metadata: {
+      carePlanId: "123",
+    },
+    // ❌ Neither does this
+    "metadata.carePlanId": "123",
+  },
+})
+```
+
+---
+
+## Workarounds
+
+### Option 1: Filter After Retrieval
+
+For infrequent queries, retrieve the data with Query first, then filter the results in memory:
+
+```ts
+const { data: orders } = await query.graph({
+  entity: "order",
+  fields: ["id", "metadata"],
+})
+
+const filteredOrders = orders.filter(
+  (order) => order.metadata?.carePlanId === "123"
+)
+```
+
+This approach is less efficient for large datasets since all records are loaded into memory first.
+
+### Option 2: Use Module Service Directly
+
+You can also bypass Query and use the module service directly to leverage PostgreSQL's JSONB querying capabilities. The downside to this approach is that you can't retrieve data across modules.
+
+For example, to filter orders by metadata using the Order Module Service:
+
+```ts title="src/api/orders/custom-metadata-search/route.ts"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
+import { IOrderModuleService } from "@medusajs/framework/types"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const orderModuleService: IOrderModuleService = req.scope.resolve(
+    Modules.ORDER
+  )
+
+  const orders = await orderModuleService.listOrders({
+    metadata: {
+      carePlanId: "123",
+    },
+  })
+
+  res.json({ orders })
+}
+```
+
+You can also combine this with Query to retrieve related data across modules. For example:
+
+```ts title="src/api/orders/custom-metadata-search/route.ts"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
+import { IOrderModuleService } from "@medusajs/framework/types"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const orderModuleService: IOrderModuleService = req.scope.resolve(
+    Modules.ORDER
+  )
+  const query = req.scope.resolve("query")
+
+  // Step 1: Use the module service to get order IDs matching the metadata filter
+  const orderIds = await orderModuleService.listOrders({
+    metadata: {
+      carePlanId: "123",
+    },
+  }, {
+    select: ["id"]
+  })
+
+  // Step 2: Use Query to get related data for those orders
+  const { data: orders } = await query.graph({
+    entity: "order",
+    fields: ["id", "metadata", "customer.id"],
+    filters: {
+      id: orderIds.map((o) => o.id),
+    },
+  })
+
+  res.json({ orders })
+}
+```
+
+---
+
+## Related Resources
+
+- [Query Documentation](!docs!/learn/fundamentals/module-links/query)
+- [Data Models Guide](!docs!/learn/fundamentals/data-models)
+- [Service Factory Reference - Filtering](../../../service-factory-reference/tips/filtering/page.mdx)

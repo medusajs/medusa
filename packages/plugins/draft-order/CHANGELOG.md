@@ -1,5 +1,148 @@
 # @medusajs/draft-order
 
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies [[`2b21d15640ae459386b0acea4c83804c6f502b9d`](https://github.com/medusajs/medusa/commit/2b21d15640ae459386b0acea4c83804c6f502b9d)]:
+  - @medusajs/framework@2.15.2
+  - @medusajs/cli@2.15.2
+  - @medusajs/test-utils@2.15.2
+  - @medusajs/admin-sdk@2.15.2
+  - @medusajs/js-sdk@2.15.2
+  - @medusajs/icons@2.15.2
+  - @medusajs/ui@4.1.12
+
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/test-utils@2.15.1
+  - @medusajs/admin-sdk@2.15.1
+  - @medusajs/cli@2.15.1
+  - @medusajs/framework@2.15.1
+  - @medusajs/js-sdk@2.15.1
+  - @medusajs/icons@2.15.1
+  - @medusajs/ui@4.1.11
+
+## 2.15.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/test-utils@2.15.0
+  - @medusajs/framework@2.15.0
+  - @medusajs/cli@2.15.0
+  - @medusajs/js-sdk@2.15.0
+  - @medusajs/admin-sdk@2.15.0
+  - @medusajs/icons@2.15.0
+  - @medusajs/ui@4.1.10
+
+## 2.14.2
+
+### Patch Changes
+
+- Updated dependencies [[`aa407641ce6ddcd2e27352315b0f7b911a2c0acf`](https://github.com/medusajs/medusa/commit/aa407641ce6ddcd2e27352315b0f7b911a2c0acf), [`be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0`](https://github.com/medusajs/medusa/commit/be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0), [`7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23`](https://github.com/medusajs/medusa/commit/7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23), [`243e88510cd7bb4187169ee383519a9be7594854`](https://github.com/medusajs/medusa/commit/243e88510cd7bb4187169ee383519a9be7594854)]:
+  - @medusajs/js-sdk@2.14.2
+  - @medusajs/framework@2.14.2
+  - @medusajs/test-utils@2.14.2
+  - @medusajs/admin-sdk@2.14.2
+  - @medusajs/cli@2.14.2
+  - @medusajs/icons@2.14.2
+  - @medusajs/ui@4.1.9
+
+## 2.14.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/test-utils@2.14.1
+  - @medusajs/admin-sdk@2.14.1
+  - @medusajs/cli@2.14.1
+  - @medusajs/framework@2.14.1
+  - @medusajs/js-sdk@2.14.1
+  - @medusajs/icons@2.14.1
+  - @medusajs/ui@4.1.8
+
+## 2.14.0
+
+### Patch Changes
+
+- Updated dependencies [[`8d4724c4a1ea2e3e731d47a941600d41ab45816f`](https://github.com/medusajs/medusa/commit/8d4724c4a1ea2e3e731d47a941600d41ab45816f), [`6b5b045dcf8963c978767ec5ce7e03b82d59e105`](https://github.com/medusajs/medusa/commit/6b5b045dcf8963c978767ec5ce7e03b82d59e105), [`0929b8d192833e10b6b91795f1ffc478938c3fb7`](https://github.com/medusajs/medusa/commit/0929b8d192833e10b6b91795f1ffc478938c3fb7), [`843dbfe7c8f27b732486c7a8da7b6d63f2fdf967`](https://github.com/medusajs/medusa/commit/843dbfe7c8f27b732486c7a8da7b6d63f2fdf967), [`9757a6a8d19b3e819c43ae5a29f35c65fdce9c34`](https://github.com/medusajs/medusa/commit/9757a6a8d19b3e819c43ae5a29f35c65fdce9c34), [`eeed5a11f7ab1110038fa02d0f6cb1e3ca18cf3d`](https://github.com/medusajs/medusa/commit/eeed5a11f7ab1110038fa02d0f6cb1e3ca18cf3d)]:
+  - @medusajs/js-sdk@2.14.0
+  - @medusajs/framework@2.14.0
+  - @medusajs/admin-sdk@2.14.0
+  - @medusajs/icons@2.14.0
+  - @medusajs/cli@2.14.0
+  - @medusajs/test-utils@2.14.0
+  - @medusajs/ui@4.1.7
+
+## 2.13.6
+
+### Patch Changes
+
+- Updated dependencies [[`7c5e5e37f632716e5c6846c12d0dee7efe1e0b96`](https://github.com/medusajs/medusa/commit/7c5e5e37f632716e5c6846c12d0dee7efe1e0b96), [`2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d`](https://github.com/medusajs/medusa/commit/2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d)]:
+  - @medusajs/cli@2.13.6
+  - @medusajs/framework@2.13.6
+  - @medusajs/js-sdk@2.13.6
+  - @medusajs/test-utils@2.13.6
+  - @medusajs/admin-sdk@2.13.6
+  - @medusajs/icons@2.13.6
+  - @medusajs/ui@4.1.6
+
+## 2.13.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/cli@2.13.5
+  - @medusajs/framework@2.13.5
+  - @medusajs/test-utils@2.13.5
+  - @medusajs/admin-sdk@2.13.5
+  - @medusajs/js-sdk@2.13.5
+  - @medusajs/icons@2.13.5
+  - @medusajs/ui@4.1.5
+
+## 2.13.4
+
+### Patch Changes
+
+- Updated dependencies [[`4efa4a6d8f10d1864156b575c7d867048deb6e93`](https://github.com/medusajs/medusa/commit/4efa4a6d8f10d1864156b575c7d867048deb6e93)]:
+  - @medusajs/ui@4.1.4
+  - @medusajs/test-utils@2.13.4
+  - @medusajs/admin-sdk@2.13.4
+  - @medusajs/cli@2.13.4
+  - @medusajs/framework@2.13.4
+  - @medusajs/js-sdk@2.13.4
+  - @medusajs/icons@2.13.4
+
+## 2.13.3
+
+### Patch Changes
+
+- Updated dependencies [[`dbaae9630d26a0806751d5614beadef3e0b4bf07`](https://github.com/medusajs/medusa/commit/dbaae9630d26a0806751d5614beadef3e0b4bf07)]:
+  - @medusajs/framework@2.13.3
+  - @medusajs/test-utils@2.13.3
+  - @medusajs/js-sdk@2.13.3
+  - @medusajs/admin-sdk@2.13.3
+  - @medusajs/cli@2.13.3
+  - @medusajs/icons@2.13.3
+  - @medusajs/ui@4.1.3
+
+## 2.13.2
+
+### Patch Changes
+
+- Updated dependencies [[`9e6e80cd2c58b373ee5e5cbf026e3fa5a9d8b526`](https://github.com/medusajs/medusa/commit/9e6e80cd2c58b373ee5e5cbf026e3fa5a9d8b526), [`7aca778ae56069371f5d26a757d3b2276d524776`](https://github.com/medusajs/medusa/commit/7aca778ae56069371f5d26a757d3b2276d524776), [`63e50fd6a4430dbb7737d1223818f8d27bb3d53b`](https://github.com/medusajs/medusa/commit/63e50fd6a4430dbb7737d1223818f8d27bb3d53b), [`77d899e135ed75668ca7d7b01a8ed4f0c1fe0ac8`](https://github.com/medusajs/medusa/commit/77d899e135ed75668ca7d7b01a8ed4f0c1fe0ac8), [`873571a7c9471a28732ac7fad70ff66c28571a0e`](https://github.com/medusajs/medusa/commit/873571a7c9471a28732ac7fad70ff66c28571a0e), [`6e994dcd6559ece5e79cb5375965f69c640d56b1`](https://github.com/medusajs/medusa/commit/6e994dcd6559ece5e79cb5375965f69c640d56b1)]:
+  - @medusajs/cli@2.13.2
+  - @medusajs/framework@2.13.2
+  - @medusajs/ui@4.1.2
+  - @medusajs/icons@2.13.2
+  - @medusajs/js-sdk@2.13.2
+  - @medusajs/test-utils@2.13.2
+  - @medusajs/admin-sdk@2.13.2
+
 ## 2.13.1
 
 ### Patch Changes

@@ -1,3 +1,5 @@
+export const revalidate = 3600
+
 import clsx from "clsx"
 import { AiAssistantChatWindow, MainNav, RootProviders } from "docs-ui"
 import Providers from "../providers"
@@ -10,6 +12,7 @@ import HomepageCodeTabs from "../components/Homepage/CodeTabs"
 import HomepageRecipesSection from "../components/Homepage/RecipesSection"
 import HomepageCommerceModulesSection from "../components/Homepage/CommerceModulesSection"
 import HomepageFooter from "../components/Homepage/Footer"
+import HomepageStartPrompt from "../components/Homepage/StartPrompt"
 
 const Homepage = () => {
   return (
@@ -49,6 +52,8 @@ const Homepage = () => {
             >
               <HomepageSectionsSeparator />
               <HomepageTopSection />
+              <HomepageStartPrompt />
+              <HomepageSectionsSeparator />
               <HomepageBloom />
               <HomepageSectionsSeparator />
               <HomepageLinksSection />

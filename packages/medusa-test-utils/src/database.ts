@@ -29,8 +29,8 @@ export function getDatabaseURL(dbName?: string): string {
   const DB_PORT = process.env.DB_PORT ?? "5432"
   const DB_NAME = dbName ?? process.env.DB_TEMP_NAME
 
-  return `postgres://${DB_USERNAME}${
-    DB_PASSWORD ? `:${DB_PASSWORD}` : ""
+  return `postgres://${encodeURIComponent(DB_USERNAME)}${
+    DB_PASSWORD ? `:${encodeURIComponent(DB_PASSWORD)}` : ""
   }@${DB_HOST}:${DB_PORT}/${DB_NAME}`
 }
 

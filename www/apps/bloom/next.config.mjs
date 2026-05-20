@@ -127,7 +127,7 @@ const nextConfig = {
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
 
   transpilePackages: ["docs-ui"],
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/docs",
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
   outputFileTracingIncludes: {
     "/md\\-content/\\[\\[\\.\\.\\.slug\\]\\]": ["./app/**/*.mdx"],
   },
@@ -145,7 +145,15 @@ const nextConfig = {
           destination: "/md-content/:path*",
         },
         {
-          source: "/:path*",
+          source: "/:path*/index.md",
+          destination: "/md-content/:path*",
+        },
+        {
+          source: "/:path*.md",
+          destination: "/md-content/:path*",
+        },
+        {
+          source: "/:path((?!md-content).+)/",
           has: [
             {
               type: "header",
@@ -153,10 +161,41 @@ const nextConfig = {
               value: ".*(text/markdown|text/plain).*",
             },
           ],
-          destination: "/md-content/:path*",
+          destination: "/md-content/:path",
+        },
+        {
+          source: "/",
+          has: [
+            {
+              type: "header",
+              key: "Accept",
+              value: ".*(text/markdown|text/plain).*",
+            },
+          ],
+          destination: "/md-content",
+        },
+        {
+          source: "/:path((?!md-content).+)",
+          has: [
+            {
+              type: "header",
+              key: "Accept",
+              value: ".*(text/markdown|text/plain).*",
+            },
+          ],
+          destination: "/md-content/:path",
         },
       ],
     }
+  },
+  redirects: async () => {
+    return [
+      {
+        source: "/prompting/service-integrations-prompting/guides/stripe",
+        destination: "/features/integrations/guides/stripe",
+        permanent: true,
+      },
+    ]
   },
 }
 

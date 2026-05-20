@@ -38,6 +38,30 @@ const Providers = ({ children }: ProvidersProps) => {
                             integrationId={
                               process.env.NEXT_PUBLIC_INTEGRATION_ID || "temp"
                             }
+                            groupIds={[
+                              process.env.NEXT_PUBLIC_KAPA_GROUP_ID || "temp",
+                            ]}
+                            suggestions={[
+                              {
+                                title: "FAQ",
+                                items: [
+                                  "What is Bloom?",
+                                  "What are the main features of Bloom?",
+                                  "What can I build with Bloom?",
+                                  "How do I get started with Bloom?",
+                                ],
+                              },
+                              {
+                                title: "Prompting",
+                                items: [
+                                  "What are the best practices for prompting Bloom?",
+                                  "What prompts can I use to design a store with Bloom?",
+                                  "What prompts can I use to connect Bloom to third-party services?",
+                                  "What ecommerce operations can I perform with Bloom prompts?",
+                                ],
+                              },
+                            ]}
+                            hideAiToolsMessage
                           >
                             <HooksLoader
                               options={{

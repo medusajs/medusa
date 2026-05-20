@@ -79,19 +79,19 @@ npx create-medusa-app@latest
 
 You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose Yes.
 
-Afterward, the installation process will start, which will install the Medusa application in a directory with your project's name, and the Next.js Starter Storefront in a separate directory with the `{project-name}-storefront` name.
-
-<Note title="Why is the storefront installed separately?">
-
-The Medusa application is composed of a headless Node.js server and an admin dashboard. The storefront is installed or custom-built separately and connects to the Medusa application through its REST endpoints, called [API routes](!docs!/learn/fundamentals/api-routes). Learn more in [Medusa's Architecture documentation](!docs!/learn/introduction/architecture).
-
-</Note>
+Afterward, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
 
 Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
 
 <Note title="Ran into Errors?">
 
 Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
+
+</Note>
+
+<Note>
+
+In this guide, all file paths of backend customizations are relative to the `apps/backend` directory of your Medusa project.
 
 </Note>
 
@@ -290,11 +290,11 @@ export const getProductFeedItemsHighlights3 = [
   ["2", "", "Skip products without variants"],
   ["3", "salesChannel", "Retrieve the product's sales channel with stock locations in the requested country code"],
   ["9", "availability", "Retrieve inventory availability for the product's variants."],
-  ["17", "hasOriginalPrice", "Check if the product variant is on sale."],
-  ["18", "originalPrice", "The regular price of the product variant."],
-  ["20", "salePrice", "The sale price of the product variant."],
-  ["22", "stockStatus", "The stock status of the product variant."],
-  ["38", "item_group_id", "Group the variants by their product."]
+  ["17", "hasOriginalPrice", "Check if the product variant is on sale by comparing original and calculated amounts."],
+  ["19", "originalPrice", "The regular price of the product variant."],
+  ["21", "salePrice", "The sale price of the product variant."],
+  ["23", "stockStatus", "The stock status of the product variant."],
+  ["39", "item_group_id", "Group the variants by their product."]
 ]
 
 ```ts title="src/workflows/steps/get-product-feed-items.ts" highlights={getProductFeedItemsHighlights3}
@@ -314,7 +314,8 @@ for (const product of products) {
   for (const variant of product.variants) {
     // @ts-ignore
     const calculatedPrice = variant.calculated_price as CalculatedPriceSet
-    const hasOriginalPrice = calculatedPrice?.original_amount
+    const hasOriginalPrice = calculatedPrice?.original_amount && 
+      calculatedPrice.original_amount !== calculatedPrice.calculated_amount
     const originalPrice = hasOriginalPrice ? calculatedPrice.original_amount : 
     calculatedPrice.calculated_amount
     const salePrice = hasOriginalPrice ? calculatedPrice.calculated_amount : 

@@ -1,0 +1,155 @@
+name: TSDoc Generation
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - "packages/core/types/src/**"
+      - "packages/medusa/src/api/admin/**"
+      - "packages/medusa/src/api/store/**"
+      - "packages/design-system/ui/src/components/**"
+      - "packages/modules/*/src/models/**"
+      - "packages/core/js-sdk/src/**"
+      - "packages/core/utils/src/**"
+      - "packages/core/workflows-sdk/src/utils/composer/**"
+      - "packages/core/core-flows/src/**"
+      - "packages/plugins/loyalty/src/workflows/**"
+      - "packages/plugins/loyalty/src/types/**"
+
+jobs:
+  generate-tsdocs:
+    if: |
+      !contains(github.event.head_commit.message, 'Version Packages') &&
+      !contains(github.event.head_commit.message, 'docs/add-tsdocs') &&
+      !startsWith(github.event.head_commit.message, 'docs: add TSDocs') &&
+      github.actor != 'github-actions[bot]' &&
+      github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # Use a PAT so the created PR triggers other workflows
+          token: ${{ secrets.REFERENCE_PAT }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "yarn"
+
+      - name: Get changed files from commit
+        id: changed-files
+        run: |
+          PATTERN='^packages/core/types/src/|^packages/medusa/src/api/(admin|store)/|^packages/design-system/ui/src/components/|^packages/modules/[^/]+/src/models/|^packages/core/js-sdk/src/|^packages/core/utils/src/(analytics|auth|cache|core-flows|event-bus|file|fulfillment|locking|notification|payment|tax)/|^packages/core/workflows-sdk/src/utils/composer/|^packages/core/core-flows/src/'
+
+          FILES=$(git diff --name-only ${{ github.sha }}^..${{ github.sha }} 2>/dev/null \
+            | grep -E "$PATTERN" \
+            | grep -E '\.tsx?$' \
+            | grep -v '\.spec\.ts\|\.test\.ts\|__tests__' \
+            || true)
+
+          if [ -z "$FILES" ]; then
+            echo "has_files=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_files=true" >> "$GITHUB_OUTPUT"
+            {
+              echo 'files<<FILES_EOF'
+              echo "$FILES"
+              echo 'FILES_EOF'
+            } >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Extract next minor version
+        id: version
+        if: steps.changed-files.outputs.has_files == 'true'
+        run: |
+          NEXT=$(node -e "
+            const v = require('./packages/medusa/package.json').version.split('.').map(Number);
+            console.log(v[0] + '.' + v[1] + '.' + (v[2]+1));
+          ")
+          echo "next_version=$NEXT" >> "$GITHUB_OUTPUT"
+
+      - name: Run Claude Code to add TSDocs
+        if: steps.changed-files.outputs.has_files == 'true'
+        uses: anthropics/claude-code-base-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+          allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*,git log:*,git status:*,ls:*)"
+          max_turns: 30
+          prompt: |
+            Load and follow the /writing-tsdocs skill before doing anything else.
+
+            You are adding TSDoc comments to TypeScript source files in the Medusa codebase.
+            Next Medusa version (use for @since tags on new exports only): ${{ steps.version.outputs.next_version }}
+            Merged commit: ${{ github.sha }}
+
+            Files changed in this commit that need TSDoc review:
+            ${{ steps.changed-files.outputs.files }}
+
+            For each file:
+            1. Read the file
+            2. Run: git diff ${{ github.sha }}^..${{ github.sha }} -- <file>  (to see exactly what changed)
+            3. Add TSDocs to all exported symbols that are missing them, following the writing-tsdocs skill for that file type
+            4. For symbols that are NEW in the diff (appear only in added lines), add @since ${{ steps.version.outputs.next_version }}
+            5. Save the updated file
+
+            Rules:
+            - Do NOT remove or modify existing TSDoc comments
+            - Do NOT modify any logic or implementation
+            - Use @since ${{ steps.version.outputs.next_version }} ONLY on symbols that are demonstrably new in this commit's diff
+            - If a symbol was in the file before this commit, omit @since
+
+      - name: Build PR metadata
+        id: pr-meta
+        if: steps.changed-files.outputs.has_files == 'true'
+        run: |
+          SHORT_SHA="${{ github.sha }}"
+          SHORT_SHA="${SHORT_SHA:0:7}"
+          COMMIT_URL="${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
+          COMMIT_SUBJECT=$(git log --format="%s" -1 ${{ github.sha }})
+
+          # Build a concise title from the commit subject (strip conventional commit prefix if present)
+          CLEAN_SUBJECT=$(echo "$COMMIT_SUBJECT" | sed 's/^[a-z]*([^)]*): //' | sed 's/^[a-z]*: //')
+          # Truncate to 60 chars to leave room for the prefix
+          CLEAN_SUBJECT=$(echo "$CLEAN_SUBJECT" | cut -c1-60)
+          PR_TITLE="docs: add TSDocs for \"${CLEAN_SUBJECT}\""
+
+          echo "pr_title=${PR_TITLE}" >> "$GITHUB_OUTPUT"
+
+          {
+            echo 'BODY<<PR_BODY_EOF'
+            echo "## Automated TSDoc Additions"
+            echo ""
+            echo "This PR adds TSDoc comments to TypeScript source files changed in commit [\`${SHORT_SHA}\`](${COMMIT_URL})."
+            echo ""
+            echo "**Triggered by:** ${COMMIT_SUBJECT}"
+            echo ""
+            echo "**Files updated:**"
+            echo "${{ steps.changed-files.outputs.files }}" | while IFS= read -r f; do
+              [ -n "$f" ] && echo "- \`$f\`"
+            done
+            echo ""
+            echo "> Review carefully before merging. Claude may have missed context or used incorrect descriptions."
+            printf '\n'
+            echo 'PR_BODY_EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create Pull Request
+        if: steps.changed-files.outputs.has_files == 'true'
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.REFERENCE_PAT }}
+          commit-message: "docs: add TSDocs for ${{ github.sha }}"
+          base: develop
+          branch: docs/add-tsdocs
+          branch-suffix: timestamp
+          title: ${{ steps.pr-meta.outputs.pr_title }}
+          labels: "type: chore"
+          add-paths: packages/**
+          body: ${{ steps.pr-meta.outputs.BODY }}

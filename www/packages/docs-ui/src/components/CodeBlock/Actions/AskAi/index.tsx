@@ -6,6 +6,7 @@ import clsx from "clsx"
 import { Tooltip } from "../../../Tooltip"
 import { useChat } from "@kapaai/react-sdk"
 import { BloomIcon } from "../../../Icons"
+import { useSiteConfig } from "../../../../providers/SiteConfig"
 
 export type CodeBlockCopyActionProps = {
   source: string
@@ -17,7 +18,12 @@ export const CodeBlockAskAiAction = ({
   inHeader,
 }: CodeBlockCopyActionProps) => {
   const { setChatOpened, loading } = useAiAssistant()
+  const { config } = useSiteConfig()
   const { submitQuery } = useChat()
+
+  if (!config.features?.aiAssistant) {
+    return null
+  }
 
   const handleClick = () => {
     if (loading) {

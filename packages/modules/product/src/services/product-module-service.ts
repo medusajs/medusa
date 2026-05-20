@@ -1561,14 +1561,14 @@ export default class ProductModuleService
       (product): product is UpdateProductInput => !!product.id
     )
     const forCreate = input.filter(
-      (product): product is ProductTypes.CreateProductDTO => !product.id
+      (product) => !product.id
     )
 
     let created: ProductTypes.ProductDTO[] = []
     let updated: InferEntityType<typeof Product>[] = []
 
     if (forCreate.length) {
-      created = await this.createProducts(forCreate, sharedContext)
+      created = await this.createProducts(forCreate as ProductTypes.CreateProductDTO[], sharedContext)
     }
     if (forUpdate.length) {
       updated = await this.updateProducts_(forUpdate, sharedContext)
@@ -1957,21 +1957,6 @@ export default class ProductModuleService
 
       if (!productData.thumbnail && productData.images?.length) {
         productData.thumbnail = productData.images[0].url
-      }
-
-      // TODO: these props are typed as number, the model expect a string, the API expect number etc
-      // There is some inconsistency here, we should fix it
-      if ("weight" in productData) {
-        productData.weight = productData.weight?.toString() as any
-      }
-      if ("length" in productData) {
-        productData.length = productData.length?.toString() as any
-      }
-      if ("height" in productData) {
-        productData.height = productData.height?.toString() as any
-      }
-      if ("width" in productData) {
-        productData.width = productData.width?.toString() as any
       }
 
       if (productData.images?.length) {

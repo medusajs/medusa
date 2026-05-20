@@ -782,10 +782,10 @@ export default class InventoryModuleService
     config?: RestoreReturn<string>,
     @MedusaContext() context: Context = {}
   ): Promise<void> {
+    await super.restoreReservationItems({ id: ids }, config, context)
+
     const reservations: InventoryTypes.ReservationItemDTO[] =
       await super.listReservationItems({ id: ids }, {}, context)
-
-    await super.restoreReservationItems({ id: ids }, config, context)
 
     await this.adjustInventoryLevelsForReservationsRestore(
       reservations,
@@ -883,17 +883,17 @@ export default class InventoryModuleService
     lineItemId: string | string[],
     @MedusaContext() context: Context = {}
   ): Promise<void> {
+    await this.reservationItemService_.restore(
+      { line_item_id: lineItemId },
+      context
+    )
+
     const reservations: InventoryTypes.ReservationItemDTO[] =
       await this.reservationItemService_.list(
         { line_item_id: lineItemId },
         {},
         context
       )
-
-    await this.reservationItemService_.restore(
-      { line_item_id: lineItemId },
-      context
-    )
 
     await this.adjustInventoryLevelsForReservationsRestore(
       reservations,

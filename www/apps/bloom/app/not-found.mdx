@@ -2,12 +2,13 @@
 hide_content_menu: true
 ---
 
-import { CardList, H1, SimilarPages } from "docs-ui"
+import { CardList, H1, SimilarPages, BloomIcon } from "docs-ui"
 import {
-  BookOpen,
+  InformationCircleSolid,
   AcademicCapSolid,
   ComputerDesktopSolid,
-  BuildingStorefront
+  RocketLaunchSolid,
+  PuzzleSolid
 } from "@medusajs/icons"
 
 export const metadata = {
@@ -27,6 +28,29 @@ If you think this is a mistake, please [report this issue on GitHub](https://git
 <CardList
   itemsPerRow={2}
   items={[
-    {/* TODO add items */}
+    {
+      title: "Create your first Bloom",
+      text: "Get started with Bloom",
+      icon: BloomIcon,
+      href: "/first-store"
+    },
+    {
+      title: "Going Live",
+      text: "Publish your Bloom store",
+      icon: RocketLaunchSolid,
+      href: "/going-live"
+    },
+    {
+      title: "Features",
+      text: "Explore Bloom's features",
+      icon: PuzzleSolid,
+      href: "/features/commerce-features"
+    },
+    {
+      title: "FAQ",
+      text: "Find answers to common questions",
+      icon: InformationCircleSolid,
+      href: "/faq"
+    }
   ]}
 />

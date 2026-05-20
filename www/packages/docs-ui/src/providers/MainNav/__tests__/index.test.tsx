@@ -9,10 +9,6 @@ const defaultUseSiteConfigReturn = {
   config: {
     baseUrl: "",
     basePath: "",
-    project: {
-      key: "test-project",
-      title: "Test Project",
-    },
   },
 }
 
@@ -28,6 +24,14 @@ const mockUseSiteConfig = vi.fn(() => defaultUseSiteConfigReturn)
 
 vi.mock("@/providers/SiteConfig", () => ({
   useSiteConfig: () => mockUseSiteConfig(),
+}))
+
+const mockShownSidebar = vi.fn(() => null)
+
+vi.mock("@/providers/Sidebar", () => ({
+  useSidebar: () => ({
+    shownSidebar: mockShownSidebar(),
+  }),
 }))
 
 const TestComponent = () => {
@@ -63,6 +67,7 @@ beforeEach(() => {
   vi.clearAllMocks()
   mockUsePathname.mockReturnValue("/test-path")
   mockUseSiteConfig.mockReturnValue(defaultUseSiteConfigReturn)
+  mockShownSidebar.mockReturnValue(null)
 })
 
 afterEach(() => {
@@ -156,60 +161,6 @@ describe("useMainNav hook", () => {
     )
 
     expect(getByTestId("active-index")).toHaveTextContent("0")
-  })
-
-  test("uses fallback index when useAsFallback is true", () => {
-    const navItems: NavigationItem[] = [
-      {
-        type: "link",
-        title: "Fallback",
-        link: "/fallback",
-        useAsFallback: true,
-      },
-      {
-        type: "link",
-        title: "Other",
-        link: "/other",
-      },
-    ]
-
-    mockUsePathname.mockReturnValue("/fallback/nonexistent")
-
-    const { getByTestId } = render(
-      <MainNavProvider navItems={navItems}>
-        <TestComponent />
-      </MainNavProvider>
-    )
-
-    // Should use fallback index when no exact match
-    expect(getByTestId("active-index")).toHaveTextContent("0")
-  })
-
-  test("filters items by project key", () => {
-    const navItems: NavigationItem[] = [
-      {
-        type: "link",
-        title: "Project A",
-        link: "/project-a",
-        project: "project-a",
-      },
-      {
-        type: "link",
-        title: "Test Project",
-        link: "/test",
-        project: "test-project",
-      },
-    ]
-
-    mockUsePathname.mockReturnValue("/test")
-
-    const { getByTestId } = render(
-      <MainNavProvider navItems={navItems}>
-        <TestComponent />
-      </MainNavProvider>
-    )
-
-    expect(getByTestId("active-index")).toHaveTextContent("1")
   })
 
   test("throws error when used outside provider", () => {
@@ -315,5 +266,247 @@ describe("useMainNav hook", () => {
     expect(getByTestId("logo-url")).toHaveTextContent("none")
     expect(getByTestId("help-nav-item")).toHaveTextContent("none")
     expect(getByTestId("additional-menu-items")).toHaveTextContent("0")
+  })
+})
+
+describe("sidebar_id matching", () => {
+  test("finds active item by sidebar_id on top-level link", () => {
+    const navItems: NavigationItem[] = [
+      {
+        type: "link",
+        title: "Home",
+        link: "/home",
+      },
+      {
+        type: "link",
+        title: "Docs",
+        link: "/docs",
+        sidebar_id: "docs-sidebar",
+      },
+      {
+        type: "link",
+        title: "API",
+        link: "/api",
+      },
+    ]
+
+    mockShownSidebar.mockReturnValue({ sidebar_id: "docs-sidebar" })
+    mockUsePathname.mockReturnValue("/some-other-path")
+
+    const { getByTestId } = render(
+      <MainNavProvider navItems={navItems}>
+        <TestComponent />
+      </MainNavProvider>
+    )
+
+    expect(getByTestId("active-index")).toHaveTextContent("1")
+    expect(getByTestId("active-item")).toHaveTextContent("Docs")
+  })
+
+  test("finds active item by sidebar_id on top-level dropdown", () => {
+    const navItems: NavigationItem[] = [
+      {
+        type: "link",
+        title: "Home",
+        link: "/home",
+      },
+      {
+        type: "dropdown",
+        title: "Products",
+        link: "/products",
+        sidebar_id: "products-sidebar",
+        children: [
+          {
+            type: "link",
+            title: "Product A",
+            link: "/products/a",
+          },
+        ],
+      },
+    ]
+
+    mockShownSidebar.mockReturnValue({ sidebar_id: "products-sidebar" })
+    mockUsePathname.mockReturnValue("/unrelated-path")
+
+    const { getByTestId } = render(
+      <MainNavProvider navItems={navItems}>
+        <TestComponent />
+      </MainNavProvider>
+    )
+
+    expect(getByTestId("active-index")).toHaveTextContent("1")
+    expect(getByTestId("active-item")).toHaveTextContent("Products")
+  })
+
+  test("finds active item by sidebar_id on dropdown child link", () => {
+    const navItems: NavigationItem[] = [
+      {
+        type: "link",
+        title: "Home",
+        link: "/home",
+      },
+      {
+        type: "dropdown",
+        title: "Resources",
+        link: "/resources",
+        children: [
+          {
+            type: "link",
+            title: "Guides",
+            link: "/resources/guides",
+            sidebar_id: "guides-sidebar",
+          },
+          {
+            type: "link",
+            title: "Tutorials",
+            link: "/resources/tutorials",
+          },
+        ],
+      },
+    ]
+
+    mockShownSidebar.mockReturnValue({ sidebar_id: "guides-sidebar" })
+    mockUsePathname.mockReturnValue("/different-path")
+
+    const { getByTestId } = render(
+      <MainNavProvider navItems={navItems}>
+        <TestComponent />
+      </MainNavProvider>
+    )
+
+    expect(getByTestId("active-index")).toHaveTextContent("1")
+    expect(getByTestId("active-item")).toHaveTextContent("Resources")
+  })
+
+  test("finds active item by sidebar_id on sub-menu item", () => {
+    const navItems: NavigationItem[] = [
+      {
+        type: "link",
+        title: "Home",
+        link: "/home",
+      },
+      {
+        type: "dropdown",
+        title: "Documentation",
+        link: "/docs",
+        children: [
+          {
+            type: "sub-menu",
+            title: "Advanced",
+            items: [
+              {
+                type: "link",
+                title: "Configuration",
+                link: "/docs/config",
+                sidebar_id: "config-sidebar",
+              },
+              {
+                type: "link",
+                title: "Deployment",
+                link: "/docs/deployment",
+              },
+            ],
+          },
+        ],
+      },
+    ]
+
+    mockShownSidebar.mockReturnValue({ sidebar_id: "config-sidebar" })
+    mockUsePathname.mockReturnValue("/another-path")
+
+    const { getByTestId } = render(
+      <MainNavProvider navItems={navItems}>
+        <TestComponent />
+      </MainNavProvider>
+    )
+
+    expect(getByTestId("active-index")).toHaveTextContent("1")
+    expect(getByTestId("active-item")).toHaveTextContent("Documentation")
+  })
+
+  test("matches item by sidebar_id even when URL does not match", () => {
+    const navItems: NavigationItem[] = [
+      {
+        type: "link",
+        title: "Home",
+        link: "/home",
+      },
+      {
+        type: "link",
+        title: "Docs",
+        link: "/docs",
+        sidebar_id: "docs-sidebar",
+      },
+    ]
+
+    // URL doesn't match /docs, but sidebar_id matches
+    mockShownSidebar.mockReturnValue({ sidebar_id: "docs-sidebar" })
+    mockUsePathname.mockReturnValue("/unrelated-path")
+
+    const { getByTestId } = render(
+      <MainNavProvider navItems={navItems}>
+        <TestComponent />
+      </MainNavProvider>
+    )
+
+    expect(getByTestId("active-index")).toHaveTextContent("1")
+    expect(getByTestId("active-item")).toHaveTextContent("Docs")
+  })
+
+  test("returns no active item when sidebar_id does not match", () => {
+    const navItems: NavigationItem[] = [
+      {
+        type: "link",
+        title: "Home",
+        link: "/home",
+        sidebar_id: "home-sidebar",
+      },
+      {
+        type: "link",
+        title: "Docs",
+        link: "/docs",
+        sidebar_id: "docs-sidebar",
+      },
+    ]
+
+    mockShownSidebar.mockReturnValue({ sidebar_id: "nonexistent-sidebar" })
+    mockUsePathname.mockReturnValue("/unrelated-path")
+
+    const { getByTestId } = render(
+      <MainNavProvider navItems={navItems}>
+        <TestComponent />
+      </MainNavProvider>
+    )
+
+    expect(getByTestId("active-index")).toHaveTextContent("none")
+    expect(getByTestId("active-item")).toHaveTextContent("none")
+  })
+
+  test("falls back to URL matching when no sidebar_id matches", () => {
+    const navItems: NavigationItem[] = [
+      {
+        type: "link",
+        title: "Home",
+        link: "/home",
+        sidebar_id: "home-sidebar",
+      },
+      {
+        type: "link",
+        title: "Docs",
+        link: "/docs",
+      },
+    ]
+
+    mockShownSidebar.mockReturnValue({ sidebar_id: "nonexistent-sidebar" })
+    mockUsePathname.mockReturnValue("/docs")
+
+    const { getByTestId } = render(
+      <MainNavProvider navItems={navItems}>
+        <TestComponent />
+      </MainNavProvider>
+    )
+
+    expect(getByTestId("active-index")).toHaveTextContent("1")
+    expect(getByTestId("active-item")).toHaveTextContent("Docs")
   })
 })

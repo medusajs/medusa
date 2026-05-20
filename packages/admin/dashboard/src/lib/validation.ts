@@ -87,7 +87,7 @@ export function partialFormValidation<TForm extends FieldValues>(
   const validationResult = schema.safeParse(values)
 
   if (!validationResult.success) {
-    validationResult.error.errors.forEach(({ path, message, code }) => {
+    validationResult.error.issues.forEach(({ path, message, code }) => {
       form.setError(path.join(".") as any, {
         type: code,
         message,

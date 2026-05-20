@@ -1,0 +1,190 @@
+name: Cloud Docs Automation
+
+on:
+  repository_dispatch:
+    types:
+      - cloud-deployment
+
+
+jobs:
+  cloud-docs-automation:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # Use a PAT so the created PR triggers other workflows
+          # (the default GITHUB_TOKEN cannot trigger workflow runs)
+          token: ${{ secrets.REFERENCE_PAT }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "yarn"
+
+      - name: Install monorepo dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: cloud-docs-automation
+
+      - name: Install www dependencies
+        working-directory: www
+        run: yarn install
+
+      - name: Build www packages
+        working-directory: www
+        run: yarn build:packages
+
+      - name: Install www/utils dependencies
+        working-directory: www/utils
+        run: yarn install
+
+      - name: Build www/utils packages
+        working-directory: www/utils
+        run: yarn build
+
+      - name: Write dispatch payload to file
+        id: write-payload
+        run: |
+          node --input-type=module << 'EOF'
+            import { writeFileSync } from "fs"
+            const payload = ${{ toJSON(github.event.client_payload) }}
+            writeFileSync("/tmp/cloud-dispatch.json", JSON.stringify(payload, null, 2))
+            console.log("Payload written to /tmp/cloud-dispatch.json")
+          EOF
+
+      - name: Analyze cloud deployment
+        id: analyze
+        working-directory: www/utils/packages/docs-automator
+        run: yarn analyze-cloud --dispatch-file /tmp/cloud-dispatch.json --output /tmp/analysis.json
+        continue-on-error: true
+
+      - name: Check if documentation changes are needed
+        id: check
+        run: |
+          if [ "${{ steps.analyze.outcome }}" = "failure" ]; then
+            echo "needs_docs=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          node --input-type=module << 'EOF'
+          import { readFileSync, appendFileSync } from "fs"
+          const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+          const needed = a.affectedProjects.length > 0 ? "true" : "false"
+          appendFileSync(process.env.GITHUB_OUTPUT, `needs_docs=${needed}\n`)
+          EOF
+
+      - name: Configure git
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Extract Claude prompt
+        id: extract-prompt
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          node --input-type=module << 'EOF'
+            import { readFileSync, appendFileSync } from "fs"
+            const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+            const prefix = "IMPORTANT: Only make file changes using the Write and Edit tools. Never use git commands to stage, commit, or push files.\n\nIMPORTANT: To load the writing-docs skill, use the Skill tool directly with skill='writing-docs'. Do NOT spawn a sub-agent or use the Task tool to load it.\n\n"
+            const delimiter = "CLAUDE_PROMPT_EOF"
+            appendFileSync(
+              process.env.GITHUB_OUTPUT,
+              `CLAUDE_PROMPT<<${delimiter}\n${prefix}${a.claudePrompt}\n${delimiter}\n`
+            )
+          EOF
+
+      - name: Run Claude Code to update cloud docs
+        if: steps.check.outputs.needs_docs == 'true'
+        uses: anthropics/claude-code-base-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+          prompt: ${{ steps.extract-prompt.outputs.CLAUDE_PROMPT }}
+          allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*,ls:*,find:*,cat:*)"
+          max_turns: 40
+
+      - name: Run prep script for cloud project
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          echo "Running prep for cloud..."
+          (cd "www/apps/cloud" && yarn prep) || true
+
+      - name: Run lint:content for cloud project
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          echo "Running lint:content for cloud..."
+          (cd "www/apps/cloud" && yarn lint:content) || true
+
+      - name: Check for documentation changes
+        id: changes
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          CHANGES=$(git diff --name-only -- www/apps/cloud/app www/apps/cloud/generated www/apps/cloud/sidebar.mjs \
+            | grep -E '\.(mdx|json|mjs)$' || true)
+          if [ -n "$CHANGES" ]; then
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No documentation changes found."
+          fi
+
+      - name: Build PR body
+        id: pr-body
+        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
+        run: |
+          node --input-type=module << 'EOF'
+            import { readFileSync, appendFileSync } from "fs"
+
+            const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+            const flagged = Array.isArray(a.featureFlaggedFeatures) ? a.featureFlaggedFeatures : []
+
+            const lines = [
+              "## Automated Cloud Documentation Updates",
+              "",
+              "This PR contains automated documentation changes triggered by Cloud production deployments.",
+              "",
+              "> Review carefully before merging. Claude may have missed context or made incorrect assumptions.",
+            ]
+
+            if (flagged.length > 0) {
+              lines.push("")
+              lines.push("---")
+              lines.push("")
+              lines.push("### ⚠️ Feature flag warning")
+              lines.push("")
+              lines.push(
+                "The following features appear to be gated by a feature flag. " +
+                "**Confirm they have been fully rolled out before merging this PR:**"
+              )
+              lines.push("")
+              for (const f of flagged) {
+                lines.push(`- ${f}`)
+              }
+            }
+
+            const body = lines.join("\n")
+            const delimiter = "PR_BODY_EOF"
+            appendFileSync(process.env.GITHUB_OUTPUT, `BODY<<${delimiter}\n${body}\n${delimiter}\n`)
+          EOF
+
+      - name: Create Pull Request
+        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.REFERENCE_PAT }}
+          commit-message: "chore(docs): automated cloud documentation update"
+          base: develop
+          branch: docs/cloud-docs
+          branch-suffix: timestamp
+          title: "chore(docs): cloud doc changes (automated)"
+          labels: "type: chore"
+          add-paths: |
+            www/apps/cloud/app
+            www/apps/cloud/generated
+            www/apps/cloud/sidebar.mjs
+          body: ${{ steps.pr-body.outputs.BODY }}

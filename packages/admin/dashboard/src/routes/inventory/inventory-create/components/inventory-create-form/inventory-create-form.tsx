@@ -454,7 +454,7 @@ export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
                               {t("products.fields.countryOrigin.label")}
                             </Form.Label>
                             <Form.Control>
-                              <CountrySelect {...field} />
+                              <CountrySelect {...field} allowClear />
                             </Form.Control>
                           </Form.Item>
                         )
