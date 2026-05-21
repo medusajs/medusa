@@ -49,6 +49,9 @@ export interface CreatePaymentSessionsWorkflowInput {
   context?: Record<string, unknown>
 }
 
+/**
+ * The ID of the create payment sessions workflow.
+ */
 export const createPaymentSessionsWorkflowId = "create-payment-sessions"
 /**
  * This workflow creates payment sessions. It's used by the
