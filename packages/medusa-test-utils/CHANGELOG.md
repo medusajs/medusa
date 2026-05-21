@@ -1,5 +1,16 @@
 # Change Log
 
+## 2.15.3
+
+### Patch Changes
+
+- [#15344](https://github.com/medusajs/medusa/pull/15344) [`e0b8251bbd04a400dffa635e990e3e587f9f2986`](https://github.com/medusajs/medusa/commit/e0b8251bbd04a400dffa635e990e3e587f9f2986) Thanks [@Ultron03](https://github.com/Ultron03)! - fix(test-utils): encode username and password in getDatabaseURL to handle special URL characters
+
+- Updated dependencies [[`22fa3e373aa5377b79e7f80b006b69b33eac7434`](https://github.com/medusajs/medusa/commit/22fa3e373aa5377b79e7f80b006b69b33eac7434), [`d0f4df0c6307555737a46f54ab7b99dd81c6c75b`](https://github.com/medusajs/medusa/commit/d0f4df0c6307555737a46f54ab7b99dd81c6c75b), [`5d14db303b5192c3459a5aa5302c292286a54ff6`](https://github.com/medusajs/medusa/commit/5d14db303b5192c3459a5aa5302c292286a54ff6), [`0697de72f2e59e9674e8b6489febf72587e3feef`](https://github.com/medusajs/medusa/commit/0697de72f2e59e9674e8b6489febf72587e3feef), [`ad14455d087d045eba3b3197ac37bf66e42d4e64`](https://github.com/medusajs/medusa/commit/ad14455d087d045eba3b3197ac37bf66e42d4e64), [`d36790f6ccc1a8d7fa729027f9e9d75ad8c9d418`](https://github.com/medusajs/medusa/commit/d36790f6ccc1a8d7fa729027f9e9d75ad8c9d418), [`de43962211feb705d27b2f388384e3f3f4b6d466`](https://github.com/medusajs/medusa/commit/de43962211feb705d27b2f388384e3f3f4b6d466)]:
+  - @medusajs/core-flows@2.15.3
+  - @medusajs/medusa@2.15.3
+  - @medusajs/framework@2.15.3
+
 ## 2.15.2
 
 ### Patch Changes

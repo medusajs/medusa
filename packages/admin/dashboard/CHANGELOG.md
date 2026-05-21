@@ -1,5 +1,17 @@
 # @medusajs/dashboard
 
+## 2.15.3
+
+### Patch Changes
+
+- [#15417](https://github.com/medusajs/medusa/pull/15417) [`f2def586bb52f37752a3b06e673d69095a2551d8`](https://github.com/medusajs/medusa/commit/f2def586bb52f37752a3b06e673d69095a2551d8) Thanks [@Derekko-web](https://github.com/Derekko-web)! - fix(dashboard): include inventory item query params in detail cache keys
+
+- Updated dependencies [[`ac0a8b63d16518eae7c5370171b76bdf2d8dc2c5`](https://github.com/medusajs/medusa/commit/ac0a8b63d16518eae7c5370171b76bdf2d8dc2c5), [`139d5f9d636dba61cdaec8319358b59f2aef3836`](https://github.com/medusajs/medusa/commit/139d5f9d636dba61cdaec8319358b59f2aef3836), [`18a410c48d9d928de6e63d9577782480c3308e6b`](https://github.com/medusajs/medusa/commit/18a410c48d9d928de6e63d9577782480c3308e6b)]:
+  - @medusajs/icons@2.15.3
+  - @medusajs/js-sdk@2.15.3
+  - @medusajs/ui@4.1.13
+  - @medusajs/admin-shared@2.15.3
+
 ## 2.15.2
 
 ### Patch Changes

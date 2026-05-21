@@ -1,5 +1,15 @@
 # Change Log
 
+## 2.15.3
+
+### Patch Changes
+
+- [#15436](https://github.com/medusajs/medusa/pull/15436) [`133ab3ca84bc1c12dfce31230977c21886703a6f`](https://github.com/medusajs/medusa/commit/133ab3ca84bc1c12dfce31230977c21886703a6f) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): fix incorrect command replacement when using yarn and npm
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.3
+  - @medusajs/telemetry@2.15.3
+
 ## 2.15.2
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @medusajs/ui
 
+## 4.1.13
+
+### Patch Changes
+
+- [#15424](https://github.com/medusajs/medusa/pull/15424) [`18a410c48d9d928de6e63d9577782480c3308e6b`](https://github.com/medusajs/medusa/commit/18a410c48d9d928de6e63d9577782480c3308e6b) Thanks [@christiananese](https://github.com/christiananese)! - Added an OtpInput component for segmented numeric verification codes.
+
+- Updated dependencies [[`ac0a8b63d16518eae7c5370171b76bdf2d8dc2c5`](https://github.com/medusajs/medusa/commit/ac0a8b63d16518eae7c5370171b76bdf2d8dc2c5)]:
+  - @medusajs/icons@2.15.3
+
 ## 4.1.12
 
 ### Patch Changes
