@@ -3,8 +3,7 @@ import { FileType, FileUpload } from "../../../../components/common/file-upload"
 import { Hint } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
-const SUPPORTED_FORMATS = ["text/csv"]
-const SUPPORTED_FORMATS_FILE_EXTENSIONS = [".csv"]
+const SUPPORTED_FORMATS = [".csv"]
 
 export const UploadImport = ({
   onUploaded,
@@ -16,14 +15,16 @@ export const UploadImport = ({
 
   const hasInvalidFiles = (fileList: FileType[]) => {
     const invalidFile = fileList.find(
-      (f) => !SUPPORTED_FORMATS.includes(f.file.type)
+      (f) => !SUPPORTED_FORMATS.some((ext) =>
+        f.file.name.toLowerCase().endsWith(ext)
+      )
     )
 
     if (invalidFile) {
       setError(
         t("products.media.invalidFileType", {
           name: invalidFile.file.name,
-          types: SUPPORTED_FORMATS_FILE_EXTENSIONS.join(", "),
+          types: SUPPORTED_FORMATS.join(", "),
         })
       )
 
