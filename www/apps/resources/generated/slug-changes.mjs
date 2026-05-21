@@ -75,6 +75,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthIdentities/page.mdx"
   },
   {
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthMfaChallenge",
+    "newSlug": "/references/auth/createAuthMfaChallenge",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthMfaChallenge/page.mdx"
+  },
+  {
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createProviderIdentities",
     "newSlug": "/references/auth/createProviderIdentities",
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createProviderIdentities/page.mdx"
@@ -90,6 +95,16 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.deleteProviderIdentities/page.mdx"
   },
   {
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.disableAuthMfa",
+    "newSlug": "/references/auth/disableAuthMfa",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.disableAuthMfa/page.mdx"
+  },
+  {
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.generateAuthMfaRecoveryCodes",
+    "newSlug": "/references/auth/generateAuthMfaRecoveryCodes",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.generateAuthMfaRecoveryCodes/page.mdx"
+  },
+  {
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAndCountAuthIdentities",
     "newSlug": "/references/auth/listAndCountAuthIdentities",
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAndCountAuthIdentities/page.mdx"
@@ -98,6 +113,11 @@ export const slugChanges = [
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthIdentities",
     "newSlug": "/references/auth/listAuthIdentities",
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthIdentities/page.mdx"
+  },
+  {
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthMfa",
+    "newSlug": "/references/auth/listAuthMfa",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthMfa/page.mdx"
   },
   {
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listProviderIdentities",
@@ -115,9 +135,19 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieveAuthIdentity/page.mdx"
   },
   {
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieveAuthMfa",
+    "newSlug": "/references/auth/retrieveAuthMfa",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieveAuthMfa/page.mdx"
+  },
+  {
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieveProviderIdentity",
     "newSlug": "/references/auth/retrieveProviderIdentity",
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieveProviderIdentity/page.mdx"
+  },
+  {
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.startAuthMfa",
+    "newSlug": "/references/auth/startAuthMfa",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.startAuthMfa/page.mdx"
   },
   {
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateAuthIdentities",
@@ -135,9 +165,24 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateProviderIdentities/page.mdx"
   },
   {
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.useAuthMfaRecoveryCode",
+    "newSlug": "/references/auth/useAuthMfaRecoveryCode",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.useAuthMfaRecoveryCode/page.mdx"
+  },
+  {
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.validateCallback",
     "newSlug": "/references/auth/validateCallback",
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.validateCallback/page.mdx"
+  },
+  {
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.verifyAuthMfa",
+    "newSlug": "/references/auth/verifyAuthMfa",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.verifyAuthMfa/page.mdx"
+  },
+  {
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.verifyAuthMfaChallenge",
+    "newSlug": "/references/auth/verifyAuthMfaChallenge",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.verifyAuthMfaChallenge/page.mdx"
   },
   {
     "origSlug": "/references/auth/interfaces/auth.IAuthModuleService",
@@ -148,6 +193,16 @@ export const slugChanges = [
     "origSlug": "/references/auth_models/variables/auth_models.AuthIdentity",
     "newSlug": "/references/auth/models/AuthIdentity",
     "filePath": "/www/apps/resources/references/auth_models/variables/auth_models.AuthIdentity/page.mdx"
+  },
+  {
+    "origSlug": "/references/auth_models/variables/auth_models.AuthMfaFactor",
+    "newSlug": "/references/auth/models/AuthMfaFactor",
+    "filePath": "/www/apps/resources/references/auth_models/variables/auth_models.AuthMfaFactor/page.mdx"
+  },
+  {
+    "origSlug": "/references/auth_models/variables/auth_models.AuthMfaRecoveryCode",
+    "newSlug": "/references/auth/models/AuthMfaRecoveryCode",
+    "filePath": "/www/apps/resources/references/auth_models/variables/auth_models.AuthMfaRecoveryCode/page.mdx"
   },
   {
     "origSlug": "/references/auth_models/variables/auth_models.ProviderIdentity",

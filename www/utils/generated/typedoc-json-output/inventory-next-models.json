@@ -1,12 +1,12 @@
 {
-	"id": 6733,
+	"id": 6921,
 	"name": "inventory-next-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 6734,
+			"id": 6922,
 			"name": "InventoryItem",
 			"variant": "declaration",
 			"kind": 32,
@@ -18,7 +18,7 @@
 					"fileName": "inventory-item.ts",
 					"line": 5,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L5"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L5"
 				}
 			],
 			"type": {
@@ -38,14 +38,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 6735,
+									"id": 6923,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 6736,
+											"id": 6924,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -63,7 +63,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L7"
 												}
 											],
 											"type": {
@@ -89,7 +89,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6737,
+											"id": 6925,
 											"name": "sku",
 											"variant": "declaration",
 											"kind": 1024,
@@ -109,7 +109,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L8"
 												}
 											],
 											"type": {
@@ -124,7 +124,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6738,
+											"id": 6926,
 											"name": "origin_country",
 											"variant": "declaration",
 											"kind": 1024,
@@ -144,7 +144,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L9"
 												}
 											],
 											"type": {
@@ -159,7 +159,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6739,
+											"id": 6927,
 											"name": "hs_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -179,7 +179,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L10"
 												}
 											],
 											"type": {
@@ -194,7 +194,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6740,
+											"id": 6928,
 											"name": "mid_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -214,7 +214,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L11"
 												}
 											],
 											"type": {
@@ -229,7 +229,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6741,
+											"id": 6929,
 											"name": "material",
 											"variant": "declaration",
 											"kind": 1024,
@@ -249,7 +249,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L12"
 												}
 											],
 											"type": {
@@ -264,7 +264,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6742,
+											"id": 6930,
 											"name": "weight",
 											"variant": "declaration",
 											"kind": 1024,
@@ -284,7 +284,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L13"
 												}
 											],
 											"type": {
@@ -299,7 +299,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6743,
+											"id": 6931,
 											"name": "length",
 											"variant": "declaration",
 											"kind": 1024,
@@ -319,7 +319,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L14"
 												}
 											],
 											"type": {
@@ -334,7 +334,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6744,
+											"id": 6932,
 											"name": "height",
 											"variant": "declaration",
 											"kind": 1024,
@@ -354,7 +354,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L15"
 												}
 											],
 											"type": {
@@ -369,7 +369,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6745,
+											"id": 6933,
 											"name": "width",
 											"variant": "declaration",
 											"kind": 1024,
@@ -389,7 +389,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 16,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L16"
 												}
 											],
 											"type": {
@@ -404,7 +404,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6746,
+											"id": 6934,
 											"name": "requires_shipping",
 											"variant": "declaration",
 											"kind": 1024,
@@ -422,7 +422,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 17,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L17"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L17"
 												}
 											],
 											"type": {
@@ -437,7 +437,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6747,
+											"id": 6935,
 											"name": "description",
 											"variant": "declaration",
 											"kind": 1024,
@@ -457,7 +457,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 18,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L18"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L18"
 												}
 											],
 											"type": {
@@ -472,7 +472,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6748,
+											"id": 6936,
 											"name": "title",
 											"variant": "declaration",
 											"kind": 1024,
@@ -492,7 +492,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 19,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L19"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L19"
 												}
 											],
 											"type": {
@@ -507,7 +507,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6749,
+											"id": 6937,
 											"name": "thumbnail",
 											"variant": "declaration",
 											"kind": 1024,
@@ -527,7 +527,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 20,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L20"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L20"
 												}
 											],
 											"type": {
@@ -542,7 +542,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6750,
+											"id": 6938,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -562,7 +562,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 21,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L21"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L21"
 												}
 											],
 											"type": {
@@ -577,7 +577,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6751,
+											"id": 6939,
 											"name": "location_levels",
 											"variant": "declaration",
 											"kind": 1024,
@@ -598,7 +598,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 22,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L22"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L22"
 												}
 											],
 											"type": {
@@ -610,7 +610,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 6784,
+														"target": 6972,
 														"name": "InventoryLevel"
 													}
 												],
@@ -620,7 +620,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6765,
+											"id": 6953,
 											"name": "reservation_items",
 											"variant": "declaration",
 											"kind": 1024,
@@ -641,7 +641,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 25,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L25"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L25"
 												}
 											],
 											"type": {
@@ -653,7 +653,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 6820,
+														"target": 7008,
 														"name": "ReservationItem"
 													}
 												],
@@ -663,7 +663,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6782,
+											"id": 6970,
 											"name": "reserved_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -681,7 +681,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 28,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L28"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L28"
 												}
 											],
 											"type": {
@@ -720,7 +720,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6783,
+											"id": 6971,
 											"name": "stocked_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -738,7 +738,7 @@
 													"fileName": "inventory-item.ts",
 													"line": 29,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L29"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L29"
 												}
 											],
 											"type": {
@@ -781,25 +781,25 @@
 										{
 											"title": "Properties",
 											"children": [
-												6736,
-												6737,
-												6738,
-												6739,
-												6740,
-												6741,
-												6742,
-												6743,
-												6744,
-												6745,
-												6746,
-												6747,
-												6748,
-												6749,
-												6750,
-												6751,
-												6765,
-												6782,
-												6783
+												6924,
+												6925,
+												6926,
+												6927,
+												6928,
+												6929,
+												6930,
+												6931,
+												6932,
+												6933,
+												6934,
+												6935,
+												6936,
+												6937,
+												6938,
+												6939,
+												6953,
+												6970,
+												6971
 											]
 										}
 									],
@@ -808,7 +808,7 @@
 											"fileName": "inventory-item.ts",
 											"line": 6,
 											"character": 27,
-											"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-item.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-item.ts#L6"
 										}
 									]
 								}
@@ -828,7 +828,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 6784,
+			"id": 6972,
 			"name": "InventoryLevel",
 			"variant": "declaration",
 			"kind": 32,
@@ -840,7 +840,7 @@
 					"fileName": "inventory-level.ts",
 					"line": 4,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-level.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-level.ts#L4"
 				}
 			],
 			"type": {
@@ -860,14 +860,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 6785,
+									"id": 6973,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 6786,
+											"id": 6974,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -885,7 +885,7 @@
 													"fileName": "inventory-level.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-level.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-level.ts#L6"
 												}
 											],
 											"type": {
@@ -911,7 +911,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6787,
+											"id": 6975,
 											"name": "location_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -929,7 +929,7 @@
 													"fileName": "inventory-level.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-level.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-level.ts#L7"
 												}
 											],
 											"type": {
@@ -944,7 +944,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6788,
+											"id": 6976,
 											"name": "stocked_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -962,7 +962,7 @@
 													"fileName": "inventory-level.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-level.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-level.ts#L8"
 												}
 											],
 											"type": {
@@ -977,7 +977,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6789,
+											"id": 6977,
 											"name": "reserved_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -995,7 +995,7 @@
 													"fileName": "inventory-level.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-level.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-level.ts#L9"
 												}
 											],
 											"type": {
@@ -1010,7 +1010,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6790,
+											"id": 6978,
 											"name": "incoming_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1028,7 +1028,7 @@
 													"fileName": "inventory-level.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-level.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-level.ts#L10"
 												}
 											],
 											"type": {
@@ -1043,7 +1043,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6791,
+											"id": 6979,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1063,7 +1063,7 @@
 													"fileName": "inventory-level.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-level.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-level.ts#L11"
 												}
 											],
 											"type": {
@@ -1078,7 +1078,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6792,
+											"id": 6980,
 											"name": "inventory_item",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1099,7 +1099,7 @@
 													"fileName": "inventory-level.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-level.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-level.ts#L12"
 												}
 											],
 											"type": {
@@ -1111,7 +1111,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 6734,
+														"target": 6922,
 														"name": "InventoryItem"
 													}
 												],
@@ -1121,7 +1121,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6819,
+											"id": 7007,
 											"name": "available_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1139,7 +1139,7 @@
 													"fileName": "inventory-level.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-level.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-level.ts#L15"
 												}
 											],
 											"type": {
@@ -1182,14 +1182,14 @@
 										{
 											"title": "Properties",
 											"children": [
-												6786,
-												6787,
-												6788,
-												6789,
-												6790,
-												6791,
-												6792,
-												6819
+												6974,
+												6975,
+												6976,
+												6977,
+												6978,
+												6979,
+												6980,
+												7007
 											]
 										}
 									],
@@ -1198,7 +1198,7 @@
 											"fileName": "inventory-level.ts",
 											"line": 5,
 											"character": 28,
-											"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/inventory-level.ts#L5"
+											"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/inventory-level.ts#L5"
 										}
 									]
 								}
@@ -1218,7 +1218,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 6820,
+			"id": 7008,
 			"name": "ReservationItem",
 			"variant": "declaration",
 			"kind": 32,
@@ -1230,7 +1230,7 @@
 					"fileName": "reservation-item.ts",
 					"line": 4,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/reservation-item.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/reservation-item.ts#L4"
 				}
 			],
 			"type": {
@@ -1250,14 +1250,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 6821,
+									"id": 7009,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 6822,
+											"id": 7010,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1275,7 +1275,7 @@
 													"fileName": "reservation-item.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/reservation-item.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/reservation-item.ts#L6"
 												}
 											],
 											"type": {
@@ -1301,7 +1301,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6823,
+											"id": 7011,
 											"name": "line_item_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1321,7 +1321,7 @@
 													"fileName": "reservation-item.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/reservation-item.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/reservation-item.ts#L7"
 												}
 											],
 											"type": {
@@ -1336,7 +1336,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6824,
+											"id": 7012,
 											"name": "allow_backorder",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1354,7 +1354,7 @@
 													"fileName": "reservation-item.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/reservation-item.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/reservation-item.ts#L8"
 												}
 											],
 											"type": {
@@ -1369,7 +1369,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6825,
+											"id": 7013,
 											"name": "location_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1387,7 +1387,7 @@
 													"fileName": "reservation-item.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/reservation-item.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/reservation-item.ts#L9"
 												}
 											],
 											"type": {
@@ -1402,7 +1402,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6826,
+											"id": 7014,
 											"name": "quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1420,7 +1420,7 @@
 													"fileName": "reservation-item.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/reservation-item.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/reservation-item.ts#L10"
 												}
 											],
 											"type": {
@@ -1435,7 +1435,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6827,
+											"id": 7015,
 											"name": "raw_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1453,7 +1453,7 @@
 													"fileName": "reservation-item.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/reservation-item.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/reservation-item.ts#L11"
 												}
 											],
 											"type": {
@@ -1468,7 +1468,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6828,
+											"id": 7016,
 											"name": "external_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1488,7 +1488,7 @@
 													"fileName": "reservation-item.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/reservation-item.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/reservation-item.ts#L12"
 												}
 											],
 											"type": {
@@ -1503,7 +1503,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6829,
+											"id": 7017,
 											"name": "description",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1523,7 +1523,7 @@
 													"fileName": "reservation-item.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/reservation-item.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/reservation-item.ts#L13"
 												}
 											],
 											"type": {
@@ -1538,7 +1538,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6830,
+											"id": 7018,
 											"name": "created_by",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1558,7 +1558,7 @@
 													"fileName": "reservation-item.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/reservation-item.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/reservation-item.ts#L14"
 												}
 											],
 											"type": {
@@ -1573,7 +1573,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6831,
+											"id": 7019,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1593,7 +1593,7 @@
 													"fileName": "reservation-item.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/reservation-item.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/reservation-item.ts#L15"
 												}
 											],
 											"type": {
@@ -1608,7 +1608,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6832,
+											"id": 7020,
 											"name": "inventory_item",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1629,7 +1629,7 @@
 													"fileName": "reservation-item.ts",
 													"line": 16,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/reservation-item.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/reservation-item.ts#L16"
 												}
 											],
 											"type": {
@@ -1641,7 +1641,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 6734,
+														"target": 6922,
 														"name": "InventoryItem"
 													}
 												],
@@ -1655,17 +1655,17 @@
 										{
 											"title": "Properties",
 											"children": [
-												6822,
-												6823,
-												6824,
-												6825,
-												6826,
-												6827,
-												6828,
-												6829,
-												6830,
-												6831,
-												6832
+												7010,
+												7011,
+												7012,
+												7013,
+												7014,
+												7015,
+												7016,
+												7017,
+												7018,
+												7019,
+												7020
 											]
 										}
 									],
@@ -1674,7 +1674,7 @@
 											"fileName": "reservation-item.ts",
 											"line": 5,
 											"character": 29,
-											"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/inventory/src/models/reservation-item.ts#L5"
+											"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/inventory/src/models/reservation-item.ts#L5"
 										}
 									]
 								}
@@ -1698,515 +1698,515 @@
 		{
 			"title": "Variables",
 			"children": [
-				6734,
-				6784,
-				6820
+				6922,
+				6972,
+				7008
 			]
 		}
 	],
 	"packageName": "@medusajs/inventory",
 	"symbolIdMap": {
-		"6733": {
+		"6921": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"6734": {
+		"6922": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "InventoryItem"
 		},
-		"6735": {
+		"6923": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object"
 		},
-		"6736": {
+		"6924": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.id"
 		},
-		"6737": {
+		"6925": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.sku"
 		},
-		"6738": {
+		"6926": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.origin_country"
 		},
-		"6739": {
+		"6927": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.hs_code"
 		},
-		"6740": {
+		"6928": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.mid_code"
 		},
-		"6741": {
+		"6929": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.material"
 		},
-		"6742": {
+		"6930": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.weight"
 		},
-		"6743": {
+		"6931": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.length"
 		},
-		"6744": {
+		"6932": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.height"
 		},
-		"6745": {
+		"6933": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.width"
 		},
-		"6746": {
+		"6934": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.requires_shipping"
 		},
-		"6747": {
+		"6935": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.description"
 		},
-		"6748": {
+		"6936": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.title"
 		},
-		"6749": {
+		"6937": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.thumbnail"
 		},
-		"6750": {
+		"6938": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"6751": {
+		"6939": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.location_levels"
 		},
-		"6752": {
+		"6940": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__function"
 		},
-		"6753": {
+		"6941": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__function"
 		},
-		"6754": {
+		"6942": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object"
 		},
-		"6755": {
+		"6943": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object.id"
 		},
-		"6756": {
+		"6944": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object.location_id"
 		},
-		"6757": {
+		"6945": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object.stocked_quantity"
 		},
-		"6758": {
+		"6946": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object.reserved_quantity"
 		},
-		"6759": {
+		"6947": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object.incoming_quantity"
 		},
-		"6760": {
+		"6948": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"6761": {
+		"6949": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object.inventory_item"
 		},
-		"6762": {
+		"6950": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__function"
 		},
-		"6763": {
+		"6951": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__function"
 		},
-		"6764": {
+		"6952": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object.available_quantity"
 		},
-		"6765": {
+		"6953": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.reservation_items"
 		},
-		"6766": {
+		"6954": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__function"
 		},
-		"6767": {
+		"6955": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__function"
 		},
-		"6768": {
+		"6956": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object"
 		},
-		"6769": {
+		"6957": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.id"
 		},
-		"6770": {
+		"6958": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.line_item_id"
 		},
-		"6771": {
+		"6959": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.allow_backorder"
 		},
-		"6772": {
+		"6960": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.location_id"
 		},
-		"6773": {
+		"6961": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.quantity"
 		},
-		"6774": {
+		"6962": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.raw_quantity"
 		},
-		"6775": {
+		"6963": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.external_id"
 		},
-		"6776": {
+		"6964": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.description"
 		},
-		"6777": {
+		"6965": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.created_by"
 		},
-		"6778": {
+		"6966": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"6779": {
+		"6967": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.inventory_item"
 		},
-		"6780": {
+		"6968": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__function"
 		},
-		"6781": {
+		"6969": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__function"
 		},
-		"6782": {
+		"6970": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.reserved_quantity"
 		},
-		"6783": {
+		"6971": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.stocked_quantity"
 		},
-		"6784": {
+		"6972": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "InventoryLevel"
 		},
-		"6785": {
+		"6973": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object"
 		},
-		"6786": {
+		"6974": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object.id"
 		},
-		"6787": {
+		"6975": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object.location_id"
 		},
-		"6788": {
+		"6976": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object.stocked_quantity"
 		},
-		"6789": {
+		"6977": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object.reserved_quantity"
 		},
-		"6790": {
+		"6978": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object.incoming_quantity"
 		},
-		"6791": {
+		"6979": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"6792": {
+		"6980": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object.inventory_item"
 		},
-		"6793": {
+		"6981": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__function"
 		},
-		"6794": {
+		"6982": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__function"
 		},
-		"6795": {
+		"6983": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object"
 		},
-		"6796": {
+		"6984": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.id"
 		},
-		"6797": {
+		"6985": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.sku"
 		},
-		"6798": {
+		"6986": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.origin_country"
 		},
-		"6799": {
+		"6987": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.hs_code"
 		},
-		"6800": {
+		"6988": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.mid_code"
 		},
-		"6801": {
+		"6989": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.material"
 		},
-		"6802": {
+		"6990": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.weight"
 		},
-		"6803": {
+		"6991": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.length"
 		},
-		"6804": {
+		"6992": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.height"
 		},
-		"6805": {
+		"6993": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.width"
 		},
-		"6806": {
+		"6994": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.requires_shipping"
 		},
-		"6807": {
+		"6995": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.description"
 		},
-		"6808": {
+		"6996": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.title"
 		},
-		"6809": {
+		"6997": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.thumbnail"
 		},
-		"6810": {
+		"6998": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"6811": {
+		"6999": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.location_levels"
 		},
-		"6812": {
+		"7000": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__function"
 		},
-		"6813": {
+		"7001": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__function"
 		},
-		"6814": {
+		"7002": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.reservation_items"
 		},
-		"6815": {
+		"7003": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__function"
 		},
-		"6816": {
+		"7004": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__function"
 		},
-		"6817": {
+		"7005": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.reserved_quantity"
 		},
-		"6818": {
+		"7006": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.stocked_quantity"
 		},
-		"6819": {
+		"7007": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-level.ts",
 			"qualifiedName": "__object.available_quantity"
 		},
-		"6820": {
+		"7008": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "ReservationItem"
 		},
-		"6821": {
+		"7009": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object"
 		},
-		"6822": {
+		"7010": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.id"
 		},
-		"6823": {
+		"7011": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.line_item_id"
 		},
-		"6824": {
+		"7012": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.allow_backorder"
 		},
-		"6825": {
+		"7013": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.location_id"
 		},
-		"6826": {
+		"7014": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.quantity"
 		},
-		"6827": {
+		"7015": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.raw_quantity"
 		},
-		"6828": {
+		"7016": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.external_id"
 		},
-		"6829": {
+		"7017": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.description"
 		},
-		"6830": {
+		"7018": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.created_by"
 		},
-		"6831": {
+		"7019": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"6832": {
+		"7020": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__object.inventory_item"
 		},
-		"6833": {
+		"7021": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__function"
 		},
-		"6834": {
+		"7022": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/reservation-item.ts",
 			"qualifiedName": "__function"
 		},
-		"6835": {
+		"7023": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object"
 		},
-		"6836": {
+		"7024": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.id"
 		},
-		"6837": {
+		"7025": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.sku"
 		},
-		"6838": {
+		"7026": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.origin_country"
 		},
-		"6839": {
+		"7027": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.hs_code"
 		},
-		"6840": {
+		"7028": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.mid_code"
 		},
-		"6841": {
+		"7029": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.material"
 		},
-		"6842": {
+		"7030": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.weight"
 		},
-		"6843": {
+		"7031": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.length"
 		},
-		"6844": {
+		"7032": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.height"
 		},
-		"6845": {
+		"7033": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.width"
 		},
-		"6846": {
+		"7034": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.requires_shipping"
 		},
-		"6847": {
+		"7035": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.description"
 		},
-		"6848": {
+		"7036": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.title"
 		},
-		"6849": {
+		"7037": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.thumbnail"
 		},
-		"6850": {
+		"7038": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"6851": {
+		"7039": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.location_levels"
 		},
-		"6852": {
+		"7040": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__function"
 		},
-		"6853": {
+		"7041": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__function"
 		},
-		"6854": {
+		"7042": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.reservation_items"
 		},
-		"6855": {
+		"7043": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__function"
 		},
-		"6856": {
+		"7044": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__function"
 		},
-		"6857": {
+		"7045": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.reserved_quantity"
 		},
-		"6858": {
+		"7046": {
 			"sourceFileName": "../../../../packages/modules/inventory/src/models/inventory-item.ts",
 			"qualifiedName": "__object.stocked_quantity"
 		}
@@ -2216,7 +2216,7 @@
 			"1": "../../../../packages/modules/inventory/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 6733
+			"1": 6921
 		}
 	}
 }
