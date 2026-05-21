@@ -28,3 +28,20 @@ describe("WorkflowLoader", () => {
     expect(registeredWorkflows.has(productWorkflowId)).toBe(true)
   })
 })
+
+describe("WorkflowLoader - index file support", () => {
+  const rootDir = join(__dirname, "../__fixtures__", "workflows-with-index")
+
+  beforeAll(async () => {
+    const container = createMedusaContainer()
+    container.register(ContainerRegistrationKeys.LOGGER, asValue(logger))
+
+    await new WorkflowLoader(rootDir, container).load()
+  })
+
+  it("should register workflows exported from index.[js|ts] files", async () => {
+    const registeredWorkflows = WorkflowManager.getWorkflows()
+
+    expect(registeredWorkflows.has("index-file-workflow")).toBe(true)
+  })
+})

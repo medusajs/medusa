@@ -34,7 +34,7 @@ export class WorkflowLoader extends ResourceLoader {
    * therefore we only need to import them
    */
   async load() {
-    await super.discoverResources()
+    await super.discoverResources({ allowIndex: true })
 
     this.logger.debug(`Workflows registered.`)
   }

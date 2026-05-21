@@ -43,14 +43,17 @@ export abstract class ResourceLoader {
    * Discover resources from the source directory
    * @param exclude - custom exclusion regexes
    * @param customFiltering - custom filtering function
+   * @param allowIndex - when true, index.[js|ts] files are not excluded
    * @returns The resources discovered
    */
   protected async discoverResources({
     exclude,
     customFiltering,
+    allowIndex,
   }: {
     exclude?: RegExp[]
     customFiltering?: (entry: Dirent) => boolean
+    allowIndex?: boolean
   } = {}): Promise<Record<string, unknown>[]> {
     exclude ??= []
     customFiltering ??= (entry: Dirent) => {
@@ -58,7 +61,7 @@ export abstract class ResourceLoader {
 
       return (
         !entry.isDirectory() &&
-        parsedName.name !== "index" &&
+        (allowIndex || parsedName.name !== "index") &&
         !parsedName.base.endsWith(".d.ts") &&
         !entry.path.includes("__tests__") &&
         [".js", ".ts"].includes(parsedName.ext) &&
