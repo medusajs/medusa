@@ -6,8 +6,7 @@
  * description: |
  *   Retrieve the list of multi-factor authentication (MFA) factors registered for the authenticated user,
  *   including both pending (not yet verified) and enabled factors.
- * x-authenticated: true
- * parameters: []
+ * x-authenticated: false
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK
@@ -43,6 +42,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * x-since: 2.15.3
+ * 
 */
 

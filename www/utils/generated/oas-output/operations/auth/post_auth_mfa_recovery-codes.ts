@@ -8,8 +8,7 @@
  *   be used to verify MFA challenges when the user does not have access to their primary MFA
  *   factor. Generating new codes replaces any previously issued codes, so they should be stored in
  *   a safe place. At least one enabled MFA factor is required to generate recovery codes.
- * x-authenticated: true
- * parameters: []
+ * x-authenticated: false
  * requestBody:
  *   content:
  *     application/json:
@@ -56,6 +55,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * x-since: 2.15.3
+ * 
 */
 
