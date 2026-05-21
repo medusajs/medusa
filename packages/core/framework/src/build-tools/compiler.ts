@@ -5,6 +5,8 @@ import { access, constants, copyFile, mkdir, rm } from "fs/promises"
 import path from "path"
 import type tsStatic from "typescript"
 
+import { shouldIgnoreBackendBuildFile } from "./ignore-files"
+
 /**
  * The compiler exposes the opinionated APIs for compiling Medusa
  * applications and plugins. You can perform the following
@@ -190,9 +192,10 @@ export class Compiler {
   }> {
     const ts = await this.#loadTSCompiler()
     const filesToCompile = tsConfig.fileNames.filter((fileName) => {
-      const relativeFileName = path.relative(this.#projectRoot, fileName)
-      return !chunksToIgnore.some((chunk) =>
-        relativeFileName.includes(`${chunk}`)
+      return !shouldIgnoreBackendBuildFile(
+        this.#projectRoot,
+        fileName,
+        chunksToIgnore
       )
     })
 
