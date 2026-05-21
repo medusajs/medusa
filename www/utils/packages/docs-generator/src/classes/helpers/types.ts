@@ -46,6 +46,44 @@ export default class TypesHelper {
     return cleanedUpTypes
   }
 
+  /**
+   * Same as {@link cleanUpTypes}, plus removes fully-permissive object types
+   * (e.g. `Record<string, unknown>` / `Record<string, any>`) that contribute
+   * no schema information when intersected with a structured object type.
+   * Without this, intersections like `Record<string, unknown> & { id: string }`
+   * emit an `allOf` with a redundant empty `{ type: object }` entry.
+   */
+  cleanUpIntersectionTypes(types: ts.Type[]): ts.Type[] {
+    const cleanedUpTypes = this.cleanUpTypes(types)
+    return this.removeUnconstrainedRecord(cleanedUpTypes)
+  }
+
+  private removeUnconstrainedRecord(types: ts.Type[]): ts.Type[] {
+    if (types.length <= 1) {
+      return types
+    }
+    const filtered = types.filter((t) => !this.isUnconstrainedRecord(t))
+    return filtered.length > 0 ? filtered : types
+  }
+
+  private isUnconstrainedRecord(type: ts.Type): boolean {
+    const aliasSymbol = type.aliasSymbol
+    if (!aliasSymbol || aliasSymbol.escapedName !== "Record") {
+      return false
+    }
+    const args = type.aliasTypeArguments
+    if (!args || args.length !== 2) {
+      return false
+    }
+    const [keyArg, valArg] = args
+    const keyIsString = !!(keyArg.flags & ts.TypeFlags.String)
+    const valIsUnknownOrAny = !!(
+      valArg.flags &
+      (ts.TypeFlags.Unknown | ts.TypeFlags.Any)
+    )
+    return keyIsString && valIsUnknownOrAny
+  }
+
   private removeStringRegExpTypeOverlaps(types: ts.Type[]): ts.Type[] {
     return types.filter((itemType) => {
       // remove overlapping string / regexp types

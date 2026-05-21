@@ -8,8 +8,7 @@
  *   user. The response contains the factor along with provider-specific setup data (such as a
  *   secret and an `otpauth_url` for TOTP) that can be used to display a QR code. The factor must
  *   then be verified via the verify endpoint before it can be used.
- * x-authenticated: true
- * parameters: []
+ * x-authenticated: false
  * requestBody:
  *   content:
  *     application/json:
@@ -79,6 +78,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * x-since: 2.15.3
+ * 
 */
 

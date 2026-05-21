@@ -7,7 +7,7 @@
  *   Verify a pending multi-factor authentication (MFA) factor by submitting a code generated from
  *   it. A successful verification enables the factor, after which it can be used to verify MFA
  *   challenges during login.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: id
  *     in: path
@@ -70,6 +70,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * x-since: 2.15.3
+ * 
 */
 

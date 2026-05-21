@@ -7,7 +7,7 @@
  *   Disable a multi-factor authentication (MFA) factor for the authenticated user. Once disabled,
  *   the factor can no longer be used to verify MFA challenges. When disabling a recovery-code
  *   factor, a valid recovery code must be provided in the request body.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: id
  *     in: path
@@ -65,6 +65,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * x-since: 2.15.3
+ * 
 */
 
