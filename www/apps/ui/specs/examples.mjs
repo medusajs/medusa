@@ -383,6 +383,38 @@ export const ExampleRegistry = {
     component: dynamic(() => import("@/specs/examples/label-with-inputs")),
     file: "specs/examples/label-with-inputs.tsx",
   },
+  "otp-input-demo": {
+    name: "otp-input-demo",
+    component: dynamic(() => import("@/specs/examples/otp-input-demo")),
+    file: "specs/examples/otp-input-demo.tsx",
+  },
+  "otp-input-pin": {
+    name: "otp-input-pin",
+    component: dynamic(() => import("@/specs/examples/otp-input-pin")),
+    file: "specs/examples/otp-input-pin.tsx",
+  },
+  "otp-input-custom-separator": {
+    name: "otp-input-custom-separator",
+    component: dynamic(
+      () => import("@/specs/examples/otp-input-custom-separator")
+    ),
+    file: "specs/examples/otp-input-custom-separator.tsx",
+  },
+  "otp-input-on-complete": {
+    name: "otp-input-on-complete",
+    component: dynamic(() => import("@/specs/examples/otp-input-on-complete")),
+    file: "specs/examples/otp-input-on-complete.tsx",
+  },
+  "otp-input-group-size": {
+    name: "otp-input-group-size",
+    component: dynamic(() => import("@/specs/examples/otp-input-group-size")),
+    file: "specs/examples/otp-input-group-size.tsx",
+  },
+  "otp-input-error": {
+    name: "otp-input-error",
+    component: dynamic(() => import("@/specs/examples/otp-input-error")),
+    file: "specs/examples/otp-input-error.tsx",
+  },
   "prompt-demo": {
     name: "prompt-demo",
     component: dynamic(() => import("@/specs/examples/prompt-demo")),
