@@ -286,12 +286,9 @@ export const ReturnCreateForm = ({
   })
 
   const onItemsSelected = () => {
-    const existingItemIds = new Set(items.map((i) => i.item_id))
-    const newItems = selectedItems.filter((id) => !existingItemIds.has(id))
-
-    if (newItems.length) {
+    if (selectedItems.length) {
       addReturnItem({
-        items: newItems.map((id) => ({
+        items: selectedItems.map((id) => ({
           id,
           quantity: 1,
         })),
