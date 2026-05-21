@@ -28,9 +28,17 @@ const User = model.define("User", {
   username: model.text(),
 })
 
+const CountryCompanyInfo = model.define("CountryCompanyInfo", {
+  id: model.text(),
+})
+
 type BlogDTO = {
   id: number
   title: string
+}
+
+type CountryCompanyInfoDTO = {
+  id: string
 }
 
 type CreateBlogDTO = {
@@ -72,6 +80,22 @@ const containerMock = {
 }
 
 describe("Medusa Service typings", () => {
+  test("pluralizes compound info model method names", () => {
+    class CountryCompanyInfoService extends MedusaService<{
+      CountryCompanyInfo: { dto: CountryCompanyInfoDTO }
+    }>({ CountryCompanyInfo }) {}
+    const countryCompanyInfoService = new CountryCompanyInfoService(
+      containerMock
+    )
+
+    expectTypeOf(
+      countryCompanyInfoService.listCountryCompanyInfos
+    ).returns.toEqualTypeOf<Promise<CountryCompanyInfoDTO[]>>()
+
+    // @ts-expect-error compound Info model names should match runtime plural method names
+    countryCompanyInfoService.listCountryCompanyInfo
+  })
+
   describe("create<Service>", () => {
     test("type-hint model properties", () => {
       class BlogService extends MedusaService({ Blog, Comment }) {}

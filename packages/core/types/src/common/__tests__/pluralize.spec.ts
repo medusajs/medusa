@@ -60,9 +60,11 @@ describe("Pluralize", () => {
     expectTypeOf<Pluralize<"foot">>().toEqualTypeOf<"feet">()
   })
 
-  test("pluralize compound words ending with uncountable suffix", () => {
-    expectTypeOf<Pluralize<"CountryCompanyInfo">>().toEqualTypeOf<"CountryCompanyInfo">()
-    expectTypeOf<Pluralize<"SoftInfo">>().toEqualTypeOf<"SoftInfo">()
+  test("pluralize compound words ending with info", () => {
+    expectTypeOf<
+      Pluralize<"CountryCompanyInfo">
+    >().toEqualTypeOf<"CountryCompanyInfos">()
+    expectTypeOf<Pluralize<"SoftInfo">>().toEqualTypeOf<"SoftInfos">()
   })
 
   test("pluralize common words with suffix false positives", () => {
