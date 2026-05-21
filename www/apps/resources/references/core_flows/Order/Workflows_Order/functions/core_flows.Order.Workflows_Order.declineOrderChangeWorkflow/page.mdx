@@ -18,7 +18,7 @@ This workflow declines an order change.
 You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
 declining an order change.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/core/core-flows/src/order/workflows/decline-order-change.ts#L16" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/core/core-flows/src/order/workflows/decline-order-change.ts#L16" />
 
 ## Examples
 
@@ -39,7 +39,7 @@ export async function POST(
   const { result } = await declineOrderChangeWorkflow(req.scope)
     .run({
       input: {
-        "id": "id_ZEMoD46PdKf8"
+        "id": "id_4680gkFydGP"
       }
     })
 
@@ -64,7 +64,7 @@ export default async function handleOrderPlaced({
   const { result } = await declineOrderChangeWorkflow(container)
     .run({
       input: {
-        "id": "id_ZEMoD46PdKf8"
+        "id": "id_4680gkFydGP"
       }
     })
 
@@ -89,7 +89,7 @@ export default async function myCustomJob(
   const { result } = await declineOrderChangeWorkflow(container)
     .run({
       input: {
-        "id": "id_ZEMoD46PdKf8"
+        "id": "id_4680gkFydGP"
       }
     })
 
@@ -115,7 +115,7 @@ const myWorkflow = createWorkflow(
     const result = declineOrderChangeWorkflow
       .runAsStep({
         input: {
-          "id": "id_ZEMoD46PdKf8"
+          "id": "id_4680gkFydGP"
         }
       })
   }

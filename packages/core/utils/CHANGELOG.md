@@ -1,5 +1,14 @@
 # @medusajs/utils
 
+## 2.15.3
+
+### Patch Changes
+
+- [#15275](https://github.com/medusajs/medusa/pull/15275) [`3063ea20314843c23ad8077ce5e2f5c01ce2c54c`](https://github.com/medusajs/medusa/commit/3063ea20314843c23ad8077ce5e2f5c01ce2c54c) Thanks [@Suh0161](https://github.com/Suh0161)! - fix(utils): implement tokenized free text search to support multi-word queries across different columns (e.g. first + last name)
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.3
+
 ## 2.15.2
 
 ### Patch Changes

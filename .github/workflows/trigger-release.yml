@@ -34,9 +34,37 @@ permissions:
   id-token: write # to enable use of OIDC for trusted publishing and npm provenance
 
 jobs:
+  check:
+    name: Check if Release workflow is running
+    if: github.event_name != 'issue_comment'
+    runs-on: ubuntu-latest
+    outputs:
+      release_running: ${{ steps.check_release.outputs.release_running }}
+    steps:
+      - name: Check for active Release workflow runs
+        id: check_release
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data } = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'release.yml',
+              per_page: 10,
+            })
+            const isRunning = data.workflow_runs.some(
+              run => ['in_progress', 'queued', 'waiting', 'requested', 'pending'].includes(run.status)
+            )
+            if (isRunning) {
+              core.notice('Release workflow is currently running. Skipping preview release to avoid conflicts.')
+            }
+            core.setOutput('release_running', isRunning.toString())
+
   release:
     name: Trigger Preview Release
-    if: github.event_name != 'issue_comment'
+    needs: check
+    if: needs.check.outputs.release_running != 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo

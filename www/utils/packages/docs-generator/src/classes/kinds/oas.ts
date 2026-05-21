@@ -1772,7 +1772,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         }
       case itemType.isIntersection():
         const allOfItems = this.typesHelper
-          .cleanUpTypes((itemType as ts.IntersectionType).types)
+          .cleanUpIntersectionTypes((itemType as ts.IntersectionType).types)
           .map((intersectionType) => {
             return this.typeToSchema({
               itemType: intersectionType,

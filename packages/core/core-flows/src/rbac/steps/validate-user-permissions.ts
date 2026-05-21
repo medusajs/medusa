@@ -1,7 +1,8 @@
+import { hasPermission } from "@medusajs/framework"
 import {
+  arrayDifference,
   ContainerRegistrationKeys,
   MedusaError,
-  toSnakeCase,
 } from "@medusajs/framework/utils"
 import { createStep } from "@medusajs/framework/workflows-sdk"
 
@@ -41,51 +42,58 @@ export const validateUserPermissionsStep = createStep(
     }
 
     const query = container.resolve(ContainerRegistrationKeys.QUERY)
+
     const { data: users } = await query.graph({
       entity: actor ?? "user",
-      fields: ["rbac_roles.id", "rbac_roles.policies.*"],
+      fields: ["rbac_roles.id"],
       filters: { id: actor_id },
     })
 
-    if (!users?.[0]?.rbac_roles || users[0].rbac_roles.length === 0) {
+    const roleIds: string[] =
+      users?.[0]?.rbac_roles?.map((r) => r.id).filter(Boolean) ?? []
+
+    if (!roleIds.length) {
       throw new MedusaError(MedusaError.Types.FORBIDDEN, "Forbidden")
     }
 
-    const operationMap = new Map()
-    users[0].rbac_roles.forEach((role) => {
-      role.policies.forEach((policy) => {
-        const op =
-          policy.operation === "*" ? "*" : toSnakeCase(policy.operation)
-        operationMap.set(`${policy.resource}:${op}`, policy.id)
-      })
-    })
-
-    const allUserPolicies = users[0].rbac_roles.flatMap(
-      (role) => role.policies || []
-    )
-    const userPolicyIds = new Set(allUserPolicies.map((p) => p.id))
-
-    let unauthorizedPolicies: string[] = []
+    let actionsToCheck: { resource: string; operation: string }[] = []
 
     if (policy_ids?.length) {
-      unauthorizedPolicies = policy_ids.filter(
-        (policyId) => !userPolicyIds.has(policyId)
-      )
-    } else if (actions?.length) {
-      unauthorizedPolicies = actions
-        .filter((action) => {
-          const op =
-            action.operation === "*" ? "*" : toSnakeCase(action.operation)
+      const { data: targetPolicies } = await query.graph({
+        entity: "rbac_policy",
+        fields: ["id", "resource", "operation"],
+        filters: { id: policy_ids },
+      })
 
-          return (
-            !operationMap.has(`${action.resource}:${op}`) &&
-            !operationMap.has(`${action.resource}:*`)
-          )
-        })
-        .map((action) => `${action.resource}:${action.operation}`)
+      // A user cannot grant a policy that doesn't exist.
+      const inexistentPolicies = arrayDifference(
+        policy_ids,
+        targetPolicies.map((p) => p.id)
+      )
+      if (inexistentPolicies.length) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `The following policies do not exist: ${inexistentPolicies.join(
+            ", "
+          )}`
+        )
+      }
+
+      actionsToCheck = targetPolicies.map((p) => ({
+        resource: p.resource,
+        operation: p.operation,
+      }))
+    } else if (actions?.length) {
+      actionsToCheck = actions
     }
 
-    if (unauthorizedPolicies.length) {
+    const allowed = await hasPermission({
+      roles: roleIds,
+      actions: actionsToCheck,
+      container,
+    })
+
+    if (!allowed) {
       throw new MedusaError(MedusaError.Types.FORBIDDEN, "Forbidden")
     }
   }

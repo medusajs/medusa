@@ -94,7 +94,7 @@ jobs:
           git fetch origin
           if git ls-remote --exit-code origin docs/release-docs-staging > /dev/null 2>&1; then
             git checkout docs/release-docs-staging
-            git merge origin/develop -m "chore: sync docs/release-docs-staging with develop"
+            git merge -X theirs origin/develop -m "chore: sync docs/release-docs-staging with develop"
             echo "Checked out and synced existing branch docs/release-docs-staging"
           else
             git checkout -b docs/release-docs-staging
