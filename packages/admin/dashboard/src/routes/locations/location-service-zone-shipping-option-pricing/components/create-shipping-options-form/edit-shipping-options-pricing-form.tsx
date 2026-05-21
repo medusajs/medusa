@@ -303,7 +303,7 @@ const findRuleValue = (
   return (
     rules?.find(
       (r) => r.attribute === ITEM_TOTAL_ATTRIBUTE && r.operator === operator
-    )?.value || fallbackValue
+    )?.value ?? fallbackValue
   )
 }
 

@@ -66,6 +66,12 @@ describe("buildShippingOptionPriceRules", () => {
     )
   })
 
+  it("should exclude conditions with empty string values", () => {
+    const rules = buildShippingOptionPriceRules({ gte: "", lte: 100 })
+    expect(rules).toHaveLength(1)
+    expect(rules[0]).toMatchObject({ operator: "lte", value: 100 })
+  })
+
   it("should accept string values and cast them to numbers", () => {
     const rules = buildShippingOptionPriceRules({ gte: "0", lte: "100" })
     expect(rules).toHaveLength(2)
