@@ -1,6 +1,8 @@
 import {
+  assignUserRolesWorkflow,
   createRbacRolesWorkflow,
   createUsersWorkflow,
+  removeUserRolesWorkflow,
   updateRbacRolesWorkflow,
 } from "@medusajs/core-flows"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
@@ -861,6 +863,155 @@ medusaIntegrationTestRunner({
               .catch((e) => e)
 
             expect(result).toHaveLength(1)
+          })
+        })
+
+        describe("assignUserRolesWorkflow / removeUserRolesWorkflow", () => {
+          // A role-with-policies fixture used as the target of assign/remove
+          // operations. Built once per test from the shared policy IDs.
+          let productReadRoleId: string
+          let mixedRoleId: string
+          let assigneeUserId: string
+
+          beforeEach(async () => {
+            const rbacModule = container.resolve(Modules.RBAC)
+            const userModule = container.resolve(Modules.USER)
+
+            const productReadRole = await rbacModule.createRbacRoles({
+              name: "Assignable - Product Read",
+            })
+            const mixedRole = await rbacModule.createRbacRoles({
+              name: "Assignable - Mixed",
+            })
+
+            await rbacModule.createRbacRolePolicies([
+              {
+                role_id: productReadRole.id,
+                policy_id: productReadPolicyId,
+              },
+              { role_id: mixedRole.id, policy_id: productReadPolicyId },
+              { role_id: mixedRole.id, policy_id: customerCreatePolicyId },
+            ])
+
+            productReadRoleId = productReadRole.id
+            mixedRoleId = mixedRole.id
+
+            const assignee = await userModule.createUsers({
+              email: "assignee@medusa.js",
+              first_name: "Assignee",
+              last_name: "User",
+            })
+            assigneeUserId = assignee.id
+          })
+
+          it("super-admin (`*:*`) can assign a role with policies to a user", async () => {
+            const userModule = container.resolve(Modules.USER)
+            const [superAdminUser] = await userModule.listUsers({
+              email: "admin@medusa.js",
+            })
+
+            const { result } = await assignUserRolesWorkflow(container).run({
+              input: {
+                actor_id: superAdminUser.id,
+                actor: "user",
+                user_id: assigneeUserId,
+                role_ids: [mixedRoleId],
+              },
+            })
+
+            expect(result).toBeUndefined()
+          })
+
+          it("`resource:*` holder can assign a role whose policies fall under that resource", async () => {
+            // product-manager holds product:* and can assign a role whose only
+            // policy is product:read.
+            const userModule = container.resolve(Modules.USER)
+            const [productManager] = await userModule.listUsers({
+              email: "product-manager@medusa.js",
+            })
+
+            const { result } = await assignUserRolesWorkflow(container).run({
+              input: {
+                actor_id: productManager.id,
+                actor: "user",
+                user_id: assigneeUserId,
+                role_ids: [productReadRoleId],
+              },
+            })
+
+            expect(result).toBeUndefined()
+          })
+
+          it("denies a scoped holder when the role contains policies outside their grant", async () => {
+            // product-manager holds product:* but the mixed role also has
+            // customer:create, so the assignment must be rejected.
+            const userModule = container.resolve(Modules.USER)
+            const [productManager] = await userModule.listUsers({
+              email: "product-manager@medusa.js",
+            })
+
+            const error = await assignUserRolesWorkflow(container)
+              .run({
+                input: {
+                  actor_id: productManager.id,
+                  actor: "user",
+                  user_id: assigneeUserId,
+                  role_ids: [mixedRoleId],
+                },
+              })
+              .catch((e) => e)
+
+            expect(error.message).toContain(
+              "You do not have permission to assign these roles"
+            )
+          })
+
+          it("denies an actor with no roles", async () => {
+            const userModule = container.resolve(Modules.USER)
+            const stray = await userModule.createUsers({
+              email: "stray@medusa.js",
+              first_name: "Stray",
+              last_name: "User",
+            })
+
+            const error = await assignUserRolesWorkflow(container)
+              .run({
+                input: {
+                  actor_id: stray.id,
+                  actor: "user",
+                  user_id: assigneeUserId,
+                  role_ids: [productReadRoleId],
+                },
+              })
+              .catch((e) => e)
+
+            expect(error.message).toContain(
+              "You do not have permission to assign these roles"
+            )
+          })
+
+          it("removeUserRolesWorkflow: super-admin can remove a role with policies", async () => {
+            const userModule = container.resolve(Modules.USER)
+            const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+            const [superAdminUser] = await userModule.listUsers({
+              email: "admin@medusa.js",
+            })
+
+            await remoteLink.create({
+              [Modules.USER]: { user_id: assigneeUserId },
+              [Modules.RBAC]: { rbac_role_id: mixedRoleId },
+            })
+
+            const { result } = await removeUserRolesWorkflow(container).run({
+              input: {
+                actor_id: superAdminUser.id,
+                actor: "user",
+                user_id: assigneeUserId,
+                role_ids: [mixedRoleId],
+              },
+            })
+
+            expect(result).toBeUndefined()
           })
         })
       })
