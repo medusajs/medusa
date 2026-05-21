@@ -282,4 +282,26 @@ export class RbacRole {
       }
     )
   }
+
+  /**
+   * Retrieves the authenticated actor's resolved permission set: a flat list
+   * of `resource:operation` strings with wildcards already expanded.
+   *
+   * @param headers - Headers to pass in the request.
+   * @returns The flat permission list.
+   *
+   * @example
+   * sdk.admin.rbacRole.mePermissions().then(({ permissions }) => {
+   *   console.log(permissions) // ["product:read", "customer:read", ...]
+   * })
+   */
+  async mePermissions(headers?: ClientHeaders) {
+    return await this.client.fetch<HttpTypes.AdminRbacMePermissionsResponse>(
+      `/admin/rbac/me/permissions`,
+      {
+        method: "GET",
+        headers,
+      }
+    )
+  }
 }

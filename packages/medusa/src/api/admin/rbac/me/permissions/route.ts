@@ -3,6 +3,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   defineFileConfig,
@@ -31,7 +32,7 @@ import RbacFeatureFlag from "../../../../../feature-flags/rbac"
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<{ permissions: string[] }>
+  res: MedusaResponse<HttpTypes.AdminRbacMePermissionsResponse>
 ) => {
   const actorId = req.auth_context.actor_id
   const actorType = req.auth_context.actor_type
