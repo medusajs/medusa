@@ -63,7 +63,7 @@
  *         "provider": "{value}"
  *       }'
  * tags:
- *   - Mfa
+ *   - Auth
  * responses:
  *   "200":
  *     description: OK

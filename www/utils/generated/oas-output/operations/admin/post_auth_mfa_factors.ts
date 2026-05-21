@@ -63,7 +63,7 @@
  *         "provider": "{value}"
  *       }'
  * tags:
- *   - Mfa
+ *   - Multi-Factor Authentication
  * responses:
  *   "200":
  *     description: OK

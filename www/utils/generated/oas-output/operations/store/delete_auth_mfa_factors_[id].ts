@@ -49,7 +49,7 @@
  *     label: cURL
  *     source: curl -X DELETE '{backend_url}/auth/mfa/factors/{id}'
  * tags:
- *   - Mfa
+ *   - Auth
  * responses:
  *   "200":
  *     description: OK

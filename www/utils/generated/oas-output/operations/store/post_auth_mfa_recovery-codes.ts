@@ -40,7 +40,7 @@
  *     label: cURL
  *     source: curl -X POST '{backend_url}/auth/mfa/recovery-codes'
  * tags:
- *   - Mfa
+ *   - Auth
  * responses:
  *   "200":
  *     description: OK
