@@ -6,9 +6,9 @@ export const metadata = {
 
 # {metadata.title}
 
-A preview environment is a short-lived Cloud environment that is automatically created for each pull request (PR) opened towards a branch with a long-lived environment in Cloud.
+A preview environment is a short-lived Cloud environment that is automatically created for each pull request (PR) opened towards a branch that has an environment in Cloud. That includes long-lived environments, such as Staging or Production, or other preview environments.
 
-Preview environments facilitate testing a PR's changes in a live environment before merging them. They allow you to test changes in an environment that closely resembles the target long-lived environment.
+Preview environments facilitate testing a PR's changes in a live environment before merging them. They allow you to test changes in an environment that closely resembles the target environment.
 
 Each preview environment has its own Medusa backend, admin dashboard, and storefront, along with separate resources like a database and server instance.
 
@@ -43,7 +43,7 @@ To view the preview environments for a project, go to the [project's dashboard](
 
 ## Create Preview Environment
 
-To create a new preview environment, create a PR towards a branch that has a long-lived environment in Cloud, such as Production.
+To create a new preview environment, create a PR towards a branch that has an environment in Cloud, such as Production.
 
 Medusa will automatically create a preview environment for the PR and deploy the changes to that environment. Everytime you push a new commit to the PR, Medusa will redeploy the preview environment with the latest changes.
 
@@ -112,7 +112,7 @@ Once the preview environment has finished deploying, you can access its Medusa A
 
 ![Preview button in the project's dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1767789953/Cloud/CleanShot_2026-01-07_at_14.45.38_2x_bqe8k1.png)
 
-To log into the Medusa Admin of the preview environment, use the admin credentials of the Production or associated long-lived environment. If you [configured the shared previews settings](#manage-shared-previews-settings) to use a different environment's database, you can log in with the admin credentials of that environment instead.
+To log into the Medusa Admin of the preview environment, use the admin credentials of the Production or associated environment. If you [configured the shared previews settings](#manage-shared-previews-settings) to use a different environment's database, you can log in with the admin credentials of that environment instead.
 
 You can also [send requests to the preview deployment's API](../../deployments/page.mdx#send-requests-to-the-deployment).
 

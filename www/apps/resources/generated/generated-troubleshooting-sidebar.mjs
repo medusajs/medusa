@@ -152,6 +152,14 @@ const generatedgeneratedTroubleshootingSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "link",
+              "path": "/troubleshooting/query/metadata-filtering",
+              "title": "Metadata Filtering",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
               "path": "/troubleshooting/query/service-list",
               "title": "service.list Error",
               "children": []

@@ -205,6 +205,10 @@ export type AuthMfaVerifyDTO = {
    */
   id: string
   /**
+   * The ID of the authentication identity this multi-factor authentication (MFA) belongs to.
+   */
+  auth_identity_id?: string
+  /**
    * The verification code from the multi-factor authentication (MFA) provider.
    */
   code: string
