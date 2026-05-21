@@ -1616,6 +1616,10 @@ export const filesMap = [
     "pathname": "/troubleshooting/query/filter-linked"
   },
   {
+    "filePath": "/www/apps/resources/app/troubleshooting/query/metadata-filtering/page.mdx",
+    "pathname": "/troubleshooting/query/metadata-filtering"
+  },
+  {
     "filePath": "/www/apps/resources/app/troubleshooting/query/service-list/page.mdx",
     "pathname": "/troubleshooting/query/service-list"
   },
