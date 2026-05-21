@@ -874,6 +874,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/auth/createAuthMfaChallenge",
+                      "title": "createAuthMfaChallenge",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/auth/createProviderIdentities",
                       "title": "createProviderIdentities",
                       "description": "",
@@ -901,6 +910,24 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/auth/disableAuthMfa",
+                      "title": "disableAuthMfa",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/generateAuthMfaRecoveryCodes",
+                      "title": "generateAuthMfaRecoveryCodes",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/auth/listAndCountAuthIdentities",
                       "title": "listAndCountAuthIdentities",
                       "description": "",
@@ -912,6 +939,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/listAuthIdentities",
                       "title": "listAuthIdentities",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/listAuthMfa",
+                      "title": "listAuthMfa",
                       "description": "",
                       "children": []
                     },
@@ -946,8 +982,26 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/auth/retrieveAuthMfa",
+                      "title": "retrieveAuthMfa",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/auth/retrieveProviderIdentity",
                       "title": "retrieveProviderIdentity",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/startAuthMfa",
+                      "title": "startAuthMfa",
                       "description": "",
                       "children": []
                     },
@@ -982,8 +1036,35 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/auth/useAuthMfaRecoveryCode",
+                      "title": "useAuthMfaRecoveryCode",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/auth/validateCallback",
                       "title": "validateCallback",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/verifyAuthMfa",
+                      "title": "verifyAuthMfa",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/verifyAuthMfaChallenge",
+                      "title": "verifyAuthMfaChallenge",
                       "description": "",
                       "children": []
                     }
@@ -1023,6 +1104,24 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/models/AuthIdentity",
                       "title": "AuthIdentity",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/models/AuthMfaFactor",
+                      "title": "AuthMfaFactor",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/models/AuthMfaRecoveryCode",
+                      "title": "AuthMfaRecoveryCode",
                       "description": "",
                       "children": []
                     },
