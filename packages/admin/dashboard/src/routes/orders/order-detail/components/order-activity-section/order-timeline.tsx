@@ -28,7 +28,10 @@ import {
   useCancelExchange,
   useExchanges,
 } from "../../../../../hooks/api/exchanges"
-import { useCancelReturn, useReturns } from "../../../../../hooks/api/returns"
+import {
+  useCancelReturnRequest,
+  useReturns,
+} from "../../../../../hooks/api/returns"
 import { useDate } from "../../../../../hooks/use-date"
 import { getFormattedAddress } from "../../../../../lib/addresses"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
@@ -872,7 +875,7 @@ const ReturnBody = ({
   const prompt = usePrompt()
   const { t } = useTranslation()
 
-  const { mutateAsync: cancelReturnRequest } = useCancelReturn(
+  const { mutateAsync: cancelReturnRequest } = useCancelReturnRequest(
     orderReturn.id,
     orderReturn.order_id
   )
