@@ -21,3 +21,15 @@ export function getWorkflowReflectionFromNamespace(
 
   return found
 }
+
+export function getPackageNameForWorkflowReflection(
+  workflowReflection: DeclarationReflection
+): string {
+  if (workflowReflection.sources?.length) {
+    if (workflowReflection.sources[0].fileName.startsWith("plugins/loyalty")) {
+      return "@medusajs/loyalty-plugin/workflows"
+    }
+  }
+
+  return "@medusajs/medusa/core-flows"
+}

@@ -4,6 +4,10 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse

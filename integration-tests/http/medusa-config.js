@@ -93,4 +93,10 @@ module.exports = defineConfig({
     rbac: process.env.MEDUSA_FF_RBAC === "true",
   },
   modules,
+  plugins: [
+    {
+      resolve: "@medusajs/loyalty-plugin",
+      options: {},
+    },
+  ],
 })

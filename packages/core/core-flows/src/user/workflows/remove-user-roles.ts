@@ -7,6 +7,10 @@ import {
 import { dismissRemoteLinkStep } from "../../common/steps/dismiss-remote-links"
 import { validateUserRolePermissionsStep } from "../steps/validate-user-role-permissions"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export type RemoveUserRolesWorkflowInput = {
   actor_id: string
   actor?: string
@@ -16,6 +20,10 @@ export type RemoveUserRolesWorkflowInput = {
   role_ids?: string[]
 }
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const removeUserRolesWorkflowId = "remove-user-roles"
 
 /**
@@ -24,6 +32,8 @@ export const removeUserRolesWorkflowId = "remove-user-roles"
  * - Remove multiple roles from a single user: { user_id, role_ids }
  * - Remove multiple users from a single role: { user_ids, role_id }
  * It validates that the actor has all the policies from the roles being removed.
+ * @ignore
+ * @featureFlag rbac
  */
 export const removeUserRolesWorkflow = createWorkflow(
   removeUserRolesWorkflowId,

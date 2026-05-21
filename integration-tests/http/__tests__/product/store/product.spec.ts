@@ -521,6 +521,7 @@ medusaIntegrationTestRunner({
           title: "test product 1",
           collection_id: collection.id,
           status: ProductStatus.PUBLISHED,
+          external_id: "my-prod-001",
           shipping_profile_id: shippingProfile.id,
           options: [
             { title: "size", values: ["large", "small"] },
@@ -531,6 +532,10 @@ medusaIntegrationTestRunner({
             {
               title: "test variant 1",
               manage_inventory: true,
+              sku: 'test-sku',
+              ean: 'test-ean',
+              upc: 'test-upc',
+              barcode: 'test-barcode',
               options: {
                 size: "large",
                 color: "green",
@@ -862,6 +867,93 @@ medusaIntegrationTestRunner({
           expect.objectContaining({ id: product.id }),
         ])
       })
+
+      it('returns the external_id field when requested with `fields` param', async () => {  
+        const response  = await api.get('/store/products/' + product.id, storeHeaders);
+        expect(response.status).toEqual(200);
+        expect(response.data.product.external_id).toBeUndefined();
+
+        const response2  = await api.get('/store/products/' + product.id + "?fields=+external_id", storeHeaders);
+        expect(response2.status).toEqual(200);
+        expect(response2.data.product.external_id).toEqual(product.external_id);
+      });
+
+      it("returns a list of products with given external_id", async () => {
+        const response2  = await api.get('/store/products/' + product.id + "?fields=+external_id", storeHeaders);
+        expect(response2.status).toEqual(200);
+        expect(response2.data.product.external_id).toBeTruthy();
+        expect(response2.data.product.external_id).toEqual(product.external_id);
+
+        const response = await api.get(
+          `/store/products?external_id[]=${product.external_id}`,
+          storeHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product.id }),
+        ])
+      })
+
+
+
+
+      it("can filter products by ean", async () => {
+        const response = await api.get(
+          `/store/products?variants[ean]=${product.variants[0].ean}`,
+          storeHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product.id }),
+        ])
+      })
+
+      it("can filter products by upc", async () => {
+        const response = await api.get(
+          `/store/products?variants[upc]=${product.variants[0].upc}`,
+          storeHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product.id }),
+        ])
+      })
+
+      it("can filter products by barcode", async () => {
+        const response = await api.get(
+          `/store/products?variants[barcode]=${product.variants[0].barcode}`,
+          storeHeaders
+        )
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product.id }),
+        ])
+      })
+
+
+      it("can filter products by sku", async () => {
+        const response = await api.get(
+          `/store/products?variants[sku]=${product.variants[0].sku}`,
+          storeHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product.id }),
+        ])
+      })
+
+
+
+
 
       it("returns a list of products with one of the given handles", async () => {
         const response = await api.get(

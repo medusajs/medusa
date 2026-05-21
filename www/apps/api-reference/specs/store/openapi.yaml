@@ -297,8 +297,6 @@ paths:
     $ref: paths/store_customers_me_addresses_{address_id}.yaml
   /store/gift-cards/{idOrCode}:
     $ref: paths/store_gift-cards_{idOrCode}.yaml
-  /store/gift-cards/{idOrCode}/redeem:
-    $ref: paths/store_gift-cards_{idOrCode}_redeem.yaml
   /store/locales:
     $ref: paths/store_locales.yaml
   /store/orders:
@@ -351,6 +349,8 @@ paths:
     $ref: paths/store_shipping-options_{id}_calculate.yaml
   /store/store-credit-accounts:
     $ref: paths/store_store-credit-accounts.yaml
+  /store/store-credit-accounts/claim:
+    $ref: paths/store_store-credit-accounts_claim.yaml
   /store/store-credit-accounts/{id}:
     $ref: paths/store_store-credit-accounts_{id}.yaml
 components:

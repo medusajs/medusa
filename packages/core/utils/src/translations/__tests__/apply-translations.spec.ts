@@ -53,6 +53,57 @@ describe("applyTranslations", () => {
     expect(inputObjects[0].title).toBe("Translated Title")
   })
 
+  it("should not overwrite fields when translation value is empty or whitespace-only", async () => {
+    const inputObjects = [
+      {
+        id: "prod_1",
+        title: "Original Title",
+        description: "Original description",
+      },
+    ]
+
+    mockQuery.graph.mockResolvedValue({
+      data: [
+        {
+          reference_id: "prod_1",
+          translations: {
+            title: "",
+            description: "Translated description",
+          },
+        },
+      ],
+    })
+
+    await applyTranslations({
+      localeCode: mockReq.locale as string,
+      objects: inputObjects,
+      container: mockContainer as any,
+    })
+
+    expect(inputObjects[0].title).toBe("Original Title")
+    expect(inputObjects[0].description).toBe("Translated description")
+
+    const inputObjects2 = [
+      { id: "prod_2", title: "Original Title 2" },
+    ]
+    mockQuery.graph.mockResolvedValue({
+      data: [
+        {
+          reference_id: "prod_2",
+          translations: { title: "   " },
+        },
+      ],
+    })
+
+    await applyTranslations({
+      localeCode: mockReq.locale as string,
+      objects: inputObjects2,
+      container: mockContainer as any,
+    })
+
+    expect(inputObjects2[0].title).toBe("Original Title 2")
+  })
+
   it("should apply translations to nested objects", async () => {
     const inputObjects = [
       {

@@ -24,6 +24,9 @@ export interface AdminUpdateUser {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * @featureFlag rbac
+ */
 export interface AdminAssignUserRoles {
   /**
    * The IDs of the roles to assign to the user.
@@ -31,9 +34,19 @@ export interface AdminAssignUserRoles {
   roles: string[]
 }
 
+/**
+ * @featureFlag rbac
+ */
 export interface AdminRemoveUserRoles {
   /**
    * The IDs of the roles to remove from the user.
    */
+  roles: string[]
+}
+
+/**
+ * @featureFlag rbac
+ */
+export interface AdminAssignUserRoles {
   roles: string[]
 }

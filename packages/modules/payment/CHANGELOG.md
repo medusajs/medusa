@@ -1,5 +1,101 @@
 # @medusajs/payment
 
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies [[`2b21d15640ae459386b0acea4c83804c6f502b9d`](https://github.com/medusajs/medusa/commit/2b21d15640ae459386b0acea4c83804c6f502b9d)]:
+  - @medusajs/framework@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- [#15295](https://github.com/medusajs/medusa/pull/15295) [`876bdba41d0d00a6d14e25c5deea830aa009b2ad`](https://github.com/medusajs/medusa/commit/876bdba41d0d00a6d14e25c5deea830aa009b2ad) Thanks [@Ultron03](https://github.com/Ultron03)! - fix(payment): persist provider data returned by cancelPayment
+
+- [#15303](https://github.com/medusajs/medusa/pull/15303) [`436f549e326563cc3da4b7b142c12072fb89eed4`](https://github.com/medusajs/medusa/commit/436f549e326563cc3da4b7b142c12072fb89eed4) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows,payment): Fix rounding issue on refund creation
+
+- [#15273](https://github.com/medusajs/medusa/pull/15273) [`f57b942b8bbd385f32203965e2f54a3964e812eb`](https://github.com/medusajs/medusa/commit/f57b942b8bbd385f32203965e2f54a3964e812eb) Thanks [@Metbcy](https://github.com/Metbcy)! - fix(core-flows, payment, types): expose `metadata` on refund creation through `refundPaymentsWorkflow`
+
+  The `Refund` data model supports a `metadata` field, but it was not exposed on
+  `CreateRefundDTO`, `RefundPaymentsStepInput`, or `RefundPaymentsWorkflowInput`,
+  making it impossible to set metadata on a refund created via
+  `refundPaymentsWorkflow`. This adds the optional field to all three types and
+  threads it through `PaymentModuleService.refundPayment` so the value reaches
+  the underlying refund row.
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.0
+
+## 2.14.2
+
+### Patch Changes
+
+- Updated dependencies [[`be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0`](https://github.com/medusajs/medusa/commit/be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0), [`7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23`](https://github.com/medusajs/medusa/commit/7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23)]:
+  - @medusajs/framework@2.14.2
+
+## 2.14.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.14.1
+
+## 2.14.0
+
+### Patch Changes
+
+- [#13975](https://github.com/medusajs/medusa/pull/13975) [`67499a8aa6b3b53cbdecb5be9fcc358b4e466696`](https://github.com/medusajs/medusa/commit/67499a8aa6b3b53cbdecb5be9fcc358b4e466696) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(currency,payment,pricing,region,order,store,cart,core-flows,medusa,utils): repo wide currency_code normalization
+
+- [#15144](https://github.com/medusajs/medusa/pull/15144) [`d72499ddb490a6e6e61929b1f3b5d467308f7e48`](https://github.com/medusajs/medusa/commit/d72499ddb490a6e6e61929b1f3b5d467308f7e48) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(payment): fix currency code unset when updating payment collection
+
+- Updated dependencies [[`0929b8d192833e10b6b91795f1ffc478938c3fb7`](https://github.com/medusajs/medusa/commit/0929b8d192833e10b6b91795f1ffc478938c3fb7), [`843dbfe7c8f27b732486c7a8da7b6d63f2fdf967`](https://github.com/medusajs/medusa/commit/843dbfe7c8f27b732486c7a8da7b6d63f2fdf967)]:
+  - @medusajs/framework@2.14.0
+
+## 2.13.6
+
+### Patch Changes
+
+- Updated dependencies [[`2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d`](https://github.com/medusajs/medusa/commit/2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d)]:
+  - @medusajs/framework@2.13.6
+
+## 2.13.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.13.5
+
+## 2.13.4
+
+### Patch Changes
+
+- [#14797](https://github.com/medusajs/medusa/pull/14797) [`c191ea5ede6e9b35a2764093ed00057e200e800f`](https://github.com/medusajs/medusa/commit/c191ea5ede6e9b35a2764093ed00057e200e800f) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(order,payment): make return and refund reason translatable
+
+- Updated dependencies []:
+  - @medusajs/framework@2.13.4
+
+## 2.13.3
+
+### Patch Changes
+
+- Updated dependencies [[`dbaae9630d26a0806751d5614beadef3e0b4bf07`](https://github.com/medusajs/medusa/commit/dbaae9630d26a0806751d5614beadef3e0b4bf07)]:
+  - @medusajs/framework@2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- Updated dependencies [[`7aca778ae56069371f5d26a757d3b2276d524776`](https://github.com/medusajs/medusa/commit/7aca778ae56069371f5d26a757d3b2276d524776), [`77d899e135ed75668ca7d7b01a8ed4f0c1fe0ac8`](https://github.com/medusajs/medusa/commit/77d899e135ed75668ca7d7b01a8ed4f0c1fe0ac8)]:
+  - @medusajs/framework@2.13.2
+
 ## 2.13.1
 
 ### Patch Changes

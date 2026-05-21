@@ -8,6 +8,9 @@ import { ButtonProps } from "../../Button"
 const mockConfig = {
   baseUrl: "https://docs.medusajs.com",
   logo: "/logo.png",
+  features: {
+    aiAssistant: true,
+  },
 }
 
 const defaultUseSiteConfigReturn = {
@@ -175,6 +178,22 @@ describe("rendering", () => {
     expect(helpDropdown).toBeInTheDocument()
   })
 
+  test("does not render ai assistant trigger when ai assistant feature is disabled", () => {
+    mockUseSiteConfig.mockReturnValueOnce({
+      config: {
+        ...mockConfig,
+        features: {
+          aiAssistant: false,
+        },
+      },
+    })
+    const { container } = render(<MainNav />)
+    const aiTrigger = container.querySelector(
+      "[data-testid='ai-assistant-trigger']"
+    )
+    expect(aiTrigger).not.toBeInTheDocument()
+  })
+
   test("renders nav items when not collapsed", () => {
     const { container } = render(<MainNav />)
     const navItems = container.querySelector("[data-testid='nav-items']")
@@ -214,6 +233,14 @@ describe("rendering", () => {
     )
     const navItems = container.querySelector("[data-testid='nav-items']")
     expect(navItems).toHaveClass("custom-items-class")
+  })
+
+  test("always shows border-b on nav content regardless of collapse state", () => {
+    const { container } = render(<MainNav />)
+    const topBar = container.querySelector("[data-testid='main-nav-content']")
+    expect(topBar).toBeInTheDocument()
+    expect(topBar).toHaveClass("border-b")
+    expect(topBar).toHaveClass("border-medusa-border-base")
   })
 
   test("adjusts layout when collapsed", () => {

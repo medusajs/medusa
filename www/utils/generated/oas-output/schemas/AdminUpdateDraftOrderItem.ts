@@ -22,6 +22,9 @@
  *     type: string
  *     title: internal_note
  *     description: A note viewed only by admin users about the item.
+ *   metadata:
+ *     type: object
+ *     description: Key-value pairs of custom data.
  * 
 */
 

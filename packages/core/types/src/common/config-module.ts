@@ -59,7 +59,6 @@ export interface AdminOptions {
    * - `/admin`
    * - `/store`
    * - `/auth`
-   * - `/`
    *
    * @example
    * ```ts title="medusa-config.ts"
@@ -119,6 +118,22 @@ export interface AdminOptions {
    * @privateRemarks TODO Add example
    */
   vite?: (config: InlineConfig) => InlineConfig
+
+  /**
+   * The maximum file size for media uploads in bytes. The default value is `1048576` (1MB).
+   * Set to `Infinity` to disable the file size limit.
+   *
+   * @example
+   * ```js title="medusa-config.ts"
+   * module.exports = defineConfig({
+   *   admin: {
+   *     maxUploadFileSize: 10 * 1024 * 1024, // 10MB
+   *   },
+   *   // ...
+   * })
+   * ```
+   */
+  maxUploadFileSize?: number
 }
 
 /**

@@ -31,12 +31,8 @@ export type StoreRequestOrderTransferType = z.infer<
 >
 export const StoreRequestOrderTransfer = z.object({
   description: z.string().optional(),
+  update_order_email: z.boolean().optional(),
 })
-
-export type StoreCancelOrderTransferRequestType = z.infer<
-  typeof StoreCancelOrderTransferRequest
->
-export const StoreCancelOrderTransferRequest = z.object({})
 
 export type StoreDeclineOrderTransferRequestType = z.infer<
   typeof StoreDeclineOrderTransferRequest

@@ -120,6 +120,11 @@ export interface CreatePriceListWorkflowInputDTO {
    * The prices associated with the price list.
    */
   prices?: CreatePriceListPriceWorkflowDTO[]
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 /**
@@ -160,6 +165,11 @@ export interface UpdatePriceListWorkflowInputDTO {
    * The rules associated with the price list.
    */
   rules?: Record<string, string[]>
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 /**

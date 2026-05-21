@@ -1,11 +1,13 @@
 import { track } from "@medusajs/telemetry"
 import boxen from "boxen"
 import chalk from "chalk"
+import fs from "fs"
 import { emojify } from "node-emoji"
 import open from "open"
 import { EOL } from "os"
 import slugifyType from "slugify"
 import waitOn from "wait-on"
+import { promptClaudeCodePlugin } from "../claude-code-plugin.js"
 import { runCloneRepo } from "../clone-repo.js"
 import { isAbortError } from "../create-abort-controller.js"
 import { getDbClientAndCredentials, runCreateDb } from "../create-db.js"
@@ -18,6 +20,10 @@ import {
 } from "../nextjs-utils.js"
 import prepareProject from "../prepare-project.js"
 import startMedusa from "../start-medusa.js"
+import {
+  getBackendDirectory,
+  getStorefrontDirectory,
+} from "../project-paths.js"
 import {
   BaseProjectCreator,
   ProjectCreator,
@@ -43,7 +49,7 @@ export class MedusaProjectCreator
     this.setupProcessManager()
   }
 
-  async create(): Promise<void> {
+  async create({ verbose }: { verbose?: boolean }): Promise<void> {
     track("CREATE_CLI_CMA")
 
     try {
@@ -51,13 +57,14 @@ export class MedusaProjectCreator
       await this.setupProject()
       await this.startServices()
     } catch (e: any) {
-      this.handleError(e)
+      this.handleError(e, verbose)
     }
   }
 
   private async initializeProject(): Promise<void> {
     const installNextjs =
       this.options.withNextjsStarter || (await askForNextjsStarter())
+    await promptClaudeCodePlugin()
 
     if (!this.options.skipDb) {
       await this.setupDatabase()
@@ -89,9 +96,16 @@ export class MedusaProjectCreator
       message: "Created project directory",
     })
 
-    if (installNextjs) {
-      this.nextjsDirectory = await installNextjsStarter({
-        directoryName: this.projectPath,
+    const storefrontDirectory = getStorefrontDirectory(this.projectPath)
+
+    if (!installNextjs) {
+      if (fs.existsSync(storefrontDirectory)) {
+        fs.rmSync(storefrontDirectory, { recursive: true, force: true })
+      }
+    } else {
+      this.nextjsDirectory = storefrontDirectory
+      await installNextjsStarter({
+        storefrontDirectory,
         abortController: this.abortController,
         factBoxOptions: this.factBoxOptions,
         verbose: this.options.verbose,
@@ -172,7 +186,7 @@ export class MedusaProjectCreator
     })
 
     startMedusa({
-      directory: this.projectPath,
+      directory: getBackendDirectory(this.projectPath),
       abortController: this.abortController,
       packageManager: this.packageManager,
     })
@@ -203,12 +217,13 @@ export class MedusaProjectCreator
     )
   }
 
-  private handleError(e: Error): void {
+  private handleError(e: Error, verbose?: boolean): void {
     if (isAbortError(e)) {
       process.exit()
     }
 
-    const showStack = e.message.includes("npm") || e.message.includes("yarn")
+    const showStack =
+      verbose || e.message?.includes("npm") || e.message?.includes("yarn")
 
     this.spinner.stop()
     logMessage({
@@ -231,7 +246,7 @@ export class MedusaProjectCreator
               : ""
           }${
             this.nextjsDirectory?.length
-              ? `The Next.js Starter Storefront was installed in the \`${this.nextjsDirectory}\` directory. Change to that directory and start it with the following command:${EOL}${EOL}${commandStr}${EOL}${EOL}`
+              ? `The Next.js Starter Storefront is available in the \`${this.nextjsDirectory}\` directory. Change to that directory and start it with the following command:${EOL}${EOL}${commandStr}${EOL}${EOL}`
               : ""
           }Check out the Medusa ${terminalLink(
             "documentation",

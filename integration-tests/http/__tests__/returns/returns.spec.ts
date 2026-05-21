@@ -2,28 +2,35 @@ import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   ContainerRegistrationKeys,
   Modules,
+  ReturnStatus,
   RuleOperator,
 } from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
+  generatePublishableKey,
+  generateStoreHeaders,
 } from "../../../helpers/create-admin-user"
 
 jest.setTimeout(60000)
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
-    let order, order2
+    let order, order2, storeOrder
     let returnShippingOption
     let shippingProfile
     let fulfillmentSet
-    let returnReason
+    let returnReason, returnReasonTwo
     let inventoryItem
     let location
+    let storeHeaders
 
     beforeEach(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      const publishableKey = await generatePublishableKey(container)
+      storeHeaders = generateStoreHeaders({ publishableKey })
 
       shippingProfile = (
         await api.post(
@@ -67,6 +74,18 @@ medusaIntegrationTestRunner({
           {
             value: "return-reason-test",
             label: "Test return reason",
+            description: "This is the reason description!!!",
+          },
+          adminHeaders
+        )
+      ).data.return_reason
+
+      returnReasonTwo = (
+        await api.post(
+          "/admin/return-reasons",
+          {
+            value: "return-reason-test-two",
+            label: "Test return reason two",
             description: "This is the reason description!!!",
           },
           adminHeaders
@@ -313,7 +332,7 @@ medusaIntegrationTestRunner({
       )
     })
 
-    describe("Returns lifecycle", () => {
+    describe("Admin Returns lifecycle", () => {
       it("Full flow with 2 orders", async () => {
         let result = await api.post(
           "/admin/returns",
@@ -1344,6 +1363,64 @@ medusaIntegrationTestRunner({
             deleted: true,
           })
         })
+      })
+    })
+
+    describe("Store Returns lifecycle", () => {
+      it("should request a return", async () => {
+        const createdReturn = (
+          await api.post(
+            "/store/returns",
+            {
+              order_id: order.id,
+              items: [
+                {
+                  id: order.items[0].id,
+                  quantity: 1,
+                  reason_id: returnReason.id,
+                },
+                {
+                  id: order.items[0].id,
+                  quantity: 1,
+                  reason_id: returnReasonTwo.id,
+                },
+              ],
+              return_shipping: {
+                option_id: returnShippingOption.id,
+              },
+            },
+            storeHeaders
+          )
+        ).data.return
+
+        expect(createdReturn).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            order_id: order.id,
+            status: ReturnStatus.REQUESTED,
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.any(String),
+                item_id: order.items[0].id,
+                quantity: 1,
+                reason_id: returnReason.id,
+              }),
+              expect.objectContaining({
+                id: expect.any(String),
+                item_id: order.items[0].id,
+                quantity: 1,
+                reason_id: returnReasonTwo.id,
+              }),
+            ]),
+            shipping_methods: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.any(String),
+                shipping_option_id: returnShippingOption.id,
+                name: returnShippingOption.name,
+              }),
+            ]),
+          })
+        )
       })
     })
   },

@@ -19,7 +19,7 @@ export type UpdateProductVariantWorkflowInputDTO =
     /**
      * The variant's prices.
      */
-    prices?: PricingTypes.CreateMoneyAmountDTO[]
+    prices?: PricingTypes.UpsertMoneyAmountDTO[]
   }
 
 /**

@@ -641,6 +641,13 @@ export function getRouteMap({
                           "../../routes/price-lists/price-list-prices-edit"
                         ),
                     },
+                    {
+                      path: "metadata/edit",
+                      lazy: () =>
+                        import(
+                          "../../routes/price-lists/price-list-metadata"
+                        ),
+                    },
                   ],
                 },
               ],
@@ -1402,6 +1409,11 @@ export function getRouteMap({
                         ),
                     },
                     {
+                      path: "metadata/edit",
+                      lazy: () =>
+                        import("../../routes/locations/location-metadata"),
+                    },
+                    {
                       path: "fulfillment-set/:fset_id",
                       children: [
                         {
@@ -1972,7 +1984,7 @@ export function getRouteMap({
                 },
               ],
             },
-            ...(settingsRoutes?.[0]?.children || []),
+            ...settingsRoutes.flatMap((r) => r?.children || []),
           ],
         },
       ],

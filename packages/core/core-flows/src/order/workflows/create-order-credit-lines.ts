@@ -138,6 +138,7 @@ export const createOrderCreditLinesWorkflow = createWorkflow(
       fields: [
         "id",
         "status",
+        "version",
         "change_type",
         "actions.id",
         "actions.order_id",
@@ -163,11 +164,21 @@ export const createOrderCreditLinesWorkflow = createWorkflow(
       orderId: order.id,
     })
 
+    const createdCreditLines = transform(
+      { confirmedOrderChanges: orderChanges, orderChange },
+      ({ confirmedOrderChanges, orderChange }) => {
+        return confirmedOrderChanges.credit_lines.filter(
+          (creditLine) =>
+            creditLine.metadata?.created_in_version === orderChange.version
+        )
+      }
+    )
+
     createHook("creditLinesCreated", {
       order_id: input.id,
-      credit_lines: orderChanges.credit_lines,
+      credit_lines: createdCreditLines,
     })
 
-    return new WorkflowResponse(orderChanges.credit_lines)
+    return new WorkflowResponse(createdCreditLines)
   }
 )

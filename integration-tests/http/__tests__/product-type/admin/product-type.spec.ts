@@ -21,6 +21,7 @@ medusaIntegrationTestRunner({
           "/admin/product-types",
           {
             value: "test1",
+            external_id: "ext-test-01",
           },
           adminHeaders
         )
@@ -47,6 +48,7 @@ medusaIntegrationTestRunner({
             {
               id: expect.stringMatching(/ptyp_.{24}/),
               value: "test1",
+              external_id: "ext-test-01",
               created_at: expect.any(String),
               updated_at: expect.any(String),
               metadata: null,
@@ -54,6 +56,7 @@ medusaIntegrationTestRunner({
             {
               id: expect.stringMatching(/ptyp_.{24}/),
               value: "test2",
+              external_id: null,
               created_at: expect.any(String),
               updated_at: expect.any(String),
               metadata: null,
@@ -61,6 +64,16 @@ medusaIntegrationTestRunner({
           ])
         )
       })
+
+      it('returns a list of product types matching external_id search param', async () => {
+        const res = await api.get("/admin/product-types?external_id=ext-test-01", adminHeaders)
+        
+        expect(res.status).toEqual(200) 
+        expect(res.data.product_types.length).toEqual(1)
+        expect(res.data.product_types).toEqual(
+          expect.arrayContaining([expect.objectContaining({ value: "test1", external_id: "ext-test-01" })])
+        )
+      });
 
       it("returns a list of product types matching free text search param", async () => {
         const res = await api.get("/admin/product-types?q=test1", adminHeaders)
@@ -72,6 +85,7 @@ medusaIntegrationTestRunner({
           {
             id: expect.stringMatching(/ptyp_.{24}/),
             value: "test1",
+            external_id: "ext-test-01",
             created_at: expect.any(String),
             updated_at: expect.any(String),
             metadata: null,
@@ -93,6 +107,7 @@ medusaIntegrationTestRunner({
         expect(res.data.product_type).toEqual({
           id: expect.stringMatching(/ptyp_.{24}/),
           value: "test1",
+          external_id: "ext-test-01",
           created_at: expect.any(String),
           updated_at: expect.any(String),
           metadata: null,

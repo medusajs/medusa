@@ -63,6 +63,10 @@ const TestComponent = () => {
       <div data-testid="has-content-ref">
         {assistant.contentRef.current ? "yes" : "no"}
       </div>
+      <div data-testid="suggestions-count">{assistant.suggestions.length}</div>
+      <div data-testid="hide-ai-tools-message">
+        {assistant.hideAiToolsMessage ? "hidden" : "shown"}
+      </div>
       <button
         data-testid="set-chat-opened"
         onClick={() => assistant.setChatOpened(true)}
@@ -400,6 +404,65 @@ describe("useAiAssistant hook", () => {
     }).toThrow("useAiAssistant must be used within a AiAssistantProvider")
 
     consoleSpy.mockRestore()
+  })
+
+  test("suggestions defaults to defaultSuggestions", () => {
+    const { getByTestId } = render(
+      <AiAssistantProvider integrationId="test-id">
+        <TestComponent />
+      </AiAssistantProvider>
+    )
+
+    // Default suggestions have 2 groups
+    expect(getByTestId("suggestions-count")).toHaveTextContent("2")
+  })
+
+  test("custom suggestions can be provided", () => {
+    const customSuggestions = [
+      {
+        title: "Custom Group 1",
+        items: ["Item 1", "Item 2"],
+      },
+      {
+        title: "Custom Group 2",
+        items: ["Item 3", "Item 4", "Item 5"],
+      },
+      {
+        title: "Custom Group 3",
+        items: ["Item 6"],
+      },
+    ]
+
+    const { getByTestId } = render(
+      <AiAssistantProvider
+        integrationId="test-id"
+        suggestions={customSuggestions}
+      >
+        <TestComponent />
+      </AiAssistantProvider>
+    )
+
+    expect(getByTestId("suggestions-count")).toHaveTextContent("3")
+  })
+
+  test("hideAiToolsMessage defaults to false", () => {
+    const { getByTestId } = render(
+      <AiAssistantProvider integrationId="test-id">
+        <TestComponent />
+      </AiAssistantProvider>
+    )
+
+    expect(getByTestId("hide-ai-tools-message")).toHaveTextContent("shown")
+  })
+
+  test("hideAiToolsMessage can be set to true", () => {
+    const { getByTestId } = render(
+      <AiAssistantProvider integrationId="test-id" hideAiToolsMessage={true}>
+        <TestComponent />
+      </AiAssistantProvider>
+    )
+
+    expect(getByTestId("hide-ai-tools-message")).toHaveTextContent("hidden")
   })
 })
 
