@@ -90,7 +90,7 @@ const useHandleLogin = (isAutoLogin: boolean) => {
         callback_url: `${window.location.origin}${window.location.pathname}?auth_provider=${CLOUD_AUTH_PROVIDER}`,
       })
 
-      if (typeof result === "object" && result.location) {
+      if (typeof result === "object" && "location" in result) {
         // Redirect to Medusa Cloud for authentication
         window.location.href = result.location
         return
@@ -128,7 +128,17 @@ const useAuthCallback = (searchParams: URLSearchParams) => {
         const query = Object.fromEntries(searchParams)
         delete query.auth_provider // BE doesn't need this
 
-        token = await sdk.auth.callback("user", CLOUD_AUTH_PROVIDER, query)
+        const result = await sdk.auth.callback(
+          "user",
+          CLOUD_AUTH_PROVIDER,
+          query
+        )
+
+        if (typeof result !== "string") {
+          throw new Error("Unexpected authentication callback response")
+        }
+
+        token = result
       } catch (error) {
         throw new Error("Authentication callback failed")
       }

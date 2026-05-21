@@ -16,18 +16,34 @@ export const deleteReservationsStep = createStep(
   deleteReservationsStepId,
   async (ids: DeleteReservationsStepInput, { container }) => {
     const service = container.resolve<IInventoryService>(Modules.INVENTORY)
+    const locking = container.resolve(Modules.LOCKING)
 
-    await service.softDeleteReservationItems(ids)
+    const reservations = await service.listReservationItems(
+      { id: ids },
+      { select: ["id", "inventory_item_id"] }
+    )
 
-    return new StepResponse(void 0, ids)
+    const inventoryItemIds = reservations.map((r) => r.inventory_item_id)
+    const lockingKeys = Array.from(new Set(inventoryItemIds))
+
+    await locking.execute(lockingKeys, async () => {
+      await service.softDeleteReservationItems(ids)
+    })
+
+    return new StepResponse(void 0, { ids, inventoryItemIds })
   },
-  async (prevIds, { container }) => {
-    if (!prevIds?.length) {
+  async (data, { container }) => {
+    if (!data?.ids?.length) {
       return
     }
 
     const service = container.resolve<IInventoryService>(Modules.INVENTORY)
+    const locking = container.resolve(Modules.LOCKING)
 
-    await service.restoreReservationItems(prevIds)
+    const lockingKeys = Array.from(new Set(data.inventoryItemIds))
+
+    await locking.execute(lockingKeys, async () => {
+      await service.restoreReservationItems(data.ids)
+    })
   }
 )
