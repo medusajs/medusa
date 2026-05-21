@@ -1,24 +1,31 @@
 import { Spinner } from "@medusajs/icons"
+import { useMemo } from "react"
 import { Navigate, Outlet, useLocation } from "react-router-dom"
+import type { Permission, UserPolicy } from "../../../lib/permissions"
+import { useMePermissions } from "../../../hooks/api/rbac-roles"
 import { useMe } from "../../../hooks/api/users"
-import { buildPermissionsResponse } from "../../../lib/permissions"
 import { PermissionsProvider } from "../../../providers/permissions-provider"
 import { SearchProvider } from "../../../providers/search-provider"
 import { SidebarProvider } from "../../../providers/sidebar-provider"
-import { HttpTypes } from "@medusajs/types"
 
 export const ProtectedRoute = () => {
   const location = useLocation()
 
-  const { user, isLoading: isLoadingUser } = useMe({
-    fields: "rbac_roles.*,rbac_roles.policies.*",
-  })
+  const { user, isLoading: isLoadingUser } = useMe()
+  const { data: permissionsResponse, isLoading: isLoadingPermissions } =
+    useMePermissions({
+      // Don't fetch permissions until we know the user is authenticated.
+      enabled: !!user,
+    })
 
-  const policy = user
-    ? buildPermissionsResponse(
-        user as HttpTypes.AdminUser & { rbac_roles: HttpTypes.AdminRbacRole[] }
-      ).policy
-    : null
+  const policy: UserPolicy | null = useMemo(() => {
+    if (!permissionsResponse) {
+      return null
+    }
+    return {
+      permissions: permissionsResponse.permissions as Permission[],
+    }
+  }, [permissionsResponse])
 
   if (isLoadingUser) {
     return (
@@ -33,7 +40,7 @@ export const ProtectedRoute = () => {
   }
 
   return (
-    <PermissionsProvider policy={policy} isLoading={isLoadingUser}>
+    <PermissionsProvider policy={policy} isLoading={isLoadingPermissions}>
       <SidebarProvider>
         <SearchProvider>
           <Outlet />
