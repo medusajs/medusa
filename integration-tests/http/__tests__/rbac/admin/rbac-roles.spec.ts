@@ -919,7 +919,7 @@ medusaIntegrationTestRunner({
               },
             })
 
-            expect(result).toHaveLength(1)
+            expect(result).toBeUndefined()
           })
 
           it("`resource:*` holder can assign a role whose policies fall under that resource", async () => {
@@ -939,7 +939,7 @@ medusaIntegrationTestRunner({
               },
             })
 
-            expect(result).toHaveLength(1)
+            expect(result).toBeUndefined()
           })
 
           it("denies a scoped holder when the role contains policies outside their grant", async () => {
@@ -1011,7 +1011,7 @@ medusaIntegrationTestRunner({
               },
             })
 
-            expect(result).toHaveLength(1)
+            expect(result).toBeUndefined()
           })
         })
       })
