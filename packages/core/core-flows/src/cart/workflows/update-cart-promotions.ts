@@ -56,6 +56,9 @@ export type UpdateCartPromotionsWorkflowInput = {
   force_refresh_payment_collection?: boolean
 }
 
+/**
+ * The ID of the workflow that updates a cart's promotions.
+ */
 export const updateCartPromotionsWorkflowId = "update-cart-promotions"
 /**
  * This workflow updates a cart's promotions, applying or removing promotion codes from the cart. It also computes the adjustments
