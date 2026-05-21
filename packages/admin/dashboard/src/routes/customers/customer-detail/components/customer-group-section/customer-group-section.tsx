@@ -16,7 +16,10 @@ import { keepPreviousData } from "@tanstack/react-query"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  Action,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { PermissionGuard } from "../../../../../components/common/permission-guard"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useBatchCustomerCustomerGroups } from "../../../../../hooks/api"
@@ -206,7 +209,7 @@ const CustomerGroupRowActions = ({
     })
   }
 
-  const actions = []
+  const actions: Action[] = []
 
   actions.push({
     label: t("actions.edit"),

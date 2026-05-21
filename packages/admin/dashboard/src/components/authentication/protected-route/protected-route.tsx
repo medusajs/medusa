@@ -5,6 +5,7 @@ import { buildPermissionsResponse } from "../../../lib/permissions"
 import { PermissionsProvider } from "../../../providers/permissions-provider"
 import { SearchProvider } from "../../../providers/search-provider"
 import { SidebarProvider } from "../../../providers/sidebar-provider"
+import { HttpTypes } from "@medusajs/types"
 
 export const ProtectedRoute = () => {
   const location = useLocation()
@@ -13,7 +14,11 @@ export const ProtectedRoute = () => {
     fields: "rbac_roles.*,rbac_roles.policies.*",
   })
 
-  const policy = user ? buildPermissionsResponse(user).policy : null
+  const policy = user
+    ? buildPermissionsResponse(
+        user as HttpTypes.AdminUser & { rbac_roles: HttpTypes.AdminRbacRole[] }
+      ).policy
+    : null
 
   if (isLoadingUser) {
     return (

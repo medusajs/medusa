@@ -11,7 +11,10 @@ import {
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { useDeleteCustomer } from "../../../../../hooks/api/customers"
 import { useCustomerPermissions } from "../../../../../hooks/use-resource-permissions"
 
@@ -70,7 +73,7 @@ export const CustomerGeneralSection = ({
     })
   }
 
-  const groups = []
+  const groups: ActionGroup[] = []
 
   if (canUpdate) {
     groups.push({
