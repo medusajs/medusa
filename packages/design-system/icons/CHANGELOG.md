@@ -1,5 +1,11 @@
 # @medusajs/icons
 
+## 2.15.3
+
+### Patch Changes
+
+- [#15271](https://github.com/medusajs/medusa/pull/15271) [`ac0a8b63d16518eae7c5370171b76bdf2d8dc2c5`](https://github.com/medusajs/medusa/commit/ac0a8b63d16518eae7c5370171b76bdf2d8dc2c5) Thanks [@Suh0161](https://github.com/Suh0161)! - fix(icons): broaden React peer dependency to support v18 and v19
+
 ## 2.15.2
 
 ## 2.15.1

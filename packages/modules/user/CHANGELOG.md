@@ -1,5 +1,12 @@
 # @medusajs/user
 
+## 2.15.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.3
+
 ## 2.15.2
 
 ### Patch Changes
