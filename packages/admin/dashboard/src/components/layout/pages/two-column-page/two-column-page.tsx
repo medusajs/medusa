@@ -37,7 +37,7 @@ const Root = <TData,>({
    */
   showMetadata = false,
   /**
-   * Section rendered under the JSON section.
+   * Optional section rendered under the JSON section.
    */
   requiredPermissionsSection,
   /**
