@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server"
-import path from "path"
-import { existsSync } from "fs"
 import getSchemaContent from "../../utils/get-schema-content"
+import { getPathForEnv } from "../../utils/get-path-for-env"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -36,38 +35,40 @@ export async function GET(request: Request) {
     .replace("#/components/schemas/", "")
     .replaceAll("./components/schemas/", "")
 
-  const baseSchemasPath = path.join(
-    process.cwd(),
+  const r2Base = process.env.SPECS_R2_BASE_URL
+
+  const baseSchemasUrl = getPathForEnv(
+    r2Base || process.cwd(),
     "specs",
     area,
     "components",
     "schemas"
   )
-  const schemaPath = path.join(baseSchemasPath, name)
+  const schemaUrl = getPathForEnv(baseSchemasUrl, name)
 
-  if (!existsSync(schemaPath)) {
+  try {
+    const { dereferencedDocument, originalSchema: schema } =
+      await getSchemaContent(schemaUrl, baseSchemasUrl)
+
+    return NextResponse.json(
+      {
+        schema: dereferencedDocument.components?.schemas
+          ? Object.values(dereferencedDocument.components?.schemas)[0]
+          : schema,
+      },
+      {
+        status: 200,
+      }
+    )
+  } catch (error) {
     return NextResponse.json(
       {
         success: false,
-        message: `Schema ${name} doesn't exist.`,
+        message: `Failed to fetch schema: ${error}`,
       },
       {
-        status: 404,
+        status: 500,
       }
     )
   }
-
-  const { dereferencedDocument, originalSchema: schema } =
-    await getSchemaContent(schemaPath, baseSchemasPath)
-
-  return NextResponse.json(
-    {
-      schema: dereferencedDocument.components?.schemas
-        ? Object.values(dereferencedDocument.components?.schemas)[0]
-        : schema,
-    },
-    {
-      status: 200,
-    }
-  )
 }
