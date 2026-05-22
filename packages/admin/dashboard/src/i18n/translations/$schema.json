@@ -9525,6 +9525,7 @@
           "type": "string"
         },
         "create": {
+        "settings": {
           "type": "object",
           "properties": {
             "header": {

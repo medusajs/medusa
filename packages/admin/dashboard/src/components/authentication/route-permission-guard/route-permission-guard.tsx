@@ -48,6 +48,15 @@ const readRequirementFromHandle = (
   const permissions = Array.isArray(rawPermissions)
     ? rawPermissions
     : [rawPermissions]
+
+  if (!permissions.every((permission) => typeof permission === "string")) {
+    console.error(
+      "Invalid permissions: all permissions must be strings",
+      permissions
+    )
+    return undefined
+  }
+
   if (!permissions.length) {
     return undefined
   }

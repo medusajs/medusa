@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom"
 import { JsonViewSection } from "../../../common/json-view-section"
 import { MetadataSection } from "../../../common/metadata-section"
 import { PageProps, WidgetProps } from "../types"
+import { RequiredPermissionsSection } from "../../../common/required-permissions-section"
 
 interface TwoColumnWidgetProps extends WidgetProps {
   sideBefore: ComponentType<any>[]
@@ -39,7 +40,7 @@ const Root = <TData,>({
   /**
    * Optional section rendered under the JSON section.
    */
-  requiredPermissionsSection,
+  requiredPermissionsSection = <RequiredPermissionsSection />,
   /**
    * Whether to render an outlet for children routes. Defaults to true.
    */

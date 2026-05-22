@@ -1,5 +1,16 @@
 # @medusajs/core-flows
 
+## 2.15.4
+
+### Patch Changes
+
+- [#15470](https://github.com/medusajs/medusa/pull/15470) [`fe9636daba55fd65213fe338ba818ec1429783fa`](https://github.com/medusajs/medusa/commit/fe9636daba55fd65213fe338ba818ec1429783fa) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows): use hasPermission util to perform checks in validateUserRolePermissionsStep
+
+- [#15465](https://github.com/medusajs/medusa/pull/15465) [`94a3ee29d2a2ec441791d671e42deb24108df7f3`](https://github.com/medusajs/medusa/commit/94a3ee29d2a2ec441791d671e42deb24108df7f3) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows,medusa): align validate user permissions check with hasPermission util
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.4
+
 ## 2.15.3
 
 ### Patch Changes

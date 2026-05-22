@@ -47,9 +47,12 @@ const PolicyOperation: Record<string, string> & {
   readonly ALL: "*"
 } = global.PolicyOperation ?? { ALL: WILDCARD }
 
+const normalizeKey = (element: string) => {
+  return element === WILDCARD ? WILDCARD : toSnakeCase(element)
+}
+
 for (const operation of defaultOperations) {
-  const operationKey =
-    operation === WILDCARD ? WILDCARD : toSnakeCase(operation)
+  const operationKey = normalizeKey(operation)
   PolicyOperation[operationKey] = operation
 }
 
@@ -114,10 +117,8 @@ export function definePolicies(
   }
 
   for (const policy of policiesArray) {
-    const resourceKey =
-      policy.resource === WILDCARD ? WILDCARD : toSnakeCase(policy.resource)
-    const operationKey =
-      policy.operation === WILDCARD ? WILDCARD : toSnakeCase(policy.operation)
+    const resourceKey = normalizeKey(policy.resource)
+    const operationKey = normalizeKey(policy.operation)
 
     policy.resource = resourceKey
     policy.operation = operationKey
