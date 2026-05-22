@@ -47,6 +47,8 @@ import { WorkflowExecution } from "./workflow-execution.js"
 import { ShippingOptionType } from "./shipping-option-type.js"
 import { Locale } from "./locale.js"
 import { Translation } from "./translation.js"
+import { RbacRole } from "./rbac-role"
+import { RbacPolicy } from "./rbac-policy"
 
 export class Admin {
   /**
@@ -243,6 +245,14 @@ export class Admin {
    * @featureFlag view_configurations
    */
   public views: Views
+  /**
+   * @tags rbac
+   */
+  public rbacRole: RbacRole
+  /**
+   * @tags rbac
+   */
+  public rbacPolicy: RbacPolicy
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -293,5 +303,7 @@ export class Admin {
     this.plugin = new Plugin(client)
     this.taxProvider = new TaxProvider(client)
     this.views = new Views(client)
+    this.rbacRole = new RbacRole(client)
+    this.rbacPolicy = new RbacPolicy(client)
   }
 }
