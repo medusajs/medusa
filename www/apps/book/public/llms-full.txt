@@ -4480,7 +4480,7 @@ export const analyticsPolicies = definePolicies("analytics", {
   view_reports: "View analytics reports",
   generate_reports: "Generate new reports", 
   export_data: "Export analytics data",
-  manage_settings: "Configure analytics settings"
+  manage_settings: "Configure analytics settings",
 })
 
 // Export individual policies for use in code
@@ -4488,7 +4488,7 @@ export const {
   ANALYTICS_VIEW_REPORTS,
   ANALYTICS_GENERATE_REPORTS, 
   ANALYTICS_EXPORT_DATA,
-  ANALYTICS_MANAGE_SETTINGS
+  ANALYTICS_MANAGE_SETTINGS,
 } = analyticsPolicies
 ```
 
@@ -4506,7 +4506,7 @@ import {
   createStep,
   StepResponse,
   WorkflowData,
-  WorkflowResponse
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { hasPermission } from "@medusajs/framework"
 import { MedusaError } from "@medusajs/framework/utils"
@@ -4520,9 +4520,9 @@ const checkGeneratePermissionStep = createStep(
       roles: userId,
       action: {
         resource: "analytics",
-        operation: "generate_reports"
+        operation: "generate_reports",
       },
-      container
+      container,
     })
 
     if (!hasAccess) {
@@ -4548,7 +4548,7 @@ const generateReportStep = createStep(
     
     const report = await analyticsService.generateReport({
       type: reportType,
-      dateRange
+      dateRange,
     })
 
     return new StepResponse(
@@ -4578,7 +4578,7 @@ export const generateReportWorkflow = createWorkflow(
     // Generate report if authorized
     const { report } = generateReportStep({
       reportType: input.reportType,
-      dateRange: input.dateRange
+      dateRange: input.dateRange,
     })
 
     return new WorkflowResponse({ report })
@@ -4595,7 +4595,7 @@ Create API routes that check permissions before allowing access.
 ```ts title="src/api/admin/analytics/reports/route.ts"
 import {
   AuthenticatedMedusaRequest,
-  MedusaResponse
+  MedusaResponse,
 } from "@medusajs/framework/http"
 import { HttpTypes, MedusaError } from "@medusajs/framework/types"
 import { hasPermission } from "@medusajs/framework"
@@ -4621,9 +4621,9 @@ export const GET = async (
     roles: userId,
     action: {
       resource: "analytics", 
-      operation: "view_reports"
+      operation: "view_reports",
     },
-    container: req.scope
+    container: req.scope,
   })
 
   if (!canView) {
@@ -4655,9 +4655,9 @@ export const POST = async (
       reportType,
       dateRange: {
         from: new Date(dateRange.from),
-        to: new Date(dateRange.to)
-      }
-    }
+        to: new Date(dateRange.to),
+      },
+    },
   })
 
   res.json({ report: result.report })
@@ -4679,12 +4679,12 @@ import {
   Heading,
   Card,
   Text,
-  Badge
+  Badge,
 } from "@medusajs/ui"
 import {
   PermissionGuard,
   RoutePermissionGuard,
-  usePermissions
+  usePermissions,
 } from "@medusajs/dashboard"
 import { useState } from "react"
 import { generateReportWorkflow } from "../../../workflows/analytics/generate-report"
@@ -4703,9 +4703,9 @@ export default function AnalyticsPage() {
           reportType: type,
           dateRange: {
             from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
-            to: new Date()
-          }
-        }
+            to: new Date(),
+          },
+        },
       })
     } catch (error) {
       console.error("Report generation failed:", error)
@@ -4832,7 +4832,7 @@ export default function AnalyticsPage() {
 
 export const config = defineRouteConfig({
   label: "Analytics",
-  icon: AnalyticsIcon
+  icon: AnalyticsIcon,
 })
 ```
 
@@ -4847,7 +4847,7 @@ import { LoaderOptions } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export default async function setupAnalyticsRBAC({
-  container
+  container,
 }: LoaderOptions) {
   const rbacModuleService = container.resolve(Modules.RBAC)
 
@@ -4858,35 +4858,35 @@ export default async function setupAnalyticsRBAC({
       resource: "analytics",
       operation: "view_reports",
       name: "View Analytics Reports",
-      description: "Allows viewing analytics reports"
+      description: "Allows viewing analytics reports",
     },
     {
       key: "analytics.generate_reports", 
       resource: "analytics",
       operation: "generate_reports",
       name: "Generate Reports",
-      description: "Allows generating new analytics reports"
+      description: "Allows generating new analytics reports",
     },
     {
       key: "analytics.export_data",
       resource: "analytics", 
       operation: "export_data",
       name: "Export Data",
-      description: "Allows exporting analytics data"
+      description: "Allows exporting analytics data",
     },
     {
       key: "analytics.manage_settings",
       resource: "analytics",
       operation: "manage_settings", 
       name: "Manage Settings",
-      description: "Allows configuring analytics settings"
-    }
+      description: "Allows configuring analytics settings",
+    },
   ]
 
   // Create policies if they don't exist
   for (const policyData of policies) {
     const existingPolicy = await rbacModuleService.listPolicies({
-      key: [policyData.key]
+      key: [policyData.key],
     })
 
     if (existingPolicy.length === 0) {
@@ -4904,14 +4904,14 @@ export default async function setupAnalyticsRBAC({
   await rbacModuleService.addRolePolicies([
     {
       role_id: viewerRole.id,
-      policy_id: policies[0].key
-    }
+      policy_id: policies[0].key,
+    },
   ])
 
   // Create analytics admin role
   const adminRole = await rbacModuleService.upsert({
     name: "Analytics Admin",
-    description: "Full analytics access"
+    description: "Full analytics access",
   })
 
   // Add all permissions to admin role
@@ -4919,8 +4919,8 @@ export default async function setupAnalyticsRBAC({
     await rbacModuleService.addRolePolicies([
       {
         role_id: adminRole.id,
-        policy_id: policy.key
-      }
+        policy_id: policy.key,
+      },
     ])
   }
 }
@@ -4951,18 +4951,18 @@ medusaIntegrationTestRunner({
 
         // Create test role with view permission
         const role = await rbacService.createRoles({
-          name: "Test Viewer"
+          name: "Test Viewer",
         })
 
         const policy = await rbacService.createPolicies({
           key: "analytics.view_reports",
           resource: "analytics", 
-          operation: "view_reports"
+          operation: "view_reports",
         })
 
         await rbacService.addRolePolicies([{
           role_id: role.id,
-          policy_id: policy.id
+          policy_id: policy.id,
         }])
 
         // Test permission check
@@ -4970,9 +4970,9 @@ medusaIntegrationTestRunner({
           roles: [role.id],
           action: {
             resource: "analytics",
-            operation: "view_reports"
+            operation: "view_reports",
           },
-          container
+          container,
         })
 
         expect(canView).toBe(true)
@@ -4983,16 +4983,16 @@ medusaIntegrationTestRunner({
 
         // Create role without generate permission
         const role = await rbacService.createRoles({
-          name: "Limited User"
+          name: "Limited User",
         })
 
         const canGenerate = await hasPermission({
           roles: [role.id],
           action: {
             resource: "analytics",
-            operation: "generate_reports" 
+            operation: "generate_reports", 
           },
-          container
+          container,
         })
 
         expect(canGenerate).toBe(false)
@@ -5002,39 +5002,39 @@ medusaIntegrationTestRunner({
         const rbacService = container.resolve(Modules.RBAC)
 
         const role = await rbacService.createRoles({
-          name: "Analytics Admin"
+          name: "Analytics Admin",
         })
 
         // Create wildcard policy
         const policy = await rbacService.createPolicies({
           key: "analytics.*",
           resource: "analytics",
-          operation: "*"
+          operation: "*",
         })
 
         await rbacService.addRolePolicies([{
           role_id: role.id,
-          policy_id: policy.id
+          policy_id: policy.id,
         }])
 
         // Should have access to all analytics operations
         const canView = await hasPermission({
           roles: [role.id],
           action: { resource: "analytics", operation: "view_reports" },
-          container
+          container,
         })
 
         const canGenerate = await hasPermission({
           roles: [role.id], 
           action: { resource: "analytics", operation: "generate_reports" },
-          container
+          container,
         })
 
         expect(canView).toBe(true)
         expect(canGenerate).toBe(true)
       })
     })
-  }
+  },
 })
 ```
 
@@ -9313,8 +9313,8 @@ import { defineConfig } from "@medusajs/framework"
 export default defineConfig({
   // ... other configurations
   featureFlags: {
-    rbac: true
-  }
+    rbac: true,
+  },
 })
 ```
 
@@ -9365,7 +9365,7 @@ export default function DynamicMenu() {
   const canManageProducts = hasAnyPermission([
     "product:create", 
     "product:update", 
-    "product:delete"
+    "product:delete",
   ])
   
   if (!canManageProducts) {
@@ -9473,7 +9473,7 @@ import { definePolicies } from "@medusajs/framework/utils"
 export const analyticsModulePolicies = definePolicies("analytics", {
   generate_reports: "Generate analytical reports",
   export_data: "Export analytics data", 
-  view_dashboards: "View analytics dashboards"
+  view_dashboards: "View analytics dashboards",
 })
 ```
 
@@ -9491,7 +9491,7 @@ export async function createCustomPolicies() {
     resource: "custom_reports",
     operation: "generate", 
     name: "Generate Custom Reports",
-    description: "Allows generating custom business reports"
+    description: "Allows generating custom business reports",
   })
 
   const exportPolicy = await sdk.admin.rbacPolicy.create({
@@ -9499,7 +9499,7 @@ export async function createCustomPolicies() {
     resource: "analytics",
     operation: "export",
     name: "Export Analytics", 
-    description: "Allows exporting analytics data"
+    description: "Allows exporting analytics data",
   })
 
   return { reportPolicy, exportPolicy }
@@ -9520,21 +9520,21 @@ export async function setupBusinessRoles(container) {
   const { result: editorRole } = await createRoleWorkflow(container).run({
     input: {
       name: "Content Editor",
-      description: "Can create and edit products and collections"
-    }
+      description: "Can create and edit products and collections",
+    },
   })
 
   // Add specific policies to the role
   await sdk.admin.rbacRole.addPolicies(editorRole.role.id, {
-    policies: ["product:create", "product:update", "collection:*"]
+    policies: ["product:create", "product:update", "collection:*"],
   })
 
   // Create manager role with broader access  
   const { result: managerRole } = await createRoleWorkflow(container).run({
     input: {
       name: "Store Manager", 
-      description: "Can manage products, orders, and customers"
-    }
+      description: "Can manage products, orders, and customers",
+    },
   })
 
   await sdk.admin.rbacRole.addPolicies(managerRole.role.id, {
@@ -9542,8 +9542,8 @@ export async function setupBusinessRoles(container) {
       "product:*", 
       "order:read", 
       "order:update", 
-      "customer:read"
-    ]
+      "customer:read",
+    ],
   })
 }
 ```
@@ -9557,8 +9557,8 @@ Create role hierarchies with inheritance:
 const { result: managerRole } = await createRoleWorkflow(container).run({
   input: {
     name: "Manager",
-    description: "Management level access"
-  }
+    description: "Management level access",
+  },
 })
 
 // Create child role that inherits parent permissions
@@ -9566,8 +9566,8 @@ const { result: seniorManagerRole } = await createRoleWorkflow(container).run({
   input: {
     name: "Senior Manager",
     description: "Senior management with additional privileges",
-    parent_id: managerRole.role.id  // Inherits all manager permissions
-  }
+    parent_id: managerRole.role.id,  // Inherits all manager permissions
+  },
 })
 ```
 
@@ -9579,7 +9579,7 @@ Check permissions within custom workflows and steps:
 import { 
   createWorkflow, 
   createStep, 
-  StepResponse 
+  StepResponse, 
 } from "@medusajs/framework/workflows-sdk"
 import { hasPermission } from "@medusajs/framework"
 
@@ -9589,13 +9589,13 @@ const checkPermissionStep = createStep(
     actorId, 
     actorType, 
     resource, 
-    operation 
+    operation, 
   }, { container }) => {
     // Check if user has permission for this operation
     const canPerform = await hasPermission({
       roles: actorId, // User ID or role IDs
       action: { resource, operation },
-      container
+      container,
     })
 
     if (!canPerform) {
@@ -9616,7 +9616,7 @@ export const protectedProductUpdateWorkflow = createWorkflow(
       actorId: input.userId,
       actorType: "user",
       resource: "product", 
-      operation: "update"
+      operation: "update",
     })
 
     // Continue with protected operation...
@@ -9675,14 +9675,14 @@ export default function UserStatus() {
 import {
   PermissionGuard,
   RoutePermissionGuard,
-  usePermissions
+  usePermissions,
 } from "@medusajs/dashboard"
 import {
   Button,
   Container,
   DataTable,
   Heading,
-  Text
+  Text,
 } from "@medusajs/ui"
 
 export default function AdvancedProductManager() {
@@ -9691,7 +9691,7 @@ export default function AdvancedProductManager() {
   // Check complex permission combinations
   const canBulkEdit = hasAllPermissions([
     "product:update", 
-    "inventory:update"
+    "inventory:update",
   ])
 
   const isProductAdmin = can("product", "*")
@@ -44700,14 +44700,14 @@ Roles can be organized hierarchically using parent-child relationships. Child ro
 // Parent role
 const managerRole = {
   name: "Manager",
-  policies: ["product:read", "customer:read"]
+  policies: ["product:read", "customer:read"],
 }
 
 // Child role inherits parent policies
 const seniorManagerRole = {
   name: "Senior Manager", 
   parent_id: managerRole.id,
-  policies: ["order:*"] // Gets product:read, customer:read, order:*
+  policies: ["order:*"], // Gets product:read, customer:read, order:*
 }
 ```
 
@@ -44771,7 +44771,7 @@ const { policy } = await sdk.admin.rbacPolicy.create({
   resource: "custom_resource", 
   operation: "manage",
   name: "Custom Resource Management",
-  description: "Manage custom business resources"
+  description: "Manage custom business resources",
 })
 ```
 
@@ -44808,7 +44808,7 @@ const checkPermissionStep = createStep(
     const hasAccess = await hasPermission({
       roles: userId,
       action: { resource, operation },
-      container
+      container,
     })
     
     if (!hasAccess) {
@@ -44908,8 +44908,8 @@ export async function POST(
     .run({
       input: {
         name: "Editor",
-        description: "Can edit content"
-      }
+        description: "Can edit content",
+      },
     })
 
   res.send(result)
@@ -44933,8 +44933,8 @@ export default async function handleUserCreated({
     .run({
       input: {
         name: "New User Role",
-        description: "Default role for new users"
-      }
+        description: "Default role for new users",
+      },
     })
 
   console.log(result)
@@ -44963,7 +44963,7 @@ export default async function cleanupRolesJob(
 
   if (unusedRoles.length > 0) {
     await rbacModuleService.deleteRoles(
-      unusedRoles.map(role => role.id)
+      unusedRoles.map((role) => role.id)
     )
   }
 }
@@ -131403,14 +131403,14 @@ const DynamicActions = ({ productId }: { productId: string }) => {
     hasPermission, 
     hasAnyPermission, 
     hasAllPermissions, 
-    can 
+    can, 
   } = usePermissions()
   
   const canEdit = can("product", "update")
   const canDelete = can("product", "delete")
   const canManageInventory = hasAllPermissions([
     "product:update", 
-    "inventory:update"
+    "inventory:update",
   ])
   
   return (
@@ -131544,13 +131544,13 @@ hasPermission("product:create") // ❌ false
 ```tsx title="src/admin/widgets/product-management.tsx"
 import { 
   PermissionGuard, 
-  usePermissions 
+  usePermissions, 
 } from "@medusajs/dashboard"
 import { 
   Button, 
   Container, 
   Heading, 
-  Text 
+  Text, 
 } from "@medusajs/ui"
 
 const ProductManagement = () => {
@@ -131559,7 +131559,7 @@ const ProductManagement = () => {
   const hasProductAccess = hasAnyPermission([
     "product:read", 
     "product:create", 
-    "product:update"
+    "product:update",
   ])
 
   if (!hasProductAccess) {
