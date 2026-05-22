@@ -331,11 +331,10 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
 
           const itemsAtLocationWithoutAvailableQuantity = cart.items.filter(
             (item) => {
-              if (!item.variant?.manage_inventory) {
-                return false
-              }
-
-              if (item.variant?.allow_backorder) {
+              if (
+                !item.variant?.manage_inventory ||
+                item.variant?.allow_backorder
+              ) {
                 return false
               }
 
