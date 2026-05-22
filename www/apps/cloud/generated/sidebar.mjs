@@ -176,6 +176,14 @@ export const generatedSidebars = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
+                "title": "Fix with AI",
+                "path": "/deployments/fix-with-ai",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
                 "title": "Troubleshooting",
                 "path": "/deployments/troubleshooting",
                 "children": []

@@ -322,17 +322,27 @@ Learn more in the [Access Live Deployment](./access/page.mdx) guide.
 
 ## Troubleshooting Failed Deployments
 
-### Troubleshooting Build Failures
+### AI Troubleshooting
 
-If a deployment's status is "Build failed", you can check the [build logs](../logs/page.mdx) to understand why it failed. The build logs will show you the errors that occurred during the build process for either the backend or storefront (if applicable), which can help you fix the issue in your code.
+When a deployment or its build fails, you can use the "Fix with AI" feature to troubleshoot the issue with the help of Cloud's support agent. The AI agent will analyze the deployment and build logs, identify the root cause of the issue, and provide you with actionable steps to resolve it.
 
-You can also contact support for help with the issue, if necessary.
+Learn more in the [Fix Deployment and Build Issues with AI](./fix-with-ai/page.mdx) guide.
 
-### Troubleshooting Deployment Failures
+### Manually Troubleshooting Build Failures
 
-If a deployment's status is "Deploy failed", you can check the [runtime logs](../logs/page.mdx) to understand why it failed. The runtime logs will show you the errors that occurred during the deployment process, which can help you fix the issue in your code.
+If a deployment's status is "Build failed", you can:
 
-You can also contact support for help with the issue, if necessary.
+- Check the [build logs](../logs/page.mdx) to understand why it failed. The build logs will show you the errors that occurred during the build process for either the backend or storefront (if applicable), which can help you fix the issue in your code.
+- Use the [Cloud CLI](../cli/commands/logs/page.mdx) to stream the build logs and identify the issue. This is useful when debugging the issue with your AI agent.
+- Contact support for help with the issue, if necessary.
+
+### Manually Troubleshooting Deployment Failures
+
+If a deployment's status is "Deploy failed", you can:
+
+- Check the [runtime logs](../logs/page.mdx) to understand why it failed. The runtime logs will show you the errors that occurred during the deployment process, which can help you fix the issue in your code.
+- Use the [Cloud CLI](../cli/commands/logs/page.mdx) to stream the deployment logs and identify the issue. This is useful when debugging the issue with your AI agent.
+- Contact support for help with the issue, if necessary.
 
 ---
 
