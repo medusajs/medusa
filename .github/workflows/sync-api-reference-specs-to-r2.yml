@@ -2,6 +2,11 @@ name: Sync API Reference Specs to R2
 
 on:
   workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: "Commit SHA to retrieve changed files from (defaults to HEAD)"
+        required: false
+        type: string
   push:
     branches:
       - develop
@@ -19,7 +24,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: ${{ inputs.commit_sha && 0 || 2 }}
+          ref: ${{ inputs.commit_sha || github.ref }}
 
       - uses: actions/setup-node@v4
         with:
@@ -36,6 +42,7 @@ jobs:
         with:
           files: "www/apps/api-reference/specs/**"
           separator: " "
+          sha: ${{ inputs.commit_sha || '' }}
 
       - name: Upload added/modified specs
         if: steps.changed.outputs.any_changed == 'true'
