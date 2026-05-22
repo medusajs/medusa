@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: ${{ inputs.commit_sha && 0 || 2 }}
+          fetch-depth: ${{ inputs.commit_sha != '' && '0' || '2' }}
 
       - uses: actions/setup-node@v4
         with:
@@ -35,6 +35,12 @@ jobs:
         run: yarn install --immutable
         working-directory: .
 
+      - name: Resolve dispatch base SHA
+        if: inputs.commit_sha != ''
+        id: dispatch_base
+        working-directory: .
+        run: echo "base_sha=$(git rev-parse ${{ inputs.commit_sha }}^)" >> "$GITHUB_OUTPUT"
+
       - name: Get changed spec files
         id: changed
         uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96
@@ -42,6 +48,7 @@ jobs:
           files: "www/apps/ui/specs/**"
           separator: " "
           sha: ${{ inputs.commit_sha || '' }}
+          base_sha: ${{ steps.dispatch_base.outputs.base_sha || '' }}
 
       - name: Upload added/modified specs
         if: steps.changed.outputs.any_changed == 'true'
