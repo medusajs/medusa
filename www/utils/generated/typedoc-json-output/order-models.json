@@ -1,12 +1,12 @@
 {
-	"id": 9325,
+	"id": 9513,
 	"name": "order-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 9326,
+			"id": 9514,
 			"name": "OrderAddress",
 			"variant": "declaration",
 			"kind": 32,
@@ -18,7 +18,7 @@
 					"fileName": "address.ts",
 					"line": 27,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/address.ts#L27"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/address.ts#L27"
 				}
 			],
 			"type": {
@@ -38,14 +38,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 9327,
+									"id": 9515,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 9328,
+											"id": 9516,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -63,7 +63,7 @@
 													"fileName": "address.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/address.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/address.ts#L5"
 												}
 											],
 											"type": {
@@ -89,7 +89,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9329,
+											"id": 9517,
 											"name": "customer_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -109,7 +109,7 @@
 													"fileName": "address.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/address.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/address.ts#L6"
 												}
 											],
 											"type": {
@@ -124,7 +124,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9330,
+											"id": 9518,
 											"name": "company",
 											"variant": "declaration",
 											"kind": 1024,
@@ -144,7 +144,7 @@
 													"fileName": "address.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/address.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/address.ts#L7"
 												}
 											],
 											"type": {
@@ -159,7 +159,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9331,
+											"id": 9519,
 											"name": "first_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -179,7 +179,7 @@
 													"fileName": "address.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/address.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/address.ts#L8"
 												}
 											],
 											"type": {
@@ -194,7 +194,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9332,
+											"id": 9520,
 											"name": "last_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -214,7 +214,7 @@
 													"fileName": "address.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/address.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/address.ts#L9"
 												}
 											],
 											"type": {
@@ -229,7 +229,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9333,
+											"id": 9521,
 											"name": "address_1",
 											"variant": "declaration",
 											"kind": 1024,
@@ -249,7 +249,7 @@
 													"fileName": "address.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/address.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/address.ts#L10"
 												}
 											],
 											"type": {
@@ -264,7 +264,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9334,
+											"id": 9522,
 											"name": "address_2",
 											"variant": "declaration",
 											"kind": 1024,
@@ -284,7 +284,7 @@
 													"fileName": "address.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/address.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/address.ts#L11"
 												}
 											],
 											"type": {
@@ -299,7 +299,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9335,
+											"id": 9523,
 											"name": "city",
 											"variant": "declaration",
 											"kind": 1024,
@@ -319,7 +319,7 @@
 													"fileName": "address.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/address.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/address.ts#L12"
 												}
 											],
 											"type": {
@@ -334,7 +334,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9336,
+											"id": 9524,
 											"name": "country_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -365,7 +365,7 @@
 													"fileName": "address.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/address.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/address.ts#L13"
 												}
 											],
 											"type": {
@@ -380,7 +380,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9337,
+											"id": 9525,
 											"name": "province",
 											"variant": "declaration",
 											"kind": 1024,
@@ -400,7 +400,7 @@
 													"fileName": "address.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/address.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/address.ts#L14"
 												}
 											],
 											"type": {
@@ -415,7 +415,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9338,
+											"id": 9526,
 											"name": "postal_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -435,7 +435,7 @@
 													"fileName": "address.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/address.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/address.ts#L15"
 												}
 											],
 											"type": {
@@ -450,7 +450,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9339,
+											"id": 9527,
 											"name": "phone",
 											"variant": "declaration",
 											"kind": 1024,
@@ -470,7 +470,7 @@
 													"fileName": "address.ts",
 													"line": 16,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/address.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/address.ts#L16"
 												}
 											],
 											"type": {
@@ -485,7 +485,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9340,
+											"id": 9528,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -505,7 +505,7 @@
 													"fileName": "address.ts",
 													"line": 17,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/address.ts#L17"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/address.ts#L17"
 												}
 											],
 											"type": {
@@ -524,19 +524,19 @@
 										{
 											"title": "Properties",
 											"children": [
-												9328,
-												9329,
-												9330,
-												9331,
-												9332,
-												9333,
-												9334,
-												9335,
-												9336,
-												9337,
-												9338,
-												9339,
-												9340
+												9516,
+												9517,
+												9518,
+												9519,
+												9520,
+												9521,
+												9522,
+												9523,
+												9524,
+												9525,
+												9526,
+												9527,
+												9528
 											]
 										}
 									],
@@ -545,7 +545,7 @@
 											"fileName": "address.ts",
 											"line": 4,
 											"character": 26,
-											"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/address.ts#L4"
+											"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/address.ts#L4"
 										}
 									]
 								}
@@ -565,7 +565,7 @@
 			"defaultValue": "_OrderAddress"
 		},
 		{
-			"id": 9397,
+			"id": 9585,
 			"name": "OrderClaimItemImage",
 			"variant": "declaration",
 			"kind": 32,
@@ -577,7 +577,7 @@
 					"fileName": "claim-item-image.ts",
 					"line": 31,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim-item-image.ts#L31"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim-item-image.ts#L31"
 				}
 			],
 			"type": {
@@ -587,7 +587,7 @@
 			"defaultValue": "_OrderClaimItemImage"
 		},
 		{
-			"id": 9396,
+			"id": 9584,
 			"name": "OrderClaimItem",
 			"variant": "declaration",
 			"kind": 32,
@@ -599,7 +599,7 @@
 					"fileName": "claim-item.ts",
 					"line": 51,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim-item.ts#L51"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim-item.ts#L51"
 				}
 			],
 			"type": {
@@ -609,7 +609,7 @@
 			"defaultValue": "_OrderClaimItem"
 		},
 		{
-			"id": 9341,
+			"id": 9529,
 			"name": "OrderClaim",
 			"variant": "declaration",
 			"kind": 32,
@@ -621,7 +621,7 @@
 					"fileName": "claim.ts",
 					"line": 84,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L84"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L84"
 				}
 			],
 			"type": {
@@ -641,14 +641,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 9342,
+									"id": 9530,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 9343,
+											"id": 9531,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -666,7 +666,7 @@
 													"fileName": "claim.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L10"
 												}
 											],
 											"type": {
@@ -692,7 +692,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9344,
+											"id": 9532,
 											"name": "order_version",
 											"variant": "declaration",
 											"kind": 1024,
@@ -710,7 +710,7 @@
 													"fileName": "claim.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L11"
 												}
 											],
 											"type": {
@@ -725,7 +725,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9345,
+											"id": 9533,
 											"name": "display_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -743,7 +743,7 @@
 													"fileName": "claim.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L12"
 												}
 											],
 											"type": {
@@ -758,7 +758,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9346,
+											"id": 9534,
 											"name": "type",
 											"variant": "declaration",
 											"kind": 1024,
@@ -776,7 +776,7 @@
 													"fileName": "claim.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L13"
 												}
 											],
 											"type": {
@@ -806,7 +806,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9347,
+											"id": 9535,
 											"name": "no_notification",
 											"variant": "declaration",
 											"kind": 1024,
@@ -826,7 +826,7 @@
 													"fileName": "claim.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L14"
 												}
 											],
 											"type": {
@@ -841,7 +841,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9348,
+											"id": 9536,
 											"name": "refund_amount",
 											"variant": "declaration",
 											"kind": 1024,
@@ -861,7 +861,7 @@
 													"fileName": "claim.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L15"
 												}
 											],
 											"type": {
@@ -876,7 +876,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9349,
+											"id": 9537,
 											"name": "created_by",
 											"variant": "declaration",
 											"kind": 1024,
@@ -896,7 +896,7 @@
 													"fileName": "claim.ts",
 													"line": 16,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L16"
 												}
 											],
 											"type": {
@@ -911,7 +911,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9350,
+											"id": 9538,
 											"name": "canceled_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -931,7 +931,7 @@
 													"fileName": "claim.ts",
 													"line": 17,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L17"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L17"
 												}
 											],
 											"type": {
@@ -946,7 +946,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9351,
+											"id": 9539,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -966,7 +966,7 @@
 													"fileName": "claim.ts",
 													"line": 18,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L18"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L18"
 												}
 											],
 											"type": {
@@ -981,7 +981,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9352,
+											"id": 9540,
 											"name": "order",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1002,7 +1002,7 @@
 													"fileName": "claim.ts",
 													"line": 19,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L19"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L19"
 												}
 											],
 											"type": {
@@ -1014,7 +1014,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 9439,
+														"target": 9627,
 														"name": "Order"
 													}
 												],
@@ -1024,7 +1024,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9379,
+											"id": 9567,
 											"name": "return",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1047,7 +1047,7 @@
 													"fileName": "claim.ts",
 													"line": 23,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L23"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L23"
 												}
 											],
 											"type": {
@@ -1060,7 +1060,7 @@
 													{
 														"type": "reflection",
 														"declaration": {
-															"id": 9382,
+															"id": 9570,
 															"name": "__type",
 															"variant": "declaration",
 															"kind": 65536,
@@ -1070,12 +1070,12 @@
 																	"fileName": "claim.ts",
 																	"line": 24,
 																	"character": 14,
-																	"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L24"
+																	"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L24"
 																}
 															],
 															"signatures": [
 																{
-																	"id": 9383,
+																	"id": 9571,
 																	"name": "__type",
 																	"variant": "signature",
 																	"kind": 4096,
@@ -1085,7 +1085,7 @@
 																			"fileName": "claim.ts",
 																			"line": 24,
 																			"character": 14,
-																			"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L24"
+																			"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L24"
 																		}
 																	],
 																	"type": {
@@ -1107,7 +1107,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9384,
+											"id": 9572,
 											"name": "additional_items",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1128,7 +1128,7 @@
 													"fileName": "claim.ts",
 													"line": 29,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L29"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L29"
 												}
 											],
 											"type": {
@@ -1141,7 +1141,7 @@
 													{
 														"type": "reflection",
 														"declaration": {
-															"id": 9385,
+															"id": 9573,
 															"name": "__type",
 															"variant": "declaration",
 															"kind": 65536,
@@ -1151,12 +1151,12 @@
 																	"fileName": "claim.ts",
 																	"line": 29,
 																	"character": 36,
-																	"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L29"
+																	"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L29"
 																}
 															],
 															"signatures": [
 																{
-																	"id": 9386,
+																	"id": 9574,
 																	"name": "__type",
 																	"variant": "signature",
 																	"kind": 4096,
@@ -1166,7 +1166,7 @@
 																			"fileName": "claim.ts",
 																			"line": 29,
 																			"character": 36,
-																			"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L29"
+																			"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L29"
 																		}
 																	],
 																	"type": {
@@ -1184,7 +1184,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9387,
+											"id": 9575,
 											"name": "claim_items",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1205,7 +1205,7 @@
 													"fileName": "claim.ts",
 													"line": 35,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L35"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L35"
 												}
 											],
 											"type": {
@@ -1218,7 +1218,7 @@
 													{
 														"type": "reflection",
 														"declaration": {
-															"id": 9388,
+															"id": 9576,
 															"name": "__type",
 															"variant": "declaration",
 															"kind": 65536,
@@ -1228,12 +1228,12 @@
 																	"fileName": "claim.ts",
 																	"line": 35,
 																	"character": 31,
-																	"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L35"
+																	"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L35"
 																}
 															],
 															"signatures": [
 																{
-																	"id": 9389,
+																	"id": 9577,
 																	"name": "__type",
 																	"variant": "signature",
 																	"kind": 4096,
@@ -1243,7 +1243,7 @@
 																			"fileName": "claim.ts",
 																			"line": 35,
 																			"character": 31,
-																			"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L35"
+																			"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L35"
 																		}
 																	],
 																	"type": {
@@ -1261,7 +1261,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9390,
+											"id": 9578,
 											"name": "shipping_methods",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1282,7 +1282,7 @@
 													"fileName": "claim.ts",
 													"line": 41,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L41"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L41"
 												}
 											],
 											"type": {
@@ -1295,7 +1295,7 @@
 													{
 														"type": "reflection",
 														"declaration": {
-															"id": 9391,
+															"id": 9579,
 															"name": "__type",
 															"variant": "declaration",
 															"kind": 65536,
@@ -1305,12 +1305,12 @@
 																	"fileName": "claim.ts",
 																	"line": 41,
 																	"character": 36,
-																	"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L41"
+																	"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L41"
 																}
 															],
 															"signatures": [
 																{
-																	"id": 9392,
+																	"id": 9580,
 																	"name": "__type",
 																	"variant": "signature",
 																	"kind": 4096,
@@ -1320,7 +1320,7 @@
 																			"fileName": "claim.ts",
 																			"line": 41,
 																			"character": 36,
-																			"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L41"
+																			"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L41"
 																		}
 																	],
 																	"type": {
@@ -1338,7 +1338,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9393,
+											"id": 9581,
 											"name": "transactions",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1359,7 +1359,7 @@
 													"fileName": "claim.ts",
 													"line": 47,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L47"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L47"
 												}
 											],
 											"type": {
@@ -1372,7 +1372,7 @@
 													{
 														"type": "reflection",
 														"declaration": {
-															"id": 9394,
+															"id": 9582,
 															"name": "__type",
 															"variant": "declaration",
 															"kind": 65536,
@@ -1382,12 +1382,12 @@
 																	"fileName": "claim.ts",
 																	"line": 47,
 																	"character": 32,
-																	"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L47"
+																	"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L47"
 																}
 															],
 															"signatures": [
 																{
-																	"id": 9395,
+																	"id": 9583,
 																	"name": "__type",
 																	"variant": "signature",
 																	"kind": 4096,
@@ -1397,7 +1397,7 @@
 																			"fileName": "claim.ts",
 																			"line": 47,
 																			"character": 32,
-																			"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L47"
+																			"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L47"
 																		}
 																	],
 																	"type": {
@@ -1419,21 +1419,21 @@
 										{
 											"title": "Properties",
 											"children": [
-												9343,
-												9344,
-												9345,
-												9346,
-												9347,
-												9348,
-												9349,
-												9350,
-												9351,
-												9352,
-												9379,
-												9384,
-												9387,
-												9390,
-												9393
+												9531,
+												9532,
+												9533,
+												9534,
+												9535,
+												9536,
+												9537,
+												9538,
+												9539,
+												9540,
+												9567,
+												9572,
+												9575,
+												9578,
+												9581
 											]
 										}
 									],
@@ -1442,7 +1442,7 @@
 											"fileName": "claim.ts",
 											"line": 9,
 											"character": 24,
-											"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/claim.ts#L9"
+											"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/claim.ts#L9"
 										}
 									]
 								}
@@ -1462,7 +1462,7 @@
 			"defaultValue": "_OrderClaim"
 		},
 		{
-			"id": 9398,
+			"id": 9586,
 			"name": "OrderCreditLine",
 			"variant": "declaration",
 			"kind": 32,
@@ -1474,7 +1474,7 @@
 					"fileName": "credit-line.ts",
 					"line": 38,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/credit-line.ts#L38"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/credit-line.ts#L38"
 				}
 			],
 			"type": {
@@ -1494,14 +1494,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 9399,
+									"id": 9587,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 9400,
+											"id": 9588,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1519,7 +1519,7 @@
 													"fileName": "credit-line.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/credit-line.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/credit-line.ts#L6"
 												}
 											],
 											"type": {
@@ -1545,7 +1545,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9401,
+											"id": 9589,
 											"name": "version",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1563,7 +1563,7 @@
 													"fileName": "credit-line.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/credit-line.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/credit-line.ts#L7"
 												}
 											],
 											"type": {
@@ -1578,7 +1578,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9402,
+											"id": 9590,
 											"name": "reference",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1598,7 +1598,7 @@
 													"fileName": "credit-line.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/credit-line.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/credit-line.ts#L8"
 												}
 											],
 											"type": {
@@ -1613,7 +1613,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9403,
+											"id": 9591,
 											"name": "reference_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1633,7 +1633,7 @@
 													"fileName": "credit-line.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/credit-line.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/credit-line.ts#L9"
 												}
 											],
 											"type": {
@@ -1648,7 +1648,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9404,
+											"id": 9592,
 											"name": "amount",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1666,7 +1666,7 @@
 													"fileName": "credit-line.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/credit-line.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/credit-line.ts#L10"
 												}
 											],
 											"type": {
@@ -1681,7 +1681,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9405,
+											"id": 9593,
 											"name": "raw_amount",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1699,7 +1699,7 @@
 													"fileName": "credit-line.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/credit-line.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/credit-line.ts#L11"
 												}
 											],
 											"type": {
@@ -1714,7 +1714,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9406,
+											"id": 9594,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1734,7 +1734,7 @@
 													"fileName": "credit-line.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/credit-line.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/credit-line.ts#L12"
 												}
 											],
 											"type": {
@@ -1749,7 +1749,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9407,
+											"id": 9595,
 											"name": "order",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1770,7 +1770,7 @@
 													"fileName": "credit-line.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/credit-line.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/credit-line.ts#L13"
 												}
 											],
 											"type": {
@@ -1782,7 +1782,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 9439,
+														"target": 9627,
 														"name": "Order"
 													}
 												],
@@ -1796,14 +1796,14 @@
 										{
 											"title": "Properties",
 											"children": [
-												9400,
-												9401,
-												9402,
-												9403,
-												9404,
-												9405,
-												9406,
-												9407
+												9588,
+												9589,
+												9590,
+												9591,
+												9592,
+												9593,
+												9594,
+												9595
 											]
 										}
 									],
@@ -1812,7 +1812,7 @@
 											"fileName": "credit-line.ts",
 											"line": 5,
 											"character": 29,
-											"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/credit-line.ts#L5"
+											"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/credit-line.ts#L5"
 										}
 									]
 								}
@@ -1832,7 +1832,7 @@
 			"defaultValue": "OrderCreditLine_"
 		},
 		{
-			"id": 9435,
+			"id": 9623,
 			"name": "OrderExchangeItem",
 			"variant": "declaration",
 			"kind": 32,
@@ -1844,7 +1844,7 @@
 					"fileName": "exchange-item.ts",
 					"line": 39,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/exchange-item.ts#L39"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/exchange-item.ts#L39"
 				}
 			],
 			"type": {
@@ -1854,7 +1854,7 @@
 			"defaultValue": "_OrderExchangeItem"
 		},
 		{
-			"id": 9434,
+			"id": 9622,
 			"name": "OrderExchange",
 			"variant": "declaration",
 			"kind": 32,
@@ -1866,7 +1866,7 @@
 					"fileName": "exchange.ts",
 					"line": 78,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/exchange.ts#L78"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/exchange.ts#L78"
 				}
 			],
 			"type": {
@@ -1876,7 +1876,7 @@
 			"defaultValue": "_OrderExchange"
 		},
 		{
-			"id": 9437,
+			"id": 9625,
 			"name": "OrderLineItemAdjustment",
 			"variant": "declaration",
 			"kind": 32,
@@ -1888,7 +1888,7 @@
 					"fileName": "line-item-adjustment.ts",
 					"line": 26,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/line-item-adjustment.ts#L26"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/line-item-adjustment.ts#L26"
 				}
 			],
 			"type": {
@@ -1898,7 +1898,7 @@
 			"defaultValue": "_OrderLineItemAdjustment"
 		},
 		{
-			"id": 9438,
+			"id": 9626,
 			"name": "OrderLineItemTaxLine",
 			"variant": "declaration",
 			"kind": 32,
@@ -1910,7 +1910,7 @@
 					"fileName": "line-item-tax-line.ts",
 					"line": 24,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/line-item-tax-line.ts#L24"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/line-item-tax-line.ts#L24"
 				}
 			],
 			"type": {
@@ -1920,7 +1920,7 @@
 			"defaultValue": "_OrderLineItemTaxLine"
 		},
 		{
-			"id": 9436,
+			"id": 9624,
 			"name": "OrderLineItem",
 			"variant": "declaration",
 			"kind": 32,
@@ -1932,7 +1932,7 @@
 					"fileName": "line-item.ts",
 					"line": 75,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/line-item.ts#L75"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/line-item.ts#L75"
 				}
 			],
 			"type": {
@@ -1942,7 +1942,7 @@
 			"defaultValue": "_OrderLineItem"
 		},
 		{
-			"id": 9517,
+			"id": 9705,
 			"name": "OrderChangeAction",
 			"variant": "declaration",
 			"kind": 32,
@@ -1954,7 +1954,7 @@
 					"fileName": "order-change-action.ts",
 					"line": 72,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change-action.ts#L72"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change-action.ts#L72"
 				}
 			],
 			"type": {
@@ -1964,7 +1964,7 @@
 			"defaultValue": "_OrderChangeAction"
 		},
 		{
-			"id": 9464,
+			"id": 9652,
 			"name": "OrderChange",
 			"variant": "declaration",
 			"kind": 32,
@@ -1976,7 +1976,7 @@
 					"fileName": "order-change.ts",
 					"line": 89,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L89"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L89"
 				}
 			],
 			"type": {
@@ -1996,14 +1996,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 9465,
+									"id": 9653,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 9466,
+											"id": 9654,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2021,7 +2021,7 @@
 													"fileName": "order-change.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L7"
 												}
 											],
 											"type": {
@@ -2047,7 +2047,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9467,
+											"id": 9655,
 											"name": "return_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2067,7 +2067,7 @@
 													"fileName": "order-change.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L8"
 												}
 											],
 											"type": {
@@ -2082,7 +2082,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9468,
+											"id": 9656,
 											"name": "claim_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2102,7 +2102,7 @@
 													"fileName": "order-change.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L9"
 												}
 											],
 											"type": {
@@ -2117,7 +2117,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9469,
+											"id": 9657,
 											"name": "exchange_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2137,7 +2137,7 @@
 													"fileName": "order-change.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L10"
 												}
 											],
 											"type": {
@@ -2152,7 +2152,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9470,
+											"id": 9658,
 											"name": "version",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2170,7 +2170,7 @@
 													"fileName": "order-change.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L11"
 												}
 											],
 											"type": {
@@ -2185,7 +2185,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9471,
+											"id": 9659,
 											"name": "change_type",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2205,7 +2205,7 @@
 													"fileName": "order-change.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L12"
 												}
 											],
 											"type": {
@@ -2220,7 +2220,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9472,
+											"id": 9660,
 											"name": "description",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2240,7 +2240,7 @@
 													"fileName": "order-change.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L13"
 												}
 											],
 											"type": {
@@ -2255,7 +2255,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9473,
+											"id": 9661,
 											"name": "status",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2275,7 +2275,7 @@
 													"fileName": "order-change.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L14"
 												}
 											],
 											"type": {
@@ -2305,7 +2305,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9474,
+											"id": 9662,
 											"name": "internal_note",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2325,7 +2325,7 @@
 													"fileName": "order-change.ts",
 													"line": 18,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L18"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L18"
 												}
 											],
 											"type": {
@@ -2340,7 +2340,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9475,
+											"id": 9663,
 											"name": "created_by",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2360,7 +2360,7 @@
 													"fileName": "order-change.ts",
 													"line": 19,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L19"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L19"
 												}
 											],
 											"type": {
@@ -2375,7 +2375,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9476,
+											"id": 9664,
 											"name": "requested_by",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2395,7 +2395,7 @@
 													"fileName": "order-change.ts",
 													"line": 20,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L20"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L20"
 												}
 											],
 											"type": {
@@ -2410,7 +2410,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9477,
+											"id": 9665,
 											"name": "requested_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2430,7 +2430,7 @@
 													"fileName": "order-change.ts",
 													"line": 21,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L21"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L21"
 												}
 											],
 											"type": {
@@ -2445,7 +2445,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9478,
+											"id": 9666,
 											"name": "confirmed_by",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2465,7 +2465,7 @@
 													"fileName": "order-change.ts",
 													"line": 22,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L22"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L22"
 												}
 											],
 											"type": {
@@ -2480,7 +2480,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9479,
+											"id": 9667,
 											"name": "confirmed_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2500,7 +2500,7 @@
 													"fileName": "order-change.ts",
 													"line": 23,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L23"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L23"
 												}
 											],
 											"type": {
@@ -2515,7 +2515,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9480,
+											"id": 9668,
 											"name": "declined_by",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2535,7 +2535,7 @@
 													"fileName": "order-change.ts",
 													"line": 24,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L24"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L24"
 												}
 											],
 											"type": {
@@ -2550,7 +2550,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9481,
+											"id": 9669,
 											"name": "declined_reason",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2570,7 +2570,7 @@
 													"fileName": "order-change.ts",
 													"line": 25,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L25"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L25"
 												}
 											],
 											"type": {
@@ -2585,7 +2585,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9482,
+											"id": 9670,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2605,7 +2605,7 @@
 													"fileName": "order-change.ts",
 													"line": 26,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L26"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L26"
 												}
 											],
 											"type": {
@@ -2620,7 +2620,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9483,
+											"id": 9671,
 											"name": "declined_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2640,7 +2640,7 @@
 													"fileName": "order-change.ts",
 													"line": 27,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L27"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L27"
 												}
 											],
 											"type": {
@@ -2655,7 +2655,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9484,
+											"id": 9672,
 											"name": "canceled_by",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2675,7 +2675,7 @@
 													"fileName": "order-change.ts",
 													"line": 28,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L28"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L28"
 												}
 											],
 											"type": {
@@ -2690,7 +2690,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9485,
+											"id": 9673,
 											"name": "canceled_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2710,7 +2710,7 @@
 													"fileName": "order-change.ts",
 													"line": 29,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L29"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L29"
 												}
 											],
 											"type": {
@@ -2725,7 +2725,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9486,
+											"id": 9674,
 											"name": "carry_over_promotions",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2756,7 +2756,7 @@
 													"fileName": "order-change.ts",
 													"line": 33,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L33"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L33"
 												}
 											],
 											"type": {
@@ -2771,7 +2771,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9487,
+											"id": 9675,
 											"name": "order",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2792,7 +2792,7 @@
 													"fileName": "order-change.ts",
 													"line": 34,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L34"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L34"
 												}
 											],
 											"type": {
@@ -2804,7 +2804,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 9439,
+														"target": 9627,
 														"name": "Order"
 													}
 												],
@@ -2814,7 +2814,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9514,
+											"id": 9702,
 											"name": "actions",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2835,7 +2835,7 @@
 													"fileName": "order-change.ts",
 													"line": 37,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L37"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L37"
 												}
 											],
 											"type": {
@@ -2848,7 +2848,7 @@
 													{
 														"type": "reflection",
 														"declaration": {
-															"id": 9515,
+															"id": 9703,
 															"name": "__type",
 															"variant": "declaration",
 															"kind": 65536,
@@ -2858,12 +2858,12 @@
 																	"fileName": "order-change.ts",
 																	"line": 37,
 																	"character": 27,
-																	"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L37"
+																	"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L37"
 																}
 															],
 															"signatures": [
 																{
-																	"id": 9516,
+																	"id": 9704,
 																	"name": "__type",
 																	"variant": "signature",
 																	"kind": 4096,
@@ -2873,7 +2873,7 @@
 																			"fileName": "order-change.ts",
 																			"line": 37,
 																			"character": 27,
-																			"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L37"
+																			"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L37"
 																		}
 																	],
 																	"type": {
@@ -2895,29 +2895,29 @@
 										{
 											"title": "Properties",
 											"children": [
-												9466,
-												9467,
-												9468,
-												9469,
-												9470,
-												9471,
-												9472,
-												9473,
-												9474,
-												9475,
-												9476,
-												9477,
-												9478,
-												9479,
-												9480,
-												9481,
-												9482,
-												9483,
-												9484,
-												9485,
-												9486,
-												9487,
-												9514
+												9654,
+												9655,
+												9656,
+												9657,
+												9658,
+												9659,
+												9660,
+												9661,
+												9662,
+												9663,
+												9664,
+												9665,
+												9666,
+												9667,
+												9668,
+												9669,
+												9670,
+												9671,
+												9672,
+												9673,
+												9674,
+												9675,
+												9702
 											]
 										}
 									],
@@ -2926,7 +2926,7 @@
 											"fileName": "order-change.ts",
 											"line": 6,
 											"character": 25,
-											"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-change.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-change.ts#L6"
 										}
 									]
 								}
@@ -2946,7 +2946,7 @@
 			"defaultValue": "_OrderChange"
 		},
 		{
-			"id": 9518,
+			"id": 9706,
 			"name": "OrderItem",
 			"variant": "declaration",
 			"kind": 32,
@@ -2958,7 +2958,7 @@
 					"fileName": "order-item.ts",
 					"line": 56,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L56"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L56"
 				}
 			],
 			"type": {
@@ -2978,14 +2978,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 9519,
+									"id": 9707,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 9520,
+											"id": 9708,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3003,7 +3003,7 @@
 													"fileName": "order-item.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L8"
 												}
 											],
 											"type": {
@@ -3029,7 +3029,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9521,
+											"id": 9709,
 											"name": "version",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3047,7 +3047,7 @@
 													"fileName": "order-item.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L9"
 												}
 											],
 											"type": {
@@ -3062,7 +3062,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9522,
+											"id": 9710,
 											"name": "unit_price",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3082,7 +3082,7 @@
 													"fileName": "order-item.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L10"
 												}
 											],
 											"type": {
@@ -3097,7 +3097,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9523,
+											"id": 9711,
 											"name": "compare_at_unit_price",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3117,7 +3117,7 @@
 													"fileName": "order-item.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L11"
 												}
 											],
 											"type": {
@@ -3132,7 +3132,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9524,
+											"id": 9712,
 											"name": "quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3150,7 +3150,7 @@
 													"fileName": "order-item.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L12"
 												}
 											],
 											"type": {
@@ -3165,7 +3165,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9525,
+											"id": 9713,
 											"name": "fulfilled_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3183,7 +3183,7 @@
 													"fileName": "order-item.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L13"
 												}
 											],
 											"type": {
@@ -3198,7 +3198,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9526,
+											"id": 9714,
 											"name": "delivered_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3216,7 +3216,7 @@
 													"fileName": "order-item.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L14"
 												}
 											],
 											"type": {
@@ -3231,7 +3231,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9527,
+											"id": 9715,
 											"name": "shipped_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3249,7 +3249,7 @@
 													"fileName": "order-item.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L15"
 												}
 											],
 											"type": {
@@ -3264,7 +3264,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9528,
+											"id": 9716,
 											"name": "return_requested_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3282,7 +3282,7 @@
 													"fileName": "order-item.ts",
 													"line": 16,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L16"
 												}
 											],
 											"type": {
@@ -3297,7 +3297,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9529,
+											"id": 9717,
 											"name": "return_received_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3315,7 +3315,7 @@
 													"fileName": "order-item.ts",
 													"line": 17,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L17"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L17"
 												}
 											],
 											"type": {
@@ -3330,7 +3330,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9530,
+											"id": 9718,
 											"name": "return_dismissed_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3348,7 +3348,7 @@
 													"fileName": "order-item.ts",
 													"line": 18,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L18"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L18"
 												}
 											],
 											"type": {
@@ -3363,7 +3363,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9531,
+											"id": 9719,
 											"name": "written_off_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3381,7 +3381,7 @@
 													"fileName": "order-item.ts",
 													"line": 19,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L19"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L19"
 												}
 											],
 											"type": {
@@ -3396,7 +3396,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9532,
+											"id": 9720,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3416,7 +3416,7 @@
 													"fileName": "order-item.ts",
 													"line": 20,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L20"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L20"
 												}
 											],
 											"type": {
@@ -3431,7 +3431,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9533,
+											"id": 9721,
 											"name": "order",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3452,7 +3452,7 @@
 													"fileName": "order-item.ts",
 													"line": 21,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L21"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L21"
 												}
 											],
 											"type": {
@@ -3464,7 +3464,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 9439,
+														"target": 9627,
 														"name": "Order"
 													}
 												],
@@ -3474,7 +3474,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9560,
+											"id": 9748,
 											"name": "item",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3495,7 +3495,7 @@
 													"fileName": "order-item.ts",
 													"line": 24,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L24"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L24"
 												}
 											],
 											"type": {
@@ -3508,7 +3508,7 @@
 													{
 														"type": "reflection",
 														"declaration": {
-															"id": 9561,
+															"id": 9749,
 															"name": "__type",
 															"variant": "declaration",
 															"kind": 65536,
@@ -3518,12 +3518,12 @@
 																	"fileName": "order-item.ts",
 																	"line": 24,
 																	"character": 23,
-																	"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L24"
+																	"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L24"
 																}
 															],
 															"signatures": [
 																{
-																	"id": 9562,
+																	"id": 9750,
 																	"name": "__type",
 																	"variant": "signature",
 																	"kind": 4096,
@@ -3533,7 +3533,7 @@
 																			"fileName": "order-item.ts",
 																			"line": 24,
 																			"character": 23,
-																			"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L24"
+																			"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L24"
 																		}
 																	],
 																	"type": {
@@ -3559,21 +3559,21 @@
 										{
 											"title": "Properties",
 											"children": [
-												9520,
-												9521,
-												9522,
-												9523,
-												9524,
-												9525,
-												9526,
-												9527,
-												9528,
-												9529,
-												9530,
-												9531,
-												9532,
-												9533,
-												9560
+												9708,
+												9709,
+												9710,
+												9711,
+												9712,
+												9713,
+												9714,
+												9715,
+												9716,
+												9717,
+												9718,
+												9719,
+												9720,
+												9721,
+												9748
 											]
 										}
 									],
@@ -3582,7 +3582,7 @@
 											"fileName": "order-item.ts",
 											"line": 7,
 											"character": 23,
-											"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-item.ts#L7"
+											"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-item.ts#L7"
 										}
 									]
 								}
@@ -3602,7 +3602,7 @@
 			"defaultValue": "_OrderItem"
 		},
 		{
-			"id": 9563,
+			"id": 9751,
 			"name": "OrderShipping",
 			"variant": "declaration",
 			"kind": 32,
@@ -3614,7 +3614,7 @@
 					"fileName": "order-shipping-method.ts",
 					"line": 83,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-shipping-method.ts#L83"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-shipping-method.ts#L83"
 				}
 			],
 			"type": {
@@ -3624,7 +3624,7 @@
 			"defaultValue": "_OrderShipping"
 		},
 		{
-			"id": 9564,
+			"id": 9752,
 			"name": "OrderSummary",
 			"variant": "declaration",
 			"kind": 32,
@@ -3636,7 +3636,7 @@
 					"fileName": "order-summary.ts",
 					"line": 34,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-summary.ts#L34"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-summary.ts#L34"
 				}
 			],
 			"type": {
@@ -3656,14 +3656,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 9565,
+									"id": 9753,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 9566,
+											"id": 9754,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3681,7 +3681,7 @@
 													"fileName": "order-summary.ts",
 													"line": 11,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-summary.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-summary.ts#L11"
 												}
 											],
 											"type": {
@@ -3707,7 +3707,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9567,
+											"id": 9755,
 											"name": "version",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3725,7 +3725,7 @@
 													"fileName": "order-summary.ts",
 													"line": 12,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-summary.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-summary.ts#L12"
 												}
 											],
 											"type": {
@@ -3740,7 +3740,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9568,
+											"id": 9756,
 											"name": "totals",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3758,7 +3758,7 @@
 													"fileName": "order-summary.ts",
 													"line": 13,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-summary.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-summary.ts#L13"
 												}
 											],
 											"type": {
@@ -3773,7 +3773,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9569,
+											"id": 9757,
 											"name": "order",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3794,7 +3794,7 @@
 													"fileName": "order-summary.ts",
 													"line": 14,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-summary.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-summary.ts#L14"
 												}
 											],
 											"type": {
@@ -3806,7 +3806,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 9439,
+														"target": 9627,
 														"name": "Order"
 													}
 												],
@@ -3820,10 +3820,10 @@
 										{
 											"title": "Properties",
 											"children": [
-												9566,
-												9567,
-												9568,
-												9569
+												9754,
+												9755,
+												9756,
+												9757
 											]
 										}
 									],
@@ -3832,7 +3832,7 @@
 											"fileName": "order-summary.ts",
 											"line": 10,
 											"character": 4,
-											"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-summary.ts#L10"
+											"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-summary.ts#L10"
 										}
 									]
 								}
@@ -3844,14 +3844,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 9596,
+							"id": 9784,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 9597,
+									"id": 9785,
 									"name": "tableName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3863,7 +3863,7 @@
 											"fileName": "order-summary.ts",
 											"line": 7,
 											"character": 6,
-											"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-summary.ts#L7"
+											"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-summary.ts#L7"
 										}
 									],
 									"type": {
@@ -3873,7 +3873,7 @@
 									"defaultValue": "\"order_summary\""
 								},
 								{
-									"id": 9598,
+									"id": 9786,
 									"name": "name",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3885,7 +3885,7 @@
 											"fileName": "order-summary.ts",
 											"line": 8,
 											"character": 6,
-											"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-summary.ts#L8"
+											"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-summary.ts#L8"
 										}
 									],
 									"type": {
@@ -3899,8 +3899,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										9597,
-										9598
+										9785,
+										9786
 									]
 								}
 							],
@@ -3909,7 +3909,7 @@
 									"fileName": "order-summary.ts",
 									"line": 6,
 									"character": 4,
-									"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order-summary.ts#L6"
+									"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order-summary.ts#L6"
 								}
 							]
 						}
@@ -3921,7 +3921,7 @@
 			"defaultValue": "_OrderSummary"
 		},
 		{
-			"id": 9439,
+			"id": 9627,
 			"name": "Order",
 			"variant": "declaration",
 			"kind": 32,
@@ -3933,7 +3933,7 @@
 					"fileName": "order.ts",
 					"line": 132,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L132"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L132"
 				}
 			],
 			"type": {
@@ -3953,14 +3953,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 9440,
+									"id": 9628,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 9441,
+											"id": 9629,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3978,7 +3978,7 @@
 													"fileName": "order.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L12"
 												}
 											],
 											"type": {
@@ -4004,7 +4004,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9442,
+											"id": 9630,
 											"name": "display_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4022,7 +4022,7 @@
 													"fileName": "order.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L13"
 												}
 											],
 											"type": {
@@ -4037,7 +4037,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9443,
+											"id": 9631,
 											"name": "custom_display_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4057,7 +4057,7 @@
 													"fileName": "order.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L14"
 												}
 											],
 											"type": {
@@ -4072,7 +4072,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9444,
+											"id": 9632,
 											"name": "region_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4092,7 +4092,7 @@
 													"fileName": "order.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L15"
 												}
 											],
 											"type": {
@@ -4107,7 +4107,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9445,
+											"id": 9633,
 											"name": "customer_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4127,7 +4127,7 @@
 													"fileName": "order.ts",
 													"line": 16,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L16"
 												}
 											],
 											"type": {
@@ -4142,7 +4142,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9446,
+											"id": 9634,
 											"name": "version",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4160,7 +4160,7 @@
 													"fileName": "order.ts",
 													"line": 17,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L17"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L17"
 												}
 											],
 											"type": {
@@ -4175,7 +4175,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9447,
+											"id": 9635,
 											"name": "sales_channel_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4195,7 +4195,7 @@
 													"fileName": "order.ts",
 													"line": 18,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L18"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L18"
 												}
 											],
 											"type": {
@@ -4210,7 +4210,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9448,
+											"id": 9636,
 											"name": "status",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4228,7 +4228,7 @@
 													"fileName": "order.ts",
 													"line": 19,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L19"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L19"
 												}
 											],
 											"type": {
@@ -4258,7 +4258,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9449,
+											"id": 9637,
 											"name": "is_draft_order",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4276,7 +4276,7 @@
 													"fileName": "order.ts",
 													"line": 20,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L20"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L20"
 												}
 											],
 											"type": {
@@ -4291,7 +4291,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9450,
+											"id": 9638,
 											"name": "email",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4311,7 +4311,7 @@
 													"fileName": "order.ts",
 													"line": 21,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L21"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L21"
 												}
 											],
 											"type": {
@@ -4326,7 +4326,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9451,
+											"id": 9639,
 											"name": "currency_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4355,7 +4355,7 @@
 													"fileName": "order.ts",
 													"line": 22,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L22"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L22"
 												}
 											],
 											"type": {
@@ -4370,7 +4370,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9452,
+											"id": 9640,
 											"name": "locale",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4390,7 +4390,7 @@
 													"fileName": "order.ts",
 													"line": 23,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L23"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L23"
 												}
 											],
 											"type": {
@@ -4405,7 +4405,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9453,
+											"id": 9641,
 											"name": "no_notification",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4425,7 +4425,7 @@
 													"fileName": "order.ts",
 													"line": 24,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L24"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L24"
 												}
 											],
 											"type": {
@@ -4440,7 +4440,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9454,
+											"id": 9642,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4460,7 +4460,7 @@
 													"fileName": "order.ts",
 													"line": 25,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L25"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L25"
 												}
 											],
 											"type": {
@@ -4475,7 +4475,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9455,
+											"id": 9643,
 											"name": "canceled_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4495,7 +4495,7 @@
 													"fileName": "order.ts",
 													"line": 26,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L26"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L26"
 												}
 											],
 											"type": {
@@ -4510,7 +4510,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9456,
+											"id": 9644,
 											"name": "shipping_address",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4533,7 +4533,7 @@
 													"fileName": "order.ts",
 													"line": 27,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L27"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L27"
 												}
 											],
 											"type": {
@@ -4558,7 +4558,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9457,
+											"id": 9645,
 											"name": "billing_address",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4581,7 +4581,7 @@
 													"fileName": "order.ts",
 													"line": 34,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L34"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L34"
 												}
 											],
 											"type": {
@@ -4606,7 +4606,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9458,
+											"id": 9646,
 											"name": "summary",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4627,7 +4627,7 @@
 													"fileName": "order.ts",
 													"line": 41,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L41"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L41"
 												}
 											],
 											"type": {
@@ -4648,7 +4648,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9459,
+											"id": 9647,
 											"name": "items",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4669,7 +4669,7 @@
 													"fileName": "order.ts",
 													"line": 44,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L44"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L44"
 												}
 											],
 											"type": {
@@ -4690,7 +4690,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9460,
+											"id": 9648,
 											"name": "shipping_methods",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4711,7 +4711,7 @@
 													"fileName": "order.ts",
 													"line": 47,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L47"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L47"
 												}
 											],
 											"type": {
@@ -4732,7 +4732,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9461,
+											"id": 9649,
 											"name": "transactions",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4753,7 +4753,7 @@
 													"fileName": "order.ts",
 													"line": 50,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L50"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L50"
 												}
 											],
 											"type": {
@@ -4774,7 +4774,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9462,
+											"id": 9650,
 											"name": "credit_lines",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4795,7 +4795,7 @@
 													"fileName": "order.ts",
 													"line": 53,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L53"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L53"
 												}
 											],
 											"type": {
@@ -4816,7 +4816,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9463,
+											"id": 9651,
 											"name": "returns",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4837,7 +4837,7 @@
 													"fileName": "order.ts",
 													"line": 56,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L56"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L56"
 												}
 											],
 											"type": {
@@ -4862,29 +4862,29 @@
 										{
 											"title": "Properties",
 											"children": [
-												9441,
-												9442,
-												9443,
-												9444,
-												9445,
-												9446,
-												9447,
-												9448,
-												9449,
-												9450,
-												9451,
-												9452,
-												9453,
-												9454,
-												9455,
-												9456,
-												9457,
-												9458,
-												9459,
-												9460,
-												9461,
-												9462,
-												9463
+												9629,
+												9630,
+												9631,
+												9632,
+												9633,
+												9634,
+												9635,
+												9636,
+												9637,
+												9638,
+												9639,
+												9640,
+												9641,
+												9642,
+												9643,
+												9644,
+												9645,
+												9646,
+												9647,
+												9648,
+												9649,
+												9650,
+												9651
 											]
 										}
 									],
@@ -4893,7 +4893,7 @@
 											"fileName": "order.ts",
 											"line": 11,
 											"character": 19,
-											"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/order.ts#L11"
+											"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/order.ts#L11"
 										}
 									]
 								}
@@ -4913,7 +4913,7 @@
 			"defaultValue": "_Order"
 		},
 		{
-			"id": 9600,
+			"id": 9788,
 			"name": "ReturnItem",
 			"variant": "declaration",
 			"kind": 32,
@@ -4925,7 +4925,7 @@
 					"fileName": "return-item.ts",
 					"line": 59,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/return-item.ts#L59"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/return-item.ts#L59"
 				}
 			],
 			"type": {
@@ -4935,7 +4935,7 @@
 			"defaultValue": "_ReturnItem"
 		},
 		{
-			"id": 9601,
+			"id": 9789,
 			"name": "ReturnReason",
 			"variant": "declaration",
 			"kind": 32,
@@ -4947,7 +4947,7 @@
 					"fileName": "return-reason.ts",
 					"line": 43,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/return-reason.ts#L43"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/return-reason.ts#L43"
 				}
 			],
 			"type": {
@@ -4967,14 +4967,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 9602,
+									"id": 9790,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 9603,
+											"id": 9791,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4992,7 +4992,7 @@
 													"fileName": "return-reason.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/return-reason.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/return-reason.ts#L5"
 												}
 											],
 											"type": {
@@ -5018,7 +5018,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9604,
+											"id": 9792,
 											"name": "value",
 											"variant": "declaration",
 											"kind": 1024,
@@ -5036,7 +5036,7 @@
 													"fileName": "return-reason.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/return-reason.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/return-reason.ts#L6"
 												}
 											],
 											"type": {
@@ -5051,7 +5051,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9605,
+											"id": 9793,
 											"name": "label",
 											"variant": "declaration",
 											"kind": 1024,
@@ -5069,7 +5069,7 @@
 													"fileName": "return-reason.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/return-reason.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/return-reason.ts#L7"
 												}
 											],
 											"type": {
@@ -5084,7 +5084,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9606,
+											"id": 9794,
 											"name": "description",
 											"variant": "declaration",
 											"kind": 1024,
@@ -5104,7 +5104,7 @@
 													"fileName": "return-reason.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/return-reason.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/return-reason.ts#L8"
 												}
 											],
 											"type": {
@@ -5119,7 +5119,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9607,
+											"id": 9795,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -5139,7 +5139,7 @@
 													"fileName": "return-reason.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/return-reason.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/return-reason.ts#L9"
 												}
 											],
 											"type": {
@@ -5154,7 +5154,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9608,
+											"id": 9796,
 											"name": "parent_return_reason",
 											"variant": "declaration",
 											"kind": 1024,
@@ -5177,7 +5177,7 @@
 													"fileName": "return-reason.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/return-reason.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/return-reason.ts#L10"
 												}
 											],
 											"type": {
@@ -5190,7 +5190,7 @@
 													{
 														"type": "reflection",
 														"declaration": {
-															"id": 9611,
+															"id": 9799,
 															"name": "__type",
 															"variant": "declaration",
 															"kind": 65536,
@@ -5200,12 +5200,12 @@
 																	"fileName": "return-reason.ts",
 																	"line": 11,
 																	"character": 17,
-																	"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/return-reason.ts#L11"
+																	"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/return-reason.ts#L11"
 																}
 															],
 															"signatures": [
 																{
-																	"id": 9612,
+																	"id": 9800,
 																	"name": "__type",
 																	"variant": "signature",
 																	"kind": 4096,
@@ -5215,7 +5215,7 @@
 																			"fileName": "return-reason.ts",
 																			"line": 11,
 																			"character": 17,
-																			"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/return-reason.ts#L11"
+																			"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/return-reason.ts#L11"
 																		}
 																	],
 																	"type": {
@@ -5237,7 +5237,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9613,
+											"id": 9801,
 											"name": "return_reason_children",
 											"variant": "declaration",
 											"kind": 1024,
@@ -5258,7 +5258,7 @@
 													"fileName": "return-reason.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/return-reason.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/return-reason.ts#L15"
 												}
 											],
 											"type": {
@@ -5271,7 +5271,7 @@
 													{
 														"type": "reflection",
 														"declaration": {
-															"id": 9614,
+															"id": 9802,
 															"name": "__type",
 															"variant": "declaration",
 															"kind": 65536,
@@ -5281,12 +5281,12 @@
 																	"fileName": "return-reason.ts",
 																	"line": 15,
 																	"character": 42,
-																	"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/return-reason.ts#L15"
+																	"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/return-reason.ts#L15"
 																}
 															],
 															"signatures": [
 																{
-																	"id": 9615,
+																	"id": 9803,
 																	"name": "__type",
 																	"variant": "signature",
 																	"kind": 4096,
@@ -5296,7 +5296,7 @@
 																			"fileName": "return-reason.ts",
 																			"line": 15,
 																			"character": 42,
-																			"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/return-reason.ts#L15"
+																			"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/return-reason.ts#L15"
 																		}
 																	],
 																	"type": {
@@ -5318,13 +5318,13 @@
 										{
 											"title": "Properties",
 											"children": [
-												9603,
-												9604,
-												9605,
-												9606,
-												9607,
-												9608,
-												9613
+												9791,
+												9792,
+												9793,
+												9794,
+												9795,
+												9796,
+												9801
 											]
 										}
 									],
@@ -5333,7 +5333,7 @@
 											"fileName": "return-reason.ts",
 											"line": 4,
 											"character": 26,
-											"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/return-reason.ts#L4"
+											"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/return-reason.ts#L4"
 										}
 									]
 								}
@@ -5353,7 +5353,7 @@
 			"defaultValue": "_ReturnReason"
 		},
 		{
-			"id": 9599,
+			"id": 9787,
 			"name": "Return",
 			"variant": "declaration",
 			"kind": 32,
@@ -5365,7 +5365,7 @@
 					"fileName": "return.ts",
 					"line": 90,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/return.ts#L90"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/return.ts#L90"
 				}
 			],
 			"type": {
@@ -5375,7 +5375,7 @@
 			"defaultValue": "_Return"
 		},
 		{
-			"id": 9617,
+			"id": 9805,
 			"name": "OrderShippingMethodAdjustment",
 			"variant": "declaration",
 			"kind": 32,
@@ -5406,7 +5406,7 @@
 					"fileName": "shipping-method-adjustment.ts",
 					"line": 46,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/shipping-method-adjustment.ts#L46"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/shipping-method-adjustment.ts#L46"
 				}
 			],
 			"type": {
@@ -5416,7 +5416,7 @@
 			"defaultValue": "_OrderShippingMethodAdjustment"
 		},
 		{
-			"id": 9618,
+			"id": 9806,
 			"name": "OrderShippingMethodTaxLine",
 			"variant": "declaration",
 			"kind": 32,
@@ -5428,7 +5428,7 @@
 					"fileName": "shipping-method-tax-line.ts",
 					"line": 33,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/shipping-method-tax-line.ts#L33"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/shipping-method-tax-line.ts#L33"
 				}
 			],
 			"type": {
@@ -5438,7 +5438,7 @@
 			"defaultValue": "_OrderShippingMethodTaxLine"
 		},
 		{
-			"id": 9616,
+			"id": 9804,
 			"name": "OrderShippingMethod",
 			"variant": "declaration",
 			"kind": 32,
@@ -5450,7 +5450,7 @@
 					"fileName": "shipping-method.ts",
 					"line": 40,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/shipping-method.ts#L40"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/shipping-method.ts#L40"
 				}
 			],
 			"type": {
@@ -5460,7 +5460,7 @@
 			"defaultValue": "_OrderShippingMethod"
 		},
 		{
-			"id": 9619,
+			"id": 9807,
 			"name": "OrderTransaction",
 			"variant": "declaration",
 			"kind": 32,
@@ -5472,7 +5472,7 @@
 					"fileName": "transaction.ts",
 					"line": 89,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/436df450fde8d9967eee1388ef865dc84ea1534a/packages/modules/order/src/models/transaction.ts#L89"
+					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/order/src/models/transaction.ts#L89"
 				}
 			],
 			"type": {
@@ -5486,1211 +5486,1211 @@
 		{
 			"title": "Variables",
 			"children": [
-				9326,
-				9397,
-				9396,
-				9341,
-				9398,
-				9435,
-				9434,
-				9437,
-				9438,
-				9436,
-				9517,
-				9464,
-				9518,
-				9563,
-				9564,
-				9439,
-				9600,
-				9601,
-				9599,
-				9617,
-				9618,
-				9616,
-				9619
+				9514,
+				9585,
+				9584,
+				9529,
+				9586,
+				9623,
+				9622,
+				9625,
+				9626,
+				9624,
+				9705,
+				9652,
+				9706,
+				9751,
+				9752,
+				9627,
+				9788,
+				9789,
+				9787,
+				9805,
+				9806,
+				9804,
+				9807
 			]
 		}
 	],
 	"packageName": "@medusajs/order",
 	"symbolIdMap": {
-		"9325": {
+		"9513": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"9326": {
+		"9514": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "OrderAddress"
 		},
-		"9327": {
+		"9515": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "__object"
 		},
-		"9328": {
+		"9516": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "__object.id"
 		},
-		"9329": {
+		"9517": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "__object.customer_id"
 		},
-		"9330": {
+		"9518": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "__object.company"
 		},
-		"9331": {
+		"9519": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "__object.first_name"
 		},
-		"9332": {
+		"9520": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "__object.last_name"
 		},
-		"9333": {
+		"9521": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "__object.address_1"
 		},
-		"9334": {
+		"9522": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "__object.address_2"
 		},
-		"9335": {
+		"9523": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "__object.city"
 		},
-		"9336": {
+		"9524": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "__object.country_code"
 		},
-		"9337": {
+		"9525": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "__object.province"
 		},
-		"9338": {
+		"9526": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "__object.postal_code"
 		},
-		"9339": {
+		"9527": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "__object.phone"
 		},
-		"9340": {
+		"9528": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"9341": {
+		"9529": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "OrderClaim"
 		},
-		"9342": {
+		"9530": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "__object"
 		},
-		"9343": {
+		"9531": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "__object.id"
 		},
-		"9344": {
+		"9532": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "__object.order_version"
 		},
-		"9345": {
+		"9533": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "__object.display_id"
 		},
-		"9346": {
+		"9534": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "__object.type"
 		},
-		"9347": {
+		"9535": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "__object.no_notification"
 		},
-		"9348": {
+		"9536": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "__object.refund_amount"
 		},
-		"9349": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__object.created_by"
-		},
-		"9350": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__object.canceled_at"
-		},
-		"9351": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"9352": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__object.order"
-		},
-		"9353": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__type"
-		},
-		"9354": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__type"
-		},
-		"9355": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object"
-		},
-		"9356": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.id"
-		},
-		"9357": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.display_id"
-		},
-		"9358": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.custom_display_id"
-		},
-		"9359": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.region_id"
-		},
-		"9360": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.customer_id"
-		},
-		"9361": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.version"
-		},
-		"9362": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.sales_channel_id"
-		},
-		"9363": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.status"
-		},
-		"9364": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.is_draft_order"
-		},
-		"9365": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.email"
-		},
-		"9366": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.currency_code"
-		},
-		"9367": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.locale"
-		},
-		"9368": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.no_notification"
-		},
-		"9369": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"9370": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.canceled_at"
-		},
-		"9371": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.shipping_address"
-		},
-		"9372": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.billing_address"
-		},
-		"9373": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.summary"
-		},
-		"9374": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.items"
-		},
-		"9375": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.shipping_methods"
-		},
-		"9376": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.transactions"
-		},
-		"9377": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.credit_lines"
-		},
-		"9378": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.returns"
-		},
-		"9379": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__object.return"
-		},
-		"9380": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__type"
-		},
-		"9381": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__type"
-		},
-		"9382": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__type"
-		},
-		"9383": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__type"
-		},
-		"9384": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__object.additional_items"
-		},
-		"9385": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__type"
-		},
-		"9386": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__type"
-		},
-		"9387": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__object.claim_items"
-		},
-		"9388": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__type"
-		},
-		"9389": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__type"
-		},
-		"9390": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__object.shipping_methods"
-		},
-		"9391": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__type"
-		},
-		"9392": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__type"
-		},
-		"9393": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__object.transactions"
-		},
-		"9394": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__type"
-		},
-		"9395": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "__type"
-		},
-		"9396": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
-			"qualifiedName": "OrderClaimItem"
-		},
-		"9397": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item-image.ts",
-			"qualifiedName": "OrderClaimItemImage"
-		},
-		"9398": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
-			"qualifiedName": "OrderCreditLine"
-		},
-		"9399": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
-			"qualifiedName": "__object"
-		},
-		"9400": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
-			"qualifiedName": "__object.id"
-		},
-		"9401": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
-			"qualifiedName": "__object.version"
-		},
-		"9402": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
-			"qualifiedName": "__object.reference"
-		},
-		"9403": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
-			"qualifiedName": "__object.reference_id"
-		},
-		"9404": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
-			"qualifiedName": "__object.amount"
-		},
-		"9405": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
-			"qualifiedName": "__object.raw_amount"
-		},
-		"9406": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"9407": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
-			"qualifiedName": "__object.order"
-		},
-		"9408": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
-			"qualifiedName": "__function"
-		},
-		"9409": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
-			"qualifiedName": "__function"
-		},
-		"9410": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object"
-		},
-		"9411": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.id"
-		},
-		"9412": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.display_id"
-		},
-		"9413": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.custom_display_id"
-		},
-		"9414": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.region_id"
-		},
-		"9415": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.customer_id"
-		},
-		"9416": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.version"
-		},
-		"9417": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.sales_channel_id"
-		},
-		"9418": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.status"
-		},
-		"9419": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.is_draft_order"
-		},
-		"9420": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.email"
-		},
-		"9421": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.currency_code"
-		},
-		"9422": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.locale"
-		},
-		"9423": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.no_notification"
-		},
-		"9424": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"9425": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.canceled_at"
-		},
-		"9426": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.shipping_address"
-		},
-		"9427": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.billing_address"
-		},
-		"9428": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.summary"
-		},
-		"9429": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.items"
-		},
-		"9430": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.shipping_methods"
-		},
-		"9431": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.transactions"
-		},
-		"9432": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.credit_lines"
-		},
-		"9433": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.returns"
-		},
-		"9434": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
-			"qualifiedName": "OrderExchange"
-		},
-		"9435": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
-			"qualifiedName": "OrderExchangeItem"
-		},
-		"9436": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
-			"qualifiedName": "OrderLineItem"
-		},
-		"9437": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/line-item-adjustment.ts",
-			"qualifiedName": "OrderLineItemAdjustment"
-		},
-		"9438": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/line-item-tax-line.ts",
-			"qualifiedName": "OrderLineItemTaxLine"
-		},
-		"9439": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "Order"
-		},
-		"9440": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object"
-		},
-		"9441": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.id"
-		},
-		"9442": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.display_id"
-		},
-		"9443": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.custom_display_id"
-		},
-		"9444": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.region_id"
-		},
-		"9445": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.customer_id"
-		},
-		"9446": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.version"
-		},
-		"9447": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.sales_channel_id"
-		},
-		"9448": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.status"
-		},
-		"9449": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.is_draft_order"
-		},
-		"9450": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.email"
-		},
-		"9451": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.currency_code"
-		},
-		"9452": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.locale"
-		},
-		"9453": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.no_notification"
-		},
-		"9454": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"9455": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.canceled_at"
-		},
-		"9456": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.shipping_address"
-		},
-		"9457": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.billing_address"
-		},
-		"9458": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.summary"
-		},
-		"9459": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.items"
-		},
-		"9460": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.shipping_methods"
-		},
-		"9461": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.transactions"
-		},
-		"9462": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.credit_lines"
-		},
-		"9463": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.returns"
-		},
-		"9464": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "OrderChange"
-		},
-		"9465": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object"
-		},
-		"9466": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.id"
-		},
-		"9467": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.return_id"
-		},
-		"9468": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.claim_id"
-		},
-		"9469": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.exchange_id"
-		},
-		"9470": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.version"
-		},
-		"9471": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.change_type"
-		},
-		"9472": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.description"
-		},
-		"9473": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.status"
-		},
-		"9474": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.internal_note"
-		},
-		"9475": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.created_by"
-		},
-		"9476": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.requested_by"
-		},
-		"9477": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.requested_at"
-		},
-		"9478": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.confirmed_by"
-		},
-		"9479": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.confirmed_at"
-		},
-		"9480": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.declined_by"
-		},
-		"9481": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.declined_reason"
-		},
-		"9482": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"9483": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.declined_at"
-		},
-		"9484": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.canceled_by"
-		},
-		"9485": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.canceled_at"
-		},
-		"9486": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.carry_over_promotions"
-		},
-		"9487": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.order"
-		},
-		"9488": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__type"
-		},
-		"9489": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__type"
-		},
-		"9490": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object"
-		},
-		"9491": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.id"
-		},
-		"9492": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.display_id"
-		},
-		"9493": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.custom_display_id"
-		},
-		"9494": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.region_id"
-		},
-		"9495": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.customer_id"
-		},
-		"9496": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.version"
-		},
-		"9497": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.sales_channel_id"
-		},
-		"9498": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.status"
-		},
-		"9499": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.is_draft_order"
-		},
-		"9500": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.email"
-		},
-		"9501": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.currency_code"
-		},
-		"9502": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.locale"
-		},
-		"9503": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.no_notification"
-		},
-		"9504": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"9505": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.canceled_at"
-		},
-		"9506": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.shipping_address"
-		},
-		"9507": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.billing_address"
-		},
-		"9508": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.summary"
-		},
-		"9509": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.items"
-		},
-		"9510": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.shipping_methods"
-		},
-		"9511": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.transactions"
-		},
-		"9512": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.credit_lines"
-		},
-		"9513": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.returns"
-		},
-		"9514": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__object.actions"
-		},
-		"9515": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__type"
-		},
-		"9516": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
-			"qualifiedName": "__type"
-		},
-		"9517": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-change-action.ts",
-			"qualifiedName": "OrderChangeAction"
-		},
-		"9518": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "OrderItem"
-		},
-		"9519": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__object"
-		},
-		"9520": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__object.id"
-		},
-		"9521": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__object.version"
-		},
-		"9522": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__object.unit_price"
-		},
-		"9523": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__object.compare_at_unit_price"
-		},
-		"9524": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__object.quantity"
-		},
-		"9525": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__object.fulfilled_quantity"
-		},
-		"9526": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__object.delivered_quantity"
-		},
-		"9527": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__object.shipped_quantity"
-		},
-		"9528": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__object.return_requested_quantity"
-		},
-		"9529": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__object.return_received_quantity"
-		},
-		"9530": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__object.return_dismissed_quantity"
-		},
-		"9531": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__object.written_off_quantity"
-		},
-		"9532": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"9533": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__object.order"
-		},
-		"9534": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__type"
-		},
-		"9535": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__type"
-		},
-		"9536": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object"
-		},
 		"9537": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.id"
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__object.created_by"
 		},
 		"9538": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.display_id"
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__object.canceled_at"
 		},
 		"9539": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.custom_display_id"
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__object.metadata"
 		},
 		"9540": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.region_id"
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__object.order"
 		},
 		"9541": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.customer_id"
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__type"
 		},
 		"9542": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.version"
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__type"
 		},
 		"9543": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.sales_channel_id"
+			"qualifiedName": "__object"
 		},
 		"9544": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.status"
+			"qualifiedName": "__object.id"
 		},
 		"9545": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.is_draft_order"
+			"qualifiedName": "__object.display_id"
 		},
 		"9546": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.email"
+			"qualifiedName": "__object.custom_display_id"
 		},
 		"9547": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.currency_code"
+			"qualifiedName": "__object.region_id"
 		},
 		"9548": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.locale"
+			"qualifiedName": "__object.customer_id"
 		},
 		"9549": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.no_notification"
+			"qualifiedName": "__object.version"
 		},
 		"9550": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__object.sales_channel_id"
 		},
 		"9551": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.canceled_at"
+			"qualifiedName": "__object.status"
 		},
 		"9552": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.shipping_address"
+			"qualifiedName": "__object.is_draft_order"
 		},
 		"9553": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.billing_address"
+			"qualifiedName": "__object.email"
 		},
 		"9554": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.summary"
+			"qualifiedName": "__object.currency_code"
 		},
 		"9555": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.items"
+			"qualifiedName": "__object.locale"
 		},
 		"9556": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.shipping_methods"
+			"qualifiedName": "__object.no_notification"
 		},
 		"9557": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.transactions"
+			"qualifiedName": "__object.metadata"
 		},
 		"9558": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.credit_lines"
+			"qualifiedName": "__object.canceled_at"
 		},
 		"9559": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.returns"
-		},
-		"9560": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__object.item"
-		},
-		"9561": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__type"
-		},
-		"9562": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
-			"qualifiedName": "__type"
-		},
-		"9563": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-shipping-method.ts",
-			"qualifiedName": "OrderShipping"
-		},
-		"9564": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
-			"qualifiedName": "OrderSummary"
-		},
-		"9565": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
-			"qualifiedName": "__object"
-		},
-		"9566": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
-			"qualifiedName": "__object.id"
-		},
-		"9567": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
-			"qualifiedName": "__object.version"
-		},
-		"9568": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
-			"qualifiedName": "__object.totals"
-		},
-		"9569": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
-			"qualifiedName": "__object.order"
-		},
-		"9570": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
-			"qualifiedName": "__type"
-		},
-		"9571": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
-			"qualifiedName": "__type"
-		},
-		"9572": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object"
-		},
-		"9573": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.id"
-		},
-		"9574": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.display_id"
-		},
-		"9575": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.custom_display_id"
-		},
-		"9576": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.region_id"
-		},
-		"9577": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.customer_id"
-		},
-		"9578": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.version"
-		},
-		"9579": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.sales_channel_id"
-		},
-		"9580": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.status"
-		},
-		"9581": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.is_draft_order"
-		},
-		"9582": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.email"
-		},
-		"9583": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.currency_code"
-		},
-		"9584": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.locale"
-		},
-		"9585": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.no_notification"
-		},
-		"9586": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"9587": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
-			"qualifiedName": "__object.canceled_at"
-		},
-		"9588": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
 			"qualifiedName": "__object.shipping_address"
 		},
-		"9589": {
+		"9560": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
 			"qualifiedName": "__object.billing_address"
 		},
-		"9590": {
+		"9561": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
 			"qualifiedName": "__object.summary"
 		},
-		"9591": {
+		"9562": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
 			"qualifiedName": "__object.items"
 		},
-		"9592": {
+		"9563": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
 			"qualifiedName": "__object.shipping_methods"
 		},
-		"9593": {
+		"9564": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
 			"qualifiedName": "__object.transactions"
 		},
-		"9594": {
+		"9565": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
 			"qualifiedName": "__object.credit_lines"
 		},
-		"9595": {
+		"9566": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
 			"qualifiedName": "__object.returns"
 		},
+		"9567": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__object.return"
+		},
+		"9568": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__type"
+		},
+		"9569": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__type"
+		},
+		"9570": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__type"
+		},
+		"9571": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__type"
+		},
+		"9572": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__object.additional_items"
+		},
+		"9573": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__type"
+		},
+		"9574": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__type"
+		},
+		"9575": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__object.claim_items"
+		},
+		"9576": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__type"
+		},
+		"9577": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__type"
+		},
+		"9578": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__object.shipping_methods"
+		},
+		"9579": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__type"
+		},
+		"9580": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__type"
+		},
+		"9581": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__object.transactions"
+		},
+		"9582": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__type"
+		},
+		"9583": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "__type"
+		},
+		"9584": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
+			"qualifiedName": "OrderClaimItem"
+		},
+		"9585": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item-image.ts",
+			"qualifiedName": "OrderClaimItemImage"
+		},
+		"9586": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
+			"qualifiedName": "OrderCreditLine"
+		},
+		"9587": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
+			"qualifiedName": "__object"
+		},
+		"9588": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
+			"qualifiedName": "__object.id"
+		},
+		"9589": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
+			"qualifiedName": "__object.version"
+		},
+		"9590": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
+			"qualifiedName": "__object.reference"
+		},
+		"9591": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
+			"qualifiedName": "__object.reference_id"
+		},
+		"9592": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
+			"qualifiedName": "__object.amount"
+		},
+		"9593": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
+			"qualifiedName": "__object.raw_amount"
+		},
+		"9594": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"9595": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
+			"qualifiedName": "__object.order"
+		},
 		"9596": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
+			"qualifiedName": "__function"
+		},
+		"9597": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/credit-line.ts",
+			"qualifiedName": "__function"
+		},
+		"9598": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object"
+		},
+		"9599": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.id"
+		},
+		"9600": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.display_id"
+		},
+		"9601": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.custom_display_id"
+		},
+		"9602": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.region_id"
+		},
+		"9603": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.customer_id"
+		},
+		"9604": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.version"
+		},
+		"9605": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.sales_channel_id"
+		},
+		"9606": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.status"
+		},
+		"9607": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.is_draft_order"
+		},
+		"9608": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.email"
+		},
+		"9609": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"9610": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.locale"
+		},
+		"9611": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.no_notification"
+		},
+		"9612": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"9613": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.canceled_at"
+		},
+		"9614": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.shipping_address"
+		},
+		"9615": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.billing_address"
+		},
+		"9616": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.summary"
+		},
+		"9617": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.items"
+		},
+		"9618": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.shipping_methods"
+		},
+		"9619": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.transactions"
+		},
+		"9620": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.credit_lines"
+		},
+		"9621": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.returns"
+		},
+		"9622": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
+			"qualifiedName": "OrderExchange"
+		},
+		"9623": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
+			"qualifiedName": "OrderExchangeItem"
+		},
+		"9624": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
+			"qualifiedName": "OrderLineItem"
+		},
+		"9625": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/line-item-adjustment.ts",
+			"qualifiedName": "OrderLineItemAdjustment"
+		},
+		"9626": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/line-item-tax-line.ts",
+			"qualifiedName": "OrderLineItemTaxLine"
+		},
+		"9627": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "Order"
+		},
+		"9628": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object"
+		},
+		"9629": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.id"
+		},
+		"9630": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.display_id"
+		},
+		"9631": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.custom_display_id"
+		},
+		"9632": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.region_id"
+		},
+		"9633": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.customer_id"
+		},
+		"9634": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.version"
+		},
+		"9635": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.sales_channel_id"
+		},
+		"9636": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.status"
+		},
+		"9637": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.is_draft_order"
+		},
+		"9638": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.email"
+		},
+		"9639": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"9640": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.locale"
+		},
+		"9641": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.no_notification"
+		},
+		"9642": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"9643": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.canceled_at"
+		},
+		"9644": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.shipping_address"
+		},
+		"9645": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.billing_address"
+		},
+		"9646": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.summary"
+		},
+		"9647": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.items"
+		},
+		"9648": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.shipping_methods"
+		},
+		"9649": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.transactions"
+		},
+		"9650": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.credit_lines"
+		},
+		"9651": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.returns"
+		},
+		"9652": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "OrderChange"
+		},
+		"9653": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object"
+		},
+		"9654": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.id"
+		},
+		"9655": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.return_id"
+		},
+		"9656": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.claim_id"
+		},
+		"9657": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.exchange_id"
+		},
+		"9658": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.version"
+		},
+		"9659": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.change_type"
+		},
+		"9660": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.description"
+		},
+		"9661": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.status"
+		},
+		"9662": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.internal_note"
+		},
+		"9663": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.created_by"
+		},
+		"9664": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.requested_by"
+		},
+		"9665": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.requested_at"
+		},
+		"9666": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.confirmed_by"
+		},
+		"9667": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.confirmed_at"
+		},
+		"9668": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.declined_by"
+		},
+		"9669": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.declined_reason"
+		},
+		"9670": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"9671": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.declined_at"
+		},
+		"9672": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.canceled_by"
+		},
+		"9673": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.canceled_at"
+		},
+		"9674": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.carry_over_promotions"
+		},
+		"9675": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.order"
+		},
+		"9676": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__type"
+		},
+		"9677": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__type"
+		},
+		"9678": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object"
+		},
+		"9679": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.id"
+		},
+		"9680": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.display_id"
+		},
+		"9681": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.custom_display_id"
+		},
+		"9682": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.region_id"
+		},
+		"9683": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.customer_id"
+		},
+		"9684": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.version"
+		},
+		"9685": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.sales_channel_id"
+		},
+		"9686": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.status"
+		},
+		"9687": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.is_draft_order"
+		},
+		"9688": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.email"
+		},
+		"9689": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"9690": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.locale"
+		},
+		"9691": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.no_notification"
+		},
+		"9692": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"9693": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.canceled_at"
+		},
+		"9694": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.shipping_address"
+		},
+		"9695": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.billing_address"
+		},
+		"9696": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.summary"
+		},
+		"9697": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.items"
+		},
+		"9698": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.shipping_methods"
+		},
+		"9699": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.transactions"
+		},
+		"9700": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.credit_lines"
+		},
+		"9701": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.returns"
+		},
+		"9702": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__object.actions"
+		},
+		"9703": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__type"
+		},
+		"9704": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change.ts",
+			"qualifiedName": "__type"
+		},
+		"9705": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-change-action.ts",
+			"qualifiedName": "OrderChangeAction"
+		},
+		"9706": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "OrderItem"
+		},
+		"9707": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__object"
+		},
+		"9708": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__object.id"
+		},
+		"9709": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__object.version"
+		},
+		"9710": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__object.unit_price"
+		},
+		"9711": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__object.compare_at_unit_price"
+		},
+		"9712": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__object.quantity"
+		},
+		"9713": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__object.fulfilled_quantity"
+		},
+		"9714": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__object.delivered_quantity"
+		},
+		"9715": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__object.shipped_quantity"
+		},
+		"9716": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__object.return_requested_quantity"
+		},
+		"9717": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__object.return_received_quantity"
+		},
+		"9718": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__object.return_dismissed_quantity"
+		},
+		"9719": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__object.written_off_quantity"
+		},
+		"9720": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"9721": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__object.order"
+		},
+		"9722": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__type"
+		},
+		"9723": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__type"
+		},
+		"9724": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object"
+		},
+		"9725": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.id"
+		},
+		"9726": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.display_id"
+		},
+		"9727": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.custom_display_id"
+		},
+		"9728": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.region_id"
+		},
+		"9729": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.customer_id"
+		},
+		"9730": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.version"
+		},
+		"9731": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.sales_channel_id"
+		},
+		"9732": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.status"
+		},
+		"9733": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.is_draft_order"
+		},
+		"9734": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.email"
+		},
+		"9735": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"9736": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.locale"
+		},
+		"9737": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.no_notification"
+		},
+		"9738": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"9739": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.canceled_at"
+		},
+		"9740": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.shipping_address"
+		},
+		"9741": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.billing_address"
+		},
+		"9742": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.summary"
+		},
+		"9743": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.items"
+		},
+		"9744": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.shipping_methods"
+		},
+		"9745": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.transactions"
+		},
+		"9746": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.credit_lines"
+		},
+		"9747": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.returns"
+		},
+		"9748": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__object.item"
+		},
+		"9749": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__type"
+		},
+		"9750": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-item.ts",
+			"qualifiedName": "__type"
+		},
+		"9751": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-shipping-method.ts",
+			"qualifiedName": "OrderShipping"
+		},
+		"9752": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
+			"qualifiedName": "OrderSummary"
+		},
+		"9753": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
 			"qualifiedName": "__object"
 		},
-		"9597": {
+		"9754": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
+			"qualifiedName": "__object.id"
+		},
+		"9755": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
+			"qualifiedName": "__object.version"
+		},
+		"9756": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
+			"qualifiedName": "__object.totals"
+		},
+		"9757": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
+			"qualifiedName": "__object.order"
+		},
+		"9758": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
+			"qualifiedName": "__type"
+		},
+		"9759": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
+			"qualifiedName": "__type"
+		},
+		"9760": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object"
+		},
+		"9761": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.id"
+		},
+		"9762": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.display_id"
+		},
+		"9763": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.custom_display_id"
+		},
+		"9764": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.region_id"
+		},
+		"9765": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.customer_id"
+		},
+		"9766": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.version"
+		},
+		"9767": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.sales_channel_id"
+		},
+		"9768": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.status"
+		},
+		"9769": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.is_draft_order"
+		},
+		"9770": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.email"
+		},
+		"9771": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"9772": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.locale"
+		},
+		"9773": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.no_notification"
+		},
+		"9774": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"9775": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.canceled_at"
+		},
+		"9776": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.shipping_address"
+		},
+		"9777": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.billing_address"
+		},
+		"9778": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.summary"
+		},
+		"9779": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.items"
+		},
+		"9780": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.shipping_methods"
+		},
+		"9781": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.transactions"
+		},
+		"9782": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.credit_lines"
+		},
+		"9783": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order.ts",
+			"qualifiedName": "__object.returns"
+		},
+		"9784": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
+			"qualifiedName": "__object"
+		},
+		"9785": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
 			"qualifiedName": "__object.tableName"
 		},
-		"9598": {
+		"9786": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/order-summary.ts",
 			"qualifiedName": "__object.name"
 		},
-		"9599": {
+		"9787": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/return.ts",
 			"qualifiedName": "Return"
 		},
-		"9600": {
+		"9788": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/return-item.ts",
 			"qualifiedName": "ReturnItem"
 		},
-		"9601": {
+		"9789": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/return-reason.ts",
 			"qualifiedName": "ReturnReason"
 		},
-		"9602": {
+		"9790": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/return-reason.ts",
 			"qualifiedName": "__object"
 		},
-		"9603": {
+		"9791": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/return-reason.ts",
 			"qualifiedName": "__object.id"
 		},
-		"9604": {
+		"9792": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/return-reason.ts",
 			"qualifiedName": "__object.value"
 		},
-		"9605": {
+		"9793": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/return-reason.ts",
 			"qualifiedName": "__object.label"
 		},
-		"9606": {
+		"9794": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/return-reason.ts",
 			"qualifiedName": "__object.description"
 		},
-		"9607": {
+		"9795": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/return-reason.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"9608": {
+		"9796": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/return-reason.ts",
 			"qualifiedName": "__object.parent_return_reason"
 		},
-		"9609": {
+		"9797": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/return-reason.ts",
 			"qualifiedName": "__type"
 		},
-		"9610": {
+		"9798": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/return-reason.ts",
 			"qualifiedName": "__type"
 		},
-		"9611": {
+		"9799": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/return-reason.ts",
 			"qualifiedName": "__type"
 		},
-		"9612": {
+		"9800": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/return-reason.ts",
 			"qualifiedName": "__type"
 		},
-		"9613": {
+		"9801": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/return-reason.ts",
 			"qualifiedName": "__object.return_reason_children"
 		},
-		"9614": {
+		"9802": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/return-reason.ts",
 			"qualifiedName": "__type"
 		},
-		"9615": {
+		"9803": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/return-reason.ts",
 			"qualifiedName": "__type"
 		},
-		"9616": {
+		"9804": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method.ts",
 			"qualifiedName": "OrderShippingMethod"
 		},
-		"9617": {
+		"9805": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-adjustment.ts",
 			"qualifiedName": "OrderShippingMethodAdjustment"
 		},
-		"9618": {
+		"9806": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-tax-line.ts",
 			"qualifiedName": "OrderShippingMethodTaxLine"
 		},
-		"9619": {
+		"9807": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "OrderTransaction"
 		}
@@ -6700,7 +6700,7 @@
 			"1": "../../../../packages/modules/order/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 9325
+			"1": 9513
 		}
 	}
 }

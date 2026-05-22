@@ -66,4 +66,11 @@ export interface AdminRbacRoleUsersDeleteResponse {
    * Whether the users were removed successfully.
    */
   deleted: boolean
+  extends DeleteResponse<"rbac_policy"> {}
+
+export interface AdminRbacMePermissionsResponse {
+  /**
+   * The actor's effective `resource:operation` permissions, with wildcards already expanded.
+   */
+  permissions: string[]
 }

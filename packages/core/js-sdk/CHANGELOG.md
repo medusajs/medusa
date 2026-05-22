@@ -1,5 +1,11 @@
 # @medusajs/js-sdk
 
+## 2.15.3
+
+### Patch Changes
+
+- [#15441](https://github.com/medusajs/medusa/pull/15441) [`139d5f9d636dba61cdaec8319358b59f2aef3836`](https://github.com/medusajs/medusa/commit/139d5f9d636dba61cdaec8319358b59f2aef3836) Thanks [@christiananese](https://github.com/christiananese)! - feat(js-sdk): add MFA auth helpers
+
 ## 2.15.2
 
 ## 2.15.1

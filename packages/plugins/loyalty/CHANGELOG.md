@@ -1,5 +1,17 @@
 # @medusajs/loyalty-plugin
 
+## 2.15.3
+
+### Patch Changes
+
+- Updated dependencies [[`ac0a8b63d16518eae7c5370171b76bdf2d8dc2c5`](https://github.com/medusajs/medusa/commit/ac0a8b63d16518eae7c5370171b76bdf2d8dc2c5), [`e0b8251bbd04a400dffa635e990e3e587f9f2986`](https://github.com/medusajs/medusa/commit/e0b8251bbd04a400dffa635e990e3e587f9f2986), [`18a410c48d9d928de6e63d9577782480c3308e6b`](https://github.com/medusajs/medusa/commit/18a410c48d9d928de6e63d9577782480c3308e6b)]:
+  - @medusajs/icons@2.15.3
+  - @medusajs/test-utils@2.15.3
+  - @medusajs/ui@4.1.13
+  - @medusajs/cli@2.15.3
+  - @medusajs/framework@2.15.3
+  - @medusajs/admin-sdk@2.15.3
+
 ## 2.15.2
 
 ### Patch Changes

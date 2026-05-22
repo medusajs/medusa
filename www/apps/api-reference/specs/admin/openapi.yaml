@@ -1252,6 +1252,16 @@ paths:
   /admin/workflows-executions/{workflow_id}/{transaction_id}/subscribe:
     $ref: >-
       paths/admin_workflows-executions_{workflow_id}_{transaction_id}_subscribe.yaml
+  /auth/mfa/challenges/{id}/verify:
+    $ref: paths/auth_mfa_challenges_{id}_verify.yaml
+  /auth/mfa/factors:
+    $ref: paths/auth_mfa_factors.yaml
+  /auth/mfa/factors/{id}:
+    $ref: paths/auth_mfa_factors_{id}.yaml
+  /auth/mfa/factors/{id}/verify:
+    $ref: paths/auth_mfa_factors_{id}_verify.yaml
+  /auth/mfa/recovery-codes:
+    $ref: paths/auth_mfa_recovery-codes.yaml
   /auth/session:
     $ref: paths/auth_session.yaml
   /auth/token/refresh:

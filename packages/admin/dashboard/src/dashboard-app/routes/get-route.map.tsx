@@ -665,11 +665,8 @@ export function getRouteMap({
                   children: [
                     {
                       path: "create",
-                      element: (
-                        <RoutePermissionGuard
-                          permissions={["customer:create"]}
-                        />
-                      ),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "customer:create" },
                       children: [
                         {
                           path: "",
@@ -700,11 +697,8 @@ export function getRouteMap({
                   children: [
                     {
                       path: "edit",
-                      element: (
-                        <RoutePermissionGuard
-                          permissions={["customer:update"]}
-                        />
-                      ),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "customer:update" },
                       children: [
                         {
                           path: "",
@@ -715,11 +709,8 @@ export function getRouteMap({
                     },
                     {
                       path: "create-address",
-                      element: (
-                        <RoutePermissionGuard
-                          permissions={["customer:update"]}
-                        />
-                      ),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "customer:update" },
                       children: [
                         {
                           path: "",
@@ -732,11 +723,8 @@ export function getRouteMap({
                     },
                     {
                       path: "add-customer-groups",
-                      element: (
-                        <RoutePermissionGuard
-                          permissions={["customer:update"]}
-                        />
-                      ),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "customer:update" },
                       children: [
                         {
                           path: "",
@@ -754,11 +742,8 @@ export function getRouteMap({
                     },
                     {
                       path: "metadata/edit",
-                      element: (
-                        <RoutePermissionGuard
-                          permissions={["customer:update"]}
-                        />
-                      ),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "customer:update" },
                       children: [
                         {
                           path: "",

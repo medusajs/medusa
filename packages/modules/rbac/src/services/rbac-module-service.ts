@@ -11,6 +11,7 @@ import {
   MedusaService,
   Policy,
   promiseAll,
+  WILDCARD,
 } from "@medusajs/framework/utils"
 import {
   CreateRbacRoleParentDTO,
@@ -36,7 +37,7 @@ type InjectedDependencies = {
   >
 }
 
-const SUPER_ADMIN_KEY = "*:*"
+const SUPER_ADMIN_KEY = `${WILDCARD}:${WILDCARD}`
 
 export default class RbacModuleService
   extends MedusaService({
@@ -113,7 +114,7 @@ export default class RbacModuleService
 
     // Process registered policies
     for (const registeredPolicy of registeredPolicies) {
-      if (registeredPolicy.key === "*" && registeredPolicy.operation === "*") {
+      if (registeredPolicy.key === SUPER_ADMIN_KEY) {
         continue
       }
 

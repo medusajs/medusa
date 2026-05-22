@@ -7,7 +7,10 @@ import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
 import { HttpTypes } from "@medusajs/types"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  Action,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { PermissionGuard } from "../../../../../components/common/permission-guard"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useCustomers } from "../../../../../hooks/api/customers"
@@ -94,7 +97,7 @@ const CustomerActions = ({
   const { t } = useTranslation()
   const { can } = usePermissions()
 
-  const actions = []
+  const actions: Action[] = []
 
   if (can("customer", "update")) {
     actions.push({

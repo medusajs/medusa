@@ -1,5 +1,14 @@
 # @medusajs/link-modules
 
+## 2.15.3
+
+### Patch Changes
+
+- [#15344](https://github.com/medusajs/medusa/pull/15344) [`e0b8251bbd04a400dffa635e990e3e587f9f2986`](https://github.com/medusajs/medusa/commit/e0b8251bbd04a400dffa635e990e3e587f9f2986) Thanks [@Ultron03](https://github.com/Ultron03)! - fix(link-modules): drop schema prefix from RENAME TO target to fix ERROR 42601 in db:sync-links
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.3
+
 ## 2.15.2
 
 ### Patch Changes

@@ -294,6 +294,28 @@ export const useRemoveRbacRoleUsers = (
 
       options?.onSuccess?.(data, variables, context)
     },
+const ME_PERMISSIONS_QUERY_KEY = ["me-permissions"] as const
+
+export const mePermissionsQueryKey = ME_PERMISSIONS_QUERY_KEY
+
+/**
+ * Fetches the authenticated actor's resolved permission set. The response is always a flat list of `resource:operation` strings.
+ */
+export const useMePermissions = (
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminRbacMePermissionsResponse,
+      FetchError,
+      HttpTypes.AdminRbacMePermissionsResponse,
+      QueryKey
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  return useQuery({
+    queryFn: () => sdk.admin.rbacRole.mePermissions(),
+    queryKey: mePermissionsQueryKey,
+    staleTime: 5 * 60 * 1000,
     ...options,
   })
 }

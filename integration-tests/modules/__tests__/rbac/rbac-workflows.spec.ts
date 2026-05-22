@@ -20,7 +20,7 @@ function clearPolicies() {
 }
 
 medusaIntegrationTestRunner({
-  env: {},
+  env: { MEDUSA_FF_RBAC: true },
   testSuite: ({ getContainer }) => {
     describe("Workflows: RBAC", () => {
       let appContainer: MedusaContainer
