@@ -10,87 +10,102 @@ import {
 } from "../../../providers/permissions-provider"
 
 type PermissionRouteHandle = {
-  permission?: Permission
-}
-
-const readPermissionFromHandle = (handle: unknown): Permission | undefined => {
-  if (!handle || typeof handle !== "object") {
-    return undefined
-  }
-  const candidate = (handle as PermissionRouteHandle).permission
-  return typeof candidate === "string" ? (candidate as Permission) : undefined
-}
-
-interface RoutePermissionGuardProps {
   /**
-   * Optional explicit permissions to check for this route.
-   * If not provided, permissions are inferred from the route path.
+   * The permissions required to access the route.
    */
-  permissions?: Permission[]
+  permissions?: Permission | Permission[]
   /**
-   * If true, requires ALL permissions. Default is ANY.
+   * If true (default), the actor must hold ALL listed permissions.
+   * If false, holding ANY one is enough.
    */
   requireAll?: boolean
   /**
-   * Path to redirect to when access is denied.
-   * If not provided, shows an access denied page.
+   * Optional path to redirect to when access is denied. When omitted, the
+   * access-denied page is rendered in place.
    */
   redirectTo?: string
 }
 
+type ResolvedRequirement = {
+  permissions: Permission[]
+  requireAll: boolean
+  redirectTo?: string
+}
+
+const readRequirementFromHandle = (
+  handle: unknown
+): ResolvedRequirement | undefined => {
+  if (!handle || typeof handle !== "object") {
+    return undefined
+  }
+
+  const declared = handle as PermissionRouteHandle
+  const rawPermissions = declared.permissions
+  if (!rawPermissions) {
+    return undefined
+  }
+
+  const permissions = Array.isArray(rawPermissions)
+    ? rawPermissions
+    : [rawPermissions]
+  if (!permissions.length) {
+    return undefined
+  }
+
+  return {
+    permissions,
+    requireAll: declared.requireAll ?? true,
+    redirectTo: declared.redirectTo,
+  }
+}
+
 /**
- * Route-level permission guard that protects entire routes.
- * Can be used as a route element to wrap protected routes.
+ * Route-level permission guard. Mount it as the `element` of a route and
+ * declare the permission requirement in the route's `handle.permissions`.
  *
- * @example
+ * Example:
+ *
  * ```tsx
- * // In route definition
- * {
- *   path: "/customers/create",
- *   element: <RoutePermissionGuard permissions={["customer:create"]} />,
- *   children: [
- *     { path: "", lazy: () => import("./customer-create") }
- *   ]
- * }
- *
- * // Or using automatic permission inference
  * {
  *   path: "/customers/create",
  *   element: <RoutePermissionGuard />,
- *   children: [...]
+ *   handle: { permissions: "customer:create" },
+ *   children: [...],
+ * }
+ * ```
+ *
+ * For routes with multiple required permissions:
+ *
+ * ```tsx
+ * {
+ *   path: "/customers/:id/orders",
+ *   element: <RoutePermissionGuard />,
+ *   handle: {
+ *     permissions: ["customer:read", "order:read"],
+ *     // requireAll defaults to true; set to false to require ANY
+ *   },
+ *   children: [...],
  * }
  * ```
  */
-export const RoutePermissionGuard = ({
-  permissions,
-  requireAll = false, // TODO: should be true by default ?
-  redirectTo,
-}: RoutePermissionGuardProps) => {
+export const RoutePermissionGuard = () => {
   const matches = useMatches()
-  const { hasAnyPermission, hasAllPermissions, hasPermission, isLoading } =
-    usePermissions()
+  const { hasAnyPermission, hasAllPermissions, isLoading } = usePermissions()
 
-  // When no explicit `permissions` prop is passed, infer the requirement from
-  // the closest route match that declares `handle.permission`. This lets a parent route declare a default
-  // while children override.
-  const inferredPermission = useMemo(() => {
+  // Walk the matches from deepest to shallowest. The deepest route that
+  // declares `handle.permissions` wins, so children can override a parent.
+  const requirement = useMemo(() => {
     for (let i = matches.length - 1; i >= 0; i--) {
-      const permission = readPermissionFromHandle(matches[i].handle)
-      if (permission) {
-        return permission
+      const found = readRequirementFromHandle(matches[i].handle)
+      if (found) {
+        return found
       }
     }
     return undefined
   }, [matches])
 
-  const requiredPermissions = permissions?.length
-    ? permissions
-    : inferredPermission
-    ? [inferredPermission]
-    : null
-
-  useRegisterPermissions(requiredPermissions, {
-    requireAll: permissions?.length ? requireAll : false,
+  useRegisterPermissions(requirement?.permissions ?? null, {
+    requireAll: requirement?.requireAll ?? false,
     source: "route",
   })
 
@@ -99,36 +114,31 @@ export const RoutePermissionGuard = ({
     return <Outlet />
   }
 
-  let hasAccess = false
-
-  if (permissions?.length) {
-    hasAccess = requireAll
-      ? hasAllPermissions(permissions)
-      : hasAnyPermission(permissions)
-  } else if (inferredPermission) {
-    hasAccess = hasPermission(inferredPermission)
-  } else {
-    hasAccess = true
+  // No requirement declared anywhere up the tree → opt-out, render through.
+  if (!requirement) {
+    return <Outlet />
   }
 
+  const hasAccess = requirement.requireAll
+    ? hasAllPermissions(requirement.permissions)
+    : hasAnyPermission(requirement.permissions)
+
   if (!hasAccess) {
-    // TODO: maybe just show button instead of immidate redirect
-    if (redirectTo) {
-      return <Navigate to={redirectTo} replace />
+    if (requirement.redirectTo) {
+      return <Navigate to={requirement.redirectTo} replace />
     }
 
-    // Show access denied page
-    return <AccessDenied requiredPermission={inferredPermission} />
+    return <AccessDenied requirement={requirement} />
   }
 
   return <Outlet />
 }
 
 interface AccessDeniedProps {
-  requiredPermission?: Permission
+  requirement: ResolvedRequirement
 }
 
-const AccessDenied = ({ requiredPermission }: AccessDeniedProps) => {
+const AccessDenied = ({ requirement }: AccessDeniedProps) => {
   const { t } = useTranslation()
 
   return (
@@ -144,13 +154,11 @@ const AccessDenied = ({ requiredPermission }: AccessDeniedProps) => {
               {t("permissions.accessDenied.description")}
             </Text>
           </div>
-          {requiredPermission && (
-            <Text size="small" className="text-ui-fg-muted">
-              {t("permissions.accessDenied.requiredPermission", {
-                permission: requiredPermission,
-              })}
-            </Text>
-          )}
+          <Text size="small" className="text-ui-fg-muted">
+            {t("permissions.accessDenied.requiredPermission", {
+              permission: requirement.permissions.join(", "),
+            })}
+          </Text>
         </div>
       </Container>
     </div>
