@@ -2,17 +2,24 @@ import { ExclamationCircle } from "@medusajs/icons"
 import { Container, Heading, Text } from "@medusajs/ui"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { Navigate, Outlet, useLocation } from "react-router-dom"
-import {
-  buildPermission,
-  canAccessRoute,
-  getRoutePermission,
-  type Permission,
-} from "../../../lib/permissions"
+import { Navigate, Outlet, useMatches } from "react-router-dom"
+import { type Permission } from "../../../lib/permissions"
 import {
   usePermissions,
   useRegisterPermissions,
 } from "../../../providers/permissions-provider"
+
+type PermissionRouteHandle = {
+  permission?: Permission
+}
+
+const readPermissionFromHandle = (handle: unknown): Permission | undefined => {
+  if (!handle || typeof handle !== "object") {
+    return undefined
+  }
+  const candidate = (handle as PermissionRouteHandle).permission
+  return typeof candidate === "string" ? (candidate as Permission) : undefined
+}
 
 interface RoutePermissionGuardProps {
   /**
@@ -59,19 +66,28 @@ export const RoutePermissionGuard = ({
   requireAll = false, // TODO: should be true by default ?
   redirectTo,
 }: RoutePermissionGuardProps) => {
-  const location = useLocation()
-  const { policy, hasAnyPermission, hasAllPermissions, isLoading } =
+  const matches = useMatches()
+  const { hasAnyPermission, hasAllPermissions, hasPermission, isLoading } =
     usePermissions()
-  const inferredPermission = useMemo(
-    () => getRoutePermission(location.pathname),
-    [location.pathname]
-  )
+
+  // When no explicit `permissions` prop is passed, infer the requirement from
+  // the closest route match that declares `handle.permission`. This lets a parent route declare a default
+  // while children override.
+  const inferredPermission = useMemo(() => {
+    for (let i = matches.length - 1; i >= 0; i--) {
+      const permission = readPermissionFromHandle(matches[i].handle)
+      if (permission) {
+        return permission
+      }
+    }
+    return undefined
+  }, [matches])
 
   const requiredPermissions = permissions?.length
     ? permissions
     : inferredPermission
-      ? [buildPermission(inferredPermission.resource, inferredPermission.operation)]
-      : null
+    ? [inferredPermission]
+    : null
 
   useRegisterPermissions(requiredPermissions, {
     requireAll: permissions?.length ? requireAll : false,
@@ -89,9 +105,10 @@ export const RoutePermissionGuard = ({
     hasAccess = requireAll
       ? hasAllPermissions(permissions)
       : hasAnyPermission(permissions)
+  } else if (inferredPermission) {
+    hasAccess = hasPermission(inferredPermission)
   } else {
-    // Infer permissions from route
-    hasAccess = canAccessRoute(policy, location.pathname)
+    hasAccess = true
   }
 
   if (!hasAccess) {
@@ -101,19 +118,18 @@ export const RoutePermissionGuard = ({
     }
 
     // Show access denied page
-    return <AccessDenied pathname={location.pathname} />
+    return <AccessDenied requiredPermission={inferredPermission} />
   }
 
   return <Outlet />
 }
 
 interface AccessDeniedProps {
-  pathname: string
+  requiredPermission?: Permission
 }
 
-const AccessDenied = ({ pathname }: AccessDeniedProps) => {
+const AccessDenied = ({ requiredPermission }: AccessDeniedProps) => {
   const { t } = useTranslation()
-  const routePermission = getRoutePermission(pathname)
 
   return (
     <div className="bg-ui-bg-subtle absolute bottom-0 left-0 right-0 top-0 flex min-h-screen items-center justify-center p-4">
@@ -128,10 +144,10 @@ const AccessDenied = ({ pathname }: AccessDeniedProps) => {
               {t("permissions.accessDenied.description")}
             </Text>
           </div>
-          {routePermission && (
+          {requiredPermission && (
             <Text size="small" className="text-ui-fg-muted">
               {t("permissions.accessDenied.requiredPermission", {
-                permission: `${routePermission.resource}:${routePermission.operation}`,
+                permission: requiredPermission,
               })}
             </Text>
           )}
