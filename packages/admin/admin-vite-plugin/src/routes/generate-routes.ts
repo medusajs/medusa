@@ -1,9 +1,18 @@
 import fs from "fs/promises"
 import { outdent } from "outdent"
-import { File, parse, ParseResult, traverse } from "../babel"
+import {
+  File,
+  isIdentifier,
+  isObjectProperty,
+  Node,
+  parse,
+  ParseResult,
+  traverse,
+} from "../babel"
 import { logger } from "../logger"
 import {
   crawl,
+  getConfigObjectProperties,
   getParserOptions,
   hasDefaultExport,
   normalizePath,
@@ -15,6 +24,12 @@ type Route = {
   path: string
   handle?: string
   loader?: string
+  /**
+   * Code reference (e.g. `"RouteConfig0.access"`) interpolated into the
+   * generated route object, or `undefined` when the route's config doesn't
+   * declare `access`.
+   */
+  access?: string
   children?: Route[]
 }
 
@@ -57,6 +72,11 @@ function formatRoute(route: Route): string {
   if (route.loader) {
     base += `,
     loader: ${route.loader}`
+  }
+
+  if (route.access) {
+    base += `,
+    access: ${route.access}`
   }
 
   if (route.children?.length) {
@@ -141,10 +161,23 @@ async function parseFile(
   }
 
   const { hasHandle, hasLoader } = await hasNamedExports(ast, file)
+  const hasConfigAccess = await detectConfigAccess(ast, file)
   const routePath = getRoute(file)
 
-  const imports = generateImports(file, index, hasHandle, hasLoader)
-  const route = generateRoute(routePath, index, hasHandle, hasLoader)
+  const imports = generateImports(
+    file,
+    index,
+    hasHandle,
+    hasLoader,
+    hasConfigAccess
+  )
+  const route = generateRoute(
+    routePath,
+    index,
+    hasHandle,
+    hasLoader,
+    hasConfigAccess
+  )
 
   return {
     imports,
@@ -170,22 +203,30 @@ function generateImports(
   file: string,
   index: number,
   hasHandle: boolean,
-  hasLoader: boolean
+  hasLoader: boolean,
+  hasConfigAccess: boolean
 ): string[] {
   const imports: string[] = []
   const route = generateRouteComponentName(index)
   const importPath = normalizePath(file)
 
-  if (!hasHandle && !hasLoader) {
+  const namedImports: string[] = []
+  if (hasHandle) {
+    namedImports.push(`handle as ${generateHandleName(index)}`)
+  }
+  if (hasLoader) {
+    namedImports.push(`loader as ${generateLoaderName(index)}`)
+  }
+  if (hasConfigAccess) {
+    namedImports.push(`config as ${generateRouteConfigName(index)}`)
+  }
+
+  if (namedImports.length === 0) {
     imports.push(`import ${route} from "${importPath}"`)
   } else {
-    const namedImports = [
-      hasHandle && `handle as ${generateHandleName(index)}`,
-      hasLoader && `loader as ${generateLoaderName(index)}`,
-    ]
-      .filter(Boolean)
-      .join(", ")
-    imports.push(`import ${route}, { ${namedImports} } from "${importPath}"`)
+    imports.push(
+      `import ${route}, { ${namedImports.join(", ")} } from "${importPath}"`
+    )
   }
 
   return imports
@@ -195,18 +236,26 @@ function generateRoute(
   route: string,
   index: number,
   hasHandle: boolean,
-  hasLoader: boolean
+  hasLoader: boolean,
+  hasConfigAccess: boolean
 ): Route {
   return {
     Component: generateRouteComponentName(index),
     path: route,
     handle: hasHandle ? generateHandleName(index) : undefined,
     loader: hasLoader ? generateLoaderName(index) : undefined,
+    access: hasConfigAccess
+      ? `${generateRouteConfigName(index)}.access`
+      : undefined,
   }
 }
 
 function generateRouteComponentName(index: number): string {
   return `RouteComponent${index}`
+}
+
+function generateRouteConfigName(index: number): string {
+  return `RouteConfig${index}`
 }
 
 function generateHandleName(index: number): string {
@@ -215,6 +264,60 @@ function generateHandleName(index: number): string {
 
 function generateLoaderName(index: number): string {
   return `loader${index}`
+}
+
+/**
+ * Detects whether the route file's `config` named export declares an
+ * `access` property. We only need a boolean: the value itself is passed
+ * through by reference in the generated import so plugin authors can
+ * compose any shape compatible with `AccessConfig`.
+ */
+async function detectConfigAccess(
+  ast: ParseResult<File>,
+  file: string
+): Promise<boolean> {
+  let hasAccess = false
+
+  const inspectProperties = (properties: Node[]) => {
+    if (
+      properties.some(
+        (prop) =>
+          isObjectProperty(prop) && isIdentifier(prop.key, { name: "access" })
+      )
+    ) {
+      hasAccess = true
+    }
+  }
+
+  try {
+    traverse(ast, {
+      VariableDeclarator(path) {
+        if (hasAccess) {
+          return
+        }
+        const properties = getConfigObjectProperties(path)
+        if (properties) {
+          inspectProperties(properties as unknown as Node[])
+        }
+      },
+      ExportNamedDeclaration(path) {
+        if (hasAccess) {
+          return
+        }
+        const properties = getConfigObjectProperties(path)
+        if (properties) {
+          inspectProperties(properties as unknown as Node[])
+        }
+      },
+    })
+  } catch (e) {
+    logger.error("An error occurred while inspecting the route config.", {
+      file,
+      error: e,
+    })
+  }
+
+  return hasAccess
 }
 
 async function hasNamedExports(

@@ -71,7 +71,8 @@ const expectedMenuItems = `
             path: "/one",
             nested: undefined,
             rank: undefined,
-            translationNs: undefined
+            translationNs: undefined,
+            access: undefined
           },
           {
             label: RouteConfig1.label,
@@ -79,7 +80,8 @@ const expectedMenuItems = `
             path: "/two",
             nested: undefined,
             rank: undefined,
-            translationNs: undefined
+            translationNs: undefined,
+            access: undefined
           },
           {
             label: RouteConfig2.label,
@@ -87,7 +89,8 @@ const expectedMenuItems = `
             path: "/three",
             nested: "/products",
             rank: undefined,
-            translationNs: undefined
+            translationNs: undefined,
+            access: undefined
           }
         ]
       `
@@ -202,7 +205,8 @@ describe("generateMenuItems", () => {
           path: "/analytics",
           nested: undefined,
           rank: 1,
-          translationNs: undefined
+          translationNs: undefined,
+          access: undefined
         },
         {
           label: RouteConfig1.label,
@@ -210,7 +214,8 @@ describe("generateMenuItems", () => {
           path: "/reports",
           nested: undefined,
           rank: 2,
-          translationNs: undefined
+          translationNs: undefined,
+          access: undefined
         }
       ]
     `
@@ -256,7 +261,8 @@ describe("generateMenuItems", () => {
           path: "/custom",
           nested: undefined,
           rank: undefined,
-          translationNs: RouteConfig0.translationNs
+          translationNs: RouteConfig0.translationNs,
+          access: undefined
         }
       ]
     `
@@ -335,7 +341,8 @@ describe("generateMenuItems", () => {
           path: "/first",
           nested: undefined,
           rank: 1,
-          translationNs: undefined
+          translationNs: undefined,
+          access: undefined
         },
         {
           label: RouteConfig1.label,
@@ -343,7 +350,8 @@ describe("generateMenuItems", () => {
           path: "/second",
           nested: undefined,
           rank: undefined,
-          translationNs: undefined
+          translationNs: undefined,
+          access: undefined
         },
         {
           label: RouteConfig2.label,
@@ -351,13 +359,61 @@ describe("generateMenuItems", () => {
           path: "/third",
           nested: undefined,
           rank: 0,
-          translationNs: undefined
+          translationNs: undefined,
+          access: undefined
         }
       ]
     `
 
     expect(utils.normalizeString(result.code)).toEqual(
       utils.normalizeString(expectedMixedMenuItems)
+    )
+  })
+
+  it("should emit access by reference when the config declares it", async () => {
+    const mockFileWithAccess = `
+      import { defineRouteConfig } from "@medusajs/admin-sdk"
+
+      const Page = () => {
+          return <div>Widgets</div>
+      }
+
+      export const config = defineRouteConfig({
+          label: "Widgets",
+          access: { permissions: "widget:read" },
+      })
+
+      export default Page
+    `
+
+    const mockFiles = ["Users/user/medusa/src/admin/routes/widgets/page.tsx"]
+    vi.mocked(utils.crawl).mockResolvedValue(mockFiles)
+    vi.mocked(fs.readFile).mockResolvedValue(mockFileWithAccess)
+
+    const result = await generateMenuItems(
+      new Set(["Users/user/medusa/src/admin"])
+    )
+
+    expect(result.imports).toEqual([
+      `import { config as RouteConfig0 } from "Users/user/medusa/src/admin/routes/widgets/page.tsx"`,
+    ])
+
+    const expectedOutput = `
+      menuItems: [
+        {
+          label: RouteConfig0.label,
+          icon: undefined,
+          path: "/widgets",
+          nested: undefined,
+          rank: undefined,
+          translationNs: undefined,
+          access: RouteConfig0.access
+        }
+      ]
+    `
+
+    expect(utils.normalizeString(result.code)).toEqual(
+      utils.normalizeString(expectedOutput)
     )
   })
 })

@@ -1,4 +1,5 @@
 import type {
+  AccessConfig,
   CustomFieldFormKeys,
   CustomFieldModel,
   CustomFieldModelContainerMap,
@@ -14,6 +15,19 @@ export interface WidgetConfig {
    * The injection zone or zones that the widget should be injected into.
    */
   zone: InjectionZone | InjectionZone[]
+  /**
+   * Optional access requirements gating whether the widget is rendered.
+   *
+   * When the actor does not satisfy the requirement, the widget is omitted
+   * from its injection zone entirely.
+   *
+   * @example
+   * ```ts
+   * access: { permissions: "product:update" }
+   * access: { permissions: ["product:update", "inventory:read"], requireAll: false }
+   * ```
+   */
+  access?: Omit<AccessConfig, "redirectTo">
 }
 
 export interface RouteConfig {
@@ -47,6 +61,26 @@ export interface RouteConfig {
    * ```
    */
   translationNs?: string
+
+  /**
+   * Optional access requirements gating the route and its sidebar item.
+   *
+   * When set, the dashboard wraps the route with a permission guard and
+   * hides the corresponding sidebar item from actors who don't satisfy the
+   * requirement. Provide `redirectTo` to navigate away on denial; otherwise
+   * the default access-denied page is rendered.
+   *
+   * @example
+   * ```ts
+   * access: { permissions: "widget:read" }
+   * access: {
+   *   permissions: ["widget:read", "widget:update"],
+   *   requireAll: true, // default
+   *   redirectTo: "/widgets",
+   * }
+   * ```
+   */
+  access?: AccessConfig
 }
 
 export type CustomFormField<

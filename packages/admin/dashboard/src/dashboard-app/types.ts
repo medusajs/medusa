@@ -1,4 +1,5 @@
 import {
+  AccessConfig,
   CustomFieldContainerZone,
   CustomFieldFormTab,
   CustomFieldFormZone,
@@ -17,6 +18,11 @@ export type RouteExtension = {
   handle?: object
   children?: RouteExtension[]
   path: string
+  /**
+   * Optional access requirement for the route — when set, the route is
+   * wrapped in `RoutePermissionGuard` with the corresponding `handle` entries.
+   */
+  access?: AccessConfig
 }
 
 export type MenuItemExtension = {
@@ -26,11 +32,22 @@ export type MenuItemExtension = {
   nested?: NestedRoutePosition
   rank?: number
   translationNs?: string
+  /**
+   * Optional access requirement for the sidebar entry — the dashboard hides
+   * the menu item when the actor doesn't satisfy it.
+   */
+  access?: AccessConfig
 }
 
 export type WidgetExtension = {
   Component: ComponentType
   zone: InjectionZone[]
+  /**
+   * Optional access requirement for the widget — when set, the dashboard
+   * wraps the rendered component in `PermissionGuard` so the widget is
+   * omitted from its zone when the actor doesn't satisfy the requirement.
+   */
+  access?: Omit<AccessConfig, "redirectTo">
 }
 
 export type DisplayExtension = {

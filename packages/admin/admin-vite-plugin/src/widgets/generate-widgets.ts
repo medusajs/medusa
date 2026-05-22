@@ -4,6 +4,8 @@ import outdent from "outdent"
 import {
   File,
   isArrayExpression,
+  isIdentifier,
+  isObjectProperty,
   isStringLiteral,
   isTemplateLiteral,
   Node,
@@ -12,12 +14,23 @@ import {
   traverse,
 } from "../babel"
 import { logger } from "../logger"
-import { getParserOptions, hasDefaultExport, normalizePath } from "../utils"
+import {
+  getConfigObjectProperties,
+  getParserOptions,
+  hasDefaultExport,
+  normalizePath,
+} from "../utils"
 import { getWidgetFilesFromSources } from "./helpers"
 
 type WidgetConfig = {
   Component: string
   zone: InjectionZone[]
+  /**
+   * Code reference (e.g. `"WidgetConfig0.access"`) interpolated into the
+   * generated widget object, or `undefined` when the config doesn't declare
+   * `access`.
+   */
+  access?: string
 }
 
 type ParsedWidgetConfig = {
@@ -58,7 +71,8 @@ function formatWidget(widget: WidgetConfig): string {
   return outdent`
     {
         Component: ${widget.Component},
-        zone: [${widget.zone.map((z) => `"${z}"`).join(", ")}]
+        zone: [${widget.zone.map((z) => `"${z}"`).join(", ")}],
+        access: ${widget.access || "undefined"}
     }
   `
 }
@@ -113,8 +127,10 @@ async function parseFile(
     return null
   }
 
+  const hasConfigAccess = await detectConfigAccess(ast, file)
+
   const import_ = generateImport(file, index)
-  const widget = generateWidget(zone, index)
+  const widget = generateWidget(zone, index, hasConfigAccess)
 
   return {
     widget,
@@ -137,11 +153,71 @@ function generateImport(file: string, index: number): string {
   )}, { config as ${generateWidgetConfigName(index)} } from "${path}"`
 }
 
-function generateWidget(zone: InjectionZone[], index: number): WidgetConfig {
+function generateWidget(
+  zone: InjectionZone[],
+  index: number,
+  hasConfigAccess: boolean
+): WidgetConfig {
   return {
     Component: generateWidgetComponentName(index),
     zone: zone,
+    access: hasConfigAccess
+      ? `${generateWidgetConfigName(index)}.access`
+      : undefined,
   }
+}
+
+/**
+ * Detects whether the widget file's `config` declares an `access` property.
+ * The value itself is passed through by reference at runtime — we only need
+ * a boolean here.
+ */
+async function detectConfigAccess(
+  ast: ParseResult<File>,
+  file: string
+): Promise<boolean> {
+  let hasAccess = false
+
+  const inspect = (properties: Node[]) => {
+    if (
+      properties.some(
+        (prop) =>
+          isObjectProperty(prop) && isIdentifier(prop.key, { name: "access" })
+      )
+    ) {
+      hasAccess = true
+    }
+  }
+
+  try {
+    traverse(ast, {
+      VariableDeclarator(path) {
+        if (hasAccess) {
+          return
+        }
+        const properties = getConfigObjectProperties(path)
+        if (properties) {
+          inspect(properties as unknown as Node[])
+        }
+      },
+      ExportNamedDeclaration(path) {
+        if (hasAccess) {
+          return
+        }
+        const properties = getConfigObjectProperties(path)
+        if (properties) {
+          inspect(properties as unknown as Node[])
+        }
+      },
+    })
+  } catch (e) {
+    logger.error(`An error occurred while inspecting the widget config.`, {
+      file,
+      error: e,
+    })
+  }
+
+  return hasAccess
 }
 
 async function getWidgetZone(

@@ -18,7 +18,10 @@ import { Avatar, Divider, DropdownMenu, Text, clx } from "@medusajs/ui"
 import { Collapsible as RadixCollapsible } from "radix-ui"
 import { useTranslation } from "react-i18next"
 
+import type { AccessConfig } from "@medusajs/admin-shared"
 import { useStore } from "../../../hooks/api/store"
+import type { Permission } from "../../../lib/permissions"
+import { usePermissions } from "../../../providers/permissions-provider"
 import { PermissionGuard } from "../../common/permission-guard"
 import { Skeleton } from "../../common/skeleton"
 import { INavItem, NavItem } from "../../layout/nav-item"
@@ -310,11 +313,45 @@ const CoreRouteSection = () => {
   )
 }
 
+/**
+ * Decides whether the actor satisfies a menu item's access requirement.
+ * When no access requirement is declared, the item is always visible.
+ */
+const useMenuItemAccess = () => {
+  const { hasAllPermissions, hasAnyPermission } = usePermissions()
+
+  return (access: AccessConfig | undefined): boolean => {
+    if (!access?.permissions) {
+      return true
+    }
+    const permissions = Array.isArray(access.permissions)
+      ? access.permissions
+      : [access.permissions]
+    if (!permissions.length) {
+      return true
+    }
+    const requireAll = access.requireAll ?? true
+    return requireAll
+      ? hasAllPermissions(permissions as Permission[])
+      : hasAnyPermission(permissions as Permission[])
+  }
+}
+
 const ExtensionRouteSection = () => {
   const { t } = useTranslation()
   const { getMenu } = useExtension()
+  const hasAccess = useMenuItemAccess()
 
-  const menuItems = getMenu("coreExtensions").filter((item) => !item.nested)
+  const menuItems = getMenu("coreExtensions")
+    .filter((item) => !item.nested)
+    // Hide menu items whose declared access requirement isn't satisfied.
+    // Sub-items are also filtered so collapsed groups don't expose entries
+    // the user can't reach.
+    .filter((item) => hasAccess(item.access))
+    .map((item) => ({
+      ...item,
+      items: item.items?.filter((subItem) => hasAccess(subItem.access)),
+    }))
 
   if (!menuItems.length) {
     return null

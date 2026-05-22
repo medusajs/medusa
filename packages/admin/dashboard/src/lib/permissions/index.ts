@@ -1,4 +1,5 @@
 export type {
+  AccessConfig,
   Permission,
   PermissionOperation,
   PermissionRequirement,

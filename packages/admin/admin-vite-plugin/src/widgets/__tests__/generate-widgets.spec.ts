@@ -38,7 +38,8 @@ const expectedWidgets = `
     widgets: [
         {
             Component: WidgetComponent0,
-            zone: ["product.details.after"]
+            zone: ["product.details.after"],
+            access: undefined
         }
     ]
 `
@@ -78,6 +79,51 @@ describe("generateWidgets", () => {
     ])
     expect(utils.normalizeString(result.code)).toEqual(
       utils.normalizeString(expectedWidgets)
+    )
+  })
+
+  it("should emit access by reference when the widget config declares it", async () => {
+    const mockFileWithAccess = `
+      import { defineWidgetConfig } from "@medusajs/admin-sdk"
+
+      const Widget = () => {
+          return <div>Sensitive Widget</div>
+      }
+
+      export const config = defineWidgetConfig({
+          zone: "product.details.after",
+          access: { permissions: "product:update" },
+      })
+
+      export default Widget
+    `
+
+    const mockFiles = [
+      "Users/user/medusa/src/admin/widgets/sensitive-widget.tsx",
+    ]
+    vi.mocked(utils.crawl).mockResolvedValue(mockFiles)
+    vi.mocked(fs.readFile).mockResolvedValue(mockFileWithAccess)
+
+    const result = await generateWidgets(
+      new Set(["Users/user/medusa/src/admin"])
+    )
+
+    expect(result.imports).toEqual([
+      `import WidgetComponent0, { config as WidgetConfig0 } from "Users/user/medusa/src/admin/widgets/sensitive-widget.tsx"`,
+    ])
+
+    const expectedOutput = `
+      widgets: [
+          {
+              Component: WidgetComponent0,
+              zone: ["product.details.after"],
+              access: WidgetConfig0.access
+          }
+      ]
+    `
+
+    expect(utils.normalizeString(result.code)).toEqual(
+      utils.normalizeString(expectedOutput)
     )
   })
 })

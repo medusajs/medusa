@@ -1,4 +1,5 @@
 import {
+  AccessConfig,
   CustomFieldContainerZone,
   CustomFieldFormTab,
   CustomFieldFormZone,
@@ -6,6 +7,7 @@ import {
   deepMerge,
   InjectionZone,
   NESTED_ROUTE_POSITIONS,
+  Permission,
 } from "@medusajs/admin-shared"
 import * as React from "react"
 import {
@@ -13,6 +15,7 @@ import {
   RouteObject,
   RouterProvider,
 } from "react-router-dom"
+import { PermissionGuard } from "../components/common/permission-guard"
 import { INavItem } from "../components/layout/nav-item"
 import { Providers } from "../providers"
 import coreTranslations from "../i18n/translations"
@@ -49,6 +52,49 @@ type DashboardAppProps = {
  * Such paths can be added to the menu items without the optional segment.
  */
 const OPTIONAL_LAST_SEGMENT_MATCH = /\/([^/])+\?$/
+
+/**
+ * Wraps a widget component with `PermissionGuard` so it only renders when the
+ * actor satisfies the declared access requirement. Returns the original
+ * component when no permissions are declared, so wrapping is a no-op for
+ * widgets without an `access` config.
+ *
+ * Done at registration time (not per-render) to keep the component identity
+ * stable — the guard otherwise re-mounts every time its injection zone
+ * re-renders.
+ */
+const wrapWithPermissionGuard = (
+  Component: React.ComponentType<any>,
+  access: Omit<AccessConfig, "redirectTo">
+): React.ComponentType<any> => {
+  const permissions = Array.isArray(access.permissions)
+    ? access.permissions
+    : access.permissions
+      ? [access.permissions]
+      : []
+
+  if (!permissions.length) {
+    return Component
+  }
+
+  const requireAll = access.requireAll ?? true
+
+  const Wrapped: React.ComponentType<any> = (props) => (
+    <PermissionGuard
+      permissions={permissions as Permission[]}
+      requireAll={requireAll}
+      fallback={null}
+    >
+      <Component {...props} />
+    </PermissionGuard>
+  )
+
+  Wrapped.displayName = `GuardedWidget(${
+    Component.displayName || Component.name || "Anonymous"
+  })`
+
+  return Wrapped
+}
 
 export class DashboardApp {
   private widgets: WidgetMap
@@ -106,11 +152,18 @@ export class DashboardApp {
       }
 
       widgets.forEach((widget) => {
+        // Wrap at registration time so the wrapped component identity is
+        // stable across renders — the guard otherwise re-mounts every time
+        // its injection zone re-renders.
+        const Component = widget.access
+          ? wrapWithPermissionGuard(widget.Component, widget.access)
+          : widget.Component
+
         widget.zone.forEach((zone) => {
           if (!registry.has(zone)) {
             registry.set(zone, [])
           }
-          registry.get(zone)!.push(widget.Component)
+          registry.get(zone)!.push(Component)
         })
       })
     })
@@ -190,6 +243,7 @@ export class DashboardApp {
         nested: item.nested,
         rank: item.rank,
         translationNs: item.translationNs,
+        access: item.access,
       }
 
       if (parentPath !== "/" && tempRegistry[parentPath]) {

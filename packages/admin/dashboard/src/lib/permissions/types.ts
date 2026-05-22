@@ -1,54 +1,28 @@
 /**
  * Permission types for RBAC in the admin dashboard.
  *
+ * The canonical definitions live in `@medusajs/admin-shared` so that the
+ * dashboard and the extension SDK both consume the same types. The dashboard
+ * re-exports them here for convenient internal imports.
+ *
  * Permissions follow the pattern: `{resource}:{operation}`
  * Examples:
  *   - customer:read - Can view customers
  *   - customer:create - Can create customers
  *   - customer:* - Wildcard, full access (read + create + update + delete)
  */
+export type {
+  AccessConfig,
+  Permission,
+  PermissionOperation,
+  PermissionResource,
+} from "@medusajs/admin-shared"
 
-/**
- * Resources that can have permissions applied to them.
- * These map to Medusa commerce domains.
- */
-export type PermissionResource =
-  | "customer"
-  | "customer_group"
-  | "order"
-  | "product"
-  | "product_category"
-  | "product_collection"
-  | "product_tag"
-  | "product_type"
-  | "inventory"
-  | "reservation"
-  | "promotion"
-  | "campaign"
-  | "price_list"
-  | "region"
-  | "store"
-  | "user"
-  | "sales_channel"
-  | "stock_location"
-  | "shipping_profile"
-  | "shipping_option"
-  | "tax_region"
-  | "api_key"
-  | "return_reason"
-  | "refund_reason"
-  | "workflow"
-  | "translation"
-
-/**
- * Operations that can be performed on resources.
- */
-export type PermissionOperation = "read" | "create" | "update" | "delete" | "*"
-
-/**
- * A single permission string in the format "resource:operation"
- */
-export type Permission = `${PermissionResource}:${PermissionOperation}`
+import type {
+  Permission,
+  PermissionOperation,
+  PermissionResource,
+} from "@medusajs/admin-shared"
 
 /**
  * A policy represents the user's set of permissions.

@@ -266,4 +266,48 @@ describe("generateRoutes", () => {
       utils.normalizeString(expectedRoutesWithHandleLoader)
     )
   })
+
+  it("should emit access by reference when the route config declares it", async () => {
+    const mockFile = `
+      import { defineRouteConfig } from "@medusajs/admin-sdk"
+
+      const Page = () => {
+          return <div>Widgets</div>
+      }
+
+      export const config = defineRouteConfig({
+          label: "Widgets",
+          access: { permissions: "widget:read" },
+      })
+
+      export default Page
+    `
+
+    const mockFiles = ["Users/user/medusa/src/admin/routes/widgets/page.tsx"]
+    vi.mocked(utils.crawl).mockResolvedValue(mockFiles)
+    vi.mocked(fs.readFile).mockResolvedValue(mockFile)
+    vi.mocked(fs.stat).mockRejectedValue(new Error("File not found"))
+
+    const result = await generateRoutes(
+      new Set(["Users/user/medusa/src/admin"])
+    )
+
+    expect(result.imports).toEqual([
+      `import RouteComponent0, { config as RouteConfig0 } from "Users/user/medusa/src/admin/routes/widgets/page.tsx"`,
+    ])
+
+    const expectedOutput = `
+      routes: [
+          {
+              Component: RouteComponent0,
+              path: "/widgets",
+              access: RouteConfig0.access
+          }
+      ]
+    `
+
+    expect(utils.normalizeString(result.code)).toEqual(
+      utils.normalizeString(expectedOutput)
+    )
+  })
 })

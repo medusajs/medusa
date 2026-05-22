@@ -1,7 +1,24 @@
-import { ComponentType } from "react"
+import type { AccessConfig } from "@medusajs/admin-shared"
+import { ComponentType, createElement } from "react"
 import { LoaderFunction, RouteObject } from "react-router-dom"
+import { RoutePermissionGuard } from "../../components/authentication/route-permission-guard"
 import { ErrorBoundary } from "../../components/utilities/error-boundary"
 import { RouteExtension, RouteModule } from "../types"
+
+/**
+ * Folds an extension's `access` config into the route's handle so the mounted
+ * `RoutePermissionGuard` can read it via `useMatches()`. Returns the merged
+ * handle to assign on the route.
+ */
+const buildAccessAwareHandle = (
+  existingHandle: object | undefined,
+  access: AccessConfig
+): object => ({
+  ...(existingHandle ?? {}),
+  permissions: access.permissions,
+  requireAll: access.requireAll,
+  redirectTo: access.redirectTo,
+})
 
 /**
  * Used to test if a route is a settings route.
@@ -128,7 +145,8 @@ const addRoute = (
   handle?: object,
   parallelRoutes?: RouteExtension[],
   fullPath?: string,
-  componentPath?: string
+  componentPath?: string,
+  access?: AccessConfig
 ) => {
   if (!pathSegments.length) {
     return
@@ -157,6 +175,16 @@ const addRoute = (
 
     if (loader) {
       route.loader = loader
+    }
+
+    // When the extension declares an access requirement, mount the guard at
+    // the branch level. The leaf renders through its <Outlet />. Both the
+    // branch's handle (carrying permissions) and the leaf's handle (carrying
+    // breadcrumb / loader-derived data) remain visible via `useMatches()`.
+    if (access && currentSegment !== "*?" && currentSegment !== "*") {
+      route.element = createElement(RoutePermissionGuard)
+      route.handle = buildAccessAwareHandle(route.handle, access)
+      route.ErrorBoundary = ErrorBoundary
     }
 
     // Since splat segments must occur at the end of a route, react-router enforces the segment to be a leaf.
@@ -191,7 +219,8 @@ const addRoute = (
       handle,
       parallelRoutes,
       currentFullPath,
-      componentPath
+      componentPath,
+      access
     )
   }
 }
@@ -208,7 +237,7 @@ export const createRouteMap = (
 ): RouteObject[] => {
   const root: RouteObject[] = []
 
-  routes.forEach(({ path, Component, loader, handle, children }) => {
+  routes.forEach(({ path, Component, loader, handle, children, access }) => {
     const cleanedPath = ignore
       ? path.replace(ignore, "").replace(/^\/+/, "")
       : path.replace(/^\/+/, "")
@@ -221,7 +250,8 @@ export const createRouteMap = (
       handle,
       children,
       undefined,
-      path
+      path,
+      access
     )
   })
 

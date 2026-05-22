@@ -31,6 +31,12 @@ type RouteConfig = {
   nested?: NestedRoutePosition
   rank?: number
   translationNs?: string
+  /**
+   * `true` when the config declares an `access` field. The actual value is
+   * picked up by reference at runtime — we don't statically serialize the
+   * object so plugin authors can use anything assignable to `AccessConfig`.
+   */
+  hasAccess: boolean
 }
 
 type MenuItem = {
@@ -40,6 +46,12 @@ type MenuItem = {
   nested?: NestedRoutePosition
   rank?: number
   translationNs?: string
+  /**
+   * Code reference (e.g. `"RouteConfig0.access"`) interpolated into the
+   * generated menu item object, or `undefined` when the config doesn't
+   * declare `access`.
+   */
+  access?: string
 }
 
 type MenuItemResult = {
@@ -69,14 +81,15 @@ function generateCode(results: MenuItemResult[]): string {
 }
 
 function formatMenuItem(route: MenuItem): string {
-  const { label, icon, path, nested, rank, translationNs } = route
+  const { label, icon, path, nested, rank, translationNs, access } = route
   return `{
     label: ${label},
     icon: ${icon || "undefined"},
     path: "${path}",
     nested: ${nested ? `"${nested}"` : "undefined"},
     rank: ${rank !== undefined ? rank : "undefined"},
-    translationNs: ${translationNs ? `${translationNs}` : "undefined"}
+    translationNs: ${translationNs ? `${translationNs}` : "undefined"},
+    access: ${access || "undefined"}
   }`
 }
 
@@ -141,6 +154,7 @@ function generateMenuItem(
     translationNs: config.translationNs
       ? `${configName}.translationNs`
       : undefined,
+    access: config.hasAccess ? `${configName}.access` : undefined,
   }
 }
 
@@ -279,6 +293,7 @@ function processConfigProperties(
     nested: nestedValue as NestedRoutePosition | undefined,
     rank: rankValue,
     translationNs: translationNsValue,
+    hasAccess: hasProperty("access"),
   }
 }
 

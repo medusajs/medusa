@@ -1,3 +1,4 @@
+import type { AccessConfig } from "@medusajs/admin-shared"
 import { Kbd, Text, clx } from "@medusajs/ui"
 import { Collapsible as RadixCollapsible } from "radix-ui"
 import {
@@ -18,6 +19,11 @@ type NestedItemProps = {
   label: string
   to: string
   translationNs?: string
+  /**
+   * Optional access requirement — when set, the dashboard hides the sub-item
+   * from actors who don't satisfy it.
+   */
+  access?: AccessConfig
 }
 
 export type INavItem = {
@@ -28,6 +34,11 @@ export type INavItem = {
   type?: ItemType
   from?: string
   nested?: string
+  /**
+   * Optional access requirement — when set, the dashboard hides the menu
+   * entry from actors who don't satisfy it.
+   */
+  access?: AccessConfig
   translationNs?: string
 }
 
