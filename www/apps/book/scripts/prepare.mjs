@@ -1,4 +1,5 @@
 import "dotenv/config"
+import { existsSync } from "fs"
 import path from "path"
 import { sidebars } from "../sidebar.mjs"
 import {
@@ -12,6 +13,11 @@ import {
   crossProjectLinksPlugin,
   localLinksRehypePlugin,
 } from "remark-rehype-plugins"
+
+function scanDir(config) {
+  const dir = typeof config === "string" ? config : config.dir
+  return existsSync(dir) ? config : null
+}
 
 async function main() {
   await generateEditedDates()
@@ -57,7 +63,7 @@ async function main() {
       {
         dir: path.join(process.cwd(), "app"),
       },
-      {
+      scanDir({
         dir: path.join(
           process.cwd(),
           "..",
@@ -68,8 +74,8 @@ async function main() {
         allowedFilesPatterns: [
           /^(?!.*\/(workflows|js-sdk|extend|admin-widget-zones)\/).*$/,
         ],
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(
           process.cwd(),
           "..",
@@ -77,8 +83,8 @@ async function main() {
           "app",
           "infrastructure-modules"
         ),
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(
           process.cwd(),
           "..",
@@ -93,8 +99,8 @@ async function main() {
             baseUrl,
           },
         },
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(
           process.cwd(),
           "..",
@@ -109,8 +115,8 @@ async function main() {
             baseUrl,
           },
         },
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(
           process.cwd(),
           "..",
@@ -119,20 +125,20 @@ async function main() {
           "modules",
           "events"
         ),
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(process.cwd(), "..", "resources", "app", "medusa-cli"),
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(process.cwd(), "..", "resources", "app", "medusa-cli"),
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(process.cwd(), "..", "resources", "app", "js-sdk"),
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(process.cwd(), "..", "resources", "app", "examples"),
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(
           process.cwd(),
           "..",
@@ -140,14 +146,14 @@ async function main() {
           "app",
           "how-to-tutorials"
         ),
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(process.cwd(), "..", "resources", "app", "integrations"),
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(process.cwd(), "..", "resources", "app", "plugins"),
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(
           process.cwd(),
           "..",
@@ -164,8 +170,8 @@ async function main() {
             type: "Admin",
           },
         },
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(
           process.cwd(),
           "..",
@@ -182,8 +188,8 @@ async function main() {
             type: "Auth",
           },
         },
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(
           process.cwd(),
           "..",
@@ -200,8 +206,8 @@ async function main() {
             type: "Store",
           },
         },
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(
           process.cwd(),
           "..",
@@ -209,8 +215,8 @@ async function main() {
           "app",
           "admin-components"
         ),
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(
           process.cwd(),
           "..",
@@ -218,8 +224,8 @@ async function main() {
           "app",
           "service-factory-reference"
         ),
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(
           process.cwd(),
           "..",
@@ -228,11 +234,11 @@ async function main() {
           "nextjs-starter",
           "guides"
         ),
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(process.cwd(), "..", "api-reference", "markdown"),
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(
           process.cwd(),
           "..",
@@ -252,8 +258,8 @@ async function main() {
         options: {
           plugins,
         },
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(
           process.cwd(),
           "..",
@@ -273,8 +279,8 @@ async function main() {
         options: {
           plugins,
         },
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(process.cwd(), "..", "ui", "app"),
         options: {
           parserOptions: {
@@ -299,11 +305,11 @@ async function main() {
           },
         },
         allowedFilesPatterns: [/^(?!.*\/(colors|icons|hooks)\/).*$/],
-      },
-      {
+      }),
+      scanDir({
         dir: path.join(process.cwd(), "..", "resources", "app", "recipes"),
-      },
-    ],
+      }),
+    ].filter(Boolean),
   })
 }
 

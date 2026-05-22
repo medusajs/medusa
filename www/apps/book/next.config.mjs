@@ -22,33 +22,31 @@ const withMDX = mdx({
   extension: /\.mdx?$/,
   options: {
     rehypePlugins: [
-      [
-        brokenLinkCheckerPlugin,
-        {
-          crossProjects: {
-            bloom: {
-              projectPath: path.resolve("..", "bloom"),
-            },
-            resources: {
-              projectPath: path.resolve("..", "resources"),
-              hasGeneratedSlugs: true,
-            },
-            ui: {
-              projectPath: path.resolve("..", "ui"),
-            },
-            "user-guide": {
-              projectPath: path.resolve("..", "user-guide"),
-            },
-            api: {
-              projectPath: path.resolve("..", "api-reference"),
-              skipSlugValidation: true,
-            },
-            cloud: {
-              projectPath: path.resolve("..", "cloud"),
-            },
-          },
-        },
-      ],
+      ...(!process.env.MC_ENV
+        ? [
+            [
+              brokenLinkCheckerPlugin,
+              {
+                crossProjects: {
+                  bloom: { projectPath: path.resolve("..", "bloom") },
+                  resources: {
+                    projectPath: path.resolve("..", "resources"),
+                    hasGeneratedSlugs: true,
+                  },
+                  ui: { projectPath: path.resolve("..", "ui") },
+                  "user-guide": {
+                    projectPath: path.resolve("..", "user-guide"),
+                  },
+                  api: {
+                    projectPath: path.resolve("..", "api-reference"),
+                    skipSlugValidation: true,
+                  },
+                  cloud: { projectPath: path.resolve("..", "cloud") },
+                },
+              },
+            ],
+          ]
+        : []),
       [
         crossProjectLinksPlugin,
         {
@@ -74,8 +72,7 @@ const withMDX = mdx({
             },
           },
           useBaseUrl:
-            process.env.NODE_ENV === "production" ||
-            process.env.VERCEL_ENV === "production",
+            process.env.NODE_ENV === "production" || !!process.env.MC_ENV,
         },
       ],
       [localLinksRehypePlugin],
@@ -125,20 +122,20 @@ const nextConfig = {
     return {
       beforeFiles: [
         {
+          source: "/:path*/index.html.md",
+          destination: "/md-content/:path*/",
+        },
+        {
+          source: "/:path*/index.md",
+          destination: "/md-content/:path*/",
+        },
+        {
+          source: "/:path*.md",
+          destination: "/md-content/:path*",
+        },
+        {
           source:
-            "/:path((?!resources|api|ui|user-guide|cloud).*)index.html.md",
-          destination: "/md-content/:path*",
-        },
-        {
-          source: "/:path((?!resources|api|ui|user-guide|cloud).*)index.md",
-          destination: "/md-content/:path*",
-        },
-        {
-          source: "/:path((?!resources|api|ui|user-guide|cloud).*).md",
-          destination: "/md-content/:path*",
-        },
-        {
-          source: "/:path((?!resources|api|ui|user-guide|cloud|md-content).+)/",
+            "/:first((?!resources|api|ui|user-guide|cloud|md-content)[^/]+)/:rest*/",
           has: [
             {
               type: "header",
@@ -146,7 +143,7 @@ const nextConfig = {
               value: ".*(text/markdown|text/plain).*",
             },
           ],
-          destination: "/md-content/:path",
+          destination: "/md-content/:first/:rest*",
         },
         {
           source: "/",
@@ -160,7 +157,8 @@ const nextConfig = {
           destination: "/md-content",
         },
         {
-          source: "/:path((?!resources|api|ui|user-guide|cloud|md-content).+)",
+          source:
+            "/:first((?!resources|api|ui|user-guide|cloud|md-content)[^/]+)/:rest*",
           has: [
             {
               type: "header",
@@ -168,7 +166,7 @@ const nextConfig = {
               value: ".*(text/markdown|text/plain).*",
             },
           ],
-          destination: "/md-content/:path",
+          destination: "/md-content/:first/:rest*",
         },
       ],
       fallback: [
@@ -334,11 +332,13 @@ const nextConfig = {
 
     return catchBadRedirects(result)
   },
-  outputFileTracingIncludes: {
-    "/md\\-content/\\[\\.\\.\\.slug\\]": ["./app/**/*.mdx"],
-  },
+  outputFileTracingRoot: new URL("../../", import.meta.url).pathname,
   outputFileTracingExcludes: {
-    "*": ["node_modules/@medusajs/icons"],
+    "*": [
+      "node_modules/@medusajs/icons",
+      "../**/.open-next/**",
+      "../!(book)/.next/**",
+    ],
   },
   experimental: {
     optimizePackageImports: ["@medusajs/icons", "@medusajs/ui"],

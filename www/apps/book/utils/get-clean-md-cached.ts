@@ -9,13 +9,15 @@ import type { Plugin } from "unified"
 
 type Options = {
   removeExtra?: boolean
+  content?: string
 }
 
 export const getCleanMdCached = unstable_cache(
-  async (filePath: string, options: Options = {}) => {
-    const { removeExtra } = options
+  async (filePathOrKey: string, options: Options = {}) => {
+    const { removeExtra, content } = options
     const md = await getCleanMd({
-      file: filePath,
+      file: content ?? filePathOrKey,
+      type: content ? "content" : "file",
       plugins: {
         before: [
           [
@@ -27,18 +29,18 @@ export const getCleanMdCached = unstable_cache(
                   url: process.env.NEXT_PUBLIC_RESOURCES_URL,
                 },
                 "user-guide": {
-                  url: process.env.NEXT_PUBLIC_RESOURCES_URL,
+                  url: process.env.NEXT_PUBLIC_USER_GUIDE_URL,
                 },
                 ui: {
-                  url: process.env.NEXT_PUBLIC_RESOURCES_URL,
+                  url: process.env.NEXT_PUBLIC_UI_URL,
                 },
                 api: {
-                  url: process.env.NEXT_PUBLIC_RESOURCES_URL,
+                  url: process.env.NEXT_PUBLIC_API_URL,
                 },
               },
               useBaseUrl:
                 process.env.NODE_ENV === "production" ||
-                process.env.VERCEL_ENV === "production",
+                !!process.env.MC_ENV,
             },
           ],
           [localLinksRehypePlugin],
