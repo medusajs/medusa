@@ -1,12 +1,13 @@
 import { Key, PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Container, Heading } from "@medusajs/ui"
+import { Container, Heading, Hint } from "@medusajs/ui"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { ListSummary } from "../../../../../components/common/list-summary"
 import { SectionRow } from "../../../../../components/common/section"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 type RoleWithUsers = HttpTypes.AdminRbacRole & {
   users_link?: { user?: HttpTypes.AdminUser | null }[]
@@ -18,6 +19,7 @@ type RoleGeneralSectionProps = {
 
 export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
   const { t } = useTranslation()
+  const { hasAllPermissions, hasPermission } = usePermissions()
 
   const users = useMemo(() => {
     return (
@@ -65,11 +67,26 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
                   icon: <PencilSquare />,
                   label: t("actions.edit"),
                   to: `edit`,
+                  disabled: !hasPermission("rbac_role:update"),
+                  disabledTooltip: (
+                    <Hint variant="error">
+                      {t("permissions.accessDenied.action")}
+                    </Hint>
+                  ),
                 },
                 {
                   icon: <Key />,
                   label: t("roles.actions.managePermissions"),
                   to: `permissions`,
+                  disabled: !hasAllPermissions([
+                    "rbac_role:update",
+                    "user:update",
+                  ]),
+                  disabledTooltip: (
+                    <Hint variant="error">
+                      {t("permissions.accessDenied.action")}
+                    </Hint>
+                  ),
                 },
               ],
             },
@@ -79,6 +96,12 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
                   icon: <Trash />,
                   label: t("actions.delete"),
                   onClick: () => {},
+                  disabled: !hasPermission("rbac_role:delete"),
+                  disabledTooltip: (
+                    <Hint variant="error">
+                      {t("permissions.accessDenied.action")}
+                    </Hint>
+                  ),
                 },
               ],
             },

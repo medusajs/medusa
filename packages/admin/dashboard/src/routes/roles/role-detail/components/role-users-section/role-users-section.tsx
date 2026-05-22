@@ -218,20 +218,15 @@ const RoleUserActions = ({
         {
           actions: [
             {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `/settings/users/${user.id}/edit`,
-            },
-          ],
-        },
-        {
-          actions: [
-            {
               icon: <Trash />,
               label: t("actions.remove"),
               onClick: handleRemove,
               disabled: !canManageRole,
-              disabledTooltip: t("permissions.accessDenied.description"),
+              disabledTooltip: (
+                <Hint variant="error">
+                  {t("permissions.accessDenied.action")}
+                </Hint>
+              ),
             },
           ],
         },
