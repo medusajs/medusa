@@ -2,6 +2,11 @@ import { HttpTypes } from "@medusajs/types"
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
+/**
+ * This class is used to send requests to the RBAC Role API routes.
+ *
+ * @since 2.15.5
+ */
 export class RbacRole {
   /**
    * @ignore
@@ -57,6 +62,9 @@ export class RbacRole {
    *   console.log(roles)
    * })
    * ```
+   *
+   * @tags rbac
+   * @since 2.15.5
    */
   async list(
     queryParams?: HttpTypes.AdminRbacRoleListParams,
@@ -85,6 +93,9 @@ export class RbacRole {
    * .then(({ role }) => {
    *   console.log(role)
    * })
+   *
+   * @tags rbac
+   * @since 2.15.5
    */
   async retrieve(
     id: string,
@@ -117,6 +128,9 @@ export class RbacRole {
    * .then(({ role }) => {
    *   console.log(role)
    * })
+   *
+   * @tags rbac
+   * @since 2.15.5
    */
   async create(
     body: HttpTypes.AdminCreateRbacRole,
@@ -151,6 +165,9 @@ export class RbacRole {
    * .then(({ role }) => {
    *   console.log(role)
    * })
+   *
+   * @tags rbac
+   * @since 2.15.5
    */
   async update(
     id: string,
