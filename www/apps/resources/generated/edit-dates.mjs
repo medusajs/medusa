@@ -7507,5 +7507,11 @@ export const generatedEditDates = {
   "references/js_sdk/auth/types/js_sdk.auth.AuthMfaVerifyChallengePayload/page.mdx": "2026-05-21T11:40:09.163Z",
   "references/js_sdk/auth/types/js_sdk.auth.AuthRedirectResponse/page.mdx": "2026-05-21T11:40:09.037Z",
   "references/types/interfaces/types.AuthenticationInput/page.mdx": "2026-05-21T11:39:47.305Z",
-  "references/types/interfaces/types.AuthenticationResponse/page.mdx": "2026-05-21T11:39:47.303Z"
+  "references/types/interfaces/types.AuthenticationResponse/page.mdx": "2026-05-21T11:39:47.303Z",
+  "app/admin-components/components/permission-guard/page.mdx": "2026-05-22T12:35:52.932Z",
+  "app/commerce-modules/rbac/concepts/page.mdx": "2026-05-22T12:34:33.872Z",
+  "app/commerce-modules/rbac/js-sdk/page.mdx": "2026-05-22T12:33:28.011Z",
+  "app/commerce-modules/rbac/js-sdk/rbac-policy/page.mdx": "2026-05-22T12:33:56.854Z",
+  "app/commerce-modules/rbac/js-sdk/rbac-role/page.mdx": "2026-05-22T12:33:42.997Z",
+  "app/commerce-modules/rbac/page.mdx": "2026-05-22T12:33:01.378Z"
 }

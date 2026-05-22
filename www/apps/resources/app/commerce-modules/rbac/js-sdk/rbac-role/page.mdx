@@ -1,0 +1,144 @@
+export const metadata = {
+  title: `RbacRole JS SDK Methods`,
+}
+
+# {metadata.title}
+
+The `RbacRole` class in the [JS SDK](../../../../js-sdk/page.mdx) provides methods to manage RBAC roles and their associated policies.
+
+## Methods
+
+### list
+
+Retrieve a paginated list of RBAC roles.
+
+```ts
+const { roles, count, limit, offset } = await sdk.admin.rbacRole.list({
+  limit: 10,
+  offset: 0,
+})
+```
+
+### retrieve
+
+Retrieve an RBAC role by its ID.
+
+```ts
+const { role } = await sdk.admin.rbacRole.retrieve("role_123", {
+  fields: "id,name,*policies",
+})
+```
+
+### create
+
+Create a new RBAC role.
+
+```ts
+const { role } = await sdk.admin.rbacRole.create({
+  name: "Editor",
+  description: "Can edit content",
+  parent_id: "role_parent_123",
+})
+```
+
+### update
+
+Update an existing RBAC role.
+
+```ts
+const { role } = await sdk.admin.rbacRole.update("role_123", {
+  name: "Senior Editor",
+  description: "Can edit and review content",
+})
+```
+
+### delete
+
+Delete an RBAC role.
+
+```ts
+const { deleted } = await sdk.admin.rbacRole.delete("role_123")
+```
+
+## Policy Management
+
+### listPolicies
+
+Retrieve a paginated list of policies associated with a role.
+
+```ts
+const { policies, count } = await sdk.admin.rbacRole.listPolicies("role_123", {
+  limit: 20,
+})
+```
+
+### addPolicies
+
+Add multiple policies to a role.
+
+```ts
+const { policies } = await sdk.admin.rbacRole.addPolicies("role_123", {
+  policies: ["policy_123", "policy_456"],
+})
+```
+
+### removePolicy
+
+Remove a specific policy from a role.
+
+```ts
+const { deleted } = await sdk.admin.rbacRole.removePolicy("role_123", "policy_456")
+```
+
+## Permission Resolution
+
+### mePermissions
+
+Get the authenticated actor's resolved permission set as a flat array of `resource:operation` strings with wildcards already expanded.
+
+```ts
+const { permissions } = await sdk.admin.rbacRole.mePermissions()
+// Returns: ["product:read", "customer:create", "order:*", ...]
+```
+
+This method is useful for client-side permission checks, as it provides a complete list of permissions without requiring wildcard logic on the frontend.
+
+---
+
+## Examples
+
+### Managing User Roles
+
+```ts
+// Create a content editor role
+const { role } = await sdk.admin.rbacRole.create({
+  name: "Content Editor",
+  description: "Can create and edit products and collections",
+})
+
+// Add specific policies to the role
+await sdk.admin.rbacRole.addPolicies(role.id, {
+  policies: ["product_create_policy", "product_update_policy", "collection_manage_policy"],
+})
+
+// Check what permissions a user has
+const { permissions } = await sdk.admin.rbacRole.mePermissions()
+const canEditProducts = permissions.includes("product:update")
+```
+
+### Role Hierarchy
+
+```ts
+// Create a parent role
+const { role: managerRole } = await sdk.admin.rbacRole.create({
+  name: "Manager",
+  description: "Management level access",
+})
+
+// Create a child role that inherits from parent
+const { role: teamLeadRole } = await sdk.admin.rbacRole.create({
+  name: "Team Lead",
+  description: "Team leadership with manager permissions",
+  parent_id: managerRole.id,
+})
+```

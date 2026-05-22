@@ -24,6 +24,10 @@ export const filesMap = [
     "pathname": "/admin-components/components/json-view-section"
   },
   {
+    "filePath": "/www/apps/resources/app/admin-components/components/permission-guard/page.mdx",
+    "pathname": "/admin-components/components/permission-guard"
+  },
+  {
     "filePath": "/www/apps/resources/app/admin-components/components/section-row/page.mdx",
     "pathname": "/admin-components/components/section-row"
   },
@@ -546,6 +550,26 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/promotion/workflows/page.mdx",
     "pathname": "/commerce-modules/promotion/workflows"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/rbac/concepts/page.mdx",
+    "pathname": "/commerce-modules/rbac/concepts"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/rbac/js-sdk/page.mdx",
+    "pathname": "/commerce-modules/rbac/js-sdk"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/rbac/js-sdk/rbac-policy/page.mdx",
+    "pathname": "/commerce-modules/rbac/js-sdk/rbac-policy"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/rbac/js-sdk/rbac-role/page.mdx",
+    "pathname": "/commerce-modules/rbac/js-sdk/rbac-role"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/rbac/page.mdx",
+    "pathname": "/commerce-modules/rbac"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/region/admin-widget-zones/page.mdx",

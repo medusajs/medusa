@@ -146,5 +146,7 @@ export const generatedEditDates = {
   "app/learn/introduction/build-with-llms-ai/ai-friendly-docs/page.mdx": "2026-04-29T13:21:17.313Z",
   "app/learn/introduction/build-with-llms-ai/bloom/page.mdx": "2026-04-29T13:20:11.886Z",
   "app/learn/introduction/build-with-llms-ai/mcp-server/page.mdx": "2026-05-14T10:18:25.649Z",
-  "app/learn/introduction/build-with-llms-ai/cloud-cli/page.mdx": "2026-05-05T11:18:36.186Z"
+  "app/learn/introduction/build-with-llms-ai/cloud-cli/page.mdx": "2026-05-05T11:18:36.186Z",
+  "app/learn/customization/extend-features/implement-permission-checks/page.mdx": "2026-05-22T12:38:04.040Z",
+  "app/learn/fundamentals/admin/rbac/page.mdx": "2026-05-22T12:37:01.614Z"
 }

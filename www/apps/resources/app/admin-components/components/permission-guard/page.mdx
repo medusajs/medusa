@@ -1,0 +1,377 @@
+---
+sidebar_label: "Permission Guard"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Permission Guard - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+This feature requires RBAC to be enabled in your Medusa application. Learn more about [RBAC configuration](!docs!/learn/fundamentals/admin/rbac) in the development guide.
+
+</Note>
+
+The `PermissionGuard` component allows you to conditionally render UI elements based on the user's RBAC permissions. This is useful for hiding or showing admin UI components based on what actions a user is authorized to perform.
+
+![Example of permission-based UI hiding create button](https://res.cloudinary.com/dza7lstvk/image/upload/v1728295658/Medusa%20Resources/permission_guard_example.png)
+
+You can use this component in your Admin Extensions to implement role-based access control in the admin dashboard.
+
+## Basic Usage
+
+### PermissionGuard Component
+
+The `PermissionGuard` component conditionally renders its children based on the user's permissions:
+
+```tsx title="src/admin/widgets/product-actions.tsx"
+import { PermissionGuard } from "@medusajs/dashboard"
+import { Button } from "@medusajs/ui"
+
+const ProductActions = () => {
+  return (
+    <div className="flex gap-2">
+      <PermissionGuard permissions={["product:create"]}>
+        <Button variant="secondary" size="base">
+          Create Product
+        </Button>
+      </PermissionGuard>
+      
+      <PermissionGuard permissions={["product:update"]}>
+        <Button variant="secondary" size="base">
+          Edit Product
+        </Button>
+      </PermissionGuard>
+      
+      <PermissionGuard permissions={["product:delete"]}>
+        <Button variant="danger" size="base">
+          Delete Product
+        </Button>
+      </PermissionGuard>
+    </div>
+  )
+}
+
+export default ProductActions
+```
+
+### Multiple Permissions
+
+You can require multiple permissions using the `requireAll` prop:
+
+```tsx title="src/admin/widgets/advanced-actions.tsx"
+import { PermissionGuard } from "@medusajs/dashboard"
+import { Button } from "@medusajs/ui"
+
+const AdvancedActions = () => {
+  return (
+    <div>
+      {/* User needs ANY of these permissions */}
+      <PermissionGuard permissions={["product:read", "order:read"]}>
+        <Button>View Reports</Button>
+      </PermissionGuard>
+      
+      {/* User needs ALL of these permissions */}
+      <PermissionGuard 
+        permissions={["product:update", "inventory:update"]} 
+        requireAll={true}
+      >
+        <Button>Bulk Update Products</Button>
+      </PermissionGuard>
+    </div>
+  )
+}
+```
+
+### Fallback Content
+
+Provide alternative content when permissions are not met:
+
+```tsx title="src/admin/widgets/conditional-content.tsx"
+import { PermissionGuard } from "@medusajs/dashboard"
+import { Button, Text } from "@medusajs/ui"
+
+const ConditionalContent = () => {
+  return (
+    <PermissionGuard 
+      permissions={["product:create"]} 
+      fallback={
+        <Text className="text-ui-fg-muted">
+          You don't have permission to create products
+        </Text>
+      }
+    >
+      <Button>Create New Product</Button>
+    </PermissionGuard>
+  )
+}
+```
+
+## Using Permission Hooks
+
+For more complex permission checking logic, use the permission hooks:
+
+```tsx title="src/admin/widgets/dynamic-actions.tsx"
+import { usePermissions } from "@medusajs/dashboard"
+import { Button, Badge } from "@medusajs/ui"
+
+const DynamicActions = ({ productId }: { productId: string }) => {
+  const { 
+    hasPermission, 
+    hasAnyPermission, 
+    hasAllPermissions, 
+    can, 
+  } = usePermissions()
+  
+  const canEdit = can("product", "update")
+  const canDelete = can("product", "delete")
+  const canManageInventory = hasAllPermissions([
+    "product:update", 
+    "inventory:update",
+  ])
+  
+  return (
+    <div className="space-y-2">
+      {/* Simple permission check */}
+      {hasPermission("product:read") && (
+        <Badge>You can view products</Badge>
+      )}
+      
+      {/* Check any of multiple permissions */}
+      {hasAnyPermission(["product:create", "product:update"]) && (
+        <Button variant="secondary">
+          Manage Products
+        </Button>
+      )}
+      
+      {/* Resource and operation check */}
+      {canEdit && (
+        <Button onClick={() => editProduct(productId)}>
+          Edit Product
+        </Button>
+      )}
+      
+      {/* Complex logic */}
+      {canManageInventory && (
+        <Button variant="primary">
+          Update Inventory
+        </Button>
+      )}
+    </div>
+  )
+}
+```
+
+## Props Reference
+
+<TypeList
+  types={[
+    { 
+      name: "permissions", 
+      type: "`string[]`", 
+      description: "Array of permission strings in the format `resource:operation` (e.g., `['product:read', 'customer:create']`)." 
+    },
+    { 
+      name: "requireAll", 
+      type: "`boolean`", 
+      description: "If `true`, user must have ALL specified permissions. If `false` (default), user needs ANY of the permissions." 
+    },
+    { 
+      name: "fallback", 
+      type: "`React.ReactNode`", 
+      description: "Content to render when user doesn't have required permissions. If not provided, nothing is rendered." 
+    },
+    { 
+      name: "children", 
+      type: "`React.ReactNode`", 
+      description: "Content to render when user has required permissions." 
+    }
+  ]}
+  sectionTitle="PermissionGuard Props"
+/>
+
+## Permission Hook Methods
+
+<TypeList
+  types={[
+    { 
+      name: "hasPermission", 
+      type: "`function`", 
+      description: "Check if user has a specific permission string.",
+      children: [
+        { name: "permission", type: "`string`", description: "Permission string in format `resource:operation`" }
+      ]
+    },
+    { 
+      name: "hasAnyPermission", 
+      type: "`function`", 
+      description: "Check if user has any of the specified permissions.",
+      children: [
+        { name: "permissions", type: "`string[]`", description: "Array of permission strings" }
+      ]
+    },
+    { 
+      name: "hasAllPermissions", 
+      type: "`function`", 
+      description: "Check if user has all of the specified permissions.",
+      children: [
+        { name: "permissions", type: "`string[]`", description: "Array of permission strings" }
+      ]
+    },
+    { 
+      name: "can", 
+      type: "`function`", 
+      description: "Check if user can perform an operation on a resource.",
+      children: [
+        { name: "resource", type: "`string`", description: "Resource name (e.g., `product`, `customer`)" },
+        { name: "operation", type: "`string`", description: "Operation name (e.g., `read`, `create`, `update`, `delete`, `*`)" }
+      ]
+    }
+  ]}
+  sectionTitle="Permission Hook Methods"
+/>
+
+## Route Protection
+
+For protecting entire routes, use the `RoutePermissionGuard` component:
+
+```tsx title="src/admin/routes/protected/page.tsx"
+import { RoutePermissionGuard } from "@medusajs/dashboard"
+import { SingleColumnLayout } from "../../layouts/single-column"
+
+const ProtectedPage = () => {
+  return (
+    <RoutePermissionGuard 
+      permissions={["user:read"]} 
+      fallback={<div>Access Denied</div>}
+    >
+      <SingleColumnLayout>
+        <div>This page requires user:read permission</div>
+      </SingleColumnLayout>
+    </RoutePermissionGuard>
+  )
+}
+
+export default ProtectedPage
+```
+
+## Permission Patterns
+
+### Common Permission Patterns
+
+```tsx
+// Resource-specific permissions
+"product:read"     // View products
+"product:create"   // Create products
+"product:update"   // Edit products
+"product:delete"   // Delete products
+"product:*"        // All product operations
+
+// Cross-resource permissions
+"*:read"          // Read all resources
+"*:*"             // Super admin (all operations)
+
+// Custom permissions
+"reports:generate" // Generate reports
+"settings:manage"  // Manage settings
+```
+
+### Wildcard Handling
+
+The permission system automatically handles wildcards:
+
+```tsx
+// User with "product:*" permission
+hasPermission("product:read")   // ✅ true
+hasPermission("product:create") // ✅ true
+hasPermission("product:update") // ✅ true
+hasPermission("product:delete") // ✅ true
+
+// User with "*:read" permission  
+hasPermission("product:read")   // ✅ true
+hasPermission("customer:read")  // ✅ true
+hasPermission("product:create") // ❌ false
+```
+
+## Best Practices
+
+1. **Granular Permissions**: Use specific permissions rather than broad wildcards when possible
+2. **Consistent Naming**: Follow the `resource:operation` pattern consistently
+3. **Fallback Content**: Always provide meaningful fallback content for better UX
+4. **Performance**: Permission checks are cached, so multiple calls to the same permission are efficient
+5. **Testing**: Test your permission-based UI with different user roles
+
+## Complete Example
+
+```tsx title="src/admin/widgets/product-management.tsx"
+import { 
+  PermissionGuard, 
+  usePermissions, 
+} from "@medusajs/dashboard"
+import { 
+  Button, 
+  Container, 
+  Heading, 
+  Text, 
+} from "@medusajs/ui"
+
+const ProductManagement = () => {
+  const { can, hasAnyPermission } = usePermissions()
+  
+  const hasProductAccess = hasAnyPermission([
+    "product:read", 
+    "product:create", 
+    "product:update",
+  ])
+
+  if (!hasProductAccess) {
+    return (
+      <Container>
+        <Text>You don't have access to product management</Text>
+      </Container>
+    )
+  }
+
+  return (
+    <Container>
+      <div className="flex items-center justify-between">
+        <Heading level="h2">Product Management</Heading>
+        
+        <div className="flex gap-2">
+          <PermissionGuard permissions={["product:create"]}>
+            <Button variant="primary">
+              Create Product
+            </Button>
+          </PermissionGuard>
+          
+          <PermissionGuard permissions={["product:update"]}>
+            <Button variant="secondary">
+              Bulk Edit
+            </Button>
+          </PermissionGuard>
+        </div>
+      </div>
+      
+      <PermissionGuard 
+        permissions={["product:read"]}
+        fallback={
+          <Text className="text-ui-fg-muted">
+            You need read permissions to view products
+          </Text>
+        }
+      >
+        <div>
+          {/* Product list/table would go here */}
+          <Text>Product list goes here...</Text>
+        </div>
+      </PermissionGuard>
+    </Container>
+  )
+}
+
+export default ProductManagement
+```

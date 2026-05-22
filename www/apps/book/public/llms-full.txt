@@ -4453,6 +4453,607 @@ In the Medusa application's logs, you'll find the message `Linked brand to produ
 Now that you've extending the create-product flow to link a brand to it, you want to retrieve the brand details of a product. You'll learn how to do so in the next chapter.
 
 
+# Implement Permission Checks in Custom Features
+
+This tutorial shows you how to implement RBAC permission checks in your custom Medusa features, including workflows, API routes, and admin UI components.
+
+## Overview
+
+You'll learn how to:
+
+1. Define custom policies for your feature
+2. Implement permission checks in workflows
+3. Protect API routes with RBAC
+4. Build permission-aware admin UI
+5. Test your permission implementation
+
+***
+
+## Step 1: Define Custom Policies
+
+First, define the permissions your custom feature requires. In this example, you'll build a custom analytics feature that needs specific permissions.
+
+```ts title="src/modules/analytics/policies.ts"
+import { definePolicies } from "@medusajs/framework/utils"
+
+export const analyticsPolicies = definePolicies("analytics", {
+  view_reports: "View analytics reports",
+  generate_reports: "Generate new reports", 
+  export_data: "Export analytics data",
+  manage_settings: "Configure analytics settings"
+})
+
+// Export individual policies for use in code
+export const {
+  ANALYTICS_VIEW_REPORTS,
+  ANALYTICS_GENERATE_REPORTS, 
+  ANALYTICS_EXPORT_DATA,
+  ANALYTICS_MANAGE_SETTINGS
+} = analyticsPolicies
+```
+
+The `definePolicies` function automatically creates permission strings in the format `analytics:view_reports`, `analytics:generate_reports`, etc.
+
+***
+
+## Step 2: Implement Permission Checks in Workflows
+
+Create workflows that respect RBAC permissions by checking access before performing operations.
+
+```ts title="src/workflows/analytics/generate-report.ts"
+import {
+  createWorkflow,
+  createStep,
+  StepResponse,
+  WorkflowData,
+  WorkflowResponse
+} from "@medusajs/framework/workflows-sdk"
+import { hasPermission } from "@medusajs/framework"
+import { MedusaError } from "@medusajs/framework/utils"
+import { ANALYTICS_GENERATE_REPORTS } from "../../modules/analytics/policies"
+
+// Step to check permissions
+const checkGeneratePermissionStep = createStep(
+  "check-generate-permission",
+  async ({ userId }: { userId: string }, { container }) => {
+    const hasAccess = await hasPermission({
+      roles: userId,
+      action: {
+        resource: "analytics",
+        operation: "generate_reports"
+      },
+      container
+    })
+
+    if (!hasAccess) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "You don't have permission to generate reports"
+      )
+    }
+
+    return new StepResponse({ authorized: true })
+  }
+)
+
+// Step to generate the actual report
+const generateReportStep = createStep(
+  "generate-report", 
+  async ({ reportType, dateRange }: {
+    reportType: string
+    dateRange: { from: Date; to: Date }
+  }, { container }) => {
+    // Implement report generation logic
+    const analyticsService = container.resolve("analyticsService")
+    
+    const report = await analyticsService.generateReport({
+      type: reportType,
+      dateRange
+    })
+
+    return new StepResponse(
+      { report },
+      { reportId: report.id } // For compensation
+    )
+  },
+  async (compensation, { container }) => {
+    // Clean up if workflow fails
+    if (compensation?.reportId) {
+      const analyticsService = container.resolve("analyticsService")
+      await analyticsService.deleteReport(compensation.reportId)
+    }
+  }
+)
+
+export const generateReportWorkflow = createWorkflow(
+  "generate-analytics-report",
+  (input: WorkflowData<{
+    userId: string
+    reportType: string
+    dateRange: { from: Date; to: Date }
+  }>) => {
+    // Check permissions first
+    checkGeneratePermissionStep({ userId: input.userId })
+    
+    // Generate report if authorized
+    const { report } = generateReportStep({
+      reportType: input.reportType,
+      dateRange: input.dateRange
+    })
+
+    return new WorkflowResponse({ report })
+  }
+)
+```
+
+***
+
+## Step 3: Protect API Routes
+
+Create API routes that check permissions before allowing access.
+
+```ts title="src/api/admin/analytics/reports/route.ts"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse
+} from "@medusajs/framework/http"
+import { HttpTypes, MedusaError } from "@medusajs/framework/types"
+import { hasPermission } from "@medusajs/framework"
+import { generateReportWorkflow } from "../../../../workflows/analytics/generate-report"
+
+type GenerateReportRequest = {
+  reportType: "sales" | "products" | "customers"
+  dateRange: {
+    from: string // ISO date string
+    to: string
+  }
+}
+
+// GET /admin/analytics/reports
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse<{ reports: any[] }>
+) => {
+  const userId = req.auth_context.actor_id
+
+  // Check read permissions
+  const canView = await hasPermission({
+    roles: userId,
+    action: {
+      resource: "analytics", 
+      operation: "view_reports"
+    },
+    container: req.scope
+  })
+
+  if (!canView) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
+      "You don't have permission to view reports"
+    )
+  }
+
+  // Fetch and return reports
+  const analyticsService = req.scope.resolve("analyticsService")
+  const reports = await analyticsService.listReports()
+
+  res.json({ reports })
+}
+
+// POST /admin/analytics/reports  
+export const POST = async (
+  req: AuthenticatedMedusaRequest<GenerateReportRequest>,
+  res: MedusaResponse<{ report: any }>
+) => {
+  const userId = req.auth_context.actor_id
+  const { reportType, dateRange } = req.validatedBody
+
+  // Execute workflow with permission check
+  const { result } = await generateReportWorkflow(req.scope).run({
+    input: {
+      userId,
+      reportType,
+      dateRange: {
+        from: new Date(dateRange.from),
+        to: new Date(dateRange.to)
+      }
+    }
+  })
+
+  res.json({ report: result.report })
+}
+```
+
+***
+
+## Step 4: Build Permission-Aware Admin UI
+
+Create admin components that respect user permissions.
+
+```tsx title="src/admin/routes/analytics/page.tsx"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+import { AnalyticsIcon } from "@medusajs/icons"
+import {
+  Button,
+  Container,
+  Heading,
+  Card,
+  Text,
+  Badge
+} from "@medusajs/ui"
+import {
+  PermissionGuard,
+  RoutePermissionGuard,
+  usePermissions
+} from "@medusajs/dashboard"
+import { useState } from "react"
+import { generateReportWorkflow } from "../../../workflows/analytics/generate-report"
+
+export default function AnalyticsPage() {
+  const { can, hasAnyPermission } = usePermissions()
+  const [loading, setLoading] = useState(false)
+
+  const handleGenerateReport = async (type: string) => {
+    setLoading(true)
+    try {
+      // The workflow handles permission checks
+      await generateReportWorkflow.run({
+        input: {
+          userId: "current-user", // Get from auth context
+          reportType: type,
+          dateRange: {
+            from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
+            to: new Date()
+          }
+        }
+      })
+    } catch (error) {
+      console.error("Report generation failed:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <RoutePermissionGuard 
+      permissions={["analytics:view_reports"]}
+      fallback={
+        <Container>
+          <Text>You need analytics access to view this page</Text>
+        </Container>
+      }
+    >
+      <Container>
+        <div className="flex justify-between items-center mb-6">
+          <Heading>Analytics Dashboard</Heading>
+          
+          {/* Permission-based user status */}
+          <div className="flex items-center gap-2">
+            {can("analytics", "manage_settings") && (
+              <Badge color="blue">Admin</Badge>
+            )}
+            {hasAnyPermission(["analytics:generate_reports", "analytics:export_data"]) && (
+              <Badge color="green">Editor</Badge>
+            )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Sales Report Card */}
+          <Card>
+            <Card.Header>
+              <Heading level="h3">Sales Reports</Heading>
+              <Text className="text-ui-fg-muted">
+                View sales performance and trends
+              </Text>
+            </Card.Header>
+            <Card.Footer>
+              <PermissionGuard permissions={["analytics:generate_reports"]}>
+                <Button 
+                  onClick={() => handleGenerateReport("sales")}
+                  loading={loading}
+                  className="w-full"
+                >
+                  Generate Sales Report
+                </Button>
+              </PermissionGuard>
+            </Card.Footer>
+          </Card>
+
+          {/* Product Report Card */}
+          <Card>
+            <Card.Header>
+              <Heading level="h3">Product Analytics</Heading>
+              <Text className="text-ui-fg-muted">
+                Analyze product performance
+              </Text>
+            </Card.Header>
+            <Card.Footer>
+              <PermissionGuard 
+                permissions={["analytics:generate_reports"]}
+                fallback={
+                  <Text size="small" className="text-ui-fg-muted">
+                    Permission required to generate reports
+                  </Text>
+                }
+              >
+                <Button 
+                  onClick={() => handleGenerateReport("products")}
+                  loading={loading}
+                  className="w-full"
+                >
+                  Generate Product Report  
+                </Button>
+              </PermissionGuard>
+            </Card.Footer>
+          </Card>
+
+          {/* Settings Card */}
+          <PermissionGuard permissions={["analytics:manage_settings"]}>
+            <Card>
+              <Card.Header>
+                <Heading level="h3">Analytics Settings</Heading>
+                <Text className="text-ui-fg-muted">
+                  Configure analytics preferences
+                </Text>
+              </Card.Header>
+              <Card.Footer>
+                <Button variant="secondary" className="w-full">
+                  Manage Settings
+                </Button>
+              </Card.Footer>
+            </Card>
+          </PermissionGuard>
+        </div>
+
+        {/* Export functionality */}
+        <PermissionGuard permissions={["analytics:export_data"]}>
+          <div className="mt-8">
+            <Card>
+              <Card.Header>
+                <Heading level="h3">Data Export</Heading>
+                <Text className="text-ui-fg-muted">
+                  Export analytics data for external analysis
+                </Text>
+              </Card.Header>
+              <Card.Footer>
+                <div className="flex gap-2">
+                  <Button variant="secondary">Export CSV</Button>
+                  <Button variant="secondary">Export JSON</Button>
+                </div>
+              </Card.Footer>
+            </Card>
+          </div>
+        </PermissionGuard>
+      </Container>
+    </RoutePermissionGuard>
+  )
+}
+
+export const config = defineRouteConfig({
+  label: "Analytics",
+  icon: AnalyticsIcon
+})
+```
+
+***
+
+## Step 5: Set Up Initial Roles and Policies
+
+Create a loader to set up the necessary roles and policies when your module initializes.
+
+```ts title="src/modules/analytics/loaders/setup-rbac.ts"
+import { LoaderOptions } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+
+export default async function setupAnalyticsRBAC({
+  container
+}: LoaderOptions) {
+  const rbacModuleService = container.resolve(Modules.RBAC)
+
+  // Create analytics policies
+  const policies = [
+    {
+      key: "analytics.view_reports",
+      resource: "analytics",
+      operation: "view_reports",
+      name: "View Analytics Reports",
+      description: "Allows viewing analytics reports"
+    },
+    {
+      key: "analytics.generate_reports", 
+      resource: "analytics",
+      operation: "generate_reports",
+      name: "Generate Reports",
+      description: "Allows generating new analytics reports"
+    },
+    {
+      key: "analytics.export_data",
+      resource: "analytics", 
+      operation: "export_data",
+      name: "Export Data",
+      description: "Allows exporting analytics data"
+    },
+    {
+      key: "analytics.manage_settings",
+      resource: "analytics",
+      operation: "manage_settings", 
+      name: "Manage Settings",
+      description: "Allows configuring analytics settings"
+    }
+  ]
+
+  // Create policies if they don't exist
+  for (const policyData of policies) {
+    const existingPolicy = await rbacModuleService.listPolicies({
+      key: [policyData.key]
+    })
+
+    if (existingPolicy.length === 0) {
+      await rbacModuleService.createPolicies(policyData)
+    }
+  }
+
+  // Create analytics viewer role
+  const viewerRole = await rbacModuleService.upsert({
+    name: "Analytics Viewer",
+    description: "Can view analytics reports",
+  })
+
+  // Add view permission to viewer role  
+  await rbacModuleService.addRolePolicies([
+    {
+      role_id: viewerRole.id,
+      policy_id: policies[0].key
+    }
+  ])
+
+  // Create analytics admin role
+  const adminRole = await rbacModuleService.upsert({
+    name: "Analytics Admin",
+    description: "Full analytics access"
+  })
+
+  // Add all permissions to admin role
+  for (const policy of policies) {
+    await rbacModuleService.addRolePolicies([
+      {
+        role_id: adminRole.id,
+        policy_id: policy.key
+      }
+    ])
+  }
+}
+```
+
+***
+
+## Step 6: Test Your Implementation
+
+Create tests to verify your permission implementation works correctly.
+
+```ts title="src/modules/analytics/__tests__/permissions.spec.ts"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { hasPermission } from "@medusajs/framework"
+import { Modules } from "@medusajs/framework/utils"
+
+medusaIntegrationTestRunner({
+  testSuite: ({ getContainer }) => {
+    let container
+
+    beforeEach(async () => {
+      container = await getContainer()
+    })
+
+    describe("Analytics RBAC", () => {
+      it("should allow viewing reports with correct permission", async () => {
+        const rbacService = container.resolve(Modules.RBAC)
+
+        // Create test role with view permission
+        const role = await rbacService.createRoles({
+          name: "Test Viewer"
+        })
+
+        const policy = await rbacService.createPolicies({
+          key: "analytics.view_reports",
+          resource: "analytics", 
+          operation: "view_reports"
+        })
+
+        await rbacService.addRolePolicies([{
+          role_id: role.id,
+          policy_id: policy.id
+        }])
+
+        // Test permission check
+        const canView = await hasPermission({
+          roles: [role.id],
+          action: {
+            resource: "analytics",
+            operation: "view_reports"
+          },
+          container
+        })
+
+        expect(canView).toBe(true)
+      })
+
+      it("should deny generating reports without permission", async () => {
+        const rbacService = container.resolve(Modules.RBAC)
+
+        // Create role without generate permission
+        const role = await rbacService.createRoles({
+          name: "Limited User"
+        })
+
+        const canGenerate = await hasPermission({
+          roles: [role.id],
+          action: {
+            resource: "analytics",
+            operation: "generate_reports" 
+          },
+          container
+        })
+
+        expect(canGenerate).toBe(false)
+      })
+
+      it("should respect wildcard permissions", async () => {
+        const rbacService = container.resolve(Modules.RBAC)
+
+        const role = await rbacService.createRoles({
+          name: "Analytics Admin"
+        })
+
+        // Create wildcard policy
+        const policy = await rbacService.createPolicies({
+          key: "analytics.*",
+          resource: "analytics",
+          operation: "*"
+        })
+
+        await rbacService.addRolePolicies([{
+          role_id: role.id,
+          policy_id: policy.id
+        }])
+
+        // Should have access to all analytics operations
+        const canView = await hasPermission({
+          roles: [role.id],
+          action: { resource: "analytics", operation: "view_reports" },
+          container
+        })
+
+        const canGenerate = await hasPermission({
+          roles: [role.id], 
+          action: { resource: "analytics", operation: "generate_reports" },
+          container
+        })
+
+        expect(canView).toBe(true)
+        expect(canGenerate).toBe(true)
+      })
+    })
+  }
+})
+```
+
+***
+
+## What You've Learned
+
+You've successfully implemented RBAC permission checks across your custom feature:
+
+1. **Defined custom policies** using `definePolicies` for your analytics feature
+2. **Protected workflows** by checking permissions before executing operations
+3. **Secured API routes** with permission validation
+4. **Built permission-aware UI** using `PermissionGuard` and permission hooks
+5. **Set up initial roles** through module loaders
+6. **Tested your implementation** to ensure permissions work correctly
+
+This approach ensures your custom features integrate seamlessly with Medusa's RBAC system and provide appropriate access control throughout your application.
+
+
 # Extend Core Commerce Features
 
 In the upcoming chapters, you'll learn about the concepts and tools to extend Medusa's core commerce features.
@@ -8687,6 +9288,480 @@ Refer to the [Medusa UI documentation](https://docs.medusajs.com/ui/index.html.m
 The [Admin How-to Guides](undefined/resources/how-to-tutorials#admin) provides guides that walk you through common admin customizations, such as [building common admin components](undefined/resources/admin-components), or [adding third-party authentication to the admin](undefined/resources/how-to-tutorials/how-to/admin/auth).
 
 Refer to these guides for practical examples of customizing the Medusa Admin dashboard.
+
+
+# RBAC in Admin Extensions
+
+Learn how to implement Role-Based Access Control (RBAC) in your Medusa Admin extensions to provide secure, permission-based access to different features.
+
+## What is RBAC?
+
+Role-Based Access Control (RBAC) is a security model that controls access to resources based on user roles and permissions. In Medusa, RBAC allows you to:
+
+- Define granular permissions for different resources and operations
+- Create roles that group related permissions together
+- Assign roles to admin users to control their access
+- Build permission-aware admin UI components
+
+## Enabling RBAC
+
+RBAC is controlled by a feature flag. Enable it in your `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+import { defineConfig } from "@medusajs/framework"
+
+export default defineConfig({
+  // ... other configurations
+  featureFlags: {
+    rbac: true
+  }
+})
+```
+
+RBAC functionality requires the `rbac` feature flag to be enabled. Without it, permission checks will return `true` for all operations.
+
+## Permission-Based UI Components
+
+Medusa provides React components and hooks for building permission-aware admin UI.
+
+### PermissionGuard Component
+
+Use `PermissionGuard` to conditionally render UI based on user permissions:
+
+```tsx title="src/admin/widgets/product-actions.tsx"
+import { PermissionGuard } from "@medusajs/dashboard"
+import { Button } from "@medusajs/ui"
+
+export default function ProductActions() {
+  return (
+    <div className="flex gap-2">
+      <PermissionGuard permissions={["product:create"]}>
+        <Button>Create Product</Button>
+      </PermissionGuard>
+      
+      <PermissionGuard permissions={["product:update"]}>
+        <Button>Edit Product</Button>
+      </PermissionGuard>
+      
+      <PermissionGuard permissions={["product:delete"]}>
+        <Button variant="danger">Delete Product</Button>
+      </PermissionGuard>
+    </div>
+  )
+}
+```
+
+### Permission Hooks
+
+For more complex logic, use the `usePermissions` hook:
+
+```tsx title="src/admin/widgets/dynamic-menu.tsx"
+import { usePermissions } from "@medusajs/dashboard"
+import { Button, DropdownMenu } from "@medusajs/ui"
+
+export default function DynamicMenu() {
+  const { can, hasAnyPermission } = usePermissions()
+  
+  const canManageProducts = hasAnyPermission([
+    "product:create", 
+    "product:update", 
+    "product:delete"
+  ])
+  
+  if (!canManageProducts) {
+    return null
+  }
+  
+  return (
+    <DropdownMenu>
+      <DropdownMenu.Trigger asChild>
+        <Button>Actions</Button>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content>
+        {can("product", "create") && (
+          <DropdownMenu.Item>Create Product</DropdownMenu.Item>
+        )}
+        {can("product", "update") && (
+          <DropdownMenu.Item>Edit Product</DropdownMenu.Item>
+        )}
+        {can("product", "delete") && (
+          <DropdownMenu.Item>Delete Product</DropdownMenu.Item>
+        )}
+      </DropdownMenu.Content>
+    </DropdownMenu>
+  )
+}
+```
+
+### Route Protection
+
+Protect entire admin routes with `RoutePermissionGuard`:
+
+```tsx title="src/admin/routes/products/create/page.tsx"
+import { RoutePermissionGuard } from "@medusajs/dashboard"
+import { SingleColumnLayout } from "../../../layouts/single-column"
+
+export default function CreateProductPage() {
+  return (
+    <RoutePermissionGuard 
+      permissions={["product:create"]}
+      fallback={<div>You don't have permission to create products</div>}
+    >
+      <SingleColumnLayout>
+        <h1>Create New Product</h1>
+        {/* Product creation form */}
+      </SingleColumnLayout>
+    </RoutePermissionGuard>
+  )
+}
+```
+
+## Permission Format
+
+Permissions follow the format `resource:operation`:
+
+- **Resources**: Core commerce entities like `product`, `customer`, `order`, `inventory`
+- **Operations**: Actions like `read`, `create`, `update`, `delete`, or `*` (wildcard)
+
+### Common Permission Examples
+
+```tsx
+// Resource-specific permissions
+"product:read"     // View products
+"product:create"   // Create products  
+"product:update"   // Edit products
+"product:delete"   // Delete products
+"product:*"        // All product operations
+
+// Cross-resource permissions
+"*:read"          // Read all resources
+"*:*"             // Super admin access
+
+// Custom permissions for extensions
+"reports:generate"   // Generate custom reports
+"analytics:export"   // Export analytics data
+```
+
+### Wildcard Support
+
+The permission system automatically handles wildcards:
+
+```tsx
+// User with "product:*" permission automatically gets:
+// - product:read
+// - product:create
+// - product:update
+// - product:delete
+
+// User with "*:read" can read any resource
+hasPermission("product:read")   // ✅ true
+hasPermission("customer:read")  // ✅ true 
+hasPermission("order:read")     // ✅ true
+```
+
+## Working with Policies
+
+Policies define the specific permissions available in your system. You can define custom policies for your admin extensions.
+
+### Code-Defined Policies
+
+Define policies in your module or plugin:
+
+```ts title="src/modules/analytics/index.ts"
+import { definePolicies } from "@medusajs/framework/utils"
+
+export const analyticsModulePolicies = definePolicies("analytics", {
+  generate_reports: "Generate analytical reports",
+  export_data: "Export analytics data", 
+  view_dashboards: "View analytics dashboards"
+})
+```
+
+### Runtime Policy Management
+
+Create policies dynamically through the RBAC module:
+
+```ts title="src/admin/lib/setup-permissions.ts"
+import { sdk } from "./config"
+
+export async function createCustomPolicies() {
+  // Create custom policies for your extension
+  const reportPolicy = await sdk.admin.rbacPolicy.create({
+    key: "custom_reports.generate",
+    resource: "custom_reports",
+    operation: "generate", 
+    name: "Generate Custom Reports",
+    description: "Allows generating custom business reports"
+  })
+
+  const exportPolicy = await sdk.admin.rbacPolicy.create({
+    key: "analytics.export",
+    resource: "analytics",
+    operation: "export",
+    name: "Export Analytics", 
+    description: "Allows exporting analytics data"
+  })
+
+  return { reportPolicy, exportPolicy }
+}
+```
+
+## Role Management
+
+### Creating Roles
+
+Define roles that group related permissions:
+
+```ts title="src/workflows/setup-roles.ts"
+import { createRoleWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function setupBusinessRoles(container) {
+  // Create content editor role
+  const { result: editorRole } = await createRoleWorkflow(container).run({
+    input: {
+      name: "Content Editor",
+      description: "Can create and edit products and collections"
+    }
+  })
+
+  // Add specific policies to the role
+  await sdk.admin.rbacRole.addPolicies(editorRole.role.id, {
+    policies: ["product:create", "product:update", "collection:*"]
+  })
+
+  // Create manager role with broader access  
+  const { result: managerRole } = await createRoleWorkflow(container).run({
+    input: {
+      name: "Store Manager", 
+      description: "Can manage products, orders, and customers"
+    }
+  })
+
+  await sdk.admin.rbacRole.addPolicies(managerRole.role.id, {
+    policies: [
+      "product:*", 
+      "order:read", 
+      "order:update", 
+      "customer:read"
+    ]
+  })
+}
+```
+
+### Hierarchical Roles
+
+Create role hierarchies with inheritance:
+
+```ts title="src/workflows/role-hierarchy.ts"
+// Create parent role
+const { result: managerRole } = await createRoleWorkflow(container).run({
+  input: {
+    name: "Manager",
+    description: "Management level access"
+  }
+})
+
+// Create child role that inherits parent permissions
+const { result: seniorManagerRole } = await createRoleWorkflow(container).run({
+  input: {
+    name: "Senior Manager",
+    description: "Senior management with additional privileges",
+    parent_id: managerRole.role.id  // Inherits all manager permissions
+  }
+})
+```
+
+## Integration with Workflows
+
+Check permissions within custom workflows and steps:
+
+```ts title="src/workflows/protected-operations.ts"
+import { 
+  createWorkflow, 
+  createStep, 
+  StepResponse 
+} from "@medusajs/framework/workflows-sdk"
+import { hasPermission } from "@medusajs/framework"
+
+const checkPermissionStep = createStep(
+  "check-permission",
+  async ({ 
+    actorId, 
+    actorType, 
+    resource, 
+    operation 
+  }, { container }) => {
+    // Check if user has permission for this operation
+    const canPerform = await hasPermission({
+      roles: actorId, // User ID or role IDs
+      action: { resource, operation },
+      container
+    })
+
+    if (!canPerform) {
+      throw new Error(
+        `Insufficient permissions: ${resource}:${operation}`
+      )
+    }
+
+    return new StepResponse({ authorized: true })
+  }
+)
+
+export const protectedProductUpdateWorkflow = createWorkflow(
+  "protected-product-update",
+  (input) => {
+    // Check permissions before proceeding
+    checkPermissionStep({
+      actorId: input.userId,
+      actorType: "user",
+      resource: "product", 
+      operation: "update"
+    })
+
+    // Continue with protected operation...
+    const updatedProduct = updateProductStep(input)
+
+    return { product: updatedProduct }
+  }
+)
+```
+
+## Permission Context
+
+Access current user permissions in your components:
+
+```tsx title="src/admin/widgets/user-status.tsx"
+import { usePermissions } from "@medusajs/dashboard"
+import { Badge, Text } from "@medusajs/ui"
+
+export default function UserStatus() {
+  const { policy, isLoading } = usePermissions()
+
+  if (isLoading) {
+    return <Text>Loading permissions...</Text>
+  }
+
+  const isAdmin = policy?.permissions.includes("*:*")
+  const canManageUsers = policy?.permissions.includes("user:*")
+
+  return (
+    <div className="flex gap-2 items-center">
+      <Text size="small">Access Level:</Text>
+      {isAdmin ? (
+        <Badge color="red">Super Admin</Badge>
+      ) : canManageUsers ? (
+        <Badge color="blue">User Manager</Badge>
+      ) : (
+        <Badge color="grey">Standard User</Badge>
+      )}
+    </div>
+  )
+}
+```
+
+## Best Practices
+
+1. **Principle of Least Privilege**: Grant only the minimum permissions needed
+2. **Granular Permissions**: Use specific permissions instead of broad wildcards
+3. **Consistent Naming**: Follow `resource:operation` format consistently
+4. **Fallback UI**: Always provide meaningful content when permissions are missing
+5. **Performance**: Permission checks are cached, so multiple calls are efficient
+6. **Testing**: Test your admin extensions with different permission levels
+
+## Complete Example
+
+```tsx title="src/admin/widgets/advanced-product-manager.tsx"
+import {
+  PermissionGuard,
+  RoutePermissionGuard,
+  usePermissions
+} from "@medusajs/dashboard"
+import {
+  Button,
+  Container,
+  DataTable,
+  Heading,
+  Text
+} from "@medusajs/ui"
+
+export default function AdvancedProductManager() {
+  const { can, hasAllPermissions, policy } = usePermissions()
+
+  // Check complex permission combinations
+  const canBulkEdit = hasAllPermissions([
+    "product:update", 
+    "inventory:update"
+  ])
+
+  const isProductAdmin = can("product", "*")
+
+  return (
+    <RoutePermissionGuard 
+      permissions={["product:read"]}
+      fallback={
+        <Container>
+          <Text>You need product read access to use this feature</Text>
+        </Container>
+      }
+    >
+      <Container>
+        <div className="flex justify-between items-center mb-4">
+          <Heading>Advanced Product Management</Heading>
+          
+          <div className="flex gap-2">
+            <PermissionGuard permissions={["product:create"]}>
+              <Button variant="primary">
+                Create Product
+              </Button>
+            </PermissionGuard>
+
+            {canBulkEdit && (
+              <Button variant="secondary">
+                Bulk Edit Inventory
+              </Button>
+            )}
+
+            {isProductAdmin && (
+              <Button variant="danger">
+                Admin Tools
+              </Button>
+            )}
+          </div>
+        </div>
+
+        <PermissionGuard 
+          permissions={["product:read"]}
+          fallback={
+            <Text className="text-ui-fg-muted">
+              Contact your administrator for product access
+            </Text>
+          }
+        >
+          {/* Product data table with permission-based actions */}
+          <DataTable>
+            {/* Table implementation */}
+          </DataTable>
+        </PermissionGuard>
+
+        {/* Show permission summary for debugging */}
+        {process.env.NODE_ENV === "development" && (
+          <div className="mt-4 p-4 bg-ui-bg-subtle rounded">
+            <Text size="small" className="font-medium">
+              Debug: Current Permissions
+            </Text>
+            <Text size="xsmall" className="text-ui-fg-muted">
+              {policy?.permissions.join(", ") || "No permissions"}
+            </Text>
+          </div>
+        )}
+      </Container>
+    </RoutePermissionGuard>
+  )
+}
+```
+
+This approach ensures your admin extensions respect user permissions and provide appropriate access control throughout your custom functionality.
 
 
 # Admin Routing Customizations
@@ -43531,6 +44606,377 @@ The result:
 4. Add tax back to total: `$72` x `1.25` = `$90`
 
 The final total is `$90`, which correctly applies both the tax-inclusive promotion and tax-inclusive pricing.
+
+
+# RBAC Concepts
+
+Learn about the key concepts and components of Medusa's Role-Based Access Control (RBAC) system.
+
+## What is RBAC?
+
+Role-Based Access Control (RBAC) is a security model that controls access to resources based on user roles. In Medusa, RBAC provides fine-grained permission management for admin users, allowing you to control who can perform specific operations on different resources.
+
+## Core Components
+
+### Roles
+
+A **role** is a collection of permissions that can be assigned to users. Roles define what a user is allowed to do within the system.
+
+```ts
+{
+  id: "role_123",
+  name: "Product Editor",
+  description: "Can create and edit products",
+  parent_id: null,
+  policies: [...]
+}
+```
+
+### Policies
+
+A **policy** defines a specific permission using the format `resource:operation`. Policies are the atomic units of permission in the RBAC system.
+
+```ts
+{
+  id: "policy_123", 
+  key: "product.read",
+  resource: "product",
+  operation: "read",
+  name: "View Products",
+  description: "Allows viewing product information"
+}
+```
+
+### Permissions
+
+**Permissions** are the actual access grants that result from the combination of roles and policies. They follow the format `resource:operation`.
+
+Examples:
+
+- `product:read` - Can view products
+- `customer:create` - Can create customers
+- `order:*` - Full order management access
+- `*:*` - Complete system access (super admin)
+
+## Permission System
+
+### Resource Types
+
+Medusa RBAC supports permissions for all major commerce resources:
+
+- **Products**: `product`, `product_category`, `product_collection`, `product_tag`, `product_type`
+- **Orders**: `order`, `payment`, `fulfillment`, `return`
+- **Customers**: `customer`, `customer_group`
+- **Inventory**: `inventory`, `stock_location`, `reservation`
+- **Admin**: `user`, `api_key`, `workflow`
+- **Store Setup**: `region`, `store`, `sales_channel`, `shipping_option`
+- **Marketing**: `promotion`, `campaign`, `price_list`
+
+### Operations
+
+Standard operations available for most resources:
+
+- `read` - View/list resources
+- `create` - Create new resources
+- `update` - Modify existing resources
+- `delete` - Remove resources
+- `*` - Wildcard for all operations
+
+### Wildcards
+
+The RBAC system supports wildcards (`*`) for flexible permission assignment:
+
+- `*:read` - Read access to all resources
+- `product:*` - Full access to products
+- `*:*` - Complete system access
+
+Wildcards are expanded at resolution time, so a user with `product:*` automatically gets `product:read`, `product:create`, `product:update`, and `product:delete` permissions.
+
+## Policy Inheritance
+
+Roles can be organized hierarchically using parent-child relationships. Child roles inherit all policies from their parent roles.
+
+```ts
+// Parent role
+const managerRole = {
+  name: "Manager",
+  policies: ["product:read", "customer:read"]
+}
+
+// Child role inherits parent policies
+const seniorManagerRole = {
+  name: "Senior Manager", 
+  parent_id: managerRole.id,
+  policies: ["order:*"] // Gets product:read, customer:read, order:*
+}
+```
+
+## Permission Guards
+
+Medusa provides React components and hooks for implementing permission-based UI in admin extensions.
+
+### PermissionGuard Component
+
+Conditionally render UI based on user permissions:
+
+```tsx
+import { PermissionGuard } from "@medusajs/dashboard"
+
+<PermissionGuard permissions={["product:create"]}>
+  <CreateProductButton />
+</PermissionGuard>
+```
+
+### Permission Hooks
+
+```tsx
+import { usePermissions } from "@medusajs/dashboard"
+
+function ProductActions() {
+  const { can } = usePermissions()
+  
+  return (
+    <div>
+      {can("product", "create") && <CreateButton />}
+      {can("product", "update") && <EditButton />} 
+      {can("product", "delete") && <DeleteButton />}
+    </div>
+  )
+}
+```
+
+### Route Protection
+
+Protect entire routes based on permissions:
+
+```tsx
+import { RoutePermissionGuard } from "@medusajs/dashboard"
+
+<RoutePermissionGuard 
+  permissions={["product:read"]} 
+  fallback={<AccessDenied />}
+>
+  <ProductListPage />
+</RoutePermissionGuard>
+```
+
+## Runtime Policies
+
+Unlike code-defined policies, runtime policies can be created dynamically through the admin interface or API. This allows for flexible permission management without code changes.
+
+```ts
+// Create a custom policy at runtime
+const { policy } = await sdk.admin.rbacPolicy.create({
+  key: "custom_resource.manage",
+  resource: "custom_resource", 
+  operation: "manage",
+  name: "Custom Resource Management",
+  description: "Manage custom business resources"
+})
+```
+
+## Permission Resolution
+
+The RBAC system provides a `resolvePermissions` function that returns a flat list of granted permissions with wildcards already expanded. This is useful for client-side permission checking:
+
+```ts
+const permissions = await sdk.admin.rbacRole.mePermissions()
+// Returns: ["product:read", "product:create", "customer:read", ...]
+
+// Client can do simple lookups
+const canEditProducts = permissions.includes("product:update")
+```
+
+## Best Practices
+
+1. **Principle of Least Privilege**: Grant users only the minimum permissions needed for their role
+2. **Role Hierarchy**: Use parent-child relationships to organize permissions logically
+3. **Granular Permissions**: Prefer specific permissions over broad wildcards when possible
+4. **Regular Audits**: Periodically review and clean up unused roles and policies
+5. **Clear Naming**: Use descriptive names and descriptions for roles and policies
+
+## Integration with Workflows
+
+RBAC permissions can be checked within workflows and steps:
+
+```ts
+import { hasPermission } from "@medusajs/framework"
+
+const checkPermissionStep = createStep(
+  "check-permission",
+  async ({ userId, resource, operation }, { container }) => {
+    const hasAccess = await hasPermission({
+      roles: userId,
+      action: { resource, operation },
+      container
+    })
+    
+    if (!hasAccess) {
+      throw new Error("Insufficient permissions")
+    }
+    
+    return new StepResponse({ authorized: true })
+  }
+)
+```
+
+
+# RBAC Module
+
+In this section of the documentation, you will find resources to learn more about the RBAC Module and how to use it in your application.
+
+Refer to the [Medusa Admin User Guide](undefined/user-guide/settings/rbac) to learn how to manage roles and permissions using the dashboard.
+
+Medusa has role-based access control (RBAC) features available out-of-the-box through the RBAC Module. A [module](undefined/docs/learn/fundamentals/modules) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this RBAC Module.
+
+Learn more about why modules are isolated in [this documentation](undefined/docs/learn/fundamentals/modules/isolation).
+
+## RBAC Features
+
+- [Roles and Policies](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/rbac/concepts): Create and manage roles with specific permissions for users and teams.
+- [Permission System](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/rbac/concepts#permissions): Fine-grained permission control using resource:operation format with wildcard support.
+- [Permission Guards](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/rbac/concepts#permission-guards): UI components and hooks for conditional rendering based on user permissions.
+- [Policy Inheritance](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/rbac/concepts#policy-inheritance): Hierarchical role structures with inherited permissions.
+- [Runtime Policy Management](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/rbac/concepts#runtime-policies): Create and modify policies dynamically at runtime.
+
+***
+
+## How to Use the RBAC Module
+
+In your Medusa application, you build flows around Commerce Modules. A flow is built as a [Workflow](undefined/docs/learn/fundamentals/workflows), which is a special function composed of a series of steps that guarantees data consistency and reliable roll-back mechanism.
+
+You can build custom workflows and steps. You can also re-use Medusa's workflows and steps, which are provided by the `@medusajs/medusa/core-flows` package.
+
+For example:
+
+```ts title="src/workflows/create-role.ts" highlights={highlights}
+import { 
+  createWorkflow, 
+  WorkflowResponse,
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+
+const createRoleStep = createStep(
+  "create-role",
+  async ({ name, description }, { container }) => {
+    const rbacModuleService = container.resolve(Modules.RBAC)
+
+    const role = await rbacModuleService.createRoles({
+      name,
+      description,
+    })
+
+    return new StepResponse({ role }, role.id)
+  },
+  async (roleId, { container }) => {
+    const rbacModuleService = container.resolve(Modules.RBAC)
+
+    await rbacModuleService.deleteRoles([roleId])
+  }
+)
+
+export const createRoleWorkflow = createWorkflow(
+  "create-role",
+  (input) => {
+    const { role } = createRoleStep(input)
+
+    return new WorkflowResponse({
+      role,
+    })
+  }
+)
+```
+
+You can then execute the workflow in your custom API routes, scheduled jobs, or subscribers:
+
+### API Route
+
+```ts title="src/api/rbac/role/route.ts" highlights={[["11"], ["12"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { createRoleWorkflow } from "../../workflows/create-role"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await createRoleWorkflow(req.scope)
+    .run({
+      input: {
+        name: "Editor",
+        description: "Can edit content"
+      }
+    })
+
+  res.send(result)
+}
+```
+
+### Subscriber
+
+```ts title="src/subscribers/user-created.ts" highlights={[["11"], ["12"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { createRoleWorkflow } from "../workflows/create-role"
+
+export default async function handleUserCreated({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  const { result } = await createRoleWorkflow(container)
+    .run({
+      input: {
+        name: "New User Role",
+        description: "Default role for new users"
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "user.created",
+}
+```
+
+### Scheduled Job
+
+```ts title="src/jobs/cleanup-roles.ts" highlights={[["7"], ["8"]]}
+import { MedusaContainer } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+
+export default async function cleanupRolesJob(
+  container: MedusaContainer
+) {
+  const rbacModuleService = container.resolve(Modules.RBAC)
+
+  // Remove unused roles
+  const unusedRoles = await rbacModuleService.listRoles({
+    // Custom logic to find unused roles
+  })
+
+  if (unusedRoles.length > 0) {
+    await rbacModuleService.deleteRoles(
+      unusedRoles.map(role => role.id)
+    )
+  }
+}
+
+export const config = {
+  name: "cleanup-roles",
+  schedule: `0 2 * * 0`, // Weekly at 2 AM on Sunday
+}
+```
+
+Learn more about workflows in [this documentation](undefined/docs/learn/fundamentals/workflows).
+
+***
 
 
 # Links between Region Module and Other Modules
@@ -129843,6 +131289,326 @@ export default ProductWidget
 ```
 
 This shows the JSON section at the top of the product page, passing it the object `{ name: "John" }`.
+
+
+# Permission Guard - Admin Components
+
+This feature requires RBAC to be enabled in your Medusa application. Learn more about [RBAC configuration](undefined/docs/learn/fundamentals/admin/rbac) in the development guide.
+
+The `PermissionGuard` component allows you to conditionally render UI elements based on the user's RBAC permissions. This is useful for hiding or showing admin UI components based on what actions a user is authorized to perform.
+
+![Example of permission-based UI hiding create button](https://res.cloudinary.com/dza7lstvk/image/upload/v1728295658/Medusa%20Resources/permission_guard_example.png)
+
+You can use this component in your Admin Extensions to implement role-based access control in the admin dashboard.
+
+## Basic Usage
+
+### PermissionGuard Component
+
+The `PermissionGuard` component conditionally renders its children based on the user's permissions:
+
+```tsx title="src/admin/widgets/product-actions.tsx"
+import { PermissionGuard } from "@medusajs/dashboard"
+import { Button } from "@medusajs/ui"
+
+const ProductActions = () => {
+  return (
+    <div className="flex gap-2">
+      <PermissionGuard permissions={["product:create"]}>
+        <Button variant="secondary" size="base">
+          Create Product
+        </Button>
+      </PermissionGuard>
+      
+      <PermissionGuard permissions={["product:update"]}>
+        <Button variant="secondary" size="base">
+          Edit Product
+        </Button>
+      </PermissionGuard>
+      
+      <PermissionGuard permissions={["product:delete"]}>
+        <Button variant="danger" size="base">
+          Delete Product
+        </Button>
+      </PermissionGuard>
+    </div>
+  )
+}
+
+export default ProductActions
+```
+
+### Multiple Permissions
+
+You can require multiple permissions using the `requireAll` prop:
+
+```tsx title="src/admin/widgets/advanced-actions.tsx"
+import { PermissionGuard } from "@medusajs/dashboard"
+import { Button } from "@medusajs/ui"
+
+const AdvancedActions = () => {
+  return (
+    <div>
+      {/* User needs ANY of these permissions */}
+      <PermissionGuard permissions={["product:read", "order:read"]}>
+        <Button>View Reports</Button>
+      </PermissionGuard>
+      
+      {/* User needs ALL of these permissions */}
+      <PermissionGuard 
+        permissions={["product:update", "inventory:update"]} 
+        requireAll={true}
+      >
+        <Button>Bulk Update Products</Button>
+      </PermissionGuard>
+    </div>
+  )
+}
+```
+
+### Fallback Content
+
+Provide alternative content when permissions are not met:
+
+```tsx title="src/admin/widgets/conditional-content.tsx"
+import { PermissionGuard } from "@medusajs/dashboard"
+import { Button, Text } from "@medusajs/ui"
+
+const ConditionalContent = () => {
+  return (
+    <PermissionGuard 
+      permissions={["product:create"]} 
+      fallback={
+        <Text className="text-ui-fg-muted">
+          You don't have permission to create products
+        </Text>
+      }
+    >
+      <Button>Create New Product</Button>
+    </PermissionGuard>
+  )
+}
+```
+
+## Using Permission Hooks
+
+For more complex permission checking logic, use the permission hooks:
+
+```tsx title="src/admin/widgets/dynamic-actions.tsx"
+import { usePermissions } from "@medusajs/dashboard"
+import { Button, Badge } from "@medusajs/ui"
+
+const DynamicActions = ({ productId }: { productId: string }) => {
+  const { 
+    hasPermission, 
+    hasAnyPermission, 
+    hasAllPermissions, 
+    can 
+  } = usePermissions()
+  
+  const canEdit = can("product", "update")
+  const canDelete = can("product", "delete")
+  const canManageInventory = hasAllPermissions([
+    "product:update", 
+    "inventory:update"
+  ])
+  
+  return (
+    <div className="space-y-2">
+      {/* Simple permission check */}
+      {hasPermission("product:read") && (
+        <Badge>You can view products</Badge>
+      )}
+      
+      {/* Check any of multiple permissions */}
+      {hasAnyPermission(["product:create", "product:update"]) && (
+        <Button variant="secondary">
+          Manage Products
+        </Button>
+      )}
+      
+      {/* Resource and operation check */}
+      {canEdit && (
+        <Button onClick={() => editProduct(productId)}>
+          Edit Product
+        </Button>
+      )}
+      
+      {/* Complex logic */}
+      {canManageInventory && (
+        <Button variant="primary">
+          Update Inventory
+        </Button>
+      )}
+    </div>
+  )
+}
+```
+
+## Props Reference
+
+- permissions: (\`string\[]\`) Array of permission strings in the format \`resource:operation\` (e.g., \`\['product:read', 'customer:create']\`).
+- requireAll: (\`boolean\`) If \`true\`, user must have ALL specified permissions. If \`false\` (default), user needs ANY of the permissions.
+- fallback: (\`React.ReactNode\`) Content to render when user doesn't have required permissions. If not provided, nothing is rendered.
+- children: (\`React.ReactNode\`) Content to render when user has required permissions.
+
+## Permission Hook Methods
+
+- hasPermission: (\`function\`) Check if user has a specific permission string.
+
+  - permission: (\`string\`) Permission string in format \`resource:operation\`
+- hasAnyPermission: (\`function\`) Check if user has any of the specified permissions.
+
+  - permissions: (\`string\[]\`) Array of permission strings
+- hasAllPermissions: (\`function\`) Check if user has all of the specified permissions.
+
+  - permissions: (\`string\[]\`) Array of permission strings
+- can: (\`function\`) Check if user can perform an operation on a resource.
+
+  - resource: (\`string\`) Resource name (e.g., \`product\`, \`customer\`)
+
+  - operation: (\`string\`) Operation name (e.g., \`read\`, \`create\`, \`update\`, \`delete\`, \`\*\`)
+
+## Route Protection
+
+For protecting entire routes, use the `RoutePermissionGuard` component:
+
+```tsx title="src/admin/routes/protected/page.tsx"
+import { RoutePermissionGuard } from "@medusajs/dashboard"
+import { SingleColumnLayout } from "../../layouts/single-column"
+
+const ProtectedPage = () => {
+  return (
+    <RoutePermissionGuard 
+      permissions={["user:read"]} 
+      fallback={<div>Access Denied</div>}
+    >
+      <SingleColumnLayout>
+        <div>This page requires user:read permission</div>
+      </SingleColumnLayout>
+    </RoutePermissionGuard>
+  )
+}
+
+export default ProtectedPage
+```
+
+## Permission Patterns
+
+### Common Permission Patterns
+
+```tsx
+// Resource-specific permissions
+"product:read"     // View products
+"product:create"   // Create products
+"product:update"   // Edit products
+"product:delete"   // Delete products
+"product:*"        // All product operations
+
+// Cross-resource permissions
+"*:read"          // Read all resources
+"*:*"             // Super admin (all operations)
+
+// Custom permissions
+"reports:generate" // Generate reports
+"settings:manage"  // Manage settings
+```
+
+### Wildcard Handling
+
+The permission system automatically handles wildcards:
+
+```tsx
+// User with "product:*" permission
+hasPermission("product:read")   // ✅ true
+hasPermission("product:create") // ✅ true
+hasPermission("product:update") // ✅ true
+hasPermission("product:delete") // ✅ true
+
+// User with "*:read" permission  
+hasPermission("product:read")   // ✅ true
+hasPermission("customer:read")  // ✅ true
+hasPermission("product:create") // ❌ false
+```
+
+## Best Practices
+
+1. **Granular Permissions**: Use specific permissions rather than broad wildcards when possible
+2. **Consistent Naming**: Follow the `resource:operation` pattern consistently
+3. **Fallback Content**: Always provide meaningful fallback content for better UX
+4. **Performance**: Permission checks are cached, so multiple calls to the same permission are efficient
+5. **Testing**: Test your permission-based UI with different user roles
+
+## Complete Example
+
+```tsx title="src/admin/widgets/product-management.tsx"
+import { 
+  PermissionGuard, 
+  usePermissions 
+} from "@medusajs/dashboard"
+import { 
+  Button, 
+  Container, 
+  Heading, 
+  Text 
+} from "@medusajs/ui"
+
+const ProductManagement = () => {
+  const { can, hasAnyPermission } = usePermissions()
+  
+  const hasProductAccess = hasAnyPermission([
+    "product:read", 
+    "product:create", 
+    "product:update"
+  ])
+
+  if (!hasProductAccess) {
+    return (
+      <Container>
+        <Text>You don't have access to product management</Text>
+      </Container>
+    )
+  }
+
+  return (
+    <Container>
+      <div className="flex items-center justify-between">
+        <Heading level="h2">Product Management</Heading>
+        
+        <div className="flex gap-2">
+          <PermissionGuard permissions={["product:create"]}>
+            <Button variant="primary">
+              Create Product
+            </Button>
+          </PermissionGuard>
+          
+          <PermissionGuard permissions={["product:update"]}>
+            <Button variant="secondary">
+              Bulk Edit
+            </Button>
+          </PermissionGuard>
+        </div>
+      </div>
+      
+      <PermissionGuard 
+        permissions={["product:read"]}
+        fallback={
+          <Text className="text-ui-fg-muted">
+            You need read permissions to view products
+          </Text>
+        }
+      >
+        <div>
+          {/* Product list/table would go here */}
+          <Text>Product list goes here...</Text>
+        </div>
+      </PermissionGuard>
+    </Container>
+  )
+}
+
+export default ProductManagement
+```
 
 
 # Section Row - Admin Components

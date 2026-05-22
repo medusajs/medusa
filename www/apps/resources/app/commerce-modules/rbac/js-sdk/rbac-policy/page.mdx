@@ -1,0 +1,155 @@
+export const metadata = {
+  title: `RbacPolicy JS SDK Methods`,
+}
+
+# {metadata.title}
+
+The `RbacPolicy` class in the [JS SDK](../../../../js-sdk/page.mdx) provides methods to manage RBAC policies that define specific permissions.
+
+## Methods
+
+### list
+
+Retrieve a paginated list of RBAC policies.
+
+```ts
+const { policies, count, limit, offset } = await sdk.admin.rbacPolicy.list({
+  limit: 10,
+  offset: 0,
+  resource: "product", // Filter by resource
+})
+```
+
+### retrieve
+
+Retrieve an RBAC policy by its ID.
+
+```ts
+const { policy } = await sdk.admin.rbacPolicy.retrieve("policy_123", {
+  fields: "id,key,resource,operation",
+})
+```
+
+### create
+
+Create a new RBAC policy.
+
+```ts
+const { policy } = await sdk.admin.rbacPolicy.create({
+  key: "product.read",
+  resource: "product",
+  operation: "read",
+  name: "Read Products",
+  description: "Allows reading product information",
+})
+```
+
+### update
+
+Update an existing RBAC policy.
+
+```ts
+const { policy } = await sdk.admin.rbacPolicy.update("policy_123", {
+  name: "Updated Policy Name",
+  description: "Updated description",
+})
+```
+
+### delete
+
+Delete an RBAC policy.
+
+```ts
+const { deleted } = await sdk.admin.rbacPolicy.delete("policy_123")
+```
+
+---
+
+## Examples
+
+### Creating Permission Policies
+
+```ts
+// Create a read-only policy
+const { policy: readPolicy } = await sdk.admin.rbacPolicy.create({
+  key: "customer.read",
+  resource: "customer",
+  operation: "read",
+  name: "View Customers",
+  description: "Allows viewing customer information",
+})
+
+// Create a wildcard policy for full access
+const { policy: adminPolicy } = await sdk.admin.rbacPolicy.create({
+  key: "product.*",
+  resource: "product", 
+  operation: "*",
+  name: "Full Product Access",
+  description: "Complete access to product management",
+})
+```
+
+### Filtering Policies
+
+```ts
+// Get all policies for product management
+const { policies: productPolicies } = await sdk.admin.rbacPolicy.list({
+  resource: "product",
+})
+
+// Get all read-only policies
+const { policies: readPolicies } = await sdk.admin.rbacPolicy.list({
+  operation: "read",
+})
+```
+
+### Policy Management Workflow
+
+```ts
+// Create a comprehensive policy set
+const policies = [
+  {
+    key: "order.read",
+    resource: "order",
+    operation: "read",
+    name: "View Orders",
+    description: "Read access to orders",
+  },
+  {
+    key: "order.update",
+    resource: "order", 
+    operation: "update",
+    name: "Update Orders",
+    description: "Update existing orders",
+  },
+]
+
+// Create multiple policies
+const createdPolicies = []
+for (const policyData of policies) {
+  const { policy } = await sdk.admin.rbacPolicy.create(policyData)
+  createdPolicies.push(policy)
+}
+
+// Add them to a role
+await sdk.admin.rbacRole.addPolicies("role_123", {
+  policies: createdPolicies.map((p) => p.id),
+})
+```
+
+## Permission Format
+
+RBAC policies follow the format `resource:operation`:
+
+- **Resources**: `product`, `customer`, `order`, `inventory`, etc.
+- **Operations**: `read`, `create`, `update`, `delete`, or `*` (wildcard)
+- **Wildcards**: 
+  - `*:read` - Read access to all resources
+  - `product:*` - Full access to products  
+  - `*:*` - Complete system access
+
+Examples:
+- `product:read` - Can view products
+- `customer:create` - Can create customers
+- `order:*` - Full order management access
+- `*:*` - Super admin permissions

@@ -1,0 +1,607 @@
+export const metadata = {
+  title: `Implement Permission Checks in Custom Features`,
+}
+
+# {metadata.title}
+
+This tutorial shows you how to implement RBAC permission checks in your custom Medusa features, including workflows, API routes, and admin UI components.
+
+## Overview
+
+You'll learn how to:
+
+1. Define custom policies for your feature
+2. Implement permission checks in workflows
+3. Protect API routes with RBAC
+4. Build permission-aware admin UI
+5. Test your permission implementation
+
+---
+
+## Step 1: Define Custom Policies
+
+First, define the permissions your custom feature requires. In this example, you'll build a custom analytics feature that needs specific permissions.
+
+```ts title="src/modules/analytics/policies.ts"
+import { definePolicies } from "@medusajs/framework/utils"
+
+export const analyticsPolicies = definePolicies("analytics", {
+  view_reports: "View analytics reports",
+  generate_reports: "Generate new reports", 
+  export_data: "Export analytics data",
+  manage_settings: "Configure analytics settings",
+})
+
+// Export individual policies for use in code
+export const {
+  ANALYTICS_VIEW_REPORTS,
+  ANALYTICS_GENERATE_REPORTS, 
+  ANALYTICS_EXPORT_DATA,
+  ANALYTICS_MANAGE_SETTINGS,
+} = analyticsPolicies
+```
+
+<Note>
+
+The `definePolicies` function automatically creates permission strings in the format `analytics:view_reports`, `analytics:generate_reports`, etc.
+
+</Note>
+
+---
+
+## Step 2: Implement Permission Checks in Workflows
+
+Create workflows that respect RBAC permissions by checking access before performing operations.
+
+```ts title="src/workflows/analytics/generate-report.ts"
+import {
+  createWorkflow,
+  createStep,
+  StepResponse,
+  WorkflowData,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { hasPermission } from "@medusajs/framework"
+import { MedusaError } from "@medusajs/framework/utils"
+import { ANALYTICS_GENERATE_REPORTS } from "../../modules/analytics/policies"
+
+// Step to check permissions
+const checkGeneratePermissionStep = createStep(
+  "check-generate-permission",
+  async ({ userId }: { userId: string }, { container }) => {
+    const hasAccess = await hasPermission({
+      roles: userId,
+      action: {
+        resource: "analytics",
+        operation: "generate_reports",
+      },
+      container,
+    })
+
+    if (!hasAccess) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "You don't have permission to generate reports"
+      )
+    }
+
+    return new StepResponse({ authorized: true })
+  }
+)
+
+// Step to generate the actual report
+const generateReportStep = createStep(
+  "generate-report", 
+  async ({ reportType, dateRange }: {
+    reportType: string
+    dateRange: { from: Date; to: Date }
+  }, { container }) => {
+    // Implement report generation logic
+    const analyticsService = container.resolve("analyticsService")
+    
+    const report = await analyticsService.generateReport({
+      type: reportType,
+      dateRange,
+    })
+
+    return new StepResponse(
+      { report },
+      { reportId: report.id } // For compensation
+    )
+  },
+  async (compensation, { container }) => {
+    // Clean up if workflow fails
+    if (compensation?.reportId) {
+      const analyticsService = container.resolve("analyticsService")
+      await analyticsService.deleteReport(compensation.reportId)
+    }
+  }
+)
+
+export const generateReportWorkflow = createWorkflow(
+  "generate-analytics-report",
+  (input: WorkflowData<{
+    userId: string
+    reportType: string
+    dateRange: { from: Date; to: Date }
+  }>) => {
+    // Check permissions first
+    checkGeneratePermissionStep({ userId: input.userId })
+    
+    // Generate report if authorized
+    const { report } = generateReportStep({
+      reportType: input.reportType,
+      dateRange: input.dateRange,
+    })
+
+    return new WorkflowResponse({ report })
+  }
+)
+```
+
+---
+
+## Step 3: Protect API Routes
+
+Create API routes that check permissions before allowing access.
+
+```ts title="src/api/admin/analytics/reports/route.ts"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { HttpTypes, MedusaError } from "@medusajs/framework/types"
+import { hasPermission } from "@medusajs/framework"
+import { generateReportWorkflow } from "../../../../workflows/analytics/generate-report"
+
+type GenerateReportRequest = {
+  reportType: "sales" | "products" | "customers"
+  dateRange: {
+    from: string // ISO date string
+    to: string
+  }
+}
+
+// GET /admin/analytics/reports
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse<{ reports: any[] }>
+) => {
+  const userId = req.auth_context.actor_id
+
+  // Check read permissions
+  const canView = await hasPermission({
+    roles: userId,
+    action: {
+      resource: "analytics", 
+      operation: "view_reports",
+    },
+    container: req.scope,
+  })
+
+  if (!canView) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
+      "You don't have permission to view reports"
+    )
+  }
+
+  // Fetch and return reports
+  const analyticsService = req.scope.resolve("analyticsService")
+  const reports = await analyticsService.listReports()
+
+  res.json({ reports })
+}
+
+// POST /admin/analytics/reports  
+export const POST = async (
+  req: AuthenticatedMedusaRequest<GenerateReportRequest>,
+  res: MedusaResponse<{ report: any }>
+) => {
+  const userId = req.auth_context.actor_id
+  const { reportType, dateRange } = req.validatedBody
+
+  // Execute workflow with permission check
+  const { result } = await generateReportWorkflow(req.scope).run({
+    input: {
+      userId,
+      reportType,
+      dateRange: {
+        from: new Date(dateRange.from),
+        to: new Date(dateRange.to),
+      },
+    },
+  })
+
+  res.json({ report: result.report })
+}
+```
+
+---
+
+## Step 4: Build Permission-Aware Admin UI
+
+Create admin components that respect user permissions.
+
+```tsx title="src/admin/routes/analytics/page.tsx"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+import { AnalyticsIcon } from "@medusajs/icons"
+import {
+  Button,
+  Container,
+  Heading,
+  Card,
+  Text,
+  Badge,
+} from "@medusajs/ui"
+import {
+  PermissionGuard,
+  RoutePermissionGuard,
+  usePermissions,
+} from "@medusajs/dashboard"
+import { useState } from "react"
+import { generateReportWorkflow } from "../../../workflows/analytics/generate-report"
+
+export default function AnalyticsPage() {
+  const { can, hasAnyPermission } = usePermissions()
+  const [loading, setLoading] = useState(false)
+
+  const handleGenerateReport = async (type: string) => {
+    setLoading(true)
+    try {
+      // The workflow handles permission checks
+      await generateReportWorkflow.run({
+        input: {
+          userId: "current-user", // Get from auth context
+          reportType: type,
+          dateRange: {
+            from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
+            to: new Date(),
+          },
+        },
+      })
+    } catch (error) {
+      console.error("Report generation failed:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <RoutePermissionGuard 
+      permissions={["analytics:view_reports"]}
+      fallback={
+        <Container>
+          <Text>You need analytics access to view this page</Text>
+        </Container>
+      }
+    >
+      <Container>
+        <div className="flex justify-between items-center mb-6">
+          <Heading>Analytics Dashboard</Heading>
+          
+          {/* Permission-based user status */}
+          <div className="flex items-center gap-2">
+            {can("analytics", "manage_settings") && (
+              <Badge color="blue">Admin</Badge>
+            )}
+            {hasAnyPermission(["analytics:generate_reports", "analytics:export_data"]) && (
+              <Badge color="green">Editor</Badge>
+            )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Sales Report Card */}
+          <Card>
+            <Card.Header>
+              <Heading level="h3">Sales Reports</Heading>
+              <Text className="text-ui-fg-muted">
+                View sales performance and trends
+              </Text>
+            </Card.Header>
+            <Card.Footer>
+              <PermissionGuard permissions={["analytics:generate_reports"]}>
+                <Button 
+                  onClick={() => handleGenerateReport("sales")}
+                  loading={loading}
+                  className="w-full"
+                >
+                  Generate Sales Report
+                </Button>
+              </PermissionGuard>
+            </Card.Footer>
+          </Card>
+
+          {/* Product Report Card */}
+          <Card>
+            <Card.Header>
+              <Heading level="h3">Product Analytics</Heading>
+              <Text className="text-ui-fg-muted">
+                Analyze product performance
+              </Text>
+            </Card.Header>
+            <Card.Footer>
+              <PermissionGuard 
+                permissions={["analytics:generate_reports"]}
+                fallback={
+                  <Text size="small" className="text-ui-fg-muted">
+                    Permission required to generate reports
+                  </Text>
+                }
+              >
+                <Button 
+                  onClick={() => handleGenerateReport("products")}
+                  loading={loading}
+                  className="w-full"
+                >
+                  Generate Product Report  
+                </Button>
+              </PermissionGuard>
+            </Card.Footer>
+          </Card>
+
+          {/* Settings Card */}
+          <PermissionGuard permissions={["analytics:manage_settings"]}>
+            <Card>
+              <Card.Header>
+                <Heading level="h3">Analytics Settings</Heading>
+                <Text className="text-ui-fg-muted">
+                  Configure analytics preferences
+                </Text>
+              </Card.Header>
+              <Card.Footer>
+                <Button variant="secondary" className="w-full">
+                  Manage Settings
+                </Button>
+              </Card.Footer>
+            </Card>
+          </PermissionGuard>
+        </div>
+
+        {/* Export functionality */}
+        <PermissionGuard permissions={["analytics:export_data"]}>
+          <div className="mt-8">
+            <Card>
+              <Card.Header>
+                <Heading level="h3">Data Export</Heading>
+                <Text className="text-ui-fg-muted">
+                  Export analytics data for external analysis
+                </Text>
+              </Card.Header>
+              <Card.Footer>
+                <div className="flex gap-2">
+                  <Button variant="secondary">Export CSV</Button>
+                  <Button variant="secondary">Export JSON</Button>
+                </div>
+              </Card.Footer>
+            </Card>
+          </div>
+        </PermissionGuard>
+      </Container>
+    </RoutePermissionGuard>
+  )
+}
+
+export const config = defineRouteConfig({
+  label: "Analytics",
+  icon: AnalyticsIcon,
+})
+```
+
+---
+
+## Step 5: Set Up Initial Roles and Policies
+
+Create a loader to set up the necessary roles and policies when your module initializes.
+
+```ts title="src/modules/analytics/loaders/setup-rbac.ts"
+import { LoaderOptions } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+
+export default async function setupAnalyticsRBAC({
+  container,
+}: LoaderOptions) {
+  const rbacModuleService = container.resolve(Modules.RBAC)
+
+  // Create analytics policies
+  const policies = [
+    {
+      key: "analytics.view_reports",
+      resource: "analytics",
+      operation: "view_reports",
+      name: "View Analytics Reports",
+      description: "Allows viewing analytics reports",
+    },
+    {
+      key: "analytics.generate_reports", 
+      resource: "analytics",
+      operation: "generate_reports",
+      name: "Generate Reports",
+      description: "Allows generating new analytics reports",
+    },
+    {
+      key: "analytics.export_data",
+      resource: "analytics", 
+      operation: "export_data",
+      name: "Export Data",
+      description: "Allows exporting analytics data",
+    },
+    {
+      key: "analytics.manage_settings",
+      resource: "analytics",
+      operation: "manage_settings", 
+      name: "Manage Settings",
+      description: "Allows configuring analytics settings",
+    },
+  ]
+
+  // Create policies if they don't exist
+  for (const policyData of policies) {
+    const existingPolicy = await rbacModuleService.listPolicies({
+      key: [policyData.key],
+    })
+
+    if (existingPolicy.length === 0) {
+      await rbacModuleService.createPolicies(policyData)
+    }
+  }
+
+  // Create analytics viewer role
+  const viewerRole = await rbacModuleService.upsert({
+    name: "Analytics Viewer",
+    description: "Can view analytics reports",
+  })
+
+  // Add view permission to viewer role  
+  await rbacModuleService.addRolePolicies([
+    {
+      role_id: viewerRole.id,
+      policy_id: policies[0].key,
+    },
+  ])
+
+  // Create analytics admin role
+  const adminRole = await rbacModuleService.upsert({
+    name: "Analytics Admin",
+    description: "Full analytics access",
+  })
+
+  // Add all permissions to admin role
+  for (const policy of policies) {
+    await rbacModuleService.addRolePolicies([
+      {
+        role_id: adminRole.id,
+        policy_id: policy.key,
+      },
+    ])
+  }
+}
+```
+
+---
+
+## Step 6: Test Your Implementation
+
+Create tests to verify your permission implementation works correctly.
+
+```ts title="src/modules/analytics/__tests__/permissions.spec.ts"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { hasPermission } from "@medusajs/framework"
+import { Modules } from "@medusajs/framework/utils"
+
+medusaIntegrationTestRunner({
+  testSuite: ({ getContainer }) => {
+    let container
+
+    beforeEach(async () => {
+      container = await getContainer()
+    })
+
+    describe("Analytics RBAC", () => {
+      it("should allow viewing reports with correct permission", async () => {
+        const rbacService = container.resolve(Modules.RBAC)
+
+        // Create test role with view permission
+        const role = await rbacService.createRoles({
+          name: "Test Viewer",
+        })
+
+        const policy = await rbacService.createPolicies({
+          key: "analytics.view_reports",
+          resource: "analytics", 
+          operation: "view_reports",
+        })
+
+        await rbacService.addRolePolicies([{
+          role_id: role.id,
+          policy_id: policy.id,
+        }])
+
+        // Test permission check
+        const canView = await hasPermission({
+          roles: [role.id],
+          action: {
+            resource: "analytics",
+            operation: "view_reports",
+          },
+          container,
+        })
+
+        expect(canView).toBe(true)
+      })
+
+      it("should deny generating reports without permission", async () => {
+        const rbacService = container.resolve(Modules.RBAC)
+
+        // Create role without generate permission
+        const role = await rbacService.createRoles({
+          name: "Limited User",
+        })
+
+        const canGenerate = await hasPermission({
+          roles: [role.id],
+          action: {
+            resource: "analytics",
+            operation: "generate_reports", 
+          },
+          container,
+        })
+
+        expect(canGenerate).toBe(false)
+      })
+
+      it("should respect wildcard permissions", async () => {
+        const rbacService = container.resolve(Modules.RBAC)
+
+        const role = await rbacService.createRoles({
+          name: "Analytics Admin",
+        })
+
+        // Create wildcard policy
+        const policy = await rbacService.createPolicies({
+          key: "analytics.*",
+          resource: "analytics",
+          operation: "*",
+        })
+
+        await rbacService.addRolePolicies([{
+          role_id: role.id,
+          policy_id: policy.id,
+        }])
+
+        // Should have access to all analytics operations
+        const canView = await hasPermission({
+          roles: [role.id],
+          action: { resource: "analytics", operation: "view_reports" },
+          container,
+        })
+
+        const canGenerate = await hasPermission({
+          roles: [role.id], 
+          action: { resource: "analytics", operation: "generate_reports" },
+          container,
+        })
+
+        expect(canView).toBe(true)
+        expect(canGenerate).toBe(true)
+      })
+    })
+  },
+})
+```
+
+---
+
+## What You've Learned
+
+You've successfully implemented RBAC permission checks across your custom feature:
+
+1. **Defined custom policies** using `definePolicies` for your analytics feature
+2. **Protected workflows** by checking permissions before executing operations
+3. **Secured API routes** with permission validation  
+4. **Built permission-aware UI** using `PermissionGuard` and permission hooks
+5. **Set up initial roles** through module loaders
+6. **Tested your implementation** to ensure permissions work correctly
+
+This approach ensures your custom features integrate seamlessly with Medusa's RBAC system and provide appropriate access control throughout your application.
