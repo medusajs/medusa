@@ -31890,6 +31890,41 @@ Refer to [Medusa's configuration guide](undefined/docs/learn/configurations/medu
 
 ***
 
+## mfa
+
+The `mfa` option configures multi-factor authentication (MFA) settings for the Auth Module.
+
+For example:
+
+```ts title="medusa-config.ts"
+import { Modules, ContainerRegistrationKeys } from "@medusajs/framework/utils"
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
+      options: {
+        mfa: {
+          disable_policy: "challenge", // or "session"
+        },
+      },
+    },
+  ],
+})
+```
+
+The `mfa` option accepts the following properties:
+
+- `disable_policy`: A string indicating the policy for disabling MFA factors. Can be either:
+  - `"challenge"`: Requires MFA challenge verification to disable an MFA factor
+  - `"session"` (default): Only requires a valid session to disable an MFA factor
+
+***
+
 ## authMethodsPerActor Configuration
 
 The Medusa application's configuration accept an `authMethodsPerActor` configuration which restricts the allowed auth providers used with an actor type.
@@ -31910,6 +31945,7 @@ Learn more about why modules are isolated in [this documentation](undefined/docs
 - [Basic User Authentication](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#1-basic-authentication-flow): Authenticate users using their email and password credentials.
 - [Third-Party and Social Authentication](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#2-third-party-service-authenticate-flow): Authenticate users using third-party services and social platforms, such as [Google](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/google) and [GitHub](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/github).
 - [Authenticate Custom Actor Types](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/create-actor-type): Create custom user or actor types, such as managers, authenticate them in your application, and guard routes based on the custom user types.
+- **Multi-Factor Authentication (MFA)**: Add an extra layer of security with time-based one-time passwords (TOTP), backup recovery codes, and configurable disable policies. Learn more in the [Auth Module Service reference](undefined/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.startAuthMfa).
 - [Custom Authentication Providers](undefined/references/auth/provider): Integrate third-party services with custom authentication providers.
 
 ***
