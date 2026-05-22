@@ -1,5 +1,17 @@
 # @medusajs/dashboard
 
+## 2.15.4
+
+### Patch Changes
+
+- [#15430](https://github.com/medusajs/medusa/pull/15430) [`8a4a9c5507463dc3db5a4e122e59f80d718564d9`](https://github.com/medusajs/medusa/commit/8a4a9c5507463dc3db5a4e122e59f80d718564d9) Thanks [@shiminshen](https://github.com/shiminshen)! - fix(dashboard): order list fulfillment and payment status badges render with the correct status colors when view_configurations is enabled
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.15.4
+  - @medusajs/js-sdk@2.15.4
+  - @medusajs/icons@2.15.4
+  - @medusajs/ui@4.1.14
+
 ## 2.15.3
 
 ### Patch Changes
