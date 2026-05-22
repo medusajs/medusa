@@ -1,5 +1,37 @@
 # integration-tests-http
 
+## 1.1.14
+
+### Patch Changes
+
+- Updated dependencies [[`fe9636daba55fd65213fe338ba818ec1429783fa`](https://github.com/medusajs/medusa/commit/fe9636daba55fd65213fe338ba818ec1429783fa), [`08912969605975ca8dafae3bc87776f1ae184e08`](https://github.com/medusajs/medusa/commit/08912969605975ca8dafae3bc87776f1ae184e08), [`94a3ee29d2a2ec441791d671e42deb24108df7f3`](https://github.com/medusajs/medusa/commit/94a3ee29d2a2ec441791d671e42deb24108df7f3)]:
+  - @medusajs/core-flows@2.15.4
+  - @medusajs/auth@2.15.4
+  - @medusajs/medusa@2.15.4
+  - @medusajs/test-utils@2.15.4
+  - @medusajs/api-key@2.15.4
+  - @medusajs/customer@2.15.4
+  - @medusajs/fulfillment@2.15.4
+  - @medusajs/inventory@2.15.4
+  - @medusajs/pricing@2.15.4
+  - @medusajs/product@2.15.4
+  - @medusajs/promotion@2.15.4
+  - @medusajs/region@2.15.4
+  - @medusajs/stock-location@2.15.4
+  - @medusajs/store@2.15.4
+  - @medusajs/tax@2.15.4
+  - @medusajs/translation@2.15.4
+  - @medusajs/user@2.15.4
+  - @medusajs/workflow-engine-inmemory@2.15.4
+  - @medusajs/loyalty-plugin@2.15.4
+  - @medusajs/framework@2.15.4
+  - @medusajs/modules-sdk@2.15.4
+  - @medusajs/utils@2.15.4
+  - @medusajs/cache-inmemory@2.15.4
+  - @medusajs/event-bus-local@2.15.4
+  - @medusajs/event-bus-redis@2.15.4
+  - @medusajs/fulfillment-manual@2.15.4
+
 ## 1.1.13
 
 ### Patch Changes
