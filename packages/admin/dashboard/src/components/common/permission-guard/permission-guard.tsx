@@ -51,7 +51,8 @@ interface PermissionGuardWithPermissions extends BasePermissionGuardProps {
   operation?: never
 }
 
-interface PermissionGuardWithResourceOperation extends BasePermissionGuardProps {
+interface PermissionGuardWithResourceOperation
+  extends BasePermissionGuardProps {
   /**
    * Resource to check permission for.
    */
@@ -129,24 +130,15 @@ export const PermissionGuard = ({
 
   useRegisterPermissions(requiredPermissions, { requireAll })
 
-  const { can, hasPermission, hasAnyPermission, hasAllPermissions, isLoading } =
-    usePermissions()
+  const { hasAnyPermission, hasAllPermissions, isLoading } = usePermissions()
 
   if (isLoading && showLoading) {
     return <>{loadingComponent}</>
   }
 
-  let hasAccess = false
-
-  if ("permission" in props && props.permission) {
-    hasAccess = hasPermission(props.permission)
-  } else if ("permissions" in props && props.permissions) {
-    hasAccess = props.requireAll
-      ? hasAllPermissions(props.permissions)
-      : hasAnyPermission(props.permissions)
-  } else if ("resource" in props && "operation" in props) {
-    hasAccess = can(props.resource, props.operation)
-  }
+  const hasAccess = props.requireAll
+    ? hasAllPermissions(requiredPermissions ?? [])
+    : hasAnyPermission(requiredPermissions ?? [])
 
   if (!hasAccess) {
     return <>{fallback}</>

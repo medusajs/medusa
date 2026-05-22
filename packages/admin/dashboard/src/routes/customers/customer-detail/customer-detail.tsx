@@ -47,7 +47,6 @@ export const CustomerDetail = () => {
         hasOutlet
         showJSON
         showMetadata
-        requiredPermissionsSection={<RequiredPermissionsSection />}
       >
         <TwoColumnPage.Main>
           <CustomerGeneralSection customer={customer} />
