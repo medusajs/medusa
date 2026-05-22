@@ -8,4 +8,4 @@
 "@medusajs/medusa": patch
 ---
 
-feat(dashbaord,framework,rbac,js-sdk,types,utils,medusa): rbac admin dashboard utils
+feat(dashboard,framework,rbac,js-sdk,types,utils,medusa): rbac admin dashboard utils
