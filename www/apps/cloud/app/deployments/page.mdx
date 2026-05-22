@@ -200,7 +200,7 @@ On the deployment details page, you'll find:
 1. **Commit**: The commit that the deployment was created from. This is the page's title.
 2. **Status**: The current [status](#deployment-statuses-and-lifecycle) of the deployment. For example, "Live" or "Build Failed". You can see it next to the "Redeploy" button.
 3. **Author**: The GitHub user who pushed the commit that created the deployment. You can see the user name when you hover over the user's avatar.
-4. **Activity**: This section shows the build logs for the backend and storefront (if applicable). They are useful to understand why a deployment failed. Learn more in the [Logs](../logs/page.mdx) guide.
+4. **Activity**: This section shows the build logs for the backend and storefront (if applicable). They are useful to understand why a deployment failed. Errors from either the backend or storefront build processes will cause the deployment to show a failed status. Learn more in the [Logs](../logs/page.mdx) guide.
 
 ### Switch Between Deployments
 
@@ -254,7 +254,7 @@ A deployment can have one of the following statuses:
         Build failed
       </Table.Cell>
       <Table.Cell>
-        The build process failed due to a build error. You can check the [build logs](../logs/page.mdx) to troubleshoot the issue.
+        The build process failed due to a build error in either the backend or storefront (if applicable). You can check the [build logs](../logs/page.mdx) to troubleshoot the issue.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -324,7 +324,7 @@ Learn more in the [Access Live Deployment](./access/page.mdx) guide.
 
 ### Troubleshooting Build Failures
 
-If a deployment's status is "Build failed", you can check the [build logs](../logs/page.mdx) to understand why it failed. The build logs will show you the errors that occurred during the build process, which can help you fix the issue in your code.
+If a deployment's status is "Build failed", you can check the [build logs](../logs/page.mdx) to understand why it failed. The build logs will show you the errors that occurred during the build process for either the backend or storefront (if applicable), which can help you fix the issue in your code.
 
 You can also contact support for help with the issue, if necessary.
 
