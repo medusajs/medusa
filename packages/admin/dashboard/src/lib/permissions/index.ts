@@ -10,4 +10,4 @@ export type {
 
 export { OPERATION_IMPLICATIONS } from "./constants"
 
-export { buildPermission, parsePermission } from "./utils"
+export { buildPermission, canAssignPolicy, parsePermission } from "./utils"

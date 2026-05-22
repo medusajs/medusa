@@ -32,6 +32,8 @@ import {
 } from "../../../../../hooks/api/rbac-roles"
 import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
+import { canAssignPolicy } from "../../../../../lib/permissions"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 enum Tab {
   DETAILS = "details",
@@ -58,6 +60,7 @@ export const CreateRoleForm = () => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const direction = useDocumentDirection()
+  const { hasPermission } = usePermissions()
 
   const [tab, setTab] = useState<Tab>(Tab.DETAILS)
   const [tabState, setTabState] = useState<TabState>({
@@ -300,6 +303,8 @@ export const CreateRoleForm = () => {
                 rowSelection={{
                   state: rowSelection,
                   onRowSelectionChange: onRowSelectionChange,
+                  enableRowSelection: (row) =>
+                    canAssignPolicy(row.original, hasPermission),
                 }}
                 layout="fill"
                 emptyState={{
