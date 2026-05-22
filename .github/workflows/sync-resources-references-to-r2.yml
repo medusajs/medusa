@@ -1,6 +1,7 @@
 name: Sync Resources References to R2
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - develop
@@ -43,7 +44,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_R2_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
           CLOUDFLARE_R2_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
-          R2_BUCKET_NAME: ${{ vars.R2_BUCKET_NAME }}
+          R2_BUCKET_NAME: ${{ vars.R2_RESOURCES_BUCKET_NAME }}
         run: |
           STRIPPED=$(echo "$CHANGED_FILES" | tr ' ' '\n' | grep '/page\.mdx$' | sed 's|^www/apps/resources/||' | tr '\n' ' ')
           [ -n "$STRIPPED" ] && node ./scripts/upload-references-to-r2.mjs --upload $STRIPPED || echo "No page.mdx files to upload."
@@ -55,7 +56,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_R2_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
           CLOUDFLARE_R2_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
-          R2_BUCKET_NAME: ${{ vars.R2_BUCKET_NAME }}
+          R2_BUCKET_NAME: ${{ vars.R2_RESOURCES_BUCKET_NAME }}
         run: |
           STRIPPED=$(echo "$DELETED_FILES" | tr ' ' '\n' | grep '/page\.mdx$' | sed 's|^www/apps/resources/||' | tr '\n' ' ')
           [ -n "$STRIPPED" ] && node ./scripts/upload-references-to-r2.mjs --remove $STRIPPED || echo "No page.mdx files to remove."
