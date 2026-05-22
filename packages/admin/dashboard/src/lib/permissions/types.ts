@@ -61,16 +61,6 @@ export interface UserPolicy {
 }
 
 /**
- * Permission check options for more complex scenarios.
- */
-export interface PermissionCheckOptions {
-  /**
-   * If true, requires ALL permissions. If false (default), requires ANY permission.
-   */
-  requireAll?: boolean
-}
-
-/**
  * Required permissions descriptor for a subtree or component.
  */
 export interface PermissionRequirement {
@@ -139,39 +129,3 @@ export interface PermissionsRequirementsContextValue {
   unregisterRequiredPermissions: (id: string) => void
 }
 
-/**
- * Route permission configuration for protecting routes.
- */
-export interface RoutePermission {
-  /**
-   * Required permissions to access this route.
-   */
-  permissions: Permission[]
-  /**
-   * If true, requires ALL permissions. Default is ANY.
-   */
-  requireAll?: boolean
-  /**
-   * Optional redirect path when access is denied.
-   */
-  fallbackPath?: string
-}
-
-/**
- * Navigation item with permission requirements.
- */
-export interface PermissionedNavItem {
-  /**
-   * The navigation item's path.
-   */
-  to: string
-  /**
-   * Required permission to see this nav item.
-   */
-  permission?: Permission
-  /**
-   * Or multiple permissions with requireAll option.
-   */
-  permissions?: Permission[]
-  requireAll?: boolean
-}
