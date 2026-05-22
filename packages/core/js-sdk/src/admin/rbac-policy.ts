@@ -2,6 +2,11 @@ import { HttpTypes } from "@medusajs/types"
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
+/**
+ * This class is used to send requests to the RBAC Policy API routes.
+ *
+ * @since 2.15.5
+ */
 export class RbacPolicy {
   /**
    * @ignore
@@ -57,6 +62,9 @@ export class RbacPolicy {
    *   console.log(policies)
    * })
    * ```
+   *
+   * @tags rbac
+   * @since 2.15.5
    */
   async list(
     queryParams?: HttpTypes.AdminRbacPolicyListParams,
@@ -85,6 +93,9 @@ export class RbacPolicy {
    * .then(({ policy }) => {
    *   console.log(policy)
    * })
+   *
+   * @tags rbac
+   * @since 2.15.5
    */
   async retrieve(
     id: string,
@@ -118,6 +129,9 @@ export class RbacPolicy {
    * .then(({ policy }) => {
    *   console.log(policy)
    * })
+   *
+   * @tags rbac
+   * @since 2.15.5
    */
   async create(
     body: HttpTypes.AdminCreateRbacPolicy,
@@ -153,6 +167,9 @@ export class RbacPolicy {
    * .then(({ policy }) => {
    *   console.log(policy)
    * })
+   *
+   * @tags rbac
+   * @since 2.15.5
    */
   async update(
     id: string,
@@ -184,6 +201,9 @@ export class RbacPolicy {
    * .then(({ deleted }) => {
    *   console.log(deleted)
    * })
+   *
+   * @tags rbac
+   * @since 2.15.5
    */
   async delete(id: string, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminRbacPolicyDeleteResponse>(
