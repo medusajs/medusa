@@ -29,7 +29,7 @@ export type PermissionResource =
   | "region"
   | "store"
   | "user"
-  | "role"
+  | "rbac_role"
   | "sales_channel"
   | "stock_location"
   | "shipping_profile"

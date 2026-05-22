@@ -18,10 +18,11 @@ import {
 import { _DataTable } from "../../../../../components/table/data-table"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useAddRbacRoleUsers } from "../../../../../hooks/api/rbac-roles"
-import { useMe, useUsers } from "../../../../../hooks/api/users"
+import { useUsers } from "../../../../../hooks/api/users"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useDate } from "../../../../../hooks/use-date"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 type AddUsersFormProps = {
   roleId: string
@@ -40,9 +41,11 @@ const PAGE_SIZE = 10
 export const AddUsersForm = ({ roleId }: AddUsersFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  const { user } = useMe({ fields: "id,rbac_roles.id" })
-  const userRoles = (user as UserWithRbacRoles | undefined)?.rbac_roles ?? []
-  const canManageRole = userRoles.some((rbacRole) => rbacRole.id === roleId)
+  const { hasAllPermissions } = usePermissions()
+  const canManageRole = hasAllPermissions([
+    "user:update",
+    "rbac_role:update",
+  ])
 
   const form = useForm<zod.infer<typeof AddUsersSchema>>({
     defaultValues: {

@@ -1,6 +1,14 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Button, Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
+import {
+  Button,
+  Checkbox,
+  Container,
+  Heading,
+  Hint,
+  Tooltip,
+  usePrompt,
+} from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -12,17 +20,13 @@ import {
   useRbacRoleUsers,
   useRemoveRbacRoleUsers,
 } from "../../../../../hooks/api/rbac-roles"
-import { useMe } from "../../../../../hooks/api/users"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useDate } from "../../../../../hooks/use-date"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 type RoleUsersSectionProps = {
   role: HttpTypes.AdminRbacRole
-}
-
-type UserWithRbacRoles = HttpTypes.AdminUser & {
-  rbac_roles?: HttpTypes.AdminRbacRole[] | null
 }
 
 const PAGE_SIZE = 10
@@ -32,10 +36,9 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
   const { offset, order } = useQueryParams(["offset", "order"])
-  const { user } = useMe({ fields: "id,rbac_roles.id" })
+  const { hasAllPermissions } = usePermissions()
 
-  const userRoles = (user as UserWithRbacRoles)?.rbac_roles ?? []
-  const canManageRole = userRoles.some((rbacRole) => rbacRole.id === role.id)
+  const canManageRole = hasAllPermissions(["user:update", "rbac_role:update"])
 
   useEffect(() => {
     if (!canManageRole && Object.keys(rowSelection).length) {
@@ -124,9 +127,19 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
             </Button>
           </Link>
         ) : (
-          <Button variant="secondary" size="small" disabled>
-            {t("general.add")}
-          </Button>
+          <>
+            <Tooltip
+              content={
+                <Hint variant="error">
+                  {t("permissions.accessDenied.action")}
+                </Hint>
+              }
+            >
+              <Button variant="secondary" size="small" disabled>
+                {t("general.add")}
+              </Button>
+            </Tooltip>
+          </>
         )}
       </div>
       <_DataTable
