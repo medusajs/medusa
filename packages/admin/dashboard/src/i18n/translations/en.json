@@ -3421,7 +3421,8 @@
     "accessDenied": {
       "title": "Access Denied",
       "description": "You don't have permission to access this page.",
-      "requiredPermission": "Required permission: {{permission}}"
+      "requiredPermission": "Required permission: {{permission}}",
+      "action": "You don't have permission to perform this action."
     },
     "requiredPermissions": {
       "title": "Required permissions",

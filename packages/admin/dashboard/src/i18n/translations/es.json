@@ -2241,6 +2241,57 @@
       }
     }
   },
+  "permissions": {
+    "accessDenied": {
+      "title": "Acceso Denegado",
+      "description": "No tienes permiso para acceder a esta página.",
+      "requiredPermission": "Permiso requerido: {{permission}}",
+      "action": "No tienes permiso para realizar esta acción."
+    },
+    "requiredPermissions": {
+      "title": "Permisos requeridos",
+      "none": "No hay permisos declarados en esta vista.",
+      "anyOf": "Cualquiera de",
+      "allOf": "Todos los",
+      "source": "Origen: {{source}}"
+    },
+    "resources": {
+      "customer": "Cliente",
+      "customer_group": "Grupo de clientes",
+      "order": "Pedido",
+      "product": "Producto",
+      "product_category": "Categoría de producto",
+      "product_collection": "Colección de producto",
+      "product_tag": "Etiqueta de producto",
+      "product_type": "Tipo de producto",
+      "inventory": "Inventario",
+      "reservation": "Reserva",
+      "promotion": "Promoción",
+      "campaign": "Campaña",
+      "price_list": "Lista de precios",
+      "region": "Región",
+      "store": "Tienda",
+      "user": "Usuario",
+      "role": "Rol",
+      "permission": "Permiso",
+      "sales_channel": "Canal de venta",
+      "stock_location": "Ubicación de stock",
+      "shipping_profile": "Perfil de envío",
+      "shipping_option": "Opción de envío",
+      "tax_region": "Región de impuestos",
+      "api_key": "Clave de API",
+      "return_reason": "Razón de devolución",
+      "refund_reason": "Razón de reembolso",
+      "workflow": "Flujo de trabajo",
+      "translation": "Traducción"
+    },
+    "actions": {
+      "read": "Ver",
+      "create": "Crear",
+      "update": "Editar",
+      "delete": "Eliminar"
+    }
+  },
   "campaigns": {
     "domain": "Campañas",
     "details": "Detalles de la campaña",

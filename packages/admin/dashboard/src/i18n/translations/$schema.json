@@ -12749,6 +12749,9 @@
             "description": {
               "type": "string"
             },
+            "action": {
+              "type": "string"
+            },
             "requiredPermission": {
               "type": "string"
             }
