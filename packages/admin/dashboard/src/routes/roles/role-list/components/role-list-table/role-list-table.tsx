@@ -1,6 +1,6 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Container, createDataTableColumnHelper } from "@medusajs/ui"
+import { Container, createDataTableColumnHelper, Hint } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useCallback, useMemo } from "react"
 import { useTranslation } from "react-i18next"
@@ -12,11 +12,13 @@ import { ListSummary } from "../../../../../components/common/list-summary"
 import { useRbacRoles } from "../../../../../hooks/api/rbac-roles"
 import { useDate } from "../../../../../hooks/use-date"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 const PAGE_SIZE = 20
 
 export const RoleListTable = () => {
   const { t } = useTranslation()
+  const { hasPermission } = usePermissions()
 
   const { q, order, offset, created_at } = useQueryParams([
     "q",
@@ -63,6 +65,10 @@ export const RoleListTable = () => {
         action={{
           label: t("actions.create"),
           to: "create",
+          disabled: !hasPermission("rbac_role:create"),
+          tooltip: hasPermission("rbac_role:create") ? undefined : (
+            <Hint variant="error">{t("permissions.accessDenied.action")}</Hint>
+          ),
         }}
         emptyState={{
           empty: {
