@@ -31,7 +31,6 @@ import { useExtension } from "../../../providers/extension-provider"
 import { useSearch } from "../../../providers/search-provider"
 import { UserMenu } from "../user-menu"
 import { useDocumentDirection } from "../../../hooks/use-document-direction"
-import { PermissionGuard } from "../../common/permission-guard"
 
 export const MainLayout = () => {
   return (

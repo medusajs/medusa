@@ -15,7 +15,7 @@ export interface AdminRbacRoleListResponse
      * The list of roles.
      */
     roles: AdminRbacRole[]
-  }> { }
+  }> {}
 
 export interface AdminRbacRoleDeleteResponse
   extends DeleteResponse<"rbac_role"> {}
@@ -33,10 +33,10 @@ export interface AdminRbacPolicyListResponse
      * The list of policies.
      */
     policies: AdminRbacPolicy[]
- }> { }
+  }> {}
 
 export interface AdminRbacPolicyDeleteResponse
-  extends DeleteResponse<"rbac_policy"> { }
+  extends DeleteResponse<"rbac_policy"> {}
 
 export interface AdminRbacRoleUserListResponse
   extends PaginatedResponse<{
@@ -44,7 +44,7 @@ export interface AdminRbacRoleUserListResponse
      * The list of users.
      */
     users: AdminUser[]
-  }> { }
+  }> {}
 
 export interface AdminRbacRoleUsersResponse {
   /**
@@ -66,7 +66,7 @@ export interface AdminRbacRoleUsersDeleteResponse {
    * Whether the users were removed successfully.
    */
   deleted: boolean
-}> {}
+}
 
 export interface AdminRbacPolicyDeleteResponse
   extends DeleteResponse<"rbac_policy"> {}

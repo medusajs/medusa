@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { ListSummary } from "../../../../../components/common/list-summary"
 import { SectionRow } from "../../../../../components/common/section"
-import { useDate } from "../../../../../hooks/use-date"
 
 type RoleWithUsers = HttpTypes.AdminRbacRole & {
   users_link?: { user?: HttpTypes.AdminUser | null }[]
@@ -19,7 +18,6 @@ type RoleGeneralSectionProps = {
 
 export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
   const { t } = useTranslation()
-  const { getFullDate } = useDate()
 
   const users = useMemo(() => {
     return (
@@ -80,7 +78,7 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
                 {
                   icon: <Trash />,
                   label: t("actions.delete"),
-                  disabled: true,
+                  onClick: () => {},
                 },
               ],
             },

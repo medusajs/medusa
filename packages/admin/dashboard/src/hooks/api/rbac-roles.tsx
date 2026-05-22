@@ -294,6 +294,10 @@ export const useRemoveRbacRoleUsers = (
 
       options?.onSuccess?.(data, variables, context)
     },
+    ...options,
+  })
+}
+
 const ME_PERMISSIONS_QUERY_KEY = ["me-permissions"] as const
 
 export const mePermissionsQueryKey = ME_PERMISSIONS_QUERY_KEY

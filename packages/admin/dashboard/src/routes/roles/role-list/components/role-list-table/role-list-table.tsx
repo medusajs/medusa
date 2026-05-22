@@ -120,9 +120,9 @@ const useColumns = () => {
         header: t("users.domain"),
         cell: ({ row }) => {
           const users =
-            row.original.users.filter(
-              (user): user is HttpTypes.AdminUser => !!user
-            ) ?? []
+            row.original.users_link
+              ?.map((link) => link.user)
+              .filter((user): user is HttpTypes.AdminUser => !!user) ?? []
 
           if (!users.length) {
             return "-"

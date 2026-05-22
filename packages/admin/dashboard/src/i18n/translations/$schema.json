@@ -9525,6 +9525,8 @@
           "type": "string"
         },
         "create": {
+          "type": "string"
+        },
         "settings": {
           "type": "object",
           "properties": {

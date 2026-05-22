@@ -1,6 +1,5 @@
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { RequiredPermissionsSection } from "../../../components/common/required-permissions-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { TwoColumnPage } from "../../../components/layout/pages"
 import { useCustomer } from "../../../hooks/api/customers"
