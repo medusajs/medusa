@@ -992,6 +992,24 @@
   "GET /admin/translations/statistics": {
     "js-sdk": "sdk.admin.translation.statistics({\n  entity_type: \"product\"\n})\n.then(({ statistics }) => {\n  console.log(statistics)\n})"
   },
+  "GET /auth/mfa/factors": {
+    "js-sdk": "const { mfa_factors } = await sdk.auth.mfa.list()"
+  },
+  "POST /auth/mfa/factors": {
+    "js-sdk": "const setup = await sdk.auth.mfa.start({\n  provider: \"totp\",\n  label: \"Authenticator app\"\n})\n\n// Render setup.otpauth_url as a QR code or show setup.secret manually."
+  },
+  "POST /auth/mfa/factors/{id}/verify": {
+    "js-sdk": "const { mfa_factor } = await sdk.auth.mfa.verify(\"authmfa_123\", {\n  code: \"123456\"\n})"
+  },
+  "DELETE /auth/mfa/factors/{id}": {
+    "js-sdk": "const { mfa_factor } = await sdk.auth.mfa.disable(\"authmfa_123\")"
+  },
+  "POST /auth/mfa/recovery-codes": {
+    "js-sdk": "const { recovery_codes } = await sdk.auth.mfa.generateRecoveryCodes()"
+  },
+  "POST /auth/mfa/challenges/{id}/verify": {
+    "js-sdk": "const result = await sdk.auth.login(\"user\", \"emailpass\", {\n  email: \"user@example.com\",\n  password: \"secret\"\n})\n\nif (typeof result === \"object\" && \"mfa_challenge\" in result) {\n  await sdk.auth.mfa.verifyChallenge(result.mfa_challenge.id, {\n    method: \"totp\",\n    code: \"123456\"\n  })\n}"
+  },
   "POST /auth/{actor}/{method}/register": {
     "js-sdk": "await sdk.auth.register(\n  \"customer\",\n  \"emailpass\",\n  {\n    email: \"customer@gmail.com\",\n    password: \"supersecret\"\n  }\n)\n\n// all subsequent requests will use the token in the header\nconst { customer } = await sdk.store.customer.create({\n  email: \"customer@gmail.com\",\n  password: \"supersecret\"\n})"
   },

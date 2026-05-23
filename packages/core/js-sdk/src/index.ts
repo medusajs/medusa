@@ -32,7 +32,22 @@ export default Medusa
 
 export { FetchError, Client } from "./client.js"
 export { Admin } from "./admin/index.js"
-export { Auth } from "./auth/index.js"
+export {
+  Auth,
+  type AuthCallbackResponse,
+  type AuthLoginResponse,
+  type AuthMfaDisablePayload,
+  type AuthMfaFactorResponse,
+  type AuthMfaGenerateRecoveryCodesPayload,
+  type AuthMfaListResponse,
+  type AuthMfaRecoveryCodesResponse,
+  type AuthMfaRequiredResponse,
+  type AuthMfaSetupResponse,
+  type AuthMfaStartPayload,
+  type AuthMfaVerifyChallengePayload,
+  type AuthMfaVerifyPayload,
+  type AuthRedirectResponse,
+} from "./auth/index.js"
 export { Store } from "./store/index.js"
 export {
   Config,

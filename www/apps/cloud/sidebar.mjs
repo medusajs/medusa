@@ -117,6 +117,11 @@ export const sidebar = [
               },
               {
                 type: "link",
+                title: "Fix with AI",
+                path: "/deployments/fix-with-ai",
+              },
+              {
+                type: "link",
                 title: "Troubleshooting",
                 path: "/deployments/troubleshooting",
               },

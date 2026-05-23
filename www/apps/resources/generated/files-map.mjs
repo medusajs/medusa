@@ -1884,6 +1884,10 @@ export const filesMap = [
     "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthIdentities"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthMfaChallenge/page.mdx",
+    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthMfaChallenge"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createProviderIdentities/page.mdx",
     "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createProviderIdentities"
   },
@@ -1896,12 +1900,24 @@ export const filesMap = [
     "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.deleteProviderIdentities"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.disableAuthMfa/page.mdx",
+    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.disableAuthMfa"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.generateAuthMfaRecoveryCodes/page.mdx",
+    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.generateAuthMfaRecoveryCodes"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAndCountAuthIdentities/page.mdx",
     "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAndCountAuthIdentities"
   },
   {
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthIdentities/page.mdx",
     "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthIdentities"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthMfa/page.mdx",
+    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthMfa"
   },
   {
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listProviderIdentities/page.mdx",
@@ -1916,8 +1932,16 @@ export const filesMap = [
     "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieveAuthIdentity"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieveAuthMfa/page.mdx",
+    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieveAuthMfa"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieveProviderIdentity/page.mdx",
     "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieveProviderIdentity"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.startAuthMfa/page.mdx",
+    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.startAuthMfa"
   },
   {
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateAuthIdentities/page.mdx",
@@ -1932,8 +1956,20 @@ export const filesMap = [
     "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateProviderIdentities"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.useAuthMfaRecoveryCode/page.mdx",
+    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.useAuthMfaRecoveryCode"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.validateCallback/page.mdx",
     "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.validateCallback"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.verifyAuthMfa/page.mdx",
+    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.verifyAuthMfa"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.verifyAuthMfaChallenge/page.mdx",
+    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.verifyAuthMfaChallenge"
   },
   {
     "filePath": "/www/apps/resources/references/auth/IMessageAggregator/methods/auth.IMessageAggregator.clearMessages/page.mdx",
@@ -1988,6 +2024,10 @@ export const filesMap = [
     "pathname": "/references/auth/interfaces/auth.FilterableAuthIdentityProps"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/interfaces/auth.FilterableAuthMfaProps/page.mdx",
+    "pathname": "/references/auth/interfaces/auth.FilterableAuthMfaProps"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth/interfaces/auth.FilterableProviderIdentityProps/page.mdx",
     "pathname": "/references/auth/interfaces/auth.FilterableProviderIdentityProps"
   },
@@ -2032,6 +2072,50 @@ export const filesMap = [
     "pathname": "/references/auth/interfaces/auth.UpdateProviderIdentityDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/types/auth.AuthMfaChallengeDTO/page.mdx",
+    "pathname": "/references/auth/types/auth.AuthMfaChallengeDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.AuthMfaChallengeMethod/page.mdx",
+    "pathname": "/references/auth/types/auth.AuthMfaChallengeMethod"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.AuthMfaDTO/page.mdx",
+    "pathname": "/references/auth/types/auth.AuthMfaDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.AuthMfaProvider/page.mdx",
+    "pathname": "/references/auth/types/auth.AuthMfaProvider"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.AuthMfaSelector/page.mdx",
+    "pathname": "/references/auth/types/auth.AuthMfaSelector"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.AuthMfaStartDTO/page.mdx",
+    "pathname": "/references/auth/types/auth.AuthMfaStartDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.AuthMfaStartResponse/page.mdx",
+    "pathname": "/references/auth/types/auth.AuthMfaStartResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.AuthMfaStatus/page.mdx",
+    "pathname": "/references/auth/types/auth.AuthMfaStatus"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.AuthMfaVerifyDTO/page.mdx",
+    "pathname": "/references/auth/types/auth.AuthMfaVerifyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.CreateAuthMfaChallengeDTO/page.mdx",
+    "pathname": "/references/auth/types/auth.CreateAuthMfaChallengeDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.DisableAuthMfaDTO/page.mdx",
+    "pathname": "/references/auth/types/auth.DisableAuthMfaDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth/types/auth.Event/page.mdx",
     "pathname": "/references/auth/types/auth.Event"
   },
@@ -2042,6 +2126,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/auth/types/auth.FindConfigOrder/page.mdx",
     "pathname": "/references/auth/types/auth.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.GenerateAuthMfaRecoveryCodesDTO/page.mdx",
+    "pathname": "/references/auth/types/auth.GenerateAuthMfaRecoveryCodesDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.GenerateAuthMfaRecoveryCodesResponse/page.mdx",
+    "pathname": "/references/auth/types/auth.GenerateAuthMfaRecoveryCodesResponse"
   },
   {
     "filePath": "/www/apps/resources/references/auth/types/auth.JoinerRelationship/page.mdx",
@@ -2068,8 +2160,24 @@ export const filesMap = [
     "pathname": "/references/auth/types/auth.RawMessageFormat"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/types/auth.UseAuthMfaRecoveryCodeDTO/page.mdx",
+    "pathname": "/references/auth/types/auth.UseAuthMfaRecoveryCodeDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.VerifyAuthMfaChallengeDTO/page.mdx",
+    "pathname": "/references/auth/types/auth.VerifyAuthMfaChallengeDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth_models/variables/auth_models.AuthIdentity/page.mdx",
     "pathname": "/references/auth_models/variables/auth_models.AuthIdentity"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth_models/variables/auth_models.AuthMfaFactor/page.mdx",
+    "pathname": "/references/auth_models/variables/auth_models.AuthMfaFactor"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth_models/variables/auth_models.AuthMfaRecoveryCode/page.mdx",
+    "pathname": "/references/auth_models/variables/auth_models.AuthMfaRecoveryCode"
   },
   {
     "filePath": "/www/apps/resources/references/auth_models/variables/auth_models.ProviderIdentity/page.mdx",
@@ -15040,8 +15148,64 @@ export const filesMap = [
     "pathname": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.updateProvider"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/properties/js_sdk.auth.Auth.mfa/page.mdx",
+    "pathname": "/references/js_sdk/auth/Auth/properties/js_sdk.auth.Auth.mfa"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/auth/classes/js_sdk.auth.Auth/page.mdx",
     "pathname": "/references/js_sdk/auth/classes/js_sdk.auth.Auth"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/types/js_sdk.auth.AuthCallbackResponse/page.mdx",
+    "pathname": "/references/js_sdk/auth/types/js_sdk.auth.AuthCallbackResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/types/js_sdk.auth.AuthLoginResponse/page.mdx",
+    "pathname": "/references/js_sdk/auth/types/js_sdk.auth.AuthLoginResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/types/js_sdk.auth.AuthMfaDisablePayload/page.mdx",
+    "pathname": "/references/js_sdk/auth/types/js_sdk.auth.AuthMfaDisablePayload"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/types/js_sdk.auth.AuthMfaFactorResponse/page.mdx",
+    "pathname": "/references/js_sdk/auth/types/js_sdk.auth.AuthMfaFactorResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/types/js_sdk.auth.AuthMfaGenerateRecoveryCodesPayload/page.mdx",
+    "pathname": "/references/js_sdk/auth/types/js_sdk.auth.AuthMfaGenerateRecoveryCodesPayload"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/types/js_sdk.auth.AuthMfaListResponse/page.mdx",
+    "pathname": "/references/js_sdk/auth/types/js_sdk.auth.AuthMfaListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/types/js_sdk.auth.AuthMfaRecoveryCodesResponse/page.mdx",
+    "pathname": "/references/js_sdk/auth/types/js_sdk.auth.AuthMfaRecoveryCodesResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/types/js_sdk.auth.AuthMfaRequiredResponse/page.mdx",
+    "pathname": "/references/js_sdk/auth/types/js_sdk.auth.AuthMfaRequiredResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/types/js_sdk.auth.AuthMfaSetupResponse/page.mdx",
+    "pathname": "/references/js_sdk/auth/types/js_sdk.auth.AuthMfaSetupResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/types/js_sdk.auth.AuthMfaStartPayload/page.mdx",
+    "pathname": "/references/js_sdk/auth/types/js_sdk.auth.AuthMfaStartPayload"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/types/js_sdk.auth.AuthMfaVerifyChallengePayload/page.mdx",
+    "pathname": "/references/js_sdk/auth/types/js_sdk.auth.AuthMfaVerifyChallengePayload"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/types/js_sdk.auth.AuthMfaVerifyPayload/page.mdx",
+    "pathname": "/references/js_sdk/auth/types/js_sdk.auth.AuthMfaVerifyPayload"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/types/js_sdk.auth.AuthRedirectResponse/page.mdx",
+    "pathname": "/references/js_sdk/auth/types/js_sdk.auth.AuthRedirectResponse"
   },
   {
     "filePath": "/www/apps/resources/references/js_sdk/modules/js_sdk.admin/page.mdx",

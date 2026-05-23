@@ -2,6 +2,7 @@ import { HttpTypes } from "@medusajs/types"
 import { t } from "i18next"
 import { Outlet, RouteObject, UIMatch } from "react-router-dom"
 import { ProtectedRoute } from "../../components/authentication/protected-route"
+import { RoutePermissionGuard } from "../../components/authentication/route-permission-guard"
 import { MainLayout } from "../../components/layout/main-layout"
 import { PublicLayout } from "../../components/layout/public-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
@@ -664,8 +665,15 @@ export function getRouteMap({
                   children: [
                     {
                       path: "create",
-                      lazy: () =>
-                        import("../../routes/customers/customer-create"),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "customer:create" },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () =>
+                            import("../../routes/customers/customer-create"),
+                        },
+                      ],
                     },
                   ],
                 },
@@ -689,22 +697,43 @@ export function getRouteMap({
                   children: [
                     {
                       path: "edit",
-                      lazy: () =>
-                        import("../../routes/customers/customer-edit"),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "customer:update" },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () =>
+                            import("../../routes/customers/customer-edit"),
+                        },
+                      ],
                     },
                     {
                       path: "create-address",
-                      lazy: () =>
-                        import(
-                          "../../routes/customers/customer-create-address"
-                        ),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "customer:update" },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () =>
+                            import(
+                              "../../routes/customers/customer-create-address"
+                            ),
+                        },
+                      ],
                     },
                     {
                       path: "add-customer-groups",
-                      lazy: () =>
-                        import(
-                          "../../routes/customers/customers-add-customer-group"
-                        ),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "customer:update" },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () =>
+                            import(
+                              "../../routes/customers/customers-add-customer-group"
+                            ),
+                        },
+                      ],
                     },
                     {
                       path: ":order_id/transfer",
@@ -713,8 +742,15 @@ export function getRouteMap({
                     },
                     {
                       path: "metadata/edit",
-                      lazy: () =>
-                        import("../../routes/customers/customer-metadata"),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "customer:update" },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () =>
+                            import("../../routes/customers/customer-metadata"),
+                        },
+                      ],
                     },
                   ],
                 },
