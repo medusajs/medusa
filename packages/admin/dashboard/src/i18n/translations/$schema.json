@@ -9775,6 +9775,111 @@
       ],
       "additionalProperties": false
     },
+    "policies": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "create": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "hint": {
+              "type": "string"
+            },
+            "successToast": {
+              "type": "string"
+            }
+          },
+          "required": ["header", "hint", "successToast"],
+          "additionalProperties": false
+        },
+        "edit": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "successToast": {
+              "type": "string"
+            }
+          },
+          "required": ["header", "successToast"],
+          "additionalProperties": false
+        },
+        "list": {
+          "type": "object",
+          "properties": {
+            "empty": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["heading", "description"],
+              "additionalProperties": false
+            },
+            "filtered": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["heading", "description"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["empty", "filtered"],
+          "additionalProperties": false
+        },
+        "roles": {
+          "type": "object",
+          "properties": {
+            "list": {
+              "type": "object",
+              "properties": {
+                "noRecordsMessage": {
+                  "type": "string"
+                }
+              },
+              "required": ["noRecordsMessage"],
+              "additionalProperties": false
+            },
+            "empty": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["heading", "description"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["list", "empty"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["domain", "subtitle", "create", "edit", "list", "roles"],
+      "additionalProperties": false
+    },
     "translations": {
       "type": "object",
       "properties": {

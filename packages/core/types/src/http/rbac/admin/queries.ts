@@ -82,3 +82,5 @@ export interface AdminRbacRoleUserListParams extends FindParams {
    */
   user_id?: string | string[]
 }
+
+export interface AdminRbacPolicyRoleListParams extends FindParams {}

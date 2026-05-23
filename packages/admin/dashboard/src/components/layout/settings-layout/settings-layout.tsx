@@ -40,6 +40,10 @@ const useSettingRoutes = (): INavItem[] => {
               label: t("roles.domain"),
               to: "/settings/roles",
             },
+            {
+              label: t("policies.domain"),
+              to: "/settings/policies",
+            },
           ]
         : []),
       {

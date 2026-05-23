@@ -194,4 +194,21 @@ export class RbacPolicy {
       }
     )
   }
+
+  /**
+   * Lists the roles that include the given policy.
+   */
+  async listRoles(
+    id: string,
+    queryParams?: HttpTypes.AdminRbacPolicyRoleListParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminRbacPolicyRolesListResponse>(
+      `/admin/rbac/policies/${id}/roles`,
+      {
+        query: queryParams,
+        headers,
+      }
+    )
+  }
 }

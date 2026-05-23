@@ -13,7 +13,17 @@ import { queryKeysFactory } from "../../lib/query-key-factory"
 import { rbacRolesQueryKeys } from "./rbac-roles"
 
 const RBAC_POLICIES_QUERY_KEY = "rbac_policies" as const
-export const rbacPoliciesQueryKeys = queryKeysFactory(RBAC_POLICIES_QUERY_KEY)
+const _rbacPoliciesQueryKeys = queryKeysFactory(RBAC_POLICIES_QUERY_KEY) as ReturnType<
+  typeof queryKeysFactory<"rbac_policies">
+> & {
+  roles: (policyId: string, query?: any) => any[]
+}
+
+_rbacPoliciesQueryKeys.roles = function (policyId: string, query?: any) {
+  return [this.detail(policyId), "roles", query].filter(Boolean)
+}
+
+export const rbacPoliciesQueryKeys = _rbacPoliciesQueryKeys
 
 export const useRbacPolicy = (
   id: string,
@@ -126,4 +136,26 @@ export const useDeleteRbacPolicy = (
     },
     ...options,
   })
+}
+
+export const useRbacPolicyRoles = (
+  policyId: string,
+  query?: HttpTypes.AdminRbacPolicyRoleListParams,
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminRbacPolicyRolesListResponse,
+      FetchError,
+      HttpTypes.AdminRbacPolicyRolesListResponse,
+      QueryKey
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: () => sdk.admin.rbacPolicy.listRoles(policyId, query),
+    queryKey: rbacPoliciesQueryKeys.roles(policyId, query),
+    ...options,
+  })
+
+  return { ...data, ...rest }
 }

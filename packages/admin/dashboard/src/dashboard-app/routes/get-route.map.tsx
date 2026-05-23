@@ -644,9 +644,7 @@ export function getRouteMap({
                     {
                       path: "metadata/edit",
                       lazy: () =>
-                        import(
-                          "../../routes/price-lists/price-list-metadata"
-                        ),
+                        import("../../routes/price-lists/price-list-metadata"),
                     },
                   ],
                 },
@@ -1165,6 +1163,71 @@ export function getRouteMap({
                       lazy: () => import("../../routes/roles/role-permissions"),
                     },
                   ],
+                },
+              ],
+            },
+            {
+              path: "policies",
+              errorElement: <ErrorBoundary />,
+              element: <RoutePermissionGuard />,
+              handle: {
+                breadcrumb: () => t("policies.domain"),
+                permissions: "rbac_policy:read",
+              },
+              children: [
+                {
+                  path: "",
+                  lazy: () => import("../../routes/policies/policy-list"),
+                  // TODO: V1: policy CRUD lives in code (`definePolicies`).Uncomment
+                  // along with the matching list/detail action sites to
+                  // re-enable dashboard CRUD.
+                  // children: [
+                  //   {
+                  //     path: "create",
+                  //     element: <RoutePermissionGuard />,
+                  //     handle: { permissions: "rbac_policy:create" },
+                  //     children: [
+                  //       {
+                  //         path: "",
+                  //         lazy: () =>
+                  //           import("../../routes/policies/policy-create"),
+                  //       },
+                  //     ],
+                  //   },
+                  // ],
+                },
+                {
+                  path: ":id",
+                  lazy: async () => {
+                    const { Component, Breadcrumb, loader } = await import(
+                      "../../routes/policies/policy-detail"
+                    )
+
+                    return {
+                      Component,
+                      loader,
+                      handle: {
+                        breadcrumb: (
+                          match: UIMatch<HttpTypes.AdminRbacPolicyResponse>
+                        ) => <Breadcrumb {...match} />,
+                      },
+                    }
+                  },
+                  // TODO: V1: `edit` child kept commented out — see note above.
+                  // children: [
+                  //   {
+                  //     path: "edit",
+                  //     element: <RoutePermissionGuard />,
+                  //     handle: { permissions: "rbac_policy:update" },
+                  //     children: [
+                  //       {
+                  //         path: "",
+                  //         lazy: () =>
+                  //           import("../../routes/policies/policy-edit"),
+                  //       },
+                  //     ],
+                  //   },
+                  // ],
                 },
               ],
             },

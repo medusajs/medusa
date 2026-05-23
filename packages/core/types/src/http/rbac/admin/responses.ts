@@ -68,6 +68,14 @@ export interface AdminRbacRoleUsersDeleteResponse {
   deleted: boolean
 }
 
+export interface AdminRbacPolicyRolesListResponse
+  extends PaginatedResponse<{
+    /**
+     * The roles that include this policy.
+     */
+    roles: AdminRbacRole[]
+  }> {}
+
 export interface AdminRbacPolicyDeleteResponse
   extends DeleteResponse<"rbac_policy"> {}
 

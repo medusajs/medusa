@@ -55,3 +55,11 @@ export const AdminUpdateRbacPolicy = z
     metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
+
+export type AdminGetRbacPolicyRolesParamsType = z.infer<
+  typeof AdminGetRbacPolicyRolesParams
+>
+export const AdminGetRbacPolicyRolesParams = createFindParams({
+  limit: 10,
+  offset: 0,
+})

@@ -2629,6 +2629,47 @@
       }
     }
   },
+  "policies": {
+    "domain": "Policies",
+    "subtitle": "Define the permissions that roles can grant.",
+    "create": {
+      "header": "Create policy",
+      "hint": "Define a new permission that can be attached to roles.",
+      "successToast": "Policy {{key}} created"
+    },
+    "edit": {
+      "header": "Edit policy",
+      "successToast": "Policy {{key}} updated"
+    },
+    "delete": {
+      "title": "Delete policy",
+      "description": "You are about to delete the policy {{key}}. This action cannot be undone.",
+      "successToast": "Policy {{key}} deleted"
+    },
+    "fields": {
+      "roles": "Roles",
+      "users": "Users"
+    },
+    "list": {
+      "empty": {
+        "heading": "No policies found",
+        "description": "Create policies to manage the permissions roles can grant."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No policies match the current filter criteria."
+      }
+    },
+    "roles": {
+      "list": {
+        "noRecordsMessage": "No roles include this policy yet."
+      },
+      "empty": {
+        "heading": "No roles",
+        "description": "No roles include this policy yet."
+      }
+    }
+  },
   "translations": {
     "domain": "Translations",
     "settings": {

@@ -1,4 +1,4 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
+import { Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import {
   Button,

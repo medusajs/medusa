@@ -210,6 +210,13 @@ const ROLE_INJECTION_ZONES = [
   "role.list.after",
 ] as const
 
+const POLICY_INJECTION_ZONES = [
+  "policy.details.before",
+  "policy.details.after",
+  "policy.list.before",
+  "policy.list.after",
+] as const
+
 /**
  * All valid injection zones in the admin panel. An injection zone is a specific place
  * in the admin panel where a plugin can inject custom widgets.
@@ -244,4 +251,5 @@ export const INJECTION_ZONES = [
   ...REFUND_REASON_INJECTION_ZONES,
   ...INVENTORY_ITEM_INJECTION_ZONES,
   ...ROLE_INJECTION_ZONES,
+  ...POLICY_INJECTION_ZONES,
 ] as const
