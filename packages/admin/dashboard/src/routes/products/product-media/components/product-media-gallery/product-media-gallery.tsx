@@ -93,7 +93,7 @@ export const ProductMediaGallery = ({ product }: ProductMediaGalleryProps) => {
         .map((i) => ({ id: i.id, url: i.url })) || []
 
     if (curr === media.length - 1) {
-      setCurr((prev) => prev - 1)
+      setCurr((prev) => Math.max(0, prev - 1))
     }
 
     await mutateAsync({
