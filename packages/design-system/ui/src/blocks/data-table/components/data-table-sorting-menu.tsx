@@ -82,19 +82,21 @@ const DataTableSortingMenu = (props: DataTableSortingMenuProps) => {
         </DropdownMenu.Trigger>
       </Wrapper>
       <DropdownMenu.Content side="bottom">
-        <DropdownMenu.RadioGroup value={sorting?.id} onValueChange={setKey}>
-          {sortableColumns.map((column) => {
-            return (
-              <DropdownMenu.RadioItem
-                onSelect={(e) => e.preventDefault()}
-                value={column.id}
-                key={column.id}
-              >
-                {getSortLabel(column)}
-              </DropdownMenu.RadioItem>
-            )
-          })}
-        </DropdownMenu.RadioGroup>
+        <div className="max-h-[300px] overflow-auto p-1">
+          <DropdownMenu.RadioGroup value={sorting?.id} onValueChange={setKey}>
+            {sortableColumns.map((column) => {
+              return (
+                <DropdownMenu.RadioItem
+                  onSelect={(e) => e.preventDefault()}
+                  value={column.id}
+                  key={column.id}
+                >
+                  {getSortLabel(column)}
+                </DropdownMenu.RadioItem>
+              )
+            })}
+          </DropdownMenu.RadioGroup>
+        </div>
         {sorting && (
           <React.Fragment>
             <DropdownMenu.Separator />
