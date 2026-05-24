@@ -1,0 +1,97 @@
+---
+description: Migrate tasks.md from old [P] format to new [AGENT] format with dependency graph and parallel lanes.
+---
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+## Outline
+
+ultrathink
+
+> "Кто вам это до меня делал? Руки бы оторвать." — Valera reads the old `[P]` format.
+
+1. Run `.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute.
+
+2. **Read existing tasks.md** and detect format:
+   - **Old format indicators**: Tasks with `[P]` markers, no `[AGENT]` tags, no Dependency Graph section
+   - **New format indicators**: Tasks with `[AGENT]` tags, Dependency Graph section exists
+   - If already in new format → report "Already migrated" and exit
+   - If no tasks.md found → report error and suggest `/speckit.tasks`
+
+3. **Parse old-format tasks**:
+   - Extract all tasks with IDs, `[P]` markers, `[Story]` labels, descriptions, file paths
+   - Extract phase structure (Setup, Foundational, User Stories, Polish)
+
+4. **Assign agent tags** using the Assignment Rules from speckit.tasks:
+
+   **By file path (primary):**
+   - `models/`, `prisma/`, `drizzle/`, `migrations/`, `schema.*` → `[DB]`
+   - `api/`, `services/`, `middleware/`, `server/`, `routes/` → `[BE]`
+   - `components/`, `pages/`, `app/`, `styles/`, `public/` → `[FE]`
+   - `Dockerfile`, `.github/workflows/`, `infra/`, `deploy/` → `[OPS]`
+   - `tests/e2e/`, `tests/integration/` (cross-domain) → `[E2E]`
+   - `docs/`, `README.md`, `CHANGELOG.md`, `*.api.md` → `[DOC]`
+   - `ios/`, `android/`, React Native/Flutter app roots → `[MOBILE]`
+   - `robots.txt`, `sitemap.xml`, `app/sitemap.*`, `app/robots.*` → `[SEO]`
+   - `design/`, `figma/`, design tokens, wireframes → `[UIUX]`
+   - Unity `Assets/`, Godot `*.godot`, game-engine configs → `[GAME]`
+
+   **By description (fallback):**
+   - "audit", "security", "vulnerability", "OWASP" → `[SEC]`
+   - "pentest", "exploit", "red team", "offensive test" → `[PENTEST]`
+   - "create schema", "migration", "seed", "index" → `[DB]`
+   - "endpoint", "route", "service", "middleware" → `[BE]`
+   - "component", "page", "style", "form" → `[FE]`
+   - "optimize", "profile", "benchmark", "bundle size", "Core Web Vitals", "LCP/INP/CLS" → `[PERF]`
+   - "document", "README", "API docs", "changelog", "runbook" → `[DOC]`
+   - "debug", "investigate", "root cause", "RCA", "crash" → `[DEBUG]`
+   - "refactor", "extract", "modernize legacy", "characterization test" → `[REFACTOR]`
+   - "SEO", "structured data", "sitemap", "meta tags", "GEO", "E-E-A-T" → `[SEO]`
+   - "mobile", "React Native", "Flutter", "iOS", "Android" → `[MOBILE]`
+   - "wireframe", "mockup", "design system", "design tokens", "user flow" → `[UIUX]`
+   - "game mechanic", "physics", "shader", "multiplayer netcode", "game loop" → `[GAME]`
+
+   **Phase defaults:**
+   - Phase 1 (Setup) tasks → `[SETUP]`
+   - Polish phase tasks involving docs/perf/debug → `[DOC]`/`[PERF]`/`[DEBUG]` respectively
+
+   **Unknown/ambiguous tasks**: flag for manual review, do NOT guess — it is better to pause than to assign the wrong agent.
+
+5. **Build dependency graph**:
+   - Tasks previously marked `[P]` within same phase → no dependency between them
+   - Tasks NOT marked `[P]` → sequential dependency on previous task in same phase
+   - Cross-phase: Phase 2 depends on Phase 1 completion, US phases depend on Phase 2
+   - `[E2E]` tasks depend on all implementation tasks in their story
+   - `[SEC]` tasks depend on all implementation tasks in their story
+
+6. **Generate new sections**:
+   - Remove all `[P]` markers from tasks
+   - Add `[AGENT]` tag to each task after task ID
+   - Generate `## Dependency Graph` section with `→` and `+` syntax
+   - Generate `## Dependency Visualization` mermaid block
+   - Generate `## Parallel Lanes` table
+   - Generate `## Agent Summary` table
+   - Calculate and add **Critical Path**
+
+7. **Preview changes**: Show the user:
+   - Number of tasks migrated
+   - Agent tag assignments (count per agent)
+   - Any ambiguous tasks that need manual review
+   - Diff summary: what will change
+
+8. **Ask for confirmation**: "Ready to update tasks.md? (yes/no)"
+   - If yes → write the updated tasks.md
+   - If no → exit without changes
+
+## Notes
+
+- This is a ONE-TIME migration utility for existing projects
+- The migration preserves all existing task descriptions and file paths
+- Agent assignments may need manual review for ambiguous tasks
+- After migration, run `/speckit.analyze` to validate consistency

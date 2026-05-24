@@ -1,0 +1,64 @@
+---
+description: Convert existing tasks into actionable, dependency-ordered GitHub issues for the feature based on available design artifacts.
+tools: ['github/github-mcp-server/issue_write']
+---
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+## Outline
+
+1. Run `.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute. For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
+1. From the executed script, extract the path to **tasks**.
+1. Get the Git remote by running:
+
+```bash
+git config --get remote.origin.url
+```
+
+> [!CAUTION]
+> ONLY PROCEED TO NEXT STEPS IF THE REMOTE IS A GITHUB URL
+
+1. Parse the Dependency Graph section from tasks.md to build a dependency map (task → blocked-by tasks).
+
+1. For each task in the list, use the GitHub MCP server to create a new issue in the repository that is representative of the Git remote:
+
+   **Agent Tag → GitHub Label mapping:**
+
+   | Agent Tag | GitHub Label |
+   |-----------|-------------|
+   | `[SETUP]` | `setup` |
+   | `[DB]` | `database` |
+   | `[BE]` | `backend` |
+   | `[FE]` | `frontend` |
+   | `[OPS]` | `devops` |
+   | `[E2E]` | `testing` |
+   | `[SEC]` | `security` |
+   | `[PERF]` | `performance` |
+   | `[DOC]` | `documentation` |
+   | `[DEBUG]` | `bug` |
+   | `[REFACTOR]` | `refactor` |
+   | `[SEO]` | `seo` |
+   | `[MOBILE]` | `mobile` |
+   | `[UIUX]` | `design` |
+   | `[PENTEST]` | `security,pentest` |
+   | `[GAME]` | `gamedev` |
+
+   **Issue creation rules:**
+   - Title: `[TaskID] Description` (e.g., `[T003] Create User model in src/models/user.py`)
+   - Labels: agent label + story label if present (e.g., `backend`, `US1`)
+   - Body includes:
+     - Task description and file paths
+     - Agent assignment
+     - Dependencies: "Blocked by: #N, #M" (referencing previously created issue numbers from the dependency map)
+     - Parallel Lane info: "Part of Lane N ([DB] → [BE])" from the Parallel Lanes table
+   - Create labels if they don't exist in the repo (using GitHub MCP)
+   - Track created issue numbers to resolve dependency references for subsequent issues
+
+> [!CAUTION]
+> UNDER NO CIRCUMSTANCES EVER CREATE ISSUES IN REPOSITORIES THAT DO NOT MATCH THE REMOTE URL

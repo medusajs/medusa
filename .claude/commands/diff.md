@@ -1,0 +1,57 @@
+---
+description: Quick context recap — git diff --stat summary + first 50 lines of actual diff. Use to remind yourself or the model what's changing right now.
+---
+
+# /diff — Context Snapshot
+
+$ARGUMENTS
+
+> "Обрисуй ситуацию." — Before discussing, look at what actually changed.
+
+## Behavior
+
+Fast read-only git state snapshot. No edits, no side effects.
+
+Default (no args): unstaged changes (`git diff`).
+
+Flags:
+
+| Flag | Meaning |
+|------|---------|
+| (none) | Unstaged changes vs. working tree |
+| `--staged` | Staged (`git diff --cached`) |
+| `--range <A..B>` | Arbitrary range (e.g. `HEAD~3..HEAD`) |
+| `--since <tag>` | Everything since a tag (e.g. `--since v0.1.0`) |
+| `<file>` | Scope to a single path |
+
+## Execution
+
+1. Print `git diff --stat` (file-level summary — which files, how many lines).
+2. Print first 50 lines of `git diff` (actual hunks).
+3. If diff is longer than 50 lines: append
+   ```
+   … (NNN more lines — use `git diff <scope>` to see full)
+   ```
+4. If working tree is fully clean: fall back to `git diff HEAD~1 --stat` and note "no local changes; showing last commit instead."
+
+## Constraints
+
+- **Never mutate**: no `git add`, `git checkout`, `git reset`, nothing that stages or discards.
+- **Never paginate**: use `git --no-pager` to avoid interactive modes hanging.
+- **Respect scope**: if `<file>` given, only show that file.
+
+## Pairs with
+
+- `/blame-line <file:line>` — dig into a specific line's history.
+- `/verify` — after reading the diff, run checks.
+- `/commit` — when ready to commit the diff.
+
+## Examples
+
+```
+/diff
+/diff --staged
+/diff --range HEAD~5..HEAD
+/diff --since v0.2.0
+/diff packages/cli/src/cli/sync.ts
+```

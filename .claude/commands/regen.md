@@ -1,0 +1,94 @@
+---
+description: Regenerate derived targets in-place for the upstream-template repo (this repo). Wrapper over `helpers regen` CLI with a context guard.
+---
+
+# /regen — Regenerate Upstream Targets
+
+$ARGUMENTS
+
+> "Источник один — отражения везде." — One source of truth, mirrored to every surface.
+> "Сбоку заходи, сбоку!" — If `sync` is the consumer path, `regen` is the upstream path. Don't mix them up.
+
+## Context — READ THIS FIRST
+
+This command is for **the upstream template repo** (where `helpers.config.ts` lives and `.claude/` is source-of-truth). It regenerates the derived trees:
+
+- `.github/instructions/**` ← transformers of `.claude/skills/**` + agents
+- `.github/prompts/*.prompt.md` ← `.claude/commands/*.md`
+- `.gemini/commands/*.toml` ← `.claude/commands/*.md`
+- `GEMINI.md` ← composed from `.claude/skills/phrases` + coding instructions
+- `.agent/**` ← mirror of `.claude/agents`, `.claude/skills`, `.claude/workflows` (identity transform)
+
+If you are in a **consumer repo** (no `helpers.config.ts`) — you want [`/sync`](sync.md), not `/regen`.
+
+## Detection
+
+Run first:
+
+```bash
+test -f helpers.config.ts && echo "upstream" || echo "consumer"
+```
+
+- **upstream** → proceed.
+- **consumer** → stop. Direct the user to `/sync` instead.
+
+## Behavior
+
+Thin wrapper. The real work lives in the CLI:
+
+```bash
+node packages/cli/bin/helpers.mjs regen [--dry-run] [--target <id>] [--verbose]
+```
+
+Flags:
+
+| Flag | Meaning |
+|------|---------|
+| `--dry-run` | Plan only — list what would change, write nothing |
+| `--target <id>` | Restrict to one target (e.g. `copilot-prompts`, `gemini-commands`, `agent`) |
+| `--verbose` | Log per-file transforms |
+| (none) | Run all enabled targets |
+
+## Workflow
+
+1. **Detect context** (see above). Bail out early if consumer.
+2. **Clean state check**: `git status --porcelain` — if dirty, warn and ask before regenerating (regen overwrites derived files; if the user has uncommitted edits to a generated file, they will be lost).
+3. **Dry-run first** (when the change set is expected to be non-trivial or when debugging):
+   ```bash
+   node packages/cli/bin/helpers.mjs regen --dry-run
+   ```
+4. **Execute**:
+   ```bash
+   node packages/cli/bin/helpers.mjs regen
+   ```
+5. **Verify**: `git diff --stat` — show the user which files changed.
+6. **Suggest next**: `/verify` (tests still pass?), then `/commit` with an appropriate conventional-commits message.
+
+## When to run
+
+- After adding/editing any file in `.claude/` (commands, agents, skills, workflows).
+- After editing transformers in `packages/cli/src/transformers/`.
+- After editing `helpers.config.ts` (adding targets, changing patterns).
+- Before committing — CI's `drift-check` job runs regen + `git diff --exit-code`; if derived trees are out of sync, CI fails.
+
+## Absolute constraints
+
+- **Never run `regen` in a consumer repo.** The CLI's internal guard will refuse, but don't try to override.
+- **Never commit only generated files** without the corresponding `.claude/` source change. That creates drift and breaks CI's logic.
+- **Never edit generated files by hand.** The next `regen` will overwrite them. Edit the source in `.claude/`; fix the transformer if the output is wrong.
+
+## Pairs with
+
+- `/sync` — the opposite direction; for **consumer** repos pulling from upstream.
+- `/verify` — run after regen to make sure tests still pass.
+- `/diff` — inspect what regen changed before committing.
+- `/commit` — commit with appropriate `chore(regen):` or `feat(...)` depending on what triggered the regen.
+
+## Examples
+
+```
+/regen                              # regenerate everything
+/regen --dry-run                    # show what would change
+/regen --target gemini-commands     # only regenerate .gemini/commands/
+/regen --verbose                    # log every file transform
+```

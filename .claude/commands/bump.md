@@ -1,0 +1,74 @@
+---
+description: Bump the npm package version (patch/minor/major) with the semver-versioning skill guiding the decision.
+---
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+ultrathink
+
+> "Обкашляю вопросик. Какой у нас bump?" — Valera opens the release conversation.
+> "Сила в бэкапах... и в правильной версии." — Version discipline is not optional.
+
+## Outline
+
+1. **Load the decision framework**: invoke the `semver-versioning` skill. It contains the full bump rules, 0.x-zone specifics, commit-mapping, pre-bump checklist, and workflow.
+
+2. **Detect the package** to bump:
+   - If `$ARGUMENTS` names a specific package or path → use it.
+   - Otherwise, list all `package.json` files under `packages/` and ask user which one (or default to `packages/cli/` if only one exists).
+
+3. **Collect context** before deciding:
+   - Read current version from `packages/<pkg>/package.json`.
+   - Find the last release tag: `git describe --tags --abbrev=0 --match "v*" 2>/dev/null || echo "no previous tag"`.
+   - List changes since last tag: `git log <last-tag>..HEAD --oneline -- packages/<pkg>/`.
+   - Read recent commit messages to classify (feat/fix/breaking).
+
+4. **Classify the bump** using rules from the skill:
+   - Any `BREAKING CHANGE` / `feat!:` / removed flag / changed output format → **major** (or **minor** if current version is `0.x`).
+   - Any `feat:` / new command / new flag → **minor**.
+   - Only `fix:` / `perf:` → **patch**.
+   - Only `chore:` / `docs:` / `refactor:` / `test:` / `ci:` / `build:` → **no bump** — tell the user and stop.
+   - If mixed, the highest category wins.
+
+5. **Present the decision** to the user with:
+   - Current version → proposed version.
+   - Reasoning: which commits drove the bump and why.
+   - Whether we're in 0.x zone (affects breaking-change handling).
+   - Any red flags from the skill's checklist (dirty tree, failing tests, missing migration notes).
+   - **Ask for confirmation before running `npm version`.** Do not bump without explicit approval.
+
+6. **Pre-bump checks** (if user confirms):
+   - `git status` → working tree must be clean; if not, stop and report.
+   - `npm test` in the package dir → must pass.
+   - `npm run build` (if script exists) → must succeed.
+   - `npm run validate` (if script exists) → must pass.
+
+7. **Perform the bump**:
+   ```bash
+   cd packages/<pkg>
+   npm version <patch|minor|major>
+   ```
+   This updates `package.json` + `package-lock.json`, creates a commit `X.Y.Z`, and creates a git tag `vX.Y.Z` — atomically.
+
+   For pre-releases: `npm version prerelease --preid=<alpha|beta|rc>`.
+
+8. **Report and hand off**:
+   - Print the new version and the created tag.
+   - Tell the user the next steps: `git push --follow-tags`, `npm publish` (or `--tag next` for pre-release), optionally `gh release create`.
+   - **Do NOT push or publish without explicit user request** — bump creates the local commit+tag only.
+
+## Absolute constraints
+
+- Never run `npm version` without user confirmation of the bump size.
+- Never use `--force` / `--no-git-tag-version` unless user explicitly asks.
+- Never push tags or publish to the registry automatically.
+- Never bump when the commit list is only `chore:`/`docs:`/etc. — tell the user and exit.
+- Never edit `package.json` version by hand; always use `npm version` so the lockfile + tag stay in sync.
+
+## Fast path
+
+If the user gives a clear directive like `/bump patch` or `/bump minor` — skip the classification step and go straight to confirmation + pre-checks + execute. Still present current→new and ask for yes/no.

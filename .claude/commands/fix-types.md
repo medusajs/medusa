@@ -1,0 +1,88 @@
+---
+description: Run the TypeScript type-checker, fix errors in cascade order (earliest first), and rerun until clean. Loads typescript-expert skill.
+---
+
+# /fix-types — Fix TypeScript errors in cascade order
+
+$ARGUMENTS
+
+ultrathink
+
+> "Ничто так не ограничивает полёт мысли программиста, как компилятор." — Compiler is right more often than you are.
+> "Ложки нет, Нео. Есть только баги." — `as any` is not a fix; it's postponement.
+
+## Delegation
+
+Load `typescript-expert` skill. Also: `clean-code`, `code-review-checklist`.
+
+## Why cascade order matters
+
+TS errors chain: one wrong type declaration at the top of an import graph can spawn 50 red squiggles downstream. Fix the **earliest** one first (lowest file path by dependency order, earliest line within file), rerun the checker, and watch most of the rest disappear. Fixing a leaf error first is often wasted work because the fix gets invalidated when the root type is corrected.
+
+## Workflow
+
+### 1. Detect the type-check command
+
+From `package.json` scripts, in this priority: `typecheck`, `validate`, `check`, or literal `tsc --noEmit`. If none exist, run `npx tsc --noEmit` directly.
+
+### 2. Run once; parse errors
+
+Capture output. Group errors by `file:line:ts-code`. If zero → stop, report.
+
+### 3. Sort to cascade order
+
+1. Sort files by dependency depth (least imported first). Heuristic: `src/types/*` → `src/core/*` → `src/cli/*` → `tests/*`.
+2. Within a file, earliest line wins.
+3. Pick the **single top-ranked error**.
+
+### 4. Fix that one error. Then rerun.
+
+After one fix, re-run the full type-check. Count how many errors disappeared (typically 1–N). Repeat with the new top-ranked error.
+
+### 5. Absolute constraints (MUST)
+
+- **Never `as any`** to silence an error. If the type is genuinely unknowable, use `unknown` and narrow at boundaries.
+- **Never `@ts-ignore` / `@ts-expect-error`** without a `// reason:` comment approved by user. They decay into tombstones.
+- **Never disable a compiler flag** (`noImplicitAny`, `strict`, `noUncheckedIndexedAccess`) project-wide to pass. If needed, wrap only the narrowest file and flag it.
+- **Never change a type just to match wrong code.** The type declares intent. If code disagrees, usually code is wrong.
+- **Revisit your fix** — is the error gone because the type is now correct, or because you weakened the type?
+
+### 6. When to stop and escalate
+
+- Error indicates a **real API contract mismatch** (e.g. the signature changed and callers weren't updated) → fix the callers too, scope may grow. If it grows beyond the current task, stop and propose a plan.
+- Error reveals a **structural design flaw** (circular types, impossible variance) → stop, brainstorm, don't patch.
+- 3 attempts on same error with no progress → escalate to user with current hypothesis.
+
+### 7. Verify & hand off
+
+When type-check is clean:
+- Run `/verify` (or at least the test suite) to confirm no runtime regression.
+- Never declare "fixed" until `npm test` also passes. Type-clean code can still be wrong code.
+
+## Output format
+
+```markdown
+## Type-check: <N errors> → <M remaining>
+
+### Fix sequence
+1. `src/core/manifest.ts:42` (TS2345) — param narrowed from `any` to `HelpersConfig` — cascade-fixed 7 downstream errors.
+2. `src/cli/regen.ts:94` (TS2322) — return type `Promise<void>` → `Promise<{dir:string}>` — fixed 1.
+3. …
+
+### Status: ✓ clean after 3 fixes, N iterations of the checker.
+### Tests: ✓ green (or: ✗ run `/fix-tests` next)
+```
+
+## Pairs with
+
+- `/verify` — start here.
+- `/fix-tests` — run AFTER types are clean; many "test failures" are type drift.
+- `/debug` — for a single error whose root cause isn't obvious.
+
+## Examples
+
+```
+/fix-types
+/fix-types typecheck              # specific script name
+/fix-types src/core/manifest.ts   # scope fixes to one file
+```

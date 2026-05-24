@@ -1,0 +1,131 @@
+---
+description: Capture a reusable pattern (anti-pattern, bug-class, technique) into knowledge/patterns/<slug>.md as staged knowledge. Filled from current session context. Promotion to skills/agents happens later via /improve, not here.
+---
+
+# /learn — Capture a Pattern
+
+$ARGUMENTS
+
+> "Записал — значит вспомнишь." — Capture while context is fresh.
+> "Не лей в общую трубу пока не отстоялось." — Stage first; promote to skill/agent only after the pattern proves itself.
+
+## Behavior
+
+Capture a pattern from the current session into `knowledge/patterns/<slug>.md` — a **staging area**, not a final destination. Promotion to `.claude/skills/<name>/SKILL.md` or `.claude/agents/<name>.md` happens later via `/improve`, when the pattern has earned its place.
+
+### Input
+
+`$ARGUMENTS` = pattern slug. Must be:
+- **kebab-case** (`auth-flake-with-cleared-jwt`, not `Auth Flake!`)
+- **descriptive** — names a class of issue/technique, not a one-off ("typo-in-readme" = bad; "windows-crlf-in-bash-heredoc" = good)
+- **≤60 chars**, no slashes, no extension
+
+If `$ARGUMENTS` empty or invalid → ask user for slug. Do NOT silently invent one.
+
+### Workflow
+
+1. **Validate slug**. Reject (with a fix proposal) if it fails the rules above.
+2. **Check for collision**. If `knowledge/patterns/<slug>.md` exists → show diff intent, ask whether to overwrite, append, or pick a new slug.
+3. **Pull session context**:
+   - Recent commits: `git log --oneline -10`
+   - Files touched: `git diff --stat HEAD~5..HEAD`
+   - Recent error messages, stack traces, or surprises mentioned in this conversation
+4. **Draft the pattern file** using the template below. Fill what you can from context; leave `_TBD_` for what the user must add.
+5. **Write file**. Print absolute path + checklist of `_TBD_` markers user should fill.
+6. **Suggest next**: `/improve` (later) reads `knowledge/patterns/` and proposes promotions.
+
+### Template (write this content)
+
+```markdown
+---
+slug: <slug>
+captured: <YYYY-MM-DD>
+status: draft
+candidate-promotion-target: <e.g., skills/typescript-expert | agents/debugger | _TBD_>
+captured-from-commit: <SHA or "uncommitted">
+---
+
+# Pattern: <Title>
+
+## Symptom
+What you observed. Concrete: error message, stack trace excerpt, or "weird behavior" description. ≤5 lines.
+
+## Root cause
+Why it happens. Mechanism, not just "X was wrong". ≤10 lines.
+
+## Fix / Pattern
+How to handle. Include a code snippet if it makes the fix concrete (≤20 lines). If applicable, note the wrong way → right way.
+
+## How to detect
+Future occurrences. Choose the strongest signal:
+- **grep**: `<regex>`
+- **lint rule**: `<rule name>`
+- **type signature**: `<sig>`
+- **test**: `<test description>`
+- **manual**: <heuristic, last resort>
+
+## References
+- Commit: `<SHA>`
+- Related files: `<path1>`, `<path2>`
+- Related issues / PRs: <links>
+- Prior occurrences (if recurring): <list>
+```
+
+### Smart defaults
+
+- **`<Title>`**: title-case version of the slug ("auth-flake-with-cleared-jwt" → "Auth flake with cleared JWT")
+- **`captured`**: today's date in `YYYY-MM-DD`
+- **`status: draft`** — always, on initial capture
+- **`captured-from-commit`**: `git rev-parse --short HEAD` (mark "uncommitted" if working tree dirty)
+- **`candidate-promotion-target`**: best guess based on which agent/skill *would* benefit. If unclear → `_TBD_`. Don't force a wrong guess.
+
+### Output to user
+
+After write:
+
+```
+✓ Captured: knowledge/patterns/<slug>.md
+
+TBD markers (1 line per):
+  - candidate-promotion-target: pick one of skills/<name> or agents/<name>
+  - <other _TBD_ found in template>
+
+Next:
+  - Edit the file to flesh out anything thin
+  - When the pattern recurs OR after N similar captures, run /improve to propose
+    promotion into a skill or agent (it filters status:draft entries)
+  - Pattern stays in knowledge/patterns/ until promoted; nothing auto-deletes
+```
+
+## Constraints
+
+- **Never** write outside `knowledge/patterns/`. Other staging dirs (`knowledge/decisions/`, `knowledge/architecture/`) — out of scope for this command; future expansion.
+- **Never** auto-promote. Promotion = explicit decision through `/improve`. This command captures only.
+- **Never** overwrite without confirmation. Existing pattern + new capture = ask "overwrite, append, or rename".
+- **Never** invent context. If session context doesn't contain enough to fill a section, mark it `_TBD_` and tell the user what's missing.
+- **Never** commit. User decides when (Standing Order #1).
+
+## Pairs with
+
+- `/improve` — reads `knowledge/patterns/`, proposes promotions to skills/agents (Step 8 of self-maintaining workflow).
+- `/dispatch` — Stop hook (`session-checkpoint.sh`) reminds about `/learn` after turn 30.
+- `/blame-line` — useful when filling `References` section: dig into who/when/why for a line involved in the pattern.
+- `/diff` — quickly identify what changed in this session that's worth capturing.
+
+## Examples
+
+```
+/learn windows-crlf-in-bash-heredoc
+   → captures the gotcha that bash heredocs on Windows pick up CRLF unless `binmode`
+     is set, into knowledge/patterns/windows-crlf-in-bash-heredoc.md
+
+/learn npm-version-skip-with-submodules
+   → captures the npm version footgun where submodules trigger silent skip of
+     commit+tag despite ignore=dirty. (Real example from this repo's session.)
+
+/learn                         # no args
+   → asks "what slug? (kebab-case, descriptive, ≤60 chars)"
+
+/learn AUTH-FLAKE!             # invalid
+   → "Slug must be kebab-case ASCII. Suggest: auth-flake. Use that?"
+```

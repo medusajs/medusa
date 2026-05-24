@@ -1,0 +1,65 @@
+---
+description: Display live dashboard of task execution progress, agent status, and lane activity.
+---
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+## Outline
+
+1. Run `.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute.
+
+2. **Read tasks.md** and parse:
+   - All tasks with their statuses, IDs, agent tags, story labels
+   - Dependency Graph section
+   - Parallel Lanes table
+   - Agent Summary table
+
+3. **Count tasks by status**:
+
+   | Status | Symbol | Count |
+   |--------|--------|-------|
+   | Pending | `[ ]` | N |
+   | In Progress | `[→]` | N |
+   | Completed | `[X]` | N |
+   | Failed | `[!]` | N |
+   | Blocked | `[~]` | N |
+   | **Total** | | **N** |
+
+4. **Count tasks by agent**:
+
+   | Agent | Pending | In Progress | Completed | Failed | Blocked | Total |
+   |-------|---------|-------------|-----------|--------|---------|-------|
+   | [SETUP] | | | | | | |
+   | [DB] | | | | | | |
+   | [BE] | | | | | | |
+   | [FE] | | | | | | |
+   | [OPS] | | | | | | |
+   | [E2E] | | | | | | |
+   | [SEC] | | | | | | |
+
+5. **Identify current phase**: Which phase has `[→]` in-progress tasks? If none, which phase has remaining `[ ]` tasks?
+
+6. **Show active lanes**: From Parallel Lanes table, which lanes have in-progress or ready tasks?
+
+7. **Show blockers**: List any `[!]` failed tasks and their cascade — all `[~]` blocked tasks that depend on them.
+
+8. **Show progress bar**:
+
+   ```
+   Progress: [████████████░░░░░░░░] 60% (12/20 tasks)
+   Phase: User Story 1 (Phase 3)
+   Active Lanes: 2 ([DB]→[BE]), 3 ([DB]→[FE])
+   Blockers: None
+   ```
+
+9. **Next ready tasks**: List tasks that could start now (all dependencies met, status `[ ]`).
+
+## Output Format
+
+Output a clean dashboard to the terminal. No file writes. Rerunnable at any time for live status.

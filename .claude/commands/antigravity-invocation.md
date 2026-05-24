@@ -1,0 +1,1 @@
+# agy -m gemini-3.5-flash --non-interactive --output-format json --yolo "твой промт, например, очень полезно - можно загуглить что-то помощью ии"

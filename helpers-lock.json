@@ -1,0 +1,4024 @@
+{
+  "schema": 1,
+  "toolVersion": "0.1.0",
+  "source": {
+    "url": "github:UnderUndre/ai",
+    "ref": "latest",
+    "commit": "716a30d1b8b7e7d62e74ab056d0c626c96b79145"
+  },
+  "installedAt": "2026-05-24T11:14:39.156Z",
+  "targets": [
+    "claude",
+    "copilot",
+    "gemini"
+  ],
+  "trustedTransformers": [],
+  "files": [
+    {
+      "path": ".claude/agents/backend-specialist.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:ecf719733ce152d732d437d2e280c22920e89b4be8725878d388b96339689b28",
+      "localCanonicalHash": "sha256:ecf719733ce152d732d437d2e280c22920e89b4be8725878d388b96339689b28"
+    },
+    {
+      "path": ".claude/agents/brainstorm.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:bc0d4bcf6b75dbb56c60e19fb967ee942a68698b40537781b38d2be4468612da",
+      "localCanonicalHash": "sha256:bc0d4bcf6b75dbb56c60e19fb967ee942a68698b40537781b38d2be4468612da"
+    },
+    {
+      "path": ".claude/agents/create.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:b8582bc0a85709705fa1ce07fb779e7d59f41797ba988ca857b7230f12f87fa1",
+      "localCanonicalHash": "sha256:b8582bc0a85709705fa1ce07fb779e7d59f41797ba988ca857b7230f12f87fa1"
+    },
+    {
+      "path": ".claude/agents/database-architect.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:afed02a6e24bc41942b4f6e58420e2ec59bc4d8e1d53111e36ee9ee8750a0a48",
+      "localCanonicalHash": "sha256:afed02a6e24bc41942b4f6e58420e2ec59bc4d8e1d53111e36ee9ee8750a0a48"
+    },
+    {
+      "path": ".claude/agents/debugger.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:3a6db999e6a76b4b79d85c3005f9237b800fc243e474a49dc7934cda999f0b6e",
+      "localCanonicalHash": "sha256:3a6db999e6a76b4b79d85c3005f9237b800fc243e474a49dc7934cda999f0b6e"
+    },
+    {
+      "path": ".claude/agents/deploy.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:d295b9167932694788b0c1f0cea3f6795aa145b9d6e48f604f29080a8f47bc39",
+      "localCanonicalHash": "sha256:d295b9167932694788b0c1f0cea3f6795aa145b9d6e48f604f29080a8f47bc39"
+    },
+    {
+      "path": ".claude/agents/devops-engineer.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:7ffbdb360ad5a7e0de83f0edcd220100bade55bef0043b5b116d76f9d3f73a1e",
+      "localCanonicalHash": "sha256:7ffbdb360ad5a7e0de83f0edcd220100bade55bef0043b5b116d76f9d3f73a1e"
+    },
+    {
+      "path": ".claude/agents/documentation-writer.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:6f526c266ce5b28224c350766c6e898f067e604aa6ff6cb1a9a02201f16987fe",
+      "localCanonicalHash": "sha256:6f526c266ce5b28224c350766c6e898f067e604aa6ff6cb1a9a02201f16987fe"
+    },
+    {
+      "path": ".claude/agents/enhance.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:47d086c6c530e0dd95a8acfcaf75e6c8b1b0c1e9068e2dfbe0bf4d80af8658f6",
+      "localCanonicalHash": "sha256:47d086c6c530e0dd95a8acfcaf75e6c8b1b0c1e9068e2dfbe0bf4d80af8658f6"
+    },
+    {
+      "path": ".claude/agents/explorer-agent.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:a971d98d5b7533f8d6bc6bb8affe5868565542f37aac2f397472812554dd79cd",
+      "localCanonicalHash": "sha256:a971d98d5b7533f8d6bc6bb8affe5868565542f37aac2f397472812554dd79cd"
+    },
+    {
+      "path": ".claude/agents/frontend-specialist.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:866abf74f65ebdb4b2a36f8b9c43b21045d84f02b1bb9708e2b827f97663369e",
+      "localCanonicalHash": "sha256:866abf74f65ebdb4b2a36f8b9c43b21045d84f02b1bb9708e2b827f97663369e"
+    },
+    {
+      "path": ".claude/agents/game-developer.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:a44ab1190baf7945e5c6461a16baf164129997fa99f506f5d9500f75ac2f6fab",
+      "localCanonicalHash": "sha256:a44ab1190baf7945e5c6461a16baf164129997fa99f506f5d9500f75ac2f6fab"
+    },
+    {
+      "path": ".claude/agents/legacy-code.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:cc3a3097dff2bf67454da8837c4548a957b5adcf507be68d2df8efcb22497f21",
+      "localCanonicalHash": "sha256:cc3a3097dff2bf67454da8837c4548a957b5adcf507be68d2df8efcb22497f21"
+    },
+    {
+      "path": ".claude/agents/mobile-developer.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:bcb01d9381d23cc01a13743958bd9b39ddde5b3d07b2a2bb58861f63f954bb6d",
+      "localCanonicalHash": "sha256:bcb01d9381d23cc01a13743958bd9b39ddde5b3d07b2a2bb58861f63f954bb6d"
+    },
+    {
+      "path": ".claude/agents/orchestrate.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:64747209243e4deca0441d67a719fe6885ecdec279d2b3a655e7522ccc73d7f0",
+      "localCanonicalHash": "sha256:64747209243e4deca0441d67a719fe6885ecdec279d2b3a655e7522ccc73d7f0"
+    },
+    {
+      "path": ".claude/agents/orchestrator.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:286d0d2f3d2ae628c6cf92c0398410785c116d680d68d8747058a1158e18dedb",
+      "localCanonicalHash": "sha256:286d0d2f3d2ae628c6cf92c0398410785c116d680d68d8747058a1158e18dedb"
+    },
+    {
+      "path": ".claude/agents/penetration-tester.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:abd8e563517fdb537e3d478e8aa168f8f1bc951a1deda9aef5d8438bb9a3b548",
+      "localCanonicalHash": "sha256:abd8e563517fdb537e3d478e8aa168f8f1bc951a1deda9aef5d8438bb9a3b548"
+    },
+    {
+      "path": ".claude/agents/performance-optimizer.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:b08aa087ec8fac76998b9f765939e14d61b876de13e5e17db5a95cd279ffb07d",
+      "localCanonicalHash": "sha256:b08aa087ec8fac76998b9f765939e14d61b876de13e5e17db5a95cd279ffb07d"
+    },
+    {
+      "path": ".claude/agents/plan.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:944471a2fd71ded4dd58f9ef221c71a89cb5d91433539bda6f46c13eb326262a",
+      "localCanonicalHash": "sha256:944471a2fd71ded4dd58f9ef221c71a89cb5d91433539bda6f46c13eb326262a"
+    },
+    {
+      "path": ".claude/agents/preview.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:98861334eb81e2ce09f175792dc154df400027b8764d65394f37016451a73e66",
+      "localCanonicalHash": "sha256:98861334eb81e2ce09f175792dc154df400027b8764d65394f37016451a73e66"
+    },
+    {
+      "path": ".claude/agents/project-planner.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:92fb6b2be3d123aad895b1da18c8c0eccac4bc47896131f85b6d5c6cdc4ea435",
+      "localCanonicalHash": "sha256:92fb6b2be3d123aad895b1da18c8c0eccac4bc47896131f85b6d5c6cdc4ea435"
+    },
+    {
+      "path": ".claude/agents/security-auditor.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:50ce6c281e29be3083262f0d99580290397248e9901650ccf0dbae0e1b16473f",
+      "localCanonicalHash": "sha256:50ce6c281e29be3083262f0d99580290397248e9901650ccf0dbae0e1b16473f"
+    },
+    {
+      "path": ".claude/agents/seo-specialist.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:1fb071c98be6e7046e2a57f3dd0a624d5127a23ac3cd1f1bccf20de7afd6c5d2",
+      "localCanonicalHash": "sha256:1fb071c98be6e7046e2a57f3dd0a624d5127a23ac3cd1f1bccf20de7afd6c5d2"
+    },
+    {
+      "path": ".claude/agents/status.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:c3dfcaad00388c6af0ee8a8e396a853620837c5eb4954fa213932b499601abf1",
+      "localCanonicalHash": "sha256:c3dfcaad00388c6af0ee8a8e396a853620837c5eb4954fa213932b499601abf1"
+    },
+    {
+      "path": ".claude/agents/test-engineer.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:abbaf23c955308ee6a533b0af8f6a8edace763fa75f37ba8c9ab2dbc7c950093",
+      "localCanonicalHash": "sha256:abbaf23c955308ee6a533b0af8f6a8edace763fa75f37ba8c9ab2dbc7c950093"
+    },
+    {
+      "path": ".claude/agents/test.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:420414646890deadc487ee12e89fb831084aa825de7aefab0b4414fc8ee9ddd8",
+      "localCanonicalHash": "sha256:420414646890deadc487ee12e89fb831084aa825de7aefab0b4414fc8ee9ddd8"
+    },
+    {
+      "path": ".claude/agents/ui-ux-pro-max.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:853b6d1f9b5e61a776f6bd14a3c3ae7ad114d8b7b771ed1a688af7f1c0ea7690",
+      "localCanonicalHash": "sha256:853b6d1f9b5e61a776f6bd14a3c3ae7ad114d8b7b771ed1a688af7f1c0ea7690"
+    },
+    {
+      "path": ".claude/commands/antigravity-invocation.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:65dcca5e6bd4e2391e5a824ddee6b4d4d17a6be160d0084a70fcd48ddc5f343a",
+      "localCanonicalHash": "sha256:65dcca5e6bd4e2391e5a824ddee6b4d4d17a6be160d0084a70fcd48ddc5f343a"
+    },
+    {
+      "path": ".claude/commands/backend-specialist.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:92bda7a378edb9200c9060b73ec221af69533aa831ca973140a071b668e84bf3",
+      "localCanonicalHash": "sha256:92bda7a378edb9200c9060b73ec221af69533aa831ca973140a071b668e84bf3"
+    },
+    {
+      "path": ".claude/commands/backup_before_ai.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:20b144114727e5e324c823aaf996f79c0227bb02741f5e1c457446bfb60529e5",
+      "localCanonicalHash": "sha256:20b144114727e5e324c823aaf996f79c0227bb02741f5e1c457446bfb60529e5"
+    },
+    {
+      "path": ".claude/commands/blame-line.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:0c88281be75eac447b1e8e0290498ad9e76588ba4a5947926b2e0d26f45388b0",
+      "localCanonicalHash": "sha256:0c88281be75eac447b1e8e0290498ad9e76588ba4a5947926b2e0d26f45388b0"
+    },
+    {
+      "path": ".claude/commands/brainstorm.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:10d0aca07bea04b3629fc04c92e4891f5b1970b028bb93686d9c9af22b406a1e",
+      "localCanonicalHash": "sha256:10d0aca07bea04b3629fc04c92e4891f5b1970b028bb93686d9c9af22b406a1e"
+    },
+    {
+      "path": ".claude/commands/bump.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:cb8c2399ace03508f310e2fd4d151540fbce3de9b1acc70471ddd1b6984f62ba",
+      "localCanonicalHash": "sha256:cb8c2399ace03508f310e2fd4d151540fbce3de9b1acc70471ddd1b6984f62ba"
+    },
+    {
+      "path": ".claude/commands/code_review.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:1e28c2fc20695ffb186475887ffb7c5cee6ff0856c63726b810b1f1cc190bf5c",
+      "localCanonicalHash": "sha256:1e28c2fc20695ffb186475887ffb7c5cee6ff0856c63726b810b1f1cc190bf5c"
+    },
+    {
+      "path": ".claude/commands/commit.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:23b48698c4f3a8a6da3fa691956b0ce78592bc8372716e45d0eaf3f2d6eb1528",
+      "localCanonicalHash": "sha256:23b48698c4f3a8a6da3fa691956b0ce78592bc8372716e45d0eaf3f2d6eb1528"
+    },
+    {
+      "path": ".claude/commands/create.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:b8582bc0a85709705fa1ce07fb779e7d59f41797ba988ca857b7230f12f87fa1",
+      "localCanonicalHash": "sha256:b8582bc0a85709705fa1ce07fb779e7d59f41797ba988ca857b7230f12f87fa1"
+    },
+    {
+      "path": ".claude/commands/database-architect.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:31cde71d708500c27a0166943bb6cf35f30c434d22e412fae627cb36fcbb95d3",
+      "localCanonicalHash": "sha256:31cde71d708500c27a0166943bb6cf35f30c434d22e412fae627cb36fcbb95d3"
+    },
+    {
+      "path": ".claude/commands/debugger.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:3aafd9ca4234b822a756cae82e813c5375488e7823013dd40fa37fd83cb48033",
+      "localCanonicalHash": "sha256:3aafd9ca4234b822a756cae82e813c5375488e7823013dd40fa37fd83cb48033"
+    },
+    {
+      "path": ".claude/commands/deploy.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:d295b9167932694788b0c1f0cea3f6795aa145b9d6e48f604f29080a8f47bc39",
+      "localCanonicalHash": "sha256:d295b9167932694788b0c1f0cea3f6795aa145b9d6e48f604f29080a8f47bc39"
+    },
+    {
+      "path": ".claude/commands/deps-check.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:d269ba9376d5da3b2e6cfda78397d18a2e590af0c5a2a8cae2735694d4f5ead6",
+      "localCanonicalHash": "sha256:d269ba9376d5da3b2e6cfda78397d18a2e590af0c5a2a8cae2735694d4f5ead6"
+    },
+    {
+      "path": ".claude/commands/devops-engineer.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:f01312b5a54ad098dfd8375e8cb4887a72334459288b28e03debffa7b1688b50",
+      "localCanonicalHash": "sha256:f01312b5a54ad098dfd8375e8cb4887a72334459288b28e03debffa7b1688b50"
+    },
+    {
+      "path": ".claude/commands/diff.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:600c180699a45f313503c6e95e993c403c07c49f0fd52314010fbe951aeaf9b4",
+      "localCanonicalHash": "sha256:600c180699a45f313503c6e95e993c403c07c49f0fd52314010fbe951aeaf9b4"
+    },
+    {
+      "path": ".claude/commands/dispatch.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:ebd8d07eb42eab023cba7ac091ad0c3c78f3c89cfc5dec53be0bb6682e19bfbc",
+      "localCanonicalHash": "sha256:ebd8d07eb42eab023cba7ac091ad0c3c78f3c89cfc5dec53be0bb6682e19bfbc"
+    },
+    {
+      "path": ".claude/commands/documentation-writer.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:6f526c266ce5b28224c350766c6e898f067e604aa6ff6cb1a9a02201f16987fe",
+      "localCanonicalHash": "sha256:6f526c266ce5b28224c350766c6e898f067e604aa6ff6cb1a9a02201f16987fe"
+    },
+    {
+      "path": ".claude/commands/enhance.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:47d086c6c530e0dd95a8acfcaf75e6c8b1b0c1e9068e2dfbe0bf4d80af8658f6",
+      "localCanonicalHash": "sha256:47d086c6c530e0dd95a8acfcaf75e6c8b1b0c1e9068e2dfbe0bf4d80af8658f6"
+    },
+    {
+      "path": ".claude/commands/explorer-agent.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:12c0e8249a15b13c5d4e4a0d31aa049c3852539ccdd4076e176be515302829c8",
+      "localCanonicalHash": "sha256:12c0e8249a15b13c5d4e4a0d31aa049c3852539ccdd4076e176be515302829c8"
+    },
+    {
+      "path": ".claude/commands/fix-ci.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:ce1c6da18b78ee364bc9f5094115ad9e3c983c3705ff5213f3ea2572bda1d63f",
+      "localCanonicalHash": "sha256:ce1c6da18b78ee364bc9f5094115ad9e3c983c3705ff5213f3ea2572bda1d63f"
+    },
+    {
+      "path": ".claude/commands/fix-tests.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:d3f4615113713d8c4229206b1fc6c749b7c0cca4af767e7b19e24f9a888a26a7",
+      "localCanonicalHash": "sha256:d3f4615113713d8c4229206b1fc6c749b7c0cca4af767e7b19e24f9a888a26a7"
+    },
+    {
+      "path": ".claude/commands/fix-types.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:84ef6fbb4fe322883a18ea31311f9c91b9d9926cdc804b16a7f134954189e890",
+      "localCanonicalHash": "sha256:84ef6fbb4fe322883a18ea31311f9c91b9d9926cdc804b16a7f134954189e890"
+    },
+    {
+      "path": ".claude/commands/fix_from_review.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:18493237aa6a4d1e04d4dad4c539190a82a3ae8b73782bd5a7ff1b164bd98d37",
+      "localCanonicalHash": "sha256:18493237aa6a4d1e04d4dad4c539190a82a3ae8b73782bd5a7ff1b164bd98d37"
+    },
+    {
+      "path": ".claude/commands/frontend-specialist.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:6adfb83e412c071510923106b72db1b19535d49ccf8ed08d04ed257249efc22e",
+      "localCanonicalHash": "sha256:6adfb83e412c071510923106b72db1b19535d49ccf8ed08d04ed257249efc22e"
+    },
+    {
+      "path": ".claude/commands/game-developer.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:a44ab1190baf7945e5c6461a16baf164129997fa99f506f5d9500f75ac2f6fab",
+      "localCanonicalHash": "sha256:a44ab1190baf7945e5c6461a16baf164129997fa99f506f5d9500f75ac2f6fab"
+    },
+    {
+      "path": ".claude/commands/hermes-invocation.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:c806fe8fd172632886a3a88e0ab5ef43bab47521d4e893b1bf15aef8ebfd8595",
+      "localCanonicalHash": "sha256:c806fe8fd172632886a3a88e0ab5ef43bab47521d4e893b1bf15aef8ebfd8595"
+    },
+    {
+      "path": ".claude/commands/improve.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:6db96a9eea1be0fd215277d339838c40a9fe76e03290422d8a06447285eae614",
+      "localCanonicalHash": "sha256:6db96a9eea1be0fd215277d339838c40a9fe76e03290422d8a06447285eae614"
+    },
+    {
+      "path": ".claude/commands/learn.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:77185eb29ea99f24b01a9b9e6c5a94916aa95e64758a5951e503fee5d41c49bc",
+      "localCanonicalHash": "sha256:77185eb29ea99f24b01a9b9e6c5a94916aa95e64758a5951e503fee5d41c49bc"
+    },
+    {
+      "path": ".claude/commands/legacy-code.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:4561adf442db801b9fa71413087254f2f3fc7add00de919a12efd8a86bb60de7",
+      "localCanonicalHash": "sha256:4561adf442db801b9fa71413087254f2f3fc7add00de919a12efd8a86bb60de7"
+    },
+    {
+      "path": ".claude/commands/mobile-developer.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:bcb01d9381d23cc01a13743958bd9b39ddde5b3d07b2a2bb58861f63f954bb6d",
+      "localCanonicalHash": "sha256:bcb01d9381d23cc01a13743958bd9b39ddde5b3d07b2a2bb58861f63f954bb6d"
+    },
+    {
+      "path": ".claude/commands/orch.run.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:a243bacf892bbb84b5ab83bbcc144e71bed86ecef9ed6b7db67654770f1cc712",
+      "localCanonicalHash": "sha256:a243bacf892bbb84b5ab83bbcc144e71bed86ecef9ed6b7db67654770f1cc712"
+    },
+    {
+      "path": ".claude/commands/orch.status.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:bc7b75ec47bd1b6e5e9395f522eac783bbbb56b04c483a5c9207827944979b41",
+      "localCanonicalHash": "sha256:bc7b75ec47bd1b6e5e9395f522eac783bbbb56b04c483a5c9207827944979b41"
+    },
+    {
+      "path": ".claude/commands/orch.tools.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:6ab01d1a52805d8c8dfac9ac018a53aff43cf56a4748ebd6e1c84beafd794ea1",
+      "localCanonicalHash": "sha256:6ab01d1a52805d8c8dfac9ac018a53aff43cf56a4748ebd6e1c84beafd794ea1"
+    },
+    {
+      "path": ".claude/commands/orchestrate.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:c87540a84b4433e1a52c3c9ce58b3c7af27bc2203db57ba9fa8ab6306f96eb35",
+      "localCanonicalHash": "sha256:c87540a84b4433e1a52c3c9ce58b3c7af27bc2203db57ba9fa8ab6306f96eb35"
+    },
+    {
+      "path": ".claude/commands/orchestrator.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:245f92f13209cafbaadcc7fb5ff2f0ba0d62b17843aaa2ab1371c4ec57418f36",
+      "localCanonicalHash": "sha256:245f92f13209cafbaadcc7fb5ff2f0ba0d62b17843aaa2ab1371c4ec57418f36"
+    },
+    {
+      "path": ".claude/commands/penetration-tester.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:3832971154882bda01e66a3bd1e58d3020429d7fc3d93e75fabfdb32511eefd5",
+      "localCanonicalHash": "sha256:3832971154882bda01e66a3bd1e58d3020429d7fc3d93e75fabfdb32511eefd5"
+    },
+    {
+      "path": ".claude/commands/perf-check.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:9a1c0ffa38bbf61911f9934adaa39e02b653abeb58e94f007c8103eb9cc04711",
+      "localCanonicalHash": "sha256:9a1c0ffa38bbf61911f9934adaa39e02b653abeb58e94f007c8103eb9cc04711"
+    },
+    {
+      "path": ".claude/commands/performance-optimizer.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:967089346570ad9caa30a3b068ca97c8efb40eab234652cf99b766c880421079",
+      "localCanonicalHash": "sha256:967089346570ad9caa30a3b068ca97c8efb40eab234652cf99b766c880421079"
+    },
+    {
+      "path": ".claude/commands/plan.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:ea9ae5d9ead9d0c4912d875bccf65dea537036e3a2815cdbac9325802492232f",
+      "localCanonicalHash": "sha256:ea9ae5d9ead9d0c4912d875bccf65dea537036e3a2815cdbac9325802492232f"
+    },
+    {
+      "path": ".claude/commands/powershell.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:a43ac90ed75eba7970ad303020e6db17b970392969e4d2582bef3674e52e4246",
+      "localCanonicalHash": "sha256:a43ac90ed75eba7970ad303020e6db17b970392969e4d2582bef3674e52e4246"
+    },
+    {
+      "path": ".claude/commands/pr.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:09d084675dc948823440d4def901d24cacc4c7af92879f4534d4878fec692224",
+      "localCanonicalHash": "sha256:09d084675dc948823440d4def901d24cacc4c7af92879f4534d4878fec692224"
+    },
+    {
+      "path": ".claude/commands/preview.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:98861334eb81e2ce09f175792dc154df400027b8764d65394f37016451a73e66",
+      "localCanonicalHash": "sha256:98861334eb81e2ce09f175792dc154df400027b8764d65394f37016451a73e66"
+    },
+    {
+      "path": ".claude/commands/project-planner.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:27af5a7cd0c5e4327359c8349f8a186808c7722cd5206088a9de76a00375156a",
+      "localCanonicalHash": "sha256:27af5a7cd0c5e4327359c8349f8a186808c7722cd5206088a9de76a00375156a"
+    },
+    {
+      "path": ".claude/commands/prompt_for_jules.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:56fea9628350713bddd87e0892616d458d990010ebd6f7a26498c8e661926882",
+      "localCanonicalHash": "sha256:56fea9628350713bddd87e0892616d458d990010ebd6f7a26498c8e661926882"
+    },
+    {
+      "path": ".claude/commands/pull_comments_from_gh_pr.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:d5d894a14473a5fc485c7c131f04dfff30567b83efa82e388f0efca4b906f71e",
+      "localCanonicalHash": "sha256:d5d894a14473a5fc485c7c131f04dfff30567b83efa82e388f0efca4b906f71e"
+    },
+    {
+      "path": ".claude/commands/questions_ideas.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:1d812ab01d2f7f7364f1aadbf1c22ddda88bc13bf124d63622dc36f44ccdffa0",
+      "localCanonicalHash": "sha256:1d812ab01d2f7f7364f1aadbf1c22ddda88bc13bf124d63622dc36f44ccdffa0"
+    },
+    {
+      "path": ".claude/commands/regen.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:6c7a99d9e04c6a0a2b4dbab7a6d338dbb272bea7b88ad8c8fda0c40fed494652",
+      "localCanonicalHash": "sha256:6c7a99d9e04c6a0a2b4dbab7a6d338dbb272bea7b88ad8c8fda0c40fed494652"
+    },
+    {
+      "path": ".claude/commands/resolve-conflicts.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:0e46d1f0b9d9306efdf51cfe0fa37e0c93aaf0e708515271d95bca58a4c6915a",
+      "localCanonicalHash": "sha256:0e46d1f0b9d9306efdf51cfe0fa37e0c93aaf0e708515271d95bca58a4c6915a"
+    },
+    {
+      "path": ".claude/commands/review_and_merge_pr.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:5ee49b4da2be964e0dc5d7e4e9fd5d482d5d44784e8ab074f93c255159052948",
+      "localCanonicalHash": "sha256:5ee49b4da2be964e0dc5d7e4e9fd5d482d5d44784e8ab074f93c255159052948"
+    },
+    {
+      "path": ".claude/commands/security-auditor.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:67bf6c0415708c32874b77ee93a206d28fff0281b0798a5ca5c5ff941978f74c",
+      "localCanonicalHash": "sha256:67bf6c0415708c32874b77ee93a206d28fff0281b0798a5ca5c5ff941978f74c"
+    },
+    {
+      "path": ".claude/commands/seo-specialist.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:1fb071c98be6e7046e2a57f3dd0a624d5127a23ac3cd1f1bccf20de7afd6c5d2",
+      "localCanonicalHash": "sha256:1fb071c98be6e7046e2a57f3dd0a624d5127a23ac3cd1f1bccf20de7afd6c5d2"
+    },
+    {
+      "path": ".claude/commands/speckit.analyze.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:5b003d174194bd992653a667c343f9260687b1f26c85d0234b791a9675b16bfe",
+      "localCanonicalHash": "sha256:5b003d174194bd992653a667c343f9260687b1f26c85d0234b791a9675b16bfe"
+    },
+    {
+      "path": ".claude/commands/speckit.checklist.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:9dfbef923542fe9155618f8086b71d1d2cdbbdb08c2dc9a5e2d2282d843d32ed",
+      "localCanonicalHash": "sha256:9dfbef923542fe9155618f8086b71d1d2cdbbdb08c2dc9a5e2d2282d843d32ed"
+    },
+    {
+      "path": ".claude/commands/speckit.clarify.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:5e338a463ff84ae22bd6398e2acf342280abce8701c303d7f6023d8c509942d8",
+      "localCanonicalHash": "sha256:5e338a463ff84ae22bd6398e2acf342280abce8701c303d7f6023d8c509942d8"
+    },
+    {
+      "path": ".claude/commands/speckit.constitution.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:1a05aa3e05f7793c188ca805437b290d7074b9b08a27bd4a36d77762e0f89598",
+      "localCanonicalHash": "sha256:1a05aa3e05f7793c188ca805437b290d7074b9b08a27bd4a36d77762e0f89598"
+    },
+    {
+      "path": ".claude/commands/speckit.diff.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:46fefcac9db7bf8b8698933643e84a01185a5d2db1e6b360b1492f9700986d21",
+      "localCanonicalHash": "sha256:46fefcac9db7bf8b8698933643e84a01185a5d2db1e6b360b1492f9700986d21"
+    },
+    {
+      "path": ".claude/commands/speckit.full-plan.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:03f253ce990d4c42ecc8de8fb5c6f1a81ef09ac01f2387e71cb9c43a2b36f69d",
+      "localCanonicalHash": "sha256:03f253ce990d4c42ecc8de8fb5c6f1a81ef09ac01f2387e71cb9c43a2b36f69d"
+    },
+    {
+      "path": ".claude/commands/speckit.full-spec.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:dcf6bfaa400e352fa484a52bb247dcab4105b2e664dc13f94606a8ecf39ef933",
+      "localCanonicalHash": "sha256:dcf6bfaa400e352fa484a52bb247dcab4105b2e664dc13f94606a8ecf39ef933"
+    },
+    {
+      "path": ".claude/commands/speckit.implement.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:22d30af2997230d0a88428260107c533817a13697adeac73fab8ebc5b2c6de83",
+      "localCanonicalHash": "sha256:22d30af2997230d0a88428260107c533817a13697adeac73fab8ebc5b2c6de83"
+    },
+    {
+      "path": ".claude/commands/speckit.migrate.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:a905d86949324447bfaaed17e5cf64ff1ba6ba796d3d83dc91f5070c1c98ac85",
+      "localCanonicalHash": "sha256:a905d86949324447bfaaed17e5cf64ff1ba6ba796d3d83dc91f5070c1c98ac85"
+    },
+    {
+      "path": ".claude/commands/speckit.plan.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:17adb990e9c275eabb6dd4dae040573d911c6a29b00c95dd905621776dc01a38",
+      "localCanonicalHash": "sha256:17adb990e9c275eabb6dd4dae040573d911c6a29b00c95dd905621776dc01a38"
+    },
+    {
+      "path": ".claude/commands/speckit.retrospective.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:6e4d22e5dde4531cac2da8766aa8ae49d17a7d35cc30886a298b4937c462860b",
+      "localCanonicalHash": "sha256:6e4d22e5dde4531cac2da8766aa8ae49d17a7d35cc30886a298b4937c462860b"
+    },
+    {
+      "path": ".claude/commands/speckit.review.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:f6dcc73b4463043458955807306aa9af691590dcfaa72fb52eb157fa1987ba11",
+      "localCanonicalHash": "sha256:f6dcc73b4463043458955807306aa9af691590dcfaa72fb52eb157fa1987ba11"
+    },
+    {
+      "path": ".claude/commands/speckit.scope.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:969bec878170b006a2913abdb3d95b904bf1b3c6d9f80fe729d1cb38b1695331",
+      "localCanonicalHash": "sha256:969bec878170b006a2913abdb3d95b904bf1b3c6d9f80fe729d1cb38b1695331"
+    },
+    {
+      "path": ".claude/commands/speckit.specify.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:36b908586935e67425fb7937e8a168f64a338acb417770a6b760370385c01603",
+      "localCanonicalHash": "sha256:36b908586935e67425fb7937e8a168f64a338acb417770a6b760370385c01603"
+    },
+    {
+      "path": ".claude/commands/speckit.start.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:bfddda02a0cdcae9dc513e467569264acb3bc71645ff631a64368010ee37e9c5",
+      "localCanonicalHash": "sha256:bfddda02a0cdcae9dc513e467569264acb3bc71645ff631a64368010ee37e9c5"
+    },
+    {
+      "path": ".claude/commands/speckit.status.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:a39d913c61d63a72ca57e085514a1e44b7073507d1092f507b418f5924f0d0b0",
+      "localCanonicalHash": "sha256:a39d913c61d63a72ca57e085514a1e44b7073507d1092f507b418f5924f0d0b0"
+    },
+    {
+      "path": ".claude/commands/speckit.tasks.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:0b463ba449f4df85b97aff89caf40ba33b0c3765c0998cfce8c317200eeb4552",
+      "localCanonicalHash": "sha256:0b463ba449f4df85b97aff89caf40ba33b0c3765c0998cfce8c317200eeb4552"
+    },
+    {
+      "path": ".claude/commands/speckit.taskstoissues.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:19ebafa4bf6e72a3080c0d297905d93bdac5aaf989fc03b255450d4de18ec4d7",
+      "localCanonicalHash": "sha256:19ebafa4bf6e72a3080c0d297905d93bdac5aaf989fc03b255450d4de18ec4d7"
+    },
+    {
+      "path": ".claude/commands/status.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:c3dfcaad00388c6af0ee8a8e396a853620837c5eb4954fa213932b499601abf1",
+      "localCanonicalHash": "sha256:c3dfcaad00388c6af0ee8a8e396a853620837c5eb4954fa213932b499601abf1"
+    },
+    {
+      "path": ".claude/commands/test-engineer.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:366ba5025b01e8886c209f1e8a13dc5c958d7ce4d1ffa64e2f117d9e0b1bc259",
+      "localCanonicalHash": "sha256:366ba5025b01e8886c209f1e8a13dc5c958d7ce4d1ffa64e2f117d9e0b1bc259"
+    },
+    {
+      "path": ".claude/commands/test.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:420414646890deadc487ee12e89fb831084aa825de7aefab0b4414fc8ee9ddd8",
+      "localCanonicalHash": "sha256:420414646890deadc487ee12e89fb831084aa825de7aefab0b4414fc8ee9ddd8"
+    },
+    {
+      "path": ".claude/commands/ui-ux-pro-max.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:853b6d1f9b5e61a776f6bd14a3c3ae7ad114d8b7b771ed1a688af7f1c0ea7690",
+      "localCanonicalHash": "sha256:853b6d1f9b5e61a776f6bd14a3c3ae7ad114d8b7b771ed1a688af7f1c0ea7690"
+    },
+    {
+      "path": ".claude/commands/ultrathink.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:73f79b944c130c0446994167ccf3abe696b8cac28dcea525bb7453ec0c7d523d",
+      "localCanonicalHash": "sha256:73f79b944c130c0446994167ccf3abe696b8cac28dcea525bb7453ec0c7d523d"
+    },
+    {
+      "path": ".claude/commands/verify.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:aa44f137822d52d4e5aba85f0945ff9a8e548c6b4d23d05a4311da59dd37a109",
+      "localCanonicalHash": "sha256:aa44f137822d52d4e5aba85f0945ff9a8e548c6b4d23d05a4311da59dd37a109"
+    },
+    {
+      "path": ".claude/skills/api-patterns/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:af58dfd276037eebaf53153b9c0a8be2d655fdb97cd96ca2d376913572d3173a",
+      "localCanonicalHash": "sha256:af58dfd276037eebaf53153b9c0a8be2d655fdb97cd96ca2d376913572d3173a"
+    },
+    {
+      "path": ".claude/skills/api-patterns/api-style.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:ac7b7677e862c7b6f1a622425ac398807890272a3dcb31f528993f6411abccc2",
+      "localCanonicalHash": "sha256:ac7b7677e862c7b6f1a622425ac398807890272a3dcb31f528993f6411abccc2"
+    },
+    {
+      "path": ".claude/skills/api-patterns/auth.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:9e4c83d0ec058b3a8c7c8b21c3f01bbd3064a6ef2a96fdd07b466472ed7e0d0b",
+      "localCanonicalHash": "sha256:9e4c83d0ec058b3a8c7c8b21c3f01bbd3064a6ef2a96fdd07b466472ed7e0d0b"
+    },
+    {
+      "path": ".claude/skills/api-patterns/documentation.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:aa1d0262be74814e7d72d5dd2a4acf074235e8ca33c0dff0ec986adfd962a124",
+      "localCanonicalHash": "sha256:aa1d0262be74814e7d72d5dd2a4acf074235e8ca33c0dff0ec986adfd962a124"
+    },
+    {
+      "path": ".claude/skills/api-patterns/graphql.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:f7f49e84697c8993d9cdc66b3ada56f71b01d2221107cfe70bbf291628136b8c",
+      "localCanonicalHash": "sha256:f7f49e84697c8993d9cdc66b3ada56f71b01d2221107cfe70bbf291628136b8c"
+    },
+    {
+      "path": ".claude/skills/api-patterns/rate-limiting.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:f1538d288ce362012241a6085beb3b5ff06d11f754b5867bf0adb7b62afd0657",
+      "localCanonicalHash": "sha256:f1538d288ce362012241a6085beb3b5ff06d11f754b5867bf0adb7b62afd0657"
+    },
+    {
+      "path": ".claude/skills/api-patterns/response.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:37bc83dfd2c4365ea9f50e531149c22e6ecdafd9d0b66c2170528b2d88a8cfa6",
+      "localCanonicalHash": "sha256:37bc83dfd2c4365ea9f50e531149c22e6ecdafd9d0b66c2170528b2d88a8cfa6"
+    },
+    {
+      "path": ".claude/skills/api-patterns/rest.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:20bbf589c4f583b482f4610f41d25669af7224e989427353f18092e11d59970f",
+      "localCanonicalHash": "sha256:20bbf589c4f583b482f4610f41d25669af7224e989427353f18092e11d59970f"
+    },
+    {
+      "path": ".claude/skills/api-patterns/scripts/api_validator.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:0c633f13a560ba75556e434eb87adbd37d4c1b98ff6eb9b9ca36a2df5b192852",
+      "localCanonicalHash": "sha256:0c633f13a560ba75556e434eb87adbd37d4c1b98ff6eb9b9ca36a2df5b192852"
+    },
+    {
+      "path": ".claude/skills/api-patterns/security-testing.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:f05972e1ddacf4a32ec3b1dd01e722ff07959fa8b3fe30357cfc3e0d7b33c252",
+      "localCanonicalHash": "sha256:f05972e1ddacf4a32ec3b1dd01e722ff07959fa8b3fe30357cfc3e0d7b33c252"
+    },
+    {
+      "path": ".claude/skills/api-patterns/trpc.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:722dde150b45392b9517a2053e53958619cb8fc0c2047c8ef09be4bcb5e9095d",
+      "localCanonicalHash": "sha256:722dde150b45392b9517a2053e53958619cb8fc0c2047c8ef09be4bcb5e9095d"
+    },
+    {
+      "path": ".claude/skills/api-patterns/versioning.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:58abb2fc534e687bb54a4a191188f2698ec9ed3e4e12ba269d93cc03ed8d1ee6",
+      "localCanonicalHash": "sha256:58abb2fc534e687bb54a4a191188f2698ec9ed3e4e12ba269d93cc03ed8d1ee6"
+    },
+    {
+      "path": ".claude/skills/app-builder/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:0169334a5adab93cfb503fab2c66aa377c2a7177e49c3b0c0094365eb3bb5baa",
+      "localCanonicalHash": "sha256:0169334a5adab93cfb503fab2c66aa377c2a7177e49c3b0c0094365eb3bb5baa"
+    },
+    {
+      "path": ".claude/skills/app-builder/agent-coordination.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:195d6c460ce3475c21a96c55c196263f21345bd5372caed08fd37059a2a2e041",
+      "localCanonicalHash": "sha256:195d6c460ce3475c21a96c55c196263f21345bd5372caed08fd37059a2a2e041"
+    },
+    {
+      "path": ".claude/skills/app-builder/feature-building.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:e717306dfca771266b42b582a69ed67b02883d3a3604b6d6118841ae1369207c",
+      "localCanonicalHash": "sha256:e717306dfca771266b42b582a69ed67b02883d3a3604b6d6118841ae1369207c"
+    },
+    {
+      "path": ".claude/skills/app-builder/project-detection.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:65f41fd5bc87b8022b609cfef5ac0a372f57df872a939bcb8705dbe9294edd2f",
+      "localCanonicalHash": "sha256:65f41fd5bc87b8022b609cfef5ac0a372f57df872a939bcb8705dbe9294edd2f"
+    },
+    {
+      "path": ".claude/skills/app-builder/scaffolding.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:79248126fec6d29a6e07358afe485d47ac7023d60349bab2e6218280e51144e3",
+      "localCanonicalHash": "sha256:79248126fec6d29a6e07358afe485d47ac7023d60349bab2e6218280e51144e3"
+    },
+    {
+      "path": ".claude/skills/app-builder/tech-stack.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:2ebf7007824f0f9f8e9ddf35ddc35165c7a4954069b081e77b0a6d56b41558ce",
+      "localCanonicalHash": "sha256:2ebf7007824f0f9f8e9ddf35ddc35165c7a4954069b081e77b0a6d56b41558ce"
+    },
+    {
+      "path": ".claude/skills/app-builder/templates/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:b4887369cad061e7e59e9198593ffe3e93dd455dfe0cb93cb4e63ad37ccfa054",
+      "localCanonicalHash": "sha256:b4887369cad061e7e59e9198593ffe3e93dd455dfe0cb93cb4e63ad37ccfa054"
+    },
+    {
+      "path": ".claude/skills/app-builder/templates/astro-static/TEMPLATE.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:b603190c6f2d0a453d8fb9156532fd314722e0404635453858a278bc50bd6428",
+      "localCanonicalHash": "sha256:b603190c6f2d0a453d8fb9156532fd314722e0404635453858a278bc50bd6428"
+    },
+    {
+      "path": ".claude/skills/app-builder/templates/chrome-extension/TEMPLATE.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:dc8701558732953a5834255066a89bfc0036dd778d5a44d3a39f3066036fe8c2",
+      "localCanonicalHash": "sha256:dc8701558732953a5834255066a89bfc0036dd778d5a44d3a39f3066036fe8c2"
+    },
+    {
+      "path": ".claude/skills/app-builder/templates/cli-tool/TEMPLATE.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:89c0e5940c9fc79e664981d2826f9d5b2c4855a343d6b179ed0087032d3a323d",
+      "localCanonicalHash": "sha256:89c0e5940c9fc79e664981d2826f9d5b2c4855a343d6b179ed0087032d3a323d"
+    },
+    {
+      "path": ".claude/skills/app-builder/templates/electron-desktop/TEMPLATE.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:b495860b7ab3a38d0541729933178cc49b7f05d08d02ac06541cb1b3eacbb7ce",
+      "localCanonicalHash": "sha256:b495860b7ab3a38d0541729933178cc49b7f05d08d02ac06541cb1b3eacbb7ce"
+    },
+    {
+      "path": ".claude/skills/app-builder/templates/express-api/TEMPLATE.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:e06f166902ccca2943775faac0198c77cc52eca50ec7dde41aa90d9e16ee0990",
+      "localCanonicalHash": "sha256:e06f166902ccca2943775faac0198c77cc52eca50ec7dde41aa90d9e16ee0990"
+    },
+    {
+      "path": ".claude/skills/app-builder/templates/flutter-app/TEMPLATE.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:2b518b263daa7bc0090e5ccc387b1c55977367527e69e672332be4cd98049c1e",
+      "localCanonicalHash": "sha256:2b518b263daa7bc0090e5ccc387b1c55977367527e69e672332be4cd98049c1e"
+    },
+    {
+      "path": ".claude/skills/app-builder/templates/monorepo-turborepo/TEMPLATE.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:b0bd06e7e2eb80e6f52bd99a87ba45778943036bc33dcab2955e12994c4fe9bf",
+      "localCanonicalHash": "sha256:b0bd06e7e2eb80e6f52bd99a87ba45778943036bc33dcab2955e12994c4fe9bf"
+    },
+    {
+      "path": ".claude/skills/app-builder/templates/nextjs-fullstack/TEMPLATE.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:ab1216024dafc747c61a5aa1164ea3d1b278eb7f92381cd8a5ca93e41f2bc81c",
+      "localCanonicalHash": "sha256:ab1216024dafc747c61a5aa1164ea3d1b278eb7f92381cd8a5ca93e41f2bc81c"
+    },
+    {
+      "path": ".claude/skills/app-builder/templates/nextjs-saas/TEMPLATE.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:27f5ae71129e1286e875c8f0257c16b931bbb4e34409e363521418161f185816",
+      "localCanonicalHash": "sha256:27f5ae71129e1286e875c8f0257c16b931bbb4e34409e363521418161f185816"
+    },
+    {
+      "path": ".claude/skills/app-builder/templates/nextjs-static/TEMPLATE.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:8e9e9437629d9cbc1cfcdf9a64825e4cda782939e75e55bbbe42dc7f0968fa6d",
+      "localCanonicalHash": "sha256:8e9e9437629d9cbc1cfcdf9a64825e4cda782939e75e55bbbe42dc7f0968fa6d"
+    },
+    {
+      "path": ".claude/skills/app-builder/templates/nuxt-app/TEMPLATE.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:5b265e4c64d31429e3e64e436fd4eb5a140e6a8918f67926dd3169a7ca197c46",
+      "localCanonicalHash": "sha256:5b265e4c64d31429e3e64e436fd4eb5a140e6a8918f67926dd3169a7ca197c46"
+    },
+    {
+      "path": ".claude/skills/app-builder/templates/python-fastapi/TEMPLATE.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:5324b3fb4b0b1eee0363e5b452ff51de8fc03650ad58d568428a8f22283d8ba7",
+      "localCanonicalHash": "sha256:5324b3fb4b0b1eee0363e5b452ff51de8fc03650ad58d568428a8f22283d8ba7"
+    },
+    {
+      "path": ".claude/skills/app-builder/templates/react-native-app/TEMPLATE.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:1de9b35c7155becd8390605896b1f2fc16550ab82d1778bfdeafbec47cc48dcc",
+      "localCanonicalHash": "sha256:1de9b35c7155becd8390605896b1f2fc16550ab82d1778bfdeafbec47cc48dcc"
+    },
+    {
+      "path": ".claude/skills/architecture/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:a33d8d7d253bba0160de3c53556ea618a593ba35b18961d7d0b5d6469dff4feb",
+      "localCanonicalHash": "sha256:a33d8d7d253bba0160de3c53556ea618a593ba35b18961d7d0b5d6469dff4feb"
+    },
+    {
+      "path": ".claude/skills/architecture/context-discovery.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:0698e38a37669c36c819bac70c51213bb955e99125ca96b690c840c317595a17",
+      "localCanonicalHash": "sha256:0698e38a37669c36c819bac70c51213bb955e99125ca96b690c840c317595a17"
+    },
+    {
+      "path": ".claude/skills/architecture/examples.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:5bdd281a7409189049af4c55fbf8c8f562c250cd3e34cd60741be113110843a5",
+      "localCanonicalHash": "sha256:5bdd281a7409189049af4c55fbf8c8f562c250cd3e34cd60741be113110843a5"
+    },
+    {
+      "path": ".claude/skills/architecture/pattern-selection.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:6bdc74d7900a0574057d7c03b79afa3bf35b9efc4bc719cf6e198575373b879d",
+      "localCanonicalHash": "sha256:6bdc74d7900a0574057d7c03b79afa3bf35b9efc4bc719cf6e198575373b879d"
+    },
+    {
+      "path": ".claude/skills/architecture/patterns-reference.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:264d0c372a6b5d2a7bba506a4dd4d74855f69298d4dabf1ae046d51f2f49bd9d",
+      "localCanonicalHash": "sha256:264d0c372a6b5d2a7bba506a4dd4d74855f69298d4dabf1ae046d51f2f49bd9d"
+    },
+    {
+      "path": ".claude/skills/architecture/trade-off-analysis.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:f56a4be059c369565f6e527ffac5950a580c5912a75eb3a516afc9a549d05d04",
+      "localCanonicalHash": "sha256:f56a4be059c369565f6e527ffac5950a580c5912a75eb3a516afc9a549d05d04"
+    },
+    {
+      "path": ".claude/skills/bash-linux/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:17c0a0d75bf28f0f639c983299a5e3c0f7fa829d50d6e147f553b3d26ffcb13c",
+      "localCanonicalHash": "sha256:17c0a0d75bf28f0f639c983299a5e3c0f7fa829d50d6e147f553b3d26ffcb13c"
+    },
+    {
+      "path": ".claude/skills/behavioral-modes/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:e97c4f41ca0e9079b4b3b6830845d010ed9982542381afe0a8fe355f1c9b9b30",
+      "localCanonicalHash": "sha256:e97c4f41ca0e9079b4b3b6830845d010ed9982542381afe0a8fe355f1c9b9b30"
+    },
+    {
+      "path": ".claude/skills/brainstorming/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:884b2f3d36a02cd7e70e7f283b0ef0b1c7791d731ef633d38b359be075bf3d2c",
+      "localCanonicalHash": "sha256:884b2f3d36a02cd7e70e7f283b0ef0b1c7791d731ef633d38b359be075bf3d2c"
+    },
+    {
+      "path": ".claude/skills/brainstorming/dynamic-questioning.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:b8ee14ed26f4ebffd4d6e63959eab94646dea87c5c3cfb15e9f036bd9a6a7c61",
+      "localCanonicalHash": "sha256:b8ee14ed26f4ebffd4d6e63959eab94646dea87c5c3cfb15e9f036bd9a6a7c61"
+    },
+    {
+      "path": ".claude/skills/clean-code/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:1797935797098463f4bcb60f493060263868882a4b5fe2663cefef438c357db4",
+      "localCanonicalHash": "sha256:1797935797098463f4bcb60f493060263868882a4b5fe2663cefef438c357db4"
+    },
+    {
+      "path": ".claude/skills/code-review-checklist/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:905ec9820ad5ac6f04de94a26921c1c7e363b3d5449853c1ffa2150f0c9e8caf",
+      "localCanonicalHash": "sha256:905ec9820ad5ac6f04de94a26921c1c7e363b3d5449853c1ffa2150f0c9e8caf"
+    },
+    {
+      "path": ".claude/skills/database-design/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:f5c789b508bc4f21966971720178b274c2717c12333fdb79d900d4142c18f24b",
+      "localCanonicalHash": "sha256:f5c789b508bc4f21966971720178b274c2717c12333fdb79d900d4142c18f24b"
+    },
+    {
+      "path": ".claude/skills/database-design/database-selection.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:3655cdd3a38a9ca1ae8408be8057ea628b08bf9ab22460b1bc571228dd2ba6c6",
+      "localCanonicalHash": "sha256:3655cdd3a38a9ca1ae8408be8057ea628b08bf9ab22460b1bc571228dd2ba6c6"
+    },
+    {
+      "path": ".claude/skills/database-design/indexing.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:eec8ce01e7c1c8ec2aed7a96d260a52b12d90c2996288e32814a8d9cf29cc22a",
+      "localCanonicalHash": "sha256:eec8ce01e7c1c8ec2aed7a96d260a52b12d90c2996288e32814a8d9cf29cc22a"
+    },
+    {
+      "path": ".claude/skills/database-design/migrations.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:b5b9e518f18264cdd946f4914d73c2355065ba712cb61db01ba59bacb95423a2",
+      "localCanonicalHash": "sha256:b5b9e518f18264cdd946f4914d73c2355065ba712cb61db01ba59bacb95423a2"
+    },
+    {
+      "path": ".claude/skills/database-design/optimization.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:10a6f484fdae9973957030d8ef47bad4ffba9f7709e9c824883a97f92925a722",
+      "localCanonicalHash": "sha256:10a6f484fdae9973957030d8ef47bad4ffba9f7709e9c824883a97f92925a722"
+    },
+    {
+      "path": ".claude/skills/database-design/orm-selection.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:11ece2e816949e26a7019b84004e240a9f9ab0b38c4f454bd522dd251c5dac97",
+      "localCanonicalHash": "sha256:11ece2e816949e26a7019b84004e240a9f9ab0b38c4f454bd522dd251c5dac97"
+    },
+    {
+      "path": ".claude/skills/database-design/schema-design.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:0a83addd1e9963e3d958eb00474d7dc72881c4290a97bac03bf09553607e3f6f",
+      "localCanonicalHash": "sha256:0a83addd1e9963e3d958eb00474d7dc72881c4290a97bac03bf09553607e3f6f"
+    },
+    {
+      "path": ".claude/skills/database-design/scripts/schema_validator.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:30002411da4b6b82471d7e33ac3906daec72e69fab0fd29dd8c201b6a5777748",
+      "localCanonicalHash": "sha256:30002411da4b6b82471d7e33ac3906daec72e69fab0fd29dd8c201b6a5777748"
+    },
+    {
+      "path": ".claude/skills/deployment-procedures/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:61e5f86dfbacfcc76604917d49cc5c9e80d53a0fddf48933ede81005549abb17",
+      "localCanonicalHash": "sha256:61e5f86dfbacfcc76604917d49cc5c9e80d53a0fddf48933ede81005549abb17"
+    },
+    {
+      "path": ".claude/skills/doc.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:617c52f21a69434077995bbfaaa34db558be519ab88792d33fc8423e4c9dc44b",
+      "localCanonicalHash": "sha256:617c52f21a69434077995bbfaaa34db558be519ab88792d33fc8423e4c9dc44b"
+    },
+    {
+      "path": ".claude/skills/docker-expert/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:e33b08feeaa8e110c08dddd030970547356514d42aa484e52f51e2fd2d4f451b",
+      "localCanonicalHash": "sha256:e33b08feeaa8e110c08dddd030970547356514d42aa484e52f51e2fd2d4f451b"
+    },
+    {
+      "path": ".claude/skills/documentation-templates/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:84034e4f339571ef49cae33497cc63c67eee511410c90a737b7d071cdd791292",
+      "localCanonicalHash": "sha256:84034e4f339571ef49cae33497cc63c67eee511410c90a737b7d071cdd791292"
+    },
+    {
+      "path": ".claude/skills/frontend-design/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:a45e00527047fed4a69fadf0db401fdbc22210f54036b107d11ea3c26f7d0b71",
+      "localCanonicalHash": "sha256:a45e00527047fed4a69fadf0db401fdbc22210f54036b107d11ea3c26f7d0b71"
+    },
+    {
+      "path": ".claude/skills/frontend-design/animation-guide.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:50b6c57bd21dd545befc48038ed92dc5e1ada7d65489a6fc833f68857a461317",
+      "localCanonicalHash": "sha256:50b6c57bd21dd545befc48038ed92dc5e1ada7d65489a6fc833f68857a461317"
+    },
+    {
+      "path": ".claude/skills/frontend-design/color-system.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:31a6b50a4263591f68725461e1af85bc4334e5807bf6dac8b6342657118d0857",
+      "localCanonicalHash": "sha256:31a6b50a4263591f68725461e1af85bc4334e5807bf6dac8b6342657118d0857"
+    },
+    {
+      "path": ".claude/skills/frontend-design/decision-trees.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:d521ce17fb9f33d3c8a899270ba15b82f1c9ae414624a6720013ddf133f59807",
+      "localCanonicalHash": "sha256:d521ce17fb9f33d3c8a899270ba15b82f1c9ae414624a6720013ddf133f59807"
+    },
+    {
+      "path": ".claude/skills/frontend-design/deep-design-thinking.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:83db4a691a8733cf4fa9971ca9484087d06ba10ed24e59e3e73ef3317615a639",
+      "localCanonicalHash": "sha256:83db4a691a8733cf4fa9971ca9484087d06ba10ed24e59e3e73ef3317615a639"
+    },
+    {
+      "path": ".claude/skills/frontend-design/motion-graphics.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:0351bd1a0a5ec2759c4cea6874e6a8bc2d2ada557e39b96c9345c6498f9ed96e",
+      "localCanonicalHash": "sha256:0351bd1a0a5ec2759c4cea6874e6a8bc2d2ada557e39b96c9345c6498f9ed96e"
+    },
+    {
+      "path": ".claude/skills/frontend-design/scripts/accessibility_checker.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:07de15cb02bfbddb87e405fd8e73b43a2da7b82c4ad8800aecc2d71a9813efc3",
+      "localCanonicalHash": "sha256:07de15cb02bfbddb87e405fd8e73b43a2da7b82c4ad8800aecc2d71a9813efc3"
+    },
+    {
+      "path": ".claude/skills/frontend-design/scripts/ux_audit.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:1fffb5617de9467ce45a6de2157970af5c0be50391f68909d39d401ed5215c19",
+      "localCanonicalHash": "sha256:1fffb5617de9467ce45a6de2157970af5c0be50391f68909d39d401ed5215c19"
+    },
+    {
+      "path": ".claude/skills/frontend-design/typography-system.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:79c82e26c31d28087c8528ba280ad7810e85d101ae2661abd2f94dd3277a648a",
+      "localCanonicalHash": "sha256:79c82e26c31d28087c8528ba280ad7810e85d101ae2661abd2f94dd3277a648a"
+    },
+    {
+      "path": ".claude/skills/frontend-design/ux-psychology.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:92523c787e4abd1991d954f3b376682a091957ce19ba931c4b18faf75234f153",
+      "localCanonicalHash": "sha256:92523c787e4abd1991d954f3b376682a091957ce19ba931c4b18faf75234f153"
+    },
+    {
+      "path": ".claude/skills/frontend-design/visual-effects.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:07568520407d298f50733028f92bf090d071a84a6ecd97950fba1384a0496a82",
+      "localCanonicalHash": "sha256:07568520407d298f50733028f92bf090d071a84a6ecd97950fba1384a0496a82"
+    },
+    {
+      "path": ".claude/skills/game-development/2d-games/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:f31d95e041d06f018620fc697f25a32ea115b4ec577d9f448f714eeeb606363d",
+      "localCanonicalHash": "sha256:f31d95e041d06f018620fc697f25a32ea115b4ec577d9f448f714eeeb606363d"
+    },
+    {
+      "path": ".claude/skills/game-development/3d-games/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:141bf1ca6af96066cffa91b2b37417b9d1cffec4fcc2a6ef1333ee976121f7dd",
+      "localCanonicalHash": "sha256:141bf1ca6af96066cffa91b2b37417b9d1cffec4fcc2a6ef1333ee976121f7dd"
+    },
+    {
+      "path": ".claude/skills/game-development/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:994e2de3a8fd7dcd5caa8f08ddcb663d0d27cf161ddd5f74f88a441c0905189d",
+      "localCanonicalHash": "sha256:994e2de3a8fd7dcd5caa8f08ddcb663d0d27cf161ddd5f74f88a441c0905189d"
+    },
+    {
+      "path": ".claude/skills/game-development/game-art/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:ab7029cb91c498c6469137f7b8b1575fdc7a97db3cc338c5cd2f0edc2ac2888a",
+      "localCanonicalHash": "sha256:ab7029cb91c498c6469137f7b8b1575fdc7a97db3cc338c5cd2f0edc2ac2888a"
+    },
+    {
+      "path": ".claude/skills/game-development/game-audio/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:5cfa7e0a750c202ce81dde7aef8ebbd6e9954ece42ce47ed1619163d217a48c3",
+      "localCanonicalHash": "sha256:5cfa7e0a750c202ce81dde7aef8ebbd6e9954ece42ce47ed1619163d217a48c3"
+    },
+    {
+      "path": ".claude/skills/game-development/game-design/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:93c4179046820a685506d81b066cbceeaa91b197cdb89ab7da1e04cac9062657",
+      "localCanonicalHash": "sha256:93c4179046820a685506d81b066cbceeaa91b197cdb89ab7da1e04cac9062657"
+    },
+    {
+      "path": ".claude/skills/game-development/mobile-games/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:43db8fb50830a99fb14ace08cb29cc60cd7f51a240c5ae73dbe5b31da704f24f",
+      "localCanonicalHash": "sha256:43db8fb50830a99fb14ace08cb29cc60cd7f51a240c5ae73dbe5b31da704f24f"
+    },
+    {
+      "path": ".claude/skills/game-development/multiplayer/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:79ee8d6f2e04a993b6cdf5eb251590051427cc4e09aa3a7f67f1ab8e61e205f5",
+      "localCanonicalHash": "sha256:79ee8d6f2e04a993b6cdf5eb251590051427cc4e09aa3a7f67f1ab8e61e205f5"
+    },
+    {
+      "path": ".claude/skills/game-development/pc-games/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:739b244b02659ec53ca719bbdf8ac2684dbeeafc5d5ddac124ffa6407f10f5df",
+      "localCanonicalHash": "sha256:739b244b02659ec53ca719bbdf8ac2684dbeeafc5d5ddac124ffa6407f10f5df"
+    },
+    {
+      "path": ".claude/skills/game-development/vr-ar/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:59ddbdecc4fa17e74c4747f5f02bd69edb8bffcd1cdc2866dd6a053e19bc139e",
+      "localCanonicalHash": "sha256:59ddbdecc4fa17e74c4747f5f02bd69edb8bffcd1cdc2866dd6a053e19bc139e"
+    },
+    {
+      "path": ".claude/skills/game-development/web-games/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:1213dbf108ac6a56c7c2cb67e81705b10cf0b9d136fa775ad161273bfe452a90",
+      "localCanonicalHash": "sha256:1213dbf108ac6a56c7c2cb67e81705b10cf0b9d136fa775ad161273bfe452a90"
+    },
+    {
+      "path": ".claude/skills/geo-fundamentals/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:2ee830fe680802316c549dbeb31cc0c4e49569c25ab338e7812500d097a5924b",
+      "localCanonicalHash": "sha256:2ee830fe680802316c549dbeb31cc0c4e49569c25ab338e7812500d097a5924b"
+    },
+    {
+      "path": ".claude/skills/geo-fundamentals/scripts/geo_checker.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:869b00f7f8e069ebed9efadf7032f8fa0544f72a2719a690920e6460ea945bde",
+      "localCanonicalHash": "sha256:869b00f7f8e069ebed9efadf7032f8fa0544f72a2719a690920e6460ea945bde"
+    },
+    {
+      "path": ".claude/skills/i18n-localization/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:1509cf8dc323307ffec7288f185414226862a400c3ef2617c62fdd77ee4cb8f9",
+      "localCanonicalHash": "sha256:1509cf8dc323307ffec7288f185414226862a400c3ef2617c62fdd77ee4cb8f9"
+    },
+    {
+      "path": ".claude/skills/i18n-localization/scripts/i18n_checker.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:a90946f9ffee5fc83b1dbdbd001616eceb299101bf255efaec4601cecf210379",
+      "localCanonicalHash": "sha256:a90946f9ffee5fc83b1dbdbd001616eceb299101bf255efaec4601cecf210379"
+    },
+    {
+      "path": ".claude/skills/lint-and-validate/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:00497ead822be9f5dc871ab48dfba38a19f1a04cc77e5fdee77898a2a7e2e88f",
+      "localCanonicalHash": "sha256:00497ead822be9f5dc871ab48dfba38a19f1a04cc77e5fdee77898a2a7e2e88f"
+    },
+    {
+      "path": ".claude/skills/lint-and-validate/scripts/lint_runner.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:db69de52503eae949fecc7dca6198fe8194ea6e2018569ef86823d6b77fe11fe",
+      "localCanonicalHash": "sha256:db69de52503eae949fecc7dca6198fe8194ea6e2018569ef86823d6b77fe11fe"
+    },
+    {
+      "path": ".claude/skills/lint-and-validate/scripts/type_coverage.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:e654d5eeae187976700da0739b4e62f35e2829d3c61b88cd08da19b99eb164f9",
+      "localCanonicalHash": "sha256:e654d5eeae187976700da0739b4e62f35e2829d3c61b88cd08da19b99eb164f9"
+    },
+    {
+      "path": ".claude/skills/mcp-builder/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:8a0beec9a58945294089efe281a1e2d8cc66517b621796bed0f619a4d07402da",
+      "localCanonicalHash": "sha256:8a0beec9a58945294089efe281a1e2d8cc66517b621796bed0f619a4d07402da"
+    },
+    {
+      "path": ".claude/skills/mobile-design/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:ec74cda5e1954572e4282c3aaa9c1c32ec743cef83c53f8aef622c00dc8f0682",
+      "localCanonicalHash": "sha256:ec74cda5e1954572e4282c3aaa9c1c32ec743cef83c53f8aef622c00dc8f0682"
+    },
+    {
+      "path": ".claude/skills/mobile-design/decision-trees.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:ed7e218bdd40a6d6614974acf4d54772bc6384536d747ac7e4f378870388b0d3",
+      "localCanonicalHash": "sha256:ed7e218bdd40a6d6614974acf4d54772bc6384536d747ac7e4f378870388b0d3"
+    },
+    {
+      "path": ".claude/skills/mobile-design/mobile-backend.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:b46b4c0d122de115ed85a8ea814c898cebecb6338f58008b8ce23f28d136dcb2",
+      "localCanonicalHash": "sha256:b46b4c0d122de115ed85a8ea814c898cebecb6338f58008b8ce23f28d136dcb2"
+    },
+    {
+      "path": ".claude/skills/mobile-design/mobile-color-system.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:9e6e302b1a03179811cbe15b8cba70eca5c6dbd42396d9efbc331d704c9b86b1",
+      "localCanonicalHash": "sha256:9e6e302b1a03179811cbe15b8cba70eca5c6dbd42396d9efbc331d704c9b86b1"
+    },
+    {
+      "path": ".claude/skills/mobile-design/mobile-debugging.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:647fed510688212d3025c3f1ab06aae44dc5c19d245521de400d2575699e8008",
+      "localCanonicalHash": "sha256:647fed510688212d3025c3f1ab06aae44dc5c19d245521de400d2575699e8008"
+    },
+    {
+      "path": ".claude/skills/mobile-design/mobile-design-thinking.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:0f0f8aa1e4b081c61de164572c46ccee716904ca1a4483e3bd0d2ed7996b074a",
+      "localCanonicalHash": "sha256:0f0f8aa1e4b081c61de164572c46ccee716904ca1a4483e3bd0d2ed7996b074a"
+    },
+    {
+      "path": ".claude/skills/mobile-design/mobile-navigation.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:1d9aefcd45146bc39aa4ac12b27e89343cc1f206ea2dafa41269e72433930711",
+      "localCanonicalHash": "sha256:1d9aefcd45146bc39aa4ac12b27e89343cc1f206ea2dafa41269e72433930711"
+    },
+    {
+      "path": ".claude/skills/mobile-design/mobile-performance.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:1acdf49acba81035b6e11870b5e2b80e2b585178f6b524065c6937fb42da7059",
+      "localCanonicalHash": "sha256:1acdf49acba81035b6e11870b5e2b80e2b585178f6b524065c6937fb42da7059"
+    },
+    {
+      "path": ".claude/skills/mobile-design/mobile-testing.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:a940bd0c2d5204f83b1b8e2214e938e2a4b0e68e72e7b63b175c33d7bb8bdd12",
+      "localCanonicalHash": "sha256:a940bd0c2d5204f83b1b8e2214e938e2a4b0e68e72e7b63b175c33d7bb8bdd12"
+    },
+    {
+      "path": ".claude/skills/mobile-design/mobile-typography.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:40253bb17ed0bdacef06c0f0f27233ba03274aa1587f0c96215025aaefc0316a",
+      "localCanonicalHash": "sha256:40253bb17ed0bdacef06c0f0f27233ba03274aa1587f0c96215025aaefc0316a"
+    },
+    {
+      "path": ".claude/skills/mobile-design/platform-android.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:672a828fa4cd2d85dfe6aba379c1f65bffd4d9abf484da58e2d39b6abf0b16ef",
+      "localCanonicalHash": "sha256:672a828fa4cd2d85dfe6aba379c1f65bffd4d9abf484da58e2d39b6abf0b16ef"
+    },
+    {
+      "path": ".claude/skills/mobile-design/platform-ios.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:3843ee18984f68ab5fa022976f2015429788baff5f8af0dd56d6298792e09396",
+      "localCanonicalHash": "sha256:3843ee18984f68ab5fa022976f2015429788baff5f8af0dd56d6298792e09396"
+    },
+    {
+      "path": ".claude/skills/mobile-design/scripts/mobile_audit.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:7d9f7b6813c8decb159462259ce09a6bc91ecfc602971c20ca3919981ac9efe6",
+      "localCanonicalHash": "sha256:7d9f7b6813c8decb159462259ce09a6bc91ecfc602971c20ca3919981ac9efe6"
+    },
+    {
+      "path": ".claude/skills/mobile-design/touch-psychology.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:ec131aea1ce39b8d46d1c491ee4839510979d2f60ee7698e2ad1aed2c48b6146",
+      "localCanonicalHash": "sha256:ec131aea1ce39b8d46d1c491ee4839510979d2f60ee7698e2ad1aed2c48b6146"
+    },
+    {
+      "path": ".claude/skills/nestjs-expert/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:13a1778b3ed20c47e0578340310c29f46d65dd9a3ab8b5a987fc74abf9a833c9",
+      "localCanonicalHash": "sha256:13a1778b3ed20c47e0578340310c29f46d65dd9a3ab8b5a987fc74abf9a833c9"
+    },
+    {
+      "path": ".claude/skills/nextjs-best-practices/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:50bf04377ef5686f02884153c4115168ef2ec21b481bdac732c27389e4f3d3ef",
+      "localCanonicalHash": "sha256:50bf04377ef5686f02884153c4115168ef2ec21b481bdac732c27389e4f3d3ef"
+    },
+    {
+      "path": ".claude/skills/nodejs-best-practices/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:e6d0dea6b638c8674370bba370377b2812dfc84268700e55e08f7babb685c17d",
+      "localCanonicalHash": "sha256:e6d0dea6b638c8674370bba370377b2812dfc84268700e55e08f7babb685c17d"
+    },
+    {
+      "path": ".claude/skills/parallel-agents/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:e50894844f2014135e160d0ed5dbee3fb807dac945cbdd7d224430fec21a5007",
+      "localCanonicalHash": "sha256:e50894844f2014135e160d0ed5dbee3fb807dac945cbdd7d224430fec21a5007"
+    },
+    {
+      "path": ".claude/skills/performance-profiling/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:5bf6f690e108cc77dbcea1582953d068a95e8ede8bec7c17a102f2ec276730fd",
+      "localCanonicalHash": "sha256:5bf6f690e108cc77dbcea1582953d068a95e8ede8bec7c17a102f2ec276730fd"
+    },
+    {
+      "path": ".claude/skills/performance-profiling/scripts/lighthouse_audit.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:7e3928f1ac24e472fd9b0bc390f223379d8ce3e3d9ff6136e557ac4bdad7f52c",
+      "localCanonicalHash": "sha256:7e3928f1ac24e472fd9b0bc390f223379d8ce3e3d9ff6136e557ac4bdad7f52c"
+    },
+    {
+      "path": ".claude/skills/plan-writing/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:2d5af48c518c9252afd636953ac5467466dfb03d7c5607a20dda35726228a7cc",
+      "localCanonicalHash": "sha256:2d5af48c518c9252afd636953ac5467466dfb03d7c5607a20dda35726228a7cc"
+    },
+    {
+      "path": ".claude/skills/powershell-windows/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:e902ee8d16b3fe50d8c53d7612fbfce4c97526ec4d069e7738e14bc9ae3acacb",
+      "localCanonicalHash": "sha256:e902ee8d16b3fe50d8c53d7612fbfce4c97526ec4d069e7738e14bc9ae3acacb"
+    },
+    {
+      "path": ".claude/skills/prisma-expert/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:67895cb892dc903f72c13ed5bd662bffba531906b9a323365b1b48affbb0644c",
+      "localCanonicalHash": "sha256:67895cb892dc903f72c13ed5bd662bffba531906b9a323365b1b48affbb0644c"
+    },
+    {
+      "path": ".claude/skills/python-patterns/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:b295d6221117d189efe741abf680924aedb836c80bc6990f85137f6975fd734e",
+      "localCanonicalHash": "sha256:b295d6221117d189efe741abf680924aedb836c80bc6990f85137f6975fd734e"
+    },
+    {
+      "path": ".claude/skills/react-patterns/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:b10579e408d1a03dca9f23c62648c8b669e8a18a9f119a48860b9aa44f397b81",
+      "localCanonicalHash": "sha256:b10579e408d1a03dca9f23c62648c8b669e8a18a9f119a48860b9aa44f397b81"
+    },
+    {
+      "path": ".claude/skills/red-team-tactics/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:0009ad5e3194671eed6a0456d4c33d17e40e067c78ae5b2779deb81438aa00ea",
+      "localCanonicalHash": "sha256:0009ad5e3194671eed6a0456d4c33d17e40e067c78ae5b2779deb81438aa00ea"
+    },
+    {
+      "path": ".claude/skills/semver-versioning/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:dc7950da30d937562976fe6986a7f5dd16302cbe1c5aee31fc60d67fece77f7e",
+      "localCanonicalHash": "sha256:dc7950da30d937562976fe6986a7f5dd16302cbe1c5aee31fc60d67fece77f7e"
+    },
+    {
+      "path": ".claude/skills/seo-fundamentals/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:eb5f2f9fe15f290323c464f362ea258dc40ebd9f72991e611beb2e7f5f8db2d3",
+      "localCanonicalHash": "sha256:eb5f2f9fe15f290323c464f362ea258dc40ebd9f72991e611beb2e7f5f8db2d3"
+    },
+    {
+      "path": ".claude/skills/seo-fundamentals/scripts/seo_checker.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:58354b1653f8151d8a4dd7c7d93112756160597d830ce4ba4cfd6ab45f42880e",
+      "localCanonicalHash": "sha256:58354b1653f8151d8a4dd7c7d93112756160597d830ce4ba4cfd6ab45f42880e"
+    },
+    {
+      "path": ".claude/skills/server-management/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:60277deafa8e97df1d8ec571eab94e752dba768e70aee6d994c87a25a4a09521",
+      "localCanonicalHash": "sha256:60277deafa8e97df1d8ec571eab94e752dba768e70aee6d994c87a25a4a09521"
+    },
+    {
+      "path": ".claude/skills/system-design-patterns/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:638b74e3c1e7623b679633ee16e4dda6fb614a5cb9d7300a7cfbf73090cc897a",
+      "localCanonicalHash": "sha256:638b74e3c1e7623b679633ee16e4dda6fb614a5cb9d7300a7cfbf73090cc897a"
+    },
+    {
+      "path": ".claude/skills/systematic-debugging/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:255ee1d1d72eb1889391c932840483dd281aed6f0d6774dbe436ba3759f09d0a",
+      "localCanonicalHash": "sha256:255ee1d1d72eb1889391c932840483dd281aed6f0d6774dbe436ba3759f09d0a"
+    },
+    {
+      "path": ".claude/skills/systems-programming/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:0287aef2f022ea083b677021bb23b27547716f3c0eb627aa3197c1805e7d7fa8",
+      "localCanonicalHash": "sha256:0287aef2f022ea083b677021bb23b27547716f3c0eb627aa3197c1805e7d7fa8"
+    },
+    {
+      "path": ".claude/skills/tailwind-patterns/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:bc64b47c56a44183441f3c908457dd4dcaaf1dfe4dc2c508b83f56ecdb017667",
+      "localCanonicalHash": "sha256:bc64b47c56a44183441f3c908457dd4dcaaf1dfe4dc2c508b83f56ecdb017667"
+    },
+    {
+      "path": ".claude/skills/tdd-workflow/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:b8fceb81c0967e5beadb7a89e80bc6b199c5c203fb34de50514ba9742d530157",
+      "localCanonicalHash": "sha256:b8fceb81c0967e5beadb7a89e80bc6b199c5c203fb34de50514ba9742d530157"
+    },
+    {
+      "path": ".claude/skills/testing-patterns/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:f229085ad979d04c004b01865ad8fc4dcd732f4a917b56af59f600e0a3a26e8d",
+      "localCanonicalHash": "sha256:f229085ad979d04c004b01865ad8fc4dcd732f4a917b56af59f600e0a3a26e8d"
+    },
+    {
+      "path": ".claude/skills/testing-patterns/scripts/test_runner.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:e09b21e2334913fbb6b2e840faa229874283fd76c79b3dd0f81c504f41585c8d",
+      "localCanonicalHash": "sha256:e09b21e2334913fbb6b2e840faa229874283fd76c79b3dd0f81c504f41585c8d"
+    },
+    {
+      "path": ".claude/skills/typescript-expert/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:88b62c21b51eae08cd9af282d29d5adb9fa06626af59768cd4e9d739791e5a65",
+      "localCanonicalHash": "sha256:88b62c21b51eae08cd9af282d29d5adb9fa06626af59768cd4e9d739791e5a65"
+    },
+    {
+      "path": ".claude/skills/typescript-expert/references/tsconfig-strict.json",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:baa3936ec045998a5b751166cc118ce9e9c7877f583562e75849f0a1d8bc59ac",
+      "localCanonicalHash": "sha256:baa3936ec045998a5b751166cc118ce9e9c7877f583562e75849f0a1d8bc59ac"
+    },
+    {
+      "path": ".claude/skills/typescript-expert/references/typescript-cheatsheet.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:48e2298805f0f0f1081a2a3637470dac17714f838b6ae594a036a1c5364b6c5a",
+      "localCanonicalHash": "sha256:48e2298805f0f0f1081a2a3637470dac17714f838b6ae594a036a1c5364b6c5a"
+    },
+    {
+      "path": ".claude/skills/typescript-expert/references/utility-types.ts",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:72c9a65db30be18fa08a7e3fe9335aba271f871e91085ab586d5da49f7a6ca7e",
+      "localCanonicalHash": "sha256:72c9a65db30be18fa08a7e3fe9335aba271f871e91085ab586d5da49f7a6ca7e"
+    },
+    {
+      "path": ".claude/skills/typescript-expert/scripts/ts_diagnostic.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:5748639b1202052332554151d677dd6b1d2376c4985db08a17ae66561dc228a8",
+      "localCanonicalHash": "sha256:5748639b1202052332554151d677dd6b1d2376c4985db08a17ae66561dc228a8"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:9599b36ecd561f8cdafab3ce471476db66a5d57102860c3e01439a8aad347500",
+      "localCanonicalHash": "sha256:9599b36ecd561f8cdafab3ce471476db66a5d57102860c3e01439a8aad347500"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/charts.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:5b4176f1a5057cb795c91ce5cca0d59e7a547e11b86e223976e3bdf0befd6ec5",
+      "localCanonicalHash": "sha256:5b4176f1a5057cb795c91ce5cca0d59e7a547e11b86e223976e3bdf0befd6ec5"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/colors.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:810e2df8659ac77642665217db481982fa01b7d45f72ab90fa600eee9962dfa0",
+      "localCanonicalHash": "sha256:810e2df8659ac77642665217db481982fa01b7d45f72ab90fa600eee9962dfa0"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/icons.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:26be5e47c4c3fc7acae52ac8bbfaf1bf9e5ddc9c01808953a3636f8615b9de9f",
+      "localCanonicalHash": "sha256:26be5e47c4c3fc7acae52ac8bbfaf1bf9e5ddc9c01808953a3636f8615b9de9f"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/landing.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:a052aeae53c4bf700b92cc59c901f3b79a8a0e040e48d7af0dbd15ac1f840326",
+      "localCanonicalHash": "sha256:a052aeae53c4bf700b92cc59c901f3b79a8a0e040e48d7af0dbd15ac1f840326"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/products.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:7e07553856a7c59aa249a5c305bdbc03593040143b3c26a5ac101eebdc91d1bd",
+      "localCanonicalHash": "sha256:7e07553856a7c59aa249a5c305bdbc03593040143b3c26a5ac101eebdc91d1bd"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/prompts.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:4fafc5d3bbf699705bf9b944ca3550fb5687ae1efa9cad31ef84ac51753132f5",
+      "localCanonicalHash": "sha256:4fafc5d3bbf699705bf9b944ca3550fb5687ae1efa9cad31ef84ac51753132f5"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/react-performance.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:904c8afcda229629545912dde0e8ac37503757131f0169f80b016f1f58c4fd3f",
+      "localCanonicalHash": "sha256:904c8afcda229629545912dde0e8ac37503757131f0169f80b016f1f58c4fd3f"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/stacks/flutter.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:fe36d404c799781e8ba6e9a8179b45799ed5126a545528550cd2eb0f2346e8c5",
+      "localCanonicalHash": "sha256:fe36d404c799781e8ba6e9a8179b45799ed5126a545528550cd2eb0f2346e8c5"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/stacks/html-tailwind.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:7aef38e75c53559470afcfa91580a9917ca8b7dbf8b92110389e23e93703ac52",
+      "localCanonicalHash": "sha256:7aef38e75c53559470afcfa91580a9917ca8b7dbf8b92110389e23e93703ac52"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/stacks/nextjs.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:e828ccc04843742f52f545a068e8a9ab0d2b97c0e771f7e93bf0cef74da05554",
+      "localCanonicalHash": "sha256:e828ccc04843742f52f545a068e8a9ab0d2b97c0e771f7e93bf0cef74da05554"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/stacks/nuxt-ui.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:05d6e74501b2b6a636faed32450622759f49a5bcafad971f5f4e7eba0eb7be71",
+      "localCanonicalHash": "sha256:05d6e74501b2b6a636faed32450622759f49a5bcafad971f5f4e7eba0eb7be71"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/stacks/nuxtjs.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:f7a3f2d9542856d00199f85c6c023b7c284cc698e2e6e12d61afce2edacb24d6",
+      "localCanonicalHash": "sha256:f7a3f2d9542856d00199f85c6c023b7c284cc698e2e6e12d61afce2edacb24d6"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/stacks/react-native.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:077aefc81d194895ecf7936b3ed298b978e36961f183e3a275f8acda19b5f621",
+      "localCanonicalHash": "sha256:077aefc81d194895ecf7936b3ed298b978e36961f183e3a275f8acda19b5f621"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/stacks/react.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:e5624ab41d33427d88e41d07581ce4eca59b37b36ab72a6ad43a9c8e2d0a1c72",
+      "localCanonicalHash": "sha256:e5624ab41d33427d88e41d07581ce4eca59b37b36ab72a6ad43a9c8e2d0a1c72"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/stacks/shadcn.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:395c2e415ef6f48a474acccdc8eb2c7258a6ed751a5037ba171a2d8823e02ded",
+      "localCanonicalHash": "sha256:395c2e415ef6f48a474acccdc8eb2c7258a6ed751a5037ba171a2d8823e02ded"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/stacks/svelte.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:71af52d64f266c88070b91dbbaa900c2f8074b6baae9f35eaea6ba9cec6fd803",
+      "localCanonicalHash": "sha256:71af52d64f266c88070b91dbbaa900c2f8074b6baae9f35eaea6ba9cec6fd803"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/stacks/swiftui.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:c9c2d2510f8e66281a2514e8dd0125a6b653b9ef53a71281b5e7dfe003d5b569",
+      "localCanonicalHash": "sha256:c9c2d2510f8e66281a2514e8dd0125a6b653b9ef53a71281b5e7dfe003d5b569"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/stacks/vue.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:c2724915d3c11cd67263f25896cff721f787a0fdd8326002d31e9f5806dfd8f8",
+      "localCanonicalHash": "sha256:c2724915d3c11cd67263f25896cff721f787a0fdd8326002d31e9f5806dfd8f8"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/styles.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:f7c33cd7a7a695ace1683ccff88a01b00fcd5d3e53d29d0a71cb119230662e8a",
+      "localCanonicalHash": "sha256:f7c33cd7a7a695ace1683ccff88a01b00fcd5d3e53d29d0a71cb119230662e8a"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/typography.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:6c0cd9db74f75d384773b347e1ddac42692c8d00c56790e8a0e619bfa4b9537d",
+      "localCanonicalHash": "sha256:6c0cd9db74f75d384773b347e1ddac42692c8d00c56790e8a0e619bfa4b9537d"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/ui-reasoning.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:58fc52fff69f62709f8c7dd460de6f6693699ea820f24287f3301a427c2b554e",
+      "localCanonicalHash": "sha256:58fc52fff69f62709f8c7dd460de6f6693699ea820f24287f3301a427c2b554e"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/ux-guidelines.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:ff6f38f28c23e8f20f027e8b22e8bcf249d3e2794fce06ed3e1efd2c86b91ad1",
+      "localCanonicalHash": "sha256:ff6f38f28c23e8f20f027e8b22e8bcf249d3e2794fce06ed3e1efd2c86b91ad1"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/data/web-interface.csv",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:10bfc24e09a6a15db8309e6ef9b6881e1d4af97dffb7c99418aefb8e30df7d54",
+      "localCanonicalHash": "sha256:10bfc24e09a6a15db8309e6ef9b6881e1d4af97dffb7c99418aefb8e30df7d54"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/scripts/core.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:e91bcee14c39f84d5222c71bf75df3b50d36f514cf98ca1178f083e14d598db0",
+      "localCanonicalHash": "sha256:e91bcee14c39f84d5222c71bf75df3b50d36f514cf98ca1178f083e14d598db0"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/scripts/design_system.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:3bfd1aa556a80cd588fb169d0c8066bcfd6ebf00c969e1408f031c82376a2227",
+      "localCanonicalHash": "sha256:3bfd1aa556a80cd588fb169d0c8066bcfd6ebf00c969e1408f031c82376a2227"
+    },
+    {
+      "path": ".claude/skills/ui-ux-pro-max/scripts/search.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:5140fd39b367dae8be3e0609bb104420ab13ae77067f10fb8c154ca443510748",
+      "localCanonicalHash": "sha256:5140fd39b367dae8be3e0609bb104420ab13ae77067f10fb8c154ca443510748"
+    },
+    {
+      "path": ".claude/skills/vulnerability-scanner/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:ae404d1fde44627a681cbe26a9df2ee17f384c4199cd34bcaa7b1d2757e06950",
+      "localCanonicalHash": "sha256:ae404d1fde44627a681cbe26a9df2ee17f384c4199cd34bcaa7b1d2757e06950"
+    },
+    {
+      "path": ".claude/skills/vulnerability-scanner/checklists.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:fcad8d2be67a2ef31a223f2fba9e1ed13188fcc15857a584a8fb5b55d9813e42",
+      "localCanonicalHash": "sha256:fcad8d2be67a2ef31a223f2fba9e1ed13188fcc15857a584a8fb5b55d9813e42"
+    },
+    {
+      "path": ".claude/skills/vulnerability-scanner/llm-security-shield.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:25c85aa68d6b28b2348243bcb92a751ae2d6536889b43457a607f1393ebcafc6",
+      "localCanonicalHash": "sha256:25c85aa68d6b28b2348243bcb92a751ae2d6536889b43457a607f1393ebcafc6"
+    },
+    {
+      "path": ".claude/skills/vulnerability-scanner/scripts/security_scan.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:5a066b5ffeb57b29187aaa83f570279cb3b05f39521169a4ae407d19d37dc482",
+      "localCanonicalHash": "sha256:5a066b5ffeb57b29187aaa83f570279cb3b05f39521169a4ae407d19d37dc482"
+    },
+    {
+      "path": ".claude/skills/webapp-testing/SKILL.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:aa05117912ef52addc31bdf601e8610c45badec923fc68bbc0d849b42695959a",
+      "localCanonicalHash": "sha256:aa05117912ef52addc31bdf601e8610c45badec923fc68bbc0d849b42695959a"
+    },
+    {
+      "path": ".claude/skills/webapp-testing/scripts/playwright_runner.py",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:122aedbf4fead451d04423857a7048fecf83e76ad4bfdc608787bca3fb3fbd5d",
+      "localCanonicalHash": "sha256:122aedbf4fead451d04423857a7048fecf83e76ad4bfdc608787bca3fb3fbd5d"
+    },
+    {
+      "path": "CLAUDE.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:6d6ae045a5f1cc2c5d6108877801cb61f1b3ff13c8028c8d02451184c56ac605",
+      "localCanonicalHash": "sha256:6d6ae045a5f1cc2c5d6108877801cb61f1b3ff13c8028c8d02451184c56ac605"
+    },
+    {
+      "path": ".github/prompts/antigravity-invocation.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/antigravity-invocation.md",
+      "renderedHash": "sha256:c71a1bc620bbeb0097384488aa2ae8f2d3b4fbb91452cf397bc0de76732b1fdc",
+      "localRenderedHash": "sha256:c71a1bc620bbeb0097384488aa2ae8f2d3b4fbb91452cf397bc0de76732b1fdc",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/backend-specialist.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/backend-specialist.md",
+      "renderedHash": "sha256:013a5c88e4c853b456366f48f582d75102ad0839c549eb12daf2b4b4ab2777a8",
+      "localRenderedHash": "sha256:013a5c88e4c853b456366f48f582d75102ad0839c549eb12daf2b4b4ab2777a8",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/backup_before_ai.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/backup_before_ai.md",
+      "renderedHash": "sha256:faf499dbc0c4a7e1a22e4c011c7b5d467bbe8dc4d76ab4328a4c0ffba64f7750",
+      "localRenderedHash": "sha256:faf499dbc0c4a7e1a22e4c011c7b5d467bbe8dc4d76ab4328a4c0ffba64f7750",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/blame-line.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/blame-line.md",
+      "renderedHash": "sha256:e7329a22943bab0b6544218d3ce4593d0f706ac1dcc0d7f965e4dd0b98b06c1a",
+      "localRenderedHash": "sha256:e7329a22943bab0b6544218d3ce4593d0f706ac1dcc0d7f965e4dd0b98b06c1a",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/brainstorm.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/brainstorm.md",
+      "renderedHash": "sha256:eb7fc253d827ba7fe2d607a2af0778631b1c1955daf1b2774e2c8ab849ca13e2",
+      "localRenderedHash": "sha256:eb7fc253d827ba7fe2d607a2af0778631b1c1955daf1b2774e2c8ab849ca13e2",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/bump.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/bump.md",
+      "renderedHash": "sha256:2219426cbdc19b2e0f4ce995b98305e6a8de380ac3eab62923ed8c3002255b79",
+      "localRenderedHash": "sha256:2219426cbdc19b2e0f4ce995b98305e6a8de380ac3eab62923ed8c3002255b79",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/code_review.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/code_review.md",
+      "renderedHash": "sha256:0db218f598d3510412e1568a1fd6ab2657d0222a13042e6662a6d40b02360931",
+      "localRenderedHash": "sha256:0db218f598d3510412e1568a1fd6ab2657d0222a13042e6662a6d40b02360931",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/commit.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/commit.md",
+      "renderedHash": "sha256:53e3fe28047c09d9e673f2752decef6be95b52d5b69d4d4607706013db170369",
+      "localRenderedHash": "sha256:53e3fe28047c09d9e673f2752decef6be95b52d5b69d4d4607706013db170369",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/create.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/create.md",
+      "renderedHash": "sha256:b52a583862119e69adeb414cf2be45c2db8ccc6958f72c1c742b0065d900e3b4",
+      "localRenderedHash": "sha256:b52a583862119e69adeb414cf2be45c2db8ccc6958f72c1c742b0065d900e3b4",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/database-architect.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/database-architect.md",
+      "renderedHash": "sha256:44bcecb8570b7ba85325ac182059f43b9efd735d5c731f6fe8a80171ae3b048c",
+      "localRenderedHash": "sha256:44bcecb8570b7ba85325ac182059f43b9efd735d5c731f6fe8a80171ae3b048c",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/debugger.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/debugger.md",
+      "renderedHash": "sha256:44b7d2fbd7d3c639663c32dca762bc9899628491a2ccf447abd0cb671411c6e7",
+      "localRenderedHash": "sha256:44b7d2fbd7d3c639663c32dca762bc9899628491a2ccf447abd0cb671411c6e7",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/deploy.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/deploy.md",
+      "renderedHash": "sha256:aa89337adf36c5b6b75f98e733e600be4ba16895aa01d0d7542cd9105ec005ac",
+      "localRenderedHash": "sha256:aa89337adf36c5b6b75f98e733e600be4ba16895aa01d0d7542cd9105ec005ac",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/deps-check.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/deps-check.md",
+      "renderedHash": "sha256:a3877d00caee01227a406d092983e535d0cd388fa82036130c814213add41a61",
+      "localRenderedHash": "sha256:a3877d00caee01227a406d092983e535d0cd388fa82036130c814213add41a61",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/devops-engineer.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/devops-engineer.md",
+      "renderedHash": "sha256:74919e5b396612a82dd86c0aec6ac3912f12f5cbed363d198b842c704ed5e308",
+      "localRenderedHash": "sha256:74919e5b396612a82dd86c0aec6ac3912f12f5cbed363d198b842c704ed5e308",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/diff.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/diff.md",
+      "renderedHash": "sha256:542cb1d85eef5b3fb07453e6ac5b5213eed3160627396b4c56a765112351e4a1",
+      "localRenderedHash": "sha256:542cb1d85eef5b3fb07453e6ac5b5213eed3160627396b4c56a765112351e4a1",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/dispatch.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/dispatch.md",
+      "renderedHash": "sha256:dcfd02a73ec68c9f952c6a05fa4769421f5bbdd2be940ebca2c6a47adfb822ae",
+      "localRenderedHash": "sha256:dcfd02a73ec68c9f952c6a05fa4769421f5bbdd2be940ebca2c6a47adfb822ae",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/documentation-writer.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/documentation-writer.md",
+      "renderedHash": "sha256:29b628c6b69ed585a18f6995244c25a7aff6eb3f6475e40f0dbd250fc1848af8",
+      "localRenderedHash": "sha256:29b628c6b69ed585a18f6995244c25a7aff6eb3f6475e40f0dbd250fc1848af8",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/enhance.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/enhance.md",
+      "renderedHash": "sha256:8804acfdeaf4a0b41c1c4fe6e9ea232fd2d4db30aea3e4efe6339a447ab01d62",
+      "localRenderedHash": "sha256:8804acfdeaf4a0b41c1c4fe6e9ea232fd2d4db30aea3e4efe6339a447ab01d62",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/explorer-agent.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/explorer-agent.md",
+      "renderedHash": "sha256:cece676771565bc6a90ca5b0d4c58ba406a22859dbe6e0f19f50e5a32bae3546",
+      "localRenderedHash": "sha256:cece676771565bc6a90ca5b0d4c58ba406a22859dbe6e0f19f50e5a32bae3546",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/fix-ci.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/fix-ci.md",
+      "renderedHash": "sha256:ef706f446470300941723181702e23094cd3df67ac8017e4c1a6b71a46fcd900",
+      "localRenderedHash": "sha256:ef706f446470300941723181702e23094cd3df67ac8017e4c1a6b71a46fcd900",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/fix-tests.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/fix-tests.md",
+      "renderedHash": "sha256:28c243dc2bd7db551c21a8b4d5823d341b3ca3affdbc87a6343ff7b37a539d42",
+      "localRenderedHash": "sha256:28c243dc2bd7db551c21a8b4d5823d341b3ca3affdbc87a6343ff7b37a539d42",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/fix-types.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/fix-types.md",
+      "renderedHash": "sha256:4a6436ebbccd90f994480ec85c1624244a584cc30dc140fa88752ba43a76daf2",
+      "localRenderedHash": "sha256:4a6436ebbccd90f994480ec85c1624244a584cc30dc140fa88752ba43a76daf2",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/fix_from_review.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/fix_from_review.md",
+      "renderedHash": "sha256:49d5d8f7efea715fd6ac24851e1c384f8ca0f82fbebc490c3af6fe5d034a59a6",
+      "localRenderedHash": "sha256:49d5d8f7efea715fd6ac24851e1c384f8ca0f82fbebc490c3af6fe5d034a59a6",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/frontend-specialist.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/frontend-specialist.md",
+      "renderedHash": "sha256:9412c4f4bb07f1870f169c25c45b8b4304aa6d6d0a8003f85906eb8afdac1aa7",
+      "localRenderedHash": "sha256:9412c4f4bb07f1870f169c25c45b8b4304aa6d6d0a8003f85906eb8afdac1aa7",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/game-developer.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/game-developer.md",
+      "renderedHash": "sha256:d615782aaf9561ae3adf9ad31ed933c8522254d88fef9acb5d7e813fa62e9c0c",
+      "localRenderedHash": "sha256:d615782aaf9561ae3adf9ad31ed933c8522254d88fef9acb5d7e813fa62e9c0c",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/hermes-invocation.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/hermes-invocation.md",
+      "renderedHash": "sha256:8e1f69baa16567bc94ebcb596d27c473d1228d33b2a99cfeb4c2f5a065b9198e",
+      "localRenderedHash": "sha256:8e1f69baa16567bc94ebcb596d27c473d1228d33b2a99cfeb4c2f5a065b9198e",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/improve.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/improve.md",
+      "renderedHash": "sha256:b916cc529cb148ec32adc8e076912e58ede5b46258512ce818840694073cc9a7",
+      "localRenderedHash": "sha256:b916cc529cb148ec32adc8e076912e58ede5b46258512ce818840694073cc9a7",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/learn.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/learn.md",
+      "renderedHash": "sha256:c44797ce9736174d2acf83994af2463d529585d13e550c36f03fd10186e1f806",
+      "localRenderedHash": "sha256:c44797ce9736174d2acf83994af2463d529585d13e550c36f03fd10186e1f806",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/legacy-code.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/legacy-code.md",
+      "renderedHash": "sha256:17462e63aad63c9fdbcba3e96a1388a58aca3fa047af59ffdff79d78a94be5c7",
+      "localRenderedHash": "sha256:17462e63aad63c9fdbcba3e96a1388a58aca3fa047af59ffdff79d78a94be5c7",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/mobile-developer.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/mobile-developer.md",
+      "renderedHash": "sha256:1cd02f9cf62120eefe80af24d10e782585de982bd331bfe9aa3b4c4f39b77bdc",
+      "localRenderedHash": "sha256:1cd02f9cf62120eefe80af24d10e782585de982bd331bfe9aa3b4c4f39b77bdc",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/orch.run.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/orch.run.md",
+      "renderedHash": "sha256:6d849aef1cc3292b905413038c075a24823be1e63bff5401c68c1de1bd6cfaa6",
+      "localRenderedHash": "sha256:6d849aef1cc3292b905413038c075a24823be1e63bff5401c68c1de1bd6cfaa6",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/orch.status.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/orch.status.md",
+      "renderedHash": "sha256:396066d7bc2434648f3aa2c108bb548f7d2e0ffb6bea90c618e59f4bfb846a74",
+      "localRenderedHash": "sha256:396066d7bc2434648f3aa2c108bb548f7d2e0ffb6bea90c618e59f4bfb846a74",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/orch.tools.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/orch.tools.md",
+      "renderedHash": "sha256:936dca760441cc064f1958b10a844b768c5f5261646df2a9e02a9cc256764f93",
+      "localRenderedHash": "sha256:936dca760441cc064f1958b10a844b768c5f5261646df2a9e02a9cc256764f93",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/orchestrate.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/orchestrate.md",
+      "renderedHash": "sha256:a2f7174f70d66c36fcb5efab01420887c2a9b6ef28d97406621cc0454059014d",
+      "localRenderedHash": "sha256:a2f7174f70d66c36fcb5efab01420887c2a9b6ef28d97406621cc0454059014d",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/orchestrator.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/orchestrator.md",
+      "renderedHash": "sha256:197fc2cc96dc037eae64ad4883a36ad57c939ce7f1d5ea1f08bfabb00ca4fd66",
+      "localRenderedHash": "sha256:197fc2cc96dc037eae64ad4883a36ad57c939ce7f1d5ea1f08bfabb00ca4fd66",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/penetration-tester.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/penetration-tester.md",
+      "renderedHash": "sha256:79a0ed0242de5514fd992e40d3ede9671b6274ae2e8cc380fe21845a6d76abd6",
+      "localRenderedHash": "sha256:79a0ed0242de5514fd992e40d3ede9671b6274ae2e8cc380fe21845a6d76abd6",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/perf-check.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/perf-check.md",
+      "renderedHash": "sha256:1bf89e9737e2e98adc38098d64f6dfa31f408af6ce9eb3c744c62d7815b86cff",
+      "localRenderedHash": "sha256:1bf89e9737e2e98adc38098d64f6dfa31f408af6ce9eb3c744c62d7815b86cff",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/performance-optimizer.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/performance-optimizer.md",
+      "renderedHash": "sha256:855fc7342b03c501f923323b803208cc71ecd687ba9b7d552170cf2eb3e41247",
+      "localRenderedHash": "sha256:855fc7342b03c501f923323b803208cc71ecd687ba9b7d552170cf2eb3e41247",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/plan.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/plan.md",
+      "renderedHash": "sha256:25948957e5dd1cb371b011cf9d28435e22648fba7feffd511cc8aea0e25d6773",
+      "localRenderedHash": "sha256:25948957e5dd1cb371b011cf9d28435e22648fba7feffd511cc8aea0e25d6773",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/powershell.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/powershell.md",
+      "renderedHash": "sha256:4875900986ee0dec489f8b0a020b3318668a91e057c3b2c79a000b8366e3b5a7",
+      "localRenderedHash": "sha256:4875900986ee0dec489f8b0a020b3318668a91e057c3b2c79a000b8366e3b5a7",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/pr.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/pr.md",
+      "renderedHash": "sha256:53de4926ed92fdb3d94a5e09da46c10017d01dd9147031f58fe27bdc23539fbb",
+      "localRenderedHash": "sha256:53de4926ed92fdb3d94a5e09da46c10017d01dd9147031f58fe27bdc23539fbb",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/preview.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/preview.md",
+      "renderedHash": "sha256:947dd4a00a5bbec84957e0fd9444a09b5221411274ad96021c54b5c05ca1db8e",
+      "localRenderedHash": "sha256:947dd4a00a5bbec84957e0fd9444a09b5221411274ad96021c54b5c05ca1db8e",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/project-planner.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/project-planner.md",
+      "renderedHash": "sha256:9555284bf814b2445283193e12c1d82870a76144a133af5e95767a480a2d43b3",
+      "localRenderedHash": "sha256:9555284bf814b2445283193e12c1d82870a76144a133af5e95767a480a2d43b3",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/prompt_for_jules.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/prompt_for_jules.md",
+      "renderedHash": "sha256:460982092776400694f5b3bb6d9aab4c11581c97bed8430d111c404ea397770d",
+      "localRenderedHash": "sha256:460982092776400694f5b3bb6d9aab4c11581c97bed8430d111c404ea397770d",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/pull_comments_from_gh_pr.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/pull_comments_from_gh_pr.md",
+      "renderedHash": "sha256:954a7ae182eb0456188ad458ddf6c7d3dc34c6b0f908637fa277c1bc0fbfc2d3",
+      "localRenderedHash": "sha256:954a7ae182eb0456188ad458ddf6c7d3dc34c6b0f908637fa277c1bc0fbfc2d3",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/questions_ideas.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/questions_ideas.md",
+      "renderedHash": "sha256:b1021355d81804c7085eb4e2822ad5f88761f3aa92700da3f22150e9b4efb7c7",
+      "localRenderedHash": "sha256:b1021355d81804c7085eb4e2822ad5f88761f3aa92700da3f22150e9b4efb7c7",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/regen.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/regen.md",
+      "renderedHash": "sha256:5b896f8bd7a7f48d7ff67a2b6d83009e387fa85ee75acf1b089902380ca984f4",
+      "localRenderedHash": "sha256:5b896f8bd7a7f48d7ff67a2b6d83009e387fa85ee75acf1b089902380ca984f4",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/resolve-conflicts.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/resolve-conflicts.md",
+      "renderedHash": "sha256:894d16ba52869cbb4f2e6fd614a7f122098ad93a642bd460118966d9e9f8012a",
+      "localRenderedHash": "sha256:894d16ba52869cbb4f2e6fd614a7f122098ad93a642bd460118966d9e9f8012a",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/review_and_merge_pr.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/review_and_merge_pr.md",
+      "renderedHash": "sha256:2854d9bee8dc2bc5d38161296c14475163dff89c979fb0c69caead6b03a3d93c",
+      "localRenderedHash": "sha256:2854d9bee8dc2bc5d38161296c14475163dff89c979fb0c69caead6b03a3d93c",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/security-auditor.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/security-auditor.md",
+      "renderedHash": "sha256:68de01eb9e61d6ecd842514ae7fbab3e3bca7cb38fd07d03cc19284ec9ea1f10",
+      "localRenderedHash": "sha256:68de01eb9e61d6ecd842514ae7fbab3e3bca7cb38fd07d03cc19284ec9ea1f10",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/seo-specialist.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/seo-specialist.md",
+      "renderedHash": "sha256:732281e78fa5a96ec29157b02230204f91ca322d1309401d1266c727f9b8853a",
+      "localRenderedHash": "sha256:732281e78fa5a96ec29157b02230204f91ca322d1309401d1266c727f9b8853a",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.analyze.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.analyze.md",
+      "renderedHash": "sha256:6d6651a592dfd139a92f46ee14f5d637617b2b69765e4e965fa3e9907991bf0f",
+      "localRenderedHash": "sha256:6d6651a592dfd139a92f46ee14f5d637617b2b69765e4e965fa3e9907991bf0f",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.checklist.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.checklist.md",
+      "renderedHash": "sha256:ba3a464f83109b9a32a933e5758a050e7425be58bbffccaefd7006522106782d",
+      "localRenderedHash": "sha256:ba3a464f83109b9a32a933e5758a050e7425be58bbffccaefd7006522106782d",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.clarify.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.clarify.md",
+      "renderedHash": "sha256:804970d1840abbde25720a3d37ba51c9801080db5b0c7eacab6b01e9f1e5564e",
+      "localRenderedHash": "sha256:804970d1840abbde25720a3d37ba51c9801080db5b0c7eacab6b01e9f1e5564e",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.constitution.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.constitution.md",
+      "renderedHash": "sha256:283a0f1baa699e0564bc0299b0729aa9b448496017f525210c07e6758768b53c",
+      "localRenderedHash": "sha256:283a0f1baa699e0564bc0299b0729aa9b448496017f525210c07e6758768b53c",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.diff.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.diff.md",
+      "renderedHash": "sha256:bee083a9d503458567225839902813376803f68ab1bd784c1a21acf9a99686cd",
+      "localRenderedHash": "sha256:bee083a9d503458567225839902813376803f68ab1bd784c1a21acf9a99686cd",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.full-plan.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.full-plan.md",
+      "renderedHash": "sha256:56fc627cf1ab7312f216433444745e3c3dad296e201daf6d02c0acd00dbeecd7",
+      "localRenderedHash": "sha256:56fc627cf1ab7312f216433444745e3c3dad296e201daf6d02c0acd00dbeecd7",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.full-spec.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.full-spec.md",
+      "renderedHash": "sha256:bacf7b4b503811e5a484766b0f961bf2f9c6d04042960e10e9e6097feacbf5d5",
+      "localRenderedHash": "sha256:bacf7b4b503811e5a484766b0f961bf2f9c6d04042960e10e9e6097feacbf5d5",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.implement.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.implement.md",
+      "renderedHash": "sha256:ad14af10c72094ceba4ab54e04940fafc4f253c6f5c876ded662afa0a34723b1",
+      "localRenderedHash": "sha256:ad14af10c72094ceba4ab54e04940fafc4f253c6f5c876ded662afa0a34723b1",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.migrate.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.migrate.md",
+      "renderedHash": "sha256:a945759304d7a3510bd2cbd1f28c019b8a30754388f52e7f29db653157b4ffa3",
+      "localRenderedHash": "sha256:a945759304d7a3510bd2cbd1f28c019b8a30754388f52e7f29db653157b4ffa3",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.plan.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.plan.md",
+      "renderedHash": "sha256:031defbb38ff2b56e6cca3ee650d8eb40108181c6a5ee1342f514ff533ebc8a5",
+      "localRenderedHash": "sha256:031defbb38ff2b56e6cca3ee650d8eb40108181c6a5ee1342f514ff533ebc8a5",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.retrospective.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.retrospective.md",
+      "renderedHash": "sha256:2e4460462ed7eb8930a1947dbe3784fef2ac90f6dc70f28686bbcb307d1d94fe",
+      "localRenderedHash": "sha256:2e4460462ed7eb8930a1947dbe3784fef2ac90f6dc70f28686bbcb307d1d94fe",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.review.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.review.md",
+      "renderedHash": "sha256:7b985af6da5c133a8dc809c4311970cee85cee184d758274fc750c96e829e7ea",
+      "localRenderedHash": "sha256:7b985af6da5c133a8dc809c4311970cee85cee184d758274fc750c96e829e7ea",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.scope.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.scope.md",
+      "renderedHash": "sha256:5b1d3cc071d9429d08a47535f9572d0c69571c294971e0960bb6aa5345ef5320",
+      "localRenderedHash": "sha256:5b1d3cc071d9429d08a47535f9572d0c69571c294971e0960bb6aa5345ef5320",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.specify.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.specify.md",
+      "renderedHash": "sha256:19a86308b5354a6494b9c66eb5d65bc3d1f4f3931b4ce27aa30123a3606bfb21",
+      "localRenderedHash": "sha256:19a86308b5354a6494b9c66eb5d65bc3d1f4f3931b4ce27aa30123a3606bfb21",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.start.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.start.md",
+      "renderedHash": "sha256:11699e64693b4141b0db46b89fc3665f706a9615b0f728775d1a433983af6c5a",
+      "localRenderedHash": "sha256:11699e64693b4141b0db46b89fc3665f706a9615b0f728775d1a433983af6c5a",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.status.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.status.md",
+      "renderedHash": "sha256:a64ad0bd2c7f5a76d8f59dafdac68160f05c11f2e3070a1c00db0dfb3593c8f9",
+      "localRenderedHash": "sha256:a64ad0bd2c7f5a76d8f59dafdac68160f05c11f2e3070a1c00db0dfb3593c8f9",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.tasks.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.tasks.md",
+      "renderedHash": "sha256:a16c280124d334c7c7485769a170fce001d55db319a78ab76235e0d99f72be02",
+      "localRenderedHash": "sha256:a16c280124d334c7c7485769a170fce001d55db319a78ab76235e0d99f72be02",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/speckit.taskstoissues.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/speckit.taskstoissues.md",
+      "renderedHash": "sha256:6e24120930b10e74a4901b5fe16b56d88cf3e104eb5137ae491a1a3616587b3b",
+      "localRenderedHash": "sha256:6e24120930b10e74a4901b5fe16b56d88cf3e104eb5137ae491a1a3616587b3b",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/status.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/status.md",
+      "renderedHash": "sha256:1db3d1f1e2894212f9aed9023aeff9f60e95472a672db0d9beccb022e79a3463",
+      "localRenderedHash": "sha256:1db3d1f1e2894212f9aed9023aeff9f60e95472a672db0d9beccb022e79a3463",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/test-engineer.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/test-engineer.md",
+      "renderedHash": "sha256:1d246944ec2c3ebe3a9ded673d1131b5147e1792f9eae685b75c59e3fab427fc",
+      "localRenderedHash": "sha256:1d246944ec2c3ebe3a9ded673d1131b5147e1792f9eae685b75c59e3fab427fc",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/test.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/test.md",
+      "renderedHash": "sha256:3c6a51cb7e12e51bc0fb52de659f5c908a32aafbf7cda109141e475db614cc3c",
+      "localRenderedHash": "sha256:3c6a51cb7e12e51bc0fb52de659f5c908a32aafbf7cda109141e475db614cc3c",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/ui-ux-pro-max.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/ui-ux-pro-max.md",
+      "renderedHash": "sha256:ceb7226152727f3edd2127f0ce9ae657c7106638a7f23b9ac80f2989a3cddf07",
+      "localRenderedHash": "sha256:ceb7226152727f3edd2127f0ce9ae657c7106638a7f23b9ac80f2989a3cddf07",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/ultrathink.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/ultrathink.md",
+      "renderedHash": "sha256:9a75e079be5154638be5862c72f79864c054c523acc7ef3187078f779ac53736",
+      "localRenderedHash": "sha256:9a75e079be5154638be5862c72f79864c054c523acc7ef3187078f779ac53736",
+      "status": "managed"
+    },
+    {
+      "path": ".github/prompts/verify.prompt.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-prompt",
+      "fromSource": ".claude/commands/verify.md",
+      "renderedHash": "sha256:8afdb6cc1007caa205f95918b7003b954924470a3d5999e1384716af215e0da2",
+      "localRenderedHash": "sha256:8afdb6cc1007caa205f95918b7003b954924470a3d5999e1384716af215e0da2",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/backend-specialist.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/backend-specialist.md",
+      "renderedHash": "sha256:89b2c34d3c3de9e4fe1cef46166d309e0250f8bd7abcb4fcdb6bbb0789af05ab",
+      "localRenderedHash": "sha256:89b2c34d3c3de9e4fe1cef46166d309e0250f8bd7abcb4fcdb6bbb0789af05ab",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/brainstorm.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/brainstorm.md",
+      "renderedHash": "sha256:a1459095f41c05d48a2c9ad23927f4cd6b622291686af38bca8a48877173bc16",
+      "localRenderedHash": "sha256:a1459095f41c05d48a2c9ad23927f4cd6b622291686af38bca8a48877173bc16",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/create.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/create.md",
+      "renderedHash": "sha256:0d568fd2494430ce8d09ed86ad68f78d4f730a57a4edbc4d603c6c085cef207b",
+      "localRenderedHash": "sha256:0d568fd2494430ce8d09ed86ad68f78d4f730a57a4edbc4d603c6c085cef207b",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/database-architect.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/database-architect.md",
+      "renderedHash": "sha256:3690745c99af67e27acee6f6fc0a51ff3ef63775db8bb1fc86acd18279261677",
+      "localRenderedHash": "sha256:3690745c99af67e27acee6f6fc0a51ff3ef63775db8bb1fc86acd18279261677",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/debugger.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/debugger.md",
+      "renderedHash": "sha256:f153cce7218ff8d2e0e0e760f51d0bda053f586885545cf9b84aae4f90439923",
+      "localRenderedHash": "sha256:f153cce7218ff8d2e0e0e760f51d0bda053f586885545cf9b84aae4f90439923",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/deploy.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/deploy.md",
+      "renderedHash": "sha256:858af747c392ca08b6cd84089c8cbcf932d0d56bd307485c16acd97f55e14ddb",
+      "localRenderedHash": "sha256:858af747c392ca08b6cd84089c8cbcf932d0d56bd307485c16acd97f55e14ddb",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/devops-engineer.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/devops-engineer.md",
+      "renderedHash": "sha256:45501113d531330c26fc9994c6c7cc166883e21d1e1e00fa1311af94c533e5de",
+      "localRenderedHash": "sha256:45501113d531330c26fc9994c6c7cc166883e21d1e1e00fa1311af94c533e5de",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/documentation-writer.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/documentation-writer.md",
+      "renderedHash": "sha256:6022ed4e01041ea0527218db44e586709c4bda6d43aec0ec858561acf92a4242",
+      "localRenderedHash": "sha256:6022ed4e01041ea0527218db44e586709c4bda6d43aec0ec858561acf92a4242",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/enhance.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/enhance.md",
+      "renderedHash": "sha256:6c2672de5e566c23c4f6b428f08e49365d883aceb390d2230a452118b6a33222",
+      "localRenderedHash": "sha256:6c2672de5e566c23c4f6b428f08e49365d883aceb390d2230a452118b6a33222",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/explorer-agent.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/explorer-agent.md",
+      "renderedHash": "sha256:e6e4fe6361500614def4108304b7a42b10e24f5e3d46bd078fb19368066745b0",
+      "localRenderedHash": "sha256:e6e4fe6361500614def4108304b7a42b10e24f5e3d46bd078fb19368066745b0",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/frontend-specialist.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/frontend-specialist.md",
+      "renderedHash": "sha256:2169afca1b06732a22db1e07cb4e77e35b809708985396494977fefcf1cb9530",
+      "localRenderedHash": "sha256:2169afca1b06732a22db1e07cb4e77e35b809708985396494977fefcf1cb9530",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/game-developer.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/game-developer.md",
+      "renderedHash": "sha256:895e962573aed2c91ed848ac770baa0ddfb304accaa6fa85ab1acb5da787ed9f",
+      "localRenderedHash": "sha256:895e962573aed2c91ed848ac770baa0ddfb304accaa6fa85ab1acb5da787ed9f",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/legacy-code.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/legacy-code.md",
+      "renderedHash": "sha256:15a340c045824bcb25eae033ddc61214106a507ac7b4d31ecbd58a2a442573c7",
+      "localRenderedHash": "sha256:15a340c045824bcb25eae033ddc61214106a507ac7b4d31ecbd58a2a442573c7",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/mobile-developer.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/mobile-developer.md",
+      "renderedHash": "sha256:6bd6d19f0d7aacb18ed7838037d13c53cc6b20ffbdd4e164bde9be1d142c288e",
+      "localRenderedHash": "sha256:6bd6d19f0d7aacb18ed7838037d13c53cc6b20ffbdd4e164bde9be1d142c288e",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/orchestrate.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/orchestrate.md",
+      "renderedHash": "sha256:2470c75d0005352a391746816adda28ed409e2f3606e6c7029355eb5f061152e",
+      "localRenderedHash": "sha256:2470c75d0005352a391746816adda28ed409e2f3606e6c7029355eb5f061152e",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/orchestrator.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/orchestrator.md",
+      "renderedHash": "sha256:5e677f75d0f998ef9f6cd9fd446293f3aab7ef2b2ac720d9422ef4eb4b4bcc29",
+      "localRenderedHash": "sha256:5e677f75d0f998ef9f6cd9fd446293f3aab7ef2b2ac720d9422ef4eb4b4bcc29",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/penetration-tester.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/penetration-tester.md",
+      "renderedHash": "sha256:7ef09f1b572b95dc887bd45e870fc2959a74079758a3045e7fcac412a9c18c84",
+      "localRenderedHash": "sha256:7ef09f1b572b95dc887bd45e870fc2959a74079758a3045e7fcac412a9c18c84",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/performance-optimizer.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/performance-optimizer.md",
+      "renderedHash": "sha256:a0fa15eff1df1596e84761e1d62ee45c08ee6fb9e6de2d3c568646d99e7a0f0e",
+      "localRenderedHash": "sha256:a0fa15eff1df1596e84761e1d62ee45c08ee6fb9e6de2d3c568646d99e7a0f0e",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/plan.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/plan.md",
+      "renderedHash": "sha256:daf4c86189f799937577f83f3e09d11d95035434b7b5a2651ffb7640ac475148",
+      "localRenderedHash": "sha256:daf4c86189f799937577f83f3e09d11d95035434b7b5a2651ffb7640ac475148",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/preview.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/preview.md",
+      "renderedHash": "sha256:ad3bd2cabae4e6f4bca24e22187b2cc654e71fc8fb38472cefccc14f26a27a68",
+      "localRenderedHash": "sha256:ad3bd2cabae4e6f4bca24e22187b2cc654e71fc8fb38472cefccc14f26a27a68",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/project-planner.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/project-planner.md",
+      "renderedHash": "sha256:750da15b550fb24270972e6655417b2e7d9e6b9ab41d57564cef14c54146e4bd",
+      "localRenderedHash": "sha256:750da15b550fb24270972e6655417b2e7d9e6b9ab41d57564cef14c54146e4bd",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/security-auditor.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/security-auditor.md",
+      "renderedHash": "sha256:ad7937bb9b736658cf313cff9e88985b98ceac26ca83f09495e7dcc2d08067f1",
+      "localRenderedHash": "sha256:ad7937bb9b736658cf313cff9e88985b98ceac26ca83f09495e7dcc2d08067f1",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/seo-specialist.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/seo-specialist.md",
+      "renderedHash": "sha256:4753f606f6f42c460b16e3b19e871f0525c1b22ab18860dcfa72558e2300a010",
+      "localRenderedHash": "sha256:4753f606f6f42c460b16e3b19e871f0525c1b22ab18860dcfa72558e2300a010",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/status.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/status.md",
+      "renderedHash": "sha256:bfa7070d9f424be62c050ae2c712668b5892e1280803c261825182236c0d1dbc",
+      "localRenderedHash": "sha256:bfa7070d9f424be62c050ae2c712668b5892e1280803c261825182236c0d1dbc",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/test-engineer.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/test-engineer.md",
+      "renderedHash": "sha256:86d568985ff5c49868b1bd69586efc8d1ce14017f6970c63f6fe5e9f64eac800",
+      "localRenderedHash": "sha256:86d568985ff5c49868b1bd69586efc8d1ce14017f6970c63f6fe5e9f64eac800",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/test.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/test.md",
+      "renderedHash": "sha256:20160c73f72e1f723cdd42bfd2b2623df2db427a46c35ccc3c7ad7f803cfe625",
+      "localRenderedHash": "sha256:20160c73f72e1f723cdd42bfd2b2623df2db427a46c35ccc3c7ad7f803cfe625",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/ui-ux-pro-max.instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-instructions",
+      "fromSource": ".claude/agents/ui-ux-pro-max.md",
+      "renderedHash": "sha256:37e6d114866853def76ba9c19b98b3cd1f0787a5ff9d2279926750a5c7086de6",
+      "localRenderedHash": "sha256:37e6d114866853def76ba9c19b98b3cd1f0787a5ff9d2279926750a5c7086de6",
+      "status": "managed"
+    },
+    {
+      "path": ".github/copilot-instructions.md",
+      "kind": "generated",
+      "transformer": "claude-to-copilot-root-instructions",
+      "fromSource": "CLAUDE.md",
+      "renderedHash": "sha256:efb455011fdc42ef4cdf909a3af97161cf0ca5775198082a15ed95a73f119cd4",
+      "localRenderedHash": "sha256:efb455011fdc42ef4cdf909a3af97161cf0ca5775198082a15ed95a73f119cd4",
+      "status": "managed"
+    },
+    {
+      "path": ".github/instructions/coding/copilot-instructions.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:67a741162b70e0d3f2ead047198f8e9e662135b086f3f939bd0a261155aafc8c",
+      "localCanonicalHash": "sha256:67a741162b70e0d3f2ead047198f8e9e662135b086f3f939bd0a261155aafc8c"
+    },
+    {
+      "path": ".github/instructions/coding/git/copilot-instructions.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:4ae99e9c599739c793df4e16dd6c1852ac0613d0ba1a51caa1ee703586d52e37",
+      "localCanonicalHash": "sha256:4ae99e9c599739c793df4e16dd6c1852ac0613d0ba1a51caa1ee703586d52e37"
+    },
+    {
+      "path": ".github/instructions/persona/copilot-instructions.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:f7fcd7ce20717c6dfbdb5596630ba658a918d92825ccb086bfd0b0b09143dc17",
+      "localCanonicalHash": "sha256:f7fcd7ce20717c6dfbdb5596630ba658a918d92825ccb086bfd0b0b09143dc17"
+    },
+    {
+      "path": ".github/instructions/persona/phrases/copilot-instructions.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:0361b198fb726f573bcc824d7dd31c72c69b1c88788a502a8ef1c3258a5e3ab0",
+      "localCanonicalHash": "sha256:0361b198fb726f573bcc824d7dd31c72c69b1c88788a502a8ef1c3258a5e3ab0"
+    },
+    {
+      "path": ".github/instructions/project/copilot-instructions.md",
+      "kind": "source",
+      "class": "core",
+      "status": "managed",
+      "sourceCanonicalHash": "sha256:2dc7fd722b911887c146c6565840fd82140b169c6ac14276a35280e61d3de0c6",
+      "localCanonicalHash": "sha256:2dc7fd722b911887c146c6565840fd82140b169c6ac14276a35280e61d3de0c6"
+    },
+    {
+      "path": ".gemini/commands/antigravity-invocation.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/antigravity-invocation.md",
+      "renderedHash": "sha256:f8a4351e01900fc8b2ee39612d1848084d89050b95f1ca776ffbbdcd510983d5",
+      "localRenderedHash": "sha256:f8a4351e01900fc8b2ee39612d1848084d89050b95f1ca776ffbbdcd510983d5",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/backend-specialist.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/backend-specialist.md",
+      "renderedHash": "sha256:77c6696ec89eaffb44a4df6b2d28d486a982a874899ebf3c80ebab810eff83be",
+      "localRenderedHash": "sha256:77c6696ec89eaffb44a4df6b2d28d486a982a874899ebf3c80ebab810eff83be",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/backup_before_ai.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/backup_before_ai.md",
+      "renderedHash": "sha256:c10d0d71c7df9dd441d92374f31be1dc6b82a751e38d515f03838aec0506d133",
+      "localRenderedHash": "sha256:c10d0d71c7df9dd441d92374f31be1dc6b82a751e38d515f03838aec0506d133",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/blame-line.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/blame-line.md",
+      "renderedHash": "sha256:deb36b113e51d43e1e7671334927489d332cbd2ed71226e765fdb017fe812a97",
+      "localRenderedHash": "sha256:deb36b113e51d43e1e7671334927489d332cbd2ed71226e765fdb017fe812a97",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/brainstorm.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/brainstorm.md",
+      "renderedHash": "sha256:4001640e9c16d9829190cf9c5acf5802febb51424a45c8a6d3bd4b37f8c9530e",
+      "localRenderedHash": "sha256:4001640e9c16d9829190cf9c5acf5802febb51424a45c8a6d3bd4b37f8c9530e",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/bump.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/bump.md",
+      "renderedHash": "sha256:672e599589547cf2c41dffd8b6301d12a9ceb78633d56b5f4158f9fa6203e31b",
+      "localRenderedHash": "sha256:672e599589547cf2c41dffd8b6301d12a9ceb78633d56b5f4158f9fa6203e31b",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/code_review.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/code_review.md",
+      "renderedHash": "sha256:427555bd543aeab6949d71752f771c7797c8f7355b83537ecdb84efa206c80cb",
+      "localRenderedHash": "sha256:427555bd543aeab6949d71752f771c7797c8f7355b83537ecdb84efa206c80cb",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/commit.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/commit.md",
+      "renderedHash": "sha256:0b5cbbd3b6568e61b30c8fd78a9d9a9260f9f46240ff6d678e76b26477c02c33",
+      "localRenderedHash": "sha256:0b5cbbd3b6568e61b30c8fd78a9d9a9260f9f46240ff6d678e76b26477c02c33",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/create.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/create.md",
+      "renderedHash": "sha256:55cae8af32c848ae9fe8453cdb5de5022da312b938c7f294e52557340dc4236c",
+      "localRenderedHash": "sha256:55cae8af32c848ae9fe8453cdb5de5022da312b938c7f294e52557340dc4236c",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/database-architect.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/database-architect.md",
+      "renderedHash": "sha256:f0aaf2b6175b8daf0ce32206b57a275ebcb3bd867b5fbac74db899b5eb8d1f12",
+      "localRenderedHash": "sha256:f0aaf2b6175b8daf0ce32206b57a275ebcb3bd867b5fbac74db899b5eb8d1f12",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/debugger.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/debugger.md",
+      "renderedHash": "sha256:db4d4c98655f60670ec5779982ea577907ac5f0137d16a4310b7950cddfa2e38",
+      "localRenderedHash": "sha256:db4d4c98655f60670ec5779982ea577907ac5f0137d16a4310b7950cddfa2e38",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/deploy.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/deploy.md",
+      "renderedHash": "sha256:40d1fbbe3bb34a49632d6d68b5f495d743834f8aa1e3c64640f11313e4c0acc1",
+      "localRenderedHash": "sha256:40d1fbbe3bb34a49632d6d68b5f495d743834f8aa1e3c64640f11313e4c0acc1",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/deps-check.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/deps-check.md",
+      "renderedHash": "sha256:1fd461e2172a41ba58ee66c5785b4ac354452104bf66b6e2531b505d09eaa8ea",
+      "localRenderedHash": "sha256:1fd461e2172a41ba58ee66c5785b4ac354452104bf66b6e2531b505d09eaa8ea",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/devops-engineer.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/devops-engineer.md",
+      "renderedHash": "sha256:a2a1bf458aa06302cca3da2256b7069ad3c5b5d1833b34fb8b258a289408ec2d",
+      "localRenderedHash": "sha256:a2a1bf458aa06302cca3da2256b7069ad3c5b5d1833b34fb8b258a289408ec2d",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/diff.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/diff.md",
+      "renderedHash": "sha256:892ffb4e40e024acf5fa63103efe542e04bc4269bfd0344e209836282ace60f6",
+      "localRenderedHash": "sha256:892ffb4e40e024acf5fa63103efe542e04bc4269bfd0344e209836282ace60f6",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/dispatch.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/dispatch.md",
+      "renderedHash": "sha256:5306b275a92a17987afa7cea604a6d2628c90a573a5cfb4a2feb3ef5addbab6e",
+      "localRenderedHash": "sha256:5306b275a92a17987afa7cea604a6d2628c90a573a5cfb4a2feb3ef5addbab6e",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/documentation-writer.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/documentation-writer.md",
+      "renderedHash": "sha256:c44a22dff206b2b7b27fde398634f262e4f1339eaadeec2728b3307bfa39209b",
+      "localRenderedHash": "sha256:c44a22dff206b2b7b27fde398634f262e4f1339eaadeec2728b3307bfa39209b",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/enhance.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/enhance.md",
+      "renderedHash": "sha256:70bcbb9f28d2cfe344400a17920f90ce7b4ce7e18304254344d955aa5b59f35f",
+      "localRenderedHash": "sha256:70bcbb9f28d2cfe344400a17920f90ce7b4ce7e18304254344d955aa5b59f35f",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/explorer-agent.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/explorer-agent.md",
+      "renderedHash": "sha256:6926487a21fb7d9cad95fcf9011418cc538d48b30c3b832473bd0c62293b4b92",
+      "localRenderedHash": "sha256:6926487a21fb7d9cad95fcf9011418cc538d48b30c3b832473bd0c62293b4b92",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/fix-ci.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/fix-ci.md",
+      "renderedHash": "sha256:b74583bb19f62cb24505098425fb21172698826e320463b83b7feb2185e0eda8",
+      "localRenderedHash": "sha256:b74583bb19f62cb24505098425fb21172698826e320463b83b7feb2185e0eda8",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/fix-tests.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/fix-tests.md",
+      "renderedHash": "sha256:379472729f0fb2201decad516633ca44a0edc763d39193b9d6f2e67546d29123",
+      "localRenderedHash": "sha256:379472729f0fb2201decad516633ca44a0edc763d39193b9d6f2e67546d29123",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/fix-types.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/fix-types.md",
+      "renderedHash": "sha256:76e0679db4b865a8b896ec847aa7905025b1c30420207c52225fa40636e7c422",
+      "localRenderedHash": "sha256:76e0679db4b865a8b896ec847aa7905025b1c30420207c52225fa40636e7c422",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/fix_from_review.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/fix_from_review.md",
+      "renderedHash": "sha256:543da81ba4de6850bac075ad43939c4fbb66d456f95edfa15846e1143125ea28",
+      "localRenderedHash": "sha256:543da81ba4de6850bac075ad43939c4fbb66d456f95edfa15846e1143125ea28",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/frontend-specialist.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/frontend-specialist.md",
+      "renderedHash": "sha256:0459d38bc305535f52904379958407e8fd8711834be80bb90c6a39621fb8259a",
+      "localRenderedHash": "sha256:0459d38bc305535f52904379958407e8fd8711834be80bb90c6a39621fb8259a",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/game-developer.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/game-developer.md",
+      "renderedHash": "sha256:d47bbe634e914a517e091c3479c6a46a6e1a6881d59bbd35861f39c13f94862a",
+      "localRenderedHash": "sha256:d47bbe634e914a517e091c3479c6a46a6e1a6881d59bbd35861f39c13f94862a",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/hermes-invocation.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/hermes-invocation.md",
+      "renderedHash": "sha256:1bb64c76347a8dfbf6ef4159ae2e0e1ebcece600d3d613dd407e60963d185a0d",
+      "localRenderedHash": "sha256:1bb64c76347a8dfbf6ef4159ae2e0e1ebcece600d3d613dd407e60963d185a0d",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/improve.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/improve.md",
+      "renderedHash": "sha256:5009f2a73fd2501bd140e29668d5c7eed0e13bc51d1fc308805aa57749841b5e",
+      "localRenderedHash": "sha256:5009f2a73fd2501bd140e29668d5c7eed0e13bc51d1fc308805aa57749841b5e",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/learn.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/learn.md",
+      "renderedHash": "sha256:6e2720a15a361454cfca320b9a2bb470b31f1a0d7717aea4a6ede5dc3b071ebd",
+      "localRenderedHash": "sha256:6e2720a15a361454cfca320b9a2bb470b31f1a0d7717aea4a6ede5dc3b071ebd",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/legacy-code.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/legacy-code.md",
+      "renderedHash": "sha256:734d1803a857ba24f0e92c8a54c0f589814b9b2d5253610a9ff95e3e32a65e59",
+      "localRenderedHash": "sha256:734d1803a857ba24f0e92c8a54c0f589814b9b2d5253610a9ff95e3e32a65e59",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/mobile-developer.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/mobile-developer.md",
+      "renderedHash": "sha256:72f2ff10133bbc67e446363d6c1d68a0a08dd16fe53c2cd80c8385885c228f28",
+      "localRenderedHash": "sha256:72f2ff10133bbc67e446363d6c1d68a0a08dd16fe53c2cd80c8385885c228f28",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/orch.run.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/orch.run.md",
+      "renderedHash": "sha256:39a8e7e78c1169a823623e52bd2a12534ed8e8d2e4c27912e70b6770ec1aef3e",
+      "localRenderedHash": "sha256:39a8e7e78c1169a823623e52bd2a12534ed8e8d2e4c27912e70b6770ec1aef3e",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/orch.status.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/orch.status.md",
+      "renderedHash": "sha256:8af8668bd932d1809589071760ce8b225684bff2464de417cfe19ab31b4d9746",
+      "localRenderedHash": "sha256:8af8668bd932d1809589071760ce8b225684bff2464de417cfe19ab31b4d9746",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/orch.tools.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/orch.tools.md",
+      "renderedHash": "sha256:7405791a1d924a32f54f9961806982f2adf53f0cba8c268396319339a30bd24d",
+      "localRenderedHash": "sha256:7405791a1d924a32f54f9961806982f2adf53f0cba8c268396319339a30bd24d",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/orchestrate.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/orchestrate.md",
+      "renderedHash": "sha256:557c1f21b558a3b84c71621e4ed62914f5818065dc7fb8a8560745143df5e2e3",
+      "localRenderedHash": "sha256:557c1f21b558a3b84c71621e4ed62914f5818065dc7fb8a8560745143df5e2e3",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/orchestrator.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/orchestrator.md",
+      "renderedHash": "sha256:7aa510b7093d0b2e84f6427470cf944ba476a6c2c7cb6569f5bae2d0b436676f",
+      "localRenderedHash": "sha256:7aa510b7093d0b2e84f6427470cf944ba476a6c2c7cb6569f5bae2d0b436676f",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/penetration-tester.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/penetration-tester.md",
+      "renderedHash": "sha256:c00229946b28a564bed4e2f02e402acbef9134ba168f97283eb9b839295754d6",
+      "localRenderedHash": "sha256:c00229946b28a564bed4e2f02e402acbef9134ba168f97283eb9b839295754d6",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/perf-check.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/perf-check.md",
+      "renderedHash": "sha256:4254876fd8d702a4b50e695381e35ddc04ead278a875a164b54c0f877645fa67",
+      "localRenderedHash": "sha256:4254876fd8d702a4b50e695381e35ddc04ead278a875a164b54c0f877645fa67",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/performance-optimizer.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/performance-optimizer.md",
+      "renderedHash": "sha256:9eea6f002e86b8a338164b0643082bf1106619b1cd6d11f6abbc1dfddb44ff10",
+      "localRenderedHash": "sha256:9eea6f002e86b8a338164b0643082bf1106619b1cd6d11f6abbc1dfddb44ff10",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/plan.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/plan.md",
+      "renderedHash": "sha256:e3c5123d7b6a095c5bcc6300b0d26adfa9c5b5c90b218000eac6522409f91c53",
+      "localRenderedHash": "sha256:e3c5123d7b6a095c5bcc6300b0d26adfa9c5b5c90b218000eac6522409f91c53",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/powershell.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/powershell.md",
+      "renderedHash": "sha256:fd5a903ed279af0efc9567981379dfbf72e86c4076498cfea99ea9b51478de18",
+      "localRenderedHash": "sha256:fd5a903ed279af0efc9567981379dfbf72e86c4076498cfea99ea9b51478de18",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/pr.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/pr.md",
+      "renderedHash": "sha256:031e9f067db3b5616decf5e1d47bef898509e01a8a953340a2a27545d267bce7",
+      "localRenderedHash": "sha256:031e9f067db3b5616decf5e1d47bef898509e01a8a953340a2a27545d267bce7",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/preview.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/preview.md",
+      "renderedHash": "sha256:0a7dc4ffd1f3e5f3090e2e30e705bb9e5a7a15120da18f647e0835ff5b822e97",
+      "localRenderedHash": "sha256:0a7dc4ffd1f3e5f3090e2e30e705bb9e5a7a15120da18f647e0835ff5b822e97",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/project-planner.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/project-planner.md",
+      "renderedHash": "sha256:d2bf1957be372402bd5e8835a1bb3edf38fb50da0ec21e49a62e18b0d1d20e6f",
+      "localRenderedHash": "sha256:d2bf1957be372402bd5e8835a1bb3edf38fb50da0ec21e49a62e18b0d1d20e6f",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/prompt_for_jules.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/prompt_for_jules.md",
+      "renderedHash": "sha256:8162cdecbbbc76344a2e0150967ab93055b32715fb82a6ae94dd331c87716361",
+      "localRenderedHash": "sha256:8162cdecbbbc76344a2e0150967ab93055b32715fb82a6ae94dd331c87716361",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/pull_comments_from_gh_pr.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/pull_comments_from_gh_pr.md",
+      "renderedHash": "sha256:cf75fe043e8a9fbbf295407fcc45d7ef8cdeefcf79c6eb20ed93c066d058f9b4",
+      "localRenderedHash": "sha256:cf75fe043e8a9fbbf295407fcc45d7ef8cdeefcf79c6eb20ed93c066d058f9b4",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/questions_ideas.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/questions_ideas.md",
+      "renderedHash": "sha256:319569e9953e1bb12d041917f9e495c314a4ad33cab9d037328868d406f8910b",
+      "localRenderedHash": "sha256:319569e9953e1bb12d041917f9e495c314a4ad33cab9d037328868d406f8910b",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/regen.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/regen.md",
+      "renderedHash": "sha256:8370eb3de872fe36199cb44d4d415c1b3970f0ddb83e3b4e1ea55224099f38ca",
+      "localRenderedHash": "sha256:8370eb3de872fe36199cb44d4d415c1b3970f0ddb83e3b4e1ea55224099f38ca",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/resolve-conflicts.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/resolve-conflicts.md",
+      "renderedHash": "sha256:da01e804ab9d6a03add78227059dbfc7e277093705fc409c141b33292cddfaf0",
+      "localRenderedHash": "sha256:da01e804ab9d6a03add78227059dbfc7e277093705fc409c141b33292cddfaf0",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/review_and_merge_pr.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/review_and_merge_pr.md",
+      "renderedHash": "sha256:1f9ed484e9ff87ef9f7c658966cda61dc1765d3a6fd302d691b6f24edc8c2c1d",
+      "localRenderedHash": "sha256:1f9ed484e9ff87ef9f7c658966cda61dc1765d3a6fd302d691b6f24edc8c2c1d",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/security-auditor.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/security-auditor.md",
+      "renderedHash": "sha256:6baeb07e0bc4695d4ac10b4d44976e730d447e2a411c75193ea6b182ce7362bb",
+      "localRenderedHash": "sha256:6baeb07e0bc4695d4ac10b4d44976e730d447e2a411c75193ea6b182ce7362bb",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/seo-specialist.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/seo-specialist.md",
+      "renderedHash": "sha256:a3f443b4ff7750b6d374f8116bff4b04ec504021b3efa1eaad560a192366e3d8",
+      "localRenderedHash": "sha256:a3f443b4ff7750b6d374f8116bff4b04ec504021b3efa1eaad560a192366e3d8",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.analyze.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.analyze.md",
+      "renderedHash": "sha256:6d317fc6507fb5b9928372123e2b77318373fa2edd5e164a32a5dccc597f938b",
+      "localRenderedHash": "sha256:6d317fc6507fb5b9928372123e2b77318373fa2edd5e164a32a5dccc597f938b",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.checklist.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.checklist.md",
+      "renderedHash": "sha256:30141e5bfb0b0d51ab8404e9f46eb80438d250274920b30f32926d1aae38e4cf",
+      "localRenderedHash": "sha256:30141e5bfb0b0d51ab8404e9f46eb80438d250274920b30f32926d1aae38e4cf",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.clarify.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.clarify.md",
+      "renderedHash": "sha256:d85a7ad7f4f693b29dbf0b9d32cffb4589e4f4f51a031c0147d4e27ad79e92ed",
+      "localRenderedHash": "sha256:d85a7ad7f4f693b29dbf0b9d32cffb4589e4f4f51a031c0147d4e27ad79e92ed",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.constitution.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.constitution.md",
+      "renderedHash": "sha256:09bf04b25005356234251bbc57deee4b2bcdbcb15b72a17678b9bf7c07ca609f",
+      "localRenderedHash": "sha256:09bf04b25005356234251bbc57deee4b2bcdbcb15b72a17678b9bf7c07ca609f",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.diff.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.diff.md",
+      "renderedHash": "sha256:1f3a0d7ca572945c44e69f6b7bbabc930eac75748b8169757ff9c7356dc0e47a",
+      "localRenderedHash": "sha256:1f3a0d7ca572945c44e69f6b7bbabc930eac75748b8169757ff9c7356dc0e47a",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.full-plan.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.full-plan.md",
+      "renderedHash": "sha256:bcb956ccb4c2b695828cfda485a69d6f41da6cb102cc9280d03c423e9d4f0329",
+      "localRenderedHash": "sha256:bcb956ccb4c2b695828cfda485a69d6f41da6cb102cc9280d03c423e9d4f0329",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.full-spec.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.full-spec.md",
+      "renderedHash": "sha256:30eaf1c854372bd2f93a4d97cef9c90c6da96ad2f34323799a3c883f32a3a13a",
+      "localRenderedHash": "sha256:30eaf1c854372bd2f93a4d97cef9c90c6da96ad2f34323799a3c883f32a3a13a",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.implement.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.implement.md",
+      "renderedHash": "sha256:eddd34bbbfb1268b9463daee270f6f7f1b7341b1d9877445d9a5b8f2e9b5343d",
+      "localRenderedHash": "sha256:eddd34bbbfb1268b9463daee270f6f7f1b7341b1d9877445d9a5b8f2e9b5343d",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.migrate.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.migrate.md",
+      "renderedHash": "sha256:e7ad5e204c510c596e114830b9e49d936665d17adae7b176eb72dbf2ff2fc227",
+      "localRenderedHash": "sha256:e7ad5e204c510c596e114830b9e49d936665d17adae7b176eb72dbf2ff2fc227",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.plan.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.plan.md",
+      "renderedHash": "sha256:70afdce0690e13f8d2db797f70ed1c92b499e9d5b5c24b5af5da443f6250485e",
+      "localRenderedHash": "sha256:70afdce0690e13f8d2db797f70ed1c92b499e9d5b5c24b5af5da443f6250485e",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.retrospective.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.retrospective.md",
+      "renderedHash": "sha256:211c290f4ff51c63974264d9670e158e36324535337ff72e9be5e16c2ed767a4",
+      "localRenderedHash": "sha256:211c290f4ff51c63974264d9670e158e36324535337ff72e9be5e16c2ed767a4",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.review.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.review.md",
+      "renderedHash": "sha256:62f5f9b6d5b689946c2d07f0f61bdf862ea7ca33b965b944b0b57c8ae0f6e701",
+      "localRenderedHash": "sha256:62f5f9b6d5b689946c2d07f0f61bdf862ea7ca33b965b944b0b57c8ae0f6e701",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.scope.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.scope.md",
+      "renderedHash": "sha256:ae9cfa8853e2025b0c3e6f40ca5fe977553c160638833697559b6e136d9406d3",
+      "localRenderedHash": "sha256:ae9cfa8853e2025b0c3e6f40ca5fe977553c160638833697559b6e136d9406d3",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.specify.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.specify.md",
+      "renderedHash": "sha256:6e912f0f78be78b3e5f7383d15a21a1dcc9d5d18363820bb3fee3233566f09d6",
+      "localRenderedHash": "sha256:6e912f0f78be78b3e5f7383d15a21a1dcc9d5d18363820bb3fee3233566f09d6",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.start.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.start.md",
+      "renderedHash": "sha256:ccee2b489c783cd8d58a3731fbe88a046e760a9dcdcb8c4216a5a26bec9693a3",
+      "localRenderedHash": "sha256:ccee2b489c783cd8d58a3731fbe88a046e760a9dcdcb8c4216a5a26bec9693a3",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.status.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.status.md",
+      "renderedHash": "sha256:8417b3e49a503051b391fd8829375e6401dc7532e3f5f3daade6913f4e92f66a",
+      "localRenderedHash": "sha256:8417b3e49a503051b391fd8829375e6401dc7532e3f5f3daade6913f4e92f66a",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.tasks.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.tasks.md",
+      "renderedHash": "sha256:7bd8d43d4e0d87b8b8df382bf2b287f0a5bf7fa8d95a75f084a95279aa283ce4",
+      "localRenderedHash": "sha256:7bd8d43d4e0d87b8b8df382bf2b287f0a5bf7fa8d95a75f084a95279aa283ce4",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/speckit.taskstoissues.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/speckit.taskstoissues.md",
+      "renderedHash": "sha256:7e084ea644e51bbe38d1f9fc52fc78927b83f6b43e092a2f4d56ba2e8440a2fa",
+      "localRenderedHash": "sha256:7e084ea644e51bbe38d1f9fc52fc78927b83f6b43e092a2f4d56ba2e8440a2fa",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/status.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/status.md",
+      "renderedHash": "sha256:ca1584a11b4af5345b7ef8e263445308f06837b34bbf826aceafc9c97fb5d5fc",
+      "localRenderedHash": "sha256:ca1584a11b4af5345b7ef8e263445308f06837b34bbf826aceafc9c97fb5d5fc",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/test-engineer.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/test-engineer.md",
+      "renderedHash": "sha256:a10dc65bce89005d5088ab02ee047bd5459ec9d2604ef74bd0cc7df7e7dcaf91",
+      "localRenderedHash": "sha256:a10dc65bce89005d5088ab02ee047bd5459ec9d2604ef74bd0cc7df7e7dcaf91",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/test.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/test.md",
+      "renderedHash": "sha256:e21a2dddbbab15af116eebb824addd20f1943dbceb5927379cfa3df56ddf0650",
+      "localRenderedHash": "sha256:e21a2dddbbab15af116eebb824addd20f1943dbceb5927379cfa3df56ddf0650",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/ui-ux-pro-max.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/ui-ux-pro-max.md",
+      "renderedHash": "sha256:b95ccaf995324750813ed52da94d9b0034153db8824db49d2df0f7626562e454",
+      "localRenderedHash": "sha256:b95ccaf995324750813ed52da94d9b0034153db8824db49d2df0f7626562e454",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/ultrathink.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/ultrathink.md",
+      "renderedHash": "sha256:f8b700a8cde748d426847bde9464512e99a82ecffa276a2f5c04d5061fb2a519",
+      "localRenderedHash": "sha256:f8b700a8cde748d426847bde9464512e99a82ecffa276a2f5c04d5061fb2a519",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/commands/verify.toml",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-command",
+      "fromSource": ".claude/commands/verify.md",
+      "renderedHash": "sha256:0c721f75bf2bd8b7d71833cd46d1ec255d6faf54346d8d0811ed19a476335527",
+      "localRenderedHash": "sha256:0c721f75bf2bd8b7d71833cd46d1ec255d6faf54346d8d0811ed19a476335527",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/backend-specialist.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/backend-specialist.md",
+      "renderedHash": "sha256:7f5f89c412ebeb128b183f79ce7c5774587382f715e879cc060fdd734034adc8",
+      "localRenderedHash": "sha256:7f5f89c412ebeb128b183f79ce7c5774587382f715e879cc060fdd734034adc8",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/brainstorm.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/brainstorm.md",
+      "renderedHash": "sha256:9c3b6ac0f52a9eb1cf4f5cd9214eb05522bb3e2f94531f3d35650b7fbf823eb7",
+      "localRenderedHash": "sha256:9c3b6ac0f52a9eb1cf4f5cd9214eb05522bb3e2f94531f3d35650b7fbf823eb7",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/create.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/create.md",
+      "renderedHash": "sha256:3a8c1af062a7a86a7387fd94e647332de09cbbdf632a9c36293d98b10409639c",
+      "localRenderedHash": "sha256:3a8c1af062a7a86a7387fd94e647332de09cbbdf632a9c36293d98b10409639c",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/database-architect.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/database-architect.md",
+      "renderedHash": "sha256:2993793974a3fbccd9268bc9a1e127b20acd3d8887d1b227e096a1a61ad0bb0b",
+      "localRenderedHash": "sha256:2993793974a3fbccd9268bc9a1e127b20acd3d8887d1b227e096a1a61ad0bb0b",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/debugger.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/debugger.md",
+      "renderedHash": "sha256:00e99d46c2b5f5ce31e8cf4c1091b0557ec709c08b9d409f7207559678b73e1a",
+      "localRenderedHash": "sha256:00e99d46c2b5f5ce31e8cf4c1091b0557ec709c08b9d409f7207559678b73e1a",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/deploy.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/deploy.md",
+      "renderedHash": "sha256:392e2b54dcf08fec3ac91fdfe35f00d9bbb2a4164ebc862803e9fc1c5d68cfe1",
+      "localRenderedHash": "sha256:392e2b54dcf08fec3ac91fdfe35f00d9bbb2a4164ebc862803e9fc1c5d68cfe1",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/devops-engineer.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/devops-engineer.md",
+      "renderedHash": "sha256:a3b3bbcaafc8b207fa3ee49523a568ba3ad4b256a029bc4958fd880109b521aa",
+      "localRenderedHash": "sha256:a3b3bbcaafc8b207fa3ee49523a568ba3ad4b256a029bc4958fd880109b521aa",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/documentation-writer.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/documentation-writer.md",
+      "renderedHash": "sha256:5d9d1d7f34a66cc6124d19a4b4a880f6f6fe44d1fa3b5050ce5768a71c6f15c8",
+      "localRenderedHash": "sha256:5d9d1d7f34a66cc6124d19a4b4a880f6f6fe44d1fa3b5050ce5768a71c6f15c8",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/enhance.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/enhance.md",
+      "renderedHash": "sha256:15b6d03157c28d581fe706c9345011ddd4b5c01d2e4608a9ec9dda124a0b5a09",
+      "localRenderedHash": "sha256:15b6d03157c28d581fe706c9345011ddd4b5c01d2e4608a9ec9dda124a0b5a09",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/explorer-agent.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/explorer-agent.md",
+      "renderedHash": "sha256:aac415b08e9ea68073e026e12dd6df939c3f0ce76479ea3745e239e84abbf1dc",
+      "localRenderedHash": "sha256:aac415b08e9ea68073e026e12dd6df939c3f0ce76479ea3745e239e84abbf1dc",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/frontend-specialist.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/frontend-specialist.md",
+      "renderedHash": "sha256:19a306cc81c778b6ec84e961b090dbf99dd7b906ae3144ee245a2403b2592114",
+      "localRenderedHash": "sha256:19a306cc81c778b6ec84e961b090dbf99dd7b906ae3144ee245a2403b2592114",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/game-developer.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/game-developer.md",
+      "renderedHash": "sha256:288de6b8bd2a8d7d49e08b8ef1ecaa15e83a4e4d3694385b077d85f812f4103a",
+      "localRenderedHash": "sha256:288de6b8bd2a8d7d49e08b8ef1ecaa15e83a4e4d3694385b077d85f812f4103a",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/legacy-code.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/legacy-code.md",
+      "renderedHash": "sha256:cc66eb4e36ca68ff406fc776cc1fdd9f04c3da402f24dd3e5bfb0e759599fc6f",
+      "localRenderedHash": "sha256:cc66eb4e36ca68ff406fc776cc1fdd9f04c3da402f24dd3e5bfb0e759599fc6f",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/mobile-developer.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/mobile-developer.md",
+      "renderedHash": "sha256:64d7cae0fb70ea0d5756f19e9330ef766a2fd931a27e036e61d7ae3210276428",
+      "localRenderedHash": "sha256:64d7cae0fb70ea0d5756f19e9330ef766a2fd931a27e036e61d7ae3210276428",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/orchestrate.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/orchestrate.md",
+      "renderedHash": "sha256:b21d8719a6d1f0e06d9bb9d1003bedbf5d9e46ab37e3d916e16e73bb25e61697",
+      "localRenderedHash": "sha256:b21d8719a6d1f0e06d9bb9d1003bedbf5d9e46ab37e3d916e16e73bb25e61697",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/orchestrator.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/orchestrator.md",
+      "renderedHash": "sha256:f3fd84c040edccc0a18e2e7f6197a5dd599d55a0f33310b6bad4d845bd9c00e9",
+      "localRenderedHash": "sha256:f3fd84c040edccc0a18e2e7f6197a5dd599d55a0f33310b6bad4d845bd9c00e9",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/penetration-tester.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/penetration-tester.md",
+      "renderedHash": "sha256:87b9933ca655f2bcbd34b1deafdcff825ff535a42a54bdab284b785aea9a8d6d",
+      "localRenderedHash": "sha256:87b9933ca655f2bcbd34b1deafdcff825ff535a42a54bdab284b785aea9a8d6d",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/performance-optimizer.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/performance-optimizer.md",
+      "renderedHash": "sha256:8e5906266d13206d5a3810e937593d229567e973ff8e32dcd32753eeb1a33532",
+      "localRenderedHash": "sha256:8e5906266d13206d5a3810e937593d229567e973ff8e32dcd32753eeb1a33532",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/plan.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/plan.md",
+      "renderedHash": "sha256:22978e2ffbe61884298532a5da21d06e7208c9c6475e16ccf3c636dad147c22c",
+      "localRenderedHash": "sha256:22978e2ffbe61884298532a5da21d06e7208c9c6475e16ccf3c636dad147c22c",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/preview.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/preview.md",
+      "renderedHash": "sha256:6081a7277362b9bab60bee90dd0b08dfdcf558094907b259784cbe62896c5353",
+      "localRenderedHash": "sha256:6081a7277362b9bab60bee90dd0b08dfdcf558094907b259784cbe62896c5353",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/project-planner.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/project-planner.md",
+      "renderedHash": "sha256:2358a197e51cabc1475c999483106a392ad704c25bc735dfdf030894ce37c4ae",
+      "localRenderedHash": "sha256:2358a197e51cabc1475c999483106a392ad704c25bc735dfdf030894ce37c4ae",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/security-auditor.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/security-auditor.md",
+      "renderedHash": "sha256:c59fe3bae51b8988e47a71ea2af74bf4debb055155aec4acb7af3d09abdb5228",
+      "localRenderedHash": "sha256:c59fe3bae51b8988e47a71ea2af74bf4debb055155aec4acb7af3d09abdb5228",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/seo-specialist.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/seo-specialist.md",
+      "renderedHash": "sha256:a611bf65f905efac9d39ac0495fc077e1005392d00fbeece3413877955f479ea",
+      "localRenderedHash": "sha256:a611bf65f905efac9d39ac0495fc077e1005392d00fbeece3413877955f479ea",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/status.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/status.md",
+      "renderedHash": "sha256:1bf69540826fd42bcc40ce3a77386df99ca492ea9d5de2bd69c94e0c46bf01a3",
+      "localRenderedHash": "sha256:1bf69540826fd42bcc40ce3a77386df99ca492ea9d5de2bd69c94e0c46bf01a3",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/test-engineer.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/test-engineer.md",
+      "renderedHash": "sha256:f97f1b5c4b717a9bde1235d65ed23d211ae1ef05878ab096d37fb6ea19a191b2",
+      "localRenderedHash": "sha256:f97f1b5c4b717a9bde1235d65ed23d211ae1ef05878ab096d37fb6ea19a191b2",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/test.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/test.md",
+      "renderedHash": "sha256:e9df2b20becbf45d4b660774c5de2fc5f493b9d91625a790fdaf73cf53c01110",
+      "localRenderedHash": "sha256:e9df2b20becbf45d4b660774c5de2fc5f493b9d91625a790fdaf73cf53c01110",
+      "status": "managed"
+    },
+    {
+      "path": ".gemini/agents/ui-ux-pro-max.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-agent",
+      "fromSource": ".claude/agents/ui-ux-pro-max.md",
+      "renderedHash": "sha256:b7ebda47aa16a4387836939272feb7aa65b66fac2aaeb934d0ec4baae37c06e9",
+      "localRenderedHash": "sha256:b7ebda47aa16a4387836939272feb7aa65b66fac2aaeb934d0ec4baae37c06e9",
+      "status": "managed"
+    },
+    {
+      "path": "GEMINI.md",
+      "kind": "generated",
+      "transformer": "claude-to-gemini-root",
+      "fromSource": "CLAUDE.md",
+      "renderedHash": "sha256:bfe1b66bf6d57c688ee46308b68f726f72b83c5c3edd3af4504467cf23fd6188",
+      "localRenderedHash": "sha256:bfe1b66bf6d57c688ee46308b68f726f72b83c5c3edd3af4504467cf23fd6188",
+      "status": "managed"
+    }
+  ]
+}
