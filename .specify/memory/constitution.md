@@ -1,148 +1,144 @@
-# UnderUndre AI Helpers Constitution
-
-Binding principles for `clai-helpers` CLI + the curated `.claude/` template it ships. Every `/speckit.*` command checks plans and tasks against this file. Violations halt work until resolved or the constitution is explicitly amended.
+# undrlla v2 Constitution
 
 ## Core Principles
 
-### I. Source of Truth Discipline
+### I. TS-Native Stack (NON-NEGOTIABLE)
 
-`.claude/` is **the** authoritative AI configuration. All downstream formats (`.github/prompts/`, `.github/instructions/*.instructions.md`, `.gemini/`, `GEMINI.md`, `.github/copilot-instructions.md`) are **generated**, never hand-edited.
+Single-stack TypeScript across backend (Medusa v2, Node 22 LTS), frontend (Next.js 16 App
+Router), tooling (Hermes / undrestrator / OmniRoute). No Python, Ruby, or Go in the core
+runtime. Shared types between back and front via `packages/shared-types/`. Infrastructure
+services (MinIO, Grafana, Loki) may run non-TS processes but are not part of the core
+application code.
 
-- Edits flow one direction: `.claude/` → transformers → consumer tree.
-- Any reverse flow (editing a generated file) is an incident and must be rolled back via `clai-helpers sync`.
-- Hand-written instruction files under `.github/instructions/{project,persona,coding}/` are the explicit exception and are preserved by pipeline exclusion, not by luck.
+Violation examples: adding a Django service, writing migration scripts in Python, using
+Go for a sidecar. All prohibited without constitutional amendment.
 
-### II. Transformer, Not Fork
+### II. MIT License Safety (NON-NEGOTIABLE)
 
-New AI-tool target = one new transformer in `packages/cli/src/transformers/` + registration + pipeline entry in `helpers.config.ts`. Duplicating `.claude/` into a new directory tree is forbidden.
+Every direct runtime dependency must be MIT / Apache 2.0 / BSD / ISC / similar permissive
+license. AGPL / BSL / SSPL / custom proprietary restrictions are prohibited in core
+application code. Infrastructure-only services (MinIO AGPL, Grafana AGPL) are acceptable
+when deployed as isolated containers and not embedded as library dependencies in the TS
+application.
 
-- Rationale: two copies of the same instruction drift. The CLI pipeline is the anti-drift discipline.
-- Corollary: `.agent/`, `.gemini/`, `.github/prompts/` etc. MUST be produced by the pipeline, not maintained by hand.
+Before adding any dependency: verify license via `license-checker` or `npm info <pkg>
+license`. If license is AGPL or unknown — block and escalate to maintainer.
 
-### III. Protected Slots over Hand-Editing
+### III. Plan-Driven Development
 
-Project-specific overrides inside managed files MUST use `<!-- HELPERS:CUSTOM START --> … <!-- HELPERS:CUSTOM END -->` markers. These survive `sync`. Unmarked hand-edits to managed files are lost silently on next sync — by design.
+Every feature — no matter how small — uses the speckit pipeline before implementation:
+`/speckit.start -> .specify -> .clarify -> .plan -> .tasks -> .analyze -> .implement`.
+No "just-do-it" code in `src/` or `apps/` without a corresponding spec in `specs/<slug>/`.
 
-- Consumer projects never edit generated trees directly.
-- Upstream improvements that would benefit every consumer go through `UnderUndre/ai` + `sync`, not local patch.
+The only exceptions are: hotfixes for P0 production incidents (document after the fact in
+a `hotfix/` spec within 48 hours) and dependency version bumps.
 
-### IV. SemVer Discipline in the 0.x Zone (NON-NEGOTIABLE)
+### IV. AI-Augmented Velocity
 
-While `clai-helpers` is pre-1.0:
+Hermes + OmniRoute + undrestrator are first-class development tools, not afterthoughts.
+Code generation via undrestrator ensemble, test scaffolding via Hermes, review-loops via
+cross-AI gate are all expected and encouraged. AI-generated code must pass the same review
+and quality gates as human-written code — AI authorship is never an excuse for skipping
+tests or code review.
 
-- **Breaking change** → MINOR bump (de facto major in 0.x semantics).
-- **Feature** → MINOR bump.
-- **Bugfix** → PATCH bump.
-- **`chore:` / `docs:` / `refactor:` / `ci:` / `test:` / `build:`** → NO bump. Every `chore: bump version` commit is a smell.
-- Going to `1.0.0` is a one-way public promise of API stability. Not before migration notes, deprecation cycles, and a tagged RC.
+OmniRoute sidecar must be running in every dev environment. If it is not running, the AI
+advisor and BYOK paths degrade gracefully but this must be a monitored degraded state, not
+a silent failure.
 
-Full framework: `.claude/skills/semver-versioning/SKILL.md`. Bump via `/bump` command — never by hand-editing `package.json#version`.
+### V. Decentralization-Ready
 
-### V. Token Economy for AI Artifacts
+Every component must be deployable to:
+  (a) Akash Network via an SDL manifest in `infra/akash/`,
+  (b) any Linux VPS via `docker-compose.yml` at repository root,
+  (c) community-operator self-hosted via the 1-command install script.
 
-Every file in `.claude/` earns its place by being invoked. Decorative clones, stale mirrors, and "just in case" agents bloat the context window of every downstream Claude session.
+No assumed dependency on a specific cloud provider API (no AWS SDK calls in core, no
+GCP-specific primitives). Object storage must use S3-compatible interface (MinIO locally,
+any S3-compatible provider in production).
 
-- A file not referenced by any command, agent, or skill in 60 days is a candidate for deletion.
-- `ultrathink` markers belong on entry points (commands + primary agents + decision-framework skills), not on every file. Each marker costs reasoning budget on load.
-- Persona flavor (catchphrases, aphorisms) MUST be opt-in via a separate transpile target so non-Russian-speaking consumers can omit it.
+Exception: the centralized hot-core services (payment vault, VPN key store, KYC vault)
+are intentionally NOT deployable to Akash — this is by design per Decision 2.
 
-### VI. Cross-AI Review Gate (NON-NEGOTIABLE)
+### VI. Hot-Secrets Boundary (NON-NEGOTIABLE)
 
-`/speckit.implement` MUST NOT proceed without explicit gate approval. The gate requires:
+Payment-provider secrets (Stripe secret key, PayPal client secret, BTCPay webhook secret),
+VPN master keys (WireGuard private keys, AmneziaWG PSK, Xray UUID secrets), and KYC vault
+data (identity documents, tax IDs) MUST reside exclusively on the centralized hardened
+hot-core infrastructure.
 
-1. `/speckit.analyze` written `specs/<slug>/reviews/analyze.md` with verdict ∈ {PASS, OVERRIDDEN}.
-2. At least **2 distinct external AI reviewers** (Codex Desktop, Antigravity, Gemini CLI, Copilot, or Claude in an independent session) wrote `specs/<slug>/reviews/<provider>.md` via `/speckit.review` with verdict ∈ {PASS, OVERRIDDEN}.
+They MUST NOT appear in:
+  - Akash SDL manifests or environment variables passed to Akash deployments
+  - Community-operator configuration files or docker-compose files
+  - Logs, stack traces, or error responses
+  - Git commits or CI environment variables
 
-Rationale: the model that wrote the spec is the worst auditor of the spec. Independent eyes find what the author already rationalized away. Two reviewers is the minimum to distinguish a real signal from a single-model blind spot.
+Enforced by: CI secret-scan (gitleaks), ORM-level log filtering, quarterly production
+probes. Any violation is a P0 incident requiring immediate key rotation.
 
-Override is permitted via `--override-gate <reason>` passed to `/speckit.implement`. Every override is logged to `specs/<slug>/reviews/_gate-override.md` with timestamp, actor, commit SHA, and reason. Frequent overrides on a single feature are an incident, not a workflow.
+AES-256-GCM encryption at rest is mandatory for all secrets stored in the database.
+Key Encryption Keys (KEK) must be sourced from Infisical or a hardware HSM — never
+hardcoded in application config files.
 
-Reviewers identify themselves by tool — `claude`, `codex`, `antigravity`, `gemini`, `copilot`. Two reviews from the same provider count as one. The gate trusts the provider tag in the VERDICT block; falsifying it defeats the purpose.
+### VII. Cross-AI Review Gate
 
-### VII. Artifact Versioning
+`/speckit.implement` blocks until:
+  1. `/speckit.analyze` produces a PASS verdict on the implementation plan.
+  2. At least 2 external reviewer PASSes from distinct AI providers (Codex / Gemini /
+     Copilot / Antigravity / OpenCode).
 
-Every pipeline stage that mutates a feature artifact (specify, clarify, plan, tasks, review) MUST tag the commit via `.specify/scripts/{bash,powershell}/snapshot-stage.{sh,ps1}` using the convention `<stage>/<slug>/v<N>`.
+Override is permitted only with a logged justification in `specs/<slug>/reviews/override.md`
+signed by the maintainer. The justification must state: which gate is bypassed, why, and
+what compensating controls apply.
 
-- Tags are the **only** historical record. **No parallel `.history/` files** — git is the history. Duplicating into `specs/<slug>/.history/` is an anti-pattern: it drifts and bloats the tree.
-- `/speckit.diff <slug>` reads tags to compare iterations without speculative file copies.
-- `/speckit.retrospective` reads `tasks/<slug>/v1` → HEAD to bound the implementation lifecycle and surface lessons-learned.
-- The snapshot script is **idempotent** via `--points-at HEAD` guard — re-running a speckit command on the same commit reuses the existing tag instead of polluting the namespace.
-- Reviewers (`/speckit.review`) only need ONE of them to call snapshot — the idempotency guard ensures parallel reviewers don't duplicate.
+This gate is non-negotiable for all features that touch: payment processing, VPN
+provisioning, authentication, tenant isolation, or any path that handles secrets.
 
-### VIII. Self-Maintaining Knowledge
+## Additional Constraints
 
-The AI workflow infrastructure MUST keep itself current. Lessons learned are captured into staged knowledge; recurring patterns get promoted into skills/agents; project-wide spec drift is corrected actively. The repo is a learning system, not a static template.
+### Performance Budgets
+- P50 checkout latency ≤ 300ms; P95 ≤ 1500ms (SC-007)
+- AI advisor first-token P95 ≤ 8s for PC-builder briefs (SC-006)
+- Token-metering pipeline overhead < 5% of upstream provider cost (SC-005)
+- Akash provider-failure RTO: 5 minutes P95 (resolved in research.md)
 
-Mechanisms (delivered May 2026):
+### Security Posture
+- Zero PII in logs or error responses (SC-009)
+- Zero secrets outside hot-core (SC-010)
+- Tenant-scope isolation: 404 on cross-tenant access attempts, never 403 (spec edge case)
+- RLS policies at Postgres level as defense-in-depth beyond ORM tenant filter
 
-1. **Intent Routing** (CLAUDE.md §"Intent Routing" + `/dispatch` command). User utterances map to known commands/agents. Soft-baseline transpiles to all targets; CC adds reliability via `UserPromptSubmit` hook (`.claude/hooks/intent-hint.sh`).
-2. **Agent skills loading** (`.claude/hooks/agent-skills-reminder.sh`). `PreToolUse(Task)` hook prepends "load skills from frontmatter" reminder into the spawned subagent's prompt. Prevents subagents from skipping their declared skills.
-3. **Session checkpoint** (`.claude/hooks/session-checkpoint.sh`). Stop hook fires once per session at turn ~30 to remind about `/improve`, `/learn`, spec updates. Counter-gated to avoid alarm fatigue.
-4. **Pattern capture** (`/learn <slug>`). Stages reusable patterns in `knowledge/patterns/<slug>.md` with `status: draft`. Not a final destination — patterns mature here before being promoted.
-5. **Promotion** (`/improve`). Reads `knowledge/patterns/`, proposes targeted promotions into specific `.claude/skills/<name>/SKILL.md` or `.claude/agents/<name>.md`. Promotion is explicit, not automatic.
-6. **Living spec** ([`specs/main/architecture.md`](../../specs/main/architecture.md) + [`requirements.md`](../../specs/main/requirements.md)). Canonical source for project topography and contracts. Updated when arch changes — drift here is treated as a defect.
-
-Violations (signals, not blockers):
-
-- Same anti-pattern observed in 2+ commits within a quarter without a corresponding `knowledge/patterns/` entry → `/learn` candidate.
-- Agent X spawned 3+ times for tasks that touch domain Y without using domain-Y skill → frontmatter or skill itself is wrong.
-- `specs/main/` last-modified > 90 days while `packages/cli/src/` had ≥10 commits → spec drift, run a refresh.
-- `knowledge/patterns/` entries with `status: draft` older than 60 days → either promote (`/improve`) or close as won't-fix.
-
-Detection is **fuzzy**, not automated gates. This principle informs `/speckit.retrospective`, `/improve`, and the Stop checkpoint hook — they raise these signals when they see them. Acting on the signals is the maintainer's call. Unlike Principles IV/VI/VII, VIII does not block `/speckit.implement`.
-
-Hybrid enforcement:
-
-- **Soft baseline**: Intent Routing table + `/dispatch` + `/learn` + `/improve` — all in `.claude/`, transpile to Copilot/Gemini/Codex/Antigravity.
-- **CC ratchet**: hooks under `.claude/hooks/` + `.claude/settings.json` registration. Live upstream-only by design (Hybrid enforcement decision from May 2026 brainstorm). Do not transpile; not in `helpers.config.ts.sources`.
-
-## Technical Constraints
-
-> Moved to [`../../specs/main/requirements.md`](../../specs/main/requirements.md) §2.1 (single source of truth). Constitution governs **principles**; concrete tech-stack constraints live alongside requirements where they belong.
+### Compliance Scope
+- GDPR (EU/EEA + UK + Switzerland + EU-adequacy countries) — mandatory
+- RU market: out of scope; FR-028a provides legacy customer offboarding
+- Akash providers: GDPR-compatible jurisdictions only (SDL geo-filter enforced)
 
 ## Development Workflow
 
-### Plumber's Loop (required for every non-trivial change)
+### Quality Gates (per PR)
+1. `pnpm validate` passes (typecheck + lint + unit tests)
+2. Integration tests green (docker-compose test environment)
+3. Secret scan (gitleaks) zero findings
+4. No new AGPL/BSL dependencies introduced
+5. Spec exists for any new feature (Constitution Principle III)
 
-`Classify → Analyze → Spec → Plan → Execute → Verify → Reflect`. Defined in `.github/instructions/coding/copilot-instructions.md` §5.
+### Review Process
+- All PRs require: author self-review + at least 1 human review
+- Features touching payment/VPN/auth: additional Cross-AI Review Gate (Principle VII)
+- Architecture changes: update `specs/main/architecture.md` in the same PR
 
-### WRAP atomicity
-
-`W`rite-issue → `R`efine → `A`tomic-tasks (<500 LOC each) → `P`air-execute (one PR = one concern: refactor XOR feature, never both).
-
-### `/speckit.*` pipeline for features
-
-`/speckit.specify` → `/speckit.clarify` → `/speckit.plan` → `/speckit.tasks` → `/speckit.analyze` → **`/speckit.review`** (×2 from external AI tools) → `/speckit.implement` → `/speckit.status`.
-
-This file (the constitution) is loaded at the Constitution Check gate of `/speckit.plan`. Violations block until resolved.
-
-`/speckit.implement` enforces Principle VI's cross-AI review gate before any task execution: requires `analyze.md` PASS + ≥2 distinct external reviewers PASS in `specs/<slug>/reviews/`. Override via `--override-gate <reason>` is logged.
-
-### Quality gates before `done`
-
-- `npm run validate` (tsc --noEmit) — clean.
-- `npm test` — all pass.
-- `npm run build` — produces `dist/`.
-- `npx clai-helpers status --strict` — no drift between `.claude/` source and generated targets.
-
-### Release gate
-
-`/bump` → confirmation → `npm version` → `git push --follow-tags` → `npm publish` (which triggers `prepublishOnly` = validate + test + build). No manual version edits. No publish from dirty tree.
+### Deployment Gates
+- Staging must pass 100% of legacy regression tests (Phase 1 milestone)
+- Production cutover requires dual-write window (FR-038) + reconciliation report
 
 ## Governance
 
-1. **This constitution supersedes ad-hoc practice.** If an agent, skill, or command contradicts a principle here, the principle wins until the constitution is amended.
-2. **Amendments require a commit** that touches `.specify/memory/constitution.md` plus any dependent `.claude/` files (e.g., changing Principle IV requires updating `semver-versioning` skill and `/bump` command to match).
-3. **`/speckit.analyze` enforces constitution alignment** — any misalignment in spec/plan/tasks is flagged CRITICAL.
-4. **Complexity must be justified.** Every new agent, transformer, target, or skill adds load to every downstream session. A change that doesn't earn its weight is rejected.
-5. **Anti-sycophancy applies to review of this file too.** If a principle above is wrong for the project, say so and propose an amendment. Don't quietly ignore it.
+This Constitution supersedes all other project conventions. Amendments require:
+  1. A documented proposal in `specs/constitution-amendment/spec.md`
+  2. Maintainer approval (signed commit)
+  3. Migration plan for any teams or tooling affected
 
-**Version**: 1.4.0 | **Ratified**: 2026-04-17 | **Last Amended**: 2026-05-06
+All PRs and reviews must verify compliance with applicable principles. Complexity
+violations (e.g., adding a 4th runtime language) must be justified in the feature spec's
+Complexity Tracking section.
 
-### Changelog
-
-- **1.4.0** (2026-05-06) — Added Principle VIII: Self-Maintaining Knowledge. Documents the May 2026 self-maintaining workflow infrastructure (Intent Routing + `/dispatch` + 3 hooks + `/learn` + `/improve` + `specs/main/`). NOT NON-NEGOTIABLE — fuzzy signals only, no `/speckit.implement` block. Hybrid enforcement: soft baseline transpiles everywhere; CC ratchet (hooks) lives upstream-only. Companion build-out: brainstorm Option B implemented over Steps 1-7.
-- **1.3.0** (2026-05-06) — Moved "Technical Constraints" section out of constitution to [`specs/main/requirements.md`](../../specs/main/requirements.md) §2.1 as part of project-doc consolidation. Constitution now governs **principles only**; concrete tech-stack constraints live with requirements. No principle changes; no behavioral diff for `/speckit.*` commands.
-- **1.2.0** (2026-04-26) — Added Principle VII: Artifact Versioning. Every speckit pipeline stage (specify/clarify/plan/tasks/review) now tags the commit via `snapshot-stage.{sh,ps1}` using `<stage>/<slug>/v<N>` convention. Enables `/speckit.diff` and `/speckit.retrospective` without parallel `.history/` files. Idempotent via `--points-at HEAD` guard.
-- **1.1.0** (2026-04-26) — Added Principle VI: Cross-AI Review Gate (NON-NEGOTIABLE). `/speckit.implement` now requires `/speckit.analyze` PASS + ≥2 external reviewer PASS via `/speckit.review`. Override via `--override-gate <reason>` with audit log.
-- **1.0.0** (2026-04-17) — Initial ratification.
+**Version**: 1.0.0 | **Ratified**: 2026-05-24 | **Last Amended**: 2026-05-24

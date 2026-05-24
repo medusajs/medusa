@@ -32,6 +32,7 @@ description: "Task list template for feature implementation with agent routing a
 | `[SEC]` | security-auditor | Security audit, vulnerability review (conditional) |
 
 **Assignment rules:**
+
 - By file path: `models/`, `prisma/`, `migrations/` → `[DB]`; `api/`, `services/`, `middleware/` → `[BE]`; `components/`, `pages/`, `app/`, `styles/` → `[FE]`; `Dockerfile`, `.github/workflows/`, `infra/` → `[OPS]`; `tests/e2e/`, `tests/integration/` (cross-domain) → `[E2E]`
 - By description fallback: "audit"/"security review" → `[SEC]`; "create schema"/"migration" → `[DB]`
 - Phase 1 tasks without clear domain → `[SETUP]`
@@ -203,38 +204,12 @@ T014 + T016 → T011             # E2E needs both BE and FE ready
 ### Self-Validation Checklist
 
 > The generator MUST verify before writing:
+>
 > - [ ] Every task ID in Dependencies exists in the task list above
 > - [ ] No circular dependencies (A→B→A)
 > - [ ] No orphan task IDs referenced that don't exist
 > - [ ] Fan-in uses `+` only, fan-out uses `,` only
 > - [ ] No chained arrows on a single line
-
----
-
-## Dependency Visualization
-
-> Auto-generated from Dependencies section above. For visual rendering in GitHub/VS Code only — NOT for parsing by the orchestrator.
-
-```mermaid
-graph LR
-    T001 --> T002
-    T001 --> T003
-    T001 --> T004
-    T004 --> T007
-    T007 --> T012
-    T007 --> T013
-    T005 & T006 --> T014
-    T012 & T013 --> T014
-    T014 --> T015
-    T015 --> T016
-    T016 --> T017
-    T014 & T016 --> T011
-```
-
-> **Generator rule:** Convert each Dependency line to mermaid syntax:
-> - `T001 → T002` becomes `T001 --> T002`
-> - `T001 → T002, T003` becomes `T001 --> T002` and `T001 --> T003` (separate lines)
-> - `T002 + T003 → T004` becomes `T002 & T003 --> T004`
 
 ---
 
@@ -265,48 +240,6 @@ graph LR
 | [SEC] | 1 | all US complete |
 
 **Critical Path**: T001 → T004 → T007 → T012 → T014 → T015 → T016 → T017
-
----
-
-## Agent Dispatch Plan
-
-> For each agent that has tasks, provide the context needed to spawn a subagent (Claude Code) or switch role context (Gemini/Copilot). The orchestrator or human uses this table to dispatch without re-reading plan.md.
-
-| Agent | Subagent | Skills | Input Context | Tasks | Files |
-|-------|----------|--------|---------------|-------|-------|
-| `[SETUP]` | — (orchestrator) | — | plan.md §structure | T001, T002 | `package.json`, `tsconfig.json`, project root |
-| `[DB]` | `database-architect` | `database-design` | data-model.md, plan.md §storage | T004, T007, T012, T013 | `src/models/`, `migrations/` |
-| `[BE]` | `backend-specialist` | `api-patterns`, `system-design-patterns` | contracts/, plan.md §tech-stack, data-model.md §entities | T005, T006, T008, T014, T015 | `src/api/`, `src/services/`, `src/middleware/` |
-| `[FE]` | `frontend-specialist` | `react-patterns`, `tailwind-patterns`, `frontend-design` | contracts/ §endpoints, plan.md §ui-framework | T016, T017 | `src/components/`, `src/pages/` |
-| `[OPS]` | `devops-engineer` | `deployment-procedures` | plan.md §infra, quickstart.md | T003, T009 | `Dockerfile`, `.github/workflows/`, `infra/` |
-| `[E2E]` | `test-engineer` | `testing-patterns`, `webapp-testing` | contracts/, quickstart.md §scenarios | T011 | `tests/e2e/`, `tests/integration/` |
-| `[SEC]` | `security-auditor` | `vulnerability-scanner` | spec.md §security, plan.md §auth | TXXX | project-wide |
-
-<!--
-  ============================================================================
-  GENERATOR RULES for Agent Dispatch Plan:
-
-  1. Only include agents that have actual tasks (skip unused conditional agents)
-  2. Skills: pull from .claude/agents/<agent>.md frontmatter `skills:` field
-  3. Input Context: list specific sections from plan.md/data-model.md/contracts/
-     that the agent needs — NOT the whole file
-  4. Tasks: list actual task IDs assigned to this agent
-  5. Files: list directories/files the agent will create or modify
-  6. For conditional agents ([PERF], [DOC], [DEBUG], [REFACTOR], [SEO], [MOBILE],
-     [UIUX], [PENTEST], [GAME]) — add rows only when tasks exist
-
-  Additional conditional agent mappings (add row if tasks exist):
-  - [PERF]     → performance-optimizer  → performance-profiling
-  - [DOC]      → documentation-writer   → documentation-templates
-  - [DEBUG]    → debugger               → systematic-debugging
-  - [REFACTOR] → (general-purpose)      → legacy-code, testing-patterns
-  - [SEO]      → seo-specialist         → seo-fundamentals, geo-fundamentals
-  - [MOBILE]   → mobile-developer       → mobile-design + framework-specific
-  - [UIUX]     → (general-purpose)      → ui-ux-pro-max, frontend-design
-  - [PENTEST]  → penetration-tester     → red-team-tactics
-  - [GAME]     → game-developer         → game-development
-  ============================================================================
--->
 
 ---
 
