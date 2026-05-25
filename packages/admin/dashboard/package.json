@@ -67,6 +67,7 @@
     "lodash.isequal": "^4.5.0",
     "match-sorter": "^6.3.4",
     "motion": "^11.15.0",
+    "qrcode": "^1.5.4",
     "qs": "^6.12.1",
     "radix-ui": "1.1.2",
     "react": "^18.3.1",
@@ -85,6 +86,7 @@
     "@medusajs/admin-vite-plugin": "2.15.4",
     "@medusajs/types": "2.15.4",
     "@medusajs/ui-preset": "2.15.4",
+    "@types/qrcode": "^1.5.5",
     "@typescript/native-preview": "^7.0.0-dev.20260423.1",
     "eslint": "8",
     "typescript": "5.9.3"
