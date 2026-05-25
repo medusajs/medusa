@@ -339,6 +339,16 @@ export default class AuthModuleService
       sharedContext
     )
 
+    if (
+      data.auth_identity_id &&
+      factor.auth_identity_id !== data.auth_identity_id
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `MFA factor with id "${data.id}" was not found`
+      )
+    }
+
     return await this.authMfaProviderService_.verifySetup(
       factor.provider,
       data,
@@ -458,7 +468,10 @@ export default class AuthModuleService
       sharedContext
     )
 
-    if (this.getMfaDisablePolicy_() === "challenge") {
+    if (
+      factor.status === "enabled" &&
+      this.getMfaDisablePolicy_() === "challenge"
+    ) {
       if (!data.method || !data.code) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,

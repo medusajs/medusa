@@ -11,13 +11,11 @@ type Options = {
   removeExtra?: boolean
 }
 
-// slug is used as the cache key; content is the MDX source fetched from /raw-mdx/
 export const getCleanMdCached = unstable_cache(
-  async (content: string, options: Options = {}) => {
+  async (filePath: string, options: Options = {}) => {
     const { removeExtra } = options
     const md = await getCleanMd({
-      file: content,
-      type: "content",
+      file: filePath,
       plugins: {
         before: [
           [
@@ -40,8 +38,7 @@ export const getCleanMdCached = unstable_cache(
               },
               useBaseUrl:
                 process.env.NODE_ENV === "production" ||
-                process.env.VERCEL_ENV === "production" ||
-                !!process.env.CLOUDFLARE_ENV,
+                process.env.VERCEL_ENV === "production",
             },
           ],
           [localLinksRehypePlugin],

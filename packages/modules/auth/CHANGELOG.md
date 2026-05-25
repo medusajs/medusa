@@ -1,5 +1,21 @@
 # @medusajs/auth
 
+## 2.15.4
+
+### Patch Changes
+
+- [#15475](https://github.com/medusajs/medusa/pull/15475) [`08912969605975ca8dafae3bc87776f1ae184e08`](https://github.com/medusajs/medusa/commit/08912969605975ca8dafae3bc87776f1ae184e08) Thanks [@christiananese](https://github.com/christiananese)! - fix(auth): allow cancelling pending MFA setup without a challenge
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.3
+
 ## 2.15.2
 
 ### Patch Changes
