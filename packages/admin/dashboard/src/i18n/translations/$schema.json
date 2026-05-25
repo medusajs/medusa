@@ -9525,9 +9525,6 @@
           "type": "string"
         },
         "create": {
-          "type": "string"
-        },
-        "settings": {
           "type": "object",
           "properties": {
             "header": {
@@ -9822,6 +9819,35 @@
           "required": ["header", "successToast"],
           "additionalProperties": false
         },
+        "delete": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "successToast": {
+              "type": "string"
+            }
+          },
+          "required": ["title", "description", "successToast"],
+          "additionalProperties": false
+        },
+        "fields": {
+          "type": "object",
+          "properties": {
+            "roles": {
+              "type": "string"
+            },
+            "users": {
+              "type": "string"
+            }
+          },
+          "required": ["roles", "users"],
+          "additionalProperties": false
+        },
         "list": {
           "type": "object",
           "properties": {
@@ -9886,7 +9912,16 @@
           "additionalProperties": false
         }
       },
-      "required": ["domain", "subtitle", "create", "edit", "list", "roles"],
+      "required": [
+        "domain",
+        "subtitle",
+        "create",
+        "edit",
+        "delete",
+        "fields",
+        "list",
+        "roles"
+      ],
       "additionalProperties": false
     },
     "translations": {
