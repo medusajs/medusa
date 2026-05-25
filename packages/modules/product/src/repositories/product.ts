@@ -200,10 +200,13 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
     const products = await manager.find<InferEntityType<typeof Product>>(
       Product.name,
       { id: productIds },
-      { limit: productIds.length } as any
+      { limit: productIds.length, refresh: true } as any
     )
+    // `refresh: true` ensures that if the entities are already in the identity
+    // map (e.g. created earlier in the same transaction), their collections
+    // are re-hydrated from the DB instead of returning stale empty ones.
     for (const relation of relations) {
-      await (manager as any).populate(products, [relation])
+      await (manager as any).populate(products, [relation], { refresh: true })
     }
     return products
   }
@@ -277,8 +280,9 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
     }
 
     const manager = this.getActiveManager<SqlEntityManager>(context)
-    const connection = manager.getConnection()
-    const knex = connection.getKnex()
+    // Use the transaction-bound knex so we see writes made earlier in the
+    // same transaction (e.g. pivot rows just inserted by another service call).
+    const knex = manager.getTransactionContext() ?? manager.getKnex()
 
     const allProductIds = [...new Set(validPairs.map((p) => p.productId))]
     const allValueIds = [
@@ -336,8 +340,9 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
     }
 
     const manager = this.getActiveManager<SqlEntityManager>(context)
-    const connection = manager.getConnection()
-    const knex = connection.getKnex()
+    // Use the transaction-bound knex so we see writes made earlier in the
+    // same transaction (e.g. pivot rows just inserted by another service call).
+    const knex = manager.getTransactionContext() ?? manager.getKnex()
 
     const blockingOptions = await knex
       .select("ppo.product_option_id")
@@ -359,11 +364,9 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
    * Returns conflicting option ids if:
    *    - the option is already assigned to that product
    *    - the option is exclusive and is assigned to another product
-   *    - the input has duplicate assignments for the same product and option
    *
    * @param pairs - Array of { productId, optionId } pairs to check
    * @param context - The context
-   * @throws if the input contains duplicate product/option assignments
    */
   async canAssignProductOptionToProduct(
     pairs: Array<{ productId: string; optionId: string }> = [],
@@ -376,17 +379,19 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
       return { exclusiveOptionIds: [], alreadyLinkedOptionIds: [] }
     }
 
-    const pairKeys = new Set<string>()
+    // Reject duplicate (product, option) pairs within the input itself. Without
+    // this check, downstream `INSERT … ON CONFLICT DO NOTHING` silently dedupes
+    // the rows and the caller never finds out they double-assigned.
+    const seenKeys = new Set<string>()
     const duplicateKeys: string[] = []
     for (const pair of pairs) {
       const key = `${pair.productId}_${pair.optionId}`
-      if (pairKeys.has(key)) {
+      if (seenKeys.has(key)) {
         duplicateKeys.push(key)
       } else {
-        pairKeys.add(key)
+        seenKeys.add(key)
       }
     }
-
     if (duplicateKeys.length) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -407,8 +412,9 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
     const optionIds = [...optionToProductIds.keys()]
 
     const manager = this.getActiveManager<SqlEntityManager>(context)
-    const connection = manager.getConnection()
-    const knex = connection.getKnex()
+    // Use the transaction-bound knex so we see writes made earlier in the
+    // same transaction (e.g. pivot rows just inserted by another service call).
+    const knex = manager.getTransactionContext() ?? manager.getKnex()
 
     const pairPlaceholders = pairs.map(() => "(?, ?)").join(", ")
     const pairBindings = pairs.flatMap((p) => [p.productId, p.optionId])
@@ -465,9 +471,8 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
       return optionIdsByProduct
     }
 
-    const knex = this.getActiveManager<SqlEntityManager>(context)
-      .getConnection()
-      .getKnex()
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    const knex = manager.getTransactionContext() ?? manager.getKnex()
 
     const rows = await knex("product_product_option")
       .select("product_id", "product_option_id")
@@ -494,13 +499,14 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
       return allowedValueIdsByProduct
     }
 
-    const knex = this.getActiveManager<SqlEntityManager>(context)
-      .getConnection()
-      .getKnex()
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    // Use the transaction-bound knex so we see pivot rows written earlier in
+    // the same transaction (e.g. by addProductOptionToProduct_).
+    const knex = manager.getTransactionContext() ?? manager.getKnex()
 
     const rows = await knex("product_product_option_value as ppov")
       .select("ppo.product_id", "ppov.product_option_value_id")
-      .innerJoin("product_product_option as ppo", function () {
+      .innerJoin("product_product_option as ppo", function (this: any) {
         this.on("ppo.id", "ppov.product_product_option_id").andOnNull(
           "ppo.deleted_at"
         )

@@ -1570,20 +1570,40 @@ export default class ProductModuleService
 
     const uniqueOptionIds = [...new Set(pairs.map((p) => p.product_option_id))]
 
-    const [options, assignmentConflicts] = await promiseAll([
-      this.productOptionService_.list(
-        { id: uniqueOptionIds },
-        { relations: ["values"] },
-        sharedContext
-      ),
-      this.productRepository_.canAssignProductOptionToProduct(
+    // Read option values via a direct knex query rather than
+    // productOptionService_.list({...,relations:["values"]}). That MikroORM
+    // path can return an option whose `.values` collection is stale (cached
+    // empty in the identity map) when the option was created earlier in the
+    // same transaction — which silently produces no value pivot rows below.
+    // Callers that persist options in the same transaction (e.g.
+    // createProducts_) are responsible for flushing before calling this.
+    // Use the transaction-bound knex so we see writes that have been flushed
+    // but not committed yet.
+    const manager = (sharedContext.transactionManager ??
+      sharedContext.manager) as any
+    const knex = manager.getTransactionContext() ?? manager.getKnex()
+    const optionValuesRows: { id: string; option_id: string }[] = await knex(
+      "product_option_value"
+    )
+      .select("id", "option_id")
+      .whereIn("option_id", uniqueOptionIds)
+      .whereNull("deleted_at")
+
+    const optionValuesMap = new Map<string, { id: string }[]>()
+    for (const row of optionValuesRows) {
+      const list = optionValuesMap.get(row.option_id) ?? []
+      list.push({ id: row.id })
+      optionValuesMap.set(row.option_id, list)
+    }
+
+    const assignmentConflicts =
+      await this.productRepository_.canAssignProductOptionToProduct(
         pairs.map((pair) => ({
           productId: pair.product_id,
           optionId: pair.product_option_id,
         })),
         sharedContext
-      ),
-    ])
+      )
 
     if (assignmentConflicts.alreadyLinkedOptionIds.length) {
       throw new MedusaError(
@@ -1602,10 +1622,6 @@ export default class ProductModuleService
         )}`
       )
     }
-
-    const optionValuesMap = new Map(
-      options.map((opt) => [opt.id, opt.values || []])
-    )
 
     const pposToCreate: Array<{
       product_id: string
@@ -2836,6 +2852,13 @@ export default class ProductModuleService
     }
 
     if (linkPairs.length > 0) {
+      // Flush the just-created options + values to the DB before
+      // addProductOptionToProduct_ runs — it reads option values via raw knex
+      // to build the value-pivot rows, and that read can't see entities that
+      // are still only in MikroORM's Unit of Work.
+      if (allOptionsWithIds.length > 0) {
+        await (sharedContext.transactionManager as any).flush()
+      }
       await this.addProductOptionToProduct_(linkPairs, sharedContext)
     }
 
@@ -3092,6 +3115,27 @@ export default class ProductModuleService
     }
 
     const options = productData.options
+
+    if (options?.length) {
+      const seenOptionIds = new Set<string>()
+      const duplicateOptionIds: string[] = []
+      for (const option of options) {
+        if ("id" in option) {
+          if (seenOptionIds.has(option.id)) {
+            duplicateOptionIds.push(option.id)
+          } else {
+            seenOptionIds.add(option.id)
+          }
+        }
+      }
+      if (duplicateOptionIds.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Product "${productData.title}" has duplicate option assignments: [${duplicateOptionIds.join(", ")}]`
+        )
+      }
+    }
+
     const missingOptionsVariants: string[] = []
 
     if (options?.length) {
