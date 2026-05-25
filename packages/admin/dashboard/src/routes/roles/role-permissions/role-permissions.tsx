@@ -20,18 +20,20 @@ export const RolePermissions = () => {
   return (
     <RouteDrawer>
       {!isPending && role && (
-        <RouteDrawer.Header>
-          <RouteDrawer.Title asChild>
-            <Heading>
-              {t("roles.permissions.header", { name: role.name })}
-            </Heading>
-          </RouteDrawer.Title>
-          <RouteDrawer.Description className="sr-only">
-            {t("roles.permissions.hint")}
-          </RouteDrawer.Description>
-        </RouteDrawer.Header>
+        <>
+          <RouteDrawer.Header>
+            <RouteDrawer.Title asChild>
+              <Heading>
+                {t("roles.permissions.header", { name: role.name })}
+              </Heading>
+            </RouteDrawer.Title>
+            <RouteDrawer.Description className="sr-only">
+              {t("roles.permissions.hint")}
+            </RouteDrawer.Description>
+          </RouteDrawer.Header>
+          <EditRolePermissionsForm role={role} />
+        </>
       )}
-      {!isPending && role && <EditRolePermissionsForm role={role} />}
     </RouteDrawer>
   )
 }

@@ -1,16 +1,15 @@
-import { useEffect } from "react"
-import { useLoaderData, useNavigate, useParams } from "react-router-dom"
+import { useLoaderData, useParams } from "react-router-dom"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { SingleColumnPage } from "../../../components/layout/pages"
 import { useRbacPolicy } from "../../../hooks/api/rbac-policies"
+import { useRequireRbacFeature } from "../../../hooks/use-require-rbac-feature"
 import { useExtension } from "../../../providers/extension-provider"
-import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { usePermissions } from "../../../providers/permissions-provider"
 import { PolicyGeneralSection } from "./components/policy-general-section"
 import { PolicyRolesSection } from "./components/policy-roles-section"
 import { POLICY_DETAIL_FIELDS } from "./constants"
 import { policyLoader } from "./loader"
-import { usePermissions } from "../../../providers/permissions-provider"
 
 export const PolicyDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -18,15 +17,8 @@ export const PolicyDetail = () => {
   >
   const { id } = useParams()
   const { getWidgets } = useExtension()
-  const isRbacEnabled = useFeatureFlag("rbac")
-  const navigate = useNavigate()
+  const isRbacEnabled = useRequireRbacFeature()
   const { hasPermission } = usePermissions()
-
-  useEffect(() => {
-    if (!isRbacEnabled) {
-      navigate(-1)
-    }
-  }, [isRbacEnabled, navigate])
 
   const {
     policy,
@@ -42,12 +34,12 @@ export const PolicyDetail = () => {
     }
   )
 
-  if (isLoading || !policy) {
-    return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
-  }
-
   if (isError) {
     throw error
+  }
+
+  if (isLoading || !policy) {
+    return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
 
   return (

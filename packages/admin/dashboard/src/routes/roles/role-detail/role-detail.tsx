@@ -1,8 +1,7 @@
-import { useEffect } from "react"
-import { useLoaderData, useNavigate, useParams } from "react-router-dom"
+import { useLoaderData, useParams } from "react-router-dom"
 
 import { useRbacRole } from "../../../hooks/api/rbac-roles"
-import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { useRequireRbacFeature } from "../../../hooks/use-require-rbac-feature"
 import { RoleGeneralSection } from "./components/role-general-section"
 import { RoleUsersSection } from "./components/role-users-section"
 import { roleLoader } from "./loader"
@@ -16,14 +15,7 @@ export const RoleDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof roleLoader>>
   const { id } = useParams()
   const { getWidgets } = useExtension()
-  const isRbacEnabled = useFeatureFlag("rbac")
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if (!isRbacEnabled) {
-      navigate(-1)
-    }
-  }, [isRbacEnabled, navigate])
+  const isRbacEnabled = useRequireRbacFeature()
 
   const {
     role,
@@ -43,12 +35,12 @@ export const RoleDetail = () => {
     return null
   }
 
-  if (isLoading || !role) {
-    return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
-  }
-
   if (isError) {
     throw error
+  }
+
+  if (isLoading || !role) {
+    return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
 
   return (

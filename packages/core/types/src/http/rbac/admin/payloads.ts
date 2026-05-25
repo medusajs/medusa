@@ -15,6 +15,12 @@ export interface AdminCreateRbacRole {
    * Custom key-value pairs that can be added to the role.
    */
   metadata?: Record<string, unknown> | null
+  /**
+   * The IDs of the policies to attach to the role on creation. The actor
+   * must hold every policy in the list; omit or
+   * leave empty to create a role without any policies.
+   */
+  policy_ids?: string[]
 }
 
 export interface AdminUpdateRbacRole {

@@ -26,10 +26,7 @@ import {
 } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useRbacPolicies } from "../../../../../hooks/api/rbac-policies"
-import {
-  useAddRbacRolePoliciesById,
-  useCreateRbacRole,
-} from "../../../../../hooks/api/rbac-roles"
+import { useCreateRbacRole } from "../../../../../hooks/api/rbac-roles"
 import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 import { canAssignPolicy } from "../../../../../lib/permissions"
@@ -90,11 +87,7 @@ export const CreateRoleForm = () => {
     setTab(nextTab)
   }
 
-  const { mutateAsync: createRole, isPending: isCreating } =
-    useCreateRbacRole()
-
-  const { mutateAsync: addPolicies, isPending: isAddingPolicies } =
-    useAddRbacRolePoliciesById()
+  const { mutateAsync: createRole, isPending: isCreating } = useCreateRbacRole()
 
   const onRowSelectionChange = useCallback(
     (selection: DataTableRowSelectionState) => {
@@ -110,10 +103,7 @@ export const CreateRoleForm = () => {
     [form]
   )
 
-  const { q, order, offset } = useQueryParams(
-    ["q", "order", "offset"],
-    PREFIX
-  )
+  const { q, order, offset } = useQueryParams(["q", "order", "offset"], PREFIX)
 
   const {
     policies,
@@ -155,55 +145,33 @@ export const CreateRoleForm = () => {
   useEffect(() => {
     const currentState = { ...tabState }
 
-    if (tab === Tab.DETAILS) {
-      currentState[Tab.DETAILS] = "in-progress"
-      currentState[Tab.PERMISSIONS] = "not-started"
-    }
-
-    if (tab === Tab.PERMISSIONS) {
-      currentState[Tab.DETAILS] = "completed"
-      currentState[Tab.PERMISSIONS] = "in-progress"
-    }
+    currentState[Tab.DETAILS] =
+      tab === Tab.DETAILS ? "in-progress" : "completed"
+    currentState[Tab.PERMISSIONS] =
+      tab === Tab.DETAILS ? "not-started" : "in-progress"
 
     setTabState({ ...currentState })
     // eslint-disable-next-line react-hooks/exhaustive-deps -- only update when tab changes
   }, [tab])
 
-  const isSaving = isCreating || isAddingPolicies
-
   const handleSubmit = form.handleSubmit(async (values) => {
-    let createdRole: HttpTypes.AdminRbacRole | undefined
-
     try {
       const { role } = await createRole({
         name: values.name.trim(),
         description: values.description?.trim() || null,
+        policy_ids: values.policies?.length ? values.policies : undefined,
       })
 
-      createdRole = role
+      toast.success(
+        t("roles.create.successToast", {
+          name: role.name,
+        })
+      )
+
+      handleSuccess(`/settings/roles/${role.id}`)
     } catch (error) {
       toast.error((error as Error).message)
-      return
     }
-
-    if (values.policies?.length) {
-      try {
-        await addPolicies({
-          roleId: createdRole.id,
-          policies: values.policies,
-        })
-      } catch (error) {
-        toast.error((error as Error).message)
-      }
-    }
-
-    toast.success(
-      t("roles.create.successToast", {
-        name: createdRole.name,
-      })
-    )
-
-    handleSuccess(`/settings/roles/${createdRole.id}`)
   })
 
   return (
@@ -310,7 +278,9 @@ export const CreateRoleForm = () => {
                 emptyState={{
                   empty: {
                     heading: t("roles.create.permissions.empty.heading"),
-                    description: t("roles.create.permissions.empty.description"),
+                    description: t(
+                      "roles.create.permissions.empty.description"
+                    ),
                   },
                   filtered: {
                     heading: t("roles.create.permissions.filtered.heading"),
@@ -330,7 +300,7 @@ export const CreateRoleForm = () => {
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <PrimaryButton tab={tab} next={onNext} isLoading={isSaving} />
+            <PrimaryButton tab={tab} next={onNext} isLoading={isCreating} />
           </div>
         </RouteFocusModal.Footer>
       </KeyboundForm>

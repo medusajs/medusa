@@ -71,6 +71,112 @@ medusaIntegrationTestRunner({
             })
           )
         })
+
+        it("creates a role with attached policies in a single request", async () => {
+          // Seed two concrete policies for super-admin to attach.
+          const rbacModule = container.resolve(Modules.RBAC)
+          const [readPolicy] = await rbacModule.createRbacPolicies([
+            {
+              key: "product:read",
+              resource: "product",
+              operation: "read",
+              name: "Read Products",
+            },
+          ])
+          const [createPolicy] = await rbacModule.createRbacPolicies([
+            {
+              key: "product:create",
+              resource: "product",
+              operation: "create",
+              name: "Create Products",
+            },
+          ])
+
+          const response = await api.post(
+            "/admin/rbac/roles",
+            {
+              name: "Product Editor",
+              description: "Read and create products",
+              policy_ids: [readPolicy.id, createPolicy.id],
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.role).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              name: "Product Editor",
+            })
+          )
+
+          // The role-policy join rows should exist
+          const rolePolicies = await rbacModule.listRbacRolePolicies({
+            role_id: response.data.role.id,
+          })
+          expect(rolePolicies.map((rp) => rp.policy_id)).toEqual(
+            expect.arrayContaining([readPolicy.id, createPolicy.id])
+          )
+          expect(rolePolicies).toHaveLength(2)
+        })
+
+        it("rejects creating a role with policies the actor doesn't hold", async () => {
+          // Build a scoped actor whose only grant is product:read, then try
+          // to create a role bundling product:read + customer:create.
+          const rbacModule = container.resolve(Modules.RBAC)
+
+          const [productRead] = await rbacModule.createRbacPolicies([
+            {
+              key: "product:read",
+              resource: "product",
+              operation: "read",
+              name: "Read Products",
+            },
+          ])
+          const [customerCreate] = await rbacModule.createRbacPolicies([
+            {
+              key: "customer:create",
+              resource: "customer",
+              operation: "create",
+              name: "Create Customers",
+            },
+          ])
+
+          const scopedRole = await rbacModule.createRbacRoles({
+            name: "Product Reader Only",
+          })
+          await rbacModule.createRbacRolePolicies([
+            { role_id: scopedRole.id, policy_id: productRead.id },
+          ])
+
+          const scopedActorHeaders = { headers: { ...adminHeaders.headers } }
+          await createAdminUser(dbConnection, scopedActorHeaders, container, {
+            email: "product-reader-only@medusa.js",
+            roles: [scopedRole.id],
+          })
+
+          const error = await api
+            .post(
+              "/admin/rbac/roles",
+              {
+                name: "Cannot Create",
+                policy_ids: [productRead.id, customerCreate.id],
+              },
+              scopedActorHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(403)
+          expect(error.response.data.message).toContain(
+            "You do not have access to some of the policies you are trying to assign."
+          )
+
+          // No role should have been persisted
+          const created = await rbacModule.listRbacRoles({
+            name: "Cannot Create",
+          })
+          expect(created).toHaveLength(0)
+        })
       })
 
       describe("GET /admin/rbac/roles", () => {

@@ -32,7 +32,7 @@ type UserWithRbacRoles = HttpTypes.AdminUser & {
   rbac_roles?: HttpTypes.AdminRbacRole[] | null
 }
 
-export const AddUsersSchema = zod.object({
+const AddUsersSchema = zod.object({
   user_ids: zod.array(zod.string()).min(1),
 })
 
@@ -42,10 +42,7 @@ export const AddUsersForm = ({ roleId }: AddUsersFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const { hasAllPermissions } = usePermissions()
-  const canManageRole = hasAllPermissions([
-    "user:update",
-    "rbac_role:update",
-  ])
+  const canManageRole = hasAllPermissions(["user:update", "rbac_role:update"])
 
   const form = useForm<zod.infer<typeof AddUsersSchema>>({
     defaultValues: {
