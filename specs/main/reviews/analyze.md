@@ -22,7 +22,7 @@
 | 9 | VPN Provisioning Contract | `specs/main/contracts/vpn-provisioning.md` | Draft |
 | 10 | Quickstart Guide | `specs/main/quickstart.md` | Final |
 | 11 | Architecture | `specs/main/architecture.md` | Final |
-| 12 | Constitution | `.specify/memory/constitution.md` | v1.4.0 |
+| 12 | Constitution | `.specify/memory/constitution.md` | v1.0.0 |
 
 ---
 

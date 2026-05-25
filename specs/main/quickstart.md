@@ -45,7 +45,7 @@ This starts:
 | MinIO | `:9000` / `:9001` | S3-compatible object storage |
 | BTCPay (testnet) | `:23000` | Bitcoin payment processing |
 | Langfuse | `:3001` | LLM observability / tracing |
-| OmniRoute sidecar | `:4000` | AI gateway routing |
+| OmniRoute sidecar | `:20128` | AI gateway routing |
 
 Verify all containers are healthy:
 
@@ -119,7 +119,7 @@ docker compose -f infra/docker-compose/docker-compose.yml exec redis redis-cli p
 # Expected: PONG
 
 # OmniRoute health
-curl -s http://localhost:4000/health | jq .
+curl -s http://localhost:20128/health | jq .
 
 # MinIO buckets
 curl -s http://localhost:9000/minio/health/live
@@ -182,7 +182,7 @@ Returns WireGuard peer config (`.conf` file content).
 ### Trigger AI Conversation
 
 ```bash
-curl -X POST http://localhost:4000/v1/chat/completions \
+curl -X POST http://localhost:20128/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <omniroute_key>" \
   -d '{
@@ -285,7 +285,7 @@ Restart affected services after changing.
 Check that `OMNIROUTE_API_KEY` and `OPENAI_API_KEY` (or equivalent) are set in `.env`. OmniRoute needs at least one upstream LLM provider configured.
 
 ```bash
-curl -s http://localhost:4000/health
+curl -s http://localhost:20128/health
 # Check "providers" field for connected backends
 ```
 

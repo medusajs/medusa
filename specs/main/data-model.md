@@ -1,24 +1,26 @@
-# Data Model: undrlla v2 — Medusa Migration
+# Data Model: undrlla v2 — Medusa Migration (DML)
 
-**Spec**: `specs/001-init/spec.md` | **Date**: 2026-05-24 | **Status**: Phase 1 design
+**Spec**: `specs/001-init/spec.md` | **Date**: 2026-05-25 | **Status**: Phase 1 design — Dual-ORM
 
 ---
 
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [Schema Conventions](#schema-conventions)
-3. [Prisma Tenant Enforcement Pattern](#prisma-tenant-enforcement-pattern)
-4. [Module: TenantModule](#module-tenantmodule)
-5. [Module: VPNModule](#module-vpnmodule)
-6. [Module: AIMeteringModule](#module-aimeteringmodule)
-7. [Module: FederationModule](#module-federationmodule)
-8. [Module: MigrationModule](#module-migrationmodule)
-9. [Medusa Entity Extensions](#medusa-entity-extensions)
-10. [Cross-Entity Relationship Map](#cross-entity-entity-relationship-map)
-11. [Migration Strategy Notes](#migration-strategy-notes)
-12. [Index Strategy Summary](#index-strategy-summary)
-13. [RLS Policy Templates](#rls-policy-templates)
+2. [Architecture: Dual-ORM](#architecture-dual-orm)
+3. [Schema Conventions](#schema-conventions)
+4. [Tenant Enforcement Pattern](#tenant-enforcement-pattern)
+5. [Module: TenantModule (DML)](#module-tenantmodule-dml)
+6. [Module: VPNModule (DML)](#module-vpnmodule-dml)
+7. [Module: AIMeteringModule (DML)](#module-aimeteringmodule-dml)
+8. [Module: FederationModule (DML)](#module-federationmodule-dml)
+9. [Module: PaymentBTCPayModule (DML)](#module-paymentbtcpaymodule-dml)
+10. [Standalone: MigrationTool (Prisma)](#standalone-migrationtool-prisma)
+11. [Medusa Entity Extensions (Links)](#medusa-entity-extensions-links)
+12. [Cross-Entity Relationship Map](#cross-entity-relationship-map)
+13. [Migration Strategy Notes](#migration-strategy-notes)
+14. [Index Strategy Summary](#index-strategy-summary)
+15. [RLS Policy Templates](#rls-policy-templates)
 
 ---
 
@@ -26,23 +28,69 @@
 
 undrlla v2 extends Medusa v2's `public` schema with a custom `undrlla` schema containing all domain-specific entities. Medusa provides catalog, cart, order, inventory, fulfillment, returns, and payment primitives out of the box. This document defines everything **beyond** Medusa's built-in models.
 
-### Custom modules
+### Custom modules (Medusa DML — MikroORM)
 
-| Module | Custom Entities | Medusa Extension Points |
-|--------|----------------|------------------------|
-| **TenantModule** | `Tenant`, `Workspace`, `BrandConfig` | Sales Channel binding, Region |
-| **VPNModule** | `VPNServer`, `VPNPeer`, `VPNIPPool` | Fulfillment workflow hook |
-| **AIMeteringModule** | `AIUsageEvent`, `AIKeyVault`, `AITierConfig` | — (sidecar integration) |
-| **FederationModule** | `FederationInstance`, `FederationCatalogEntry` | — (future) |
-| **MigrationModule** | `MigrationJournal`, `MigrationCheckpoint` | — (tooling only) |
+| Module | Custom Entities | Location | Medusa Extension Points |
+|--------|----------------|----------|------------------------|
+| **TenantModule** | `Tenant`, `Workspace`, `BrandConfig` | `apps/medusa/src/modules/tenant/` | Sales Channel binding, Region |
+| **VPNModule** | `VPNServer`, `VPNPeer`, `VPNIPPool` | `apps/medusa/src/modules/vpn/` | Fulfillment workflow hook |
+| **AIMeteringModule** | `AIUsageEvent`, `AIKeyVault`, `AITierConfig` | `apps/medusa/src/modules/ai-metering/` | — (sidecar integration) |
+| **FederationModule** | `FederationInstance`, `FederationCatalogEntry` | `apps/medusa/src/modules/federation/` | — (future) |
+| **PaymentBTCPayModule** | `PaymentTransaction` | `apps/medusa/src/modules/payment-btcpay/` | Extends Medusa Payment module |
+
+### Standalone packages (Prisma)
+
+| Package | Entities | Location |
+|---------|----------|----------|
+| **migration-tool** | `MigrationJournal`, `MigrationCheckpoint` | `packages/migration-tool/prisma/schema.prisma` |
 
 ### Entity classification
 
 | Type | Count | Examples |
 |------|-------|---------|
-| **Pure custom** (no Medusa base) | 12 | Tenant, VPNServer, AIUsageEvent, AIKeyVault, MigrationJournal |
+| **Pure custom** (DML, no Medusa base) | 12 | Tenant, VPNServer, AIUsageEvent, AIKeyVault, FederationInstance |
 | **Medusa-extended** (link table + custom fields) | 3 | Product ↔ Tenant, Order ↔ Tenant, Customer ↔ Tenant |
 | **Config/enumeration** | 2 | BrandConfig, AITierConfig |
+
+---
+
+## Architecture: Dual-ORM
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    Medusa v2 Application                        │
+│                                                                 │
+│  Custom Modules (DML → MikroORM)          Medusa Core           │
+│  ┌─────────────────────────┐             ┌──────────┐          │
+│  │ TenantModule            │             │ Customer │          │
+│  │ VPNModule               │             │ Order    │          │
+│  │ AIMeteringModule        │             │ Product  │          │
+│  │ FederationModule        │             │ Payment  │          │
+│  │ PaymentBTCPayModule     │             └──────────┘          │
+│  └───────────┬─────────────┘                                   │
+│              │ medusa db:migrate                                │
+│              ▼                                                  │
+│         PostgreSQL (undrlla schema)                             │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│               Standalone Packages                               │
+│                                                                 │
+│  migration-tool (Prisma)                                        │
+│  ┌─────────────────────────┐                                    │
+│  │ schema.prisma            │                                    │
+│  │ → prisma migrate deploy │                                    │
+│  └───────────┬─────────────┘                                    │
+│              ▼                                                  │
+│         PostgreSQL (public / undrlla schema)                    │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Key rule
+
+- **Inside `apps/medusa/src/modules/`**: DML only. No Prisma. No raw SQL schema definitions. Migrations managed by `medusa db:migrate`.
+- **Inside `packages/migration-tool/`**: Prisma. Independent schema, independent migration lifecycle.
+- **Tenant middleware**: MikroORM subscriber for modules, Prisma extension for standalone packages. Both backed by Postgres RLS.
 
 ---
 
@@ -54,32 +102,42 @@ undrlla v2 extends Medusa v2's `public` schema with a custom `undrlla` schema co
 |------------|---------|
 | Schema: `undrlla` | `undrlla.tenant`, `undrlla.vpn_server` |
 | Table names: `snake_case` | `ai_usage_event`, `vpn_ip_pool` |
+| DML model names: `snake_case` (first arg to `model.define`) | `model.define("tenant", {...})` |
 | Column names: `snake_case` | `tenant_id`, `allocated_at` |
-| Primary key: `id` (UUID v4) | `id UUID PRIMARY KEY DEFAULT gen_random_uuid()` |
+| Primary key: `id` (UUID v4) | `model.id().primaryKey()` |
 | Foreign keys: `<entity>_id` | `tenant_id`, `vpn_server_id`, `customer_id` |
-| Timestamps: `created_at`, `updated_at`, `deleted_at` | `TIMESTAMPTZ NOT NULL DEFAULT now()` |
+| Timestamps: `created_at`, `updated_at`, `deleted_at` | Auto-managed by Medusa DML |
 | Boolean flags: `is_<adjective>` or `<verb>_ed` | `is_active`, `allocated` |
 
 ### Shared columns (every customer-scoped table)
 
-```sql
-tenant_id   UUID NOT NULL REFERENCES undrlla.tenant(id),
-created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
-updated_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
-deleted_at  TIMESTAMPTZ          -- soft delete
+```typescript
+tenant_id: model.text().index("IDX_<TABLE>_TENANT"),
 ```
+
+Medusa DML auto-manages `id`, `created_at`, `updated_at`, `deleted_at`. These do NOT need explicit definition.
 
 ### Data types
 
-| Domain | Postgres Type | Rationale |
-|--------|--------------|-----------|
-| UUID | `UUID` | Native indexing, no collision |
-| Money | `BIGINT` (cents) + `currency_code TEXT` | Avoids floating-point; Medusa convention |
-| JSON blobs | `JSONB` | Indexable, schema-flexible |
-| Encrypted secrets | `BYTEA` | AES-256-GCM ciphertext + nonce + tag |
-| Timestamps | `TIMESTAMPTZ` | All UTC; timezone-aware |
-| IP addresses | `INET` | Native network operations, range queries |
-| Enum-like | `TEXT` + `CHECK` constraint | Prisma compatibility; Medusa uses TEXT enums |
+| Domain | DML Type | Postgres Type | Rationale |
+|--------|----------|--------------|-----------|
+| UUID PK | `model.id().primaryKey()` | `UUID` | Native indexing, no collision |
+| Text | `model.text()` | `TEXT` / `VARCHAR` | DML maps to TEXT by default |
+| Number | `model.number()` | `INTEGER` / `BIGINT` | Use `.nullable()` where needed |
+| Boolean | `model.boolean()` | `BOOLEAN` | |
+| Enum | `model.enum([...])` | `TEXT` + CHECK | Medusa convention |
+| JSON | `model.json()` | `JSONB` | Indexable, schema-flexible |
+| Encrypted | `model.text()` (store base64) | `TEXT` | AES-256-GCM ciphertext encoded |
+| Timestamp | `model.date()` | `TIMESTAMPTZ` | |
+
+### DML relationship types
+
+| Relationship | DML | Example |
+|-------------|-----|---------|
+| BelongsTo | `model.belongsTo(() => Entity, { mappedBy: "field" })` | Workspace → Tenant |
+| HasMany | `model.hasMany(() => Entity, { mappedBy: "field" })` | Tenant → Workspaces |
+| HasOne | `model.hasOne(() => Entity, { mappedBy: "field" })` | Tenant → BrandConfig |
+| ManyToMany | `model.manyToMany(() => Entity, { mappedBy: "field" })` | Not used in v1 |
 
 ### Encryption (AES-256-GCM)
 
@@ -91,70 +149,100 @@ Storage format per column:
 [32-byte nonce] [16-byte auth tag] [N-byte ciphertext]
 ```
 
-All stored as a single `BYTEA`. Decryption key is sourced from `ENCRYPTION_MASTER_KEY` env var (split via Shamir secret sharing in production). Never logged, never serialized in API responses, never cached in plaintext.
+All stored as base64-encoded TEXT (DML `model.text()`). Decryption key is sourced from `ENCRYPTION_MASTER_KEY` env var (split via Shamir secret sharing in production). Never logged, never serialized in API responses, never cached in plaintext.
+
+### File structure per module
+
+```
+apps/medusa/src/modules/<module-name>/
+├── models/
+│   ├── tenant.ts              # DML entity
+│   ├── workspace.ts           # DML entity
+│   ├── brand-config.ts        # DML entity
+│   └── index.ts               # re-exports
+├── services/
+│   └── tenant-service.ts      # extends MedusaService
+├── index.ts                   # ModuleDefinition
+└── __tests__/
+```
 
 ---
 
-## Prisma Tenant Enforcement Pattern
+## Tenant Enforcement Pattern
 
-Every custom module uses a Prisma Client extension that injects `tenant_id` into every query automatically. This prevents accidental cross-tenant data access at the ORM layer.
+Three layers of defense — ORM subscriber, Prisma extension, and Postgres RLS.
 
-```prisma
-// prisma/schema.prisma — datasource block
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  schemas  = ["public", "undrlla"]
-}
-```
+### Layer 1: MikroORM Subscriber (Medusa Modules)
 
-```prisma
-// prisma/schema.prisma — model example (Tenant table)
-model Tenant {
-  id          String   @id @default(uuid()) @db.Uuid
-  slug        String   @unique @db.VarChar(64)
-  name        String   @db.VarChar(255)
-  sales_channel_id String? @db.Uuid
-  default_currency String @default("USD") @db.Char(3)
-  region      String   @default("GLOBAL") @db.VarChar(16)
-  ai_tier     String   @default("dev") @db.VarChar(16)
-  is_active   Boolean  @default(true)
-  metadata    Json?
-  created_at  DateTime @default(now()) @db.Timestamptz
-  updated_at  DateTime @updatedAt @db.Timestamptz
-  deleted_at  DateTime? @db.Timestamptz
-
-  workspaces      Workspace[]
-  brand_config    BrandConfig?
-  vpn_peers       VPNPeer[]
-  ai_usage_events AIUsageEvent[]
-  ai_key_vault    AIKeyVault?
-  ai_tier_config  AITierConfig?
-  customers       CustomerTenantLink[]
-  orders          OrderTenantLink[]
-
-  @@map("tenant")
-  @@schema("undrlla")
-}
-```
+For all DML-based modules inside Medusa. Hooks into MikroORM lifecycle events to inject and protect `tenant_id`.
 
 ```typescript
-// src/lib/prisma-tenant.ts — Client extension for automatic tenant scoping
-import { Prisma, PrismaClient } from "@prisma/client"
+// packages/tenant-middleware/src/mikro-orm-tenant-subscriber.ts
+import { EventSubscriber, EntityName } from "@medusajs/framework/mikro-orm/knex"
+
+@EventSubscriber()
+export class TenantSubscriber {
+  getSubscribedEntities(): EntityName<any>[] {
+    return [] // auto-detects tenant-scoped entities via metadata
+  }
+
+  beforeInsert(args: any): void {
+    if (args.entity.tenant_id === undefined) {
+      const tenantId = getCurrentTenantId()
+      if (tenantId) args.entity.tenant_id = tenantId
+    }
+  }
+
+  beforeUpdate(args: any): void {
+    if (args.entity.tenant_id !== undefined) {
+      const original = args.changeSet?.originalEntity?.tenant_id
+      if (original && args.entity.tenant_id !== original) {
+        throw new Error("tenant_id mutation is not allowed")
+      }
+    }
+  }
+
+  beforeFind(args: any): void {
+    const tenantId = getCurrentTenantId()
+    if (tenantId && hasTenantColumn(args.metadata)) {
+      args.filters ??= {}
+      args.filters.tenant_id = tenantId
+    }
+  }
+
+  beforeDelete(args: any): void {
+    const tenantId = getCurrentTenantId()
+    if (tenantId && hasTenantColumn(args.metadata)) {
+      args.filters ??= {}
+      args.filters.tenant_id = tenantId
+    }
+  }
+}
 
 const tenantContext = new AsyncLocalStorage<string>()
 
-export function setTenantId(id: string) {
+export function setTenantId(id: string): void {
   tenantContext.enterWith(id)
 }
 
-export function getTenantId(): string {
-  const id = tenantContext.getStore()
-  if (!id) throw new Error("tenant_id not set in current context")
-  return id
+export function getCurrentTenantId(): string | undefined {
+  return tenantContext.getStore()
 }
 
-export const prisma = new PrismaClient().$extends({
+function hasTenantColumn(metadata: any): boolean {
+  return metadata?.properties?.tenant_id !== undefined
+}
+```
+
+### Layer 2: Prisma Client Extension (Standalone Packages)
+
+For packages that run outside Medusa and use Prisma directly (migration-tool, etc.).
+
+```typescript
+// packages/tenant-middleware/src/prisma-tenant-extension.ts
+import { Prisma, PrismaClient } from "@prisma/client"
+
+const prisma = new PrismaClient().$extends({
   name: "tenantScope",
   query: {
     $allModels: {
@@ -182,39 +270,51 @@ export const prisma = new PrismaClient().$extends({
 })
 ```
 
-This ensures that **no route handler can bypass tenant scoping** — it is enforced at the ORM layer (FR-009).
+### Layer 3: Postgres RLS
+
+Defense-in-depth regardless of ORM. See [RLS Policy Templates](#rls-policy-templates).
 
 ---
 
-## Module: TenantModule
+## Module: TenantModule (DML)
+
+**Location**: `apps/medusa/src/modules/tenant/`
 
 ### Entity: `Tenant`
 
 Workspace boundary. Represents a region (GLOBAL / EU) or B2B reseller / white-label operator. Owns branding, payment config, AI tier, and Sales Channel binding.
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `UUID` | `PK DEFAULT gen_random_uuid()` | Internal identifier |
-| `slug` | `VARCHAR(64)` | `UNIQUE NOT NULL` | URL-safe identifier (e.g., `global`, `eu`, `reseller-acme`) |
-| `name` | `VARCHAR(255)` | `NOT NULL` | Display name |
-| `sales_channel_id` | `UUID` | `REFERENCES public.sales_channel(id)` | Medusa Sales Channel — 1:1 mapping |
-| `default_currency` | `CHAR(3)` | `NOT NULL DEFAULT 'USD'` | ISO 4217 |
-| `region` | `VARCHAR(16)` | `NOT NULL DEFAULT 'GLOBAL' CHECK (region IN ('GLOBAL','EU'))` | Geographic compliance region |
-| `ai_tier` | `VARCHAR(16)` | `NOT NULL DEFAULT 'dev' CHECK (ai_tier IN ('dev','paid','byok'))` | Active AI deployment tier |
-| `is_active` | `BOOLEAN` | `NOT NULL DEFAULT true` | Soft enable/disable |
-| `metadata` | `JSONB` | | Extensible key-value (jurisdiction, tax ID, etc.) |
-| `created_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
-| `updated_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
-| `deleted_at` | `TIMESTAMPTZ` | | Soft delete |
+```typescript
+// apps/medusa/src/modules/tenant/models/tenant.ts
+import { model } from "@medusajs/framework/utils"
+import Workspace from "./workspace"
+import BrandConfig from "./brand-config"
+
+const Tenant = model.define("tenant", {
+  slug: model.text().unique("IDX_TENANT_SLUG"),
+  name: model.text(),
+  sales_channel_id: model.text().nullable(),
+  default_currency: model.text().default("USD"),
+  region: model.enum(["GLOBAL", "EU"]).default("GLOBAL"),
+  ai_tier: model.enum(["dev", "paid", "byok"]).default("dev"),
+  status: model.enum(["active", "suspended", "migrated"]).default("active"),
+  settings: model.json().default({}),
+  workspaces: model.hasMany(() => Workspace, { mappedBy: "tenant" }),
+  brand_config: model.hasOne(() => BrandConfig, { mappedBy: "tenant" }),
+}).indexes([
+  { on: ["slug"], unique: true },
+  { on: ["region", "status"] },
+])
+
+export default Tenant
+```
 
 **Indexes**:
 
 | Name | Columns | Type | Purpose |
 |------|---------|------|---------|
-| `tenant_pkey` | `id` | UNIQUE (PK) | Primary key |
-| `tenant_slug_key` | `slug` | UNIQUE | Lookup by slug |
-| `tenant_sales_channel_idx` | `sales_channel_id` | btree | Sales Channel → Tenant reverse lookup |
-| `tenant_region_idx` | `region` | btree | Region-scoped queries |
+| `IDX_TENANT_SLUG` | `slug` | UNIQUE | Lookup by slug |
+| `IDX_TENANT_REGION_STATUS` | `region, status` | btree | Region-scoped queries |
 
 **RLS Policy**:
 
@@ -233,29 +333,40 @@ CREATE POLICY tenant_isolation ON undrlla.tenant
 
 Storefront-level grouping. Maps 1:1 to Tenant initially; 1:N possible when multi-tenant activates.
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `UUID` | `PK DEFAULT gen_random_uuid()` | |
-| `tenant_id` | `UUID` | `NOT NULL REFERENCES undrlla.tenant(id)` | Owning tenant |
-| `slug` | `VARCHAR(64)` | `UNIQUE NOT NULL` | Subdomain or path prefix |
-| `name` | `VARCHAR(255)` | `NOT NULL` | Display name |
-| `domain` | `VARCHAR(255)` | `UNIQUE` | Custom domain (e.g., `store.reseller.com`) |
-| `subdomain` | `VARCHAR(64)` | `UNIQUE` | `<subdomain>.undrlla.com` |
-| `is_active` | `BOOLEAN` | `NOT NULL DEFAULT true` | |
-| `metadata` | `JSONB` | | Theme settings, feature flags |
-| `created_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
-| `updated_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
-| `deleted_at` | `TIMESTAMPTZ` | | |
+```typescript
+// apps/medusa/src/modules/tenant/models/workspace.ts
+import { model } from "@medusajs/framework/utils"
+import Tenant from "./tenant"
+
+const Workspace = model.define("workspace", {
+  tenant_id: model.text().index("IDX_WORKSPACE_TENANT"),
+  tenant: model.belongsTo(() => Tenant, { mappedBy: "workspaces" }),
+  name: model.text(),
+  slug: model.text().unique("IDX_WORKSPACE_SLUG"),
+  domain: model.text().nullable().unique("IDX_WORKSPACE_DOMAIN"),
+  subdomain: model.text().nullable().unique("IDX_WORKSPACE_SUBDOMAIN"),
+  path_prefix: model.text().nullable(),
+  branding_id: model.text().nullable(),
+  is_default: model.boolean().default(false),
+  settings: model.json().default({}),
+}).indexes([
+  { on: ["slug"], unique: true },
+  { on: ["domain"] },
+  { on: ["subdomain"] },
+  { on: ["tenant_id"] },
+])
+
+export default Workspace
+```
 
 **Indexes**:
 
 | Name | Columns | Type | Purpose |
 |------|---------|------|---------|
-| `workspace_pkey` | `id` | UNIQUE (PK) | |
-| `workspace_slug_key` | `slug` | UNIQUE | |
-| `workspace_domain_key` | `domain` | UNIQUE (partial, WHERE domain IS NOT NULL) | Custom domain routing |
-| `workspace_subdomain_key` | `subdomain` | UNIQUE (partial, WHERE subdomain IS NOT NULL) | Subdomain routing |
-| `workspace_tenant_idx` | `tenant_id` | btree | Tenant → Workspaces |
+| `IDX_WORKSPACE_SLUG` | `slug` | UNIQUE | |
+| `IDX_WORKSPACE_DOMAIN` | `domain` | UNIQUE (partial, WHERE domain IS NOT NULL) | Custom domain routing |
+| `IDX_WORKSPACE_SUBDOMAIN` | `subdomain` | UNIQUE (partial, WHERE subdomain IS NOT NULL) | Subdomain routing |
+| `IDX_WORKSPACE_TENANT` | `tenant_id` | btree | Tenant → Workspaces |
 
 **RLS Policy**:
 
@@ -274,74 +385,116 @@ CREATE POLICY workspace_tenant_isolation ON undrlla.workspace
 
 Branding and payment configuration for a Tenant. One-to-one with Tenant.
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `UUID` | `PK DEFAULT gen_random_uuid()` | |
-| `tenant_id` | `UUID` | `NOT NULL UNIQUE REFERENCES undrlla.tenant(id)` | Owning tenant |
-| `logo_url` | `TEXT` | | CDN URL for logo |
-| `primary_color` | `CHAR(7)` | | Hex color (e.g., `#1a1a2e`) |
-| `secondary_color` | `CHAR(7)` | | |
-| `font_family` | `VARCHAR(255)` | | CSS font stack |
-| `favicon_url` | `TEXT` | | |
-| `payment_config` | `JSONB` | `NOT NULL DEFAULT '{}'` | Encrypted provider credentials (Stripe key, BTCPay URL, etc.). Values encrypted with AES-256-GCM before storage. |
-| `social_links` | `JSONB` | `DEFAULT '{}'` | `{ telegram, whatsapp, discord, matrix }` |
-| `legal_links` | `JSONB` | `DEFAULT '{}'` | `{ privacy_policy_url, terms_url, refund_policy_url }` |
-| `created_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
-| `updated_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
+```typescript
+// apps/medusa/src/modules/tenant/models/brand-config.ts
+import { model } from "@medusajs/framework/utils"
+import Tenant from "./tenant"
+
+const BrandConfig = model.define("brand_config", {
+  tenant_id: model.text().unique("IDX_BRAND_CONFIG_TENANT"),
+  tenant: model.belongsTo(() => Tenant, { mappedBy: "brand_config" }),
+  logo_url: model.text().nullable(),
+  primary_color: model.text().nullable(),
+  secondary_color: model.text().nullable(),
+  font_family: model.text().nullable(),
+  custom_css: model.text().nullable(),
+  favicon_url: model.text().nullable(),
+  payment_config: model.json().default({}),
+  social_links: model.json().default({}),
+  legal_links: model.json().default({}),
+}).indexes([
+  { on: ["tenant_id"], unique: true },
+])
+
+export default BrandConfig
+```
 
 **Indexes**:
 
 | Name | Columns | Type | Purpose |
 |------|---------|------|---------|
-| `brand_config_pkey` | `id` | UNIQUE (PK) | |
-| `brand_config_tenant_key` | `tenant_id` | UNIQUE | 1:1 with Tenant |
+| `IDX_BRAND_CONFIG_TENANT` | `tenant_id` | UNIQUE | 1:1 with Tenant |
 
 **Migration notes**: Extract branding from legacy `undrlla` Next.js `site.config.ts`. Payment credentials from legacy `.env` — re-encrypt with AES-256-GCM before inserting.
 
 ---
 
-## Module: VPNModule
+### Module definition
+
+```typescript
+// apps/medusa/src/modules/tenant/index.ts
+import TenantModule from "./models"
+import TenantService from "./services/tenant-service"
+import { ModuleDefinition } from "@medusajs/framework/types"
+
+const TenantModuleDef: ModuleDefinition = {
+  key: "tenant",
+  label: "Tenant",
+  defaultService: TenantService,
+  models: TenantModule,
+}
+
+export default TenantModuleDef
+```
+
+---
+
+## Module: VPNModule (DML)
+
+**Location**: `apps/medusa/src/modules/vpn/`
 
 ### Entity: `VPNServer`
 
-Physical/virtual server running WireGuard / AmneziaWG / Xray. Hosted exclusively on centralized hardened infrastructure (FR-019). Never on Akash.
+Physical/virtual server running WireGuard / AmneziaWG / Xray. Hosted exclusively on centralized hardened infrastructure (FR-019). Never on Akash. **No tenant_id — operator-scoped.**
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `UUID` | `PK DEFAULT gen_random_uuid()` | |
-| `name` | `VARCHAR(255)` | `NOT NULL` | Human-readable label |
-| `hostname` | `VARCHAR(255)` | `NOT NULL` | SSH/API endpoint |
-| `ssh_port` | `INTEGER` | `NOT NULL DEFAULT 22` | |
-| `public_ip` | `INET` | `NOT NULL` | WireGuard endpoint IP |
-| `wg_port` | `INTEGER` | `NOT NULL DEFAULT 51820` | WireGuard/AmneziaWG listen port |
-| `xray_port` | `INTEGER` | | Xray listen port (nullable if not running Xray) |
-| `protocol` | `VARCHAR(16)` | `NOT NULL CHECK (protocol IN ('wireguard','amneziawg','xray','multi'))` | Active protocol(s) |
-| `wg_public_key` | `TEXT` | `NOT NULL` | Server's WireGuard public key |
-| `wg_private_key_enc` | `BYTEA` | `NOT NULL` | AES-256-GCM encrypted private key |
-| `location_city` | `VARCHAR(255)` | | City (e.g., "Frankfurt") |
-| `location_country` | `CHAR(2)` | | ISO 3166-1 alpha-2 |
-| `location_lat` | `DECIMAL(9,6)` | | Latitude |
-| `location_lon` | `DECIMAL(9,6)` | | Longitude |
-| `max_peers` | `INTEGER` | `NOT NULL DEFAULT 100` | Hard capacity limit |
-| `active_peers` | `INTEGER` | `NOT NULL DEFAULT 0` | Current allocated count (denormalized for fast capacity checks) |
-| `is_active` | `BOOLEAN` | `NOT NULL DEFAULT true` | Accepts new peers |
-| `health_status` | `VARCHAR(16)` | `NOT NULL DEFAULT 'unknown' CHECK (health_status IN ('healthy','degraded','down','unknown'))` | Last known health |
-| `health_checked_at` | `TIMESTAMPTZ` | | Timestamp of last health check |
-| `metadata` | `JSONB` | | Provider, instance type, provider_id |
-| `created_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
-| `updated_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
-| `deleted_at` | `TIMESTAMPTZ` | | |
+```typescript
+// apps/medusa/src/modules/vpn/models/vpn-server.ts
+import { model } from "@medusajs/framework/utils"
+import VPNPeer from "./vpn-peer"
+import VPNIPPool from "./vpn-ip-pool"
+
+const VPNServer = model.define("vpn_server", {
+  name: model.text(),
+  hostname: model.text().unique("IDX_VPN_SERVER_HOSTNAME"),
+  ssh_port: model.number().default(22),
+  public_ip: model.text(),
+  wg_port: model.number().default(51820),
+  xray_port: model.number().nullable(),
+  protocol: model.enum(["wireguard", "amneziawg", "xray", "multi"]).default("wireguard"),
+  wg_public_key: model.text(),
+  wg_private_key_enc: model.text(),
+  location_city: model.text().nullable(),
+  location_country: model.text().nullable(),
+  location_lat: model.number().nullable(),
+  location_lon: model.number().nullable(),
+  max_peers: model.number().default(100),
+  active_peers: model.number().default(0),
+  is_active: model.boolean().default(true),
+  health_status: model.enum(["healthy", "degraded", "down", "unknown"]).default("unknown"),
+  health_checked_at: model.date().nullable(),
+  metadata: model.json().default({}),
+  peers: model.hasMany(() => VPNPeer, { mappedBy: "server" }),
+  ip_pool: model.hasMany(() => VPNIPPool, { mappedBy: "server" }),
+}).indexes([
+  { on: ["hostname"], unique: true },
+  { on: ["public_ip"] },
+  { on: ["location_country", "location_city"] },
+  { on: ["is_active", "active_peers", "max_peers"] },
+  { on: ["health_status", "health_checked_at"] },
+])
+
+export default VPNServer
+```
 
 **Indexes**:
 
 | Name | Columns | Type | Purpose |
 |------|---------|------|---------|
-| `vpn_server_pkey` | `id` | UNIQUE (PK) | |
-| `vpn_server_hostname_key` | `hostname` | UNIQUE | |
-| `vpn_server_public_ip_idx` | `public_ip` | btree | |
-| `vpn_server_location_idx` | `location_country, location_city` | btree | Geo-filtered listing |
-| `vpn_server_capacity_idx` | `is_active, active_peers, max_peers` | btree | Capacity-aware peer allocation |
-| `vpn_server_health_idx` | `health_status, health_checked_at` | btree | Monitoring queries |
+| `IDX_VPN_SERVER_HOSTNAME` | `hostname` | UNIQUE | |
+| `IDX_VPN_SERVER_PUBLIC_IP` | `public_ip` | btree | |
+| `IDX_VPN_SERVER_LOCATION` | `location_country, location_city` | btree | Geo-filtered listing |
+| `IDX_VPN_SERVER_CAPACITY` | `is_active, active_peers, max_peers` | btree | Capacity-aware peer allocation |
+| `IDX_VPN_SERVER_HEALTH` | `health_status, health_checked_at` | btree | Monitoring queries |
 
 **RLS Policy**: VPNServer is **operator-scoped, not tenant-scoped**. VPN servers are shared infrastructure. No `tenant_id` column. RLS restricted to `app.is_operator = true`.
 
@@ -360,39 +513,51 @@ CREATE POLICY vpn_server_operator_only ON undrlla.vpn_server
 
 Allocated peer slot on a VPNServer. Linked to Customer, Order, and IP allocation.
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `UUID` | `PK DEFAULT gen_random_uuid()` | |
-| `tenant_id` | `UUID` | `NOT NULL REFERENCES undrlla.tenant(id)` | Tenant that owns this peer |
-| `vpn_server_id` | `UUID` | `NOT NULL REFERENCES undrlla.vpn_server(id)` | Hosting server |
-| `customer_id` | `UUID` | `REFERENCES public.customer(id)` | Medusa customer |
-| `order_id` | `UUID` | `REFERENCES public.order(id)` | Medusa order that created this peer |
-| `allocated_ip` | `INET` | `NOT NULL` | Peer IP within server's subnet |
-| `public_key` | `TEXT` | `NOT NULL` | Client public key |
-| `preshared_key_enc` | `BYTEA` | | AES-256-GCM encrypted preshared key (optional) |
-| `protocol` | `VARCHAR(16)` | `NOT NULL CHECK (protocol IN ('wireguard','amneziawg','xray'))` | |
-| `config_ref` | `TEXT` | | Reference to stored config archive (S3 key / local path) |
-| `status` | `VARCHAR(16)` | `NOT NULL DEFAULT 'active' CHECK (status IN ('provisioning','active','suspended','revoked','expired'))` | |
-| `expires_at` | `TIMESTAMPTZ` | | Subscription end date |
-| `last_connected_at` | `TIMESTAMPTZ` | | Last handshake timestamp |
-| `data_usage_bytes` | `BIGINT` | `NOT NULL DEFAULT 0` | Cumulative bytes transferred |
-| `metadata` | `JSONB` | | Protocol-specific config (AmneziaWG junk packets, Xray UUID, etc.) |
-| `created_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
-| `updated_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
-| `deleted_at` | `TIMESTAMPTZ` | | |
+```typescript
+// apps/medusa/src/modules/vpn/models/vpn-peer.ts
+import { model } from "@medusajs/framework/utils"
+import VPNServer from "./vpn-server"
+
+const VPNPeer = model.define("vpn_peer", {
+  tenant_id: model.text().index("IDX_VPN_PEER_TENANT"),
+  server_id: model.text().index("IDX_VPN_PEER_SERVER"),
+  server: model.belongsTo(() => VPNServer, { mappedBy: "peers" }),
+  customer_id: model.text().nullable(),
+  order_id: model.text().nullable(),
+  allocated_ip: model.text(),
+  public_key: model.text().unique("IDX_VPN_PEER_PUBKEY"),
+  preshared_key_enc: model.text().nullable(),
+  protocol: model.enum(["wireguard", "amneziawg", "xray"]).default("wireguard"),
+  config_ref: model.text().nullable(),
+  status: model.enum(["provisioning", "active", "suspended", "revoked", "expired"]).default("active"),
+  expires_at: model.date().nullable(),
+  last_connected_at: model.date().nullable(),
+  data_usage_bytes: model.number().default(0),
+  metadata: model.json().default({}),
+}).indexes([
+  { on: ["tenant_id", "server_id"] },
+  { on: ["customer_id"] },
+  { on: ["order_id"] },
+  { on: ["public_key"], unique: true },
+  { on: ["server_id", "allocated_ip"], unique: true },
+  { on: ["status", "expires_at"] },
+])
+
+export default VPNPeer
+```
 
 **Indexes**:
 
 | Name | Columns | Type | Purpose |
 |------|---------|------|---------|
-| `vpn_peer_pkey` | `id` | UNIQUE (PK) | |
-| `vpn_peer_tenant_server_idx` | `tenant_id, vpn_server_id` | btree | Tenant's peers on a server |
-| `vpn_peer_customer_idx` | `customer_id` | btree | Customer's peers |
-| `vpn_peer_order_idx` | `order_id` | btree | Order → peers |
-| `vpn_peer_public_key_idx` | `public_key` | UNIQUE | Prevent duplicate key assignment |
-| `vpn_peer_allocated_ip_idx` | `vpn_server_id, allocated_ip` | UNIQUE | Prevent duplicate IP assignment |
-| `vpn_peer_status_idx` | `status, expires_at` | btree | Active/expiring peer queries |
-| `vpn_peer_expires_idx` | `expires_at` WHERE `status = 'active'` | btree (partial) | Expiration sweep job |
+| `IDX_VPN_PEER_TENANT` | `tenant_id` | btree | Tenant scoping |
+| `IDX_VPN_PEER_SERVER` | `server_id` | btree | Server's peers |
+| `IDX_VPN_PEER_TENANT_SERVER` | `tenant_id, server_id` | btree | Tenant's peers on a server |
+| `IDX_VPN_PEER_CUSTOMER` | `customer_id` | btree | Customer's peers |
+| `IDX_VPN_PEER_ORDER` | `order_id` | btree | Order → peers |
+| `IDX_VPN_PEER_PUBKEY` | `public_key` | UNIQUE | Prevent duplicate key assignment |
+| `IDX_VPN_PEER_ALLOCATED_IP` | `server_id, allocated_ip` | UNIQUE | Prevent duplicate IP assignment |
+| `IDX_VPN_PEER_STATUS_EXPIRES` | `status, expires_at` | btree | Active/expiring peer queries |
 
 **RLS Policy**:
 
@@ -411,26 +576,37 @@ CREATE POLICY vpn_peer_tenant_isolation ON undrlla.vpn_peer
 
 IP address pool for a VPN server. Atomic allocation via `UPDATE ... WHERE allocated = false LIMIT 1 RETURNING *` (FR-020).
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `UUID` | `PK DEFAULT gen_random_uuid()` | |
-| `vpn_server_id` | `UUID` | `NOT NULL REFERENCES undrlla.vpn_server(id)` | Owning server |
-| `ip_address` | `INET` | `NOT NULL` | Individual IP in pool |
-| `allocated` | `BOOLEAN` | `NOT NULL DEFAULT false` | Allocation flag |
-| `allocated_to_peer_id` | `UUID` | `REFERENCES undrlla.vpn_peer(id)` | Peer that holds this IP |
-| `allocated_at` | `TIMESTAMPTZ` | | When allocated |
-| `created_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
+```typescript
+// apps/medusa/src/modules/vpn/models/vpn-ip-pool.ts
+import { model } from "@medusajs/framework/utils"
+import VPNServer from "./vpn-server"
+
+const VPNIPPool = model.define("vpn_ip_pool", {
+  server_id: model.text().index("IDX_VPN_IP_POOL_SERVER"),
+  server: model.belongsTo(() => VPNServer, { mappedBy: "ip_pool" }),
+  ip_address: model.text(),
+  subnet_mask: model.text().nullable(),
+  gateway_ip: model.text().nullable(),
+  allocated: model.boolean().default(false),
+  allocated_to_peer_id: model.text().nullable(),
+  allocated_at: model.date().nullable(),
+}).indexes([
+  { on: ["server_id", "ip_address"], unique: true },
+  { on: ["allocated_to_peer_id"] },
+])
+
+export default VPNIPPool
+```
 
 **Indexes**:
 
 | Name | Columns | Type | Purpose |
 |------|---------|------|---------|
-| `vpn_ip_pool_pkey` | `id` | UNIQUE (PK) | |
-| `vpn_ip_pool_server_ip_key` | `vpn_server_id, ip_address` | UNIQUE | One IP per server |
-| `vpn_ip_pool_free_idx` | `vpn_server_id, allocated` WHERE `allocated = false` | btree (partial) | **Atomic allocation target** |
-| `vpn_ip_pool_peer_idx` | `allocated_to_peer_id` WHERE `allocated = true` | btree (partial) | Reverse lookup |
+| `IDX_VPN_IP_POOL_SERVER` | `server_id` | btree | |
+| `IDX_VPN_IP_POOL_SERVER_IP` | `server_id, ip_address` | UNIQUE | One IP per server |
+| `IDX_VPN_IP_POOL_PEER` | `allocated_to_peer_id` | btree | Reverse lookup |
 
-**Atomic allocation query**:
+**Atomic allocation query** (raw SQL — not expressible in DML):
 
 ```sql
 UPDATE undrlla.vpn_ip_pool
@@ -439,7 +615,7 @@ SET allocated = true,
     allocated_at = now()
 WHERE id = (
     SELECT id FROM undrlla.vpn_ip_pool
-    WHERE vpn_server_id = $server_id
+    WHERE server_id = $server_id
       AND allocated = false
     ORDER BY ip_address
     LIMIT 1
@@ -450,52 +626,69 @@ RETURNING ip_address;
 
 `FOR UPDATE SKIP LOCKED` prevents race conditions when two concurrent orders request from the same pool (Edge Case: VPN peer creation race condition).
 
+> **Note**: This raw SQL query runs via MikroORM's `em.execute()` or Medusa's `Query` tool — DML does not cover atomic `UPDATE ... RETURNING` patterns.
+
 **RLS Policy**: Operator-only, same as VPNServer.
 
 **Migration notes**: Generate from legacy server subnet definitions. One row per IP in each server's CIDR range. Mark currently-allocated IPs from legacy peer data.
 
 ---
 
-## Module: AIMeteringModule
+## Module: AIMeteringModule (DML)
+
+**Location**: `apps/medusa/src/modules/ai-metering/`
 
 ### Entity: `AIUsageEvent`
 
 Metered event from OmniRoute. Every AI request produces one row (FR-012).
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `UUID` | `PK DEFAULT gen_random_uuid()` | |
-| `tenant_id` | `UUID` | `NOT NULL REFERENCES undrlla.tenant(id)` | Tenant |
-| `customer_id` | `UUID` | `REFERENCES public.customer(id)` | Medusa customer (null for system/internal) |
-| `session_id` | `VARCHAR(255)` | | Conversation session identifier |
-| `request_id` | `VARCHAR(255)` | `NOT NULL` | Unique request ID from OmniRoute |
-| `use_case` | `VARCHAR(64)` | `NOT NULL` | Tag: `pc_builder`, `support_agent`, `seo_gen`, `ops_automation`, `generic` |
-| `ai_tier` | `VARCHAR(16)` | `NOT NULL CHECK (ai_tier IN ('dev','paid','byok'))` | Tier used for this request |
-| `provider` | `VARCHAR(64)` | `NOT NULL` | Upstream provider: `openai`, `anthropic`, `openrouter`, `ollama`, etc. |
-| `model` | `VARCHAR(128)` | `NOT NULL` | Model identifier: `gpt-4o`, `claude-sonnet-4-20250514`, etc. |
-| `prompt_tokens` | `INTEGER` | `NOT NULL DEFAULT 0` | |
-| `completion_tokens` | `INTEGER` | `NOT NULL DEFAULT 0` | |
-| `total_tokens` | `INTEGER` | `NOT NULL DEFAULT 0` | Computed: prompt + completion |
-| `cost_usd` | `BIGINT` | `NOT NULL DEFAULT 0` | Cost in microdollars (1/1,000,000 USD) |
-| `latency_ms` | `INTEGER` | | Round-trip latency |
-| `is_success` | `BOOLEAN` | `NOT NULL DEFAULT true` | false on error / fallback |
-| `error_code` | `VARCHAR(64)` | | Provider error code if failed |
-| `langfuse_trace_id` | `VARCHAR(255)` | | Langfuse trace correlation (FR-030) |
-| `metadata` | `JSONB` | | Extra context (user agent, channel, etc.) |
-| `created_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
+```typescript
+// apps/medusa/src/modules/ai-metering/models/ai-usage-event.ts
+import { model } from "@medusajs/framework/utils"
+
+const AIUsageEvent = model.define("ai_usage_event", {
+  tenant_id: model.text().index("IDX_AI_USAGE_TENANT"),
+  customer_id: model.text().nullable(),
+  session_id: model.text().nullable(),
+  request_id: model.text().unique("IDX_AI_USAGE_REQUEST"),
+  use_case: model.text(),
+  ai_tier: model.enum(["dev", "paid", "byok"]),
+  provider: model.text(),
+  model: model.text(),
+  prompt_tokens: model.number().default(0),
+  completion_tokens: model.number().default(0),
+  total_tokens: model.number().default(0),
+  cost_usd: model.number().default(0),
+  latency_ms: model.number().nullable(),
+  is_success: model.boolean().default(true),
+  error_code: model.text().nullable(),
+  langfuse_trace_id: model.text().nullable(),
+  metadata: model.json().default({}),
+}).indexes([
+  { on: ["tenant_id", "created_at"] },
+  { on: ["customer_id", "created_at"] },
+  { on: ["request_id"], unique: true },
+  { on: ["tenant_id", "use_case", "created_at"] },
+  { on: ["tenant_id", "ai_tier", "created_at"] },
+  { on: ["provider", "model", "created_at"] },
+  { on: ["langfuse_trace_id"] },
+])
+
+export default AIUsageEvent
+```
 
 **Indexes**:
 
 | Name | Columns | Type | Purpose |
 |------|---------|------|---------|
-| `ai_usage_event_pkey` | `id` | UNIQUE (PK) | |
-| `ai_usage_event_tenant_time_idx` | `tenant_id, created_at DESC` | btree | Per-tenant usage timeline |
-| `ai_usage_event_customer_idx` | `customer_id, created_at DESC` | btree | Per-customer usage |
-| `ai_usage_event_request_key` | `request_id` | UNIQUE | Deduplication |
-| `ai_usage_event_use_case_idx` | `tenant_id, use_case, created_at DESC` | btree | Use-case analytics |
-| `ai_usage_event_billing_idx` | `tenant_id, ai_tier, created_at` WHERE `ai_tier = 'paid'` | btree (partial) | Billing aggregation |
-| `ai_usage_event_model_idx` | `provider, model, created_at DESC` | btree | Model usage analytics |
-| `ai_usage_event_langfuse_idx` | `langfuse_trace_id` | btree | Trace correlation |
+| `IDX_AI_USAGE_TENANT` | `tenant_id` | btree | Tenant scoping |
+| `IDX_AI_USAGE_TENANT_TIME` | `tenant_id, created_at DESC` | btree | Per-tenant usage timeline |
+| `IDX_AI_USAGE_CUSTOMER` | `customer_id, created_at DESC` | btree | Per-customer usage |
+| `IDX_AI_USAGE_REQUEST` | `request_id` | UNIQUE | Deduplication |
+| `IDX_AI_USAGE_USE_CASE` | `tenant_id, use_case, created_at DESC` | btree | Use-case analytics |
+| `IDX_AI_USAGE_BILLING` | `tenant_id, ai_tier, created_at` | btree | Billing aggregation |
+| `IDX_AI_USAGE_MODEL` | `provider, model, created_at DESC` | btree | Model usage analytics |
+| `IDX_AI_USAGE_LANGFUSE` | `langfuse_trace_id` | btree | Trace correlation |
 
 **RLS Policy**:
 
@@ -514,27 +707,32 @@ CREATE POLICY ai_usage_tenant_isolation ON undrlla.ai_usage_event
 
 Encrypted BYOK customer keys. **Never logged, never serialized in API responses, never cached in plaintext** (FR-033, SC-010).
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `UUID` | `PK DEFAULT gen_random_uuid()` | |
-| `tenant_id` | `UUID` | `NOT NULL UNIQUE REFERENCES undrlla.tenant(id)` | Owning tenant (1 BYOK vault per tenant) |
-| `encrypted_key` | `BYTEA` | `NOT NULL` | AES-256-GCM encrypted API key |
-| `key_nonce` | `BYTEA` | `NOT NULL` | 32-byte nonce (stored separately for audit) |
-| `provider` | `VARCHAR(64)` | `NOT NULL` | `openai`, `anthropic`, `openrouter`, `ollama` |
-| `key_alias` | `VARCHAR(255)` | | User-friendly label ("My OpenAI Key") |
-| `key_prefix` | `VARCHAR(16)` | `NOT NULL` | First 4 chars of decrypted key for display (e.g., `sk-o...`) |
-| `is_valid` | `BOOLEAN` | `NOT NULL DEFAULT true` | Set false on auth failure; prompt re-entry |
-| `last_validated_at` | `TIMESTAMPTZ` | | Last successful validation |
-| `routing_rules` | `JSONB` | `DEFAULT '{}'` | Per-use-case provider routing overrides |
-| `created_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
-| `updated_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
+```typescript
+// apps/medusa/src/modules/ai-metering/models/ai-key-vault.ts
+import { model } from "@medusajs/framework/utils"
+
+const AIKeyVault = model.define("ai_key_vault", {
+  tenant_id: model.text().unique("IDX_AI_KEY_VAULT_TENANT"),
+  encrypted_key: model.text(),
+  key_nonce: model.text(),
+  provider: model.enum(["openai", "anthropic", "openrouter", "ollama"]),
+  key_alias: model.text().nullable(),
+  key_prefix: model.text(),
+  validation_status: model.enum(["valid", "invalid", "unverified"]).default("unverified"),
+  last_validated_at: model.date().nullable(),
+  routing_rules: model.json().default({}),
+}).indexes([
+  { on: ["tenant_id"], unique: true },
+])
+
+export default AIKeyVault
+```
 
 **Indexes**:
 
 | Name | Columns | Type | Purpose |
 |------|---------|------|---------|
-| `ai_key_vault_pkey` | `id` | UNIQUE (PK) | |
-| `ai_key_vault_tenant_key` | `tenant_id` | UNIQUE | 1 vault per tenant |
+| `IDX_AI_KEY_VAULT_TENANT` | `tenant_id` | UNIQUE | 1 vault per tenant |
 
 **RLS Policy**: Strict — only accessible from OmniRoute request path middleware, not from general tenant context.
 
@@ -554,69 +752,120 @@ CREATE POLICY ai_key_vault_restricted ON undrlla.ai_key_vault
 
 Per-tenant AI tier configuration. Defines limits, fallback rules, and billing parameters.
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `UUID` | `PK DEFAULT gen_random_uuid()` | |
-| `tenant_id` | `UUID` | `NOT NULL UNIQUE REFERENCES undrlla.tenant(id)` | |
-| `tier` | `VARCHAR(16)` | `NOT NULL CHECK (tier IN ('dev','paid','byok'))` | Active tier |
-| `monthly_token_limit` | `BIGINT` | `NOT NULL DEFAULT 1000000` | Hard limit per month (0 = unlimited) |
-| `monthly_cost_limit_usd` | `BIGINT` | `NOT NULL DEFAULT 100000000` | Hard limit in microdollars (0 = unlimited) |
-| `cost_alert_threshold_pct` | `INTEGER` | `NOT NULL DEFAULT 80` | Alert at N% of cost limit |
-| `default_provider` | `VARCHAR(64)` | `NOT NULL DEFAULT 'openai'` | Primary provider |
-| `default_model` | `VARCHAR(128)` | `NOT NULL DEFAULT 'gpt-4o-mini'` | Primary model |
-| `fallback_provider` | `VARCHAR(64)` | | Fallback on primary failure |
-| `fallback_model` | `VARCHAR(128)` | | |
-| `allowed_models` | `JSONB` | `NOT NULL DEFAULT '[]'` | Array of `{ provider, model }` allowed for this tier |
-| `billing_provider` | `VARCHAR(32)` | `CHECK (billing_provider IN ('openmeter','killbill','stripe_metered'))` | Usage billing backend |
-| `billing_config` | `JSONB` | | Provider-specific config (API key ref, plan ID, etc.) |
-| `created_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
-| `updated_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
+```typescript
+// apps/medusa/src/modules/ai-metering/models/ai-tier-config.ts
+import { model } from "@medusajs/framework/utils"
+
+const AITierConfig = model.define("ai_tier_config", {
+  tenant_id: model.text().unique("IDX_AI_TIER_CONFIG_TENANT"),
+  tier: model.enum(["dev", "paid", "byok"]),
+  monthly_token_limit: model.number().default(1000000),
+  monthly_cost_limit_usd: model.number().default(100000000),
+  cost_alert_threshold_pct: model.number().default(80),
+  default_provider: model.text().default("openai"),
+  default_model: model.text().default("gpt-4o-mini"),
+  fallback_provider: model.text().nullable(),
+  fallback_model: model.text().nullable(),
+  allowed_models: model.json().default([]),
+  routing_rules: model.json().default({}),
+}).indexes([
+  { on: ["tenant_id"], unique: true },
+])
+
+export default AITierConfig
+```
 
 **Indexes**:
 
 | Name | Columns | Type | Purpose |
 |------|---------|------|---------|
-| `ai_tier_config_pkey` | `id` | UNIQUE (PK) | |
-| `ai_tier_config_tenant_key` | `tenant_id` | UNIQUE | 1 config per tenant |
+| `IDX_AI_TIER_CONFIG_TENANT` | `tenant_id` | UNIQUE | 1 config per tenant |
 
 **Migration notes**: New entity. Seed defaults for GLOBAL and EU tenants during install.
 
+### Entity: `metering_dead_letter`
+
+Dead-letter storage for metering events that failed remote emission after retry exhaustion. RLS by `tenant_id`.
+
+| Column | Type | Constraints | Purpose |
+|--------|------|-------------|----------|
+| `event_id` | UUID | PK | Unique event identifier |
+| `tenant_id` | UUID | FK → Tenant | Tenant isolation |
+| `customer_id` | UUID | FK → Customer | Customer attribution |
+| `event_payload` | JSONB | NOT NULL | Original metering event data |
+| `original_emit_at` | TIMESTAMPTZ | NOT NULL | When emission was first attempted |
+| `last_retry_at` | TIMESTAMPTZ | NOT NULL | Most recent retry timestamp |
+| `retry_count` | INTEGER | NOT NULL DEFAULT 0 | Number of retry attempts |
+| `failure_reason` | TEXT | NOT NULL | Error message from last failed attempt |
+| `operator_resolved_at` | TIMESTAMPTZ | | When ops resolved this entry (nullable) |
+| `operator_id` | UUID | FK → Operator (nullable) | Who resolved |
+
+**Index**: `(operator_resolved_at IS NULL, original_emit_at)` for ops dashboard — partial index on unresolved events sorted by age.
+
+**RLS Policy**: tenant-scoped read; operator-scoped write (resolve).
+
+### Entity: `product_embeddings`
+
+Product description embeddings for PC-builder RAG retrieval. pgvector extension required on hot-core Postgres.
+
+| Column | Type | Constraints | Purpose |
+|--------|------|-------------|----------|
+| `product_id` | UUID | PK, FK → Product | Embedded product |
+| `embedding` | VECTOR(1536) | NOT NULL | text-embedding-3-small output |
+| `model_version` | TEXT | NOT NULL | Embedding model identifier for re-embed detection |
+| `embedded_at` | TIMESTAMPTZ | NOT NULL | Last embedding timestamp |
+
+**Index**: IVFFlat index on `embedding` column with `lists = 100` (pgvector). Re-index when product count changes significantly.
+
 ---
 
-## Module: FederationModule
+## Module: FederationModule (DML)
+
+**Location**: `apps/medusa/src/modules/federation/`
 
 ### Entity: `FederationInstance`
 
-Registered third-party-operated undrlla instance. Metadata only — no shared state (FR-034, future).
+Registered third-party-operated undrlla instance. Metadata only — no shared state (FR-034, future). **No tenant_id — public-read.**
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `UUID` | `PK DEFAULT gen_random_uuid()` | |
-| `domain` | `VARCHAR(255)` | `UNIQUE NOT NULL` | Instance URL |
-| `name` | `VARCHAR(255)` | `NOT NULL` | Operator-chosen display name |
-| `operator_email` | `VARCHAR(255)` | `NOT NULL` | Contact |
-| `operator_pubkey` | `TEXT` | | PGP/age public key for verified communication |
-| `version` | `VARCHAR(32)` | | Reported undrlla version |
-| `region` | `VARCHAR(16)` | | Operator's primary region |
-| `jurisdiction` | `VARCHAR(64)` | | Legal jurisdiction |
-| `is_listed` | `BOOLEAN` | `NOT NULL DEFAULT false` | Opt-in to public catalog |
-| `is_verified` | `BOOLEAN` | `NOT NULL DEFAULT false` | Maintainer has verified operator identity |
-| `health_url` | `TEXT` | | Health check endpoint |
-| `health_status` | `VARCHAR(16)` | `DEFAULT 'unknown' CHECK (health_status IN ('healthy','degraded','down','unknown'))` | |
-| `last_seen_at` | `TIMESTAMPTZ` | | Last heartbeat |
-| `metadata` | `JSONB` | | Custom operator metadata |
-| `registered_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
-| `updated_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
-| `deleted_at` | `TIMESTAMPTZ` | | |
+```typescript
+// apps/medusa/src/modules/federation/models/federation-instance.ts
+import { model } from "@medusajs/framework/utils"
+import FederationCatalogEntry from "./federation-catalog-entry"
+
+const FederationInstance = model.define("federation_instance", {
+  instance_id: model.text().unique("IDX_FED_INSTANCE_ID"),
+  name: model.text(),
+  url: model.text().unique("IDX_FED_INSTANCE_URL"),
+  pubkey: model.text().nullable(),
+  operator_email: model.text(),
+  version: model.text().nullable(),
+  region: model.text().nullable(),
+  jurisdiction: model.text().nullable(),
+  is_listed: model.boolean().default(false),
+  is_verified: model.boolean().default(false),
+  health_url: model.text().nullable(),
+  health_status: model.enum(["healthy", "degraded", "down", "unknown"]).default("unknown"),
+  last_seen_at: model.date().nullable(),
+  metadata: model.json().default({}),
+  catalog_entries: model.hasMany(() => FederationCatalogEntry, { mappedBy: "instance" }),
+}).indexes([
+  { on: ["instance_id"], unique: true },
+  { on: ["url"], unique: true },
+  { on: ["is_listed", "is_verified", "region"] },
+  { on: ["health_status", "last_seen_at"] },
+])
+
+export default FederationInstance
+```
 
 **Indexes**:
 
 | Name | Columns | Type | Purpose |
 |------|---------|------|---------|
-| `federation_instance_pkey` | `id` | UNIQUE (PK) | |
-| `federation_instance_domain_key` | `domain` | UNIQUE | |
-| `federation_instance_listed_idx` | `is_listed, is_verified, region` | btree | Public catalog query |
-| `federation_instance_health_idx` | `health_status, last_seen_at` | btree | Staleness detection |
+| `IDX_FED_INSTANCE_ID` | `instance_id` | UNIQUE | |
+| `IDX_FED_INSTANCE_URL` | `url` | UNIQUE | |
+| `IDX_FED_INSTANCE_LISTED` | `is_listed, is_verified, region` | btree | Public catalog query |
+| `IDX_FED_INSTANCE_HEALTH` | `health_status, last_seen_at` | btree | Staleness detection |
 
 **RLS Policy**: FederationInstance is **public-reading, operator-writing**.
 
@@ -638,29 +887,32 @@ CREATE POLICY federation_instance_write ON undrlla.federation_instance
 
 Products shared across federation instances (future feature).
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `UUID` | `PK DEFAULT gen_random_uuid()` | |
-| `instance_id` | `UUID` | `NOT NULL REFERENCES undrlla.federation_instance(id)` | Source instance |
-| `product_id` | `UUID` | `NOT NULL` | Product ID on source instance |
-| `product_title` | `VARCHAR(255)` | `NOT NULL` | Denormalized title |
-| `product_handle` | `VARCHAR(255)` | `NOT NULL` | |
-| `category` | `VARCHAR(128)` | | |
-| `price_usd` | `BIGINT` | | Price in cents (USD equivalent) |
-| `currency_code` | `CHAR(3)` | `DEFAULT 'USD'` | Source currency |
-| `thumbnail_url` | `TEXT` | | |
-| `is_available` | `BOOLEAN` | `NOT NULL DEFAULT true` | |
-| `indexed_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
-| `updated_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
+```typescript
+// apps/medusa/src/modules/federation/models/federation-catalog-entry.ts
+import { model } from "@medusajs/framework/utils"
+import FederationInstance from "./federation-instance"
+
+const FederationCatalogEntry = model.define("federation_catalog_entry", {
+  instance_id: model.text().index("IDX_FED_CATALOG_INSTANCE"),
+  instance: model.belongsTo(() => FederationInstance, { mappedBy: "catalog_entries" }),
+  vpn_type: model.text().nullable(),
+  name: model.text(),
+  description: model.text().nullable(),
+  pricing: model.json().default({}),
+  availability: model.json().default({}),
+}).indexes([
+  { on: ["instance_id", "name"] },
+])
+
+export default FederationCatalogEntry
+```
 
 **Indexes**:
 
 | Name | Columns | Type | Purpose |
 |------|---------|------|---------|
-| `federation_catalog_pkey` | `id` | UNIQUE (PK) | |
-| `federation_catalog_instance_product_key` | `instance_id, product_id` | UNIQUE | |
-| `federation_catalog_search_idx` | `product_title, category` | GIN (gin_trgm_ops) | Full-text search |
-| `federation_catalog_price_idx` | `price_usd, currency_code` | btree | Price sorting |
+| `IDX_FED_CATALOG_INSTANCE` | `instance_id` | btree | |
+| `IDX_FED_CATALOG_INSTANCE_NAME` | `instance_id, name` | btree | |
 
 **RLS Policy**: Public read, operator write (same as FederationInstance).
 
@@ -668,42 +920,157 @@ Products shared across federation instances (future feature).
 
 ---
 
-## Module: MigrationModule
+## Module: PaymentBTCPayModule (DML)
 
-### Entity: `MigrationJournal`
+**Location**: `apps/medusa/src/modules/payment-btcpay/`
 
-Every migrated entity: source ID, target ID, content hash, status (FR-004, FR-037).
+Extends Medusa's Payment module with BTCPay Server integration and a provider-agnostic payment record for crypto and manual payment reconciliation.
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `UUID` | `PK DEFAULT gen_random_uuid()` | |
-| `entity_type` | `VARCHAR(64)` | `NOT NULL` | Legacy entity: `customer`, `product`, `order`, `order_item`, `address`, `vpn_server`, `vpn_peer`, `payment` |
-| `source_id` | `VARCHAR(255)` | `NOT NULL` | Legacy primary key |
-| `target_id` | `UUID` | | Medusa v2 UUID |
-| `content_hash` | `CHAR(64)` | `NOT NULL` | SHA-256 of canonicalized source row JSON |
-| `status` | `VARCHAR(16)` | `NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','migrating','migrated','verified','failed','skipped'))` | |
-| `error_message` | `TEXT` | | Failure reason |
-| `source_data` | `JSONB` | | Snapshot of source row (for verification / rollback) |
-| `dry_run_result` | `JSONB` | | Output from dry-run mode (no actual write) |
-| `migrated_at` | `TIMESTAMPTZ` | | |
-| `verified_at` | `TIMESTAMPTZ` | | |
-| `verification_diff` | `JSONB` | | Diff between source snapshot and target readback |
-| `created_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
+### Entity: `PaymentTransaction`
+
+```typescript
+// apps/medusa/src/modules/payment-btcpay/models/payment-transaction.ts
+import { model } from "@medusajs/framework/utils"
+
+const PaymentTransaction = model.define("payment_transaction", {
+  tenant_id: model.text().index("IDX_PAY_TX_TENANT"),
+  medusa_payment_id: model.text().nullable().unique("IDX_PAY_TX_MEDUSA"),
+  order_id: model.text(),
+  provider: model.enum(["stripe", "paypal", "btcpay", "shkeeper", "manual_bank"]),
+  provider_tx_id: model.text().nullable(),
+  provider_session_id: model.text().nullable(),
+  amount: model.number(),
+  currency_code: model.text().default("USD"),
+  status: model.enum([
+    "pending", "processing", "captured", "failed",
+    "refunded", "partially_refunded", "disputed", "expired",
+  ]).default("pending"),
+  settlement_amount: model.number().nullable(),
+  settlement_currency: model.text().nullable(),
+  settlement_at: model.date().nullable(),
+  confirmation_code: model.text().nullable(),
+  legacy_id: model.text().nullable(),
+  metadata: model.json().default({}),
+}).indexes([
+  { on: ["medusa_payment_id"], unique: true },
+  { on: ["order_id", "provider"] },
+  { on: ["tenant_id", "created_at"] },
+  { on: ["provider", "provider_tx_id"] },
+  { on: ["status", "provider"] },
+])
+
+export default PaymentTransaction
+```
 
 **Indexes**:
 
 | Name | Columns | Type | Purpose |
 |------|---------|------|---------|
-| `migration_journal_pkey` | `id` | UNIQUE (PK) | |
+| `IDX_PAY_TX_TENANT` | `tenant_id` | btree | Tenant scoping |
+| `IDX_PAY_TX_MEDUSA` | `medusa_payment_id` | UNIQUE | Medusa payment link |
+| `IDX_PAY_TX_ORDER` | `order_id, provider` | btree | Order payments |
+| `IDX_PAY_TX_TENANT_TIME` | `tenant_id, created_at DESC` | btree | Tenant payment timeline |
+| `IDX_PAY_TX_PROVIDER` | `provider, provider_tx_id` | btree | Provider reconciliation |
+| `IDX_PAY_TX_STATUS` | `status, provider` | btree | Pending/failed payment sweep |
+
+**RLS Policy**:
+
+```sql
+CREATE POLICY payment_transaction_tenant_isolation ON undrlla.payment_transaction
+  FOR ALL USING (
+    tenant_id = current_setting('app.tenant_id')::UUID
+  );
+```
+
+**Migration notes**: Import from legacy `payments` table. Map provider-specific statuses to unified enum. For crypto payments, populate `confirmation_code` with on-chain tx hash. Legacy SHKeeper transactions use `provider = 'shkeeper'` (no new enum value) with `metadata.legacy = true` and `metadata.migration_source = 'v1-shkeeper-export'` marking them as read-only historical data.
+
+---
+
+## Standalone: MigrationTool (Prisma)
+
+**Location**: `packages/migration-tool/prisma/schema.prisma`
+
+These entities run outside Medusa and use their own Prisma schema. Migrations managed by `prisma migrate deploy`, not `medusa db:migrate`.
+
+```prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["public", "undrlla"]
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model MigrationJournal {
+  id             String   @id @default(uuid()) @db.Uuid
+  entity_type    String   @db.VarChar(64)
+  source_id      String   @db.VarChar(255)
+  target_id      String?  @db.Uuid
+  content_hash   String   @db.Char(64)
+  status         String   @default("pending") @db.VarChar(16)
+  error_message  String?  @db.Text
+  source_data    Json?
+  dry_run_result Json?
+  migrated_at    DateTime? @db.Timestamptz
+  verified_at    DateTime? @db.Timestamptz
+  verification_diff Json?
+  created_at     DateTime @default(now()) @db.Timestamptz
+
+  @@unique([entity_type, source_id])
+  @@index([entity_type, target_id])
+  @@index([status, entity_type])
+  @@index([content_hash])
+  @@map("migration_journal")
+  @@schema("undrlla")
+}
+
+model MigrationCheckpoint {
+  id               String   @id @default(uuid()) @db.Uuid
+  run_id           String   @db.VarChar(64)
+  phase            String   @db.VarChar(32)
+  entity_type      String   @db.VarChar(64)
+  last_source_id   String   @db.VarChar(255)
+  total_count      Int      @default(0)
+  processed_count  Int      @default(0)
+  failed_count     Int      @default(0)
+  started_at       DateTime @default(now()) @db.Timestamptz
+  completed_at     DateTime? @db.Timestamptz
+  metadata         Json?
+
+  @@unique([run_id, phase, entity_type])
+  @@index([run_id], map: "migration_checkpoint_active_idx")
+  @@map("migration_checkpoint")
+  @@schema("undrlla")
+}
+```
+
+### MigrationJournal indexes
+
+| Name | Columns | Type | Purpose |
+|------|---------|------|---------|
 | `migration_journal_source_key` | `entity_type, source_id` | UNIQUE | Deduplication |
-| `migration_journal_target_idx` | `entity_type, target_id` WHERE `target_id IS NOT NULL` | btree (partial) | Target lookup |
+| `migration_journal_target_idx` | `entity_type, target_id` | btree (partial) | Target lookup |
 | `migration_journal_status_idx` | `status, entity_type` | btree | Progress tracking |
 | `migration_journal_content_hash_idx` | `content_hash` | btree | Integrity verification |
 
-**RLS Policy**: Operator-only.
+### MigrationCheckpoint indexes
+
+| Name | Columns | Type | Purpose |
+|------|---------|------|---------|
+| `migration_checkpoint_run_phase_key` | `run_id, phase, entity_type` | UNIQUE | One checkpoint per phase per run |
+| `migration_checkpoint_active_idx` | `run_id` WHERE `completed_at IS NULL` | btree (partial) | Find active runs |
+
+**RLS Policy**: Operator-only for both tables.
 
 ```sql
 CREATE POLICY migration_journal_operator_only ON undrlla.migration_journal
+  FOR ALL USING (
+    current_setting('app.is_operator', true)::BOOLEAN = true
+  );
+
+CREATE POLICY migration_checkpoint_operator_only ON undrlla.migration_checkpoint
   FOR ALL USING (
     current_setting('app.is_operator', true)::BOOLEAN = true
   );
@@ -718,39 +1085,7 @@ Resumable: re-running picks up where `status = 'pending'` left off.
 
 ---
 
-### Entity: `MigrationCheckpoint`
-
-Snapshot of migration progress for resumability across runs.
-
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `UUID` | `PK DEFAULT gen_random_uuid()` | |
-| `run_id` | `VARCHAR(64)` | `NOT NULL` | Unique migration run identifier |
-| `phase` | `VARCHAR(32)` | `NOT NULL` | `schema_export`, `customers`, `products`, `orders`, `payments`, `vpn`, `verification`, `complete` |
-| `entity_type` | `VARCHAR(64)` | `NOT NULL` | |
-| `last_source_id` | `VARCHAR(255)` | `NOT NULL` | Last successfully processed source ID |
-| `total_count` | `INTEGER` | `NOT NULL DEFAULT 0` | Total entities in this phase |
-| `processed_count` | `INTEGER` | `NOT NULL DEFAULT 0` | Entities processed so far |
-| `failed_count` | `INTEGER` | `NOT NULL DEFAULT 0` | |
-| `started_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
-| `completed_at` | `TIMESTAMPTZ` | | |
-| `metadata` | `JSONB` | | Run config, flags, etc. |
-
-**Indexes**:
-
-| Name | Columns | Type | Purpose |
-|------|---------|------|---------|
-| `migration_checkpoint_pkey` | `id` | UNIQUE (PK) | |
-| `migration_checkpoint_run_phase_key` | `run_id, phase, entity_type` | UNIQUE | One checkpoint per phase per run |
-| `migration_checkpoint_active_idx` | `run_id` WHERE `completed_at IS NULL` | btree (partial) | Find active runs |
-
-**RLS Policy**: Operator-only.
-
-**Migration notes**: Tooling-only table. Created at first migration run. Updated atomically per entity batch.
-
----
-
-## Medusa Entity Extensions
+## Medusa Entity Extensions (Links)
 
 These are **link tables** connecting Medusa's built-in entities to undrlla's custom tenant scope. Medusa v2's Module Link framework is used (not schema modification of Medusa's own tables).
 
@@ -758,24 +1093,53 @@ These are **link tables** connecting Medusa's built-in entities to undrlla's cus
 
 Links Medusa `customer` to undrlla `tenant`. Many-to-one (customer belongs to one tenant).
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `UUID` | `PK DEFAULT gen_random_uuid()` | |
-| `tenant_id` | `UUID` | `NOT NULL REFERENCES undrlla.tenant(id)` | |
-| `customer_id` | `UUID` | `NOT NULL REFERENCES public.customer(id)` | Medusa customer |
-| `legacy_id` | `VARCHAR(255)` | | Legacy undrlla customer ID for migration tracing |
-| `created_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
+```typescript
+// apps/medusa/src/modules/tenant/models/customer-tenant-link.ts
+import { model } from "@medusajs/framework/utils"
+import Tenant from "./tenant"
+
+const CustomerTenantLink = model.define("customer_tenant_link", {
+  tenant_id: model.text().index("IDX_CUST_LINK_TENANT"),
+  tenant: model.belongsTo(() => Tenant, { mappedBy: "customer_links" }),
+  customer_id: model.text().unique("IDX_CUST_LINK_CUSTOMER"),
+  legacy_id: model.text().nullable(),
+}).indexes([
+  { on: ["customer_id"], unique: true },
+  { on: ["tenant_id"] },
+])
+
+export default CustomerTenantLink
+```
 
 **Indexes**:
 
 | Name | Columns | Type | Purpose |
 |------|---------|------|---------|
-| `customer_tenant_link_pkey` | `id` | UNIQUE (PK) | |
-| `customer_tenant_link_customer_key` | `customer_id` | UNIQUE | 1 customer → 1 tenant |
-| `customer_tenant_link_tenant_idx` | `tenant_id` | btree | Tenant's customers |
-| `customer_tenant_link_legacy_idx` | `legacy_id` WHERE `legacy_id IS NOT NULL` | btree (partial) | Migration lookup |
+| `IDX_CUST_LINK_CUSTOMER` | `customer_id` | UNIQUE | 1 customer → 1 tenant |
+| `IDX_CUST_LINK_TENANT` | `tenant_id` | btree | Tenant's customers |
 
 **Migration notes**: Created during customer migration. `legacy_id` enables traceability back to the original `undrlla` customer table.
+
+### Table: `auth_legacy_credentials`
+
+> **Managed by Better-Auth's built-in migration pipeline** — NOT a Medusa DML entity. Created via Better-Auth SQL migrations, not `medusa db:migrate`. See T027, contract `auth-better-auth.md`.
+
+Stores legacy bcrypt hashes for transparent password migration on first login. On successful migration, the hash is re-hashed with a modern cost factor (≥12) and the row is marked complete.
+
+| Column | Type | Nullable | Default | Description |
+|--------|------|----------|---------|-------------|
+| `id` | UUID | NO | `gen_random_uuid()` | Primary key |
+| `legacy_customer_id` | UUID | NO | — | FK to `customer_tenant_link.legacy_id` (original legacy customer ID) |
+| `legacy_bcrypt_hash` | TEXT | NO | — | Original bcrypt hash from V1 (encrypted at rest with AES-256-GCM envelope encryption). Accepts `$2a$`, `$2b$`, `$2y$` prefixes. |
+| `migrated_at` | TIMESTAMPTZ | YES | `NULL` | Set when customer successfully logs in and hash is re-hashed. `NULL` = not yet migrated. |
+| `migration_attempts` | INT | NO | `0` | Counter for failed migration attempts (wrong password). Incremented on each failed login against this hash. |
+
+**Indexes**:
+
+| Name | Columns | Type | Purpose |
+|------|---------|------|---------|
+| `IDX_AUTH_LEGACY_CUSTOMER` | `legacy_customer_id` | UNIQUE | 1 legacy customer → 1 credential row |
+| `IDX_AUTH_LEGACY_MIGRATED` | `migrated_at` | btree (partial: `WHERE migrated_at IS NULL`) | Fast lookup for unmigrated credentials |
 
 ---
 
@@ -783,72 +1147,30 @@ Links Medusa `customer` to undrlla `tenant`. Many-to-one (customer belongs to on
 
 Links Medusa `order` to undrlla `tenant`.
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `UUID` | `PK DEFAULT gen_random_uuid()` | |
-| `tenant_id` | `UUID` | `NOT NULL REFERENCES undrlla.tenant(id)` | |
-| `order_id` | `UUID` | `NOT NULL REFERENCES public.order(id)` | Medusa order |
-| `legacy_id` | `VARCHAR(255)` | | Legacy order ID |
-| `created_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
+```typescript
+// apps/medusa/src/modules/tenant/models/order-tenant-link.ts
+import { model } from "@medusajs/framework/utils"
+import Tenant from "./tenant"
 
-**Indexes**:
+const OrderTenantLink = model.define("order_tenant_link", {
+  tenant_id: model.text().index("IDX_ORDER_LINK_TENANT"),
+  tenant: model.belongsTo(() => Tenant, { mappedBy: "order_links" }),
+  order_id: model.text().unique("IDX_ORDER_LINK_ORDER"),
+  legacy_id: model.text().nullable(),
+}).indexes([
+  { on: ["order_id"], unique: true },
+  { on: ["tenant_id"] },
+])
 
-| Name | Columns | Type | Purpose |
-|------|---------|------|---------|
-| `order_tenant_link_pkey` | `id` | UNIQUE (PK) | |
-| `order_tenant_link_order_key` | `order_id` | UNIQUE | |
-| `order_tenant_link_tenant_idx` | `tenant_id` | btree | |
-| `order_tenant_link_legacy_idx` | `legacy_id` WHERE `legacy_id IS NOT NULL` | btree (partial) | Migration lookup |
-
----
-
-### Entity: `PaymentTransaction`
-
-Provider-agnostic payment record. Extends Medusa's `payment` with additional fields for crypto and manual payment reconciliation.
-
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `UUID` | `PK DEFAULT gen_random_uuid()` | |
-| `tenant_id` | `UUID` | `NOT NULL REFERENCES undrlla.tenant(id)` | |
-| `medusa_payment_id` | `UUID` | `UNIQUE REFERENCES public.payment(id)` | Medusa payment |
-| `order_id` | `UUID` | `NOT NULL REFERENCES public.order(id)` | |
-| `provider` | `VARCHAR(32)` | `NOT NULL CHECK (provider IN ('stripe','paypal','btcpay','shkeeper','manual_bank'))` | |
-| `provider_tx_id` | `VARCHAR(255)` | | Provider's transaction ID |
-| `provider_session_id` | `VARCHAR(255)` | | Checkout / charge session ID |
-| `amount` | `BIGINT` | `NOT NULL` | Amount in smallest currency unit (cents) |
-| `currency_code` | `CHAR(3)` | `NOT NULL` | |
-| `status` | `VARCHAR(32)` | `NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','processing','captured','failed','refunded','partially_refunded','disputed','expired'))` | |
-| `settlement_amount` | `BIGINT` | | Actual settled amount (may differ for crypto) |
-| `settlement_currency` | `CHAR(3)` | | |
-| `settlement_at` | `TIMESTAMPTZ` | | |
-| `confirmation_code` | `VARCHAR(255)` | | Crypto tx hash, bank ref, etc. |
-| `metadata` | `JSONB` | | Provider-specific data |
-| `legacy_id` | `VARCHAR(255)` | | Legacy payment ID |
-| `created_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
-| `updated_at` | `TIMESTAMPTZ` | `NOT NULL DEFAULT now()` | |
-
-**Indexes**:
-
-| Name | Columns | Type | Purpose |
-|------|---------|------|---------|
-| `payment_transaction_pkey` | `id` | UNIQUE (PK) | |
-| `payment_transaction_medusa_key` | `medusa_payment_id` | UNIQUE | |
-| `payment_transaction_order_idx` | `order_id, provider` | btree | Order payments |
-| `payment_transaction_tenant_idx` | `tenant_id, created_at DESC` | btree | Tenant payment timeline |
-| `payment_transaction_provider_tx_idx` | `provider, provider_tx_id` | btree | Provider reconciliation |
-| `payment_transaction_status_idx` | `status, provider` | btree | Pending/failed payment sweep |
-| `payment_transaction_legacy_idx` | `legacy_id` WHERE `legacy_id IS NOT NULL` | btree (partial) | Migration lookup |
-
-**RLS Policy**:
-
-```sql
-CREATE POLICY payment_transaction_tenant_isolation ON undrlla.payment_transaction
-  FOR ALL USING (
-    tenant_id = current_setting('app.tenant_id')::UUID
-  );
+export default OrderTenantLink
 ```
 
-**Migration notes**: Import from legacy `payments` table. Map provider-specific statuses to unified enum. For crypto payments, populate `confirmation_code` with on-chain tx hash.
+**Indexes**:
+
+| Name | Columns | Type | Purpose |
+|------|---------|------|---------|
+| `IDX_ORDER_LINK_ORDER` | `order_id` | UNIQUE | |
+| `IDX_ORDER_LINK_TENANT` | `tenant_id` | btree | |
 
 ---
 
@@ -869,7 +1191,7 @@ CREATE POLICY payment_transaction_tenant_isolation ON undrlla.payment_transactio
         │              │        └───────┘     └──────┬──────┘
         │              │                              │
 ┌───────┼──────────────┼──────────────────────────────┼───────────────┐
-│       │    undrlla schema                           │               │
+│       │    undrlla schema (DML → MikroORM)          │               │
 │  ┌────▼──────────────────────┐              ┌───────▼───────┐       │
 │  │        Tenant ◄───────────┼──────────────┤  BrandConfig  │       │
 │  │  ┌─────────┐              │              └───────────────┘       │
@@ -884,7 +1206,7 @@ CREATE POLICY payment_transaction_tenant_isolation ON undrlla.payment_transactio
 │      │       │  ┌────▼────────────────────────────────────┐         │
 │      │       │  │           VPNPeer                        │         │
 │      │       │  │  tenant_id, customer_id, order_id,       │         │
-│      │       │  │  vpn_server_id, allocated_ip             │         │
+│      │       │  │  server_id (→ VPNServer), allocated_ip   │         │
 │      │       │  └────┬─────────────────────────────┬──────┘         │
 │      │       │       │                              │                │
 │      │       │  ┌────▼─────────┐  ┌────────────────▼──────┐        │
@@ -893,60 +1215,71 @@ CREATE POLICY payment_transaction_tenant_isolation ON undrlla.payment_transactio
 │      │       │  └──────────────┘  └───────────────────────┘        │
 │      │       │                                                      │
 │  ┌───▼───────▼──────────────────────────────────────────────┐       │
-│  │                  MigrationJournal                         │       │
-│  │  entity_type, source_id → target_id, content_hash        │       │
-│  └───────────────────────────────────────────────────────────┘       │
-│  ┌───────────────────────────────────────────────────────────┐       │
-│  │                  MigrationCheckpoint                       │       │
-│  │  run_id, phase, last_source_id                            │       │
-│  └───────────────────────────────────────────────────────────┘       │
-│  ┌───────────────────────────────────────────────────────────┐       │
-│  │  FederationInstance ──► FederationCatalogEntry             │       │
-│  │  (public read, operator write)                             │       │
+│  │     FederationInstance ──► FederationCatalogEntry         │       │
+│  │     (public read, operator write)                         │       │
 │  └───────────────────────────────────────────────────────────┘       │
 └──────────────────────────────────────────────────────────────────────┘
+
+  ┌──────────────────────────────────────────────────────────────────┐
+  │  Standalone: Prisma (packages/migration-tool/)                   │
+  │  ┌──────────────────────┐  ┌──────────────────────────────┐     │
+  │  │  MigrationJournal    │  │  MigrationCheckpoint         │     │
+  │  │  entity_type,        │  │  run_id, phase,              │     │
+  │  │  source_id → target  │  │  last_source_id              │     │
+  │  └──────────────────────┘  └──────────────────────────────┘     │
+  └──────────────────────────────────────────────────────────────────┘
 ```
 
 ### Foreign key summary
 
-| Source Entity | FK Column | Target Entity | Target Column | Cardinality |
-|---------------|-----------|---------------|---------------|-------------|
-| Workspace | `tenant_id` | Tenant | `id` | N:1 |
-| BrandConfig | `tenant_id` | Tenant | `id` | 1:1 |
-| CustomerTenantLink | `tenant_id` | Tenant | `id` | N:1 |
-| CustomerTenantLink | `customer_id` | Medusa customer | `id` | N:1 |
-| OrderTenantLink | `tenant_id` | Tenant | `id` | N:1 |
-| OrderTenantLink | `order_id` | Medusa order | `id` | N:1 |
-| PaymentTransaction | `tenant_id` | Tenant | `id` | N:1 |
-| PaymentTransaction | `order_id` | Medusa order | `id` | N:1 |
-| VPNPeer | `tenant_id` | Tenant | `id` | N:1 |
-| VPNPeer | `vpn_server_id` | VPNServer | `id` | N:1 |
-| VPNPeer | `customer_id` | Medusa customer | `id` | N:1 |
-| VPNPeer | `order_id` | Medusa order | `id` | N:1 |
-| VPNIPPool | `vpn_server_id` | VPNServer | `id` | N:1 |
-| VPNIPPool | `allocated_to_peer_id` | VPNPeer | `id` | 1:1 |
-| AIUsageEvent | `tenant_id` | Tenant | `id` | N:1 |
-| AIUsageEvent | `customer_id` | Medusa customer | `id` | N:1 |
-| AIKeyVault | `tenant_id` | Tenant | `id` | 1:1 |
-| AITierConfig | `tenant_id` | Tenant | `id` | 1:1 |
-| FederationCatalogEntry | `instance_id` | FederationInstance | `id` | N:1 |
+| Source Entity | FK Column | Target Entity | Target Column | Cardinality | ORM |
+|---------------|-----------|---------------|---------------|-------------|-----|
+| Workspace | `tenant_id` | Tenant | `id` | N:1 | DML |
+| BrandConfig | `tenant_id` | Tenant | `id` | 1:1 | DML |
+| CustomerTenantLink | `tenant_id` | Tenant | `id` | N:1 | DML |
+| CustomerTenantLink | `customer_id` | Medusa customer | `id` | N:1 | Link |
+| OrderTenantLink | `tenant_id` | Tenant | `id` | N:1 | DML |
+| OrderTenantLink | `order_id` | Medusa order | `id` | N:1 | Link |
+| PaymentTransaction | `tenant_id` | Tenant | `id` | N:1 | DML |
+| PaymentTransaction | `order_id` | Medusa order | `id` | N:1 | DML |
+| VPNPeer | `tenant_id` | Tenant | `id` | N:1 | DML |
+| VPNPeer | `server_id` | VPNServer | `id` | N:1 | DML |
+| VPNPeer | `customer_id` | Medusa customer | `id` | N:1 | DML |
+| VPNPeer | `order_id` | Medusa order | `id` | N:1 | DML |
+| VPNIPPool | `server_id` | VPNServer | `id` | N:1 | DML |
+| VPNIPPool | `allocated_to_peer_id` | VPNPeer | `id` | 1:1 | DML |
+| AIUsageEvent | `tenant_id` | Tenant | `id` | N:1 | DML |
+| AIUsageEvent | `customer_id` | Medusa customer | `id` | N:1 | DML |
+| AIKeyVault | `tenant_id` | Tenant | `id` | 1:1 | DML |
+| AITierConfig | `tenant_id` | Tenant | `id` | 1:1 | DML |
+| FederationCatalogEntry | `instance_id` | FederationInstance | `id` | N:1 | DML |
 
 ---
 
 ## Migration Strategy Notes
 
+### ORM-specific migration commands
+
+| Layer | Command | When |
+|-------|---------|------|
+| Medusa Custom Modules (DML) | `medusa db:migrate` | After DML model changes in `apps/medusa/src/modules/` |
+| Standalone Packages (Prisma) | `prisma migrate deploy` | After `schema.prisma` changes in `packages/migration-tool/` |
+| RLS Policies | Raw SQL via migration scripts | One-time setup + schema changes |
+
+> **Important**: Never run `prisma migrate` inside `apps/medusa/`. Medusa manages its own migrations via DML → MikroORM. Prisma migrations are only for standalone packages.
+
 ### Phase approach
 
-| Phase | Entities | Direction | Notes |
-|-------|----------|-----------|-------|
-| 1 | Tenant, Workspace, BrandConfig | Manual seed | Create GLOBAL + EU tenants before any data migration |
-| 2 | VPNServer, VPNIPPool | Legacy → v2 | Re-encrypt keys with new master; generate IP pools from CIDR |
-| 3 | Customer → CustomerTenantLink | Legacy → v2 | Map legacy customer IDs; create Medusa customer + link row atomically |
-| 4 | Product | Legacy → v2 | Map to Medusa Product + Variant; assign to tenant's Sales Channel |
-| 5 | Order → OrderTenantLink | Legacy → v2 | Map to Medusa Order + Line Items; link to tenant + customer |
-| 6 | PaymentTransaction | Legacy → v2 | Map per-provider; crypto tx hashes in `confirmation_code` |
-| 7 | VPNPeer | Legacy → v2 | Re-link to new customer_id + order_id via MigrationJournal; verify IP uniqueness |
-| 8 | Verification | Read-back | SHA-256 compare source_data vs target readback; log diffs |
+| Phase | Entities | Direction | ORM | Notes |
+|-------|----------|-----------|-----|-------|
+| 1 | Tenant, Workspace, BrandConfig | Manual seed | DML | Create GLOBAL + EU tenants before any data migration |
+| 2 | VPNServer, VPNIPPool | Legacy → v2 | DML | Re-encrypt keys with new master; generate IP pools from CIDR |
+| 3 | Customer → CustomerTenantLink | Legacy → v2 | DML | Map legacy customer IDs; create Medusa customer + link row atomically |
+| 4 | Product | Legacy → v2 | DML | Map to Medusa Product + Variant; assign to tenant's Sales Channel |
+| 5 | Order → OrderTenantLink | Legacy → v2 | DML | Map to Medusa Order + Line Items; link to tenant + customer |
+| 6 | PaymentTransaction | Legacy → v2 | DML | Map per-provider; crypto tx hashes in `confirmation_code` |
+| 7 | VPNPeer | Legacy → v2 | DML | Re-link to new customer_id + order_id via MigrationJournal; verify IP uniqueness |
+| 8 | Verification | Read-back | Prisma | SHA-256 compare source_data vs target readback; log diffs |
 
 ### Dual-write window (FR-038)
 
@@ -959,6 +1292,8 @@ During cutover, both legacy and v2 receive writes:
 ### Integrity verification (FR-004)
 
 ```
+**Accepted status values**: `pending`, `migrated`, `verified`, `failed`, `orphan_server` (peer cannot be live-verified because its legacy VPNServer is decommissioned; manual ops review required post-migration).
+
 For each MigrationJournal row WHERE status = 'migrated':
   1. Read source_data from MigrationJournal
   2. Read target entity from v2 by target_id
@@ -974,6 +1309,7 @@ For each MigrationJournal row WHERE status = 'migrated':
 - Rollback = delete target entities in reverse order (VPNPeer → PaymentTransaction → Order → Customer → VPNServer)
 - Legacy data is never modified — only read
 - Post-rollback: legacy is still the source of truth
+- DML entity deletions go through Medusa's soft-delete (`deleted_at`), then hard-delete via cleanup job
 
 ---
 
@@ -981,15 +1317,16 @@ For each MigrationJournal row WHERE status = 'migrated':
 
 ### Total indexes by module
 
-| Module | Tables | Indexes | Notes |
-|--------|--------|---------|-------|
-| TenantModule | 3 | 9 | BrandConfig is lightweight (1:1) |
-| VPNModule | 3 | 15 | VPNIPPool has critical partial index for atomic allocation |
-| AIMeteringModule | 3 | 12 | Heavy time-series indexing on AIUsageEvent |
-| FederationModule | 2 | 7 | Catalog search uses GIN trigram |
-| MigrationModule | 2 | 7 | Content hash index for integrity checks |
-| Medusa Extensions | 3 | 13 | Legacy ID partial indexes for migration |
-| **Total** | **16** | **63** | |
+| Module | Tables | Indexes | ORM | Notes |
+|--------|--------|---------|-----|-------|
+| TenantModule | 3 | 8 | DML | BrandConfig is lightweight (1:1) |
+| VPNModule | 3 | 13 | DML | VPNIPPool has critical index for atomic allocation |
+| AIMeteringModule | 3 | 11 | DML | Heavy time-series indexing on AIUsageEvent |
+| FederationModule | 2 | 6 | DML | Catalog search |
+| PaymentBTCPayModule | 1 | 6 | DML | Provider reconciliation |
+| Medusa Extensions | 2 | 4 | DML | Customer/Order link tables |
+| MigrationTool | 2 | 7 | Prisma | Content hash index for integrity checks |
+| **Total** | **16** | **55** | | |
 
 ### Partial indexes (performance-critical)
 
@@ -1004,11 +1341,13 @@ For each MigrationJournal row WHERE status = 'migrated':
 | `migration_journal` | `WHERE target_id IS NOT NULL` | Target lookup skips pending rows |
 | `migration_checkpoint` | `WHERE completed_at IS NULL` | Active run detection |
 
+> **Note**: Partial indexes with `WHERE` clauses cannot be expressed in DML `.indexes()`. They must be created via raw SQL migrations (`medusa db:migrate` runs custom migration files in addition to DML-generated ones).
+
 ---
 
 ## RLS Policy Templates
 
-All RLS policies use `current_setting('app.*')` set per-request by the application middleware.
+All RLS policies use `current_setting('app.*')` set per-request by the application middleware. RLS is ORM-agnostic — it filters at the Postgres level regardless of whether queries come from MikroORM (DML) or Prisma.
 
 ### Session variables
 
@@ -1032,7 +1371,6 @@ All RLS policies use `current_setting('app.*')` set per-request by the applicati
 ### Enable RLS on all tables
 
 ```sql
--- Run once per table in undrlla schema
 ALTER TABLE undrlla.tenant ENABLE ROW LEVEL SECURITY;
 ALTER TABLE undrlla.workspace ENABLE ROW LEVEL SECURITY;
 ALTER TABLE undrlla.brand_config ENABLE ROW LEVEL SECURITY;
@@ -1053,8 +1391,8 @@ ALTER TABLE undrlla.payment_transaction ENABLE ROW LEVEL SECURITY;
 
 ### Defense-in-depth
 
-RLS is the **second** line of defense. The **first** is the Prisma Client extension that injects `tenant_id` into every query (see [Prisma Tenant Enforcement Pattern](#prisma-tenant-enforcement-pattern)). If either layer fails, the other still protects. A malicious authenticated request from tenant A attempting tenant B's data fails with **404** (not 403) so entity existence is not leaked (Edge Case: Tenant-scope leak attempt).
+RLS is the **third** line of defense. The **first** is the MikroORM TenantSubscriber (for DML modules) or Prisma Client extension (for standalone packages) that injects `tenant_id` into every query. The **second** is application-layer validation. If any layer fails, the others still protect. A malicious authenticated request from tenant A attempting tenant B's data fails with **404** (not 403) so entity existence is not leaked (Edge Case: Tenant-scope leak attempt).
 
 ---
 
-*Document generated: 2026-05-24 | Spec ref: `specs/001-init/spec.md` | Decisions: `specs/001-init/decisions/`*
+*Document generated: 2026-05-25 | Spec ref: `specs/001-init/spec.md` | Decisions: `specs/001-init/decisions/` | ORM: Dual (DML + Prisma)*

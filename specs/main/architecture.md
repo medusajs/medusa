@@ -75,10 +75,10 @@ undrlla v2 is a **Medusa v2** headless commerce platform for custom PC builds, V
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                     LAYER 3 — AKASH COMPUTE (stateless)                      │
 │                                                                              │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
-│  │  Next.js 16  │  │  Medusa v2  │  │  OmniRoute  │  │   Redis 7   │        │
-│  │  Storefront  │  │   Backend   │  │   Sidecar   │  │   (cache)   │        │
-│  └──────┬───────┘  └──────┬──────┘  └──────┬──────┘  └─────────────┘        │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐ │
+│  │  Next.js 16  │  │  Medusa v2  │  │  OmniRoute  │  │   Redis 7   │  │   Hatchet   │ │
+│  │  Storefront  │  │   Backend   │  │   Sidecar   │  │   (cache)   │  │   Engine    │ │
+│  └──────┬───────┘  └──────┬──────┘  └──────┬──────┘  └─────────────┘  └──────┬──────┘ │
 │         │                 │                 │                                 │
 │         └────────┬────────┘                 │                                 │
 │                  │                          │                                 │
@@ -95,11 +95,11 @@ undrlla v2 is a **Medusa v2** headless commerce platform for custom PC builds, V
 │  │  (primary)   │  │  (secrets)  │  │  (AI trace) │  │ + Killbill  │        │
 │  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘        │
 │                                                                              │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐                         │
-│  │  VPN Servers │  │   MinIO     │  │   Hatchet   │                         │
-│  │  (WG/AWG/   │  │  (S3 files) │  │  Engine     │                         │
-│  │   Xray)     │  │             │  │             │                         │
-│  └─────────────┘  └─────────────┘  └─────────────┘                         │
+│  ┌─────────────┐  ┌─────────────┐                                        │
+│  │  VPN Servers │  │   MinIO     │                                        │
+│  │  (WG/AWG/   │  │  (S3 files) │                                        │
+│  │   Xray)     │  │             │                                        │
+│  └─────────────┘  └─────────────┘                                        │
 └──────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -202,7 +202,7 @@ Hatchet replaces BullMQ from the legacy stack. All durable workflows run through
 | Migration dual-write reconciliation | During cutover window | P1 — data integrity |
 | Notification dispatch | Various events | P2 — customer experience |
 
-Hatchet workers run on Akash compute but execute SSH commands to VPN servers on the hot-core via the WireGuard tunnel.
+Hatchet engine and workers run on Akash. Engine connects to hot-core Postgres for state storage via WireGuard tunnel (standard TCP). Workers execute SSH commands to VPN servers on the hot-core for provisioning steps. Per claude v3 F14.
 
 ### AI Tier Resolution
 
@@ -248,6 +248,8 @@ OmniRoute is the AI gateway, deployed as a sidecar container in every topology:
 - HTTP cache (Medusa cache module)
 - Hatchet task queues
 
+Redis stores: session JWT-jti revocation list, CSRF tokens, OmniRoute rate-limit counters, daily reconciliation cache. Does NOT store cart state (Postgres-resident per Medusa v2 default).
+
 ### MinIO
 
 S3-compatible object storage for:
@@ -271,7 +273,7 @@ The hot-core is a **dedicated Hetzner server** in an EU GDPR-compliant data cent
 | **Infisical** | Secret management — KEK store, payment provider secrets, VPN master keys | Top Secret |
 | **Langfuse** | AI tracing — per-tenant project isolation, cost attribution | Confidential (may contain PII in prompts) |
 | **OpenMeter + Killbill** | AI token metering + billing engine | Confidential (financial) |
-| **Hatchet Engine** | Job orchestrator — gRPC endpoint for Akash workers | Internal |
+| **Hatchet Engine** | Job orchestrator — runs on Akash; state-DB on hot-core Postgres via WireGuard TCP | Internal |
 | **VPN Servers** | WireGuard / AmneziaWG / Xray — master keys, peer provisioning | Top Secret |
 | **MinIO** | S3-compatible storage (prod) | Confidential |
 
@@ -401,8 +403,24 @@ apps/
 │   │       ├── billing-cycle.ts    # Killbill billing cycle aggregation
 │   │       └── vpn-cleanup.ts      # Expired VPN peer cleanup
 │   ├── medusa-config.ts            # Medusa configuration
-│   └── prisma/
-│       └── schema.prisma           # Extended schema (tenant_id, VPN, AI events)
+│   └── src/modules/                # Medusa Custom Modules (DML entities)
+│       ├── tenant/models/
+│       │   ├── tenant.ts           # Tenant entity
+│       │   ├── workspace.ts        # Workspace entity
+│       │   └── brand-config.ts     # BrandConfig entity
+│       ├── vpn/models/
+│       │   ├── vpn-server.ts       # VPNServer entity
+│       │   ├── vpn-peer.ts         # VPNPeer entity
+│       │   └── vpn-ip-pool.ts      # VPNIPPool entity
+│       ├── ai/models/
+│       │   ├── ai-usage-event.ts   # AIUsageEvent entity
+│       │   ├── ai-key-vault.ts     # AIKeyVault entity
+│       │   └── ai-tier-config.ts   # AITierConfig entity
+│       ├── payment-btcpay/models/
+│       │   └── payment-transaction.ts # PaymentTransaction entity
+│       └── federation/models/
+│           ├── federation-instance.ts  # FederationInstance entity
+│           └── federation-catalog-entry.ts # FederationCatalogEntry entity
 │
 ├── storefront/                     # Next.js 16 App Router storefront
 │   ├── src/
@@ -449,11 +467,14 @@ packages/
 │
 ├── tenant-middleware/              # tenant_id enforcement
 │   └── src/
-│       ├── prisma-extension.ts     # tenant_id injection into every query
+│       ├── mikroorm-subscriber.ts  # tenant_id injection for Medusa Modules (DML entities)
+│       ├── prisma-extension.ts     # tenant_id injection for standalone packages
 │       ├── medusa-middleware.ts    # Medusa module context injection
 │       └── rls-policy.ts           # Postgres RLS policy generator
 │
 ├── migration-tool/                 # Legacy → v2 migration CLI
+│   ├── prisma/
+│   │   └── schema.prisma           # Standalone Prisma schema (MigrationJournal, MigrationCheckpoint) — DO NOT use for Medusa Custom Modules
 │   └── src/
 │       ├── cli.ts                  # CLI entry (dry-run, resumable, verify)
 │       ├── extractors/             # Per-entity legacy data extractors
@@ -591,7 +612,7 @@ Community operators run the full stack on any Linux VPS. Postgres runs locally o
 |------|-------------|
 | No secret in logs, stack traces, or error responses | CI secret-scan (trufflehog/gitleaks); structured logging with PII redaction |
 | No payment secret, AI key, VPN key, or KYC document outside hot-core | Infisical agent injects at runtime; never in env vars or config files on Akash |
-| Tenant isolation: tenant A cannot see tenant B's data | 3-layer: Prisma extension → Medusa middleware → Postgres RLS. Returns 404 (not 403) to avoid existence leaks |
+| Tenant isolation: tenant A cannot see tenant B's data | 3-layer: MikroORM Subscriber (Modules) + Prisma extension (standalone) → Medusa middleware → Postgres RLS. Returns 404 (not 403) to avoid existence leaks |
 | BYOK key never serialized in logs or API responses | Decrypt only inside OmniRoute request path; `bytea` ciphertext columns |
 | CI secret-scan on every push | Zero tolerance for committed secrets |
 
@@ -686,7 +707,8 @@ MigrationJournal (standalone, tracks legacy → v2 entity mapping)
 
 Three layers of tenant isolation:
 
-1. **Prisma extension** (`packages/tenant-middleware/prisma-extension.ts`) — injects `tenant_id` into every query from the authenticated session
+1. **MikroORM Subscriber** (`packages/tenant-middleware/mikroorm-subscriber.ts`) — injects `tenant_id` into every query from Medusa Custom Modules (DML entities)
+2. **Prisma extension** (`packages/tenant-middleware/prisma-extension.ts`) — injects `tenant_id` into every query from standalone packages (migration-tool, vpn-provisioner, install-cli, federation-protocol)
 2. **Medusa module middleware** (`packages/tenant-middleware/medusa-middleware.ts`) — validates tenant context at the Medusa module boundary
 3. **Postgres RLS policies** (`packages/tenant-middleware/rls-policy.ts`) — defense-in-depth at the database level
 
@@ -740,7 +762,7 @@ All decisions finalized. Full rationale in [`specs/001-init/research.md`](../001
 | D2 | Hosting model | Hybrid: Akash + Federation + Hot Core (8.87/10) | High | Cost savings vs operational complexity |
 | D3 | Tenancy model | Hybrid: mono-tenant + `tenant_id` FK everywhere | High | Schema simplicity vs premature multi-tenant overhead |
 | D4 | AI tier model | 3-tier: dev / paid / BYOK | High | Flexibility vs SDK complexity |
-| D5 | Multi-tenant pattern | Shared schema + `tenant_id` + Prisma ext + RLS | High | Operational simplicity vs isolation granularity |
+| D5 | Multi-tenant pattern | Shared schema + `tenant_id` + MikroORM Subscriber (Medusa Modules) + Prisma ext (standalone packages) + RLS | High | Operational simplicity vs isolation granularity |
 | D6 | Postgres hosting | Primary on hot-core Hetzner; Akash stateless | High | Data safety vs network latency (mitigated by EU-only Akash) |
 | D7 | OmniRoute integration | Sidecar container + TS SDK | High | Minimal latency vs sidecar failure (mitigated by health-check + graceful degradation) |
 | D8 | BTCPay payment | Custom Medusa v2 Payment Provider Module | Medium | Full control vs maintenance burden |
@@ -808,7 +830,7 @@ packages/federation-protocol (standalone REST server)
 | BTCPay Server API | Version changes break webhook handler | Pin BTCPay version in docker-compose; integration test against pinned version |
 | Akash Network | Provider quality varies; scheduler behavior may change | Provider reputation ranking; VPS warm-standby; quarterly provider-kill drills |
 | Better-Auth + Medusa | Undocumented integration pattern | PoC in Phase 0 M0.6; fallback to custom JWT auth |
-| Hatchet on Akash | gRPC over WireGuard tunnel must work | PoC in Phase 0; fallback to BullMQ if needed |
+| Hatchet on Akash | Engine runs on Akash; connects to hot-core state-DB via standard TCP over WireGuard | Resolved per claude v3 F14 — no gRPC tunnel complexity |
 | OpenMeter throughput | Must handle 1000+ events/min | Load test in Phase 2; Postgres counter fallback |
 
 ---

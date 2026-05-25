@@ -71,9 +71,9 @@ This document resolves all deferred items and technical unknowns identified in `
 
 ### 1. Medusa v2 multi-tenant pattern
 
-**Decision**: Use a **single Medusa instance with `tenant_id` column on every customer-scoped table**, enforced at two layers: (1) a Medusa custom module middleware that injects `tenant_id` into every query context from the authenticated session, and (2) Postgres Row-Level Security (RLS) policies as a defense-in-depth layer. Medusa Sales Channels map 1:1 to tenants for product visibility, pricing, and payment-provider scoping. The ORM filter is implemented as a Prisma extension (not a Medusa module decorator) to ensure every raw query — including those from custom modules — is scoped.
+**Decision**: Use a **single Medusa instance with `tenant_id` column on every customer-scoped table**, enforced at two layers: (1) a MikroORM Subscriber that injects `tenant_id` into every query context for Medusa Custom Modules (DML is mandatory in Medusa v2 modules — Prisma cannot be used inside them), and (2) a Prisma Client extension for standalone packages (migration-tool, vpn-provisioner, install-cli, federation-protocol) that are not Medusa modules. Postgres Row-Level Security (RLS) policies serve as a defense-in-depth layer. Medusa Sales Channels map 1:1 to tenants for product visibility, pricing, and payment-provider scoping.
 
-**Rationale**: Schema-per-tenant adds massive operational complexity (N migration runs per deploy, cross-tenant analytics require federated queries). Database-per-tenant is even worse for a small team. Shared-schema with `tenant_id` is the industry-standard pattern used by Shopify, BigCommerce, and Medusa's own recommended multi-tenant guidance. RLS at the Postgres level provides the safety net required by FR-009 (no route handler may bypass the tenant filter). The Prisma extension approach catches queries that bypass the Medusa module layer (e.g., raw SQL in a migration or a custom worker).
+**Rationale**: Schema-per-tenant adds massive operational complexity (N migration runs per deploy, cross-tenant analytics require federated queries). Database-per-tenant is even worse for a small team. Shared-schema with `tenant_id` is the industry-standard pattern used by Shopify, BigCommerce, and Medusa's own recommended multi-tenant guidance. RLS at the Postgres level provides the safety net required by FR-009 (no route handler may bypass the tenant filter). Medusa v2 Custom Modules use DML (Data Model Language) backed by MikroORM — Prisma cannot be used inside Medusa module code, making a MikroORM Subscriber the only viable enforcement mechanism at the module level. Standalone packages (migration-tool, vpn-provisioner, install-cli, federation-protocol) remain Prisma-based and use a Prisma Client extension for tenant scoping.
 
 **Alternatives considered**:
 - **Schema-per-tenant**: Each tenant gets their own Postgres schema. Clean isolation but N× migration complexity. Unmanageable beyond ~20 tenants. Rejected for the hybrid tenancy model where we expect 1–10 tenants for the foreseeable future.
@@ -261,7 +261,7 @@ This document resolves all deferred items and technical unknowns identified in `
 | A1 | Federation license (FR-034) | Pure MIT; monetize via managed hosting | High |
 | A2 | Akash RTO target | 5 min P95, 15 min P99, RPO=0 | Medium |
 | A3 | Legacy retention (FR-040) | 1 year read-only + 7 year cold archive | High |
-| B1 | Medusa multi-tenant pattern | Shared schema + `tenant_id` + RLS | High |
+| B1 | Medusa multi-tenant pattern | Shared schema + `tenant_id` + MikroORM Subscriber (Modules) + Prisma ext (standalone) + RLS | High |
 | B2 | Akash Postgres strategy | Primary on hot-core; Akash is stateless | High |
 | B3 | OmniRoute integration | Sidecar container + TS SDK | High |
 | B4 | BTCPay Medusa plugin | Custom v2 Payment Provider Module | Medium |
@@ -280,9 +280,9 @@ This document resolves all deferred items and technical unknowns identified in `
 
 ### Decisions that chain together
 
-1. **Auth → Tenancy → ORM filter → RLS**: Better-Auth org plugin provides the tenant context → Prisma extension injects `tenant_id` into queries → Postgres RLS enforces at the DB level. These three layers must be tested as a unit.
+1. **Auth → Tenancy → ORM filter → RLS**: Better-Auth org plugin provides the tenant context → MikroORM Subscriber injects `tenant_id` for Medusa Modules (DML entities) + Prisma extension injects for standalone packages → Postgres RLS enforces at the DB level. These layers must be tested as a unit.
 
-2. **Hatchet → VPN provisioning → Hot-core**: Hatchet workers run on Akash compute but SSH into VPN servers on the hot-core. The WireGuard tunnel between Akash and hot-core is the critical path — its latency and reliability directly impact provisioning time.
+2. **Hatchet → VPN provisioning → Hot-core**: Hatchet engine and workers run on Akash (revised per claude v3 F14); engine state-DB on hot-core Postgres via standard TCP over WireGuard. Workers SSH into VPN servers on the hot-core. The WireGuard tunnel between Akash and hot-core carries Postgres TCP + SSH — no gRPC tunnel complexity.
 
 3. **OmniRoute → OpenMeter → Killbill → Stripe**: Every AI request flows through OmniRoute → emits a metering event to OpenMeter → Killbill aggregates at billing cycle → Stripe collects payment. End-to-end integration test must verify the full chain.
 
@@ -291,5 +291,5 @@ This document resolves all deferred items and technical unknowns identified in `
 ### Open items for Phase 1 validation
 
 - **Better-Auth + Medusa auth provider integration**: Not a documented pattern. Requires a proof-of-concept in Phase 0 to validate the adapter.
-- **Hatchet on Akash**: Hatchet engine must be reachable from Akash workers. If the engine runs on the hot-core, the WireGuard tunnel must allow Hatchet gRPC traffic.
+- ~~**Hatchet on Akash**~~: RESOLVED per claude v3 F14 — engine relocated to Akash; standard TCP to hot-core state-DB replaces gRPC tunnel requirement.
 - **OpenMeter throughput at scale**: Validate that OpenMeter handles 1000+ events/minute without backpressure. Load test in Phase 1.

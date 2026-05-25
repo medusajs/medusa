@@ -231,7 +231,7 @@ See [`.claude/skills/semver-versioning/SKILL.md`](.claude/skills/semver-versioni
 /speckit.retrospective       # Post-implement lessons → retrospective.md + constitution candidates
 ```
 
-**Constitution gates** (`.specify/memory/constitution.md` v1.4.0):
+**Constitution gates** (`.specify/memory/constitution.md` v1.0.0):
 
 - **Principle VI** (Cross-AI Review Gate, NON-NEGOTIABLE): `/speckit.implement` blocks until `analyze.md` PASS + ≥2 external reviewer PASS.
 - **Principle VII** (Artifact Versioning): every speckit stage tags via `snapshot-stage.{sh,ps1}` as `<stage>/<slug>/v<N>`. No `.history/` files — git is the history.
@@ -257,7 +257,7 @@ See [`.claude/skills/semver-versioning/SKILL.md`](.claude/skills/semver-versioni
 | **Contributing**       | [`CONTRIBUTING.md`](CONTRIBUTING.md)                                                                                           |
 | **CLI package docs**   | [`packages/cli/README.md`](packages/cli/README.md)                                                                             |
 | **Feature specs**      | `specs/<feature-slug>/spec.md`, `plan.md`, `tasks.md`                                                                          |
-| **Constitution**       | [`.specify/memory/constitution.md`](.specify/memory/constitution.md) (v1.4.0) — governance principles only                     |
+| **Constitution**       | [`.specify/memory/constitution.md`](.specify/memory/constitution.md) (v1.0.0) — governance principles only                     |
 
 ---
 

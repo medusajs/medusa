@@ -23,6 +23,18 @@ OmniRoute TS SDK provides a typed client for the OmniRoute sidecar proxy, handli
 
 All requests require one of the above. Missing auth → `401`. Invalid/expired → `403`.
 
+### Internal Service-to-Sidecar Authentication
+
+In addition to the per-request authentication above, the SDK MUST authenticate to the OmniRoute sidecar using a short-lived JWT derived from the authenticated session:
+
+- **Token source**: Medusa auth middleware issues a sidecar-scoped JWT (audience: `omniroute-sidecar`, TTL: 5 min) containing `tenant_id`, `user_id`, and `session_id`
+- **Token injection**: SDK attaches `Authorization: Bearer <sidecar-jwt>` on every request
+- **Sidecar validation**: OmniRoute validates JWT signature (shared secret or JWKS), checks audience, extracts `tenant_id` for metering
+- **BYOK key access**: OmniRoute only decrypts AIKeyVault entries after successful JWT validation — prevents unauthorized key extraction even from co-located containers
+- **mTLS (production)**: In Akash/hot-core deployments, Docker network policies restrict sidecar access to Medusa/Next.js containers only. mTLS available as additional layer for high-security tenants.
+
+This addresses the risk of co-located container shell access extracting BYOK keys from request flows.
+
 ---
 
 ## Rate Limiting
