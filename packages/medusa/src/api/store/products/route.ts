@@ -14,13 +14,6 @@ export const GET = async (
   req: RequestWithContext<HttpTypes.StoreProductListParams>,
   res: MedusaResponse<HttpTypes.StoreProductListResponse>
 ) => {
-  const filterableFields: HttpTypes.StoreProductListParams & {
-    // these are available through the Zod transformation
-    tags?: string | string[]
-    categories?: string | string[]
-  } =
-    req.filterableFields
-
   if (FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key)) {
     // TODO: These filters are not supported by the index engine yet
     if (
