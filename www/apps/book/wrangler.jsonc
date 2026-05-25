@@ -16,5 +16,25 @@
   ],
   "images": {
     "binding": "IMAGES"
+  },
+  "observability": {
+    "logs": {
+      "enabled": false,
+      "invocation_logs": true
+    }
+  },
+  "env": {
+    "production": {
+      "name": "medusa-docs-book",
+      "services": [
+        {
+          "binding": "WORKER_SELF_REFERENCE",
+          "service": "medusa-docs-book"
+        }
+      ],
+      "images": {
+        "binding": "IMAGES"
+      }
+    }
   }
 }
