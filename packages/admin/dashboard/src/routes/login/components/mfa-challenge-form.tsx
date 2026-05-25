@@ -20,7 +20,7 @@ const getDefaultMethod = (
 
 type MfaChallengeFormProps = {
   challenge: AuthMfaChallenge
-  onSuccess: (token: string) => void
+  onSuccess: (token: string) => void | Promise<void>
   onBack?: () => void
 }
 
@@ -55,7 +55,7 @@ export const MfaChallengeForm = ({
         method,
         code: verificationCode,
       })
-      onSuccess(token)
+      await onSuccess(token)
     } catch (e) {
       setError(e instanceof Error ? e.message : t("login.mfa.verifyError"))
       setCode("")

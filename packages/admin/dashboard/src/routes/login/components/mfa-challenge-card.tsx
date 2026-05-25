@@ -4,7 +4,7 @@ import { MfaChallengeForm } from "./mfa-challenge-form"
 
 type MfaChallengeCardProps = {
   challenge: AuthMfaChallenge
-  onSuccess: (token: string) => void
+  onSuccess: (token: string) => void | Promise<void>
   onBack?: () => void
 }
 
