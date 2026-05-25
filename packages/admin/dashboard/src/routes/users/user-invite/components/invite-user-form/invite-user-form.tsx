@@ -32,7 +32,7 @@ import {
   useInvites,
   useResendInvite,
 } from "../../../../../hooks/api/invites"
-import { useRbacRoles } from "../../../../../hooks/api/rbac-roles"
+import { useRbacAssignableRoles } from "../../../../../hooks/api/rbac-roles"
 import { useUserInviteTableQuery } from "../../../../../hooks/table/query/use-user-invite-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { isFetchError } from "../../../../../lib/is-fetch-error"
@@ -65,21 +65,18 @@ export const InviteUserForm = () => {
     resolver: zodResolver(InviteUserSchema),
   })
 
-  const { roles: rbacRoles, isPending: isRolesLoading } = useRbacRoles(
-    {
-      fields: "id,name",
-      limit: 200,
-      order: "name",
-    },
-    { enabled: showRbacRolesField }
-  )
+  const { data: assignableData, isPending: isRolesLoading } =
+    useRbacAssignableRoles(
+      { limit: 200, order: "name" },
+      { enabled: showRbacRolesField }
+    )
 
   const roleOptions = useMemo(() => {
-    return (rbacRoles ?? []).map((role) => ({
+    return (assignableData?.roles ?? []).map((role) => ({
       label: role.name,
       value: role.id,
     }))
-  }, [rbacRoles])
+  }, [assignableData?.roles])
 
   const inviteFields = useMemo(() => {
     if (!showRbacRolesField) {

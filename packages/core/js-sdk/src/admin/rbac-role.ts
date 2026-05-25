@@ -397,4 +397,25 @@ export class RbacRole {
       }
     )
   }
+
+  /**
+   * Lists the roles the authenticated actor is allowed to assign.
+   *
+   * @param queryParams - Filters and pagination configurations.
+   * @param headers - Headers to pass in the request.
+   * @returns The assignable roles.
+   */
+  async listAssignable(
+    queryParams?: HttpTypes.AdminRbacRoleListParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminRbacAssignableRolesListResponse>(
+      `/admin/rbac/roles/assignable`,
+      {
+        method: "GET",
+        query: queryParams,
+        headers,
+      }
+    )
+  }
 }

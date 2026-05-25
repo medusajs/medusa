@@ -17,6 +17,7 @@ import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { _DataTable } from "../../../../../components/table/data-table"
 import {
+  useRbacAssignableRoles,
   useRbacRoleUsers,
   useRemoveRbacRoleUsers,
 } from "../../../../../hooks/api/rbac-roles"
@@ -40,11 +41,18 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
 
   const canManageRole = hasAllPermissions(["user:update", "rbac_role:update"])
 
+  const { data: assignableData } = useRbacAssignableRoles(undefined, {
+    enabled: canManageRole,
+  })
+  const isRoleAssignable = (assignableData?.roles ?? []).some(
+    (r) => r.id === role.id
+  )
+
   useEffect(() => {
-    if (!canManageRole && Object.keys(rowSelection).length) {
+    if (!isRoleAssignable && Object.keys(rowSelection).length) {
       setRowSelection({})
     }
-  }, [canManageRole, rowSelection, setRowSelection])
+  }, [isRoleAssignable, rowSelection, setRowSelection])
 
   const {
     users,
@@ -58,7 +66,7 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
     order,
   })
 
-  const columns = useColumns(canManageRole)
+  const columns = useColumns(isRoleAssignable)
 
   const { table } = useDataTable({
     data: users ?? [],
@@ -66,7 +74,7 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
     count,
     getRowId: (row) => row.id,
     enablePagination: true,
-    enableRowSelection: canManageRole,
+    enableRowSelection: isRoleAssignable,
     pageSize: PAGE_SIZE,
     rowSelection: {
       state: rowSelection,
@@ -74,6 +82,7 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
     },
     meta: {
       roleId: role.id,
+      isRoleAssignable,
     },
   })
 
@@ -84,7 +93,7 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
   const { mutateAsync } = useRemoveRbacRoleUsers(role.id)
 
   const handleRemove = async () => {
-    if (!canManageRole) {
+    if (!isRoleAssignable) {
       return
     }
 
@@ -116,30 +125,28 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
     })
   }
 
+  const disabledTooltipKey = !canManageRole
+    ? "permissions.accessDenied.action"
+    : "roles.users.unassignableRoleTooltip"
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("users.domain")}</Heading>
-        {canManageRole ? (
+        {isRoleAssignable ? (
           <Link to="add-users">
             <Button variant="secondary" size="small">
               {t("general.add")}
             </Button>
           </Link>
         ) : (
-          <>
-            <Tooltip
-              content={
-                <Hint variant="error">
-                  {t("permissions.accessDenied.action")}
-                </Hint>
-              }
-            >
-              <Button variant="secondary" size="small" disabled>
-                {t("general.add")}
-              </Button>
-            </Tooltip>
-          </>
+          <Tooltip
+            content={<Hint variant="error">{t(disabledTooltipKey)}</Hint>}
+          >
+            <Button variant="secondary" size="small" disabled>
+              {t("general.add")}
+            </Button>
+          </Tooltip>
         )}
       </div>
       <_DataTable
@@ -157,7 +164,7 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
           { key: "updated_at", label: t("fields.updatedAt") },
         ]}
         commands={
-          canManageRole
+          isRoleAssignable
             ? [
                 {
                   action: handleRemove,
@@ -179,18 +186,18 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
 const RoleUserActions = ({
   user,
   roleId,
-  canManageRole,
+  isRoleAssignable,
 }: {
   user: HttpTypes.AdminUser
   roleId: string
-  canManageRole: boolean
+  isRoleAssignable: boolean
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
   const { mutateAsync } = useRemoveRbacRoleUsers(roleId)
 
   const handleRemove = async () => {
-    if (!canManageRole) {
+    if (!isRoleAssignable) {
       return
     }
 
@@ -221,7 +228,7 @@ const RoleUserActions = ({
               icon: <Trash />,
               label: t("actions.remove"),
               onClick: handleRemove,
-              disabled: !canManageRole,
+              disabled: !isRoleAssignable,
               disabledTooltip: (
                 <Hint variant="error">
                   {t("permissions.accessDenied.action")}
@@ -237,7 +244,7 @@ const RoleUserActions = ({
 
 const columnHelper = createColumnHelper<HttpTypes.AdminUser>()
 
-const useColumns = (canManageRole: boolean) => {
+const useColumns = (isRoleAssignable: boolean) => {
   const { t } = useTranslation()
   const { getFullDate } = useDate()
 
@@ -253,7 +260,7 @@ const useColumns = (canManageRole: boolean) => {
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()
               }
-              disabled={!canManageRole}
+              disabled={!isRoleAssignable}
               onCheckedChange={(value) =>
                 table.toggleAllPageRowsSelected(!!value)
               }
@@ -292,18 +299,22 @@ const useColumns = (canManageRole: boolean) => {
       columnHelper.display({
         id: "actions",
         cell: ({ row, table }) => {
-          const { roleId } = table.options.meta as { roleId: string }
+          const { roleId, isRoleAssignable: rowisRoleAssignable } = table
+            .options.meta as {
+            roleId: string
+            isRoleAssignable: boolean
+          }
 
           return (
             <RoleUserActions
               user={row.original}
               roleId={roleId}
-              canManageRole={canManageRole}
+              isRoleAssignable={rowisRoleAssignable}
             />
           )
         },
       }),
     ],
-    [t, getFullDate, canManageRole]
+    [t, getFullDate, isRoleAssignable]
   )
 }

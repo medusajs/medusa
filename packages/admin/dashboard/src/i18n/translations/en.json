@@ -2589,6 +2589,7 @@
     },
     "users": {
       "alreadyAddedTooltip": "User already has this role.",
+      "unassignableRoleTooltip": "You don't have access to assign this role — your permissions don't cover all of its policies.",
       "add": {
         "successToast_one": "User was successfully added to the role.",
         "successToast_other": "Users were successfully added to the role.",

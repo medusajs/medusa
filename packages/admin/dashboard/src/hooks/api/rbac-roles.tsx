@@ -323,3 +323,30 @@ export const useMePermissions = (
     ...options,
   })
 }
+
+const ASSIGNABLE_ROLES_QUERY_KEY = ["rbac_assignable_roles"] as const
+
+export const assignableRolesQueryKey = ASSIGNABLE_ROLES_QUERY_KEY
+
+/**
+ * Fetches the roles the authenticated actor is allowed to assign.
+ */
+export const useRbacAssignableRoles = (
+  query?: HttpTypes.AdminRbacRoleListParams,
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminRbacAssignableRolesListResponse,
+      FetchError,
+      HttpTypes.AdminRbacAssignableRolesListResponse,
+      QueryKey
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  return useQuery({
+    queryFn: () => sdk.admin.rbacRole.listAssignable(query),
+    queryKey: [...ASSIGNABLE_ROLES_QUERY_KEY, query],
+    staleTime: 5 * 60 * 1000,
+    ...options,
+  })
+}

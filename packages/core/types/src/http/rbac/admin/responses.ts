@@ -76,6 +76,17 @@ export interface AdminRbacPolicyRolesListResponse
     roles: AdminRbacRole[]
   }> {}
 
+export interface AdminRbacAssignableRolesListResponse {
+  /**
+   * The roles the authenticated actor is allowed to assign.
+   */
+  roles: Pick<AdminRbacRole, "id" | "name" | "description">[]
+  /**
+   * Total number of assignable roles after applying actor-coverage filtering.
+   */
+  count: number
+}
+
 export interface AdminRbacPolicyDeleteResponse
   extends DeleteResponse<"rbac_policy"> {}
 
