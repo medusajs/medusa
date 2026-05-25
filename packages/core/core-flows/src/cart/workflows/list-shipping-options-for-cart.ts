@@ -26,6 +26,9 @@ import {
 } from "../utils/schemas"
 import { getTranslatedShippingOptionsStep } from "../../common/steps/get-translated-shipping-option"
 
+/**
+ * The ID of the workflow that lists the shipping options of a cart.
+ */
 export const listShippingOptionsForCartWorkflowId =
   "list-shipping-options-for-cart"
 /**
