@@ -7,6 +7,11 @@ on:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
 jobs:
   release:
     name: Version packages PR
@@ -20,13 +25,8 @@ jobs:
         with:
           node-version: 20
 
-      - name: Creating .npmrc
-        run: |
-          cat << EOF > "$HOME/.npmrc"
-            //registry.npmjs.org/:_authToken=$NPM_TOKEN
-          EOF
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Ensure npm 11.5.1+ for OIDC
+        run: npm install -g npm@latest
 
       - name: Install Dependencies
         run: yarn
@@ -43,7 +43,6 @@ jobs:
           createGithubReleases: false
           publish: yarn changeset publish
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Trigger draft release generation
