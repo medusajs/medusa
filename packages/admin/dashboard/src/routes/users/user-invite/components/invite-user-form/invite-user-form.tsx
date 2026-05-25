@@ -37,6 +37,7 @@ import { useUserInviteTableQuery } from "../../../../../hooks/table/query/use-us
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { isFetchError } from "../../../../../lib/is-fetch-error"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 const InviteUserSchema = zod.object({
   email: zod.string().email(),
@@ -52,6 +53,9 @@ const INVITE_URL = `${window.location.origin}${
 export const InviteUserForm = () => {
   const { t } = useTranslation()
   const isRbacEnabled = useFeatureFlag("rbac")
+  const { hasPermission } = usePermissions()
+  const canReadRbacRoles = hasPermission("rbac_role:read")
+  const showRbacRolesField = isRbacEnabled && canReadRbacRoles
 
   const form = useForm<zod.infer<typeof InviteUserSchema>>({
     defaultValues: {
@@ -67,7 +71,7 @@ export const InviteUserForm = () => {
       limit: 200,
       order: "name",
     },
-    { enabled: isRbacEnabled }
+    { enabled: showRbacRolesField }
   )
 
   const roleOptions = useMemo(() => {
@@ -78,7 +82,7 @@ export const InviteUserForm = () => {
   }, [rbacRoles])
 
   const inviteFields = useMemo(() => {
-    if (!isRbacEnabled) {
+    if (!showRbacRolesField) {
       return undefined
     }
 
@@ -93,7 +97,7 @@ export const InviteUserForm = () => {
       "rbac_roles.id",
       "rbac_roles.name",
     ].join(",")
-  }, [isRbacEnabled])
+  }, [showRbacRolesField])
 
   const { raw, searchParams } = useUserInviteTableQuery({
     prefix: PREFIX,
@@ -109,7 +113,7 @@ export const InviteUserForm = () => {
     error,
   } = useInvites(searchParams)
 
-  const columns = useColumns({ isRbacEnabled })
+  const columns = useColumns({ isRbacEnabled: showRbacRolesField })
 
   const { table } = useDataTable({
     data: invites ?? [],
@@ -129,7 +133,7 @@ export const InviteUserForm = () => {
         email: values.email,
       }
 
-      if (isRbacEnabled && values.roles?.length) {
+      if (showRbacRolesField && values.roles?.length) {
         payload.roles = values.roles
       }
 
@@ -197,7 +201,7 @@ export const InviteUserForm = () => {
                       )
                     }}
                   />
-                  {isRbacEnabled && (
+                  {showRbacRolesField && (
                     <Form.Field
                       control={form.control}
                       name="roles"

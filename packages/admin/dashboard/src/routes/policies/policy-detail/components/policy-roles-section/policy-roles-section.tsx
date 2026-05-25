@@ -4,9 +4,11 @@ import { keepPreviousData } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
+import { PermissionGuard } from "../../../../../components/common/permission-guard"
 import { DataTable } from "../../../../../components/data-table"
 import { useRbacPolicyRoles } from "../../../../../hooks/api/rbac-policies"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 type PolicyRolesSectionProps = {
   policy: HttpTypes.AdminRbacPolicy
@@ -22,6 +24,8 @@ const PREFIX = "pr"
 export const PolicyRolesSection = ({ policy }: PolicyRolesSectionProps) => {
   const { t } = useTranslation()
   const { offset } = useQueryParams(["offset"], PREFIX)
+  const { hasPermission } = usePermissions()
+  const canReadRoles = hasPermission("rbac_role:read")
 
   const { roles, count, isPending, isError, error } = useRbacPolicyRoles(
     policy.id,
@@ -31,6 +35,7 @@ export const PolicyRolesSection = ({ policy }: PolicyRolesSectionProps) => {
     },
     {
       placeholderData: keepPreviousData,
+      enabled: canReadRoles,
     }
   )
 
@@ -41,31 +46,33 @@ export const PolicyRolesSection = ({ policy }: PolicyRolesSectionProps) => {
   }
 
   return (
-    <Container className="divide-y p-0">
-      <DataTable
-        data={(roles as RoleWithUsers[]) ?? []}
-        columns={columns}
-        getRowId={(row) => row.id}
-        rowHref={(row) => `/settings/roles/${row.id}`}
-        rowCount={count}
-        pageSize={PAGE_SIZE}
-        heading={t("policies.fields.roles")}
-        headingLevel="h2"
-        isLoading={isPending}
-        prefix={PREFIX}
-        enableSearch={false}
-        emptyState={{
-          empty: {
-            heading: t("policies.roles.empty.heading"),
-            description: t("policies.roles.empty.description"),
-          },
-          filtered: {
-            heading: t("policies.list.filtered.heading"),
-            description: t("policies.list.filtered.description"),
-          },
-        }}
-      />
-    </Container>
+    <PermissionGuard permission="rbac_role:read">
+      <Container className="divide-y p-0">
+        <DataTable
+          data={(roles as RoleWithUsers[]) ?? []}
+          columns={columns}
+          getRowId={(row) => row.id}
+          rowHref={(row) => `/settings/roles/${row.id}`}
+          rowCount={count}
+          pageSize={PAGE_SIZE}
+          heading={t("policies.fields.roles")}
+          headingLevel="h2"
+          isLoading={isPending}
+          prefix={PREFIX}
+          enableSearch={false}
+          emptyState={{
+            empty: {
+              heading: t("policies.roles.empty.heading"),
+              description: t("policies.roles.empty.description"),
+            },
+            filtered: {
+              heading: t("policies.list.filtered.heading"),
+              description: t("policies.list.filtered.description"),
+            },
+          }}
+        />
+      </Container>
+    </PermissionGuard>
   )
 }
 

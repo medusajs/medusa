@@ -12,6 +12,7 @@ import { ListSummary } from "../../../../../components/common/list-summary"
 import { useRbacRoles } from "../../../../../hooks/api/rbac-roles"
 import { useDate } from "../../../../../hooks/use-date"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
+import type { Permission } from "../../../../../lib/permissions"
 import { usePermissions } from "../../../../../providers/permissions-provider"
 
 const PAGE_SIZE = 20
@@ -42,7 +43,7 @@ export const RoleListTable = () => {
     }
   )
 
-  const columns = useColumns()
+  const columns = useColumns({ hasPermission })
   const filters = useFilters()
 
   if (isError) {
@@ -91,7 +92,11 @@ type RoleWithUsers = HttpTypes.AdminRbacRole & {
 
 const columnHelper = createDataTableColumnHelper<RoleWithUsers>()
 
-const useColumns = () => {
+const useColumns = ({
+  hasPermission,
+}: {
+  hasPermission: (permission: Permission) => boolean
+}) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { getFullDate } = useDate()
@@ -107,8 +112,11 @@ const useColumns = () => {
     // TODO: implement delete role flow
   }, [])
 
+  const canUpdate = hasPermission("rbac_role:update")
+  const canDelete = hasPermission("rbac_role:delete")
+
   return useMemo(() => {
-    return [
+    const baseColumns = [
       columnHelper.accessor("name", {
         header: t("fields.name"),
         enableSorting: true,
@@ -157,30 +165,45 @@ const useColumns = () => {
         sortAscLabel: t("filters.sorting.dateAsc"),
         sortDescLabel: t("filters.sorting.dateDesc"),
       }),
+    ]
+
+    if (!canUpdate && !canDelete) {
+      return baseColumns
+    }
+
+    const groups: {
+      label: string
+      icon: React.ReactNode
+      onClick: (ctx: { row: { original: HttpTypes.AdminRbacRole } }) => void
+    }[][] = []
+
+    if (canUpdate) {
+      groups.push([
+        {
+          label: t("actions.edit"),
+          icon: <PencilSquare />,
+          onClick: (ctx) => handleEdit(ctx.row.original),
+        },
+      ])
+    }
+
+    if (canDelete) {
+      groups.push([
+        {
+          label: t("actions.delete"),
+          icon: <Trash />,
+          onClick: (ctx) => handleDelete(ctx.row.original),
+        },
+      ])
+    }
+
+    return [
+      ...baseColumns,
       columnHelper.action({
-        actions: [
-          [
-            {
-              label: t("actions.edit"),
-              icon: <PencilSquare />,
-              onClick: (ctx) => {
-                handleEdit(ctx.row.original)
-              },
-            },
-          ],
-          [
-            {
-              label: t("actions.delete"),
-              icon: <Trash />,
-              onClick: (ctx) => {
-                handleDelete(ctx.row.original)
-              },
-            },
-          ],
-        ],
+        actions: groups,
       }),
     ]
-  }, [t, getFullDate, handleEdit, handleDelete])
+  }, [t, getFullDate, handleEdit, handleDelete, canUpdate, canDelete])
 }
 
 const useFilters = () => {

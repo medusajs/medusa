@@ -19,7 +19,7 @@ type RoleGeneralSectionProps = {
 
 export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
   const { t } = useTranslation()
-  const { hasAllPermissions, hasPermission } = usePermissions()
+  const { hasPermission } = usePermissions()
 
   const users = useMemo(() => {
     return (
@@ -78,10 +78,7 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
                   icon: <Key />,
                   label: t("roles.actions.managePermissions"),
                   to: `permissions`,
-                  disabled: !hasAllPermissions([
-                    "rbac_role:update",
-                    "user:update",
-                  ]),
+                  disabled: !hasPermission("rbac_role:update"),
                   disabledTooltip: (
                     <Hint variant="error">
                       {t("permissions.accessDenied.action")}

@@ -1117,9 +1117,10 @@ export function getRouteMap({
             {
               path: "roles",
               errorElement: <ErrorBoundary />,
-              element: <Outlet />,
+              element: <RoutePermissionGuard />,
               handle: {
                 breadcrumb: () => t("roles.domain"),
+                permissions: "rbac_role:read",
               },
               children: [
                 {
@@ -1128,7 +1129,14 @@ export function getRouteMap({
                   children: [
                     {
                       path: "create",
-                      lazy: () => import("../../routes/roles/role-create"),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "rbac_role:create" },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () => import("../../routes/roles/role-create"),
+                        },
+                      ],
                     },
                   ],
                 },
@@ -1152,15 +1160,40 @@ export function getRouteMap({
                   children: [
                     {
                       path: "edit",
-                      lazy: () => import("../../routes/roles/role-edit"),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "rbac_role:update" },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () => import("../../routes/roles/role-edit"),
+                        },
+                      ],
                     },
                     {
                       path: "add-users",
-                      lazy: () => import("../../routes/roles/role-add-users"),
+                      element: <RoutePermissionGuard />,
+                      handle: {
+                        permissions: ["user:update", "rbac_role:update"],
+                      },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () =>
+                            import("../../routes/roles/role-add-users"),
+                        },
+                      ],
                     },
                     {
                       path: "permissions",
-                      lazy: () => import("../../routes/roles/role-permissions"),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "rbac_role:update" },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () =>
+                            import("../../routes/roles/role-permissions"),
+                        },
+                      ],
                     },
                   ],
                 },
