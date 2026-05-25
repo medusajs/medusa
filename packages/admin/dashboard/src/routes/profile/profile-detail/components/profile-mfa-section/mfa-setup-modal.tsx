@@ -77,17 +77,19 @@ export const MfaSetupModal = ({ setup, onClose }: MfaSetupModalProps) => {
 
   return (
     <FocusModal open onOpenChange={(open) => !open && onClose()}>
-      <FocusModal.Content>
+      <FocusModal.Content className="inset-auto left-1/2 top-1/2 max-h-[calc(100vh-32px)] w-[calc(100vw-32px)] max-w-[560px] -translate-x-1/2 -translate-y-1/2">
         <FocusModal.Header>
-          <FocusModal.Title>
-            {step === "verify"
-              ? t("profile.mfa.setupTitle")
-              : t("profile.mfa.recoveryCodesTitle")}
+          <FocusModal.Title asChild>
+            <span className="sr-only">
+              {step === "verify"
+                ? t("profile.mfa.setupTitle")
+                : t("profile.mfa.recoveryCodesTitle")}
+            </span>
           </FocusModal.Title>
         </FocusModal.Header>
-        <FocusModal.Body className="flex flex-1 items-center justify-center">
+        <FocusModal.Body className="overflow-y-auto p-6">
           {step === "verify" ? (
-            <div className="flex w-full max-w-[480px] flex-col items-center gap-y-6">
+            <div className="flex w-full flex-col items-center gap-y-6">
               <div className="flex flex-col items-center gap-y-2 text-center">
                 <Heading>{t("profile.mfa.setupAuthenticatorApp")}</Heading>
                 <Text size="small" className="text-ui-fg-subtle">
@@ -122,7 +124,7 @@ export const MfaSetupModal = ({ setup, onClose }: MfaSetupModalProps) => {
               </div>
             </div>
           ) : (
-            <div className="flex w-full max-w-[480px] flex-col gap-y-4">
+            <div className="flex w-full flex-col gap-y-4">
               <div>
                 <Heading>{t("profile.mfa.recoveryCodesTitle")}</Heading>
                 <Text size="small" className="text-ui-fg-subtle">
