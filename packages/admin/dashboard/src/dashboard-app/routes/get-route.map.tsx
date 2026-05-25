@@ -1080,7 +1080,16 @@ export function getRouteMap({
                   children: [
                     {
                       path: "invite",
-                      lazy: () => import("../../routes/users/user-invite"),
+                      element: <RoutePermissionGuard />,
+                      handle: {
+                        permissions: ["invite:create", "invite:read"],
+                      },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () => import("../../routes/users/user-invite"),
+                        },
+                      ],
                     },
                   ],
                 },
