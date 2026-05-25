@@ -373,6 +373,44 @@ export const AuthWorkflowEvents = {
    * ```
    */
   PASSWORD_RESET: "auth.password_reset",
+  /**
+   * Emitted when an MFA factor is enabled for an auth identity.
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   auth_identity_id, // The ID of the auth identity.
+   *   mfa_id, // The ID of the enabled MFA factor.
+   *   provider, // The MFA provider that was enabled.
+   * }
+   * ```
+   */
+  MFA_ENABLED: "auth.mfa_enabled",
+  /**
+   * Emitted when an MFA factor is disabled for an auth identity.
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   auth_identity_id, // The ID of the auth identity.
+   *   mfa_id, // The ID of the disabled MFA factor.
+   *   provider, // The MFA provider that was disabled.
+   * }
+   * ```
+   */
+  MFA_DISABLED: "auth.mfa_disabled",
+  /**
+   * Emitted when recovery codes are generated for an auth identity.
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   auth_identity_id, // The ID of the auth identity.
+   *   count, // The number of generated recovery codes.
+   * }
+   * ```
+   */
+  MFA_RECOVERY_CODES_GENERATED: "auth.mfa_recovery_codes_generated",
 } as const
 
 /**
