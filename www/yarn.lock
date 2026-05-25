@@ -3654,23 +3654,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/mdx@npm:15.3.9":
-  version: 15.3.9
-  resolution: "@next/mdx@npm:15.3.9"
-  dependencies:
-    source-map: ^0.7.0
-  peerDependencies:
-    "@mdx-js/loader": ">=0.15.0"
-    "@mdx-js/react": ">=0.15.0"
-  peerDependenciesMeta:
-    "@mdx-js/loader":
-      optional: true
-    "@mdx-js/react":
-      optional: true
-  checksum: 2bd3ad465d2f12ac77c5e017f9ea359532b319ac6635539fe3a2be266b87c3150a4641ece72813c9ff3b0ab8712c817920bd18706e5ea6449b6c3cec4a43ac88
-  languageName: node
-  linkType: hard
-
 "@next/mdx@npm:15.5.18":
   version: 15.5.18
   resolution: "@next/mdx@npm:15.5.18"
@@ -9178,7 +9161,8 @@ __metadata:
     "@mdx-js/loader": ^3.1.0
     "@mdx-js/react": ^3.1.0
     "@medusajs/icons": 2.15.3
-    "@next/mdx": 15.3.9
+    "@next/mdx": 15.5.18
+    "@opennextjs/cloudflare": ^1.19.9
     "@stefanprobst/rehype-extract-toc": ^3.0.0
     "@types/mdx": ^2.0.13
     "@types/node": ^20
@@ -9194,7 +9178,7 @@ __metadata:
     eslint-plugin-prettier: ^5.2.1
     eslint-plugin-react-hooks: ^5.0.0
     loops: ^6.0.1
-    next: 15.3.9
+    next: 15.5.18
     postcss: ^8
     posthog-js: ^1.298.1
     posthog-node: ^5.29.0
@@ -9210,6 +9194,7 @@ __metadata:
     tsconfig: "*"
     types: "*"
     typescript: ^5
+    wrangler: ^4.90.0
   languageName: unknown
   linkType: soft
 
