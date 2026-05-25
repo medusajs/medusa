@@ -1217,6 +1217,148 @@ moduleIntegrationTestRunner<IProductModuleService>({
             `Product "Product with variants and options" has variants with missing options: [missing option]`
           )
         })
+
+        it("should throw when a variant references an option value outside the product's value_ids subset on create", async () => {
+          // Set up a shared global option with three values, then create the
+          // product linking only two of them. A variant referencing the third
+          // value (still on the option, but not on this product) must be
+          // rejected — the per-product `value_ids` subset is enforcing.
+          const sharedOption = await service.createProductOptions({
+            title: "Subset",
+            values: ["sub-a", "sub-b", "sub-c"],
+          })
+          const allowed = sharedOption.values
+            .filter((v) => v.value !== "sub-c")
+            .map((v) => v.id)
+
+          const error = await service
+            .createProducts([
+              {
+                title: "Subset violation on create",
+                options: [{ id: sharedOption.id, value_ids: allowed }],
+                variants: [
+                  {
+                    title: "out-of-subset variant",
+                    options: { Subset: "sub-c" },
+                  },
+                ],
+              },
+            ])
+            .catch((e) => e)
+
+          expect(error?.message).toEqual(
+            "Option value sub-c does not exist for option Subset"
+          )
+        })
+
+        it("should throw when updating a variant to reference a value outside the product's value_ids subset", async () => {
+          // Same fixture as above, but exercising the update path: link the
+          // option with a restricted subset, then attempt to flip a variant
+          // onto a value the product is not configured for.
+          const sharedOption = await service.createProductOptions({
+            title: "UpdateSubset",
+            values: ["u-a", "u-b", "u-c"],
+          })
+          const allowed = sharedOption.values
+            .filter((v) => v.value !== "u-c")
+            .map((v) => v.id)
+
+          const [created] = await service.createProducts([
+            {
+              title: "Subset violation on update",
+              options: [{ id: sharedOption.id, value_ids: allowed }],
+              variants: [
+                {
+                  title: "v1",
+                  options: { UpdateSubset: "u-a" },
+                },
+              ],
+            },
+          ])
+
+          const error = await service
+            .updateProducts(created.id, {
+              variants: [
+                {
+                  title: "v1",
+                  options: { UpdateSubset: "u-c" },
+                },
+              ],
+            })
+            .catch((e) => e)
+
+          expect(error?.message).toEqual(
+            "Option value u-c does not exist for option UpdateSubset"
+          )
+        })
+
+        it("should accept a variant value after that value is added to the product's value_ids subset", async () => {
+          // Set up: option has 3 values, product is linked to only 2 of them.
+          // A variant referencing the third value is initially rejected. After
+          // expanding the per-product subset to include the third value, the
+          // same variant payload must now succeed.
+          const sharedOption = await service.createProductOptions({
+            title: "ExpandSubset",
+            values: ["e-a", "e-b", "e-c"],
+          })
+          const valueA = sharedOption.values.find((v) => v.value === "e-a")!
+          const valueB = sharedOption.values.find((v) => v.value === "e-b")!
+          const valueC = sharedOption.values.find((v) => v.value === "e-c")!
+
+          const [created] = await service.createProducts([
+            {
+              title: "Expandable subset product",
+              options: [
+                { id: sharedOption.id, value_ids: [valueA.id, valueB.id] },
+              ],
+              variants: [
+                { title: "vA", options: { ExpandSubset: "e-a" } },
+              ],
+            },
+          ])
+
+          // Sanity: variant with the not-yet-allowed value is rejected.
+          const initialError = await service
+            .updateProducts(created.id, {
+              variants: [
+                {
+                  id: created.variants[0].id,
+                  title: "vA",
+                  options: { ExpandSubset: "e-c" },
+                },
+              ],
+            })
+            .catch((e) => e)
+          expect(initialError?.message).toEqual(
+            "Option value e-c does not exist for option ExpandSubset"
+          )
+
+          // Expand the product's allowed value subset to include the third value.
+          await service.updateProductOptionValuesOnProduct({
+            product_id: created.id,
+            product_option_id: sharedOption.id,
+            add: [valueC.id],
+          })
+
+          // Same variant update payload that just failed should now succeed.
+          await service.updateProducts(created.id, {
+            variants: [
+              {
+                id: created.variants[0].id,
+                title: "vA",
+                options: { ExpandSubset: "e-c" },
+              },
+            ],
+          })
+
+          const reloaded = await service.retrieveProduct(created.id, {
+            relations: ["variants.options", "options.values"],
+          })
+          const variantValues = reloaded.variants[0].options.map(
+            (o) => o.value
+          )
+          expect(variantValues).toEqual(["e-c"])
+        })
       })
 
       describe("softDelete", function () {

@@ -518,30 +518,53 @@ export default class ProductModuleService
       )
     }
 
-    const productOptions = await this.productOptionService_.list(
-      {
-        products: {
-          id: [...new Set<string>(data.map((v) => v.product_id!))],
-        },
-      },
-      {
-        relations: ["values", "products"],
-      },
-      sharedContext
-    )
+    const productIds = [...new Set<string>(data.map((v) => v.product_id!))]
+    const [
+      productOptions,
+      variants,
+      optionIdsByProductId,
+      valueIdsByProductId,
+    ] = await promiseAll([
+      this.productOptionService_.list(
+        { products: { id: productIds } },
+        { relations: ["values"] },
+        sharedContext
+      ),
+      this.productVariantService_.list(
+        { product_id: productIds },
+        { relations: ["options"] },
+        sharedContext
+      ),
+      this.productRepository_.getOptionIdsByProductIds(
+        productIds,
+        sharedContext
+      ),
+      this.productRepository_.getOptionValueIdsByProductIds(
+        productIds,
+        sharedContext
+      ),
+    ])
 
-    const variants = await this.productVariantService_.list(
-      {
-        product_id: [...new Set<string>(data.map((v) => v.product_id!))],
-      },
-      {
-        relations: ["options"],
-      },
-      sharedContext
-    )
+    const optionsById = new Map(productOptions.map((o) => [o.id, o]))
+    const optionsByProductId = new Map<
+      string,
+      InferEntityType<typeof ProductOption>[]
+    >()
+    for (const [productId, optionIds] of optionIdsByProductId) {
+      const opts: InferEntityType<typeof ProductOption>[] = []
+      optionIds.forEach((id) => {
+        const opt = optionsById.get(id)
+        if (opt) opts.push(opt)
+      })
+      optionsByProductId.set(productId, opts)
+    }
 
     const productVariantsWithOptions =
-      ProductModuleService.assignOptionsToVariants(data, productOptions)
+      ProductModuleService.assignOptionsToVariants(
+        data,
+        optionsByProductId,
+        valueIdsByProductId
+      )
 
     ProductModuleService.checkIfVariantWithOptionsAlreadyExists(
       productVariantsWithOptions as any,
@@ -687,22 +710,45 @@ export default class ProductModuleService
       })
     )
 
-    const productOptions = await this.productOptionService_.list(
-      {
-        products: {
-          id: Array.from(
-            new Set(variantsWithProductId.map((v) => v.product_id!))
-          ),
-        },
-      },
-      { relations: ["values", "products"] },
-      sharedContext
+    const productIds = Array.from(
+      new Set(variantsWithProductId.map((v) => v.product_id!))
     )
+    const [productOptions, optionIdsByProductId, valueIdsByProductId] =
+      await promiseAll([
+        this.productOptionService_.list(
+          { products: { id: productIds } },
+          { relations: ["values"] },
+          sharedContext
+        ),
+        this.productRepository_.getOptionIdsByProductIds(
+          productIds,
+          sharedContext
+        ),
+        this.productRepository_.getOptionValueIdsByProductIds(
+          productIds,
+          sharedContext
+        ),
+      ])
+
+    const optionsById = new Map(productOptions.map((o) => [o.id, o]))
+    const optionsByProductId = new Map<
+      string,
+      InferEntityType<typeof ProductOption>[]
+    >()
+    for (const [productId, optionIds] of optionIdsByProductId) {
+      const opts: InferEntityType<typeof ProductOption>[] = []
+      optionIds.forEach((id) => {
+        const opt = optionsById.get(id)
+        if (opt) opts.push(opt)
+      })
+      optionsByProductId.set(productId, opts)
+    }
 
     const productVariantsWithOptions =
       ProductModuleService.assignOptionsToVariants(
         variantsWithProductId,
-        productOptions
+        optionsByProductId,
+        valueIdsByProductId
       )
 
     if (data.some((d) => !!d.options)) {
@@ -2591,10 +2637,12 @@ export default class ProductModuleService
             )
           }
 
+          // Preserve the value id alongside the value name so downstream
+          // normalization can enforce the per-product `value_ids` subset.
           return {
             id: dbOption.id,
             title: dbOption.title,
-            values: dbOption.values?.map((v) => ({ value: v.value })),
+            values: dbOption.values?.map((v) => ({ id: v.id, value: v.value })),
             value_ids: option.value_ids,
           }
         }
@@ -2663,9 +2711,35 @@ export default class ProductModuleService
             const productOption = product.options?.find(
               (option) => (option as any).title === key
             )!
-            const productOptionValue = (productOption as any).values?.find(
-              (optionValue) => (optionValue as any).value === value
-            )!
+            // Respect the per-product value subset on the input: if the option
+            // was linked with `value_ids`, only those values are allowed for
+            // this product's variants.
+            const allowedValueIds = Array.isArray(
+              (productOption as any)?.value_ids
+            )
+              ? new Set<string>((productOption as any).value_ids as string[])
+              : undefined
+            const allValues = (productOption as any).values
+            // Values may be wrapped a second time by normalizeCreateProductInput
+            // (e.g. {value: {id, value: "red"}}). Read both shapes.
+            const valueOf = (v: any): string | undefined =>
+              v?.value?.value ?? v?.value
+            const idOf = (v: any): string | undefined => v?.value?.id ?? v?.id
+            const candidateValues = allowedValueIds
+              ? allValues?.filter((v: any) => {
+                  const id = idOf(v)
+                  return id ? allowedValueIds.has(id) : true
+                })
+              : allValues
+            const productOptionValue = candidateValues?.find(
+              (optionValue: any) => valueOf(optionValue) === value
+            )
+            if (!productOptionValue) {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                `Option value ${value} does not exist for option ${key}`
+              )
+            }
             ;(productOptionValue as any).variants ??= []
             ;(productOptionValue as any).variants.push(variant)
           })
@@ -2768,13 +2842,14 @@ export default class ProductModuleService
     await (sharedContext.transactionManager as any).flush()
 
     const productIds = createdProducts.map((p) => p.id)
-    const productsWithOptions = await this.productService_.list(
-      { id: productIds },
-      {
-        relations: ["options", "options.values", "variants", "images", "tags"],
-      },
-      sharedContext
-    )
+    // Use the split-populate helper to avoid the MikroORM combined-populate
+    // slow path
+    const productsWithOptions =
+      await this.productRepository_.findByIdsWithSplitPopulate(
+        productIds,
+        ["options", "options.values", "variants", "images", "tags"],
+        sharedContext
+      )
 
     const productIdOrder = new Map(productIds.map((id, index) => [id, index]))
 
@@ -2814,14 +2889,14 @@ export default class ProductModuleService
       this.productService_.list(
         { id: data.map((d) => d.id) },
         {
-          relations: ["options", "options.values", "options.products", "tags"],
+          relations: ["options", "options.values", "tags"],
         },
         sharedContext
       ),
       allOptionIds.length
         ? this.productOptionService_.list(
             { id: allOptionIds },
-            { relations: ["values", "products"] },
+            {},
             sharedContext
           )
         : Promise.resolve([]),
@@ -2859,10 +2934,20 @@ export default class ProductModuleService
       this.validateProductUpdatePayload(product)
     }
 
+    // Load the per-product allowed value subset *after* the link flush so the
+    // map reflects the just-created pivot rows. deepUpdate uses this to enforce
+    // that variant.options only reference values inside the subset.
+    const valueIdsByProductId =
+      await this.productRepository_.getOptionValueIdsByProductIds(
+        normalizedProducts.map((p) => p.id),
+        sharedContext
+      )
+
     const updatedProducts = await this.productRepository_.deepUpdate(
       normalizedProducts,
       ProductModuleService.validateVariantOptions,
       expectedOptionIdsMap,
+      valueIdsByProductId,
       sharedContext
     )
 
@@ -3062,6 +3147,11 @@ export default class ProductModuleService
             }),
             is_exclusive: (option as any).is_exclusive ?? true, // Always default to true for options created from product creation
             ...((option as any).id ? { id: (option as any).id } : {}),
+            // Preserve the per-product value subset so downstream variant
+            // normalization can enforce it.
+            ...((option as any).value_ids
+              ? { value_ids: (option as any).value_ids }
+              : {}),
           }
         })
       }
@@ -3178,18 +3268,18 @@ export default class ProductModuleService
     variants:
       | ProductTypes.CreateProductVariantDTO[]
       | ProductTypes.UpdateProductVariantDTO[],
-    options: InferEntityType<typeof ProductOption>[]
+    options: InferEntityType<typeof ProductOption>[],
+    productId: string,
+    allowedValueIds?: Set<string>
   ) {
+    const optionsByProductId = new Map([[productId, options]])
+    const valueIdsByProductId = allowedValueIds
+      ? new Map([[productId, allowedValueIds]])
+      : undefined
     const variantsWithOptions = ProductModuleService.assignOptionsToVariants(
-      variants.map((v) => ({
-        ...v,
-        // adding product_id to the variant to make it valid for the assignOptionsToVariants function
-        // get product_id from the first product in the products array of the first option
-        ...(options.length && options[0].products?.length
-          ? { product_id: options[0].products[0].id }
-          : {}),
-      })),
-      options
+      variants.map((v) => ({ ...v, product_id: productId })),
+      optionsByProductId,
+      valueIdsByProductId
     )
 
     ProductModuleService.checkIfVariantsHaveUniqueOptionsCombinations(
@@ -3201,7 +3291,13 @@ export default class ProductModuleService
     variants:
       | ProductTypes.CreateProductVariantDTO[]
       | ProductTypes.UpdateProductVariantDTO[],
-    options: InferEntityType<typeof ProductOption>[]
+    optionsByProductId: Map<string, InferEntityType<typeof ProductOption>[]>,
+    // When provided, each product's allowed option-value subset
+    // (product_product_option_value pivot) is enforced — a variant cannot
+    // reference a value that exists on the option but is not in the product's
+    // subset. Without it, the helper falls back to using the option's full
+    // value list, which is the legacy (1:1 product↔option) behavior.
+    valueIdsByProductId?: Map<string, Set<string>>
   ):
     | ProductTypes.CreateProductVariantDTO[]
     | ProductTypes.UpdateProductVariantDTO[] {
@@ -3213,13 +3309,9 @@ export default class ProductModuleService
         variant.options || {}
       ).length
 
-      const productsOptions = options.filter((o) => {
-        // products could be a Collection object or array, normalize to array
-        const productsArray = Array.isArray(o.products)
-          ? o.products
-          : (o.products as any)?.toArray?.() ?? []
-        return productsArray.some((p) => p.id === variant.product_id)
-      })
+      const productsOptions =
+        optionsByProductId.get(variant.product_id) ?? []
+      const allowedValueIds = valueIdsByProductId?.get(variant.product_id)
 
       if (
         numOfProvidedVariantOptionValues &&
@@ -3235,7 +3327,13 @@ export default class ProductModuleService
         ([key, val]) => {
           const option = productsOptions.find((o) => o.title === key)
 
-          const optionValue = option?.values?.find(
+          // If the product has a value subset configured, restrict the value
+          // search to the allowed values only.
+          const candidateValues = allowedValueIds
+            ? option?.values?.filter((v: any) => allowedValueIds.has(v.id))
+            : option?.values
+
+          const optionValue = candidateValues?.find(
             (v: any) => (v.value?.value ?? v.value) === val
           )
 

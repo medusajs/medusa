@@ -56,9 +56,12 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
     productsToUpdate: ({ id: string } & any)[],
     validateVariantOptions: (
       variants: any[],
-      options: InferEntityType<typeof ProductOption>[]
+      options: InferEntityType<typeof ProductOption>[],
+      productId: string,
+      allowedValueIds?: Set<string>
     ) => void,
     expectedOptionIdsMap: Map<string, Set<string>> = new Map(),
+    valueIdsByProductId: Map<string, Set<string>> = new Map(),
     context: Context = {}
   ): Promise<InferEntityType<typeof Product>[]> {
     const productsToUpdate_ = deepCopy(productsToUpdate)
@@ -71,11 +74,13 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
     const relationsToLoad =
       ProductRepository.#getProductDeepUpdateRelationsToLoad(productsToUpdate_)
 
-    const manager = super.getActiveManager<SqlEntityManager>(context)
-    const products = await manager.find<InferEntityType<typeof Product>>(
-      Product.name,
-      { id: productIdsToUpdate },
-      { populate: relationsToLoad, limit: productsToUpdate_.length } as any
+    // Splitting the populate into per-relation calls avoids a pathological
+    // slow path in MikroORM where a combined `find({populate})` over deep
+    // relations becomes orders of magnitude slower at moderate batch sizes
+    const products = await this.findByIdsWithSplitPopulate(
+      productIdsToUpdate,
+      relationsToLoad,
+      context
     )
     const productsMap = new Map(products.map((p) => [p.id, p]))
 
@@ -103,8 +108,14 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
         const optionsForValidation = expectedOptionIds
           ? product.options.filter((o) => expectedOptionIds.has(o.id))
           : product.options
+        const allowedValueIds = valueIdsByProductId.get(product.id)
 
-        validateVariantOptions(productToUpdate.variants, optionsForValidation)
+        validateVariantOptions(
+          productToUpdate.variants,
+          optionsForValidation,
+          product.id,
+          allowedValueIds
+        )
 
         productToUpdate.variants.forEach((variant: any) => {
           if (variant.options) {
@@ -113,9 +124,20 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
                 const productOption = product.options.find(
                   (option) => option.title === key
                 )!
-                const productOptionValue = productOption.values?.find(
+                const candidateValues = allowedValueIds
+                  ? productOption.values?.filter((v: any) =>
+                      allowedValueIds.has(v.id)
+                    )
+                  : productOption.values
+                const productOptionValue = candidateValues?.find(
                   (optionValue) => optionValue.value === value
-                )!
+                )
+                if (!productOptionValue) {
+                  throw new MedusaError(
+                    MedusaError.Types.INVALID_DATA,
+                    `Option value ${value} does not exist for option ${key}`
+                  )
+                }
                 return productOptionValue.id
               }
             )
@@ -158,6 +180,32 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
     return productsToUpdate_.map(
       (productToUpdate) => productsMap.get(productToUpdate.id)!
     )
+  }
+
+  /**
+   * Loads products by id with the given relations using sequential per-relation
+   * populate() calls instead of one combined find({populate}) — see deepUpdate
+   * for the rationale (combined populate is dramatically slower for moderate
+   * batch sizes with multiple deep relations).
+   */
+  async findByIdsWithSplitPopulate(
+    productIds: string[],
+    relations: string[],
+    context: Context = {}
+  ): Promise<InferEntityType<typeof Product>[]> {
+    if (!productIds.length) {
+      return []
+    }
+    const manager = super.getActiveManager<SqlEntityManager>(context)
+    const products = await manager.find<InferEntityType<typeof Product>>(
+      Product.name,
+      { id: productIds },
+      { limit: productIds.length } as any
+    )
+    for (const relation of relations) {
+      await (manager as any).populate(products, [relation])
+    }
+    return products
   }
 
   /**
@@ -405,6 +453,35 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
         alreadyLinkedOptionIds.includes(id)
       ),
     }
+  }
+
+  async getOptionIdsByProductIds(
+    productIds: string[],
+    context: Context = {}
+  ): Promise<Map<string, Set<string>>> {
+    const optionIdsByProduct = new Map<string, Set<string>>()
+
+    if (!productIds.length) {
+      return optionIdsByProduct
+    }
+
+    const knex = this.getActiveManager<SqlEntityManager>(context)
+      .getConnection()
+      .getKnex()
+
+    const rows = await knex("product_product_option")
+      .select("product_id", "product_option_id")
+      .whereIn("product_id", productIds)
+      .whereNull("deleted_at")
+
+    rows.forEach((row) => {
+      if (!optionIdsByProduct.has(row.product_id)) {
+        optionIdsByProduct.set(row.product_id, new Set())
+      }
+      optionIdsByProduct.get(row.product_id)!.add(row.product_option_id)
+    })
+
+    return optionIdsByProduct
   }
 
   async getOptionValueIdsByProductIds(
