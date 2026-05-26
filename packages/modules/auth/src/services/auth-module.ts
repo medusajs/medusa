@@ -43,6 +43,7 @@ type InjectedDependencies = {
   logger?: Logger
   cache?: ICacheService
 }
+
 export default class AuthModuleService
   extends MedusaService<{
     AuthIdentity: { dto: AuthTypes.AuthIdentityDTO }
@@ -349,11 +350,13 @@ export default class AuthModuleService
       )
     }
 
-    return await this.authMfaProviderService_.verifySetup(
+    const verifiedFactor = await this.authMfaProviderService_.verifySetup(
       factor.provider,
       data,
       sharedContext
     )
+
+    return verifiedFactor
   }
 
   @InjectManager()
@@ -754,9 +757,7 @@ export default class AuthModuleService
       )
     }
 
-    if (
-      !challenge.methods.includes(method)
-    ) {
+    if (!challenge.methods.includes(method)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `MFA challenge does not support method "${method}"`
