@@ -98,5 +98,9 @@ export default async function developPlugin({
   }
 
   await compiler.buildPluginBackend(parsedConfig)
+  const adminBundler = await import("@medusajs/admin-bundler")
+  await compiler.buildPluginAdminExtensions(adminBundler)
+
   await compiler.developPluginBackend(transformFile, publishChanges)
+  await compiler.developPluginAdminExtensions(adminBundler, publishChanges)
 }

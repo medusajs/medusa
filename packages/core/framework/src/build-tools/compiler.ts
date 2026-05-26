@@ -544,9 +544,28 @@ export class Compiler {
     })
   }
 
+  async #hasPluginAdminExtensions() {
+    try {
+      await access(path.join(this.#projectRoot, "src/admin"), constants.F_OK)
+      return true
+    } catch (error) {
+      if (error.code !== "ENOENT") {
+        throw error
+      }
+      return false
+    }
+  }
+
   async buildPluginAdminExtensions(bundler: {
     plugin: (options: { root: string; outDir: string }) => Promise<void>
   }) {
+    if (!(await this.#hasPluginAdminExtensions())) {
+      this.#logger.info(
+        "Skipping plugin admin extensions build, since src/admin does not exist"
+      )
+      return true
+    }
+
     const tracker = this.#trackDuration()
     this.#logger.info("Compiling plugin admin extensions...")
 
@@ -563,5 +582,58 @@ export class Compiler {
       this.#logger.error(`Plugin admin extensions build failed`, error)
       return false
     }
+  }
+
+  async developPluginAdminExtensions(
+    bundler: {
+      plugin: (options: { root: string; outDir: string }) => Promise<void>
+    },
+    onFileChange?: (
+      filePath: string,
+      action: "add" | "change" | "unlink"
+    ) => void
+  ) {
+    let isBuilding = false
+    let hasQueuedBuild = false
+
+    const rebuild = async (
+      file: string,
+      action: "add" | "change" | "unlink"
+    ) => {
+      if (isBuilding) {
+        hasQueuedBuild = true
+        return
+      }
+
+      do {
+        hasQueuedBuild = false
+        isBuilding = true
+
+        this.#logger.info(`${file} updated: Rebuilding admin extensions`)
+        const buildSucceeded = await this.buildPluginAdminExtensions(bundler)
+
+        isBuilding = false
+
+        if (buildSucceeded) {
+          onFileChange?.(file, action)
+        }
+      } while (hasQueuedBuild)
+    }
+
+    const watcher = chokidar.watch(["src/admin"], {
+      ignoreInitial: true,
+      cwd: this.#projectRoot,
+      ignored: [/node_modules/, /(^|[\\/\\])\../, ".medusa"],
+    })
+
+    watcher.on("add", (file) => {
+      void rebuild(file, "add")
+    })
+    watcher.on("change", (file) => {
+      void rebuild(file, "change")
+    })
+    watcher.on("unlink", (file) => {
+      void rebuild(file, "unlink")
+    })
   }
 }
