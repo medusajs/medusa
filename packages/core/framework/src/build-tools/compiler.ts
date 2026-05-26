@@ -635,5 +635,9 @@ export class Compiler {
     watcher.on("unlink", (file) => {
       void rebuild(file, "unlink")
     })
+
+    watcher.on("ready", () => {
+      this.#logger.info("watching for plugin admin extension file changes")
+    })
   }
 }
