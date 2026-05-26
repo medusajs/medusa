@@ -1,6 +1,6 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Container, createDataTableColumnHelper, Hint } from "@medusajs/ui"
+import { Container, createDataTableColumnHelper } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useCallback, useMemo } from "react"
 import { useTranslation } from "react-i18next"
@@ -50,6 +50,8 @@ export const RoleListTable = () => {
     throw error
   }
 
+  const canCreate = hasPermission("rbac_role:create")
+
   return (
     <Container className="divide-y p-0">
       <DataTable
@@ -63,14 +65,14 @@ export const RoleListTable = () => {
         heading={t("roles.domain")}
         subHeading={t("roles.subtitle")}
         isLoading={isPending}
-        action={{
-          label: t("actions.create"),
-          to: "create",
-          disabled: !hasPermission("rbac_role:create"),
-          tooltip: hasPermission("rbac_role:create") ? undefined : (
-            <Hint variant="error">{t("permissions.accessDenied.action")}</Hint>
-          ),
-        }}
+        action={
+          canCreate
+            ? {
+                label: t("actions.create"),
+                to: "create",
+              }
+            : undefined
+        }
         emptyState={{
           empty: {
             heading: t("roles.list.empty.heading"),

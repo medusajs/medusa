@@ -1,10 +1,13 @@
 import { Key, PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Container, Heading, Hint } from "@medusajs/ui"
+import { Container, Heading } from "@medusajs/ui"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { ListSummary } from "../../../../../components/common/list-summary"
 import { SectionRow } from "../../../../../components/common/section"
 import { usePermissions } from "../../../../../providers/permissions-provider"
@@ -55,81 +58,75 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
     )
   }, [role.policies])
 
+  const canUpdate = hasPermission("rbac_role:update")
+  const canDelete = hasPermission("rbac_role:delete")
+
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
+        {
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          to: `edit`,
+        },
+        {
+          icon: <Key />,
+          label: t("roles.actions.managePermissions"),
+          to: `permissions`,
+        },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
+        {
+          icon: <Trash />,
+          label: t("actions.delete"),
+          onClick: () => {},
+        },
+      ],
+    })
+  }
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{role.name}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  icon: <PencilSquare />,
-                  label: t("actions.edit"),
-                  to: `edit`,
-                  disabled: !hasPermission("rbac_role:update"),
-                  disabledTooltip: (
-                    <Hint variant="error">
-                      {t("permissions.accessDenied.action")}
-                    </Hint>
-                  ),
-                },
-                {
-                  icon: <Key />,
-                  label: t("roles.actions.managePermissions"),
-                  to: `permissions`,
-                  disabled: !hasPermission("rbac_role:update"),
-                  disabledTooltip: (
-                    <Hint variant="error">
-                      {t("permissions.accessDenied.action")}
-                    </Hint>
-                  ),
-                },
-              ],
-            },
-            {
-              actions: [
-                {
-                  icon: <Trash />,
-                  label: t("actions.delete"),
-                  onClick: () => {},
-                  disabled: !hasPermission("rbac_role:delete"),
-                  disabledTooltip: (
-                    <Hint variant="error">
-                      {t("permissions.accessDenied.action")}
-                    </Hint>
-                  ),
-                },
-              ],
-            },
-          ]}
-        />
+        {groups.length && <ActionMenu groups={groups} />}
       </div>
       <SectionRow title={t("fields.description")} value={role.description} />
-      <SectionRow
-        title={t("users.domain")}
-        value={
-          userLabels.length ? (
-            <div className="inline-flex">
-              <ListSummary list={userLabels} />
-            </div>
-          ) : (
-            "-"
-          )
-        }
-      />
-      <SectionRow
-        title={t("roles.fields.permissions")}
-        value={
-          permissionLabels.length ? (
-            <div className="inline-flex">
-              <ListSummary list={permissionLabels} />
-            </div>
-          ) : (
-            "-"
-          )
-        }
-      />
+      {hasPermission("user:read") && (
+        <SectionRow
+          title={t("users.domain")}
+          value={
+            userLabels.length ? (
+              <div className="inline-flex">
+                <ListSummary list={userLabels} />
+              </div>
+            ) : (
+              "-"
+            )
+          }
+        />
+      )}
+      {hasPermission("rbac_policy:read") && (
+        <SectionRow
+          title={t("roles.fields.permissions")}
+          value={
+            permissionLabels.length ? (
+              <div className="inline-flex">
+                <ListSummary list={permissionLabels} />
+              </div>
+            ) : (
+              "-"
+            )
+          }
+        />
+      )}
     </Container>
   )
 }

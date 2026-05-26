@@ -1,5 +1,6 @@
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { useRbacRole } from "../../../hooks/api/rbac-roles"
 import { useRequireRbacFeature } from "../../../hooks/use-require-rbac-feature"
 import { RoleGeneralSection } from "./components/role-general-section"
@@ -54,7 +55,9 @@ export const RoleDetail = () => {
       }}
     >
       <RoleGeneralSection role={role} />
-      <RoleUsersSection role={role} />
+      <PermissionGuard permission="user:read">
+        <RoleUsersSection role={role} />
+      </PermissionGuard>
     </SingleColumnPage>
   )
 }

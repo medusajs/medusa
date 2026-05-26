@@ -1,14 +1,6 @@
 import { Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import {
-  Button,
-  Checkbox,
-  Container,
-  Heading,
-  Hint,
-  Tooltip,
-  usePrompt,
-} from "@medusajs/ui"
+import { Button, Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -125,28 +117,16 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
     })
   }
 
-  const disabledTooltipKey = !canManageRole
-    ? "permissions.accessDenied.action"
-    : "roles.users.unassignableRoleTooltip"
-
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("users.domain")}</Heading>
-        {isRoleAssignable ? (
+        {isRoleAssignable && (
           <Link to="add-users">
             <Button variant="secondary" size="small">
               {t("general.add")}
             </Button>
           </Link>
-        ) : (
-          <Tooltip
-            content={<Hint variant="error">{t(disabledTooltipKey)}</Hint>}
-          >
-            <Button variant="secondary" size="small" disabled>
-              {t("general.add")}
-            </Button>
-          </Tooltip>
         )}
       </div>
       <_DataTable
@@ -196,11 +176,11 @@ const RoleUserActions = ({
   const prompt = usePrompt()
   const { mutateAsync } = useRemoveRbacRoleUsers(roleId)
 
-  const handleRemove = async () => {
-    if (!isRoleAssignable) {
-      return
-    }
+  if (!isRoleAssignable) {
+    return null
+  }
 
+  const handleRemove = async () => {
     const res = await prompt({
       title: t("roles.users.remove.title", {
         count: 1,
@@ -228,12 +208,6 @@ const RoleUserActions = ({
               icon: <Trash />,
               label: t("actions.remove"),
               onClick: handleRemove,
-              disabled: !isRoleAssignable,
-              disabledTooltip: (
-                <Hint variant="error">
-                  {t("permissions.accessDenied.action")}
-                </Hint>
-              ),
             },
           ],
         },

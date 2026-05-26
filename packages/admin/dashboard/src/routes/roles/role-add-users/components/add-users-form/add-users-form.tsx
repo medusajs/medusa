@@ -102,7 +102,7 @@ export const AddUsersForm = ({ roleId }: AddUsersFormProps) => {
     setRowSelection(state)
   }
 
-  const columns = useColumns({ roleId, canManageRole })
+  const columns = useColumns({ roleId })
 
   const { table } = useDataTable({
     data: users ?? [],
@@ -158,11 +158,6 @@ export const AddUsersForm = ({ roleId }: AddUsersFormProps) => {
       >
         <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
-            {!canManageRole && (
-              <Hint variant="error">
-                {t("permissions.accessDenied.description")}
-              </Hint>
-            )}
             {form.formState.errors.user_ids && (
               <Hint variant="error">
                 {form.formState.errors.user_ids.message}
@@ -198,15 +193,16 @@ export const AddUsersForm = ({ roleId }: AddUsersFormProps) => {
               {t("actions.cancel")}
             </Button>
           </RouteFocusModal.Close>
-          <Button
-            type="submit"
-            variant="primary"
-            size="small"
-            isLoading={isPending}
-            disabled={!canManageRole}
-          >
-            {t("actions.save")}
-          </Button>
+          {canManageRole && (
+            <Button
+              type="submit"
+              variant="primary"
+              size="small"
+              isLoading={isPending}
+            >
+              {t("actions.save")}
+            </Button>
+          )}
         </RouteFocusModal.Footer>
       </KeyboundForm>
     </RouteFocusModal.Form>
@@ -215,13 +211,7 @@ export const AddUsersForm = ({ roleId }: AddUsersFormProps) => {
 
 const columnHelper = createColumnHelper<HttpTypes.AdminUser>()
 
-const useColumns = ({
-  roleId,
-  canManageRole,
-}: {
-  roleId: string
-  canManageRole: boolean
-}) => {
+const useColumns = ({ roleId }: { roleId: string }) => {
   const { t } = useTranslation()
   const { getFullDate } = useDate()
 
@@ -237,7 +227,6 @@ const useColumns = ({
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()
               }
-              disabled={!canManageRole}
               onCheckedChange={(value) =>
                 table.toggleAllPageRowsSelected(!!value)
               }
@@ -250,12 +239,11 @@ const useColumns = ({
             (rbacRole) => rbacRole.id === roleId
           )
           const isSelected = row.getIsSelected() || isAlreadyAdded
-          const isDisabled = !canManageRole || isAlreadyAdded
 
           const Component = (
             <Checkbox
               checked={isSelected}
-              disabled={isDisabled}
+              disabled={isAlreadyAdded}
               onCheckedChange={(value) => row.toggleSelected(!!value)}
               onClick={(e) => {
                 e.stopPropagation()
@@ -267,17 +255,6 @@ const useColumns = ({
             return (
               <Tooltip
                 content={t("roles.users.alreadyAddedTooltip")}
-                side="right"
-              >
-                {Component}
-              </Tooltip>
-            )
-          }
-
-          if (!canManageRole) {
-            return (
-              <Tooltip
-                content={t("permissions.accessDenied.description")}
                 side="right"
               >
                 {Component}
@@ -305,6 +282,6 @@ const useColumns = ({
         cell: ({ row }) => getFullDate({ date: row.original.created_at }),
       }),
     ],
-    [t, getFullDate, roleId, canManageRole]
+    [t, getFullDate, roleId]
   )
 }
