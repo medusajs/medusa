@@ -28,8 +28,14 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     protocol: req.protocol,
   } as AuthenticationInput
 
-  const { success, error, authIdentity, location, mfa_challenge } =
-    await service.authenticate(auth_provider, authData)
+  const {
+    success,
+    error,
+    authIdentity,
+    location,
+    mfa_challenge,
+    verification,
+  } = await service.authenticate(auth_provider, authData)
 
   if (location) {
     return res.status(200).json({ location })
@@ -39,6 +45,13 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     return res.status(200).json({
       mfa_required: true,
       mfa_challenge,
+    })
+  }
+
+  if (success && verification) {
+    return res.status(200).json({
+      verification_required: true,
+      verification,
     })
   }
 
