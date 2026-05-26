@@ -34,6 +34,19 @@ export const adminRbacPolicyRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["GET"],
+    matcher: "/admin/rbac/policies/assignable",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetRbacPoliciesParams,
+        QueryConfig.listTransformQueryConfig
+      ),
+    ],
+    policies: [
+      { resource: RBAC_POLICY_RESOURCE, operation: PolicyOperation.read },
+    ],
+  },
+  {
+    method: ["GET"],
     matcher: "/admin/rbac/policies/:id",
     middlewares: [
       validateAndTransformQuery(
