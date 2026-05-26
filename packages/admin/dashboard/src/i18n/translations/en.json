@@ -3339,5 +3339,53 @@
       "authenticationFailed": "Authentication failed",
       "cloud": "Log in with Medusa Cloud"
     }
+  },
+  "permissions": {
+    "accessDenied": {
+      "title": "Access Denied",
+      "description": "You don't have permission to access this page.",
+      "requiredPermission": "Required permission: {{permission}}"
+    },
+    "requiredPermissions": {
+      "title": "Required permissions",
+      "none": "No permissions declared in this view.",
+      "anyOf": "Any of",
+      "allOf": "All of",
+      "source": "Source: {{source}}"
+    },
+    "resources": {
+      "customer": "Customer",
+      "customer_group": "Customer Group",
+      "order": "Order",
+      "product": "Product",
+      "product_category": "Product Category",
+      "product_collection": "Product Collection",
+      "product_tag": "Product Tag",
+      "product_type": "Product Type",
+      "inventory": "Inventory",
+      "reservation": "Reservation",
+      "promotion": "Promotion",
+      "campaign": "Campaign",
+      "price_list": "Price List",
+      "region": "Region",
+      "store": "Store",
+      "user": "User",
+      "sales_channel": "Sales Channel",
+      "stock_location": "Stock Location",
+      "shipping_profile": "Shipping Profile",
+      "shipping_option": "Shipping Option",
+      "tax_region": "Tax Region",
+      "api_key": "API Key",
+      "return_reason": "Return Reason",
+      "refund_reason": "Refund Reason",
+      "workflow": "Workflow",
+      "translation": "Translation"
+    },
+    "actions": {
+      "read": "View",
+      "create": "Create",
+      "update": "Edit",
+      "delete": "Delete"
+    }
   }
 }

@@ -14,10 +14,14 @@ This documentation provides a reference to the data models in the Auth Module
 ```mermaid
 erDiagram
 	AuthIdentity ||--|| ProviderIdentity : provider_identities
+	AuthIdentity ||--|| AuthMfaFactor : mfa_factors
+	AuthIdentity ||--|| AuthMfaRecoveryCode : mfa_recovery_codes
 
 ```
 
 ## Data Models
 
 - [AuthIdentity](../../auth_models/variables/auth_models.AuthIdentity/page.mdx)
+- [AuthMfaFactor](../../auth_models/variables/auth_models.AuthMfaFactor/page.mdx)
+- [AuthMfaRecoveryCode](../../auth_models/variables/auth_models.AuthMfaRecoveryCode/page.mdx)
 - [ProviderIdentity](../../auth_models/variables/auth_models.ProviderIdentity/page.mdx)

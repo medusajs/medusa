@@ -468,7 +468,10 @@ export default class AuthModuleService
       sharedContext
     )
 
-    if (this.getMfaDisablePolicy_() === "challenge") {
+    if (
+      factor.status === "enabled" &&
+      this.getMfaDisablePolicy_() === "challenge"
+    ) {
       if (!data.method || !data.code) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
