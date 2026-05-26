@@ -14,6 +14,11 @@ export const AdminGetPriceListPricesParams = createFindParams({
   limit: 50,
 })
 
+export const AdminGetPriceListProductsParams = createFindParams({
+  offset: 0,
+  limit: 50,
+})
+
 export const AdminGetPriceListsParamsFields = z.object({
   q: z.string().optional(),
   id: z.union([z.string(), z.array(z.string())]).optional(),
