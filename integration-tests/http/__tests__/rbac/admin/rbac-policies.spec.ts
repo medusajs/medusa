@@ -1,3 +1,5 @@
+import { getAssignablePoliciesWorkflow } from "@medusajs/core-flows"
+import { Modules } from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
@@ -284,6 +286,271 @@ medusaIntegrationTestRunner({
           expect(
             listResponse.data.policies.find((p) => p.id === policyId)
           ).toBeUndefined()
+        })
+      })
+
+      describe("GET /admin/rbac/policies/assignable", () => {
+        // Headers for actors with varying levels of permission coverage.
+        // `adminHeaders` is the super-admin baseline (holds `*:*`).
+        const productManagerHeaders = { headers: { ...adminHeaders.headers } }
+        const universalReaderHeaders = { headers: { ...adminHeaders.headers } }
+        const productReaderHeaders = { headers: { ...adminHeaders.headers } }
+        const noRolesUserHeaders = { headers: { ...adminHeaders.headers } }
+
+        // Candidate policy IDs we ask the endpoint about. Their `(resource,
+        // operation)` shape drives whether each scoped actor can cover them.
+        let productReadId: string
+        let productCreateId: string
+        let customerReadId: string
+        let customerCreateId: string
+        let wildcardPolicyId: string
+
+        beforeEach(async () => {
+          const rbacModule = container.resolve(Modules.RBAC)
+
+          // Concrete candidate policies — covered by various wildcard grants.
+          const ensurePolicy = async (params: {
+            key: string
+            resource: string
+            operation: string
+            name: string
+          }) => {
+            const [existing] = await rbacModule.listRbacPolicies({
+              key: params.key,
+            })
+            if (existing) {
+              return existing
+            }
+            const [created] = await rbacModule.createRbacPolicies([params])
+            return created
+          }
+
+          const productRead = await ensurePolicy({
+            key: "product:read",
+            resource: "product",
+            operation: "read",
+            name: "Read Products",
+          })
+          const productCreate = await ensurePolicy({
+            key: "product:create",
+            resource: "product",
+            operation: "create",
+            name: "Create Products",
+          })
+          const customerRead = await ensurePolicy({
+            key: "customer:read",
+            resource: "customer",
+            operation: "read",
+            name: "Read Customers",
+          })
+          const customerCreate = await ensurePolicy({
+            key: "customer:create",
+            resource: "customer",
+            operation: "create",
+            name: "Create Customers",
+          })
+
+          // Wildcard grants attached to actor roles.
+          const productWildcard = await ensurePolicy({
+            key: "product:*",
+            resource: "product",
+            operation: "*",
+            name: "Manage Products",
+          })
+          const universalRead = await ensurePolicy({
+            key: "*:read",
+            resource: "*",
+            operation: "read",
+            name: "Read Anything",
+          })
+
+          // A literal `*:*` candidate row — only a `*:*` holder can assign it.
+          const fullWildcard = await ensurePolicy({
+            key: "*:*",
+            resource: "*",
+            operation: "*",
+            name: "Everything",
+          })
+
+          // The route is guarded by `rbac_policy:read` — every non-super-admin
+          // actor below also holds it so they reach the workflow.
+          const rbacPolicyRead = await ensurePolicy({
+            key: "rbac_policy:read",
+            resource: "rbac_policy",
+            operation: "read",
+            name: "Read Policies",
+          })
+
+          productReadId = productRead.id
+          productCreateId = productCreate.id
+          customerReadId = customerRead.id
+          customerCreateId = customerCreate.id
+          wildcardPolicyId = fullWildcard.id
+
+          // --- Actor roles ---
+          const productManagerRole = await rbacModule.createRbacRoles({
+            name: "Assignable Policies — Product Manager",
+          })
+          const universalReaderRole = await rbacModule.createRbacRoles({
+            name: "Assignable Policies — Universal Reader",
+          })
+          const productReaderRole = await rbacModule.createRbacRoles({
+            name: "Assignable Policies — Product Reader",
+          })
+
+          await rbacModule.createRbacRolePolicies([
+            {
+              role_id: productManagerRole.id,
+              policy_id: productWildcard.id,
+            },
+            {
+              role_id: productManagerRole.id,
+              policy_id: rbacPolicyRead.id,
+            },
+            { role_id: universalReaderRole.id, policy_id: universalRead.id },
+            {
+              role_id: universalReaderRole.id,
+              policy_id: rbacPolicyRead.id,
+            },
+            { role_id: productReaderRole.id, policy_id: productRead.id },
+            {
+              role_id: productReaderRole.id,
+              policy_id: rbacPolicyRead.id,
+            },
+          ])
+
+          await createAdminUser(
+            dbConnection,
+            productManagerHeaders,
+            container,
+            {
+              email: "assignable-policies-product-manager@medusa.js",
+              roles: [productManagerRole.id],
+            }
+          )
+          await createAdminUser(
+            dbConnection,
+            universalReaderHeaders,
+            container,
+            {
+              email: "assignable-policies-universal-reader@medusa.js",
+              roles: [universalReaderRole.id],
+            }
+          )
+          await createAdminUser(dbConnection, productReaderHeaders, container, {
+            email: "assignable-policies-product-reader@medusa.js",
+            roles: [productReaderRole.id],
+          })
+          await createAdminUser(dbConnection, noRolesUserHeaders, container, {
+            email: "assignable-policies-no-roles@medusa.js",
+            roles: [],
+          })
+        })
+
+        it("returns every candidate policy for a super-admin (`*:*`)", async () => {
+          const response = await api.get(
+            "/admin/rbac/policies/assignable",
+            adminHeaders
+          )
+
+          const ids = response.data.policies.map((p: { id: string }) => p.id)
+          expect(ids).toEqual(
+            expect.arrayContaining([
+              productReadId,
+              productCreateId,
+              customerReadId,
+              customerCreateId,
+              wildcardPolicyId,
+            ])
+          )
+        })
+
+        it("expands `resource:*` — product:* actor sees product policies but not other resources", async () => {
+          const response = await api.get(
+            "/admin/rbac/policies/assignable",
+            productManagerHeaders
+          )
+
+          const ids = response.data.policies.map((p: { id: string }) => p.id)
+          expect(ids).toEqual(
+            expect.arrayContaining([productReadId, productCreateId])
+          )
+          expect(ids.length).toEqual(2)
+        })
+
+        it("expands `*:op` — *:read actor sees read policies across resources but no creates", async () => {
+          const response = await api.get(
+            "/admin/rbac/policies/assignable",
+            universalReaderHeaders
+          )
+
+          const ids = response.data.policies.map((p: { id: string }) => p.id)
+          expect(ids).toEqual(
+            expect.arrayContaining([productReadId, customerReadId])
+          )
+          expect(ids.length).toEqual(2)
+        })
+
+        it("requires literal coverage — product:read actor only sees product:read", async () => {
+          const response = await api.get(
+            "/admin/rbac/policies/assignable",
+            productReaderHeaders
+          )
+
+          const ids = response.data.policies.map((p: { id: string }) => p.id)
+          expect(ids).toEqual([productReadId])
+        })
+
+        it("only a `*:*` holder can assign a literal `*:*` policy", async () => {
+          // Super-admin holds *:* → can assign the wildcard policy row.
+          const superAdminIds = (
+            await api.get("/admin/rbac/policies/assignable", adminHeaders)
+          ).data.policies.map((p: { id: string }) => p.id)
+          expect(superAdminIds).toContain(wildcardPolicyId)
+
+          // Every scoped actor cannot.
+          const others = await Promise.all([
+            api.get("/admin/rbac/policies/assignable", productManagerHeaders),
+            api.get("/admin/rbac/policies/assignable", universalReaderHeaders),
+            api.get("/admin/rbac/policies/assignable", productReaderHeaders),
+          ])
+          for (const response of others) {
+            const ids = response.data.policies.map((p: { id: string }) => p.id)
+            expect(ids).not.toContain(wildcardPolicyId)
+          }
+        })
+
+        it("returns empty policies via the workflow when the actor holds no roles", async () => {
+          // No-roles actor can't pass the route's `rbac_policy:read` gate,
+          // so we exercise the empty-actor branch by running the workflow
+          // directly with their id.
+          const userModule = container.resolve(Modules.USER)
+          const [noRolesUser] = await userModule.listUsers({
+            email: "assignable-policies-no-roles@medusa.js",
+          })
+
+          const { result } = await getAssignablePoliciesWorkflow(container).run(
+            {
+              input: {
+                actor_id: noRolesUser.id,
+                actor: "user",
+              },
+            }
+          )
+
+          expect(result.policies).toEqual([])
+          expect(result.count).toEqual(0)
+        })
+
+        it("applies the `id` filter when forwarded", async () => {
+          const response = await api.get(
+            `/admin/rbac/policies/assignable?id=${productReadId}`,
+            adminHeaders
+          )
+
+          const ids = response.data.policies.map((p: { id: string }) => p.id)
+          expect(ids).toEqual([productReadId])
+          expect(response.data.count).toEqual(1)
         })
       })
     })
