@@ -595,6 +595,8 @@ export class Compiler {
   ) {
     let isBuilding = false
     let hasQueuedBuild = false
+    let latestQueuedFile: string | undefined
+    let latestQueuedAction: "add" | "change" | "unlink" | undefined
 
     const rebuild = async (
       file: string,
@@ -602,20 +604,34 @@ export class Compiler {
     ) => {
       if (isBuilding) {
         hasQueuedBuild = true
+        latestQueuedFile = file
+        latestQueuedAction = action
         return
       }
 
+      let currentFile = file
+      let currentAction = action
+
       do {
         hasQueuedBuild = false
+        latestQueuedFile = undefined
+        latestQueuedAction = undefined
         isBuilding = true
 
-        this.#logger.info(`${file} updated: Rebuilding admin extensions`)
+        this.#logger.info(
+          `${currentFile} updated: Rebuilding admin extensions`
+        )
         const buildSucceeded = await this.buildPluginAdminExtensions(bundler)
 
         isBuilding = false
 
         if (buildSucceeded) {
-          onFileChange?.(file, action)
+          onFileChange?.(currentFile, currentAction)
+        }
+
+        if (hasQueuedBuild && latestQueuedFile && latestQueuedAction) {
+          currentFile = latestQueuedFile
+          currentAction = latestQueuedAction
         }
       } while (hasQueuedBuild)
     }
