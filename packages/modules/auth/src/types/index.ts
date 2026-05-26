@@ -1,5 +1,4 @@
 import {
-  IEventBusModuleService,
   Logger,
   ModuleProviderExports,
   ModuleServiceInitializeOptions,
@@ -7,7 +6,6 @@ import {
 
 export type InitializeModuleInjectableDependencies = {
   logger?: Logger
-  EventBus?: IEventBusModuleService
 }
 
 export const AuthIdentifiersRegistrationName = "auth_providers_identifier"

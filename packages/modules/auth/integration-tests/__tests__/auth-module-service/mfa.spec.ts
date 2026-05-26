@@ -1,9 +1,6 @@
 import { AuthTypes, IAuthModuleService } from "@medusajs/framework/types"
-import { AuthWorkflowEvents, Modules } from "@medusajs/framework/utils"
-import {
-  MockEventBusService,
-  moduleIntegrationTestRunner,
-} from "@medusajs/test-utils"
+import { Modules } from "@medusajs/framework/utils"
+import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { resolve } from "path"
 import { createAuthIdentities } from "../../__fixtures__/auth-identity"
 import { generateTotpCode } from "../../../src/utils/totp"
@@ -86,20 +83,15 @@ moduleIntegrationTestRunner<IAuthModuleService>({
       ],
     },
   },
-  moduleDependencies: [Modules.CACHE, Modules.EVENT_BUS],
+  moduleDependencies: [Modules.CACHE],
   injectedDependencies: {
     [Modules.CACHE]: inMemoryCache,
-    [Modules.EVENT_BUS]: new MockEventBusService(),
   },
   testSuite: ({ MikroOrmWrapper, service }) => {
-    let eventBusSpy: jest.SpyInstance
-
     describe("AuthModuleService - MFA", () => {
       beforeEach(async () => {
-        eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
         jest.spyOn(Date, "now").mockReturnValue(1_710_000_000_000)
         await createAuthIdentities(service)
-        eventBusSpy.mockClear()
       })
 
       afterEach(() => {
@@ -126,9 +118,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           otpauth_url: expect.stringContaining("otpauth://totp/"),
           secret: expect.any(String),
         })
-        expect(setup.otpauth_url).toContain(
-          "Medusa%20Test:Authenticator%20app"
-        )
+        expect(setup.otpauth_url).toContain("Medusa%20Test:Authenticator%20app")
         expect(setup.otpauth_url).toContain("issuer=Medusa%20Test")
         expect(setup.mfa).not.toHaveProperty("secret")
         expect(setup.mfa).not.toHaveProperty("provider_metadata")
@@ -228,17 +218,6 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         )
         expect(factor).not.toHaveProperty("secret")
         expect(factor).not.toHaveProperty("provider_metadata")
-        expect(eventBusSpy).toHaveBeenCalledWith(
-          {
-            name: AuthWorkflowEvents.MFA_ENABLED,
-            data: {
-              auth_identity_id: "test-id",
-              mfa_id: setup.mfa.id,
-              provider: "totp",
-            },
-          },
-          { internal: true }
-        )
       })
 
       it("verifies setup only for factors owned by the auth identity", async () => {
@@ -296,16 +275,6 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         })
 
         expect(codes).toHaveLength(2)
-        expect(eventBusSpy).toHaveBeenCalledWith(
-          {
-            name: AuthWorkflowEvents.MFA_RECOVERY_CODES_GENERATED,
-            data: {
-              auth_identity_id: "test-id",
-              count: 2,
-            },
-          },
-          { internal: true }
-        )
 
         const storedCodes = await MikroOrmWrapper.forkManager().execute(
           "select * from auth_mfa_recovery_code where auth_identity_id = ? and deleted_at is null",
@@ -353,7 +322,6 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           id: setup.mfa.id,
           code,
         })
-        eventBusSpy.mockClear()
 
         const factor = await service.disableAuthMfa({
           id: setup.mfa.id,
@@ -366,17 +334,6 @@ moduleIntegrationTestRunner<IAuthModuleService>({
             id: setup.mfa.id,
             status: "disabled",
           })
-        )
-        expect(eventBusSpy).toHaveBeenCalledWith(
-          {
-            name: AuthWorkflowEvents.MFA_DISABLED,
-            data: {
-              auth_identity_id: "test-id",
-              mfa_id: setup.mfa.id,
-              provider: "totp",
-            },
-          },
-          { internal: true }
         )
       })
 

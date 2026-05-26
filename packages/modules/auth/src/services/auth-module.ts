@@ -7,7 +7,6 @@ import {
   DAL,
   FindConfig,
   ICacheService,
-  IEventBusModuleService,
   InferEntityType,
   InternalModuleDeclaration,
   Logger,
@@ -20,9 +19,7 @@ import {
   MedusaContext,
   MedusaError,
   MedusaService,
-  AuthWorkflowEvents,
   generateEntityId,
-  Modules,
 } from "@medusajs/framework/utils"
 import {
   AuthIdentity,
@@ -45,15 +42,8 @@ type InjectedDependencies = {
   authMfaProviderService: AuthMfaProviderService
   logger?: Logger
   cache?: ICacheService
-  [Modules.EVENT_BUS]?: IEventBusModuleService
 }
 
-type AuthMfaEventData = {
-  auth_identity_id: string
-  mfa_id?: string
-  provider?: string
-  count?: number
-}
 export default class AuthModuleService
   extends MedusaService<{
     AuthIdentity: { dto: AuthTypes.AuthIdentityDTO }
@@ -77,7 +67,6 @@ export default class AuthModuleService
   protected readonly authProviderService_: AuthProviderService
   protected readonly authMfaProviderService_: AuthMfaProviderService
   protected readonly cache_: ICacheService | undefined
-  protected readonly eventBusModuleService_?: IEventBusModuleService
   protected readonly moduleOptions_: AuthModuleOptions
 
   constructor(
@@ -90,7 +79,6 @@ export default class AuthModuleService
       authMfaProviderService,
       baseRepository,
       cache,
-      [Modules.EVENT_BUS]: eventBusModuleService,
     }: InjectedDependencies,
     moduleOptions: AuthModuleOptions = {},
     protected readonly moduleDeclaration?: InternalModuleDeclaration
@@ -106,7 +94,6 @@ export default class AuthModuleService
     this.authMfaProviderService_ = authMfaProviderService
     this.providerIdentityService_ = providerIdentityService
     this.cache_ = cache
-    this.eventBusModuleService_ = eventBusModuleService
     this.moduleOptions_ = moduleOptions
   }
 
@@ -363,20 +350,11 @@ export default class AuthModuleService
       )
     }
 
-    const previousStatus = factor.status
     const verifiedFactor = await this.authMfaProviderService_.verifySetup(
       factor.provider,
       data,
       sharedContext
     )
-
-    if (previousStatus !== "enabled" && verifiedFactor.status === "enabled") {
-      await this.emitMfaEvent_(AuthWorkflowEvents.MFA_ENABLED, {
-        auth_identity_id: factor.auth_identity_id,
-        mfa_id: verifiedFactor.id,
-        provider: verifiedFactor.provider,
-      })
-    }
 
     return verifiedFactor
   }
@@ -529,17 +507,7 @@ export default class AuthModuleService
       sharedContext
     )
 
-    const serializedFactor = await this.serializeMfaFactor_(disabledFactor)
-
-    if (factor.status !== "disabled") {
-      await this.emitMfaEvent_(AuthWorkflowEvents.MFA_DISABLED, {
-        auth_identity_id: serializedFactor.auth_identity_id!,
-        mfa_id: serializedFactor.id,
-        provider: serializedFactor.provider,
-      })
-    }
-
-    return serializedFactor
+    return await this.serializeMfaFactor_(disabledFactor)
   }
 
   @InjectManager()
@@ -628,11 +596,6 @@ export default class AuthModuleService
       },
       sharedContext
     )
-
-    await this.emitMfaEvent_(AuthWorkflowEvents.MFA_RECOVERY_CODES_GENERATED, {
-      auth_identity_id: data.auth_identity_id,
-      count: codes.length,
-    })
 
     return { codes }
   }
@@ -794,9 +757,7 @@ export default class AuthModuleService
       )
     }
 
-    if (
-      !challenge.methods.includes(method)
-    ) {
+    if (!challenge.methods.includes(method)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `MFA challenge does not support method "${method}"`
@@ -1051,22 +1012,5 @@ export default class AuthModuleService
         return await this.cache_.get(key)
       },
     }
-  }
-
-  protected async emitMfaEvent_(
-    name: string,
-    data: AuthMfaEventData
-  ): Promise<void> {
-    if (!this.eventBusModuleService_) {
-      return
-    }
-
-    await this.eventBusModuleService_.emit(
-      {
-        name,
-        data,
-      },
-      { internal: true }
-    )
   }
 }
