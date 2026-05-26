@@ -13,6 +13,7 @@ export const POST = async (
   const { id } = req.params
   const authService = req.scope.resolve<IAuthModuleService>(Modules.AUTH)
 
+  // Capture the previous status to emit the lifecycle event only on transition.
   const factor = await authService.retrieveAuthMfa({
     id,
     auth_identity_id: req.auth_context.auth_identity_id,
