@@ -9385,6 +9385,9 @@
             "recoveryCodesDescription": {
               "type": "string"
             },
+            "recoveryCodesError": {
+              "type": "string"
+            },
             "disableTitle": {
               "type": "string"
             },
@@ -9419,6 +9422,7 @@
             "qrError",
             "recoveryCodesTitle",
             "recoveryCodesDescription",
+            "recoveryCodesError",
             "disableTitle",
             "disableDescription",
             "disableChallengeDescription",
@@ -11085,6 +11089,9 @@
             "verifyError": {
               "type": "string"
             },
+            "completeError": {
+              "type": "string"
+            },
             "backToLogin": {
               "type": "string"
             },
@@ -11108,6 +11115,7 @@
             "recoveryCodePlaceholder",
             "verify",
             "verifyError",
+            "completeError",
             "backToLogin",
             "useRecoveryCodePrompt",
             "useRecoveryCode",

@@ -26,6 +26,7 @@ export const MfaSetupModal = ({ setup, onClose }: MfaSetupModalProps) => {
   const [step, setStep] = useState<"verify" | "recovery-codes">("verify")
   const [code, setCode] = useState("")
   const [error, setError] = useState<string | null>(null)
+  const [isVerified, setIsVerified] = useState(false)
   const [recoveryCodes, setRecoveryCodes] = useState<string[]>([])
   const secret = setup.secret
   const otpauthUrl = setup.otpauth_url
@@ -35,7 +36,26 @@ export const MfaSetupModal = ({ setup, onClose }: MfaSetupModalProps) => {
   const { mutateAsync: generateRecoveryCodes, isPending: isGenerating } =
     useGenerateAuthMfaRecoveryCodes()
 
+  const generateAndShowRecoveryCodes = async () => {
+    setError(null)
+
+    try {
+      const { recovery_codes } = await generateRecoveryCodes()
+      setRecoveryCodes(recovery_codes)
+      setStep("recovery-codes")
+    } catch (e) {
+      setError(
+        e instanceof Error ? e.message : t("profile.mfa.recoveryCodesError")
+      )
+    }
+  }
+
   const handleVerify = async (nextCode = code) => {
+    if (isVerified) {
+      await generateAndShowRecoveryCodes()
+      return
+    }
+
     if (nextCode.length !== 6) {
       return
     }
@@ -44,13 +64,14 @@ export const MfaSetupModal = ({ setup, onClose }: MfaSetupModalProps) => {
 
     try {
       await verify({ code: nextCode })
-      const { recovery_codes } = await generateRecoveryCodes()
-      setRecoveryCodes(recovery_codes)
-      setStep("recovery-codes")
+      setIsVerified(true)
     } catch (e) {
       setError(e instanceof Error ? e.message : t("profile.mfa.verifyError"))
       setCode("")
+      return
     }
+
+    await generateAndShowRecoveryCodes()
   }
 
   const handleOtpChange = (value: string) => {
@@ -110,7 +131,9 @@ export const MfaSetupModal = ({ setup, onClose }: MfaSetupModalProps) => {
                   value={code}
                   onChange={handleOtpChange}
                   onComplete={handleVerify}
-                  disabled={isVerifying || isGenerating || !secret}
+                  disabled={
+                    isVerifying || isGenerating || !secret || isVerified
+                  }
                   autoFocus
                 />
                 {error && (
@@ -148,7 +171,7 @@ export const MfaSetupModal = ({ setup, onClose }: MfaSetupModalProps) => {
               </Button>
               <Button
                 isLoading={isVerifying || isGenerating}
-                disabled={code.length !== 6 || !secret}
+                disabled={(!isVerified && code.length !== 6) || !secret}
                 onClick={() => handleVerify()}
               >
                 {t("actions.confirm")}

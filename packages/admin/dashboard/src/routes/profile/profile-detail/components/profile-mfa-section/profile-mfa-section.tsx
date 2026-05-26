@@ -20,11 +20,15 @@ import {
 import { MfaDisableModal } from "./mfa-disable-modal"
 import { MfaSetupModal } from "./mfa-setup-modal"
 
+const MFA_DISABLE_CODE_REQUIRED_ERROR =
+  "MFA verification code is required to disable MFA"
+
 export const ProfileMfaSection = () => {
   const { t } = useTranslation()
   const prompt = usePrompt()
   const { mfa_factors: factors = [], isPending } = useAuthMfa()
-  const [setup, setSetup] = useState<AuthMfaSetupResponse | null>(null)
+  const [setupResponse, setSetupResponse] =
+    useState<AuthMfaSetupResponse | null>(null)
   const [disableChallengeFactor, setDisableChallengeFactor] =
     useState<AuthTypes.AuthMfaDTO | null>(null)
   const { mutateAsync: startMfa, isPending: isStarting } = useStartAuthMfa()
@@ -54,7 +58,7 @@ export const ProfileMfaSection = () => {
         label: t("profile.mfa.authenticatorApp"),
       })
 
-      setSetup(response)
+      setSetupResponse(response)
     } catch (e) {
       toast.error(e instanceof Error ? e.message : t("profile.mfa.setupError"))
     }
@@ -80,8 +84,18 @@ export const ProfileMfaSection = () => {
     try {
       await disableMfa()
       toast.success(t("profile.mfa.disableSuccess"))
-    } catch {
-      setDisableChallengeFactor(enabledFactor)
+    } catch (e) {
+      if (
+        e instanceof Error &&
+        e.message.includes(MFA_DISABLE_CODE_REQUIRED_ERROR)
+      ) {
+        setDisableChallengeFactor(enabledFactor)
+        return
+      }
+
+      toast.error(
+        e instanceof Error ? e.message : t("profile.mfa.disableError")
+      )
     }
   }
 
@@ -163,7 +177,12 @@ export const ProfileMfaSection = () => {
           </div>
         </div>
       </Container>
-      {setup && <MfaSetupModal setup={setup} onClose={() => setSetup(null)} />}
+      {setupResponse && (
+        <MfaSetupModal
+          setup={setupResponse}
+          onClose={() => setSetupResponse(null)}
+        />
+      )}
       {disableChallengeFactor && (
         <MfaDisableModal
           factor={disableChallengeFactor}

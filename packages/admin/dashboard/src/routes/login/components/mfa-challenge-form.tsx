@@ -32,34 +32,52 @@ export const MfaChallengeForm = ({
   )
   const [code, setCode] = useState("")
   const [error, setError] = useState<string | null>(null)
+  const [verifiedToken, setVerifiedToken] = useState<string | null>(null)
+  const [isCompleting, setIsCompleting] = useState(false)
   const { mutateAsync, isPending } = useVerifyAuthMfaChallenge()
 
   const isRecoveryCode = method === "recovery_code"
   const canUseRecoveryCode = challenge.methods.includes("recovery_code")
   const canVerify = isRecoveryCode ? !!code.trim() : code.length === 6
+  const isLoading = isPending || isCompleting
 
   const handleVerify = async (nextCode = code) => {
     const verificationCode = nextCode.trim()
 
     if (
-      !verificationCode ||
-      (!isRecoveryCode && verificationCode.length !== 6)
+      !verifiedToken &&
+      (!verificationCode || (!isRecoveryCode && verificationCode.length !== 6))
     ) {
       return
     }
 
     setError(null)
 
+    let token = verifiedToken
+
+    if (!token) {
+      try {
+        token = await mutateAsync({
+          id: challenge.id,
+          method,
+          code: verificationCode,
+        })
+        setVerifiedToken(token)
+      } catch (e) {
+        setError(e instanceof Error ? e.message : t("login.mfa.verifyError"))
+        setCode("")
+        return
+      }
+    }
+
+    setIsCompleting(true)
+
     try {
-      const token = await mutateAsync({
-        id: challenge.id,
-        method,
-        code: verificationCode,
-      })
       await onSuccess(token)
     } catch (e) {
-      setError(e instanceof Error ? e.message : t("login.mfa.verifyError"))
-      setCode("")
+      setError(e instanceof Error ? e.message : t("login.mfa.completeError"))
+    } finally {
+      setIsCompleting(false)
     }
   }
 
@@ -71,6 +89,7 @@ export const MfaChallengeForm = ({
     setMethod(nextMethod)
     setCode("")
     setError(null)
+    setVerifiedToken(null)
   }
 
   return (
@@ -91,13 +110,14 @@ export const MfaChallengeForm = ({
             placeholder={t("login.mfa.recoveryCodePlaceholder")}
             value={code}
             onChange={(e) => setCode(e.target.value)}
+            disabled={isLoading || !!verifiedToken}
           />
         ) : (
           <OtpInput
             value={code}
             onChange={handleOtpChange}
             onComplete={handleVerify}
-            disabled={isPending}
+            disabled={isLoading || !!verifiedToken}
             autoFocus
           />
         )}
@@ -110,8 +130,8 @@ export const MfaChallengeForm = ({
         )}
         <Button
           className="w-full"
-          isLoading={isPending}
-          disabled={!canVerify}
+          isLoading={isLoading}
+          disabled={!verifiedToken && !canVerify}
           onClick={() => handleVerify()}
         >
           {t("login.mfa.verify")}
