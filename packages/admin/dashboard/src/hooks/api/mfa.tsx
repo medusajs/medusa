@@ -20,17 +20,6 @@ import { queryKeysFactory } from "../../lib/query-key-factory"
 const MFA_QUERY_KEY = "mfa" as const
 export const mfaQueryKeys = queryKeysFactory(MFA_QUERY_KEY)
 
-export type {
-  AuthLoginResponse,
-  AuthMfaRequiredResponse,
-  AuthMfaSetupResponse,
-} from "@medusajs/js-sdk"
-
-export type AuthMfa = AuthTypes.AuthMfaDTO
-export type AuthMfaChallenge = AuthTypes.AuthMfaChallengeDTO
-export type AuthMfaChallengeMethod = AuthTypes.AuthMfaChallengeMethod
-export type AuthMfaProvider = AuthTypes.AuthMfaProvider
-
 export const callbackWithCloudAuth = async (
   query: Record<string, unknown>
 ): ReturnType<typeof sdk.auth.callback> =>

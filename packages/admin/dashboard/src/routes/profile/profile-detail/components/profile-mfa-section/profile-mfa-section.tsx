@@ -1,4 +1,5 @@
 import { Key, ShieldCheck } from "@medusajs/icons"
+import type { AuthMfaSetupResponse } from "@medusajs/js-sdk"
 import {
   Badge,
   Button,
@@ -8,11 +9,10 @@ import {
   toast,
   usePrompt,
 } from "@medusajs/ui"
+import type { AuthTypes } from "@medusajs/types"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import {
-  AuthMfa,
-  AuthMfaSetupResponse,
   useAuthMfa,
   useDisableAuthMfa,
   useStartAuthMfa,
@@ -26,7 +26,7 @@ export const ProfileMfaSection = () => {
   const { mfa_factors: factors = [], isPending } = useAuthMfa()
   const [setup, setSetup] = useState<AuthMfaSetupResponse | null>(null)
   const [disableChallengeFactor, setDisableChallengeFactor] =
-    useState<AuthMfa | null>(null)
+    useState<AuthTypes.AuthMfaDTO | null>(null)
   const { mutateAsync: startMfa, isPending: isStarting } = useStartAuthMfa()
 
   const enabledFactor = useMemo(() => {
@@ -36,11 +36,6 @@ export const ProfileMfaSection = () => {
   const pendingFactor = useMemo(() => {
     return factors.find((factor) => factor.status === "pending")
   }, [factors])
-
-  const enabledFactorLabel =
-    typeof enabledFactor?.metadata?.label === "string"
-      ? enabledFactor.metadata.label
-      : undefined
 
   const { mutateAsync: disableMfa, isPending: isDisabling } = useDisableAuthMfa(
     enabledFactor?.id ?? ""
@@ -150,7 +145,7 @@ export const ProfileMfaSection = () => {
               <>
                 <ShieldCheck className="text-ui-fg-subtle" />
                 <Text size="small" leading="compact">
-                  {enabledFactorLabel || t("profile.mfa.authenticatorApp")}
+                  {t("profile.mfa.authenticatorApp")}
                 </Text>
               </>
             ) : (

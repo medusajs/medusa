@@ -1,10 +1,11 @@
 import { Button, FocusModal, Heading, Hint, OtpInput, Text } from "@medusajs/ui"
+import type { AuthTypes } from "@medusajs/types"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import { AuthMfa, useDisableAuthMfa } from "../../../../../hooks/api"
+import { useDisableAuthMfa } from "../../../../../hooks/api"
 
 type MfaDisableModalProps = {
-  factor: AuthMfa
+  factor: AuthTypes.AuthMfaDTO
   onClose: () => void
   onSuccess: () => void
 }
@@ -40,10 +41,6 @@ export const MfaDisableModal = ({
 
   const handleOtpChange = (value: string) => {
     setCode(value)
-
-    if (value.length === 6) {
-      handleDisable(value)
-    }
   }
 
   return (
@@ -63,6 +60,7 @@ export const MfaDisableModal = ({
             <OtpInput
               value={code}
               onChange={handleOtpChange}
+              onComplete={handleDisable}
               disabled={isPending}
               autoFocus
             />

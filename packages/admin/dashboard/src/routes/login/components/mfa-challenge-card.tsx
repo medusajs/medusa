@@ -1,9 +1,9 @@
+import type { AuthTypes } from "@medusajs/types"
 import AvatarBox from "../../../components/common/logo-box/avatar-box"
-import { AuthMfaChallenge } from "../../../hooks/api"
 import { MfaChallengeForm } from "./mfa-challenge-form"
 
 type MfaChallengeCardProps = {
-  challenge: AuthMfaChallenge
+  challenge: AuthTypes.AuthMfaChallengeDTO
   onSuccess: (token: string) => void | Promise<void>
   onBack?: () => void
 }

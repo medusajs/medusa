@@ -1,16 +1,13 @@
 import { Button, Heading, Hint, Input, OtpInput, Text } from "@medusajs/ui"
+import type { AuthTypes } from "@medusajs/types"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
-import {
-  AuthMfaChallenge,
-  AuthMfaChallengeMethod,
-  useVerifyAuthMfaChallenge,
-} from "../../../hooks/api"
+import { useVerifyAuthMfaChallenge } from "../../../hooks/api"
 
 const getDefaultMethod = (
-  methods: AuthMfaChallengeMethod[]
-): AuthMfaChallengeMethod => {
+  methods: AuthTypes.AuthMfaChallengeMethod[]
+): AuthTypes.AuthMfaChallengeMethod => {
   if (methods.includes("totp")) {
     return "totp"
   }
@@ -19,7 +16,7 @@ const getDefaultMethod = (
 }
 
 type MfaChallengeFormProps = {
-  challenge: AuthMfaChallenge
+  challenge: AuthTypes.AuthMfaChallengeDTO
   onSuccess: (token: string) => void | Promise<void>
   onBack?: () => void
 }
@@ -30,7 +27,7 @@ export const MfaChallengeForm = ({
   onBack,
 }: MfaChallengeFormProps) => {
   const { t } = useTranslation()
-  const [method, setMethod] = useState<AuthMfaChallengeMethod>(
+  const [method, setMethod] = useState<AuthTypes.AuthMfaChallengeMethod>(
     getDefaultMethod(challenge.methods)
   )
   const [code, setCode] = useState("")
@@ -39,11 +36,15 @@ export const MfaChallengeForm = ({
 
   const isRecoveryCode = method === "recovery_code"
   const canUseRecoveryCode = challenge.methods.includes("recovery_code")
+  const canVerify = isRecoveryCode ? !!code.trim() : code.length === 6
 
   const handleVerify = async (nextCode = code) => {
     const verificationCode = nextCode.trim()
 
-    if (!verificationCode) {
+    if (
+      !verificationCode ||
+      (!isRecoveryCode && verificationCode.length !== 6)
+    ) {
       return
     }
 
@@ -64,13 +65,9 @@ export const MfaChallengeForm = ({
 
   const handleOtpChange = (value: string) => {
     setCode(value)
-
-    if (value.length === 6) {
-      handleVerify(value)
-    }
   }
 
-  const handleMethodChange = (nextMethod: AuthMfaChallengeMethod) => {
+  const handleMethodChange = (nextMethod: AuthTypes.AuthMfaChallengeMethod) => {
     setMethod(nextMethod)
     setCode("")
     setError(null)
@@ -99,6 +96,7 @@ export const MfaChallengeForm = ({
           <OtpInput
             value={code}
             onChange={handleOtpChange}
+            onComplete={handleVerify}
             disabled={isPending}
             autoFocus
           />
@@ -113,7 +111,7 @@ export const MfaChallengeForm = ({
         <Button
           className="w-full"
           isLoading={isPending}
-          disabled={!code.trim()}
+          disabled={!canVerify}
           onClick={() => handleVerify()}
         >
           {t("login.mfa.verify")}
@@ -129,7 +127,7 @@ export const MfaChallengeForm = ({
         )}
       </div>
       {canUseRecoveryCode && (
-        <div className="text-ui-fg-muted txt-small mt-6">
+        <div className="text-ui-fg-muted txt-small mt-6 text-center">
           {isRecoveryCode
             ? t("login.mfa.useAuthenticatorPrompt")
             : t("login.mfa.useRecoveryCodePrompt")}{" "}

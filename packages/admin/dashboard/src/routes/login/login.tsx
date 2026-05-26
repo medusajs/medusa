@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import type { AuthTypes } from "@medusajs/types"
 import { Alert, Button, Heading, Hint, Input, Text } from "@medusajs/ui"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -8,7 +9,7 @@ import * as z from "zod"
 
 import { Form } from "../../components/common/form"
 import AvatarBox from "../../components/common/logo-box/avatar-box"
-import { AuthMfaChallenge, useSignInWithEmailPass } from "../../hooks/api"
+import { useSignInWithEmailPass } from "../../hooks/api"
 import { isFetchError } from "../../lib/is-fetch-error"
 import { useExtension } from "../../providers/extension-provider"
 import { CloudAuthLogin } from "./components/cloud-auth-login"
@@ -24,9 +25,8 @@ export const Login = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const { getWidgets } = useExtension()
-  const [mfaChallenge, setMfaChallenge] = useState<AuthMfaChallenge | null>(
-    null
-  )
+  const [mfaChallenge, setMfaChallenge] =
+    useState<AuthTypes.AuthMfaChallengeDTO | null>(null)
   const [mfaSuccessHandler, setMfaSuccessHandler] = useState<
     ((token: string) => void | Promise<void>) | null
   >(null)

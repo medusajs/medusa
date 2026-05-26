@@ -1,10 +1,11 @@
 import { Spinner } from "@medusajs/icons"
+import type { AuthTypes } from "@medusajs/types"
 import { Button, toast } from "@medusajs/ui"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { decodeToken } from "react-jwt"
 import { useNavigate, useSearchParams } from "react-router-dom"
-import { AuthMfaChallenge, callbackWithCloudAuth } from "../../../hooks/api"
+import { callbackWithCloudAuth } from "../../../hooks/api"
 import {
   useCloudAuthEnabled,
   useCreateCloudAuthUser,
@@ -15,7 +16,7 @@ const CLOUD_AUTH_PROVIDER = "cloud"
 
 type CloudAuthLoginProps = {
   onMfaChallenge?: (
-    challenge: AuthMfaChallenge,
+    challenge: AuthTypes.AuthMfaChallengeDTO,
     onSuccess: (token: string) => void | Promise<void>
   ) => void
 }
@@ -126,7 +127,7 @@ const useHandleLogin = (isAutoLogin: boolean) => {
 const useAuthCallback = (
   searchParams: URLSearchParams,
   onMfaChallenge?: (
-    challenge: AuthMfaChallenge,
+    challenge: AuthTypes.AuthMfaChallengeDTO,
     onSuccess: (token: string) => void | Promise<void>
   ) => void
 ) => {

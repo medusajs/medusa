@@ -7,10 +7,10 @@ import {
   OtpInput,
   Text,
 } from "@medusajs/ui"
+import type { AuthMfaSetupResponse } from "@medusajs/js-sdk"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import {
-  AuthMfaSetupResponse,
   useGenerateAuthMfaRecoveryCodes,
   useVerifyAuthMfa,
 } from "../../../../../hooks/api"
@@ -55,10 +55,6 @@ export const MfaSetupModal = ({ setup, onClose }: MfaSetupModalProps) => {
 
   const handleOtpChange = (value: string) => {
     setCode(value)
-
-    if (value.length === 6) {
-      handleVerify(value)
-    }
   }
 
   const handleDownloadRecoveryCodes = () => {
@@ -113,6 +109,7 @@ export const MfaSetupModal = ({ setup, onClose }: MfaSetupModalProps) => {
                 <OtpInput
                   value={code}
                   onChange={handleOtpChange}
+                  onComplete={handleVerify}
                   disabled={isVerifying || isGenerating || !secret}
                   autoFocus
                 />
@@ -140,37 +137,33 @@ export const MfaSetupModal = ({ setup, onClose }: MfaSetupModalProps) => {
                   )
                 })}
               </div>
-              <div className="flex items-center justify-end gap-x-2">
-                <Button
-                  variant="secondary"
-                  size="small"
-                  onClick={handleDownloadRecoveryCodes}
-                >
-                  {t("actions.download")}
-                </Button>
-                <Copy content={recoveryCodes.join("\n")} asChild>
-                  <Button variant="secondary" size="small">
-                    {t("actions.copy")}
-                  </Button>
-                </Copy>
-              </div>
             </div>
           )}
         </FocusModal.Body>
         <FocusModal.Footer>
-          <Button variant="secondary" onClick={onClose}>
-            {t("actions.cancel")}
-          </Button>
           {step === "verify" ? (
-            <Button
-              isLoading={isVerifying || isGenerating}
-              disabled={code.length !== 6 || !secret}
-              onClick={() => handleVerify()}
-            >
-              {t("actions.confirm")}
-            </Button>
+            <>
+              <Button variant="secondary" onClick={onClose}>
+                {t("actions.cancel")}
+              </Button>
+              <Button
+                isLoading={isVerifying || isGenerating}
+                disabled={code.length !== 6 || !secret}
+                onClick={() => handleVerify()}
+              >
+                {t("actions.confirm")}
+              </Button>
+            </>
           ) : (
-            <Button onClick={onClose}>{t("actions.complete")}</Button>
+            <>
+              <Button variant="secondary" onClick={handleDownloadRecoveryCodes}>
+                {t("actions.download")}
+              </Button>
+              <Copy content={recoveryCodes.join("\n")} asChild>
+                <Button variant="secondary">{t("actions.copy")}</Button>
+              </Copy>
+              <Button onClick={onClose}>{t("actions.complete")}</Button>
+            </>
           )}
         </FocusModal.Footer>
       </FocusModal.Content>

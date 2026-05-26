@@ -11,7 +11,7 @@ export const ProfileDetail = () => {
   const { getWidgets } = useExtension()
 
   if (isLoading || !user) {
-    return <SingleColumnPageSkeleton sections={3} />
+    return <SingleColumnPageSkeleton sections={2} />
   }
 
   if (isError) {

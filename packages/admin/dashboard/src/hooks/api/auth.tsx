@@ -1,8 +1,7 @@
-import { FetchError } from "@medusajs/js-sdk"
+import { AuthLoginResponse, FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import { UseMutationOptions, useMutation } from "@tanstack/react-query"
 import { sdk } from "../../lib/client"
-import type { AuthLoginResponse } from "./mfa"
 
 export const useSignInWithEmailPass = (
   options?: UseMutationOptions<
