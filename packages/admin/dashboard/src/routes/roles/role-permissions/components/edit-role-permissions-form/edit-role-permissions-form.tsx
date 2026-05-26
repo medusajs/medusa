@@ -20,11 +20,10 @@ import {
   rbacRolesQueryKeys,
   useAddRbacRolePolicies,
 } from "../../../../../hooks/api/rbac-roles"
+import { useAssignablePoliciesFilter } from "../../../../../hooks/use-assignable-policies-filter"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 import { sdk } from "../../../../../lib/client"
-import { canAssignPolicy } from "../../../../../lib/permissions"
 import { queryClient } from "../../../../../lib/query-client"
-import { usePermissions } from "../../../../../providers/permissions-provider"
 
 const EditRolePermissionsSchema = zod.object({
   policies: zod.array(zod.string()).optional(),
@@ -42,7 +41,6 @@ export const EditRolePermissionsForm = ({
 }: EditRolePermissionsFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  const { hasPermission } = usePermissions()
 
   const form = useForm<zod.infer<typeof EditRolePermissionsSchema>>({
     defaultValues: {
@@ -88,6 +86,8 @@ export const EditRolePermissionsForm = ({
       placeholderData: keepPreviousData,
     }
   )
+
+  const visiblePolicies = useAssignablePoliciesFilter(policies)
 
   const columns = usePolicyColumns()
 
@@ -152,7 +152,7 @@ export const EditRolePermissionsForm = ({
       >
         <RouteDrawer.Body className="-mx-4 flex flex-1 flex-col overflow-hidden p-0">
           <DataTable
-            data={policies ?? []}
+            data={visiblePolicies}
             columns={columns}
             getRowId={(row) => row.id}
             rowCount={count}
@@ -161,8 +161,6 @@ export const EditRolePermissionsForm = ({
             rowSelection={{
               state: rowSelection,
               onRowSelectionChange: setRowSelection,
-              enableRowSelection: (row) =>
-                canAssignPolicy(row.original, hasPermission),
             }}
             autoFocusSearch
             layout="fill"

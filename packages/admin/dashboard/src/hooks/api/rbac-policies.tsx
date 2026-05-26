@@ -13,9 +13,9 @@ import { queryKeysFactory } from "../../lib/query-key-factory"
 import { rbacRolesQueryKeys } from "./rbac-roles"
 
 const RBAC_POLICIES_QUERY_KEY = "rbac_policies" as const
-const _rbacPoliciesQueryKeys = queryKeysFactory(RBAC_POLICIES_QUERY_KEY) as ReturnType<
-  typeof queryKeysFactory<"rbac_policies">
-> & {
+const _rbacPoliciesQueryKeys = queryKeysFactory(
+  RBAC_POLICIES_QUERY_KEY
+) as ReturnType<typeof queryKeysFactory<"rbac_policies">> & {
   roles: (policyId: string, query?: any) => any[]
 }
 
@@ -158,4 +158,31 @@ export const useRbacPolicyRoles = (
   })
 
   return { ...data, ...rest }
+}
+
+const ASSIGNABLE_POLICIES_QUERY_KEY = ["rbac_assignable_policies"] as const
+
+export const assignablePoliciesQueryKey = ASSIGNABLE_POLICIES_QUERY_KEY
+
+/**
+ * Fetches the policies the authenticated actor is allowed to assign.
+ */
+export const useRbacAssignablePolicies = (
+  query?: HttpTypes.AdminRbacPolicyListParams,
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminRbacAssignablePoliciesListResponse,
+      FetchError,
+      HttpTypes.AdminRbacAssignablePoliciesListResponse,
+      QueryKey
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  return useQuery({
+    queryFn: () => sdk.admin.rbacPolicy.listAssignable(query),
+    queryKey: [...ASSIGNABLE_POLICIES_QUERY_KEY, query],
+    staleTime: 60 * 1000,
+    ...options,
+  })
 }
