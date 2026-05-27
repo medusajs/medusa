@@ -2581,6 +2581,11 @@
       "header": "Edit role",
       "successToast": "Role {{name}} updated"
     },
+    "delete": {
+      "title": "Delete role",
+      "description": "You are about to delete the role {{name}}. This action cannot be undone.",
+      "successToast": "Role {{name}} deleted"
+    },
     "fields": {
       "permissions": "Permissions"
     },

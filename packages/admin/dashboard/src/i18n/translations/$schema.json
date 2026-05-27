@@ -9599,6 +9599,22 @@
           "required": ["header", "successToast"],
           "additionalProperties": false
         },
+        "delete": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "successToast": {
+              "type": "string"
+            }
+          },
+          "required": ["title", "description", "successToast"],
+          "additionalProperties": false
+        },
         "fields": {
           "type": "object",
           "properties": {
@@ -9773,6 +9789,7 @@
         "subtitle",
         "create",
         "edit",
+        "delete",
         "fields",
         "actions",
         "users",

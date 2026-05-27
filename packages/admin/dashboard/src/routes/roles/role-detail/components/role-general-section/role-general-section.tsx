@@ -1,8 +1,9 @@
 import { Key, PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Container, Heading } from "@medusajs/ui"
+import { Container, Heading, toast, usePrompt } from "@medusajs/ui"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
+import { useNavigate } from "react-router-dom"
 
 import {
   ActionGroup,
@@ -10,6 +11,7 @@ import {
 } from "../../../../../components/common/action-menu"
 import { ListSummary } from "../../../../../components/common/list-summary"
 import { SectionRow } from "../../../../../components/common/section"
+import { useDeleteRbacRole } from "../../../../../hooks/api/rbac-roles"
 import { usePermissions } from "../../../../../providers/permissions-provider"
 
 type RoleWithUsers = HttpTypes.AdminRbacRole & {
@@ -23,6 +25,33 @@ type RoleGeneralSectionProps = {
 export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
   const { t } = useTranslation()
   const { hasPermission } = usePermissions()
+  const prompt = usePrompt()
+  const navigate = useNavigate()
+
+  const { mutateAsync: deleteRole, isPending: isDeleting } = useDeleteRbacRole(
+    role.id
+  )
+
+  const handleDelete = async () => {
+    const confirmed = await prompt({
+      title: t("roles.delete.title"),
+      description: t("roles.delete.description", { name: role.name }),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!confirmed) {
+      return
+    }
+
+    try {
+      await deleteRole()
+      toast.success(t("roles.delete.successToast", { name: role.name }))
+      navigate("/settings/roles", { replace: true })
+    } catch (error) {
+      toast.error((error as Error).message)
+    }
+  }
 
   const users = useMemo(() => {
     return (
@@ -86,7 +115,8 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
         {
           icon: <Trash />,
           label: t("actions.delete"),
-          onClick: () => {},
+          onClick: handleDelete,
+          disabled: isDeleting,
         },
       ],
     })

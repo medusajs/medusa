@@ -1,6 +1,11 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Container, createDataTableColumnHelper } from "@medusajs/ui"
+import {
+  Container,
+  createDataTableColumnHelper,
+  toast,
+  usePrompt,
+} from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useCallback, useMemo } from "react"
 import { useTranslation } from "react-i18next"
@@ -9,7 +14,10 @@ import { useNavigate } from "react-router-dom"
 import { DataTable } from "../../../../../components/data-table"
 import { useDataTableDateFilters } from "../../../../../components/data-table/helpers/general/use-data-table-date-filters"
 import { ListSummary } from "../../../../../components/common/list-summary"
-import { useRbacRoles } from "../../../../../hooks/api/rbac-roles"
+import {
+  useDeleteRbacRoleLazy,
+  useRbacRoles,
+} from "../../../../../hooks/api/rbac-roles"
 import { useDate } from "../../../../../hooks/use-date"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 import type { Permission } from "../../../../../lib/permissions"
@@ -101,7 +109,10 @@ const useColumns = ({
 }) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const prompt = usePrompt()
   const { getFullDate } = useDate()
+
+  const { mutateAsync: deleteRole } = useDeleteRbacRoleLazy()
 
   const handleEdit = useCallback(
     (role: HttpTypes.AdminRbacRole) => {
@@ -110,9 +121,28 @@ const useColumns = ({
     [navigate]
   )
 
-  const handleDelete = useCallback((_: HttpTypes.AdminRbacRole) => {
-    // TODO: implement delete role flow
-  }, [])
+  const handleDelete = useCallback(
+    async (role: HttpTypes.AdminRbacRole) => {
+      const confirmed = await prompt({
+        title: t("roles.delete.title"),
+        description: t("roles.delete.description", { name: role.name }),
+        confirmText: t("actions.delete"),
+        cancelText: t("actions.cancel"),
+      })
+
+      if (!confirmed) {
+        return
+      }
+
+      try {
+        await deleteRole(role.id)
+        toast.success(t("roles.delete.successToast", { name: role.name }))
+      } catch (error) {
+        toast.error((error as Error).message)
+      }
+    },
+    [prompt, deleteRole, t]
+  )
 
   const canUpdate = hasPermission("rbac_role:update")
   const canDelete = hasPermission("rbac_role:delete")

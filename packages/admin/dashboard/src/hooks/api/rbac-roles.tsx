@@ -174,6 +174,25 @@ export const useDeleteRbacRole = (
   })
 }
 
+export const useDeleteRbacRoleLazy = (
+  options?: UseMutationOptions<
+    HttpTypes.AdminRbacRoleDeleteResponse,
+    FetchError,
+    string
+  >
+) => {
+  return useMutation({
+    mutationFn: (id: string) => sdk.admin.rbacRole.delete(id),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.details() })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useAddRbacRolePolicies = (
   roleId: string,
   options?: UseMutationOptions<
