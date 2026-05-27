@@ -84,20 +84,16 @@ export const getAssignableRolesStep = createStep(
         "policies.resource",
         "policies.operation",
       ],
-      filters: {
-        ...(filters ?? {}),
-        policies: {
-          resource: { $ne: null },
-          operation: { $ne: null },
-        },
-      },
+      filters: filters ?? {},
       pagination: pagination ?? {},
     })
 
     const assignable: AssignableRole[] = []
 
     for (const role of candidates ?? []) {
-      const actions = role.policies ?? []
+      const actions = (role.policies ?? []).filter(
+        (p: any) => p.resource != null && p.operation != null
+      )
 
       const allowed = await hasPermission({
         roles: actorRoleIds,
