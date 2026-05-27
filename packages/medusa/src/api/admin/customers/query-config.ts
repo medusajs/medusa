@@ -50,6 +50,7 @@ export const listTransformQueryConfig = {
 
 export const defaultAdminCustomerAddressFields = [
   "id",
+  "address_name",
   "company",
   "customer_id",
   "first_name",
