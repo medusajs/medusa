@@ -29,8 +29,8 @@ export const AdminGetRbacPoliciesParams = createFindParams({
   limit: 50,
   offset: 0,
 })
-  .extend(AdminGetRbacPoliciesParamsFields)
-  .extend(applyAndAndOrOperators(AdminGetRbacPoliciesParamsFields))
+  .extend(AdminGetRbacPoliciesParamsFields.shape)
+  .extend(applyAndAndOrOperators(AdminGetRbacPoliciesParamsFields).shape)
 
 export type AdminCreateRbacPolicyType = z.infer<typeof AdminCreateRbacPolicy>
 export const AdminCreateRbacPolicy = z
