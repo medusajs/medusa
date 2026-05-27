@@ -304,6 +304,9 @@ medusaIntegrationTestRunner({
         let customerReadId: string
         let customerCreateId: string
         let wildcardPolicyId: string
+        let productWildcardId: string
+        let universalReadId: string
+        let rbacPolicyReadId: string
 
         beforeEach(async () => {
           const rbacModule = container.resolve(Modules.RBAC)
@@ -386,6 +389,9 @@ medusaIntegrationTestRunner({
           customerReadId = customerRead.id
           customerCreateId = customerCreate.id
           wildcardPolicyId = fullWildcard.id
+          productWildcardId = productWildcard.id
+          universalReadId = universalRead.id
+          rbacPolicyReadId = rbacPolicyRead.id
 
           // --- Actor roles ---
           const productManagerRole = await rbacModule.createRbacRoles({
@@ -465,7 +471,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("expands `resource:*` — product:* actor sees product policies but not other resources", async () => {
+        it("expands `resource:*` — product:* actor sees all product policies including the wildcard itself", async () => {
           const response = await api.get(
             "/admin/rbac/policies/assignable",
             productManagerHeaders
@@ -473,12 +479,17 @@ medusaIntegrationTestRunner({
 
           const ids = response.data.policies.map((p: { id: string }) => p.id)
           expect(ids).toEqual(
-            expect.arrayContaining([productReadId, productCreateId])
+            expect.arrayContaining([
+              productReadId,
+              productCreateId,
+              productWildcardId,
+              rbacPolicyReadId,
+            ])
           )
-          expect(ids.length).toEqual(2)
+          expect(ids.length).toEqual(4)
         })
 
-        it("expands `*:op` — *:read actor sees read policies across resources but no creates", async () => {
+        it("expands `*:op` — *:read actor sees all read policies including the wildcard itself", async () => {
           const response = await api.get(
             "/admin/rbac/policies/assignable",
             universalReaderHeaders
@@ -486,19 +497,27 @@ medusaIntegrationTestRunner({
 
           const ids = response.data.policies.map((p: { id: string }) => p.id)
           expect(ids).toEqual(
-            expect.arrayContaining([productReadId, customerReadId])
+            expect.arrayContaining([
+              productReadId,
+              customerReadId,
+              universalReadId,
+              rbacPolicyReadId,
+            ])
           )
-          expect(ids.length).toEqual(2)
+          expect(ids.length).toEqual(4)
         })
 
-        it("requires literal coverage — product:read actor only sees product:read", async () => {
+        it("literal grant — product:read actor sees product:read and any policy covered by that grant", async () => {
           const response = await api.get(
             "/admin/rbac/policies/assignable",
             productReaderHeaders
           )
 
           const ids = response.data.policies.map((p: { id: string }) => p.id)
-          expect(ids).toEqual([productReadId])
+          expect(ids).toEqual(
+            expect.arrayContaining([productReadId, rbacPolicyReadId])
+          )
+          expect(ids.length).toEqual(2)
         })
 
         it("only a `*:*` holder can assign a literal `*:*` policy", async () => {
