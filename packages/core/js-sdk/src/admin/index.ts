@@ -50,6 +50,9 @@ import { Translation } from "./translation.js"
 import { RbacRole } from "./rbac-role"
 import { RbacPolicy } from "./rbac-policy"
 
+/**
+ * The admin client provides access to admin-related resources.
+ */
 export class Admin {
   /**
    * @tags user
@@ -247,10 +250,12 @@ export class Admin {
   public views: Views
   /**
    * @tags rbac
+   * @since 2.15.5
    */
   public rbacRole: RbacRole
   /**
    * @tags rbac
+   * @since 2.15.5
    */
   public rbacPolicy: RbacPolicy
 

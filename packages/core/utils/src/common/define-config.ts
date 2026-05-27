@@ -208,6 +208,9 @@ function resolveModules(
     {
       resolve: MODULE_PACKAGE_NAMES[Modules.AUTH],
       options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+        },
         providers: [
           {
             resolve: "@medusajs/medusa/auth-emailpass",

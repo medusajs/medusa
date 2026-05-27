@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken"
+import { AuthEvents, Modules } from "@medusajs/framework/utils"
 import { POST as validateCallback } from "../../[actor_type]/[auth_provider]/callback/route"
 import { POST as authenticate } from "../../[actor_type]/[auth_provider]/route"
 import { POST as verifyChallenge } from "../challenges/[id]/verify/route"
@@ -27,11 +28,15 @@ const createRequest = ({
     app_metadata: {},
     user_metadata: {},
   },
+  eventBus = {
+    emit: jest.fn(),
+  },
 }: {
   authService: Record<string, jest.Mock>
   params?: Record<string, string>
   validatedBody?: Record<string, unknown>
   authContext?: Record<string, unknown>
+  eventBus?: { emit: jest.Mock }
 }) => {
   return {
     params,
@@ -44,8 +49,12 @@ const createRequest = ({
     auth_context: authContext,
     scope: {
       resolve: jest.fn((key) => {
-        if (key === "auth") {
+        if (key === Modules.AUTH) {
           return authService
+        }
+
+        if (key === Modules.EVENT_BUS) {
+          return eventBus
         }
 
         if (key === "configModule") {
@@ -285,8 +294,16 @@ describe("MFA auth routes", () => {
 
   it("verifies only factors owned by the authenticated auth identity", async () => {
     const authService = {
+      retrieveAuthMfa: jest.fn().mockResolvedValue({
+        id: "factor_1",
+        auth_identity_id: "auth_identity_1",
+        provider: "totp",
+        status: "pending",
+      }),
       verifyAuthMfa: jest.fn().mockResolvedValue({
         id: "factor_1",
+        auth_identity_id: "auth_identity_1",
+        provider: "totp",
         status: "enabled",
       }),
     }
@@ -299,6 +316,10 @@ describe("MFA auth routes", () => {
 
     await verifyFactor(req, res)
 
+    expect(authService.retrieveAuthMfa).toHaveBeenCalledWith({
+      id: "factor_1",
+      auth_identity_id: "auth_identity_1",
+    })
     expect(authService.verifyAuthMfa).toHaveBeenCalledWith({
       id: "factor_1",
       auth_identity_id: "auth_identity_1",
@@ -307,7 +328,17 @@ describe("MFA auth routes", () => {
     expect(res.json).toHaveBeenCalledWith({
       mfa_factor: {
         id: "factor_1",
+        auth_identity_id: "auth_identity_1",
+        provider: "totp",
         status: "enabled",
+      },
+    })
+    expect(req.scope.resolve(Modules.EVENT_BUS).emit).toHaveBeenCalledWith({
+      name: AuthEvents.MFA_ENABLED,
+      data: {
+        auth_identity_id: "auth_identity_1",
+        mfa_id: "factor_1",
+        provider: "totp",
       },
     })
   })
@@ -316,9 +347,14 @@ describe("MFA auth routes", () => {
     const authService = {
       retrieveAuthMfa: jest.fn().mockResolvedValue({
         id: "factor_1",
+        auth_identity_id: "auth_identity_1",
+        provider: "totp",
+        status: "enabled",
       }),
       disableAuthMfa: jest.fn().mockResolvedValue({
         id: "factor_1",
+        auth_identity_id: "auth_identity_1",
+        provider: "totp",
         status: "disabled",
       }),
     }
@@ -346,7 +382,17 @@ describe("MFA auth routes", () => {
     expect(res.json).toHaveBeenCalledWith({
       mfa_factor: {
         id: "factor_1",
+        auth_identity_id: "auth_identity_1",
+        provider: "totp",
         status: "disabled",
+      },
+    })
+    expect(req.scope.resolve(Modules.EVENT_BUS).emit).toHaveBeenCalledWith({
+      name: AuthEvents.MFA_DISABLED,
+      data: {
+        auth_identity_id: "auth_identity_1",
+        mfa_id: "factor_1",
+        provider: "totp",
       },
     })
   })
@@ -381,6 +427,13 @@ describe("MFA auth routes", () => {
     })
     expect(res.json).toHaveBeenCalledWith({
       recovery_codes: ["code-1", "code-2"],
+    })
+    expect(req.scope.resolve(Modules.EVENT_BUS).emit).toHaveBeenCalledWith({
+      name: AuthEvents.MFA_RECOVERY_CODES_GENERATED,
+      data: {
+        auth_identity_id: "auth_identity_1",
+        count: 2,
+      },
     })
   })
 })

@@ -229,6 +229,53 @@ Files changed (~24 occurrences across):
 
 ---
 
+## `next.config.mjs` Rewrites Changes (book app)
+
+`@opennextjs/cloudflare` requires Next.js rewrites to use named capture groups instead of wildcard `:path*` patterns. The `book` app's internal md-content rewrites were updated to comply.
+
+### Before
+
+```js
+// source patterns used a single :path* capture
+{ source: "/:path((?!resources|api|...).+)/", destination: "/md-content/:path" }
+{ source: "/:path((?!resources|api|...).+)",  destination: "/md-content/:path" }
+// index routes excluded sub-apps in the pattern
+{ source: "/:path((?!resources|api|...)*)index.html.md" }
+{ source: "/:path((?!resources|api|...)*)index.md" }
+{ source: "/:path((?!resources|api|...).*).md" }
+```
+
+### After
+
+```js
+// split into :first + :rest* to satisfy open-next's named-segment requirement
+{ source: "/:first((?!resources|api|ui|user-guide|cloud|md-content)[^/]+)/:rest*/", destination: "/md-content/:first/:rest*" }
+{ source: "/:first((?!resources|api|ui|user-guide|cloud|md-content)[^/]+)/:rest*",  destination: "/md-content/:first/:rest*" }
+// index routes simplified (sub-app exclusion handled by fallback ordering)
+{ source: "/index.html.md",       destination: "/md-content" }
+{ source: "/index.md",            destination: "/md-content" }
+{ source: "/:path*/index.html.md" }
+{ source: "/:path*/index.md" }
+{ source: "/:path*.md" }
+```
+
+### `outputFileTracingRoot` and `outputFileTracingExcludes`
+
+Also added to `book/next.config.mjs` to prevent sibling apps from being traced into the bundle:
+
+```js
+outputFileTracingRoot: new URL("../../", import.meta.url).pathname,
+outputFileTracingExcludes: {
+  "*": [
+    "node_modules/@medusajs/icons",
+    "../**/.open-next/**",   // exclude Cloudflare build output from other apps
+    "../!(book)/.next/**",   // exclude sibling app .next directories
+  ],
+},
+```
+
+---
+
 ## remark/rehype Plugin Changes
 
 The link-fixer plugins (`typeListLinkFixerPlugin`, `workflowDiagramLinkFixerPlugin`, `prerequisitesLinkFixerPlugin`, `localLinksRehypePlugin`) were updated to:
