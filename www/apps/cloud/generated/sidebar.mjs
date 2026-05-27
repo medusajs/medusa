@@ -22,6 +22,14 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "path": "/get-started",
+            "title": "Get Started Flow",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/sign-up",
             "title": "Sign Up",
             "children": []
