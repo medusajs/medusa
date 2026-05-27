@@ -1,12 +1,18 @@
 import { useMemo } from "react"
 import { createDataTableColumnHelper, StatusBadge } from "@medusajs/ui"
 import { HttpTypes } from "@medusajs/types"
+import { useTranslation } from "react-i18next"
 import { useDate } from "../../../../../../hooks/use-date"
+import {
+  getOrderFulfillmentStatus,
+  getOrderPaymentStatus,
+} from "../../../../../../lib/order-helpers"
 
 const columnHelper = createDataTableColumnHelper<HttpTypes.AdminOrder>()
 
 export function useOrderDataTableColumns(apiColumns: any[] | undefined) {
   const { getFullDate } = useDate()
+  const { t } = useTranslation()
 
   return useMemo(() => {
     if (!apiColumns?.length) {
@@ -64,9 +70,11 @@ export function useOrderDataTableColumns(apiColumns: any[] | undefined) {
           header: () => apiColumn.name,
           cell: ({ getValue }) => {
             const value = getValue()
-            return value ? (
-              <StatusBadge color={"grey"}>{value as string}</StatusBadge>
-            ) : null
+            if (!value) {
+              return null
+            }
+            const { label, color } = getOrderPaymentStatus(t, value as string)
+            return <StatusBadge color={color}>{label}</StatusBadge>
           },
           meta: {
             name: apiColumn.name,
@@ -82,9 +90,14 @@ export function useOrderDataTableColumns(apiColumns: any[] | undefined) {
           header: () => apiColumn.name,
           cell: ({ getValue }) => {
             const value = getValue()
-            return value ? (
-              <StatusBadge color={"grey"}>{value as string}</StatusBadge>
-            ) : null
+            if (!value) {
+              return null
+            }
+            const { label, color } = getOrderFulfillmentStatus(
+              t,
+              value as string
+            )
+            return <StatusBadge color={color}>{label}</StatusBadge>
           },
           meta: {
             name: apiColumn.name,
@@ -160,5 +173,5 @@ export function useOrderDataTableColumns(apiColumns: any[] | undefined) {
         }
       )
     })
-  }, [apiColumns, getFullDate])
+  }, [apiColumns, getFullDate, t])
 }
