@@ -2,4 +2,4 @@
 "@medusajs/dashboard": patch
 ---
 
-fix: rename duplicate column id to fix React key warning
+fix(dashboard): rename duplicate column id to fix React key warning
