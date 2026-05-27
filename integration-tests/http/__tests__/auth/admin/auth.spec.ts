@@ -101,6 +101,13 @@ medusaIntegrationTestRunner({
         const signOutRequest = await api.delete("/auth/session", cookieHeader)
         expect(signOutRequest.status).toEqual(200)
 
+        // Regression: DELETE /auth/session must clear the session cookie on
+        // the client. See https://github.com/medusajs/medusa/issues/15508
+        const signOutSetCookie = signOutRequest.headers["set-cookie"]
+        expect(signOutSetCookie).toBeDefined()
+        expect(signOutSetCookie[0]).toMatch(/^connect\.sid=;/)
+        expect(signOutSetCookie[0]).toContain("Expires=")
+
         // Attempt to perform authenticated request
         const unAuthedRequest = await api
           .get("/admin/products?limit=1", cookieHeader)
