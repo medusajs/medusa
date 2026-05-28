@@ -179,13 +179,9 @@ function resolveModules(
 ): Exclude<ConfigModule["modules"], undefined> {
   const authMfaEncryptionKey = process.env.AUTH_MFA_ENCRYPTION_KEY
   const authModuleOptions = {
-    ...(authMfaEncryptionKey
-      ? {
-          mfa: {
-            encryption_key: authMfaEncryptionKey,
-          },
-        }
-      : {}),
+    mfa: {
+      encryption_key: authMfaEncryptionKey,
+    },
     providers: [
       {
         resolve: "@medusajs/medusa/auth-emailpass",
