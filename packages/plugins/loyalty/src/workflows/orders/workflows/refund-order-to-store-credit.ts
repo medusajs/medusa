@@ -29,9 +29,11 @@ const validateRefundOrderToStoreCreditStep = createStep(
   async function ({
     customer,
     amount,
+    order,
   }: {
     customer: CustomerDTO
     amount: BigNumberInput
+    order: OrderDTO
   }) {
     if (!customer?.has_account) {
       throw new MedusaError(
@@ -44,6 +46,23 @@ const validateRefundOrderToStoreCreditStep = createStep(
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Refund amount must be greater than 0"
+      )
+    }
+
+    // Guard the admin-callable endpoint: only an overpaid order (a negative
+    // pending difference) can be refunded to store credit. On a balanced or
+    // underpaid order, the negative order transaction added below would push
+    // the order into an artificial underpayment while still funding the
+    // customer's store credit.
+    const pendingDifference =
+      order.summary?.raw_pending_difference ??
+      order.summary?.pending_difference ??
+      0
+
+    if (MathBN.gte(pendingDifference, 0)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The order has no outstanding overpayment to refund to store credit"
       )
     }
   }
@@ -114,10 +133,6 @@ export interface RefundOrderToStoreCreditWorkflowInput {
    */
   amount: BigNumberInput
   /**
-   * The ID of the user that issued the refund.
-   */
-  created_by?: string
-  /**
    * An optional note to attach to the refund.
    */
   note?: string
@@ -159,13 +174,7 @@ export const refundOrderToStoreCreditWorkflow = createWorkflow(
   function (input: WorkflowData<RefundOrderToStoreCreditWorkflowInput>) {
     const orderQuery = useQueryGraphStep({
       entity: "order",
-      fields: [
-        "id",
-        "customer_id",
-        "currency_code",
-        "summary",
-        "payment_collections.id",
-      ],
+      fields: ["id", "customer_id", "currency_code", "summary"],
       filters: { id: input.order_id },
       options: { throwIfKeyNotFound: true },
     }).config({ name: "get-order-query" })
@@ -185,7 +194,11 @@ export const refundOrderToStoreCreditWorkflow = createWorkflow(
       return customerQuery.data[0] as CustomerDTO
     })
 
-    validateRefundOrderToStoreCreditStep({ customer, amount: input.amount })
+    validateRefundOrderToStoreCreditStep({
+      customer,
+      amount: input.amount,
+      order,
+    })
 
     const storeCreditAccountsQuery = useQueryGraphStep({
       entity: "store_credit_account",
@@ -211,7 +224,8 @@ export const refundOrderToStoreCreditWorkflow = createWorkflow(
     })
 
     // Cap the refund to the order's overpayment (the negative pending
-    // difference). This keeps the order balanced on the paid side and absorbs
+    // difference, guaranteed to exist by the validation step above). This never
+    // over-credits, keeps the order balanced on the paid side, and absorbs
     // sub-cent rounding: refunding the rounded amount (2.38) on a -2.376
     // overpayment settles pending_difference exactly on 0, with no credit line.
     const refundAmount = transform({ order, input }, ({ order, input }) => {
@@ -220,17 +234,12 @@ export const refundOrderToStoreCreditWorkflow = createWorkflow(
         order.summary?.pending_difference ??
         0
 
+      const overpayment = MathBN.mult(pendingDifference, -1)
       const amountToRefund = MathBN.convert(input.amount)
 
-      if (MathBN.lt(pendingDifference, 0)) {
-        const overpayment = MathBN.mult(pendingDifference, -1)
-
-        return MathBN.gt(amountToRefund, overpayment)
-          ? overpayment
-          : amountToRefund
-      }
-
-      return amountToRefund
+      return MathBN.gt(amountToRefund, overpayment)
+        ? overpayment
+        : amountToRefund
     })
 
     const creditAccountTransactions = transform(

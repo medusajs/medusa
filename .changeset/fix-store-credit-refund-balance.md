@@ -3,4 +3,4 @@
 "@medusajs/loyalty-plugin": patch
 ---
 
-fix(loyalty): refund an order overpayment to store credit
+fix(loyalty-plugin,dashboard): refund an order overpayment to store credit

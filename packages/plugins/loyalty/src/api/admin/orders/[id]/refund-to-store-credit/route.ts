@@ -19,7 +19,6 @@ export const POST = async (
       order_id: id,
       amount: req.validatedBody.amount,
       note: req.validatedBody.note,
-      created_by: req.auth_context.actor_id,
     },
     container: req.scope,
   })
@@ -30,7 +29,7 @@ export const POST = async (
   } = await query.graph(
     {
       entity: "order",
-      fields: req.queryConfig?.fields ?? ["*"],
+      fields: ["*"],
       filters: { id },
     },
     { throwIfKeyNotFound: true }
