@@ -22,7 +22,7 @@ import { Form } from "../../../../../components/common/form"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import {
-  useCreateOrderCreditLine,
+  useRefundOrderToStoreCredit,
   useRefundPayment,
 } from "../../../../../hooks/api"
 import { currencies } from "../../../../../lib/data/currencies"
@@ -87,8 +87,10 @@ export const OrderBalanceSettlementForm = ({
     resolver: zodResolver(OrderBalanceSettlementSchema),
   })
 
-  const { mutateAsync: createCreditLine, isPending: isCreditLinePending } =
-    useCreateOrderCreditLine(order.id)
+  const {
+    mutateAsync: refundToStoreCredit,
+    isPending: isStoreCreditPending
+  } = useRefundOrderToStoreCredit(order.id)
 
   const { mutateAsync: createRefund, isPending: isRefundPending } =
     useRefundPayment(order.id, activePayment?.id!)
@@ -100,11 +102,14 @@ export const OrderBalanceSettlementForm = ({
       if (data.credit_line?.amount.float === null) {
         return
       }
-      await createCreditLine(
+      // Refund as store credit via a transaction-based refund (loyalty plugin):
+      // it lowers the paid total so the outstanding amount returns to 0 without
+      // inflating the order total (credit_line_total stays 0), and absorbs the
+      // sub-cent rounding residual exactly like the payment-method refund.
+      await refundToStoreCredit(
         {
-          amount: data.credit_line!.amount.float! * -1,
-          reference: "refund",
-          reference_id: order.id,
+          amount: data.credit_line!.amount.float!,
+          note: data.credit_line?.note,
         },
         {
           onSuccess: () => {
@@ -366,6 +371,24 @@ export const OrderBalanceSettlementForm = ({
                     )
                   }}
                 />
+
+                <Form.Field
+                  control={form.control}
+                  name={`credit_line.note`}
+                  render={({ field }) => {
+                    return (
+                      <Form.Item>
+                        <Form.Label>{t("fields.note")}</Form.Label>
+
+                        <Form.Control>
+                          <Textarea {...field} />
+                        </Form.Control>
+
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )
+                  }}
+                />
               </>
             )}
           </div>
@@ -380,7 +403,7 @@ export const OrderBalanceSettlementForm = ({
             </RouteDrawer.Close>
 
             <Button
-              isLoading={isCreditLinePending || isRefundPending}
+              isLoading={isStoreCreditPending || isRefundPending}
               type="submit"
               variant="primary"
               size="small"

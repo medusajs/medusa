@@ -415,6 +415,47 @@ export const useCreateOrderCreditLine = (
   })
 }
 
+/**
+ * Refund an outstanding order amount to the customer's store credit account.
+ *
+ * Backed by the loyalty plugin endpoint (`refundOrderToStoreCreditWorkflow`),
+ * which adds a negative order transaction so the outstanding amount returns to
+ * zero without inflating the order total, and credits the customer's store
+ * credit account. Only ever called from the loyalty-gated balance settlement
+ * form, so the endpoint is guaranteed to exist when this runs.
+ */
+export const useRefundOrderToStoreCredit = (
+  orderId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminOrderResponse,
+    FetchError,
+    { amount: number; note?: string }
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) =>
+      sdk.client.fetch<HttpTypes.AdminOrderResponse>(
+        `/admin/orders/${orderId}/refund-to-store-credit`,
+        {
+          method: "POST",
+          body: payload,
+        }
+      ),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useUpdateOrderChange = (
   orderChangeId: string,
   options?: UseMutationOptions<
