@@ -13,6 +13,7 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
 } from "@medusajs/framework/types"
+import crypto from "node:crypto"
 import {
   InjectTransactionManager,
   InjectManager,
@@ -22,6 +23,7 @@ import {
   generateEntityId,
 } from "@medusajs/framework/utils"
 import {
+  AuthVerificationToken,
   AuthIdentity,
   AuthMfaFactor,
   AuthMfaRecoveryCode,
@@ -35,6 +37,7 @@ import AuthMfaProviderService from "./mfa-provider"
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   authIdentityService: ModulesSdkTypes.IMedusaInternalService<any>
+  authVerificationTokenService: ModulesSdkTypes.IMedusaInternalService<any>
   authMfaFactorService: ModulesSdkTypes.IMedusaInternalService<any>
   authMfaRecoveryCodeService: ModulesSdkTypes.IMedusaInternalService<any>
   providerIdentityService: ModulesSdkTypes.IMedusaInternalService<any>
@@ -55,6 +58,9 @@ export default class AuthModuleService
   protected authIdentityService_: ModulesSdkTypes.IMedusaInternalService<
     InferEntityType<typeof AuthIdentity>
   >
+  protected authVerificationTokenService_: ModulesSdkTypes.IMedusaInternalService<
+    InferEntityType<typeof AuthVerificationToken>
+  >
   protected authMfaFactorService_: ModulesSdkTypes.IMedusaInternalService<
     InferEntityType<typeof AuthMfaFactor>
   >
@@ -72,6 +78,7 @@ export default class AuthModuleService
   constructor(
     {
       authIdentityService,
+      authVerificationTokenService,
       authMfaFactorService,
       authMfaRecoveryCodeService,
       providerIdentityService,
@@ -88,6 +95,7 @@ export default class AuthModuleService
 
     this.baseRepository_ = baseRepository
     this.authIdentityService_ = authIdentityService
+    this.authVerificationTokenService_ = authVerificationTokenService
     this.authMfaFactorService_ = authMfaFactorService
     this.authMfaRecoveryCodeService_ = authMfaRecoveryCodeService
     this.authProviderService_ = authProviderService
@@ -168,11 +176,16 @@ export default class AuthModuleService
     authenticationData: AuthenticationInput
   ): Promise<AuthenticationResponse> {
     try {
-      return await this.authProviderService_.register(
+      const response = await this.authProviderService_.register(
         provider,
         authenticationData,
         this.getAuthIdentityProviderService(provider)
       )
+
+      return await this.applyVerificationRequirement_(response, {
+        actor_type: authenticationData.actor_type,
+        auth_provider: provider,
+      })
     } catch (error) {
       return { success: false, error: error.message }
     }
@@ -266,7 +279,15 @@ export default class AuthModuleService
         this.getAuthIdentityProviderService(provider)
       )
 
-      return await this.applyMfaRequirement_(response, {
+      const verificationResponse = await this.applyVerificationRequirement_(
+        response,
+        {
+          actor_type: authenticationData.actor_type,
+          auth_provider: provider,
+        }
+      )
+
+      return await this.applyMfaRequirement_(verificationResponse, {
         actor_type: authenticationData.actor_type,
         auth_provider: provider,
       })
@@ -627,6 +648,228 @@ export default class AuthModuleService
     }
   }
 
+  @InjectManager()
+  async createAuthVerificationToken(
+    data: AuthTypes.CreateAuthVerificationTokenDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.CreateAuthVerificationTokenResponse> {
+    return await this.createAuthVerificationToken_(data, sharedContext)
+  }
+
+  @InjectTransactionManager()
+  protected async createAuthVerificationToken_(
+    data: AuthTypes.CreateAuthVerificationTokenDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.CreateAuthVerificationTokenResponse> {
+    const token = this.generateVerificationToken_()
+
+    const createdToken = await this.authVerificationTokenService_.create(
+      {
+        auth_identity_id: data.auth_identity_id,
+        provider_identity_id: data.provider_identity_id,
+        entity_id: data.entity_id,
+        token_hash: this.hashVerificationToken_(token),
+        expires_at: data.expires_at,
+        metadata: data.metadata ?? null,
+      },
+      sharedContext
+    )
+
+    return {
+      token,
+      verification_token: await this.serializeVerificationToken_(createdToken),
+    }
+  }
+
+  @InjectManager()
+  async requestAuthVerification(
+    data: AuthTypes.RequestAuthVerificationDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.RequestAuthVerificationResponse> {
+    return await this.requestAuthVerification_(data, sharedContext)
+  }
+
+  @InjectTransactionManager()
+  protected async requestAuthVerification_(
+    data: AuthTypes.RequestAuthVerificationDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.RequestAuthVerificationResponse> {
+    const providerIdentity = await this.retrieveVerificationProviderIdentity_(
+      data.provider,
+      data.entity_id,
+      sharedContext
+    )
+
+    if (providerIdentity.provider_metadata?.verified_at) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Identity is already verified"
+      )
+    }
+
+    if (providerIdentity.provider_metadata?.requires_verification !== true) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Verification is not required"
+      )
+    }
+
+    await this.invalidateAuthVerificationTokens_(
+      providerIdentity.id,
+      sharedContext
+    )
+
+    const expiresAt = new Date(
+      Date.now() + this.getVerificationTokenTtlMs_(data.ttl_seconds)
+    )
+    const { token } = await this.createAuthVerificationToken_(
+      {
+        auth_identity_id: providerIdentity.auth_identity_id!,
+        provider_identity_id: providerIdentity.id,
+        entity_id: providerIdentity.entity_id,
+        expires_at: expiresAt,
+        metadata: data.metadata ?? null,
+      },
+      sharedContext
+    )
+
+    return {
+      token,
+      verification: {
+        actor_type: data.actor_type ?? null,
+        provider: data.provider,
+        auth_identity_id: providerIdentity.auth_identity_id!,
+        provider_identity_id: providerIdentity.id,
+        entity_id: providerIdentity.entity_id,
+        expires_at: expiresAt,
+        metadata: data.metadata ?? null,
+      },
+    }
+  }
+
+  @InjectManager()
+  async confirmAuthVerification(
+    data: AuthTypes.ConfirmAuthVerificationDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.ConfirmAuthVerificationResponse> {
+    return await this.confirmAuthVerification_(data, sharedContext)
+  }
+
+  @InjectTransactionManager()
+  protected async confirmAuthVerification_(
+    data: AuthTypes.ConfirmAuthVerificationDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.ConfirmAuthVerificationResponse> {
+    if (!data.token) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Verification token is required"
+      )
+    }
+
+    const [verificationToken] = await this.authVerificationTokenService_.list(
+      {
+        token_hash: this.hashVerificationToken_(data.token),
+      },
+      {},
+      sharedContext
+    )
+
+    if (!verificationToken) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Verification token is invalid or already used"
+      )
+    }
+
+    if (new Date(verificationToken.expires_at).getTime() <= Date.now()) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Verification token has expired"
+      )
+    }
+
+    const providerIdentity = await this.providerIdentityService_.retrieve(
+      verificationToken.provider_identity_id,
+      {},
+      sharedContext
+    )
+    const expectedProvider = (
+      data as AuthTypes.ConfirmAuthVerificationDTO & {
+        provider?: string
+      }
+    ).provider
+
+    if (expectedProvider && providerIdentity.provider !== expectedProvider) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Verification token does not belong to provider "${expectedProvider}"`
+      )
+    }
+
+    const verifiedAt = new Date(Date.now())
+
+    await this.providerIdentityService_.update(
+      {
+        id: providerIdentity.id,
+        provider_metadata: {
+          ...(providerIdentity.provider_metadata ?? {}),
+          verified_at:
+            providerIdentity.provider_metadata?.verified_at ??
+            verifiedAt.toISOString(),
+          requires_verification: false,
+        },
+      },
+      sharedContext
+    )
+
+    await this.authVerificationTokenService_.delete(
+      verificationToken.id,
+      sharedContext
+    )
+
+    return {
+      verified: true,
+      auth_identity_id: verificationToken.auth_identity_id!,
+      provider_identity_id: verificationToken.provider_identity_id!,
+      entity_id: verificationToken.entity_id,
+    }
+  }
+
+  protected async applyVerificationRequirement_(
+    response: AuthenticationResponse,
+    context: Pick<
+      AuthTypes.CreateAuthMfaChallengeDTO,
+      "actor_type" | "auth_provider"
+    >
+  ): Promise<AuthenticationResponse> {
+    if (!response.success || !response.authIdentity || response.location) {
+      return response
+    }
+
+    const providerIdentity = response.authIdentity.provider_identities?.find(
+      (providerIdentity) => providerIdentity.provider === context.auth_provider
+    )
+    const providerMetadata = providerIdentity?.provider_metadata ?? {}
+
+    if (
+      !providerIdentity ||
+      providerMetadata.requires_verification !== true ||
+      providerMetadata.verified_at
+    ) {
+      return response
+    }
+
+    return {
+      success: true,
+      verification: {
+        actor_type: context.actor_type ?? null,
+        provider: providerIdentity.provider,
+        entity_id: providerIdentity.entity_id,
+      },
+    }
+  }
+
   protected async applyMfaRequirement_(
     response: AuthenticationResponse,
     context: Pick<
@@ -763,6 +1006,83 @@ export default class AuthModuleService
         `MFA challenge does not support method "${method}"`
       )
     }
+  }
+
+  protected async retrieveVerificationProviderIdentity_(
+    provider: string,
+    entityId: string,
+    sharedContext: Context = {}
+  ): Promise<AuthTypes.ProviderIdentityDTO> {
+    const [providerIdentity] = await this.providerIdentityService_.list(
+      {
+        provider,
+        entity_id: entityId,
+      },
+      {},
+      sharedContext
+    )
+
+    if (!providerIdentity) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `ProviderIdentity with entity_id "${entityId}" was not found`
+      )
+    }
+
+    return await this.baseRepository_.serialize<AuthTypes.ProviderIdentityDTO>(
+      providerIdentity
+    )
+  }
+
+  protected async invalidateAuthVerificationTokens_(
+    providerIdentityId: string,
+    sharedContext: Context = {}
+  ): Promise<void> {
+    const existingTokens = await this.authVerificationTokenService_.list(
+      {
+        provider_identity_id: providerIdentityId,
+      },
+      { select: ["id"] },
+      sharedContext
+    )
+    const tokenIds = existingTokens.map((token) => token.id)
+
+    if (tokenIds.length) {
+      await this.authVerificationTokenService_.delete(tokenIds, sharedContext)
+    }
+  }
+
+  protected async serializeVerificationToken_(
+    token: InferEntityType<typeof AuthVerificationToken>
+  ): Promise<AuthTypes.AuthVerificationTokenDTO> {
+    const serialized = await this.baseRepository_.serialize<
+      AuthTypes.AuthVerificationTokenDTO & {
+        token_hash?: string
+      }
+    >(token)
+
+    delete serialized.token_hash
+
+    return serialized
+  }
+
+  protected generateVerificationToken_(): string {
+    return crypto.randomBytes(32).toString("base64url")
+  }
+
+  protected hashVerificationToken_(token: string): string {
+    return crypto.createHash("sha256").update(token).digest("hex")
+  }
+
+  protected getVerificationTokenTtlMs_(ttlSeconds = 900): number {
+    if (!Number.isInteger(ttlSeconds) || ttlSeconds < 1) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Verification token TTL must be a positive integer"
+      )
+    }
+
+    return ttlSeconds * 1000
   }
 
   protected getMfaChallengeConfig_(): {

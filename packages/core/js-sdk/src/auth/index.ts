@@ -29,12 +29,44 @@ export type AuthMfaRequiredResponse = {
 }
 
 /**
+ * Response returned when authentication succeeds but must be completed with
+ * verification before issuing a token.
+ */
+export type AuthVerificationRequiredResponse = {
+  /**
+   * Indicates that the client must complete verification.
+   */
+  verification_required: true
+  /**
+   * The verification state to show to the caller.
+   */
+  verification: AuthTypes.AuthVerification
+}
+
+/**
+ * Response returned from a registration attempt.
+ */
+export type AuthRegisterResponse = string | AuthVerificationRequiredResponse
+
+/**
+ * Options used when registering with an auth provider.
+ */
+export type AuthRegisterOptions = {
+  /**
+   * Return verification state instead of throwing when registration
+   * requires verification before a token can be issued.
+   */
+  returnVerification?: boolean
+}
+
+/**
  * Response returned from an authentication attempt.
  */
 export type AuthLoginResponse =
   | string
   | AuthRedirectResponse
   | AuthMfaRequiredResponse
+  | AuthVerificationRequiredResponse
 
 /**
  * Response returned from an authentication callback.
@@ -162,11 +194,61 @@ export type AuthMfaVerifyChallengePayload = {
   code: string
 }
 
+/**
+ * Payload used to request a verification token.
+ */
+export type AuthVerificationRequestPayload = {
+  /**
+   * The provider identity to verify.
+   */
+  entity_id: string
+  /**
+   * Optional metadata to include in the verification request event.
+   */
+  metadata?: Record<string, unknown>
+}
+
+/**
+ * Payload used to confirm a verification token.
+ */
+export type AuthVerificationConfirmPayload = {
+  /**
+   * The verification token delivered to the user.
+   */
+  token: string
+}
+
+/**
+ * Response returned after requesting a verification token.
+ */
+export type AuthVerificationRequestResponse = {
+  /**
+   * The verification state.
+   */
+  verification: AuthTypes.AuthVerification
+}
+
+/**
+ * Response returned after confirming verification.
+ */
+export type AuthVerificationConfirmResponse = {
+  /**
+   * The verified provider identity.
+   */
+  entity_id: string
+  /**
+   * Indicates the identity was verified.
+   */
+  verified: true
+}
+
 type AuthProviderResponse = {
   token?: string
   location?: string
   mfa_required?: true
   mfa_challenge?: AuthTypes.AuthMfaChallengeDTO
+  verification_required?: true
+  verification?: AuthTypes.AuthVerification
 }
 
 export class Auth {
@@ -374,6 +456,63 @@ export class Auth {
   }
 
   /**
+   * Methods for requesting and confirming verification.
+   */
+  verification = {
+    /**
+     * This method requests a verification token for an auth identity.
+     *
+     * @param actor - The actor type. For example, `user` for admin user, or `customer` for customer.
+     * @param provider - The authentication provider to use. For example, `emailpass`.
+     * @param body - The verification request details.
+     * @param headers - Headers to pass in the request.
+     *
+     * @tags auth
+     */
+    request: async (
+      actor: string,
+      provider: string,
+      body: AuthVerificationRequestPayload,
+      headers?: ClientHeaders
+    ) => {
+      return await this.client.fetch<AuthVerificationRequestResponse>(
+        `/auth/${actor}/${provider}/verification/request`,
+        {
+          method: "POST",
+          body,
+          headers,
+        }
+      )
+    },
+
+    /**
+     * This method confirms a verification token.
+     *
+     * @param actor - The actor type. For example, `user` for admin user, or `customer` for customer.
+     * @param provider - The authentication provider to use. For example, `emailpass`.
+     * @param body - The verification token details.
+     * @param headers - Headers to pass in the request.
+     *
+     * @tags auth
+     */
+    confirm: async (
+      actor: string,
+      provider: string,
+      body: AuthVerificationConfirmPayload,
+      headers?: ClientHeaders
+    ) => {
+      return await this.client.fetch<AuthVerificationConfirmResponse>(
+        `/auth/${actor}/${provider}/verification/confirm`,
+        {
+          method: "POST",
+          body,
+          headers,
+        }
+      )
+    },
+  }
+
+  /**
    * This method is used to retrieve a registration JWT token for a user, customer, or custom actor type. It sends a request to the
    * [Retrieve Registration Token API route](https://docs.medusajs.com/api/store#auth_postactor_typeauth_provider_register).
    *
@@ -387,6 +526,7 @@ export class Auth {
    * @param method - The authentication provider to use. For example, `emailpass` or `google`.
    * @param payload - The data to pass in the request's body for authentication. When using the `emailpass` provider,
    * you pass the email and password.
+   * @param options - Optional behavior for multi-step registration responses.
    * @returns The JWT token used for registration later.
    *
    * @tags auth
@@ -407,22 +547,52 @@ export class Auth {
    *   password: "supersecret"
    * })
    */
-  register = async (
+  register = (async (
     actor: string,
     method: string,
-    payload: HttpTypes.AdminSignUpWithEmailPassword | Record<string, unknown>
-  ) => {
-    const { token } = await this.client.fetch<{ token: string }>(
-      `/auth/${actor}/${method}/register`,
-      {
-        method: "POST",
-        body: payload,
+    payload: HttpTypes.AdminSignUpWithEmailPassword | Record<string, unknown>,
+    options?: AuthRegisterOptions
+  ): Promise<AuthRegisterResponse> => {
+    const { token, verification_required, verification } =
+      await this.client.fetch<AuthProviderResponse>(
+        `/auth/${actor}/${method}/register`,
+        {
+          method: "POST",
+          body: payload,
+        }
+      )
+
+    if (verification_required && verification) {
+      if (options?.returnVerification) {
+        return {
+          verification_required: true,
+          verification,
+        }
       }
-    )
+
+      throw new Error("Unexpected registration response")
+    }
+
+    if (!token) {
+      throw new Error("Unexpected registration response")
+    }
 
     this.client.setToken(token)
 
     return token
+  }) as {
+    (
+      actor: string,
+      method: string,
+      payload: HttpTypes.AdminSignUpWithEmailPassword | Record<string, unknown>,
+      options: AuthRegisterOptions & { returnVerification: true }
+    ): Promise<AuthRegisterResponse>
+    (
+      actor: string,
+      method: string,
+      payload: HttpTypes.AdminSignUpWithEmailPassword | Record<string, unknown>,
+      options?: AuthRegisterOptions
+    ): Promise<string>
   }
 
   /**
@@ -490,12 +660,27 @@ export class Auth {
     method: string,
     payload: HttpTypes.AdminSignInWithEmailPassword | Record<string, unknown>
   ): Promise<AuthLoginResponse> => {
-    // There will either be token, location, or MFA challenge returned from the backend.
-    const { token, location, mfa_challenge } =
-      await this.client.fetch<AuthProviderResponse>(`/auth/${actor}/${method}`, {
+    // There will either be token, location, MFA challenge, or verification returned from the backend.
+    const {
+      token,
+      location,
+      mfa_challenge,
+      verification_required,
+      verification,
+    } = await this.client.fetch<AuthProviderResponse>(
+      `/auth/${actor}/${method}`,
+      {
         method: "POST",
         body: payload,
-      })
+      }
+    )
+
+    if (verification_required && verification) {
+      return {
+        verification_required: true,
+        verification,
+      }
+    }
 
     if (mfa_challenge) {
       return {
