@@ -18,6 +18,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -200,6 +203,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -390,6 +396,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -581,6 +590,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -760,6 +772,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -942,6 +957,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -1127,6 +1145,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -1362,6 +1383,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -1557,6 +1581,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -1809,6 +1836,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -2140,6 +2170,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -2342,6 +2375,9 @@ describe("defineConfig", function () {
                 "oauth_authorize_endpoint": "test-oauth-authorize-endpoint",
                 "oauth_token_endpoint": "test-oauth-token-endpoint",
                 "sandbox_handle": undefined,
+              },
+              "mfa": {
+                "encryption_key": undefined,
               },
               "providers": [
                 {
@@ -2563,6 +2599,9 @@ describe("defineConfig", function () {
                 "oauth_authorize_endpoint": "test-oauth-authorize-endpoint",
                 "oauth_token_endpoint": "test-oauth-token-endpoint",
                 "sandbox_handle": "test-sandbox",
+              },
+              "mfa": {
+                "encryption_key": undefined,
               },
               "providers": [
                 {
@@ -2793,6 +2832,9 @@ describe("defineConfig", function () {
                 "oauth_authorize_endpoint": "overriden-oauth-authorize-endpoint",
                 "oauth_token_endpoint": "overriden-oauth-token-endpoint",
                 "sandbox_handle": undefined,
+              },
+              "mfa": {
+                "encryption_key": undefined,
               },
               "providers": [
                 {
