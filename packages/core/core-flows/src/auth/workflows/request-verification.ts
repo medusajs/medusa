@@ -9,8 +9,18 @@ import {
 import { emitEventStep } from "../../common"
 import { requestVerificationStep } from "../steps"
 
+/**
+ * The ID of the request verification workflow.
+ * 
+ * @since 2.15.5
+ */
 export const requestVerificationWorkflowId = "request-verification-workflow"
 
+/**
+ * This workflow requests authentication verification.
+ * 
+ * @since 2.15.5
+ */
 export const requestVerificationWorkflow = createWorkflow(
   requestVerificationWorkflowId,
   (
