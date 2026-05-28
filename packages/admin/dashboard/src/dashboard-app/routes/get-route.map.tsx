@@ -33,8 +33,10 @@ export function getRouteMap({
             {
               path: "/products",
               errorElement: <ErrorBoundary />,
+              element: <RoutePermissionGuard />,
               handle: {
                 breadcrumb: () => t("products.domain"),
+                permissions: "product:read",
               },
               children: [
                 {
@@ -45,16 +47,19 @@ export function getRouteMap({
                       path: "create",
                       lazy: () =>
                         import("../../routes/products/product-create"),
+                      handle: { permissions: "product:create" },
                     },
                     {
                       path: "import",
                       lazy: () =>
                         import("../../routes/products/product-import"),
+                      handle: { permissions: "product:create" },
                     },
                     {
                       path: "export",
                       lazy: () =>
                         import("../../routes/products/product-export"),
+                      handle: { permissions: "product:read" },
                     },
                   ],
                 },
@@ -86,6 +91,7 @@ export function getRouteMap({
                           path: "edit",
                           lazy: () =>
                             import("../../routes/products/product-edit"),
+                          handle: { permissions: "product:update" },
                         },
                         {
                           path: "edit-variant",
@@ -93,6 +99,12 @@ export function getRouteMap({
                             import(
                               "../../routes/product-variants/product-variant-edit"
                             ),
+                          handle: {
+                            permissions: [
+                              "product:update",
+                              "product_variant:update",
+                            ],
+                          },
                         },
                         {
                           path: "sales-channels",
@@ -100,11 +112,13 @@ export function getRouteMap({
                             import(
                               "../../routes/products/product-sales-channels"
                             ),
+                          handle: { permissions: "product:update" },
                         },
                         {
                           path: "attributes",
                           lazy: () =>
                             import("../../routes/products/product-attributes"),
+                          handle: { permissions: "product:update" },
                         },
                         {
                           path: "organization",
@@ -112,6 +126,7 @@ export function getRouteMap({
                             import(
                               "../../routes/products/product-organization"
                             ),
+                          handle: { permissions: "product:update" },
                         },
                         {
                           path: "shipping-profile",
@@ -119,11 +134,13 @@ export function getRouteMap({
                             import(
                               "../../routes/products/product-shipping-profile"
                             ),
+                          handle: { permissions: "product:update" },
                         },
                         {
                           path: "media",
                           lazy: () =>
                             import("../../routes/products/product-media"),
+                          handle: { permissions: "product:update" },
                         },
                         {
                           path: "images/:image_id/variants",
@@ -131,11 +148,24 @@ export function getRouteMap({
                             import(
                               "../../routes/products/product-image-variants-edit"
                             ),
+                          handle: {
+                            permissions: [
+                              "product:update",
+                              "product_variant:update",
+                            ],
+                          },
                         },
                         {
                           path: "prices",
                           lazy: () =>
                             import("../../routes/products/product-prices"),
+                          handle: {
+                            permissions: [
+                              "product:update",
+                              "product_variant:update",
+                              "price:update",
+                            ],
+                          },
                         },
                         {
                           path: "options/create",
@@ -143,11 +173,23 @@ export function getRouteMap({
                             import(
                               "../../routes/products/product-create-option"
                             ),
+                          handle: {
+                            permissions: [
+                              "product:update",
+                              "product_option:create",
+                            ],
+                          },
                         },
                         {
                           path: "options/:option_id/edit",
                           lazy: () =>
                             import("../../routes/products/product-edit-option"),
+                          handle: {
+                            permissions: [
+                              "product:update",
+                              "product_option:update",
+                            ],
+                          },
                         },
                         {
                           path: "variants/create",
@@ -155,16 +197,30 @@ export function getRouteMap({
                             import(
                               "../../routes/products/product-create-variant"
                             ),
+                          handle: {
+                            permissions: [
+                              "product:update",
+                              "product_variant:create",
+                            ],
+                          },
                         },
                         {
                           path: "stock",
                           lazy: () =>
                             import("../../routes/products/product-stock"),
+                          handle: {
+                            permissions: [
+                              "product:update",
+                              "product_variant:update",
+                              "inventory_level:update",
+                            ],
+                          },
                         },
                         {
                           path: "metadata/edit",
                           lazy: () =>
                             import("../../routes/products/product-metadata"),
+                          handle: { permissions: "product:update" },
                         },
                       ],
                     },
@@ -193,11 +249,24 @@ export function getRouteMap({
                             import(
                               "../../routes/product-variants/product-variant-edit"
                             ),
+                          handle: {
+                            permissions: [
+                              "product:update",
+                              "product_variant:update",
+                            ],
+                          },
                         },
                         {
                           path: "prices",
                           lazy: () =>
                             import("../../routes/products/product-prices"),
+                          handle: {
+                            permissions: [
+                              "product:update",
+                              "product_variant:update",
+                              "price:update",
+                            ],
+                          },
                         },
                         {
                           path: "manage-items",
@@ -205,6 +274,13 @@ export function getRouteMap({
                             import(
                               "../../routes/product-variants/product-variant-manage-inventory-items"
                             ),
+                          handle: {
+                            permissions: [
+                              "product:update",
+                              "product_variant:update",
+                              "inventory_level:update",
+                            ],
+                          },
                         },
                         {
                           path: "media",
@@ -212,6 +288,12 @@ export function getRouteMap({
                             import(
                               "../../routes/product-variants/product-variant-media"
                             ),
+                          handle: {
+                            permissions: [
+                              "product:update",
+                              "product_variant:update",
+                            ],
+                          },
                         },
                         {
                           path: "metadata/edit",
@@ -219,6 +301,12 @@ export function getRouteMap({
                             import(
                               "../../routes/product-variants/product-variant-metadata"
                             ),
+                          handle: {
+                            permissions: [
+                              "product:update",
+                              "product_variant:update",
+                            ],
+                          },
                         },
                       ],
                     },

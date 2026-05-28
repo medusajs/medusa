@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next"
 
 import { useStore } from "../../../hooks/api/store"
 import { PermissionGuard } from "../../common/permission-guard"
+import { usePermissions } from "../../../providers/permissions-provider"
 import { Skeleton } from "../../common/skeleton"
 import { INavItem, NavItem } from "../../layout/nav-item"
 import { Shell } from "../../layout/shell"
@@ -181,6 +182,11 @@ const Header = () => {
 
 const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
   const { t } = useTranslation()
+  const { hasPermission } = usePermissions()
+
+  const canReadProducts = hasPermission("product:read")
+  const canReadProductCollections = hasPermission("product_collection:read")
+  const canReadProductCategories = hasPermission("product_category:read")
 
   return [
     {
@@ -195,26 +201,38 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
         // },
       ],
     },
-    {
-      icon: <Tag />,
-      label: t("products.domain"),
-      to: "/products",
-      items: [
-        {
-          label: t("collections.domain"),
-          to: "/collections",
-        },
-        {
-          label: t("categories.domain"),
-          to: "/categories",
-        },
-        // TODO: Enable when domin is introduced
-        // {
-        //   label: t("giftCards.domain"),
-        //   to: "/gift-cards",
-        // },
-      ],
-    },
+    ...(canReadProducts
+      ? [
+          {
+            icon: <Tag />,
+            label: t("products.domain"),
+            to: "/products",
+            items: [
+              ...(canReadProductCollections
+                ? [
+                    {
+                      label: t("collections.domain"),
+                      to: "/collections",
+                    },
+                  ]
+                : []),
+              ...(canReadProductCategories
+                ? [
+                    {
+                      label: t("categories.domain"),
+                      to: "/categories",
+                    },
+                  ]
+                : []),
+              // TODO: Enable when domin is introduced
+              // {
+              //   label: t("giftCards.domain"),
+              //   to: "/gift-cards",
+              // },
+            ],
+          },
+        ]
+      : []),
     {
       icon: <Buildings />,
       label: t("inventory.domain"),
