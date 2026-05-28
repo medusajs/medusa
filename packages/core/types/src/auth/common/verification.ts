@@ -13,7 +13,6 @@ export type AuthVerificationTokenDTO = {
   provider_identity_id?: string
   entity_id: string
   expires_at: Date
-  used_at?: Date | null
   metadata?: Record<string, unknown> | null
   created_at?: Date
   updated_at?: Date

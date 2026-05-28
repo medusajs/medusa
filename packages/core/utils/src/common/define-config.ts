@@ -179,7 +179,7 @@ function resolveModules(
 ): Exclude<ConfigModule["modules"], undefined> {
   const authMfaEncryptionKey = process.env.AUTH_MFA_ENCRYPTION_KEY
   const authModuleOptions = {
-    ...(authMfaEncryptionKey !== undefined
+    ...(authMfaEncryptionKey
       ? {
           mfa: {
             encryption_key: authMfaEncryptionKey,

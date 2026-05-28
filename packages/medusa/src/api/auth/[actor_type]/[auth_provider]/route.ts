@@ -41,17 +41,17 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     return res.status(200).json({ location })
   }
 
-  if (success && mfa_challenge) {
-    return res.status(200).json({
-      mfa_required: true,
-      mfa_challenge,
-    })
-  }
-
   if (success && verification) {
     return res.status(200).json({
       verification_required: true,
       verification,
+    })
+  }
+
+  if (success && mfa_challenge) {
+    return res.status(200).json({
+      mfa_required: true,
+      mfa_challenge,
     })
   }
 

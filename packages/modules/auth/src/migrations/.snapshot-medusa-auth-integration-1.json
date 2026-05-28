@@ -102,22 +102,6 @@
           "enumItems": [],
           "mappedType": "datetime"
         },
-        "used_at": {
-          "name": "used_at",
-          "type": "timestamptz(6)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "unique": false,
-          "length": 6,
-          "precision": null,
-          "scale": null,
-          "default": null,
-          "comment": null,
-          "enumItems": [],
-          "mappedType": "datetime"
-        },
         "metadata": {
           "name": "metadata",
           "type": "jsonb",

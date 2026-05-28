@@ -14,7 +14,6 @@ export const AuthVerificationToken = model
     entity_id: model.text(),
     token_hash: model.text(),
     expires_at: model.dateTime(),
-    used_at: model.dateTime().nullable(),
     metadata: model.json().nullable(),
   })
   .indexes([

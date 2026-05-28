@@ -1,11 +1,8 @@
-import jwt from "jsonwebtoken"
-
 jest.mock("@medusajs/core-flows", () => ({
   requestVerificationWorkflow: jest.fn(),
 }))
 
 import { requestVerificationWorkflow } from "@medusajs/core-flows"
-import { MedusaError } from "@medusajs/framework/utils"
 import { POST as confirmVerification } from "../../[actor_type]/[auth_provider]/verification/confirm/route"
 import { POST as requestVerification } from "../../[actor_type]/[auth_provider]/verification/request/route"
 import { POST as register } from "../../[actor_type]/[auth_provider]/register/route"
@@ -191,7 +188,7 @@ describe("Verification auth routes", () => {
     })
   })
 
-  it("confirms verification and issues an auth token", async () => {
+  it("confirms verification without issuing an auth token", async () => {
     const authService = {
       confirmAuthVerification: jest.fn().mockResolvedValue({
         verified: true,
@@ -199,29 +196,6 @@ describe("Verification auth routes", () => {
         provider_identity_id: "provider_identity_1",
         entity_id: "test@example.com",
       }),
-      retrieveAuthIdentity: jest.fn().mockResolvedValue({
-        id: "auth_identity_1",
-        app_metadata: {
-          user_id: "user_1",
-        },
-        provider_identities: [
-          {
-            id: "provider_identity_1",
-            provider: "emailpass",
-            user_metadata: {
-              entity_id: "test@example.com",
-            },
-          },
-        ],
-      }),
-      createAuthMfaChallenge: jest
-        .fn()
-        .mockRejectedValue(
-          new MedusaError(
-            MedusaError.Types.NOT_ALLOWED,
-            "Auth identity does not have any enabled MFA methods"
-          )
-        ),
     }
     const req = createRequest({
       authService,
@@ -236,87 +210,9 @@ describe("Verification auth routes", () => {
     expect(authService.confirmAuthVerification).toHaveBeenCalledWith({
       token: "verify-token",
       provider: "emailpass",
-    })
-    expect(authService.retrieveAuthIdentity).toHaveBeenCalledWith(
-      "auth_identity_1",
-      { relations: ["provider_identities"] }
-    )
-    expect(res.status).toHaveBeenCalledWith(200)
-    const responseBody = res.json.mock.calls[0][0]
-    const decoded = jwt.decode(responseBody.token) as Record<string, unknown>
-
-    expect(decoded).toEqual(
-      expect.objectContaining({
-        actor_id: "user_1",
-        actor_type: "user",
-        auth_identity_id: "auth_identity_1",
-        auth_provider: "emailpass",
-      })
-    )
-    expect(responseBody).toEqual({
-      token: expect.any(String),
-      entity_id: "test@example.com",
-      verified: true,
-    })
-  })
-
-  it("returns an MFA challenge after verification when MFA is available", async () => {
-    const mfaChallenge = {
-      id: "challenge_1",
-      auth_identity_id: "auth_identity_1",
-      actor_type: "user",
-      auth_provider: "emailpass",
-      methods: ["totp"],
-      attempts: 0,
-      max_attempts: 5,
-    }
-    const authService = {
-      confirmAuthVerification: jest.fn().mockResolvedValue({
-        verified: true,
-        auth_identity_id: "auth_identity_1",
-        provider_identity_id: "provider_identity_1",
-        entity_id: "test@example.com",
-      }),
-      retrieveAuthIdentity: jest.fn().mockResolvedValue({
-        id: "auth_identity_1",
-        app_metadata: {
-          user_id: "user_1",
-        },
-        provider_identities: [
-          {
-            id: "provider_identity_1",
-            provider: "emailpass",
-            user_metadata: {
-              entity_id: "test@example.com",
-            },
-          },
-        ],
-      }),
-      createAuthMfaChallenge: jest.fn().mockResolvedValue(mfaChallenge),
-    }
-    const req = createRequest({
-      authService,
-      validatedBody: {
-        token: "verify-token",
-      },
-    })
-    const res = createResponse()
-
-    await confirmVerification(req, res)
-
-    expect(authService.confirmAuthVerification).toHaveBeenCalledWith({
-      token: "verify-token",
-      provider: "emailpass",
-    })
-    expect(authService.createAuthMfaChallenge).toHaveBeenCalledWith({
-      auth_identity_id: "auth_identity_1",
-      actor_type: "user",
-      auth_provider: "emailpass",
     })
     expect(res.status).toHaveBeenCalledWith(200)
     expect(res.json).toHaveBeenCalledWith({
-      mfa_required: true,
-      mfa_challenge: mfaChallenge,
       entity_id: "test@example.com",
       verified: true,
     })

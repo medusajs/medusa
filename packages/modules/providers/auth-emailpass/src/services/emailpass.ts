@@ -27,6 +27,7 @@ type AuthIdentityParams = {
 type ProviderMetadata = {
   password?: unknown
   verified_at?: string | null
+  requires_verification?: boolean
 }
 
 interface LocalServiceConfig extends EmailPassAuthProviderOptions {}
@@ -231,9 +232,10 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
 
     if (
       this.requiresVerification_() &&
-      !Object.prototype.hasOwnProperty.call(providerMetadata, "verified_at")
+      !providerMetadata.verified_at &&
+      providerMetadata.requires_verification !== false
     ) {
-      providerMetadata.verified_at = null
+      providerMetadata.requires_verification = true
     }
 
     const authIdentity =

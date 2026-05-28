@@ -670,7 +670,6 @@ export default class AuthModuleService
         entity_id: data.entity_id,
         token_hash: this.hashVerificationToken_(token),
         expires_at: data.expires_at,
-        used_at: null,
         metadata: data.metadata ?? null,
       },
       sharedContext
@@ -701,22 +700,17 @@ export default class AuthModuleService
       sharedContext
     )
 
-    if (
-      !Object.prototype.hasOwnProperty.call(
-        providerIdentity.provider_metadata ?? {},
-        "verified_at"
-      )
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Verification is not required"
-      )
-    }
-
     if (providerIdentity.provider_metadata?.verified_at) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "Identity is already verified"
+      )
+    }
+
+    if (providerIdentity.provider_metadata?.requires_verification !== true) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Verification is not required"
       )
     }
 
@@ -781,7 +775,7 @@ export default class AuthModuleService
       sharedContext
     )
 
-    if (!verificationToken || verificationToken.used_at) {
+    if (!verificationToken) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "Verification token is invalid or already used"
@@ -823,16 +817,14 @@ export default class AuthModuleService
           verified_at:
             providerIdentity.provider_metadata?.verified_at ??
             verifiedAt.toISOString(),
+          requires_verification: false,
         },
       },
       sharedContext
     )
 
-    await this.authVerificationTokenService_.update(
-      {
-        id: verificationToken.id,
-        used_at: verifiedAt,
-      },
+    await this.authVerificationTokenService_.delete(
+      verificationToken.id,
       sharedContext
     )
 
@@ -862,7 +854,7 @@ export default class AuthModuleService
 
     if (
       !providerIdentity ||
-      !Object.prototype.hasOwnProperty.call(providerMetadata, "verified_at") ||
+      providerMetadata.requires_verification !== true ||
       providerMetadata.verified_at
     ) {
       return response
@@ -1050,12 +1042,10 @@ export default class AuthModuleService
       {
         provider_identity_id: providerIdentityId,
       },
-      { select: ["id", "used_at"] },
+      { select: ["id"] },
       sharedContext
     )
-    const tokenIds = existingTokens
-      .filter((token) => !token.used_at)
-      .map((token) => token.id)
+    const tokenIds = existingTokens.map((token) => token.id)
 
     if (tokenIds.length) {
       await this.authVerificationTokenService_.delete(tokenIds, sharedContext)
@@ -1084,7 +1074,7 @@ export default class AuthModuleService
     return crypto.createHash("sha256").update(token).digest("hex")
   }
 
-  protected getVerificationTokenTtlMs_(ttlSeconds = 86400): number {
+  protected getVerificationTokenTtlMs_(ttlSeconds = 900): number {
     if (!Number.isInteger(ttlSeconds) || ttlSeconds < 1) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,

@@ -405,7 +405,6 @@ describe("Auth", () => {
           })
 
           return HttpResponse.json({
-            token,
             entity_id: "test@example.com",
             verified: true,
           })
@@ -431,41 +430,6 @@ describe("Auth", () => {
         token: "verify-token",
       })
     ).resolves.toEqual({
-      token,
-      entity_id: "test@example.com",
-      verified: true,
-    })
-    expect(storage.setItem).toHaveBeenCalledWith(jwtTokenStorageKey, token)
-  })
-
-  it("returns an MFA challenge from verification confirmation without storing a token", async () => {
-    server.use(
-      http.post(
-        `${baseUrl}/auth/user/emailpass/verification/confirm`,
-        async ({ request }) => {
-          expect(await request.json()).toEqual({
-            token: "verify-token",
-          })
-
-          return HttpResponse.json({
-            mfa_required: true,
-            mfa_challenge: mfaChallenge,
-            entity_id: "test@example.com",
-            verified: true,
-          })
-        }
-      )
-    )
-
-    const auth = createAuth()
-
-    await expect(
-      auth.verification.confirm("user", "emailpass", {
-        token: "verify-token",
-      })
-    ).resolves.toEqual({
-      mfa_required: true,
-      mfa_challenge: mfaChallenge,
       entity_id: "test@example.com",
       verified: true,
     })

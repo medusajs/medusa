@@ -231,31 +231,16 @@ export type AuthVerificationRequestResponse = {
 /**
  * Response returned after confirming verification.
  */
-export type AuthVerificationConfirmResponse =
-  | {
-      /**
-       * The authentication JWT token.
-       */
-      token: string
-      /**
-       * The verified provider identity.
-       */
-      entity_id: string
-      /**
-       * Indicates the identity was verified.
-       */
-      verified: true
-    }
-  | (AuthMfaRequiredResponse & {
-      /**
-       * The verified provider identity.
-       */
-      entity_id: string
-      /**
-       * Indicates the identity was verified.
-       */
-      verified: true
-    })
+export type AuthVerificationConfirmResponse = {
+  /**
+   * The verified provider identity.
+   */
+  entity_id: string
+  /**
+   * Indicates the identity was verified.
+   */
+  verified: true
+}
 
 type AuthProviderResponse = {
   token?: string
@@ -503,9 +488,6 @@ export class Auth {
     /**
      * This method confirms a verification token.
      *
-     * If verification succeeds without requiring MFA, the returned token is
-     * stored based on the SDK's auth configuration, matching `sdk.auth.login`.
-     *
      * @param actor - The actor type. For example, `user` for admin user, or `customer` for customer.
      * @param provider - The authentication provider to use. For example, `emailpass`.
      * @param body - The verification token details.
@@ -519,7 +501,7 @@ export class Auth {
       body: AuthVerificationConfirmPayload,
       headers?: ClientHeaders
     ) => {
-      const response = await this.client.fetch<AuthVerificationConfirmResponse>(
+      return await this.client.fetch<AuthVerificationConfirmResponse>(
         `/auth/${actor}/${provider}/verification/confirm`,
         {
           method: "POST",
@@ -527,13 +509,6 @@ export class Auth {
           headers,
         }
       )
-
-      if ("mfa_challenge" in response) {
-        return response
-      }
-
-      await this.setToken_(response.token)
-      return response
     },
   }
 

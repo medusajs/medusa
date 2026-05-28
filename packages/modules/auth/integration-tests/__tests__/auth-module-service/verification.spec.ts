@@ -82,7 +82,7 @@ const createUnverifiedIdentity = async (service: IAuthModuleService) => {
         provider: "emailpass",
         provider_metadata: {
           password: "plaintext",
-          verified_at: null,
+          requires_verification: true,
         },
       },
     ],
@@ -136,7 +136,17 @@ moduleIntegrationTestRunner<IAuthModuleService>({
 
         expect(storedToken.token_hash).not.toEqual(result.token)
         expect(storedToken.token_hash).toMatch(/^[a-f0-9]{64}$/)
-        expect(storedToken.used_at).toBeNull()
+      })
+
+      it("uses a short default token TTL", async () => {
+        const result = await service.requestAuthVerification({
+          provider: "emailpass",
+          entity_id: "verify@test.com",
+        })
+
+        expect(result.verification.expires_at).toEqual(
+          new Date(1_710_000_900_000)
+        )
       })
 
       it("invalidates existing unused tokens when requesting a new token", async () => {
@@ -182,15 +192,18 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           "select provider_metadata from provider_identity where id = ?",
           ["provider-id"]
         )
-        const [storedToken] = await MikroOrmWrapper.forkManager().execute(
-          "select used_at from auth_verification_token where provider_identity_id = ?",
+        const storedTokens = await MikroOrmWrapper.forkManager().execute(
+          "select * from auth_verification_token where provider_identity_id = ?",
           ["provider-id"]
         )
 
         expect(
           parseJson(providerIdentity.provider_metadata).verified_at
         ).toEqual(new Date(1_710_000_000_000).toISOString())
-        expect(storedToken.used_at).not.toBeNull()
+        expect(
+          parseJson(providerIdentity.provider_metadata).requires_verification
+        ).toBe(false)
+        expect(storedTokens).toHaveLength(0)
       })
 
       it("rejects the wrong provider without consuming the token", async () => {
@@ -213,14 +226,19 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           ["provider-id"]
         )
         const [storedToken] = await MikroOrmWrapper.forkManager().execute(
-          "select used_at from auth_verification_token where provider_identity_id = ?",
+          "select * from auth_verification_token where provider_identity_id = ?",
           ["provider-id"]
         )
 
         expect(
           parseJson(providerIdentity.provider_metadata).verified_at
-        ).toBeNull()
-        expect(storedToken.used_at).toBeNull()
+        ).toBeUndefined()
+        expect(parseJson(providerIdentity.provider_metadata)).toEqual(
+          expect.objectContaining({
+            requires_verification: true,
+          })
+        )
+        expect(storedToken).toBeDefined()
 
         await expect(
           service.confirmAuthVerification({

@@ -153,7 +153,7 @@ describe("Email password auth provider", () => {
       expect.objectContaining({
         provider_metadata: expect.objectContaining({
           password: expect.any(String),
-          verified_at: null,
+          requires_verification: true,
         }),
       })
     )
@@ -161,7 +161,7 @@ describe("Email password auth provider", () => {
       expect.objectContaining({
         entity_id: "test@admin.com",
         provider_metadata: {
-          verified_at: null,
+          requires_verification: true,
         },
       })
     )
@@ -180,7 +180,7 @@ describe("Email password auth provider", () => {
               provider: "emailpass",
               provider_metadata: {
                 password: passwordHash.toString("base64"),
-                verified_at: null,
+                requires_verification: true,
               },
             },
           ],
@@ -200,7 +200,7 @@ describe("Email password auth provider", () => {
           provider_identities: [
             expect.objectContaining({
               provider_metadata: {
-                verified_at: null,
+                requires_verification: true,
               },
             }),
           ],
@@ -220,6 +220,7 @@ describe("Email password auth provider", () => {
               provider_metadata: {
                 password: "old-hash",
                 verified_at: "2026-05-25T10:00:00.000Z",
+                requires_verification: false,
               },
             },
           ],
@@ -249,6 +250,7 @@ describe("Email password auth provider", () => {
         provider_metadata: expect.objectContaining({
           password: expect.any(String),
           verified_at: "2026-05-25T10:00:00.000Z",
+          requires_verification: false,
         }),
       })
     )
@@ -266,6 +268,7 @@ describe("Email password auth provider", () => {
               provider_metadata: {
                 password: "old-hash",
                 verified_at: "2026-05-25T10:00:00.000Z",
+                requires_verification: false,
                 custom: "keep-me",
               },
             },
@@ -296,6 +299,7 @@ describe("Email password auth provider", () => {
         provider_metadata: expect.objectContaining({
           password: expect.any(String),
           verified_at: "2026-05-25T10:00:00.000Z",
+          requires_verification: false,
           custom: "keep-me",
         }),
       })
@@ -305,6 +309,7 @@ describe("Email password auth provider", () => {
         entity_id: "test@admin.com",
         provider_metadata: {
           verified_at: "2026-05-25T10:00:00.000Z",
+          requires_verification: false,
           custom: "keep-me",
         },
       })
