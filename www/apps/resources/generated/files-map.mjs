@@ -112,6 +112,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/auth/create-actor-type"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/email-verification/page.mdx",
+    "pathname": "/commerce-modules/auth/email-verification"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/js-sdk/page.mdx",
     "pathname": "/commerce-modules/auth/js-sdk"
   },

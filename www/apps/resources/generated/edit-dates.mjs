@@ -1,10 +1,10 @@
 export const generatedEditDates = {
-  "app/commerce-modules/auth/auth-providers/emailpass/page.mdx": "2025-01-13T11:31:35.361Z",
+  "app/commerce-modules/auth/auth-providers/emailpass/page.mdx": "2026-05-28T14:14:41.828Z",
   "app/commerce-modules/auth/auth-providers/page.mdx": "2025-05-20T07:51:40.707Z",
   "app/commerce-modules/auth/authentication-route/page.mdx": "2025-11-24T07:39:10.358Z",
   "app/commerce-modules/auth/examples/page.mdx": "2024-10-15T15:02:13.794Z",
   "app/commerce-modules/auth/module-options/page.mdx": "2026-05-22T12:04:07.232Z",
-  "app/commerce-modules/auth/page.mdx": "2026-05-22T12:04:24.595Z",
+  "app/commerce-modules/auth/page.mdx": "2026-05-28T14:13:36.952Z",
   "app/commerce-modules/cart/_events/_events-table/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/cart/_events/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/cart/concepts/page.mdx": "2025-12-10T13:46:32.697Z",
@@ -5771,7 +5771,7 @@ export const generatedEditDates = {
   "app/how-to-tutorials/tutorials/abandoned-cart/page.mdx": "2026-01-12T12:19:01.373Z",
   "app/integrations/guides/algolia/page.mdx": "2026-01-12T12:02:36.771Z",
   "app/integrations/guides/magento/page.mdx": "2025-10-09T11:30:09.533Z",
-  "app/js-sdk/auth/overview/page.mdx": "2025-03-28T08:05:32.622Z",
+  "app/js-sdk/auth/overview/page.mdx": "2026-05-28T14:15:09.048Z",
   "app/how-to-tutorials/tutorials/loyalty-points/page.mdx": "2026-01-12T12:21:45.523Z",
   "references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.plugin/page.mdx": "2025-04-11T09:04:55.084Z",
   "references/js_sdk/admin/Customer/methods/js_sdk.admin.Customer.createAddress/page.mdx": "2026-04-23T12:33:09.966Z",
@@ -7513,5 +7513,6 @@ export const generatedEditDates = {
   "app/commerce-modules/rbac/js-sdk/page.mdx": "2026-05-22T15:27:46.008Z",
   "app/commerce-modules/rbac/js-sdk/rbac-policy/page.mdx": "2026-05-22T15:27:12.307Z",
   "app/commerce-modules/rbac/js-sdk/rbac-role/page.mdx": "2026-05-22T15:27:17.390Z",
-  "app/commerce-modules/rbac/page.mdx": "2026-05-22T12:33:01.378Z"
+  "app/commerce-modules/rbac/page.mdx": "2026-05-22T12:33:01.378Z",
+  "app/commerce-modules/auth/email-verification/page.mdx": "2026-05-28T14:14:23.553Z"
 }
