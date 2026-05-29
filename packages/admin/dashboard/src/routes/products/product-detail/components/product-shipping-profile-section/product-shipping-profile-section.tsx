@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next"
 import { SidebarLink } from "../../../../../components/common/sidebar-link/sidebar-link"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { ExtendedProduct } from "../../constants"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 type ProductShippingProfileSectionProps = {
   product: ExtendedProduct
@@ -14,26 +15,30 @@ export const ProductShippingProfileSection = ({
   product,
 }: ProductShippingProfileSectionProps) => {
   const { t } = useTranslation()
+  const { hasPermission } = usePermissions()
 
+  const canUpdate = hasPermission("product:update")
   const shippingProfile = product.shipping_profile
 
   return (
     <Container className="p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.shippingProfile.header")}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("actions.edit"),
-                  to: "shipping-profile",
-                  icon: <PencilSquare />,
-                },
-              ],
-            },
-          ]}
-        />
+        {canUpdate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.edit"),
+                    to: "shipping-profile",
+                    icon: <PencilSquare />,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
 
       {shippingProfile && (
