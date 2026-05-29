@@ -1,4 +1,4 @@
-import { hasPermission } from "@medusajs/framework"
+import { resolvePermissions } from "@medusajs/framework"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
@@ -20,7 +20,7 @@ export type GetAssignablePoliciesStepInput = {
    */
   filters?: Record<string, unknown>
   /**
-   * Optional pagination forwarded to the `rbac_policy` query.
+   * Optional pagination applied to the assignable subset after permission resolution.
    */
   pagination?: { skip?: number; take?: number }
 }
@@ -85,24 +85,20 @@ export const getAssignablePoliciesStep = createStep(
         resource: { $ne: null },
         operation: { $ne: null },
       },
-      pagination: pagination ?? {},
+    })
+
+    const granted = await resolvePermissions({
+      roles: actorRoleIds,
+      universe: (candidates ?? []).map((p: any) => ({
+        resource: p.resource as string,
+        operation: p.operation as string,
+      })),
+      container,
     })
 
     const assignable: AssignablePolicy[] = []
-
     for (const policy of candidates ?? []) {
-      const allowed = await hasPermission({
-        roles: actorRoleIds,
-        actions: [
-          {
-            resource: policy.resource as string,
-            operation: policy.operation as string,
-          },
-        ],
-        container,
-      })
-
-      if (allowed) {
+      if (granted.has(`${policy.resource}:${policy.operation}`)) {
         assignable.push({
           id: policy.id,
           key: policy.key,
@@ -113,6 +109,12 @@ export const getAssignablePoliciesStep = createStep(
       }
     }
 
-    return new StepResponse({ policies: assignable, count: assignable.length })
+    const { skip = 0, take } = pagination ?? {}
+    const page =
+      typeof take === "number"
+        ? assignable.slice(skip, skip + take)
+        : assignable.slice(skip)
+
+    return new StepResponse({ policies: page, count: assignable.length })
   }
 )

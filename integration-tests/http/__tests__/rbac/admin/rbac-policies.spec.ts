@@ -571,6 +571,51 @@ medusaIntegrationTestRunner({
           expect(ids).toEqual([productReadId])
           expect(response.data.count).toEqual(1)
         })
+
+        it("paginates the assignable subset, not the raw rbac_policy set", async () => {
+          // product:* actor is assignable exactly 4 policies:
+          //   product:read, product:create, product:* (self), rbac_policy:read.
+          // Asking for limit=2 must return 2 rows (a full page), and the next
+          // page (offset=2, limit=2) must return the remaining 2 — proving
+          // filtering happens before pagination. count must reflect the total
+          // assignable, not the page size.
+          const firstPage = await api.get(
+            "/admin/rbac/policies/assignable?limit=2&offset=0&order=id",
+            productManagerHeaders
+          )
+
+          expect(firstPage.data.policies).toHaveLength(2)
+          expect(firstPage.data.count).toEqual(4)
+
+          const secondPage = await api.get(
+            "/admin/rbac/policies/assignable?limit=2&offset=2&order=id",
+            productManagerHeaders
+          )
+
+          expect(secondPage.data.policies).toHaveLength(2)
+          expect(secondPage.data.count).toEqual(4)
+
+          // No overlap between the pages
+          const firstIds = firstPage.data.policies.map(
+            (p: { id: string }) => p.id
+          )
+          const secondIds = secondPage.data.policies.map(
+            (p: { id: string }) => p.id
+          )
+          expect(firstIds).not.toEqual(
+            expect.arrayContaining(secondIds as string[])
+          )
+
+          // Union covers exactly the assignable set.
+          expect(new Set([...firstIds, ...secondIds])).toEqual(
+            new Set([
+              productReadId,
+              productCreateId,
+              productWildcardId,
+              rbacPolicyReadId,
+            ])
+          )
+        })
       })
     })
   },
