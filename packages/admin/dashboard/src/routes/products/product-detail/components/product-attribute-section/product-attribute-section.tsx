@@ -6,6 +6,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { getFormattedCountry } from "../../../../../lib/addresses"
 import { useExtension } from "../../../../../providers/extension-provider"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 type ProductAttributeSectionProps = {
   product: HttpTypes.AdminProduct
@@ -16,24 +17,29 @@ export const ProductAttributeSection = ({
 }: ProductAttributeSectionProps) => {
   const { t } = useTranslation()
   const { getDisplays } = useExtension()
+  const { hasPermission } = usePermissions()
+
+  const canUpdate = hasPermission("product:update")
 
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.attributes")}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("actions.edit"),
-                  to: "attributes",
-                  icon: <PencilSquare />,
-                },
-              ],
-            },
-          ]}
-        />
+        {canUpdate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.edit"),
+                    to: "attributes",
+                    icon: <PencilSquare />,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       <SectionRow title={t("fields.height")} value={product.height} />
       <SectionRow title={t("fields.width")} value={product.width} />
