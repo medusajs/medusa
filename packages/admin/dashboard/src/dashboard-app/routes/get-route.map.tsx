@@ -244,6 +244,10 @@ export function getRouteMap({
                               // eslint-disable-next-line max-len
                               match: UIMatch<HttpTypes.AdminProductVariantResponse>
                             ) => <Breadcrumb {...match} />,
+                            permissions: [
+                              "product:read",
+                              "product_variant:read",
+                            ],
                           },
                         }
                       },
