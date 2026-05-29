@@ -14,6 +14,7 @@ import { VariantMediaSection } from "./components/variant-media-section"
 import { VariantPricesSection } from "./components/variant-prices-section"
 import { ExtendedVariant, VARIANT_DETAIL_FIELDS } from "./constants"
 import { variantLoader } from "./loader"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const ProductVariantDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -66,21 +67,25 @@ export const ProductVariantDetail = () => {
         {!variant.manage_inventory ? (
           <InventorySectionPlaceholder />
         ) : (
-          <VariantInventorySection
-            inventoryItems={(variant.inventory_items ?? [])
-              .filter((i) => i.inventory)
-              .map((i) => {
-                return {
-                  ...i.inventory!,
-                  required_quantity: i.required_quantity,
-                  variant,
-                }
-              })}
-          />
+          <PermissionGuard permission="inventory_level:read">
+            <VariantInventorySection
+              inventoryItems={(variant.inventory_items ?? [])
+                .filter((i) => i.inventory)
+                .map((i) => {
+                  return {
+                    ...i.inventory!,
+                    required_quantity: i.required_quantity,
+                    variant,
+                  }
+                })}
+            />
+          </PermissionGuard>
         )}
       </TwoColumnPage.Main>
       <TwoColumnPage.Sidebar>
-        <VariantPricesSection variant={variant as ExtendedVariant} />
+        <PermissionGuard permission="price:read">
+          <VariantPricesSection variant={variant as ExtendedVariant} />
+        </PermissionGuard>
       </TwoColumnPage.Sidebar>
     </TwoColumnPage>
   )
