@@ -15,6 +15,8 @@ import { productLoader } from "./loader"
 
 import { useExtension } from "../../../providers/extension-provider"
 import { ProductShippingProfileSection } from "./components/product-shipping-profile-section"
+import { usePermissions } from "../../../providers/permissions-provider"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const ProductDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -67,13 +69,30 @@ export const ProductDetail = () => {
       <TwoColumnPage.Main>
         <ProductGeneralSection product={product} />
         <ProductMediaSection product={product} />
-        <ProductOptionSection product={product} />
-        <ProductVariantSection product={product} />
+        <PermissionGuard permission="product_option:read">
+          <ProductOptionSection product={product} />
+        </PermissionGuard>
+        <PermissionGuard permission="product_variant:read">
+          <ProductVariantSection product={product} />
+        </PermissionGuard>
       </TwoColumnPage.Main>
       <TwoColumnPage.Sidebar>
-        <ProductSalesChannelSection product={product} />
-        <ProductShippingProfileSection product={product as ExtendedProduct} />
-        <ProductOrganizationSection product={product} />
+        <PermissionGuard permission="sales_channel:read">
+          <ProductSalesChannelSection product={product} />
+        </PermissionGuard>
+        <PermissionGuard permission="shipping_profile:read">
+          <ProductShippingProfileSection product={product as ExtendedProduct} />
+        </PermissionGuard>
+        <PermissionGuard
+          permissions={[
+            "product_tag:read",
+            "product_type:read",
+            "product_collection:read",
+            "product_category:read",
+          ]}
+        >
+          <ProductOrganizationSection product={product} />
+        </PermissionGuard>
         <ProductAttributeSection product={product} />
       </TwoColumnPage.Sidebar>
     </TwoColumnPage>
