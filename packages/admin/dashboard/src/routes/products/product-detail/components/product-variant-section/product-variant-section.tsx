@@ -33,6 +33,7 @@ import { useQueryParams } from "../../../../../hooks/use-query-params"
 import { PRODUCT_VARIANT_IDS_KEY } from "../../../common/constants"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 type ProductVariantSectionProps = {
   product: HttpTypes.AdminProduct
@@ -46,6 +47,30 @@ export const ProductVariantSection = ({
 }: ProductVariantSectionProps) => {
   const { t } = useTranslation()
   const isTranslationsEnabled = useFeatureFlag("translation")
+  const { hasPermission, hasAllPermissions } = usePermissions()
+
+  const canUpdateVariant = hasAllPermissions([
+    "product:update",
+    "product_variant:update",
+  ])
+  const canCreateVariant = hasAllPermissions([
+    "product:update",
+    "product_variant:create",
+  ])
+  const canReadInventory = hasPermission("inventory_level:read")
+  const canDelete = hasPermission("product_variant:delete")
+  const canUpdatePrices = hasAllPermissions([
+    "product:update",
+    "product_variant:update",
+    "price:update",
+  ])
+  const canUpdateInventory = hasAllPermissions([
+    "product:update",
+    "product_variant:update",
+    "inventory_level:update",
+  ])
+  const canManageTranslations =
+    isTranslationsEnabled && hasPermission("translation:update")
 
   const { q, order, offset, allow_backorder, manage_inventory } =
     useQueryParams(
@@ -53,9 +78,14 @@ export const ProductVariantSection = ({
       PREFIX
     )
 
-  const columns = useColumns(product)
+  const columns = useColumns(product, {
+    canUpdateVariant,
+    canManageTranslations,
+    canReadInventory,
+    canDelete,
+  })
   const filters = useFilters()
-  const commands = useCommands()
+  const commands = useCommands({ canUpdate: canUpdateVariant })
 
   const { variants, count, isPending, isError, error } = useProductVariants(
     product.id,
@@ -87,6 +117,38 @@ export const ProductVariantSection = ({
     throw error
   }
 
+  const sectionActions = true
+    ? [
+        ...(canUpdatePrices
+          ? [
+              {
+                label: t("products.editPrices"),
+                to: `prices`,
+                icon: <PencilSquare />,
+              },
+            ]
+          : []),
+        ...(canUpdateInventory
+          ? [
+              {
+                label: t("inventory.stock.action"),
+                to: `stock`,
+                icon: <Buildings />,
+              },
+            ]
+          : []),
+        ...(canManageTranslations
+          ? [
+              {
+                icon: <GlobeEurope />,
+                label: t("translations.actions.manage"),
+                to: `/settings/translations/edit?reference=product_variant&${translationParams.toString()}`,
+              },
+            ]
+          : []),
+      ]
+    : []
+
   return (
     <Container className="divide-y p-0">
       <DataTable
@@ -110,37 +172,19 @@ export const ProductVariantSection = ({
             description: t("products.variants.filtered.description"),
           },
         }}
-        action={{
-          label: t("actions.create"),
-          to: `variants/create`,
-        }}
-        actionMenu={{
-          groups: [
-            {
-              actions: [
-                {
-                  label: t("products.editPrices"),
-                  to: `prices`,
-                  icon: <PencilSquare />,
-                },
-                {
-                  label: t("inventory.stock.action"),
-                  to: `stock`,
-                  icon: <Buildings />,
-                },
-                ...(isTranslationsEnabled
-                  ? [
-                      {
-                        icon: <GlobeEurope />,
-                        label: t("translations.actions.manage"),
-                        to: `/settings/translations/edit?reference=product_variant&${translationParams.toString()}`,
-                      },
-                    ]
-                  : []),
-              ],
-            },
-          ],
-        }}
+        action={
+          canCreateVariant
+            ? {
+                label: t("actions.create"),
+                to: `variants/create`,
+              }
+            : undefined
+        }
+        actionMenu={
+          sectionActions.length > 0
+            ? { groups: [{ actions: sectionActions }] }
+            : undefined
+        }
         commands={commands}
         prefix={PREFIX}
       />
@@ -151,12 +195,26 @@ export const ProductVariantSection = ({
 const columnHelper =
   createDataTableColumnHelper<HttpTypes.AdminProductVariant>()
 
-const useColumns = (product: HttpTypes.AdminProduct) => {
+const useColumns = (
+  product: HttpTypes.AdminProduct,
+  permissions: {
+    canUpdateVariant: boolean
+    canManageTranslations: boolean
+    canReadInventory: boolean
+    canDelete: boolean
+  }
+) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { mutateAsync } = useDeleteVariantLazy(product.id)
   const prompt = usePrompt()
   const [searchParams] = useSearchParams()
+  const {
+    canUpdateVariant: canUpdate,
+    canManageTranslations,
+    canReadInventory,
+    canDelete,
+  } = permissions
 
   const tableSearchParams = useMemo(() => {
     const filtered = new URLSearchParams()
@@ -230,8 +288,10 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
         inventory_items: { inventory: HttpTypes.AdminInventoryItem }[]
       }
 
-      const mainActions: DataTableAction<HttpTypes.AdminProductVariant>[] = [
-        {
+      const mainActions: DataTableAction<HttpTypes.AdminProductVariant>[] = []
+
+      if (canUpdate) {
+        mainActions.push({
           icon: <PencilSquare />,
           label: t("actions.edit"),
           onClick: (row) => {
@@ -246,8 +306,11 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
               }
             )
           },
-        },
-        {
+        })
+      }
+
+      if (canManageTranslations) {
+        mainActions.push({
           icon: <GlobeEurope />,
           label: t("translations.actions.manage"),
           onClick: () => {
@@ -255,67 +318,80 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
               `/settings/translations/edit?reference=product_variant&reference_id=${variant.id}`
             )
           },
-        },
-      ]
+        })
+      }
 
       const secondaryActions: DataTableAction<HttpTypes.AdminProductVariant>[] =
-        [
-          {
-            icon: <Trash />,
-            label: t("actions.delete"),
-            onClick: () => handleDelete(variant.id, variant.title!),
-          },
-        ]
+        canDelete
+          ? [
+              {
+                icon: <Trash />,
+                label: t("actions.delete"),
+                onClick: () => handleDelete(variant.id, variant.title!),
+              },
+            ]
+          : []
 
       const inventoryItemsCount = variant.inventory_items?.length || 0
 
-      switch (inventoryItemsCount) {
-        case 0:
-          break
-        case 1: {
-          const inventoryItemLink = `/inventory/${
-            variant.inventory_items![0].inventory.id
-          }`
+      if (canReadInventory) {
+        switch (inventoryItemsCount) {
+          case 0:
+            break
+          case 1: {
+            const inventoryItemLink = `/inventory/${
+              variant.inventory_items![0].inventory.id
+            }`
 
-          mainActions.push({
-            label: t("products.variant.inventory.actions.inventoryItems"),
-            onClick: () => {
-              navigate(inventoryItemLink)
-            },
-            icon: <Buildings />,
-          })
-          break
-        }
-        default: {
-          const ids = variant.inventory_items?.map((i) => i.inventory?.id)
-
-          if (!ids || ids.length === 0) {
+            mainActions.push({
+              label: t("products.variant.inventory.actions.inventoryItems"),
+              onClick: () => {
+                navigate(inventoryItemLink)
+              },
+              icon: <Buildings />,
+            })
             break
           }
+          default: {
+            const ids = variant.inventory_items?.map((i) => i.inventory?.id)
 
-          const inventoryKitLink = `/inventory?${new URLSearchParams({
-            id: ids.join(","),
-          }).toString()}`
+            if (!ids || ids.length === 0) {
+              break
+            }
 
-          mainActions.push({
-            label: t("products.variant.inventory.actions.inventoryKit"),
-            onClick: () => {
-              navigate(inventoryKitLink)
-            },
-            icon: <Component />,
-          })
+            const inventoryKitLink = `/inventory?${new URLSearchParams({
+              id: ids.join(","),
+            }).toString()}`
+
+            mainActions.push({
+              label: t("products.variant.inventory.actions.inventoryKit"),
+              onClick: () => {
+                navigate(inventoryKitLink)
+              },
+              icon: <Component />,
+            })
+          }
         }
       }
 
-      return [mainActions, secondaryActions]
+      return [mainActions, secondaryActions].filter((group) => group.length > 0)
     },
-    [handleDelete, navigate, t, tableSearchParams]
+    [
+      handleDelete,
+      navigate,
+      t,
+      tableSearchParams,
+      canUpdate,
+      canDelete,
+      canManageTranslations,
+      canReadInventory,
+    ]
   )
 
   const getInventory = useCallback(
     (variant: HttpTypes.AdminProductVariant) => {
       const castVariant = variant as HttpTypes.AdminProductVariant & {
-        inventory_items: { inventory: HttpTypes.AdminInventoryItem }[]
+        inventory_items?: { inventory: HttpTypes.AdminInventoryItem }[]
       }
 
       if (!variant.manage_inventory) {
@@ -328,8 +404,8 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
 
       const quantity = variant.inventory_quantity
 
-      const inventoryItems = castVariant.inventory_items
-        ?.map((i) => i.inventory)
+      const inventoryItems = (castVariant.inventory_items ?? [])
+        .map((i) => i.inventory)
         .filter(Boolean) as HttpTypes.AdminInventoryItem[]
 
       const hasInventoryKit = inventoryItems.length > 1
@@ -359,6 +435,9 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
     [t]
   )
 
+  const hasRowActions =
+    canUpdate || canDelete || canManageTranslations || canReadInventory
+
   return useMemo(() => {
     return [
       columnHelper.accessor("thumbnail", {
@@ -386,36 +465,50 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
         sortDescLabel: t("filters.sorting.alphabeticallyDesc"),
       }),
       ...optionColumns,
-      columnHelper.display({
-        id: "inventory",
-        header: t("fields.inventory"),
-        cell: ({ row }) => {
-          const { text, hasInventoryKit, quantity, notManaged } = getInventory(
-            row.original
-          )
+      ...(canReadInventory
+        ? [
+            columnHelper.display({
+              id: "inventory",
+              header: t("fields.inventory"),
+              cell: ({ row }) => {
+                const { text, hasInventoryKit, quantity, notManaged } =
+                  getInventory(row.original)
 
-          return (
-            <Tooltip content={text}>
-              <div className="flex h-full w-full items-center gap-2 overflow-hidden">
-                {hasInventoryKit && <Component />}
-                <span
-                  className={clx("truncate", {
-                    "text-ui-fg-error": !quantity && !notManaged,
-                  })}
-                >
-                  {text}
-                </span>
-              </div>
-            </Tooltip>
-          )
-        },
-        maxSize: 250,
-      }),
-      columnHelper.action({
-        actions: getActions,
-      }),
+                return (
+                  <Tooltip content={text}>
+                    <div className="flex h-full w-full items-center gap-2 overflow-hidden">
+                      {hasInventoryKit && <Component />}
+                      <span
+                        className={clx("truncate", {
+                          "text-ui-fg-error": !quantity && !notManaged,
+                        })}
+                      >
+                        {text}
+                      </span>
+                    </div>
+                  </Tooltip>
+                )
+              },
+              maxSize: 250,
+            }),
+          ]
+        : []),
+      ...(hasRowActions
+        ? [
+            columnHelper.action({
+              actions: getActions,
+            }),
+          ]
+        : []),
     ]
-  }, [t, optionColumns, getActions, getInventory])
+  }, [
+    t,
+    optionColumns,
+    getActions,
+    getInventory,
+    hasRowActions,
+    canReadInventory,
+  ])
 }
 
 const filterHelper =
@@ -450,9 +543,13 @@ const useFilters = () => {
 
 const commandHelper = createDataTableCommandHelper()
 
-const useCommands = () => {
+const useCommands = ({ canUpdate }: { canUpdate: boolean }) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+
+  if (!canUpdate) {
+    return []
+  }
 
   return [
     commandHelper.command({
