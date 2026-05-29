@@ -21,7 +21,11 @@ export type PermissionResource =
   | "product_collection"
   | "product_tag"
   | "product_type"
+  | "product_variant"
+  | "product_option"
+  | "price"
   | "inventory"
+  | "inventory_level"
   | "reservation"
   | "promotion"
   | "campaign"
@@ -130,4 +134,3 @@ export interface PermissionsRequirementsContextValue {
    */
   unregisterRequiredPermissions: (id: string) => void
 }
-

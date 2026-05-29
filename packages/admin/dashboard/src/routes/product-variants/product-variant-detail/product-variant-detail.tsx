@@ -67,7 +67,7 @@ export const ProductVariantDetail = () => {
         {!variant.manage_inventory ? (
           <InventorySectionPlaceholder />
         ) : (
-          <PermissionGuard permission="inventory_level:read">
+          <PermissionGuard permission="inventory:read">
             <VariantInventorySection
               inventoryItems={(variant.inventory_items ?? [])
                 .filter((i) => i.inventory)

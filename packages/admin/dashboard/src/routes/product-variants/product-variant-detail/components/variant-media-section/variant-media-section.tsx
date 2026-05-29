@@ -4,6 +4,7 @@ import { HttpTypes } from "@medusajs/types"
 import { PencilSquare, ThumbnailBadge } from "@medusajs/icons"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 type VariantMediaSectionProps = {
   variant: Omit<HttpTypes.AdminProductVariant, "images"> & {
@@ -15,6 +16,8 @@ type VariantMediaSectionProps = {
 
 export const VariantMediaSection = ({ variant }: VariantMediaSectionProps) => {
   const { t } = useTranslation()
+  const { hasPermission } = usePermissions()
+  const canUpdate = hasPermission("product:update")
 
   // show only variant scoped images
   const media = (variant.images || []).filter((image) =>
@@ -25,19 +28,21 @@ export const VariantMediaSection = ({ variant }: VariantMediaSectionProps) => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.media.label")}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("actions.editImages"),
-                  to: "media",
-                  icon: <PencilSquare />,
-                },
-              ],
-            },
-          ]}
-        />
+        {canUpdate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.editImages"),
+                    to: "media",
+                    icon: <PencilSquare />,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       {media.length > 0 ? (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-4 px-6 py-4">
