@@ -7,7 +7,10 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useLoaderData } from "react-router-dom"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useProductTags } from "../../../../../hooks/api"
 import { useProductTagTableColumns } from "../../../../../hooks/table/columns"
@@ -17,11 +20,14 @@ import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useDeleteProductTagAction } from "../../../common/hooks/use-delete-product-tag-action"
 import { productTagListLoader } from "../../loader"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 const PAGE_SIZE = 20
 
 export const ProductTagListTable = () => {
   const { t } = useTranslation()
+  const { hasPermission } = usePermissions()
+  const canCreate = hasPermission("product_tag:create")
   const { searchParams, raw } = useProductTagTableQuery({
     pageSize: PAGE_SIZE,
   })
@@ -57,9 +63,11 @@ export const ProductTagListTable = () => {
     <Container className="divide-y px-0 py-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{t("productTags.domain")}</Heading>
-        <Button variant="secondary" size="small" asChild>
-          <Link to="create">{t("actions.create")}</Link>
-        </Button>
+        {canCreate && (
+          <Button variant="secondary" size="small" asChild>
+            <Link to="create">{t("actions.create")}</Link>
+          </Button>
+        )}
       </div>
       <_DataTable
         table={table}
@@ -90,44 +98,56 @@ const ProductTagRowActions = ({
   const { t } = useTranslation()
   const handleDelete = useDeleteProductTagAction({ productTag })
   const isTranslationsEnabled = useFeatureFlag("translation")
+  const { hasPermission } = usePermissions()
 
-  return (
-    <ActionMenu
-      groups={[
+  const canUpdate = hasPermission("product_tag:update")
+  const canDelete = hasPermission("product_tag:delete")
+  const canManageTranslations =
+    isTranslationsEnabled && hasPermission("translation:update")
+
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `${productTag.id}/edit`,
-            },
-          ],
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          to: `${productTag.id}/edit`,
         },
-        ...(isTranslationsEnabled
-          ? [
-              {
-                actions: [
-                  {
-                    icon: <GlobeEurope />,
-                    label: t("translations.actions.manage"),
-                    to: `/settings/translations/edit?reference=product_tag&reference_id=${productTag.id}`,
-                  },
-                ],
-              },
-            ]
-          : []),
+      ],
+    })
+  }
+
+  if (canManageTranslations) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ],
+          icon: <GlobeEurope />,
+          label: t("translations.actions.manage"),
+          to: `/settings/translations/edit?reference=product_tag&reference_id=${productTag.id}`,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
+        {
+          icon: <Trash />,
+          label: t("actions.delete"),
+          onClick: handleDelete,
+        },
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }
 
 const columnHelper = createColumnHelper<HttpTypes.AdminProductTag>()

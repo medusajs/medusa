@@ -1702,9 +1702,14 @@ export function getRouteMap({
             {
               path: "product-tags",
               errorElement: <ErrorBoundary />,
-              element: <Outlet />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("productTags.domain"),
+                permissions: "product_tag:read",
               },
               children: [
                 {
@@ -1716,6 +1721,7 @@ export function getRouteMap({
                       path: "create",
                       lazy: () =>
                         import("../../routes/product-tags/product-tag-create"),
+                      handle: { permissions: "product_tag:create" },
                     },
                   ],
                 },
@@ -1741,6 +1747,7 @@ export function getRouteMap({
                       path: "edit",
                       lazy: () =>
                         import("../../routes/product-tags/product-tag-edit"),
+                      handle: { permissions: "product_tag:update" },
                     },
                     {
                       path: "metadata/edit",
@@ -1748,6 +1755,7 @@ export function getRouteMap({
                         import(
                           "../../routes/product-tags/product-tag-metadata"
                         ),
+                      handle: { permissions: "product_tag:update" },
                     },
                   ],
                 },

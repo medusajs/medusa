@@ -27,6 +27,7 @@ const useSettingRoutes = (): INavItem[] => {
 
   const canReadRoles = hasPermission("rbac_role:read")
   const canReadPolicies = hasPermission("rbac_policy:read")
+  const canReadProductTags = hasPermission("product_tag:read")
 
   return useMemo(
     () => [
@@ -78,10 +79,14 @@ const useSettingRoutes = (): INavItem[] => {
         label: t("productTypes.domain"),
         to: "/settings/product-types",
       },
-      {
-        label: t("productTags.domain"),
-        to: "/settings/product-tags",
-      },
+      ...(canReadProductTags
+        ? [
+            {
+              label: t("productTags.domain"),
+              to: "/settings/product-tags",
+            },
+          ]
+        : []),
       {
         label: t("stockLocations.domain"),
         to: "/settings/locations",
@@ -95,7 +100,13 @@ const useSettingRoutes = (): INavItem[] => {
           ]
         : []),
     ],
-    [t, isTranslationsEnabled, canReadRoles, canReadPolicies]
+    [
+      t,
+      isTranslationsEnabled,
+      canReadRoles,
+      canReadPolicies,
+      canReadProductTags,
+    ]
   )
 }
 

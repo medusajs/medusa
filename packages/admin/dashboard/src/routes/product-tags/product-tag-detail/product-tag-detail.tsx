@@ -7,6 +7,7 @@ import { useExtension } from "../../../providers/extension-provider"
 import { ProductTagGeneralSection } from "./components/product-tag-general-section"
 import { ProductTagProductSection } from "./components/product-tag-product-section"
 import { productTagLoader } from "./loader"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const ProductTagDetail = () => {
   const { id } = useParams()
@@ -41,10 +42,13 @@ export const ProductTagDetail = () => {
       }}
       showJSON
       showMetadata
+      showRequiredPermissions
       data={product_tag}
     >
       <ProductTagGeneralSection productTag={product_tag} />
-      <ProductTagProductSection productTag={product_tag} />
+      <PermissionGuard permission="product:read">
+        <ProductTagProductSection productTag={product_tag} />
+      </PermissionGuard>
     </SingleColumnPage>
   )
 }
