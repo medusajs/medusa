@@ -3,10 +3,14 @@ import { Badge, Container, Heading, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteVariant } from "../../../../../hooks/api/products"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 import { ExtendedVariant } from "../../constants"
 
 type VariantGeneralSectionProps = {
@@ -18,6 +22,18 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
   const prompt = usePrompt()
   const navigate = useNavigate()
   const isTranslationsEnabled = useFeatureFlag("translation")
+  const { hasPermission, hasAllPermissions } = usePermissions()
+
+  const canUpdate = hasAllPermissions([
+    "product:update",
+    "product_variant:update",
+  ])
+  const canDelete = hasAllPermissions([
+    "product:update",
+    "product_variant:delete",
+  ])
+  const canManageTranslations =
+    isTranslationsEnabled && hasPermission("translation:update")
 
   const hasInventoryKit = (variant.inventory?.length ?? 0) > 1
 
@@ -61,9 +77,11 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
           </span>
         </div>
         <div className="flex items-center gap-x-4">
-          <ActionMenu
-            groups={[
-              {
+          {(() => {
+            const groups: ActionGroup[] = []
+
+            if (canUpdate) {
+              groups.push({
                 actions: [
                   {
                     label: t("actions.edit"),
@@ -71,21 +89,23 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
                     icon: <PencilSquare />,
                   },
                 ],
-              },
-              ...(isTranslationsEnabled
-                ? [
-                    {
-                      actions: [
-                        {
-                          label: t("translations.actions.manage"),
-                          to: `/settings/translations/edit?reference=product_variant&reference_id=${variant.id}`,
-                          icon: <GlobeEurope />,
-                        },
-                      ],
-                    },
-                  ]
-                : []),
-              {
+              })
+            }
+
+            if (canManageTranslations && isTranslationsEnabled) {
+              groups.push({
+                actions: [
+                  {
+                    label: t("translations.actions.manage"),
+                    to: `/settings/translations/edit?reference=product_variant&reference_id=${variant.id}`,
+                    icon: <GlobeEurope />,
+                  },
+                ],
+              })
+            }
+
+            if (canDelete) {
+              groups.push({
                 actions: [
                   {
                     label: t("actions.delete"),
@@ -93,9 +113,11 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
                     icon: <Trash />,
                   },
                 ],
-              },
-            ]}
-          />
+              })
+            }
+
+            return groups.length > 0 ? <ActionMenu groups={groups} /> : null
+          })()}
         </div>
       </div>
 
