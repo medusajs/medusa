@@ -12,12 +12,15 @@ import { useCollectionTableColumns } from "../../../../../hooks/table/columns/us
 import { useCollectionTableFilters } from "../../../../../hooks/table/filters"
 import { useCollectionTableQuery } from "../../../../../hooks/table/query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 import { CollectionRowActions } from "./collection-row-actions"
 
 const PAGE_SIZE = 20
 
 export const CollectionListTable = () => {
   const { t } = useTranslation()
+  const { hasPermission } = usePermissions()
+  const canCreate = hasPermission("product_collection:create")
   const { searchParams, raw } = useCollectionTableQuery({ pageSize: PAGE_SIZE })
   const { collections, count, isError, error, isLoading } = useCollections(
     {
@@ -54,11 +57,13 @@ export const CollectionListTable = () => {
             {t("collections.subtitle")}
           </Text>
         </div>
-        <Link to="/collections/create">
-          <Button size="small" variant="secondary">
-            {t("actions.create")}
-          </Button>
-        </Link>
+        {canCreate && (
+          <Link to="/collections/create">
+            <Button size="small" variant="secondary">
+              {t("actions.create")}
+            </Button>
+          </Link>
+        )}
       </div>
       <_DataTable
         table={table}

@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom"
 import { JsonViewSection } from "../../../common/json-view-section"
 import { MetadataSection } from "../../../common/metadata-section"
 import { PageProps } from "../types"
+import { RequiredPermissionsSection } from "../../../common/required-permissions-section"
 
 export const SingleColumnPage = <TData,>({
   children,
@@ -18,6 +19,10 @@ export const SingleColumnPage = <TData,>({
    * Whether to show JSON view of the data. Defaults to false.
    */
   showJSON,
+  /**
+   * Whether to show required permissions section. Defaults to false.
+   */
+  showRequiredPermissions = false,
   /**
    * Whether to show metadata view of the data. Defaults to false.
    */
@@ -57,6 +62,7 @@ export const SingleColumnPage = <TData,>({
       })}
       {showMetadata && <MetadataSection data={data!} />}
       {showJSON && <JsonViewSection data={data!} />}
+      {showRequiredPermissions && <RequiredPermissionsSection />}
       {hasOutlet && <Outlet />}
     </div>
   )

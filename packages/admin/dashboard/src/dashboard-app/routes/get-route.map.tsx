@@ -384,7 +384,7 @@ export function getRouteMap({
                         import("../../routes/categories/category-products"),
                       handle: {
                         permissions: [
-                          "product:read",
+                          "product:update",
                           "product_category:update",
                         ],
                       },
@@ -637,8 +637,14 @@ export function getRouteMap({
             {
               path: "/collections",
               errorElement: <ErrorBoundary />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("collections.domain"),
+                permissions: "product_collection:read",
               },
               children: [
                 {
@@ -650,6 +656,7 @@ export function getRouteMap({
                       path: "create",
                       lazy: () =>
                         import("../../routes/collections/collection-create"),
+                      handle: { permissions: "product_collection:create" },
                     },
                   ],
                 },
@@ -675,6 +682,7 @@ export function getRouteMap({
                       path: "edit",
                       lazy: () =>
                         import("../../routes/collections/collection-edit"),
+                      handle: { permissions: "product_collection:update" },
                     },
                     {
                       path: "products",
@@ -682,11 +690,19 @@ export function getRouteMap({
                         import(
                           "../../routes/collections/collection-add-products"
                         ),
+                      handle: {
+                        permissions: [
+                          "product:read",
+                          "product:update",
+                          "product_collection:update",
+                        ],
+                      },
                     },
                     {
                       path: "metadata/edit",
                       lazy: () =>
                         import("../../routes/collections/collection-metadata"),
+                      handle: { permissions: "product_collection:update" },
                     },
                   ],
                 },

@@ -7,6 +7,7 @@ import { useExtension } from "../../../providers/extension-provider"
 import { CollectionGeneralSection } from "./components/collection-general-section"
 import { CollectionProductSection } from "./components/collection-product-section"
 import { collectionLoader } from "./loader"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const CollectionDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -36,10 +37,13 @@ export const CollectionDetail = () => {
       }}
       showJSON
       showMetadata
+      showRequiredPermissions
       data={collection}
     >
       <CollectionGeneralSection collection={collection} />
-      <CollectionProductSection collection={collection} />
+      <PermissionGuard permission="product:read">
+        <CollectionProductSection collection={collection} />
+      </PermissionGuard>
     </SingleColumnPage>
   )
 }
