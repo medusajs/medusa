@@ -4,6 +4,7 @@ import { Trans, useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
 import { HttpTypes } from "@medusajs/types"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 type ProductSalesChannelSectionProps = {
   product: HttpTypes.AdminProduct
@@ -13,8 +14,16 @@ type ProductSalesChannelSectionProps = {
 export const ProductSalesChannelSection = ({
   product,
 }: ProductSalesChannelSectionProps) => {
-  const { count } = useSalesChannels()
+  const { hasPermission } = usePermissions()
+  const canReadSalesChannels = hasPermission("sales_channel:read")
+  const { count } = useSalesChannels(undefined, { enabled: canReadSalesChannels })
   const { t } = useTranslation()
+
+  if (!canReadSalesChannels) {
+    return null
+  }
+
+  const canUpdate = hasPermission("product:update")
 
   // Filter out null/undefined entries that can occur when a sales channel
   // is deleted but the product association is not cleaned up
@@ -33,19 +42,21 @@ export const ProductSalesChannelSection = ({
     <Container className="flex flex-col gap-y-4 px-6 py-4">
       <div className="flex items-center justify-between">
         <Heading level="h2">{t("fields.sales_channels")}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("actions.edit"),
-                  to: "sales-channels",
-                  icon: <PencilSquare />,
-                },
-              ],
-            },
-          ]}
-        />
+        {canUpdate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.edit"),
+                    to: "sales-channels",
+                    icon: <PencilSquare />,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       <div className="grid grid-cols-[28px_1fr] items-center gap-x-3">
         <div className="bg-ui-bg-base shadow-borders-base flex size-7 items-center justify-center rounded-md">
