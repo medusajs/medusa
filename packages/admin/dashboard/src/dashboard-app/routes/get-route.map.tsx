@@ -9,6 +9,7 @@ import { SettingsLayout } from "../../components/layout/settings-layout"
 import { ErrorBoundary } from "../../components/utilities/error-boundary"
 import { TaxRegionDetailBreadcrumb } from "../../routes/tax-regions/tax-region-detail/breadcrumb"
 import { taxRegionLoader } from "../../routes/tax-regions/tax-region-detail/loader"
+import { PermissionsRequirementsProvider } from "../../providers/permissions-provider"
 
 export function getRouteMap({
   settingsRoutes,
@@ -33,7 +34,11 @@ export function getRouteMap({
             {
               path: "/products",
               errorElement: <ErrorBoundary />,
-              element: <RoutePermissionGuard />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("products.domain"),
                 permissions: "product:read",
