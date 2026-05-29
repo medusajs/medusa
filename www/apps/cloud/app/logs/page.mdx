@@ -24,6 +24,8 @@ There are two types of logs for your environment's deployments:
 - **Build logs**: Messages generated during the build process before deploying and starting the application. These logs are useful for debugging when a deployment's build fails.
 - **Runtime logs**: Messages logged by the Medusa backend and storefront when they start and while they're running, such as informational startup messages, HTTP requests, errors, and more. These logs are useful for debugging the application's deployment and runtime errors.
 
+For storefront deployments, logs are further categorized into separate build and deployment phases to provide clearer visibility into each stage of the storefront lifecycle.
+
 ---
 
 ## View Build Logs on Cloud
@@ -64,6 +66,7 @@ This will open the deployment details page, where you can see the deployment's a
 
 - **Backend build logs**: Logs for building the Medusa backend.
 - **Storefront build logs**: If you deployed a storefront alongside the Medusa application, this shows the logs for building the storefront.
+- **Storefront deployment logs**: If you deployed a storefront, these logs show the deployment phase separate from the build phase, providing clearer insight into which stage succeeded or failed.
 
 The build logs are updated in real time as the build process runs, so you can see the progress and any errors that occur during the build.
 
