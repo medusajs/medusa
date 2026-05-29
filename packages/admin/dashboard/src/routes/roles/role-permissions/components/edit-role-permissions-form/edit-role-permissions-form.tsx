@@ -15,12 +15,11 @@ import * as zod from "zod"
 import { DataTable } from "../../../../../components/data-table"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
-import { useRbacPolicies } from "../../../../../hooks/api/rbac-policies"
+import { useRbacAssignablePolicies } from "../../../../../hooks/api/rbac-policies"
 import {
   rbacRolesQueryKeys,
   useAddRbacRolePolicies,
 } from "../../../../../hooks/api/rbac-roles"
-import { useAssignablePoliciesFilter } from "../../../../../hooks/use-assignable-policies-filter"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 import { sdk } from "../../../../../lib/client"
 import { queryClient } from "../../../../../lib/query-client"
@@ -69,12 +68,11 @@ export const EditRolePermissionsForm = ({
   const { q, order, offset } = useQueryParams(["q", "order", "offset"], PREFIX)
 
   const {
-    policies,
-    count,
+    data: pageData,
     isPending: isLoading,
     isError,
     error,
-  } = useRbacPolicies(
+  } = useRbacAssignablePolicies(
     {
       q,
       order,
@@ -87,7 +85,17 @@ export const EditRolePermissionsForm = ({
     }
   )
 
-  const visiblePolicies = useAssignablePoliciesFilter(policies)
+  const visiblePolicies = pageData?.policies ?? []
+  const count = pageData?.count ?? 0
+
+  // Unpaginated assignable id set, used only to scope the diff on submit so we
+  // never strip policies the actor cannot see.
+  const { data: allAssignable, isPending: isAssignableSetLoading } =
+    useRbacAssignablePolicies()
+  const assignableIds = useMemo(
+    () => new Set((allAssignable?.policies ?? []).map((p) => p.id)),
+    [allAssignable?.policies]
+  )
 
   const columns = usePolicyColumns()
 
@@ -120,9 +128,11 @@ export const EditRolePermissionsForm = ({
     const toAdd = selectedPolicies.filter(
       (policyId) => !existingPolicies.includes(policyId)
     )
-    const toRemove = existingPolicies.filter(
-      (policyId) => !selectedPolicies.includes(policyId)
-    )
+    // Only consider policies the actor is allowed to assign — never strip
+    // existing policies that the actor cannot see.
+    const toRemove = existingPolicies
+      .filter((policyId) => assignableIds.has(policyId))
+      .filter((policyId) => !selectedPolicies.includes(policyId))
 
     try {
       if (toAdd.length) {
@@ -188,6 +198,7 @@ export const EditRolePermissionsForm = ({
               size="small"
               type="submit"
               isLoading={isAdding || isRemoving}
+              disabled={isAssignableSetLoading}
             >
               {t("actions.save")}
             </Button>
@@ -198,7 +209,10 @@ export const EditRolePermissionsForm = ({
   )
 }
 
-const columnHelper = createDataTableColumnHelper<HttpTypes.AdminRbacPolicy>()
+const columnHelper =
+  createDataTableColumnHelper<
+    HttpTypes.AdminRbacAssignablePoliciesListResponse["policies"][number]
+  >()
 
 const usePolicyColumns = () => {
   const { t } = useTranslation()

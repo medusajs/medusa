@@ -25,9 +25,8 @@ import {
   useRouteModal,
 } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
-import { useRbacPolicies } from "../../../../../hooks/api/rbac-policies"
+import { useRbacAssignablePolicies } from "../../../../../hooks/api/rbac-policies"
 import { useCreateRbacRole } from "../../../../../hooks/api/rbac-roles"
-import { useAssignablePoliciesFilter } from "../../../../../hooks/use-assignable-policies-filter"
 import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
@@ -50,7 +49,10 @@ const CreateRoleSchema = CreateRoleDetailsSchema.extend({
 const PAGE_SIZE = 20
 const PREFIX = "rp"
 
-const columnHelper = createDataTableColumnHelper<HttpTypes.AdminRbacPolicy>()
+const columnHelper =
+  createDataTableColumnHelper<
+    HttpTypes.AdminRbacAssignablePoliciesListResponse["policies"][number]
+  >()
 
 export const CreateRoleForm = () => {
   const { t } = useTranslation()
@@ -104,12 +106,11 @@ export const CreateRoleForm = () => {
   const { q, order, offset } = useQueryParams(["q", "order", "offset"], PREFIX)
 
   const {
-    policies,
-    count,
+    data: pageData,
     isPending: isPoliciesLoading,
     isError: isPoliciesError,
     error: policiesError,
-  } = useRbacPolicies(
+  } = useRbacAssignablePolicies(
     {
       q,
       order,
@@ -126,7 +127,8 @@ export const CreateRoleForm = () => {
     throw policiesError
   }
 
-  const visiblePolicies = useAssignablePoliciesFilter(policies)
+  const visiblePolicies = pageData?.policies ?? []
+  const count = pageData?.count ?? 0
 
   const columns = usePolicyColumns()
 
