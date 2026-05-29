@@ -14,15 +14,10 @@ type ProductSalesChannelSectionProps = {
 export const ProductSalesChannelSection = ({
   product,
 }: ProductSalesChannelSectionProps) => {
-  const { hasPermission } = usePermissions()
-  const canReadSalesChannels = hasPermission("sales_channel:read")
-  const { count } = useSalesChannels(undefined, { enabled: canReadSalesChannels })
+  const { count } = useSalesChannels()
   const { t } = useTranslation()
 
-  if (!canReadSalesChannels) {
-    return null
-  }
-
+  const { hasPermission } = usePermissions()
   const canUpdate = hasPermission("product:update")
 
   // Filter out null/undefined entries that can occur when a sales channel
