@@ -8,6 +8,7 @@ import { categoryLoader } from "./loader"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import { TwoColumnPage } from "../../../components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const CategoryDetail = () => {
   const { id } = useParams()
@@ -51,14 +52,19 @@ export const CategoryDetail = () => {
       }}
       showJSON
       showMetadata
+      showRequiredPermissions
       data={product_category}
     >
       <TwoColumnPage.Main>
         <CategoryGeneralSection category={product_category} />
-        <CategoryProductSection category={product_category} />
+        <PermissionGuard permission="product:read">
+          <CategoryProductSection category={product_category} />
+        </PermissionGuard>
       </TwoColumnPage.Main>
       <TwoColumnPage.Sidebar>
-        <CategoryOrganizeSection category={product_category} />
+        <PermissionGuard permission="product_category:update">
+          <CategoryOrganizeSection category={product_category} />
+        </PermissionGuard>
       </TwoColumnPage.Sidebar>
     </TwoColumnPage>
   )

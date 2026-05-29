@@ -326,8 +326,14 @@ export function getRouteMap({
             {
               path: "/categories",
               errorElement: <ErrorBoundary />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("categories.domain"),
+                permissions: "product_category:read",
               },
               children: [
                 {
@@ -338,11 +344,13 @@ export function getRouteMap({
                       path: "create",
                       lazy: () =>
                         import("../../routes/categories/category-create"),
+                      handle: { permissions: "product_category:create" },
                     },
                     {
                       path: "organize",
                       lazy: () =>
                         import("../../routes/categories/category-organize"),
+                      handle: { permissions: "product_category:update" },
                     },
                   ],
                 },
@@ -368,21 +376,30 @@ export function getRouteMap({
                       path: "edit",
                       lazy: () =>
                         import("../../routes/categories/category-edit"),
+                      handle: { permissions: "product_category:update" },
                     },
                     {
                       path: "products",
                       lazy: () =>
                         import("../../routes/categories/category-products"),
+                      handle: {
+                        permissions: [
+                          "product:read",
+                          "product_category:update",
+                        ],
+                      },
                     },
                     {
                       path: "organize",
                       lazy: () =>
                         import("../../routes/categories/category-organize"),
+                      handle: { permissions: "product_category:update" },
                     },
                     {
                       path: "metadata/edit",
                       lazy: () =>
                         import("../../routes/categories/categories-metadata"),
+                      handle: { permissions: "product_category:update" },
                     },
                   ],
                 },

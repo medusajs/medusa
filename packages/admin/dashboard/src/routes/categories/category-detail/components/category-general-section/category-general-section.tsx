@@ -2,10 +2,14 @@ import { GlobeEurope, PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, StatusBadge, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { useDeleteProductCategoryAction } from "../../../common/hooks/use-delete-product-category-action"
 import { getIsActiveProps, getIsInternalProps } from "../../../common/utils"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 type CategoryGeneralSectionProps = {
   category: HttpTypes.AdminProductCategory
@@ -16,11 +20,55 @@ export const CategoryGeneralSection = ({
 }: CategoryGeneralSectionProps) => {
   const { t } = useTranslation()
   const isTranslationsEnabled = useFeatureFlag("translation")
+  const { hasPermission } = usePermissions()
+
+  const canUpdate = hasPermission("product_category:update")
+  const canDelete = hasPermission("product_category:delete")
+  const canManageTranslations =
+    isTranslationsEnabled && hasPermission("translation:update")
 
   const activeProps = getIsActiveProps(category.is_active, t)
   const internalProps = getIsInternalProps(category.is_internal, t)
 
   const handleDelete = useDeleteProductCategoryAction(category)
+
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
+        {
+          label: t("actions.edit"),
+          icon: <PencilSquare />,
+          to: "edit",
+        },
+      ],
+    })
+  }
+
+  if (canManageTranslations) {
+    groups.push({
+      actions: [
+        {
+          label: t("translations.actions.manage"),
+          to: `/settings/translations/edit?reference=product_category&reference_id=${category.id}`,
+          icon: <GlobeEurope />,
+        },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
+        {
+          label: t("actions.delete"),
+          icon: <Trash />,
+          onClick: handleDelete,
+        },
+      ],
+    })
+  }
 
   return (
     <Container className="divide-y p-0">
@@ -35,41 +83,7 @@ export const CategoryGeneralSection = ({
               {internalProps.label}
             </StatusBadge>
           </div>
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    label: t("actions.edit"),
-                    icon: <PencilSquare />,
-                    to: "edit",
-                  },
-                ],
-              },
-              ...(isTranslationsEnabled
-                ? [
-                    {
-                      actions: [
-                        {
-                          label: t("translations.actions.manage"),
-                          to: `/settings/translations/edit?reference=product_category&reference_id=${category.id}`,
-                          icon: <GlobeEurope />,
-                        },
-                      ],
-                    },
-                  ]
-                : []),
-              {
-                actions: [
-                  {
-                    label: t("actions.delete"),
-                    icon: <Trash />,
-                    onClick: handleDelete,
-                  },
-                ],
-              },
-            ]}
-          />
+          {groups.length > 0 && <ActionMenu groups={groups} />}
         </div>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 gap-3 px-6 py-4">

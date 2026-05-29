@@ -15,7 +15,6 @@ import { productLoader } from "./loader"
 
 import { useExtension } from "../../../providers/extension-provider"
 import { ProductShippingProfileSection } from "./components/product-shipping-profile-section"
-import { usePermissions } from "../../../providers/permissions-provider"
 import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const ProductDetail = () => {
@@ -64,6 +63,7 @@ export const ProductDetail = () => {
       }}
       showJSON
       showMetadata
+      showRequiredPermissions
       data={product}
     >
       <TwoColumnPage.Main>
