@@ -4,11 +4,15 @@ import { Container, Heading, StatusBadge, toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteProduct } from "../../../../../hooks/api/products"
 import { useExtension } from "../../../../../providers/extension-provider"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 const productStatusColor = (status: string) => {
   switch (status) {
@@ -37,6 +41,7 @@ export const ProductGeneralSection = ({
   const navigate = useNavigate()
   const { getDisplays } = useExtension()
   const isTranslationsEnabled = useFeatureFlag("translation")
+  const { hasPermission } = usePermissions()
 
   const displays = getDisplays("product", "general")
 
@@ -68,6 +73,49 @@ export const ProductGeneralSection = ({
     })
   }
 
+  const canUpdate = hasPermission("product:update")
+  const canDelete = hasPermission("product:delete")
+  const canManageTranslations =
+    isTranslationsEnabled && hasPermission("translation:update")
+
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
+        {
+          label: t("actions.edit"),
+          to: "edit",
+          icon: <PencilSquare />,
+        },
+      ],
+    })
+  }
+
+  if (canManageTranslations) {
+    groups.push({
+      actions: [
+        {
+          label: t("translations.actions.manage"),
+          to: `/settings/translations/edit?reference=product&reference_id=${product.id}`,
+          icon: <GlobeEurope />,
+        },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
+        {
+          label: t("actions.delete"),
+          onClick: handleDelete,
+          icon: <Trash />,
+        },
+      ],
+    })
+  }
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
@@ -76,41 +124,7 @@ export const ProductGeneralSection = ({
           <StatusBadge color={productStatusColor(product.status)}>
             {t(`products.productStatus.${product.status}`)}
           </StatusBadge>
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    label: t("actions.edit"),
-                    to: "edit",
-                    icon: <PencilSquare />,
-                  },
-                ],
-              },
-              ...(isTranslationsEnabled
-                ? [
-                    {
-                      actions: [
-                        {
-                          label: t("translations.actions.manage"),
-                          to: `/settings/translations/edit?reference=product&reference_id=${product.id}`,
-                          icon: <GlobeEurope />,
-                        },
-                      ],
-                    },
-                  ]
-                : []),
-              {
-                actions: [
-                  {
-                    label: t("actions.delete"),
-                    onClick: handleDelete,
-                    icon: <Trash />,
-                  },
-                ],
-              },
-            ]}
-          />
+          {groups.length > 0 && <ActionMenu groups={groups} />}
         </div>
       </div>
 
