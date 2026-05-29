@@ -49,7 +49,7 @@ export const CollectionProductSection = ({
   )
 
   const filters = useProductTableFilters(["collections"])
-  const columns = useColumns({ canManageProducts: canManageCollectionProducts })
+  const columns = useColumns({ canManageCollectionProducts })
 
   const { table } = useDataTable({
     data: products ?? [],
