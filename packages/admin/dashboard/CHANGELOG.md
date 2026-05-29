@@ -1,5 +1,17 @@
 # @medusajs/dashboard
 
+## 2.15.5
+
+### Patch Changes
+
+- [#14593](https://github.com/medusajs/medusa/pull/14593) [`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911) Thanks [@fPolic](https://github.com/fPolic)! - feat(dashboard,framework,rbac,js-sdk,types,utils,medusa): rbac admin dashboard utils
+
+- Updated dependencies [[`ace1822bccbb21afa533665937460140e36aa995`](https://github.com/medusajs/medusa/commit/ace1822bccbb21afa533665937460140e36aa995), [`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911)]:
+  - @medusajs/js-sdk@2.15.5
+  - @medusajs/admin-shared@2.15.5
+  - @medusajs/icons@2.15.5
+  - @medusajs/ui@4.1.15
+
 ## 2.15.4
 
 ### Patch Changes
