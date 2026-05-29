@@ -7,7 +7,10 @@ import { useTranslation } from "react-i18next"
 import { Link, Outlet, useLoaderData, useLocation } from "react-router-dom"
 
 import { HttpTypes } from "@medusajs/types"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { _DataTable } from "../../../../../components/table/data-table"
 import {
   useDeleteProduct,
@@ -19,12 +22,14 @@ import { useProductTableQuery } from "../../../../../hooks/table/query/use-produ
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { productsLoader } from "../../loader"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 const PAGE_SIZE = 20
 
 export const ProductListTable = () => {
   const { t } = useTranslation()
   const location = useLocation()
+  const { hasPermission } = usePermissions()
 
   const initialData = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof productsLoader>>
@@ -58,6 +63,8 @@ export const ProductListTable = () => {
     throw error
   }
 
+  const canCreate = hasPermission("product:create")
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
@@ -66,12 +73,18 @@ export const ProductListTable = () => {
           <Button size="small" variant="secondary" asChild>
             <Link to={`export${location.search}`}>{t("actions.export")}</Link>
           </Button>
-          <Button size="small" variant="secondary" asChild>
-            <Link to={`import${location.search}`}>{t("actions.import")}</Link>
-          </Button>
-          <Button size="small" variant="secondary" asChild>
-            <Link to="create">{t("actions.create")}</Link>
-          </Button>
+          {canCreate && (
+            <>
+              <Button size="small" variant="secondary" asChild>
+                <Link to={`import${location.search}`}>
+                  {t("actions.import")}
+                </Link>
+              </Button>
+              <Button size="small" variant="secondary" asChild>
+                <Link to="create">{t("actions.create")}</Link>
+              </Button>
+            </>
+          )}
         </div>
       </div>
       <_DataTable
@@ -104,6 +117,7 @@ const ProductActions = ({ product }: { product: HttpTypes.AdminProduct }) => {
   const prompt = usePrompt()
   const { mutateAsync } = useDeleteProduct(product.id)
   const isTranslationsEnabled = useFeatureFlag("translation")
+  const { hasPermission } = usePermissions()
 
   const handleDelete = async () => {
     const res = await prompt({
@@ -135,43 +149,54 @@ const ProductActions = ({ product }: { product: HttpTypes.AdminProduct }) => {
     })
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const canUpdate = hasPermission("product:update")
+  const canDelete = hasPermission("product:delete")
+  const canManageTranslations =
+    isTranslationsEnabled && hasPermission("translation:update")
+
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `/products/${product.id}/edit`,
-            },
-          ],
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          to: `/products/${product.id}/edit`,
         },
-        ...(isTranslationsEnabled
-          ? [
-              {
-                actions: [
-                  {
-                    icon: <GlobeEurope />,
-                    label: t("translations.actions.manage"),
-                    to: `/settings/translations/edit?reference=product&reference_id=${product.id}`,
-                  },
-                ],
-              },
-            ]
-          : []),
+      ],
+    })
+  }
+
+  if (canManageTranslations) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ],
+          icon: <GlobeEurope />,
+          label: t("translations.actions.manage"),
+          to: `/settings/translations/edit?reference=product&reference_id=${product.id}`,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
+        {
+          icon: <Trash />,
+          label: t("actions.delete"),
+          onClick: handleDelete,
+        },
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }
 
 const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()

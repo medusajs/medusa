@@ -22,10 +22,17 @@ import {
   VariantHeader,
 } from "../../../components/table/table-cells/product/variant-cell"
 import { HttpTypes } from "@medusajs/types"
+import { usePermissions } from "../../../providers/permissions-provider"
 
 const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
 
 export const useProductTableColumns = () => {
+  const { hasPermission } = usePermissions()
+
+  const canReadSalesChannels = hasPermission("sales_channel:read")
+  const canReadVariants = hasPermission("product_variant:read")
+  const canReadCollections = hasPermission("product_collection:read")
+
   return useMemo(
     () => [
       columnHelper.display({
@@ -33,22 +40,38 @@ export const useProductTableColumns = () => {
         header: () => <ProductHeader />,
         cell: ({ row }) => <ProductCell product={row.original} />,
       }),
-      columnHelper.accessor("collection", {
-        header: () => <CollectionHeader />,
-        cell: ({ row }) => (
-          <CollectionCell collection={row.original.collection} />
-        ),
-      }),
-      columnHelper.accessor("sales_channels", {
-        header: () => <SalesChannelHeader />,
-        cell: ({ row }) => (
-          <SalesChannelsCell salesChannels={row.original.sales_channels} />
-        ),
-      }),
-      columnHelper.accessor("variants", {
-        header: () => <VariantHeader />,
-        cell: ({ row }) => <VariantCell variants={row.original.variants} />,
-      }),
+      ...(canReadCollections
+        ? [
+            columnHelper.accessor("collection", {
+              header: () => <CollectionHeader />,
+              cell: ({ row }) => (
+                <CollectionCell collection={row.original.collection} />
+              ),
+            }),
+          ]
+        : []),
+      ...(canReadSalesChannels
+        ? [
+            columnHelper.accessor("sales_channels", {
+              header: () => <SalesChannelHeader />,
+              cell: ({ row }) => (
+                <SalesChannelsCell
+                  salesChannels={row.original.sales_channels}
+                />
+              ),
+            }),
+          ]
+        : []),
+      ...(canReadVariants
+        ? [
+            columnHelper.accessor("variants", {
+              header: () => <VariantHeader />,
+              cell: ({ row }) => (
+                <VariantCell variants={row.original.variants} />
+              ),
+            }),
+          ]
+        : []),
       columnHelper.accessor("status", {
         header: () => <ProductStatusHeader />,
         cell: ({ row }) => <ProductStatusCell status={row.original.status} />,
