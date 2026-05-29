@@ -1,10 +1,14 @@
 import { PencilSquare, Plus, Trash } from "@medusajs/icons"
 import { Badge, Container, Heading, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteProductOption } from "../../../../../hooks/api/products"
 import { HttpTypes } from "@medusajs/types"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 const OptionActions = ({
   product,
@@ -16,6 +20,16 @@ const OptionActions = ({
   const { t } = useTranslation()
   const { mutateAsync } = useDeleteProductOption(product.id, option.id)
   const prompt = usePrompt()
+  const { hasAllPermissions } = usePermissions()
+
+  const canUpdate = hasAllPermissions([
+    "product:update",
+    "product_option:update",
+  ])
+  const canDelete = hasAllPermissions([
+    "product:update",
+    "product_option:delete",
+  ])
 
   const handleDelete = async () => {
     const res = await prompt({
@@ -34,30 +48,37 @@ const OptionActions = ({
     await mutateAsync()
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              label: t("actions.edit"),
-              to: `options/${option.id}/edit`,
-              icon: <PencilSquare />,
-            },
-          ],
+          label: t("actions.edit"),
+          to: `options/${option.id}/edit`,
+          icon: <PencilSquare />,
         },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              label: t("actions.delete"),
-              onClick: handleDelete,
-              icon: <Trash />,
-            },
-          ],
+          label: t("actions.delete"),
+          onClick: handleDelete,
+          icon: <Trash />,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }
 
 type ProductOptionSectionProps = {
@@ -68,24 +89,32 @@ export const ProductOptionSection = ({
   product,
 }: ProductOptionSectionProps) => {
   const { t } = useTranslation()
+  const { hasAllPermissions } = usePermissions()
+
+  const canCreate = hasAllPermissions([
+    "product:update",
+    "product_option:create",
+  ])
 
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.options.header")}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("actions.create"),
-                  to: "options/create",
-                  icon: <Plus />,
-                },
-              ],
-            },
-          ]}
-        />
+        {canCreate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.create"),
+                    to: "options/create",
+                    icon: <Plus />,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
 
       {product.options?.map((option) => {
