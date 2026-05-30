@@ -14,7 +14,7 @@ import url from "url"
 import { track } from "@medusajs/telemetry"
 // @ts-ignore
 import inquirer from "inquirer"
-import { createDatabase } from "pg-god"
+import { createDatabase } from "../util/pg-helpers"
 
 import { getNodeVersion, MIN_SUPPORTED_NODE_VERSION } from "@medusajs/utils"
 import reporter from "../reporter"
