@@ -12,10 +12,21 @@
     "@medusajs/medusa": "^2.0.0",
     "@medusajs/dashboard": "^2.0.0",
     "@medusajs/framework": "^2.0.0",
-    "pg": "^8.11.3"
+    "pg": "^8.11.3",
+
+    "@mollie/api-client": "^3.7.0",
+
+    "@paypal/paypal-server-sdk": "^0.6.0",
+
+    "ebay-api": "^9.1.0",
+
+    "axios": "^1.7.0",
+    "crypto": "^1.0.1",
+    "node-cron": "^3.0.3"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "@types/node-cron": "^3.0.11",
     "typescript": "^5.0.0"
   }
 }

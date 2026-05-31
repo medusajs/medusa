@@ -1,57 +1,104 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "Your Cart | MemoryLane Gifts",
 }
 
-export default function CartPage() {
-  return (
-    <div className="min-h-screen">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="font-serif text-3xl font-bold text-charcoal-900 mb-8">Your Cart</h1>
+const MOCK_ITEMS = [
+  {
+    id: "1",
+    title: "Engraved Wooden Keychain",
+    variant: "Maple Wood",
+    personalization: "Sarah · 14 Feb 2025 · With all my love ♥",
+    price: 1499,
+    qty: 1,
+    img: "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=200",
+    productionDays: 2,
+  },
+  {
+    id: "2",
+    title: "NFC Birthday Card",
+    variant: "Gold Foil",
+    personalization: "Happy 30th! · nfc.link/my-video",
+    price: 2499,
+    qty: 1,
+    img: "https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=200",
+    productionDays: 1,
+  },
+]
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          {/* Cart items (empty state) */}
-          <div className="lg:col-span-2">
-            <div className="flex flex-col items-center justify-center py-20 text-center bg-cream-50 rounded-2xl border border-gold-100">
-              <span className="text-6xl mb-4">🛍️</span>
-              <h2 className="font-serif text-2xl font-bold text-charcoal-900 mb-2">Your cart is empty</h2>
-              <p className="text-gray-500 font-sans mb-6">Browse our personalised gifts and find something special.</p>
-              <Link href="/shop" className="btn-primary">Browse Gifts</Link>
-            </div>
+export default function CartPage() {
+  const subtotal = MOCK_ITEMS.reduce((s, i) => s + i.price * i.qty, 0)
+
+  return (
+    <div className="min-h-screen bg-cream-50">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h1 className="font-serif text-3xl font-bold text-charcoal-900 mb-2">Your Cart</h1>
+        <p className="text-gray-400 font-sans text-sm mb-8">{MOCK_ITEMS.length} item{MOCK_ITEMS.length !== 1 ? "s" : ""} in your cart</p>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Cart items */}
+          <div className="lg:col-span-2 space-y-4">
+            {MOCK_ITEMS.map((item) => (
+              <div key={item.id} className="bg-white rounded-2xl border border-gold-100 p-5 flex gap-4">
+                <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-cream-100 flex-shrink-0">
+                  <Image src={item.img} alt={item.title} fill className="object-cover" sizes="80px" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-serif font-semibold text-charcoal-900 text-sm">{item.title}</h3>
+                  <p className="text-xs text-gray-400 font-sans">{item.variant}</p>
+                  <div className="mt-1 bg-gold-50 border border-gold-200 rounded-lg px-2.5 py-1.5">
+                    <p className="text-xs text-gold-700 font-sans italic">✏️ {item.personalization}</p>
+                  </div>
+                  <div className="flex items-center justify-between mt-3">
+                    <div className="flex items-center gap-2">
+                      <button className="w-7 h-7 rounded-full border border-gray-200 text-sm font-sans hover:border-gold-400 transition-colors">−</button>
+                      <span className="text-sm font-sans font-medium w-4 text-center">{item.qty}</span>
+                      <button className="w-7 h-7 rounded-full border border-gray-200 text-sm font-sans hover:border-gold-400 transition-colors">+</button>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs text-gray-400 font-sans">⏱️ {item.productionDays}d production</span>
+                      <span className="font-sans font-bold text-gold-600">£{(item.price / 100).toFixed(2)}</span>
+                    </div>
+                  </div>
+                </div>
+                <button className="text-gray-300 hover:text-red-400 transition-colors self-start text-lg">×</button>
+              </div>
+            ))}
+
+            <Link
+              href="/shop"
+              className="block text-center text-sm text-gold-600 hover:text-gold-700 font-sans underline underline-offset-4 py-2"
+            >
+              ← Continue Shopping
+            </Link>
           </div>
 
           {/* Order summary */}
-          <div>
-            <div className="bg-cream-50 rounded-2xl border border-gold-100 p-6 space-y-4">
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-2xl border border-gold-100 shadow-sm p-6 space-y-4 sticky top-24">
               <h2 className="font-serif text-xl font-bold text-charcoal-900">Order Summary</h2>
+
               <div className="space-y-2 text-sm font-sans text-gray-500">
-                <div className="flex justify-between"><span>Subtotal</span><span>—</span></div>
-                <div className="flex justify-between"><span>Shipping</span><span>Calculated at checkout</span></div>
-                <div className="flex justify-between"><span>Gift wrapping</span><span>Free on $50+</span></div>
-              </div>
-              <div className="border-t border-gold-200 pt-3">
-                <div className="flex justify-between font-sans font-bold text-charcoal-900">
-                  <span>Total</span><span>—</span>
+                <div className="flex justify-between">
+                  <span>Subtotal ({MOCK_ITEMS.length} items)</span>
+                  <span>£{(subtotal / 100).toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Shipping</span>
+                  <span className="text-green-600">Free</span>
+                </div>
+                <div className="flex justify-between text-xs text-gray-400">
+                  <span>Gift wrapping</span>
+                  <span>Select at checkout</span>
                 </div>
               </div>
 
-              {/* Gift options */}
-              <div className="space-y-3 pt-2">
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input type="checkbox" className="w-4 h-4 accent-gold-500" />
-                  <span className="text-sm font-sans text-charcoal-800">Add gift wrapping 🎁</span>
-                  <span className="ml-auto text-xs text-gray-400 font-sans">Free on $50+</span>
-                </label>
-                <div>
-                  <label className="block text-sm font-sans font-medium text-charcoal-800 mb-1">Gift message (optional)</label>
-                  <textarea
-                    placeholder="Add a message to include with the order…"
-                    rows={2}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs font-sans focus:outline-none focus:ring-2 focus:ring-gold-400 resize-none"
-                  />
-                </div>
+              <div className="border-t border-gold-200 pt-3 flex justify-between font-sans font-bold text-charcoal-900">
+                <span>Total</span>
+                <span className="text-gold-600 text-xl">£{(subtotal / 100).toFixed(2)}</span>
               </div>
 
               {/* Discount code */}
@@ -66,15 +113,19 @@ export default function CartPage() {
                 </button>
               </div>
 
-              <button className="w-full btn-primary py-4 text-base" disabled>
-                Checkout →
-              </button>
+              <Link href="/checkout" className="block w-full text-center btn-primary py-4 text-base font-bold">
+                Checkout Securely 🔒
+              </Link>
 
-              <div className="flex justify-center gap-4 pt-2">
-                {["💳", "🅿️", "🍎"].map((icon, i) => (
+              {/* Payment icons */}
+              <div className="flex items-center justify-center gap-3 pt-1">
+                {["💳", "🅿️", "🩷", "🏦", "📱"].map((icon, i) => (
                   <span key={i} className="text-xl opacity-60">{icon}</span>
                 ))}
               </div>
+              <p className="text-center text-xs text-gray-400 font-sans">
+                Card · PayPal · Klarna · iDEAL · Apple Pay
+              </p>
             </div>
           </div>
         </div>
