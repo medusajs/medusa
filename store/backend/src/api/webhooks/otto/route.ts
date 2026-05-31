@@ -12,7 +12,9 @@ function verifyOttoSignature(req: MedusaRequest): boolean {
   const hmac = crypto.createHmac("sha256", secret)
   hmac.update(JSON.stringify(req.body))
   const expected = `sha256=${hmac.digest("hex")}`
-  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))
+  const sigBuf = Buffer.from(signature)
+  const expBuf = Buffer.from(expected)
+  return sigBuf.length === expBuf.length && crypto.timingSafeEqual(sigBuf, expBuf)
 }
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {

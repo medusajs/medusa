@@ -41,7 +41,11 @@ export default async function orderShippedSubscriber({
         returnPolicyId:      process.env.EBAY_RETURN_POLICY_ID!,
         merchantLocationKey: process.env.EBAY_MERCHANT_LOCATION_KEY!,
       })
-      logger.info?.(`eBay shipment confirmed for ${id}`)
+      await ebay.confirmShipment(
+        metadata.marketplace_order_id!,
+        tracking_number,
+        carrier || "ROYALMAIL"
+      )
     }
 
     if (source === "otto" && process.env.OTTO_API_KEY) {

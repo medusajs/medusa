@@ -25,6 +25,7 @@ type PayPalPaymentData = {
   status: string
   captureId?: string
   approvalUrl?: string
+  currencyCode?: string
 }
 
 export class PayPalPaymentProvider extends AbstractPaymentProvider<PayPalOptions> {
@@ -114,6 +115,7 @@ export class PayPalPaymentProvider extends AbstractPaymentProvider<PayPalOptions
           orderId: order.id,
           status: order.status,
           approvalUrl,
+          currencyCode: currency_code.toUpperCase(),
         } as PayPalPaymentData,
       }
     } catch (err) {
@@ -186,7 +188,7 @@ export class PayPalPaymentProvider extends AbstractPaymentProvider<PayPalOptions
       await this.paypalRequest("POST", `/v2/payments/captures/${data.captureId}/refund`, {
         amount: {
           value: (refundAmount / 100).toFixed(2),
-          currency_code: "USD",
+          currency_code: data.currencyCode || "GBP",
         },
       })
 

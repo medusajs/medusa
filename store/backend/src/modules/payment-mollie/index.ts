@@ -11,7 +11,7 @@ import {
   WebhookActionResult,
   PaymentSessionStatus,
 } from "@medusajs/framework/types"
-import MollieClient, { PaymentMethod, PaymentStatus } from "@mollie/api-client"
+import MollieClient, { PaymentStatus } from "@mollie/api-client"
 
 type MollieOptions = {
   apiKey: string

@@ -1,6 +1,6 @@
 import axios from "axios"
 import { MedusaContainer } from "@medusajs/framework/utils"
-import { IProductModuleService, IOrderModuleService } from "@medusajs/framework/types"
+import { IProductModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 type EbayOptions = {
@@ -203,6 +203,26 @@ export class EbaySyncService {
     }
 
     return { imported, errors }
+  }
+
+  // ── Confirm shipment ──────────────────────────────────────────────────────
+
+  async confirmShipment(
+    ebayOrderId: string,
+    trackingNumber: string,
+    carrier: string
+  ): Promise<void> {
+    await this.ebayRequest(
+      "POST",
+      `/sell/fulfillment/v1/order/${ebayOrderId}/shipping_fulfillment`,
+      {
+        lineItems: [],
+        shippedDate: new Date().toISOString(),
+        shippingCarrierCode: carrier,
+        trackingNumber,
+      }
+    )
+    this.logger.info?.(`eBay: shipment confirmed for order ${ebayOrderId}`)
   }
 
   // ── Webhook handler ───────────────────────────────────────────────────────

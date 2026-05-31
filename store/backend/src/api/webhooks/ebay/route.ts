@@ -12,7 +12,9 @@ function verifyEbaySignature(req: MedusaRequest): boolean {
   const hmac = crypto.createHmac("sha256", verificationToken)
   hmac.update(JSON.stringify(req.body))
   const expected = hmac.digest("base64")
-  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))
+  const sigBuf = Buffer.from(signature)
+  const expBuf = Buffer.from(expected)
+  return sigBuf.length === expBuf.length && crypto.timingSafeEqual(sigBuf, expBuf)
 }
 
 // eBay endpoint validation (GET) and notification handling (POST)
