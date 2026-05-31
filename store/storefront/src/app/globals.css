@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply font-sans text-base; }
+  h1, h2, h3 { @apply font-serif; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-gold-500 hover:bg-gold-600 text-white rounded-full font-sans font-medium transition-colors shadow-gold-sm;
+  }
+  .btn-outline {
+    @apply px-6 py-3 border-2 border-gold-500 text-gold-600 hover:bg-gold-500 hover:text-white rounded-full font-sans font-medium transition-colors;
+  }
+  .section-heading {
+    @apply font-serif text-3xl md:text-4xl font-bold text-charcoal-900;
+  }
+  .section-subheading {
+    @apply font-serif text-xl text-gray-500 mt-2;
+  }
+}
