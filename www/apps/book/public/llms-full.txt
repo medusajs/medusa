@@ -27916,267 +27916,6 @@ The AI agent will set up Medusa locally, deploy it to [Cloud](undefined/cloud), 
 
 ## Get Started with Cloud
 
-[Cloud](undefined/cloud) is Medusa's PaaS platform that allows you to deploy and manage production-ready Medusa applications with ease. Benefit from features like zero-configuration deployments, automatic scaling, storefront hosting, and GitHub integration to streamline your development workflow.
-
-[Sign up](http://cloud.medusajs.com/signup) with Cloud and create your first Medusa project in minutes.
-
-***
-
-## Create Medusa Application Locally
-
-A Medusa application is made up of a Node.js server and a Vite admin dashboard. You can optionally install the [Next.js Starter Storefront](undefined/resources/nextjs-starter) either while installing the Medusa application or at a later point.
-
-While this is the recommended way to create a Medusa application, you can alternatively [install a Medusa application with Docker](undefined/learn/installation/docker).
-
-### Prerequisites
-
-- [Node.js v20+ (LTS versions only)](https://nodejs.org/en/download)
-- [Git CLI tool](https://git-scm.com/downloads)
-- [PostgreSQL v15+ installed and running](https://www.postgresql.org/download/)
-
-If you choose to install the Next.js Starter Storefront, it currently doesn't support Node v25+. Make sure to downgrade to Node v24 LTS or lower before installing the Medusa application with the storefront.
-
-To create a Medusa application, use the `create-medusa-app` command:
-
-Considering using `yarn` or `pnpm` as your package manager for quicker installations and better performance. `npm` installations are generally slower.
-
-### yarn
-
-```bash
-yarn dlx create-medusa-app@latest my-medusa-store
-# npx create-medusa-app@latest my-medusa-store --use-yarn
-```
-
-### pnpm
-
-```bash
-pnpm dlx create-medusa-app@latest my-medusa-store
-# npx create-medusa-app@latest my-medusa-store --use-pnpm
-```
-
-### npm
-
-```bash
-npx create-medusa-app@latest my-medusa-store
-```
-
-Where `my-medusa-store` is the name of the project's directory and PostgreSQL database created for the project. When you run the command, you'll be asked whether you want to install the Next.js Starter Storefront.
-
-To customize the default installation behavior, such as specify a database URL, refer to the [create-medusa-app reference](undefined/resources/create-medusa-app).
-
-After answering the prompts, the command installs the Medusa application in a monorepository with your project name, and sets up a PostgreSQL database that the application connects to. The backend (with the admin dashboard) is installed in the `apps/backend` directory of the monorepository.
-
-If you chose to install the storefront with the Medusa application, the storefront is installed in the monorepository under the `apps/storefront` directory.
-
-![Directory structure overview after Medusa installation showing the main project folder containing the Medusa backend application and admin dashboard, alongside the separate storefront directory for the customer-facing Next.js application](https://res.cloudinary.com/dza7lstvk/image/upload/v1776755371/Medusa%20Book/installation-dirs_h2sqhy.jpg)
-
-### Successful Installation Result
-
-Once the installation finishes successfully, the Medusa application will run at `http://localhost:9000`.
-
-The Medusa Admin dashboard also runs at `http://localhost:9000/app`. The installation process opens the Medusa Admin dashboard in your default browser to create a user. You can later log in with that user.
-
-If you also installed the Next.js Starter Storefront, it'll be running at `http://localhost:8000`.
-
-You can stop the servers for the Medusa application and Next.js Starter Storefront by exiting the installation command. To run the server for the Medusa application again, refer to [this section](#run-medusa-application-in-development).
-
-![Post-installation running services overview: Medusa backend server and admin dashboard running on localhost:9000, Next.js Starter Storefront running on localhost:8000, with PostgreSQL database and other essential services active and ready for development](https://res.cloudinary.com/dza7lstvk/image/upload/v1745856706/Medusa%20Resources/success-overview_bj4pbt.jpg)
-
-### Troubleshooting Installation Errors
-
-If you ran into an error during your installation, refer to the following troubleshooting guides for help:
-
-1. [create-medusa-app troubleshooting guides](undefined/resources/troubleshooting/create-medusa-app-errors).
-2. [CORS errors](undefined/resources/troubleshooting/cors-errors).
-3. [Errors with pnpm](undefined/resources/troubleshooting/pnpm).
-4. [All troubleshooting guides](undefined/resources/troubleshooting).
-
-If you can't find your error reported anywhere, please open a [GitHub issue](https://github.com/medusajs/medusa/issues/new/choose).
-
-***
-
-## Run Medusa Application in Development
-
-To run the Medusa application in development, change to the `backend` application's directory and run the following command:
-
-```bash npm2yarn
-npm run dev
-```
-
-This runs your Medusa server at `http://localhost:9000`, and the Medusa Admin dashboard `http://localhost:9000/app`.
-
-![Diagram showcasing the server and application running when you start the Medusa application](https://res.cloudinary.com/dza7lstvk/image/upload/v1776755500/Medusa%20Book/start-overview_hqjexd.jpg)
-
-For details on starting and configuring the Next.js Starter Storefront, refer to [the Next.js Starter Storefront documentation](undefined/resources/nextjs-starter).
-
-The application will restart if you make any changes to code under the `src` directory, except for admin customizations which are hot reloaded, providing you with a seamless developer experience without having to refresh your browser to see the changes.
-
-***
-
-## Start Building with Claude Code
-
-Medusa provides [Claude Code plugins](https://github.com/medusajs/medusa-agent-skills) to assist you in learning and building with Medusa. You can also use the skills in these plugins with other AI agents by copying the skills.
-
-This section covers key plugins as you get started with Medusa development using Claude Code. Refer to the [Build with AI Assistants and LLMs](undefined/learn/introduction/build-with-llms-ai) chapter for more details on using Medusa with AI tools.
-
-### Interactive Learning
-
-If you're a Medusa beginner and use Claude Code, install the `learn-medusa` plugin:
-
-### Claude Code
-
-```bash
-claude # start claude code
-/plugin marketplace add medusajs/medusa-agent-skills
-/plugin install learn-medusa@medusa
-```
-
-### Other AI Agents
-
-```bash
-npx skills add medusajs/medusa-agent-skills
-# choose the following skill:
-# - learning-medusa
-```
-
-Then, start the learning experience with this prompt:
-
-```bash title="Claude Code Prompt"
-I want to learn Medusa.
-```
-
-You can also run the skill using the `/learn-medusa:learning-medusa` command in Claude Code.
-
-This starts the interactive learning experience where you'll learn Medusa concepts step-by-step by building a brands feature, similar to the [Brands tutorial](undefined/learn/customization/custom-features). You will:
-
-1. Create a Brand Module with API routes to manage brands.
-2. Link brands to products to associate products with brands.
-3. Customize the Medusa Admin dashboard to allow admin users to manage brands.
-
-By the end, you'll have a solid understanding of Medusa's architecture and how to build custom features.
-
-### Medusa Development Assistance
-
-If you want assistance in your Medusa development, install the `medusa-dev` plugin:
-
-### Claude Code
-
-```bash
-claude # start claude code
-/plugin marketplace add medusajs/medusa-agent-skills
-/plugin install medusa-dev@medusa
-```
-
-### Other AI Agents
-
-```bash
-npx skills add medusajs/medusa-agent-skills
-# choose the following skills:
-# - building-with-medusa
-# - building-admin-dashboard-customizations
-# - building-storefronts
-# - db-generate
-# - db-migrate
-# - new-user
-```
-
-Then, you can ask Claude Code to build Medusa features, fix bugs, and more. Claude Code will use the skills in the plugin to provide you with accurate and relevant Medusa code.
-
-Examples of prompts you can use:
-
-```bash title="Claude Code Prompts"
-Implement a product reviews feature. Authenticated customers can add reviews. Admin users can view and approve or reject reviews from the dashboard
-Create a wishlist feature where customers can save products. I need API routes for adding/removing items and retrieving the wishlist.
-Add a widget to the product detail page in the admin that allows managing related products. Admin users should be able to select which products are related using a searchable table.
-Help me integrate the custom reviews API into my Next.js storefront. Show product reviews on the product detail page with pagination.
-```
-
-***
-
-## Create Medusa Admin User
-
-Aside from creating an admin user in the admin dashboard, you can create a user with Medusa's CLI tool.
-
-Run the following command in your Medusa application's directory (`apps/backend`) to create a new admin user:
-
-```bash npx2yarn
-npx medusa user -e admin@medusajs.com -p supersecret
-```
-
-Replace `admin@medusajs.com` and `supersecret` with the user's email and password respectively.
-
-You can then use the user's credentials to log into the Medusa Admin application.
-
-***
-
-## Project Files
-
-Your Medusa application's project (`apps/backend`) will have the following files and directories:
-
-![A diagram of the directories overview](https://res.cloudinary.com/dza7lstvk/image/upload/v1732803813/Medusa%20Book/medusa-dir-overview_v7ks0j.jpg)
-
-### src
-
-This directory is the central place for your custom development. It includes the following sub-directories:
-
-- `admin`: Holds your admin dashboard's custom [widgets](undefined/learn/fundamentals/admin/widgets) and [UI routes](undefined/learn/fundamentals/admin/ui-routes).
-- `api`: Holds your custom [API routes](undefined/learn/fundamentals/api-routes) that are added as endpoints in your Medusa application.
-- `jobs`: Holds your [scheduled jobs](undefined/learn/fundamentals/scheduled-jobs) that run at a specified interval during your Medusa application's runtime.
-- `links`: Holds your [module links](undefined/learn/fundamentals/module-links) that build associations between data models of different modules.
-- `modules`: Holds your custom [modules](undefined/learn/fundamentals/modules) that implement custom business logic.
-- `scripts`: Holds your custom [scripts](undefined/learn/fundamentals/custom-cli-scripts) to be executed using Medusa's CLI tool.
-- `subscribers`: Holds your [event listeners](undefined/learn/fundamentals/events-and-subscribers) that are executed asynchronously whenever an event is emitted.
-- `workflows`: Holds your custom [flows](undefined/learn/fundamentals/workflows) that can be executed from anywhere in your application.
-
-### medusa-config.ts
-
-This file holds your [Medusa configurations](undefined/learn/configurations/medusa-config), such as your PostgreSQL database configurations.
-
-### .medusa
-
-The `.medusa` directory holds types and other files that are generated by Medusa when you run the `build` command. Don't modify any files or commit them to your repository.
-
-See [Automatically Generated Types](undefined/learn/fundamentals/generated-types) for more information on generated types.
-
-***
-
-## Configure Medusa Application
-
-By default, your Medusa application is equipped with the basic configuration to start your development.
-
-If you run into issues with configurations, such as CORS configurations, or need to make changes to the default configuration, refer to the [Medusa Configuration](undefined/learn/configurations/medusa-config) guide.
-
-***
-
-## Update Medusa Application
-
-Refer to the [Update Medusa](undefined/learn/update) guide to learn how to update your Medusa project.
-
-***
-
-## Next Steps
-
-In the next chapters, you'll learn about the architecture of your Medusa application, then learn how to customize your application to build custom features.
-
-
-# Install Medusa
-
-In this chapter, you'll learn how to install and run a Medusa application.
-
-## Get Started with AI Agents
-
-If you're an AI agent, or a human that wants to get started quickly with an AI agent, run the following prompt in your agent:
-
-```bash title="Prompt"
-Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
-```
-
-The AI agent will set up Medusa locally, deploy it to [Cloud](undefined/cloud), and help you build your custom commerce features.
-
-***
-
-## Get Started with Cloud
-
 [Cloud](undefined/cloud) is the quickest way to get started with Medusa. With Cloud, you can deploy your ecommerce applications in minutes. Benefit from features like:
 
 - Zero-configuration deployments
@@ -30270,7 +30009,7 @@ Refer to the [Deployment](undefined/resources/deployment) documentation to learn
 
 # Introduction
 
-Get started with Medusa, a digital commerce platform with a built-in Framework for customization.
+Get started with Medusa, an AI-native commerce platform with a Framework to build custom commerce features.
 
 ## Get Started with AI Agents
 
@@ -30282,25 +30021,29 @@ Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa 
 
 The AI agent will set up Medusa locally, deploy it to [Cloud](undefined/cloud), and help you build your custom commerce features.
 
+***
+
 ## What is Medusa
 
-Medusa is a digital commerce platform with a built-in Framework for customization.
+Medusa is an AI-native commerce platform with a Framework to build custom commerce features.
 
 Medusa ships with three main tools:
 
 1. A suite of [Commerce Modules](undefined/resources/commerce-modules) with core commerce functionalities, such as tracking inventory, calculating cart totals, accepting payments, managing orders, and much more.
-2. A [Framework](undefined/learn/fundamentals/framework) for building custom functionalities specific to your business, product, or industry. This includes tools for introducing custom API endpoints, business logic, and data models; building workflows and automations; and integrating with third-party services.
+2. A [Framework](undefined/learn/fundamentals/framework) for building agentic flows and custom functionalities specific to your business, product, or industry. This includes tools for introducing custom API endpoints, business logic, and data models; building workflows and automations; and integrating with third-party services.
 3. A customizable admin dashboard for merchants to configure and operate their store.
 
-When you install Medusa, you get a fully fledged commerce platform with all the features you need to get off the ground. However, unlike other platforms, Medusa is built with customization in mind. You don't need to build hacky workarounds that are difficult to maintain and scale. Your efforts go into building features that bring your business's vision to life.
+When you install Medusa, you get a fully fledged commerce platform with all the features you need to get off the ground. However, unlike other platforms, you don't need to build hacky workarounds that are difficult to maintain and scale.
+
+Medusa is built with customization in mind. Build features that bring your business's vision to life, with native support of AI agents to automate your operations and customer interactions.
 
 ***
 
 ## Who should use Medusa
 
-Medusa is for businesses and teams looking for a digital commerce platform with the tools to implement unique requirements that other platforms aren't built to support.
+Medusa is for businesses and teams looking for a cutting-edge commerce platform that supports their unique requirements, visions, and automated workflows that other platforms aren't built to support.
 
-Businesses of all sizes can use Medusa, from small start ups to large enterprises. Also, technical teams of all sizes can build with Medusa; all it takes is a developer to manage and deploy Medusa projects.
+Businesses of all sizes can use Medusa, from small start ups building with agentic flows to large enterprises building complex commerce features. Medusa is also for developers that want to build with the latest technologies and tools, and have the freedom to implement unique features without being limited by the platform's architecture.
 
 Below are some stories from companies that use Medusa:
 
@@ -30313,11 +30056,11 @@ Below are some stories from companies that use Medusa:
 
 ***
 
-## Who is this documentation for
+## How to learn Medusa
 
 This documentation introduces you to Medusa's concepts and how they help you build your business use case. The documentation is structured to gradually introduce Medusa's concepts, with easy-to-follow examples along the way.
 
-By following this documentation, you'll be able to create custom commerce experiences that would otherwise take large engineering teams months to build.
+You can also jump right into building your store with the help of our [agentic skills, MCP server, and other AI-friendly tools](undefined/learn/introduction/build-with-llms-ai).
 
 ### How to use the documentation
 
@@ -30326,24 +30069,15 @@ This documentation is split into the following sections:
 |Section|Description|
 |---|---|---|
 |Main Documentation|The documentation you're currently reading. It's recommended to follow the chapters in this documentation to understand the core concepts of Medusa and how to use them before jumping into the other sections.|
+|Cloud|Learn about Cloud, our managed services offering for Medusa applications. Find guides on how to deploy your Medusa application, manage organizations, and more.|
 |Product|Documentation for the |
 |Build|Recipes|
 |Tools|Guides on how to setup and use Medusa's CLI tools, |
 |API Routes References|References of the |
 |References|Useful during your development with Medusa to learn about different APIs and how to use them. Its references include the |
 |User Guide|Guides that introduce merchants and store managers to the Medusa Admin dashboard and helps them understand how to use the dashboard to manage their store.|
-|Cloud|Learn about Cloud, our managed services offering for Medusa applications. Find guides on how to deploy your Medusa application, manage organizations, and more.|
 
 To get started, check out the [Installation chapter](undefined/learn/installation).
-
-***
-
-## Useful Links
-
-- Need Help? Refer to our [GitHub repository](https://github.com/medusajs/medusa) for [issues](https://github.com/medusajs/medusa/issues) and [discussions](https://github.com/medusajs/medusa/discussions).
-- [Join the community on Discord](https://discord.gg/medusajs).
-- Have questions or need more support? Contact our [sales team](https://medusajs.com/contact/).
-- Facing issues in your development? Refer to our [troubleshooting guides](undefined/resources/troubleshooting).
 
 
 # Worker Mode of Medusa Instance
@@ -31129,79 +30863,6 @@ If you have a Medusa plugin project, you only need to update its `@medusajs/*` d
 ```bash npm2yarn
 npm  install
 ```
-
-
-# Introduction
-
-Get started with Medusa, an AI-native commerce platform with a Framework to build custom commerce features.
-
-## Get Started with AI Agents
-
-If you're an AI agent, or a human that wants to get started quickly with an AI agent, run the following prompt in your agent:
-
-```bash title="Prompt"
-Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
-```
-
-The AI agent will set up Medusa locally, deploy it to [Cloud](undefined/cloud), and help you build your custom commerce features.
-
-***
-
-## What is Medusa
-
-Medusa is an AI-native commerce platform with a Framework to build custom commerce features.
-
-Medusa ships with three main tools:
-
-1. A suite of [Commerce Modules](undefined/resources/commerce-modules) with core commerce functionalities, such as tracking inventory, calculating cart totals, accepting payments, managing orders, and much more.
-2. A [Framework](undefined/learn/fundamentals/framework) for building agentic flows and custom functionalities specific to your business, product, or industry. This includes tools for introducing custom API endpoints, business logic, and data models; building workflows and automations; and integrating with third-party services.
-3. A customizable admin dashboard for merchants to configure and operate their store.
-
-When you install Medusa, you get a fully fledged commerce platform with all the features you need to get off the ground. However, unlike other platforms, you don't need to build hacky workarounds that are difficult to maintain and scale.
-
-Medusa is built with customization in mind. Build features that bring your business's vision to life, with native support of AI agents to automate your operations and customer interactions.
-
-***
-
-## Who should use Medusa
-
-Medusa is for businesses and teams looking for a cutting-edge commerce platform that supports their unique requirements, visions, and automated workflows that other platforms aren't built to support.
-
-Businesses of all sizes can use Medusa, from small start ups building with agentic flows to large enterprises building complex commerce features. Medusa is also for developers that want to build with the latest technologies and tools, and have the freedom to implement unique features without being limited by the platform's architecture.
-
-Below are some stories from companies that use Medusa:
-
-- [Use Case: Advanced Fulfillment](https://medusajs.com/blog/eight-sleep/): How Eight Sleeps built their fulfillment setup with Medusa
-- [Use Case: D2C](https://medusajs.com/blog/matt-sleeps/): How Matt Sleeps built a unique D2C experience with Medusa
-- [Use Case: Marketplace](https://medusajs.com/blog/foraged/): How Foraged built a custom marketplace with Medusa
-- [Use Case: Distributor Platform](https://medusajs.com/blog/redington): How Redington built a B2B distributor platform with Medusa
-- [Use Case: Quick to market](https://medusajs.com/blog/partbase): How Partbase built their distributor platform with Medusa
-- [Use Case: Complex products & pricing](https://medusajs.com/blog/eki/): How EKI built a B2B platform with complex products and pricing
-
-***
-
-## How to learn Medusa
-
-This documentation introduces you to Medusa's concepts and how they help you build your business use case. The documentation is structured to gradually introduce Medusa's concepts, with easy-to-follow examples along the way.
-
-You can also jump right into building your store with the help of our [agentic skills, MCP server, and other AI-friendly tools](undefined/learn/introduction/build-with-llms-ai).
-
-### How to use the documentation
-
-This documentation is split into the following sections:
-
-|Section|Description|
-|---|---|---|
-|Main Documentation|The documentation you're currently reading. It's recommended to follow the chapters in this documentation to understand the core concepts of Medusa and how to use them before jumping into the other sections.|
-|Cloud|Learn about Cloud, our managed services offering for Medusa applications. Find guides on how to deploy your Medusa application, manage organizations, and more.|
-|Product|Documentation for the |
-|Build|Recipes|
-|Tools|Guides on how to setup and use Medusa's CLI tools, |
-|API Routes References|References of the |
-|References|Useful during your development with Medusa to learn about different APIs and how to use them. Its references include the |
-|User Guide|Guides that introduce merchants and store managers to the Medusa Admin dashboard and helps them understand how to use the dashboard to manage their store.|
-
-To get started, check out the [Installation chapter](undefined/learn/installation).
 
 
 # Set Up Medusa with AI Agents
@@ -54177,6 +53838,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [revokeApiKeysWorkflow](undefined/references/medusa-workflows/revokeApiKeysWorkflow/index.html.md)
 - [updateApiKeysWorkflow](undefined/references/medusa-workflows/updateApiKeysWorkflow/index.html.md)
 - [generateResetPasswordTokenWorkflow](undefined/references/medusa-workflows/generateResetPasswordTokenWorkflow/index.html.md)
+- [requestVerificationWorkflow](undefined/references/medusa-workflows/requestVerificationWorkflow/index.html.md)
 - [setAuthAppMetadataWorkflow](undefined/references/medusa-workflows/setAuthAppMetadataWorkflow/index.html.md)
 - [addGiftCardToCartWorkflow](undefined/references/medusa-workflows/addGiftCardToCartWorkflow/index.html.md)
 - [addShippingMethodToCartWorkflow](undefined/references/medusa-workflows/addShippingMethodToCartWorkflow/index.html.md)
@@ -54593,8 +54255,10 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [revokeApiKeysStep](undefined/references/medusa-workflows/steps/revokeApiKeysStep/index.html.md)
 - [updateApiKeysStep](undefined/references/medusa-workflows/steps/updateApiKeysStep/index.html.md)
 - [validateSalesChannelsExistStep](undefined/references/medusa-workflows/steps/validateSalesChannelsExistStep/index.html.md)
+- [requestVerificationStep](undefined/references/medusa-workflows/steps/requestVerificationStep/index.html.md)
 - [setAuthAppMetadataStep](undefined/references/medusa-workflows/steps/setAuthAppMetadataStep/index.html.md)
 - [addShippingMethodToCartStep](undefined/references/medusa-workflows/steps/addShippingMethodToCartStep/index.html.md)
+- [compensatePaymentIfNeededStep](undefined/references/medusa-workflows/steps/compensatePaymentIfNeededStep/index.html.md)
 - [confirmInventoryStep](undefined/references/medusa-workflows/steps/confirmInventoryStep/index.html.md)
 - [createCartsStep](undefined/references/medusa-workflows/steps/createCartsStep/index.html.md)
 - [createLineItemAdjustmentsStep](undefined/references/medusa-workflows/steps/createLineItemAdjustmentsStep/index.html.md)
@@ -54904,6 +54568,8 @@ This documentation page includes the list of all events emitted by [Medusa's wor
 |---|---|
 |auth.password\_reset|Emitted when a reset password token is generated. You can listen to this event
 to send a reset password email to the user or customer, for example.|
+|auth.verification\_requested|Emitted when a verification token is generated. You can listen to
+this event and decide how to deliver the token to the user or customer.|
 
 ### auth.password\_reset
 
@@ -54926,6 +54592,34 @@ to send a reset password email to the user or customer, for example.
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
 - [generateResetPasswordTokenWorkflow](undefined/references/medusa-workflows/generateResetPasswordTokenWorkflow)
+
+***
+
+### auth.verification\_requested&#xA;
+
+Emitted when a verification token is generated. You can listen to
+this event and decide how to deliver the token to the user or customer.
+
+#### Payload
+
+```ts
+{
+  entity_id, // The identifier of the user or customer. For example, an email address.
+  actor_type, // The type of actor. For example, "customer", "user", or custom.
+  provider, // The auth provider that requested verification.
+  auth_identity_id, // The ID of the auth identity being verified.
+  provider_identity_id, // The ID of the provider identity being verified.
+  token, // The generated token.
+  expires_at, // The token expiry date.
+  metadata, // Optional custom metadata passed from the request.
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [requestVerificationWorkflow](undefined/references/medusa-workflows/requestVerificationWorkflow)
 
 ***
 
@@ -129892,6 +129586,20 @@ To learn more about the commerce features that Medusa provides, check out Medusa
 - [retrieve](undefined/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.retrieve/index.html.md)
 - [update](undefined/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.update/index.html.md)
 - [updateRules](undefined/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.updateRules/index.html.md)
+- [create](undefined/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.create/index.html.md)
+- [delete](undefined/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.delete/index.html.md)
+- [list](undefined/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.list/index.html.md)
+- [retrieve](undefined/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.retrieve/index.html.md)
+- [update](undefined/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.update/index.html.md)
+- [addPolicies](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.addPolicies/index.html.md)
+- [create](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.create/index.html.md)
+- [delete](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.delete/index.html.md)
+- [list](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.list/index.html.md)
+- [listPolicies](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listPolicies/index.html.md)
+- [mePermissions](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.mePermissions/index.html.md)
+- [removePolicy](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removePolicy/index.html.md)
+- [retrieve](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.retrieve/index.html.md)
+- [update](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.update/index.html.md)
 - [create](undefined/references/js_sdk/admin/RefundReason/methods/js_sdk.admin.RefundReason.create/index.html.md)
 - [delete](undefined/references/js_sdk/admin/RefundReason/methods/js_sdk.admin.RefundReason.delete/index.html.md)
 - [list](undefined/references/js_sdk/admin/RefundReason/methods/js_sdk.admin.RefundReason.list/index.html.md)
@@ -130012,7 +129720,6 @@ To learn more about the commerce features that Medusa provides, check out Medusa
 - [login](undefined/references/js-sdk/auth/login/index.html.md)
 - [logout](undefined/references/js-sdk/auth/logout/index.html.md)
 - [refresh](undefined/references/js-sdk/auth/refresh/index.html.md)
-- [register](undefined/references/js-sdk/auth/register/index.html.md)
 - [resetPassword](undefined/references/js-sdk/auth/resetPassword/index.html.md)
 - [updateProvider](undefined/references/js-sdk/auth/updateProvider/index.html.md)
 
