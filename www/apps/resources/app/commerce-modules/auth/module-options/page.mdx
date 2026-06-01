@@ -71,6 +71,47 @@ Refer to [Medusa's configuration guide](!docs!/learn/configurations/medusa-confi
 
 ---
 
+## mfa
+
+The `mfa` option configures multi-factor authentication (MFA) settings for the Auth Module.
+
+<Note>
+
+This feature is available in Medusa v2.15.5 and above.
+
+</Note>
+
+For example:
+
+```ts title="medusa-config.ts"
+import { Modules, ContainerRegistrationKeys } from "@medusajs/framework/utils"
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
+      options: {
+        mfa: {
+          disable_policy: "challenge", // or "session"
+        },
+      },
+    },
+  ],
+})
+```
+
+The `mfa` option accepts the following properties:
+
+- `disable_policy`: A string indicating the policy for disabling MFA factors. Can be either:
+  - `"challenge"`: Requires MFA challenge verification to disable an MFA factor
+  - `"session"` (default): Only requires a valid session to disable an MFA factor
+
+---
+
 ## authMethodsPerActor Configuration
 
 The Medusa application's configuration accept an `authMethodsPerActor` configuration which restricts the allowed auth providers used with an actor type.

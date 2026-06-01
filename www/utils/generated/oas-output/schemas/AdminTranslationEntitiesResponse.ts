@@ -13,22 +13,20 @@
  *     type: array
  *     description: The list of translatable entities.
  *     items:
- *       allOf:
- *         - type: object
- *           description: The entity's data.
- *           required:
- *             - id
- *             - translations
- *           properties:
- *             id:
- *               type: string
- *               title: id
- *               description: The entity's ID.
- *             translations:
- *               type: array
- *               description: The entity's translations.
- *               items:
- *                 $ref: "#/components/schemas/AdminTranslation"
+ *       type: object
+ *       required:
+ *         - id
+ *         - translations
+ *       properties:
+ *         id:
+ *           type: string
+ *           title: id
+ *           description: The entity's ID.
+ *         translations:
+ *           type: array
+ *           description: The entity's translations.
+ *           items:
+ *             $ref: "#/components/schemas/AdminTranslation"
  *   count:
  *     type: number
  *     title: count

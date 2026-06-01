@@ -4766,6 +4766,114 @@ medusaIntegrationTestRunner({
           expect(result).toEqual([])
         })
 
+        it("should not flag insufficient_inventory for a pickup option when item has allow_backorder=true and zero stock", async () => {
+          const [product] = await productModule.createProducts([
+            {
+              title: "Backorder pickup product",
+              status: ProductStatus.PUBLISHED,
+              variants: [
+                {
+                  title: "Variant",
+                  manage_inventory: true,
+                  allow_backorder: true,
+                },
+              ],
+            },
+          ])
+
+          const inventoryItem = (
+            await api.post(
+              `/admin/inventory-items`,
+              {
+                sku: "backorder-pickup-1",
+                location_levels: [
+                  {
+                    location_id: stockLocation.id,
+                    stocked_quantity: 0,
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          const variantPriceSet = await pricingModule.createPriceSets({
+            prices: [{ amount: 1000, currency_code: "usd" }],
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.PRODUCT]: { variant_id: product.variants[0].id },
+              [Modules.PRICING]: { price_set_id: variantPriceSet.id },
+            },
+            {
+              [Modules.PRODUCT]: { variant_id: product.variants[0].id },
+              [Modules.INVENTORY]: { inventory_item_id: inventoryItem.id },
+            },
+          ])
+
+          const shippingOption = (
+            await api.post(
+              `/admin/shipping-options`,
+              {
+                name: "Pickup at location",
+                service_zone_id: fulfillmentSet.service_zones[0].id,
+                shipping_profile_id: shippingProfile.id,
+                provider_id: "manual_test-provider",
+                price_type: "flat",
+                type: {
+                  label: "Pickup",
+                  description: "Pickup at location",
+                  code: "pickup",
+                },
+                prices: [
+                  {
+                    amount: 3000,
+                    currency_code: "usd",
+                  },
+                ],
+                rules: [
+                  {
+                    operator: RuleOperator.EQ,
+                    attribute: "is_return",
+                    value: "false",
+                  },
+                  {
+                    operator: RuleOperator.EQ,
+                    attribute: "enabled_in_store",
+                    value: "true",
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.shipping_option
+
+          await addToCartWorkflow(appContainer).run({
+            input: {
+              cart_id: cart.id,
+              items: [
+                { variant_id: product.variants[0].id, quantity: 1 },
+              ],
+            },
+          })
+
+          const { result } = await listShippingOptionsForCartWorkflow(
+            appContainer
+          ).run({ input: { cart_id: cart.id } })
+
+          // The backorder-enabled variant is treated as available even at
+          // stocked_quantity 0, so the pickup option must NOT be flagged
+          // insufficient_inventory. Without the fix this returns true and
+          // the customer cannot select pickup for the backorder item.
+          expect(result).toEqual([
+            expect.objectContaining({
+              id: shippingOption.id,
+              insufficient_inventory: false,
+            }),
+          ])
+        })
+
         describe("setPricingContext hook", () => {
           it("should use context provided by the hook", async () => {
             const shippingOption = (

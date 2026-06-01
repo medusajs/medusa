@@ -18,6 +18,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -173,6 +176,28 @@ describe("defineConfig", function () {
     `)
   })
 
+  it("should include auth mfa encryption key when configured", function () {
+    const originalEnv = { ...process.env }
+    process.env.AUTH_MFA_ENCRYPTION_KEY = "test-mfa-key"
+
+    let config!: ReturnType<typeof defineConfig>
+    try {
+      config = defineConfig()
+    } finally {
+      process.env = { ...originalEnv }
+    }
+
+    expect(config.modules?.[Modules.AUTH]).toEqual(
+      expect.objectContaining({
+        options: expect.objectContaining({
+          mfa: {
+            encryption_key: "test-mfa-key",
+          },
+        }),
+      })
+    )
+  })
+
   it("should merge custom modules", function () {
     expect(
       defineConfig({
@@ -200,6 +225,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -390,6 +418,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -581,6 +612,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -760,6 +794,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -942,6 +979,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -1127,6 +1167,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -1362,6 +1405,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -1557,6 +1603,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -1809,6 +1858,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -2140,6 +2192,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -2342,6 +2397,9 @@ describe("defineConfig", function () {
                 "oauth_authorize_endpoint": "test-oauth-authorize-endpoint",
                 "oauth_token_endpoint": "test-oauth-token-endpoint",
                 "sandbox_handle": undefined,
+              },
+              "mfa": {
+                "encryption_key": undefined,
               },
               "providers": [
                 {
@@ -2563,6 +2621,9 @@ describe("defineConfig", function () {
                 "oauth_authorize_endpoint": "test-oauth-authorize-endpoint",
                 "oauth_token_endpoint": "test-oauth-token-endpoint",
                 "sandbox_handle": "test-sandbox",
+              },
+              "mfa": {
+                "encryption_key": undefined,
               },
               "providers": [
                 {
@@ -2793,6 +2854,9 @@ describe("defineConfig", function () {
                 "oauth_authorize_endpoint": "overriden-oauth-authorize-endpoint",
                 "oauth_token_endpoint": "overriden-oauth-token-endpoint",
                 "sandbox_handle": undefined,
+              },
+              "mfa": {
+                "encryption_key": undefined,
               },
               "providers": [
                 {

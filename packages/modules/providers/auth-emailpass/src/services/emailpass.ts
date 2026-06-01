@@ -6,7 +6,11 @@ import {
   EmailPassAuthProviderOptions,
   Logger,
 } from "@medusajs/framework/types"
-import { AbstractAuthModuleProvider, isString, MedusaError, } from "@medusajs/framework/utils"
+import {
+  AbstractAuthModuleProvider,
+  isString,
+  MedusaError,
+} from "@medusajs/framework/utils"
 import Scrypt from "scrypt-kdf"
 import { isPresent } from "@medusajs/utils"
 
@@ -15,9 +19,15 @@ type InjectedDependencies = {
 }
 
 type AuthIdentityParams = {
-  email: string;
-  password: string;
+  email: string
+  password: string
   authIdentityService: AuthIdentityProviderService
+}
+
+type ProviderMetadata = {
+  password?: unknown
+  verified_at?: string | null
+  requires_verification?: boolean
 }
 
 interface LocalServiceConfig extends EmailPassAuthProviderOptions {}
@@ -66,9 +76,14 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
 
     try {
       const passwordHash = await this.hashPassword(password)
+      const providerMetadata = await this.getProviderMetadata_(
+        entity_id,
+        authIdentityService
+      )
 
       authIdentity = await authIdentityService.update(entity_id, {
         provider_metadata: {
+          ...providerMetadata,
           password: passwordHash,
         },
       })
@@ -78,7 +93,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
 
     return {
       success: true,
-      authIdentity,
+      authIdentity: this.sanitizeAuthIdentity_(authIdentity),
     }
   }
 
@@ -129,15 +144,9 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
       const success = await Scrypt.verify(buf, password)
 
       if (success) {
-        const copy = JSON.parse(JSON.stringify(authIdentity))
-        const providerIdentity = copy.provider_identities?.find(
-          (pi) => pi.provider === this.provider
-        )!
-        delete providerIdentity.provider_metadata?.password
-
         return {
           success,
-          authIdentity: copy,
+          authIdentity: this.sanitizeAuthIdentity_(authIdentity),
         }
       }
     }
@@ -175,7 +184,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
 
       // If app_metadata is not defined or empty, it means no actor was assigned to the auth_identity yet (still "claimable")
       if (!isPresent(identity.app_metadata)) {
-        const updatedAuthIdentity = await this.upsertAuthIdentity('update', {
+        const updatedAuthIdentity = await this.upsertAuthIdentity("update", {
           email,
           password,
           authIdentityService,
@@ -193,7 +202,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
       }
     } catch (error) {
       if (error.type === MedusaError.Types.NOT_FOUND) {
-        const createdAuthIdentity = await this.upsertAuthIdentity('create', {
+        const createdAuthIdentity = await this.upsertAuthIdentity("create", {
           email,
           password,
           authIdentityService,
@@ -209,26 +218,71 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     }
   }
 
-  private async upsertAuthIdentity(type: 'update' | 'create', { email, password, authIdentityService }: AuthIdentityParams) {
+  private async upsertAuthIdentity(
+    type: "update" | "create",
+    { email, password, authIdentityService }: AuthIdentityParams
+  ) {
     const passwordHash = await this.hashPassword(password)
+    const providerMetadata: ProviderMetadata =
+      type === "update"
+        ? await this.getProviderMetadata_(email, authIdentityService)
+        : {}
 
-    const authIdentity = type === 'create' ? await authIdentityService.create({
-        entity_id: email,
-        provider_metadata: {
-          password: passwordHash,
-        },
-      }) : await authIdentityService.update(email, {
-      provider_metadata: {
-        password: passwordHash,
-      },
+    providerMetadata.password = passwordHash
+
+    if (
+      this.requiresVerification_() &&
+      !providerMetadata.verified_at &&
+      providerMetadata.requires_verification !== false
+    ) {
+      providerMetadata.requires_verification = true
+    }
+
+    const authIdentity =
+      type === "create"
+        ? await authIdentityService.create({
+            entity_id: email,
+            provider_metadata: providerMetadata,
+          })
+        : await authIdentityService.update(email, {
+            provider_metadata: providerMetadata,
+          })
+
+    return this.sanitizeAuthIdentity_(authIdentity)
+  }
+
+  private requiresVerification_(): boolean {
+    return this.config_.require_verification === true
+  }
+
+  private async getProviderMetadata_(
+    entityId: string,
+    authIdentityService: AuthIdentityProviderService
+  ): Promise<ProviderMetadata> {
+    const authIdentity = await authIdentityService.retrieve({
+      entity_id: entityId,
     })
+    const providerIdentity = this.getProviderIdentity_(authIdentity)
 
+    return {
+      ...(providerIdentity.provider_metadata ?? {}),
+    }
+  }
+
+  private sanitizeAuthIdentity_(
+    authIdentity: AuthIdentityDTO
+  ): AuthIdentityDTO {
     const copy = JSON.parse(JSON.stringify(authIdentity))
-    const providerIdentity = copy.provider_identities?.find(
-      (pi) => pi.provider === this.provider
-    )!
+    const providerIdentity = this.getProviderIdentity_(copy)
+
     delete providerIdentity.provider_metadata?.password
 
     return copy
+  }
+
+  private getProviderIdentity_(authIdentity: AuthIdentityDTO) {
+    return authIdentity.provider_identities?.find(
+      (pi) => pi.provider === this.provider
+    )!
   }
 }
