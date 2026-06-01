@@ -15,6 +15,7 @@
 export type PermissionResource =
   | "customer"
   | "customer_group"
+  | "customer_address"
   | "order"
   | "product"
   | "product_category"

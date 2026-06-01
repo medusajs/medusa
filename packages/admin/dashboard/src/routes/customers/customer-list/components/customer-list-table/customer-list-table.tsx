@@ -95,11 +95,11 @@ const CustomerActions = ({
   customer: HttpTypes.AdminCustomer
 }) => {
   const { t } = useTranslation()
-  const { can } = usePermissions()
+  const { hasPermission } = usePermissions()
 
   const actions: Action[] = []
 
-  if (can("customer", "update")) {
+  if (hasPermission("customer:update")) {
     actions.push({
       icon: <PencilSquare />,
       label: t("actions.edit"),
