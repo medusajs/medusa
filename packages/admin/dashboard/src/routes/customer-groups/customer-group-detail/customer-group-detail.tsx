@@ -7,6 +7,7 @@ import { CustomerGroupGeneralSection } from "./components/customer-group-general
 import { customerGroupLoader } from "./loader"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { useExtension } from "../../../providers/extension-provider"
 import { CUSTOMER_GROUP_DETAIL_FIELDS } from "./constants"
 
@@ -42,10 +43,13 @@ export const CustomerGroupDetail = () => {
       }}
       showJSON
       showMetadata
+      showRequiredPermissions
       data={customer_group}
     >
       <CustomerGroupGeneralSection group={customer_group} />
-      <CustomerGroupCustomerSection group={customer_group} />
+      <PermissionGuard permission="customer:read">
+        <CustomerGroupCustomerSection group={customer_group} />
+      </PermissionGuard>
     </SingleColumnPage>
   )
 }

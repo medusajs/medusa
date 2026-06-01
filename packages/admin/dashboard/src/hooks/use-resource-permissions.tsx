@@ -72,9 +72,21 @@ export const useResourcePermissions = (resource: PermissionResource) => {
 export const useCustomerPermissions = () => useResourcePermissions("customer")
 
 /**
+ * Hook for checking customer address-specific permissions.
+ */
+export const useCustomerAddressPermissions = () =>
+  useResourcePermissions("customer_address")
+
+/**
  * Hook for checking order-specific permissions.
  */
 export const useOrderPermissions = () => useResourcePermissions("order")
+
+/**
+ * Hook for checking customer group-specific permissions.
+ */
+export const useCustomerGroupPermissions = () =>
+  useResourcePermissions("customer_group")
 
 /**
  * Hook for checking product-specific permissions.

@@ -31,7 +31,10 @@ import { useCustomerGroupTableColumns } from "../../../../../hooks/table/columns
 import { useCustomerGroupTableFilters } from "../../../../../hooks/table/filters/use-customer-group-table-filters"
 import { useCustomerGroupTableQuery } from "../../../../../hooks/table/query/use-customer-group-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useCustomerPermissions } from "../../../../../hooks/use-resource-permissions"
+import {
+  useCustomerGroupPermissions,
+  useCustomerPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type CustomerGroupSectionProps = {
   customer: HttpTypes.AdminCustomer
@@ -44,7 +47,10 @@ export const CustomerGroupSection = ({
   customer,
 }: CustomerGroupSectionProps) => {
   const prompt = usePrompt()
-  const { canUpdate } = useCustomerPermissions()
+  const { canUpdate: canUpdateCustomers } = useCustomerPermissions()
+  const { canUpdate: canUpdateCustomerGroups } = useCustomerGroupPermissions()
+
+  const canManageMembers = canUpdateCustomers && canUpdateCustomerGroups
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const { raw, searchParams } = useCustomerGroupTableQuery({
@@ -68,7 +74,7 @@ export const CustomerGroupSection = ({
     useBatchCustomerCustomerGroups(customer.id)
 
   const filters = useCustomerGroupTableFilters()
-  const columns = useColumns(customer.id)
+  const columns = useColumns(customer.id, canManageMembers)
 
   const { table } = useDataTable({
     data: customer_groups ?? [],
@@ -76,7 +82,7 @@ export const CustomerGroupSection = ({
     count,
     getRowId: (row) => row.id,
     enablePagination: true,
-    enableRowSelection: canUpdate, // Only allow selection if user can update
+    enableRowSelection: canManageMembers,
     pageSize: PAGE_SIZE,
     prefix: PREFIX,
     rowSelection: {
@@ -127,7 +133,7 @@ export const CustomerGroupSection = ({
     throw error
   }
 
-  const commands = canUpdate
+  const commands = canManageMembers
     ? [
         {
           action: handleRemove,
@@ -141,7 +147,9 @@ export const CustomerGroupSection = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("customerGroups.domain")}</Heading>
-        <PermissionGuard resource="customer" operation="update">
+        <PermissionGuard
+          permissions={["customer:update", "customer_group:update"]}
+        >
           <Link to={`/customers/${customer.id}/add-customer-groups`}>
             <Button variant="secondary" size="small">
               {t("general.add")}
@@ -184,7 +192,10 @@ const CustomerGroupRowActions = ({
 }) => {
   const prompt = usePrompt()
   const { t } = useTranslation()
-  const { canUpdate } = useCustomerPermissions()
+  const { canUpdate: canUpdateCustomers } = useCustomerPermissions()
+  const { canUpdate: canUpdateCustomerGroups } = useCustomerGroupPermissions()
+
+  const canManageMembers = canUpdateCustomers && canUpdateCustomerGroups
 
   const { mutateAsync } = useRemoveCustomersFromGroup(group.id)
 
@@ -211,13 +222,15 @@ const CustomerGroupRowActions = ({
 
   const actions: Action[] = []
 
-  actions.push({
-    label: t("actions.edit"),
-    icon: <PencilSquare />,
-    to: `/customer-groups/${group.id}/edit`,
-  })
+  if (canUpdateCustomerGroups) {
+    actions.push({
+      label: t("actions.edit"),
+      icon: <PencilSquare />,
+      to: `/customer-groups/${group.id}/edit`,
+    })
+  }
 
-  if (canUpdate) {
+  if (canManageMembers) {
     actions.push({
       label: t("actions.remove"),
       onClick: onRemove,
@@ -242,14 +255,13 @@ const CustomerGroupRowActions = ({
 
 const columnHelper = createColumnHelper<HttpTypes.AdminCustomerGroup>()
 
-const useColumns = (customerId: string) => {
+const useColumns = (customerId: string, canManageMembers: boolean) => {
   const columns = useCustomerGroupTableColumns()
-  const { canUpdate } = useCustomerPermissions()
 
   return useMemo(
     () => [
       // Only show select column if user can update
-      ...(canUpdate
+      ...(canManageMembers
         ? [
             columnHelper.display({
               id: "select",
@@ -292,6 +304,6 @@ const useColumns = (customerId: string) => {
         ),
       }),
     ],
-    [columns, customerId, canUpdate]
+    [columns, customerId, canManageMembers]
   )
 }

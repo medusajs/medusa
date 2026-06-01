@@ -17,6 +17,7 @@ import { OrderPaymentSection } from "./components/order-payment-section"
 import { OrderSummarySection } from "./components/order-summary-section"
 import { DEFAULT_FIELDS, ExtendedOrder } from "./constants"
 import { orderLoader } from "./loader"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const OrderDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof orderLoader>>
@@ -88,7 +89,9 @@ export const OrderDetail = () => {
         <OrderFulfillmentSection order={order as ExtendedOrder} />
       </TwoColumnPage.Main>
       <TwoColumnPage.Sidebar>
-        <OrderCustomerSection order={order} />
+        <PermissionGuard permission="customer:read">
+          <OrderCustomerSection order={order} />
+        </PermissionGuard>
         <OrderActivitySection order={order as ExtendedOrder} />
       </TwoColumnPage.Sidebar>
     </TwoColumnPage>

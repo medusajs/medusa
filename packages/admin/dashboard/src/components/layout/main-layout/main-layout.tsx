@@ -32,6 +32,10 @@ import { useExtension } from "../../../providers/extension-provider"
 import { useSearch } from "../../../providers/search-provider"
 import { UserMenu } from "../user-menu"
 import { useDocumentDirection } from "../../../hooks/use-document-direction"
+import {
+  useCustomerGroupPermissions,
+  useCustomerPermissions,
+} from "../../../hooks/use-resource-permissions"
 
 export const MainLayout = () => {
   return (
@@ -184,6 +188,9 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
   const { t } = useTranslation()
   const { hasPermission } = usePermissions()
 
+  const { canRead: canReadCustomers } = useCustomerPermissions()
+  const { canRead: canReadCustomerGroups } = useCustomerGroupPermissions()
+
   const canReadProducts = hasPermission("product:read")
   const canReadProductCollections = hasPermission("product_collection:read")
   const canReadProductCategories = hasPermission("product_category:read")
@@ -244,17 +251,25 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
         },
       ],
     },
-    {
-      icon: <Users />,
-      label: t("customers.domain"),
-      to: "/customers",
-      items: [
-        {
-          label: t("customerGroups.domain"),
-          to: "/customer-groups",
-        },
-      ],
-    },
+    ...(canReadCustomers
+      ? [
+          {
+            icon: <Users />,
+            label: t("customers.domain"),
+            to: "/customers",
+            items: [
+              ...(canReadCustomerGroups
+                ? [
+                    {
+                      label: t("customerGroups.domain"),
+                      to: "/customer-groups",
+                    },
+                  ]
+                : []),
+            ],
+          },
+        ]
+      : []),
     {
       icon: <ReceiptPercent />,
       label: t("promotions.domain"),

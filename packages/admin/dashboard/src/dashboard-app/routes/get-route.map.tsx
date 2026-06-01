@@ -783,8 +783,14 @@ export function getRouteMap({
             {
               path: "/customers",
               errorElement: <ErrorBoundary />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("customers.domain"),
+                permissions: "customer:read",
               },
               children: [
                 {
@@ -793,15 +799,9 @@ export function getRouteMap({
                   children: [
                     {
                       path: "create",
-                      element: <RoutePermissionGuard />,
+                      lazy: () =>
+                        import("../../routes/customers/customer-create"),
                       handle: { permissions: "customer:create" },
-                      children: [
-                        {
-                          path: "",
-                          lazy: () =>
-                            import("../../routes/customers/customer-create"),
-                        },
-                      ],
                     },
                   ],
                 },
@@ -825,60 +825,49 @@ export function getRouteMap({
                   children: [
                     {
                       path: "edit",
-                      element: <RoutePermissionGuard />,
+                      lazy: () =>
+                        import("../../routes/customers/customer-edit"),
                       handle: { permissions: "customer:update" },
-                      children: [
-                        {
-                          path: "",
-                          lazy: () =>
-                            import("../../routes/customers/customer-edit"),
-                        },
-                      ],
                     },
                     {
                       path: "create-address",
-                      element: <RoutePermissionGuard />,
-                      handle: { permissions: "customer:update" },
-                      children: [
-                        {
-                          path: "",
-                          lazy: () =>
-                            import(
-                              "../../routes/customers/customer-create-address"
-                            ),
-                        },
-                      ],
+                      lazy: () =>
+                        import(
+                          "../../routes/customers/customer-create-address"
+                        ),
+                      handle: {
+                        permissions: [
+                          "customer:update",
+                          "customer_address:create",
+                        ],
+                      },
                     },
                     {
                       path: "add-customer-groups",
-                      element: <RoutePermissionGuard />,
-                      handle: { permissions: "customer:update" },
-                      children: [
-                        {
-                          path: "",
-                          lazy: () =>
-                            import(
-                              "../../routes/customers/customers-add-customer-group"
-                            ),
-                        },
-                      ],
+                      lazy: () =>
+                        import(
+                          "../../routes/customers/customers-add-customer-group"
+                        ),
+                      handle: {
+                        permissions: [
+                          "customer:update",
+                          "customer_group:update",
+                        ],
+                      },
                     },
                     {
                       path: ":order_id/transfer",
                       lazy: () =>
                         import("../../routes/orders/order-request-transfer"),
+                      handle: {
+                        permissions: ["customer:update", "order:update"],
+                      },
                     },
                     {
                       path: "metadata/edit",
-                      element: <RoutePermissionGuard />,
+                      lazy: () =>
+                        import("../../routes/customers/customer-metadata"),
                       handle: { permissions: "customer:update" },
-                      children: [
-                        {
-                          path: "",
-                          lazy: () =>
-                            import("../../routes/customers/customer-metadata"),
-                        },
-                      ],
                     },
                   ],
                 },
@@ -887,8 +876,14 @@ export function getRouteMap({
             {
               path: "/customer-groups",
               errorElement: <ErrorBoundary />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("customerGroups.domain"),
+                permissions: "customer_group:read",
               },
               children: [
                 {
@@ -902,6 +897,7 @@ export function getRouteMap({
                         import(
                           "../../routes/customer-groups/customer-group-create"
                         ),
+                      handle: { permissions: "customer_group:create" },
                     },
                   ],
                 },
@@ -929,6 +925,7 @@ export function getRouteMap({
                         import(
                           "../../routes/customer-groups/customer-group-edit"
                         ),
+                      handle: { permissions: "customer_group:update" },
                     },
                     {
                       path: "add-customers",
@@ -936,6 +933,13 @@ export function getRouteMap({
                         import(
                           "../../routes/customer-groups/customer-group-add-customers"
                         ),
+                      handle: {
+                        permissions: [
+                          "customer:read",
+                          "customer:update",
+                          "customer_group:update",
+                        ],
+                      },
                     },
                     {
                       path: "metadata/edit",
@@ -943,6 +947,7 @@ export function getRouteMap({
                         import(
                           "../../routes/customer-groups/customer-group-metadata"
                         ),
+                      handle: { permissions: "customer_group:update" },
                     },
                   ],
                 },

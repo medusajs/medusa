@@ -21,12 +21,14 @@ import {
 import { useDate } from "../../../../../hooks/use-date"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 import { useExtension } from "../../../../../providers/extension-provider"
+import { useCustomerGroupPermissions } from "../../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 10
 
 export const CustomerGroupListTable = () => {
   const { t } = useTranslation()
   const { getWidgets } = useExtension()
+  const { canCreate, canUpdate, canDelete } = useCustomerGroupPermissions()
 
   const { q, order, offset, created_at, updated_at } = useQueryParams([
     "q",
@@ -36,7 +38,7 @@ export const CustomerGroupListTable = () => {
     "updated_at",
   ])
 
-  const columns = useColumns()
+  const columns = useColumns({ canUpdate, canDelete })
   const filters = useFilters()
 
   const { customer_groups, count, isPending, isError, error } =
@@ -75,10 +77,14 @@ export const CustomerGroupListTable = () => {
           rowCount={count}
           getRowId={(row) => row.id}
           rowHref={(row) => `/customer-groups/${row.id}`}
-          action={{
-            label: t("actions.create"),
-            to: "/customer-groups/create",
-          }}
+          action={
+            canCreate
+              ? {
+                  label: t("actions.create"),
+                  to: "/customer-groups/create",
+                }
+              : undefined
+          }
           emptyState={{
             empty: {
               heading: t("customerGroups.list.empty.heading"),
@@ -99,7 +105,13 @@ export const CustomerGroupListTable = () => {
 
 const columnHelper = createDataTableColumnHelper<HttpTypes.AdminCustomerGroup>()
 
-const useColumns = () => {
+const useColumns = ({
+  canUpdate,
+  canDelete,
+}: {
+  canUpdate: boolean
+  canDelete: boolean
+}) => {
   const { t } = useTranslation()
   const { getFullDate } = useDate()
   const navigate = useNavigate()
@@ -140,6 +152,41 @@ const useColumns = () => {
   )
 
   return useMemo(() => {
+    const editGroup = canUpdate
+      ? [
+          {
+            icon: <PencilSquare />,
+            label: t("actions.edit"),
+            onClick: (row: {
+              row: { original: HttpTypes.AdminCustomerGroup }
+            }) => {
+              navigate(`/customer-groups/${row.row.original.id}/edit`)
+            },
+          },
+        ]
+      : []
+
+    const deleteGroup = canDelete
+      ? [
+          {
+            icon: <Trash />,
+            label: t("actions.delete"),
+            onClick: (row: {
+              row: { original: HttpTypes.AdminCustomerGroup }
+            }) => {
+              handleDeleteCustomerGroup({
+                id: row.row.original.id,
+                name: row.row.original.name ?? "",
+              })
+            },
+          },
+        ]
+      : []
+
+    const actionGroups = [editGroup, deleteGroup].filter(
+      (group) => group.length > 0
+    )
+
     return [
       columnHelper.accessor("name", {
         header: t("fields.name"),
@@ -185,33 +232,18 @@ const useColumns = () => {
         sortAscLabel: t("filters.sorting.dateAsc"),
         sortDescLabel: t("filters.sorting.dateDesc"),
       }),
-      columnHelper.action({
-        actions: [
-          [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              onClick: (row) => {
-                navigate(`/customer-groups/${row.row.original.id}/edit`)
-              },
-            },
-          ],
-          [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: (row) => {
-                handleDeleteCustomerGroup({
-                  id: row.row.original.id,
-                  name: row.row.original.name ?? "",
-                })
-              },
-            },
-          ],
-        ],
-      }),
+      ...(actionGroups.length > 0
+        ? [columnHelper.action({ actions: actionGroups })]
+        : []),
     ]
-  }, [t, navigate, getFullDate, handleDeleteCustomerGroup])
+  }, [
+    t,
+    navigate,
+    getFullDate,
+    handleDeleteCustomerGroup,
+    canUpdate,
+    canDelete,
+  ])
 }
 
 const useFilters = () => {
