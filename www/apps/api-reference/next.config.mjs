@@ -20,16 +20,6 @@ const nextConfig = {
   async rewrites() {
     const rewriteFallbacks = [
       {
-        source: "/v1",
-        destination: `${process.env.NEXT_PUBLIC_DOCS_URL}/v1`,
-        basePath: false,
-      },
-      {
-        source: "/v1/:path*",
-        destination: `${process.env.NEXT_PUBLIC_DOCS_URL}/v1/:path*`,
-        basePath: false,
-      },
-      {
         source: "/:path*",
         destination: `${process.env.NEXT_PUBLIC_DOCS_V2_URL}/:path*`,
       },
