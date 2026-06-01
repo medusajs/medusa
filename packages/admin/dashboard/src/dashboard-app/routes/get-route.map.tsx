@@ -1800,9 +1800,14 @@ export function getRouteMap({
             {
               path: "product-types",
               errorElement: <ErrorBoundary />,
-              element: <Outlet />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("productTypes.domain"),
+                permissions: "product_type:read",
               },
               children: [
                 {
@@ -1816,6 +1821,7 @@ export function getRouteMap({
                         import(
                           "../../routes/product-types/product-type-create"
                         ),
+                      handle: { permissions: "product_type:create" },
                     },
                   ],
                 },
@@ -1841,6 +1847,7 @@ export function getRouteMap({
                       path: "edit",
                       lazy: () =>
                         import("../../routes/product-types/product-type-edit"),
+                      handle: { permissions: "product_type:update" },
                     },
                     {
                       path: "metadata/edit",
@@ -1848,6 +1855,7 @@ export function getRouteMap({
                         import(
                           "../../routes/product-types/product-type-metadata"
                         ),
+                      handle: { permissions: "product_type:update" },
                     },
                   ],
                 },

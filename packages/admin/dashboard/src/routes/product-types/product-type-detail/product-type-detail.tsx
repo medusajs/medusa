@@ -7,6 +7,7 @@ import { useExtension } from "../../../providers/extension-provider"
 import { ProductTypeGeneralSection } from "./components/product-type-general-section"
 import { ProductTypeProductSection } from "./components/product-type-product-section"
 import { productTypeLoader } from "./loader"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const ProductTypeDetail = () => {
   const { id } = useParams()
@@ -40,10 +41,13 @@ export const ProductTypeDetail = () => {
       }}
       showJSON
       showMetadata
+      showRequiredPermissions
       data={product_type}
     >
       <ProductTypeGeneralSection productType={product_type} />
-      <ProductTypeProductSection productType={product_type} />
+      <PermissionGuard permission="product:read">
+        <ProductTypeProductSection productType={product_type} />
+      </PermissionGuard>
     </SingleColumnPage>
   )
 }
