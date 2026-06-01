@@ -29,6 +29,16 @@ import {
   useExchanges,
 } from "../../../../../hooks/api/exchanges"
 import { useCancelReturn, useReturns } from "../../../../../hooks/api/returns"
+import {
+  useFulfillmentPermissions,
+  useOrderChangePermissions,
+  useOrderClaimPermissions,
+  useOrderExchangePermissions,
+  useOrderPermissions,
+  usePaymentPermissions,
+  useRefundPermissions,
+  useReturnPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { useDate } from "../../../../../hooks/use-date"
 import { getFormattedAddress } from "../../../../../lib/addresses"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
@@ -126,6 +136,14 @@ type Activity = {
 const useActivityItems = (order: ExtendedOrder): Activity[] => {
   const { t } = useTranslation()
 
+  const { canRead: canReadOrderChanges } = useOrderChangePermissions()
+  const { canRead: canReadReturns } = useReturnPermissions()
+  const { canRead: canReadClaims } = useOrderClaimPermissions()
+  const { canRead: canReadExchanges } = useOrderExchangePermissions()
+  const { canRead: canReadPayments } = usePaymentPermissions()
+  const { canRead: canReadFulfillments } = useFulfillmentPermissions()
+  const { canRead: canReadRefunds } = useRefundPermissions()
+
   const { order: initialOrder = order } = useOrder(
     order.id,
     {
@@ -135,16 +153,20 @@ const useActivityItems = (order: ExtendedOrder): Activity[] => {
     { enabled: order.version !== 1 }
   )
 
-  const { order_changes: orderChanges = [] } = useOrderChanges(order.id, {
-    change_type: [
-      "edit",
-      "claim",
-      "exchange",
-      "return",
-      "transfer",
-      "update_order",
-    ],
-  })
+  const { order_changes: orderChanges = [] } = useOrderChanges(
+    order.id,
+    {
+      change_type: [
+        "edit",
+        "claim",
+        "exchange",
+        "return",
+        "transfer",
+        "update_order",
+      ],
+    },
+    { enabled: canReadOrderChanges }
+  )
 
   const rmaChanges = orderChanges.filter(
     (oc) => !NON_RMA_CHANGE_TYPES.includes(oc.change_type!)
@@ -177,22 +199,31 @@ const useActivityItems = (order: ExtendedOrder): Activity[] => {
     return _itemsMap
   }, [order.items, removedLineItems, missingLineItemIds])
 
-  const { returns = [] } = useReturns({
-    order_id: order.id,
-    fields: "+received_at,*items",
-  })
+  const { returns = [] } = useReturns(
+    {
+      order_id: order.id,
+      fields: "+received_at,*items",
+    },
+    { enabled: canReadReturns }
+  )
 
-  const { claims = [] } = useClaims({
-    order_id: order.id,
-    fields: "*additional_items",
-  })
+  const { claims = [] } = useClaims(
+    {
+      order_id: order.id,
+      fields: "*additional_items",
+    },
+    { enabled: canReadClaims }
+  )
 
-  const { exchanges = [] } = useExchanges({
-    order_id: order.id,
-    fields: "*additional_items",
-  })
+  const { exchanges = [] } = useExchanges(
+    {
+      order_id: order.id,
+      fields: "*additional_items",
+    },
+    { enabled: canReadExchanges }
+  )
 
-  const payments = getPaymentsFromOrder(order)
+  const payments = canReadPayments ? getPaymentsFromOrder(order) : []
 
   // This isn't set anywhere
   const notes: any[] = []
@@ -256,7 +287,8 @@ const useActivityItems = (order: ExtendedOrder): Activity[] => {
         })
       }
 
-      for (const refund of payment.refunds || []) {
+      const refunds = canReadRefunds ? payment.refunds : []
+      for (const refund of refunds || []) {
         items.push({
           title: t("orders.activity.events.payment.refunded"),
           timestamp: refund.created_at,
@@ -279,7 +311,8 @@ const useActivityItems = (order: ExtendedOrder): Activity[] => {
       }
     }
 
-    for (const fulfillment of order.fulfillments || []) {
+    const fulfillments = canReadFulfillments ? order.fulfillments : []
+    for (const fulfillment of fulfillments || []) {
       items.push({
         title: t("orders.activity.events.fulfillment.created"),
         timestamp: fulfillment.created_at,
@@ -871,7 +904,9 @@ const ReturnBody = ({
 }) => {
   const prompt = usePrompt()
   const { t } = useTranslation()
-
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canUpdate: canUpdateReturn } = useReturnPermissions()
+  const canManage = canUpdateReturn && canUpdateOrder
   const { mutateAsync: cancelReturnRequest } = useCancelReturn(
     orderReturn.id,
     orderReturn.order_id
@@ -905,7 +940,7 @@ const ReturnBody = ({
           count: numberOfItems,
         })}
       </Text>
-      {isCreated && (
+      {isCreated && canManage && (
         <>
           <div className="mt-[2px] flex items-center leading-none">⋅</div>
           <Button
@@ -934,6 +969,9 @@ const ClaimBody = ({
 
   const isCanceled = !!claim.created_at
 
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canUpdate: canUpdateClaim } = useOrderClaimPermissions()
+  const canManage = canUpdateClaim && canUpdateOrder
   const { mutateAsync: cancelClaim } = useCancelClaim(claim.id, claim.order_id)
 
   const onCancel = async () => {
@@ -981,7 +1019,7 @@ const ClaimBody = ({
         </Text>
       )}
 
-      {!isCanceled && (
+      {canManage && !isCanceled && (
         <Button
           onClick={onCancel}
           className="text-ui-fg-subtle h-auto px-0 leading-none hover:bg-transparent"
@@ -1007,6 +1045,9 @@ const ExchangeBody = ({
 
   const isCanceled = !!exchange.canceled_at
 
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canUpdate: canUpdateExchange } = useOrderExchangePermissions()
+  const canManage = canUpdateExchange && canUpdateOrder
   const { mutateAsync: cancelExchange } = useCancelExchange(
     exchange.id,
     exchange.order_id
@@ -1057,7 +1098,7 @@ const ExchangeBody = ({
         </Text>
       )}
 
-      {!isCanceled && (
+      {canManage && !isCanceled && (
         <Button
           onClick={onCancel}
           className="text-ui-fg-subtle h-auto px-0 leading-none hover:bg-transparent"
@@ -1231,6 +1272,7 @@ const TransferOrderRequestBody = ({
 
   const isCompleted = !!transfer.confirmed_at
 
+  const { canUpdate } = useOrderPermissions()
   const { mutateAsync: cancelTransfer } = useCancelOrderTransfer(
     transfer.order_id
   )
@@ -1269,7 +1311,7 @@ const TransferOrderRequestBody = ({
           ? `${customer?.first_name} ${customer?.last_name}`
           : customer?.email}
       </Text>
-      {!isCompleted && (
+      {canUpdate && !isCompleted && (
         <Button
           onClick={handleDelete}
           className="text-ui-fg-subtle h-auto px-0 leading-none hover:bg-transparent"

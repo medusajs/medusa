@@ -71,6 +71,9 @@ export const useResourcePermissions = (resource: PermissionResource) => {
  */
 export const useCustomerPermissions = () => useResourcePermissions("customer")
 
+export const useSalesChannelPermissions = () =>
+  useResourcePermissions("sales_channel")
+
 /**
  * Hook for checking customer address-specific permissions.
  */
@@ -81,6 +84,38 @@ export const useCustomerAddressPermissions = () =>
  * Hook for checking order-specific permissions.
  */
 export const useOrderPermissions = () => useResourcePermissions("order")
+
+export const useFulfillmentPermissions = () =>
+  useResourcePermissions("fulfillment")
+
+export const useStockLocationPermissions = () =>
+  useResourcePermissions("stock_location")
+
+export const useReturnPermissions = () => useResourcePermissions("return")
+
+export const useOrderClaimPermissions = () =>
+  useResourcePermissions("order_claim")
+
+export const useOrderAddressPermissions = () =>
+  useResourcePermissions("order_address")
+
+export const useOrderExchangePermissions = () =>
+  useResourcePermissions("order_exchange")
+
+export const useOrderChangePermissions = () =>
+  useResourcePermissions("order_change")
+
+export const useCapturePermissions = () => useResourcePermissions("capture")
+
+export const useRefundPermissions = () => useResourcePermissions("refund")
+
+export const usePaymentCollectionPermissions = () =>
+  useResourcePermissions("payment_collection")
+
+export const usePaymentPermissions = () => useResourcePermissions("payment")
+
+export const useReservationItemPermissions = () =>
+  useResourcePermissions("reservation_item")
 
 /**
  * Hook for checking customer group-specific permissions.

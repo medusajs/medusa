@@ -5,6 +5,10 @@ import { useTranslation } from "react-i18next"
 import { HttpTypes } from "@medusajs/types"
 import { useNavigate } from "react-router-dom"
 import { useCancelReturnRequest } from "../../../../../hooks/api/returns"
+import {
+  useOrderPermissions,
+  useReturnPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type ActiveOrderReturnSectionProps = {
   orderPreview: HttpTypes.AdminOrderPreview
@@ -14,6 +18,9 @@ export const ActiveOrderReturnSection = ({
   orderPreview,
 }: ActiveOrderReturnSectionProps) => {
   const { t } = useTranslation()
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canUpdate: canUpdateReturn } = useReturnPermissions()
+  const canManage = canUpdateReturn && canUpdateOrder
   const orderChange = orderPreview?.order_change
   const returnId = orderChange?.return_id
   const isReturnRequest =
@@ -66,15 +73,21 @@ export const ActiveOrderReturnSection = ({
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
-            <Button size="small" variant="secondary" onClick={onCancelReturn}>
-              {t("orders.returns.cancel.title")}
-            </Button>
+          {canManage && (
+            <div className="flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
+              <Button size="small" variant="secondary" onClick={onCancelReturn}>
+                {t("orders.returns.cancel.title")}
+              </Button>
 
-            <Button size="small" variant="secondary" onClick={onContinueReturn}>
-              {t("actions.continue")}
-            </Button>
-          </div>
+              <Button
+                size="small"
+                variant="secondary"
+                onClick={onContinueReturn}
+              >
+                {t("actions.continue")}
+              </Button>
+            </div>
+          )}
         </div>
       </Container>
     </div>

@@ -11,6 +11,10 @@ import { useMemo } from "react"
 import { AdminOrderLinePreview, HttpTypes } from "@medusajs/types"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { useNavigate } from "react-router-dom"
+import {
+  useOrderChangePermissions,
+  useOrderPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type OrderActiveEditSectionProps = {
   order: HttpTypes.AdminOrder
@@ -54,6 +58,9 @@ export const OrderActiveEditSection = ({
 }: OrderActiveEditSectionProps) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canUpdate: canUpdateOrderChange } = useOrderChangePermissions()
+  const canManage = canUpdateOrderChange && canUpdateOrder
 
   const { order: orderPreview } = useOrderPreview(order.id)
 
@@ -169,32 +176,34 @@ export const OrderActiveEditSection = ({
             </div>
           )}
 
-          <div className="bg-ui-bg-subtle flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
-            {isPending ? (
+          {canManage && (
+            <div className="bg-ui-bg-subtle flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
+              {isPending ? (
+                <Button
+                  size="small"
+                  variant="secondary"
+                  onClick={() => navigate(`/orders/${order.id}/edits`)}
+                >
+                  {t("actions.continueEdit")}
+                </Button>
+              ) : (
+                <Button
+                  size="small"
+                  variant="secondary"
+                  onClick={onConfirmOrderEdit}
+                >
+                  {t("actions.forceConfirm")}
+                </Button>
+              )}
               <Button
                 size="small"
                 variant="secondary"
-                onClick={() => navigate(`/orders/${order.id}/edits`)}
+                onClick={onCancelOrderEdit}
               >
-                {t("actions.continueEdit")}
+                {t("actions.cancel")}
               </Button>
-            ) : (
-              <Button
-                size="small"
-                variant="secondary"
-                onClick={onConfirmOrderEdit}
-              >
-                {t("actions.forceConfirm")}
-              </Button>
-            )}
-            <Button
-              size="small"
-              variant="secondary"
-              onClick={onCancelOrderEdit}
-            >
-              {t("actions.cancel")}
-            </Button>
-          </div>
+            </div>
+          )}
         </div>
       </Container>
     </div>

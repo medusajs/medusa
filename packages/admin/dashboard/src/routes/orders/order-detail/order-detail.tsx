@@ -76,17 +76,33 @@ export const OrderDetail = () => {
       data={order}
       showJSON
       showMetadata
+      showRequiredPermissions
       hasOutlet
     >
       <TwoColumnPage.Main>
-        <OrderActiveEditSection order={order} />
-        <ActiveOrderClaimSection orderPreview={orderPreview!} />
-        <ActiveOrderExchangeSection orderPreview={orderPreview!} />
-        <ActiveOrderReturnSection orderPreview={orderPreview!} />
+        <PermissionGuard permission="order_change:read">
+          <OrderActiveEditSection order={order} />
+        </PermissionGuard>
+        <PermissionGuard permission="order_claim:read">
+          <ActiveOrderClaimSection orderPreview={orderPreview!} />
+        </PermissionGuard>
+        <PermissionGuard permission="order_exchange:read">
+          <ActiveOrderExchangeSection orderPreview={orderPreview!} />
+        </PermissionGuard>
+        <PermissionGuard permission="return:read">
+          <ActiveOrderReturnSection orderPreview={orderPreview!} />
+        </PermissionGuard>
         <OrderGeneralSection order={order as ExtendedOrder} />
         <OrderSummarySection order={order} plugins={plugins} />
-        <OrderPaymentSection order={order as ExtendedOrder} plugins={plugins} />
-        <OrderFulfillmentSection order={order as ExtendedOrder} />
+        <PermissionGuard permissions={["payment:read", "refund:read"]}>
+          <OrderPaymentSection
+            order={order as ExtendedOrder}
+            plugins={plugins}
+          />
+        </PermissionGuard>
+        <PermissionGuard permission="fulfillment:read">
+          <OrderFulfillmentSection order={order as ExtendedOrder} />
+        </PermissionGuard>
       </TwoColumnPage.Main>
       <TwoColumnPage.Sidebar>
         <PermissionGuard permission="customer:read">

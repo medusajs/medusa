@@ -408,8 +408,14 @@ export function getRouteMap({
             {
               path: "/orders",
               errorElement: <ErrorBoundary />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("orders.domain"),
+                permissions: "order:read",
               },
               children: [
                 {
@@ -419,6 +425,7 @@ export function getRouteMap({
                     {
                       path: "export",
                       lazy: () => import("../../routes/orders/order-export"),
+                      handle: { permissions: "order:read" },
                     },
                   ],
                 },
@@ -444,56 +451,92 @@ export function getRouteMap({
                       path: "fulfillment",
                       lazy: () =>
                         import("../../routes/orders/order-create-fulfillment"),
+                      handle: {
+                        permissions: ["order:update", "fulfillment:create"],
+                      },
                     },
                     {
                       path: "returns/:return_id/receive",
                       lazy: () =>
                         import("../../routes/orders/order-receive-return"),
+                      handle: {
+                        permissions: ["order:update", "return:update"],
+                      },
                     },
                     {
                       path: "allocate-items",
                       lazy: () =>
                         import("../../routes/orders/order-allocate-items"),
+                      handle: {
+                        permissions: [
+                          "order:update",
+                          "reservation_item:create",
+                        ],
+                      },
                     },
                     {
                       path: ":f_id/create-shipment",
                       lazy: () =>
                         import("../../routes/orders/order-create-shipment"),
+                      handle: {
+                        permissions: ["order:update", "fulfillment:update"],
+                      },
                     },
                     {
                       path: "returns",
                       lazy: () =>
                         import("../../routes/orders/order-create-return"),
+                      handle: {
+                        permissions: ["order:update", "return:create"],
+                      },
                     },
                     {
                       path: "claims",
                       lazy: () =>
                         import("../../routes/orders/order-create-claim"),
+                      handle: {
+                        permissions: ["order:update", "order_claim:create"],
+                      },
                     },
                     {
                       path: "exchanges",
                       lazy: () =>
                         import("../../routes/orders/order-create-exchange"),
+                      handle: {
+                        permissions: ["order:update", "order_exchange:create"],
+                      },
                     },
                     {
                       path: "edits",
                       lazy: () =>
                         import("../../routes/orders/order-create-edit"),
+                      handle: {
+                        permissions: ["order:update", "order_change:create"],
+                      },
                     },
                     {
                       path: "refund",
                       lazy: () =>
                         import("../../routes/orders/order-create-refund"),
+                      handle: {
+                        permissions: ["order:update", "refund:create"],
+                      },
                     },
                     {
                       path: "transfer",
                       lazy: () =>
                         import("../../routes/orders/order-request-transfer"),
+                      handle: {
+                        permissions: ["customer:update", "order:update"],
+                      },
                     },
                     {
                       path: "email",
                       lazy: () =>
                         import("../../routes/orders/order-edit-email"),
+                      handle: {
+                        permissions: ["order:update"],
+                      },
                     },
                     {
                       path: "shipping-address",
@@ -501,6 +544,9 @@ export function getRouteMap({
                         import(
                           "../../routes/orders/order-edit-shipping-address"
                         ),
+                      handle: {
+                        permissions: ["order_address:update", "order:update"],
+                      },
                     },
                     {
                       path: "billing-address",
@@ -508,10 +554,14 @@ export function getRouteMap({
                         import(
                           "../../routes/orders/order-edit-billing-address"
                         ),
+                      handle: {
+                        permissions: ["order_address:update", "order:update"],
+                      },
                     },
                     {
                       path: "metadata/edit",
                       lazy: () => import("../../routes/orders/order-metadata"),
+                      handle: { permissions: "order:update" },
                     },
                   ],
                 },

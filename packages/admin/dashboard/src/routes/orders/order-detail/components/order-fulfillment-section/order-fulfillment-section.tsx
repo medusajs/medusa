@@ -26,6 +26,11 @@ import {
   useMarkOrderFulfillmentAsDelivered,
 } from "../../../../../hooks/api/orders"
 import { useStockLocation } from "../../../../../hooks/api/stock-locations"
+import {
+  useFulfillmentPermissions,
+  useOrderPermissions,
+  useStockLocationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
 import { FulfillmentSetType } from "../../../../locations/common/constants"
@@ -149,6 +154,10 @@ const UnfulfilledItemDisplay = ({
   requiresShipping: boolean
 }) => {
   const { t } = useTranslation()
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canCreate: canCreateFulfillment } = useFulfillmentPermissions()
+
+  const canFulfill = canCreateFulfillment && canUpdateOrder
 
   if (order.status === "canceled") {
     return
@@ -170,19 +179,21 @@ const UnfulfilledItemDisplay = ({
             {t("orders.fulfillment.awaitingFulfillmentBadge")}
           </StatusBadge>
 
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    label: t("orders.fulfillment.fulfillItems"),
-                    icon: <Buildings />,
-                    to: `/orders/${order.id}/fulfillment?requires_shipping=${requiresShipping}`,
-                  },
-                ],
-              },
-            ]}
-          />
+          {canFulfill && (
+            <ActionMenu
+              groups={[
+                {
+                  actions: [
+                    {
+                      label: t("orders.fulfillment.fulfillItems"),
+                      icon: <Buildings />,
+                      to: `/orders/${order.id}/fulfillment?requires_shipping=${requiresShipping}`,
+                    },
+                  ],
+                },
+              ]}
+            />
+          )}
         </div>
       </div>
       <div>
@@ -210,8 +221,13 @@ const Fulfillment = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canUpdate: canUpdateFulfillment } = useFulfillmentPermissions()
+  const { canRead: canReadStockLocations } = useStockLocationPermissions()
 
-  const showLocation = !!fulfillment.location_id
+  const canManage = canUpdateFulfillment && canUpdateOrder
+
+  const showLocation = !!fulfillment.location_id && canReadStockLocations
 
   const isPickUpFulfillment =
     fulfillment.shipping_option?.service_zone?.fulfillment_set?.type ===
@@ -254,6 +270,7 @@ const Fulfillment = ({
   )
 
   const showShippingButton =
+    canManage &&
     !fulfillment.canceled_at &&
     !fulfillment.shipped_at &&
     !fulfillment.delivered_at &&
@@ -261,7 +278,7 @@ const Fulfillment = ({
     !isPickUpFulfillment
 
   const showDeliveryButton =
-    !fulfillment.canceled_at && !fulfillment.delivered_at
+    canManage && !fulfillment.canceled_at && !fulfillment.delivered_at
 
   const [sendNotification, setSendNotification] = useState(
     !order.no_notification
@@ -357,23 +374,25 @@ const Fulfillment = ({
               {statusText}
             </StatusBadge>
           </Tooltip>
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    label: t("actions.cancel"),
-                    icon: <XCircle />,
-                    onClick: handleCancel,
-                    disabled:
-                      !!fulfillment.canceled_at ||
-                      !!fulfillment.shipped_at ||
-                      !!fulfillment.delivered_at,
-                  },
-                ],
-              },
-            ]}
-          />
+          {canManage && (
+            <ActionMenu
+              groups={[
+                {
+                  actions: [
+                    {
+                      label: t("actions.cancel"),
+                      icon: <XCircle />,
+                      onClick: handleCancel,
+                      disabled:
+                        !!fulfillment.canceled_at ||
+                        !!fulfillment.shipped_at ||
+                        !!fulfillment.delivered_at,
+                    },
+                  ],
+                },
+              ]}
+            />
+          )}
         </div>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">

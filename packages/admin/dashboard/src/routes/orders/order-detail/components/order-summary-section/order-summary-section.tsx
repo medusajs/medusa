@@ -41,7 +41,11 @@ import {
 } from "@medusajs/ui"
 
 import { AdminReservation } from "@medusajs/types/src/http"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  Action,
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import DisplayId from "../../../../../components/common/display-id/display-id"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { useClaims } from "../../../../../hooks/api/claims"
@@ -51,6 +55,16 @@ import { useMarkPaymentCollectionAsPaid } from "../../../../../hooks/api/payment
 import { useReservationItems } from "../../../../../hooks/api/reservations"
 import { useReturns } from "../../../../../hooks/api/returns"
 import { useDate } from "../../../../../hooks/use-date"
+import {
+  useOrderChangePermissions,
+  useOrderClaimPermissions,
+  useOrderExchangePermissions,
+  useOrderPermissions,
+  usePaymentCollectionPermissions,
+  useRefundPermissions,
+  useReservationItemPermissions,
+  useReturnPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { getTotalCreditLines } from "../../../../../lib/credit-line"
 import { formatCurrency } from "../../../../../lib/format-currency"
 import { getReservationsLimitCount } from "../../../../../lib/orders"
@@ -79,6 +93,18 @@ export const OrderSummarySection = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
 
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canUpdate: canUpdateReturn } = useReturnPermissions()
+  const { canCreate: canCreateReservation } = useReservationItemPermissions()
+  const { canUpdate: canUpdatePaymentCollection } =
+    usePaymentCollectionPermissions()
+  const { canCreate: canCreateRefund } = useRefundPermissions()
+
+  const canReceiveReturn = canUpdateReturn && canUpdateOrder
+  const canAllocate = canCreateReservation && canUpdateOrder
+  const canMarkAsPaid = canUpdatePaymentCollection && canUpdateOrder
+  const canRefund = canCreateRefund && canUpdateOrder
+
   const { reservations } = useReservationItems(
     {
       line_item_id: order?.items?.map((i) => i.id),
@@ -100,13 +126,13 @@ export const OrderSummarySection = ({
     [returns]
   )
 
-  const showReturns = !!receivableReturns.length
+  const showReturns = !!receivableReturns.length && canReceiveReturn
 
   /**
    * Show Allocation button only if there are unfulfilled items that don't have reservations
    */
   const showAllocateButton = useMemo(() => {
-    if (!reservations) {
+    if (!reservations || !canAllocate) {
       return false
     }
 
@@ -128,7 +154,7 @@ export const OrderSummarySection = ({
     }
 
     return false
-  }, [order.items, reservations])
+  }, [order.items, reservations, canAllocate])
 
   const unpaidPaymentCollection = order.payment_collections.find(
     (pc) => pc.status === "not_paid"
@@ -146,8 +172,11 @@ export const OrderSummarySection = ({
   )
 
   const showPayment =
-    unpaidPaymentCollection && pendingDifference > 0 && isAmountSignificant
-  const showRefund = pendingDifference < 0 && isAmountSignificant
+    unpaidPaymentCollection &&
+    pendingDifference > 0 &&
+    isAmountSignificant &&
+    canMarkAsPaid
+  const showRefund = pendingDifference < 0 && isAmountSignificant && canRefund
 
   const handleMarkAsPaid = async (
     paymentCollection: AdminPaymentCollection
@@ -197,92 +226,95 @@ export const OrderSummarySection = ({
       <DiscountAndTotalBreakdown order={order} plugins={plugins} />
       <Total order={order} />
 
-      {(showAllocateButton || showReturns || showPayment || showRefund) && (
-        <div className="bg-ui-bg-subtle flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
-          {showReturns &&
-            (receivableReturns.length === 1 ? (
-              <Button asChild variant="secondary" size="small">
-                <Link
-                  to={`/orders/${order.id}/returns/${receivableReturns[0].id}/receive`}
+      {showReturns ||
+        showAllocateButton ||
+        showPayment ||
+        (showRefund && (
+          <div className="bg-ui-bg-subtle flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
+            {showReturns &&
+              (receivableReturns.length === 1 ? (
+                <Button asChild variant="secondary" size="small">
+                  <Link
+                    to={`/orders/${order.id}/returns/${receivableReturns[0].id}/receive`}
+                  >
+                    {t("orders.returns.receive.action")}
+                  </Link>
+                </Button>
+              ) : (
+                <ActionMenu
+                  groups={[
+                    {
+                      actions: receivableReturns.map((r) => {
+                        let id = r.id
+                        let returnType = "Return"
+
+                        if (r.exchange_id) {
+                          id = r.exchange_id
+                          returnType = "Exchange"
+                        }
+
+                        if (r.claim_id) {
+                          id = r.claim_id
+                          returnType = "Claim"
+                        }
+
+                        return {
+                          label: t("orders.returns.receive.receiveItems", {
+                            id: `#${id.slice(-7)}`,
+                            returnType,
+                          }),
+                          icon: <ArrowLongRight />,
+                          to: `/orders/${order.id}/returns/${r.id}/receive`,
+                        }
+                      }),
+                    },
+                  ]}
                 >
-                  {t("orders.returns.receive.action")}
+                  <Button variant="secondary" size="small">
+                    {t("orders.returns.receive.action")}
+                  </Button>
+                </ActionMenu>
+              ))}
+
+            {showAllocateButton && (
+              <Button asChild variant="secondary" size="small">
+                <Link to="allocate-items">
+                  {t("orders.allocateItems.action")}
                 </Link>
               </Button>
-            ) : (
-              <ActionMenu
-                groups={[
-                  {
-                    actions: receivableReturns.map((r) => {
-                      let id = r.id
-                      let returnType = "Return"
+            )}
 
-                      if (r.exchange_id) {
-                        id = r.exchange_id
-                        returnType = "Exchange"
-                      }
+            {showPayment && (
+              <CopyPaymentLink
+                paymentCollection={unpaidPaymentCollection}
+                order={order}
+              />
+            )}
 
-                      if (r.claim_id) {
-                        id = r.claim_id
-                        returnType = "Claim"
-                      }
-
-                      return {
-                        label: t("orders.returns.receive.receiveItems", {
-                          id: `#${id.slice(-7)}`,
-                          returnType,
-                        }),
-                        icon: <ArrowLongRight />,
-                        to: `/orders/${order.id}/returns/${r.id}/receive`,
-                      }
-                    }),
-                  },
-                ]}
+            {showPayment && (
+              <Button
+                size="small"
+                variant="secondary"
+                onClick={() => handleMarkAsPaid(unpaidPaymentCollection)}
               >
-                <Button variant="secondary" size="small">
-                  {t("orders.returns.receive.action")}
-                </Button>
-              </ActionMenu>
-            ))}
+                {t("orders.payment.markAsPaid")}
+              </Button>
+            )}
 
-          {showAllocateButton && (
-            <Button asChild variant="secondary" size="small">
-              <Link to="allocate-items">
-                {t("orders.allocateItems.action")}
-              </Link>
-            </Button>
-          )}
-
-          {showPayment && (
-            <CopyPaymentLink
-              paymentCollection={unpaidPaymentCollection}
-              order={order}
-            />
-          )}
-
-          {showPayment && (
-            <Button
-              size="small"
-              variant="secondary"
-              onClick={() => handleMarkAsPaid(unpaidPaymentCollection)}
-            >
-              {t("orders.payment.markAsPaid")}
-            </Button>
-          )}
-
-          {showRefund && (
-            <Button size="small" variant="secondary" asChild>
-              <Link to={`/orders/${order.id}/refund`}>
-                {t("orders.payment.refundAmount", {
-                  amount: getStylizedAmount(
-                    pendingDifference * -1,
-                    order?.currency_code
-                  ),
-                })}
-              </Link>
-            </Button>
-          )}
-        </div>
-      )}
+            {showRefund && (
+              <Button size="small" variant="secondary" asChild>
+                <Link to={`/orders/${order.id}/refund`}>
+                  {t("orders.payment.refundAmount", {
+                    amount: getStylizedAmount(
+                      pendingDifference * -1,
+                      order?.currency_code
+                    ),
+                  })}
+                </Link>
+              </Button>
+            )}
+          </div>
+        ))}
     </Container>
   )
 }
@@ -295,6 +327,16 @@ const Header = ({
   orderPreview?: AdminOrderPreview
 }) => {
   const { t } = useTranslation()
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canCreate: canCreateOrderChange } = useOrderChangePermissions()
+  const { canCreate: canCreateReturn } = useReturnPermissions()
+  const { canCreate: canCreateExchange } = useOrderExchangePermissions()
+  const { canCreate: canCreateClaim } = useOrderClaimPermissions()
+
+  const canEditOrder = canCreateOrderChange && canUpdateOrder
+  const canCreateReturnAction = canCreateReturn && canUpdateOrder
+  const canCreateExchangeAction = canCreateExchange && canUpdateOrder
+  const canCreateClaimAction = canCreateClaim && canUpdateOrder
 
   // is ture if there is no shipped items ATM
   const shouldDisableReturn = order.items.every(
@@ -307,76 +349,88 @@ const Header = ({
     orderPreview?.order_change?.change_type === "edit" &&
     orderPreview?.order_change?.status === "pending"
 
+  const rmaActions: Action[] = []
+
+  if (canCreateReturnAction) {
+    rmaActions.push({
+      label: t("orders.returns.create"),
+      to: `/orders/${order.id}/returns`,
+      icon: <ArrowUturnLeft />,
+      disabled:
+        shouldDisableReturn ||
+        isOrderEditActive ||
+        !!orderPreview?.order_change?.exchange_id ||
+        !!orderPreview?.order_change?.claim_id,
+    })
+  }
+
+  if (canCreateExchangeAction) {
+    rmaActions.push({
+      label:
+        orderPreview?.order_change?.id &&
+        orderPreview?.order_change?.exchange_id
+          ? t("orders.exchanges.manage")
+          : t("orders.exchanges.create"),
+      to: `/orders/${order.id}/exchanges`,
+      icon: <ArrowPath />,
+      disabled:
+        shouldDisableReturn ||
+        isOrderEditActive ||
+        (!!orderPreview?.order_change?.return_id &&
+          !orderPreview?.order_change?.exchange_id) ||
+        !!orderPreview?.order_change?.claim_id,
+    })
+  }
+
+  if (canCreateClaimAction) {
+    rmaActions.push({
+      label:
+        orderPreview?.order_change?.id && orderPreview?.order_change?.claim_id
+          ? t("orders.claims.manage")
+          : t("orders.claims.create"),
+      to: `/orders/${order.id}/claims`,
+      icon: <ExclamationCircle />,
+      disabled:
+        shouldDisableReturn ||
+        isOrderEditActive ||
+        (!!orderPreview?.order_change?.return_id &&
+          !orderPreview?.order_change?.claim_id) ||
+        !!orderPreview?.order_change?.exchange_id,
+    })
+  }
+
+  const groups: ActionGroup[] = []
+
+  if (canEditOrder) {
+    groups.push({
+      actions: [
+        {
+          label: t(
+            isOrderEditPending
+              ? "orders.summary.editOrderContinue"
+              : "orders.summary.editOrder"
+          ),
+          to: `/orders/${order.id}/edits`,
+          icon: <PencilSquare />,
+          disabled:
+            order.status === "canceled" ||
+            (orderPreview?.order_change &&
+              orderPreview?.order_change?.change_type !== "edit") ||
+            (orderPreview?.order_change?.change_type === "edit" &&
+              orderPreview?.order_change?.status === "requested"),
+        },
+      ],
+    })
+  }
+
+  if (rmaActions.length) {
+    groups.push({ actions: rmaActions })
+  }
+
   return (
     <div className="flex items-center justify-between px-6 py-4">
       <Heading level="h2">{t("fields.summary")}</Heading>
-      <ActionMenu
-        groups={[
-          {
-            actions: [
-              {
-                label: t(
-                  isOrderEditPending
-                    ? "orders.summary.editOrderContinue"
-                    : "orders.summary.editOrder"
-                ),
-                to: `/orders/${order.id}/edits`,
-                icon: <PencilSquare />,
-                disabled:
-                  order.status === "canceled" ||
-                  (orderPreview?.order_change &&
-                    orderPreview?.order_change?.change_type !== "edit") ||
-                  (orderPreview?.order_change?.change_type === "edit" &&
-                    orderPreview?.order_change?.status === "requested"),
-              },
-            ],
-          },
-          {
-            actions: [
-              {
-                label: t("orders.returns.create"),
-                to: `/orders/${order.id}/returns`,
-                icon: <ArrowUturnLeft />,
-                disabled:
-                  shouldDisableReturn ||
-                  isOrderEditActive ||
-                  !!orderPreview?.order_change?.exchange_id ||
-                  !!orderPreview?.order_change?.claim_id,
-              },
-              {
-                label:
-                  orderPreview?.order_change?.id &&
-                  orderPreview?.order_change?.exchange_id
-                    ? t("orders.exchanges.manage")
-                    : t("orders.exchanges.create"),
-                to: `/orders/${order.id}/exchanges`,
-                icon: <ArrowPath />,
-                disabled:
-                  shouldDisableReturn ||
-                  isOrderEditActive ||
-                  (!!orderPreview?.order_change?.return_id &&
-                    !orderPreview?.order_change?.exchange_id) ||
-                  !!orderPreview?.order_change?.claim_id,
-              },
-              {
-                label:
-                  orderPreview?.order_change?.id &&
-                  orderPreview?.order_change?.claim_id
-                    ? t("orders.claims.manage")
-                    : t("orders.claims.create"),
-                to: `/orders/${order.id}/claims`,
-                icon: <ExclamationCircle />,
-                disabled:
-                  shouldDisableReturn ||
-                  isOrderEditActive ||
-                  (!!orderPreview?.order_change?.return_id &&
-                    !orderPreview?.order_change?.claim_id) ||
-                  !!orderPreview?.order_change?.exchange_id,
-              },
-            ],
-          },
-        ]}
-      />
+      {groups.length > 0 && <ActionMenu groups={groups} />}
     </div>
   )
 }

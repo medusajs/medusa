@@ -5,6 +5,10 @@ import { useTranslation } from "react-i18next"
 import { HttpTypes } from "@medusajs/types"
 import { useNavigate } from "react-router-dom"
 import { useCancelExchangeRequest } from "../../../../../hooks/api/exchanges"
+import {
+  useOrderExchangePermissions,
+  useOrderPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type ActiveOrderExchangeSectionProps = {
   orderPreview: HttpTypes.AdminOrderPreview
@@ -14,6 +18,9 @@ export const ActiveOrderExchangeSection = ({
   orderPreview,
 }: ActiveOrderExchangeSectionProps) => {
   const { t } = useTranslation()
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canUpdate: canUpdateExchange } = useOrderExchangePermissions()
+  const canManage = canUpdateExchange && canUpdateOrder
   const exchangeId = orderPreview?.order_change?.exchange_id
 
   const { mutateAsync: cancelExchange } = useCancelExchangeRequest(
@@ -63,19 +70,25 @@ export const ActiveOrderExchangeSection = ({
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
-            <Button size="small" variant="secondary" onClick={onCancelExchange}>
-              {t("orders.exchanges.cancel.title")}
-            </Button>
+          {canManage && (
+            <div className="flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
+              <Button
+                size="small"
+                variant="secondary"
+                onClick={onCancelExchange}
+              >
+                {t("orders.exchanges.cancel.title")}
+              </Button>
 
-            <Button
-              size="small"
-              variant="secondary"
-              onClick={onContinueExchange}
-            >
-              {t("actions.continue")}
-            </Button>
-          </div>
+              <Button
+                size="small"
+                variant="secondary"
+                onClick={onContinueExchange}
+              >
+                {t("actions.continue")}
+              </Button>
+            </div>
+          )}
         </div>
       </Container>
     </div>

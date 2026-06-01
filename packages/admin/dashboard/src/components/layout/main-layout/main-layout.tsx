@@ -35,6 +35,7 @@ import { useDocumentDirection } from "../../../hooks/use-document-direction"
 import {
   useCustomerGroupPermissions,
   useCustomerPermissions,
+  useOrderPermissions,
 } from "../../../hooks/use-resource-permissions"
 
 export const MainLayout = () => {
@@ -190,24 +191,22 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
 
   const { canRead: canReadCustomers } = useCustomerPermissions()
   const { canRead: canReadCustomerGroups } = useCustomerGroupPermissions()
+  const { canRead: canReadOrders } = useOrderPermissions()
 
   const canReadProducts = hasPermission("product:read")
   const canReadProductCollections = hasPermission("product_collection:read")
   const canReadProductCategories = hasPermission("product_category:read")
 
   return [
-    {
-      icon: <ShoppingCart />,
-      label: t("orders.domain"),
-      to: "/orders",
-      items: [
-        // TODO: Enable when domin is introduced
-        // {
-        //   label: t("draftOrders.domain"),
-        //   to: "/draft-orders",
-        // },
-      ],
-    },
+    ...(canReadOrders
+      ? [
+          {
+            icon: <ShoppingCart />,
+            label: t("orders.domain"),
+            to: "/orders",
+          },
+        ]
+      : []),
     ...(canReadProducts
       ? [
           {

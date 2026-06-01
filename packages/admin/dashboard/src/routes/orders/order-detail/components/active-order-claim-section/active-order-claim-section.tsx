@@ -5,6 +5,10 @@ import { useTranslation } from "react-i18next"
 import { HttpTypes } from "@medusajs/types"
 import { useNavigate } from "react-router-dom"
 import { useCancelClaimRequest } from "../../../../../hooks/api/claims"
+import {
+  useOrderClaimPermissions,
+  useOrderPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type ActiveOrderClaimSectionProps = {
   orderPreview: HttpTypes.AdminOrderPreview
@@ -14,6 +18,9 @@ export const ActiveOrderClaimSection = ({
   orderPreview,
 }: ActiveOrderClaimSectionProps) => {
   const { t } = useTranslation()
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canUpdate: canUpdateClaim } = useOrderClaimPermissions()
+  const canManage = canUpdateClaim && canUpdateOrder
   const claimId = orderPreview?.order_change?.claim_id
 
   const { mutateAsync: cancelClaim } = useCancelClaimRequest(
@@ -63,15 +70,21 @@ export const ActiveOrderClaimSection = ({
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
-            <Button size="small" variant="secondary" onClick={onCancelClaim}>
-              {t("orders.claims.cancel.title")}
-            </Button>
+          {canManage && (
+            <div className="flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
+              <Button size="small" variant="secondary" onClick={onCancelClaim}>
+                {t("orders.claims.cancel.title")}
+              </Button>
 
-            <Button size="small" variant="secondary" onClick={onContinueClaim}>
-              {t("actions.continue")}
-            </Button>
-          </div>
+              <Button
+                size="small"
+                variant="secondary"
+                onClick={onContinueClaim}
+              >
+                {t("actions.continue")}
+              </Button>
+            </div>
+          )}
         </div>
       </Container>
     </div>

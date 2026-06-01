@@ -5,6 +5,7 @@ const orderResources = [
   "order",
   "order_item",
   "order_change",
+  "order_address",
   "order_claim",
   "order_claim_item",
   "order_exchange",

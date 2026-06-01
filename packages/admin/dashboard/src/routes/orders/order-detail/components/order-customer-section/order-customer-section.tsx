@@ -39,12 +39,13 @@ const Header = () => {
   const { canUpdate: canUpdateAdresses } = useCustomerAddressPermissions()
   const { canUpdate: canUpdateOrders } = useOrderPermissions()
 
-  const canTransferOwnership = canUpdateCustomers && canUpdateOrders
-  const canUpdateCustomerAddresses = canUpdateAdresses && canUpdateCustomers
+  const canUpdateCustomer = canUpdateCustomers && canUpdateOrders
+  const canUpdateCustomerAddresses =
+    canUpdateAdresses && canUpdateCustomers && canUpdateOrders
 
   const groups: ActionGroup[] = []
 
-  if (canTransferOwnership) {
+  if (canUpdateCustomer) {
     groups.push({
       actions: [
         {
@@ -73,7 +74,7 @@ const Header = () => {
     })
   }
 
-  if (canUpdateCustomers) {
+  if (canUpdateCustomer) {
     groups.push({
       actions: [
         {
