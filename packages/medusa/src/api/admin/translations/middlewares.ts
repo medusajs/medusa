@@ -16,6 +16,9 @@ import {
   AdminTranslationStatisticsParams,
 } from "./validators"
 
+/**
+ * Middleware routes configuration for admin translation endpoints.
+ */
 export const adminTranslationsRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/translations/*",
