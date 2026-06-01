@@ -26,6 +26,9 @@ async function copyDir(src: string, dest: string): Promise<void> {
   }
 }
 
-export async function copyMdxToPublic({ srcDir, destDir }: Options): Promise<void> {
+export async function copyMdxToPublic({
+  srcDir,
+  destDir,
+}: Options): Promise<void> {
   await copyDir(srcDir, destDir)
 }

@@ -16,5 +16,19 @@
   ],
   "images": {
     "binding": "IMAGES"
+  },
+  "env": {
+    "production": {
+      "name": "medusa-docs-resources",
+      "services": [
+        {
+          "binding": "WORKER_SELF_REFERENCE",
+          "service": "medusa-docs-resources"
+        }
+      ],
+      "images": {
+        "binding": "IMAGES"
+      }
+    }
   }
 }

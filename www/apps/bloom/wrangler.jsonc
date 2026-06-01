@@ -16,5 +16,19 @@
   ],
   "images": {
     "binding": "IMAGES"
+  },
+  "env": {
+    "production": {
+      "name": "medusa-docs-bloom",
+      "services": [
+        {
+          "binding": "WORKER_SELF_REFERENCE",
+          "service": "medusa-docs-bloom"
+        }
+      ],
+      "images": {
+        "binding": "IMAGES"
+      }
+    }
   }
 }

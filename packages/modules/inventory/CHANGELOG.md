@@ -1,5 +1,28 @@
 # @medusajs/inventory-next
 
+## 2.15.5
+
+### Patch Changes
+
+- Updated dependencies [[`8122633a8b33164a6094f5a39896e356efde1747`](https://github.com/medusajs/medusa/commit/8122633a8b33164a6094f5a39896e356efde1747), [`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911)]:
+  - @medusajs/framework@2.15.5
+
+## 2.15.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- [#15397](https://github.com/medusajs/medusa/pull/15397) [`d36790f6ccc1a8d7fa729027f9e9d75ad8c9d418`](https://github.com/medusajs/medusa/commit/d36790f6ccc1a8d7fa729027f9e9d75ad8c9d418) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(inventory,core-flows,medusa): add missing locking to reservation steps
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.3
+
 ## 2.15.2
 
 ### Patch Changes

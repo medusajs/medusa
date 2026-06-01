@@ -16,5 +16,19 @@
   ],
   "images": {
     "binding": "IMAGES"
+  },
+  "env": {
+    "production": {
+      "name": "medusa-docs-user-guide",
+      "services": [
+        {
+          "binding": "WORKER_SELF_REFERENCE",
+          "service": "medusa-docs-user-guide"
+        }
+      ],
+      "images": {
+        "binding": "IMAGES"
+      }
+    }
   }
 }

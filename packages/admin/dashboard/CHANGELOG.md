@@ -1,5 +1,41 @@
 # @medusajs/dashboard
 
+## 2.15.5
+
+### Patch Changes
+
+- [#14593](https://github.com/medusajs/medusa/pull/14593) [`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911) Thanks [@fPolic](https://github.com/fPolic)! - feat(dashboard,framework,rbac,js-sdk,types,utils,medusa): rbac admin dashboard utils
+
+- Updated dependencies [[`ace1822bccbb21afa533665937460140e36aa995`](https://github.com/medusajs/medusa/commit/ace1822bccbb21afa533665937460140e36aa995), [`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911)]:
+  - @medusajs/js-sdk@2.15.5
+  - @medusajs/admin-shared@2.15.5
+  - @medusajs/icons@2.15.5
+  - @medusajs/ui@4.1.15
+
+## 2.15.4
+
+### Patch Changes
+
+- [#15430](https://github.com/medusajs/medusa/pull/15430) [`8a4a9c5507463dc3db5a4e122e59f80d718564d9`](https://github.com/medusajs/medusa/commit/8a4a9c5507463dc3db5a4e122e59f80d718564d9) Thanks [@shiminshen](https://github.com/shiminshen)! - fix(dashboard): order list fulfillment and payment status badges render with the correct status colors when view_configurations is enabled
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.15.4
+  - @medusajs/js-sdk@2.15.4
+  - @medusajs/icons@2.15.4
+  - @medusajs/ui@4.1.14
+
+## 2.15.3
+
+### Patch Changes
+
+- [#15417](https://github.com/medusajs/medusa/pull/15417) [`f2def586bb52f37752a3b06e673d69095a2551d8`](https://github.com/medusajs/medusa/commit/f2def586bb52f37752a3b06e673d69095a2551d8) Thanks [@Derekko-web](https://github.com/Derekko-web)! - fix(dashboard): include inventory item query params in detail cache keys
+
+- Updated dependencies [[`ac0a8b63d16518eae7c5370171b76bdf2d8dc2c5`](https://github.com/medusajs/medusa/commit/ac0a8b63d16518eae7c5370171b76bdf2d8dc2c5), [`139d5f9d636dba61cdaec8319358b59f2aef3836`](https://github.com/medusajs/medusa/commit/139d5f9d636dba61cdaec8319358b59f2aef3836), [`18a410c48d9d928de6e63d9577782480c3308e6b`](https://github.com/medusajs/medusa/commit/18a410c48d9d928de6e63d9577782480c3308e6b)]:
+  - @medusajs/icons@2.15.3
+  - @medusajs/js-sdk@2.15.3
+  - @medusajs/ui@4.1.13
+  - @medusajs/admin-shared@2.15.3
+
 ## 2.15.2
 
 ### Patch Changes
