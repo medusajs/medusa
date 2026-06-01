@@ -176,6 +176,28 @@ describe("defineConfig", function () {
     `)
   })
 
+  it("should include auth mfa encryption key when configured", function () {
+    const originalEnv = { ...process.env }
+    process.env.AUTH_MFA_ENCRYPTION_KEY = "test-mfa-key"
+
+    let config!: ReturnType<typeof defineConfig>
+    try {
+      config = defineConfig()
+    } finally {
+      process.env = { ...originalEnv }
+    }
+
+    expect(config.modules?.[Modules.AUTH]).toEqual(
+      expect.objectContaining({
+        options: expect.objectContaining({
+          mfa: {
+            encryption_key: "test-mfa-key",
+          },
+        }),
+      })
+    )
+  })
+
   it("should merge custom modules", function () {
     expect(
       defineConfig({
