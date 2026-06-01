@@ -60,11 +60,6 @@ export const authSidebar = [
           },
           {
             type: "link",
-            path: "/commerce-modules/auth/email-verification",
-            title: "Implement Email Verification",
-          },
-          {
-            type: "link",
             path: "/commerce-modules/auth/reset-password",
             title: "Handle Password Reset Event",
           },

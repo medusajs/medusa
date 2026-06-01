@@ -48,8 +48,16 @@ export const auth = [
     "path": "https://docs.medusajs.com/resources/references/auth/provider"
   },
   {
+    "title": "requestVerificationStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/requestVerificationStep"
+  },
+  {
     "title": "setAuthAppMetadataStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setAuthAppMetadataStep"
+  },
+  {
+    "title": "requestVerificationWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/requestVerificationWorkflow"
   },
   {
     "title": "setAuthAppMetadataWorkflow",
@@ -90,10 +98,6 @@ export const auth = [
   {
     "title": "refresh",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/refresh"
-  },
-  {
-    "title": "register",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/register"
   },
   {
     "title": "resetPassword",

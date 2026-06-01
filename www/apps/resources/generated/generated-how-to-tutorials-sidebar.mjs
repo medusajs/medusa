@@ -368,15 +368,6 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
-                      "path": "/admin-components/components/permission-guard",
-                      "title": "Permission Guard",
-                      "description": "",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "isPathHref": true,
-                      "type": "link",
                       "path": "/admin-components/components/section-row",
                       "title": "Section Row",
                       "description": "",

@@ -354,7 +354,7 @@ If the authentication is successful, there are three types of returned data:
 
 - An object with a `location` property: This means the authentication requires more actions, which happens when using third-party authentication providers, such as [Google](../../../commerce-modules/auth/auth-providers/google/page.mdx). In that case, you need to redirect the customer to the location to complete their authentication.
     - Refer to the [Third-Party Login in Storefront](../../../storefront-development/customers/third-party-login/page.mdx) guide for an example implementation.
-- An object with `verification_required: true`: This means the authentication requires email verification before a token can be issued. The object includes verification details like expiry time. Learn more about [email verification](../../../commerce-modules/auth/email-verification/page.mdx).
+- An object with `verification_required: true`: This means the authentication requires email verification before a token can be issued. The object includes verification details like expiry time. Verification is only required if the `require_verification` option is enabled in the [Emailpass Auth Module Provider](../../../commerce-modules/auth/auth-providers/emailpass/page.mdx).
 - A string: This means the authentication was successful, and the user is logged in. The JS SDK automatically stores the JWT token or session cookie for you and includes it in the headers of all requests to the Medusa API. All requests you send afterwards will be authenticated with the stored token or session cookie.
 
 If the authentication fails, the `catch` block will be executed, and you can handle the error accordingly.

@@ -519,14 +519,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "isPathHref": true,
-              "type": "link",
-              "path": "/commerce-modules/auth/email-verification",
-              "title": "Implement Email Verification",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "isPathHref": true,
               "type": "ref",
               "title": "Integrate Okta",
               "path": "https://docs.medusajs.com/resources/integrations/guides/okta",
