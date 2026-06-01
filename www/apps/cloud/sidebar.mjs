@@ -16,7 +16,7 @@ export const sidebar = [
           },
           {
             type: "link",
-            path: "/get-started",
+            path: "/first-project",
             title: "Get Started Flow",
           },
           {
