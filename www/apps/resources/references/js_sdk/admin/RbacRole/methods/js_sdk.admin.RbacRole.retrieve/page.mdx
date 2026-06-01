@@ -1,0 +1,29 @@
+import { TypeList } from "docs-ui"
+
+# retrieve
+
+This method retrieves an RBAC role's details. It sends a request to the
+Get RBAC Role API route.
+
+:::note
+
+This is available starting from [Medusa v2.15.5](https://github.com/medusajs/medusa/releases/tag/v2.15.5).
+
+:::
+
+## Example
+
+```ts
+sdk.admin.rbacRole.retrieve("role_123")
+.then(({ role }) => {
+  console.log(role)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The role's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[AdminRbacRoleParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleParams/page.mdx)","description":"Configure the fields to retrieve in the role.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"policies","type":"`string` \\| `string`[]","description":"Comma-separated relations to include in the response. Can include `policies`.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminRbacRoleResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The role's details.","expandable":false,"children":[{"name":"role","type":"[AdminRbacRole](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRole/page.mdx)","description":"The role's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The role's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The role's name.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"The role's description.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"parent_id","type":"`null` \\| `string`","description":"The ID of the parent role, if any.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Custom key-value pairs that can be added to the role.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string`","description":"The date the role was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string`","description":"The date the role was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string`","description":"The date the role was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"policies","type":"[AdminRbacPolicy](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminRbacPolicy/page.mdx)[]","description":"The policies associated with the role.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}],"since":"2.15.5"}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="retrieve"/>

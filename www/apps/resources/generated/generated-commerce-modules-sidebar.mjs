@@ -865,6 +865,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/auth/confirmAuthVerification",
+                      "title": "confirmAuthVerification",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/auth/createAuthIdentities",
                       "title": "createAuthIdentities",
                       "description": "",
@@ -876,6 +885,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/createAuthMfaChallenge",
                       "title": "createAuthMfaChallenge",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/createAuthVerificationToken",
+                      "title": "createAuthVerificationToken",
                       "description": "",
                       "children": []
                     },
@@ -966,6 +984,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/register",
                       "title": "register",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/requestAuthVerification",
+                      "title": "requestAuthVerification",
                       "description": "",
                       "children": []
                     },
@@ -1122,6 +1149,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/models/AuthMfaRecoveryCode",
                       "title": "AuthMfaRecoveryCode",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/models/AuthVerificationToken",
+                      "title": "AuthVerificationToken",
                       "description": "",
                       "children": []
                     },
