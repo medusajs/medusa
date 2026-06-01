@@ -177,6 +177,19 @@ function resolveModules(
   { isCloud }: { isCloud: boolean },
   projectConfig: InputConfig["projectConfig"]
 ): Exclude<ConfigModule["modules"], undefined> {
+  const authMfaEncryptionKey = process.env.AUTH_MFA_ENCRYPTION_KEY
+  const authModuleOptions = {
+    mfa: {
+      encryption_key: authMfaEncryptionKey,
+    },
+    providers: [
+      {
+        resolve: "@medusajs/medusa/auth-emailpass",
+        id: "emailpass",
+      },
+    ],
+  }
+
   const sharedModules = [
     { resolve: MODULE_PACKAGE_NAMES[Modules.STOCK_LOCATION] },
     { resolve: MODULE_PACKAGE_NAMES[Modules.INVENTORY] },
@@ -207,17 +220,7 @@ function resolveModules(
 
     {
       resolve: MODULE_PACKAGE_NAMES[Modules.AUTH],
-      options: {
-        mfa: {
-          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
-        },
-        providers: [
-          {
-            resolve: "@medusajs/medusa/auth-emailpass",
-            id: "emailpass",
-          },
-        ],
-      },
+      options: authModuleOptions,
     },
     {
       resolve: MODULE_PACKAGE_NAMES[Modules.USER],

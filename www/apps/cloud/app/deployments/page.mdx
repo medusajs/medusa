@@ -59,6 +59,8 @@ If you're deploying both a Medusa application and a storefront on Cloud, Medusa 
 2. The build command relevant to the storefront, depending on the frontend framework you're using. For example, if you're using Next.js for your storefront, Medusa will run the `next build` command in the storefront's directory.
     - Medusa currently doesn't support custom build scripts for storefronts.
 
+Storefront builds and deployments operate independently of the backend status. This means storefront deployments can proceed successfully even if the backend build or deployment fails.
+
 ### What Gets Deployed in the Medusa Application?
 
 Medusa deploys the contents of the `.medusa/server` directory of the Medusa application. This directory is created by the [build process](!docs!/learn/build). It includes the compiled JavaScript files in your project, the production build of the admin dashboard, and other necessary files to run your Medusa application in production.
@@ -324,7 +326,7 @@ Learn more in the [Access Live Deployment](./access/page.mdx) guide.
 
 ### AI Troubleshooting
 
-When a deployment or its build fails, you can use the "Fix with AI" feature to troubleshoot the issue with the help of Cloud's support agent. The AI agent will analyze the deployment and build logs, identify the root cause of the issue, and provide you with actionable steps to resolve it.
+When a deployment or its build fails, you can use the "Fix with AI" feature to troubleshoot the issue with the help of Cloud's support agent. The support agent is always available for failed deployments, allowing you to get assistance whenever there are issues in your deployments. The AI agent will analyze the deployment and build logs, identify the root cause of the issue, and provide you with actionable steps to resolve it.
 
 Learn more in the [Fix Deployment and Build Issues with AI](./fix-with-ai/page.mdx) guide.
 
