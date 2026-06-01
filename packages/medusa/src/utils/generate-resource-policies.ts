@@ -5,14 +5,17 @@ export const generateResourcePolicies = (resources: string[]) => {
   const policies: PolicyDefinition[] = []
 
   for (const resource of resources) {
+    const normalizedResource = toPascalCase(resource)
+
     for (const operation of defaultPolicyOperations) {
-      const policyName = toPascalCase(operation) + toPascalCase(resource)
+      const normalizedOperation = toPascalCase(operation)
+      const policyName = normalizedOperation + normalizedResource
 
       policies.push({
         name: policyName,
         resource: resource,
         operation: operation,
-        description: `${toPascalCase(operation)} ${resource.replace(
+        description: `${normalizedOperation} ${normalizedResource.replace(
           /_/g,
           " "
         )}`,
