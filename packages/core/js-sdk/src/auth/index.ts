@@ -31,6 +31,8 @@ export type AuthMfaRequiredResponse = {
 /**
  * Response returned when authentication succeeds but must be completed with
  * verification before issuing a token.
+ * 
+ * @since 2.15.5
  */
 export type AuthVerificationRequiredResponse = {
   /**
@@ -45,11 +47,15 @@ export type AuthVerificationRequiredResponse = {
 
 /**
  * Response returned from a registration attempt.
+ * 
+ * @since 2.15.5
  */
 export type AuthRegisterResponse = string | AuthVerificationRequiredResponse
 
 /**
  * Options used when registering with an auth provider.
+ * 
+ * @since 2.15.5
  */
 export type AuthRegisterOptions = {
   /**
@@ -196,6 +202,8 @@ export type AuthMfaVerifyChallengePayload = {
 
 /**
  * Payload used to request a verification token.
+ * 
+ * @since 2.15.5
  */
 export type AuthVerificationRequestPayload = {
   /**
@@ -210,6 +218,8 @@ export type AuthVerificationRequestPayload = {
 
 /**
  * Payload used to confirm a verification token.
+ * 
+ * @since 2.15.5
  */
 export type AuthVerificationConfirmPayload = {
   /**
@@ -220,6 +230,8 @@ export type AuthVerificationConfirmPayload = {
 
 /**
  * Response returned after requesting a verification token.
+ * 
+ * @since 2.15.5
  */
 export type AuthVerificationRequestResponse = {
   /**
@@ -230,6 +242,8 @@ export type AuthVerificationRequestResponse = {
 
 /**
  * Response returned after confirming verification.
+ * 
+ * @since 2.15.5
  */
 export type AuthVerificationConfirmResponse = {
   /**
@@ -457,6 +471,8 @@ export class Auth {
 
   /**
    * Methods for requesting and confirming verification.
+   * 
+   * @since 2.15.5
    */
   verification = {
     /**
