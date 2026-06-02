@@ -1,5 +1,22 @@
 # @medusajs/utils
 
+## 2.15.5
+
+### Patch Changes
+
+- [#15496](https://github.com/medusajs/medusa/pull/15496) [`ace1822bccbb21afa533665937460140e36aa995`](https://github.com/medusajs/medusa/commit/ace1822bccbb21afa533665937460140e36aa995) Thanks [@christiananese](https://github.com/christiananese)! - Add auth verification primitives for emailpass.
+
+- [#15493](https://github.com/medusajs/medusa/pull/15493) [`c8e37903177c2551ec27ba5f881804e351e819c4`](https://github.com/medusajs/medusa/commit/c8e37903177c2551ec27ba5f881804e351e819c4) Thanks [@christiananese](https://github.com/christiananese)! - Prepare new Medusa apps for admin MFA
+
+- [#15495](https://github.com/medusajs/medusa/pull/15495) [`8122633a8b33164a6094f5a39896e356efde1747`](https://github.com/medusajs/medusa/commit/8122633a8b33164a6094f5a39896e356efde1747) Thanks [@christiananese](https://github.com/christiananese)! - feat(auth): emit MFA lifecycle events
+
+- [#15518](https://github.com/medusajs/medusa/pull/15518) [`c7258f2ca2da8c09df430d81121ea8eae7f75cd9`](https://github.com/medusajs/medusa/commit/c7258f2ca2da8c09df430d81121ea8eae7f75cd9) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(utils): add mfa to inline snapshot test assertion
+
+- [#14593](https://github.com/medusajs/medusa/pull/14593) [`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911) Thanks [@fPolic](https://github.com/fPolic)! - feat(dashboard,framework,rbac,js-sdk,types,utils,medusa): rbac admin dashboard utils
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.5
+
 ## 2.15.4
 
 ### Patch Changes

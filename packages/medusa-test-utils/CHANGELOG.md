@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.15.5
+
+### Patch Changes
+
+- Updated dependencies [[`ace1822bccbb21afa533665937460140e36aa995`](https://github.com/medusajs/medusa/commit/ace1822bccbb21afa533665937460140e36aa995), [`2535bd63f3bf2745034abb11ac38469df6f4a588`](https://github.com/medusajs/medusa/commit/2535bd63f3bf2745034abb11ac38469df6f4a588), [`e6c632ada9ced677e44198f145097422890abc63`](https://github.com/medusajs/medusa/commit/e6c632ada9ced677e44198f145097422890abc63), [`8122633a8b33164a6094f5a39896e356efde1747`](https://github.com/medusajs/medusa/commit/8122633a8b33164a6094f5a39896e356efde1747), [`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911)]:
+  - @medusajs/core-flows@2.15.5
+  - @medusajs/medusa@2.15.5
+  - @medusajs/framework@2.15.5
+
 ## 2.15.4
 
 ### Patch Changes

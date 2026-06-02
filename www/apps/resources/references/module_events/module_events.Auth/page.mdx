@@ -33,6 +33,16 @@ Emitted when a reset password token is generated. You can listen to this event
 to send a reset password email to the user or customer, for example.
 </Table.Cell>
     </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+[auth.verification_requested](#authverification_requested)
+<Tooltip text="This event was added in version v2.15.5"><Badge variant="blue">v2.15.5</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when a verification token is generated. You can listen to
+this event and decide how to deliver the token to the user or customer.
+</Table.Cell>
+    </Table.Row>
   </Table.Body>
 </Table>
 
@@ -64,3 +74,45 @@ to send a reset password email to the user or customer, for example.
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
 - [generateResetPasswordTokenWorkflow](/references/medusa-workflows/generateResetPasswordTokenWorkflow)
+
+---
+
+<EventHeader headerLvl="2" headerProps={{ id: "authverification_requested", children: (<>auth.verification_requested
+<Tooltip text="This event was added in version v2.15.5">
+<Badge variant="blue">v2.15.5</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="auth.verification_requested" payload={`\`\`\`ts
+{
+  entity_id, // The identifier of the user or customer. For example, an email address.
+  actor_type, // The type of actor. For example, "customer", "user", or custom.
+  provider, // The auth provider that requested verification.
+  auth_identity_id, // The ID of the auth identity being verified.
+  provider_identity_id, // The ID of the provider identity being verified.
+  token, // The generated token.
+  expires_at, // The token expiry date.
+  metadata, // Optional custom metadata passed from the request.
+}
+\`\`\``} />
+
+Emitted when a verification token is generated. You can listen to
+this event and decide how to deliver the token to the user or customer.
+
+### Payload
+
+```ts
+{
+  entity_id, // The identifier of the user or customer. For example, an email address.
+  actor_type, // The type of actor. For example, "customer", "user", or custom.
+  provider, // The auth provider that requested verification.
+  auth_identity_id, // The ID of the auth identity being verified.
+  provider_identity_id, // The ID of the provider identity being verified.
+  token, // The generated token.
+  expires_at, // The token expiry date.
+  metadata, // Optional custom metadata passed from the request.
+}
+```
+
+### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [requestVerificationWorkflow](/references/medusa-workflows/requestVerificationWorkflow)
