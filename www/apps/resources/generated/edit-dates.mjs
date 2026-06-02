@@ -149,9 +149,9 @@ export const generatedEditDates = {
   "app/storefront-development/customers/addresses/page.mdx": "2025-03-27T14:47:14.252Z",
   "app/storefront-development/customers/context/page.mdx": "2025-03-27T14:47:14.248Z",
   "app/storefront-development/customers/log-out/page.mdx": "2025-03-27T14:45:23.360Z",
-  "app/storefront-development/customers/login/page.mdx": "2025-03-28T08:38:37.694Z",
+  "app/storefront-development/customers/login/page.mdx": "2026-06-02T11:24:45.693Z",
   "app/storefront-development/customers/profile/page.mdx": "2025-03-27T14:47:14.251Z",
-  "app/storefront-development/customers/register/page.mdx": "2025-12-04T13:42:00.322Z",
+  "app/storefront-development/customers/register/page.mdx": "2026-06-02T11:24:24.579Z",
   "app/storefront-development/customers/retrieve/page.mdx": "2025-03-27T14:41:39.996Z",
   "app/storefront-development/customers/page.mdx": "2024-06-13T12:21:54+03:00",
   "app/storefront-development/products/categories/list/page.mdx": "2026-04-10T10:19:20.210Z",
@@ -7572,5 +7572,7 @@ export const generatedEditDates = {
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleParams/page.mdx": "2026-06-01T09:05:14.504Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleResponse/page.mdx": "2026-06-01T09:05:14.510Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateRbacPolicy/page.mdx": "2026-06-01T09:05:14.500Z",
-  "references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateRbacRole/page.mdx": "2026-06-01T09:05:14.493Z"
+  "references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateRbacRole/page.mdx": "2026-06-01T09:05:14.493Z",
+  "app/commerce-modules/auth/email-verification/page.mdx": "2026-06-02T11:04:44.946Z",
+  "app/storefront-development/customers/verify-account/page.mdx": "2026-06-02T11:24:01.444Z"
 }

@@ -65,6 +65,11 @@ export const authSidebar = [
           },
           {
             type: "link",
+            path: "/commerce-modules/auth/email-verification",
+            title: "Send Email Verification",
+          },
+          {
+            type: "link",
             path: "/references/auth/provider",
             title: "Create Auth Provider",
           },

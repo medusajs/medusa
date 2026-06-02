@@ -108,6 +108,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/auth/create-actor-type"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/email-verification/page.mdx",
+    "pathname": "/commerce-modules/auth/email-verification"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/js-sdk/page.mdx",
     "pathname": "/commerce-modules/auth/js-sdk"
   },
@@ -1410,6 +1414,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/storefront-development/customers/third-party-login/page.mdx",
     "pathname": "/storefront-development/customers/third-party-login"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/customers/verify-account/page.mdx",
+    "pathname": "/storefront-development/customers/verify-account"
   },
   {
     "filePath": "/www/apps/resources/app/storefront-development/guides/express-checkout/page.mdx",
