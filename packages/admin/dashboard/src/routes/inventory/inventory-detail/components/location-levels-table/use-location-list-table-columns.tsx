@@ -12,12 +12,14 @@ import {
 import { sdk } from "../../../../../lib/client"
 import { queryClient } from "../../../../../lib/query-client"
 import { useNavigate } from "react-router-dom"
+import { useInventoryLevelPermissions } from "../../../../../hooks/use-resource-permissions"
 
 const columnHelper = createDataTableColumnHelper<AdminInventoryLevel>()
 
 export const useLocationListTableColumns = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { canUpdate, canDelete } = useInventoryLevelPermissions()
 
   const prompt = usePrompt()
 
@@ -128,33 +130,45 @@ export const useLocationListTableColumns = () => {
           )
         },
       }),
-      columnHelper.action({
-        actions: (ctx) => {
-          const level = ctx.row.original
-          return [
-            [
-              {
-                icon: <PencilSquare />,
-                label: t("actions.edit"),
-
-                onClick: () => {
-                  navigate(`locations/${level.location_id}`)
-                },
+      ...(canUpdate || canDelete
+        ? [
+            columnHelper.action({
+              actions: (ctx) => {
+                const level = ctx.row.original
+                return [
+                  ...(canUpdate
+                    ? [
+                        [
+                          {
+                            icon: <PencilSquare />,
+                            label: t("actions.edit"),
+                            onClick: () => {
+                              navigate(`locations/${level.location_id}`)
+                            },
+                          },
+                        ],
+                      ]
+                    : []),
+                  ...(canDelete
+                    ? [
+                        [
+                          {
+                            icon: <Trash />,
+                            label: t("actions.delete"),
+                            onClick: () => handleDelete(level),
+                            disabled:
+                              level.reserved_quantity > 0 ||
+                              level.stocked_quantity > 0,
+                          },
+                        ],
+                      ]
+                    : []),
+                ]
               },
-            ],
-            [
-              {
-                icon: <Trash />,
-                label: t("actions.delete"),
-                onClick: () => handleDelete(level),
-                disabled:
-                  level.reserved_quantity > 0 || level.stocked_quantity > 0,
-              },
-            ],
+            }),
           ]
-        },
-      }),
+        : []),
     ],
-    [t]
+    [t, canUpdate, canDelete, navigate]
   )
 }

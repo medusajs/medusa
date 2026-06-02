@@ -9,6 +9,7 @@ import {
   TextHeader,
 } from "../../../../../components/table/table-cells/common/text-cell"
 import { ReservationActions } from "./reservation-actions"
+import { useStockLocationPermissions } from "../../../../../hooks/use-resource-permissions"
 
 /**
  * Adds missing properties to the InventoryItemDTO type.
@@ -22,6 +23,7 @@ const columnHelper = createColumnHelper<ExtendedReservationItem>()
 
 export const useReservationTableColumn = ({ sku }: { sku: string }) => {
   const { t } = useTranslation()
+  const { canRead: canReadStockLocations } = useStockLocationPermissions()
 
   return useMemo(
     () => [
@@ -56,18 +58,24 @@ export const useReservationTableColumn = ({ sku }: { sku: string }) => {
           return <TextCell text={description} />
         },
       }),
-      columnHelper.accessor("location.name", {
-        header: () => <TextHeader text={t("inventory.reservation.location")} />,
-        cell: ({ getValue }) => {
-          const location = getValue()
+      ...(canReadStockLocations
+        ? [
+            columnHelper.accessor("location.name", {
+              header: () => (
+                <TextHeader text={t("inventory.reservation.location")} />
+              ),
+              cell: ({ getValue }) => {
+                const location = getValue()
 
-          if (!location) {
-            return <PlaceholderCell />
-          }
+                if (!location) {
+                  return <PlaceholderCell />
+                }
 
-          return <TextCell text={location} />
-        },
-      }),
+                return <TextCell text={location} />
+              },
+            }),
+          ]
+        : []),
       columnHelper.accessor("created_at", {
         header: () => <TextHeader text={t("fields.createdAt")} />,
         cell: ({ getValue }) => <CreatedAtCell date={getValue()} />,
@@ -83,6 +91,6 @@ export const useReservationTableColumn = ({ sku }: { sku: string }) => {
         cell: ({ row }) => <ReservationActions reservation={row.original} />,
       }),
     ],
-    [t]
+    [t, canReadStockLocations]
   )
 }

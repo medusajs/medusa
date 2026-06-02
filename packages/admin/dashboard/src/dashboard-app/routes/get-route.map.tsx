@@ -1061,8 +1061,14 @@ export function getRouteMap({
             {
               path: "/inventory",
               errorElement: <ErrorBoundary />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("inventory.domain"),
+                permissions: "inventory_item:read",
               },
               children: [
                 {
@@ -1073,11 +1079,23 @@ export function getRouteMap({
                       path: "create",
                       lazy: () =>
                         import("../../routes/inventory/inventory-create"),
+                      handle: {
+                        permissions: [
+                          "inventory_item:create",
+                          "inventory_level:read",
+                        ],
+                      },
                     },
                     {
                       path: "stock",
                       lazy: () =>
                         import("../../routes/inventory/inventory-stock"),
+                      handle: {
+                        permissions: [
+                          "inventory_level:read",
+                          "inventory_level:update",
+                        ],
+                      },
                     },
                   ],
                 },
@@ -1105,6 +1123,7 @@ export function getRouteMap({
                         import(
                           "../../routes/inventory/inventory-detail/components/edit-inventory-item"
                         ),
+                      handle: { permissions: "inventory_item:update" },
                     },
                     {
                       path: "attributes",
@@ -1112,11 +1131,13 @@ export function getRouteMap({
                         import(
                           "../../routes/inventory/inventory-detail/components/edit-inventory-item-attributes"
                         ),
+                      handle: { permissions: "inventory_item:update" },
                     },
                     {
                       path: "metadata/edit",
                       lazy: () =>
                         import("../../routes/inventory/inventory-metadata"),
+                      handle: { permissions: "inventory_item:update" },
                     },
                     {
                       path: "locations",
@@ -1124,6 +1145,13 @@ export function getRouteMap({
                         import(
                           "../../routes/inventory/inventory-detail/components/manage-locations"
                         ),
+                      handle: {
+                        permissions: [
+                          "inventory_level:create",
+                          "inventory_level:update",
+                          "inventory_level:delete",
+                        ],
+                      },
                     },
                     {
                       path: "locations/:location_id",
@@ -1131,6 +1159,7 @@ export function getRouteMap({
                         import(
                           "../../routes/inventory/inventory-detail/components/adjust-inventory"
                         ),
+                      handle: { permissions: "inventory_level:update" },
                     },
                   ],
                 },

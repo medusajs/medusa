@@ -2,6 +2,7 @@ import { HttpTypes } from "@medusajs/types"
 import { Button, Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
+import { useInventoryLevelPermissions } from "../../../../hooks/use-resource-permissions"
 import { ItemLocationListTable } from "./location-levels-table/location-list-table"
 
 type InventoryItemLocationLevelsSectionProps = {
@@ -11,14 +12,18 @@ export const InventoryItemLocationLevelsSection = ({
   inventoryItem,
 }: InventoryItemLocationLevelsSectionProps) => {
   const { t } = useTranslation()
+  const { canCreate, canUpdate, canDelete } = useInventoryLevelPermissions()
+  const canManageLocations = canCreate || canUpdate || canDelete
 
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("inventory.locationLevels")}</Heading>
-        <Button size="small" variant="secondary" asChild>
-          <Link to="locations">{t("inventory.manageLocations")}</Link>
-        </Button>
+        {canManageLocations && (
+          <Button size="small" variant="secondary" asChild>
+            <Link to="locations">{t("inventory.manageLocations")}</Link>
+          </Button>
+        )}
       </div>
       <ItemLocationListTable inventory_item_id={inventoryItem.id} />
     </Container>

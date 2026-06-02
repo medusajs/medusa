@@ -11,6 +11,7 @@ import { InventoryItemVariantsSection } from "./components/inventory-item-varian
 import { inventoryItemLoader } from "./loader"
 
 import { useExtension } from "../../../providers/extension-provider"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { INVENTORY_DETAIL_FIELDS } from "./constants"
 
 export const InventoryDetail = () => {
@@ -63,16 +64,25 @@ export const InventoryDetail = () => {
       data={inventory_item}
       showJSON
       showMetadata
+      showRequiredPermissions
     >
       <TwoColumnPage.Main>
         <InventoryItemGeneralSection inventoryItem={inventory_item} />
-        <InventoryItemLocationLevelsSection inventoryItem={inventory_item} />
-        <InventoryItemReservationsSection inventoryItem={inventory_item} />
+        <PermissionGuard
+          permissions={["inventory_level:read", "stock_location:read"]}
+        >
+          <InventoryItemLocationLevelsSection inventoryItem={inventory_item} />
+        </PermissionGuard>
+        <PermissionGuard permission="reservation_item:read">
+          <InventoryItemReservationsSection inventoryItem={inventory_item} />
+        </PermissionGuard>
       </TwoColumnPage.Main>
       <TwoColumnPage.Sidebar>
-        <InventoryItemVariantsSection
-          variants={(inventory_item as any).variants}
-        />
+        <PermissionGuard permissions={["product:read", "product_variant:read"]}>
+          <InventoryItemVariantsSection
+            variants={(inventory_item as any).variants}
+          />
+        </PermissionGuard>
         <InventoryItemAttributeSection inventoryItem={inventory_item as any} />
       </TwoColumnPage.Sidebar>
     </TwoColumnPage>

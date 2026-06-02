@@ -133,6 +133,12 @@ export const useProductPermissions = () => useResourcePermissions("product")
  */
 export const useInventoryPermissions = () => useResourcePermissions("inventory")
 
+export const useInventoryItemPermissions = () =>
+  useResourcePermissions("inventory_item")
+
+export const useInventoryLevelPermissions = () =>
+  useResourcePermissions("inventory_level")
+
 /**
  * Hook for checking user management permissions.
  */

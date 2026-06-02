@@ -7,6 +7,11 @@ import { Link, useNavigate } from "react-router-dom"
 import { _DataTable } from "../../../../components/table/data-table"
 import { useInventoryItems } from "../../../../hooks/api/inventory"
 import { useDataTable } from "../../../../hooks/use-data-table"
+import {
+  useInventoryItemPermissions,
+  useInventoryLevelPermissions,
+  useStockLocationPermissions,
+} from "../../../../hooks/use-resource-permissions"
 import { INVENTORY_ITEM_IDS_KEY } from "../../common/constants"
 import { useInventoryTableColumns } from "./use-inventory-table-columns"
 import { useInventoryTableFilters } from "./use-inventory-table-filters"
@@ -17,6 +22,19 @@ const PAGE_SIZE = 20
 export const InventoryListTable = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const {
+    canCreate: canCreateItem,
+    canUpdate: canUpdateItem,
+    canDelete: canDeleteItem,
+  } = useInventoryItemPermissions()
+  const { canRead: canReadStockLocations } = useStockLocationPermissions()
+  const {
+    canUpdate: canUpdateInventoryLevels,
+    canRead: canReadInventoryLevels,
+  } = useInventoryLevelPermissions()
+
+  const canCreate = canCreateItem && canReadStockLocations
+  const canManageLevels = canUpdateInventoryLevels && canReadStockLocations
 
   const [selection, setSelection] = useState<RowSelectionState>({})
 
@@ -35,7 +53,12 @@ export const InventoryListTable = () => {
   })
 
   const filters = useInventoryTableFilters()
-  const columns = useInventoryTableColumns()
+  const columns = useInventoryTableColumns({
+    showSelectColumn: canManageLevels,
+    showStockLevels: canReadInventoryLevels,
+    canUpdate: canUpdateItem,
+    canDelete: canDeleteItem,
+  })
 
   const { table } = useDataTable({
     data: inventory_items,
@@ -44,7 +67,7 @@ export const InventoryListTable = () => {
     enablePagination: true,
     getRowId: (row) => row.id,
     pageSize: PAGE_SIZE,
-    enableRowSelection: true,
+    enableRowSelection: canManageLevels,
     rowSelection: {
       state: selection,
       updater: setSelection,
@@ -64,9 +87,11 @@ export const InventoryListTable = () => {
             {t("inventory.subtitle")}
           </Text>
         </div>
-        <Button size="small" variant="secondary" asChild>
-          <Link to="create">{t("actions.create")}</Link>
-        </Button>
+        {canCreate && (
+          <Button size="small" variant="secondary" asChild>
+            <Link to="create">{t("actions.create")}</Link>
+          </Button>
+        )}
       </div>
       <_DataTable
         table={table}
@@ -85,19 +110,23 @@ export const InventoryListTable = () => {
           { key: "reserved_quantity", label: t("inventory.reserved") },
         ]}
         navigateTo={(row) => `${row.id}`}
-        commands={[
-          {
-            action: async (selection) => {
-              navigate(
-                `stock?${INVENTORY_ITEM_IDS_KEY}=${Object.keys(selection).join(
-                  ","
-                )}`
-              )
-            },
-            label: t("inventory.stock.action"),
-            shortcut: "i",
-          },
-        ]}
+        commands={
+          canUpdateInventoryLevels
+            ? [
+                {
+                  action: async (selection) => {
+                    navigate(
+                      `stock?${INVENTORY_ITEM_IDS_KEY}=${Object.keys(
+                        selection
+                      ).join(",")}`
+                    )
+                  },
+                  label: t("inventory.stock.action"),
+                  shortcut: "i",
+                },
+              ]
+            : []
+        }
       />
     </Container>
   )

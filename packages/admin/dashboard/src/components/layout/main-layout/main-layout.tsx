@@ -35,7 +35,9 @@ import { useDocumentDirection } from "../../../hooks/use-document-direction"
 import {
   useCustomerGroupPermissions,
   useCustomerPermissions,
+  useInventoryItemPermissions,
   useOrderPermissions,
+  useReservationItemPermissions,
 } from "../../../hooks/use-resource-permissions"
 
 export const MainLayout = () => {
@@ -192,6 +194,8 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
   const { canRead: canReadCustomers } = useCustomerPermissions()
   const { canRead: canReadCustomerGroups } = useCustomerGroupPermissions()
   const { canRead: canReadOrders } = useOrderPermissions()
+  const { canRead: canReadInventory } = useInventoryItemPermissions()
+  const { canRead: canReadReservations } = useReservationItemPermissions()
 
   const canReadProducts = hasPermission("product:read")
   const canReadProductCollections = hasPermission("product_collection:read")
@@ -239,17 +243,25 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
           },
         ]
       : []),
-    {
-      icon: <Buildings />,
-      label: t("inventory.domain"),
-      to: "/inventory",
-      items: [
-        {
-          label: t("reservations.domain"),
-          to: "/reservations",
-        },
-      ],
-    },
+    ...(canReadInventory
+      ? [
+          {
+            icon: <Buildings />,
+            label: t("inventory.domain"),
+            to: "/inventory",
+            items: [
+              ...(canReadReservations
+                ? [
+                    {
+                      label: t("reservations.domain"),
+                      to: "/reservations",
+                    },
+                  ]
+                : []),
+            ],
+          },
+        ]
+      : []),
     ...(canReadCustomers
       ? [
           {

@@ -5,6 +5,11 @@ import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../components/common/action-menu"
 import { SectionRow } from "../../../../components/common/section"
+import {
+  useInventoryItemPermissions,
+  useInventoryLevelPermissions,
+  useStockLocationPermissions,
+} from "../../../../hooks/use-resource-permissions"
 
 type InventoryItemGeneralSectionProps = {
   inventoryItem: HttpTypes.AdminInventoryItemResponse["inventory_item"]
@@ -13,13 +18,20 @@ export const InventoryItemGeneralSection = ({
   inventoryItem,
 }: InventoryItemGeneralSectionProps) => {
   const { t } = useTranslation()
+  const { canUpdate } = useInventoryItemPermissions()
+  const { canRead: canReadInventoryLevels } = useInventoryLevelPermissions()
+  const { canRead: canReadStockLocations } = useStockLocationPermissions()
 
   const getQuantityFormat = (quantity: number) => {
     if (quantity !== undefined && !isNaN(quantity)) {
-      return t("inventory.quantityAcrossLocations", {
-        quantity,
-        locations: inventoryItem.location_levels?.length,
-      })
+      if (canReadInventoryLevels && canReadStockLocations) {
+        return t("inventory.quantityAcrossLocations", {
+          quantity,
+          locations: inventoryItem.location_levels?.length,
+        })
+      }
+
+      return String(quantity)
     }
 
     return "-"
@@ -30,19 +42,21 @@ export const InventoryItemGeneralSection = ({
         <Heading>
           {inventoryItem.title ?? inventoryItem.sku} {t("fields.details")}
         </Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  icon: <PencilSquare />,
-                  label: t("actions.edit"),
-                  to: "edit",
-                },
-              ],
-            },
-          ]}
-        />
+        {canUpdate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    icon: <PencilSquare />,
+                    label: t("actions.edit"),
+                    to: "edit",
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       <SectionRow title={t("fields.sku")} value={inventoryItem.sku ?? "-"} />
       <SectionRow
