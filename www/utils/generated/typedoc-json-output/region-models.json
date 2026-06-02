@@ -1,5 +1,5 @@
 {
-	"id": 15389,
+	"id": 15537,
 	"name": "region-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,7 +18,7 @@
 	},
 	"children": [
 		{
-			"id": 15390,
+			"id": 15538,
 			"name": "Country",
 			"variant": "declaration",
 			"kind": 32,
@@ -28,7 +28,7 @@
 					"fileName": "country.ts",
 					"line": 4,
 					"character": 0,
-					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/country.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/country.ts#L4"
 				}
 			],
 			"type": {
@@ -48,14 +48,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 15391,
+									"id": 15539,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 15392,
+											"id": 15540,
 											"name": "iso_2",
 											"variant": "declaration",
 											"kind": 1024,
@@ -73,7 +73,7 @@
 													"fileName": "country.ts",
 													"line": 8,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/country.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/country.ts#L8"
 												}
 											],
 											"type": {
@@ -99,7 +99,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15393,
+											"id": 15541,
 											"name": "iso_3",
 											"variant": "declaration",
 											"kind": 1024,
@@ -117,7 +117,7 @@
 													"fileName": "country.ts",
 													"line": 9,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/country.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/country.ts#L9"
 												}
 											],
 											"type": {
@@ -132,7 +132,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15394,
+											"id": 15542,
 											"name": "num_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -150,7 +150,7 @@
 													"fileName": "country.ts",
 													"line": 10,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/country.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/country.ts#L10"
 												}
 											],
 											"type": {
@@ -165,7 +165,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15395,
+											"id": 15543,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -183,7 +183,7 @@
 													"fileName": "country.ts",
 													"line": 11,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/country.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/country.ts#L11"
 												}
 											],
 											"type": {
@@ -198,7 +198,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15396,
+											"id": 15544,
 											"name": "display_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -216,7 +216,7 @@
 													"fileName": "country.ts",
 													"line": 12,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/country.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/country.ts#L12"
 												}
 											],
 											"type": {
@@ -231,7 +231,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15397,
+											"id": 15545,
 											"name": "region",
 											"variant": "declaration",
 											"kind": 1024,
@@ -254,7 +254,7 @@
 													"fileName": "country.ts",
 													"line": 13,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/country.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/country.ts#L13"
 												}
 											],
 											"type": {
@@ -266,7 +266,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 15424,
+														"target": 15572,
 														"name": "Region"
 													}
 												],
@@ -276,7 +276,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15420,
+											"id": 15568,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -296,7 +296,7 @@
 													"fileName": "country.ts",
 													"line": 16,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/country.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/country.ts#L16"
 												}
 											],
 											"type": {
@@ -315,13 +315,13 @@
 										{
 											"title": "Properties",
 											"children": [
-												15392,
-												15393,
-												15394,
-												15395,
-												15396,
-												15397,
-												15420
+												15540,
+												15541,
+												15542,
+												15543,
+												15544,
+												15545,
+												15568
 											]
 										}
 									],
@@ -330,7 +330,7 @@
 											"fileName": "country.ts",
 											"line": 7,
 											"character": 4,
-											"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/country.ts#L7"
+											"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/country.ts#L7"
 										}
 									]
 								}
@@ -342,14 +342,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 15421,
+							"id": 15569,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 15422,
+									"id": 15570,
 									"name": "name",
 									"variant": "declaration",
 									"kind": 1024,
@@ -361,7 +361,7 @@
 											"fileName": "country.ts",
 											"line": 6,
 											"character": 6,
-											"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/country.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/country.ts#L6"
 										}
 									],
 									"type": {
@@ -371,7 +371,7 @@
 									"defaultValue": "\"Country\""
 								},
 								{
-									"id": 15423,
+									"id": 15571,
 									"name": "tableName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -383,7 +383,7 @@
 											"fileName": "country.ts",
 											"line": 6,
 											"character": 23,
-											"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/country.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/country.ts#L6"
 										}
 									],
 									"type": {
@@ -397,8 +397,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										15422,
-										15423
+										15570,
+										15571
 									]
 								}
 							],
@@ -407,7 +407,7 @@
 									"fileName": "country.ts",
 									"line": 6,
 									"character": 4,
-									"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/country.ts#L6"
+									"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/country.ts#L6"
 								}
 							]
 						}
@@ -418,7 +418,7 @@
 			}
 		},
 		{
-			"id": 15424,
+			"id": 15572,
 			"name": "Region",
 			"variant": "declaration",
 			"kind": 32,
@@ -428,7 +428,7 @@
 					"fileName": "region.ts",
 					"line": 4,
 					"character": 0,
-					"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/region.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/region.ts#L4"
 				}
 			],
 			"type": {
@@ -448,14 +448,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 15425,
+									"id": 15573,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 15426,
+											"id": 15574,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -473,7 +473,7 @@
 													"fileName": "region.ts",
 													"line": 5,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/region.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/region.ts#L5"
 												}
 											],
 											"type": {
@@ -499,7 +499,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15427,
+											"id": 15575,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -517,7 +517,7 @@
 													"fileName": "region.ts",
 													"line": 6,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/region.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/region.ts#L6"
 												}
 											],
 											"type": {
@@ -532,7 +532,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15428,
+											"id": 15576,
 											"name": "currency_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -550,7 +550,7 @@
 													"fileName": "region.ts",
 													"line": 7,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/region.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/region.ts#L7"
 												}
 											],
 											"type": {
@@ -565,7 +565,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15429,
+											"id": 15577,
 											"name": "automatic_taxes",
 											"variant": "declaration",
 											"kind": 1024,
@@ -583,7 +583,7 @@
 													"fileName": "region.ts",
 													"line": 8,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/region.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/region.ts#L8"
 												}
 											],
 											"type": {
@@ -598,7 +598,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15430,
+											"id": 15578,
 											"name": "countries",
 											"variant": "declaration",
 											"kind": 1024,
@@ -619,7 +619,7 @@
 													"fileName": "region.ts",
 													"line": 9,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/region.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/region.ts#L9"
 												}
 											],
 											"type": {
@@ -631,7 +631,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 15390,
+														"target": 15538,
 														"name": "Country"
 													}
 												],
@@ -641,7 +641,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15448,
+											"id": 15596,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -661,7 +661,7 @@
 													"fileName": "region.ts",
 													"line": 10,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/region.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/region.ts#L10"
 												}
 											],
 											"type": {
@@ -680,12 +680,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												15426,
-												15427,
-												15428,
-												15429,
-												15430,
-												15448
+												15574,
+												15575,
+												15576,
+												15577,
+												15578,
+												15596
 											]
 										}
 									],
@@ -694,7 +694,7 @@
 											"fileName": "region.ts",
 											"line": 4,
 											"character": 38,
-											"url": "https://github.com/medusajs/medusa/blob/87a57434709f3ac0edcbac65d7520e1d1b143d8b/packages/modules/region/src/models/region.ts#L4"
+											"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/region/src/models/region.ts#L4"
 										}
 									]
 								}
@@ -717,250 +717,250 @@
 		{
 			"title": "Variables",
 			"children": [
-				15390,
-				15424
+				15538,
+				15572
 			]
 		}
 	],
 	"packageName": "@medusajs/region",
 	"symbolIdMap": {
-		"15389": {
+		"15537": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"15390": {
+		"15538": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "default"
 		},
-		"15391": {
+		"15539": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object"
 		},
-		"15392": {
+		"15540": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.iso_2"
 		},
-		"15393": {
+		"15541": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.iso_3"
 		},
-		"15394": {
+		"15542": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.num_code"
 		},
-		"15395": {
+		"15543": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.name"
 		},
-		"15396": {
+		"15544": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.display_name"
 		},
-		"15397": {
+		"15545": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.region"
 		},
-		"15398": {
+		"15546": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__function"
 		},
-		"15399": {
+		"15547": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__function"
 		},
-		"15400": {
+		"15548": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object"
 		},
-		"15401": {
+		"15549": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.id"
 		},
-		"15402": {
+		"15550": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.name"
 		},
-		"15403": {
+		"15551": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.currency_code"
 		},
-		"15404": {
+		"15552": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.automatic_taxes"
 		},
-		"15405": {
+		"15553": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.countries"
 		},
-		"15406": {
+		"15554": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__function"
 		},
-		"15407": {
+		"15555": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__function"
 		},
-		"15408": {
+		"15556": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"15409": {
+		"15557": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__function"
 		},
-		"15410": {
+		"15558": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__function"
 		},
-		"15411": {
+		"15559": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object"
 		},
-		"15412": {
+		"15560": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.id"
 		},
-		"15413": {
+		"15561": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.name"
 		},
-		"15414": {
+		"15562": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.currency_code"
 		},
-		"15415": {
+		"15563": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.automatic_taxes"
 		},
-		"15416": {
+		"15564": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.countries"
 		},
-		"15417": {
+		"15565": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__function"
 		},
-		"15418": {
+		"15566": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__function"
 		},
-		"15419": {
+		"15567": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"15420": {
+		"15568": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"15421": {
+		"15569": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object"
 		},
-		"15422": {
+		"15570": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.name"
 		},
-		"15423": {
+		"15571": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.tableName"
 		},
-		"15424": {
+		"15572": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "default"
 		},
-		"15425": {
+		"15573": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object"
 		},
-		"15426": {
+		"15574": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.id"
 		},
-		"15427": {
+		"15575": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.name"
 		},
-		"15428": {
+		"15576": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.currency_code"
 		},
-		"15429": {
+		"15577": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.automatic_taxes"
 		},
-		"15430": {
+		"15578": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.countries"
 		},
-		"15431": {
+		"15579": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__function"
 		},
-		"15432": {
+		"15580": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__function"
 		},
-		"15433": {
+		"15581": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object"
 		},
-		"15434": {
+		"15582": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.iso_2"
 		},
-		"15435": {
+		"15583": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.iso_3"
 		},
-		"15436": {
+		"15584": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.num_code"
 		},
-		"15437": {
+		"15585": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.name"
 		},
-		"15438": {
+		"15586": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.display_name"
 		},
-		"15439": {
+		"15587": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.region"
 		},
-		"15440": {
+		"15588": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__function"
 		},
-		"15441": {
+		"15589": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__function"
 		},
-		"15442": {
+		"15590": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__function"
 		},
-		"15443": {
+		"15591": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__function"
 		},
-		"15444": {
+		"15592": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"15445": {
+		"15593": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object"
 		},
-		"15446": {
+		"15594": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.name"
 		},
-		"15447": {
+		"15595": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
 			"qualifiedName": "__object.tableName"
 		},
-		"15448": {
+		"15596": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.metadata"
 		}
@@ -970,7 +970,7 @@
 			"1": "../../../../packages/modules/region/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 15389
+			"1": 15537
 		}
 	}
 }

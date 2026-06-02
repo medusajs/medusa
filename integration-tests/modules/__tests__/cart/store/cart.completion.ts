@@ -1,6 +1,7 @@
 import {
   addToCartWorkflow,
   beginOrderEditOrderWorkflow,
+  compensatePaymentIfNeededStep,
   completeCartWorkflow,
   confirmOrderEditRequestWorkflow,
   createCartWorkflow,
@@ -11,6 +12,11 @@ import {
   orderEditAddNewItemWorkflow,
   processPaymentWorkflow,
 } from "@medusajs/core-flows"
+import {
+  createStep,
+  createWorkflow,
+  WorkflowData,
+} from "@medusajs/framework/workflows-sdk"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   ICartModuleService,
@@ -760,6 +766,180 @@ medusaIntegrationTestRunner({
           expect(sessions[0].id).toBeDefined()
           expect(sessions[0].id).not.toBe(paymentSession.id)
           expect(sessions[0].status).toBe("pending")
+        })
+
+        it("should NOT refund payment when a stale compensation runs against a payment session whose cart already has a placed order", async () => {
+          const salesChannel = await scModuleService.createSalesChannels({
+            name: "Webshop",
+          })
+
+          const location = await stockLocationModule.createStockLocations({
+            name: "Warehouse",
+          })
+
+          const [product] = await productModule.createProducts([
+            {
+              title: "Test product",
+              status: ProductStatus.PUBLISHED,
+              variants: [
+                {
+                  title: "Test variant",
+                  manage_inventory: false,
+                },
+              ],
+            },
+          ])
+
+          const priceSet = await pricingModule.createPriceSets({
+            prices: [
+              {
+                amount: 3000,
+                currency_code: "usd",
+              },
+            ],
+          })
+
+          await pricingModule.createPricePreferences({
+            attribute: "currency_code",
+            value: "usd",
+            is_tax_inclusive: true,
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.PRICING]: {
+                price_set_id: priceSet.id,
+              },
+            },
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+            },
+          ])
+
+          const cart = await cartModuleService.createCarts({
+            currency_code: "usd",
+            sales_channel_id: salesChannel.id,
+          })
+
+          await addToCartWorkflow(appContainer).run({
+            input: {
+              items: [
+                {
+                  variant_id: product.variants[0].id,
+                  quantity: 1,
+                  requires_shipping: false,
+                },
+              ],
+              cart_id: cart.id,
+            },
+          })
+
+          await createPaymentCollectionForCartWorkflow(appContainer).run({
+            input: { cart_id: cart.id },
+          })
+
+          const [payCol] = await remoteQuery(
+            remoteQueryObjectFromString({
+              entryPoint: "cart_payment_collection",
+              variables: { filters: { cart_id: cart.id } },
+              fields: ["payment_collection_id"],
+            })
+          )
+
+          const { result: paymentSession } =
+            await createPaymentSessionsWorkflow(appContainer).run({
+              input: {
+                payment_collection_id: payCol.payment_collection_id,
+                provider_id: "pp_system_default",
+                context: {},
+                data: {},
+              },
+            })
+
+          // Webhook-captures payment. processPaymentWorkflow internally
+          // triggers completeCartWorkflow on a successful capture, so this
+          // single call both captures AND places the order. This is the
+          // "later attempt succeeded" leg of the race.
+          await processPaymentWorkflow(appContainer).run({
+            input: {
+              action: "captured",
+              data: {
+                session_id: paymentSession.id,
+                amount: 3000,
+              },
+            },
+          })
+
+          const { data: orderCartLinks } = await query.graph({
+            entity: "order_cart",
+            fields: ["order_id"],
+            filters: { cart_id: cart.id },
+          })
+          expect(orderCartLinks[0]?.order_id).toBeDefined()
+
+          // Now simulate a late-arriving compensation from a prior FAILED
+          // completeCartWorkflow that captured the same payment_session_id
+          // before failing. We build a minimal workflow that registers the
+          // step and then forces a failure so its compensation closure runs.
+          const forceFailStep = createStep("force-fail-step", async () => {
+            throw new Error("force compensation")
+          })
+
+          const staleCompensationWorkflow = createWorkflow(
+            "test-stale-compensate-payment-if-needed",
+            (input: WorkflowData<{ payment_session_id: string }>) => {
+              compensatePaymentIfNeededStep({
+                payment_session_id: input.payment_session_id,
+              })
+              forceFailStep()
+            }
+          )
+
+          const staleRun = await staleCompensationWorkflow(appContainer).run({
+            input: { payment_session_id: paymentSession.id },
+            throwOnError: false,
+          })
+
+          // The workflow must have failed (so its compensation chain ran)
+          expect(staleRun.errors?.length ?? 0).toBeGreaterThan(0)
+
+          const paymentCollectionQuery = await query.graph({
+            entity: "payment_collection",
+            filters: { id: paymentSession.payment_collection_id },
+            fields: [
+              "*",
+              "payment_sessions.*",
+              "payments.*",
+              "payments.captures.*",
+              "payments.refunds.*",
+            ],
+          })
+
+          const paymentCollectionRow = paymentCollectionQuery.data[0]
+          const payment = paymentCollectionRow.payments[0]
+
+          // The payment must remain captured against the placed order; the
+          // stale compensation must not have refunded it.
+          expect(payment).toEqual(
+            expect.objectContaining({
+              amount: 3000,
+              captures: [expect.objectContaining({ amount: 3000 })],
+              refunds: [],
+            })
+          )
+
+          // No new (pending) payment session should have been created either.
+          const sessions = paymentCollectionRow.payment_sessions
+          expect(sessions).toHaveLength(1)
+          expect(sessions[0].id).toBe(paymentSession.id)
         })
 
         it("should complete cart when payment webhook and storefront are called in simultaneously", async () => {
