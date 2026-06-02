@@ -1,5 +1,9 @@
 export const notification = [
   {
+    "title": "Send Email Verification",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/auth/email-verification"
+  },
+  {
     "title": "Reset Password Email",
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/reset-password"
   },
