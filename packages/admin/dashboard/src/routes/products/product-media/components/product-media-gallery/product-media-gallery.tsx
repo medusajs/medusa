@@ -273,7 +273,7 @@ const Preview = ({
       </IconButton>
       <div className="flex items-center gap-x-2">
         {visibleItems.map((item) => {
-          const isCurrentImage = media[curr] ? item.id === media[curr].id : false
+          const isCurrentImage = item.id === media[curr]?.id
           const originalIndex = media.findIndex((i) => i.id === item.id)
 
           return (
