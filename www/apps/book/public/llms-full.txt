@@ -31505,50 +31505,54 @@ In the workflow, you:
 You can use this workflow when deleting a manager, such as in an API route.
 
 
-# Multi-Factor Authentication
+# Send Email Verification Notification
 
-In this guide, you'll learn how multi-factor authentication (MFA) works in the Auth Module, the providers it ships with, and how the authentication flow changes when an auth identity has MFA enabled.
+In this guide, you'll learn how to enable email verification requirement for customers in your Medusa application, and how to send email verification notifications.
 
 ### Prerequisites
 
-- [Medusa v2.15.5+](https://docs.medusajs.com/docs/learn/update/index.html.md)
+- [Medusa v2.15.5 or later](https://docs.medusajs.com/docs/learn/update/index.html.md)
+- [Notification Module Provider for the email channel, such as SendGrid or Resend](https://docs.medusajs.com/infrastructure-modules/notification#what-is-a-notification-module-provider/index.html.md)
 
-## What is Multi-Factor Authentication?
+## How Email Verification Works
 
-Multi-factor authentication adds a second verification step to the standard authentication flow. After a user authenticates with their credentials (such as email and password), they must pass another verification step using a second factor, such as a code from an authenticator app or a recovery code.
+By default, customers can register an account and log in to your Medusa store without verifying their email address. You can enable email verification to require customers to verify their email address before they can log in.
 
-The Auth Module implements MFA around two concepts:
+When email verification is enabled, the customer registration flow changes to the following:
 
-- **MFA factor**: A second factor enrolled for an auth identity, such as a TOTP authenticator. A factor is enabled only after the user verifies it once during setup.
-- **MFA challenge**: A short-lived challenge issued during authentication. The user must verify the challenge with a registered MFA method to obtain a session token.
+```mermaid
+sequenceDiagram
+    actor C as Customer
+    participant S as Store
+    C->>S: Register
+    S->>C: Send verification email
+    C->>S: Click verification link
+    S->>C: Email verified
+    C->>S: Log in
+```
+
+1. A customer registers an account by providing their email and password.
+2. The customer receives an email with a verification link. The link points to a page in your storefront that verifies the customer's email when visited.
+3. The customer clicks the verification link, which verifies their email address and completes the registration process.
+4. The customer can now log in to their account.
+
+This guide focuses on the backend implementation of this flow, which involves enabling email verification and sending the verification email.
+
+To implement the storefront part of the flow, refer to the [Verify Customer Account in Storefront guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/customers/verify-account/index.html.md).
 
 ***
 
-## Configure MFA Encryption Key
+## Enable Email Verification
 
-By default, Medusa sets the MFA encryption key to the `AUTH_MFA_ENCRYPTION_KEY` environment variable. If you've created your application after v2.15.5 of Medusa, this key is generated for you and stored in the `.env` file.
+To enable email verification, set the `require_verification` property of the [Emailpass Auth Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/emailpass/index.html.md) in `medusa-config.ts`:
 
-If you created your application before v2.15.5, generate a random 64-character string and set it as the value of the `AUTH_MFA_ENCRYPTION_KEY` environment variable in your `.env` file:
-
-If your Medusa project is deployed to Cloud, you don't need to set the `AUTH_MFA_ENCRYPTION_KEY` environment variable. Medusa automatically sets it to a random value.
-
-```bash
-AUTH_MFA_ENCRYPTION_KEY=your_random_64_character_string
-```
-
-Also, if you've added the Auth Module to your `medusa-config.ts` file to set any of its options, make sure to set the `mfa.encryption_key` option to the same environment variable:
-
-```ts title="medusa-config.ts"
-import { Modules, ContainerRegistrationKeys } from "@medusajs/framework/utils"
-
-// ...
-
+```ts title="medusa-config.ts" highlights={configHighlights}
 module.exports = defineConfig({
-  // ...
+  // other configurations...
   modules: [
+    // other modules...
     {
       resolve: "@medusajs/medusa/auth",
-      dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
       options: {
         mfa: {
           encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
@@ -31558,7 +31562,7 @@ module.exports = defineConfig({
             resolve: "@medusajs/medusa/auth-emailpass",
             id: "emailpass",
             options: {
-              // provider options...
+              require_verification: true,
             },
           },
         ],
@@ -31568,272 +31572,442 @@ module.exports = defineConfig({
 })
 ```
 
-If you don't set the `mfa.encryption_key` option, you'll get a "MFA encryption key is required to use MFA methods" error whenever trying to enroll or verify an MFA factor.
+With this configuration, customers will be required to verify their email address after registering. This includes previously registered customers as well.
 
 ***
 
-## MFA Providers
+## Send Email Verification Notification
 
-The Auth Module registers two MFA providers out of the box:
+When the storefront requests to send an email verification notification, Medusa emits the `auth.verification_requested` event. You can listen to this event in a [subscriber](https://docs.medusajs.com/docs/learn/fundamentals/events-and-subscribers/index.html.md) to send the email verification notification.
 
-- `totp`: Time-based one-time password provider. Users enroll by scanning a QR code in an authenticator app (such as Google Authenticator or 1Password) and verify the factor with a six-digit code.
-- `recovery_code`: Provides single-use backup codes that users can use to verify an MFA challenge when they don't have access to their primary factor.
+### Prerequisite Configurations
 
-The `recovery_code` provider is not enrolled as a factor on its own. It becomes available as a verification method once the user has at least one enabled MFA factor and generates recovery codes.
+#### Notification Module Provider for Email Channel
 
-{/* ### Custom MFA Providers
+To send the email verification notification, you need a [Notification Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/notification#what-is-a-notification-module-provider/index.html.md) configured for the email channel, such as [SendGrid](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/notification/sendgrid/index.html.md) or [Resend](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/integrations/guides/resend/index.html.md).
 
-You can register additional MFA providers in the `mfa.providers` array of the Auth Module's options. A custom provider must implement the `AuthMfaProvider` interface, exposing `start`, `verifySetup`, `canVerifyForAuthIdentity`, and `verify` methods.
+For development purposes, you can set the [Notification Local Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/notification/local/index.html.md)'s channel to `email` in `medusa-config.ts`:
 
-Refer to the [Module Options guide](../module-options/page.mdx#mfa) for the full list of MFA configuration options. */}
-
-***
-
-## Enrolling an MFA Factor
-
-Enrolling an MFA factor means registering a second factor for an auth identity (such as a TOTP authenticator). Once the factor is enrolled and enabled, the user must verify with that factor during authentication.
-
-The user enrolls an MFA factor by starting the enrollment, then verifying it.
-
-### Step 1: Authenticate with the Primary Factor
-
-Before enrolling an MFA factor, the user must be authenticated with their primary factor (for example, by logging in with their email and password). This ensures that only authenticated users can enroll MFA factors for their account.
-
-To authenticate, send a `POST` request to the `/auth/{actor_type}/{auth_provider}` API route with the user's credentials.
-
-For example, to authenticate an admin user with their email and password, send a request to the login route:
-
-```bash
-curl -X POST http://localhost:9000/auth/user/emailpass \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "admin@example.com",
-    "password": "supersecret"
-  }'
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/notification",
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/notification-local",
+            id: "local",
+            options: {
+              channels: ["email"],
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
 ```
 
-Use the returned JWT token in the `Authorization` header of subsequent requests to enroll and manage MFA factors.
+This will log the email verification notification to the console when it's sent, instead of actually sending an email.
 
-### Step 2: Start Enrollment
+#### Storefront URL Configuration
 
-The client sends a `POST` request to `/auth/mfa/factors` to start enrollment for a specific provider:
+To format the verification link in the email, you need to set the URL to your storefront in `medusa-config.ts`. You can use the `admin.storefrontUrl` configuration for that:
 
-```bash
-curl -X POST http://localhost:9000/auth/mfa/factors \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer {jwt_token}" \
-  -d '{
-    "provider": "totp",
-    "label": "Authenticator App",
-    "issuer": "My Store"
-  }'
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  admin: {
+    storefrontUrl: process.env.STOREFRONT_URL || "https://storefront.com",
+  },
+})
 ```
 
-In the request body, you pass the following parameters:
+This will allow you to use the `admin.storefrontUrl` value in the subscriber when formatting the verification link. If `admin.storefrontUrl` is not set, you can use a placeholder URL as shown in the subscriber example below.
 
-- `provider`: The MFA provider to enroll (for example, `totp`).
-- `label`: A label to identify the factor in the user's authenticator app.
-- `issuer`: The name of your application or store, shown in the authenticator app.
+### Email Verification Notification Subscriber
 
-The response contains the new factor in `pending` status, along with the data the user needs to register the factor in their authenticator app:
+To send the email verification notification when the `auth.verification_requested` event is emitted, create a [subscriber](https://docs.medusajs.com/docs/learn/fundamentals/events-and-subscribers/index.html.md) at `src/subscribers/send-email-verification.ts` with the following content:
 
-```json title="Example Response"
-{
-  "mfa_factor": { "id": "authmfa_...", "status": "pending", ... },
-  "secret": "JBSWY3DPEHPK3PXP",
-  "otpauth_url": "otpauth://totp/My%20Store:user@example.com?secret=..."
+```ts title="src/subscribers/send-email-verification.ts"
+import {
+  SubscriberArgs,
+  type SubscriberConfig,
+} from "@medusajs/medusa"
+import { Modules } from "@medusajs/framework/utils"
+
+export default async function verificationRequestedHandler({
+  event: { data: {
+    entity_id: email,
+    token,
+    actor_type,
+  } },
+  container,
+}: SubscriberArgs<{
+  entity_id: string
+  token: string
+  actor_type: string
+  provider: string
+  auth_identity_id: string
+  provider_identity_id: string
+  expires_at: string
+}>) {
+  if (actor_type !== "customer") {
+    return
+  }
+
+  const notificationModuleService = container.resolve(
+    Modules.NOTIFICATION
+  )
+  const config = container.resolve("configModule")
+
+  const urlPrefix = config.admin.storefrontUrl || "https://storefront.com"
+
+  console.log(`${urlPrefix}/verify-account?token=${token}&email=${email}`)
+
+  await notificationModuleService.createNotifications({
+    to: email,
+    channel: "email",
+    // TODO replace with template ID in notification provider
+    template: "email-verification",
+    data: {
+      // a URL to a frontend application
+      verification_url: `${urlPrefix}/verify-account?token=${token}&email=${email}`,
+    },
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: "auth.verification_requested",
 }
 ```
 
-For `totp` providers, the client typically renders `otpauth_url` as a QR code that the user scans with their authenticator app.
+#### Event Payload
 
-### Step 3: Verify the Factor
+This subscriber receives in the event payload an object with the following properties:
 
-Once the user has registered the factor in their authenticator app, the client sends the generated code to `/auth/mfa/factors/{id}/verify` to verify and activate the factor:
+- `entity_id`: The email address of the customer to which the verification email should be sent.
+- `token`: The token to be included in the verification link. When the customer clicks the verification link, the frontend application should send the token back to the Medusa application to verify the customer's email address.
+- `actor_type`: The type of the actor for which the verification was requested. In this case, you only want to send email verification notifications for customers, so you check if the `actor_type` is `customer` before sending the notification.
+- `provider`: The auth provider used for the verification. In this case, it will be `emailpass`.
+- `auth_identity_id`: The ID of the auth identity for which the verification was requested.
+- `provider_identity_id`: The provider-specific ID of the auth identity for which the verification was requested.
+- `expires_at`: The date and time at which the verification token expires.
 
-```bash
-curl -X POST http://localhost:9000/auth/mfa/factors/{id}/verify \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer {jwt_token}" \
-  -d '{
-    "code": "123456"
-  }'
-```
+#### Subscriber Implementation
 
-In the request body, you pass the `code` generated by the user's authenticator app.
+In the subscriber, you first format the storefront URL either using the value of `admin.storefrontUrl` set in `medusa-config.ts` or a placeholder URL. You need this URL to format the verification link sent in the email.
 
-On success, the factor's `status` becomes `enabled`, and the `auth.mfa_enabled` event is emitted. From now on, any authentication for this auth identity will require an MFA challenge.
+Then, you send a notification using the Notification Module's main service. You pass the following properties to the `createNotifications` method:
+
+- `to`: The email address of the customer to which the verification email should be sent.
+- `channel`: The channel to send the notification through. In this case, it's `email`.
+- `template`: The ID of the template to use for the notification. This depends on your Notification Module Provider. For example, if you're using the SendGrid Notification Module Provider, this should be the ID of a SendGrid template that you've set up to format the email verification notification.
+- `data`: The data to be passed to the template when sending the notification. In this case, you pass the `verification_url` property, which contains the verification link to be included in the email.
+
+The verification link points to a page in your storefront, such as `/verify-account`, which should handle verifying the customer's email when visited.
 
 ***
 
-## Authenticating with MFA
+## Handle Email Verification in Storefront
 
-When an auth identity has at least one enabled MFA factor, the standard authentication flow returns an MFA challenge instead of an immediate session token.
+When the customer clicks the verification link, they should be directed to a page in your storefront that sends the token back to the Medusa application to verify the customer's email address.
 
-Once the user successfully verifies the MFA challenge, they receive the session token and can access protected resources as usual.
+To learn how to implement this part of the flow, refer to the [Verify Customer Account in Storefront guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/customers/verify-account/index.html.md).
 
-### Step 1: Authenticate with the Primary Factor
+***
 
-The user initiates authentication with their primary factor (for example, by logging in with their email and password):
+## Example Notification Templates
 
-```bash
-curl -X POST http://localhost:9000/auth/user/emailpass \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "admin@example.com",
-    "password": "supersecret"
-  }'
+The following section provides example notification templates for some Notification Module Providers.
+
+### SendGrid
+
+Refer to the [SendGrid Notification Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/notification/sendgrid/index.html.md) documentation for more details on how to set up SendGrid.
+
+The following HTML template can be used with SendGrid to send an email verification email:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Email</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 465px;
+            margin: 40px auto;
+            border: 1px solid #eaeaea;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .title {
+            color: #000000;
+            font-size: 24px;
+            font-weight: normal;
+            margin: 0;
+        }
+        .content {
+            margin: 32px 0;
+        }
+        .text {
+            color: #000000;
+            font-size: 14px;
+            line-height: 24px;
+            margin: 0 0 16px 0;
+        }
+        .button-container {
+            text-align: center;
+            margin: 32px 0;
+        }
+        .verify-button {
+            background-color: #000000;
+            border-radius: 3px;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            padding: 12px 20px;
+            display: inline-block;
+        }
+        .verify-button:hover {
+            background-color: #333333;
+        }
+        .url-section {
+            margin: 32px 0;
+        }
+        .url-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+            line-height: 24px;
+            word-break: break-all;
+        }
+        .disclaimer {
+            margin: 32px 0;
+        }
+        .disclaimer-text {
+            color: #666666;
+            font-size: 12px;
+            line-height: 24px;
+            margin: 0 0 8px 0;
+        }
+        .security-footer {
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px solid #eaeaea;
+        }
+        .security-text {
+            color: #666666;
+            font-size: 12px;
+            line-height: 24px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Verify Your Email</h1>
+        </div>
+
+        <div class="content">
+            <p class="text">
+                Hello,
+            </p>
+            <p class="text">
+                Thanks for creating an account. Please confirm your email address by clicking the button below to complete your registration.
+            </p>
+        </div>
+
+        <div class="button-container">
+            <a href="{{verification_url}}" class="verify-button">
+                Verify Email
+            </a>
+        </div>
+
+        <div class="url-section">
+            <p class="text">
+                Or copy and paste this URL into your browser:
+            </p>
+            <a href="{{verification_url}}" class="url-link">
+                {{verification_url}}
+            </a>
+        </div>
+
+        <div class="disclaimer">
+            <p class="disclaimer-text">
+                This verification link will expire soon for security reasons.
+            </p>
+            <p class="disclaimer-text">
+                If you didn't create an account, you can safely ignore this email.
+            </p>
+        </div>
+
+        <div class="security-footer">
+            <p class="security-text">
+                For security reasons, never share this verification link with anyone. If you're having trouble with the button above, copy and paste the URL into your web browser.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
 ```
 
-The response indicates that an MFA challenge is required:
+Make sure to pass the `verification_url` variable to the template, which contains the URL to verify the customer's email.
 
-```json title="Example Response"
-{
-  "mfa_challenge": {
-    "id": "authmfachal_...",
-    "methods": ["totp", "recovery_code"]
+You can also customize the template further to show other information.
+
+### Resend
+
+If you've integrated Resend as explained in the [Resend Integration Guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/integrations/guides/resend/index.html.md), you can add a new template for email verification at `src/modules/resend/emails/email-verification.tsx`:
+
+```tsx title="src/modules/resend/emails/email-verification.tsx"
+import { 
+  Text, 
+  Container, 
+  Heading, 
+  Html, 
+  Section, 
+  Tailwind, 
+  Head, 
+  Preview, 
+  Body, 
+  Link,
+  Button, 
+} from "@react-email/components"
+
+type EmailVerificationEmailProps = {
+  verification_url: string
+}
+
+function EmailVerificationEmailComponent({ verification_url }: EmailVerificationEmailProps) {
+  return (
+    <Html>
+      <Head />
+      <Preview>Verify your email</Preview>
+      <Tailwind>
+        <Body className="bg-white my-auto mx-auto font-sans px-2">
+          <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] max-w-[465px]">
+            <Section className="mt-[32px]">
+              <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
+                Verify Your Email
+              </Heading>
+            </Section>
+
+            <Section className="my-[32px]">
+              <Text className="text-black text-[14px] leading-[24px]">
+                Hello,
+              </Text>
+              <Text className="text-black text-[14px] leading-[24px]">
+                Thanks for creating an account. Please confirm your email address by clicking the button below to complete your registration.
+              </Text>
+            </Section>
+
+            <Section className="text-center mt-[32px] mb-[32px]">
+              <Button
+                className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3"
+                href={verification_url}
+              >
+                Verify Email
+              </Button>
+            </Section>
+
+            <Section className="my-[32px]">
+              <Text className="text-black text-[14px] leading-[24px]">
+                Or copy and paste this URL into your browser:
+              </Text>
+              <Link
+                href={verification_url}
+                className="text-blue-600 no-underline text-[14px] leading-[24px] break-all"
+              >
+                {verification_url}
+              </Link>
+            </Section>
+
+            <Section className="my-[32px]">
+              <Text className="text-[#666666] text-[12px] leading-[24px]">
+                This verification link will expire soon for security reasons.
+              </Text>
+              <Text className="text-[#666666] text-[12px] leading-[24px] mt-2">
+                If you didn't create an account, you can safely ignore this email.
+              </Text>
+            </Section>
+
+            <Section className="mt-[32px] pt-[20px] border-t border-solid border-[#eaeaea]">
+              <Text className="text-[#666666] text-[12px] leading-[24px]">
+                For security reasons, never share this verification link with anyone. If you're having trouble with the button above, copy and paste the URL into your web browser.
+              </Text>
+            </Section>
+          </Container>
+        </Body>
+      </Tailwind>
+    </Html>
+  )
+}
+
+export const emailVerificationEmail = (props: EmailVerificationEmailProps) => (
+  <EmailVerificationEmailComponent {...props} />
+)
+
+// Mock data for preview/development
+const mockEmailVerification: EmailVerificationEmailProps = {
+  verification_url: "https://your-app.com/verify-account?token=sample-verification-token-123&email=user@example.com",
+}
+
+export default () => <EmailVerificationEmailComponent {...mockEmailVerification} />
+```
+
+Feel free to customize the email template further to match your branding and style, or to add additional information.
+
+Then, in the Resend Module's service at `src/modules/resend/service.ts`, add the new template to the `templates` object and `Templates` type:
+
+```ts title="src/modules/resend/service.ts"
+// other imports...
+import { emailVerificationEmail } from "./emails/email-verification"
+
+enum Templates {
+  // ...
+  EMAIL_VERIFICATION = "email-verification",
+}
+
+const templates: {[key in Templates]?: (props: unknown) => React.ReactNode} = {
+  // ...
+  [Templates.EMAIL_VERIFICATION]: emailVerificationEmail,
+}
+```
+
+Finally, find the `getTemplateSubject` function in the `ResendNotificationProviderService` and add a case for the `EMAIL_VERIFICATION` template:
+
+```ts title="src/modules/resend/service.ts"
+class ResendNotificationProviderService extends AbstractNotificationProviderService {
+  // ...
+
+  private getTemplateSubject(template: Templates) {
+    // ...
+    switch (template) {
+      // ...
+      case Templates.EMAIL_VERIFICATION:
+        return "Verify Your Email"
+    }
   }
 }
 ```
-
-The `methods` array lists the verification methods the user can complete to satisfy the challenge.
-
-### Step 2: Verify the Challenge
-
-Based on the available methods, the client prompts the user to verify the challenge. For example, if `totp` is available, the user can enter the six-digit code from their authenticator app.
-
-To verify the challenge, the client sends a `POST` request to `/auth/mfa/challenges/{id}/verify` with the chosen verification method and the corresponding code:
-
-```bash
-curl -X POST http://localhost:9000/auth/mfa/challenges/{id}/verify \
-  -H "Content-Type: application/json" \
-  -d '{
-    "method": "totp",
-    "code": "123456"
-  }'
-```
-
-On success, the response contains the JWT token the user can use in the `Authorization` header for subsequent requests:
-
-```json
-{
-  "token": "..."
-}
-```
-
-Each challenge is single-use and expires after the configured TTL (default five minutes).
-
-***
-
-## Recovery Codes
-
-Recovery codes give the user a way to verify an MFA challenge if they lose access to their primary factor.
-
-### Generating Recovery Codes
-
-Once the user has at least one enabled MFA factor, they can generate recovery codes. First, they must be authenticated:
-
-```bash
-curl -X POST http://localhost:9000/auth/user/emailpass \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "admin@example.com",
-    "password": "supersecret"
-  }'
-```
-
-Then, they can generate recovery codes using the `/auth/mfa/recovery-codes` route:
-
-```bash
-curl -X POST http://localhost:9000/auth/mfa/recovery-codes \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer {jwt_token}" \
-  -d '{
-    "count": 10
-  }'
-```
-
-In the request body, you can specify the number of recovery codes to generate. The default is either the `mfa.recovery_code_count` option from the Auth Module's configuration or `10`.
-
-The response returns the generated codes in plain text:
-
-```json
-{
-  "recovery_codes": ["abcd-efgh-ijkl", "..."]
-}
-```
-
-The user should store these codes in a safe place. The Auth Module stores only the hashed codes, so they cannot be retrieved again.
-
-Generating a new set of recovery codes replaces the previous ones and emits the `auth.mfa_recovery_codes_generated` event.
-
-### Using a Recovery Code
-
-To verify an MFA challenge with a recovery code, send a `POST` request to `/auth/mfa/challenges/{id}/verify` with `method` set to `recovery_code` and the `code` set to one of the valid recovery codes:
-
-```bash
-curl -X POST http://localhost:9000/auth/mfa/challenges/{id}/verify \
-  -H "Content-Type: application/json" \
-  -d '{
-    "method": "recovery_code",
-    "code": "abcd-efgh-ijkl"
-  }'
-```
-
-Each recovery code can be used only once. Once consumed, it cannot be reused for future challenges.
-
-***
-
-## Disabling an MFA Factor
-
-To disable an enabled MFA factor, the client must be authenticated and send a `DELETE` request to `/auth/mfa/factors/{id}`:
-
-```bash
-curl -X DELETE http://localhost:9000/auth/mfa/factors/{id} \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer {jwt_token}" \
-  -d '{
-    "method": "totp",
-    "code": "123456"
-  }'
-```
-
-Whether the `method` and `code` fields are required depends on the value of the Auth Module's `disable_policy` option:
-
-- `session` (default): A valid session is enough to disable the factor. The `method` and `code` fields are optional.
-- `challenge`: The user must additionally verify with an MFA method (TOTP code or recovery code) before the factor can be disabled.
-
-Use the `challenge` policy to protect users from a stolen session being used to remove their MFA factor.
-
-On success, the factor's `status` becomes `disabled`, and the `auth.mfa_disabled` event is emitted.
-
-***
-
-## Listing Enrolled Factors
-
-The client can list the MFA factors enrolled for the authenticated user by sending a `GET` request to `/auth/mfa/factors`:
-
-```bash
-curl -X GET http://localhost:9000/auth/mfa/factors \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer {jwt_token}"
-```
-
-The response includes each factor's `id`, `provider`, `status`, and metadata. Use this route to render the user's MFA settings page in your application.
-
-***
-
-## Events
-
-The Auth Module emits the following events around MFA:
-
-- `auth.mfa_enabled`: Emitted when a factor transitions from `pending` to `enabled`.
-- `auth.mfa_disabled`: Emitted when an enabled factor is disabled.
-- `auth.mfa_recovery_codes_generated`: Emitted when a user generates a new set of recovery codes.
-
-Subscribe to these events to send confirmation emails, audit log entries, or admin notifications.
-
-Refer to the [Events Reference](https://docs.medusajs.com/references/auth/events/index.html.md) for the full list of Auth Module events.
 
 
 # Auth Module Options

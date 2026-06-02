@@ -539,6 +539,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "title": "Phone Authentication",
               "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/phone-auth",
               "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/auth/email-verification",
+              "title": "Send Email Verification",
+              "children": []
             }
           ]
         },
