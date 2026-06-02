@@ -5,4 +5,5 @@ export interface EmailPassAuthProviderOptions {
     p: number
   }
   require_verification?: boolean
+  require_verification_actor_types?: string[]
 }

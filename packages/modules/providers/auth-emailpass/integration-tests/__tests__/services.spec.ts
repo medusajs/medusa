@@ -7,6 +7,7 @@ jest.setTimeout(100000)
 describe("Email password auth provider", () => {
   let emailpassService: EmailPassAuthService
   let verifyingEmailpassService: EmailPassAuthService
+  let endUserVerifyingEmailpassService: EmailPassAuthService
 
   beforeAll(() => {
     emailpassService = new EmailPassAuthService(
@@ -21,6 +22,15 @@ describe("Email password auth provider", () => {
       },
       {
         require_verification: true,
+      }
+    )
+    endUserVerifyingEmailpassService = new EmailPassAuthService(
+      {
+        logger: console as any,
+      },
+      {
+        require_verification: true,
+        require_verification_actor_types: ["end_user"],
       }
     )
   })
@@ -163,6 +173,91 @@ describe("Email password auth provider", () => {
         provider_metadata: {
           requires_verification: true,
         },
+      })
+    )
+  })
+
+  it("marks new identities as unverified for configured actor types", async () => {
+    const authServiceSpies = {
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+      create: jest.fn().mockImplementation((data) => {
+        return {
+          provider_identities: [
+            {
+              entity_id: data.entity_id,
+              provider: "emailpass",
+              provider_metadata: data.provider_metadata,
+            },
+          ],
+        }
+      }),
+    }
+
+    const resp = await endUserVerifyingEmailpassService.register(
+      {
+        actor_type: "end_user",
+        body: { email: "test@admin.com", password: "test" },
+      },
+      authServiceSpies
+    )
+
+    expect(authServiceSpies.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        provider_metadata: expect.objectContaining({
+          password: expect.any(String),
+          requires_verification: true,
+        }),
+      })
+    )
+    expect(resp.authIdentity?.provider_identities?.[0]).toEqual(
+      expect.objectContaining({
+        entity_id: "test@admin.com",
+        provider_metadata: {
+          requires_verification: true,
+        },
+      })
+    )
+  })
+
+  it("does not mark new identities as unverified for other actor types", async () => {
+    const authServiceSpies = {
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+      create: jest.fn().mockImplementation((data) => {
+        return {
+          provider_identities: [
+            {
+              entity_id: data.entity_id,
+              provider: "emailpass",
+              provider_metadata: data.provider_metadata,
+            },
+          ],
+        }
+      }),
+    }
+
+    const resp = await endUserVerifyingEmailpassService.register(
+      {
+        actor_type: "user",
+        body: { email: "test@admin.com", password: "test" },
+      },
+      authServiceSpies
+    )
+
+    expect(authServiceSpies.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        provider_metadata: expect.not.objectContaining({
+          requires_verification: true,
+        }),
+      })
+    )
+    expect(resp.authIdentity?.provider_identities?.[0]).toEqual(
+      expect.objectContaining({
+        entity_id: "test@admin.com",
+        provider_metadata: {},
       })
     )
   })

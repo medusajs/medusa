@@ -21,6 +21,7 @@ type InjectedDependencies = {
 type AuthIdentityParams = {
   email: string
   password: string
+  actorType?: string | null
   authIdentityService: AuthIdentityProviderService
 }
 
@@ -30,7 +31,9 @@ type ProviderMetadata = {
   requires_verification?: boolean
 }
 
-interface LocalServiceConfig extends EmailPassAuthProviderOptions {}
+interface LocalServiceConfig extends EmailPassAuthProviderOptions {
+  require_verification_actor_types?: string[]
+}
 
 export class EmailPassAuthService extends AbstractAuthModuleProvider {
   static identifier = "emailpass"
@@ -187,6 +190,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
         const updatedAuthIdentity = await this.upsertAuthIdentity("update", {
           email,
           password,
+          actorType: userData.actor_type,
           authIdentityService,
         })
 
@@ -205,6 +209,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
         const createdAuthIdentity = await this.upsertAuthIdentity("create", {
           email,
           password,
+          actorType: userData.actor_type,
           authIdentityService,
         })
 
@@ -220,7 +225,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
 
   private async upsertAuthIdentity(
     type: "update" | "create",
-    { email, password, authIdentityService }: AuthIdentityParams
+    { email, password, actorType, authIdentityService }: AuthIdentityParams
   ) {
     const passwordHash = await this.hashPassword(password)
     const providerMetadata: ProviderMetadata =
@@ -231,7 +236,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     providerMetadata.password = passwordHash
 
     if (
-      this.requiresVerification_() &&
+      this.requiresVerification_(actorType) &&
       !providerMetadata.verified_at &&
       providerMetadata.requires_verification !== false
     ) {
@@ -251,8 +256,18 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     return this.sanitizeAuthIdentity_(authIdentity)
   }
 
-  private requiresVerification_(): boolean {
-    return this.config_.require_verification === true
+  private requiresVerification_(actorType?: string | null): boolean {
+    if (this.config_.require_verification !== true) {
+      return false
+    }
+
+    const actorTypes = this.config_.require_verification_actor_types
+
+    if (!actorTypes?.length) {
+      return true
+    }
+
+    return !!actorType && actorTypes.includes(actorType)
   }
 
   private async getProviderMetadata_(
