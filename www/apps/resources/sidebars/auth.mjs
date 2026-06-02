@@ -42,6 +42,11 @@ export const authSidebar = [
             path: "/commerce-modules/auth/authentication-route",
             title: "Auth Flow with Routes",
           },
+          {
+            type: "link",
+            path: "/commerce-modules/auth/mfa",
+            title: "Multi-Factor Authentication",
+          },
         ],
       },
       {
