@@ -5,4 +5,4 @@
 "@medusajs/types": patch
 ---
 
-chore(dashboard,js-sdk,types,auth): extract MFA and recovery code providers to types package
+chore(dashboard,js-sdk,types,auth): extract MFA and recovery code provider interfaces to types package
