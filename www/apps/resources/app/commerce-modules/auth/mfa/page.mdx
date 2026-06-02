@@ -38,12 +38,6 @@ By default, Medusa sets the MFA encryption key to the `AUTH_MFA_ENCRYPTION_KEY` 
 
 If you created your application before v2.15.5, generate a random 64-character string and set it as the value of the `AUTH_MFA_ENCRYPTION_KEY` environment variable in your `.env` file:
 
-<Note>
-
-If your Medusa project is deployed to Cloud, you don't need to set the `AUTH_MFA_ENCRYPTION_KEY` environment variable. Medusa automatically sets it to a random value.
-
-</Note>
-
 ```bash
 AUTH_MFA_ENCRYPTION_KEY=your_random_64_character_string
 ```
