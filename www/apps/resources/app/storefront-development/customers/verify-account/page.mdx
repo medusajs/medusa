@@ -78,13 +78,11 @@ This guide will cover how to:
 2. Create a verification page that the customer receives in the email.
 3. Handle the login flow for customers that need to verify their email.
 
-The steps in this guide are framework-agnostic and apply whether you're using client-side calls (the examples below) or Next.js Server Actions.
-
 ---
 
 ## Step 1: Create the Registration Page
 
-The registration page implements steps one to four of the [email verification flow](#overview-of-the-register-customer-with-verification-flow). The page shows a form to collect the customer's details, sends a request to the registration API route, and handles the verification requirement.
+The registration page implements steps one to four of the [email verification flow](#register-customer-with-verification-flow). The page shows a form to collect the customer's details, sends a request to the registration API route, and handles the verification requirement.
 
 The following example shows the updated registration page:
 
@@ -472,7 +470,7 @@ The `handleResend` function sends a request to resend the verification email usi
 
 ## Step 3: Create the Login Page
 
-The login page implements steps seven and eight of the [email verification flow](#overview-of-the-register-customer-with-verification-flow). During login, if the email is verified but the customer's account is not active, send a request to the [Register Customer API route](!api!/store#customers_postcustomers) passing the login JWT token in the header, then log in the customer again to obtain an active JWT token.
+The login page implements steps seven and eight of the [email verification flow](#register-customer-with-verification-flow). During login, if the email is verified but the customer's account is not active, send a request to the [Register Customer API route](!api!/store#customers_postcustomers) passing the login JWT token in the header, then log in the customer again to obtain an active JWT token.
 
 The following example shows the updated login page:
 

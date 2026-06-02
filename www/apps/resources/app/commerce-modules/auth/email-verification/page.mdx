@@ -73,6 +73,9 @@ module.exports = defineConfig({
     {
       resolve: "@medusajs/medusa/auth",
       options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+        },
         providers: [
           {
             resolve: "@medusajs/medusa/auth-emailpass",
