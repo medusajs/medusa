@@ -136,7 +136,7 @@ export type AuthMfaStartPayload = {
   /**
    * The MFA provider to set up.
    */
-  provider: AuthTypes.AuthMfaProvider
+  provider: AuthTypes.AuthMfaProviderMethod
   /**
    * Optional label for the MFA factor.
    */
