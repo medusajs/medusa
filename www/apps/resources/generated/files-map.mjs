@@ -11508,6 +11508,10 @@ export const filesMap = [
     "pathname": "/references/event/interfaces/event.IEventBusModuleService"
   },
   {
+    "filePath": "/www/apps/resources/references/events/Auth/variables/events.Auth.AuthEvents/page.mdx",
+    "pathname": "/references/events/Auth/variables/events.Auth.AuthEvents"
+  },
+  {
     "filePath": "/www/apps/resources/references/events/Auth/variables/events.Auth.AuthWorkflowEvents/page.mdx",
     "pathname": "/references/events/Auth/variables/events.Auth.AuthWorkflowEvents"
   },

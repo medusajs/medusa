@@ -824,5 +824,35 @@
     ],
     "since": "2.12.3",
     "deprecated": false
+  },
+  {
+    "name": "auth.mfa_enabled",
+    "parentName": "AuthEvents",
+    "propertyName": "MFA_ENABLED",
+    "payload": "```ts\n{\n  auth_identity_id, // The ID of the auth identity for which the MFA factor was enabled.\n  mfa_id, // The ID of the MFA factor that was enabled.\n  provider, // The provider of the MFA factor that was enabled.\n}\n```",
+    "description": "Emitted when an MFA factor is enabled for an auth identity.",
+    "workflows": [],
+    "since": "2.15.5",
+    "deprecated": false
+  },
+  {
+    "name": "auth.mfa_disabled",
+    "parentName": "AuthEvents",
+    "propertyName": "MFA_DISABLED",
+    "payload": "```ts\n{\n  auth_identity_id, // The ID of the auth identity for which the MFA factor was disabled.\n  mfa_id, // The ID of the MFA factor that was disabled.\n  provider, // The provider of the MFA factor that was disabled.\n}\n```",
+    "description": "Emitted when an MFA factor is disabled for an auth identity.",
+    "workflows": [],
+    "since": "2.15.5",
+    "deprecated": false
+  },
+  {
+    "name": "auth.mfa_recovery_codes_generated",
+    "parentName": "AuthEvents",
+    "propertyName": "MFA_RECOVERY_CODES_GENERATED",
+    "payload": "```ts\n{\n  auth_identity_id, // The ID of the auth identity for which the recovery codes were generated.\n  count, // (number) The number of recovery codes that were generated.\n}\n```",
+    "description": "Emitted when recovery codes are generated for an auth identity.",
+    "workflows": [],
+    "since": "2.15.5",
+    "deprecated": false
   }
 ]
