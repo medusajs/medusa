@@ -8,6 +8,8 @@ import { AuthTypes, Context } from ".."
  * {@link AuthMfaProvider}, while providers that issue recovery codes should implement
  * {@link RecoveryCodeAuthMfaProvider}. Both of these interfaces extend `IAuthMfaProvider`.
  * 
+ * @ignore
+ * 
  * @since 2.15.6
  */
 export interface IAuthMfaProvider {
@@ -89,6 +91,20 @@ export interface IAuthMfaProvider {
  * export default MyAuthMfaProviderService
  * ```
  * 
+ * ### Identifier
+ * 
+ * Every MFA auth module provider must have an `identifier` static property. The provider's ID
+ * will be stored as `mfa_{identifier}`.
+ * 
+ * For example:
+ * 
+ * ```ts
+ * class MyAuthMfaProviderService implements AuthMfaProvider {
+ *   static identifier = "my-mfa"
+ *   // ...
+ * }
+ * ```
+ * 
  * @since 2.15.6
  */
 export interface AuthMfaProvider extends IAuthMfaProvider {
@@ -106,7 +122,6 @@ export interface AuthMfaProvider extends IAuthMfaProvider {
    * scoped to this provider's `method`. You can alternatively check with third-party services if the provider manages factors remotely.
    *
    * @param data - The auth identity to check.
-   * @param data.auth_identity_id - The ID of the auth identity to check.
    * @param sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns Whether the provider has an enabled factor for the auth identity.
    *
@@ -152,8 +167,6 @@ export interface AuthMfaProvider extends IAuthMfaProvider {
    * You can alternatively verify the code with third-party services if the provider manages factors remotely.
    *
    * @param data - The auth identity and code to verify.
-   * @param data.auth_identity_id - The ID of the auth identity to verify the code for.
-   * @param data.code - The MFA code to verify.
    * @param sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns Whether the code was successfully verified.
    *
@@ -297,15 +310,6 @@ export interface AuthMfaProvider extends IAuthMfaProvider {
 
 /**
  *
- * A `RecoveryCodeAuthMfaProvider` is a specialized {@link IAuthMfaProvider} that, in addition to
- * verifying codes, can generate a fresh batch of one-time recovery codes for an auth identity.
- * Recovery codes are typically used as a fallback when the user loses access to their primary
- * MFA factor (such as their TOTP authenticator).
- *
- * Each generated code should be returned to the user only once (in plain text), stored as a
- * hash on the server using the injected `authMfaRecoveryCodeService`, and invalidated after a
- * successful verification.
- * 
  * ### constructor
  *
  * The constructor allows you to access resources from the module's container using the first parameter,
@@ -351,6 +355,20 @@ export interface AuthMfaProvider extends IAuthMfaProvider {
  * export default MyRecoveryCodeProviderService
  * ```
  * 
+ * ### Identifier
+ * 
+ * Every Recovery Code MFA auth module provider must have an `identifier` static property set to `recovery_code`.
+ * The provider's ID will be stored as `mfa_{identifier}`.
+ * 
+ * For example:
+ * 
+ * ```ts
+ * class MyRecoveryCodeProviderService implements RecoveryCodeAuthMfaProvider {
+ *   static identifier = "recovery_code"
+ *   // ...
+ * }
+ * ```
+ * 
  * @since 2.15.6
  */
 export interface RecoveryCodeAuthMfaProvider extends IAuthMfaProvider {
@@ -370,7 +388,6 @@ export interface RecoveryCodeAuthMfaProvider extends IAuthMfaProvider {
    * recovery codes remotely.
    *
    * @param data - The auth identity to check.
-   * @param data.auth_identity_id - The ID of the auth identity to check.
    * @param sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns Whether the auth identity has at least one recovery code stored.
    *
@@ -411,8 +428,6 @@ export interface RecoveryCodeAuthMfaProvider extends IAuthMfaProvider {
    * recovery codes remotely.
    *
    * @param data - The auth identity and recovery code to verify.
-   * @param data.auth_identity_id - The ID of the auth identity to verify the code for.
-   * @param data.code - The recovery code submitted by the user.
    * @param sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns Whether the recovery code was matched and consumed.
    *
@@ -475,8 +490,6 @@ export interface RecoveryCodeAuthMfaProvider extends IAuthMfaProvider {
    * to invalidate existing codes by deleting them. Alternatively, you can manage recovery codes remotely.
    *
    * @param data - The auth identity and the number of codes to generate.
-   * @param data.auth_identity_id - The ID of the auth identity to generate the codes for.
-   * @param data.count - The number of recovery codes to generate.
    * @param sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns The generated recovery codes in plain text. These should be shown to the user only once.
    *
