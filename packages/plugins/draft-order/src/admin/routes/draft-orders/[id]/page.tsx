@@ -1,23 +1,20 @@
-import { Fragment } from "react"
 import {
   LoaderFunctionArgs,
-  Outlet,
   UIMatch,
   useParams,
 } from "react-router-dom"
 
 import { HttpTypes } from "@medusajs/types"
-import { PageSkeleton } from "../../../components/common/page-skeleton"
 import { ActiveOrderChange } from "../../../components/draft-orders/active-order-changes"
 import { ActivitySection } from "../../../components/draft-orders/activity-section"
 import { CustomerSection } from "../../../components/draft-orders/customer-section"
 import { GeneralSection } from "../../../components/draft-orders/general-section"
-import { JsonViewSection } from "../../../components/draft-orders/json-view-section"
-import { MetadataSection } from "../../../components/draft-orders/metadata-section"
 import { ShippingSection } from "../../../components/draft-orders/shipping-section"
 import { SummarySection } from "../../../components/draft-orders/summary-section"
 import { useOrder, useOrderChanges } from "../../../hooks/api/orders"
 import { sdk } from "../../../lib/queries/sdk"
+import { TwoColumnPage, TwoColumnPageSkeleton } from "@medusajs/dashboard/components"
+import { useExtension } from "@medusajs/dashboard/hooks"
 
 type AdminDraftOrderSummary = HttpTypes.AdminOrder & {
   promotions: HttpTypes.AdminPromotion[]
@@ -55,6 +52,8 @@ const ID = () => {
     change_type: ["edit", "transfer", "update_order"],
   })
 
+  const { getWidgets } = useExtension()
+
   if (isError) {
     throw error
   }
@@ -68,8 +67,8 @@ const ID = () => {
 
   if (!isReady) {
     return (
-      <PageSkeleton
-        mainSections={3}
+      <TwoColumnPageSkeleton
+        mainSections={4}
         sidebarSections={2}
         showJSON
         showMetadata
@@ -78,31 +77,30 @@ const ID = () => {
   }
 
   return (
-    <Fragment>
-      <div className="flex w-full flex-col gap-y-3">
-        <div className="flex w-full flex-col items-start gap-x-4 gap-y-3 xl:grid xl:grid-cols-[minmax(0,_1fr)_440px]">
-          <div className="flex w-full min-w-0 flex-col gap-y-3">
-            <ActiveOrderChange orderId={order.id} />
-            <GeneralSection order={order} />
-            <SummarySection order={order as AdminDraftOrderSummary} />
-            <ShippingSection order={order} />
-            <div className="hidden flex-col gap-y-3 xl:flex">
-              <MetadataSection order={order} />
-              <JsonViewSection data={order} />
-            </div>
-          </div>
-          <div className="flex w-full flex-col gap-y-3 xl:mt-0">
-            <CustomerSection order={order} />
-            <ActivitySection order={order} changes={order_changes} />
-            <div className="flex flex-col gap-y-3 xl:hidden">
-              <MetadataSection order={order} />
-              <JsonViewSection data={order} />
-            </div>
-          </div>
-        </div>
-      </div>
-      <Outlet />
-    </Fragment>
+    <TwoColumnPage
+      widgets={{
+        after: getWidgets("draft-order.details.after"),
+        before: getWidgets("draft-order.details.before"),
+        sideAfter: getWidgets("draft-order.details.side.after"),
+        sideBefore: getWidgets("draft-order.details.side.before"),
+      }}
+      hasOutlet
+      showJSON
+      showMetadata
+      data={order}
+    >
+      <TwoColumnPage.Main>
+        <ActiveOrderChange orderId={order.id} />
+        <GeneralSection order={order} />
+        <SummarySection order={order as AdminDraftOrderSummary} />
+        <ShippingSection order={order} />
+      </TwoColumnPage.Main>
+
+      <TwoColumnPage.Sidebar>
+        <CustomerSection order={order} />
+        <ActivitySection order={order} changes={order_changes} />
+      </TwoColumnPage.Sidebar>
+    </TwoColumnPage>
   )
 }
 
