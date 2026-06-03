@@ -68,6 +68,7 @@ import {
 import { computeOptionLinkChanges, eventBuilders } from "../utils"
 import { joinerConfig } from "./../joiner-config"
 import { buildOptionValueFilterQuery } from "../utils/build-option-value-filter-query"
+import { resolveAllowedOptionValues } from "../utils/resolve-allowed-option-values"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -519,45 +520,15 @@ export default class ProductModuleService
     }
 
     const productIds = [...new Set<string>(data.map((v) => v.product_id!))]
-    const [
-      productOptions,
-      variants,
-      optionIdsByProductId,
-      valueIdsByProductId,
-    ] = await promiseAll([
-      this.productOptionService_.list(
-        { products: { id: productIds } },
-        { relations: ["values"] },
-        sharedContext
-      ),
+    const [variants, { optionsByProductId, valueIdsByProductId }] =
+    await promiseAll([
       this.productVariantService_.list(
         { product_id: productIds },
         { relations: ["options"] },
         sharedContext
       ),
-      this.productRepository_.getOptionIdsByProductIds(
-        productIds,
-        sharedContext
-      ),
-      this.productRepository_.getOptionValueIdsByProductIds(
-        productIds,
-        sharedContext
-      ),
+      this.#loadOptionsAndValuesByProductId(productIds, sharedContext),
     ])
-
-    const optionsById = new Map(productOptions.map((o) => [o.id, o]))
-    const optionsByProductId = new Map<
-      string,
-      InferEntityType<typeof ProductOption>[]
-    >()
-    for (const [productId, optionIds] of optionIdsByProductId) {
-      const opts: InferEntityType<typeof ProductOption>[] = []
-      optionIds.forEach((id) => {
-        const opt = optionsById.get(id)
-        if (opt) opts.push(opt)
-      })
-      optionsByProductId.set(productId, opts)
-    }
 
     const productVariantsWithOptions =
       ProductModuleService.assignOptionsToVariants(
@@ -713,36 +684,8 @@ export default class ProductModuleService
     const productIds = Array.from(
       new Set(variantsWithProductId.map((v) => v.product_id!))
     )
-    const [productOptions, optionIdsByProductId, valueIdsByProductId] =
-      await promiseAll([
-        this.productOptionService_.list(
-          { products: { id: productIds } },
-          { relations: ["values"] },
-          sharedContext
-        ),
-        this.productRepository_.getOptionIdsByProductIds(
-          productIds,
-          sharedContext
-        ),
-        this.productRepository_.getOptionValueIdsByProductIds(
-          productIds,
-          sharedContext
-        ),
-      ])
-
-    const optionsById = new Map(productOptions.map((o) => [o.id, o]))
-    const optionsByProductId = new Map<
-      string,
-      InferEntityType<typeof ProductOption>[]
-    >()
-    for (const [productId, optionIds] of optionIdsByProductId) {
-      const opts: InferEntityType<typeof ProductOption>[] = []
-      optionIds.forEach((id) => {
-        const opt = optionsById.get(id)
-        if (opt) opts.push(opt)
-      })
-      optionsByProductId.set(productId, opts)
-    }
+    const { optionsByProductId, valueIdsByProductId } = 
+      await this.#loadOptionsAndValuesByProductId(productIds, sharedContext)
 
     const productVariantsWithOptions =
       ProductModuleService.assignOptionsToVariants(
@@ -2645,13 +2588,8 @@ export default class ProductModuleService
 
       const hydratedOptions = product.options.map((option) => {
         if ("id" in option) {
-          const dbOption = existingOptionsMap.get(option.id)
-          if (!dbOption) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              `Product option with id ${option.id} not found.`
-            )
-          }
+          // options guaranteed to be in the map since we throw if any are missing above
+          const dbOption = existingOptionsMap.get(option.id)!
 
           // Preserve the value id alongside the value name so downstream
           // normalization can enforce the per-product `value_ids` subset.
@@ -2699,9 +2637,11 @@ export default class ProductModuleService
       ProductTypes.CreateProductOptionDTO[]
     >()
 
-    const productsToCreate = normalizedProducts.map((product) => {
+    const productIdHydratedData = new Map<string, (typeof hydratedData)[number]>()
+    const productsToCreate = normalizedProducts.map((product, index) => {
       const productId = generateEntityId(product.id, "prod")
       product.id = productId
+      productIdHydratedData.set(productId, hydratedData[index])
 
       if ((product as any).categories?.length) {
         ;(product as any).categories = (product as any).categories.map(
@@ -2738,24 +2678,12 @@ export default class ProductModuleService
             const allValues = (productOption as any).values
             // Values may be wrapped a second time by normalizeCreateProductInput
             // (e.g. {value: {id, value: "red"}}). Read both shapes.
-            const valueOf = (v: any): string | undefined =>
-              v?.value?.value ?? v?.value
-            const idOf = (v: any): string | undefined => v?.value?.id ?? v?.id
-            const candidateValues = allowedValueIds
-              ? allValues?.filter((v: any) => {
-                  const id = idOf(v)
-                  return id ? allowedValueIds.has(id) : true
-                })
-              : allValues
-            const productOptionValue = candidateValues?.find(
-              (optionValue: any) => valueOf(optionValue) === value
-            )
-            if (!productOptionValue) {
-              throw new MedusaError(
-                MedusaError.Types.INVALID_DATA,
-                `Option value ${value} does not exist for option ${key}`
-              )
-            }
+            const productOptionValue = resolveAllowedOptionValues({
+              optionTitle: key,
+              value,
+              optionValues: allValues,
+              allowedValueIds,
+            })
             ;(productOptionValue as any).variants ??= []
             ;(productOptionValue as any).variants.push(variant)
           })
@@ -2818,9 +2746,7 @@ export default class ProductModuleService
 
     const linkPairs: ProductTypes.ProductOptionProductPair[] = []
     for (const product of createdProducts) {
-      const hydratedProduct = hydratedData.find(
-        (p) => p.title === product.title
-      )
+      const hydratedProduct = productIdHydratedData.get(product.id)
       const existingOptions: { id: string; value_ids?: string[] }[] = []
 
       if (hydratedProduct?.options?.length) {
@@ -3370,23 +3296,12 @@ export default class ProductModuleService
       const variantOptions = Object.entries(variant.options || {}).map(
         ([key, val]) => {
           const option = productsOptions.find((o) => o.title === key)
-
-          // If the product has a value subset configured, restrict the value
-          // search to the allowed values only.
-          const candidateValues = allowedValueIds
-            ? option?.values?.filter((v: any) => allowedValueIds.has(v.id))
-            : option?.values
-
-          const optionValue = candidateValues?.find(
-            (v: any) => (v.value?.value ?? v.value) === val
-          )
-
-          if (!optionValue) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              `Option value ${val} does not exist for option ${key}`
-            )
-          }
+          const optionValue = resolveAllowedOptionValues({
+            optionTitle: key,
+            value: val,
+            optionValues: option?.values,
+            allowedValueIds,
+          })
 
           return {
             id: optionValue.id,
@@ -4004,5 +3919,48 @@ export default class ProductModuleService
         }
       }
     }
+  }
+
+  async #loadOptionsAndValuesByProductId(
+    productIds: string[],
+    sharedContext: Context = {}
+  ): Promise<{
+    optionsByProductId: Map<string, InferEntityType<typeof ProductOption>[]>
+    valueIdsByProductId: Map<string, Set<string>>
+  }> {
+    const [productOptions, optionIdsByProductId, valueIdsByProductId] =
+      await promiseAll([
+        this.productOptionService_.list(
+          { products: { id: productIds } },
+          { relations: ["values"] },
+          sharedContext
+        ),
+        this.productRepository_.getOptionIdsByProductIds(
+          productIds,
+          sharedContext
+        ),
+        this.productRepository_.getOptionValueIdsByProductIds(
+          productIds,
+          sharedContext
+        ),
+      ])
+
+    const optionsById = new Map(productOptions.map((o) => [o.id, o]))
+    const optionsByProductId = new Map<
+      string,
+      InferEntityType<typeof ProductOption>[]
+    >()
+    for (const [productId, optionIds] of optionIdsByProductId) {
+      const opts: InferEntityType<typeof ProductOption>[] = []
+      optionIds.forEach((id) => {
+        const opt = optionsById.get(id)
+        if (opt) {
+          opts.push(opt)
+        }
+      })
+      optionsByProductId.set(productId, opts)
+    }
+
+    return { optionsByProductId, valueIdsByProductId }
   }
 }

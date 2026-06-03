@@ -13,6 +13,7 @@ import {
   SqlEntityManager,
   wrap,
 } from "@medusajs/framework/mikro-orm/postgresql"
+import { resolveAllowedOptionValues } from "../utils/resolve-allowed-option-values"
 
 export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
   Product
@@ -124,20 +125,12 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
                 const productOption = product.options.find(
                   (option) => option.title === key
                 )!
-                const candidateValues = allowedValueIds
-                  ? productOption.values?.filter((v: any) =>
-                      allowedValueIds.has(v.id)
-                    )
-                  : productOption.values
-                const productOptionValue = candidateValues?.find(
-                  (optionValue) => optionValue.value === value
-                )
-                if (!productOptionValue) {
-                  throw new MedusaError(
-                    MedusaError.Types.INVALID_DATA,
-                    `Option value ${value} does not exist for option ${key}`
-                  )
-                }
+                const productOptionValue = resolveAllowedOptionValues({
+                  optionTitle: key,
+                  value,
+                  optionValues: productOption.values,
+                  allowedValueIds,
+                })
                 return productOptionValue.id
               }
             )
@@ -187,6 +180,9 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
    * populate() calls instead of one combined find({populate}) — see deepUpdate
    * for the rationale (combined populate is dramatically slower for moderate
    * batch sizes with multiple deep relations).
+   * 
+   * Callers of this method should call flush() on the manager for pending writes
+   * to relations passed for population to be visible in the loaded entities.
    */
   async findByIdsWithSplitPopulate(
     productIds: string[],
