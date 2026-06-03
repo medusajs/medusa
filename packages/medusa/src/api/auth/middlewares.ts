@@ -11,6 +11,8 @@ import {
   AuthMfaGenerateRecoveryCodesRequest,
   AuthMfaVerifyChallengeRequest,
   AuthMfaVerifyFactorRequest,
+  VerificationConfirmRequest,
+  VerificationRequest,
   ResetPasswordRequest,
 } from "./validators"
 
@@ -98,6 +100,22 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       validateScopeProviderAssociation(),
       validateAndTransformBody(ResetPasswordRequest),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/auth/:actor_type/:auth_provider/verification/request",
+    middlewares: [
+      validateScopeProviderAssociation(),
+      validateAndTransformBody(VerificationRequest),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/auth/:actor_type/:auth_provider/verification/confirm",
+    middlewares: [
+      validateScopeProviderAssociation(),
+      validateAndTransformBody(VerificationConfirmRequest),
     ],
   },
   {

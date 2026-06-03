@@ -2507,6 +2507,31 @@
       "languageLabel": "Language",
       "usageInsightsLabel": "Usage insights"
     },
+    "mfa": {
+      "title": "Two-factor authentication",
+      "description": "Require an authenticator app when signing in.",
+      "status": "Status",
+      "method": "Method",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "pending": "Pending setup",
+      "authenticatorApp": "Authenticator app",
+      "noMethod": "No authentication method enabled",
+      "setupTitle": "Set up authenticator app",
+      "setupAuthenticatorApp": "Set up authenticator app",
+      "setupDescription": "Scan the QR code with your authenticator app, then enter the 6-digit code to finish setup.",
+      "setupError": "The authenticator app could not be set up.",
+      "verifyError": "The verification code could not be confirmed.",
+      "qrError": "The QR code could not be generated.",
+      "recoveryCodesTitle": "Recovery codes",
+      "recoveryCodesDescription": "Copy and store these recovery codes in case you lose access to your authenticator app.",
+      "recoveryCodesError": "Recovery codes could not be generated.",
+      "disableTitle": "Disable two-factor authentication",
+      "disableDescription": "You are about to disable two-factor authentication for your account.",
+      "disableChallengeDescription": "Enter the 6-digit code from your authenticator app to disable two-factor authentication.",
+      "disableError": "Two-factor authentication could not be disabled.",
+      "disableSuccess": "Two-factor authentication disabled"
+    },
     "edit": {
       "header": "Edit Profile",
       "languageHint": "The language you want to use in the admin dashboard. This doesn't change the language of your store.",
@@ -2945,7 +2970,21 @@
   "login": {
     "forgotPassword": "Forgot password? - <0>Reset</0>",
     "title": "Welcome to Medusa",
-    "hint": "Sign in to access the account area"
+    "hint": "Sign in to access the account area",
+    "mfa": {
+      "title": "Two-factor authentication",
+      "description": "Enter the 6-digit code from your authenticator app.",
+      "recoveryDescription": "Enter one of your recovery codes.",
+      "recoveryCodePlaceholder": "Recovery code",
+      "verify": "Verify",
+      "verifyError": "The verification code could not be confirmed.",
+      "completeError": "Authentication could not be completed.",
+      "backToLogin": "Back to login",
+      "useRecoveryCodePrompt": "Lost access to your authenticator app?",
+      "useRecoveryCode": "Use a recovery code",
+      "useAuthenticatorPrompt": "Have access to your authenticator app?",
+      "useAuthenticator": "Use an authenticator code"
+    }
   },
   "invite": {
     "title": "Welcome to Medusa",

@@ -1,26 +1,45 @@
-import { addExtraToMd } from "docs-utils"
-import { existsSync, readFileSync } from "fs"
+import { addExtraToMd, workerCompatibleFetch } from "docs-utils"
 import { notFound } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
 import path from "path"
 import { PostHog } from "posthog-node"
 import { getCleanMdCached } from "../../../utils/get-clean-md-cached"
+import { fetchRawMdx } from "../../../utils/fetch-raw-mdx"
 
 type Params = {
-  params: Promise<{ slug: string[] }>
+  params: Promise<{ slug?: string[] }>
 }
 
 export async function GET(req: NextRequest, { params }: Params) {
-  const { slug = ["/"] } = await params
+  const { slug: rawSlug } = await params
+  const slug = rawSlug?.filter(Boolean) ?? []
+  const origin = process.env.NEXT_PUBLIC_BASE_URL || new URL(req.url).origin
 
-  if (slug[0] === "/") {
-    const homepageFile = readFileSync(
-      path.join(process.cwd(), "public", "homepage.md"),
-      "utf-8"
-    )
+  if (slug.length === 0) {
+    const homepageContent = await workerCompatibleFetch<string | null>({
+      url: `${origin}/homepage.md`,
+      responseTransformer: async (res) => {
+        return res.ok ? res.text() : null
+      },
+      fallbackAction: async () => {
+        try {
+          const { promises: fs } = await import("fs")
+          return await fs.readFile(
+            path.join(process.cwd(), "public", "homepage.md"),
+            "utf-8"
+          )
+        } catch {
+          return null
+        }
+      },
+    })
+
+    if (!homepageContent) {
+      return notFound()
+    }
 
     return new NextResponse(
-      addExtraToMd(homepageFile, {
+      addExtraToMd(homepageContent, {
         baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "",
       }),
       {
@@ -33,23 +52,15 @@ export async function GET(req: NextRequest, { params }: Params) {
     )
   }
 
-  // keep this so that Vercel keeps the files in deployment
-  const basePath = path.join(process.cwd(), "app")
-  const filePath = path.join(basePath, ...slug, "page.mdx")
-  const mdContentFilePath = path.join(basePath, ...slug, "_md-content.mdx")
-  // An `_md-content.mdx` file overrides the `page.mdx` file if it exists.
-  const existingPath = existsSync(mdContentFilePath)
-    ? mdContentFilePath
-    : existsSync(filePath)
-      ? filePath
-      : null
-
-  if (!existingPath) {
+  const result = await fetchRawMdx(origin, slug)
+  if (!result) {
     return notFound()
   }
 
-  const cleanMdContent = await getCleanMdCached(existingPath, {
-    removeExtra: existingPath === mdContentFilePath,
+  const { content, isOverride } = result
+
+  const cleanMdContent = await getCleanMdCached(content, {
+    removeExtra: isOverride,
   })
 
   const acceptHeader = req.headers.get("accept") || ""

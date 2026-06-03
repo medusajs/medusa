@@ -31,7 +31,13 @@ export class TypeEmitter {
     resolved: ResolvedSchemaType,
     importTracker: ImportTracker
   ): string {
-    const { type, hasFindParams, hasSelectParams, hasBaseFilterable } = resolved
+    const {
+      type,
+      hasFindParams,
+      hasSelectParams,
+      hasBaseFilterable,
+      zodShapeType,
+    } = resolved
 
     if (hasFindParams) {
       importTracker.needsFindParams = true
@@ -47,7 +53,8 @@ export class TypeEmitter {
     const properties = resolver.resolveProperties(
       type,
       hasFindParams,
-      hasSelectParams
+      hasSelectParams,
+      zodShapeType
     )
 
     const hasOperatorMapProp = properties.some((p) => p.isOperatorMap)

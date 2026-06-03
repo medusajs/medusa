@@ -1,0 +1,47 @@
+post:
+  operationId: PostActor_typeAuth_providerVerificationConfirm
+  summary: Verify the Customer's Email
+  description: >-
+    Verifies the customer's email using a token that is typically sent to their
+    email address. This is used to confirm the customer's email during
+    registration or authentication when [email verification is
+    required](https://docs.medusajs.com/resources/commerce-modules/auth/auth-providers/emailpass).
+    You can listen to the `auth.verification_requested` event in a subscriber
+    and send an email to the customer with the verification token.
+  x-authenticated: false
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          description: The details required to verify the customer's email.
+          required:
+            - token
+          properties:
+            token:
+              type: string
+              title: token
+              description: The verification token sent to the customer's email address.
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/auth_customer_emailpass_verification_confirm/post.sh
+  tags:
+    - Auth
+  responses:
+    '200':
+      description: OK
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

@@ -1,5 +1,15 @@
 # Change Log
 
+## 2.15.5
+
+### Patch Changes
+
+- [#15493](https://github.com/medusajs/medusa/pull/15493) [`c8e37903177c2551ec27ba5f881804e351e819c4`](https://github.com/medusajs/medusa/commit/c8e37903177c2551ec27ba5f881804e351e819c4) Thanks [@christiananese](https://github.com/christiananese)! - Prepare new Medusa apps for admin MFA
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.5
+  - @medusajs/telemetry@2.15.5
+
 ## 2.15.4
 
 ### Patch Changes
