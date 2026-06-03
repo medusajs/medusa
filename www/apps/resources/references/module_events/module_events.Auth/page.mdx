@@ -26,6 +26,33 @@ Description
   <Table.Body>
     <Table.Row>
       <Table.Cell>
+[auth.mfa_enabled](#authmfa_enabled)
+<Tooltip text="This event was added in version v2.15.5"><Badge variant="blue">v2.15.5</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when an MFA factor is enabled for an auth identity.
+</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+[auth.mfa_disabled](#authmfa_disabled)
+<Tooltip text="This event was added in version v2.15.5"><Badge variant="blue">v2.15.5</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when an MFA factor is disabled for an auth identity.
+</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+[auth.mfa_recovery_codes_generated](#authmfa_recovery_codes_generated)
+<Tooltip text="This event was added in version v2.15.5"><Badge variant="blue">v2.15.5</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when recovery codes are generated for an auth identity.
+</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
 [auth.password_reset](#authpassword_reset)
 </Table.Cell>
       <Table.Cell>
@@ -45,6 +72,79 @@ this event and decide how to deliver the token to the user or customer.
     </Table.Row>
   </Table.Body>
 </Table>
+
+<EventHeader headerLvl="2" headerProps={{ id: "authmfa_enabled", children: (<>auth.mfa_enabled
+<Tooltip text="This event was added in version v2.15.5">
+<Badge variant="blue">v2.15.5</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="auth.mfa_enabled" payload={`\`\`\`ts
+{
+  auth_identity_id, // The ID of the auth identity for which the MFA factor was enabled.
+  mfa_id, // The ID of the MFA factor that was enabled.
+  provider, // The provider of the MFA factor that was enabled.
+}
+\`\`\``} />
+
+Emitted when an MFA factor is enabled for an auth identity.
+
+### Payload
+
+```ts
+{
+  auth_identity_id, // The ID of the auth identity for which the MFA factor was enabled.
+  mfa_id, // The ID of the MFA factor that was enabled.
+  provider, // The provider of the MFA factor that was enabled.
+}
+```
+
+---
+
+<EventHeader headerLvl="2" headerProps={{ id: "authmfa_disabled", children: (<>auth.mfa_disabled
+<Tooltip text="This event was added in version v2.15.5">
+<Badge variant="blue">v2.15.5</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="auth.mfa_disabled" payload={`\`\`\`ts
+{
+  auth_identity_id, // The ID of the auth identity for which the MFA factor was disabled.
+  mfa_id, // The ID of the MFA factor that was disabled.
+  provider, // The provider of the MFA factor that was disabled.
+}
+\`\`\``} />
+
+Emitted when an MFA factor is disabled for an auth identity.
+
+### Payload
+
+```ts
+{
+  auth_identity_id, // The ID of the auth identity for which the MFA factor was disabled.
+  mfa_id, // The ID of the MFA factor that was disabled.
+  provider, // The provider of the MFA factor that was disabled.
+}
+```
+
+---
+
+<EventHeader headerLvl="2" headerProps={{ id: "authmfa_recovery_codes_generated", children: (<>auth.mfa_recovery_codes_generated
+<Tooltip text="This event was added in version v2.15.5">
+<Badge variant="blue">v2.15.5</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="auth.mfa_recovery_codes_generated" payload={`\`\`\`ts
+{
+  auth_identity_id, // The ID of the auth identity for which the recovery codes were generated.
+  count, // (number) The number of recovery codes that were generated.
+}
+\`\`\``} />
+
+Emitted when recovery codes are generated for an auth identity.
+
+### Payload
+
+```ts
+{
+  auth_identity_id, // The ID of the auth identity for which the recovery codes were generated.
+  count, // (number) The number of recovery codes that were generated.
+}
+```
+
+---
 
 <EventHeader headerLvl="2" headerProps={{ id: "authpassword_reset", children: (<>auth.password_reset</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="auth.password_reset" payload={`\`\`\`ts
 {

@@ -116,6 +116,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/auth/js-sdk"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/mfa/page.mdx",
+    "pathname": "/commerce-modules/auth/mfa"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/module-options/page.mdx",
     "pathname": "/commerce-modules/auth/module-options"
   },
@@ -11502,6 +11506,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/event/interfaces/event.IEventBusModuleService/page.mdx",
     "pathname": "/references/event/interfaces/event.IEventBusModuleService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/events/Auth/variables/events.Auth.AuthEvents/page.mdx",
+    "pathname": "/references/events/Auth/variables/events.Auth.AuthEvents"
   },
   {
     "filePath": "/www/apps/resources/references/events/Auth/variables/events.Auth.AuthWorkflowEvents/page.mdx",
