@@ -1,8 +1,6 @@
 import {
   AdditionalData,
-  BigNumberInput,
   CreateOrderShippingMethodDTO,
-  FulfillmentWorkflow,
   OrderDTO,
   OrderWorkflow,
   ReturnDTO,
@@ -12,7 +10,6 @@ import {
 import {
   MathBN,
   MedusaError,
-  Modules,
   OrderWorkflowEvents,
   isDefined,
 } from "@medusajs/framework/utils"
@@ -22,18 +19,14 @@ import {
   createHook,
   createStep,
   createWorkflow,
-  parallelize,
   transform,
 } from "@medusajs/framework/workflows-sdk"
 import { pricingContextResult } from "../../../cart/utils/schemas"
 import {
-  createRemoteLinkStep,
   emitEventStep,
   useRemoteQueryStep,
 } from "../../../common"
-import { createReturnFulfillmentWorkflow } from "../../../fulfillment"
 import { createCompleteReturnStep } from "../../steps/return/create-complete-return"
-import { receiveReturnStep } from "../../steps/return/receive-return"
 import {
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderIsCancelled,
@@ -101,94 +94,6 @@ function validateCustomRefundAmount({
   }
 }
 
-function prepareReceiveItems({
-  receiveNow,
-  returnId,
-  items,
-  createdBy,
-}: {
-  receiveNow: boolean
-  returnId: string
-  items: {
-    id: string
-    quantity: BigNumberInput
-  }[]
-  createdBy?: string
-}) {
-  if (!receiveNow) {
-    return {
-      return_id: returnId,
-      items: [],
-    }
-  }
-
-  return {
-    return_id: returnId,
-    items: (items ?? []).map((i) => ({
-      id: i.id,
-      quantity: i.quantity,
-    })),
-    created_by: createdBy,
-  }
-}
-
-function prepareFulfillmentData({
-  order,
-  input,
-  returnShippingOption,
-}: {
-  order: OrderDTO
-  input: OrderWorkflow.CreateOrderReturnWorkflowInput
-  returnShippingOption: {
-    id: string
-    provider_id: string
-    service_zone: { fulfillment_set: { location?: { id: string , address?: Record<string, any> } } }
-  }
-}) {
-  const inputItems = input.items
-  const orderItemsMap = new Map<string, Required<OrderDTO>["items"][0]>(
-    order.items!.map((i) => [i.id, i])
-  )
-  const fulfillmentItems = inputItems.map((i) => {
-    const orderItem = orderItemsMap.get(i.id)!
-    return {
-      line_item_id: i.id,
-      quantity: i.quantity,
-      return_quantity: i.quantity,
-      title: orderItem.variant_title ?? orderItem.title,
-      sku: orderItem.variant_sku || "",
-      barcode: orderItem.variant_barcode || "",
-    } as FulfillmentWorkflow.CreateFulfillmentItemWorkflowDTO
-  })
-
-  let locationId: string | undefined | null = input.location_id
-  if (!locationId) {
-    locationId = returnShippingOption.service_zone.fulfillment_set.location?.id
-  }
-
-  if (!locationId) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Cannot create return without stock location, either provide a location or you should link the shipping option ${returnShippingOption.id} to a stock location.`
-    )
-  }
-
-  // delivery address is set to the stock location address
-  const { id: _id, ...address } = returnShippingOption.service_zone.fulfillment_set.location?.address ?? {}
-
-  return {
-    input: {
-      location_id: locationId,
-      provider_id: returnShippingOption.provider_id,
-      shipping_option_id: input.return_shipping?.option_id,
-      items: fulfillmentItems,
-      labels: input.return_shipping?.labels ?? [],
-      delivery_address: address,
-      order: order,
-    },
-  }
-}
-
 function prepareReturnShippingOptionQueryVariables({
   order,
   input,
@@ -227,7 +132,7 @@ export type CreateCompleteReturnValidationStepInput = {
   /**
    * The order's details.
    */
-  order
+  order: OrderDTO
   /**
    * The data to create a return.
    */
@@ -417,14 +322,6 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
       prepareShippingMethodData
     )
 
-    const fulfillmentData = transform(
-      { order, input, returnShippingOption },
-      prepareFulfillmentData
-    )
-
-    const returnFulfillment =
-      createReturnFulfillmentWorkflow.runAsStep(fulfillmentData)
-
     const returnCreated = createCompleteReturnStep({
       order_id: input.order_id,
       location_id: input.location_id,
@@ -433,47 +330,13 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
       created_by: input.created_by,
     })
 
-    const link = transform(
-      { returnCreated, fulfillment: returnFulfillment },
-      (data) => {
-        return [
-          {
-            [Modules.ORDER]: { return_id: data.returnCreated.id },
-            [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
-          },
-        ]
-      }
-    )
-
-    createRemoteLinkStep(link)
-
-    const receiveItems = transform(
-      {
-        receiveNow: input.receive_now ?? false,
-        returnId: returnCreated.id,
-        items: order.items!,
-        createdBy: input.created_by!,
+    emitEventStep({
+      eventName: OrderWorkflowEvents.RETURN_REQUESTED,
+      data: {
+        order_id: order.id,
+        return_id: returnCreated.id,
       },
-      prepareReceiveItems
-    )
-    receiveReturnStep(receiveItems)
-
-    parallelize(
-      emitEventStep({
-        eventName: OrderWorkflowEvents.RETURN_REQUESTED,
-        data: {
-          order_id: order.id,
-          return_id: returnCreated.id,
-        },
-      }).config({ name: "emit-return-requested-event" }),
-      emitEventStep({
-        eventName: OrderWorkflowEvents.RETURN_RECEIVED,
-        data: {
-          order_id: order.id,
-          return_id: returnCreated.id,
-        },
-      }).config({ name: "emit-return-received-event" })
-    )
+    })
 
     return new WorkflowResponse(returnCreated as ReturnDTO, {
       hooks: [setPricingContext] as const,
