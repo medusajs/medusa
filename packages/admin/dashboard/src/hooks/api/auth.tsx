@@ -1,35 +1,22 @@
-import { FetchError } from "@medusajs/js-sdk"
+import { AuthLoginResponse, FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import { UseMutationOptions, useMutation } from "@tanstack/react-query"
 import { sdk } from "../../lib/client"
 
-const ensureAuthTokenOrRedirect = async (
-  authResponse: ReturnType<typeof sdk.auth.login>
-) => {
-  const result = await authResponse
-
-  if (typeof result === "string" || "location" in result) {
-    return result
-  }
-
-  throw new Error(
-    "Multi-factor authentication is not supported in the dashboard"
-  )
-}
-
 export const useSignInWithEmailPass = (
   options?: UseMutationOptions<
-    | string
-    | {
-        location: string
-      },
+    AuthLoginResponse,
     FetchError,
     HttpTypes.AdminSignUpWithEmailPassword
   >
 ) => {
   return useMutation({
     mutationFn: (payload) =>
-      ensureAuthTokenOrRedirect(sdk.auth.login("user", "emailpass", payload)),
+      sdk.auth.login(
+        "user",
+        "emailpass",
+        payload
+      ) as Promise<AuthLoginResponse>,
     onSuccess: async (data, variables, context) => {
       options?.onSuccess?.(data, variables, context)
     },

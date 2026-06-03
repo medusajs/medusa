@@ -9331,6 +9331,106 @@
           "required": ["languageLabel", "usageInsightsLabel"],
           "additionalProperties": false
         },
+        "mfa": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "method": {
+              "type": "string"
+            },
+            "enabled": {
+              "type": "string"
+            },
+            "disabled": {
+              "type": "string"
+            },
+            "pending": {
+              "type": "string"
+            },
+            "authenticatorApp": {
+              "type": "string"
+            },
+            "noMethod": {
+              "type": "string"
+            },
+            "setupTitle": {
+              "type": "string"
+            },
+            "setupAuthenticatorApp": {
+              "type": "string"
+            },
+            "setupDescription": {
+              "type": "string"
+            },
+            "setupError": {
+              "type": "string"
+            },
+            "verifyError": {
+              "type": "string"
+            },
+            "qrError": {
+              "type": "string"
+            },
+            "recoveryCodesTitle": {
+              "type": "string"
+            },
+            "recoveryCodesDescription": {
+              "type": "string"
+            },
+            "recoveryCodesError": {
+              "type": "string"
+            },
+            "disableTitle": {
+              "type": "string"
+            },
+            "disableDescription": {
+              "type": "string"
+            },
+            "disableChallengeDescription": {
+              "type": "string"
+            },
+            "disableError": {
+              "type": "string"
+            },
+            "disableSuccess": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "title",
+            "description",
+            "status",
+            "method",
+            "enabled",
+            "disabled",
+            "pending",
+            "authenticatorApp",
+            "noMethod",
+            "setupTitle",
+            "setupAuthenticatorApp",
+            "setupDescription",
+            "setupError",
+            "verifyError",
+            "qrError",
+            "recoveryCodesTitle",
+            "recoveryCodesDescription",
+            "recoveryCodesError",
+            "disableTitle",
+            "disableDescription",
+            "disableChallengeDescription",
+            "disableError",
+            "disableSuccess"
+          ],
+          "additionalProperties": false
+        },
         "edit": {
           "type": "object",
           "properties": {
@@ -9370,6 +9470,7 @@
         "domain",
         "manageYourProfileDetails",
         "fields",
+        "mfa",
         "edit",
         "toast"
       ],
@@ -10966,9 +11067,65 @@
         },
         "hint": {
           "type": "string"
+        },
+        "mfa": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "recoveryDescription": {
+              "type": "string"
+            },
+            "recoveryCodePlaceholder": {
+              "type": "string"
+            },
+            "verify": {
+              "type": "string"
+            },
+            "verifyError": {
+              "type": "string"
+            },
+            "completeError": {
+              "type": "string"
+            },
+            "backToLogin": {
+              "type": "string"
+            },
+            "useRecoveryCodePrompt": {
+              "type": "string"
+            },
+            "useRecoveryCode": {
+              "type": "string"
+            },
+            "useAuthenticatorPrompt": {
+              "type": "string"
+            },
+            "useAuthenticator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "title",
+            "description",
+            "recoveryDescription",
+            "recoveryCodePlaceholder",
+            "verify",
+            "verifyError",
+            "completeError",
+            "backToLogin",
+            "useRecoveryCodePrompt",
+            "useRecoveryCode",
+            "useAuthenticatorPrompt",
+            "useAuthenticator"
+          ],
+          "additionalProperties": false
         }
       },
-      "required": ["forgotPassword", "title", "hint"],
+      "required": ["forgotPassword", "title", "hint", "mfa"],
       "additionalProperties": false
     },
     "invite": {
@@ -12638,7 +12795,12 @@
           "additionalProperties": false
         }
       },
-      "required": ["accessDenied", "requiredPermissions", "resources", "actions"],
+      "required": [
+        "accessDenied",
+        "requiredPermissions",
+        "resources",
+        "actions"
+      ],
       "additionalProperties": false
     }
   },

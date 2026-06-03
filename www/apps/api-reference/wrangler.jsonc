@@ -16,5 +16,19 @@
   ],
   "images": {
     "binding": "IMAGES"
+  },
+  "env": {
+    "production": {
+      "name": "medusa-docs-api-reference",
+      "services": [
+        {
+          "binding": "WORKER_SELF_REFERENCE",
+          "service": "medusa-docs-api-reference"
+        }
+      ],
+      "images": {
+        "binding": "IMAGES"
+      }
+    }
   }
 }

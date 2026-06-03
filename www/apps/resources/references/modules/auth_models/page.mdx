@@ -16,6 +16,8 @@ erDiagram
 	AuthIdentity ||--|| ProviderIdentity : provider_identities
 	AuthIdentity ||--|| AuthMfaFactor : mfa_factors
 	AuthIdentity ||--|| AuthMfaRecoveryCode : mfa_recovery_codes
+	AuthIdentity ||--|| AuthVerificationToken : verification_tokens
+	ProviderIdentity ||--|| AuthVerificationToken : verification_tokens
 
 ```
 
@@ -24,4 +26,5 @@ erDiagram
 - [AuthIdentity](../../auth_models/variables/auth_models.AuthIdentity/page.mdx)
 - [AuthMfaFactor](../../auth_models/variables/auth_models.AuthMfaFactor/page.mdx)
 - [AuthMfaRecoveryCode](../../auth_models/variables/auth_models.AuthMfaRecoveryCode/page.mdx)
+- [AuthVerificationToken](../../auth_models/variables/auth_models.AuthVerificationToken/page.mdx)
 - [ProviderIdentity](../../auth_models/variables/auth_models.ProviderIdentity/page.mdx)
