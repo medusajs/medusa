@@ -7573,7 +7573,7 @@ export const generatedEditDates = {
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleResponse/page.mdx": "2026-06-01T09:05:14.510Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateRbacPolicy/page.mdx": "2026-06-01T09:05:14.500Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateRbacRole/page.mdx": "2026-06-01T09:05:14.493Z",
-  "app/commerce-modules/auth/mfa/page.mdx": "2026-06-02T13:48:59.663Z",
+  "app/commerce-modules/auth/mfa/page.mdx": "2026-06-03T10:20:33.794Z",
   "app/commerce-modules/auth/email-verification/page.mdx": "2026-06-02T11:04:44.946Z",
   "app/storefront-development/customers/verify-account/page.mdx": "2026-06-02T11:24:01.444Z",
   "references/events/Auth/variables/events.Auth.AuthEvents/page.mdx": "2026-06-03T06:24:01.642Z"

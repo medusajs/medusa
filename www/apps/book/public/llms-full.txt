@@ -32084,11 +32084,44 @@ The Auth Module registers two MFA providers out of the box:
 
 The `recovery_code` provider is not enrolled as a factor on its own. It becomes available as a verification method once the user has at least one enabled MFA factor and generates recovery codes.
 
-{/* ### Custom MFA Providers
+### Custom MFA Providers
 
-You can register additional MFA providers in the `mfa.providers` array of the Auth Module's options. A custom provider must implement the `AuthMfaProvider` interface, exposing `start`, `verifySetup`, `canVerifyForAuthIdentity`, and `verify` methods.
+You can register additional MFA providers in the `mfa.providers` array of the Auth Module's options. Custom MFA providers must implement specific interfaces and include a static `identifier` property.
 
-Refer to the [Module Options guide](../module-options/page.mdx#mfa) for the full list of MFA configuration options. */}
+#### Regular MFA Providers
+
+For regular MFA factors (like TOTP), implement the `AuthMfaProvider` interface with these methods:
+
+- `start` - Initialize enrollment for the factor
+- `verifySetup` - Verify the factor during enrollment
+- `canVerifyForAuthIdentity` - Check if the identity has this factor enabled
+- `verify` - Verify a code during authentication
+
+Every MFA provider must have a static `identifier` property. The provider's ID will be stored as `mfa_{identifier}`:
+
+```ts
+class CustomMfaProvider implements AuthMfaProvider {
+  static identifier = "my-custom-mfa"
+  
+  // Implement required methods...
+}
+```
+
+#### Recovery Code Providers
+
+For recovery code providers, implement the `RecoveryCodeAuthMfaProvider` interface with additional methods for generating and managing recovery codes.
+
+Recovery code providers must have their static `identifier` property set to `"recovery_code"`:
+
+```ts
+class CustomRecoveryProvider implements RecoveryCodeAuthMfaProvider {
+  static identifier = "recovery_code"
+  
+  // Implement required methods...
+}
+```
+
+Refer to the [Module Options guide](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/module-options#mfa) for the full list of MFA configuration options.
 
 ***
 
