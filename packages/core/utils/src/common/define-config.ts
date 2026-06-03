@@ -139,6 +139,43 @@ export function transformModules(
   return remappedModules as Exclude<ConfigModule["modules"], undefined>
 }
 
+function applyDefaultAuthModuleOptions(
+  modules: InputConfigModules,
+  defaultAuthModuleOptions: Record<string, unknown>
+) {
+  modules.forEach((moduleConfig) => {
+    const isAuthModule =
+      ("key" in moduleConfig && moduleConfig.key === Modules.AUTH) ||
+      ("resolve" in moduleConfig &&
+        moduleConfig.resolve === MODULE_PACKAGE_NAMES[Modules.AUTH])
+
+    if (!isAuthModule || ("disable" in moduleConfig && moduleConfig.disable)) {
+      return
+    }
+
+    const options = (
+      isObject(moduleConfig.options) ? moduleConfig.options : {}
+    ) as Record<string, any>
+    const defaultMfaOptions = (
+      isObject(defaultAuthModuleOptions.mfa) ? defaultAuthModuleOptions.mfa : {}
+    ) as Record<string, any>
+    const mfaOptions = (isObject(options.mfa) ? options.mfa : {}) as Record<
+      string,
+      any
+    >
+
+    moduleConfig.options = {
+      ...options,
+      mfa: {
+        ...defaultMfaOptions,
+        ...mfaOptions,
+        encryption_key:
+          mfaOptions.encryption_key ?? defaultMfaOptions.encryption_key,
+      },
+    }
+  })
+}
+
 function resolvePlugins(
   configPlugins: InputConfig["plugins"],
   { isCloud }: { isCloud: boolean }
@@ -403,6 +440,8 @@ function resolveModules(
       )
     }
   }
+
+  applyDefaultAuthModuleOptions(modules, authModuleOptions)
 
   return transformModules(modules)
 }
