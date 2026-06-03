@@ -350,10 +350,11 @@ sdk.auth.login("manager", "emailpass", {
 
 In this example, you call the `sdk.auth.login` method passing it the actor type (for example, `user`), the provider (`emailpass`), and the credentials.
 
-If the authentication is successful, there are two types of returned data:
+If the authentication is successful, there are three types of returned data:
 
 - An object with a `location` property: This means the authentication requires more actions, which happens when using third-party authentication providers, such as [Google](../../../commerce-modules/auth/auth-providers/google/page.mdx). In that case, you need to redirect the customer to the location to complete their authentication.
     - Refer to the [Third-Party Login in Storefront](../../../storefront-development/customers/third-party-login/page.mdx) guide for an example implementation.
+- An object with `verification_required: true`: This means the authentication requires email verification before a token can be issued. The object includes verification details like expiry time. Verification is only required if the `require_verification` option is enabled in the [Emailpass Auth Module Provider](../../../commerce-modules/auth/auth-providers/emailpass/page.mdx).
 - A string: This means the authentication was successful, and the user is logged in. The JS SDK automatically stores the JWT token or session cookie for you and includes it in the headers of all requests to the Medusa API. All requests you send afterwards will be authenticated with the stored token or session cookie.
 
 If the authentication fails, the `catch` block will be executed, and you can handle the error accordingly.
@@ -373,6 +374,96 @@ sdk.client.setToken("your-jwt-token")
 ```
 
 You can also clear the token manually as explained in the [Manually Clearing JWT Token](#manually-clearing-jwt-token) section.
+
+---
+
+## Email Verification in JS SDK
+
+<Note>
+
+This feature is available since Medusa [v2.15.5](https://github.com/medusajs/medusa/releases/tag/v2.15.5).
+
+</Note>
+
+When email verification is required for authentication, the JS SDK provides methods to handle the verification flow:
+
+### Request Verification Token
+
+Use the `auth.verification.request` method to request a new verification token:
+
+```ts
+try {
+  const { verification } = await sdk.auth.verification.request(
+    "customer", 
+    "emailpass",
+    {
+      entity_id: "customer@example.com",
+      metadata: {
+        source: "frontend_app",
+      },
+    }
+  )
+
+  console.log("Verification code sent!")
+  console.log("Expires at:", verification.expires_at)
+} catch (error) {
+  console.error("Failed to send verification code:", error)
+}
+```
+
+### Confirm Verification
+
+Use the `auth.verification.confirm` method to verify the user's email with their token:
+
+```ts
+try {
+  const result = await sdk.auth.verification.confirm(
+    "customer",
+    "emailpass", 
+    {
+      token: "user-entered-token",
+    }
+  )
+
+  if (result.verified) {
+    console.log("Email verified successfully!")
+    // User can now authenticate normally
+  }
+} catch (error) {
+  console.error("Verification failed:", error)
+}
+```
+
+### Handle Verification-Required Registration
+
+When registering with `returnVerification: true`, the register method can return verification details instead of throwing an error:
+
+```ts
+try {
+  const result = await sdk.auth.register(
+    "customer",
+    "emailpass",
+    {
+      email: "customer@example.com", 
+      password: "password123",
+    },
+    { returnVerification: true }
+  )
+
+  if (typeof result === "object" && result.verification_required) {
+    // Show verification form to user
+    console.log("Please verify your email to complete registration")
+    console.log("Verification expires:", result.verification.expires_at)
+  } else {
+    // Registration completed without verification
+    console.log("Registration successful:", result)
+  }
+} catch (error) {
+  console.error("Registration failed:", error)
+}
+```
+
+Learn more about implementing email verification in the [email verification guide](../../../commerce-modules/auth/email-verification/page.mdx).
 
 ---
 

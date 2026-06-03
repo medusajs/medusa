@@ -243,6 +243,8 @@ tags:
         </Note>
       $ref: ./components/schemas/StoreStoreCreditAccount.yaml
 paths:
+  /auth/customer/emailpass/verification/confirm:
+    $ref: paths/auth_customer_emailpass_verification_confirm.yaml
   /auth/customer/{auth_provider}:
     $ref: paths/auth_customer_{auth_provider}.yaml
   /auth/customer/{auth_provider}/callback:
