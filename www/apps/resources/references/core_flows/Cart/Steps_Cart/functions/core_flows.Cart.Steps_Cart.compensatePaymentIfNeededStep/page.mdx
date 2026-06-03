@@ -1,0 +1,33 @@
+---
+slug: /references/medusa-workflows/steps/compensatePaymentIfNeededStep
+sidebar_label: compensatePaymentIfNeededStep
+tags:
+  - logger
+  - query
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# compensatePaymentIfNeededStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `compensatePaymentIfNeededStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+Purpose of this step is to be the last compensation in cart completion workflow.
+If the cart completion fails, this step tries to cancel or refund the payment.
+
+## Example
+
+```ts
+const data = compensatePaymentIfNeededStep({
+  payment_session_id: "pay_123"
+})
+```
+
+## Input
+
+<TypeList types={[{"name":"CompensatePaymentIfNeededStepInput","type":"[CompensatePaymentIfNeededStepInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.CompensatePaymentIfNeededStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CompensatePaymentIfNeededStepInput","type":"`object`","description":"The payment session's details for compensation.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="compensatePaymentIfNeededStep"/>
+
+## Output
+
+<TypeList types={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="compensatePaymentIfNeededStep"/>

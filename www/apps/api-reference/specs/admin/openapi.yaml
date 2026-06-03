@@ -244,6 +244,17 @@ tags:
         https://docs.medusajs.com/resources/commerce-modules/translation/concepts
     x-associatedSchema:
       $ref: ./components/schemas/AdminLocale.yaml
+  - name: Multi-Factor Authentication
+    description: >
+      Multi-factor authentication (MFA) adds an extra layer of security to admin
+      accounts by requiring additional verification factors during login, such
+      as a TOTP code or a recovery code.
+
+      These API routes allow admin users to manage their MFA factors,
+      challenges, and recovery codes.
+    externalDocs:
+      description: Learn more about MFA in Medusa
+      url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
   - name: Notifications
     description: >
       A notification informs an admin user of store changes or status changes of

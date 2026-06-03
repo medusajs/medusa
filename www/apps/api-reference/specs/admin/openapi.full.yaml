@@ -182,6 +182,13 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/translation/concepts
     x-associatedSchema:
       $ref: '#/components/schemas/AdminLocale'
+  - name: Multi-Factor Authentication
+    description: |
+      Multi-factor authentication (MFA) adds an extra layer of security to admin accounts by requiring additional verification factors during login, such as a TOTP code or a recovery code.
+      These API routes allow admin users to manage their MFA factors, challenges, and recovery codes.
+    externalDocs:
+      description: Learn more about MFA in Medusa
+      url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
   - name: Notifications
     description: |
       A notification informs an admin user of store changes or status changes of background tasks.
@@ -56153,17 +56160,338 @@ paths:
           in: query
           description: Filter by a shipping option type's creation date.
           required: false
-          schema: {}
+          schema:
+            type: object
+            properties:
+              $and:
+                type: array
+                description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                items:
+                  type: object
+              $or:
+                type: array
+                description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                items:
+                  type: object
+              $eq:
+                oneOf:
+                  - type: string
+                    title: $eq
+                    description: Filter by exact value.
+                  - type: array
+                    title: $eq
+                    description: Filter by exact value.
+                    items:
+                      type: string
+              $ne:
+                type: string
+                title: $ne
+                description: Filter by not equal to the given value.
+              $in:
+                type: array
+                title: $in
+                description: Filter by values included in the given array.
+                items:
+                  type: string
+              $nin:
+                type: array
+                title: $nin
+                description: Filter by values not included in the given array.
+                items:
+                  type: string
+              $not:
+                oneOf:
+                  - type: string
+                    title: $not
+                    description: Filter by not equal to the given value.
+                  - type: object
+                    title: $not
+                    description: Filter by values not matching the conditions in this parameter.
+                  - type: array
+                    title: $not
+                    description: Filter by values not matching the conditions in this parameter.
+                    items:
+                      type: string
+              $gt:
+                type: string
+                title: $gt
+                description: Filter by values greater than the given value.
+              $gte:
+                type: string
+                title: $gte
+                description: Filter by values greater than or equal to the given value.
+              $lt:
+                type: string
+                title: $lt
+                description: Filter by values less than the given value.
+              $lte:
+                type: string
+                title: $lte
+                description: Filter by values less than or equal to the given value.
+              $like:
+                type: string
+                title: $like
+                description: Apply a `like` filter. Useful for strings only.
+              $re:
+                type: string
+                title: $re
+                description: Apply a regex filter. Useful for strings only.
+              $ilike:
+                type: string
+                title: $ilike
+                description: Apply a case-insensitive `like` filter. Useful for strings only.
+              $fulltext:
+                type: string
+                title: $fulltext
+                description: Filter to apply on full-text properties.
+              $overlap:
+                type: array
+                title: $overlap
+                description: Filter to apply on array properties to find overlapping values.
+                items:
+                  type: string
+              $contains:
+                type: array
+                title: $contains
+                description: Filter to apply on array properties to find contained values.
+                items:
+                  type: string
+              $contained:
+                type: array
+                title: $contained
+                description: Filter to apply on array properties to find contained values.
+                items:
+                  type: string
+              $exists:
+                type: boolean
+                title: $exists
+                description: Filter by whether a value exists or not.
+            title: created_at
+            description: The shipping option type's created at.
         - name: updated_at
           in: query
           description: Filter by a shipping option type's update date.
           required: false
-          schema: {}
+          schema:
+            type: object
+            properties:
+              $and:
+                type: array
+                description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                items:
+                  type: object
+              $or:
+                type: array
+                description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                items:
+                  type: object
+              $eq:
+                oneOf:
+                  - type: string
+                    title: $eq
+                    description: Filter by exact value.
+                  - type: array
+                    title: $eq
+                    description: Filter by exact value.
+                    items:
+                      type: string
+              $ne:
+                type: string
+                title: $ne
+                description: Filter by not equal to the given value.
+              $in:
+                type: array
+                title: $in
+                description: Filter by values included in the given array.
+                items:
+                  type: string
+              $nin:
+                type: array
+                title: $nin
+                description: Filter by values not included in the given array.
+                items:
+                  type: string
+              $not:
+                oneOf:
+                  - type: string
+                    title: $not
+                    description: Filter by not equal to the given value.
+                  - type: object
+                    title: $not
+                    description: Filter by values not matching the conditions in this parameter.
+                  - type: array
+                    title: $not
+                    description: Filter by values not matching the conditions in this parameter.
+                    items:
+                      type: string
+              $gt:
+                type: string
+                title: $gt
+                description: Filter by values greater than the given value.
+              $gte:
+                type: string
+                title: $gte
+                description: Filter by values greater than or equal to the given value.
+              $lt:
+                type: string
+                title: $lt
+                description: Filter by values less than the given value.
+              $lte:
+                type: string
+                title: $lte
+                description: Filter by values less than or equal to the given value.
+              $like:
+                type: string
+                title: $like
+                description: Apply a `like` filter. Useful for strings only.
+              $re:
+                type: string
+                title: $re
+                description: Apply a regex filter. Useful for strings only.
+              $ilike:
+                type: string
+                title: $ilike
+                description: Apply a case-insensitive `like` filter. Useful for strings only.
+              $fulltext:
+                type: string
+                title: $fulltext
+                description: Filter to apply on full-text properties.
+              $overlap:
+                type: array
+                title: $overlap
+                description: Filter to apply on array properties to find overlapping values.
+                items:
+                  type: string
+              $contains:
+                type: array
+                title: $contains
+                description: Filter to apply on array properties to find contained values.
+                items:
+                  type: string
+              $contained:
+                type: array
+                title: $contained
+                description: Filter to apply on array properties to find contained values.
+                items:
+                  type: string
+              $exists:
+                type: boolean
+                title: $exists
+                description: Filter by whether a value exists or not.
+            title: updated_at
+            description: The shipping option type's updated at.
         - name: deleted_at
           in: query
           description: Filter by a shipping option type's deletion date.
           required: false
-          schema: {}
+          schema:
+            type: object
+            properties:
+              $and:
+                type: array
+                description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+                items:
+                  type: object
+              $or:
+                type: array
+                description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+                items:
+                  type: object
+              $eq:
+                oneOf:
+                  - type: string
+                    title: $eq
+                    description: Filter by exact value.
+                  - type: array
+                    title: $eq
+                    description: Filter by exact value.
+                    items:
+                      type: string
+              $ne:
+                type: string
+                title: $ne
+                description: Filter by not equal to the given value.
+              $in:
+                type: array
+                title: $in
+                description: Filter by values included in the given array.
+                items:
+                  type: string
+              $nin:
+                type: array
+                title: $nin
+                description: Filter by values not included in the given array.
+                items:
+                  type: string
+              $not:
+                oneOf:
+                  - type: string
+                    title: $not
+                    description: Filter by not equal to the given value.
+                  - type: object
+                    title: $not
+                    description: Filter by values not matching the conditions in this parameter.
+                  - type: array
+                    title: $not
+                    description: Filter by values not matching the conditions in this parameter.
+                    items:
+                      type: string
+              $gt:
+                type: string
+                title: $gt
+                description: Filter by values greater than the given value.
+              $gte:
+                type: string
+                title: $gte
+                description: Filter by values greater than or equal to the given value.
+              $lt:
+                type: string
+                title: $lt
+                description: Filter by values less than the given value.
+              $lte:
+                type: string
+                title: $lte
+                description: Filter by values less than or equal to the given value.
+              $like:
+                type: string
+                title: $like
+                description: Apply a `like` filter. Useful for strings only.
+              $re:
+                type: string
+                title: $re
+                description: Apply a regex filter. Useful for strings only.
+              $ilike:
+                type: string
+                title: $ilike
+                description: Apply a case-insensitive `like` filter. Useful for strings only.
+              $fulltext:
+                type: string
+                title: $fulltext
+                description: Filter to apply on full-text properties.
+              $overlap:
+                type: array
+                title: $overlap
+                description: Filter to apply on array properties to find overlapping values.
+                items:
+                  type: string
+              $contains:
+                type: array
+                title: $contains
+                description: Filter to apply on array properties to find contained values.
+                items:
+                  type: string
+              $contained:
+                type: array
+                title: $contained
+                description: Filter to apply on array properties to find contained values.
+                items:
+                  type: string
+              $exists:
+                type: boolean
+                title: $exists
+                description: Filter by whether a value exists or not.
+            title: deleted_at
+            description: The shipping option type's deleted at.
         - name: $and
           in: query
           description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
@@ -67351,6 +67679,9 @@ paths:
         Verify a multi-factor authentication (MFA) challenge issued during login. On success, this
         completes the authentication flow and returns a JWT token that can be used to authenticate
         subsequent requests.
+      externalDocs:
+        description: Learn more about MFA in Medusa
+        url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
       x-authenticated: false
       parameters:
         - name: id
@@ -67485,6 +67816,9 @@ paths:
         secret and an `otpauth_url` for TOTP) that can be used to display a QR code. The factor must
         then be verified via the verify endpoint before it can be used.
       x-authenticated: true
+      externalDocs:
+        description: Learn more about MFA in Medusa
+        url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
       parameters: []
       requestBody:
         content:
@@ -67634,6 +67968,9 @@ paths:
         it. A successful verification enables the factor, after which it can be used to verify MFA
         challenges during login.
       x-authenticated: true
+      externalDocs:
+        description: Learn more about MFA in Medusa
+        url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
       parameters:
         - name: id
           in: path
@@ -67708,6 +68045,9 @@ paths:
         factor. Generating new codes replaces any previously issued codes, so they should be stored in
         a safe place. At least one enabled MFA factor is required to generate recovery codes.
       x-authenticated: true
+      externalDocs:
+        description: Learn more about MFA in Medusa
+        url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
       parameters: []
       requestBody:
         content:
