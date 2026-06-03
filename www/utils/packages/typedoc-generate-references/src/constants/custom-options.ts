@@ -131,6 +131,11 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     tsConfigName: "types.json",
     name: "locking",
   }),
+  mfa: getOptions({
+    entryPointPath: "packages/core/types/src/auth/mfa-provider.ts",
+    tsConfigName: "types.json",
+    name: "mfa",
+  }),
   medusa: getOptions({
     entryPointPath: "packages/medusa/src/index.ts",
     tsConfigName: "medusa.json",

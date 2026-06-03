@@ -20,6 +20,7 @@ import notificationServiceOptions from "./notification-service.js"
 import eventsOptions from "./events.js"
 import analyticsOptions from "./analytics.js"
 import analyticsProviderOptions from "./analytics-provider.js"
+import mfaOptions from "./mfa.js"
 
 const mergerCustomOptions: FormattingOptionsType = {
   ...analyticsOptions,
@@ -38,6 +39,7 @@ const mergerCustomOptions: FormattingOptionsType = {
   ...jsSdkOptions,
   ...lockingOptions,
   ...medusaOptions,
+  ...mfaOptions,
   ...notificationServiceOptions,
   ...notificationOptions,
   ...paymentProviderOptions,

@@ -87,11 +87,16 @@ The Auth Module registers two MFA providers out of the box:
 
 The `recovery_code` provider is not enrolled as a factor on its own. It becomes available as a verification method once the user has at least one enabled MFA factor and generates recovery codes.
 
-{/* ### Custom MFA Providers
+### Custom MFA Providers
 
-You can register additional MFA providers in the `mfa.providers` array of the Auth Module's options. A custom provider must implement the `AuthMfaProvider` interface, exposing `start`, `verifySetup`, `canVerifyForAuthIdentity`, and `verify` methods.
+You can register custom MFA providers in the `mfa.providers` array of the Auth Module's options. These are either additional providers for custom usage, or providers that override the default `totp` and `recovery_code` providers.
 
-Refer to the [Module Options guide](../module-options/page.mdx#mfa) for the full list of MFA configuration options. */}
+For example, you can create a custom MFA provider that generates codes and sends them to the user via email or SMS. You can also override the default recovery code provider to customize the format of the generated codes or the way they're consumed.
+
+To create a custom MFA provider, refer to the following guides:
+
+- [Create a Custom MFA Provider](/references/auth/mfa-module-provider)
+- [Create a Custom Recovery Code Provider](/references/auth/recovery-code-mfa-module-provider)
 
 ---
 

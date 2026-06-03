@@ -1,0 +1,359 @@
+---
+slug: /references/auth/recovery-code-mfa-module-provider
+tags:
+  - auth
+  - server
+  - how to
+sidebar_label: Create Recovery Code MFA Provider
+keywords:
+  - mfa
+  - provider
+  - integration
+  - recovery code
+---
+
+import { TypeList } from "docs-ui"
+
+# How to Create a Recovery Code Multi-Factor Authentication (MFA) Module Provider
+
+In this guide, you’ll learn how to create a Recovery Code Multi-Factor Authentication (MFA) Auth Module Provider and the methods you must implement in its main service.
+
+---
+
+## What is a Recovery Code MFA Module Provider?
+
+A Recovery Code MFA Module Provider is a specialized MFA provider that, in addition to
+verifying codes, can generate a fresh batch of one-time recovery codes for an auth identity.
+Recovery codes are typically used as a fallback when the user loses access to their primary
+MFA factor (such as their TOTP authenticator).
+
+Each generated code should be returned to the user only once (in plain text), stored as a
+hash on the server using the injected `authMfaRecoveryCodeService`, and invalidated after a
+successful verification.
+
+Medusa provides a built-in Recovery Code MFA Module Provider that you can use out-of-the-box. You can also
+override it by following the instructions in this guide.
+
+---
+
+## Implementation Example
+      
+As you implement your Recovery Code MFA Auth Module Provider, it can be useful to refer to an existing provider and how it's implemeted.
+
+If you need to refer to an existing implementation as an example, check the [Recovery Code MFA Module Provider in the Medusa repository](https://github.com/medusajs/medusa/blob/develop/packages/modules/auth/src/providers/mfa/recovery-code.ts).
+
+---
+
+## 1. Create Module Provider Directory
+
+Start by creating a new directory for your module provider.
+
+If you're creating the module provider in a Medusa application, create it under the `src/modules` directory. For example, `src/modules/my-recovery-code`.
+
+If you're creating the module provider in a plugin, create it under the `src/providers` directory. For example, `src/providers/my-recovery-code`.
+
+<Note>
+
+The rest of this guide always uses the `src/modules/my-recovery-code` directory as an example.
+
+</Note>
+
+---
+
+## 2. Create the Recovery Code MFA Module Provider Service
+
+Create the file `src/modules/my-recovery-code/service.ts` that holds the module provider's main service. It must implement the `RecoveryCodeAuthMfaProvider` interface imported from `@medusajs/framework/types`:
+
+```ts title="src/modules/my-recovery-code/service.ts"
+import { RecoveryCodeAuthMfaProvider } from "@medusajs/framework/types"
+
+type Options = {
+  // define any options your provider needs here
+}
+
+class MyRecoveryCodeProviderService implements RecoveryCodeAuthMfaProvider {
+  // TODO implement methods
+}
+
+export default MyRecoveryCodeProviderService
+```
+
+### constructor
+
+The constructor allows you to access resources from the module's container using the first parameter,
+and the provider's options using the second parameter.
+
+If you're creating a client or establishing a connection with a third-party service, do it in the constructor.
+
+#### Example
+
+The Auth Module injects `authMfaRecoveryCodeService` into your provider's container. This
+is the data service for the `AuthMfaRecoveryCode` model, and you should store it as a class
+property so the rest of the provider's methods can use it to retrieve and manage the
+stored recovery codes for an auth identity (for example, when generating, verifying, or
+invalidating codes).
+
+```ts
+import { RecoveryCodeAuthMfaProvider } from "@medusajs/framework/types"
+import { Logger, ModulesSdkTypes } from "@medusajs/framework/types"
+
+type InjectedDependencies = {
+  logger: Logger
+  authMfaRecoveryCodeService: ModulesSdkTypes.IMedusaInternalService<any>
+}
+
+class MyRecoveryCodeProviderService implements RecoveryCodeAuthMfaProvider {
+  static identifier = "recovery_code"
+  readonly method = "recovery_code" as const
+
+  protected logger_: Logger
+  protected authMfaRecoveryCodeService_: ModulesSdkTypes.IMedusaInternalService<any>
+
+  constructor ({
+    logger,
+    authMfaRecoveryCodeService,
+  }: InjectedDependencies) {
+    this.logger_ = logger
+    this.authMfaRecoveryCodeService_ = authMfaRecoveryCodeService
+  }
+
+  // ...
+}
+
+export default MyRecoveryCodeProviderService
+```
+
+### Identifier
+
+Every Recovery Code MFA auth module provider must have an `identifier` static property set to `recovery_code`.
+The provider's ID will be stored as `mfa_{identifier}`.
+
+For example:
+
+```ts
+class MyRecoveryCodeProviderService implements RecoveryCodeAuthMfaProvider {
+  static identifier = "recovery_code"
+  // ...
+}
+```
+
+### method
+
+The identifier of the MFA method that the provider implements. For recovery code providers,
+this is always `recovery_code`.
+
+### canVerifyForAuthIdentity
+
+This method checks whether the auth identity has any recovery codes stored with this
+provider. The Auth Module uses it to determine whether the auth identity can fall back
+to recovery code verification.
+
+Use the injected `authMfaRecoveryCodeService` to look up stored recovery codes for the
+auth identity. Alternatively, you can check with third-party services if the provider manages 
+recovery codes remotely.
+
+#### Example
+
+```ts
+class MyRecoveryCodeProvider implements RecoveryCodeAuthMfaProvider {
+  // ...
+  async canVerifyForAuthIdentity(
+    data: { auth_identity_id: string },
+    sharedContext?: Context
+  ): Promise<boolean> {
+    const [code] = await this.authMfaRecoveryCodeService_.list(
+      { auth_identity_id: data.auth_identity_id },
+      { select: ["id"] },
+      sharedContext
+    )
+
+    return !!code
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"`object`","description":"The auth identity to check.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"auth_identity_id","type":"`string`","description":"The ID of the auth identity to check.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../types/interfaces/types.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"runId","type":"`string`","description":"A string indicating the ID of the current run.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../types/interfaces/types.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"parentStepIdempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the parent workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"preventReleaseEvents","type":"`boolean`","description":"preventReleaseEvents","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isCancelling","type":"`boolean`","description":"A boolean value indicating whether the current workflow execution is being cancelled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cancelingFromParentStep","type":"`boolean`","description":"Weither or not a sub workflow cancellation is being triggered from a parent step.\nIf true, the parent step will not be triggered by the sub workflow.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="canVerifyForAuthIdentity"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"Whether the auth identity has at least one recovery code stored.","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="canVerifyForAuthIdentity"/>
+
+### generateCodes
+
+This method generates a new batch of recovery codes for the given auth identity. Any
+previously generated codes for the auth identity should be invalidated, so that only the
+latest batch can be used.
+
+The Auth Module uses this method when an auth identity enrolls into recovery codes, or when
+the user requests a fresh set of codes.
+
+You can use the injected `authMfaRecoveryCodeService` to store the generated codes as hashes, and 
+to invalidate existing codes by deleting them. Alternatively, you can manage recovery codes remotely.
+
+#### Example
+
+```ts
+class MyRecoveryCodeProvider implements RecoveryCodeAuthMfaProvider {
+  // ...
+  async generateCodes(
+    data: { auth_identity_id: string; count: number },
+    sharedContext?: Context
+  ): Promise<string[]> {
+    // invalidate any previously generated codes
+    const existing = await this.authMfaRecoveryCodeService_.list(
+      { auth_identity_id: data.auth_identity_id },
+      { select: ["id"] },
+      sharedContext
+    )
+
+    if (existing.length) {
+      await this.authMfaRecoveryCodeService_.delete(
+        existing.map((c) => c.id),
+        sharedContext
+      )
+    }
+
+    const codes = Array.from({ length: data.count }, () => this.generateCode_())
+
+    await this.authMfaRecoveryCodeService_.create(
+      await Promise.all(
+        codes.map(async (code) => ({
+          auth_identity_id: data.auth_identity_id,
+          code_hash: await this.hashCode_(code),
+        }))
+      ),
+      sharedContext
+    )
+
+    return codes
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"`object`","description":"The auth identity and the number of codes to generate.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"auth_identity_id","type":"`string`","description":"The ID of the auth identity to generate the codes for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The number of recovery codes to generate.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../types/interfaces/types.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"runId","type":"`string`","description":"A string indicating the ID of the current run.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../types/interfaces/types.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"parentStepIdempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the parent workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"preventReleaseEvents","type":"`boolean`","description":"preventReleaseEvents","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isCancelling","type":"`boolean`","description":"A boolean value indicating whether the current workflow execution is being cancelled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cancelingFromParentStep","type":"`boolean`","description":"Weither or not a sub workflow cancellation is being triggered from a parent step.\nIf true, the parent step will not be triggered by the sub workflow.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="generateCodes"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;string[]&#62;","optional":false,"defaultValue":"","description":"The generated recovery codes in plain text. These should be shown to the user only once.","expandable":false,"children":[{"name":"string[]","type":"`string`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="generateCodes"/>
+
+### verify
+
+This method verifies a recovery code submitted by the user. It looks up the stored hashes
+for the auth identity, finds the one matching the submitted code, and consumes that code
+by deleting it so it can only be used once.
+
+Use the injected `authMfaRecoveryCodeService` to retrieve and delete the matching recovery
+code. Alternatively, you can verify and consume the code with third-party services if the provider manages
+recovery codes remotely.
+
+#### Example
+
+```ts
+class MyRecoveryCodeProvider implements RecoveryCodeAuthMfaProvider {
+  // ...
+  async verify(
+    data: { auth_identity_id: string; code: string },
+    sharedContext?: Context
+  ): Promise<boolean> {
+    const recoveryCodes = await this.authMfaRecoveryCodeService_.list(
+      { auth_identity_id: data.auth_identity_id },
+      { select: ["id", "code_hash"] },
+      sharedContext
+    )
+
+    let match: (typeof recoveryCodes)[number] | undefined
+
+    for (const candidate of recoveryCodes) {
+      if (await this.verifyHash_(candidate.code_hash, data.code)) {
+        match = candidate
+        break
+      }
+    }
+
+    if (!match) {
+      return false
+    }
+
+    // consume the code so it can't be reused
+    await this.authMfaRecoveryCodeService_.delete(match.id, sharedContext)
+
+    return true
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"`object`","description":"The auth identity and recovery code to verify.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"auth_identity_id","type":"`string`","description":"The ID of the auth identity to verify the code for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"The recovery code submitted by the user.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../types/interfaces/types.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"runId","type":"`string`","description":"A string indicating the ID of the current run.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../types/interfaces/types.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"parentStepIdempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the parent workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"preventReleaseEvents","type":"`boolean`","description":"preventReleaseEvents","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isCancelling","type":"`boolean`","description":"A boolean value indicating whether the current workflow execution is being cancelled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cancelingFromParentStep","type":"`boolean`","description":"Weither or not a sub workflow cancellation is being triggered from a parent step.\nIf true, the parent step will not be triggered by the sub workflow.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="verify"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"Whether the recovery code was matched and consumed.","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="verify"/>
+
+---
+
+## 3. Create Module Definition File
+
+Create the file `src/modules/my-recovery-code/index.ts` with the following content:
+
+```ts title="src/modules/my-recovery-code/index.ts"
+import { ModuleProvider, Modules } from "@medusajs/framework/utils"
+import MyRecoveryCodeProviderService from "./service"
+
+export default ModuleProvider(Modules.AUTH, {
+  services: [MyRecoveryCodeProviderService],
+})
+```
+
+This exports the module provider's definition, indicating that the `MyRecoveryCodeProviderService` is the module provider's service.
+
+---
+
+## 4. Use Module Provider
+
+To use your Recovery Code MFA Module Provider, add it to the `mfa.providers` array of the Auth Module in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
+      options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+          providers: [
+            {
+              // if module provider is in a plugin, use `plugin-name/providers/my-recovery-code`
+              resolve: "./src/modules/my-recovery-code",
+              id: "recovery-code",
+              options: {
+                // provider options...
+              }
+            }
+          ]
+        },
+        providers: [
+          {
+            resolve: "@medusajs/medusa/auth-emailpass",
+            id: "emailpass",
+          },
+        ],
+      },
+    },
+  ]
+})
+```
+
+---
+
+## 5. Test it Out
+
+To test out your Recovery Code MFA Module Provider, you can [manage two-factor authentication settings in the admin dashboard][two-factor authentication settings from the admin dashboard](!user-guide!/settings/profile#manage-two-factor-authentication). You can enable 2FA, which will show you the recovery codes generated by your provider.
+
+You can also refer to the [MFA guide](/commerce-modules/auth/mfa) for more details on how to use MFA providers with the API routes.

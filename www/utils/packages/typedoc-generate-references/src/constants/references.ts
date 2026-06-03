@@ -47,6 +47,7 @@ const allReferences = [
   "module-events",
   "analytics",
   "analytics-provider",
+  "mfa",
 ]
 
 export default allReferences
