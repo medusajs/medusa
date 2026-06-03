@@ -154,7 +154,7 @@ type Input = {
   title: string
 }
 
-const createPostStep = createStep(
+export const createPostStep = createStep(
   "create-post", 
   async (input: Input, { container }) => {
     const blogModuleService: BlogModuleService = container.resolve(
