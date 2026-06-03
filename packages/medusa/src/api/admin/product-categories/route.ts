@@ -1,10 +1,10 @@
 import { createProductCategoriesWorkflow } from "@medusajs/core-flows"
-import { HttpTypes } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
   refetchEntities,
 } from "@medusajs/framework/http"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminProductCategoryListParams>,
@@ -47,5 +47,7 @@ export const POST = async (
     pagination: req.queryConfig.pagination,
   })
 
-  res.status(200).json({ product_category: category })
+  const productCategory = category as HttpTypes.AdminProductCategory
+
+  res.status(200).json({ product_category: productCategory })
 }
