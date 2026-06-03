@@ -93,20 +93,10 @@ export function transformModules(
     }
 
     // TODO: handle external modules later
-    let serviceName: string =
-      "key" in moduleConfig && moduleConfig.key ? moduleConfig.key : ""
+    let serviceName: string = getKnownModuleName(moduleConfig) ?? ""
     delete moduleConfig.key
 
     if (!serviceName && "resolve" in moduleConfig) {
-      if (
-        isString(moduleConfig.resolve!) &&
-        REVERSED_MODULE_PACKAGE_NAMES[moduleConfig.resolve!]
-      ) {
-        serviceName = REVERSED_MODULE_PACKAGE_NAMES[moduleConfig.resolve!]
-        acc[serviceName] = moduleConfig
-        return acc
-      }
-
       let resolution = isString(moduleConfig.resolve!)
         ? normalizeImportPathWithSource(moduleConfig.resolve as string)
         : moduleConfig.resolve
@@ -137,6 +127,58 @@ export function transformModules(
   }, {})
 
   return remappedModules as Exclude<ConfigModule["modules"], undefined>
+}
+
+function getKnownModuleName(
+  moduleConfig: InputConfigModules[number]
+): string | undefined {
+  if ("key" in moduleConfig && moduleConfig.key) {
+    return moduleConfig.key
+  }
+
+  if (
+    "resolve" in moduleConfig &&
+    isString(moduleConfig.resolve!) &&
+    REVERSED_MODULE_PACKAGE_NAMES[moduleConfig.resolve!]
+  ) {
+    return REVERSED_MODULE_PACKAGE_NAMES[moduleConfig.resolve!]
+  }
+
+  return undefined
+}
+
+function asRecord(value: unknown): Record<string, unknown> {
+  return isObject(value) ? (value as Record<string, unknown>) : {}
+}
+
+function applyDefaultAuthMfaOptions(
+  modules: InputConfigModules,
+  defaultAuthModuleOptions: Record<string, unknown>
+) {
+  modules.forEach((moduleConfig) => {
+    const moduleName = getKnownModuleName(moduleConfig)
+
+    if (
+      moduleName !== Modules.AUTH ||
+      ("disable" in moduleConfig && moduleConfig.disable)
+    ) {
+      return
+    }
+
+    const options = asRecord(moduleConfig.options)
+    const defaultMfaOptions = asRecord(defaultAuthModuleOptions.mfa)
+    const mfaOptions = asRecord(options.mfa)
+
+    moduleConfig.options = {
+      ...options,
+      mfa: {
+        ...defaultMfaOptions,
+        ...mfaOptions,
+        encryption_key:
+          mfaOptions.encryption_key ?? defaultMfaOptions.encryption_key,
+      },
+    }
+  })
 }
 
 function resolvePlugins(
@@ -403,6 +445,8 @@ function resolveModules(
       )
     }
   }
+
+  applyDefaultAuthMfaOptions(modules, authModuleOptions)
 
   return transformModules(modules)
 }
