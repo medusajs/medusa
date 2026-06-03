@@ -171,6 +171,7 @@
   "resolutions": {
     "@redocly/cli/react": "^17.0.1",
     "@redocly/cli/react-dom": "^17.0.1",
+    "lodash": "^4.18.1",
     "pg": "8.16.3",
     "@changesets/get-github-info@^0.5.2": "patch:@changesets/get-github-info@npm:^0.5.2#.yarn/patches/changesets-github-info.patch",
     "@types/react": "^18.3.2",
