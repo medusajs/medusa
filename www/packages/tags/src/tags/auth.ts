@@ -44,6 +44,10 @@ export const auth = [
     "path": "https://docs.medusajs.com/resources/storefront-development/customers/third-party-login"
   },
   {
+    "title": "Register Customer with Email Verification in Storefront",
+    "path": "https://docs.medusajs.com/resources/storefront-development/customers/verify-account"
+  },
+  {
     "title": "Create Auth Provider",
     "path": "https://docs.medusajs.com/resources/references/auth/provider"
   },

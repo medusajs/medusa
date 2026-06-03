@@ -95,133 +95,6 @@ The following workflows emit this event when they're executed. These workflows a
 
 ---
 
-## Shipping Option Type Events
-
-### Summary
-
-<Table>
-  <Table.Header>
-    <Table.Row>
-      <Table.HeaderCell>
-Event
-</Table.HeaderCell>
-      <Table.HeaderCell>
-Description
-</Table.HeaderCell>
-    </Table.Row>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row>
-      <Table.Cell>
-[shipping-option-type.updated](#shipping-option-typeupdated)
-<Tooltip text="This event was added in version v2.10.0"><Badge variant="blue">v2.10.0</Badge></Tooltip>
-</Table.Cell>
-      <Table.Cell>
-Emitted when shipping option types are updated.
-</Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-[shipping-option-type.created](#shipping-option-typecreated)
-<Tooltip text="This event was added in version v2.10.0"><Badge variant="blue">v2.10.0</Badge></Tooltip>
-</Table.Cell>
-      <Table.Cell>
-Emitted when shipping option types are created.
-</Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-[shipping-option-type.deleted](#shipping-option-typedeleted)
-<Tooltip text="This event was added in version v2.10.0"><Badge variant="blue">v2.10.0</Badge></Tooltip>
-</Table.Cell>
-      <Table.Cell>
-Emitted when shipping option types are deleted.
-</Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table>
-
-<EventHeader headerLvl="3" headerProps={{ id: "shipping-option-typeupdated", children: (<>shipping-option-type.updated
-<Tooltip text="This event was added in version v2.10.0">
-<Badge variant="blue">v2.10.0</Badge>
-</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="shipping-option-type.updated" payload={`\`\`\`ts
-{
-  id, // The ID of the shipping option type
-}
-\`\`\``} />
-
-Emitted when shipping option types are updated.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the shipping option type
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [updateShippingOptionTypesWorkflow](/references/medusa-workflows/updateShippingOptionTypesWorkflow)
-
----
-
-<EventHeader headerLvl="3" headerProps={{ id: "shipping-option-typecreated", children: (<>shipping-option-type.created
-<Tooltip text="This event was added in version v2.10.0">
-<Badge variant="blue">v2.10.0</Badge>
-</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="shipping-option-type.created" payload={`\`\`\`ts
-{
-  id, // The ID of the shipping option type
-}
-\`\`\``} />
-
-Emitted when shipping option types are created.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the shipping option type
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [createShippingOptionTypesWorkflow](/references/medusa-workflows/createShippingOptionTypesWorkflow)
-
----
-
-<EventHeader headerLvl="3" headerProps={{ id: "shipping-option-typedeleted", children: (<>shipping-option-type.deleted
-<Tooltip text="This event was added in version v2.10.0">
-<Badge variant="blue">v2.10.0</Badge>
-</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="shipping-option-type.deleted" payload={`\`\`\`ts
-{
-  id, // The ID of the shipping option type
-}
-\`\`\``} />
-
-Emitted when shipping option types are deleted.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the shipping option type
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [deleteShippingOptionTypesWorkflow](/references/medusa-workflows/deleteShippingOptionTypesWorkflow)
-
----
-
 ## Shipping Option Events
 
 ### Summary
@@ -346,3 +219,130 @@ Emitted when shipping options are deleted.
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
 - [deleteShippingOptionsWorkflow](/references/medusa-workflows/deleteShippingOptionsWorkflow)
+
+---
+
+## Shipping Option Type Events
+
+### Summary
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+Event
+</Table.HeaderCell>
+      <Table.HeaderCell>
+Description
+</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+[shipping-option-type.updated](#shipping-option-typeupdated)
+<Tooltip text="This event was added in version v2.10.0"><Badge variant="blue">v2.10.0</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when shipping option types are updated.
+</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+[shipping-option-type.created](#shipping-option-typecreated)
+<Tooltip text="This event was added in version v2.10.0"><Badge variant="blue">v2.10.0</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when shipping option types are created.
+</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+[shipping-option-type.deleted](#shipping-option-typedeleted)
+<Tooltip text="This event was added in version v2.10.0"><Badge variant="blue">v2.10.0</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when shipping option types are deleted.
+</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+<EventHeader headerLvl="3" headerProps={{ id: "shipping-option-typeupdated", children: (<>shipping-option-type.updated
+<Tooltip text="This event was added in version v2.10.0">
+<Badge variant="blue">v2.10.0</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="shipping-option-type.updated" payload={`\`\`\`ts
+{
+  id, // The ID of the shipping option type
+}
+\`\`\``} />
+
+Emitted when shipping option types are updated.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the shipping option type
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [updateShippingOptionTypesWorkflow](/references/medusa-workflows/updateShippingOptionTypesWorkflow)
+
+---
+
+<EventHeader headerLvl="3" headerProps={{ id: "shipping-option-typecreated", children: (<>shipping-option-type.created
+<Tooltip text="This event was added in version v2.10.0">
+<Badge variant="blue">v2.10.0</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="shipping-option-type.created" payload={`\`\`\`ts
+{
+  id, // The ID of the shipping option type
+}
+\`\`\``} />
+
+Emitted when shipping option types are created.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the shipping option type
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [createShippingOptionTypesWorkflow](/references/medusa-workflows/createShippingOptionTypesWorkflow)
+
+---
+
+<EventHeader headerLvl="3" headerProps={{ id: "shipping-option-typedeleted", children: (<>shipping-option-type.deleted
+<Tooltip text="This event was added in version v2.10.0">
+<Badge variant="blue">v2.10.0</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="shipping-option-type.deleted" payload={`\`\`\`ts
+{
+  id, // The ID of the shipping option type
+}
+\`\`\``} />
+
+Emitted when shipping option types are deleted.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the shipping option type
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [deleteShippingOptionTypesWorkflow](/references/medusa-workflows/deleteShippingOptionTypesWorkflow)

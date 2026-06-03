@@ -108,8 +108,16 @@ export const filesMap = [
     "pathname": "/commerce-modules/auth/create-actor-type"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/email-verification/page.mdx",
+    "pathname": "/commerce-modules/auth/email-verification"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/js-sdk/page.mdx",
     "pathname": "/commerce-modules/auth/js-sdk"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/mfa/page.mdx",
+    "pathname": "/commerce-modules/auth/mfa"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/module-options/page.mdx",
@@ -1410,6 +1418,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/storefront-development/customers/third-party-login/page.mdx",
     "pathname": "/storefront-development/customers/third-party-login"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/customers/verify-account/page.mdx",
+    "pathname": "/storefront-development/customers/verify-account"
   },
   {
     "filePath": "/www/apps/resources/app/storefront-development/guides/express-checkout/page.mdx",
@@ -11494,6 +11506,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/event/interfaces/event.IEventBusModuleService/page.mdx",
     "pathname": "/references/event/interfaces/event.IEventBusModuleService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/events/Auth/variables/events.Auth.AuthEvents/page.mdx",
+    "pathname": "/references/events/Auth/variables/events.Auth.AuthEvents"
   },
   {
     "filePath": "/www/apps/resources/references/events/Auth/variables/events.Auth.AuthWorkflowEvents/page.mdx",
