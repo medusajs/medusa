@@ -7,6 +7,8 @@ import { AuthTypes, Context } from ".."
  * Providers that issue and manage their own factors (such as TOTP) should implement
  * {@link AuthMfaProvider}, while providers that issue recovery codes should implement
  * {@link RecoveryCodeAuthMfaProvider}. Both of these interfaces extend `IAuthMfaProvider`.
+ * 
+ * @since 2.15.6
  */
 export interface IAuthMfaProvider {
   /**
@@ -86,6 +88,8 @@ export interface IAuthMfaProvider {
  *
  * export default MyAuthMfaProviderService
  * ```
+ * 
+ * @since 2.15.6
  */
 export interface AuthMfaProvider extends IAuthMfaProvider {
   /**
@@ -346,6 +350,8 @@ export interface AuthMfaProvider extends IAuthMfaProvider {
  *
  * export default MyRecoveryCodeProviderService
  * ```
+ * 
+ * @since 2.15.6
  */
 export interface RecoveryCodeAuthMfaProvider extends IAuthMfaProvider {
   /**
