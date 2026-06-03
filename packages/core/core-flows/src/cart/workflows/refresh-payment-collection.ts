@@ -1,4 +1,8 @@
-import { MathBN, isPresent } from "@medusajs/framework/utils"
+import {
+  MathBN,
+  PaymentSessionStatus,
+  isPresent,
+} from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -10,7 +14,10 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../common"
 import { acquireLockStep, releaseLockStep } from "../../locking"
-import { updatePaymentCollectionStep } from "../../payment-collection"
+import {
+  updatePaymentCollectionStep,
+  updatePaymentSessionsStep,
+} from "../../payment-collection"
 import { deletePaymentSessionsWorkflow } from "../../payment-collection/workflows/delete-payment-sessions"
 import { validateCartStep } from "../steps"
 
@@ -32,8 +39,10 @@ export const refreshPaymentCollectionForCartWorkflowId =
   "refresh-payment-collection-for-cart"
 /**
  * This workflow refreshes a cart's payment collection, which is useful once the cart is created or when its details
- * are updated. If the cart's total changes to the amount in its payment collection, the payment collection's payment sessions are
- * deleted. It also syncs the payment collection's amount, currency code, and other details with the details in the cart.
+ * are updated. If the cart's total changes, any unconfirmed (`pending` / `requires_more`) payment session has its amount
+ * updated in place (keeping the same provider payment, e.g. the same Stripe PaymentIntent); confirmed sessions, or all
+ * sessions when the currency changes, are deleted instead. It also syncs the payment collection's amount, currency code,
+ * and other details with the details in the cart.
  *
  * This workflow is used by other cart-related workflows, such as the {@link refreshCartItemsWorkflow} to refresh the cart's
  * payment collection after an update.
@@ -93,6 +102,7 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
           "payment_collection.amount",
           "payment_collection.currency_code",
           "payment_collection.payment_sessions.id",
+          "payment_collection.payment_sessions.status",
         ],
         filters: { id: cartId },
         options: {
@@ -137,14 +147,54 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
         return shouldExecute
       }
     ).then(() => {
-      const deletePaymentSessionInput = transform(
-        { paymentCollection: cart.payment_collection },
-        (data) => {
+      // Partition the existing sessions: an unconfirmed (PENDING /
+      // REQUIRES_MORE) session whose currency is unchanged can have its amount
+      // updated in place (keeping the same provider payment, e.g. the same
+      // Stripe PaymentIntent); everything else (confirmed sessions, or all
+      // sessions on a currency change) is deleted so the caller recreates it.
+      const partitionedSessions = transform({ cart }, ({ cart }) => {
+        const sessions = cart.payment_collection?.payment_sessions ?? []
+        const currencyChanged =
+          cart.payment_collection?.currency_code !== cart.currency_code
+
+        const updateIds: string[] = []
+        const deleteIds: string[] = []
+
+        for (const ps of sessions) {
+          const eligible =
+            !currencyChanged &&
+            (ps.status === PaymentSessionStatus.PENDING ||
+              ps.status === PaymentSessionStatus.REQUIRES_MORE)
+
+          if (eligible) {
+            updateIds.push(ps.id)
+          } else {
+            deleteIds.push(ps.id)
+          }
+        }
+
+        return { updateIds, deleteIds }
+      })
+
+      const updatePaymentSessionInput = transform(
+        { cart, partitionedSessions },
+        ({ cart, partitionedSessions }) => {
           return {
-            ids:
-              data.paymentCollection?.payment_sessions
-                ?.map((ps) => ps.id)
-                ?.flat(1) || [],
+            ids: partitionedSessions.updateIds,
+            // The provider path expects the major-unit total (matching
+            // createPaymentSessionStep's amount input), NOT the raw amount used
+            // for the DB collection update below.
+            amount: cart.total,
+            currency_code: cart.currency_code,
+          }
+        }
+      )
+
+      const deletePaymentSessionInput = transform(
+        { partitionedSessions },
+        ({ partitionedSessions }) => {
+          return {
+            ids: partitionedSessions.deleteIds,
           }
         }
       )
@@ -164,6 +214,7 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
       })
 
       parallelize(
+        updatePaymentSessionsStep(updatePaymentSessionInput),
         deletePaymentSessionsWorkflow.runAsStep({
           input: deletePaymentSessionInput,
         }),

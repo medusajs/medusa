@@ -3964,7 +3964,9 @@ medusaIntegrationTestRunner({
           })
 
           const updatedPaymentCollection =
-            await paymentModule.retrievePaymentCollection(paymentCollection.id)
+            await paymentModule.retrievePaymentCollection(paymentCollection.id, {
+              relations: ["payment_sessions"],
+            })
 
           expect(updatedPaymentCollection).toEqual(
             expect.objectContaining({
@@ -3972,6 +3974,67 @@ medusaIntegrationTestRunner({
               amount: 5000,
             })
           )
+
+          // The unconfirmed session keeps the same currency, so its amount is
+          // updated in place (keeping the same id / provider payment) rather
+          // than being deleted and recreated.
+          expect(updatedPaymentCollection.payment_sessions).toHaveLength(1)
+          expect(updatedPaymentCollection.payment_sessions[0]).toEqual(
+            expect.objectContaining({
+              id: paymentSession.id,
+              amount: 5000,
+              currency_code: "dkk",
+            })
+          )
+        })
+
+        it("should delete (not update in place) a session when the currency changes", async () => {
+          const cart = await cartModuleService.createCarts({
+            currency_code: "dkk",
+            region_id: defaultRegion.id,
+            items: [
+              {
+                quantity: 1,
+                unit_price: 5000,
+                title: "Test item",
+              },
+            ],
+          })
+
+          const paymentCollection =
+            await paymentModule.createPaymentCollections({
+              amount: 5000,
+              // Different currency from the cart, forcing a delete + recreate.
+              currency_code: "usd",
+            })
+
+          const paymentSession = await paymentModule.createPaymentSession(
+            paymentCollection.id,
+            {
+              amount: 5000,
+              currency_code: "usd",
+              data: {},
+              provider_id: "pp_system_default",
+            }
+          )
+
+          await remoteLink.create([
+            {
+              [Modules.CART]: {
+                cart_id: cart.id,
+              },
+              [Modules.PAYMENT]: {
+                payment_collection_id: paymentCollection.id,
+              },
+            },
+          ])
+
+          await refreshPaymentCollectionForCartWorkflow(appContainer).run({
+            input: {
+              cart_id: cart.id,
+            },
+            throwOnError: false,
+          })
 
           const sessionShouldNotExist = await paymentModule.listPaymentSessions(
             { id: paymentSession.id },

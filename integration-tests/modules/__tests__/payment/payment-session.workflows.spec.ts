@@ -178,7 +178,10 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should delete existing sessions when create payment sessions", async () => {
+        it("should not accumulate sessions when re-initializing for the same provider", async () => {
+          // Re-initializing reuses the existing unconfirmed session in place
+          // rather than deleting + recreating, so the collection never ends up
+          // with more than one session per provider.
           await createPaymentSessionsWorkflow(appContainer).run({
             input: {
               payment_collection_id: paymentCollection.id,
@@ -214,6 +217,110 @@ medusaIntegrationTestRunner({
                   provider_id: "pp_system_default",
                 }),
               ],
+            })
+          )
+        })
+
+        it("should reuse an existing unconfirmed session instead of recreating it", async () => {
+          const { result: first } = await createPaymentSessionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              payment_collection_id: paymentCollection.id,
+              provider_id: "pp_system_default",
+              context: {},
+              data: {},
+            },
+          })
+
+          // Change the collection amount so we can assert the reused session is
+          // updated in place rather than recreated.
+          await paymentModule.updatePaymentCollections(paymentCollection.id, {
+            amount: 2000,
+          })
+
+          const { result: second } = await createPaymentSessionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              payment_collection_id: paymentCollection.id,
+              provider_id: "pp_system_default",
+              context: {},
+              data: {},
+            },
+          })
+
+          // Same session reused (same id) => same underlying provider payment,
+          // not a freshly created one.
+          expect(second.id).toEqual(first.id)
+
+          const {
+            data: [updatedPaymentCollection],
+          } = await query.graph({
+            entity: "payment_collection",
+            filters: { id: paymentCollection.id },
+            fields: [
+              "id",
+              "amount",
+              "payment_sessions.id",
+              "payment_sessions.amount",
+            ],
+          })
+
+          expect(updatedPaymentCollection.payment_sessions).toHaveLength(1)
+          expect(updatedPaymentCollection.payment_sessions[0]).toEqual(
+            expect.objectContaining({
+              id: first.id,
+              amount: 2000,
+            })
+          )
+        })
+
+        it("should create a new session (and delete the old one) when the provider changes", async () => {
+          const { result: first } = await createPaymentSessionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              payment_collection_id: paymentCollection.id,
+              provider_id: "pp_system_default",
+              context: {},
+              data: {},
+            },
+          })
+
+          const { result: second } = await createPaymentSessionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              payment_collection_id: paymentCollection.id,
+              provider_id: "pp_system_default_2",
+              context: {},
+              data: {},
+            },
+          })
+
+          // Different provider => can't reuse, a new session is created and the
+          // old one deleted.
+          expect(second.id).not.toEqual(first.id)
+          expect(second.provider_id).toEqual("pp_system_default_2")
+
+          const {
+            data: [updatedPaymentCollection],
+          } = await query.graph({
+            entity: "payment_collection",
+            filters: { id: paymentCollection.id },
+            fields: [
+              "id",
+              "payment_sessions.id",
+              "payment_sessions.provider_id",
+            ],
+          })
+
+          expect(updatedPaymentCollection.payment_sessions).toHaveLength(1)
+          expect(updatedPaymentCollection.payment_sessions[0]).toEqual(
+            expect.objectContaining({
+              id: second.id,
+              provider_id: "pp_system_default_2",
             })
           )
         })

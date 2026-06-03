@@ -6,7 +6,6 @@ import {
 import { isPresent, Modules } from "@medusajs/framework/utils"
 import {
   createWorkflow,
-  parallelize,
   transform,
   when,
   WorkflowData,
@@ -14,8 +13,8 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import {
+  createOrUpdatePaymentSessionStep,
   createPaymentAccountHolderStep,
-  createPaymentSessionStep,
 } from "../steps"
 import { deletePaymentSessionsWorkflow } from "./delete-payment-sessions"
 
@@ -182,26 +181,43 @@ export const createPaymentSessionsWorkflow = createWorkflow(
       }
     )
 
-    const deletePaymentSessionInput = transform(
-      { paymentCollection },
-      (data) => {
+    // Reuse an existing unconfirmed session for the same provider/currency by
+    // updating its amount in place (keeping the same provider payment, e.g. the
+    // same Stripe PaymentIntent) instead of always deleting and recreating it.
+    // This must run BEFORE the delete so the reused session can be excluded from
+    // deletion.
+    const resolveInput = transform(
+      { paymentSessionInput, paymentCollection },
+      ({ paymentSessionInput, paymentCollection }) => {
         return {
-          ids:
-            data.paymentCollection?.payment_sessions?.map((ps) => ps.id) || [],
+          ...paymentSessionInput,
+          existing_sessions: paymentCollection?.payment_sessions ?? [],
         }
       }
     )
 
-    // Note: We are deleting an existing active session before creating a new one
-    // for a payment collection as we don't support split payments at the moment.
-    // When we are ready to accept split payments, this along with other workflows
-    // need to be handled correctly
-    const [created] = parallelize(
-      createPaymentSessionStep(paymentSessionInput),
-      deletePaymentSessionsWorkflow.runAsStep({
-        input: deletePaymentSessionInput,
-      })
+    const resolved = createOrUpdatePaymentSessionStep(resolveInput)
+
+    // Note: We delete every OTHER existing session (we don't support split
+    // payments at the moment); the reused session, if any, is excluded so its
+    // provider payment survives. When we are ready to accept split payments,
+    // this along with other workflows need to be handled correctly.
+    const deletePaymentSessionInput = transform(
+      { paymentCollection, resolved },
+      ({ paymentCollection, resolved }) => {
+        const ids = (
+          paymentCollection?.payment_sessions?.map((ps) => ps.id) || []
+        ).filter((id) => id !== resolved.reused_session_id)
+
+        return { ids }
+      }
     )
+
+    deletePaymentSessionsWorkflow.runAsStep({
+      input: deletePaymentSessionInput,
+    })
+
+    const created = transform({ resolved }, ({ resolved }) => resolved.session)
 
     return new WorkflowResponse(created)
   }
