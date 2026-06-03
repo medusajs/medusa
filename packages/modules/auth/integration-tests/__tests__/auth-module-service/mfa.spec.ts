@@ -118,9 +118,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           otpauth_url: expect.stringContaining("otpauth://totp/"),
           secret: expect.any(String),
         })
-        expect(setup.otpauth_url).toContain(
-          "Medusa%20Test:Authenticator%20app"
-        )
+        expect(setup.otpauth_url).toContain("Medusa%20Test:Authenticator%20app")
         expect(setup.otpauth_url).toContain("issuer=Medusa%20Test")
         expect(setup.mfa).not.toHaveProperty("secret")
         expect(setup.mfa).not.toHaveProperty("provider_metadata")

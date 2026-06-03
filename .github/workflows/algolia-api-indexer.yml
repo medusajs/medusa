@@ -20,6 +20,7 @@ jobs:
           cache: yarn
 
       - name: Install dependencies
+        working-directory: www
         run: yarn install --frozen-lockfile
 
       - name: Run Algolia indexer

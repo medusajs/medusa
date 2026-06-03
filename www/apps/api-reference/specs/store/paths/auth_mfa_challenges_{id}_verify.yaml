@@ -11,6 +11,9 @@ post:
 
     subsequent requests.
   x-authenticated: false
+  externalDocs:
+    description: Learn more about MFA in Medusa
+    url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
   parameters:
     - name: id
       in: path

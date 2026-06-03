@@ -90,11 +90,11 @@ const loadReferencesFile = unstable_cache(async (slug: string[]) => {
   // (it starts with /www/...) so path math in the link-fixer plugins is correct.
   // getFileSlugSync failures are now caught in fixLinkUtil, so fs unavailability
   // in Workers degrades gracefully to path-based URLs instead of throwing.
-  const pluginOptions = process.env.CLOUDFLARE_ENV
+  const pluginOptions = r2Base
     ? {
         filePath: fileDetails.filePath,
         basePath: "/www/apps/resources",
-        r2BaseUrl: process.env.NEXT_PUBLIC_REFERENCES_R2_BASE_URL,
+        r2BaseUrl: r2Base,
       }
     : {
         filePath: localPath,
