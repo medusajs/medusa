@@ -92,7 +92,7 @@ export const ProductMediaGallery = ({ product }: ProductMediaGalleryProps) => {
         ?.filter((i) => i.id !== current.id)
         .map((i) => ({ id: i.id, url: i.url })) || []
 
-    if (curr === media.length - 1) {
+    if (curr > 0 && curr === media.length - 1) {
       setCurr((prev) => prev - 1)
     }
 
