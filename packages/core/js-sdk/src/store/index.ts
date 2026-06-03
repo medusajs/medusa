@@ -359,7 +359,7 @@ export class Store {
 
   /**
    * @tags product
-   * @since 2.13.0
+   * @since 2.16.0
    */
   public productOption = {
     /**

@@ -33,7 +33,7 @@ export type ProcessProductOptionsForImportInput = {
  * 2. Transforms `product.options` in the input to `product.option_ids`.
  * 3. Transforms variant options from `{title: value}` to `{optionId: value}`.
  * 
- * @since 2.13.0
+ * @since 2.16.0
  * 
  * @example
  * const data = processProductOptionsForImportStep({

@@ -5,7 +5,7 @@ import ProductOptionValue from "./product-option-value"
 import ProductProductOptionValue from "./product-product-option-value"
 
 /**
- * @since 2.13.0
+ * @since 2.16.0
  */
 const ProductProductOption = model.define("ProductProductOption", {
   id: model.id({ prefix: "prodopt" }).primaryKey(),

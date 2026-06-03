@@ -7,12 +7,12 @@ const ProductOption = model
     id: model.id({ prefix: "opt" }).primaryKey(),
     title: model.text().searchable().translatable(),
     /**
-     * @since 2.13.0
+     * @since 2.16.0
      */
     is_exclusive: model.boolean().default(false),
     metadata: model.json().nullable(),
     /**
-     * @since 2.13.0
+     * @since 2.16.0
      */
     products: model.manyToMany(() => Product),
     values: model.hasMany(() => ProductOptionValue, {

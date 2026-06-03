@@ -1442,7 +1442,7 @@ export interface IProductModuleService extends IModuleService {
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<{ id: string; }>} The ID of the relation between the product option and the product.
    * 
-   * @since 2.13.0
+   * @since 2.16.0
    *
    * @example
    * const productOptionProductId =
@@ -1468,7 +1468,7 @@ export interface IProductModuleService extends IModuleService {
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<{ id: string; }[]>} The IDs of the relations between each of the product option and product pairs.
    * 
-   * @since 2.13.0
+   * @since 2.16.0
    *
    * @example
    * const productOptionProductIds =
@@ -1498,7 +1498,7 @@ export interface IProductModuleService extends IModuleService {
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the product option is removed from the product successfully.
    * 
-   * @since 2.13.0
+   * @since 2.16.0
    *
    * @example
    * await productModuleService.removeProductOptionFromProduct({
@@ -1518,7 +1518,7 @@ export interface IProductModuleService extends IModuleService {
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the product options are removed from the products successfully.
    * 
-   * @since 2.13.0
+   * @since 2.16.0
    *
    * @example
    * await productModuleService.removeProductOptionFromProduct([
@@ -1540,7 +1540,7 @@ export interface IProductModuleService extends IModuleService {
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the product option values are updated successfully.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    *
    * @example
    * await productModuleService.updateProductOptionValuesOnProduct({
@@ -1562,7 +1562,7 @@ export interface IProductModuleService extends IModuleService {
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the product option values are updated successfully.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    *
    * @example
    * await productModuleService.updateProductOptionValuesOnProduct([

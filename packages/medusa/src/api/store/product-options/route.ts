@@ -6,7 +6,7 @@ import {
 } from "@medusajs/framework/http"
 
 /**
- * @since 2.13.0
+ * @since 2.16.0
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.StoreProductOptionListParams>,

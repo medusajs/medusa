@@ -84,7 +84,7 @@ export const createAndLinkProductOptionsToProductWorkflowId =
  * You can also use this workflow within your customizations or your own custom workflows, allowing you
  * to wrap custom logic around product-option and product association.
  *
- * @since 2.13.0
+ * @since 2.16.0
  *
  * @example
  * const { result } = await createAndLinkProductOptionsToProductWorkflow(container)

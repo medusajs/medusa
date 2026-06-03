@@ -496,7 +496,7 @@ export interface AdminUpdateProduct {
   /**
    * The IDs of the associated product options.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    */
   option_ids?: string[]
   /**
@@ -567,7 +567,7 @@ export interface AdminCreateProductOption {
    * The rank for each option value. The keys are the option values,
    * and the values are their respective ranks.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    *
    * @example
    * {
@@ -581,7 +581,7 @@ export interface AdminCreateProductOption {
    * Whether the option is exclusive to a specific product,
    * or can be shared across multiple products.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    */
   is_exclusive?: boolean
 }
@@ -614,7 +614,7 @@ export interface AdminUpdateProductOption {
    * The rank for each option value. The keys are the option values,
    * and the values are their respective ranks.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    *
    * @example
    * {
@@ -628,7 +628,7 @@ export interface AdminUpdateProductOption {
    * Whether the option is exclusive to a specific product,
    * or can be shared across multiple products.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    */
   is_exclusive?: boolean
   /**

@@ -567,7 +567,7 @@ export interface ProductOptionDTO {
   /**
    * Whether the product option is exclusive to a product or shared across products.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    */
   is_exclusive: boolean
   /**
@@ -773,7 +773,7 @@ export interface FilterableProductProps
   /**
    * Filters on a product's options.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    */
   options?: {
     /**
@@ -805,13 +805,13 @@ export interface FilterableProductProps
   /**
    * Filter a product by the ID of the associated option
    *
-   * @since 2.13.0
+   * @since 2.16.0
    */
   option_id?: string | string[] | OperatorMap<string | string[]>
   /**
    * Filter a product by the IDs of the associated option values.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    */
   option_value_id?: string | string[]
   /**
@@ -910,7 +910,7 @@ export interface FilterableProductOptionProps
   /**
    * Filter the product options by whether they are exclusive to a product or shared across products.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    */
   is_exclusive?: boolean
 }
@@ -1303,19 +1303,19 @@ export interface CreateProductOptionDTO {
   /**
    * The rank for each option value. The key is the option value, and the value is the rank.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    */
   ranks?: Record<string, number>
   /**
    * Whether the product option is exclusive to a product or shared across products.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    */
   is_exclusive?: boolean
   /**
    * The metadata of the product option.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    */
   metadata?: MetadataType
 }
@@ -1328,7 +1328,7 @@ export interface CreateProductOptionValueDTO {
   /**
    * The rank of the product option value among other option values.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    */
   rank?: number
   /**
@@ -1363,7 +1363,7 @@ export interface UpdateProductOptionDTO {
   /**
    * The rank for each option value. The key is the option value, and the value is the rank.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    *
    * @example
    * {
@@ -1376,13 +1376,13 @@ export interface UpdateProductOptionDTO {
   /**
    * Whether the product option is exclusive to a product or shared across products.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    */
   is_exclusive?: boolean
   /**
    * The metadata of the product option.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    */
   metadata?: MetadataType
 }

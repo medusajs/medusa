@@ -355,7 +355,7 @@ export interface BaseProductOptionValue {
   /**
    * The value's rank among other option values.
    *
-   * @since 2.13.0
+   * @since 2.16.0
    */
   rank?: number
   /**
@@ -433,13 +433,13 @@ export interface BaseProductListParams
   /**
    * Filter by the product's option(s).
    *
-   * @since 2.13.0
+   * @since 2.16.0
    */
   option_id?: string | string[]
   /**
    * Filter by the product's option value(s).
    *
-   * @since 2.13.0
+   * @since 2.16.0
    */
   option_value_id?: string | string[]
   /**

@@ -1158,7 +1158,7 @@ export class Product {
    * [Batch Product Product Options](https://docs.medusajs.com/api/admin#products_postproductsidoptionsbatch)
    * API route.
    * 
-   * @since 2.13.0
+   * @since 2.16.0
    *
    * @param productId - The product's ID.
    * @param body - The options to add or remove.

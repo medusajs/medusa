@@ -11,7 +11,7 @@ import { HttpTypes } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 /**
- * @since 2.13.0
+ * @since 2.16.0
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest<{}, HttpTypes.SelectParams>,
@@ -30,7 +30,7 @@ export const GET = async (
 }
 
 /**
- * @since 2.13.0
+ * @since 2.16.0
  */
 export const POST = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminUpdateProductOption>,

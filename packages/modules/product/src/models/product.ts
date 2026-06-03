@@ -116,7 +116,7 @@ const Product = model
       pivotEntity: () => ProductProductOption,
     }),
     /**
-     * @since 2.13.0
+     * @since 2.16.0
      */
     product_options: model.hasMany(() => ProductProductOption, {
       mappedBy: "product",
