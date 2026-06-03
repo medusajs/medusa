@@ -3,7 +3,7 @@ export const generatedEditDates = {
   "app/commerce-modules/auth/auth-providers/page.mdx": "2025-05-20T07:51:40.707Z",
   "app/commerce-modules/auth/authentication-route/page.mdx": "2025-11-24T07:39:10.358Z",
   "app/commerce-modules/auth/examples/page.mdx": "2024-10-15T15:02:13.794Z",
-  "app/commerce-modules/auth/module-options/page.mdx": "2026-06-02T13:42:43.235Z",
+  "app/commerce-modules/auth/module-options/page.mdx": "2026-06-03T19:24:44.301Z",
   "app/commerce-modules/auth/page.mdx": "2026-06-02T13:27:46.634Z",
   "app/commerce-modules/cart/_events/_events-table/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/cart/_events/page.mdx": "2024-07-03T19:27:13+03:00",
@@ -7573,7 +7573,7 @@ export const generatedEditDates = {
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleResponse/page.mdx": "2026-06-01T09:05:14.510Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateRbacPolicy/page.mdx": "2026-06-01T09:05:14.500Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateRbacRole/page.mdx": "2026-06-01T09:05:14.493Z",
-  "app/commerce-modules/auth/mfa/page.mdx": "2026-06-03T10:20:33.794Z",
+  "app/commerce-modules/auth/mfa/page.mdx": "2026-06-03T19:24:39.126Z",
   "app/commerce-modules/auth/email-verification/page.mdx": "2026-06-02T11:04:44.946Z",
   "app/storefront-development/customers/verify-account/page.mdx": "2026-06-02T11:24:01.444Z",
   "references/events/Auth/variables/events.Auth.AuthEvents/page.mdx": "2026-06-03T06:24:01.642Z"
