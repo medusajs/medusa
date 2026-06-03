@@ -471,6 +471,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "path": "/commerce-modules/auth/authentication-route",
               "title": "Auth Flow with Routes",
               "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/auth/mfa",
+              "title": "Multi-Factor Authentication",
+              "children": []
             }
           ]
         },

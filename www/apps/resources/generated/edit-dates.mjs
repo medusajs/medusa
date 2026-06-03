@@ -1,10 +1,10 @@
 export const generatedEditDates = {
-  "app/commerce-modules/auth/auth-providers/emailpass/page.mdx": "2026-05-28T14:14:41.828Z",
+  "app/commerce-modules/auth/auth-providers/emailpass/page.mdx": "2026-06-02T13:37:00.779Z",
   "app/commerce-modules/auth/auth-providers/page.mdx": "2025-05-20T07:51:40.707Z",
   "app/commerce-modules/auth/authentication-route/page.mdx": "2025-11-24T07:39:10.358Z",
   "app/commerce-modules/auth/examples/page.mdx": "2024-10-15T15:02:13.794Z",
-  "app/commerce-modules/auth/module-options/page.mdx": "2026-06-01T13:10:26.848Z",
-  "app/commerce-modules/auth/page.mdx": "2026-06-01T13:11:08.721Z",
+  "app/commerce-modules/auth/module-options/page.mdx": "2026-06-02T13:42:43.235Z",
+  "app/commerce-modules/auth/page.mdx": "2026-06-02T13:27:46.634Z",
   "app/commerce-modules/cart/_events/_events-table/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/cart/_events/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/cart/concepts/page.mdx": "2025-12-10T13:46:32.697Z",
@@ -809,8 +809,8 @@ export const generatedEditDates = {
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminClaimPreviewResponse/page.mdx": "2026-04-30T16:36:25.957Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminOrderEditPreviewResponse/page.mdx": "2026-04-30T16:36:26.468Z",
   "references/types/interfaces/types.BaseClaim/page.mdx": "2026-04-30T16:36:25.696Z",
-  "app/commerce-modules/auth/auth-providers/github/page.mdx": "2025-01-13T11:31:35.361Z",
-  "app/commerce-modules/auth/auth-providers/google/page.mdx": "2025-01-13T11:31:35.361Z",
+  "app/commerce-modules/auth/auth-providers/github/page.mdx": "2026-06-02T13:37:04.314Z",
+  "app/commerce-modules/auth/auth-providers/google/page.mdx": "2026-06-02T13:37:07.825Z",
   "app/storefront-development/customers/third-party-login/page.mdx": "2025-11-26T10:42:33.123Z",
   "references/types/HttpTypes/types/types.HttpTypes.AdminWorkflowRunResponse/page.mdx": "2024-12-09T13:21:34.761Z",
   "references/types/HttpTypes/types/types.HttpTypes.BatchResponse/page.mdx": "2026-01-06T15:55:02.329Z",
@@ -7573,6 +7573,7 @@ export const generatedEditDates = {
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleResponse/page.mdx": "2026-06-01T09:05:14.510Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateRbacPolicy/page.mdx": "2026-06-01T09:05:14.500Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateRbacRole/page.mdx": "2026-06-01T09:05:14.493Z",
+  "app/commerce-modules/auth/mfa/page.mdx": "2026-06-02T13:48:59.663Z",
   "app/commerce-modules/auth/email-verification/page.mdx": "2026-06-02T11:04:44.946Z",
   "app/storefront-development/customers/verify-account/page.mdx": "2026-06-02T11:24:01.444Z"
 }

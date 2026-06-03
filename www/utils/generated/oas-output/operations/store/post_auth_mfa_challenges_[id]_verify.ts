@@ -8,6 +8,9 @@
  *   completes the authentication flow and returns a JWT token that can be used to authenticate
  *   subsequent requests.
  * x-authenticated: false
+ * externalDocs:
+ *   description: Learn more about MFA in Medusa
+ *   url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
  * parameters:
  *   - name: id
  *     in: path
