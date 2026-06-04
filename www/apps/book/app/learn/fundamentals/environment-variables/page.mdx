@@ -201,7 +201,7 @@ You should opt for setting configurations in `medusa-config.ts` where possible. 
     <Table.Row>
       <Table.Cell>`JWT_SECRET`</Table.Cell>
       <Table.Cell>
-        A random string used to create authentication tokens in the http layer. Only used if [projectConfig.http.jwtSecret](../../configurations/medusa-config/page.mdx#http-jwtSecret-1-3) isn't set in `medusa-config.ts`.
+        A random string used to create authentication tokens in the http layer. Only used if [projectConfig.http.jwtSecret](../../configurations/medusa-config/page.mdx#http-jwtSecret-1-3) isn't set in `medusa-config.ts`. **Required in production environments.**
       </Table.Cell>
       <Table.Cell>
         \-
@@ -212,7 +212,7 @@ You should opt for setting configurations in `medusa-config.ts` where possible. 
         `COOKIE_SECRET`
       </Table.Cell>
       <Table.Cell>
-        A random string used to create cookie tokens in the http layer. Only used if [projectConfig.http.cookieSecret](../../configurations/medusa-config/page.mdx#http-cookieSecret-1-5) isn't set in `medusa-config.ts`.
+        A random string used to create cookie tokens in the http layer. Only used if [projectConfig.http.cookieSecret](../../configurations/medusa-config/page.mdx#http-cookieSecret-1-5) isn't set in `medusa-config.ts`. **Required in production environments.**
       </Table.Cell>
       <Table.Cell>
         \-
