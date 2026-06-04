@@ -198,6 +198,136 @@ describe("defineConfig", function () {
     )
   })
 
+  it("should include auth mfa encryption key when auth options are customized", function () {
+    const originalEnv = { ...process.env }
+    process.env.AUTH_MFA_ENCRYPTION_KEY = "test-mfa-key"
+
+    let config!: ReturnType<typeof defineConfig>
+    try {
+      config = defineConfig({
+        modules: [
+          {
+            resolve: "@medusajs/medusa/auth",
+            options: {
+              providers: [
+                {
+                  resolve: "@medusajs/medusa/auth-emailpass",
+                  id: "emailpass",
+                  options: {
+                    require_verification: true,
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      })
+    } finally {
+      process.env = { ...originalEnv }
+    }
+
+    expect(config.modules?.[Modules.AUTH]).toEqual(
+      expect.objectContaining({
+        options: expect.objectContaining({
+          mfa: {
+            encryption_key: "test-mfa-key",
+          },
+          providers: [
+            {
+              resolve: "@medusajs/medusa/auth-emailpass",
+              id: "emailpass",
+              options: {
+                require_verification: true,
+              },
+            },
+          ],
+        }),
+      })
+    )
+  })
+
+  it("should include auth mfa encryption key when object-style auth options are customized", function () {
+    const originalEnv = { ...process.env }
+    process.env.AUTH_MFA_ENCRYPTION_KEY = "test-mfa-key"
+
+    let config!: ReturnType<typeof defineConfig>
+    try {
+      config = defineConfig({
+        modules: {
+          auth: {
+            options: {
+              providers: [
+                {
+                  resolve: "@medusajs/medusa/auth-emailpass",
+                  id: "emailpass",
+                  options: {
+                    require_verification: true,
+                  },
+                },
+              ],
+            },
+          },
+        },
+      })
+    } finally {
+      process.env = { ...originalEnv }
+    }
+
+    expect(config.modules?.[Modules.AUTH]).toEqual(
+      expect.objectContaining({
+        options: expect.objectContaining({
+          mfa: {
+            encryption_key: "test-mfa-key",
+          },
+          providers: [
+            {
+              resolve: "@medusajs/medusa/auth-emailpass",
+              id: "emailpass",
+              options: {
+                require_verification: true,
+              },
+            },
+          ],
+        }),
+      })
+    )
+  })
+
+  it("should preserve custom auth mfa encryption key", function () {
+    const originalEnv = { ...process.env }
+    process.env.AUTH_MFA_ENCRYPTION_KEY = "test-mfa-key"
+
+    let config!: ReturnType<typeof defineConfig>
+    try {
+      config = defineConfig({
+        modules: [
+          {
+            resolve: "@medusajs/medusa/auth",
+            options: {
+              mfa: {
+                encryption_key: "custom-mfa-key",
+                challenge_ttl_seconds: 600,
+              },
+            },
+          },
+        ],
+      })
+    } finally {
+      process.env = { ...originalEnv }
+    }
+
+    expect(config.modules?.[Modules.AUTH]).toEqual(
+      expect.objectContaining({
+        options: expect.objectContaining({
+          mfa: {
+            encryption_key: "custom-mfa-key",
+            challenge_ttl_seconds: 600,
+          },
+        }),
+      })
+    )
+  })
+
   it("should merge custom modules", function () {
     expect(
       defineConfig({
