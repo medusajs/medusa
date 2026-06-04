@@ -471,6 +471,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "path": "/commerce-modules/auth/authentication-route",
               "title": "Auth Flow with Routes",
               "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/auth/mfa",
+              "title": "Multi-Factor Authentication",
+              "children": []
             }
           ]
         },
@@ -531,6 +539,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "title": "Phone Authentication",
               "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/phone-auth",
               "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/auth/email-verification",
+              "title": "Send Email Verification",
+              "children": []
             }
           ]
         },
@@ -566,6 +582,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "ref",
               "title": "Register Customer in Storefront",
               "path": "https://docs.medusajs.com/resources/storefront-development/customers/register",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Register Customer with Email Verification in Storefront",
+              "path": "https://docs.medusajs.com/resources/storefront-development/customers/verify-account",
               "children": []
             },
             {
@@ -2766,6 +2790,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "ref",
               "title": "Register Customer in Storefront",
               "path": "https://docs.medusajs.com/resources/storefront-development/customers/register",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Register Customer with Email Verification in Storefront",
+              "path": "https://docs.medusajs.com/resources/storefront-development/customers/verify-account",
               "children": []
             },
             {

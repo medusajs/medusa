@@ -9,6 +9,9 @@
  *   secret and an `otpauth_url` for TOTP) that can be used to display a QR code. The factor must
  *   then be verified via the verify endpoint before it can be used.
  * x-authenticated: true
+ * externalDocs:
+ *   description: Learn more about MFA in Medusa
+ *   url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
  * parameters: []
  * requestBody:
  *   content:

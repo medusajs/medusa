@@ -916,7 +916,7 @@ export default class AuthModuleService
 
     const factorMethods = Array.from(
       new Set(
-        factors.map((factor) => factor.provider as AuthTypes.AuthMfaProvider)
+        factors.map((factor) => factor.provider as AuthTypes.AuthMfaProviderMethod)
       )
     )
 

@@ -15,6 +15,9 @@ post:
     a safe place. At least one enabled MFA factor is required to generate
     recovery codes.
   x-authenticated: true
+  externalDocs:
+    description: Learn more about MFA in Medusa
+    url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
   parameters: []
   requestBody:
     content:

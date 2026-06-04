@@ -182,6 +182,13 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/translation/concepts
     x-associatedSchema:
       $ref: '#/components/schemas/AdminLocale'
+  - name: Multi-Factor Authentication
+    description: |
+      Multi-factor authentication (MFA) adds an extra layer of security to admin accounts by requiring additional verification factors during login, such as a TOTP code or a recovery code.
+      These API routes allow admin users to manage their MFA factors, challenges, and recovery codes.
+    externalDocs:
+      description: Learn more about MFA in Medusa
+      url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
   - name: Notifications
     description: |
       A notification informs an admin user of store changes or status changes of background tasks.
@@ -67672,6 +67679,9 @@ paths:
         Verify a multi-factor authentication (MFA) challenge issued during login. On success, this
         completes the authentication flow and returns a JWT token that can be used to authenticate
         subsequent requests.
+      externalDocs:
+        description: Learn more about MFA in Medusa
+        url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
       x-authenticated: false
       parameters:
         - name: id
@@ -67806,6 +67816,9 @@ paths:
         secret and an `otpauth_url` for TOTP) that can be used to display a QR code. The factor must
         then be verified via the verify endpoint before it can be used.
       x-authenticated: true
+      externalDocs:
+        description: Learn more about MFA in Medusa
+        url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
       parameters: []
       requestBody:
         content:
@@ -67955,6 +67968,9 @@ paths:
         it. A successful verification enables the factor, after which it can be used to verify MFA
         challenges during login.
       x-authenticated: true
+      externalDocs:
+        description: Learn more about MFA in Medusa
+        url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
       parameters:
         - name: id
           in: path
@@ -68029,6 +68045,9 @@ paths:
         factor. Generating new codes replaces any previously issued codes, so they should be stored in
         a safe place. At least one enabled MFA factor is required to generate recovery codes.
       x-authenticated: true
+      externalDocs:
+        description: Learn more about MFA in Medusa
+        url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
       parameters: []
       requestBody:
         content:
