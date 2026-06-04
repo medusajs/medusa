@@ -1,7 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 import { Button, Hint, Label, toast, Tooltip } from "@medusajs/ui"
 import { InformationCircle } from "@medusajs/icons"
-import { useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
@@ -13,7 +13,6 @@ import { useExtendableForm } from "../../../../../dashboard-app"
 import {
   productOptionsQueryKeys,
   useLinkProductOptions,
-  useProductOptions,
 } from "../../../../../hooks/api"
 import { useExtension } from "../../../../../providers/extension-provider"
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
@@ -70,8 +69,6 @@ export const ProductOptionsManageForm = ({
   const { getFormConfigs } = useExtension()
   const configs = getFormConfigs("product", "edit")
 
-  const productOptionIds = product.options?.map((opt) => opt.id) || []
-
   const form = useExtendableForm({
     defaultValues: {
       options:
@@ -91,79 +88,81 @@ export const ProductOptionsManageForm = ({
     data: product,
   })
 
-  const formOptions = form.watch("options") || []
+  const watchedOptions = form.watch("options")
+  const formOptions = useMemo(() => watchedOptions ?? [], [watchedOptions])
   const selectedOptionIds = useMemo(
     () =>
       formOptions.map((option) => option.id).filter((id): id is string => !!id),
     [formOptions]
   )
-  const selectedExistingOptionIds = useMemo(
-    () => selectedOptionIds.filter((id) => !isLocalOptionId(id)),
-    [selectedOptionIds]
-  )
-  const optionIdsForQuery = useMemo(
-    () =>
-      Array.from(new Set([...productOptionIds, ...selectedExistingOptionIds])),
-    [productOptionIds, selectedExistingOptionIds]
-  )
 
-  const { options: productOptionChoices, isLoading } = useComboboxData({
-    queryKey: productOptionsQueryKeys.list({
-      is_exclusive: false,
-      id: optionIdsForQuery,
-    }),
+  // Stable picker query for global (non-exclusive) options.
+  const productOptionsCombobox = useComboboxData({
+    queryKey: productOptionsQueryKeys.list({ is_exclusive: false }),
     queryFn: (params) =>
       sdk.admin.productOption.list({
         ...params,
-        ...(optionIdsForQuery.length
-          ? { $or: [{ is_exclusive: false }, { id: optionIdsForQuery }] }
-          : { is_exclusive: false }),
+        is_exclusive: false,
+        fields: "id,title,is_exclusive,values.id,values.value,values.rank",
       } as HttpTypes.AdminProductOptionListParams),
     getOptions: (data) =>
       data.product_options.map((option) => ({
         label: option.title,
         value: option.id,
+        option,
       })),
   })
 
-  const { product_options: fetchedOptions = [] } = useProductOptions(
-    {
-      id: selectedExistingOptionIds,
-      limit: selectedExistingOptionIds.length,
-    },
-    {
-      enabled: !!selectedExistingOptionIds.length,
-    }
+  // Accumulate full option details as they appear in the picker pages.
+  // Accumulating (rather than reading only the current page) keeps a selected
+  // option's values available even if a later search filters it out of the
+  // current results. A new Map is only created when something actually changed.
+  const [accumulatedOptionDetails, setAccumulatedOptionDetails] = useState(
+    () => new Map<string, ManageOption>()
   )
+
+  useEffect(() => {
+    setAccumulatedOptionDetails((prev) => {
+      let next: Map<string, ManageOption> | undefined
+
+      for (const choice of productOptionsCombobox.options) {
+        if (choice.option && prev.get(choice.value) !== choice.option) {
+          next ??= new Map(prev)
+          next.set(choice.value, choice.option)
+        }
+      }
+
+      return next ?? prev
+    })
+  }, [productOptionsCombobox.options])
+
+  // The product's already-linked options (incl. exclusive ones that never
+  // appear in the global-only picker) seed the lookup; the accumulated picker
+  // details take precedence so global options expose their full value set.
   const optionDetailsById = useMemo(() => {
     const merged = new Map<string, ManageOption>()
-
-    product.options?.forEach((option) => {
-      merged.set(option.id, option)
-    })
-    fetchedOptions.forEach((option) => {
-      merged.set(option.id, option)
-    })
-
+    product.options?.forEach((option) => merged.set(option.id, option))
+    accumulatedOptionDetails.forEach((option, id) => merged.set(id, option))
     return merged
-  }, [fetchedOptions, product.options])
+  }, [accumulatedOptionDetails, product.options])
 
   const optionChoices = useMemo(() => {
     const merged = new Map<string, { label: string; value: string }>()
-
-    productOptionChoices.forEach((option) => {
+    productOptionsCombobox.options.forEach((option) =>
       merged.set(option.value, option)
+    )
+
+    // Ensure every option already in the form (the product's linked options,
+    // selected existing options, and locally-created ones) has a label entry so
+    // its chip resolves even when it's not on the current page / search result.
+    formOptions.forEach((option) => {
+      if (option.id && !merged.has(option.id)) {
+        merged.set(option.id, { label: option.title, value: option.id })
+      }
     })
-    formOptions
-      .filter((option) => isLocalOptionId(option.id))
-      .forEach((option) => {
-        if (option.id && !merged.has(option.id)) {
-          merged.set(option.id, { label: option.title, value: option.id })
-        }
-      })
 
     return [...merged.values()]
-  }, [formOptions, productOptionChoices])
+  }, [formOptions, productOptionsCombobox.options])
 
   const { mutateAsync, isPending } = useLinkProductOptions(product.id)
 
@@ -285,9 +284,9 @@ export const ProductOptionsManageForm = ({
 
     form.setValue(
       "options",
-      currentOptions.map((entry) =>
-        entry.id === option.id ? { ...entry, values: nextValues } : entry
-      )
+      currentOptions.map((entry) => {
+        return entry.id === option.id ? { ...entry, values: nextValues } : entry
+      })
     )
   }
 
@@ -471,6 +470,14 @@ export const ProductOptionsManageForm = ({
                         }
                         onBlur={field.onBlur}
                         options={optionChoices}
+                        searchValue={productOptionsCombobox.searchValue}
+                        onSearchValueChange={
+                          productOptionsCombobox.onSearchValueChange
+                        }
+                        fetchNextPage={productOptionsCombobox.fetchNextPage}
+                        isFetchingNextPage={
+                          productOptionsCombobox.isFetchingNextPage
+                        }
                         shouldAlwaysShowCreateOption
                         onCreateOption={async (options) => {
                           const optionTitle = Array.isArray(options)
@@ -523,7 +530,7 @@ export const ProductOptionsManageForm = ({
                           ])
                         }}
                         placeholder={t("products.options.manage.placeholder")}
-                        disabled={isLoading}
+                        disabled={productOptionsCombobox.isLoading}
                         displayMode="chips"
                       />
                     </Form.Control>
@@ -549,17 +556,16 @@ export const ProductOptionsManageForm = ({
                       optionDetails?.is_exclusive ??
                       option.is_exclusive ??
                       isLocalOptionId(option.id)
-                    const valueOptions =
-                      optionDetails?.values
-                        ?.sort((a, b) => {
-                          const rankA = a.rank ?? Number.MAX_VALUE
-                          const rankB = b.rank ?? Number.MAX_VALUE
-                          return rankA - rankB
-                        })
-                        .map((value) => ({
-                          value: value.id,
-                          label: value.value,
-                        })) || []
+                    const valueOptions = [...(optionDetails?.values ?? [])]
+                      .sort((a, b) => {
+                        const rankA = a.rank ?? Number.MAX_VALUE
+                        const rankB = b.rank ?? Number.MAX_VALUE
+                        return rankA - rankB
+                      })
+                      .map((value) => ({
+                        value: value.id,
+                        label: value.value,
+                      }))
 
                     const selectedValues = option.values || []
                     const valueOptionIds = new Set(
