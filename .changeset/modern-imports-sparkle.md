@@ -2,4 +2,4 @@
 "@medusajs/js-sdk": patch
 ---
 
-Fix extensionless RBAC imports in the ESM admin SDK entrypoint.
+fix(js-sdk): add explicit ESM extensions to RBAC admin imports
