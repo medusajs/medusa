@@ -35,7 +35,7 @@ export const generatedEditDates = {
   "app/discounts/page.mdx": "2024-05-03T17:36:38+03:00",
   "app/orders/exchanges/page.mdx": "2025-12-01T09:27:18.971Z",
   "app/products/create/page.mdx": "2026-01-21T07:54:24.381Z",
-  "app/products/edit/page.mdx": "2026-01-21T08:24:14.119Z",
+  "app/products/edit/page.mdx": "2026-06-04T06:35:04.744Z",
   "app/products/variants/page.mdx": "2025-12-16T13:01:11.706Z",
   "app/products/create/bundle/page.mdx": "2025-05-30T13:29:15.958Z",
   "app/products/create/multi-part/page.mdx": "2025-11-27T08:28:54.245Z",
@@ -69,5 +69,6 @@ export const generatedEditDates = {
   "app/loyalty/gift-cards/page.mdx": "2026-04-20T08:45:05.777Z",
   "app/loyalty/page.mdx": "2026-04-20T08:43:37.383Z",
   "app/loyalty/store-credits/manage/page.mdx": "2026-04-20T10:38:06.046Z",
-  "app/loyalty/store-credits/page.mdx": "2026-04-20T08:52:31.091Z"
+  "app/loyalty/store-credits/page.mdx": "2026-04-20T08:52:31.091Z",
+  "app/products/options/page.mdx": "2026-06-04T06:35:45.837Z"
 }
