@@ -507,7 +507,7 @@ export default class ProductModuleService
         { relations: ["options"] },
         sharedContext
       ),
-      this.#loadOptionsAndValuesByProductId(productIds, sharedContext),
+      this.loadOptionsAndValuesByProductId_(productIds, sharedContext),
     ])
 
     const productVariantsWithOptions =
@@ -665,7 +665,7 @@ export default class ProductModuleService
       new Set(variantsWithProductId.map((v) => v.product_id!))
     )
     const { optionsByProductId, valueIdsByProductId } = 
-      await this.#loadOptionsAndValuesByProductId(productIds, sharedContext)
+      await this.loadOptionsAndValuesByProductId_(productIds, sharedContext)
 
     const productVariantsWithOptions =
       ProductModuleService.assignOptionsToVariants(
@@ -3925,7 +3925,7 @@ export default class ProductModuleService
     }
   }
 
-  async #loadOptionsAndValuesByProductId(
+  protected async loadOptionsAndValuesByProductId_(
     productIds: string[],
     sharedContext: Context = {}
   ): Promise<{
