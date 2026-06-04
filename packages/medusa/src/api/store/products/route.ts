@@ -19,7 +19,8 @@ export const GET = async (
     if (
       isPresent(req.filterableFields.tags) ||
       isPresent(req.filterableFields.categories) ||
-      isPresent(req.filterableFields.option_value_id)
+      isPresent(req.filterableFields.option_value_id) ||
+      isPresent(req.filterableFields.options)
     ) {
       return await getProducts(req, res)
     }
