@@ -15,7 +15,7 @@ import {
   useWatch,
 } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import { Form } from "../../../../../../../components/common/form"
 import { SortableList } from "../../../../../../../components/common/sortable-list"
@@ -24,8 +24,10 @@ import { ChipInput } from "../../../../../../../components/inputs/chip-input"
 import { Combobox } from "../../../../../../../components/inputs/combobox"
 import { ProductCreateSchemaType } from "../../../../types"
 import { decorateVariantsWithDefaultValues } from "../../../../utils"
-import { useProductOptions } from "../../../../../../../hooks/api"
-import { AdminProductOption } from "@medusajs/types"
+import { productOptionsQueryKeys } from "../../../../../../../hooks/api"
+import { useComboboxData } from "../../../../../../../hooks/use-combobox-data"
+import { sdk } from "../../../../../../../lib/client"
+import { AdminProductOption, HttpTypes } from "@medusajs/types"
 
 type ProductCreateVariantsSectionProps = {
   form: UseFormReturn<ProductCreateSchemaType>
@@ -37,6 +39,12 @@ type ProductOptionFormValue = {
   id?: string
   value_ids?: string[]
 }
+
+// An option being assigned during create: either an existing option (full
+// detail) or a brand-new option captured as a title + value names.
+type SelectedOptionInput =
+  | Pick<AdminProductOption, "id" | "title" | "values">
+  | { title: string; values: string[] }
 
 const getPermutations = (
   data: { title: string; values: string[] }[]
@@ -98,25 +106,76 @@ export const ProductCreateVariantsSection = ({
   const showInvalidVariantsMessage =
     form.formState.errors.variants?.root?.message === "invalid_length"
 
-  const { product_options = [], isLoading } = useProductOptions({
-    is_exclusive: false,
+  const selectedExistingOptionIds = useMemo(
+    () =>
+      watchedOptions.map((opt) => opt.id).filter((id): id is string => !!id),
+    [watchedOptions]
+  )
+
+  const productOptionsCombobox = useComboboxData({
+    queryKey: productOptionsQueryKeys.list({ is_exclusive: false }),
+    queryFn: (params) =>
+      sdk.admin.productOption.list({
+        ...params,
+        is_exclusive: false,
+        fields: "id,title,values.id,values.value,values.rank",
+      } as HttpTypes.AdminProductOptionListParams),
+    getOptions: (data) =>
+      data.product_options.map((option) => ({
+        label: option.title,
+        value: option.id,
+        option,
+      })),
   })
 
+  // Accumulate the full option details as they appear in the picker pages.
+  // Accumulating (rather than reading only the current page) keeps a selected
+  // option's values available even if a later search filters it out of the
+  // current results.
+  const [optionDetailsById, setOptionDetailsById] = useState(
+    () => new Map<string, AdminProductOption>()
+  )
+
+  useEffect(() => {
+    setOptionDetailsById((prev) => {
+      let next: Map<string, AdminProductOption> | undefined
+
+      for (const choice of productOptionsCombobox.options) {
+        if (choice.option && prev.get(choice.value) !== choice.option) {
+          next ??= new Map(prev)
+          next.set(choice.value, choice.option)
+        }
+      }
+
+      return next ?? prev
+    })
+  }, [productOptionsCombobox.options])
+
+  const knownOptionIds = useMemo(() => {
+    const ids = new Set<string>(selectedExistingOptionIds)
+    productOptionsCombobox.options.forEach((option) => ids.add(option.value))
+    return ids
+  }, [selectedExistingOptionIds, productOptionsCombobox.options])
+
   const productOptionChoices = useMemo(() => {
-    const existingChoices = product_options.map((option) => ({
-      value: option.id,
-      label: option.title,
-    }))
+    const merged = new Map<string, { label: string; value: string }>()
+    productOptionsCombobox.options.forEach((option) =>
+      merged.set(option.value, option)
+    )
 
-    const newChoices = watchedOptions
-      .filter((opt) => !opt.id && opt.title)
-      .map((opt) => ({
-        value: opt.title,
-        label: opt.title,
-      }))
+    // Make sure every selected option (existing or newly typed) has a label
+    // entry, even when it isn't on the current page / search result — otherwise
+    // its chip can't resolve. Existing options are keyed by id, new ones by
+    // title.
+    watchedOptions.forEach((opt) => {
+      const value = opt.id || opt.title
+      if (value && !merged.has(value)) {
+        merged.set(value, { value, label: opt.title || value })
+      }
+    })
 
-    return [...existingChoices, ...newChoices]
-  }, [product_options, watchedOptions])
+    return [...merged.values()]
+  }, [productOptionsCombobox.options, watchedOptions])
 
   const selectedOptionValues = useMemo(() => {
     return watchedOptions.map((opt) => opt.id || opt.title)
@@ -124,22 +183,23 @@ export const ProductCreateVariantsSection = ({
 
   const handleProductOptionSelect = (optionValues: string[]) => {
     const existingOptionIds = optionValues.filter((val) =>
-      product_options.some((opt) => opt.id === val)
+      knownOptionIds.has(val)
     )
     const newOptionTitles = optionValues.filter(
-      (val) => !product_options.some((opt) => opt.id === val)
+      (val) => !knownOptionIds.has(val)
     )
 
-    const allSelectedOptions: Array<
-      AdminProductOption | { title: string; values: string[] }
-    > = []
-
-    const selectedProductOptions = product_options.filter((option) =>
-      existingOptionIds.includes(option.id)
-    )
-    allSelectedOptions.push(...selectedProductOptions)
+    const allSelectedOptions: SelectedOptionInput[] = []
 
     const watchedOptions = form.getValues("options")
+
+    existingOptionIds.forEach((id) => {
+      const details = optionDetailsById.get(id)
+      if (details) {
+        allSelectedOptions.push(details)
+      }
+    })
+
     watchedOptions.forEach((opt) => {
       if (!opt.id && opt.title && newOptionTitles.includes(opt.title)) {
         allSelectedOptions.push({
@@ -191,7 +251,7 @@ export const ProductCreateVariantsSection = ({
       return
     }
 
-    const productOption = product_options.find((opt) => opt.id === optionId)
+    const productOption = optionDetailsById.get(optionId)
     const existingValueIds = new Set(
       productOption?.values?.map((v) => v.id) || []
     )
@@ -246,15 +306,13 @@ export const ProductCreateVariantsSection = ({
   }
 
   const updateFormWithSelectedValues = (
-    selectedProductOptions: Array<
-      AdminProductOption | { title: string; values: string[] }
-    >,
+    selectedProductOptions: SelectedOptionInput[],
     valueSelections: Record<string, string[]>
   ) => {
     const newOptions: ProductOptionFormValue[] = selectedProductOptions.map(
       (option) => {
         if ("id" in option && option.id !== undefined) {
-          const existingOption = option as AdminProductOption
+          const existingOption = option
           const selectedValueIds = valueSelections[existingOption.id] || []
           const allValues = option.values || []
 
@@ -413,6 +471,11 @@ export const ProductCreateVariantsSection = ({
               value={selectedOptionValues}
               onChange={(value) => handleProductOptionSelect(value as string[])}
               options={productOptionChoices}
+              searchValue={productOptionsCombobox.searchValue}
+              onSearchValueChange={productOptionsCombobox.onSearchValueChange}
+              fetchNextPage={productOptionsCombobox.fetchNextPage}
+              isFetchingNextPage={productOptionsCombobox.isFetchingNextPage}
+              shouldAlwaysShowCreateOption
               onCreateOption={async (options) => {
                 const optionTitle = options[options.length - 1]?.trim()
 
@@ -420,17 +483,13 @@ export const ProductCreateVariantsSection = ({
                   return
                 }
 
-                const allSelectedOptions: Array<
-                  AdminProductOption | { title: string; values: string[] }
-                > = []
+                const allSelectedOptions: SelectedOptionInput[] = []
 
                 const valueSelections: Record<string, string[]> = {}
 
                 watchedOptions.forEach((opt) => {
                   if (opt.id) {
-                    const productOption = product_options.find(
-                      (p) => p.id === opt.id
-                    )
+                    const productOption = optionDetailsById.get(opt.id)
                     if (productOption) {
                       allSelectedOptions.push(productOption)
                       if (opt.value_ids) {
@@ -459,7 +518,7 @@ export const ProductCreateVariantsSection = ({
                 )
               }}
               placeholder={t("products.fields.options.optionTitlePlaceholder")}
-              disabled={isLoading}
+              disabled={productOptionsCombobox.isLoading}
               displayMode="chips"
             />
           </div>
@@ -472,9 +531,7 @@ export const ProductCreateVariantsSection = ({
               <div className="flex flex-col gap-y-3">
                 {watchedOptions.map((opt, index) => {
                   if (opt.id) {
-                    const productOption = product_options.find(
-                      (p) => p.id === opt.id
-                    )
+                    const productOption = optionDetailsById.get(opt.id)
 
                     const existingValues = productOption?.values || []
                     const customValueNames =
@@ -482,7 +539,7 @@ export const ProductCreateVariantsSection = ({
                         (v) => !existingValues.some((ev) => ev.value === v)
                       ) || []
 
-                    const existingValueOptions = existingValues
+                    const existingValueOptions = [...existingValues]
                       .sort((a, b) => {
                         const rankA = a.rank ?? Number.MAX_VALUE
                         const rankB = b.rank ?? Number.MAX_VALUE
