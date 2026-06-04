@@ -1128,4 +1128,77 @@ describe("IndexModuleService query", function () {
     })
     expect(sensitive).toEqual([])
   })
+
+  describe("special characters in @> containment filter values", () => {
+    const injectionPayloads = [
+      "'",
+      "'; SELECT pg_sleep(0)--",
+      "' OR 1=1--",
+      `\\' OR 1=1--`,
+    ]
+
+    it.each(injectionPayloads)(
+      "does not error and returns no matches for direct equality with payload: %s",
+      async (payload) => {
+        const { data } = await module.query({
+          fields: ["product.id", "product.title"],
+          filters: {
+            product: {
+              title: payload,
+            },
+          },
+        })
+
+        expect(data).toEqual([])
+      }
+    )
+
+    it.each(injectionPayloads)(
+      "does not error and returns no matches for $eq operator with payload: %s",
+      async (payload) => {
+        const { data } = await module.query({
+          fields: ["product.id", "product.title"],
+          filters: {
+            product: {
+              title: { $eq: payload },
+            },
+          },
+        })
+
+        expect(data).toEqual([])
+      }
+    )
+
+    it("matches a literal title containing a single quote", async () => {
+      const manager = (
+        (medusaApp.sharedContainer!.resolve(Modules.INDEX) as any).container_
+          .manager as EntityManager
+      ).fork()
+
+      const indexRepository = manager.getRepository(IndexData)
+      await manager.persistAndFlush(
+        indexRepository.create({
+          id: "prod_quote",
+          name: "Product",
+          data: {
+            id: "prod_quote",
+            title: "O'Reilly's Book",
+          },
+        })
+      )
+
+      const { data } = await module.query({
+        fields: ["product.id", "product.title"],
+        filters: {
+          product: {
+            title: "O'Reilly's Book",
+          },
+        },
+      })
+
+      expect(data).toEqual([
+        { id: "prod_quote", title: "O'Reilly's Book" },
+      ])
+    })
+  })
 })
