@@ -20,6 +20,7 @@ import {
   LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
+  PopulatePath,
   ReferenceKind,
 } from "@medusajs/deps/mikro-orm/core"
 import { SqlEntityManager } from "@medusajs/deps/mikro-orm/postgresql"
@@ -142,49 +143,49 @@ export class MikroOrmBaseRepository<const T extends object = object>
     })
   }
 
-  create(
+  async create(
     data: unknown[],
     context?: Context
   ): Promise<InferRepositoryReturnType<T>[]> {
     throw new Error("Method not implemented.")
   }
 
-  update(
+  async update(
     data: { entity; update }[],
     context?: Context
   ): Promise<InferRepositoryReturnType<T>[]> {
     throw new Error("Method not implemented.")
   }
 
-  delete(
+  async delete(
     idsOrPKs: FindOptions<T>["where"],
     context?: Context
   ): Promise<string[]> {
     throw new Error("Method not implemented.")
   }
 
-  find(
+  async find(
     options?: DAL.FindOptions<T>,
     context?: Context
   ): Promise<InferRepositoryReturnType<T>[]> {
     throw new Error("Method not implemented.")
   }
 
-  findAndCount(
+  async findAndCount(
     options?: DAL.FindOptions<T>,
     context?: Context
   ): Promise<[InferRepositoryReturnType<T>[], number]> {
     throw new Error("Method not implemented.")
   }
 
-  upsert(
+  async upsert(
     data: unknown[],
     context: Context = {}
   ): Promise<InferRepositoryReturnType<T>[]> {
     throw new Error("Method not implemented.")
   }
 
-  upsertWithReplace(
+  async upsertWithReplace(
     data: unknown[],
     config: UpsertWithReplaceConfig<InferRepositoryReturnType<T>> = {
       relations: [],
@@ -247,7 +248,7 @@ export class MikroOrmBaseTreeRepository<
     super(...arguments)
   }
 
-  find(
+  async find(
     options?: DAL.FindOptions,
     transformOptions?: RepositoryTransformOptions,
     context?: Context
@@ -255,7 +256,7 @@ export class MikroOrmBaseTreeRepository<
     throw new Error("Method not implemented.")
   }
 
-  findAndCount(
+  async findAndCount(
     options?: DAL.FindOptions,
     transformOptions?: RepositoryTransformOptions,
     context?: Context
@@ -263,21 +264,21 @@ export class MikroOrmBaseTreeRepository<
     throw new Error("Method not implemented.")
   }
 
-  create(
+  async create(
     data: unknown[],
     context?: Context
   ): Promise<InferRepositoryReturnType<T>[]> {
     throw new Error("Method not implemented.")
   }
 
-  update(
+  async update(
     data: unknown[],
     context?: Context
   ): Promise<InferRepositoryReturnType<T>[]> {
     throw new Error("Method not implemented.")
   }
 
-  delete(ids: string[], context?: Context): Promise<string[]> {
+  async delete(ids: string[], context?: Context): Promise<string[]> {
     throw new Error("Method not implemented.")
   }
 }
@@ -455,6 +456,42 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
       })
     }
 
+    /**
+     * Drop populate/fields entries that don't resolve to a property on the
+     * target entity. Medusa's query.graph layer can emit aliased field names
+     * and cross-module link relations (e.g. "inventory_items" on ProductVariant)
+     * that MikroORM has no metadata for.
+     */
+    private dropUnknownEntityPaths(
+      manager: EntityManager,
+      findOptions: DAL.FindOptions<T>
+    ): void {
+      const opts = findOptions.options
+      if (!opts) {
+        return
+      }
+      const populate = opts.populate as string[] | undefined
+      const fields = opts.fields as string[] | undefined
+      if (!populate?.length && !fields?.length) {
+        return
+      }
+      const meta = manager
+        .getDriver()
+        .getMetadata()
+        .get(this.entity as any)
+      const props = meta?.properties ?? {}
+      const isKnownHead = (path: string) => {
+        const head = path.split(/[.:]/, 1)[0]
+        return head === PopulatePath.ALL || head in props
+      }
+      if (populate?.length) {
+        opts.populate = populate.filter(isKnownHead) as typeof opts.populate
+      }
+      if (fields?.length) {
+        opts.fields = fields.filter(isKnownHead) as typeof opts.fields
+      }
+    }
+
     async find(
       options: DAL.FindOptions<T> = { where: {} } as DAL.FindOptions<T>,
       context?: Context
@@ -472,6 +509,8 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
           })
         }
       }
+
+      this.dropUnknownEntityPaths(manager, findOptions_)
 
       MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
         findOptions: findOptions_,
@@ -501,6 +540,8 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
           })
         }
       }
+
+      this.dropUnknownEntityPaths(manager, findOptions_)
 
       MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
         findOptions: findOptions_,
@@ -684,7 +725,7 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
         return mainEntity
       })
 
-      let {
+      const {
         orderedEntities: upsertedTopLevelEntities,
         performedActions: performedActions_,
       } = await this.upsertMany_(manager, this.entity.name, toUpsert)
@@ -701,7 +742,9 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
 
       config.relations?.forEach((relationName) => {
         const relation = allRelations?.find((r) => r.name === relationName)
-        if (!relation) return
+        if (!relation) {
+          return
+        }
 
         if (
           relation.kind === ReferenceKind.ONE_TO_ONE ||
