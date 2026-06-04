@@ -168,12 +168,13 @@ export class ApiLoader {
       return
     }
 
+    const isRbacEnabled = FeatureFlag.isFeatureEnabled("rbac")
     if (!route.methods) {
       this.#logger.debug(`registering global middleware for ${route.matcher}`)
 
       // Wrap with permission check if policies are defined
       let handlerToUse = route.handler
-      if (route.policies) {
+      if (route.policies && isRbacEnabled) {
         handlerToUse = wrapWithPoliciesCheck(route.handler, route.policies)
       }
 
@@ -204,7 +205,7 @@ export class ApiLoader {
       )
 
       let handlerToUse = route.handler
-      if (route.policies) {
+      if (route.policies && isRbacEnabled) {
         handlerToUse = wrapWithPoliciesCheck(route.handler, route.policies)
       }
 

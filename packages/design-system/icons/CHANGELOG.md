@@ -1,5 +1,55 @@
 # @medusajs/icons
 
+## 2.15.5
+
+## 2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- [#15271](https://github.com/medusajs/medusa/pull/15271) [`ac0a8b63d16518eae7c5370171b76bdf2d8dc2c5`](https://github.com/medusajs/medusa/commit/ac0a8b63d16518eae7c5370171b76bdf2d8dc2c5) Thanks [@Suh0161](https://github.com/Suh0161)! - fix(icons): broaden React peer dependency to support v18 and v19
+
+## 2.15.2
+
+## 2.15.1
+
+## 2.15.0
+
+## 2.14.2
+
+## 2.14.1
+
+## 2.14.0
+
+### Patch Changes
+
+- [#14791](https://github.com/medusajs/medusa/pull/14791) [`9757a6a8d19b3e819c43ae5a29f35c65fdce9c34`](https://github.com/medusajs/medusa/commit/9757a6a8d19b3e819c43ae5a29f35c65fdce9c34) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(icons): upgrade React to v19
+
+## 2.13.6
+
+## 2.13.5
+
+## 2.13.4
+
+## 2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- [#14700](https://github.com/medusajs/medusa/pull/14700) [`873571a7c9471a28732ac7fad70ff66c28571a0e`](https://github.com/medusajs/medusa/commit/873571a7c9471a28732ac7fad70ff66c28571a0e) Thanks [@fPolic](https://github.com/fPolic)! - fix(icons): default viewBox
+
+## 2.13.1
+
+## 2.13.0
+
+### Minor Changes
+
+- [`a31e72c31c5235240cead2d04e39e5927688eec7`](https://github.com/medusajs/medusa/commit/a31e72c31c5235240cead2d04e39e5927688eec7) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Minor bump
+
+## 2.12.6
+
 ## 2.12.5
 
 ## 2.12.4

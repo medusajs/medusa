@@ -134,4 +134,10 @@ export const LINKS = {
     Modules.RBAC,
     "rbac_role_id"
   ),
+  InviteRbacRole: composeLinkName(
+    Modules.USER,
+    "invite_id",
+    Modules.RBAC,
+    "rbac_role_id"
+  ),
 }

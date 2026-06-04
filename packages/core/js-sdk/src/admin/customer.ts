@@ -1,6 +1,6 @@
 import { HttpTypes, SelectParams } from "@medusajs/types"
-import { Client } from "../client"
-import { ClientHeaders } from "../types"
+import { Client } from "../client.js"
+import { ClientHeaders } from "../types.js"
 
 export class Customer {
   /**
@@ -389,7 +389,7 @@ export class Customer {
    * })
    */
   async listAddresses(id: string, headers?: ClientHeaders) {
-    return await this.client.fetch<HttpTypes.AdminCustomerResponse>(
+    return await this.client.fetch<HttpTypes.AdminCustomerAddressListResponse>(
       `/admin/customers/${id}/addresses`,
       {
         headers,

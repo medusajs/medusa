@@ -58,7 +58,7 @@ module.exports = defineConfig({
 
 Finally, run the migrations to create the necessary tables for the Index Module in your database:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -206,10 +206,15 @@ export default defineLink(
 
 The `filterable` property is an array of property names in the data model that can be filtered using the `index` method. When the `filterable` property is set, the Index Module will ingest into its data store the custom data model.
 
-But first, you must run the migrations to sync the link, then start the Medusa application:
+But first, you must run the migrations to sync the link:
+
+```bash npx2yarn
+npx medusa db:migrate
+```
+
+Then, start the Medusa application:
 
 ```bash npm2yarn
-npx medusa db:migrate
 npm run dev
 ```
 

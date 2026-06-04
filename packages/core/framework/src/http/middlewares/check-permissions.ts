@@ -1,5 +1,5 @@
 import { MedusaError } from "@medusajs/utils"
-import { hasPermission } from "../../utils/has-permission"
+import { hasPermission } from "../../policies/has-permission"
 import type {
   AuthenticatedMedusaRequest,
   MedusaNextFunction,
@@ -9,7 +9,7 @@ import type {
 
 export type PolicyAction = {
   resource: string
-  operation: string
+  operation: string | string[]
 }
 
 /**
@@ -28,10 +28,10 @@ async function checkPermissions(
 
   const authContext = req.auth_context
   // Get roles from JWT token's app_metadata
-  const roleIds = (authContext.app_metadata?.roles as string[]) || []
+  const roleIds = (authContext?.app_metadata?.roles as string[]) || []
 
   if (!roleIds.length) {
-    throw new MedusaError(MedusaError.Types.UNAUTHORIZED, "Unauthorized")
+    throw new MedusaError(MedusaError.Types.FORBIDDEN, "Forbidden")
   }
 
   const hasAccess = await hasPermission({
@@ -46,7 +46,7 @@ async function checkPermissions(
       .join(", ")
 
     throw new MedusaError(
-      MedusaError.Types.UNAUTHORIZED,
+      MedusaError.Types.FORBIDDEN,
       `Insufficient permissions. Required policies: ${policyKeys}`
     )
   }

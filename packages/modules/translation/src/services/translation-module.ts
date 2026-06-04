@@ -469,7 +469,11 @@ export default class TranslationModuleService
   > {
     const dataArray = Array.isArray(data) ? data : [data]
 
-    await this.validateSettings_(dataArray, sharedContext)
+    const normalizedData = await this.ensureEntityType_(
+      dataArray,
+      sharedContext
+    )
+    TranslationModuleService.validateSettings(normalizedData)
 
     // @ts-expect-error TS can't match union type to overloads
     return await super.createTranslationSettings(data, sharedContext)
@@ -487,10 +491,47 @@ export default class TranslationModuleService
   > {
     const dataArray = Array.isArray(data) ? data : [data]
 
-    await this.validateSettings_(dataArray, sharedContext)
+    const normalizedData = await this.ensureEntityType_(
+      dataArray,
+      sharedContext
+    )
+    TranslationModuleService.validateSettings(normalizedData)
 
-    // @ts-expect-error TS can't match union type to overloads
-    return await super.updateTranslationSettings(data, sharedContext)
+    const updatedSettings = await this.settingsService_.update(
+      data,
+      sharedContext
+    )
+
+    const entityTypes = [
+      ...new Set(normalizedData.map((setting) => setting.entity_type)),
+    ]
+
+    const translatableFieldsConfig = await this.getTranslatableFields(
+      undefined,
+      sharedContext
+    )
+
+    const translations = await this.translationService_.list({
+      reference: entityTypes,
+    })
+
+    const toUpdate = translations.map((translation) => ({
+      id: translation.id,
+      translated_field_count: computeTranslatedFieldCount(
+        translation.translations,
+        translatableFieldsConfig[translation.reference] ?? []
+      ),
+    }))
+
+    if (toUpdate.length) {
+      await this.translationService_.update(toUpdate, sharedContext)
+    }
+
+    const serialized = await this.baseRepository_.serialize<
+      TranslationTypes.TranslationSettingsDTO[]
+    >(updatedSettings)
+
+    return Array.isArray(data) ? serialized : serialized[0]
   }
 
   @InjectManager()
@@ -612,15 +653,12 @@ export default class TranslationModuleService
   /**
    * Validates the translation settings to create or update against the translatable entities and their translatable fields configuration.
    * @param dataToValidate - The data to validate.
-   * @param sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    */
-  @InjectManager()
-  protected async validateSettings_(
+  static validateSettings(
     dataToValidate: (
       | CreateTranslationSettingsDTO
-      | UpdateTranslationSettingsDTO
-    )[],
-    @MedusaContext() sharedContext: Context = {}
+      | (UpdateTranslationSettingsDTO & { entity_type: string })
+    )[]
   ) {
     const translatableEntities = DmlEntity.getTranslatableEntities()
     const translatableEntitiesMap = new Map(
@@ -634,29 +672,19 @@ export default class TranslationModuleService
     }[] = []
 
     for (const item of dataToValidate) {
-      let itemEntityType = item.entity_type
-      if (!itemEntityType) {
-        const translationSetting = await this.retrieveTranslationSettings(
-          //@ts-expect-error - if no entity_type, we are on an update
-          item.id,
-          { select: ["entity_type"] },
-          sharedContext
-        )
-        itemEntityType = translationSetting.entity_type
-      }
-
-      const entity = translatableEntitiesMap.get(itemEntityType)
+      const entityType = item.entity_type
+      const entity = translatableEntitiesMap.get(entityType)
 
       if (!entity) {
         invalidSettings.push({
-          entity_type: itemEntityType,
+          entity_type: entityType,
           is_invalid_entity: true,
         })
       } else {
         const invalidFields = arrayDifference(item.fields ?? [], entity.fields)
         if (invalidFields.length) {
           invalidSettings.push({
-            entity_type: itemEntityType,
+            entity_type: entityType,
             is_invalid_entity: false,
             invalidFields,
           })
@@ -682,5 +710,45 @@ export default class TranslationModuleService
             .join("\n")
       )
     }
+  }
+
+  /**
+   * Ensures the entity type is set for the settings to be created or updated. This is useful for validation purposes and recomputing the translated field count.
+   * @param settings - The settings to ensure the entity type for.
+   * @param sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns The settings with the entity type set.
+   */
+  protected async ensureEntityType_(
+    settings: (CreateTranslationSettingsDTO | UpdateTranslationSettingsDTO)[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<
+    (
+      | CreateTranslationSettingsDTO
+      | (UpdateTranslationSettingsDTO & { entity_type: string })
+    )[]
+  > {
+    const idsNeedingResolution = settings
+      .filter((setting) => !setting.entity_type && "id" in setting)
+      .map((setting) => (setting as UpdateTranslationSettingsDTO).id)
+
+    let entityTypeMap: Record<string, string> = {}
+
+    if (idsNeedingResolution.length) {
+      const existingSettings = await this.settingsService_.list(
+        { id: idsNeedingResolution },
+        { select: ["id", "entity_type"] },
+        sharedContext
+      )
+      entityTypeMap = Object.fromEntries(
+        existingSettings.map((s) => [s.id, s.entity_type])
+      )
+    }
+
+    return settings.map((setting) => {
+      const entityType =
+        setting.entity_type ||
+        entityTypeMap[(setting as UpdateTranslationSettingsDTO).id]
+      return { ...setting, entity_type: entityType }
+    })
   }
 }

@@ -114,7 +114,7 @@ medusaIntegrationTestRunner({
           const response = await api.get("/admin/rbac/policies", adminHeaders)
 
           expect(response.status).toEqual(200)
-          expect(response.data.count).toEqual(3)
+          expect(response.data.count).toEqual(4)
           expect(response.data.policies).toEqual(
             expect.arrayContaining([
               expect.objectContaining({

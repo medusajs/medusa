@@ -52,3 +52,35 @@ jobs:
           add-paths: www/packages/docs-ui/src/global-config.ts
           branch: "docs/update-config-version"
           branch-suffix: "timestamp"
+  create-cloud-announcement:
+    runs-on: ubuntu-latest
+    env:
+      ANNOUNCEMENTS_API_URL: ${{ secrets.ANNOUNCEMENTS_API_URL }}
+      ANNOUNCEMENTS_API_TOKEN: ${{ secrets.ANNOUNCEMENTS_API_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: docs-update-version
+
+      - name: Install Workspace dependencies
+        run: yarn install
+        working-directory: www/utils
+
+      - name: Build Workspace packages
+        run: yarn build
+        working-directory: www/utils
+
+      - name: Create Cloud Announcement
+        run: yarn create:cloud-announcement
+        working-directory: www/utils/packages/scripts

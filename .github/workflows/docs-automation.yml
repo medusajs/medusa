@@ -1,0 +1,261 @@
+name: Docs Automation
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - "packages/**"
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: "Commit SHA to analyze and generate docs for"
+        required: true
+        type: string
+
+concurrency:
+  group: docs-release-staging
+  cancel-in-progress: false
+
+jobs:
+  docs-automation:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.head_commit.author.name != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # Use a PAT so the created PR triggers other workflows
+          # (the default GITHUB_TOKEN cannot trigger workflow runs)
+          token: ${{ secrets.REFERENCE_PAT }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "yarn"
+
+      - name: Install monorepo dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: docs-automation
+
+      - name: Install www dependencies
+        working-directory: www
+        run: yarn install
+
+      - name: Build www packages
+        working-directory: www
+        run: yarn build:packages
+
+      - name: Install www/utils dependencies
+        working-directory: www/utils
+        run: yarn install
+
+      - name: Build www/utils packages
+        working-directory: www/utils
+        run: yarn build
+
+      - name: Analyze commit diff
+        id: analyze
+        working-directory: www/utils/packages/docs-automator
+        run: yarn analyze --commit-sha ${{ inputs.commit_sha || github.sha }} --output /tmp/analysis.json
+        env:
+          MONOREPO_ROOT_PATH: ${{ github.workspace }}
+        continue-on-error: true
+
+      - name: Check if documentation changes are needed
+        id: check
+        run: |
+          if [ "${{ steps.analyze.outcome }}" = "failure" ]; then
+            echo "needs_docs=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          node --input-type=module << 'EOF'
+          import { readFileSync, appendFileSync } from "fs"
+          const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+          const needed = a.affectedProjects.length > 0 ? "true" : "false"
+          appendFileSync(process.env.GITHUB_OUTPUT, `needs_docs=${needed}\n`)
+          EOF
+
+      - name: Configure git
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Checkout or create release docs branch
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          git fetch origin
+          if git ls-remote --exit-code origin docs/release-docs-staging > /dev/null 2>&1; then
+            git checkout docs/release-docs-staging
+            git merge -X theirs origin/develop -m "chore: sync docs/release-docs-staging with develop"
+            echo "Checked out and synced existing branch docs/release-docs-staging"
+          else
+            git checkout -b docs/release-docs-staging
+            echo "Created new branch docs/release-docs-staging"
+          fi
+
+      - name: Extract Claude prompt
+        id: extract-prompt
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          node --input-type=module << 'EOF'
+            import { readFileSync, appendFileSync } from "fs"
+            const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+            const prefix = "IMPORTANT: Only make file changes using the Write and Edit tools. Never use git commands to stage, commit, or push files.\n\nIMPORTANT: To load the writing-docs skill, use the Skill tool directly with skill='writing-docs'. Do NOT spawn a sub-agent or use the Task tool to load it.\n\n"
+            const delimiter = "CLAUDE_PROMPT_EOF"
+            appendFileSync(
+              process.env.GITHUB_OUTPUT,
+              `CLAUDE_PROMPT<<${delimiter}\n${prefix}${a.claudePrompt}\n${delimiter}\n`
+            )
+          EOF
+
+      - name: Run Claude Code to update docs
+        if: steps.check.outputs.needs_docs == 'true'
+        uses: anthropics/claude-code-base-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+          prompt: ${{ steps.extract-prompt.outputs.CLAUDE_PROMPT }}
+          allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*,ls:*,find:*,cat:*)"
+          max_turns: 40
+
+      - name: Verify no protected files were modified
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          PROTECTED=$(git diff --name-only | grep -E \
+            "^www/apps/resources/references/|^www/apps/ui/specs/components/|^www/apps/api-reference/" \
+            || true)
+          if [ -n "$PROTECTED" ]; then
+            echo "ERROR: Protected directories were modified:"
+            echo "$PROTECTED"
+            exit 1
+          fi
+
+      - name: Run prep scripts for affected projects
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          PROJECTS=$(node --input-type=module << 'EOF'
+            import { readFileSync } from "fs"
+            const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+            process.stdout.write(a.affectedProjects.map((p) => p.project).join(" "))
+          EOF
+          )
+          for project in $PROJECTS; do
+            echo "Running prep for $project..."
+            (cd "www/apps/$project" && yarn prep) || true
+          done
+
+      - name: Run lint:content for affected projects
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          PROJECTS=$(node --input-type=module << 'EOF'
+            import { readFileSync } from "fs"
+            const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+            process.stdout.write(a.affectedProjects.map((p) => p.project).join(" "))
+          EOF
+          )
+          for project in $PROJECTS; do
+            echo "Running lint:content for $project..."
+            (cd "www/apps/$project" && yarn lint:content) || true
+          done
+
+      - name: Stage documentation changes
+        id: changes
+        if: steps.check.outputs.needs_docs == 'true'
+        run: |
+          git add www/apps/book www/apps/resources www/apps/ui www/apps/user-guide
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No documentation changes to commit."
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit documentation changes
+        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
+        run: |
+          git commit -m "chore(docs): automated documentation update for ${{ inputs.commit_sha || github.sha }}"
+
+      - name: Push release docs branch
+        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
+        run: git push origin docs/release-docs-staging
+
+      - name: Create or update Pull Request
+        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.REFERENCE_PAT }}
+          COMMIT_SHA: ${{ inputs.commit_sha || github.sha }}
+          REPO: ${{ github.repository }}
+        run: |
+          node --input-type=module << 'EOF'
+            import { readFileSync, writeFileSync } from "fs"
+            import { execSync } from "child_process"
+
+            const a = JSON.parse(readFileSync("/tmp/analysis.json", "utf8"))
+            const { COMMIT_SHA: sha, REPO: repo } = process.env
+            const date = new Date().toISOString().split("T")[0]
+
+            const projectList = a.affectedProjects
+              .map((p) => `- **${p.project}**: ${p.reason}`)
+              .join("\n")
+
+            const commitUrl = `https://github.com/${repo}/commit/${sha}`
+            const newEntry = [
+              `### [\`${sha.slice(0, 7)}\`](${commitUrl}) — ${date}`,
+              "",
+              "**Affected projects:**",
+              projectList,
+            ].join("\n")
+
+            let existingBody = ""
+            try {
+              const owner = repo.split("/")[0]
+              const out = execSync(
+                `gh api "repos/${repo}/pulls?head=${owner}:docs/release-docs-staging&state=open" --jq '.[0].body'`,
+                { encoding: "utf8" }
+              ).trim()
+              if (out !== "null" && out !== "") existingBody = out
+            } catch { /* PR does not exist yet */ }
+
+            const header = [
+              "## Automated Documentation Updates",
+              "",
+              "This PR accumulates automated documentation changes for the next release.",
+              "Each entry below corresponds to a merged commit that triggered updates.",
+              "",
+              "> Review carefully before merging. Claude may have missed context",
+              "> or made incorrect assumptions.",
+            ].join("\n")
+
+            const body = existingBody
+              ? `${existingBody}\n\n---\n\n${newEntry}`
+              : `${header}\n\n---\n\n${newEntry}`
+
+            writeFileSync("/tmp/pr-body.md", body)
+          EOF
+
+          REPO_OWNER="${REPO%%/*}"
+          PR_NUMBER=$(gh api "repos/$REPO/pulls?head=${REPO_OWNER}:docs/release-docs-staging&state=open" --jq '.[0].number' 2>/dev/null || echo "")
+          if [ -n "$PR_NUMBER" ] && [ "$PR_NUMBER" != "null" ]; then
+            gh api "repos/$REPO/pulls/$PR_NUMBER" \
+              --method PATCH \
+              --field title="chore(docs): doc changes for next release (automated)" \
+              --field body="$(cat /tmp/pr-body.md)"
+          else
+            PR_NUMBER=$(gh api "repos/$REPO/pulls" \
+              --method POST \
+              --field title="chore(docs): doc changes for next release (automated)" \
+              --field body="$(cat /tmp/pr-body.md)" \
+              --field base="develop" \
+              --field head="docs/release-docs-staging" \
+              --jq '.number')
+            gh api "repos/$REPO/issues/$PR_NUMBER/labels" \
+              --method POST \
+              --field 'labels[]=type: chore'
+          fi

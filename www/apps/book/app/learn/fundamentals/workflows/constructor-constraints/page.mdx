@@ -367,6 +367,85 @@ const myWorkflow = createWorkflow(
 })
 ```
 
+### No Loops
+
+You can't use loops, such as `for` or `while`, in a workflow's constructor function. There are two alternatives based on your use case:
+
+1. To repeat all the actions of a workflow multiple times, wrap the workflow execution in a loop in the code that calls the workflow. This is common if the workflow receives an array as input and you want to execute the workflow for each item in the array.
+
+```ts
+// Don't
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
+    for (const item of input.items) {
+      step1(item)
+    }
+})
+
+// Do
+// API route that calls the workflow
+import { 
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import myWorkflow from "../../workflows/my-workflow"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { items } = req.body
+
+  for (const item of items) {
+    await myWorkflow(req.scope)
+      .run({ item })
+  }
+
+  res.status(200).send({ success: true })
+}
+
+// Workflow definition
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
+    step1(input.item)
+})
+```
+
+2. To iterate over an array within the workflow to prepare step inputs, use `transform` to map over the array and create the desired inputs.
+
+```ts
+// Don't
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
+    const stepInputs = []
+    for (const item of input.items) {
+      stepInputs.push({ id: item.id })
+    }
+    step1(stepInputs)
+})
+
+// Do
+import { transform } from "@medusajs/framework/workflows-sdk"
+
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
+    const stepInputs = transform(
+      {
+        input,
+      },
+      (data) => {
+        return data.input.items.map((item) => ({ id: item.id }))
+      }
+    )
+
+    step1(stepInputs)
+})
+```
+
 ---
 
 ## Returned Value Constraints

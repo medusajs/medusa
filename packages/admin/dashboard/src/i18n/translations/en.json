@@ -1,7 +1,7 @@
 {
   "$schema": "./$schema.json",
   "general": {
-    "fullList": "Full list",
+    "fullList": "All",
     "ascending": "Ascending",
     "descending": "Descending",
     "add": "Add",
@@ -26,6 +26,7 @@
     "error": "Error",
     "select": "Select",
     "selectAll": "Select all",
+    "unselectAll": "Unselect all",
     "selected": "Selected",
     "enabled": "Enabled",
     "disabled": "Disabled",
@@ -1293,6 +1294,9 @@
       "outboundShipping": "Outbound shipping",
       "outboundShippingHint": "Choose which method you want to use.",
       "refundAmount": "Estimated difference",
+      "carryOverPromotion": "Carry over promotions",
+      "carryOverPromotionHint": "Apply the order's promotions to the claim items",
+      "carryOverPromotionTooltip": "Only fixed type promotions with EACH allocation and percentage type promotions with EACH or ACROSS allocation can be carried over to outbound claim items.",
       "activeChangeError": "There is an active order change on this order. Please finish or discard the previous change.",
       "actions": {
         "cancelClaim": {
@@ -1423,7 +1427,10 @@
         "partiallyReturned": "Partially returned",
         "returned": "Returned",
         "canceled": "Canceled",
-        "requiresAction": "Requires action"
+        "requiresAction": "Requires action",
+        "awaitingPickup": "Awaiting pickup",
+        "awaitingShipping": "Awaiting shipping",
+        "awaitingDelivery": "Awaiting delivery"
       },
       "toast": {
         "created": "Fulfillment created successfully",
@@ -2249,6 +2256,32 @@
         "description": "Maximum number of times this promotion can be used across all orders. Leave empty for unlimited usage."
       }
     },
+    "templates": {
+      "amount_off_products": {
+        "title": "Amount off products",
+        "description": "Discount specific products or collection of products"
+      },
+      "amount_off_order": {
+        "title": "Amount off order",
+        "description": "Discounts the total order amount"
+      },
+      "percentage_off_product": {
+        "title": "Percentage off product",
+        "description": "Discounts a percentage off selected products"
+      },
+      "percentage_off_order": {
+        "title": "Percentage off order",
+        "description": "Discounts a percentage of the total order amount"
+      },
+      "buy_get": {
+        "title": "Buy X Get Y",
+        "description": "Buy X product(s), get Y product(s)"
+      },
+      "shipping_discount": {
+        "title": "Free shipping",
+        "description": "Applies a 100% discount to shipping fees"
+      }
+    },
     "deleteWarning": "You are about to delete the promotion {{code}}. This action cannot be undone.",
     "createPromotionTitle": "Create Promotion",
     "type": "Promotion type",
@@ -2473,6 +2506,31 @@
     "fields": {
       "languageLabel": "Language",
       "usageInsightsLabel": "Usage insights"
+    },
+    "mfa": {
+      "title": "Two-factor authentication",
+      "description": "Require an authenticator app when signing in.",
+      "status": "Status",
+      "method": "Method",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "pending": "Pending setup",
+      "authenticatorApp": "Authenticator app",
+      "noMethod": "No authentication method enabled",
+      "setupTitle": "Set up authenticator app",
+      "setupAuthenticatorApp": "Set up authenticator app",
+      "setupDescription": "Scan the QR code with your authenticator app, then enter the 6-digit code to finish setup.",
+      "setupError": "The authenticator app could not be set up.",
+      "verifyError": "The verification code could not be confirmed.",
+      "qrError": "The QR code could not be generated.",
+      "recoveryCodesTitle": "Recovery codes",
+      "recoveryCodesDescription": "Copy and store these recovery codes in case you lose access to your authenticator app.",
+      "recoveryCodesError": "Recovery codes could not be generated.",
+      "disableTitle": "Disable two-factor authentication",
+      "disableDescription": "You are about to disable two-factor authentication for your account.",
+      "disableChallengeDescription": "Enter the 6-digit code from your authenticator app to disable two-factor authentication.",
+      "disableError": "Two-factor authentication could not be disabled.",
+      "disableSuccess": "Two-factor authentication disabled"
     },
     "edit": {
       "header": "Edit Profile",
@@ -2912,7 +2970,21 @@
   "login": {
     "forgotPassword": "Forgot password? - <0>Reset</0>",
     "title": "Welcome to Medusa",
-    "hint": "Sign in to access the account area"
+    "hint": "Sign in to access the account area",
+    "mfa": {
+      "title": "Two-factor authentication",
+      "description": "Enter the 6-digit code from your authenticator app.",
+      "recoveryDescription": "Enter one of your recovery codes.",
+      "recoveryCodePlaceholder": "Recovery code",
+      "verify": "Verify",
+      "verifyError": "The verification code could not be confirmed.",
+      "completeError": "Authentication could not be completed.",
+      "backToLogin": "Back to login",
+      "useRecoveryCodePrompt": "Lost access to your authenticator app?",
+      "useRecoveryCode": "Use a recovery code",
+      "useAuthenticatorPrompt": "Have access to your authenticator app?",
+      "useAuthenticator": "Use an authenticator code"
+    }
   },
   "invite": {
     "title": "Welcome to Medusa",
@@ -3305,6 +3377,54 @@
     "login": {
       "authenticationFailed": "Authentication failed",
       "cloud": "Log in with Medusa Cloud"
+    }
+  },
+  "permissions": {
+    "accessDenied": {
+      "title": "Access Denied",
+      "description": "You don't have permission to access this page.",
+      "requiredPermission": "Required permission: {{permission}}"
+    },
+    "requiredPermissions": {
+      "title": "Required permissions",
+      "none": "No permissions declared in this view.",
+      "anyOf": "Any of",
+      "allOf": "All of",
+      "source": "Source: {{source}}"
+    },
+    "resources": {
+      "customer": "Customer",
+      "customer_group": "Customer Group",
+      "order": "Order",
+      "product": "Product",
+      "product_category": "Product Category",
+      "product_collection": "Product Collection",
+      "product_tag": "Product Tag",
+      "product_type": "Product Type",
+      "inventory": "Inventory",
+      "reservation": "Reservation",
+      "promotion": "Promotion",
+      "campaign": "Campaign",
+      "price_list": "Price List",
+      "region": "Region",
+      "store": "Store",
+      "user": "User",
+      "sales_channel": "Sales Channel",
+      "stock_location": "Stock Location",
+      "shipping_profile": "Shipping Profile",
+      "shipping_option": "Shipping Option",
+      "tax_region": "Tax Region",
+      "api_key": "API Key",
+      "return_reason": "Return Reason",
+      "refund_reason": "Refund Reason",
+      "workflow": "Workflow",
+      "translation": "Translation"
+    },
+    "actions": {
+      "read": "View",
+      "create": "Create",
+      "update": "Edit",
+      "delete": "Delete"
     }
   }
 }

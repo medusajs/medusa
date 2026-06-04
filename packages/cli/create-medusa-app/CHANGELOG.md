@@ -1,5 +1,161 @@
 # Change Log
 
+## 2.15.5
+
+### Patch Changes
+
+- [#15493](https://github.com/medusajs/medusa/pull/15493) [`c8e37903177c2551ec27ba5f881804e351e819c4`](https://github.com/medusajs/medusa/commit/c8e37903177c2551ec27ba5f881804e351e819c4) Thanks [@christiananese](https://github.com/christiananese)! - Prepare new Medusa apps for admin MFA
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.5
+  - @medusajs/telemetry@2.15.5
+
+## 2.15.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.4
+  - @medusajs/telemetry@2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- [#15436](https://github.com/medusajs/medusa/pull/15436) [`133ab3ca84bc1c12dfce31230977c21886703a6f`](https://github.com/medusajs/medusa/commit/133ab3ca84bc1c12dfce31230977c21886703a6f) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): fix incorrect command replacement when using yarn and npm
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.3
+  - @medusajs/telemetry@2.15.3
+
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.2
+  - @medusajs/telemetry@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.1
+  - @medusajs/telemetry@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.0
+  - @medusajs/telemetry@2.15.0
+
+## 2.14.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.14.2
+  - @medusajs/telemetry@2.14.2
+
+## 2.14.1
+
+### Patch Changes
+
+- [#15182](https://github.com/medusajs/medusa/pull/15182) [`9b369cb735c46724b2ca08e2edfdd86ea7bfa314`](https://github.com/medusajs/medusa/commit/9b369cb735c46724b2ca08e2edfdd86ea7bfa314) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app,medusa): ask to install claude code plugin
+
+- Updated dependencies []:
+  - @medusajs/deps@2.14.1
+  - @medusajs/telemetry@2.14.1
+
+## 2.14.0
+
+### Patch Changes
+
+- [#14999](https://github.com/medusajs/medusa/pull/14999) [`eeed5a11f7ab1110038fa02d0f6cb1e3ca18cf3d`](https://github.com/medusajs/medusa/commit/eeed5a11f7ab1110038fa02d0f6cb1e3ca18cf3d) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app, cli): change cloned repository to monorepo
+
+- Updated dependencies []:
+  - @medusajs/deps@2.14.0
+  - @medusajs/telemetry@2.14.0
+
+## 2.13.6
+
+### Patch Changes
+
+- Updated dependencies [[`62e0760a2ad032c9f7ef219968d667193bf3c4a1`](https://github.com/medusajs/medusa/commit/62e0760a2ad032c9f7ef219968d667193bf3c4a1)]:
+  - @medusajs/deps@2.13.6
+  - @medusajs/telemetry@2.13.6
+
+## 2.13.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.13.5
+  - @medusajs/telemetry@2.13.5
+
+## 2.13.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.13.4
+  - @medusajs/telemetry@2.13.4
+
+## 2.13.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.13.3
+  - @medusajs/telemetry@2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- [#14681](https://github.com/medusajs/medusa/pull/14681) [`94fc900582bc11213edbea7b5dfd88c167233ae5`](https://github.com/medusajs/medusa/commit/94fc900582bc11213edbea7b5dfd88c167233ae5) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): fix installations with storefronts for pnpm
+
+- Updated dependencies []:
+  - @medusajs/deps@2.13.2
+  - @medusajs/telemetry@2.13.2
+
+## 2.13.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.13.1
+  - @medusajs/telemetry@2.13.1
+
+## 2.13.0
+
+### Minor Changes
+
+- [`a31e72c31c5235240cead2d04e39e5927688eec7`](https://github.com/medusajs/medusa/commit/a31e72c31c5235240cead2d04e39e5927688eec7) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Minor bump
+
+### Patch Changes
+
+- Updated dependencies [[`a31e72c31c5235240cead2d04e39e5927688eec7`](https://github.com/medusajs/medusa/commit/a31e72c31c5235240cead2d04e39e5927688eec7)]:
+  - @medusajs/deps@2.13.0
+  - @medusajs/telemetry@2.13.0
+
+## 2.12.6
+
+### Patch Changes
+
+- [`87a8bb35bf38759c5a1d9dfebd1a28bb17488aaa`](undefined) - fix(create-medusa-app): fix error handling when thrown error is a string
+
+- [`5f90cd0650eb11bfbd27cc326ca8c261fc588c55`](undefined) - feat(create-medusa-app): add support for pnpm and specifying package manager
+
+- [`61193c6314304af7f71cd9c0714823d039973900`](undefined) - feat(create-medusa-app): add facts for Claude Code plugin and MCP server
+
+- Updated dependencies [[`1ca3516a5cbb059ad79fe483cd8e1d6a7ebca23b`](https://github.com/medusajs/medusa/commit/1ca3516a5cbb059ad79fe483cd8e1d6a7ebca23b)]:
+  - @medusajs/deps@2.12.6
+  - @medusajs/telemetry@2.12.6
+
 ## 2.12.5
 
 ### Patch Changes

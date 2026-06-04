@@ -13,6 +13,7 @@ type DocsConfig = {
   version: {
     number: string
     releaseUrl: string
+    releaseDate: string
   }
 }
 
@@ -66,6 +67,7 @@ async function main() {
     version: {
       number: version,
       releaseUrl: response.data.html_url,
+      releaseDate: response.data.published_at || new Date().toISOString(),
     },
   }
 

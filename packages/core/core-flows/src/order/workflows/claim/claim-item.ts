@@ -4,6 +4,7 @@ import {
   OrderDTO,
   OrderPreviewDTO,
   OrderWorkflow,
+  PromotionDTO,
 } from "@medusajs/framework/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
 import {
@@ -19,7 +20,9 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { computeAdjustmentsForPreviewWorkflow } from "../compute-adjustments-for-preview"
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
+import { fieldsToComputeAdjustmentsForPreview } from "../order-edit/utils/fields"
 
 /**
  * The data to validate that claim items can be added to a claim.
@@ -42,14 +45,14 @@ export type OrderClaimItemValidationStepInput = {
 /**
  * This step validates that claim items can be added to a claim. If the
  * order or claim is canceled, or the order change is not active, the step will throw an error.
- * 
+ *
  * :::note
- * 
+ *
  * You can retrieve an order, order claim, and order change details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
  * or [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).
- * 
+ *
  * :::
- * 
+ *
  * @example
  * const data = orderClaimItemValidationStep({
  *   order: {
@@ -85,12 +88,12 @@ export const orderClaimItemValidationStep = createStep(
 
 export const orderClaimItemWorkflowId = "claim-item"
 /**
- * This workflow adds order items to a claim as claim items. It's used by the 
+ * This workflow adds order items to a claim as claim items. It's used by the
  * [Add Claim Items Admin API Route](https://docs.medusajs.com/api/admin#claims_postclaimsidclaimitems).
- * 
+ *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to add items to a claim
  * for an order in your custom flows.
- * 
+ *
  * @example
  * const { result } = await orderClaimItemWorkflow(container)
  * .run({
@@ -104,9 +107,9 @@ export const orderClaimItemWorkflowId = "claim-item"
  *     ]
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Add order items to a claim as claim items.
  */
 export const orderClaimItemWorkflow = createWorkflow(
@@ -124,7 +127,11 @@ export const orderClaimItemWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["id", "status", "canceled_at", "items.*"],
+      fields: [
+        ...fieldsToComputeAdjustmentsForPreview,
+        "status",
+        "canceled_at",
+      ],
       variables: { id: orderClaim.order_id },
       list: false,
       throw_if_key_not_found: true,
@@ -132,7 +139,7 @@ export const orderClaimItemWorkflow = createWorkflow(
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
-      fields: ["id", "status"],
+      fields: ["id", "status", "version", "claim_id", "carry_over_promotions"],
       variables: {
         filters: {
           order_id: orderClaim.order_id,
@@ -165,6 +172,7 @@ export const orderClaimItemWorkflow = createWorkflow(
             reference_id: item.id,
             reason: item.reason,
             quantity: item.quantity,
+            metadata: item.metadata,
           },
         }))
       }
@@ -172,6 +180,20 @@ export const orderClaimItemWorkflow = createWorkflow(
 
     createOrderChangeActionsWorkflow.runAsStep({
       input: orderChangeActionInput,
+    })
+
+    const orderWithPromotions = transform({ order }, ({ order }) => {
+      return {
+        ...order,
+        promotions: (order as any).promotions ?? [],
+      } as OrderDTO & { promotions: PromotionDTO[] }
+    })
+
+    computeAdjustmentsForPreviewWorkflow.runAsStep({
+      input: {
+        order: orderWithPromotions,
+        orderChange,
+      },
     })
 
     return new WorkflowResponse(previewOrderChangeStep(orderClaim.order_id))

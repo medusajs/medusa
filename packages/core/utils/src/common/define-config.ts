@@ -8,6 +8,7 @@ import {
   InternalModuleDeclaration,
   MedusaCloudOptions,
 } from "@medusajs/types"
+import { FeatureFlag } from "../feature-flags/flag-router"
 import {
   MODULE_PACKAGE_NAMES,
   Modules,
@@ -45,9 +46,7 @@ export const DEFAULT_STORE_RESTRICTED_FIELDS = [
  * make an application work seamlessly, but still provide you the ability
  * to override configuration as needed.
  */
-export function defineConfig(
-  config?: InputConfigWithArrayModules
-): ConfigModule
+export function defineConfig(config?: InputConfigWithArrayModules): ConfigModule
 /**
  * @deprecated Use array-based modules configuration instead
  */
@@ -94,20 +93,10 @@ export function transformModules(
     }
 
     // TODO: handle external modules later
-    let serviceName: string =
-      "key" in moduleConfig && moduleConfig.key ? moduleConfig.key : ""
+    let serviceName: string = getKnownModuleName(moduleConfig) ?? ""
     delete moduleConfig.key
 
     if (!serviceName && "resolve" in moduleConfig) {
-      if (
-        isString(moduleConfig.resolve!) &&
-        REVERSED_MODULE_PACKAGE_NAMES[moduleConfig.resolve!]
-      ) {
-        serviceName = REVERSED_MODULE_PACKAGE_NAMES[moduleConfig.resolve!]
-        acc[serviceName] = moduleConfig
-        return acc
-      }
-
       let resolution = isString(moduleConfig.resolve!)
         ? normalizeImportPathWithSource(moduleConfig.resolve as string)
         : moduleConfig.resolve
@@ -138,6 +127,58 @@ export function transformModules(
   }, {})
 
   return remappedModules as Exclude<ConfigModule["modules"], undefined>
+}
+
+function getKnownModuleName(
+  moduleConfig: InputConfigModules[number]
+): string | undefined {
+  if ("key" in moduleConfig && moduleConfig.key) {
+    return moduleConfig.key
+  }
+
+  if (
+    "resolve" in moduleConfig &&
+    isString(moduleConfig.resolve!) &&
+    REVERSED_MODULE_PACKAGE_NAMES[moduleConfig.resolve!]
+  ) {
+    return REVERSED_MODULE_PACKAGE_NAMES[moduleConfig.resolve!]
+  }
+
+  return undefined
+}
+
+function asRecord(value: unknown): Record<string, unknown> {
+  return isObject(value) ? (value as Record<string, unknown>) : {}
+}
+
+function applyDefaultAuthMfaOptions(
+  modules: InputConfigModules,
+  defaultAuthModuleOptions: Record<string, unknown>
+) {
+  modules.forEach((moduleConfig) => {
+    const moduleName = getKnownModuleName(moduleConfig)
+
+    if (
+      moduleName !== Modules.AUTH ||
+      ("disable" in moduleConfig && moduleConfig.disable)
+    ) {
+      return
+    }
+
+    const options = asRecord(moduleConfig.options)
+    const defaultMfaOptions = asRecord(defaultAuthModuleOptions.mfa)
+    const mfaOptions = asRecord(options.mfa)
+
+    moduleConfig.options = {
+      ...options,
+      mfa: {
+        ...defaultMfaOptions,
+        ...mfaOptions,
+        encryption_key:
+          mfaOptions.encryption_key ?? defaultMfaOptions.encryption_key,
+      },
+    }
+  })
 }
 
 function resolvePlugins(
@@ -178,6 +219,19 @@ function resolveModules(
   { isCloud }: { isCloud: boolean },
   projectConfig: InputConfig["projectConfig"]
 ): Exclude<ConfigModule["modules"], undefined> {
+  const authMfaEncryptionKey = process.env.AUTH_MFA_ENCRYPTION_KEY
+  const authModuleOptions = {
+    mfa: {
+      encryption_key: authMfaEncryptionKey,
+    },
+    providers: [
+      {
+        resolve: "@medusajs/medusa/auth-emailpass",
+        id: "emailpass",
+      },
+    ],
+  }
+
   const sharedModules = [
     { resolve: MODULE_PACKAGE_NAMES[Modules.STOCK_LOCATION] },
     { resolve: MODULE_PACKAGE_NAMES[Modules.INVENTORY] },
@@ -197,19 +251,18 @@ function resolveModules(
     { resolve: MODULE_PACKAGE_NAMES[Modules.ORDER] },
     { resolve: MODULE_PACKAGE_NAMES[Modules.SETTINGS] },
 
-    // TODO: re-enable this once we have the final release
-    // { resolve: MODULE_PACKAGE_NAMES[Modules.TRANSLATION] },
+    {
+      resolve: MODULE_PACKAGE_NAMES[Modules.TRANSLATION],
+      disable: !FeatureFlag.isFeatureEnabled("translation"),
+    },
+    {
+      resolve: MODULE_PACKAGE_NAMES[Modules.RBAC],
+      disable: !FeatureFlag.isFeatureEnabled("rbac"),
+    },
 
     {
       resolve: MODULE_PACKAGE_NAMES[Modules.AUTH],
-      options: {
-        providers: [
-          {
-            resolve: "@medusajs/medusa/auth-emailpass",
-            id: "emailpass",
-          },
-        ],
-      },
+      options: authModuleOptions,
     },
     {
       resolve: MODULE_PACKAGE_NAMES[Modules.USER],
@@ -268,40 +321,8 @@ function resolveModules(
     },
   ]
 
-  const cloudModules = [
+  const cloudModules: InputConfig["modules"] = [
     ...sharedModules,
-    {
-      resolve: TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ENGINE],
-      options: {
-        redis: { url: process.env.REDIS_URL },
-      },
-    },
-    {
-      resolve: TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.CACHE],
-      options: { redisUrl: process.env.REDIS_URL },
-    },
-    {
-      resolve: TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.EVENT_BUS],
-      options: {
-        redisUrl: process.env.REDIS_URL,
-        workerOptions: { concurrency: 3 },
-      },
-    },
-    {
-      resolve: MODULE_PACKAGE_NAMES[Modules.LOCKING],
-      options: {
-        providers: [
-          {
-            id: "locking-redis",
-            resolve: TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.LOCKING],
-            is_default: true,
-            options: {
-              redisUrl: process.env.REDIS_URL,
-            },
-          },
-        ],
-      },
-    },
     {
       resolve: MODULE_PACKAGE_NAMES[Modules.FILE],
       options: {
@@ -322,6 +343,55 @@ function resolveModules(
       },
     },
   ]
+
+  if (process.env.REDIS_URL) {
+    cloudModules.push(
+      ...[
+        {
+          resolve:
+            TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ENGINE],
+          options: {
+            redis: { url: process.env.REDIS_URL },
+          },
+        },
+        {
+          resolve: TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.CACHE],
+          options: { redisUrl: process.env.REDIS_URL },
+        },
+        {
+          resolve: TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.EVENT_BUS],
+          options: {
+            redisUrl: process.env.REDIS_URL,
+            workerOptions: { concurrency: 1 },
+          },
+        },
+        {
+          resolve: MODULE_PACKAGE_NAMES[Modules.LOCKING],
+          options: {
+            providers: [
+              {
+                id: "locking-redis",
+                resolve: TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.LOCKING],
+                is_default: true,
+                options: {
+                  redisUrl: process.env.REDIS_URL,
+                },
+              },
+            ],
+          },
+        },
+      ]
+    )
+  } else {
+    cloudModules.push(
+      ...[
+        { resolve: MODULE_PACKAGE_NAMES[Modules.CACHE] },
+        { resolve: MODULE_PACKAGE_NAMES[Modules.EVENT_BUS] },
+        { resolve: MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ENGINE] },
+        { resolve: MODULE_PACKAGE_NAMES[Modules.LOCKING] },
+      ]
+    )
+  }
 
   if (process.env.CACHE_REDIS_URL) {
     cloudModules.push({
@@ -375,6 +445,8 @@ function resolveModules(
       )
     }
   }
+
+  applyDefaultAuthMfaOptions(modules, authModuleOptions)
 
   return transformModules(modules)
 }
@@ -497,6 +569,7 @@ function normalizeAdminConfig(
   return {
     backendUrl: process.env.MEDUSA_BACKEND_URL || DEFAULT_ADMIN_URL,
     path: "/app",
+    maxUploadFileSize: 1024 * 1024, // 1MB default
     ...adminConfig,
   }
 }

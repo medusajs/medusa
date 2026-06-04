@@ -7,5 +7,8 @@
   "exclude": [
     "../../../../packages/modules/store/dist", 
     "../../../../packages/modules/store/node_modules"
-  ]
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../packages/modules/store/src"
+  }
 }

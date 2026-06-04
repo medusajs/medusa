@@ -1,5 +1,73 @@
 # @medusajs/js-sdk
 
+## 2.15.5
+
+### Patch Changes
+
+- [#15496](https://github.com/medusajs/medusa/pull/15496) [`ace1822bccbb21afa533665937460140e36aa995`](https://github.com/medusajs/medusa/commit/ace1822bccbb21afa533665937460140e36aa995) Thanks [@christiananese](https://github.com/christiananese)! - Add auth verification primitives for emailpass.
+
+- [#14593](https://github.com/medusajs/medusa/pull/14593) [`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911) Thanks [@fPolic](https://github.com/fPolic)! - feat(dashboard,framework,rbac,js-sdk,types,utils,medusa): rbac admin dashboard utils
+
+## 2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- [#15441](https://github.com/medusajs/medusa/pull/15441) [`139d5f9d636dba61cdaec8319358b59f2aef3836`](https://github.com/medusajs/medusa/commit/139d5f9d636dba61cdaec8319358b59f2aef3836) Thanks [@christiananese](https://github.com/christiananese)! - feat(js-sdk): add MFA auth helpers
+
+## 2.15.2
+
+## 2.15.1
+
+## 2.15.0
+
+## 2.14.2
+
+### Patch Changes
+
+- [#15169](https://github.com/medusajs/medusa/pull/15169) [`aa407641ce6ddcd2e27352315b0f7b911a2c0acf`](https://github.com/medusajs/medusa/commit/aa407641ce6ddcd2e27352315b0f7b911a2c0acf) Thanks [@GBreg19](https://github.com/GBreg19)! - feat(medusa,js-sdk,types): add POST /admin/payment-collections/:id/payment-sessions route
+
+- [#15134](https://github.com/medusajs/medusa/pull/15134) [`243e88510cd7bb4187169ee383519a9be7594854`](https://github.com/medusajs/medusa/commit/243e88510cd7bb4187169ee383519a9be7594854) Thanks [@v0eak](https://github.com/v0eak)! - fix(medusa,js-sdk): Refactor Workflow Subscription & Fix SSE Stream
+
+## 2.14.1
+
+## 2.14.0
+
+### Patch Changes
+
+- [#15037](https://github.com/medusajs/medusa/pull/15037) [`8d4724c4a1ea2e3e731d47a941600d41ab45816f`](https://github.com/medusajs/medusa/commit/8d4724c4a1ea2e3e731d47a941600d41ab45816f) Thanks [@pevey](https://github.com/pevey)! - fix(js-sdk): add explicit .js extensions to relative imports for ESM compliance
+
+- [#14850](https://github.com/medusajs/medusa/pull/14850) [`6b5b045dcf8963c978767ec5ce7e03b82d59e105`](https://github.com/medusajs/medusa/commit/6b5b045dcf8963c978767ec5ce7e03b82d59e105) Thanks [@asgerjensen](https://github.com/asgerjensen)! - chore(js-sdk): add methods to manage promotion codes
+
+## 2.13.6
+
+## 2.13.5
+
+## 2.13.4
+
+## 2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- [#14712](https://github.com/medusajs/medusa/pull/14712) [`6e994dcd6559ece5e79cb5375965f69c640d56b1`](https://github.com/medusajs/medusa/commit/6e994dcd6559ece5e79cb5375965f69c640d56b1) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(js-sdk): fix return type of listAddresses
+
+## 2.13.1
+
+## 2.13.0
+
+### Minor Changes
+
+- [`a31e72c31c5235240cead2d04e39e5927688eec7`](https://github.com/medusajs/medusa/commit/a31e72c31c5235240cead2d04e39e5927688eec7) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Minor bump
+
+## 2.12.6
+
+### Patch Changes
+
+- [#14541](https://github.com/medusajs/medusa/pull/14541) [`a9b5797e2de093e26286808876262b724e26671a`](https://github.com/medusajs/medusa/commit/a9b5797e2de093e26286808876262b724e26671a) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,translation,js-sdk,medusa,types): Translation settings management UI
+
 ## 2.12.5
 
 ## 2.12.4

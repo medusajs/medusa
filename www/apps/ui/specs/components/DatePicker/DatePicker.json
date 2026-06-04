@@ -229,7 +229,7 @@
       "tsType": {
         "name": "signature",
         "type": "function",
-        "raw": "(e: FocusEvent&#60;Element, Element&#62;) => void",
+        "raw": "(e: FocusEvent&#60;Element&#62;) => void",
         "signature": {
           "arguments": [
             {
@@ -260,7 +260,7 @@
       "tsType": {
         "name": "signature",
         "type": "function",
-        "raw": "(e: FocusEvent&#60;Element, Element&#62;) => void",
+        "raw": "(e: FocusEvent&#60;Element&#62;) => void",
         "signature": {
           "arguments": [
             {
@@ -485,5 +485,8 @@
         ]
       }
     }
-  }
+  },
+  "composes": [
+    "Omit"
+  ]
 }

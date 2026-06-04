@@ -4,14 +4,33 @@ import { Context } from "../shared-context"
 import {
   AuthenticationInput,
   AuthenticationResponse,
+  AuthMfaChallengeDTO,
+  AuthMfaDTO,
+  AuthMfaSelector,
+  AuthMfaStartResponse,
   AuthIdentityDTO,
+  UseAuthMfaRecoveryCodeDTO,
   CreateAuthIdentityDTO,
+  CreateAuthMfaChallengeDTO,
+  AuthMfaStartDTO,
   CreateProviderIdentityDTO,
+  DisableAuthMfaDTO,
   FilterableAuthIdentityProps,
+  FilterableAuthMfaProps,
   FilterableProviderIdentityProps,
+  GenerateAuthMfaRecoveryCodesDTO,
+  GenerateAuthMfaRecoveryCodesResponse,
   ProviderIdentityDTO,
   UpdateAuthIdentityDTO,
   UpdateProviderIdentityDTO,
+  VerifyAuthMfaChallengeDTO,
+  AuthMfaVerifyDTO,
+  ConfirmAuthVerificationDTO,
+  ConfirmAuthVerificationResponse,
+  CreateAuthVerificationTokenDTO,
+  CreateAuthVerificationTokenResponse,
+  RequestAuthVerificationDTO,
+  RequestAuthVerificationResponse,
 } from "./common"
 
 /**
@@ -55,15 +74,15 @@ export interface IAuthModuleService extends IModuleService {
    * returns the data returned by the provider.
    *
    * Refer to [this guide](https://docs.medusajs.com/resources/commerce-modules/auth/authentication-route) to learn more about the authentication flows.
-   * 
+   *
    * @param {string} provider - The ID of the provider to register the user with.
    * @param {AuthenticationInput} providerData - The data to pass to the provider to register the user.
    * @returns {Promise<AuthenticationResponse>} The details of the registration result.
-   * 
+   *
    * @example
    * The following example is in the context of an API route, where
    * `req` is an instance of the `MedusaRequest` object:
-   * 
+   *
    * ```ts
    * const { success, authIdentity, location, error } =
    *   await authModuleService.register("emailpass", {
@@ -84,15 +103,15 @@ export interface IAuthModuleService extends IModuleService {
    * This method updates an auth identity's details using the provider that created it. It uses the `update` method of the
    * underlying provider, passing it the `providerData` parameter as a parameter. The method
    * returns the data returned by the provider.
-   * 
+   *
    * @param {string} provider - The ID of the provider to update the auth identity with.
    * @param {Record<string, unknown>} providerData - The data to pass to the provider to update the auth identity.
    * @returns {Promise<AuthenticationResponse>} The details of the update result.
-   * 
+   *
    * @example
    * The following example is in the context of an API route, where
    * `req` is an instance of the `MedusaRequest` object:
-   * 
+   *
    * ```ts
    * const { success, authIdentity, location, error } =
    *   await authModuleService.updateProvider("emailpass", {
@@ -146,6 +165,244 @@ export interface IAuthModuleService extends IModuleService {
     provider: string,
     providerData: AuthenticationInput
   ): Promise<AuthenticationResponse>
+
+  /**
+   * This method starts multi-factor authentication (MFA) setup for an auth identity using the requested provider.
+   *
+   * @param {AuthMfaStartDTO} data - The data required to start multi-factor authentication (MFA) setup.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthMfaStartResponse>} The multi-factor authentication (MFA) setup response containing the configuration and setup details.
+   * @since 2.15.3
+   *
+   * @example
+   * ```ts
+   * const mfaSetup = await authModuleService.startAuthMfa({
+   *   auth_identity_id: "authusr_123",
+   *   provider: "totp",
+   *   label: "My App",
+   *   issuer: "MyCompany"
+   * })
+   * ```
+   */
+  startAuthMfa(
+    data: AuthMfaStartDTO,
+    sharedContext?: Context
+  ): Promise<AuthMfaStartResponse>
+
+  /**
+   * This method verifies a pending multi-factor authentication (MFA) setup.
+   *
+   * @param {AuthMfaVerifyDTO} data - The verification data including multi-factor authentication (MFA) configuration ID and code.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthMfaDTO>} The verified and enabled multi-factor authentication (MFA) configuration.
+   * @since 2.15.3
+   *
+   * @example
+   * ```ts
+   * const mfaConfig = await authModuleService.verifyAuthMfa({
+   *   id: "mfa_123",
+   *   code: "123456"
+   * })
+   * ```
+   */
+  verifyAuthMfa(
+    data: AuthMfaVerifyDTO,
+    sharedContext?: Context
+  ): Promise<AuthMfaDTO>
+
+  /**
+   * This method creates a multi-factor authentication (MFA) challenge for an auth identity with enabled multi-factor authentication (MFA) methods.
+   *
+   * @param {CreateAuthMfaChallengeDTO} data - The data required to create a multi-factor authentication (MFA) challenge.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthMfaChallengeDTO>} The created multi-factor authentication (MFA) challenge.
+   * @since 2.15.3
+   *
+   * @example
+   * ```ts
+   * const challenge = await authModuleService.createAuthMfaChallenge({
+   *   auth_identity_id: "authusr_123",
+   *   actor_type: "user"
+   * })
+   * ```
+   */
+  createAuthMfaChallenge(
+    data: CreateAuthMfaChallengeDTO,
+    sharedContext?: Context
+  ): Promise<AuthMfaChallengeDTO>
+
+  /**
+   * This method verifies a multi-factor authentication (MFA) challenge with one of the challenge's methods.
+   *
+   * @param {VerifyAuthMfaChallengeDTO} data - The verification data including challenge ID, method, and code.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthMfaChallengeDTO>} The completed multi-factor authentication (MFA) challenge.
+   * @since 2.15.3
+   *
+   * @example
+   * ```ts
+   * const completedChallenge = await authModuleService.verifyAuthMfaChallenge({
+   *   id: "challenge_123",
+   *   method: "totp",
+   *   code: "123456"
+   * })
+   * ```
+   */
+  verifyAuthMfaChallenge(
+    data: VerifyAuthMfaChallengeDTO,
+    sharedContext?: Context
+  ): Promise<AuthMfaChallengeDTO>
+
+  /**
+   * This method disables multi-factor authentication (MFA) for a configured method.
+   *
+   * @param {DisableAuthMfaDTO} data - The data required to disable a multi-factor authentication (MFA) configuration.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthMfaDTO>} The disabled multi-factor authentication (MFA) configuration.
+   * @since 2.15.3
+   *
+   * @example
+   * ```ts
+   * const disabledMfa = await authModuleService.disableAuthMfa({
+   *   id: "mfa_123",
+   *   method: "totp",
+   *   code: "123456"
+   * })
+   * ```
+   */
+  disableAuthMfa(
+    data: DisableAuthMfaDTO,
+    sharedContext?: Context
+  ): Promise<AuthMfaDTO>
+
+  /**
+   * This method retrieves a configured multi-factor authentication (MFA) configuration by its ID or filters.
+   *
+   * @param {string | AuthMfaSelector} selector - The ID of the multi-factor authentication (MFA) configuration
+   * or the filters to select the multi-factor authentication (MFA) configuration.
+   * @param {FindConfig<AuthMfaDTO>} config - The configurations determining how the multi-factor authentication (MFA) configuration is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a multi-factor authentication (MFA) configuration.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @return {Promise<AuthMfaDTO>} The retrieved multi-factor authentication (MFA) configuration.
+   * @since 2.15.3
+   *
+   * @example
+   * To retrieve a multi-factor authentication (MFA) configuration by its ID:
+   *
+   * ```ts
+   * const mfaConfig = await authModuleService.retrieveAuthMfa("mfa_123")
+   * ```
+   *
+   * To retrieve a multi-factor authentication (MFA) configuration using filters:
+   *
+   * ```ts
+   * const mfaConfig = await authModuleService.retrieveAuthMfa({
+   *   auth_identity_id: "authusr_123",
+   *   provider: "totp",
+   * })
+   * ```
+   */
+  retrieveAuthMfa(
+    selector: string | AuthMfaSelector,
+    config?: FindConfig<AuthMfaDTO>,
+    sharedContext?: Context
+  ): Promise<AuthMfaDTO>
+
+  /**
+   * This method retrieves a paginated list of multi-factor authentication (MFA) configurations based on optional filters and configuration.
+   *
+   * @param {FilterableAuthMfaProps} filters - The filters to apply on the retrieved multi-factor authentication (MFA) configurations.
+   * @param {FindConfig<AuthMfaDTO>} config - The configurations determining how the multi-factor authentication (MFA) configurations are retrieved.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthMfaDTO[]>} The list of multi-factor authentication (MFA) configurations.
+   * @since 2.15.3
+   *
+   * @example
+   * To retrieve a list of multi-factor authentication (MFA) configurations using their IDs:
+   *
+   * ```ts
+   * const mfaConfigs = await authModuleService.listAuthMfa({
+   *   id: ["mfa_123", "mfa_321"]
+   * })
+   * ```
+   *
+   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   *
+   * ```ts
+   * const mfaConfigs = await authModuleService.listAuthMfa(
+   *   {
+   *     id: ["mfa_123", "mfa_321"],
+   *   },
+   *   {
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
+   * ```
+   */
+  listAuthMfa(
+    filters?: FilterableAuthMfaProps,
+    config?: FindConfig<AuthMfaDTO>,
+    sharedContext?: Context
+  ): Promise<AuthMfaDTO[]>
+
+  /**
+   * This method creates a new set of single-use recovery codes for an auth
+   * identity and invalidates any existing recovery codes.
+   *
+   * @param {GenerateAuthMfaRecoveryCodesDTO} data - The data required to generate recovery codes.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<GenerateAuthMfaRecoveryCodesResponse>} The response containing generated recovery codes.
+   * @since 2.15.3
+   *
+   * @example
+   * ```ts
+   * const { codes } = await authModuleService.generateAuthMfaRecoveryCodes({
+   *   auth_identity_id: "authusr_123",
+   *   count: 8
+   * })
+   * ```
+   */
+  generateAuthMfaRecoveryCodes(
+    data: GenerateAuthMfaRecoveryCodesDTO,
+    sharedContext?: Context
+  ): Promise<GenerateAuthMfaRecoveryCodesResponse>
+
+  /**
+   * This method uses a recovery code for an auth identity.
+   *
+   * @param {UseAuthMfaRecoveryCodeDTO} data - The data required to use a recovery code.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the recovery code is successfully used.
+   * @since 2.15.3
+   *
+   * @example
+   * ```ts
+   * await authModuleService.useAuthMfaRecoveryCode({
+   *   auth_identity_id: "authusr_123",
+   *   code: "recovery123"
+   * })
+   * ```
+   */
+  useAuthMfaRecoveryCode(
+    data: UseAuthMfaRecoveryCodeDTO,
+    sharedContext?: Context
+  ): Promise<void>
+
+  createAuthVerificationToken(
+    data: CreateAuthVerificationTokenDTO,
+    sharedContext?: Context
+  ): Promise<CreateAuthVerificationTokenResponse>
+
+  requestAuthVerification(
+    data: RequestAuthVerificationDTO,
+    sharedContext?: Context
+  ): Promise<RequestAuthVerificationResponse>
+
+  confirmAuthVerification(
+    data: ConfirmAuthVerificationDTO,
+    sharedContext?: Context
+  ): Promise<ConfirmAuthVerificationResponse>
 
   /**
    * This method retrieves an auth identity by its ID.

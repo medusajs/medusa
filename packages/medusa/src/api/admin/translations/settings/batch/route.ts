@@ -3,14 +3,13 @@ import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework"
 import { defineFileConfig, FeatureFlag } from "@medusajs/framework/utils"
 import { HttpTypes } from "@medusajs/types"
 import TranslationFeatureFlag from "../../../../../feature-flags/translation"
-import { AdminBatchTranslationSettingsType } from "../../validators"
 
 /**
  * @since 2.13.0
  * @featureFlag translation
  */
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminBatchTranslationSettingsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminBatchTranslationSettings>,
   res: MedusaResponse<HttpTypes.AdminBatchTranslationSettingsResponse>
 ) => {
   const { create = [], update = [], delete: deleteIds = [] } = req.validatedBody

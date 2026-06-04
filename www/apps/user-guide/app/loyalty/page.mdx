@@ -1,0 +1,45 @@
+---
+sidebar_autogenerate_exclude: true
+tags:
+  - user guide
+  - loyalty
+products:
+  - loyalty
+  - store-credit
+---
+
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Loyalty Features in Medusa Admin`,
+}
+
+# {metadata.title}
+
+<Prerequisites
+  items={[
+    {
+      text: "Loyalty plugin installed",
+      link: "!resources!/commerce-modules/loyalty#1-install-the-loyalty-plugin",
+    },
+  ]}
+/>
+
+In the Medusa Admin, you can manage the loyalty features of your store, which include gift cards, gift card products, and store credits.
+
+- [Gift Cards](./gift-cards/page.mdx) are unique codes you issue directly to customers. Each gift card holds a balance that customers can use at checkout.
+- [Gift Card Products](./gift-card-products/page.mdx) are storefront products that customers can purchase to receive a gift card. When a customer buys a gift card product, a gift card is generated for them.
+- [Store Credits](./store-credits/page.mdx) are balance accounts linked to individual customers. You can credit a customer's store credit account and they can apply the balance at checkout.
+
+Through these features, you can offer flexible payment options to your customers and enhance their shopping experience.
+
+---
+
+## Sections
+
+- [Gift Cards Overview](./gift-cards/page.mdx)
+- [Manage Gift Cards](./gift-cards/manage/page.mdx)
+- [Gift Card Products Overview](./gift-card-products/page.mdx)
+- [Manage Gift Card Products](./gift-card-products/manage/page.mdx)
+- [Store Credits Overview](./store-credits/page.mdx)
+- [Manage Store Credits](./store-credits/manage/page.mdx)

@@ -6,12 +6,12 @@ properties:
     type: array
     description: The created inventory levels.
     items:
-      $ref: ./InventoryLevel.yaml
+      $ref: ./AdminInventoryLevel.yaml
   updated:
     type: array
     description: The updated inventory levels.
     items:
-      $ref: ./InventoryLevel.yaml
+      $ref: ./AdminInventoryLevel.yaml
   deleted:
     type: array
     description: The IDs of deleted inventory levels.

@@ -133,10 +133,27 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "title": "telemetry",
                   "description": "",
                   "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/medusa-cli/commands/codemod",
+                  "title": "codemod",
+                  "description": "",
+                  "children": []
                 }
               ]
             }
           ]
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "link",
+          "path": "/medusa-oas-cli",
+          "title": "medusa-oas-cli",
+          "children": []
         }
       ]
     },
@@ -215,15 +232,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "type": "link",
                   "path": "/references/js-sdk/auth/refresh",
                   "title": "refresh",
-                  "description": "",
-                  "children": []
-                },
-                {
-                  "loaded": true,
-                  "isPathHref": true,
-                  "type": "link",
-                  "path": "/references/js-sdk/auth/register",
-                  "title": "register",
                   "description": "",
                   "children": []
                 },
@@ -611,6 +619,24 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "type": "link",
                   "path": "/references/js-sdk/admin/promotion",
                   "title": "promotion",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/js-sdk/admin/rbacPolicy",
+                  "title": "rbacPolicy",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/js-sdk/admin/rbacRole",
+                  "title": "rbacRole",
                   "description": "",
                   "children": []
                 },

@@ -182,9 +182,9 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
             category: ["electronics"],
           })
           // Verify old filters are gone
-          expect(updatedConfig.configuration.filters.status).toBeUndefined()
-          expect(updatedConfig.configuration.filters.collection_id).toBeUndefined()
-          expect(updatedConfig.configuration.filters.price_range).toBeUndefined()
+          expect(updatedConfig.configuration.filters?.status).toBeUndefined()
+          expect(updatedConfig.configuration.filters?.collection_id).toBeUndefined()
+          expect(updatedConfig.configuration.filters?.price_range).toBeUndefined()
         })
 
         it("should remove filters when explicitly set to empty object", async () => {

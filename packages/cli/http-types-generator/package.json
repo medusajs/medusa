@@ -1,0 +1,41 @@
+{
+  "name": "@medusajs/http-types-generator",
+  "version": "2.15.5",
+  "description": "Generate and validate HTTP TypeScript types",
+  "main": "dist/index.js",
+  "bin": {
+    "medusa-http-types": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/cli/http-types-generator"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Medusa",
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn run -T tsc --build",
+    "watch": "yarn run -T tsc --watch",
+    "test": "../../../node_modules/.bin/jest --passWithNoTests --bail --forceExit --testPathPattern=src",
+    "generate:http-types": "node dist/index.js generate",
+    "validate:http-types": "node dist/index.js validate --ci"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^11.0.0",
+    "glob": "13.0.6",
+    "pluralize": "^8.0.0",
+    "prettier": "^2.8.8",
+    "typescript": "^5.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.11",
+    "@types/pluralize": "^0.0.33"
+  }
+}

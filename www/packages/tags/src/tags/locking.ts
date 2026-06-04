@@ -4,8 +4,16 @@ export const locking = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/reserveInventoryStep"
   },
   {
+    "title": "addGiftCardToCartWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addGiftCardToCartWorkflow"
+  },
+  {
     "title": "addShippingMethodToCartWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addShippingMethodToCartWorkflow"
+  },
+  {
+    "title": "addStoreCreditsToCartWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addStoreCreditsToCartWorkflow"
   },
   {
     "title": "addToCartWorkflow",
@@ -34,6 +42,10 @@ export const locking = [
   {
     "title": "refreshPaymentCollectionForCartWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshPaymentCollectionForCartWorkflow"
+  },
+  {
+    "title": "removeGiftCardFromCartWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeGiftCardFromCartWorkflow"
   },
   {
     "title": "transferCartCustomerWorkflow",
@@ -156,8 +168,20 @@ export const locking = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/cancelBeginOrderEditWorkflow"
   },
   {
+    "title": "cancelOrderClaimWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/cancelOrderClaimWorkflow"
+  },
+  {
+    "title": "cancelOrderExchangeWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/cancelOrderExchangeWorkflow"
+  },
+  {
     "title": "cancelOrderFulfillmentWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/cancelOrderFulfillmentWorkflow"
+  },
+  {
+    "title": "cancelOrderWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/cancelOrderWorkflow"
   },
   {
     "title": "confirmClaimRequestWorkflow",
@@ -228,8 +252,32 @@ export const locking = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createReservationsStep"
   },
   {
+    "title": "deleteReservationsByLineItemsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteReservationsByLineItemsStep"
+  },
+  {
+    "title": "deleteReservationsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteReservationsStep"
+  },
+  {
+    "title": "updateReservationsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateReservationsStep"
+  },
+  {
     "title": "createReservationsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createReservationsWorkflow"
+  },
+  {
+    "title": "deleteReservationsByLineItemsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteReservationsByLineItemsWorkflow"
+  },
+  {
+    "title": "deleteReservationsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteReservationsWorkflow"
+  },
+  {
+    "title": "updateReservationsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateReservationsWorkflow"
   },
   {
     "title": "Use Locking Module",

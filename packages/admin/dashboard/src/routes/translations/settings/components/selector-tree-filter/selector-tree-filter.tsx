@@ -2,6 +2,7 @@ import { Collapse, DescendingSorting } from "@medusajs/icons"
 import { Button, clx, IconButton, Input, Tooltip } from "@medusajs/ui"
 import { SegmentedControl } from "../../../../../components/common/segmented-control"
 import { useTranslation } from "react-i18next"
+import { useState } from "react"
 
 type ViewMode = "full" | "selected"
 
@@ -10,7 +11,8 @@ type SelectorTreeFilterProps = {
   onSearchChange: (value: string) => void
   viewMode: ViewMode
   onViewModeChange: (value: ViewMode) => void
-  onSelectAll: () => void
+  onSelectAllToggle: (selected: boolean) => void
+  initialAllSelected: boolean
   onSortToggle: () => void
   sortOrder: "asc" | "desc"
   onCollapseAll: () => void
@@ -22,13 +24,20 @@ export const SelectorTreeFilter = ({
   onSearchChange,
   viewMode,
   onViewModeChange,
-  onSelectAll,
+  onSelectAllToggle,
+  initialAllSelected,
   onSortToggle,
   sortOrder,
   onCollapseAll,
   className,
 }: SelectorTreeFilterProps) => {
   const { t } = useTranslation()
+  const [allSelected, setAllSelected] = useState(initialAllSelected)
+
+  const handleSelectAllToggle = () => {
+    setAllSelected((prev) => !prev)
+    onSelectAllToggle(!allSelected)
+  }
   return (
     <div className={clx("flex items-center gap-x-2", className)}>
       <div className="flex-1">
@@ -50,12 +59,13 @@ export const SelectorTreeFilter = ({
         ]}
       />
       <Button
-        onClick={onSelectAll}
+        onClick={handleSelectAllToggle}
         size="small"
         variant="secondary"
         type="button"
+        className="min-w-[90px] whitespace-nowrap"
       >
-        {t("general.selectAll")}
+        {allSelected ? t("general.unselectAll") : t("general.selectAll")}
       </Button>
       <Tooltip
         content={

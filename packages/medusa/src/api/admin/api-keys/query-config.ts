@@ -1,3 +1,7 @@
+export enum Entities {
+  api_key = "api_key",
+}
+
 export const defaultAdminApiKeyFields = [
   "id",
   "title",
@@ -17,10 +21,12 @@ export const defaultAdminApiKeyFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminApiKeyFields,
   isList: false,
+  entity: Entities.api_key,
 }
 
 export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   defaultLimit: 20,
   isList: true,
+  entity: Entities.api_key,
 }

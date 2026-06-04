@@ -1,8 +1,8 @@
-import { Admin } from "./admin"
-import { Auth } from "./auth"
-import { Client } from "./client"
-import { Store } from "./store"
-import { Config } from "./types"
+import { Admin } from "./admin/index.js"
+import { Auth } from "./auth/index.js"
+import { Client } from "./client.js"
+import { Store } from "./store/index.js"
+import { Config } from "./types.js"
 
 class Medusa {
   public client: Client
@@ -30,10 +30,32 @@ class Medusa {
 
 export default Medusa
 
-export { FetchError, Client } from "./client"
-export { Admin } from "./admin"
-export { Auth } from "./auth"
-export { Store } from "./store"
+export { FetchError, Client } from "./client.js"
+export { Admin } from "./admin/index.js"
+export {
+  Auth,
+  type AuthCallbackResponse,
+  type AuthVerificationConfirmPayload,
+  type AuthVerificationConfirmResponse,
+  type AuthVerificationRequestPayload,
+  type AuthVerificationRequestResponse,
+  type AuthVerificationRequiredResponse,
+  type AuthLoginResponse,
+  type AuthMfaDisablePayload,
+  type AuthMfaFactorResponse,
+  type AuthMfaGenerateRecoveryCodesPayload,
+  type AuthMfaListResponse,
+  type AuthMfaRecoveryCodesResponse,
+  type AuthMfaRequiredResponse,
+  type AuthMfaSetupResponse,
+  type AuthMfaStartPayload,
+  type AuthMfaVerifyChallengePayload,
+  type AuthMfaVerifyPayload,
+  type AuthRedirectResponse,
+  type AuthRegisterOptions,
+  type AuthRegisterResponse,
+} from "./auth/index.js"
+export { Store } from "./store/index.js"
 export {
   Config,
   ClientHeaders,
@@ -43,4 +65,4 @@ export {
   FetchStreamResponse,
   Logger,
   ServerSentEventMessage,
-} from "./types"
+} from "./types.js"

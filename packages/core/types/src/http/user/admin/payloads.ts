@@ -23,3 +23,17 @@ export interface AdminUpdateUser {
    */
   metadata?: Record<string, unknown> | null
 }
+
+/**
+ * @featureFlag rbac
+ */
+export interface AdminAssignUserRoles {
+  roles: string[]
+}
+
+/**
+ * @featureFlag rbac
+ */
+export interface AdminRemoveUserRoles {
+  roles: string[]
+}

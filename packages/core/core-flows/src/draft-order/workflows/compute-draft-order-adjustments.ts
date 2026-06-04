@@ -1,5 +1,6 @@
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
 import {
+  createHook,
   createWorkflow,
   transform,
   when,
@@ -7,7 +8,6 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import type {
-  ComputeActionContext,
   OrderChangeDTO,
   OrderDTO,
   PromotionDTO,
@@ -16,6 +16,7 @@ import {
   getActionsToComputeFromPromotionsStep,
   prepareAdjustmentsFromPromotionActionsStep,
 } from "../../cart"
+import { promotionContextResult } from "../../cart/utils/schemas"
 import { createOrderChangeActionsWorkflow } from "../../order/workflows/create-order-change-actions"
 import { previewOrderChangeStep } from "../../order/steps/preview-order-change"
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
@@ -23,7 +24,11 @@ import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
 import { useRemoteQueryStep } from "../../common"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import { deleteOrderChangeActionsStep } from "../../order/steps/delete-order-change-actions"
+import { prepareOrderComputeActionContextStep } from "../../order/workflows/order-edit/utils/prepare-order-compute-action-context"
 
+/**
+ * The ID of the compute draft order adjustments workflow.
+ */
 export const computeDraftOrderAdjustmentsWorkflowId =
   "compute-draft-order-adjustments"
 
@@ -57,6 +62,8 @@ export interface ComputeDraftOrderAdjustmentsWorkflowInput {
  * @summary
  *
  * Refresh the promotions in a draft order.
+ *
+ * @property hooks.setPromotionContext - This hook is executed before promotion rules are evaluated for the draft order. You can consume this hook to return any custom context that should be merged on top of the order context when evaluating promotion rules (e.g. `company.id`, `custom_tier`).
  */
 export const computeDraftOrderAdjustmentsWorkflow = createWorkflow(
   computeDraftOrderAdjustmentsWorkflowId,
@@ -90,6 +97,18 @@ export const computeDraftOrderAdjustmentsWorkflow = createWorkflow(
     }).config({ name: "order-change-query" })
 
     validateDraftOrderChangeStep({ order, orderChange })
+
+    const setPromotionContext = createHook(
+      "setPromotionContext",
+      {
+        order,
+        orderChange,
+      },
+      {
+        resultValidator: promotionContextResult,
+      }
+    )
+    const setPromotionContextResult = setPromotionContext.getResult()
 
     const toDeleteActions = transform(orderChange, (orderChange) => {
       return orderChange.actions
@@ -145,23 +164,15 @@ export const computeDraftOrderAdjustmentsWorkflow = createWorkflow(
           .filter((p) => p !== undefined)
       })
 
-      const actionsToComputeItemsInput = transform(
-        { previewedOrder, order },
-        ({ previewedOrder, order }) => {
-          return {
-            currency_code: order.currency_code,
-            items: previewedOrder.items.map((item) => ({
-              ...item,
-              // Buy-Get promotions rely on the product ID, so we need to manually set it before refreshing adjustments
-              product: { id: item.product_id },
-            })),
-          } as ComputeActionContext
-        }
-      )
+      const actionsToComputeItemsInput = prepareOrderComputeActionContextStep({
+        order,
+        previewedOrder,
+      })
 
       const actions = getActionsToComputeFromPromotionsStep({
         computeActionContext: actionsToComputeItemsInput,
         promotionCodesToApply: orderPromotions,
+        additional_promotion_context: setPromotionContextResult,
       })
 
       const { lineItemAdjustmentsToCreate } =
@@ -208,6 +219,8 @@ export const computeDraftOrderAdjustmentsWorkflow = createWorkflow(
       key: input.order_id,
     })
 
-    return new WorkflowResponse(void 0)
+    return new WorkflowResponse(void 0, {
+      hooks: [setPromotionContext] as const,
+    })
   }
 )

@@ -1,0 +1,81 @@
+name: Issue Triage
+
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      skip_triaged:
+        description: 'Skip issues that already have triage labels (type: bug, requires-more, requires-team, good-first-issue, help-wanted, feedback)'
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  # Runs only on workflow_dispatch: collects all open non-bot issues for the matrix below
+  get-open-issues:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+    outputs:
+      matrix: ${{ steps.get-issues.outputs.matrix }}
+    steps:
+      - name: Get open issues
+        id: get-issues
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SKIP_TRIAGED="${{ inputs.skip_triaged }}"
+          matrix=$(gh issue list --repo ${{ github.repository }} --state open --limit 500 --json number,author,labels \
+            --jq "[.[] | select(
+              .author.is_bot == false and
+              (if \"$SKIP_TRIAGED\" == \"true\" then
+                ([.labels[].name] | (
+                  contains([\"type: bug\"]) or
+                  contains([\"requires-more\"]) or
+                  contains([\"requires-team\"]) or
+                  contains([\"good-first-issue\"]) or
+                  contains([\"help-wanted\"]) or
+                  contains([\"feedback\"])
+                )) | not
+              else true end)
+            ) | {number: .number}]")
+
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+
+  # Runs on workflow_dispatch: triages every open issue in parallel
+  triage-all:
+    needs: get-open-issues
+    if: needs.get-open-issues.outputs.matrix != '[]' && needs.get-open-issues.outputs.matrix != ''
+    strategy:
+      matrix:
+        issue: ${{ fromJson(needs.get-open-issues.outputs.matrix) }}
+      max-parallel: 5
+      fail-fast: false
+    uses: ./.github/workflows/triage-issue-action.yml
+    with:
+      issue_number: '${{ matrix.issue.number }}'
+    secrets:
+      MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
+      MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+      CLAUDE_CODE_API_TOKEN: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+
+  # Runs on issues/issue_comment events: triages a single issue
+  triage:
+    if: |
+      (github.event_name == 'issues' &&
+       github.event.issue.user.type != 'Bot') ||
+      (github.event_name == 'issue_comment' &&
+       github.event.issue.pull_request == null &&
+       github.event.comment.user.type != 'Bot' &&
+       contains(github.event.comment.body, '@medusajs-bot triage'))
+    uses: ./.github/workflows/triage-issue-action.yml
+    with:
+      issue_number: '${{ github.event.issue.number }}'
+    secrets:
+      MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
+      MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+      CLAUDE_CODE_API_TOKEN: ${{ secrets.CLAUDE_CODE_API_TOKEN }}

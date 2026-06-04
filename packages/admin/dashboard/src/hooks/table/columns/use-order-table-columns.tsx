@@ -99,28 +99,26 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
       columnHelper.accessor("total", {
         header: () => <TotalHeader />,
         cell: ({ getValue, row }) => {
-            const isFullyRefunded = row.original.payment_status === "refunded"
-            const total = !isFullyRefunded
-              ? getValue()
-              : row.original.payment_collections?.reduce(
-                  (acc, payCol) => acc + (payCol.refunded_amount ?? 0),
-                  0
-                ) || 0
-            const currencyCode = row.original.currency_code
+          const isFullyRefunded = row.original.payment_status === "refunded"
+          const total = !isFullyRefunded
+            ? getValue()
+            : row.original.payment_collections?.reduce(
+                (acc, payCol) => acc + (payCol.refunded_amount ?? 0),
+                0
+              ) ?? 0
+          const currencyCode = row.original.currency_code
 
-            return (
-              <TotalCell
-                currencyCode={currencyCode}
-                total={total}
-                className={
-                  isFullyRefunded ? "text-ui-fg-muted line-through" : ""
-                }
-              />
-            )
+          return (
+            <TotalCell
+              currencyCode={currencyCode}
+              total={total}
+              className={isFullyRefunded ? "text-ui-fg-muted line-through" : ""}
+            />
+          )
         },
       }),
       columnHelper.display({
-        id: "actions",
+        id: "country",
         cell: ({ row }) => {
           const countryCode = row.original.shipping_address?.country_code
           const country = countries.find((c) => c.iso_2 === countryCode)

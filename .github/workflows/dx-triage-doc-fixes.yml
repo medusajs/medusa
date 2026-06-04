@@ -1,0 +1,209 @@
+name: DX Triage Doc Fixes
+
+on:
+  schedule:
+    - cron: "0 9 * * 0" # Every Sunday at 09:00 UTC
+  workflow_dispatch:
+    inputs:
+      all_issues:
+        description: "Process ALL triage issues (not just the past 7 days)"
+        type: boolean
+        default: false
+        required: false
+
+concurrency:
+  group: dx-triage-doc-fixes
+  cancel-in-progress: false
+
+jobs:
+  fix-docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # Use a PAT so the created PR triggers other workflows
+          token: ${{ secrets.REFERENCE_PAT }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Compute date cutoff
+        id: date
+        run: |
+          CUTOFF=$(date -d '7 days ago' --utc +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || \
+                   date -v -7d -u +%Y-%m-%dT%H:%M:%SZ)
+          echo "cutoff=$CUTOFF" >> $GITHUB_OUTPUT
+
+      - name: Checkout or create triage fixes branch
+        id: branch
+        run: |
+          BRANCH="docs/dx-triage-fixes-$(date +%Y-%m-%d)"
+          git fetch origin
+          if git ls-remote --exit-code origin "$BRANCH" > /dev/null 2>&1; then
+            git checkout "$BRANCH"
+            git merge origin/develop -m "chore: sync $BRANCH with develop"
+            echo "Checked out and synced existing branch $BRANCH"
+          else
+            git checkout -b "$BRANCH"
+            echo "Created new branch $BRANCH"
+          fi
+          echo "name=$BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Run Claude Code to fix docs
+        uses: anthropics/claude-code-base-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+          allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,mcp__linear-server__list_teams,mcp__linear-server__list_issues,mcp__linear-server__get_issue,mcp__linear-server__list_issue_statuses,Bash(git diff:*,git status:*,ls:*,find:*,cat:*)"
+          max_turns: 80
+          mcp_config: |
+            {
+              "mcpServers": {
+                "linear-server": {
+                  "type": "http",
+                  "url": "https://mcp.linear.app/mcp",
+                  "headers": {
+                    "Authorization": "Bearer ${{ secrets.LINEAR_API_KEY }}"
+                  }
+                }
+              }
+            }
+          prompt: |
+            IMPORTANT: Only make file changes using the Write and Edit tools. Never use git commands to stage, commit, or push files.
+
+            IMPORTANT: Before making any documentation changes, read the writing-docs guidelines by reading this file using the Read tool: .claude/skills/writing-docs/SKILL.md
+            Then read whichever reference files the skill instructs you to load for the relevant project (book, resources, user-guide, ui, or cloud). Do NOT use any MCP tools or sub-agents to load these files — use the Read tool only.
+
+            You are fixing Medusa documentation based on feedback issues from the DX team triage inbox in Linear.
+
+            ## Step 1 — Fetch issues
+
+            Use the Linear MCP tools to fetch issues with:
+            - Team: DX
+            - Status: Triage
+
+            ${{ inputs.all_issues == true && 'DATE FILTER: Process ALL triage issues regardless of when they were created.' || format('DATE FILTER: Only process issues created after {0}. Skip any issue with a createdAt timestamp earlier than this date.', steps.date.outputs.cutoff) }}
+
+            ## Step 2 — Filter issues
+
+            For each issue, SKIP it entirely if ANY of the following are true:
+            - The issue is not about documentation content (e.g. it is a code bug, feature request, or SDK behaviour issue unrelated to doc pages)
+            - The issue mentions or links to pages under these auto-generated paths:
+                resources/references/
+                api-reference/
+                ui/specs/components/
+            - The feedback is too vague to act on (e.g. message is just "no" or a single word with no actionable detail)
+            - Fixing it would require API design decisions, new feature work, or large architectural rewrites — only fix self-contained doc edits (incorrect code samples, misleading prose, missing explanations, outdated examples)
+
+            ## Step 3 — Fix each qualifying issue
+
+            For each qualifying issue:
+            1. Identify the relevant doc file from the page path or URL mentioned in the issue
+            2. Read the MDX file(s)
+            3. Validate that the issue is accurate. You can look at any necessary source code under the `packages` directory to verify if the documentation is indeed incorrect or missing information. For issues not in source code, evaluate the issue based on the content of the doc page and your understanding of good documentation and coding practices.
+            4. Apply the fix following the writing-docs skill guidelines
+            5. Only write to these directories:
+               - www/apps/book
+               - www/apps/resources
+               - www/apps/user-guide
+               - www/apps/ui
+               - www/apps/cloud
+            6. Never touch www/apps/resources/references/, www/apps/api-reference/, or www/apps/ui/specs/components/
+
+            ## Step 4 — Write fixed issue IDs
+
+            After applying all fixes, write a file at /tmp/fixed-issues.txt.
+            Write one issue identifier per line (e.g. DX-2591). No URLs, no extra text.
+
+            If no issues qualified or were fixed, write an empty file.
+
+            Example /tmp/fixed-issues.txt:
+            DX-2591
+            DX-2593
+
+      - name: Stage documentation changes
+        id: changes
+        run: |
+          git add www/apps/book www/apps/resources www/apps/user-guide www/apps/ui www/apps/cloud
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No documentation changes to commit."
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Read fixed issue IDs
+        id: fixed-ids
+        run: |
+          if [ -f /tmp/fixed-issues.txt ] && [ -s /tmp/fixed-issues.txt ]; then
+            IDS=$(cat /tmp/fixed-issues.txt | grep -v '^$' | tr '\n' ',' | sed 's/,$//' | sed 's/,/, /g')
+            echo "ids=$IDS" >> $GITHUB_OUTPUT
+            echo "Fixed issues: $IDS"
+          else
+            echo "ids=" >> $GITHUB_OUTPUT
+            echo "No issues fixed."
+          fi
+
+      - name: Commit documentation changes
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git commit -m "docs: fix documentation issues from triage inbox"
+
+      - name: Push branch
+        if: steps.changes.outputs.has_changes == 'true'
+        run: git push origin ${{ steps.branch.outputs.name }}
+
+      - name: Create or update Pull Request
+        if: steps.changes.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.REFERENCE_PAT }}
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ steps.branch.outputs.name }}
+          FIXED_IDS: ${{ steps.fixed-ids.outputs.ids }}
+        run: |
+          BODY_FILE=$(mktemp)
+
+          cat > "$BODY_FILE" << 'BODY_EOF'
+          ## Fix documentation issues in triage inbox
+
+          This PR fixes documentation issues from the triage inbox.
+          Each issue was evaluated by Claude and deemed a self-contained doc fix.
+
+          > Review carefully before merging. Claude may have missed context or made
+          > incorrect assumptions.
+          BODY_EOF
+
+          if [ -n "$FIXED_IDS" ]; then
+            echo "" >> "$BODY_FILE"
+            echo "Closes $FIXED_IDS" >> "$BODY_FILE"
+          fi
+
+          REPO_OWNER="${REPO%%/*}"
+          PR_NUMBER=$(gh api "repos/$REPO/pulls?head=${REPO_OWNER}:${BRANCH}&state=open" \
+            --jq '.[0].number' 2>/dev/null || echo "")
+
+          if [ -n "$PR_NUMBER" ] && [ "$PR_NUMBER" != "null" ]; then
+            gh api "repos/$REPO/pulls/$PR_NUMBER" \
+              --method PATCH \
+              --field title="docs: fix documentation issues in triage inbox" \
+              --field body="$(cat "$BODY_FILE")"
+            echo "Updated PR #$PR_NUMBER"
+          else
+            PR_NUMBER=$(gh api "repos/$REPO/pulls" \
+              --method POST \
+              --field title="docs: fix documentation issues in triage inbox" \
+              --field body="$(cat "$BODY_FILE")" \
+              --field base="develop" \
+              --field head="$BRANCH" \
+              --jq '.number')
+            gh api "repos/$REPO/issues/$PR_NUMBER/labels" \
+              --method POST \
+              --field 'labels[]=type: chore'
+            echo "Created PR #$PR_NUMBER"
+          fi

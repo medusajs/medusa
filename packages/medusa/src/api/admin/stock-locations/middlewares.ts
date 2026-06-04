@@ -1,10 +1,12 @@
-import { maybeApplyLinkFilter, MiddlewareRoute } from "@medusajs/framework/http"
 import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
+import { maybeApplyLinkFilter, MiddlewareRoute } from "@medusajs/framework/http"
+import { PolicyOperation } from "@medusajs/framework/utils"
 import { createLinkBody } from "../../utils/validators"
 import * as QueryConfig from "./query-config"
+import { Entities } from "./query-config"
 import {
   AdminCreateStockLocation,
   AdminCreateStockLocationFulfillmentSet,
@@ -15,6 +17,15 @@ import {
 
 export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
   {
+    matcher: "/admin/stock-locations/*",
+    policies: [
+      {
+        resource: Entities.stock_location,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
+  {
     method: ["POST"],
     matcher: "/admin/stock-locations",
     middlewares: [
@@ -23,6 +34,12 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetStockLocationParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.stock_location,
+        operation: PolicyOperation.create,
+      },
     ],
   },
   {
@@ -39,6 +56,12 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
         filterableField: "sales_channel_id",
       }),
     ],
+    policies: [
+      {
+        resource: Entities.stock_location,
+        operation: PolicyOperation.read,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -49,6 +72,12 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetStockLocationParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.stock_location,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -71,6 +100,12 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.stock_location,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -82,6 +117,12 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.stock_location,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -92,6 +133,23 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetStockLocationParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.stock_location,
+        operation: PolicyOperation.update,
+      },
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/stock-locations/:id",
+    middlewares: [],
+    policies: [
+      {
+        resource: Entities.stock_location,
+        operation: PolicyOperation.delete,
+      },
     ],
   },
 ]

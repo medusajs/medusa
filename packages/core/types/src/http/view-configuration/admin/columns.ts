@@ -1,3 +1,5 @@
+import { RelationshipFilterConfig, RenderMode } from "./property-descriptor"
+
 export interface AdminColumn {
   /**
    * The column's unique identifier (e.g., "display_id", "customer.email").
@@ -75,6 +77,54 @@ export interface AdminColumn {
     | "metric"
     | "relationship"
     | "metadata"
+    | "field"
+    | "computed"
+  /**
+   * Render mode hint for the UI to determine how to display this column.
+   */
+  render_mode?: RenderMode
+  /**
+   * Filter configuration for this column.
+   */
+  filter?: {
+    /**
+     * Whether filtering is enabled for this column.
+     */
+    enabled: boolean
+    /**
+     * Available filter operators.
+     */
+    operators?: string[]
+    /**
+     * Enum values if applicable.
+     */
+    enumValues?: string[]
+    /**
+     * Relationship filter config for dropdown selection.
+     */
+    relationship?: RelationshipFilterConfig
+  }
+  /**
+   * Source information about where this column comes from.
+   */
+  source?: {
+    /**
+     * Module name.
+     */
+    module: string
+    /**
+     * Entity name.
+     */
+    entity: string
+  }
+  /**
+   * Whether this column uses a custom user-defined label.
+   */
+  custom_label?: boolean
+  /**
+   * ID of the PropertyLabel record if custom label is used.
+   */
+  label_id?: string
 }
 
 export interface AdminViewsEntityColumnsResponse {

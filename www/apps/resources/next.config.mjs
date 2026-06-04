@@ -29,6 +29,9 @@ const withMDX = mdx({
           },
           hasGeneratedSlugs: true,
           crossProjects: {
+            bloom: {
+              projectPath: path.resolve("..", "bloom"),
+            },
             docs: {
               projectPath: path.resolve("..", "book"),
             },
@@ -278,8 +281,13 @@ const nextConfig = {
       },
     ])
   },
+  outputFileTracingRoot: new URL("../../", import.meta.url).pathname,
   outputFileTracingExcludes: {
-    "*": ["node_modules/@medusajs/icons"],
+    "*": [
+      "node_modules/@medusajs/icons",
+      "../**/.open-next/**",
+      "../!(resources)/.next/**",
+    ],
   },
   outputFileTracingIncludes: {
     "/md\\-content/\\[\\[\\.\\.\\.slug\\]\\]": ["./app/**/*.mdx"],
@@ -292,11 +300,27 @@ const nextConfig = {
     return {
       beforeFiles: [
         {
+          source: "/index.html.md",
+          destination: "/md-content",
+        },
+        {
+          source: "/index.md",
+          destination: "/md-content",
+        },
+        {
           source: "/:path*/index.html.md",
           destination: "/md-content/:path*",
         },
         {
-          source: "/:path*",
+          source: "/:path*/index.md",
+          destination: "/md-content/:path*",
+        },
+        {
+          source: "/:path*.md",
+          destination: "/md-content/:path*",
+        },
+        {
+          source: "/:first((?!md-content)[^/]+)/:rest*/",
           has: [
             {
               type: "header",
@@ -304,7 +328,29 @@ const nextConfig = {
               value: ".*(text/markdown|text/plain).*",
             },
           ],
-          destination: "/md-content/:path*",
+          destination: "/md-content/:first/:rest*",
+        },
+        {
+          source: "/",
+          has: [
+            {
+              type: "header",
+              key: "Accept",
+              value: ".*(text/markdown|text/plain).*",
+            },
+          ],
+          destination: "/md-content",
+        },
+        {
+          source: "/:first((?!md-content)[^/]+)/:rest*",
+          has: [
+            {
+              type: "header",
+              key: "Accept",
+              value: ".*(text/markdown|text/plain).*",
+            },
+          ],
+          destination: "/md-content/:first/:rest*",
         },
       ],
     }

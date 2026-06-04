@@ -136,7 +136,7 @@ export const TranslationList = () => {
             variant="secondary"
             onClick={handleManageEntities}
           >
-            <ListCheckbox />
+            <ListCheckbox className="text-ui-fg-subtle" />
             <Text className="txt-compact-small-plus text-ui-fg-base">
               {t("translations.actions.manageEntities")}
             </Text>

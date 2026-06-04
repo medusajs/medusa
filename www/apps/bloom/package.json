@@ -1,0 +1,68 @@
+{
+  "name": "bloom",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "yarn prep && next dev",
+    "dev:monorepo": "yarn prep && yarn dev -p 3005",
+    "dev:wrangler": "wrangler dev --port 3000",
+    "build": "yarn prep && next build",
+    "build:cloudflare": "CF_PAGES=1 yarn prep && opennextjs-cloudflare build",
+    "build:dev": "NODE_ENV=test yarn build",
+    "start": "next start",
+    "start:monorepo": "yarn start -p 3005",
+    "lint": "next lint --fix",
+    "lint:content": "eslint --no-config-lookup -c .content.eslintrc.mjs app/**/*.mdx --fix",
+    "prep": "node ./scripts/prepare.mjs",
+    "preview": "yarn build:cloudflare && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare deploy",
+    "upload": "yarn build:cloudflare && opennextjs-cloudflare upload",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+  },
+  "dependencies": {
+    "@mdx-js/loader": "^3.1.0",
+    "@mdx-js/react": "^3.1.0",
+    "@medusajs/icons": "2.15.5",
+    "@next/mdx": "15.5.18",
+    "@stefanprobst/rehype-extract-toc": "^3.0.0",
+    "clsx": "^2.1.0",
+    "docs-ui": "*",
+    "next": "15.5.18",
+    "posthog-js": "^1.298.1",
+    "posthog-node": "^5.29.0",
+    "react": "19.2.5",
+    "react-dom": "19.2.5",
+    "rehype-mdx-code-props": "^2.0.0",
+    "rehype-slug": "^6.0.0",
+    "remark-directive": "^3.0.0",
+    "remark-frontmatter": "^5.0.0",
+    "remark-rehype-plugins": "*",
+    "slugify": "^1.6.6"
+  },
+  "devDependencies": {
+    "@opennextjs/cloudflare": "^1.19.9",
+    "@types/mdx": "^2.0.13",
+    "@types/node": "^20",
+    "@types/react": "19.2.9",
+    "@types/react-dom": "19.2.3",
+    "autoprefixer": "^10.0.1",
+    "build-scripts": "*",
+    "eslint": "^9.13.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "postcss": "^8",
+    "tailwind": "*",
+    "tailwindcss": "^3.3.0",
+    "tsconfig": "*",
+    "types": "*",
+    "typescript": "^5",
+    "wrangler": "^4.90.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "overrides": {
+    "@types/react": "19.2.9",
+    "@types/react-dom": "19.2.3"
+  }
+}

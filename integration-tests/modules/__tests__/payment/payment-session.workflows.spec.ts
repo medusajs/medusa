@@ -129,6 +129,55 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should create payment sessions when customer has no account_holder links)", async () => {
+          const {
+            data: [customerBefore],
+          } = await query.graph({
+            entity: "customer",
+            filters: { id: customer.id },
+            fields: ["id", "account_holders.*"],
+          })
+
+          expect(
+            customerBefore.account_holders === undefined ||
+              customerBefore.account_holders?.length === 0
+          ).toBe(true)
+
+          await createPaymentSessionsWorkflow(appContainer).run({
+            input: {
+              payment_collection_id: paymentCollection.id,
+              provider_id: "pp_system_default",
+              customer_id: customer.id,
+            },
+          })
+
+          const {
+            data: [updatedPaymentCollection],
+          } = await query.graph({
+            entity: "payment_collection",
+            filters: { id: paymentCollection.id },
+            fields: ["id", "payment_sessions.*"],
+          })
+
+          expect(updatedPaymentCollection.payment_sessions).toHaveLength(1)
+
+          const {
+            data: [customerAfter],
+          } = await query.graph({
+            entity: "customer",
+            filters: { id: customer.id },
+            fields: ["id", "account_holders.*"],
+          })
+
+          expect(customerAfter.account_holders).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                email: customer.email,
+              }),
+            ])
+          )
+        })
+
         it("should delete existing sessions when create payment sessions", async () => {
           await createPaymentSessionsWorkflow(appContainer).run({
             input: {
@@ -300,6 +349,63 @@ medusaIntegrationTestRunner({
                 }),
               ])
             )
+          })
+
+          it("should skip compensation for account holder step on failure", async () => {
+            // Spy on deleteAccountHolder to verify it's NOT called during compensation
+            const deleteAccountHolderSpy = jest.spyOn(
+              paymentModule,
+              "deleteAccountHolder"
+            )
+
+            const newCustomer = await customerModule.createCustomers({
+              email: "new-customer@test.com",
+              first_name: "New",
+              last_name: "Customer",
+            })
+
+            const newPaymentCollection =
+              await paymentModule.createPaymentCollections({
+                currency_code: "usd",
+                amount: 3000,
+              })
+
+            const workflow = createPaymentSessionsWorkflow(appContainer)
+
+            workflow.appendAction("throw", createPaymentSessionsWorkflowId, {
+              invoke: async function failStep() {
+                throw new Error(
+                  `Failed to do something after creating payment sessions`
+                )
+              },
+            })
+
+            const { errors } = await workflow.run({
+              input: {
+                payment_collection_id: newPaymentCollection.id,
+                provider_id: "pp_system_default",
+                customer_id: newCustomer.id,
+                context: {},
+                data: {},
+              },
+              throwOnError: false,
+            })
+
+            expect(errors).toEqual([
+              {
+                action: "throw",
+                handlerType: "invoke",
+                error: expect.objectContaining({
+                  message: `Failed to do something after creating payment sessions`,
+                }),
+              },
+            ])
+
+            // Verify deleteAccountHolder was NOT called because noCompensation: true
+            // prevents the compensation function from running
+            expect(deleteAccountHolderSpy).not.toHaveBeenCalled()
+
+            deleteAccountHolderSpy.mockRestore()
           })
         })
       })

@@ -31,8 +31,14 @@ To create a validation schema with Zod, create a `validators.ts` file in any `sr
 
 For example, create the file `src/api/custom/validators.ts` with the following content:
 
+<Note>
+
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), Zod should be imported from `@medusajs/framework/zod`.
+
+</Note>
+
 ```ts title="src/api/custom/validators.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const PostStoreCustomSchema = z.object({
   a: z.number(),
@@ -93,7 +99,7 @@ export const routeHighlights = [
 
 ```ts title="src/api/custom/route.ts" highlights={routeHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { PostStoreCustomSchema } from "./validators"
 
 type PostStoreCustomSchemaType = z.infer<
@@ -146,7 +152,7 @@ Consider that the API route accepts two query parameters `a` and `b` that are nu
 Create the file `src/api/custom/validators.ts` with the following content:
 
 ```ts title="src/api/custom/validators.ts"
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 
 export const PostStoreCustomSchema = z.object({
   a: z.preprocess(

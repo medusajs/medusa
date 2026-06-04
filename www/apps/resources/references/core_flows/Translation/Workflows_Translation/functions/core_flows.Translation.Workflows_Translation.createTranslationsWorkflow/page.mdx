@@ -3,7 +3,6 @@ slug: /references/medusa-workflows/createTranslationsWorkflow
 sidebar_label: createTranslationsWorkflow
 sidebar_description: Create one or more translations.
 tags:
-  - query
   - translation
   - event bus
   - workflow
@@ -33,7 +32,7 @@ This is available starting from [Medusa v2.12.3](https://github.com/medusajs/med
 
 :::
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/a960fb75c9f662372fd5cd623f883f9d6d8ad473/packages/core/core-flows/src/translation/workflows/create-translations.ts#L53" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/core/core-flows/src/translation/workflows/create-translations.ts#L52" />
 
 ## Examples
 
@@ -166,11 +165,11 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"createTranslationsWorkflow","steps":[{"type":"step","name":"validateTranslationsStep","description":"This step validates that the translations are supported by the store.","link":"../../../Steps_Translation/functions/core_flows.Translation.Steps_Translation.validateTranslationsStep/page.mdx","depth":1},{"type":"step","name":"createTranslationsStep","description":"This step creates one or more translations.","link":"../../../Steps_Translation/functions/core_flows.Translation.Steps_Translation.createTranslationsStep/page.mdx","depth":2},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":3}]}} />
+<WorkflowDiagram workflow={{"name":"createTranslationsWorkflow","steps":[{"type":"step","name":"createTranslationsStep","description":"This step creates one or more translations.","link":"../../../Steps_Translation/functions/core_flows.Translation.Steps_Translation.createTranslationsStep/page.mdx","depth":1},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":2}]}} />
 
 ## Input
 
-<TypeList types={[{"name":"CreateTranslationsWorkflowInput","type":"[CreateTranslationsWorkflowInput](../../../../types/core_flows.CreateTranslationsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"The translations to create.","expandable":false,"children":[{"name":"translations","type":"[CreateTranslationDTO](../../../../../translation/interfaces/translation.CreateTranslationDTO/page.mdx)[]","description":"The translations to create.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"reference_id","type":"`string`","description":"The ID of the data model being translated.","optional":false,"defaultValue":"","example":"\"prod_123\"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"The name of the table that the translation belongs to.","optional":false,"defaultValue":"","example":"\"product\"","expandable":false,"children":[]},{"name":"locale_code","type":"`string`","description":"The BCP 47 language tag code for this translation.","optional":false,"defaultValue":"","example":"\"en-US\"","expandable":false,"children":[]},{"name":"translations","type":"`Record<string, unknown>`","description":"The translated fields as key-value pairs.","optional":false,"defaultValue":"","example":"{ * \"title\": \"Product Title\", * \"description\": \"Product Description\", * }","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createTranslationsWorkflow"/>
+<TypeList types={[{"name":"CreateTranslationsWorkflowInput","type":"[CreateTranslationsWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.CreateTranslationsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CreateTranslationsWorkflowInput","type":"`object`","description":"The translations to create.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createTranslationsWorkflow"/>
 
 ## Output
 

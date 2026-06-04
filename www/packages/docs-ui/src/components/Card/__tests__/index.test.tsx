@@ -18,6 +18,9 @@ vi.mock("@/components/Card/Layout/Filler", () => ({
 vi.mock("@/components/Card/Layout/Mini", () => ({
   CardLayoutMini: () => <div>CardLayoutMini</div>,
 }))
+vi.mock("@/components/Card/Layout/Bloom", () => ({
+  CardBloomLayout: () => <div>CardBloomLayout</div>,
+}))
 
 import { Card } from "../../Card"
 
@@ -49,5 +52,12 @@ describe("rendering", () => {
     const card = container.querySelector("div")
     expect(card).toBeInTheDocument()
     expect(card).toHaveTextContent("CardLayoutMini")
+  })
+  test("renders bloom card", () => {
+    const { container } = render(<Card type="bloom">Click me</Card>)
+    expect(container).toBeInTheDocument()
+    const card = container.querySelector("div")
+    expect(card).toBeInTheDocument()
+    expect(card).toHaveTextContent("CardBloomLayout")
   })
 })

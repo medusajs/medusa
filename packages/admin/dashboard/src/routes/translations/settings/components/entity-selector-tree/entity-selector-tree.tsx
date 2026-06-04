@@ -54,7 +54,7 @@ const SelectorRow = ({
 }
 
 export type EntitySelectorTreeRef = {
-  selectAll: () => void
+  selectAllToggle: (selected: boolean) => void
   collapseAll: () => void
 }
 
@@ -156,21 +156,26 @@ export const EntitySelectorTree = React.forwardRef<
     })
   }
 
-  const selectAll = () => {
-    const allIds = new Set<string>()
-    entities.forEach((entity) => {
-      entity.fields?.forEach((field) => {
-        allIds.add(`${entity.id}.${field.id}`)
+  const selectAllToggle = (selected: boolean) => {
+    if (selected) {
+      const allIds = new Set<string>()
+      entities.forEach((entity) => {
+        entity.fields?.forEach((field) => {
+          allIds.add(`${entity.id}.${field.id}`)
+        })
       })
-    })
-    setSelectedIds(allIds)
-    onSelectionChange?.(allIds)
+      setSelectedIds(allIds)
+      onSelectionChange?.(allIds)
+    } else {
+      setSelectedIds(new Set())
+      onSelectionChange?.(new Set())
+    }
   }
 
   const collapseAll = () => setExpandedEntities(new Set())
 
   useImperativeHandle(ref, () => ({
-    selectAll,
+    selectAllToggle,
     collapseAll,
   }))
 

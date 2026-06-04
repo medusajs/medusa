@@ -1,0 +1,51 @@
+---
+sidebar_label: "codemod"
+sidebar_position: 10
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `codemod Command - Medusa CLI Reference`,
+}
+
+# {metadata.title}
+
+<Note>
+
+The `codemod` command is available from [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0).
+
+</Note>
+
+Run a codemod to update your Medusa project to the latest version.
+
+Learn more about codemods and available transformations in the [Codemods](!docs!/learn/codemods) guide.
+
+```bash npx2yarn
+npx medusa codemod <transformation>
+```
+
+## Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Argument</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `<transformation>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The name of the codemod transformation to run. For example, `replace-zod-imports`.
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

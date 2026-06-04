@@ -4,10 +4,11 @@ import { MetadataStorage } from "@medusajs/deps/mikro-orm/core"
 import { createDatabase, dropDatabase } from "pg-god"
 import { TSMigrationGenerator } from "@medusajs/deps/mikro-orm/migrations"
 
-import { model } from "../../../dml"
+import { model, toMikroOrmEntities } from "../../../dml"
 import { FileSystem } from "../../../common"
 import { Migrations, MigrationsEvents } from "../../index"
 import { defineMikroOrmCliConfig } from "../../../modules-sdk"
+import { mikroOrmCreateConnection } from "../../../dal"
 
 const migrationFileNameGenerator = (_: string, name?: string) => {
   return `Migration${new Date().getTime()}${name ? `_${name}` : ""}`
@@ -131,6 +132,49 @@ describe.skip("Run migrations", () => {
       path: expect.stringContaining(__dirname),
       context: {},
     })
+  })
+
+  test("running migrations does not create a snapshot file", async () => {
+    const moduleKey = "my-test-run-module"
+
+    const User = model.define("User", {
+      id: model.id().primaryKey(),
+      email: model.text().unique(),
+    })
+
+    /**
+     * First generate a migration using the module-name snapshot convention,
+     * mirroring what buildGenerateMigrationScript does.
+     */
+    const generateOrm = await mikroOrmCreateConnection(
+      {
+        clientUrl: `postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${dbName}`,
+        snapshotName: `.snapshot-${moduleKey}`,
+      },
+      toMikroOrmEntities([User]),
+      fs.basePath
+    )
+    await new Migrations(generateOrm).generate()
+    expect(await fs.exists(`.snapshot-${moduleKey}.json`)).toBeTruthy()
+
+    /**
+     * Now run the migration with snapshot: false, mirroring what
+     * buildMigrationScript does. No new snapshot file should appear.
+     */
+    const runOrm = await mikroOrmCreateConnection(
+      {
+        clientUrl: `postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${dbName}`,
+        snapshot: false,
+      },
+      [],
+      fs.basePath
+    )
+    await new Migrations(runOrm).run()
+
+    // Module-name snapshot must remain untouched
+    expect(await fs.exists(`.snapshot-${moduleKey}.json`)).toBeTruthy()
+    // No DB-name-based snapshot must have been created
+    expect(await fs.exists(`.snapshot-${dbName}.json`)).toBeFalsy()
   })
 
   test("throw error when migration fails during run", async () => {

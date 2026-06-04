@@ -12,16 +12,32 @@ export const translation = [
     "path": "https://docs.medusajs.com/resources/storefront-development/localization"
   },
   {
+    "title": "createTranslationSettingsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createTranslationSettingsStep"
+  },
+  {
     "title": "createTranslationsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createTranslationsStep"
+  },
+  {
+    "title": "deleteTranslationSettingsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteTranslationSettingsStep"
   },
   {
     "title": "deleteTranslationsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteTranslationsStep"
   },
   {
+    "title": "updateTranslationSettingsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateTranslationSettingsStep"
+  },
+  {
     "title": "updateTranslationsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateTranslationsStep"
+  },
+  {
+    "title": "batchTranslationSettingsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchTranslationSettingsWorkflow"
   },
   {
     "title": "batchTranslationsWorkflow",

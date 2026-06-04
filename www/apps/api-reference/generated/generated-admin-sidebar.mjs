@@ -364,6 +364,13 @@ const generatedgeneratedAdminSidebarSidebar = {
     },
     {
       "type": "category",
+      "title": "Multi-Factor Authentication",
+      "children": [],
+      "loaded": false,
+      "showLoadingIfEmpty": true
+    },
+    {
+      "type": "category",
       "title": "Notifications",
       "children": [
         {
@@ -611,6 +618,24 @@ const generatedgeneratedAdminSidebarSidebar = {
           "type": "link",
           "path": "promotions_promotion_schema",
           "title": "Promotion Object",
+          "loaded": true,
+          "badge": {
+            "variant": "neutral",
+            "text": "Schema"
+          }
+        }
+      ],
+      "loaded": false,
+      "showLoadingIfEmpty": true
+    },
+    {
+      "type": "category",
+      "title": "Property Labels",
+      "children": [
+        {
+          "type": "link",
+          "path": "property-labels_propertylabel_schema",
+          "title": "PropertyLabel Object",
           "loaded": true,
           "badge": {
             "variant": "neutral",
@@ -881,24 +906,6 @@ const generatedgeneratedAdminSidebarSidebar = {
           "type": "link",
           "path": "tax-regions_taxregion_schema",
           "title": "TaxRegion Object",
-          "loaded": true,
-          "badge": {
-            "variant": "neutral",
-            "text": "Schema"
-          }
-        }
-      ],
-      "loaded": false,
-      "showLoadingIfEmpty": true
-    },
-    {
-      "type": "category",
-      "title": "Transaction Groups",
-      "children": [
-        {
-          "type": "link",
-          "path": "transaction-groups_transactiongroup_schema",
-          "title": "TransactionGroup Object",
           "loaded": true,
           "badge": {
             "variant": "neutral",

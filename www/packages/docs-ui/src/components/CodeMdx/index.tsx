@@ -40,8 +40,14 @@ export const CodeMdx = ({
   if (match) {
     if (rest.npm2yarn) {
       return <Npm2YarnCode npmCode={codeContent} {...rest} />
-    } else if (rest.npx2yarn) {
-      return <Npx2YarnCode npxCode={codeContent} {...rest} />
+    } else if (rest.npx2yarn || rest.npx2yarnExec) {
+      return (
+        <Npx2YarnCode
+          npxCode={codeContent}
+          {...rest}
+          isExecutable={!!rest.npx2yarnExec}
+        />
+      )
     } else if (match[1] === "mermaid") {
       return <MermaidDiagram diagramContent={codeContent} />
     }

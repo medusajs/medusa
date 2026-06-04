@@ -59,9 +59,9 @@ Exceeding these limits may incur [Flex Usage](../usage/page.mdx#what-is-flex-usa
 
 Cloud currently supports deploying storefronts built with the following frameworks:
 
-1. [Next.js](https://nextjs.org/) v15+
+1. [Next.js](https://nextjs.org/) v15. v16 is also supported if you're not using a [proxy](https://nextjs.org/docs/app/getting-started/proxy).
 2. [SvelteKit](https://kit.svelte.dev/) v2.40.0+
-3. [Tanstack Start](https://tanstack.com/start) v1.132.0+
+3. [Tanstack Start](https://tanstack.com/start) v1.132.0+ (React and Solid)
 
 If you're using a different framework for your storefront, contact support to request it.
 
@@ -71,29 +71,7 @@ If you're using a different framework for your storefront, contact support to re
 
 By default, storefronts are deployed at the `medusajs.site` subdomain. The domain prefix is the same as the Medusa application's subdomain. For example, if your Medusa application is at `my-store.medusajs.app`, your storefront will be at `my-store.medusajs.site`.
 
-You can also set up a custom domain for your storefront to use a branded URL.
-
-### Prerequisites
-
-To set up a custom domain for your storefront, you need a domain registered with a domain provider that supports either ALIAS records or top-level CNAME records.
-
-### Set Up Storefront Custom Domain
-
-You can set up storefront custom domains per environment. For example, you can set up a custom domain for the Production environment while keeping the default domain for the Staging and preview environments.
-
-To set up a storefront custom domain for an environment:
-
-1. Go to a [project's dashboard](../projects/page.mdx#open-project-dashboard) in Cloud.
-2. Click on the environment's card where you want to set up the custom domain. For example, the Production environment.
-3. In the environment's dashboard, click on the "Settings" tab.
-4. Choose the "Storefront Domains" tab from the sidebar.
-5. Click on the "Add domain" button.
-6. A form with two steps will open:
-    - **Domain Step**: Enter your custom domain name. For example, `acme.com`.
-    - **DNS Step**: Follow the instructions to add the necessary DNS records with your domain provider.
-7. Once you're done, click the "Done" button.
-
-Your custom domain will be active once the DNS changes propagate, which may take up to 48 hours.
+You can also set up a custom domain for your storefront to use a branded URL. For detailed instructions on setting up and managing custom domains for your storefront, refer to the [Custom Domains](../environments/custom-domains/page.mdx#storefront-custom-domains) guide.
 
 ---
 
@@ -113,9 +91,15 @@ When deploying your storefront to Cloud, you don't need to add any specific conf
 
 Medusa automatically injects the necessary configurations during the deployment process to ensure your storefront is correctly set up on Cloud.
 
+### Next.js Image Optimization
+
+Cloud currently does not support Next.js image optimization for storefronts. The image optimization feature that uses the Next.js Image component's automatic optimization capabilities will not function as expected when deployed on Cloud.
+
+If your storefront relies on Next.js image optimization, you should configure an external image optimization service or disable the feature in your Next.js configuration.
+
 ### Injected Environment Variables
 
-When deploying your storefront to Cloud, Medusa automatically injects the following environment variables into your storefront's build process:
+When deploying your storefront to Cloud, Medusa automatically injects the following environment variables into your storefront's build and runtime process:
 
 <CodeTabs group="storefront-framework">
   <CodeTab label="Next.js" value="nextjs">
@@ -123,7 +107,9 @@ When deploying your storefront to Cloud, Medusa automatically injects the follow
 ```shell
 NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY # Your Medusa application's publishable key
 NEXT_PUBLIC_MEDUSA_BACKEND_URL # Your Medusa backend's URL
-MEDUSA_BACKEND_URL # Your Medusa backend's URL, compatible with Next.js Starter Storefront
+NEXT_PUBLIC_BASE_URL # Your storefront's URL
+MEDUSA_BACKEND_URL # Your Medusa backend's URL
+BASE_URL # Your storefront's URL
 ```
 
   </CodeTab>
@@ -132,6 +118,9 @@ MEDUSA_BACKEND_URL # Your Medusa backend's URL, compatible with Next.js Starter 
 ```shell
 VITE_MEDUSA_PUBLISHABLE_KEY # Your Medusa application's publishable key
 VITE_MEDUSA_BACKEND_URL # Your Medusa backend's URL
+VITE_BASE_URL # Your storefront's URL
+MEDUSA_BACKEND_URL # Your Medusa backend's URL
+BASE_URL # Your storefront's URL
 ```
 
   </CodeTab>

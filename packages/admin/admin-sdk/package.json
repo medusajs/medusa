@@ -1,7 +1,7 @@
 {
   "name": "@medusajs/admin-sdk",
   "description": "SDK for building extension for the Medusa admin dashboard.",
-  "version": "2.12.5",
+  "version": "2.15.5",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
@@ -19,8 +19,8 @@
     "build": "yarn run -T tsup"
   },
   "dependencies": {
-    "@medusajs/admin-shared": "2.12.5",
-    "zod": "3.25.76"
+    "@medusajs/admin-shared": "2.15.5",
+    "zod": "4.2.0"
   },
   "packageManager": "yarn@3.2.1"
 }

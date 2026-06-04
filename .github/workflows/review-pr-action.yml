@@ -1,0 +1,78 @@
+name: Review PR (Reusable)
+
+on:
+  workflow_call:
+    inputs:
+      pr_number:
+        required: true
+        type: string
+      trigger_reason:
+        required: false
+        type: string
+        default: ''
+    secrets:
+      MEDUSA_APP_ID:
+        required: true
+      MEDUSA_APP_PRIVATE_KEY:
+        required: true
+      CLAUDE_CODE_API_TOKEN:
+        required: true
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
+      - name: Review PR
+        uses: anthropics/claude-code-action@v1
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        with:
+          anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+          github_token: ${{ steps.app-token.outputs.token }}
+          allowed_bots: "*"
+          allowed_non_write_users: "*"
+          base_branch: develop
+          show_full_output: true
+          plugin_marketplaces: "https://github.com/medusajs/medusa-agent-skills.git"
+          plugins: "medusa-dev@medusa"
+
+          prompt: |
+            PR NUMBER: ${{ inputs.pr_number }}
+            TRIGGER REASON: ${{ inputs.trigger_reason }}
+
+            Note: all scripts are located in the root `scripts/` directory and should be run as `bash scripts/<script>.sh`.
+
+            Start by running `bash scripts/get_pr.sh ${{ inputs.pr_number }}` to retrieve the PR title and author, then run:
+            /reviewing-prs ${{ inputs.pr_number }} "<title from get_pr.sh>" "<author from get_pr.sh>"
+
+            At the very end of your comment, add a small note in italics: "_Triggered by: ${{ inputs.trigger_reason }}_"
+
+          claude_args: >-
+            --allowedTools
+            "Bash(bash scripts/get_pr.sh:*),
+            Bash(bash scripts/get_pr_files.sh:*),
+            Bash(bash scripts/get_pr_diff.sh:*),
+            Bash(bash scripts/get_linked_issues.sh:*),
+            Bash(bash scripts/get_comments.sh:*),
+            Bash(bash scripts/add_comment.sh:*),
+            Bash(bash scripts/labels.sh:*),
+            Bash(bash scripts/get_labels.sh:*),
+            Bash(bash scripts/get_issue.sh:*),
+            Read"

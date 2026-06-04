@@ -38,7 +38,7 @@ Medusa updates the version number `major.minor.patch` according to the following
 
 To check the currently installed version of Medusa in your project, run the following command in your Medusa application:
 
-```bash
+```bash npx2yarn
 npx medusa -v
 ```
 
@@ -72,7 +72,7 @@ Releases may include changes to the database, such as new tables, updates to exi
 
 So, after updating Medusa, run the following command to migrate the latest changes to your database:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 
@@ -84,19 +84,19 @@ Before reverting an update, if you already ran the migrations, you have to first
 
 For example, if the version you updated to had migrations for the Cart and Product Modules, run the following command:
 
-```bash
+```bash npx2yarn
 npx medusa db:rollback cart product
 ```
 
 Then, revert the update by changing the version of all `@medusajs/*` dependencies in your `package.json` to the previous version and re-installing dependencies:
 
 ```bash npm2yarn
-npm  install
+npm install
 ```
 
 Finally, run the migrations to sync link changes:
 
-```bash
+```bash npx2yarn
 npx medusa db:migrate
 ```
 

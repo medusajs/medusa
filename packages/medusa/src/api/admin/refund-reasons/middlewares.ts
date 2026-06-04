@@ -1,9 +1,11 @@
-import { MiddlewareRoute } from "@medusajs/framework/http"
 import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
+import { MiddlewareRoute } from "@medusajs/framework/http"
+import { PolicyOperation } from "@medusajs/framework/utils"
 import * as queryConfig from "./query-config"
+import { Entities } from "./query-config"
 import {
   AdminCreatePaymentRefundReason,
   AdminGetRefundReasonParams,
@@ -13,6 +15,15 @@ import {
 
 export const adminRefundReasonsRoutesMiddlewares: MiddlewareRoute[] = [
   {
+    matcher: "/admin/refund-reasons/*",
+    policies: [
+      {
+        resource: Entities.refund_reason,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/refund-reasons",
     middlewares: [
@@ -20,6 +31,12 @@ export const adminRefundReasonsRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetRefundReasonsParams,
         queryConfig.listTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.refund_reason,
+        operation: PolicyOperation.read,
+      },
     ],
   },
   {
@@ -32,6 +49,12 @@ export const adminRefundReasonsRoutesMiddlewares: MiddlewareRoute[] = [
         queryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.refund_reason,
+        operation: PolicyOperation.create,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -42,6 +65,12 @@ export const adminRefundReasonsRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetRefundReasonParams,
         queryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.refund_reason,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -62,6 +91,12 @@ export const adminRefundReasonsRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetRefundReasonsParams,
         queryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.refund_reason,
+        operation: PolicyOperation.delete,
+      },
     ],
   },
 ]

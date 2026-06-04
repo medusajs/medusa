@@ -133,7 +133,7 @@ export function EditShippingOptionsPricingForm({
     const currencyPrices = Object.entries(data.currency_prices)
       .map(([code, value]) => {
         if (
-          !value ||
+          (value === undefined || value === "") ||
           !currencies.some((c) => c.toLowerCase() === code.toLowerCase())
         ) {
           return undefined
@@ -165,7 +165,7 @@ export function EditShippingOptionsPricingForm({
         amount: castNumber(rule.amount),
         rules: buildShippingOptionPriceRules(rule),
       }))
-    )
+    ) as PriceRecord[]
 
     /**
      * TODO: If we try to update an existing region price the API throws an error.
@@ -173,7 +173,10 @@ export function EditShippingOptionsPricingForm({
      */
     const regionPrices = Object.entries(data.region_prices)
       .map(([region_id, value]) => {
-        if (!value || !regions?.some((region) => region.id === region_id)) {
+        if (
+          (value === undefined || value === "") ||
+          !regions?.some((region) => region.id === region_id)
+        ) {
           return undefined
         }
 
@@ -195,7 +198,7 @@ export function EditShippingOptionsPricingForm({
         amount: castNumber(rule.amount),
         rules: buildShippingOptionPriceRules(rule),
       }))
-    )
+    ) as PriceRecord[]
 
     const allPrices = [
       ...currencyPrices,
@@ -300,7 +303,7 @@ const findRuleValue = (
   return (
     rules?.find(
       (r) => r.attribute === ITEM_TOTAL_ATTRIBUTE && r.operator === operator
-    )?.value || fallbackValue
+    )?.value ?? fallbackValue
   )
 }
 
@@ -359,6 +362,10 @@ const getDefaultValues = (prices: HttpTypes.AdminShippingOptionPrice[]) => {
         (r) => r.attribute === REGION_ID_ATTRIBUTE
       )?.value
 
+      if (!regionId) {
+        return
+      }
+
       region_prices[regionId] = price.amount
       return
     }
@@ -367,6 +374,10 @@ const getDefaultValues = (prices: HttpTypes.AdminShippingOptionPrice[]) => {
       const regionId = price.price_rules.find(
         (r) => r.attribute === REGION_ID_ATTRIBUTE
       )?.value
+
+      if (!regionId) {
+        return
+      }
 
       if (!conditional_region_prices[regionId]) {
         conditional_region_prices[regionId] = []

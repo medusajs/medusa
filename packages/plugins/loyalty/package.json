@@ -1,0 +1,107 @@
+{
+  "name": "@medusajs/loyalty-plugin",
+  "version": "2.15.5",
+  "description": "Medusa Plugin: Loyalty - Gift Cards",
+  "author": "Medusa (https://medusajs.com)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/plugins/loyalty"
+  },
+  "files": [
+    ".medusa/server"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./modules/loyalty/*": "./.medusa/server/src/modules/loyalty/index.js",
+    "./.medusa/server/src/modules/loyalty": "./.medusa/server/src/modules/loyalty/index.js",
+    "./.medusa/server/src/modules/store-credit": "./.medusa/server/src/modules/store-credit/index.js",
+    "./.medusa/server/src/*": "./.medusa/server/src/**/*.js",
+    "./workflows": {
+      "import": "./.medusa/server/src/workflows/index.js",
+      "types": "./.medusa/server/src/workflows/index.d.ts",
+      "require": "./.medusa/server/src/workflows/index.js"
+    },
+    "./types": {
+      "import": "./.medusa/server/src/types/index.js",
+      "types": "./.medusa/server/src/types/index.d.ts",
+      "require": "./.medusa/server/src/types/index.js"
+    },
+    "./admin": {
+      "import": "./.medusa/server/src/admin/index.mjs",
+      "require": "./.medusa/server/src/admin/index.js",
+      "default": "./.medusa/server/src/admin/index.js"
+    }
+  },
+  "keywords": [
+    "sqlite",
+    "postgres",
+    "typescript",
+    "ecommerce",
+    "headless",
+    "medusa",
+    "plugin"
+  ],
+  "scripts": {
+    "build": "medusa plugin:build",
+    "dev": "medusa plugin:develop",
+    "prepare": "cross-env NODE_ENV=production yarn run build"
+  },
+  "devDependencies": {
+    "@medusajs/admin-sdk": "2.15.5",
+    "@medusajs/cli": "2.15.5",
+    "@medusajs/framework": "2.15.5",
+    "@medusajs/icons": "2.15.5",
+    "@medusajs/test-utils": "2.15.5",
+    "@medusajs/types": "2.15.5",
+    "@medusajs/ui": "4.1.15",
+    "@medusajs/ui-preset": "2.15.5",
+    "@swc/core": "1.5.7",
+    "@types/node": "^20.0.0",
+    "cross-env": "^7.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  },
+  "peerDependencies": {
+    "@medusajs/admin-sdk": "2.15.5",
+    "@medusajs/cli": "2.15.5",
+    "@medusajs/framework": "2.15.5",
+    "@medusajs/icons": "2.15.5",
+    "@medusajs/test-utils": "2.15.5",
+    "@medusajs/ui": "4.1.15",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "6.30.3"
+  },
+  "peerDependenciesMeta": {
+    "@medusajs/admin-sdk": {
+      "optional": true
+    },
+    "@medusajs/cli": {
+      "optional": true
+    },
+    "@medusajs/icons": {
+      "optional": true
+    },
+    "@medusajs/test-utils": {
+      "optional": true
+    },
+    "@medusajs/ui": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "react-router-dom": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "yarn@3.2.1"
+}

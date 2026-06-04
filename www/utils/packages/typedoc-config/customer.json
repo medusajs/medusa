@@ -7,5 +7,8 @@
   "exclude": [
     "../../../../packages/modules/customer/dist", 
     "../../../../packages/modules/customer/node_modules"
-  ]
+  ],
+  "compilerOptions": {
+    "rootDir": "../../../../packages/modules/customer/src"
+  }
 }

@@ -1772,7 +1772,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         }
       case itemType.isIntersection():
         const allOfItems = this.typesHelper
-          .cleanUpTypes((itemType as ts.IntersectionType).types)
+          .cleanUpIntersectionTypes((itemType as ts.IntersectionType).types)
           .map((intersectionType) => {
             return this.typeToSchema({
               itemType: intersectionType,
@@ -2573,11 +2573,14 @@ class OasKindGenerator extends FunctionKindGenerator {
         false
 
       const schemaNameChanged =
-        oldSchemaObj!["x-schemaName"] !== newSchemaObj?.["x-schemaName"]
+        !!newSchemaObj?.["x-schemaName"] &&
+        oldSchemaObj!["x-schemaName"] !== newSchemaObj["x-schemaName"]
       wasUpdated = requiredChanged || schemaNameChanged
     }
     oldSchemaObj!.required = newSchemaObj?.required
-    oldSchemaObj!["x-schemaName"] = newSchemaObj?.["x-schemaName"]
+    if (newSchemaObj?.["x-schemaName"]) {
+      oldSchemaObj!["x-schemaName"] = newSchemaObj?.["x-schemaName"]
+    }
 
     return {
       schema: oldSchemaObj,

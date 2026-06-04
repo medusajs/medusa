@@ -1,9 +1,11 @@
-import { MiddlewareRoute } from "@medusajs/framework/http"
 import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
+import { MiddlewareRoute } from "@medusajs/framework/http"
+import { PolicyOperation } from "@medusajs/framework/utils"
 import * as queryConfig from "./query-config"
+import { Entities } from "./query-config"
 import {
   AdminCreatePaymentCapture,
   AdminCreatePaymentRefund,
@@ -14,6 +16,15 @@ import {
 
 export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
   {
+    matcher: "/admin/payments/*",
+    policies: [
+      {
+        resource: Entities.payment,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/payments",
     middlewares: [
@@ -21,6 +32,12 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetPaymentsParams,
         queryConfig.listTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.payment,
+        operation: PolicyOperation.read,
+      },
     ],
   },
   {
@@ -53,6 +70,12 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
         queryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.capture,
+        operation: PolicyOperation.create,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -63,6 +86,12 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetPaymentParams,
         queryConfig.retrieveTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.refund,
+        operation: PolicyOperation.create,
+      },
     ],
   },
 ]

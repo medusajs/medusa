@@ -1,6 +1,5 @@
-import { clx, Label } from "@medusajs/ui"
+import { Button, clx } from "@medusajs/ui"
 import { ReactNode } from "react"
-import { Text } from "@medusajs/ui"
 
 export type SegmentedControlOption = {
   value: string
@@ -23,29 +22,30 @@ export const SegmentedControl = ({
   return (
     <div
       className={clx(
-        "bg-ui-bg-disabled flex items-center gap-x-1 rounded-md p-[1px]",
+        "bg-ui-bg-disabled grid items-center gap-x-[1px] rounded-md p-[1px]",
         className
       )}
+      style={{
+        gridTemplateColumns: `repeat(${options.length}, 1fr)`,
+      }}
     >
       {options.map((option) => {
         const isSelected = value === option.value
 
         return (
-          <button
+          <Button
             key={option.value}
+            size="small"
             onClick={() => onValueChange(option.value)}
-            className={clx(
-              "rounded-md px-2 py-1 text-sm transition-colors",
-              isSelected
-                ? "bg-ui-bg-base text-ui-fg-base"
-                : "text-ui-fg-muted hover:text-ui-fg-base"
-            )}
+            variant={isSelected ? "secondary" : "transparent"}
             type="button"
+            className={clx(
+              "w-auto",
+              !isSelected && "hover:text-ui-fg-base text-ui-fg-muted"
+            )}
           >
-            <Label className="txt-ui-fg-base txt-compact-small-plus">
-              {option.label}
-            </Label>
-          </button>
+            {option.label}
+          </Button>
         )
       })}
     </div>

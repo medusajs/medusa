@@ -4,6 +4,10 @@ export const eventBus = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/generateResetPasswordTokenWorkflow"
   },
   {
+    "title": "requestVerificationWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/requestVerificationWorkflow"
+  },
+  {
     "title": "addShippingMethodToCartWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addShippingMethodToCartWorkflow"
   },
@@ -90,6 +94,10 @@ export const eventBus = [
   {
     "title": "refreshInviteTokensWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshInviteTokensWorkflow"
+  },
+  {
+    "title": "deleteLineItemsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteLineItemsWorkflow"
   },
   {
     "title": "archiveOrderWorkflow",

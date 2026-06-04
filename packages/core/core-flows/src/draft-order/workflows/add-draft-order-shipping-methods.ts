@@ -182,23 +182,6 @@ export const addDraftOrderShippingMethodsWorkflow = createWorkflow(
       },
     })
 
-    const appliedPromoCodes: string[] = transform(
-      order,
-      (order) => order.promotions?.map((promotion) => promotion.code) ?? []
-    )
-
-    // If any the order has any promo codes, then we need to refresh the adjustments.
-    when(
-      appliedPromoCodes,
-      (appliedPromoCodes) => appliedPromoCodes.length > 0
-    ).then(() => {
-      computeDraftOrderAdjustmentsWorkflow.runAsStep({
-        input: {
-          order_id: input.order_id,
-        },
-      })
-    })
-
     const orderChangeActionInput = transform(
       {
         order,
@@ -232,6 +215,23 @@ export const addDraftOrderShippingMethodsWorkflow = createWorkflow(
 
     createOrderChangeActionsWorkflow.runAsStep({
       input: [orderChangeActionInput],
+    })
+
+    const appliedPromoCodes: string[] = transform(
+      order,
+      (order) => order.promotions?.map((promotion) => promotion.code) ?? []
+    )
+
+    // If any the order has any promo codes, then we need to refresh the adjustments.
+    when(
+      appliedPromoCodes,
+      (appliedPromoCodes) => appliedPromoCodes.length > 0
+    ).then(() => {
+      computeDraftOrderAdjustmentsWorkflow.runAsStep({
+        input: {
+          order_id: input.order_id,
+        },
+      })
     })
 
     releaseLockStep({

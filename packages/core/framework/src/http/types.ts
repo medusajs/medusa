@@ -71,7 +71,7 @@ export type MiddlewareRoute = {
   /** @ignore */
   policies?:
     | { resource: string; operation: string }
-    | Array<{ resource: string; operation: string }>
+    | Array<{ resource: string; operation: string | string[] }>
 }
 
 export type MiddlewaresConfig = {
@@ -88,9 +88,6 @@ export type RouteDescriptor = {
   matcher: string
   method: RouteVerb
   handler: RouteHandler
-  policies?:
-    | { resource: string; operation: string }
-    | Array<{ resource: string; operation: string }>
   optedOutOfAuth: boolean
   isRoute: true
   routeType?: "admin" | "store" | "auth"
@@ -110,7 +107,7 @@ export type MiddlewareDescriptor = {
   handler: MiddlewareFunction
   policies?:
     | { resource: string; operation: string }
-    | Array<{ resource: string; operation: string }>
+    | Array<{ resource: string; operation: string | string[] }>
 }
 
 export type BodyParserConfigRoute = {
@@ -213,6 +210,7 @@ export interface AuthContext {
   actor_id: string
   actor_type: string
   auth_identity_id: string
+  auth_provider?: string
   app_metadata: Record<string, unknown>
   user_metadata: Record<string, unknown>
 }
@@ -222,12 +220,17 @@ export interface PublishableKeyContext {
   sales_channel_ids: string[]
 }
 
+export interface SecretKeyContext {
+    created_by: string
+}
+
 export interface AuthenticatedMedusaRequest<
   Body = unknown,
   QueryFields = Record<string, unknown>
 > extends MedusaRequest<Body, QueryFields> {
   auth_context: AuthContext
   publishable_key_context?: PublishableKeyContext
+  secret_key_context?: SecretKeyContext
   policies?: PolicyAction[]
 }
 

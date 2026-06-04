@@ -24,6 +24,34 @@ export const userGuide = [
     "path": "https://docs.medusajs.com/user-guide/inventory/reservations"
   },
   {
+    "title": "Manage Gift Card Products",
+    "path": "https://docs.medusajs.com/user-guide/loyalty/gift-card-products/manage"
+  },
+  {
+    "title": "Gift Card Products Overview",
+    "path": "https://docs.medusajs.com/user-guide/loyalty/gift-card-products"
+  },
+  {
+    "title": "Manage Gift Cards",
+    "path": "https://docs.medusajs.com/user-guide/loyalty/gift-cards/manage"
+  },
+  {
+    "title": "Gift Cards Overview",
+    "path": "https://docs.medusajs.com/user-guide/loyalty/gift-cards"
+  },
+  {
+    "title": "Loyalty Features in Medusa Admin",
+    "path": "https://docs.medusajs.com/user-guide/loyalty"
+  },
+  {
+    "title": "Manage Store Credits",
+    "path": "https://docs.medusajs.com/user-guide/loyalty/store-credits/manage"
+  },
+  {
+    "title": "Store Credits Overview",
+    "path": "https://docs.medusajs.com/user-guide/loyalty/store-credits"
+  },
+  {
     "title": "Manage Order Claims",
     "path": "https://docs.medusajs.com/user-guide/orders/claims"
   },

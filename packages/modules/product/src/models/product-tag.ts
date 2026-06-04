@@ -7,6 +7,7 @@ const ProductTag = model
     {
       id: model.id({ prefix: "ptag" }).primaryKey(),
       value: model.text().searchable().translatable(),
+      external_id: model.text().nullable(),
       metadata: model.json().nullable(),
       products: model.manyToMany(() => Product, {
         mappedBy: "tags",

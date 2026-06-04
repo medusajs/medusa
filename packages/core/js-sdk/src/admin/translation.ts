@@ -1,6 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
-import { Client } from "../client"
-import { ClientHeaders } from "../types"
+import { Client } from "../client.js"
+import { ClientHeaders } from "../types.js"
 
 export class Translation {
   /**
@@ -105,7 +105,6 @@ export class Translation {
    * .then(({ created, updated, deleted }) => {
    *   console.log(created, updated, deleted)
    * })
-   * ```
    */
   async batch(body: HttpTypes.AdminBatchTranslations, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminTranslationsBatchResponse>(
@@ -215,7 +214,6 @@ export class Translation {
    * .then(({ created, updated, deleted }) => {
    *   console.log(created, updated, deleted)
    * })
-   * ```
    */
   async batchSettings(
     body: HttpTypes.AdminBatchTranslationSettings,
