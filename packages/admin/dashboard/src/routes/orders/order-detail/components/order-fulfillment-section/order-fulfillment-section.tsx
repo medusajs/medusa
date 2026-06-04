@@ -390,12 +390,12 @@ const Fulfillment = ({
                 {stock_location.name}
               </Text>
             </Link>
-          ) : isError ? (
-            <Text size="small" leading="compact" className="text-ui-fg-muted">
-              {t("orders.fulfillment.locationDeleted")}
-            </Text>
           ) : isPending ? (
             <Skeleton className="w-16" />
+          ) : isError ? (
+            <Text size="small" leading="compact" className="text-ui-fg-subtle">
+              -
+            </Text>
           ) : null}
         </div>
       )}
