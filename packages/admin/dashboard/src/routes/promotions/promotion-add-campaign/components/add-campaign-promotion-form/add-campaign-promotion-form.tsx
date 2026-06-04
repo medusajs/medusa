@@ -59,7 +59,7 @@ export const AddCampaignPromotionFields = ({
         label: campaign.name.toUpperCase(),
         value: campaign.id,
         disabled:
-          campaign.budget?.currency_code &&
+          campaign.budget?.currency_code?.length > 0 &&
           campaign.budget?.currency_code?.toLowerCase() !==
             promotionCurrencyCode?.toLowerCase(), // also cannot add promotion which doesn't have currency defined to a campaign with a currency amount budget
       })),
