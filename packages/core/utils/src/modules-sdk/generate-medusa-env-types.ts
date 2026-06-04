@@ -65,10 +65,6 @@ export async function generateMedusaEnvTypes({
   const pluginPackages: string[] = []
 
   for (const plugin of plugins) {
-    if (plugin.admin?.type !== "package") {
-      continue
-    }
-
     const packageName = plugin.name
 
     if (pluginPackages.includes(packageName)) {
