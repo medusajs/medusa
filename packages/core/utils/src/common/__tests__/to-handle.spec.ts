@@ -206,7 +206,7 @@ describe("toHandle and isValidHandle", function () {
       "a-1-b-2",
     ]
 
-    handles.forEach(handle => {
+    handles.forEach((handle) => {
       expect(isValidHandle(handle)).toBe(true)
     })
 

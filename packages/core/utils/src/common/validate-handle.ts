@@ -24,7 +24,8 @@
  * isValidHandle("-product") // false (leading hyphen)
  */
 export const isValidHandle = (value: string): boolean => {
-  if (!value || value.length === 0) return false
+  
+  if (!value?.length) return false
 
   // Reject if any uppercase ASCII letters exist (A-Z)
   if (/[A-Z]/.test(value)) {

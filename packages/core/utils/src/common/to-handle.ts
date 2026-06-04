@@ -10,15 +10,18 @@
  *
  */
 export const toHandle = (value: string): string => {
+  
   let handle = value
-    .toLowerCase()                          // Normalize to lowercase
-    .replace(/ß/g, "ss")                    // Convert German eszett to ss
-    .replace(/[^\p{L}\p{N}\s_-]/gu, "")     // Remove all characters except Unicode letters, numbers, spaces, underscores, and hyphens
-    .replace(/[\s_]+/g, "-")                // Replace spaces and underscores with single hyphens
-    .replace(/-+/g, "-")                    // Collapse multiple consecutive hyphens into one
-    .replace(/^-|-$/g, "")                  // Trim leading and trailing hyphens
+    .toLowerCase()
+    .replace(/ß/g, "ss")
+    .replace(/[^\p{L}\p{N}\s_-]/gu, "")
+    .replace(/[\s_]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+
   if (!handle) {
     handle = `product-${Math.random().toString(36).substring(2, 8)}`
   }
+
   return handle
 }
