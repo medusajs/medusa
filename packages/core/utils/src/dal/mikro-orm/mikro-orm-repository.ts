@@ -475,14 +475,25 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
       if (!populate?.length && !fields?.length) {
         return
       }
-      const meta = manager
-        .getDriver()
-        .getMetadata()
-        .get(this.entity as any)
-      const props = meta?.properties ?? {}
+      let props: Record<string, unknown> | undefined
+      try {
+        // `find` returns undefined gracefully if the entity isn't registered;
+        // `get` would throw. We want to silently skip filtering in that case
+        // and let MikroORM handle the call as it did pre-6.6.14.
+        const meta = manager
+          .getDriver()
+          .getMetadata()
+          .find(this.entity as any)
+        props = meta?.properties as Record<string, unknown> | undefined
+      } catch {
+        return
+      }
+      if (!props) {
+        return
+      }
       const isKnownHead = (path: string) => {
         const head = path.split(/[.:]/, 1)[0]
-        return head === PopulatePath.ALL || head in props
+        return head === PopulatePath.ALL || head in props!
       }
       if (populate?.length) {
         opts.populate = populate.filter(isKnownHead) as typeof opts.populate
