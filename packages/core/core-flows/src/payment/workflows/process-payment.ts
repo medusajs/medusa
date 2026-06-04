@@ -15,6 +15,11 @@ const TWO_MINUTES = 60 * 2
  */
 export interface ProcessPaymentWorkflowInput extends WebhookActionResult {}
 
+/**
+ * The unique identifier for the process payment workflow.
+ * 
+ * @constant
+ */
 export const processPaymentWorkflowId = "process-payment-workflow"
 /**
  * This workflow processes a payment to either complete its associated cart,
