@@ -241,9 +241,19 @@ jobs:
             exit 1
           fi
 
-          # Enforce invariant: never add both initial-approval and requires-more.
+          # Enforce invariant: initial-approval and requires-more must never co-exist.
           if jq -e '((.labels_to_add // []) | index("initial-approval") != null) and ((.labels_to_add // []) | index("requires-more") != null)' review-decision.json >/dev/null; then
             echo "::error::labels_to_add must not contain both 'initial-approval' and 'requires-more'" >&2
+            exit 1
+          fi
+
+          # Require removing the opposite label whenever adding one, so the PR can't end up with both due to existing labels.
+          if jq -e '((.labels_to_add // []) | index("initial-approval") != null) and ((.labels_to_remove // []) | index("requires-more") == null)' review-decision.json >/dev/null; then
+            echo "::error::Adding 'initial-approval' must also remove 'requires-more'" >&2
+            exit 1
+          fi
+          if jq -e '((.labels_to_add // []) | index("requires-more") != null) and ((.labels_to_remove // []) | index("initial-approval") == null)' review-decision.json >/dev/null; then
+            echo "::error::Adding 'requires-more' must also remove 'initial-approval'" >&2
             exit 1
           fi
 
