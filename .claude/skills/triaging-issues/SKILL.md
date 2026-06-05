@@ -76,7 +76,9 @@ root. The file MUST be valid JSON matching this schema **exactly**:
 Rules:
 
 - `labels_to_add` may contain zero or more values, but only from the
-  allowlist above. Any other label is dropped by the downstream step.
+  allowlist above. Any other value (including non-string values) causes
+  the downstream apply job to **fail**, surfacing in the workflow logs.
+  Do not include any label outside the allowlist.
 - `comment_template` must be one of the IDs above or `null`. Choose `null`
   when no comment should be posted (e.g., low-signal comment-only events).
 - `comment_params.summary` is a **short, neutral, paraphrased summary**

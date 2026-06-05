@@ -159,6 +159,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: triage-decision-${{ inputs.issue_number }}
+          # Explicit path so triage-decision.json lands at the repo root,
+          # matching every subsequent step's expected location.
+          path: .
 
       - name: Validate decision
         id: validate

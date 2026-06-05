@@ -173,6 +173,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: review-decision-${{ inputs.pr_number }}
+          # Explicit path so review-decision.json lands at the repo root,
+          # matching every subsequent step's expected location.
+          path: .
 
       - name: Validate decision
         id: validate

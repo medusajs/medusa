@@ -93,10 +93,12 @@ root. The file MUST be valid JSON matching this schema **exactly**:
 Rules:
 
 - `labels_to_add` / `labels_to_remove` may contain zero or more values,
-  but only from the allowlist above. Any other label is dropped by the
-  downstream step. A PR must never end up with both `initial-approval`
-  and `requires-more` simultaneously — when you add one, add the other
-  to `labels_to_remove`.
+  but only from the allowlist above. Any other value (including
+  non-string values) causes the downstream apply job to **fail**,
+  surfacing in the workflow logs. Do not include any label outside the
+  allowlist. A PR must never end up with both `initial-approval` and
+  `requires-more` simultaneously — when you add one, add the other to
+  `labels_to_remove`.
 - `review_template` must be one of the IDs above or `null`. Choose `null`
   when no comment should be posted (e.g., re-review with no new findings).
 - `review_params.summary` is a **short, neutral summary** of the review
