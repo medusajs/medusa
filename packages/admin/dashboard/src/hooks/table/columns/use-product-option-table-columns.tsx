@@ -22,7 +22,11 @@ export const useProductOptionTableColumns = () => {
           const values = getValue()
           const count = values?.length || 0
           const displayText =
-            count > 0 ? `${count} ${count === 1 ? "value" : "values"}` : "-"
+            count > 0
+              ? t(`general.${count === 1 ? "values_one" : "values_other"}`, {
+                  count,
+                })
+              : "-"
 
           return <TextCell text={displayText} />
         },

@@ -137,6 +137,12 @@
         "items_other": {
           "type": "string"
         },
+        "values_one": {
+          "type": "string"
+        },
+        "values_other": {
+          "type": "string"
+        },
         "countSelected": {
           "type": "string"
         },
@@ -248,6 +254,8 @@
         "details",
         "items_one",
         "items_other",
+        "values_one",
+        "values_other",
         "countSelected",
         "countOfTotalSelected",
         "plusCount",
