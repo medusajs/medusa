@@ -62,8 +62,8 @@ export const ProductOptionSection = ({
           <SectionRow
             title={option.title}
             key={option.id}
-            value={option.values
-              ?.sort((a, b) => {
+            value={[...(option.values ?? [])]
+              .sort((a, b) => {
                 if (a.rank == null && b.rank == null) {
                   return 0
                 }
