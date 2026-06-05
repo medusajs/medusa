@@ -167,6 +167,104 @@ describe("Email password auth provider", () => {
     )
   })
 
+  it("skips verification for the default opt-out actor type (user)", async () => {
+    const authServiceSpies = {
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+      create: jest.fn().mockImplementation((data) => {
+        return {
+          provider_identities: [
+            {
+              entity_id: data.entity_id,
+              provider: "emailpass",
+              provider_metadata: data.provider_metadata,
+            },
+          ],
+        }
+      }),
+    }
+
+    await verifyingEmailpassService.register(
+      {
+        body: { email: "admin@admin.com", password: "test" },
+        actor_type: "user",
+      },
+      authServiceSpies
+    )
+
+    expect(authServiceSpies.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        provider_metadata: expect.not.objectContaining({
+          requires_verification: expect.anything(),
+        }),
+      })
+    )
+  })
+
+  it("respects a custom disable_verification_for_actor_types list", async () => {
+    const customService = new EmailPassAuthService(
+      {
+        logger: console as any,
+      },
+      {
+        require_verification: true,
+        disable_verification_for_actor_types: ["bot"],
+      }
+    )
+
+    const authServiceSpies = {
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+      create: jest.fn().mockImplementation((data) => {
+        return {
+          provider_identities: [
+            {
+              entity_id: data.entity_id,
+              provider: "emailpass",
+              provider_metadata: data.provider_metadata,
+            },
+          ],
+        }
+      }),
+    }
+
+    // user is no longer in the opt-out list -> should be verified
+    await customService.register(
+      {
+        body: { email: "admin@admin.com", password: "test" },
+        actor_type: "user",
+      },
+      authServiceSpies
+    )
+
+    expect(authServiceSpies.create).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        provider_metadata: expect.objectContaining({
+          requires_verification: true,
+        }),
+      })
+    )
+
+    // bot is in the opt-out list -> should skip verification
+    await customService.register(
+      {
+        body: { email: "bot@admin.com", password: "test" },
+        actor_type: "bot",
+      },
+      authServiceSpies
+    )
+
+    expect(authServiceSpies.create).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        provider_metadata: expect.not.objectContaining({
+          requires_verification: expect.anything(),
+        }),
+      })
+    )
+  })
+
   it("returns unverified state after password authentication when configured", async () => {
     const config = { logN: 15, r: 8, p: 1 }
     const passwordHash = await Scrypt.kdf("somepass", config)

@@ -21,8 +21,11 @@ type InjectedDependencies = {
 type AuthIdentityParams = {
   email: string
   password: string
+  actor_type?: string
   authIdentityService: AuthIdentityProviderService
 }
+
+const DEFAULT_DISABLE_VERIFICATION_ACTOR_TYPES = ["user"]
 
 type ProviderMetadata = {
   password?: unknown
@@ -187,6 +190,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
         const updatedAuthIdentity = await this.upsertAuthIdentity("update", {
           email,
           password,
+          actor_type: userData.actor_type,
           authIdentityService,
         })
 
@@ -205,6 +209,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
         const createdAuthIdentity = await this.upsertAuthIdentity("create", {
           email,
           password,
+          actor_type: userData.actor_type,
           authIdentityService,
         })
 
@@ -220,7 +225,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
 
   private async upsertAuthIdentity(
     type: "update" | "create",
-    { email, password, authIdentityService }: AuthIdentityParams
+    { email, password, actor_type, authIdentityService }: AuthIdentityParams
   ) {
     const passwordHash = await this.hashPassword(password)
     const providerMetadata: ProviderMetadata =
@@ -231,7 +236,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     providerMetadata.password = passwordHash
 
     if (
-      this.requiresVerification_() &&
+      this.requiresVerification_(actor_type) &&
       !providerMetadata.verified_at &&
       providerMetadata.requires_verification !== false
     ) {
@@ -251,8 +256,20 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     return this.sanitizeAuthIdentity_(authIdentity)
   }
 
-  private requiresVerification_(): boolean {
-    return this.config_.require_verification === true
+  private requiresVerification_(actorType?: string): boolean {
+    if (this.config_.require_verification !== true) {
+      return false
+    }
+
+    const disabledActorTypes =
+      this.config_.disable_verification_for_actor_types ??
+      DEFAULT_DISABLE_VERIFICATION_ACTOR_TYPES
+
+    if (actorType && disabledActorTypes.includes(actorType)) {
+      return false
+    }
+
+    return true
   }
 
   private async getProviderMetadata_(
