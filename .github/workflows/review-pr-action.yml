@@ -208,7 +208,12 @@ jobs:
             ' review-decision.json)
             if [[ -n "$invalid" ]]; then
               echo "::error::review-decision.$field contains disallowed entries:" >&2
-              printf '  - %s\n' $invalid >&2
+              # Read line by line so multi-word labels (none in the current
+              # review allowlist, but kept consistent with the triage flow)
+              # aren't word-split.
+              while IFS= read -r entry; do
+                printf '  - %s\n' "$entry" >&2
+              done <<<"$invalid"
               exit 1
             fi
           }
@@ -228,8 +233,10 @@ jobs:
               if [[ "$t" == "$TEMPLATE" ]]; then OK=1; break; fi
             done
             if [[ "$OK" -ne 1 ]]; then
-              echo "Unknown template '$TEMPLATE'; skipping comment." >&2
-              TEMPLATE=""
+              # Unknown template ids are a hard error so bad model output is
+              # visible immediately, matching the prompt's stated schema.
+              echo "::error::review-decision.review_template='$TEMPLATE' is not in the allowlist ($ALLOWED_TEMPLATES)" >&2
+              exit 1
             fi
           fi
           echo "template=$TEMPLATE" >> "$GITHUB_OUTPUT"

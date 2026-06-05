@@ -190,7 +190,11 @@ jobs:
           ' triage-decision.json)
           if [[ -n "$INVALID" ]]; then
             echo "::error::triage-decision.labels_to_add contains disallowed entries:" >&2
-            printf '  - %s\n' $INVALID >&2
+            # Read line by line so labels containing spaces (e.g. "type: bug")
+            # aren't word-split into multiple bullets.
+            while IFS= read -r entry; do
+              printf '  - %s\n' "$entry" >&2
+            done <<<"$INVALID"
             exit 1
           fi
           jq '[.labels_to_add // [] | .[] | select(type=="string")]' \
@@ -204,8 +208,10 @@ jobs:
               if [[ "$t" == "$TEMPLATE" ]]; then OK=1; break; fi
             done
             if [[ "$OK" -ne 1 ]]; then
-              echo "Unknown template '$TEMPLATE'; skipping comment." >&2
-              TEMPLATE=""
+              # Unknown template ids are a hard error so bad model output is
+              # visible immediately, matching the prompt's stated schema.
+              echo "::error::triage-decision.comment_template='$TEMPLATE' is not in the allowlist ($ALLOWED_TEMPLATES)" >&2
+              exit 1
             fi
           fi
           echo "template=$TEMPLATE" >> "$GITHUB_OUTPUT"
