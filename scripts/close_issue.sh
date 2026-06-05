@@ -1,23 +1,25 @@
 #!/usr/bin/env bash
 #
-# Closes a GitHub issue.
-# Usage: ./scripts/close_issue.sh [issue_number]
+# Closes the issue / PR identified by GITHUB_EVENT_NUMBER. Takes no
+# arguments, so a prompt-injection cannot redirect the close to a
+# different issue. Always closes with reason "not planned".
 #
-# If issue_number is not provided, reads from the workflow event payload.
+# Usage:
+#   GITHUB_EVENT_NUMBER=N ./scripts/close_issue.sh
 #
 
 set -euo pipefail
 
-if [[ -n "${1:-}" ]]; then
-  ISSUE="$1"
-else
-  ISSUE=$(jq -r '.issue.number // empty' "${GITHUB_EVENT_PATH:?GITHUB_EVENT_PATH not set}")
-fi
-
+ISSUE="${GITHUB_EVENT_NUMBER:-}"
 if ! [[ "$ISSUE" =~ ^[0-9]+$ ]]; then
-  echo "Error: no valid issue number provided or found in event payload" >&2
+  echo "Error: GITHUB_EVENT_NUMBER must be a numeric issue/PR number" >&2
   exit 1
 fi
 
-gh issue close "$ISSUE"
-echo "Closed issue #$ISSUE"
+if [[ $# -ne 0 ]]; then
+  echo "Error: this script takes no arguments. Number is read from GITHUB_EVENT_NUMBER." >&2
+  exit 1
+fi
+
+gh issue close "$ISSUE" --reason "not planned"
+echo "Closed #$ISSUE"
