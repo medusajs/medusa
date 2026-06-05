@@ -20,7 +20,10 @@ set -euo pipefail
 WORKFLOW=""
 
 require_value() {
-  if [[ $# -lt 2 || -z "$2" ]]; then
+  # Treat a missing arg, an empty string, or a next token that looks
+  # like another flag (`--foo`) as a missing value so the failure points
+  # at the right argument.
+  if [[ $# -lt 2 || -z "${2:-}" || "$2" == --* ]]; then
     echo "Error: $1 requires a value" >&2
     exit 1
   fi

@@ -43,6 +43,19 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Lock down scripts/ as read-only
+        # The agent has the generic `Write` tool (needed to emit the JSON
+        # decision file). Without this step a compromised prompt/model
+        # could overwrite an allowlisted script (e.g. get_pr_diff.sh) and
+        # then execute it via the `Bash(bash scripts/get_pr_diff.sh:*)`
+        # entry to run arbitrary commands and exfiltrate
+        # CLAUDE_CODE_API_TOKEN. Stripping write bits on the directory
+        # and its contents removes that path.
+        run: |
+          set -euo pipefail
+          chmod -R a-w scripts
+          chmod a-w scripts
+
       - name: Review analysis
         uses: anthropics/claude-code-action@v1
         env:

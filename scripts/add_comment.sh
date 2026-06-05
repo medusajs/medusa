@@ -37,7 +37,10 @@ TEMPLATE=""
 PARAMS_FILE=""
 
 require_value() {
-  if [[ $# -lt 2 || -z "$2" ]]; then
+  # Treat a missing arg, an empty string, or a next token that looks
+  # like another flag (`--foo`) as a missing value so the failure points
+  # at the right argument.
+  if [[ $# -lt 2 || -z "${2:-}" || "$2" == --* ]]; then
     echo "Error: $1 requires a value" >&2
     exit 1
   fi
@@ -87,6 +90,11 @@ fi
 
 if [[ -n "$PARAMS_FILE" && ! -f "$PARAMS_FILE" ]]; then
   echo "Error: params file not found: $PARAMS_FILE" >&2
+  exit 1
+fi
+
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "Error: python3 is required to render comment templates but was not found in PATH" >&2
   exit 1
 fi
 
