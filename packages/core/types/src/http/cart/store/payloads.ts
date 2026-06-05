@@ -122,6 +122,11 @@ export interface StoreUpdateCartLineItem {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The base shipping method data to add to a cart.
+ *
+ * @since 2.15.6
+ */
 export interface StoreAddCartShippingMethodsBase {
   /**
    * The id of the chosen shipping option.
@@ -135,6 +140,11 @@ export interface StoreAddCartShippingMethodsBase {
   data?: Record<string, unknown>
 }
 
+/**
+ * The shipping methods data to add to a cart. Can be a single method or multiple methods.
+ *
+ * @since 2.15.6
+ */
 export type StoreAddCartShippingMethods =
   | StoreAddCartShippingMethodsBase
   | StoreAddCartShippingMethodsBase[]
