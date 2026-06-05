@@ -5142,7 +5142,7 @@ medusaIntegrationTestRunner({
           })
 
           expect(
-            // @ts-ignore
+            // @ts-expect-error - transaction.context.invoke is private but we can still access it at runtime
             transaction.context.invoke["fetch-cart"].output.output.data
               .shipping_address.metadata
           ).toEqual({
@@ -5184,7 +5184,7 @@ medusaIntegrationTestRunner({
           })
 
           const fetchedCart =
-            // @ts-ignore
+            // @ts-expect-error - transaction.context.invoke is private but we can still access it at runtime
             transaction.context.invoke["fetch-cart"].output.output.data
 
           expect(fetchedCart.shipping_methods).toHaveLength(1)
