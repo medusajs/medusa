@@ -93,10 +93,12 @@ export const StoreAddCartShippingMethods = z.union([
     option_id: z.string(),
     data: z.record(z.string(), z.unknown()).optional(),
   }),
-  z.object({
-    option_ids: z.array(z.string()).min(1),
-    data: z.array(z.record(z.string(), z.unknown())).optional(),
-  }),
+  z.array(
+    z.object({
+      option_id: z.string(),
+      data: z.record(z.string(), z.unknown()).optional(),
+    })
+  ),
 ])
 
 export type StoreUpdateCartCustomerType = z.infer<

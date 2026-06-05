@@ -122,34 +122,22 @@ export interface StoreUpdateCartLineItem {
   metadata?: Record<string, unknown> | null
 }
 
+export interface StoreAddCartShippingMethodsBase {
+  /**
+   * The id of the chosen shipping option.
+   */
+  option_id: string
+  /**
+   * Data useful for the associated fulfillment provider.
+   *
+   * Learn more in [this documentation](https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property).
+   */
+  data?: Record<string, unknown>
+}
+
 export type StoreAddCartShippingMethods =
-  | {
-      /**
-       * The id of the chosen shipping option.
-       */
-      option_id: string
-      /**
-       * Data useful for the associated fulfillment provider.
-       *
-       * Learn more in [this documentation](https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property).
-       */
-      data?: Record<string, unknown>
-    }
-  | {
-      /**
-       * The ids of the chosen shipping options. Use this when adding shipping methods
-       * for multiple shipping profiles in a single request.
-       */
-      option_ids: string[]
-      /**
-       * Data for the associated fulfillment providers, matched positionally to
-       * `option_ids`. Each entry is passed to its corresponding option's fulfillment
-       * provider.
-       *
-       * Learn more in [this documentation](https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property).
-       */
-      data?: Record<string, unknown>[]
-    }
+  | StoreAddCartShippingMethodsBase
+  | StoreAddCartShippingMethodsBase[]
 
 export interface StoreCompleteCart {
   idempotency_key?: string
