@@ -71,7 +71,7 @@ jobs:
             core.setOutput('release_running', isRunning.toString())
 
   release:
-    name: Trigger Preview Release
+    name: Trigger ${{ github.event.inputs.version || 'preview' }} Release
     needs: check
     if: needs.check.outputs.release_running != 'true'
     runs-on: ubuntu-latest
@@ -126,7 +126,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "plain_text",
-                    "text": "Triggering a release for preview environments failed for ${{ github.run_id }}"
+                    "text": "Triggering a release for ${{ github.event.inputs.version || 'preview' }} environments failed for ${{ github.run_id }}"
                   }
                 }
               ]
