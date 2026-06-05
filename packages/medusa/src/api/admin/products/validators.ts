@@ -285,15 +285,14 @@ export const UpdateProduct = z
     is_giftcard: booleanString().optional(),
     options: z.any().superRefine((val, ctx) => {
       if (val !== undefined) {
-        // TODO set version and link to release notes
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message:
-            "The 'options' property was removed in version X.Y.Z. Please remove it from your request payload.",
+            "The 'options' property was removed in version 2.16.0. Please remove it from your request payload.",
         })
       }
     }),
-    option_ids: z.array(IdAssociation).optional(),
+    option_ids: z.array(z.string()).optional(),
     variants: z.array(UpdateProductVariant).optional(),
     status: statusEnum.optional(),
     subtitle: z.string().nullish(),
