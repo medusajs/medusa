@@ -231,6 +231,22 @@ jobs:
           jq '[.labels_to_remove // [] | .[] | select(type=="string")]' \
             review-decision.json > labels_to_remove.json
 
+          # Ensure the model didn't request contradictory label operations.
+          BOTH=$(comm -12 \
+            <(jq -r '.[]' labels_to_add.json | sort -u) \
+            <(jq -r '.[]' labels_to_remove.json | sort -u) || true)
+          if [[ -n "$BOTH" ]]; then
+            echo "::error::Same label present in both labels_to_add and labels_to_remove:" >&2
+            printf '%s\n' "$BOTH" | sed 's/^/  - /' >&2
+            exit 1
+          fi
+
+          # Enforce invariant: never add both initial-approval and requires-more.
+          if jq -e '((.labels_to_add // []) | index("initial-approval") != null) and ((.labels_to_add // []) | index("requires-more") != null)' review-decision.json >/dev/null; then
+            echo "::error::labels_to_add must not contain both 'initial-approval' and 'requires-more'" >&2
+            exit 1
+          fi
+
           TEMPLATE=$(jq -r '.review_template // ""' review-decision.json)
           if [[ -n "$TEMPLATE" ]]; then
             IFS=',' read -r -a TPLS <<<"$ALLOWED_TEMPLATES"
