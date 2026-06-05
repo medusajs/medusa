@@ -4,12 +4,11 @@ export interface EmailPassAuthProviderOptions {
     r: number
     p: number
   }
-  require_verification?: boolean
   /**
-   * Actor types for which email verification should be skipped even when
-   * `require_verification` is enabled. Defaults to `["user"]` since admin
-   * users are typically created via invite or CLI and don't need to verify
-   * their email.
+   * Array of actor types that require email verification before they can
+   * authenticate. When omitted or empty, no actor type requires verification.
+   * Developers must explicitly list the actor types that should require
+   * verification (e.g. `["customer"]`).
    */
-  disable_verification_for_actor_types?: string[]
+  require_verification?: string[]
 }

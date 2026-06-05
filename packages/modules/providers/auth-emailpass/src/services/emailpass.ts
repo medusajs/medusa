@@ -25,7 +25,6 @@ type AuthIdentityParams = {
   authIdentityService: AuthIdentityProviderService
 }
 
-const DEFAULT_DISABLE_VERIFICATION_ACTOR_TYPES = ["user"]
 
 type ProviderMetadata = {
   password?: unknown
@@ -257,19 +256,11 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
   }
 
   private requiresVerification_(actorType?: string): boolean {
-    if (this.config_.require_verification !== true) {
+    if (!actorType) {
       return false
     }
 
-    const disabledActorTypes =
-      this.config_.disable_verification_for_actor_types ??
-      DEFAULT_DISABLE_VERIFICATION_ACTOR_TYPES
-
-    if (actorType && disabledActorTypes.includes(actorType)) {
-      return false
-    }
-
-    return true
+    return this.config_.require_verification?.includes(actorType) === true
   }
 
   private async getProviderMetadata_(

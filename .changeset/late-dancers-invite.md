@@ -1,7 +1,7 @@
 ---
-"@medusajs/auth-emailpass": patch
-"@medusajs/types": patch
-"@medusajs/medusa": patch
+"@medusajs/auth-emailpass": minor
+"@medusajs/types": minor
+"@medusajs/medusa": minor
 ---
 
-fix(auth-emailpass, types, medusa): allow opting out of email verification by actor type
+feat(auth-emailpass, types, medusa): require verification by actor type
