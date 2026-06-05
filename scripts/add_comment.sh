@@ -15,10 +15,14 @@
 # Templates live in .github/<workflow>-templates/<template-id>.md and must
 # exist in the repository checkout. Unknown templates are rejected.
 #
-# --params-file points to a JSON object whose keys are interpolated into the
-# template as {{KEY}} placeholders. All values are coerced to string and
-# stripped of backticks, HTML angle brackets, CR, and null bytes. Unknown
-# placeholders left in the template are removed.
+# --params-file points to a JSON object. Each top-level key matching the
+# regex `[A-Z][A-Z0-9_]*` is interpolated into the template wherever the
+# literal placeholder `{{KEY}}` appears. Keys that don't match the regex
+# (e.g. lowercase keys) are ignored — the caller is responsible for
+# producing uppercase keys that match the placeholders. All values are
+# coerced to string and stripped of backticks, HTML angle brackets, CR,
+# and null bytes. Any placeholder left in the template after substitution
+# is removed.
 #
 
 set -euo pipefail

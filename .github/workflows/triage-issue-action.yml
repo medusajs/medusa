@@ -210,11 +210,12 @@ jobs:
           fi
           echo "should_close=$SHOULD_CLOSE" >> "$GITHUB_OUTPUT"
 
-          # Sanitize comment_params: keep only 'summary', cap at 280 chars,
-          # strip backticks, angle brackets, CR, and null bytes.
+          # Sanitize comment_params into the SUMMARY key (uppercase) so
+          # add_comment.sh substitutes the {{SUMMARY}} placeholder.
+          # Strip backticks, angle brackets, CR, and control chars.
           jq '
             {
-              summary: (
+              SUMMARY: (
                 (.comment_params.summary // "")
                 | tostring
                 | gsub("\r"; "")
@@ -258,6 +259,6 @@ jobs:
           GITHUB_EVENT_NUMBER: ${{ inputs.issue_number }}
         run: |
           set -euo pipefail
-          # close_issue.sh takes no arguments and only uses GITHUB_EVENT_NUMBER,
-          # so the close cannot be redirected to a different issue.
-          bash scripts/close_issue.sh
+          # The number target is pinned to GITHUB_EVENT_NUMBER, so the close
+          # cannot be redirected to a different issue.
+          bash scripts/close_issue.sh --workflow triage

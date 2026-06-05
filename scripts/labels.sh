@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Manages a labels on a GitHub issue / PR with a hardcoded allowlist.
+# Manages labels on a GitHub issue / PR with a hardcoded allowlist.
 #
 # Usage:
 #   GITHUB_EVENT_NUMBER=123 ./scripts/labels.sh \
