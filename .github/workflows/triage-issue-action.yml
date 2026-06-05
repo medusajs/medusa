@@ -188,6 +188,16 @@ jobs:
 
           jq empty triage-decision.json
 
+          # Enforce expected JSON types (schema compliance).
+          if ! jq -e '(.labels_to_add // []) | type == "array"' triage-decision.json >/dev/null; then
+            echo "::error::triage-decision.labels_to_add must be an array" >&2
+            exit 1
+          fi
+          if ! jq -e '(.comment_params // {}) | type == "object"' triage-decision.json >/dev/null; then
+            echo "::error::triage-decision.comment_params must be an object" >&2
+            exit 1
+          fi
+
           # Validate labels against the allowlist. Any value that is not a
           # string in the allowlist is a hard error so prompt-injection or
           # bad model output surfaces in the workflow logs instead of
