@@ -1006,8 +1006,14 @@ export function getRouteMap({
             {
               path: "/reservations",
               errorElement: <ErrorBoundary />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("reservations.domain"),
+                permissions: "reservation_item:read",
               },
               children: [
                 {
@@ -1019,6 +1025,12 @@ export function getRouteMap({
                       path: "create",
                       lazy: () =>
                         import("../../routes/reservations/reservation-create"),
+                      handle: {
+                        permissions: [
+                          "reservation_item:create",
+                          "stock_location:read",
+                        ],
+                      },
                     },
                   ],
                 },
@@ -1036,6 +1048,12 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminReservationResponse>
                         ) => <Breadcrumb {...match} />,
+                        permissions: [
+                          "reservation_item:read",
+                          "inventory_item:read",
+                          "inventory_level:read",
+                          "stock_location:read",
+                        ],
                       },
                     }
                   },
@@ -1046,6 +1064,15 @@ export function getRouteMap({
                         import(
                           "../../routes/reservations/reservation-detail/components/edit-reservation"
                         ),
+                      handle: {
+                        permissions: [
+                          "reservation_item:read",
+                          "inventory_item:read",
+                          "inventory_level:read",
+                          "stock_location:read",
+                          "reservation_item:update",
+                        ],
+                      },
                     },
                     {
                       path: "metadata/edit",
@@ -1053,6 +1080,7 @@ export function getRouteMap({
                         import(
                           "../../routes/reservations/reservation-metadata"
                         ),
+                      handle: { permissions: "reservation_item:update" },
                     },
                   ],
                 },

@@ -59,6 +59,7 @@ export const ReservationDetail = () => {
       data={reservation}
       showJSON
       showMetadata
+      showRequiredPermissions
     >
       <TwoColumnPage.Main>
         <ReservationGeneralSection reservation={reservation} />

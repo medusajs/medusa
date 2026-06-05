@@ -7,6 +7,7 @@ import { SectionRow } from "../../../../../components/common/section"
 import { useInventoryItem } from "../../../../../hooks/api/inventory"
 import { useStockLocation } from "../../../../../hooks/api/stock-locations"
 import { useTranslation } from "react-i18next"
+import { useReservationItemPermissions } from "../../../../../hooks/use-resource-permissions"
 
 type ReservationGeneralSectionProps = {
   reservation: AdminReservationResponse["reservation"]
@@ -16,6 +17,7 @@ export const ReservationGeneralSection = ({
   reservation,
 }: ReservationGeneralSectionProps) => {
   const { t } = useTranslation()
+  const { canUpdate } = useReservationItemPermissions()
 
   const { inventory_item: inventoryItem, isPending: isLoadingInventoryItem } =
     useInventoryItem(reservation.inventory_item_id)
@@ -44,19 +46,21 @@ export const ReservationGeneralSection = ({
             itemName: inventoryItem.title ?? inventoryItem.sku,
           })}
         </Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  icon: <PencilSquare />,
-                  label: t("actions.edit"),
-                  to: `edit`,
-                },
-              ],
-            },
-          ]}
-        />
+        {canUpdate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    icon: <PencilSquare />,
+                    label: t("actions.edit"),
+                    to: `edit`,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       <SectionRow
         title={t("inventory.reservation.lineItemId")}
