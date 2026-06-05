@@ -22,7 +22,7 @@ ACTION=""
 LABEL=""
 
 require_value() {
-  if [[ $# -lt 2 || -z "$2" ]]; then
+  if [[ $# -lt 2 || -z "${2:-}" || "$2" == --* ]]; then
     echo "Error: $1 requires a value" >&2
     exit 1
   fi
