@@ -103,7 +103,7 @@ jobs:
                describes the same schema; this is the authoritative copy):
 
                 {
-                  "labels_to_add": [<zero or more of: "type: bug", "requires-more", "requires-team", "help-wanted", "good-first-issue", "feedback">],
+                  "labels_to_add": [<zero or more of: "type: bug", "requires-more", "requires-team", "help-wanted", "good first issue", "feedback">],
                   "comment_template": "ack-bug" | "needs-repro" | "needs-info" | "ack-feature" | "close-spam" | "close-invalid" | "close-duplicate" | null,
                   "comment_params": { "summary": "<short string, max 280 chars>" }
                 }
@@ -187,7 +187,7 @@ jobs:
       - name: Validate decision
         id: validate
         env:
-          ALLOWED_LABELS: 'type: bug,requires-more,requires-team,help-wanted,good-first-issue,feedback'
+          ALLOWED_LABELS: 'type: bug,requires-more,requires-team,help-wanted,good first issue,feedback'
           ALLOWED_TEMPLATES: 'ack-bug,needs-repro,needs-info,ack-feature,close-spam,close-invalid,close-duplicate'
           CLOSE_TEMPLATES: 'close-spam,close-invalid,close-duplicate'
         run: |
@@ -263,12 +263,14 @@ jobs:
           fi
           echo "should_close=$SHOULD_CLOSE" >> "$GITHUB_OUTPUT"
 
-          # Build comment_params.json with the SUMMARY key (uppercase)
-          # so add_comment.sh substitutes the {{SUMMARY}} placeholder. We
+          # Build comment_params.json with the SUMMARY key (uppercase) so
+          # add_comment.sh can substitute the {{SUMMARY}} placeholder. We
           # only enforce structural invariants here (strip CR + control
           # chars, cap length); backtick stripping and HTML-escaping are
-          # done once in add_comment.sh's sanitize() to avoid
-          # double-escaping benign text (e.g. "A & B" -> "A &amp; B").
+          # done once inside add_comment.sh (its sanitize function) to
+          # avoid double-escaping benign text such as "A & B".
+          # NOTE: apostrophes inside this jq block would close the outer
+          # bash single-quote, so the wording above avoids them.
           jq '
             {
               SUMMARY: (

@@ -60,7 +60,7 @@ if ! [[ "$ISSUE" =~ ^[0-9]+$ ]]; then
 fi
 
 # Hardcoded per-workflow allowlists.
-TRIAGE_LABELS=("type: bug" "requires-more" "requires-team" "help-wanted" "good-first-issue" "feedback")
+TRIAGE_LABELS=("type: bug" "requires-more" "requires-team" "help-wanted" "good first issue" "feedback")
 REVIEW_LABELS=("initial-approval" "requires-more" "requires-team")
 
 case "$WORKFLOW" in
@@ -79,6 +79,16 @@ done
 if [[ "$OK" -ne 1 ]]; then
   echo "Error: label '$LABEL' is not in the $WORKFLOW allowlist" >&2
   exit 1
+fi
+
+# The hardcoded allowlist controls what the agent is permitted to ask
+# for, but the repo may not have every allowlisted label defined yet.
+# `gh issue edit --add-label` fails hard on unknown labels, which would
+# break the whole apply step over one missing label. Skip with a warning
+# instead so the rest of the decision still applies.
+if ! gh label list --limit 500 --json name --jq '.[].name' | grep -qxF "$LABEL"; then
+  echo "Warning: label '$LABEL' is not defined in this repo; skipping $ACTION." >&2
+  exit 0
 fi
 
 if [[ "$ACTION" == "add" ]]; then
