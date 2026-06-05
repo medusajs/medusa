@@ -67,7 +67,7 @@ root. The file MUST be valid JSON matching this schema **exactly**:
 
 ```json
 {
-  "labels_to_add": ["type: bug" | "requires-more" | "requires-team" | "help-wanted" | "good-first-issue" | "feedback"],
+  "labels_to_add": ["type: bug" | "requires-more" | "requires-team" | "help-wanted" | "good first issue" | "feedback"],
   "comment_template": "ack-bug" | "needs-repro" | "needs-info" | "ack-feature" | "close-spam" | "close-invalid" | "close-duplicate" | null,
   "comment_params": { "summary": "<short string, max 280 chars>" }
 }
@@ -152,7 +152,7 @@ If one or more PRs are linked:
    user's scenario is actually covered. **Stop.**
 2. **PR is OPEN** — A fix is in progress. Continue triage (categorize,
    validate, add labels), but:
-   - **Do NOT** add `good-first-issue` or `help-wanted` to `labels_to_add`.
+   - **Do NOT** add `good first issue` or `help-wanted` to `labels_to_add`.
    - Use `comment_template: "needs-info"` (or `"ack-bug"`) and write a
      `summary` that mentions a fix is in progress in PR #N.
    - Still add `type: bug`, `requires-team`, or other applicable labels.
@@ -236,7 +236,7 @@ Load the reference file for the assigned category and follow the detailed flow:
 | `type: bug` | Bug is confirmed — always include when closing the triage on a valid bug report |
 | `requires-more` | Issue lacks details needed to validate or reproduce |
 | `requires-team` | Critical/high priority, or needs team expertise; cannot be resolved without team review |
-| `good-first-issue` | Bug is confirmed, fix is straightforward — encourages community contribution |
+| `good first issue` | Bug is confirmed, fix is straightforward — encourages community contribution |
 | `help-wanted` | Bug is confirmed, fix is complex — encourages community contribution |
 | `feedback` | General feedback that team will review later |
 
@@ -279,11 +279,11 @@ from JSON-supplied numbers.
 - [ ] Triaging a comment that is just an ongoing user conversation — emit the no-op decision instead
 - [ ] Categorizing based on comments instead of the original issue body
 - [ ] Confirming a bug without first checking the documentation
-- [ ] Adding `good-first-issue` or `help-wanted` before confirming the bug in the codebase
+- [ ] Adding `good first issue` or `help-wanted` before confirming the bug in the codebase
 - [ ] Skipping the docs/codebase check for feature requests
 - [ ] Missing the Cloud platform exception in support issues
 - [ ] Not fetching issue details when they weren't passed as arguments
-- [ ] Adding `good-first-issue` or `help-wanted` when a PR is already linked to the issue
+- [ ] Adding `good first issue` or `help-wanted` when a PR is already linked to the issue
 - [ ] Producing a `summary` longer than 280 characters (it will be truncated)
 
 ## Reference Files
