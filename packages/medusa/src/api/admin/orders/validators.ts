@@ -8,6 +8,9 @@ import {
 } from "../../utils/validators"
 import { isString } from "@medusajs/framework/utils"
 
+/**
+ * Parameters for retrieving a specific order in admin.
+ */
 export const AdminGetOrdersOrderParams = createSelectParams().merge(
   z.object({
     version: z.preprocess((val) => {
@@ -19,10 +22,16 @@ export const AdminGetOrdersOrderParams = createSelectParams().merge(
   })
 )
 
+/**
+ * Type for admin get order parameters.
+ */
 export type AdminGetOrdersOrderParamsType = z.infer<
   typeof AdminGetOrdersOrderParams
 >
 
+/**
+ * Parameters for retrieving order items in admin.
+ */
 export const AdminGetOrdersOrderItemsParams = createSelectParams().merge(
   z.object({
     id: z.union([z.string(), z.array(z.string())]).optional(),
@@ -36,12 +45,21 @@ export const AdminGetOrdersOrderItemsParams = createSelectParams().merge(
   })
 )
 
+/**
+ * Type for admin get order items parameters.
+ */
 export type AdminGetOrdersOrderItemsParamsType = z.infer<
   typeof AdminGetOrdersOrderItemsParams
 >
 
+/**
+ * Parameters for retrieving shipping options for an order.
+ */
 export const AdminGetOrderShippingOptionList = z.object({})
 
+/**
+ * Type for admin get order shipping option list parameters.
+ */
 export type AdminGetOrderShippingOptionListType = z.infer<
   typeof AdminGetOrderShippingOptionList
 >
@@ -77,12 +95,21 @@ const AdminGetOrdersParamsTransform = (v: AdminGetOrdersParamsInput) => {
   }
 }
 
+/**
+ * Parameters for retrieving orders in admin with transformation.
+ */
 export const AdminGetOrdersParams = AdminGetOrdersParamsBase.transform(
   AdminGetOrdersParamsTransform
 )
 
+/**
+ * Type for admin get orders parameters.
+ */
 export type AdminGetOrdersParamsType = z.infer<typeof AdminGetOrdersParams>
 
+/**
+ * Schema for completing an order in admin.
+ */
 export const AdminCompleteOrder = WithAdditionalData(z.object({}))
 
 const Item = z.object({
@@ -90,9 +117,15 @@ const Item = z.object({
   quantity: z.number(),
 })
 
+/**
+ * Type for creating fulfillment in admin order.
+ */
 export type AdminOrderCreateFulfillmentType = z.infer<
   typeof OrderCreateFulfillment
 >
+/**
+ * Base schema for creating order fulfillment.
+ */
 export const OrderCreateFulfillment = z.object({
   items: z.array(Item).min(1),
   location_id: z.string().nullish(),
@@ -100,6 +133,9 @@ export const OrderCreateFulfillment = z.object({
   no_notification: z.boolean().optional(),
   metadata: z.record(z.string(), z.unknown()).nullish(),
 })
+/**
+ * Schema for creating order fulfillment in admin with additional data.
+ */
 export const AdminOrderCreateFulfillment = WithAdditionalData(
   OrderCreateFulfillment
 )
@@ -110,7 +146,13 @@ const Label = z.object({
   label_url: safeHttpUrl,
 })
 
+/**
+ * Type for creating shipment in admin order.
+ */
 export type AdminOrderCreateShipmentType = z.infer<typeof OrderCreateShipment>
+/**
+ * Base schema for creating order shipment.
+ */
 export const OrderCreateShipment = z.object({
   items: z.array(Item),
   labels: z.array(Label).optional(),

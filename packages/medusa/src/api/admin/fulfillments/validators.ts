@@ -2,6 +2,9 @@ import { z } from "@medusajs/framework/zod"
 import { AddressPayload, safeHttpUrl } from "../../utils/common-validators"
 import { createSelectParams } from "../../utils/validators"
 
+/**
+ * Parameters for admin fulfillment queries.
+ */
 export const AdminFulfillmentParams = createSelectParams()
 
 const AdminCreateFulfillmentItem = z.object({
@@ -19,7 +22,15 @@ const AdminCreateFulfillmentLabel = z.object({
   label_url: safeHttpUrl,
 })
 
+/**
+ * Type for creating an admin fulfillment.
+ */
 export type AdminCreateFulfillmentType = z.infer<typeof AdminCreateFulfillment>
+/**
+ * Schema for creating an admin fulfillment.
+ * 
+ * @remarks TODO: revisit the data shape this endpoint accepts
+ */
 // TODO: revisit the data shape this endpoint accepts
 export const AdminCreateFulfillment = z.object({
   location_id: z.string(),
@@ -37,7 +48,13 @@ export const AdminCreateFulfillment = z.object({
   metadata: z.record(z.string(), z.unknown()).nullable(),
 })
 
+/**
+ * Type for creating an admin shipment.
+ */
 export type AdminCreateShipmentType = z.infer<typeof AdminCreateShipment>
+/**
+ * Schema for creating an admin shipment.
+ */
 export const AdminCreateShipment = z.object({
   labels: z.array(AdminCreateFulfillmentLabel),
 })
