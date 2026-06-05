@@ -23,12 +23,36 @@ export const useProductOptionTableQuery = ({
     order,
     created_at: created_at ? JSON.parse(created_at) : undefined,
     updated_at: updated_at ? JSON.parse(updated_at) : undefined,
-    is_exclusive: is_exclusive ? JSON.parse(is_exclusive) : undefined,
+    is_exclusive: parseIsExclusive(is_exclusive),
+    // ^ undefined when the user explicitly removed the chip, so all options
+    // are returned regardless of type. The list seeds a default on first load.
     q,
   }
 
   return {
     searchParams,
     raw: queryObject,
+  }
+}
+
+// Tolerate both the quoted form produced by the DataTable filter UI
+// (`"false"`) and the plain form a human might write when sharing/bookmarking
+// a URL (`false`). Returns undefined when the filter is absent so the user
+// can clear the chip to see all options regardless of type.
+const parseIsExclusive = (raw: string | undefined): boolean | undefined => {
+  if (raw === undefined) {
+    return undefined
+  }
+  try {
+    const parsed = JSON.parse(raw)
+    if (typeof parsed === "boolean") {
+      return parsed
+    }
+    if (typeof parsed === "string") {
+      return parsed === "true"
+    }
+    return undefined
+  } catch {
+    return raw === "true"
   }
 }

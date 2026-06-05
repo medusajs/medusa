@@ -54,9 +54,7 @@ export const CreateProductOptionForm = () => {
             })
           )
 
-          handleSuccess(
-            `/product-options/${product_option.id}?is_exclusive="false"`
-          )
+          handleSuccess(`/product-options/${product_option.id}`)
         },
         onError: (error) => {
           toast.error(error.message)
