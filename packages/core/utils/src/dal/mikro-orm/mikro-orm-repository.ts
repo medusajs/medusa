@@ -20,7 +20,6 @@ import {
   LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
-  PopulatePath,
   ReferenceKind,
 } from "@medusajs/deps/mikro-orm/core"
 import { SqlEntityManager } from "@medusajs/deps/mikro-orm/postgresql"
@@ -105,7 +104,7 @@ export class MikroOrmBaseRepository<const T extends object = object>
   static retrievePrimaryKeys(entity: EntityClass<any> | EntitySchema) {
     return (
       (entity as EntitySchema).meta?.primaryKeys ??
-      (entity as EntityClass<any>).prototype.__meta?.primaryKeys ?? ["id"]
+      (entity as EntityClass<any>).prototype.__meta.primaryKeys ?? ["id"]
     )
   }
 
@@ -143,49 +142,49 @@ export class MikroOrmBaseRepository<const T extends object = object>
     })
   }
 
-  async create(
+  create(
     data: unknown[],
     context?: Context
   ): Promise<InferRepositoryReturnType<T>[]> {
     throw new Error("Method not implemented.")
   }
 
-  async update(
+  update(
     data: { entity; update }[],
     context?: Context
   ): Promise<InferRepositoryReturnType<T>[]> {
     throw new Error("Method not implemented.")
   }
 
-  async delete(
+  delete(
     idsOrPKs: FindOptions<T>["where"],
     context?: Context
   ): Promise<string[]> {
     throw new Error("Method not implemented.")
   }
 
-  async find(
+  find(
     options?: DAL.FindOptions<T>,
     context?: Context
   ): Promise<InferRepositoryReturnType<T>[]> {
     throw new Error("Method not implemented.")
   }
 
-  async findAndCount(
+  findAndCount(
     options?: DAL.FindOptions<T>,
     context?: Context
   ): Promise<[InferRepositoryReturnType<T>[], number]> {
     throw new Error("Method not implemented.")
   }
 
-  async upsert(
+  upsert(
     data: unknown[],
     context: Context = {}
   ): Promise<InferRepositoryReturnType<T>[]> {
     throw new Error("Method not implemented.")
   }
 
-  async upsertWithReplace(
+  upsertWithReplace(
     data: unknown[],
     config: UpsertWithReplaceConfig<InferRepositoryReturnType<T>> = {
       relations: [],
@@ -248,7 +247,7 @@ export class MikroOrmBaseTreeRepository<
     super(...arguments)
   }
 
-  async find(
+  find(
     options?: DAL.FindOptions,
     transformOptions?: RepositoryTransformOptions,
     context?: Context
@@ -256,7 +255,7 @@ export class MikroOrmBaseTreeRepository<
     throw new Error("Method not implemented.")
   }
 
-  async findAndCount(
+  findAndCount(
     options?: DAL.FindOptions,
     transformOptions?: RepositoryTransformOptions,
     context?: Context
@@ -264,21 +263,21 @@ export class MikroOrmBaseTreeRepository<
     throw new Error("Method not implemented.")
   }
 
-  async create(
+  create(
     data: unknown[],
     context?: Context
   ): Promise<InferRepositoryReturnType<T>[]> {
     throw new Error("Method not implemented.")
   }
 
-  async update(
+  update(
     data: unknown[],
     context?: Context
   ): Promise<InferRepositoryReturnType<T>[]> {
     throw new Error("Method not implemented.")
   }
 
-  async delete(ids: string[], context?: Context): Promise<string[]> {
+  delete(ids: string[], context?: Context): Promise<string[]> {
     throw new Error("Method not implemented.")
   }
 }
@@ -456,53 +455,6 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
       })
     }
 
-    /**
-     * Drop populate/fields entries that don't resolve to a property on the
-     * target entity. Medusa's query.graph layer can emit aliased field names
-     * and cross-module link relations (e.g. "inventory_items" on ProductVariant)
-     * that MikroORM has no metadata for.
-     */
-    private dropUnknownEntityPaths(
-      manager: EntityManager,
-      findOptions: DAL.FindOptions<T>
-    ): void {
-      const opts = findOptions.options
-      if (!opts) {
-        return
-      }
-      const populate = opts.populate as string[] | undefined
-      const fields = opts.fields as string[] | undefined
-      if (!populate?.length && !fields?.length) {
-        return
-      }
-      let props: Record<string, unknown> | undefined
-      try {
-        // `find` returns undefined gracefully if the entity isn't registered;
-        // `get` would throw. We want to silently skip filtering in that case
-        // and let MikroORM handle the call as it did pre-6.6.14.
-        const meta = manager
-          .getDriver()
-          .getMetadata()
-          .find(this.entity as any)
-        props = meta?.properties as Record<string, unknown> | undefined
-      } catch {
-        return
-      }
-      if (!props) {
-        return
-      }
-      const isKnownHead = (path: string) => {
-        const head = path.split(/[.:]/, 1)[0]
-        return head === PopulatePath.ALL || head in props!
-      }
-      if (populate?.length) {
-        opts.populate = populate.filter(isKnownHead) as typeof opts.populate
-      }
-      if (fields?.length) {
-        opts.fields = fields.filter(isKnownHead) as typeof opts.fields
-      }
-    }
-
     async find(
       options: DAL.FindOptions<T> = { where: {} } as DAL.FindOptions<T>,
       context?: Context
@@ -520,8 +472,6 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
           })
         }
       }
-
-      this.dropUnknownEntityPaths(manager, findOptions_)
 
       MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
         findOptions: findOptions_,
@@ -551,8 +501,6 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
           })
         }
       }
-
-      this.dropUnknownEntityPaths(manager, findOptions_)
 
       MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
         findOptions: findOptions_,
@@ -736,7 +684,7 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
         return mainEntity
       })
 
-      const {
+      let {
         orderedEntities: upsertedTopLevelEntities,
         performedActions: performedActions_,
       } = await this.upsertMany_(manager, this.entity.name, toUpsert)
@@ -753,9 +701,7 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
 
       config.relations?.forEach((relationName) => {
         const relation = allRelations?.find((r) => r.name === relationName)
-        if (!relation) {
-          return
-        }
+        if (!relation) return
 
         if (
           relation.kind === ReferenceKind.ONE_TO_ONE ||
