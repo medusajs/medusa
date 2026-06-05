@@ -19,6 +19,13 @@ const mfaChallenge = {
   metadata: null,
 }
 
+const verification = {
+  actor_type: "user",
+  provider: "emailpass",
+  entity_id: "test@example.com",
+  expires_at: "2026-05-20T10:00:00.000Z",
+}
+
 const storage = {
   data: new Map<string, string>(),
   getItem: jest.fn((key: string) => storage.data.get(key) ?? null),
@@ -105,6 +112,96 @@ describe("Auth", () => {
     expect(result).toEqual({
       mfa_required: true,
       mfa_challenge: mfaChallenge,
+    })
+    expect(storage.setItem).not.toHaveBeenCalled()
+  })
+
+  it("returns a verification requirement from login without storing a token", async () => {
+    server.use(
+      http.post(`${baseUrl}/auth/user/emailpass`, () => {
+        return HttpResponse.json({
+          verification_required: true,
+          verification: verification,
+        })
+      })
+    )
+
+    const auth = createAuth()
+    const result = await auth.login("user", "emailpass", {
+      email: "test@example.com",
+      password: "secret",
+    })
+
+    expect(result).toEqual({
+      verification_required: true,
+      verification: verification,
+    })
+    expect(storage.setItem).not.toHaveBeenCalled()
+  })
+
+  it("throws from register by default when verification is required", async () => {
+    server.use(
+      http.post(
+        `${baseUrl}/auth/user/emailpass/register`,
+        async ({ request }) => {
+          expect(await request.json()).toEqual({
+            email: "test@example.com",
+            password: "secret",
+          })
+
+          return HttpResponse.json({
+            verification_required: true,
+            verification: verification,
+          })
+        }
+      )
+    )
+
+    const auth = createAuth()
+
+    await expect(
+      auth.register("user", "emailpass", {
+        email: "test@example.com",
+        password: "secret",
+      })
+    ).rejects.toThrow("Unexpected registration response")
+    expect(storage.setItem).not.toHaveBeenCalled()
+  })
+
+  it("returns a verification requirement from register when opted in", async () => {
+    server.use(
+      http.post(
+        `${baseUrl}/auth/user/emailpass/register`,
+        async ({ request }) => {
+          expect(await request.json()).toEqual({
+            email: "test@example.com",
+            password: "secret",
+          })
+
+          return HttpResponse.json({
+            verification_required: true,
+            verification: verification,
+          })
+        }
+      )
+    )
+
+    const auth = createAuth()
+    const result = await auth.register(
+      "user",
+      "emailpass",
+      {
+        email: "test@example.com",
+        password: "secret",
+      },
+      {
+        returnVerification: true,
+      }
+    )
+
+    expect(result).toEqual({
+      verification_required: true,
+      verification: verification,
     })
     expect(storage.setItem).not.toHaveBeenCalled()
   })
@@ -248,11 +345,11 @@ describe("Auth", () => {
         status: "disabled",
       },
     })
-    await expect(
-      auth.mfa.generateRecoveryCodes({ count: 8 })
-    ).resolves.toEqual({
-      recovery_codes: ["code-1", "code-2"],
-    })
+    await expect(auth.mfa.generateRecoveryCodes({ count: 8 })).resolves.toEqual(
+      {
+        recovery_codes: ["code-1", "code-2"],
+      }
+    )
   })
 
   it("stores the token returned from MFA challenge verification", async () => {
@@ -278,5 +375,64 @@ describe("Auth", () => {
 
     expect(result).toBe(token)
     expect(storage.setItem).toHaveBeenCalledWith(jwtTokenStorageKey, token)
+  })
+
+  it("requests and confirms verification", async () => {
+    server.use(
+      http.post(
+        `${baseUrl}/auth/user/emailpass/verification/request`,
+        async ({ request }) => {
+          expect(await request.json()).toEqual({
+            entity_id: "test@example.com",
+            metadata: {
+              source: "dashboard",
+            },
+          })
+
+          return HttpResponse.json(
+            {
+              verification: verification,
+            },
+            { status: 201 }
+          )
+        }
+      ),
+      http.post(
+        `${baseUrl}/auth/user/emailpass/verification/confirm`,
+        async ({ request }) => {
+          expect(await request.json()).toEqual({
+            token: "verify-token",
+          })
+
+          return HttpResponse.json({
+            entity_id: "test@example.com",
+            verified: true,
+          })
+        }
+      )
+    )
+
+    const auth = createAuth()
+
+    await expect(
+      auth.verification.request("user", "emailpass", {
+        entity_id: "test@example.com",
+        metadata: {
+          source: "dashboard",
+        },
+      })
+    ).resolves.toEqual({
+      verification: verification,
+    })
+
+    await expect(
+      auth.verification.confirm("user", "emailpass", {
+        token: "verify-token",
+      })
+    ).resolves.toEqual({
+      entity_id: "test@example.com",
+      verified: true,
+    })
+    expect(storage.setItem).not.toHaveBeenCalled()
   })
 })

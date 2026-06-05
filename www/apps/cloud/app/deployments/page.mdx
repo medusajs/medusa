@@ -59,6 +59,8 @@ If you're deploying both a Medusa application and a storefront on Cloud, Medusa 
 2. The build command relevant to the storefront, depending on the frontend framework you're using. For example, if you're using Next.js for your storefront, Medusa will run the `next build` command in the storefront's directory.
     - Medusa currently doesn't support custom build scripts for storefronts.
 
+Storefront builds and deployments operate independently of the backend status. This means storefront deployments can proceed successfully even if the backend build or deployment fails.
+
 ### What Gets Deployed in the Medusa Application?
 
 Medusa deploys the contents of the `.medusa/server` directory of the Medusa application. This directory is created by the [build process](!docs!/learn/build). It includes the compiled JavaScript files in your project, the production build of the admin dashboard, and other necessary files to run your Medusa application in production.
@@ -322,17 +324,27 @@ Learn more in the [Access Live Deployment](./access/page.mdx) guide.
 
 ## Troubleshooting Failed Deployments
 
-### Troubleshooting Build Failures
+### AI Troubleshooting
 
-If a deployment's status is "Build failed", you can check the [build logs](../logs/page.mdx) to understand why it failed. The build logs will show you the errors that occurred during the build process for either the backend or storefront (if applicable), which can help you fix the issue in your code.
+When a deployment or its build fails, you can use the "Fix with AI" feature to troubleshoot the issue with the help of Cloud's support agent. The support agent is always available for failed deployments, allowing you to get assistance whenever there are issues in your deployments. The AI agent will analyze the deployment and build logs, identify the root cause of the issue, and provide you with actionable steps to resolve it.
 
-You can also contact support for help with the issue, if necessary.
+Learn more in the [Fix Deployment and Build Issues with AI](./fix-with-ai/page.mdx) guide.
 
-### Troubleshooting Deployment Failures
+### Manually Troubleshooting Build Failures
 
-If a deployment's status is "Deploy failed", you can check the [runtime logs](../logs/page.mdx) to understand why it failed. The runtime logs will show you the errors that occurred during the deployment process, which can help you fix the issue in your code.
+If a deployment's status is "Build failed", you can:
 
-You can also contact support for help with the issue, if necessary.
+- Check the [build logs](../logs/page.mdx) to understand why it failed. The build logs will show you the errors that occurred during the build process for either the backend or storefront (if applicable), which can help you fix the issue in your code.
+- Use the [Cloud CLI](../cli/commands/logs/page.mdx) to stream the build logs and identify the issue. This is useful when debugging the issue with your AI agent.
+- Contact support for help with the issue, if necessary.
+
+### Manually Troubleshooting Deployment Failures
+
+If a deployment's status is "Deploy failed", you can:
+
+- Check the [runtime logs](../logs/page.mdx) to understand why it failed. The runtime logs will show you the errors that occurred during the deployment process, which can help you fix the issue in your code.
+- Use the [Cloud CLI](../cli/commands/logs/page.mdx) to stream the deployment logs and identify the issue. This is useful when debugging the issue with your AI agent.
+- Contact support for help with the issue, if necessary.
 
 ---
 

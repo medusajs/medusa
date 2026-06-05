@@ -13,6 +13,13 @@ export interface ResolvedSchemaType {
   hasBaseFilterable: boolean
   /** The schema name for diagnostic reporting */
   schemaName: string
+  /**
+   * The raw Zod-shape type (the first type argument of `ZodObject<Shape>`),
+   * used as a fallback source of per-property Zod schema info when the
+   * inferred output for a property is degraded to `any` by complex types
+   * (e.g. `createOperatorMap()` returning `any` through `_output`).
+   */
+  zodShapeType?: ts.Type
 }
 
 /** Property names that belong to `FindParams` (superset of SelectParams) */
@@ -101,6 +108,9 @@ export class TypeResolver {
 
     let hasBaseFilterable = initialPropNames.has("$and")
 
+    let zodShapeType: ts.Type | undefined =
+      this.resolveFromZodObjectShapeArg(zodType)
+
     if (hasCircularLazyIssue && baseFieldsType) {
       const baseFieldsOutput = TsHelpers.getZodOutputType(
         this.checker,
@@ -110,6 +120,10 @@ export class TypeResolver {
         resolvedType = baseFieldsOutput
         properties = resolvedType.getProperties()
         hasBaseFilterable = true
+      }
+      const baseFieldsShape = this.resolveFromZodObjectShapeArg(baseFieldsType)
+      if (baseFieldsShape) {
+        zodShapeType = baseFieldsShape
       }
     } else if (hasCircularLazyIssue) {
       const shapeResolved = this.resolveFromZodObjectShapeArg(zodType)
@@ -136,6 +150,7 @@ export class TypeResolver {
       hasSelectParams,
       hasBaseFilterable,
       schemaName: httpTypeName,
+      zodShapeType,
     }
   }
 
@@ -149,10 +164,17 @@ export class TypeResolver {
   resolveProperties(
     resolvedType: ts.Type,
     hasFindParams: boolean,
-    hasSelectParams = false
+    hasSelectParams = false,
+    zodShapeType?: ts.Type
   ): PropertyInfo[] {
     const properties = resolvedType.getProperties()
     const result: PropertyInfo[] = []
+    const shapeProps = new Map<string, ts.Symbol>()
+    if (zodShapeType) {
+      for (const p of zodShapeType.getProperties()) {
+        shapeProps.set(p.name, p)
+      }
+    }
 
     for (const prop of properties) {
       const propName = prop.name
@@ -177,7 +199,44 @@ export class TypeResolver {
       }
 
       const nonNullableType = this.checker.getNonNullableType(propType)
-      const isOperatorMap = TsHelpers.isOperatorMapType(nonNullableType)
+      let isOperatorMap = TsHelpers.isOperatorMapType(nonNullableType)
+
+      // Fallback for the shape-arg path: when `_output` couldn't be fully
+      // resolved by TypeScript (typically due to `z.lazy()` circular
+      // references introduced by `applyAndAndOrOperators`), the resolved
+      // `propType` may be `any` or a degraded type that doesn't expose the
+      // OperatorMap members. Inspect the raw Zod schema's structure directly
+      // to detect `createOperatorMap()`.
+      if (!isOperatorMap && TsHelpers.isZodType(rawPropType)) {
+        isOperatorMap = TsHelpers.isOperatorMapZodSchema(
+          this.checker,
+          rawPropType
+        )
+      }
+      if (!isOperatorMap) {
+        const shapeProp = shapeProps.get(propName)
+        if (shapeProp) {
+          const shapePropType = this.checker.getTypeOfSymbol(shapeProp)
+          if (TsHelpers.isZodType(shapePropType)) {
+            isOperatorMap = TsHelpers.isOperatorMapZodSchema(
+              this.checker,
+              shapePropType
+            )
+            if (isOperatorMap && !isOptional) {
+              const shapeSymbolName =
+                shapePropType.getSymbol()?.getName() ?? ""
+              if (
+                shapeSymbolName === "ZodOptional" ||
+                shapeSymbolName === "ZodNullable" ||
+                shapeSymbolName === "ZodDefault" ||
+                shapeSymbolName === "ZodPipe"
+              ) {
+                isOptional = true
+              }
+            }
+          }
+        }
+      }
 
       const isFindParamsField =
         (hasFindParams && FIND_PARAMS_FIELDS.has(propName)) ||

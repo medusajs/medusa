@@ -20,6 +20,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const service: IAuthModuleService = req.scope.resolve(Modules.AUTH)
 
   const authData = {
+    actor_type,
     url: req.url,
     headers: req.headers,
     query: req.query,
@@ -27,10 +28,17 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     protocol: req.protocol,
   } as AuthenticationInput
 
-  const { success, error, authIdentity } = await service.register(
+  const { success, error, authIdentity, verification } = await service.register(
     auth_provider,
     authData
   )
+
+  if (success && verification) {
+    return res.status(200).json({
+      verification_required: true,
+      verification,
+    })
+  }
 
   if (success && authIdentity) {
     const { http } = config.projectConfig

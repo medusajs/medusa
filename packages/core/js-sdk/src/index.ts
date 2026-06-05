@@ -35,6 +35,11 @@ export { Admin } from "./admin/index.js"
 export {
   Auth,
   type AuthCallbackResponse,
+  type AuthVerificationConfirmPayload,
+  type AuthVerificationConfirmResponse,
+  type AuthVerificationRequestPayload,
+  type AuthVerificationRequestResponse,
+  type AuthVerificationRequiredResponse,
   type AuthLoginResponse,
   type AuthMfaDisablePayload,
   type AuthMfaFactorResponse,
@@ -47,6 +52,8 @@ export {
   type AuthMfaVerifyChallengePayload,
   type AuthMfaVerifyPayload,
   type AuthRedirectResponse,
+  type AuthRegisterOptions,
+  type AuthRegisterResponse,
 } from "./auth/index.js"
 export { Store } from "./store/index.js"
 export {
