@@ -12,6 +12,14 @@ import { MedusaCloudAuthProviderOptions } from "@types"
 import crypto from "crypto"
 import jwt, { type JwtHeader, type JwtPayload } from "jsonwebtoken"
 import jwksClient, { JwksClient } from "jwks-rsa"
+import { promisify } from "util"
+
+const verifyJwt = promisify<
+  string,
+  jwt.Secret | jwt.GetPublicKeyOrSecret,
+  jwt.VerifyOptions,
+  JwtPayload | string | undefined
+>(jwt.verify)
 
 type InjectedDependencies = {
   logger: Logger
@@ -178,23 +186,14 @@ export class MedusaCloudAuthService extends AbstractAuthModuleProvider {
 
     let payload: JwtPayload
     try {
-      payload = await new Promise<JwtPayload>((resolve, reject) => {
-        jwt.verify(
-          idToken,
-          this.getSigningKey_,
-          {
-            algorithms: ["RS256"],
-            audience: this.getClientId(),
-          },
-          (err, decoded) => {
-            if (err || !decoded || typeof decoded === "string") {
-              reject(err ?? new Error("Invalid id_token"))
-              return
-            }
-            resolve(decoded as JwtPayload)
-          }
-        )
+      const decoded = await verifyJwt(idToken, this.getSigningKey_, {
+        algorithms: ["RS256"],
+        audience: this.getClientId(),
       })
+      if (!decoded || typeof decoded === "string") {
+        throw new Error("Invalid id_token")
+      }
+      payload = decoded
     } catch (err) {
       return {
         success: false,
