@@ -49,13 +49,13 @@ jobs:
           allowed_bots: "*"
           base_branch: develop
           show_full_output: false
-          # Load the medusa-dev skill bundle (provides /triaging-issues).
-          # NOTE: this fetches third-party code at runtime; it is acceptable
-          # here because Job A has no App token and no mutation tools, so
-          # the worst a compromised skill can do is mis-shape the decision
-          # JSON, which Job B validates against a fixed schema.
-          plugin_marketplaces: "https://github.com/medusajs/medusa-agent-skills.git"
-          plugins: "medusa-dev@medusa"
+          # The `/triaging-issues` slash command resolves to the project's
+          # own skill at .claude/skills/triaging-issues/, available after
+          # actions/checkout above. We intentionally do NOT use
+          # plugin_marketplaces / plugins here, because fetching unpinned
+          # third-party code at runtime alongside CLAUDE_CODE_API_TOKEN is
+          # a supply-chain risk: a malicious update to the marketplace
+          # could exfiltrate the token even with read-only GitHub perms.
 
           prompt: |
             You are triaging a single GitHub issue for the medusajs/medusa repository.
@@ -177,11 +177,24 @@ jobs:
 
           jq empty triage-decision.json
 
-          # Validate labels against the allowlist; drop anything else.
-          jq --arg allowed "$ALLOWED_LABELS" '
+          # Validate labels against the allowlist. Any value that is not a
+          # string in the allowlist is a hard error so prompt-injection or
+          # bad model output surfaces in the workflow logs instead of
+          # silently producing a "successful" apply.
+          INVALID=$(jq -r --arg allowed "$ALLOWED_LABELS" '
             ($allowed | split(",")) as $a
-            | [(.labels_to_add // []) | .[] | select(type=="string") | select(. as $x | $a | index($x))]
-          ' triage-decision.json > labels_to_add.json
+            | [(.labels_to_add // []) | .[] as $x
+               | select(($x | type) != "string" or ($a | index($x) | not))
+               | $x | tostring]
+            | .[]
+          ' triage-decision.json)
+          if [[ -n "$INVALID" ]]; then
+            echo "::error::triage-decision.labels_to_add contains disallowed entries:" >&2
+            printf '  - %s\n' $INVALID >&2
+            exit 1
+          fi
+          jq '[.labels_to_add // [] | .[] | select(type=="string")]' \
+            triage-decision.json > labels_to_add.json
 
           TEMPLATE=$(jq -r '.comment_template // ""' triage-decision.json)
           if [[ -n "$TEMPLATE" ]]; then

@@ -19,9 +19,16 @@ set -euo pipefail
 
 WORKFLOW=""
 
+require_value() {
+  if [[ $# -lt 2 || -z "$2" ]]; then
+    echo "Error: $1 requires a value" >&2
+    exit 1
+  fi
+}
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --workflow) WORKFLOW="${2:-}"; shift 2 ;;
+    --workflow) require_value "$@"; WORKFLOW="$2"; shift 2 ;;
     *)
       echo "Error: unknown argument '$1'" >&2
       exit 1

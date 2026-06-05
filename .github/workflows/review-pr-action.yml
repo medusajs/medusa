@@ -54,13 +54,13 @@ jobs:
           allowed_non_write_users: "*"
           base_branch: develop
           show_full_output: false
-          # Load the medusa-dev skill bundle (provides /reviewing-prs).
-          # NOTE: this fetches third-party code at runtime; it is acceptable
-          # here because Job A has no App token and no mutation tools, so
-          # the worst a compromised skill can do is mis-shape the decision
-          # JSON, which Job B validates against a fixed schema.
-          plugin_marketplaces: "https://github.com/medusajs/medusa-agent-skills.git"
-          plugins: "medusa-dev@medusa"
+          # The `/reviewing-prs` slash command resolves to the project's
+          # own skill at .claude/skills/reviewing-prs/, available after
+          # actions/checkout above. We intentionally do NOT use
+          # plugin_marketplaces / plugins here, because fetching unpinned
+          # third-party code at runtime alongside CLAUDE_CODE_API_TOKEN is
+          # a supply-chain risk: a malicious update to the marketplace
+          # could exfiltrate the token even with read-only GitHub perms.
 
           prompt: |
             You are reviewing a single GitHub pull request for the medusajs/medusa
@@ -192,15 +192,33 @@ jobs:
 
           jq empty review-decision.json
 
-          jq --arg allowed "$ALLOWED_LABELS" '
-            ($allowed | split(",")) as $a
-            | [(.labels_to_add // []) | .[] | select(type=="string") | select(. as $x | $a | index($x))]
-          ' review-decision.json > labels_to_add.json
+          # Validate labels against the allowlist. Any value that is not a
+          # string in the allowlist is a hard error so prompt-injection or
+          # bad model output surfaces in the workflow logs instead of
+          # silently producing a "successful" apply.
+          validate_labels() {
+            local field="$1"
+            local invalid
+            invalid=$(jq -r --arg allowed "$ALLOWED_LABELS" --arg f "$field" '
+              ($allowed | split(",")) as $a
+              | [(.[$f] // []) | .[] as $x
+                 | select(($x | type) != "string" or ($a | index($x) | not))
+                 | $x | tostring]
+              | .[]
+            ' review-decision.json)
+            if [[ -n "$invalid" ]]; then
+              echo "::error::review-decision.$field contains disallowed entries:" >&2
+              printf '  - %s\n' $invalid >&2
+              exit 1
+            fi
+          }
+          validate_labels labels_to_add
+          validate_labels labels_to_remove
 
-          jq --arg allowed "$ALLOWED_LABELS" '
-            ($allowed | split(",")) as $a
-            | [(.labels_to_remove // []) | .[] | select(type=="string") | select(. as $x | $a | index($x))]
-          ' review-decision.json > labels_to_remove.json
+          jq '[.labels_to_add // [] | .[] | select(type=="string")]' \
+            review-decision.json > labels_to_add.json
+          jq '[.labels_to_remove // [] | .[] | select(type=="string")]' \
+            review-decision.json > labels_to_remove.json
 
           TEMPLATE=$(jq -r '.review_template // ""' review-decision.json)
           if [[ -n "$TEMPLATE" ]]; then
