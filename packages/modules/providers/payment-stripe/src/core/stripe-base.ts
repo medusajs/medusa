@@ -635,6 +635,15 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
 
     const { currency } = intent
 
+    // Payment intents created by Medusa always carry the originating payment
+    // session id in their metadata (see `initiatePayment`). An intent without
+    // one did not originate from this Medusa instance - e.g. an event from
+    // another integration sharing the same Stripe account - and must not be
+    // acted upon, so we treat it as an unsupported event.
+    if (!intent.metadata?.session_id) {
+      return { action: PaymentActions.NOT_SUPPORTED }
+    }
+
     switch (event.type) {
       case "payment_intent.created":
       case "payment_intent.processing":

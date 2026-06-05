@@ -20,7 +20,7 @@ export const ContentMenuActions = () => {
     () => isGeneratingAnswer || isPreparingAnswer,
     [isGeneratingAnswer, isPreparingAnswer]
   )
-  const pageUrl = `${baseUrl}${basePath}${pathname}`.replace(/\/$/, "")
+  const pageUrl = `${baseUrl}${basePath || ""}${pathname}`.replace(/\/$/, "")
 
   const handleAiAssistantClick = () => {
     if (loading) {

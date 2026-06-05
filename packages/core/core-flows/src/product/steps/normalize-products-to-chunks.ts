@@ -177,9 +177,10 @@ async function createChunks(
     }
 
     /**
-     * Cleanup in case of an error
+     * Cleanup in case of an error. Only delete chunk files that this step
+     * created; never the user-supplied `fileKey`, which is unvalidated input.
      */
-    await file.deleteFiles(chunks.map((chunk) => chunk.id).concat(fileKey))
+    await file.deleteFiles(chunks.map((chunk) => chunk.id))
     throw error
   }
 
@@ -228,10 +229,6 @@ export const normalizeCsvToChunksStep = createStep(
           { toCreate: 0, toUpdate: 0 }
         )
 
-        /**
-         * Delete CSV file once we have the chunks
-         */
-        await file.deleteFiles(fileKey)
 
         resolve(
           new StepResponse({

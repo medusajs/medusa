@@ -21,6 +21,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            path: "/first-project",
+            title: "Create First Project",
+          },
+          {
+            type: "link",
             path: "/faq",
             title: "FAQ",
           },
@@ -114,6 +119,11 @@ export const sidebar = [
                 type: "link",
                 title: "Access Deployment",
                 path: "/deployments/access",
+              },
+              {
+                type: "link",
+                title: "Fix with AI",
+                path: "/deployments/fix-with-ai",
               },
               {
                 type: "link",

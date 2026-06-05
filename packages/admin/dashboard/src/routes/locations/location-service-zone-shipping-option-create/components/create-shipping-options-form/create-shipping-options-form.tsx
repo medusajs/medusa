@@ -88,7 +88,7 @@ export function CreateShippingOptionsForm({
   const handleSubmit = form.handleSubmit(async (data) => {
     const currencyPrices = Object.entries(data.currency_prices)
       .map(([code, value]) => {
-        if (!value) {
+        if (value === undefined || value === "") {
           return undefined
         }
 
@@ -101,7 +101,7 @@ export function CreateShippingOptionsForm({
 
     const regionPrices = Object.entries(data.region_prices)
       .map(([region_id, value]) => {
-        if (!value) {
+        if (value === undefined || value === "") {
           return undefined
         }
 

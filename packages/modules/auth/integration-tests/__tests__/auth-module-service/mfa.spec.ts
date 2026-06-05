@@ -118,9 +118,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           otpauth_url: expect.stringContaining("otpauth://totp/"),
           secret: expect.any(String),
         })
-        expect(setup.otpauth_url).toContain(
-          "Medusa%20Test:Authenticator%20app"
-        )
+        expect(setup.otpauth_url).toContain("Medusa%20Test:Authenticator%20app")
         expect(setup.otpauth_url).toContain("issuer=Medusa%20Test")
         expect(setup.mfa).not.toHaveProperty("secret")
         expect(setup.mfa).not.toHaveProperty("provider_metadata")
@@ -570,6 +568,30 @@ moduleIntegrationTestRunner<IAuthModuleService>({
             id: setup.mfa.id,
           })
         ).rejects.toThrow("MFA verification code is required to disable MFA")
+      })
+
+      it("allows cancelling pending MFA setup without a challenge", async () => {
+        const setup = await service.startAuthMfa({
+          auth_identity_id: "test-id",
+          provider: "totp",
+        })
+
+        await expect(service.retrieveAuthMfa(setup.mfa.id)).resolves.toEqual(
+          expect.objectContaining({
+            status: "pending",
+          })
+        )
+
+        const factor = await service.disableAuthMfa({
+          id: setup.mfa.id,
+        })
+
+        expect(factor).toEqual(
+          expect.objectContaining({
+            id: setup.mfa.id,
+            status: "disabled",
+          })
+        )
       })
     })
   },

@@ -1,3 +1,4 @@
+export * from "./mfa-provider"
 export * from "./service"
 export * from "./common"
 export * from "./provider"
