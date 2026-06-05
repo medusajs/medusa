@@ -1,0 +1,59 @@
+import { getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
+
+export const metadata = {
+  title: `Fix Deployment and Build Issues with AI`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to use the "Fix with AI" feature on Cloud to troubleshoot and resolve issues in your deployments and builds.
+
+## What is "Fix with AI"?
+
+When your build or deployment fails on Cloud, you'll often need to look through the logs to identify the issue and find a solution. This can be time-consuming and may require searching through documentation or forums for similar issues to find a solution.
+
+With the "Fix with AI" feature, you can leverage Cloud's support agent to understand why your build or deployment failed and get suggestions on how to fix it. The AI agent analyzes the logs of your failed build or deployment, identifies the root cause of the issue, and provides you with actionable steps to resolve it.
+
+---
+
+## How to Investigate Build or Deployment Issues with AI
+
+When your build or deployment fails, you can go to the deployment's details page to access the "Fix with AI" feature:
+
+<Note title="Tip">
+
+You can also navigate to a project's deployments from the [command palette](../../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, select **Deployments**, then choose a project.
+
+</Note>
+
+
+<Tabs defaultValue="classic">
+  <TabsList>
+    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
+    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
+  </TabsList>
+  <TabsContentWrapper>
+    <TabsContent value="classic">
+
+    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../../organizations/page.mdx#switch-organization).
+    2. Click on the project you want to view its deployments.
+    3. Click on the "Deployments" tab in the project's dashboard.
+    4. Click on the deployment that failed.
+    5. Click on the "Fix with AI" button at the top right of the "Activity" section.
+
+    </TabsContent>
+    <TabsContent value="global-sidebar">
+
+    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../../organizations/page.mdx#switch-organization).
+    2. Click on "Deployments" in the sidebar under the project.
+    3. In the search bar, search for the project you want to view its deployments, then click on it.
+    4. Click on the deployment that failed.
+    5. Click on the "Fix with AI" button at the top right of the "Activity" section.
+
+    </TabsContent>
+  </TabsContentWrapper>
+</Tabs>
+
+This will open a "Troubleshoot deployment" side window that shows the AI agent's analysis of the issue and suggestions on how to fix it. You can chat with the AI agent to ask follow-up questions or get more details about the issue and the suggested solutions.
+
+The AI agent will use its knowledge on your project and its expertise in Medusa to provide you with the best possible solutions to fix your build or deployment issues. You can then follow the suggested steps to resolve the issue and get your deployment up and running again.

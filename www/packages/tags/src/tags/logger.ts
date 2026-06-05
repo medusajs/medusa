@@ -1,5 +1,9 @@
 export const logger = [
   {
+    "title": "compensatePaymentIfNeededStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/compensatePaymentIfNeededStep"
+  },
+  {
     "title": "addGiftCardToCartWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addGiftCardToCartWorkflow"
   },

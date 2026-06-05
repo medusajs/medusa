@@ -197,7 +197,7 @@ const Inner = ({
     [currencyInfo]
   )
 
-  const [localValue, setLocalValue] = useState<string | number>(value || "")
+  const [localValue, setLocalValue] = useState<string | number>(value ?? "")
 
   const handleValueChange: CurrencyInputProps["onValueChange"] = (
     value,

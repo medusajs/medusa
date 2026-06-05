@@ -1,5 +1,53 @@
 # @medusajs/settings
 
+## 2.15.5
+
+### Patch Changes
+
+- Updated dependencies [[`8122633a8b33164a6094f5a39896e356efde1747`](https://github.com/medusajs/medusa/commit/8122633a8b33164a6094f5a39896e356efde1747), [`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911)]:
+  - @medusajs/framework@2.15.5
+
+## 2.15.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.3
+
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies [[`2b21d15640ae459386b0acea4c83804c6f502b9d`](https://github.com/medusajs/medusa/commit/2b21d15640ae459386b0acea4c83804c6f502b9d)]:
+  - @medusajs/framework@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- [#15262](https://github.com/medusajs/medusa/pull/15262) [`37aa3154336e46b0f6c48aa964d6dfeca4f03b9c`](https://github.com/medusajs/medusa/commit/37aa3154336e46b0f6c48aa964d6dfeca4f03b9c) Thanks [@aliaksei-loi](https://github.com/aliaksei-loi)! - fix(settings): mark `Order.payment_status` and `Order.fulfillment_status` as non-filterable to prevent dashboard 500.
+
+  Both fields are declared as scalar enums on the `Order` GraphQL type but are computed at query time, so the orders list API rejects them as filter parameters. With the `view_configurations` flag enabled, the column generator was emitting `filter: { enabled: true, ... }` for these columns, which surfaced a clickable filter affordance in the new configurable orders table; clicking it sent an unsupported query and 500'd the dashboard.
+
+  Adds a new `nonFilterableFields?: string[]` field to `EntityOverride` that suppresses the filter affordance on listed columns while leaving them visible and sortable, and lists `payment_status` / `fulfillment_status` under the built-in `Order` override. Closes #14897.
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.0
+
 ## 2.14.2
 
 ### Patch Changes

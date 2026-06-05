@@ -44,5 +44,6 @@ export const generatedEditDates = {
   "app/installation/medusa-admin-extension/page.mdx": "2025-08-18T12:34:16.683Z",
   "app/installation/page.mdx": "2025-08-18T11:37:35.544Z",
   "app/installation/standalone-project/page.mdx": "2025-08-18T12:40:30.780Z",
-  "app/utils/clx/page.mdx": "2025-08-18T11:37:35.561Z"
+  "app/utils/clx/page.mdx": "2025-08-18T11:37:35.561Z",
+  "app/components/otp-input/page.mdx": "2026-05-21T12:04:47.911Z"
 }

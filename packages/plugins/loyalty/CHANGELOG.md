@@ -1,5 +1,77 @@
 # @medusajs/loyalty-plugin
 
+## 2.15.5
+
+### Patch Changes
+
+- Updated dependencies [[`8122633a8b33164a6094f5a39896e356efde1747`](https://github.com/medusajs/medusa/commit/8122633a8b33164a6094f5a39896e356efde1747), [`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911)]:
+  - @medusajs/framework@2.15.5
+  - @medusajs/test-utils@2.15.5
+  - @medusajs/cli@2.15.5
+  - @medusajs/admin-sdk@2.15.5
+  - @medusajs/icons@2.15.5
+  - @medusajs/ui@4.1.15
+
+## 2.15.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/test-utils@2.15.4
+  - @medusajs/admin-sdk@2.15.4
+  - @medusajs/cli@2.15.4
+  - @medusajs/framework@2.15.4
+  - @medusajs/icons@2.15.4
+  - @medusajs/ui@4.1.14
+
+## 2.15.3
+
+### Patch Changes
+
+- Updated dependencies [[`ac0a8b63d16518eae7c5370171b76bdf2d8dc2c5`](https://github.com/medusajs/medusa/commit/ac0a8b63d16518eae7c5370171b76bdf2d8dc2c5), [`e0b8251bbd04a400dffa635e990e3e587f9f2986`](https://github.com/medusajs/medusa/commit/e0b8251bbd04a400dffa635e990e3e587f9f2986), [`18a410c48d9d928de6e63d9577782480c3308e6b`](https://github.com/medusajs/medusa/commit/18a410c48d9d928de6e63d9577782480c3308e6b)]:
+  - @medusajs/icons@2.15.3
+  - @medusajs/test-utils@2.15.3
+  - @medusajs/ui@4.1.13
+  - @medusajs/cli@2.15.3
+  - @medusajs/framework@2.15.3
+  - @medusajs/admin-sdk@2.15.3
+
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies [[`2b21d15640ae459386b0acea4c83804c6f502b9d`](https://github.com/medusajs/medusa/commit/2b21d15640ae459386b0acea4c83804c6f502b9d)]:
+  - @medusajs/framework@2.15.2
+  - @medusajs/cli@2.15.2
+  - @medusajs/test-utils@2.15.2
+  - @medusajs/admin-sdk@2.15.2
+  - @medusajs/icons@2.15.2
+  - @medusajs/ui@4.1.12
+
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/test-utils@2.15.1
+  - @medusajs/admin-sdk@2.15.1
+  - @medusajs/cli@2.15.1
+  - @medusajs/framework@2.15.1
+  - @medusajs/icons@2.15.1
+  - @medusajs/ui@4.1.11
+
+## 2.15.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/test-utils@2.15.0
+  - @medusajs/framework@2.15.0
+  - @medusajs/cli@2.15.0
+  - @medusajs/admin-sdk@2.15.0
+  - @medusajs/icons@2.15.0
+  - @medusajs/ui@4.1.10
+
 ## 2.14.2
 
 ### Patch Changes

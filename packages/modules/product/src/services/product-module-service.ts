@@ -216,15 +216,14 @@ export default class ProductModuleService
       sharedContext
     )
 
-    if (shouldLoadVariantImages && product.variants && product.images) {
-      await this.buildVariantImagesFromProduct(
-        product.variants,
-        product.images,
-        sharedContext
-      )
+    const serializedProduct =
+      await this.baseRepository_.serialize<ProductTypes.ProductDTO>(product)
+
+    if (shouldLoadVariantImages) {
+      await this.assignImagesToVariants([serializedProduct], sharedContext)
     }
 
-    return this.baseRepository_.serialize<ProductTypes.ProductDTO>(product)
+    return serializedProduct
   }
 
   @InjectManager()
@@ -250,19 +249,15 @@ export default class ProductModuleService
       sharedContext
     )
 
+    const serializedProducts = await this.baseRepository_.serialize<
+      ProductTypes.ProductDTO[]
+    >(products)
+
     if (shouldLoadVariantImages) {
-      for (const product of products) {
-        if (product.variants && product.images) {
-          await this.buildVariantImagesFromProduct(
-            product.variants,
-            product.images,
-            sharedContext
-          )
-        }
-      }
+      await this.assignImagesToVariants(serializedProducts, sharedContext)
     }
 
-    return this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products)
+    return serializedProducts
   }
 
   @InjectManager()
@@ -292,21 +287,14 @@ export default class ProductModuleService
       sharedContext
     )
 
-    if (shouldLoadVariantImages) {
-      for (const product of products) {
-        if (product.variants && product.images) {
-          await this.buildVariantImagesFromProduct(
-            product.variants,
-            product.images,
-            sharedContext
-          )
-        }
-      }
-    }
-
     const serializedProducts = await this.baseRepository_.serialize<
       ProductTypes.ProductDTO[]
     >(products)
+
+    if (shouldLoadVariantImages) {
+      await this.assignImagesToVariants(serializedProducts, sharedContext)
+    }
+
     return [serializedProducts, count]
   }
 
@@ -1560,15 +1548,16 @@ export default class ProductModuleService
     const forUpdate = input.filter(
       (product): product is UpdateProductInput => !!product.id
     )
-    const forCreate = input.filter(
-      (product) => !product.id
-    )
+    const forCreate = input.filter((product) => !product.id)
 
     let created: ProductTypes.ProductDTO[] = []
     let updated: InferEntityType<typeof Product>[] = []
 
     if (forCreate.length) {
-      created = await this.createProducts(forCreate as ProductTypes.CreateProductDTO[], sharedContext)
+      created = await this.createProducts(
+        forCreate as ProductTypes.CreateProductDTO[],
+        sharedContext
+      )
     }
     if (forUpdate.length) {
       updated = await this.updateProducts_(forUpdate, sharedContext)
@@ -2507,18 +2496,38 @@ export default class ProductModuleService
     return result
   }
 
-  private async buildVariantImagesFromProduct(
-    variants: InferEntityType<typeof ProductVariant>[],
-    productImages: InferEntityType<typeof ProductImage>[],
+  /**
+   * Assigns the computed `images` value to each variant of the given products:
+   * every variant receives the product's general images (images not assigned
+   * to any variant), and variants with specific assignments additionally
+   * receive those images. This union is what `variants.images` exposes — it
+   * cannot be loaded through the m:n relation, which only contains explicit
+   * assignments.
+   *
+   * The products are expected to be serialized already. The assignment is
+   * intentionally performed on plain DTOs (after serialization) so that no
+   * ORM entity ever leaks into the returned payload, and the variant <> image
+   * relations are fetched in a single query for all products.
+   */
+  private async assignImagesToVariants(
+    products: {
+      variants?: { id: string; images?: ProductTypes.ProductImageDTO[] }[]
+      images?: ProductTypes.ProductImageDTO[]
+    }[],
     sharedContext: Context = {}
   ): Promise<void> {
-    // Create a clean map of images without problematic collections
-    const imagesMap = new Map<string, InferEntityType<typeof ProductImage>>()
-    for (const img of productImages) {
-      imagesMap.set(img.id, img)
+    const productsToProcess = products.filter(
+      (product) => product.variants?.length && product.images
+    )
+
+    const variantIds = productsToProcess.flatMap((product) =>
+      product.variants!.map((variant) => variant.id)
+    )
+
+    if (!variantIds.length) {
+      return
     }
 
-    const variantIds = variants.map((v) => v.id)
     const variantImageRelations =
       await this.productVariantProductImageService_.list(
         { variant_id: variantIds },
@@ -2526,35 +2535,38 @@ export default class ProductModuleService
         sharedContext
       )
 
-    const variantIdImageIdsMap = new Map<string, string[]>()
-    const imageIdVariantIdsMap = new Map<string, string[]>()
+    const variantIdImageIdsMap = new Map<string, Set<string>>()
+    const imageIdsWithVariants = new Set<string>()
 
     // build both lookup
     for (const relation of variantImageRelations) {
       if (!variantIdImageIdsMap.has(relation.variant_id)) {
-        variantIdImageIdsMap.set(relation.variant_id, [])
+        variantIdImageIdsMap.set(relation.variant_id, new Set())
       }
-      variantIdImageIdsMap.get(relation.variant_id)!.push(relation.image_id)
+      variantIdImageIdsMap.get(relation.variant_id)!.add(relation.image_id)
 
-      if (!imageIdVariantIdsMap.has(relation.image_id)) {
-        imageIdVariantIdsMap.set(relation.image_id, [])
-      }
-      imageIdVariantIdsMap.get(relation.image_id)!.push(relation.variant_id)
+      imageIdsWithVariants.add(relation.image_id)
     }
 
-    const [generalImages, variantImages] = partitionArray(
-      productImages,
-      (img) => !imageIdVariantIdsMap.has(img.id) // if image doesn't have any variants, it is a general image
-    )
+    for (const product of productsToProcess) {
+      const [generalImages, variantImages] = partitionArray(
+        product.images!,
+        (img) => !imageIdsWithVariants.has(img.id) // if image doesn't have any variants, it is a general image
+      )
 
-    for (const variant of variants) {
-      const variantImageIds = variantIdImageIdsMap.get(variant.id) || []
+      for (const variant of product.variants!) {
+        const variantImageIds = variantIdImageIdsMap.get(variant.id)
 
-      variant.images = [...generalImages]
+        variant.images = [...generalImages]
 
-      for (const image of variantImages) {
-        if (variantImageIds.includes(image.id)) {
-          variant.images.push(image)
+        if (!variantImageIds?.size) {
+          continue
+        }
+
+        for (const image of variantImages) {
+          if (variantImageIds.has(image.id)) {
+            variant.images.push(image)
+          }
         }
       }
     }

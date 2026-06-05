@@ -10,6 +10,127 @@ import { TypeList } from "docs-ui"
 
 This reference shows all the events emitted by the Medusa application related to the Product Module. If you use the module outside the Medusa application, these events aren't emitted.
 
+## Product Events
+
+### Summary
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+Event
+</Table.HeaderCell>
+      <Table.HeaderCell>
+Description
+</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+[product.updated](#productupdated)
+</Table.Cell>
+      <Table.Cell>
+Emitted when products are updated.
+</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+[product.created](#productcreated)
+</Table.Cell>
+      <Table.Cell>
+Emitted when products are created.
+</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+[product.deleted](#productdeleted)
+</Table.Cell>
+      <Table.Cell>
+Emitted when products are deleted.
+</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+<EventHeader headerLvl="3" headerProps={{ id: "productupdated", children: (<>product.updated</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product.updated" payload={`\`\`\`ts
+{
+  id, // The ID of the product
+}
+\`\`\``} />
+
+Emitted when products are updated.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the product
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [updateProductsWorkflow](/references/medusa-workflows/updateProductsWorkflow)
+- [batchProductsWorkflow](/references/medusa-workflows/batchProductsWorkflow)
+- [importProductsWorkflow](/references/medusa-workflows/importProductsWorkflow)
+
+---
+
+<EventHeader headerLvl="3" headerProps={{ id: "productcreated", children: (<>product.created</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product.created" payload={`\`\`\`ts
+{
+  id, // The ID of the product
+}
+\`\`\``} />
+
+Emitted when products are created.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the product
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [createProductsWorkflow](/references/medusa-workflows/createProductsWorkflow)
+- [batchProductsWorkflow](/references/medusa-workflows/batchProductsWorkflow)
+- [importProductsWorkflow](/references/medusa-workflows/importProductsWorkflow)
+
+---
+
+<EventHeader headerLvl="3" headerProps={{ id: "productdeleted", children: (<>product.deleted</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product.deleted" payload={`\`\`\`ts
+{
+  id, // The ID of the product
+}
+\`\`\``} />
+
+Emitted when products are deleted.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the product
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [deleteProductsWorkflow](/references/medusa-workflows/deleteProductsWorkflow)
+- [batchProductsWorkflow](/references/medusa-workflows/batchProductsWorkflow)
+- [importProductsWorkflow](/references/medusa-workflows/importProductsWorkflow)
+
+---
+
 ## Product Category Events
 
 ### Summary
@@ -703,124 +824,3 @@ The following workflows emit this event when they're executed. These workflows a
 
 - [deleteProductVariantsWorkflow](/references/medusa-workflows/deleteProductVariantsWorkflow)
 - [batchProductVariantsWorkflow](/references/medusa-workflows/batchProductVariantsWorkflow)
-
----
-
-## Product Events
-
-### Summary
-
-<Table>
-  <Table.Header>
-    <Table.Row>
-      <Table.HeaderCell>
-Event
-</Table.HeaderCell>
-      <Table.HeaderCell>
-Description
-</Table.HeaderCell>
-    </Table.Row>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row>
-      <Table.Cell>
-[product.updated](#productupdated)
-</Table.Cell>
-      <Table.Cell>
-Emitted when products are updated.
-</Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-[product.created](#productcreated)
-</Table.Cell>
-      <Table.Cell>
-Emitted when products are created.
-</Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-[product.deleted](#productdeleted)
-</Table.Cell>
-      <Table.Cell>
-Emitted when products are deleted.
-</Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table>
-
-<EventHeader headerLvl="3" headerProps={{ id: "productupdated", children: (<>product.updated</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product.updated" payload={`\`\`\`ts
-{
-  id, // The ID of the product
-}
-\`\`\``} />
-
-Emitted when products are updated.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the product
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [updateProductsWorkflow](/references/medusa-workflows/updateProductsWorkflow)
-- [batchProductsWorkflow](/references/medusa-workflows/batchProductsWorkflow)
-- [importProductsWorkflow](/references/medusa-workflows/importProductsWorkflow)
-
----
-
-<EventHeader headerLvl="3" headerProps={{ id: "productcreated", children: (<>product.created</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product.created" payload={`\`\`\`ts
-{
-  id, // The ID of the product
-}
-\`\`\``} />
-
-Emitted when products are created.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the product
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [createProductsWorkflow](/references/medusa-workflows/createProductsWorkflow)
-- [batchProductsWorkflow](/references/medusa-workflows/batchProductsWorkflow)
-- [importProductsWorkflow](/references/medusa-workflows/importProductsWorkflow)
-
----
-
-<EventHeader headerLvl="3" headerProps={{ id: "productdeleted", children: (<>product.deleted</>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="product.deleted" payload={`\`\`\`ts
-{
-  id, // The ID of the product
-}
-\`\`\``} />
-
-Emitted when products are deleted.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the product
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [deleteProductsWorkflow](/references/medusa-workflows/deleteProductsWorkflow)
-- [batchProductsWorkflow](/references/medusa-workflows/batchProductsWorkflow)
-- [importProductsWorkflow](/references/medusa-workflows/importProductsWorkflow)

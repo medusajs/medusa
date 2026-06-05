@@ -1,5 +1,96 @@
 # @medusajs/core-flows
 
+## 2.15.5
+
+### Patch Changes
+
+- [#15496](https://github.com/medusajs/medusa/pull/15496) [`ace1822bccbb21afa533665937460140e36aa995`](https://github.com/medusajs/medusa/commit/ace1822bccbb21afa533665937460140e36aa995) Thanks [@christiananese](https://github.com/christiananese)! - Add auth verification primitives for emailpass.
+
+- [#15527](https://github.com/medusajs/medusa/pull/15527) [`2535bd63f3bf2745034abb11ac38469df6f4a588`](https://github.com/medusajs/medusa/commit/2535bd63f3bf2745034abb11ac38469df6f4a588) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows): avoid refunding captures made in separate completeCartWorkflow executions
+
+- [#15440](https://github.com/medusajs/medusa/pull/15440) [`e6c632ada9ced677e44198f145097422890abc63`](https://github.com/medusajs/medusa/commit/e6c632ada9ced677e44198f145097422890abc63) Thanks [@marlinjai](https://github.com/marlinjai)! - fix(core-flows): respect allow_backorder when calculating pickup inventory availability
+
+  Products with `allow_backorder=true` are now correctly treated as available for pickup shipping options, even when `inventory_quantity=0`. Previously, these products would incorrectly trigger `insufficient_inventory: true`, preventing customers from selecting pickup options for backorder-enabled products.
+
+- Updated dependencies [[`8122633a8b33164a6094f5a39896e356efde1747`](https://github.com/medusajs/medusa/commit/8122633a8b33164a6094f5a39896e356efde1747), [`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911)]:
+  - @medusajs/framework@2.15.5
+
+## 2.15.4
+
+### Patch Changes
+
+- [#15470](https://github.com/medusajs/medusa/pull/15470) [`fe9636daba55fd65213fe338ba818ec1429783fa`](https://github.com/medusajs/medusa/commit/fe9636daba55fd65213fe338ba818ec1429783fa) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows): use hasPermission util to perform checks in validateUserRolePermissionsStep
+
+- [#15465](https://github.com/medusajs/medusa/pull/15465) [`94a3ee29d2a2ec441791d671e42deb24108df7f3`](https://github.com/medusajs/medusa/commit/94a3ee29d2a2ec441791d671e42deb24108df7f3) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows,medusa): align validate user permissions check with hasPermission util
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- [#15264](https://github.com/medusajs/medusa/pull/15264) [`22fa3e373aa5377b79e7f80b006b69b33eac7434`](https://github.com/medusajs/medusa/commit/22fa3e373aa5377b79e7f80b006b69b33eac7434) Thanks [@Suh0161](https://github.com/Suh0161)! - fix(core-flows): handle undefined customer account_holders in create payment sessions workflow
+
+- [#15396](https://github.com/medusajs/medusa/pull/15396) [`d0f4df0c6307555737a46f54ab7b99dd81c6c75b`](https://github.com/medusajs/medusa/commit/d0f4df0c6307555737a46f54ab7b99dd81c6c75b) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(core-flows,types): surface skipped promo codes due to budget/promotion limits
+
+- [#15159](https://github.com/medusajs/medusa/pull/15159) [`ad14455d087d045eba3b3197ac37bf66e42d4e64`](https://github.com/medusajs/medusa/commit/ad14455d087d045eba3b3197ac37bf66e42d4e64) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(core-flows): fix incorrect stock location picked for item with backorder in a sales channel with multiple locations
+
+- [#15397](https://github.com/medusajs/medusa/pull/15397) [`d36790f6ccc1a8d7fa729027f9e9d75ad8c9d418`](https://github.com/medusajs/medusa/commit/d36790f6ccc1a8d7fa729027f9e9d75ad8c9d418) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(inventory,core-flows,medusa): add missing locking to reservation steps
+
+- [#15363](https://github.com/medusajs/medusa/pull/15363) [`de43962211feb705d27b2f388384e3f3f4b6d466`](https://github.com/medusajs/medusa/commit/de43962211feb705d27b2f388384e3f3f4b6d466) Thanks [@vladimir-bogomolov](https://github.com/vladimir-bogomolov)! - fix(core-flows): acquire lock before fetching cart in updateCartPromotionsWorkflow to prevent duplicate line item adjustments under concurrent requests
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.3
+
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies [[`2b21d15640ae459386b0acea4c83804c6f502b9d`](https://github.com/medusajs/medusa/commit/2b21d15640ae459386b0acea4c83804c6f502b9d)]:
+  - @medusajs/framework@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- [#15231](https://github.com/medusajs/medusa/pull/15231) [`7747d0510b24bcce5e68bf32236559d809dabdee`](https://github.com/medusajs/medusa/commit/7747d0510b24bcce5e68bf32236559d809dabdee) Thanks [@rnagulapalle](https://github.com/rnagulapalle)! - fix(core-flows): validate cart has items before completing
+
+- [#15303](https://github.com/medusajs/medusa/pull/15303) [`436f549e326563cc3da4b7b142c12072fb89eed4`](https://github.com/medusajs/medusa/commit/436f549e326563cc3da4b7b142c12072fb89eed4) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows,payment): Fix rounding issue on refund creation
+
+- [#15301](https://github.com/medusajs/medusa/pull/15301) [`8539bc71a554ba0dd6bc48511aa980d93d3f2664`](https://github.com/medusajs/medusa/commit/8539bc71a554ba0dd6bc48511aa980d93d3f2664) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(core-flows): add setPromotionContext hook to pass additional context for promotion computation
+
+- [#15241](https://github.com/medusajs/medusa/pull/15241) [`6d0fd2fb38d56e76580b52d4e6ea74d34db2000e`](https://github.com/medusajs/medusa/commit/6d0fd2fb38d56e76580b52d4e6ea74d34db2000e) Thanks [@ShriyansSharma27](https://github.com/ShriyansSharma27)! - fix(core-flows): populate delivery_address on return fulfillments
+
+- [#15273](https://github.com/medusajs/medusa/pull/15273) [`f57b942b8bbd385f32203965e2f54a3964e812eb`](https://github.com/medusajs/medusa/commit/f57b942b8bbd385f32203965e2f54a3964e812eb) Thanks [@Metbcy](https://github.com/Metbcy)! - fix(core-flows, payment, types): expose `metadata` on refund creation through `refundPaymentsWorkflow`
+
+  The `Refund` data model supports a `metadata` field, but it was not exposed on
+  `CreateRefundDTO`, `RefundPaymentsStepInput`, or `RefundPaymentsWorkflowInput`,
+  making it impossible to set metadata on a refund created via
+  `refundPaymentsWorkflow`. This adds the optional field to all three types and
+  threads it through `PaymentModuleService.refundPayment` so the value reaches
+  the underlying refund row.
+
+- [#15316](https://github.com/medusajs/medusa/pull/15316) [`cd22b7df5120993f2311cf6fecc8f213c383f16b`](https://github.com/medusajs/medusa/commit/cd22b7df5120993f2311cf6fecc8f213c383f16b) Thanks [@hunnyboy1217](https://github.com/hunnyboy1217)! - fix(core-flows): apply currency-precision tolerance to `validatePaymentsRefundStep`
+
+  Mirrors #15303 on the plural `refundPaymentsWorkflow`'s validator. The validator
+  now sums `raw_amount` instead of `amount` and compares with a per-currency
+  epsilon (`getEpsilonFromDecimalPrecision`), so sub-cent provider captures (e.g.
+  Stripe charging in a foreign currency at `87.957975`) no longer cause a refund
+  of the user-visible rounded amount (`87.96`) to be falsely rejected. Also adds
+  `captures.raw_amount` and `refunds.raw_amount` to the payments query so the raw
+  values reach the validator.
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.0
+
 ## 2.14.2
 
 ### Patch Changes

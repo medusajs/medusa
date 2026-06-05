@@ -1,12 +1,12 @@
 {
-	"id": 16076,
+	"id": 16413,
 	"name": "stock-location-next-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 16115,
+			"id": 16452,
 			"name": "StockLocationAddress",
 			"variant": "declaration",
 			"kind": 32,
@@ -18,7 +18,7 @@
 					"fileName": "stock-location-address.ts",
 					"line": 4,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location-address.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location-address.ts#L4"
 				}
 			],
 			"type": {
@@ -38,14 +38,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 16116,
+									"id": 16453,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 16117,
+											"id": 16454,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -63,7 +63,7 @@
 													"fileName": "stock-location-address.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location-address.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location-address.ts#L6"
 												}
 											],
 											"type": {
@@ -89,7 +89,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16118,
+											"id": 16455,
 											"name": "address_1",
 											"variant": "declaration",
 											"kind": 1024,
@@ -107,7 +107,7 @@
 													"fileName": "stock-location-address.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location-address.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location-address.ts#L7"
 												}
 											],
 											"type": {
@@ -122,7 +122,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16119,
+											"id": 16456,
 											"name": "address_2",
 											"variant": "declaration",
 											"kind": 1024,
@@ -142,7 +142,7 @@
 													"fileName": "stock-location-address.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location-address.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location-address.ts#L8"
 												}
 											],
 											"type": {
@@ -157,7 +157,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16120,
+											"id": 16457,
 											"name": "company",
 											"variant": "declaration",
 											"kind": 1024,
@@ -177,7 +177,7 @@
 													"fileName": "stock-location-address.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location-address.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location-address.ts#L9"
 												}
 											],
 											"type": {
@@ -192,7 +192,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16121,
+											"id": 16458,
 											"name": "city",
 											"variant": "declaration",
 											"kind": 1024,
@@ -212,7 +212,7 @@
 													"fileName": "stock-location-address.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location-address.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location-address.ts#L10"
 												}
 											],
 											"type": {
@@ -227,7 +227,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16122,
+											"id": 16459,
 											"name": "country_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -256,7 +256,7 @@
 													"fileName": "stock-location-address.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location-address.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location-address.ts#L11"
 												}
 											],
 											"type": {
@@ -271,7 +271,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16123,
+											"id": 16460,
 											"name": "phone",
 											"variant": "declaration",
 											"kind": 1024,
@@ -291,7 +291,7 @@
 													"fileName": "stock-location-address.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location-address.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location-address.ts#L12"
 												}
 											],
 											"type": {
@@ -306,7 +306,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16124,
+											"id": 16461,
 											"name": "province",
 											"variant": "declaration",
 											"kind": 1024,
@@ -326,7 +326,7 @@
 													"fileName": "stock-location-address.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location-address.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location-address.ts#L13"
 												}
 											],
 											"type": {
@@ -341,7 +341,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16125,
+											"id": 16462,
 											"name": "postal_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -361,7 +361,7 @@
 													"fileName": "stock-location-address.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location-address.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location-address.ts#L14"
 												}
 											],
 											"type": {
@@ -376,7 +376,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16126,
+											"id": 16463,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -396,7 +396,7 @@
 													"fileName": "stock-location-address.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location-address.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location-address.ts#L15"
 												}
 											],
 											"type": {
@@ -411,7 +411,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16127,
+											"id": 16464,
 											"name": "stock_locations",
 											"variant": "declaration",
 											"kind": 1024,
@@ -432,7 +432,7 @@
 													"fileName": "stock-location-address.ts",
 													"line": 16,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location-address.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location-address.ts#L16"
 												}
 											],
 											"type": {
@@ -444,7 +444,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 16077,
+														"target": 16414,
 														"name": "StockLocation"
 													}
 												],
@@ -458,17 +458,17 @@
 										{
 											"title": "Properties",
 											"children": [
-												16117,
-												16118,
-												16119,
-												16120,
-												16121,
-												16122,
-												16123,
-												16124,
-												16125,
-												16126,
-												16127
+												16454,
+												16455,
+												16456,
+												16457,
+												16458,
+												16459,
+												16460,
+												16461,
+												16462,
+												16463,
+												16464
 											]
 										}
 									],
@@ -477,7 +477,7 @@
 											"fileName": "stock-location-address.ts",
 											"line": 5,
 											"character": 34,
-											"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location-address.ts#L5"
+											"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location-address.ts#L5"
 										}
 									]
 								}
@@ -497,7 +497,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 16077,
+			"id": 16414,
 			"name": "StockLocation",
 			"variant": "declaration",
 			"kind": 32,
@@ -509,7 +509,7 @@
 					"fileName": "stock-location.ts",
 					"line": 4,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location.ts#L4"
 				}
 			],
 			"type": {
@@ -529,14 +529,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 16078,
+									"id": 16415,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 16079,
+											"id": 16416,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -554,7 +554,7 @@
 													"fileName": "stock-location.ts",
 													"line": 5,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location.ts#L5"
 												}
 											],
 											"type": {
@@ -580,7 +580,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16080,
+											"id": 16417,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -598,7 +598,7 @@
 													"fileName": "stock-location.ts",
 													"line": 6,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location.ts#L6"
 												}
 											],
 											"type": {
@@ -613,7 +613,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16081,
+											"id": 16418,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -633,7 +633,7 @@
 													"fileName": "stock-location.ts",
 													"line": 7,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location.ts#L7"
 												}
 											],
 											"type": {
@@ -648,7 +648,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16082,
+											"id": 16419,
 											"name": "address",
 											"variant": "declaration",
 											"kind": 1024,
@@ -671,7 +671,7 @@
 													"fileName": "stock-location.ts",
 													"line": 8,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location.ts#L8"
 												}
 											],
 											"type": {
@@ -683,7 +683,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 16115,
+														"target": 16452,
 														"name": "StockLocationAddress"
 													}
 												],
@@ -697,10 +697,10 @@
 										{
 											"title": "Properties",
 											"children": [
-												16079,
-												16080,
-												16081,
-												16082
+												16416,
+												16417,
+												16418,
+												16419
 											]
 										}
 									],
@@ -709,7 +709,7 @@
 											"fileName": "stock-location.ts",
 											"line": 4,
 											"character": 52,
-											"url": "https://github.com/medusajs/medusa/blob/b41f6828baae00ff6728c7539b1184015ca4dff2/packages/modules/stock-location/src/models/stock-location.ts#L4"
+											"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/stock-location/src/models/stock-location.ts#L4"
 										}
 									]
 								}
@@ -733,262 +733,262 @@
 		{
 			"title": "Variables",
 			"children": [
-				16115,
-				16077
+				16452,
+				16414
 			]
 		}
 	],
 	"packageName": "@medusajs/stock-location",
 	"symbolIdMap": {
-		"16076": {
+		"16413": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"16077": {
+		"16414": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "StockLocation"
 		},
-		"16078": {
+		"16415": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__object"
 		},
-		"16079": {
+		"16416": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__object.id"
 		},
-		"16080": {
+		"16417": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__object.name"
 		},
-		"16081": {
+		"16418": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"16082": {
+		"16419": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__object.address"
 		},
-		"16083": {
+		"16420": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__function"
 		},
-		"16084": {
+		"16421": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__function"
 		},
-		"16085": {
+		"16422": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object"
 		},
-		"16086": {
+		"16423": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.id"
 		},
-		"16087": {
+		"16424": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.address_1"
 		},
-		"16088": {
+		"16425": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.address_2"
 		},
-		"16089": {
+		"16426": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.company"
 		},
-		"16090": {
+		"16427": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.city"
 		},
-		"16091": {
+		"16428": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.country_code"
 		},
-		"16092": {
+		"16429": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.phone"
 		},
-		"16093": {
+		"16430": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.province"
 		},
-		"16094": {
+		"16431": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.postal_code"
 		},
-		"16095": {
+		"16432": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"16096": {
+		"16433": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.stock_locations"
 		},
-		"16097": {
+		"16434": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__function"
 		},
-		"16098": {
+		"16435": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__function"
 		},
-		"16099": {
+		"16436": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__function"
 		},
-		"16100": {
+		"16437": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__function"
 		},
-		"16101": {
+		"16438": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object"
 		},
-		"16102": {
+		"16439": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.id"
 		},
-		"16103": {
+		"16440": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.address_1"
 		},
-		"16104": {
+		"16441": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.address_2"
 		},
-		"16105": {
+		"16442": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.company"
 		},
-		"16106": {
+		"16443": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.city"
 		},
-		"16107": {
+		"16444": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.country_code"
 		},
-		"16108": {
+		"16445": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.phone"
 		},
-		"16109": {
+		"16446": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.province"
 		},
-		"16110": {
+		"16447": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.postal_code"
 		},
-		"16111": {
+		"16448": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"16112": {
+		"16449": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.stock_locations"
 		},
-		"16113": {
+		"16450": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__function"
 		},
-		"16114": {
+		"16451": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__function"
 		},
-		"16115": {
+		"16452": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "StockLocationAddress"
 		},
-		"16116": {
+		"16453": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object"
 		},
-		"16117": {
+		"16454": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.id"
 		},
-		"16118": {
+		"16455": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.address_1"
 		},
-		"16119": {
+		"16456": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.address_2"
 		},
-		"16120": {
+		"16457": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.company"
 		},
-		"16121": {
+		"16458": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.city"
 		},
-		"16122": {
+		"16459": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.country_code"
 		},
-		"16123": {
+		"16460": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.phone"
 		},
-		"16124": {
+		"16461": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.province"
 		},
-		"16125": {
+		"16462": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.postal_code"
 		},
-		"16126": {
+		"16463": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"16127": {
+		"16464": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__object.stock_locations"
 		},
-		"16128": {
+		"16465": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__function"
 		},
-		"16129": {
+		"16466": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location-address.ts",
 			"qualifiedName": "__function"
 		},
-		"16130": {
+		"16467": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__object"
 		},
-		"16131": {
+		"16468": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__object.id"
 		},
-		"16132": {
+		"16469": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__object.name"
 		},
-		"16133": {
+		"16470": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"16134": {
+		"16471": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__object.address"
 		},
-		"16135": {
+		"16472": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__function"
 		},
-		"16136": {
+		"16473": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__function"
 		},
-		"16137": {
+		"16474": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__function"
 		},
-		"16138": {
+		"16475": {
 			"sourceFileName": "../../../../packages/modules/stock-location/src/models/stock-location.ts",
 			"qualifiedName": "__function"
 		}
@@ -998,7 +998,7 @@
 			"1": "../../../../packages/modules/stock-location/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 16076
+			"1": 16413
 		}
 	}
 }

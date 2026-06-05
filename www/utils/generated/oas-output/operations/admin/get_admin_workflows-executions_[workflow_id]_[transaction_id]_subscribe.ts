@@ -2,7 +2,9 @@
  * @oas [get] /admin/workflows-executions/{workflow_id}/{transaction_id}/subscribe
  * operationId: GetWorkflowsExecutionsWorkflow_idTransaction_idSubscribe
  * summary: Subscribe to Workflow Execution Events
- * description: Subscribe to workflow execution events for a specific workflow and transaction. This endpoint establishes a Server-Sent Events (SSE) connection, allowing clients to receive real-time updates about the workflow execution. The events include details such as the event type, workflow ID, transaction ID, step information, response, result, and any errors that occur during the execution.
+ * description: Subscribe to workflow execution events for a specific workflow and transaction. This endpoint establishes a Server-Sent Events (SSE) connection, allowing clients to receive real-time
+ *   updates about the workflow execution. The events include details such as the event type, workflow ID, transaction ID, step information, response, result, and any errors that occur during the
+ *   execution.
  * x-authenticated: true
  * parameters:
  *   - name: workflow_id

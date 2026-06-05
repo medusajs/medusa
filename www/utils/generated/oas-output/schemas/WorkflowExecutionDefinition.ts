@@ -1,0 +1,66 @@
+/**
+ * @schema WorkflowExecutionDefinition
+ * type: object
+ * description: The step's definition details.
+ * x-schemaName: WorkflowExecutionDefinition
+ * properties:
+ *   async:
+ *     type: boolean
+ *     title: async
+ *     description: Whether the step is async.
+ *   compensateAsync:
+ *     type: boolean
+ *     title: compensateAsync
+ *     description: Whether the compensation function of the step is async.
+ *   noCompensation:
+ *     type: boolean
+ *     title: noCompensation
+ *     description: Whether the step doesn't have a compensation function.
+ *   continueOnPermanentFailure:
+ *     type: boolean
+ *     title: continueOnPermanentFailure
+ *     description: Whether the workflow should continue executing even if its status is changed to failed.
+ *   skipOnPermanentFailure:
+ *     oneOf:
+ *       - type: string
+ *         title: skipOnPermanentFailure
+ *         description: The ID of the step to skip to in case of a permanent failure.
+ *       - type: boolean
+ *         title: skipOnPermanentFailure
+ *         description: Whether the workflow should skip subsequent steps in case of a permanent failure.
+ *   maxRetries:
+ *     type: number
+ *     title: maxRetries
+ *     description: The maximum number of times to retry the step.
+ *   noWait:
+ *     type: boolean
+ *     title: noWait
+ *     description: Whether the workflow shouldn't wait for the step to finish before moving to the next step.
+ *     default: false
+ *   retryInterval:
+ *     type: number
+ *     title: retryInterval
+ *     description: The interval in seconds between retry attempts when the step fails.
+ *   retryIntervalAwaiting:
+ *     type: number
+ *     title: retryIntervalAwaiting
+ *     description: The interval in seconds to retry a step even if its status is `waiting_response`.
+ *   saveResponse:
+ *     type: boolean
+ *     title: saveResponse
+ *     description: Whether the step's response is stored.
+ *   timeout:
+ *     type: number
+ *     title: timeout
+ *     description: The maximum time in seconds to wait for this step to complete. If the step exceeds this time, the step's state is changed to `timeout`, but the step continues executing.
+ *   autoRetry:
+ *     type: boolean
+ *     title: autoRetry
+ *     description: Whether the step should be automatically retried if it fails.
+ *   maxAwaitingRetries:
+ *     type: number
+ *     title: maxAwaitingRetries
+ *     description: The maximum number of times to retry the step while it's in the `waiting_response` state.
+ * 
+*/
+

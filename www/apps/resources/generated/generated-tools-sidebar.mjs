@@ -239,15 +239,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "loaded": true,
                   "isPathHref": true,
                   "type": "link",
-                  "path": "/references/js-sdk/auth/register",
-                  "title": "register",
-                  "description": "",
-                  "children": []
-                },
-                {
-                  "loaded": true,
-                  "isPathHref": true,
-                  "type": "link",
                   "path": "/references/js-sdk/auth/resetPassword",
                   "title": "resetPassword",
                   "description": "",
@@ -628,6 +619,24 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "type": "link",
                   "path": "/references/js-sdk/admin/promotion",
                   "title": "promotion",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/js-sdk/admin/rbacPolicy",
+                  "title": "rbacPolicy",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/js-sdk/admin/rbacRole",
+                  "title": "rbacRole",
                   "description": "",
                   "children": []
                 },
