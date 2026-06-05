@@ -4,4 +4,4 @@
 "create-medusa-app": patch
 ---
 
-fix: correct "occured" -> "occurred" typo in error messages and docs
+fix(utils, workflows-sdk, create-medusa-app): correct "occured" -> "occurred" typo in error messages and docs
