@@ -3887,7 +3887,10 @@ medusaIntegrationTestRunner({
             // Add shipping methods for both profiles
             await api.post(
               `/store/carts/${cart.id}/shipping-methods`,
-              { option_ids: [shippingOptionA.id, shippingOptionB.id] },
+              [
+                { option_id: shippingOptionA.id },
+                { option_id: shippingOptionB.id },
+              ],
               storeHeaders
             )
 
