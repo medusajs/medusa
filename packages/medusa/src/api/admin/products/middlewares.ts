@@ -344,7 +344,11 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.product_option,
-        operation: PolicyOperation.delete,
+        operation: [
+          PolicyOperation.delete,
+          PolicyOperation.create,
+          PolicyOperation.update,
+        ],
       },
     ],
   },
