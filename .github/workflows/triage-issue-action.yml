@@ -240,9 +240,12 @@ jobs:
           fi
           echo "should_close=$SHOULD_CLOSE" >> "$GITHUB_OUTPUT"
 
-          # Sanitize comment_params into the SUMMARY key (uppercase) so
-          # add_comment.sh substitutes the {{SUMMARY}} placeholder.
-          # Strip backticks, angle brackets, CR, and control chars.
+          # Build comment_params.json with the SUMMARY key (uppercase)
+          # so add_comment.sh substitutes the {{SUMMARY}} placeholder. We
+          # only enforce structural invariants here (strip CR + control
+          # chars, cap length); backtick stripping and HTML-escaping are
+          # done once in add_comment.sh's sanitize() to avoid
+          # double-escaping benign text (e.g. "A & B" -> "A &amp; B").
           jq '
             {
               SUMMARY: (
@@ -250,10 +253,6 @@ jobs:
                 | tostring
                 | gsub("\r"; "")
                 | gsub("[\u0000-\u001f]"; " ")
-                | gsub("`"; "")
-                | gsub("&"; "&amp;")
-                | gsub("<"; "&lt;")
-                | gsub(">"; "&gt;")
                 | .[0:280]
               )
             }

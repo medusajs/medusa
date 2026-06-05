@@ -20,10 +20,14 @@
 # literal placeholder `{{KEY}}` appears. Keys that don't match the regex
 # (e.g. lowercase keys) are ignored — the caller is responsible for
 # producing uppercase keys that match the placeholders. All values are
-# coerced to string, sanitized (CR + null bytes removed, backticks
-# stripped, `&` / `<` / `>` HTML-escaped so the rendered comment can't
-# smuggle Markdown / HTML), then substituted as plain text. Any
-# placeholder left in the template after substitution is removed.
+# coerced to string and lightly sanitized: CR + null bytes are removed,
+# backticks are stripped, and `&` / `<` / `>` are HTML-escaped. This
+# blocks inline code spans and raw HTML, but is NOT a full Markdown
+# sanitizer — other constructs (`**bold**`, `_italic_`, `[link](url)`,
+# headings, lists, etc.) still render. Don't rely on this as the only
+# defense against attacker-supplied prose; the upstream schema validator
+# also caps length and constrains the field set. Any placeholder left in
+# the template after substitution is removed.
 #
 
 set -euo pipefail

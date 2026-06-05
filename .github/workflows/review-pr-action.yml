@@ -262,15 +262,14 @@ jobs:
 
           # Sanitize review_params and inject TRIGGER_REASON server-side.
           jq --arg trigger "$TRIGGER_REASON" '
+            # Strip CR + control chars only. Backtick stripping and
+            # HTML escaping happen once in add_comment.sh's sanitize() so
+            # escaping is not applied twice.
             def clean(s):
               (s // "")
               | tostring
               | gsub("\r"; "")
-              | gsub("[\u0000-\u001f]"; " ")
-              | gsub("`"; "")
-              | gsub("&"; "&amp;")
-              | gsub("<"; "&lt;")
-              | gsub(">"; "&gt;");
+              | gsub("[\u0000-\u001f]"; " ");
             {
               SUMMARY: (clean(.review_params.summary) | .[0:600]),
               BLOCKING_POINTS: (
