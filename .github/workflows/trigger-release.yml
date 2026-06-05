@@ -17,10 +17,13 @@ on:
           - canary
           - options-preview
       branch:
-        type: string
+        type: choice
         default: "develop"
         description: Which branch do you want to release from?
         required: true
+        options:
+          - develop
+          - chore/add-many-to-many-between-product-and-option
     branches:
       - develop
     paths-ignore:
