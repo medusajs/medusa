@@ -105,7 +105,7 @@ export class MikroOrmBaseRepository<const T extends object = object>
   static retrievePrimaryKeys(entity: EntityClass<any> | EntitySchema) {
     return (
       (entity as EntitySchema).meta?.primaryKeys ??
-      (entity as EntityClass<any>).prototype.__meta.primaryKeys ?? ["id"]
+      (entity as EntityClass<any>).prototype.__meta?.primaryKeys ?? ["id"]
     )
   }
 

@@ -434,12 +434,15 @@ export default class IndexModuleService
     if (!this.#isWorkerMode) {
       await this.baseRepository_.transaction(
         async (transactionManager: SqlEntityManager) => {
+          const metadataStorage = transactionManager
+            .getDriver()
+            .getMetadata()
           const truncableTables = [
-            toMikroORMEntity(IndexData).prototype,
-            toMikroORMEntity(IndexRelation).prototype,
-            toMikroORMEntity(IndexMetadata).prototype,
-            toMikroORMEntity(IndexSync).prototype,
-          ].map((table) => table.__helper.__meta.collection)
+            toMikroORMEntity(IndexData),
+            toMikroORMEntity(IndexRelation),
+            toMikroORMEntity(IndexMetadata),
+            toMikroORMEntity(IndexSync),
+          ].map((entity) => metadataStorage.get(entity).collection)
 
           await transactionManager.execute(
             `TRUNCATE TABLE ${truncableTables.join(", ")} CASCADE`
