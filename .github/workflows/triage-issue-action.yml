@@ -14,10 +14,13 @@ on:
       CLAUDE_CODE_API_TOKEN:
         required: true
 
-# Cap parallel runs per issue author. The Claude job is the expensive part and
-# we don't want a single attacker spamming issues to fan out unboundedly.
+# Cap parallel runs per issue. This reusable workflow is invoked via
+# `workflow_call`, so `github.event.issue.user.login` is typically unset
+# here; the group keys on `inputs.issue_number`, which serialises repeated
+# invocations for the same issue without affecting the parent dispatcher's
+# fan-out behaviour.
 concurrency:
-  group: triage-issue-${{ github.event.issue.user.login || inputs.issue_number }}
+  group: triage-issue-${{ inputs.issue_number }}
   cancel-in-progress: false
 
 jobs:
@@ -29,6 +32,10 @@ jobs:
     permissions:
       contents: read
       issues: read
+      # get_linked_prs.sh runs `gh api graphql` against PullRequest fields,
+      # which the default token can't read without this scope. Still
+      # read-only.
+      pull-requests: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -108,6 +115,7 @@ jobs:
             Bash(bash scripts/get_labels.sh:*),
             Bash(bash scripts/get_linked_prs.sh:*),
             Bash(bash scripts/search_issues.sh:*),
+            Read,
             Write"
 
       - name: Verify decision file
@@ -243,6 +251,7 @@ jobs:
                 | gsub("\r"; "")
                 | gsub("[\u0000-\u001f]"; " ")
                 | gsub("`"; "")
+                | gsub("&"; "&amp;")
                 | gsub("<"; "&lt;")
                 | gsub(">"; "&gt;")
                 | .[0:280]

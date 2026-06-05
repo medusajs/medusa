@@ -18,10 +18,13 @@ on:
       CLAUDE_CODE_API_TOKEN:
         required: true
 
-# Cap parallel reviews per fork repo so a single forked source cannot fan
-# the model out unboundedly.
+# Cap parallel reviews per PR. This reusable workflow is invoked via
+# `workflow_call`, so `github.event.pull_request.*` is typically unset
+# here; the group keys on `inputs.pr_number`, which serialises repeated
+# invocations for the same PR without affecting the parent dispatcher's
+# fan-out behaviour.
 concurrency:
-  group: review-pr-${{ github.event.pull_request.head.repo.full_name || github.event.pull_request.user.login || inputs.pr_number }}
+  group: review-pr-${{ inputs.pr_number }}
   cancel-in-progress: false
 
 jobs:
@@ -265,6 +268,7 @@ jobs:
               | gsub("\r"; "")
               | gsub("[\u0000-\u001f]"; " ")
               | gsub("`"; "")
+              | gsub("&"; "&amp;")
               | gsub("<"; "&lt;")
               | gsub(">"; "&gt;");
             {

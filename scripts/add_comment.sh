@@ -20,9 +20,10 @@
 # literal placeholder `{{KEY}}` appears. Keys that don't match the regex
 # (e.g. lowercase keys) are ignored — the caller is responsible for
 # producing uppercase keys that match the placeholders. All values are
-# coerced to string and stripped of backticks, HTML angle brackets, CR,
-# and null bytes. Any placeholder left in the template after substitution
-# is removed.
+# coerced to string, sanitized (CR + null bytes removed, backticks
+# stripped, `&` / `<` / `>` HTML-escaped so the rendered comment can't
+# smuggle Markdown / HTML), then substituted as plain text. Any
+# placeholder left in the template after substitution is removed.
 #
 
 set -euo pipefail
@@ -115,6 +116,9 @@ def sanitize(value):
     s = str(value)
     s = s.replace("\r", "").replace("\x00", "")
     s = s.replace(BACKTICK, "")
+    # Escape `&` first so that pre-existing entities like `&lt;` in the
+    # input remain literal text (`&amp;lt;`) instead of rendering as `<`.
+    s = s.replace("&", "&amp;")
     s = s.replace("<", "&lt;").replace(">", "&gt;")
     return s
 
