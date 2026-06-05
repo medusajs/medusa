@@ -1,5 +1,5 @@
 export const generatedEditDates = {
-  "app/commerce-modules/auth/auth-providers/emailpass/page.mdx": "2026-06-02T13:37:00.779Z",
+  "app/commerce-modules/auth/auth-providers/emailpass/page.mdx": "2026-06-05T10:32:43.628Z",
   "app/commerce-modules/auth/auth-providers/page.mdx": "2025-05-20T07:51:40.707Z",
   "app/commerce-modules/auth/authentication-route/page.mdx": "2025-11-24T07:39:10.358Z",
   "app/commerce-modules/auth/examples/page.mdx": "2024-10-15T15:02:13.794Z",
@@ -7574,7 +7574,7 @@ export const generatedEditDates = {
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateRbacPolicy/page.mdx": "2026-06-01T09:05:14.500Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateRbacRole/page.mdx": "2026-06-01T09:05:14.493Z",
   "app/commerce-modules/auth/mfa/page.mdx": "2026-06-03T19:24:39.126Z",
-  "app/commerce-modules/auth/email-verification/page.mdx": "2026-06-02T11:04:44.946Z",
+  "app/commerce-modules/auth/email-verification/page.mdx": "2026-06-05T10:33:10.552Z",
   "app/storefront-development/customers/verify-account/page.mdx": "2026-06-02T11:24:01.444Z",
   "references/events/Auth/variables/events.Auth.AuthEvents/page.mdx": "2026-06-03T06:24:01.642Z"
 }

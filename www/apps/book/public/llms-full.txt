@@ -30519,9 +30519,10 @@ const hashConfig = \{
 &#x20; p: 1
 }
 \`\`\`|
-|\`require\_verification\`|Whether to require email verification for new registrations
-and authentications. When enabled, users must verify their
-email address before they can authenticate successfully.|No|\`false\`|
+|\`require\_verification\`|Array of actor types that require email verification before they can
+authenticate. When omitted or empty, no actor type requires verification.
+Developers must explicitly list the actor types that should require
+verification (for example |No|\`undefined\`|
 
 ***
 
@@ -31511,7 +31512,7 @@ In this guide, you'll learn how to enable email verification requirement for cus
 
 ### Prerequisites
 
-- [Medusa v2.15.5 or later](undefined/docs/learn/update)
+- [Medusa v2.15.6 or later](undefined/docs/learn/update)
 - [Notification Module Provider for the email channel, such as SendGrid or Resend](undefined/infrastructure-modules/notification#what-is-a-notification-module-provider)
 
 ## How Email Verification Works
@@ -31562,7 +31563,7 @@ module.exports = defineConfig({
             resolve: "@medusajs/medusa/auth-emailpass",
             id: "emailpass",
             options: {
-              require_verification: true,
+              require_verification: ["customer"],
             },
           },
         ],
@@ -31572,7 +31573,9 @@ module.exports = defineConfig({
 })
 ```
 
-With this configuration, customers will be required to verify their email address after registering. This includes previously registered customers as well.
+With this configuration, customers will be required to verify their email address after registering. You can specify multiple actor types in the array if needed. This includes previously registered customers as well.
+
+Before [Medusa v2.15.6](https://github.com/medusajs/medusa/releases/tag/v2.15.6), `require_verification` was a boolean option. To migrate from the previous version, change `require_verification: true` to `require_verification: ["customer"]`.
 
 ***
 
