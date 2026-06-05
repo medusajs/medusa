@@ -1157,7 +1157,7 @@ export class Product {
    * removing existing ones, or updating option values. It sends a request to the
    * [Batch Product Product Options](https://docs.medusajs.com/api/admin#products_postproductsidoptionsbatch)
    * API route.
-   * 
+   *
    * @since 2.16.0
    *
    * @param productId - The product's ID.
@@ -1169,14 +1169,13 @@ export class Product {
    * @example
    * sdk.admin.product.linkOptions("prod_123", {
    *   add: [
- *       "opt_123",
- *       {
- *         product_option_id: "opt_789",
- *         product_id: "prod_123",
- *         product_option_value_ids: ["optval_1", "optval_2"]
- *       }
- *     ],
- *     remove: ["opt_456"]
+   *       "opt_123",
+   *       {
+   *         id: "opt_123",
+   *         value_ids: ["optval_1", "optval_2"]
+   *       }
+   *     ],
+   *     remove: ["opt_456"]
    * })
    * .then(({ product }) => {
    *   console.log(product)
