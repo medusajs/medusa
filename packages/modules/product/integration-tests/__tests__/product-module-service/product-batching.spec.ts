@@ -16,7 +16,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("updateProducts() - batching with selector", () => {
         it("should update all products when selector matches more than BATCH_SIZE records", async () => {
-          const COUNT = BATCH_SIZE + 50 // 550 — spans two batches
+          const COUNT = BATCH_SIZE + 50 // 2050 — spans two batches
 
           // Create COUNT draft products
           const created = await service.createProducts(
@@ -58,7 +58,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should update all products spanning three or more batches", async () => {
-          const COUNT = BATCH_SIZE * 2 + 10 // 1010 — three batches
+          const COUNT = BATCH_SIZE * 2 + 10 // 4010 — three batches
 
           const created = await service.createProducts(
             Array.from({ length: COUNT }, (_, i) => ({
