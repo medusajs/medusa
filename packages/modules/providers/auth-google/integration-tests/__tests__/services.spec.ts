@@ -135,8 +135,20 @@ describe("Google auth provider", () => {
     })
   })
 
-  it("returns a custom redirect_uri on authenticate", async () => {
-    const res = await googleService.authenticate(
+  it("returns a custom redirect_uri on authenticate when allowlisted", async () => {
+    const serviceWithAllowlist = new GoogleAuthService(
+      {
+        logger: console as any,
+      },
+      {
+        clientId: "test",
+        clientSecret: "test",
+        callbackUrl: `${baseUrl}/auth/google/callback`,
+        callbackUrlAllowlist: ["https://someotherurl.com"],
+      }
+    )
+
+    const res = await serviceWithAllowlist.authenticate(
       {
         body: { callback_url: "https://someotherurl.com" },
       },
@@ -148,6 +160,17 @@ describe("Google auth provider", () => {
         Object.keys(state)[0]
       }`,
     })
+  })
+
+  it("rejects a callback_url that is not in the allowlist", async () => {
+    await expect(
+      googleService.authenticate(
+        {
+          body: { callback_url: "https://attacker.com/steal" },
+        },
+        defaultSpies
+      )
+    ).rejects.toThrow(/callback_url is not allowed/)
   })
 
   it("validate callback should return an error on empty code", async () => {

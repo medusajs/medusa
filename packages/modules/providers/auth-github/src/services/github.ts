@@ -70,8 +70,9 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
     }
 
     const stateKey = crypto.randomBytes(32).toString("hex")
+    const callbackUrl = this.resolveCallbackUrl(body?.callback_url)
     const state = {
-      callback_url: body?.callback_url ?? this.config_.callbackUrl,
+      callback_url: callbackUrl,
     }
 
     await authIdentityService.setState(stateKey, state)
@@ -206,6 +207,26 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
       success: true,
       authIdentity,
     }
+  }
+
+  private resolveCallbackUrl(requested?: string): string {
+    if (!requested) {
+      return this.config_.callbackUrl
+    }
+
+    const allowed = new Set<string>([
+      this.config_.callbackUrl,
+      ...(this.config_.callbackUrlAllowlist ?? []),
+    ])
+
+    if (!allowed.has(requested)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "The provided callback_url is not allowed. Add it to the Github auth provider's `callbackUrlAllowlist` option to permit it."
+      )
+    }
+
+    return requested
   }
 
   private getRedirect(clientId: string, callbackUrl: string, stateKey: string) {

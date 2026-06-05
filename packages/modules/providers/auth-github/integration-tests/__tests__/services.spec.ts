@@ -136,8 +136,20 @@ describe("Github auth provider", () => {
     })
   })
 
-  it("returns a custom redirect_uri on authenticate", async () => {
-    const res = await githubService.authenticate(
+  it("returns a custom redirect_uri on authenticate when allowlisted", async () => {
+    const serviceWithAllowlist = new GithubAuthService(
+      {
+        logger: console as any,
+      },
+      {
+        clientId: "test",
+        clientSecret: "test",
+        callbackUrl: `${baseUrl}/auth/github/callback`,
+        callbackUrlAllowlist: ["https://someotherurl.com"],
+      }
+    )
+
+    const res = await serviceWithAllowlist.authenticate(
       {
         body: { callback_url: "https://someotherurl.com" },
       },
@@ -149,6 +161,17 @@ describe("Github auth provider", () => {
         Object.keys(state)[0]
       }`,
     })
+  })
+
+  it("rejects a callback_url that is not in the allowlist", async () => {
+    await expect(
+      githubService.authenticate(
+        {
+          body: { callback_url: "https://attacker.com/steal" },
+        },
+        defaultSpies
+      )
+    ).rejects.toThrow(/callback_url is not allowed/)
   })
 
   it("validate callback should return an error on empty code", async () => {
