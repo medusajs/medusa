@@ -198,6 +198,22 @@ jobs:
 
           jq empty review-decision.json
 
+          # Enforce expected JSON types (schema compliance).
+          for f in labels_to_add labels_to_remove; do
+            if ! jq -e --arg f "$f" '(.[$f] // []) | type == "array"' review-decision.json >/dev/null; then
+              echo "::error::review-decision.$f must be an array" >&2
+              exit 1
+            fi
+          done
+          if ! jq -e '(.review_params // {}) | type == "object"' review-decision.json >/dev/null; then
+            echo "::error::review-decision.review_params must be an object" >&2
+            exit 1
+          fi
+          if ! jq -e '(.review_params.blocking_points // []) | type == "array"' review-decision.json >/dev/null; then
+            echo "::error::review-decision.review_params.blocking_points must be an array" >&2
+            exit 1
+          fi
+
           # Validate labels against the allowlist. Any value that is not a
           # string in the allowlist is a hard error so prompt-injection or
           # bad model output surfaces in the workflow logs instead of
