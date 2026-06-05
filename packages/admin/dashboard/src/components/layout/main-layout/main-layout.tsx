@@ -33,10 +33,12 @@ import { useSearch } from "../../../providers/search-provider"
 import { UserMenu } from "../user-menu"
 import { useDocumentDirection } from "../../../hooks/use-document-direction"
 import {
+  useCampaignPermissions,
   useCustomerGroupPermissions,
   useCustomerPermissions,
   useInventoryItemPermissions,
   useOrderPermissions,
+  usePromotionPermissions,
   useReservationItemPermissions,
 } from "../../../hooks/use-resource-permissions"
 
@@ -196,6 +198,8 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
   const { canRead: canReadOrders } = useOrderPermissions()
   const { canRead: canReadInventory } = useInventoryItemPermissions()
   const { canRead: canReadReservations } = useReservationItemPermissions()
+  const { canRead: canReadPromotions } = usePromotionPermissions()
+  const { canRead: canReadCampaigns } = useCampaignPermissions()
 
   const canReadProducts = hasPermission("product:read")
   const canReadProductCollections = hasPermission("product_collection:read")
@@ -281,17 +285,25 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
           },
         ]
       : []),
-    {
-      icon: <ReceiptPercent />,
-      label: t("promotions.domain"),
-      to: "/promotions",
-      items: [
-        {
-          label: t("campaigns.domain"),
-          to: "/campaigns",
-        },
-      ],
-    },
+    ...(canReadPromotions
+      ? [
+          {
+            icon: <ReceiptPercent />,
+            label: t("promotions.domain"),
+            to: "/promotions",
+            items: [
+              ...(canReadCampaigns
+                ? [
+                    {
+                      label: t("campaigns.domain"),
+                      to: "/campaigns",
+                    },
+                  ]
+                : []),
+            ],
+          },
+        ]
+      : []),
     {
       icon: <CurrencyDollar />,
       label: t("priceLists.domain"),

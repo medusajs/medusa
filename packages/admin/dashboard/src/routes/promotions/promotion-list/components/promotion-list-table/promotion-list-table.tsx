@@ -7,7 +7,10 @@ import { useTranslation } from "react-i18next"
 import { Link, Outlet, useLoaderData, useNavigate } from "react-router-dom"
 
 import { keepPreviousData } from "@tanstack/react-query"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { _DataTable } from "../../../../../components/table/data-table"
 import {
   useDeletePromotion,
@@ -17,12 +20,14 @@ import { usePromotionTableColumns } from "../../../../../hooks/table/columns/use
 import { usePromotionTableFilters } from "../../../../../hooks/table/filters/use-promotion-table-filters"
 import { usePromotionTableQuery } from "../../../../../hooks/table/query/use-promotion-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { usePromotionPermissions } from "../../../../../hooks/use-resource-permissions"
 import { promotionsLoader } from "../../loader"
 
 const PAGE_SIZE = 20
 
 export const PromotionListTable = () => {
   const { t } = useTranslation()
+  const { canCreate } = usePromotionPermissions()
   const initialData = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof promotionsLoader>>
   >
@@ -57,9 +62,11 @@ export const PromotionListTable = () => {
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h1">{t("promotions.domain")}</Heading>
 
-        <Button size="small" variant="secondary" asChild>
-          <Link to="create">{t("actions.create")}</Link>
-        </Button>
+        {canCreate && (
+          <Button size="small" variant="secondary" asChild>
+            <Link to="create">{t("actions.create")}</Link>
+          </Button>
+        )}
       </div>
 
       <_DataTable
@@ -87,6 +94,7 @@ const PromotionActions = ({ promotion }: { promotion: AdminPromotion }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
+  const { canUpdate, canDelete } = usePromotionPermissions()
   const { mutateAsync } = useDeletePromotion(promotion.id)
 
   const handleDelete = async () => {
@@ -116,26 +124,29 @@ const PromotionActions = ({ promotion }: { promotion: AdminPromotion }) => {
     }
   }
 
-  return (
-    <ActionMenu
-      groups={[
-        {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `/promotions/${promotion.id}/edit`,
-            },
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ],
-        },
-      ]}
-    />
-  )
+  const actions: ActionGroup["actions"] = []
+
+  if (canUpdate) {
+    actions.push({
+      icon: <PencilSquare />,
+      label: t("actions.edit"),
+      to: `/promotions/${promotion.id}/edit`,
+    })
+  }
+
+  if (canDelete) {
+    actions.push({
+      icon: <Trash />,
+      label: t("actions.delete"),
+      onClick: handleDelete,
+    })
+  }
+
+  if (!actions.length) {
+    return null
+  }
+
+  return <ActionMenu groups={[{ actions }]} />
 }
 
 const columnHelper = createColumnHelper<AdminPromotion>()

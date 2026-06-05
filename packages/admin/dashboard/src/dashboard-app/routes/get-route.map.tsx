@@ -570,8 +570,14 @@ export function getRouteMap({
             {
               path: "/promotions",
               errorElement: <ErrorBoundary />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("promotions.domain"),
+                permissions: "promotion:read",
               },
               children: [
                 {
@@ -582,6 +588,7 @@ export function getRouteMap({
                   path: "create",
                   lazy: () =>
                     import("../../routes/promotions/promotion-create"),
+                  handle: { permissions: "promotion:create" },
                 },
                 {
                   path: ":id",
@@ -607,6 +614,7 @@ export function getRouteMap({
                         import(
                           "../../routes/promotions/promotion-edit-details"
                         ),
+                      handle: { permissions: "promotion:update" },
                     },
                     {
                       path: "add-to-campaign",
@@ -614,11 +622,19 @@ export function getRouteMap({
                         import(
                           "../../routes/promotions/promotion-add-campaign"
                         ),
+                      handle: {
+                        permissions: [
+                          "promotion:update",
+                          "campaign:read",
+                          "campaign:update",
+                        ],
+                      },
                     },
                     {
                       path: ":ruleType/edit",
                       lazy: () =>
                         import("../../routes/promotions/common/edit-rules"),
+                      handle: { permissions: "promotion:update" },
                     },
                   ],
                 },

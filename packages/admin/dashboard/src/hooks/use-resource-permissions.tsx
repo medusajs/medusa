@@ -143,3 +143,14 @@ export const useInventoryLevelPermissions = () =>
  * Hook for checking user management permissions.
  */
 export const useUserPermissions = () => useResourcePermissions("user")
+
+/**
+ * Hook for checking promotion-specific permissions.
+ */
+export const usePromotionPermissions = () =>
+  useResourcePermissions("promotion")
+
+/**
+ * Hook for checking campaign-specific permissions.
+ */
+export const useCampaignPermissions = () => useResourcePermissions("campaign")
