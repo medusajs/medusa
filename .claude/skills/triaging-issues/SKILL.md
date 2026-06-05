@@ -101,8 +101,7 @@ Rules:
 ### Comment template mapping
 
 The category flow in the reference files describes the wording of comments
-to post. Map the **intent** of that comment to one of the four templates:
-
+to post. Map the **intent** of that comment to one of the templates below:
 | Reference flow says to post… | Use template |
 |------------------------------|--------------|
 | "Acknowledge this bug, we'll investigate" | `ack-bug` |
