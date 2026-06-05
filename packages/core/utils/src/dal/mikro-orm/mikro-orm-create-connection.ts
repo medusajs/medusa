@@ -74,6 +74,7 @@ export async function mikroOrmCreateConnection(
   database: ModuleServiceInitializeOptions["database"] & {
     connection?: any
     snapshotName?: string
+    snapshot?: boolean
     filters?: Record<string, Filter>
   },
   entities: any[],
@@ -131,6 +132,7 @@ export async function mikroOrmCreateConnection(
       disableForeignKeys: false,
       path: pathToMigrations,
       snapshotName: database.snapshotName,
+      snapshot: database.snapshot,
       generator: CustomTsMigrationGenerator,
       silent: !(
         database.debug ??

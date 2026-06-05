@@ -1,0 +1,19 @@
+---
+displayed_sidebar: authReference
+---
+
+import { TypeList } from "docs-ui"
+
+# AuthMfaStartDTO
+
+ **AuthMfaStartDTO**: `Object`
+
+Data required to start multi-factor authentication (MFA) setup for an authentication identity.
+
+:::note
+
+This is available starting from [Medusa v2.15.3](https://github.com/medusajs/medusa/releases/tag/v2.15.3).
+
+:::
+
+<TypeList types={[{"name":"auth_identity_id","type":"`string`","description":"The ID of the authentication identity to set up multi-factor authentication (MFA) for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"[AuthMfaProvider](../auth.AuthMfaProvider/page.mdx)","description":"The multi-factor authentication (MFA) provider to use.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"label","type":"`string` \\| `null`","description":"Optional label for the multi-factor authentication (MFA) configuration.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"issuer","type":"`string`","description":"The issuer name for time-based one-time password (TOTP) apps.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"Additional metadata for the multi-factor authentication (MFA) setup.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="AuthMfaStartDTO"/>

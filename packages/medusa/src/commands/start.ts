@@ -17,6 +17,7 @@ import {
   GracefulShutdownServer,
   isFileSkipped,
   isPresent,
+  isProduction,
   promiseAll,
 } from "@medusajs/framework/utils"
 
@@ -111,11 +112,7 @@ function displayAdminUrl({
   port: string | number
   container: MedusaContainer
 }) {
-  const isProduction = ["production", "prod"].includes(
-    process.env.NODE_ENV || ""
-  )
-
-  if (isProduction) {
+  if (isProduction()) {
     return
   }
 

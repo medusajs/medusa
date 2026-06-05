@@ -178,6 +178,14 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Send Email Verification",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/auth/email-verification",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Send Notification",
               "path": "https://docs.medusajs.com/resources/infrastructure-modules/notification/send-notification",
               "children": []

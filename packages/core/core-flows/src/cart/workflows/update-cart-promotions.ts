@@ -88,6 +88,16 @@ export const updateCartPromotionsWorkflow = createWorkflow(
     idempotent: false,
   },
   (input: WorkflowData<UpdateCartPromotionsWorkflowInput>) => {
+    const cartId = transform({ input }, ({ input }) => {
+      return input.cart_id ?? input.cart?.id
+    })
+
+    acquireLockStep({
+      key: cartId,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const fetchCart = when("should-fetch-cart", { input }, ({ input }) => {
       return !input.cart
     }).then(() => {
@@ -106,12 +116,6 @@ export const updateCartPromotionsWorkflow = createWorkflow(
     })
 
     validateCartStep({ cart })
-
-    acquireLockStep({
-      key: cart.id,
-      timeout: 2,
-      ttl: 10,
-    })
 
     const validate = createHook("validate", {
       input,
@@ -157,6 +161,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       shippingMethodAdjustmentsToCreate,
       shippingMethodAdjustmentIdsToRemove,
       computedPromotionCodes,
+      skippedPromoCodes,
     } = prepareAdjustmentsFromPromotionActionsStep({ actions })
 
     parallelize(
@@ -185,11 +190,12 @@ export const updateCartPromotionsWorkflow = createWorkflow(
     })
 
     releaseLockStep({
-      key: cart.id,
+      key: cartId,
     })
 
-    return new WorkflowResponse(void 0, {
-      hooks: [validate, setPromotionContext] as const,
-    })
+    return new WorkflowResponse(
+      { skipped_promo_codes: skippedPromoCodes },
+      { hooks: [validate, setPromotionContext] as const }
+    )
   }
 )

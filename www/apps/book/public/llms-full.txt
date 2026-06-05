@@ -13872,6 +13872,27 @@ export default Post
 
 In this example, the `title` property is searchable.
 
+### Searchable Relationship Properties
+
+You can also make relationship properties searchable by adding the `searchable` method to relationship definitions like `hasMany`, `hasOne`, `belongsTo`, or `manyToMany`.
+
+For example:
+
+```ts highlights={relationshipSearchableHighlights}
+import { model } from "@medusajs/framework/utils"
+
+const Product = model.define("product", {
+  variants: model.hasMany(() => ProductVariant, {
+    mappedBy: "product",
+  }).searchable(),
+  // ...
+})
+
+export default Product
+```
+
+When a relationship property is marked as searchable, the related records' searchable text properties can be queried when using the `q` filter.
+
 ### Search Example
 
 If you pass a `q` filter to the `listPosts` method:
@@ -14222,6 +14243,37 @@ const Product = model.define("product", {
 The `cascades` method accepts an object. Its key is the operation’s name, such as `delete`. The value is an array of relationship property names that the operation is cascaded to.
 
 In the example above, when a store is deleted, its associated products are also deleted.
+
+***
+
+## Searchable Relationships
+
+You can make relationship properties searchable by adding the `searchable` method to any relationship definition (`hasMany`, `hasOne`, `belongsTo`, or `manyToMany`).
+
+When a relationship property is marked as searchable, the related records' searchable text properties can be queried when using the `q` filter in service methods like `list{ModelName}s`.
+
+For example:
+
+```ts highlights={searchableRelationshipHighlights}
+import { model } from "@medusajs/framework/utils"
+
+const Store = model.define("store", {
+  id: model.id().primaryKey(),
+  products: model.hasMany(() => Product, {
+    mappedBy: "store",
+  }).searchable(),
+})
+
+const Product = model.define("product", {
+  id: model.id().primaryKey(),
+  title: model.text().searchable(),
+  store: model.belongsTo(() => Store, {
+    mappedBy: "products",
+  }),
+})
+```
+
+In this example, when you search for stores using the `q` filter, the search will include matching product titles from the related products.
 
 
 # Migrations
@@ -26789,267 +26841,6 @@ The AI agent will set up Medusa locally, deploy it to [Cloud](https://docs.medus
 
 ## Get Started with Cloud
 
-[Cloud](https://docs.medusajs.com/cloud/index.html.md) is Medusa's PaaS platform that allows you to deploy and manage production-ready Medusa applications with ease. Benefit from features like zero-configuration deployments, automatic scaling, storefront hosting, and GitHub integration to streamline your development workflow.
-
-[Sign up](http://cloud.medusajs.com/signup) with Cloud and create your first Medusa project in minutes.
-
-***
-
-## Create Medusa Application Locally
-
-A Medusa application is made up of a Node.js server and a Vite admin dashboard. You can optionally install the [Next.js Starter Storefront](https://docs.medusajs.com/resources/nextjs-starter/index.html.md) either while installing the Medusa application or at a later point.
-
-While this is the recommended way to create a Medusa application, you can alternatively [install a Medusa application with Docker](https://docs.medusajs.com/learn/installation/docker/index.html.md).
-
-### Prerequisites
-
-- [Node.js v20+ (LTS versions only)](https://nodejs.org/en/download)
-- [Git CLI tool](https://git-scm.com/downloads)
-- [PostgreSQL installed and running](https://www.postgresql.org/download/)
-
-If you choose to install the Next.js Starter Storefront, it currently doesn't support Node v25+. Make sure to downgrade to Node v24 LTS or lower before installing the Medusa application with the storefront.
-
-To create a Medusa application, use the `create-medusa-app` command:
-
-Considering using `yarn` or `pnpm` as your package manager for quicker installations and better performance. `npm` installations are generally slower.
-
-### yarn
-
-```bash
-yarn dlx create-medusa-app@latest my-medusa-store
-# npx create-medusa-app@latest my-medusa-store --use-yarn
-```
-
-### pnpm
-
-```bash
-pnpm dlx create-medusa-app@latest my-medusa-store
-# npx create-medusa-app@latest my-medusa-store --use-pnpm
-```
-
-### npm
-
-```bash
-npx create-medusa-app@latest my-medusa-store
-```
-
-Where `my-medusa-store` is the name of the project's directory and PostgreSQL database created for the project. When you run the command, you'll be asked whether you want to install the Next.js Starter Storefront.
-
-To customize the default installation behavior, such as specify a database URL, refer to the [create-medusa-app reference](https://docs.medusajs.com/resources/create-medusa-app/index.html.md).
-
-After answering the prompts, the command installs the Medusa application in a monorepository with your project name, and sets up a PostgreSQL database that the application connects to. The backend (with the admin dashboard) is installed in the `apps/backend` directory of the monorepository.
-
-If you chose to install the storefront with the Medusa application, the storefront is installed in the monorepository under the `apps/storefront` directory.
-
-![Directory structure overview after Medusa installation showing the main project folder containing the Medusa backend application and admin dashboard, alongside the separate storefront directory for the customer-facing Next.js application](https://res.cloudinary.com/dza7lstvk/image/upload/v1776755371/Medusa%20Book/installation-dirs_h2sqhy.jpg)
-
-### Successful Installation Result
-
-Once the installation finishes successfully, the Medusa application will run at `http://localhost:9000`.
-
-The Medusa Admin dashboard also runs at `http://localhost:9000/app`. The installation process opens the Medusa Admin dashboard in your default browser to create a user. You can later log in with that user.
-
-If you also installed the Next.js Starter Storefront, it'll be running at `http://localhost:8000`.
-
-You can stop the servers for the Medusa application and Next.js Starter Storefront by exiting the installation command. To run the server for the Medusa application again, refer to [this section](#run-medusa-application-in-development).
-
-![Post-installation running services overview: Medusa backend server and admin dashboard running on localhost:9000, Next.js Starter Storefront running on localhost:8000, with PostgreSQL database and other essential services active and ready for development](https://res.cloudinary.com/dza7lstvk/image/upload/v1745856706/Medusa%20Resources/success-overview_bj4pbt.jpg)
-
-### Troubleshooting Installation Errors
-
-If you ran into an error during your installation, refer to the following troubleshooting guides for help:
-
-1. [create-medusa-app troubleshooting guides](https://docs.medusajs.com/resources/troubleshooting/create-medusa-app-errors/index.html.md).
-2. [CORS errors](https://docs.medusajs.com/resources/troubleshooting/cors-errors/index.html.md).
-3. [Errors with pnpm](https://docs.medusajs.com/resources/troubleshooting/pnpm/index.html.md).
-4. [All troubleshooting guides](https://docs.medusajs.com/resources/troubleshooting/index.html.md).
-
-If you can't find your error reported anywhere, please open a [GitHub issue](https://github.com/medusajs/medusa/issues/new/choose).
-
-***
-
-## Run Medusa Application in Development
-
-To run the Medusa application in development, change to the `backend` application's directory and run the following command:
-
-```bash npm2yarn
-npm run dev
-```
-
-This runs your Medusa server at `http://localhost:9000`, and the Medusa Admin dashboard `http://localhost:9000/app`.
-
-![Diagram showcasing the server and application running when you start the Medusa application](https://res.cloudinary.com/dza7lstvk/image/upload/v1776755500/Medusa%20Book/start-overview_hqjexd.jpg)
-
-For details on starting and configuring the Next.js Starter Storefront, refer to [the Next.js Starter Storefront documentation](https://docs.medusajs.com/resources/nextjs-starter/index.html.md).
-
-The application will restart if you make any changes to code under the `src` directory, except for admin customizations which are hot reloaded, providing you with a seamless developer experience without having to refresh your browser to see the changes.
-
-***
-
-## Start Building with Claude Code
-
-Medusa provides [Claude Code plugins](https://github.com/medusajs/medusa-agent-skills) to assist you in learning and building with Medusa. You can also use the skills in these plugins with other AI agents by copying the skills.
-
-This section covers key plugins as you get started with Medusa development using Claude Code. Refer to the [Build with AI Assistants and LLMs](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/index.html.md) chapter for more details on using Medusa with AI tools.
-
-### Interactive Learning
-
-If you're a Medusa beginner and use Claude Code, install the `learn-medusa` plugin:
-
-### Claude Code
-
-```bash
-claude # start claude code
-/plugin marketplace add medusajs/medusa-agent-skills
-/plugin install learn-medusa@medusa
-```
-
-### Other AI Agents
-
-```bash
-npx skills add medusajs/medusa-agent-skills
-# choose the following skill:
-# - learning-medusa
-```
-
-Then, start the learning experience with this prompt:
-
-```bash title="Claude Code Prompt"
-I want to learn Medusa.
-```
-
-You can also run the skill using the `/learn-medusa:learning-medusa` command in Claude Code.
-
-This starts the interactive learning experience where you'll learn Medusa concepts step-by-step by building a brands feature, similar to the [Brands tutorial](https://docs.medusajs.com/learn/customization/custom-features/index.html.md). You will:
-
-1. Create a Brand Module with API routes to manage brands.
-2. Link brands to products to associate products with brands.
-3. Customize the Medusa Admin dashboard to allow admin users to manage brands.
-
-By the end, you'll have a solid understanding of Medusa's architecture and how to build custom features.
-
-### Medusa Development Assistance
-
-If you want assistance in your Medusa development, install the `medusa-dev` plugin:
-
-### Claude Code
-
-```bash
-claude # start claude code
-/plugin marketplace add medusajs/medusa-agent-skills
-/plugin install medusa-dev@medusa
-```
-
-### Other AI Agents
-
-```bash
-npx skills add medusajs/medusa-agent-skills
-# choose the following skills:
-# - building-with-medusa
-# - building-admin-dashboard-customizations
-# - building-storefronts
-# - db-generate
-# - db-migrate
-# - new-user
-```
-
-Then, you can ask Claude Code to build Medusa features, fix bugs, and more. Claude Code will use the skills in the plugin to provide you with accurate and relevant Medusa code.
-
-Examples of prompts you can use:
-
-```bash title="Claude Code Prompts"
-Implement a product reviews feature. Authenticated customers can add reviews. Admin users can view and approve or reject reviews from the dashboard
-Create a wishlist feature where customers can save products. I need API routes for adding/removing items and retrieving the wishlist.
-Add a widget to the product detail page in the admin that allows managing related products. Admin users should be able to select which products are related using a searchable table.
-Help me integrate the custom reviews API into my Next.js storefront. Show product reviews on the product detail page with pagination.
-```
-
-***
-
-## Create Medusa Admin User
-
-Aside from creating an admin user in the admin dashboard, you can create a user with Medusa's CLI tool.
-
-Run the following command in your Medusa application's directory (`apps/backend`) to create a new admin user:
-
-```bash npx2yarn
-npx medusa user -e admin@medusajs.com -p supersecret
-```
-
-Replace `admin@medusajs.com` and `supersecret` with the user's email and password respectively.
-
-You can then use the user's credentials to log into the Medusa Admin application.
-
-***
-
-## Project Files
-
-Your Medusa application's project (`apps/backend`) will have the following files and directories:
-
-![A diagram of the directories overview](https://res.cloudinary.com/dza7lstvk/image/upload/v1732803813/Medusa%20Book/medusa-dir-overview_v7ks0j.jpg)
-
-### src
-
-This directory is the central place for your custom development. It includes the following sub-directories:
-
-- `admin`: Holds your admin dashboard's custom [widgets](https://docs.medusajs.com/learn/fundamentals/admin/widgets/index.html.md) and [UI routes](https://docs.medusajs.com/learn/fundamentals/admin/ui-routes/index.html.md).
-- `api`: Holds your custom [API routes](https://docs.medusajs.com/learn/fundamentals/api-routes/index.html.md) that are added as endpoints in your Medusa application.
-- `jobs`: Holds your [scheduled jobs](https://docs.medusajs.com/learn/fundamentals/scheduled-jobs/index.html.md) that run at a specified interval during your Medusa application's runtime.
-- `links`: Holds your [module links](https://docs.medusajs.com/learn/fundamentals/module-links/index.html.md) that build associations between data models of different modules.
-- `modules`: Holds your custom [modules](https://docs.medusajs.com/learn/fundamentals/modules/index.html.md) that implement custom business logic.
-- `scripts`: Holds your custom [scripts](https://docs.medusajs.com/learn/fundamentals/custom-cli-scripts/index.html.md) to be executed using Medusa's CLI tool.
-- `subscribers`: Holds your [event listeners](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers/index.html.md) that are executed asynchronously whenever an event is emitted.
-- `workflows`: Holds your custom [flows](https://docs.medusajs.com/learn/fundamentals/workflows/index.html.md) that can be executed from anywhere in your application.
-
-### medusa-config.ts
-
-This file holds your [Medusa configurations](https://docs.medusajs.com/learn/configurations/medusa-config/index.html.md), such as your PostgreSQL database configurations.
-
-### .medusa
-
-The `.medusa` directory holds types and other files that are generated by Medusa when you run the `build` command. Don't modify any files or commit them to your repository.
-
-See [Automatically Generated Types](https://docs.medusajs.com/learn/fundamentals/generated-types/index.html.md) for more information on generated types.
-
-***
-
-## Configure Medusa Application
-
-By default, your Medusa application is equipped with the basic configuration to start your development.
-
-If you run into issues with configurations, such as CORS configurations, or need to make changes to the default configuration, refer to the [Medusa Configuration](https://docs.medusajs.com/learn/configurations/medusa-config/index.html.md) guide.
-
-***
-
-## Update Medusa Application
-
-Refer to the [Update Medusa](https://docs.medusajs.com/learn/update/index.html.md) guide to learn how to update your Medusa project.
-
-***
-
-## Next Steps
-
-In the next chapters, you'll learn about the architecture of your Medusa application, then learn how to customize your application to build custom features.
-
-
-# Install Medusa
-
-In this chapter, you'll learn how to install and run a Medusa application.
-
-## Get Started with AI Agents
-
-If you're an AI agent, or a human that wants to get started quickly with an AI agent, run the following prompt in your agent:
-
-```bash title="Prompt"
-Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
-```
-
-The AI agent will set up Medusa locally, deploy it to [Cloud](https://docs.medusajs.com/cloud/index.html.md), and help you build your custom commerce features.
-
-***
-
-## Get Started with Cloud
-
 [Cloud](https://docs.medusajs.com/cloud/index.html.md) is the quickest way to get started with Medusa. With Cloud, you can deploy your ecommerce applications in minutes. Benefit from features like:
 
 - Zero-configuration deployments
@@ -27640,12 +27431,12 @@ Medusa hosts a Streamable HTTP MCP server at `https://docs.medusajs.com/mcp` tha
 
 ## Authentication
 
-This MCP server is available for [Cloud](https://docs.medusajs.com/cloud/index.html.md) users only. It requires authenticating with Medusa Cloud to use it.
+This MCP server is available for [Cloud](https://docs.medusajs.com/cloud/index.html.md) users only. It requires authenticating with your Cloud account to use it.
 
 The MCP server supports two authentication methods:
 
-1. OAuth: This is the recommended authentication method. It allows you to authenticate with your Medusa Cloud account without generating a token manually. When you connect to the MCP server, you will be prompted to log into your Medusa Cloud account in a browser window to authenticate.
-2. [Personal Access Key](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md): Use your Medusa Cloud personal access key as a Bearer token in the Authorization header when connecting to the MCP server. This is useful for AI agents like OpenCode that may have issues with OAuth authentication flows.
+1. OAuth: This is the recommended authentication method. It allows you to authenticate with your Cloud account without generating a token manually. When you connect to the MCP server, you will be prompted to log into your Cloud account in a browser window to authenticate.
+2. [Personal Access Key](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md): Use your Cloud personal access key as a Bearer token in the Authorization header when connecting to the MCP server. This is useful for AI agents like OpenCode that may have issues with OAuth authentication flows.
 
 ***
 
@@ -27663,36 +27454,37 @@ To connect to the Medusa MCP server in Claude Code, run the following command in
 claude mcp add --transport http medusa https://docs.medusajs.com/mcp
 ```
 
-Then, start Claude Code and authenticate with your Medusa Cloud account:
+Then, start Claude Code and authenticate with your Cloud account:
 
 ```sh
 claude
 /mcp
 ```
 
-Then, select the `medusa` MCP server and choose "Authenticate". This will open a browser window where you can log into your Medusa Cloud account to authenticate.
+Then, select the `medusa` MCP server and choose "Authenticate". This will open a browser window where you can log into your Cloud account to authenticate.
 
 ### Cursor
 
-<Link href="cursor://anysphere.cursor-deeplink/mcp/install?name=medusa&config=eyJ1cmwiOiJodHRwczovL2RvY3MubWVkdXNhanMuY29tL21jcCJ9" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Medusa MCP server to Cursor.
+Cursor has known issues with OAuth authentication flows. So, to connect to the Medusa MCP server in Cursor, [create a personal access key in your Cloud account](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md) first.
 
-To manually connect to the Medusa MCP server in Cursor, add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://docs.cursor.com/context/model-context-protocol):
+Then, add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://cursor.com/docs/mcp):
 
-```json
+```json title=".cursor/mcp.json"
 {
   "mcpServers": {
     "medusa": {
-      "url": "https://docs.medusajs.com/mcp"
+      "url": "https://docs.medusajs.com/mcp",
+      "headers": {
+        "Authorization": "Bearer {token}"
+      }
     }
   }
 }
 ```
 
-Then, to authenticate with your Medusa Cloud account:
+Replace `{token}` with the personal access key you generated in your Cloud account.
 
-1. Go to Settings -> Tools & MCP in Cursor.
-2. Click the "Connect" button next to the Medusa MCP server.
-3. Log into your Medusa Cloud account in the opened browser window to authenticate.
+You can then start using the Medusa MCP server in Cursor.
 
 ### VS Code
 
@@ -27700,7 +27492,7 @@ Then, to authenticate with your Medusa Cloud account:
 
 To manually connect to the Medusa MCP server in VSCode, add the following to your `.vscode/mcp.json` file in your workspace:
 
-```json
+```json title=".vscode/mcp.json"
 {
   "servers": {
     "medusa": {
@@ -27711,15 +27503,15 @@ To manually connect to the Medusa MCP server in VSCode, add the following to you
 }
 ```
 
-Then, once you start the MCP server connection, you will be prompted to authenticate with your Medusa Cloud account in a browser window. Log in to authenticate and start using the Medusa MCP server in VSCode.
+Then, once you start the MCP server connection, you will be prompted to authenticate with your Cloud account in a browser window. Log in to authenticate and start using the Medusa MCP server in VSCode.
 
 ### OpenCode
 
-OpenCode has known issues with OAuth authentication flows. So, to connect to the Medusa MCP server in OpenCode, [create a personal access key in your Medusa Cloud account](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md) first.
+OpenCode has known issues with OAuth authentication flows. So, to connect to the Medusa MCP server in OpenCode, [create a personal access key in your Cloud account](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md) first.
 
 Then, add the following to your [OpenCode config file](https://opencode.ai/docs/config/) (for example, `~/.config/opencode/opencode.json`):
 
-```json
+```json title="~/.config/opencode/opencode.json"
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
@@ -27735,7 +27527,7 @@ Then, add the following to your [OpenCode config file](https://opencode.ai/docs/
 }
 ```
 
-Replace `{token}` with the personal access key you generated in your Medusa Cloud account.
+Replace `{token}` with the personal access key you generated in your Cloud account.
 
 You can then start using the Medusa MCP server in OpenCode.
 
@@ -29142,7 +28934,7 @@ Refer to the [Deployment](https://docs.medusajs.com/resources/deployment/index.h
 
 # Introduction
 
-Get started with Medusa, a digital commerce platform with a built-in Framework for customization.
+Get started with Medusa, an AI-native commerce platform with a Framework to build custom commerce features.
 
 ## Get Started with AI Agents
 
@@ -29154,25 +28946,29 @@ Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa 
 
 The AI agent will set up Medusa locally, deploy it to [Cloud](https://docs.medusajs.com/cloud/index.html.md), and help you build your custom commerce features.
 
+***
+
 ## What is Medusa
 
-Medusa is a digital commerce platform with a built-in Framework for customization.
+Medusa is an AI-native commerce platform with a Framework to build custom commerce features.
 
 Medusa ships with three main tools:
 
 1. A suite of [Commerce Modules](https://docs.medusajs.com/resources/commerce-modules/index.html.md) with core commerce functionalities, such as tracking inventory, calculating cart totals, accepting payments, managing orders, and much more.
-2. A [Framework](https://docs.medusajs.com/learn/fundamentals/framework/index.html.md) for building custom functionalities specific to your business, product, or industry. This includes tools for introducing custom API endpoints, business logic, and data models; building workflows and automations; and integrating with third-party services.
+2. A [Framework](https://docs.medusajs.com/learn/fundamentals/framework/index.html.md) for building agentic flows and custom functionalities specific to your business, product, or industry. This includes tools for introducing custom API endpoints, business logic, and data models; building workflows and automations; and integrating with third-party services.
 3. A customizable admin dashboard for merchants to configure and operate their store.
 
-When you install Medusa, you get a fully fledged commerce platform with all the features you need to get off the ground. However, unlike other platforms, Medusa is built with customization in mind. You don't need to build hacky workarounds that are difficult to maintain and scale. Your efforts go into building features that bring your business's vision to life.
+When you install Medusa, you get a fully fledged commerce platform with all the features you need to get off the ground. However, unlike other platforms, you don't need to build hacky workarounds that are difficult to maintain and scale.
+
+Medusa is built with customization in mind. Build features that bring your business's vision to life, with native support of AI agents to automate your operations and customer interactions.
 
 ***
 
 ## Who should use Medusa
 
-Medusa is for businesses and teams looking for a digital commerce platform with the tools to implement unique requirements that other platforms aren't built to support.
+Medusa is for businesses and teams looking for a cutting-edge commerce platform that supports their unique requirements, visions, and automated workflows that other platforms aren't built to support.
 
-Businesses of all sizes can use Medusa, from small start ups to large enterprises. Also, technical teams of all sizes can build with Medusa; all it takes is a developer to manage and deploy Medusa projects.
+Businesses of all sizes can use Medusa, from small start ups building with agentic flows to large enterprises building complex commerce features. Medusa is also for developers that want to build with the latest technologies and tools, and have the freedom to implement unique features without being limited by the platform's architecture.
 
 Below are some stories from companies that use Medusa:
 
@@ -29185,11 +28981,11 @@ Below are some stories from companies that use Medusa:
 
 ***
 
-## Who is this documentation for
+## How to learn Medusa
 
 This documentation introduces you to Medusa's concepts and how they help you build your business use case. The documentation is structured to gradually introduce Medusa's concepts, with easy-to-follow examples along the way.
 
-By following this documentation, you'll be able to create custom commerce experiences that would otherwise take large engineering teams months to build.
+You can also jump right into building your store with the help of our [agentic skills, MCP server, and other AI-friendly tools](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/index.html.md).
 
 ### How to use the documentation
 
@@ -29198,24 +28994,15 @@ This documentation is split into the following sections:
 |Section|Description|
 |---|---|---|
 |Main Documentation|The documentation you're currently reading. It's recommended to follow the chapters in this documentation to understand the core concepts of Medusa and how to use them before jumping into the other sections.|
+|Cloud|Learn about Cloud, our managed services offering for Medusa applications. Find guides on how to deploy your Medusa application, manage organizations, and more.|
 |Product|Documentation for the |
 |Build|Recipes|
 |Tools|Guides on how to setup and use Medusa's CLI tools, |
 |API Routes References|References of the |
 |References|Useful during your development with Medusa to learn about different APIs and how to use them. Its references include the |
 |User Guide|Guides that introduce merchants and store managers to the Medusa Admin dashboard and helps them understand how to use the dashboard to manage their store.|
-|Cloud|Learn about Cloud, our managed services offering for Medusa applications. Find guides on how to deploy your Medusa application, manage organizations, and more.|
 
 To get started, check out the [Installation chapter](https://docs.medusajs.com/learn/installation/index.html.md).
-
-***
-
-## Useful Links
-
-- Need Help? Refer to our [GitHub repository](https://github.com/medusajs/medusa) for [issues](https://github.com/medusajs/medusa/issues) and [discussions](https://github.com/medusajs/medusa/discussions).
-- [Join the community on Discord](https://discord.gg/medusajs).
-- Have questions or need more support? Contact our [sales team](https://medusajs.com/contact/).
-- Facing issues in your development? Refer to our [troubleshooting guides](https://docs.medusajs.com/resources/troubleshooting/index.html.md).
 
 
 # Worker Mode of Medusa Instance
@@ -30003,79 +29790,6 @@ npm  install
 ```
 
 
-# Introduction
-
-Get started with Medusa, an AI-native commerce platform with a Framework to build custom commerce features.
-
-## Get Started with AI Agents
-
-If you're an AI agent, or a human that wants to get started quickly with an AI agent, run the following prompt in your agent:
-
-```bash title="Prompt"
-Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
-```
-
-The AI agent will set up Medusa locally, deploy it to [Cloud](https://docs.medusajs.com/cloud/index.html.md), and help you build your custom commerce features.
-
-***
-
-## What is Medusa
-
-Medusa is an AI-native commerce platform with a Framework to build custom commerce features.
-
-Medusa ships with three main tools:
-
-1. A suite of [Commerce Modules](https://docs.medusajs.com/resources/commerce-modules/index.html.md) with core commerce functionalities, such as tracking inventory, calculating cart totals, accepting payments, managing orders, and much more.
-2. A [Framework](https://docs.medusajs.com/learn/fundamentals/framework/index.html.md) for building agentic flows and custom functionalities specific to your business, product, or industry. This includes tools for introducing custom API endpoints, business logic, and data models; building workflows and automations; and integrating with third-party services.
-3. A customizable admin dashboard for merchants to configure and operate their store.
-
-When you install Medusa, you get a fully fledged commerce platform with all the features you need to get off the ground. However, unlike other platforms, you don't need to build hacky workarounds that are difficult to maintain and scale.
-
-Medusa is built with customization in mind. Build features that bring your business's vision to life, with native support of AI agents to automate your operations and customer interactions.
-
-***
-
-## Who should use Medusa
-
-Medusa is for businesses and teams looking for a cutting-edge commerce platform that supports their unique requirements, visions, and automated workflows that other platforms aren't built to support.
-
-Businesses of all sizes can use Medusa, from small start ups building with agentic flows to large enterprises building complex commerce features. Medusa is also for developers that want to build with the latest technologies and tools, and have the freedom to implement unique features without being limited by the platform's architecture.
-
-Below are some stories from companies that use Medusa:
-
-- [Use Case: Advanced Fulfillment](https://medusajs.com/blog/eight-sleep/): How Eight Sleeps built their fulfillment setup with Medusa
-- [Use Case: D2C](https://medusajs.com/blog/matt-sleeps/): How Matt Sleeps built a unique D2C experience with Medusa
-- [Use Case: Marketplace](https://medusajs.com/blog/foraged/): How Foraged built a custom marketplace with Medusa
-- [Use Case: Distributor Platform](https://medusajs.com/blog/redington): How Redington built a B2B distributor platform with Medusa
-- [Use Case: Quick to market](https://medusajs.com/blog/partbase): How Partbase built their distributor platform with Medusa
-- [Use Case: Complex products & pricing](https://medusajs.com/blog/eki/): How EKI built a B2B platform with complex products and pricing
-
-***
-
-## How to learn Medusa
-
-This documentation introduces you to Medusa's concepts and how they help you build your business use case. The documentation is structured to gradually introduce Medusa's concepts, with easy-to-follow examples along the way.
-
-You can also jump right into building your store with the help of our [agentic skills, MCP server, and other AI-friendly tools](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/index.html.md).
-
-### How to use the documentation
-
-This documentation is split into the following sections:
-
-|Section|Description|
-|---|---|---|
-|Main Documentation|The documentation you're currently reading. It's recommended to follow the chapters in this documentation to understand the core concepts of Medusa and how to use them before jumping into the other sections.|
-|Cloud|Learn about Cloud, our managed services offering for Medusa applications. Find guides on how to deploy your Medusa application, manage organizations, and more.|
-|Product|Documentation for the |
-|Build|Recipes|
-|Tools|Guides on how to setup and use Medusa's CLI tools, |
-|API Routes References|References of the |
-|References|Useful during your development with Medusa to learn about different APIs and how to use them. Its references include the |
-|User Guide|Guides that introduce merchants and store managers to the Medusa Admin dashboard and helps them understand how to use the dashboard to manage their store.|
-
-To get started, check out the [Installation chapter](https://docs.medusajs.com/learn/installation/index.html.md).
-
-
 # Set Up Medusa with AI Agents
 
 Create an ecommerce store with Medusa and go live in minutes. This page is designed for AI agents and humans who want to get started quickly with an AI agent.
@@ -30774,6 +30488,9 @@ module.exports = defineConfig({
       resolve: "@medusajs/medusa/auth",
       dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
       options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+        },
         providers: [
           // other providers...
           {
@@ -30802,12 +30519,16 @@ const hashConfig = \{
 &#x20; p: 1
 }
 \`\`\`|
+|\`require\_verification\`|Whether to require email verification for new registrations
+and authentications. When enabled, users must verify their
+email address before they can authenticate successfully.|No|\`false\`|
 
 ***
 
 ## Related Guides
 
 - [How to register a customer using email and password](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/customers/register/index.html.md)
+- [Implement email verification](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/email-verification/index.html.md)
 
 
 # GitHub Auth Module Provider
@@ -30837,6 +30558,9 @@ module.exports = defineConfig({
       resolve: "@medusajs/medusa/auth",
       dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
       options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+        },
         providers: [
           // other providers...
           {
@@ -30916,6 +30640,9 @@ module.exports = defineConfig({
       resolve: "@medusajs/medusa/auth",
       dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
       options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+        },
         providers: [
           // other providers...
           {
@@ -31778,9 +31505,843 @@ In the workflow, you:
 You can use this workflow when deleting a manager, such as in an API route.
 
 
+# Send Email Verification Notification
+
+In this guide, you'll learn how to enable email verification requirement for customers in your Medusa application, and how to send email verification notifications.
+
+### Prerequisites
+
+- [Medusa v2.15.5 or later](https://docs.medusajs.com/docs/learn/update/index.html.md)
+- [Notification Module Provider for the email channel, such as SendGrid or Resend](https://docs.medusajs.com/infrastructure-modules/notification#what-is-a-notification-module-provider/index.html.md)
+
+## How Email Verification Works
+
+By default, customers can register an account and log in to your Medusa store without verifying their email address. You can enable email verification to require customers to verify their email address before they can log in.
+
+When email verification is enabled, the customer registration flow changes to the following:
+
+```mermaid
+sequenceDiagram
+    actor C as Customer
+    participant S as Store
+    C->>S: Register
+    S->>C: Send verification email
+    C->>S: Click verification link
+    S->>C: Email verified
+    C->>S: Log in
+```
+
+1. A customer registers an account by providing their email and password.
+2. The customer receives an email with a verification link. The link points to a page in your storefront that verifies the customer's email when visited.
+3. The customer clicks the verification link, which verifies their email address and completes the registration process.
+4. The customer can now log in to their account.
+
+This guide focuses on the backend implementation of this flow, which involves enabling email verification and sending the verification email.
+
+To implement the storefront part of the flow, refer to the [Verify Customer Account in Storefront guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/customers/verify-account/index.html.md).
+
+***
+
+## Enable Email Verification
+
+To enable email verification, set the `require_verification` property of the [Emailpass Auth Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/emailpass/index.html.md) in `medusa-config.ts`:
+
+```ts title="medusa-config.ts" highlights={configHighlights}
+module.exports = defineConfig({
+  // other configurations...
+  modules: [
+    // other modules...
+    {
+      resolve: "@medusajs/medusa/auth",
+      options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+        },
+        providers: [
+          {
+            resolve: "@medusajs/medusa/auth-emailpass",
+            id: "emailpass",
+            options: {
+              require_verification: true,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+With this configuration, customers will be required to verify their email address after registering. This includes previously registered customers as well.
+
+***
+
+## Send Email Verification Notification
+
+When the storefront requests to send an email verification notification, Medusa emits the `auth.verification_requested` event. You can listen to this event in a [subscriber](https://docs.medusajs.com/docs/learn/fundamentals/events-and-subscribers/index.html.md) to send the email verification notification.
+
+### Prerequisite Configurations
+
+#### Notification Module Provider for Email Channel
+
+To send the email verification notification, you need a [Notification Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/notification#what-is-a-notification-module-provider/index.html.md) configured for the email channel, such as [SendGrid](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/notification/sendgrid/index.html.md) or [Resend](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/integrations/guides/resend/index.html.md).
+
+For development purposes, you can set the [Notification Local Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/notification/local/index.html.md)'s channel to `email` in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/notification",
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/notification-local",
+            id: "local",
+            options: {
+              channels: ["email"],
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+This will log the email verification notification to the console when it's sent, instead of actually sending an email.
+
+#### Storefront URL Configuration
+
+To format the verification link in the email, you need to set the URL to your storefront in `medusa-config.ts`. You can use the `admin.storefrontUrl` configuration for that:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  admin: {
+    storefrontUrl: process.env.STOREFRONT_URL || "https://storefront.com",
+  },
+})
+```
+
+This will allow you to use the `admin.storefrontUrl` value in the subscriber when formatting the verification link. If `admin.storefrontUrl` is not set, you can use a placeholder URL as shown in the subscriber example below.
+
+### Email Verification Notification Subscriber
+
+To send the email verification notification when the `auth.verification_requested` event is emitted, create a [subscriber](https://docs.medusajs.com/docs/learn/fundamentals/events-and-subscribers/index.html.md) at `src/subscribers/send-email-verification.ts` with the following content:
+
+```ts title="src/subscribers/send-email-verification.ts"
+import {
+  SubscriberArgs,
+  type SubscriberConfig,
+} from "@medusajs/medusa"
+import { Modules } from "@medusajs/framework/utils"
+
+export default async function verificationRequestedHandler({
+  event: { data: {
+    entity_id: email,
+    token,
+    actor_type,
+  } },
+  container,
+}: SubscriberArgs<{
+  entity_id: string
+  token: string
+  actor_type: string
+  provider: string
+  auth_identity_id: string
+  provider_identity_id: string
+  expires_at: string
+}>) {
+  if (actor_type !== "customer") {
+    return
+  }
+
+  const notificationModuleService = container.resolve(
+    Modules.NOTIFICATION
+  )
+  const config = container.resolve("configModule")
+
+  const urlPrefix = config.admin.storefrontUrl || "https://storefront.com"
+
+  console.log(`${urlPrefix}/verify-account?token=${token}&email=${email}`)
+
+  await notificationModuleService.createNotifications({
+    to: email,
+    channel: "email",
+    // TODO replace with template ID in notification provider
+    template: "email-verification",
+    data: {
+      // a URL to a frontend application
+      verification_url: `${urlPrefix}/verify-account?token=${token}&email=${email}`,
+    },
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: "auth.verification_requested",
+}
+```
+
+#### Event Payload
+
+This subscriber receives in the event payload an object with the following properties:
+
+- `entity_id`: The email address of the customer to which the verification email should be sent.
+- `token`: The token to be included in the verification link. When the customer clicks the verification link, the frontend application should send the token back to the Medusa application to verify the customer's email address.
+- `actor_type`: The type of the actor for which the verification was requested. In this case, you only want to send email verification notifications for customers, so you check if the `actor_type` is `customer` before sending the notification.
+- `provider`: The auth provider used for the verification. In this case, it will be `emailpass`.
+- `auth_identity_id`: The ID of the auth identity for which the verification was requested.
+- `provider_identity_id`: The provider-specific ID of the auth identity for which the verification was requested.
+- `expires_at`: The date and time at which the verification token expires.
+
+#### Subscriber Implementation
+
+In the subscriber, you first format the storefront URL either using the value of `admin.storefrontUrl` set in `medusa-config.ts` or a placeholder URL. You need this URL to format the verification link sent in the email.
+
+Then, you send a notification using the Notification Module's main service. You pass the following properties to the `createNotifications` method:
+
+- `to`: The email address of the customer to which the verification email should be sent.
+- `channel`: The channel to send the notification through. In this case, it's `email`.
+- `template`: The ID of the template to use for the notification. This depends on your Notification Module Provider. For example, if you're using the SendGrid Notification Module Provider, this should be the ID of a SendGrid template that you've set up to format the email verification notification.
+- `data`: The data to be passed to the template when sending the notification. In this case, you pass the `verification_url` property, which contains the verification link to be included in the email.
+
+The verification link points to a page in your storefront, such as `/verify-account`, which should handle verifying the customer's email when visited.
+
+***
+
+## Handle Email Verification in Storefront
+
+When the customer clicks the verification link, they should be directed to a page in your storefront that sends the token back to the Medusa application to verify the customer's email address.
+
+To learn how to implement this part of the flow, refer to the [Verify Customer Account in Storefront guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/customers/verify-account/index.html.md).
+
+***
+
+## Example Notification Templates
+
+The following section provides example notification templates for some Notification Module Providers.
+
+### SendGrid
+
+Refer to the [SendGrid Notification Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/notification/sendgrid/index.html.md) documentation for more details on how to set up SendGrid.
+
+The following HTML template can be used with SendGrid to send an email verification email:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Email</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 465px;
+            margin: 40px auto;
+            border: 1px solid #eaeaea;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .title {
+            color: #000000;
+            font-size: 24px;
+            font-weight: normal;
+            margin: 0;
+        }
+        .content {
+            margin: 32px 0;
+        }
+        .text {
+            color: #000000;
+            font-size: 14px;
+            line-height: 24px;
+            margin: 0 0 16px 0;
+        }
+        .button-container {
+            text-align: center;
+            margin: 32px 0;
+        }
+        .verify-button {
+            background-color: #000000;
+            border-radius: 3px;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            padding: 12px 20px;
+            display: inline-block;
+        }
+        .verify-button:hover {
+            background-color: #333333;
+        }
+        .url-section {
+            margin: 32px 0;
+        }
+        .url-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+            line-height: 24px;
+            word-break: break-all;
+        }
+        .disclaimer {
+            margin: 32px 0;
+        }
+        .disclaimer-text {
+            color: #666666;
+            font-size: 12px;
+            line-height: 24px;
+            margin: 0 0 8px 0;
+        }
+        .security-footer {
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px solid #eaeaea;
+        }
+        .security-text {
+            color: #666666;
+            font-size: 12px;
+            line-height: 24px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Verify Your Email</h1>
+        </div>
+
+        <div class="content">
+            <p class="text">
+                Hello,
+            </p>
+            <p class="text">
+                Thanks for creating an account. Please confirm your email address by clicking the button below to complete your registration.
+            </p>
+        </div>
+
+        <div class="button-container">
+            <a href="{{verification_url}}" class="verify-button">
+                Verify Email
+            </a>
+        </div>
+
+        <div class="url-section">
+            <p class="text">
+                Or copy and paste this URL into your browser:
+            </p>
+            <a href="{{verification_url}}" class="url-link">
+                {{verification_url}}
+            </a>
+        </div>
+
+        <div class="disclaimer">
+            <p class="disclaimer-text">
+                This verification link will expire soon for security reasons.
+            </p>
+            <p class="disclaimer-text">
+                If you didn't create an account, you can safely ignore this email.
+            </p>
+        </div>
+
+        <div class="security-footer">
+            <p class="security-text">
+                For security reasons, never share this verification link with anyone. If you're having trouble with the button above, copy and paste the URL into your web browser.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+```
+
+Make sure to pass the `verification_url` variable to the template, which contains the URL to verify the customer's email.
+
+You can also customize the template further to show other information.
+
+### Resend
+
+If you've integrated Resend as explained in the [Resend Integration Guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/integrations/guides/resend/index.html.md), you can add a new template for email verification at `src/modules/resend/emails/email-verification.tsx`:
+
+```tsx title="src/modules/resend/emails/email-verification.tsx"
+import { 
+  Text, 
+  Container, 
+  Heading, 
+  Html, 
+  Section, 
+  Tailwind, 
+  Head, 
+  Preview, 
+  Body, 
+  Link,
+  Button, 
+} from "@react-email/components"
+
+type EmailVerificationEmailProps = {
+  verification_url: string
+}
+
+function EmailVerificationEmailComponent({ verification_url }: EmailVerificationEmailProps) {
+  return (
+    <Html>
+      <Head />
+      <Preview>Verify your email</Preview>
+      <Tailwind>
+        <Body className="bg-white my-auto mx-auto font-sans px-2">
+          <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] max-w-[465px]">
+            <Section className="mt-[32px]">
+              <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
+                Verify Your Email
+              </Heading>
+            </Section>
+
+            <Section className="my-[32px]">
+              <Text className="text-black text-[14px] leading-[24px]">
+                Hello,
+              </Text>
+              <Text className="text-black text-[14px] leading-[24px]">
+                Thanks for creating an account. Please confirm your email address by clicking the button below to complete your registration.
+              </Text>
+            </Section>
+
+            <Section className="text-center mt-[32px] mb-[32px]">
+              <Button
+                className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3"
+                href={verification_url}
+              >
+                Verify Email
+              </Button>
+            </Section>
+
+            <Section className="my-[32px]">
+              <Text className="text-black text-[14px] leading-[24px]">
+                Or copy and paste this URL into your browser:
+              </Text>
+              <Link
+                href={verification_url}
+                className="text-blue-600 no-underline text-[14px] leading-[24px] break-all"
+              >
+                {verification_url}
+              </Link>
+            </Section>
+
+            <Section className="my-[32px]">
+              <Text className="text-[#666666] text-[12px] leading-[24px]">
+                This verification link will expire soon for security reasons.
+              </Text>
+              <Text className="text-[#666666] text-[12px] leading-[24px] mt-2">
+                If you didn't create an account, you can safely ignore this email.
+              </Text>
+            </Section>
+
+            <Section className="mt-[32px] pt-[20px] border-t border-solid border-[#eaeaea]">
+              <Text className="text-[#666666] text-[12px] leading-[24px]">
+                For security reasons, never share this verification link with anyone. If you're having trouble with the button above, copy and paste the URL into your web browser.
+              </Text>
+            </Section>
+          </Container>
+        </Body>
+      </Tailwind>
+    </Html>
+  )
+}
+
+export const emailVerificationEmail = (props: EmailVerificationEmailProps) => (
+  <EmailVerificationEmailComponent {...props} />
+)
+
+// Mock data for preview/development
+const mockEmailVerification: EmailVerificationEmailProps = {
+  verification_url: "https://your-app.com/verify-account?token=sample-verification-token-123&email=user@example.com",
+}
+
+export default () => <EmailVerificationEmailComponent {...mockEmailVerification} />
+```
+
+Feel free to customize the email template further to match your branding and style, or to add additional information.
+
+Then, in the Resend Module's service at `src/modules/resend/service.ts`, add the new template to the `templates` object and `Templates` type:
+
+```ts title="src/modules/resend/service.ts"
+// other imports...
+import { emailVerificationEmail } from "./emails/email-verification"
+
+enum Templates {
+  // ...
+  EMAIL_VERIFICATION = "email-verification",
+}
+
+const templates: {[key in Templates]?: (props: unknown) => React.ReactNode} = {
+  // ...
+  [Templates.EMAIL_VERIFICATION]: emailVerificationEmail,
+}
+```
+
+Finally, find the `getTemplateSubject` function in the `ResendNotificationProviderService` and add a case for the `EMAIL_VERIFICATION` template:
+
+```ts title="src/modules/resend/service.ts"
+class ResendNotificationProviderService extends AbstractNotificationProviderService {
+  // ...
+
+  private getTemplateSubject(template: Templates) {
+    // ...
+    switch (template) {
+      // ...
+      case Templates.EMAIL_VERIFICATION:
+        return "Verify Your Email"
+    }
+  }
+}
+```
+
+
+# Multi-Factor Authentication
+
+In this guide, you'll learn how multi-factor authentication (MFA) works in the Auth Module, the providers it ships with, and how the authentication flow changes when an auth identity has MFA enabled.
+
+### Prerequisites
+
+- [Medusa v2.15.5+](https://docs.medusajs.com/docs/learn/update/index.html.md)
+
+## What is Multi-Factor Authentication?
+
+Multi-factor authentication adds a second verification step to the standard authentication flow. After a user authenticates with their credentials (such as email and password), they must pass another verification step using a second factor, such as a code from an authenticator app or a recovery code.
+
+The Auth Module implements MFA around two concepts:
+
+- **MFA factor**: A second factor enrolled for an auth identity, such as a TOTP authenticator. A factor is enabled only after the user verifies it once during setup.
+- **MFA challenge**: A short-lived challenge issued during authentication. The user must verify the challenge with a registered MFA method to obtain a session token.
+
+***
+
+## Configure MFA Encryption Key
+
+By default, Medusa sets the MFA encryption key to the `AUTH_MFA_ENCRYPTION_KEY` environment variable. If you've created your application after v2.15.5 of Medusa, this key is generated for you and stored in the `.env` file.
+
+If you created your application before v2.15.5, generate a random 64-character string and set it as the value of the `AUTH_MFA_ENCRYPTION_KEY` environment variable in your `.env` file:
+
+```bash
+AUTH_MFA_ENCRYPTION_KEY=your_random_64_character_string
+```
+
+Also, if you've added the Auth Module to your `medusa-config.ts` file to set any of its options, make sure to set the `mfa.encryption_key` option to the same environment variable:
+
+```ts title="medusa-config.ts"
+import { Modules, ContainerRegistrationKeys } from "@medusajs/framework/utils"
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
+      options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+        },
+        providers: [
+          {
+            resolve: "@medusajs/medusa/auth-emailpass",
+            id: "emailpass",
+            options: {
+              // provider options...
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+If you don't set the `mfa.encryption_key` option, you'll get a "MFA encryption key is required to use MFA methods" error whenever trying to enroll or verify an MFA factor.
+
+***
+
+## MFA Providers
+
+The Auth Module registers two MFA providers out of the box:
+
+- `totp`: Time-based one-time password provider. Users enroll by scanning a QR code in an authenticator app (such as Google Authenticator or 1Password) and verify the factor with a six-digit code.
+- `recovery_code`: Provides single-use backup codes that users can use to verify an MFA challenge when they don't have access to their primary factor.
+
+The `recovery_code` provider is not enrolled as a factor on its own. It becomes available as a verification method once the user has at least one enabled MFA factor and generates recovery codes.
+
+{/* ### Custom MFA Providers
+
+You can register additional MFA providers in the `mfa.providers` array of the Auth Module's options. A custom provider must implement the `AuthMfaProvider` interface, exposing `start`, `verifySetup`, `canVerifyForAuthIdentity`, and `verify` methods.
+
+Refer to the [Module Options guide](../module-options/page.mdx#mfa) for the full list of MFA configuration options. */}
+
+***
+
+## Enrolling an MFA Factor
+
+Enrolling an MFA factor means registering a second factor for an auth identity (such as a TOTP authenticator). Once the factor is enrolled and enabled, the user must verify with that factor during authentication.
+
+The user enrolls an MFA factor by starting the enrollment, then verifying it.
+
+### Step 1: Authenticate with the Primary Factor
+
+Before enrolling an MFA factor, the user must be authenticated with their primary factor (for example, by logging in with their email and password). This ensures that only authenticated users can enroll MFA factors for their account.
+
+To authenticate, send a `POST` request to the `/auth/{actor_type}/{auth_provider}` API route with the user's credentials.
+
+For example, to authenticate an admin user with their email and password, send a request to the login route:
+
+```bash
+curl -X POST http://localhost:9000/auth/user/emailpass \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@example.com",
+    "password": "supersecret"
+  }'
+```
+
+Use the returned JWT token in the `Authorization` header of subsequent requests to enroll and manage MFA factors.
+
+### Step 2: Start Enrollment
+
+The client sends a `POST` request to `/auth/mfa/factors` to start enrollment for a specific provider:
+
+```bash
+curl -X POST http://localhost:9000/auth/mfa/factors \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {jwt_token}" \
+  -d '{
+    "provider": "totp",
+    "label": "Authenticator App",
+    "issuer": "My Store"
+  }'
+```
+
+In the request body, you pass the following parameters:
+
+- `provider`: The MFA provider to enroll (for example, `totp`).
+- `label`: A label to identify the factor in the user's authenticator app.
+- `issuer`: The name of your application or store, shown in the authenticator app.
+
+The response contains the new factor in `pending` status, along with the data the user needs to register the factor in their authenticator app:
+
+```json title="Example Response"
+{
+  "mfa_factor": { "id": "authmfa_...", "status": "pending", ... },
+  "secret": "JBSWY3DPEHPK3PXP",
+  "otpauth_url": "otpauth://totp/My%20Store:user@example.com?secret=..."
+}
+```
+
+For `totp` providers, the client typically renders `otpauth_url` as a QR code that the user scans with their authenticator app.
+
+### Step 3: Verify the Factor
+
+Once the user has registered the factor in their authenticator app, the client sends the generated code to `/auth/mfa/factors/{id}/verify` to verify and activate the factor:
+
+```bash
+curl -X POST http://localhost:9000/auth/mfa/factors/{id}/verify \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {jwt_token}" \
+  -d '{
+    "code": "123456"
+  }'
+```
+
+In the request body, you pass the `code` generated by the user's authenticator app.
+
+On success, the factor's `status` becomes `enabled`, and the `auth.mfa_enabled` event is emitted. From now on, any authentication for this auth identity will require an MFA challenge.
+
+***
+
+## Authenticating with MFA
+
+When an auth identity has at least one enabled MFA factor, the standard authentication flow returns an MFA challenge instead of an immediate session token.
+
+Once the user successfully verifies the MFA challenge, they receive the session token and can access protected resources as usual.
+
+### Step 1: Authenticate with the Primary Factor
+
+The user initiates authentication with their primary factor (for example, by logging in with their email and password):
+
+```bash
+curl -X POST http://localhost:9000/auth/user/emailpass \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@example.com",
+    "password": "supersecret"
+  }'
+```
+
+The response indicates that an MFA challenge is required:
+
+```json title="Example Response"
+{
+  "mfa_challenge": {
+    "id": "authmfachal_...",
+    "methods": ["totp", "recovery_code"]
+  }
+}
+```
+
+The `methods` array lists the verification methods the user can complete to satisfy the challenge.
+
+### Step 2: Verify the Challenge
+
+Based on the available methods, the client prompts the user to verify the challenge. For example, if `totp` is available, the user can enter the six-digit code from their authenticator app.
+
+To verify the challenge, the client sends a `POST` request to `/auth/mfa/challenges/{id}/verify` with the chosen verification method and the corresponding code:
+
+```bash
+curl -X POST http://localhost:9000/auth/mfa/challenges/{id}/verify \
+  -H "Content-Type: application/json" \
+  -d '{
+    "method": "totp",
+    "code": "123456"
+  }'
+```
+
+On success, the response contains the JWT token the user can use in the `Authorization` header for subsequent requests:
+
+```json
+{
+  "token": "..."
+}
+```
+
+Each challenge is single-use and expires after the configured TTL (default five minutes).
+
+***
+
+## Recovery Codes
+
+Recovery codes give the user a way to verify an MFA challenge if they lose access to their primary factor.
+
+### Generating Recovery Codes
+
+Once the user has at least one enabled MFA factor, they can generate recovery codes. First, they must be authenticated:
+
+```bash
+curl -X POST http://localhost:9000/auth/user/emailpass \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@example.com",
+    "password": "supersecret"
+  }'
+```
+
+Then, they can generate recovery codes using the `/auth/mfa/recovery-codes` route:
+
+```bash
+curl -X POST http://localhost:9000/auth/mfa/recovery-codes \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {jwt_token}" \
+  -d '{
+    "count": 10
+  }'
+```
+
+In the request body, you can specify the number of recovery codes to generate. The default is either the `mfa.recovery_code_count` option from the Auth Module's configuration or `10`.
+
+The response returns the generated codes in plain text:
+
+```json
+{
+  "recovery_codes": ["abcd-efgh-ijkl", "..."]
+}
+```
+
+The user should store these codes in a safe place. The Auth Module stores only the hashed codes, so they cannot be retrieved again.
+
+Generating a new set of recovery codes replaces the previous ones and emits the `auth.mfa_recovery_codes_generated` event.
+
+### Using a Recovery Code
+
+To verify an MFA challenge with a recovery code, send a `POST` request to `/auth/mfa/challenges/{id}/verify` with `method` set to `recovery_code` and the `code` set to one of the valid recovery codes:
+
+```bash
+curl -X POST http://localhost:9000/auth/mfa/challenges/{id}/verify \
+  -H "Content-Type: application/json" \
+  -d '{
+    "method": "recovery_code",
+    "code": "abcd-efgh-ijkl"
+  }'
+```
+
+Each recovery code can be used only once. Once consumed, it cannot be reused for future challenges.
+
+***
+
+## Disabling an MFA Factor
+
+To disable an enabled MFA factor, the client must be authenticated and send a `DELETE` request to `/auth/mfa/factors/{id}`:
+
+```bash
+curl -X DELETE http://localhost:9000/auth/mfa/factors/{id} \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {jwt_token}" \
+  -d '{
+    "method": "totp",
+    "code": "123456"
+  }'
+```
+
+Whether the `method` and `code` fields are required depends on the value of the Auth Module's `disable_policy` option:
+
+- `session` (default): A valid session is enough to disable the factor. The `method` and `code` fields are optional.
+- `challenge`: The user must additionally verify with an MFA method (TOTP code or recovery code) before the factor can be disabled.
+
+Use the `challenge` policy to protect users from a stolen session being used to remove their MFA factor.
+
+On success, the factor's `status` becomes `disabled`, and the `auth.mfa_disabled` event is emitted.
+
+***
+
+## Listing Enrolled Factors
+
+The client can list the MFA factors enrolled for the authenticated user by sending a `GET` request to `/auth/mfa/factors`:
+
+```bash
+curl -X GET http://localhost:9000/auth/mfa/factors \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {jwt_token}"
+```
+
+The response includes each factor's `id`, `provider`, `status`, and metadata. Use this route to render the user's MFA settings page in your application.
+
+***
+
+## Events
+
+The Auth Module emits the following events around MFA:
+
+- `auth.mfa_enabled`: Emitted when a factor transitions from `pending` to `enabled`.
+- `auth.mfa_disabled`: Emitted when an enabled factor is disabled.
+- `auth.mfa_recovery_codes_generated`: Emitted when a user generates a new set of recovery codes.
+
+Subscribe to these events to send confirmation emails, audit log entries, or admin notifications.
+
+Refer to the [Events Reference](https://docs.medusajs.com/references/auth/events/index.html.md) for the full list of Auth Module events.
+
+
 # Auth Module Options
 
-In this document, you'll learn about the options of the Auth Module.
+In this guide, you'll learn about the options of the Auth Module.
 
 ## providers
 
@@ -31804,6 +32365,9 @@ module.exports = defineConfig({
       resolve: "@medusajs/medusa/auth",
       dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
       options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+        },
         providers: [
           {
             resolve: "@medusajs/medusa/auth-emailpass",
@@ -31837,6 +32401,55 @@ Refer to [Medusa's configuration guide](https://docs.medusajs.com/docs/learn/con
 
 ***
 
+## mfa
+
+The `mfa` option configures multi-factor authentication (MFA) settings for the Auth Module.
+
+When passing any options to the Auth Module, you must set the `mfa.encryption_key` option. This option is set by default to the `AUTH_MFA_ENCRYPTION_KEY` environment variable. If you created your Medusa application after v2.15.5, this environment variable is already set in your `.env` file. If not, make sure to set it to a random string.
+
+This feature is available in [Medusa v2.15.5](https://docs.medusajs.com/docs/learn/update/index.html.md) and above.
+
+For example:
+
+```ts title="medusa-config.ts"
+import { Modules, ContainerRegistrationKeys } from "@medusajs/framework/utils"
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
+      options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+          disable_policy: "challenge",
+        },
+      },
+    },
+  ],
+})
+```
+
+The `mfa` option accepts the following properties:
+
+- `encryption_key`: A string indicating the encryption key used for MFA. This is required and should be set to the `AUTH_MFA_ENCRYPTION_KEY` environment variable.
+  - If you don't set the `mfa.encryption_key` option, you'll get a "MFA encryption key is required to use MFA methods" error whenever trying to enroll or verify an MFA factor.
+- `recovery_code_count`: An optional number indicating the number of recovery codes to generate for each user. The default is `10`.
+- `challenge_ttl_seconds`: An optional number indicating the time-to-live (TTL) of MFA challenges in seconds. The default is `300` seconds (5 minutes).
+- `challenge_max_attempts`: An optional number indicating the maximum number of failed attempts allowed for an MFA challenge. The default is `5`.
+- `disable_policy`: A string indicating the policy for disabling MFA factors. Can be either:
+  - `"session"` (default): Only requires a valid session to disable an MFA factor.
+  - `"challenge"`: Requires MFA challenge verification to disable an MFA factor.
+- `providers`: An optional array of MFA providers to use. These are registered alongside, and can override, the default `totp` and `recovery_code` providers. Each object in the array accepts the following properties:
+  - `resolve`: A string indicating the package name of the MFA provider or the path to it relative to the `src` directory.
+  - `id`: A string indicating the MFA provider's unique name or ID. The ID is prefixed with `mfa_`. If not provided, the `identifier` static property of the provider's service is used.
+  - `options`: An optional object of the MFA provider's options.
+
+***
+
 ## authMethodsPerActor Configuration
 
 The Medusa application's configuration accept an `authMethodsPerActor` configuration which restricts the allowed auth providers used with an actor type.
@@ -31857,6 +32470,8 @@ Learn more about why modules are isolated in [this documentation](https://docs.m
 - [Basic User Authentication](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#1-basic-authentication-flow/index.html.md): Authenticate users using their email and password credentials.
 - [Third-Party and Social Authentication](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#2-third-party-service-authenticate-flow/index.html.md): Authenticate users using third-party services and social platforms, such as [Google](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/google/index.html.md) and [GitHub](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/github/index.html.md).
 - [Authenticate Custom Actor Types](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/create-actor-type/index.html.md): Create custom user or actor types, such as managers, authenticate them in your application, and guard routes based on the custom user types.
+- [Email Verification](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/email-verification/index.html.md): Require email verification for new registrations and authentications.
+- [Multi-Factor Authentication (MFA)](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/mfa/index.html.md): Add an extra layer of security with time-based one-time passwords (TOTP), backup recovery codes, and configurable disable policies.
 - [Custom Authentication Providers](https://docs.medusajs.com/references/auth/provider/index.html.md): Integrate third-party services with custom authentication providers.
 
 ***
@@ -39180,9 +39795,53 @@ You can then:
 
 - Complete the cart using the [completeCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/completeCartWorkflow/index.html.md) if you're using the Medusa application.
 - Capture the payment either using the [capturePaymentWorkflow](https://docs.medusajs.com/references/medusa-workflows/capturePaymentWorkflow/index.html.md) or [capturePayment method](https://docs.medusajs.com/references/payment/capturePayment/index.html.md).
-- Refund captured amounts using the [refundPaymentWorkflow](https://docs.medusajs.com/references/medusa-workflows/refundPaymentWorkflow/index.html.md) or [refundPayment method](https://docs.medusajs.com/references/payment/refundPayment/index.html.md).
+- Refund captured amounts using the [refundPaymentsWorkflow](https://docs.medusajs.com/references/medusa-workflows/refundPaymentsWorkflow/index.html.md) or [refundPayment method](https://docs.medusajs.com/references/payment/refundPayment/index.html.md).
 
-Some payment providers allow capturing the payment automatically once it’s authorized. In that case, you don’t need to do it manually.
+Some payment providers allow capturing the payment automatically once it's authorized. In that case, you don't need to do it manually.
+
+### Refund Payments
+
+If you need to refund a payment, use the `refundPaymentsWorkflow`:
+
+### Using Workflow
+
+```ts
+import { refundPaymentsWorkflow } from "@medusajs/medusa/core-flows"
+
+// ...
+
+await refundPaymentsWorkflow(container)
+  .run({
+    input: [
+      {
+        payment_id: "pay_123",
+        amount: 1000, // refund amount
+        note: "Customer requested refund", // optional note
+        metadata: { // optional custom data
+          reason: "damaged_goods",
+          return_id: "ret_456",
+        },
+      },
+    ],
+  })
+```
+
+### Using Service
+
+```ts
+const refund = await paymentModuleService.refundPayment({
+  payment_id: "pay_123",
+  amount: 1000,
+  refund_reason_id: "rr_123",
+  note: "Customer requested refund",
+  metadata: {
+    reason: "damaged_goods",
+    return_id: "ret_456",
+  },
+})
+```
+
+The `metadata` property is available since Medusa [v2.15.0](https://github.com/medusajs/medusa/releases/tag/v2.15.0).
 
 
 # Payment Module Provider
@@ -39568,6 +40227,8 @@ A [PriceList](https://docs.medusajs.com/references/pricing/models/PriceList/inde
 When the conditions are met, the prices in the price list can override the default prices in a price set. Learn more in the [Price Calculation](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/pricing/price-calculation/index.html.md) guide.
 
 A price list has optional `start_date` and `end_date` properties that indicate the date range in which a price list can be applied.
+
+You can store custom data in key-value pairs on a price list using the `metadata` property. This property is available since Medusa [v2.15.0](https://github.com/medusajs/medusa/releases/tag/v2.15.0).
 
 Its associated prices are represented by the [Price data model](#price-data-model).
 
@@ -52213,6 +52874,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [revokeApiKeysWorkflow](https://docs.medusajs.com/references/medusa-workflows/revokeApiKeysWorkflow/index.html.md)
 - [updateApiKeysWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateApiKeysWorkflow/index.html.md)
 - [generateResetPasswordTokenWorkflow](https://docs.medusajs.com/references/medusa-workflows/generateResetPasswordTokenWorkflow/index.html.md)
+- [requestVerificationWorkflow](https://docs.medusajs.com/references/medusa-workflows/requestVerificationWorkflow/index.html.md)
 - [setAuthAppMetadataWorkflow](https://docs.medusajs.com/references/medusa-workflows/setAuthAppMetadataWorkflow/index.html.md)
 - [addGiftCardToCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/addGiftCardToCartWorkflow/index.html.md)
 - [addShippingMethodToCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/addShippingMethodToCartWorkflow/index.html.md)
@@ -52629,8 +53291,10 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [revokeApiKeysStep](https://docs.medusajs.com/references/medusa-workflows/steps/revokeApiKeysStep/index.html.md)
 - [updateApiKeysStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateApiKeysStep/index.html.md)
 - [validateSalesChannelsExistStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateSalesChannelsExistStep/index.html.md)
+- [requestVerificationStep](https://docs.medusajs.com/references/medusa-workflows/steps/requestVerificationStep/index.html.md)
 - [setAuthAppMetadataStep](https://docs.medusajs.com/references/medusa-workflows/steps/setAuthAppMetadataStep/index.html.md)
 - [addShippingMethodToCartStep](https://docs.medusajs.com/references/medusa-workflows/steps/addShippingMethodToCartStep/index.html.md)
+- [compensatePaymentIfNeededStep](https://docs.medusajs.com/references/medusa-workflows/steps/compensatePaymentIfNeededStep/index.html.md)
 - [confirmInventoryStep](https://docs.medusajs.com/references/medusa-workflows/steps/confirmInventoryStep/index.html.md)
 - [createCartsStep](https://docs.medusajs.com/references/medusa-workflows/steps/createCartsStep/index.html.md)
 - [createLineItemAdjustmentsStep](https://docs.medusajs.com/references/medusa-workflows/steps/createLineItemAdjustmentsStep/index.html.md)
@@ -52658,6 +53322,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [updateLineItemsStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateLineItemsStep/index.html.md)
 - [updateShippingMethodsStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateShippingMethodsStep/index.html.md)
 - [validateAndReturnShippingMethodsDataStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateAndReturnShippingMethodsDataStep/index.html.md)
+- [validateCartItemsStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateCartItemsStep/index.html.md)
 - [validateCartPaymentsStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateCartPaymentsStep/index.html.md)
 - [validateCartShippingOptionsPriceStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateCartShippingOptionsPriceStep/index.html.md)
 - [validateCartShippingOptionsStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateCartShippingOptionsStep/index.html.md)
@@ -52939,6 +53604,8 @@ This documentation page includes the list of all events emitted by [Medusa's wor
 |---|---|
 |auth.password\_reset|Emitted when a reset password token is generated. You can listen to this event
 to send a reset password email to the user or customer, for example.|
+|auth.verification\_requested|Emitted when a verification token is generated. You can listen to
+this event and decide how to deliver the token to the user or customer.|
 
 ### auth.password\_reset
 
@@ -52961,6 +53628,34 @@ to send a reset password email to the user or customer, for example.
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
 - [generateResetPasswordTokenWorkflow](https://docs.medusajs.com/references/medusa-workflows/generateResetPasswordTokenWorkflow/index.html.md)
+
+***
+
+### auth.verification\_requested&#xA;
+
+Emitted when a verification token is generated. You can listen to
+this event and decide how to deliver the token to the user or customer.
+
+#### Payload
+
+```ts
+{
+  entity_id, // The identifier of the user or customer. For example, an email address.
+  actor_type, // The type of actor. For example, "customer", "user", or custom.
+  provider, // The auth provider that requested verification.
+  auth_identity_id, // The ID of the auth identity being verified.
+  provider_identity_id, // The ID of the provider identity being verified.
+  token, // The generated token.
+  expires_at, // The token expiry date.
+  metadata, // Optional custom metadata passed from the request.
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [requestVerificationWorkflow](https://docs.medusajs.com/references/medusa-workflows/requestVerificationWorkflow/index.html.md)
 
 ***
 
@@ -55725,10 +56420,11 @@ sdk.auth.login("manager", "emailpass", {
 
 In this example, you call the `sdk.auth.login` method passing it the actor type (for example, `user`), the provider (`emailpass`), and the credentials.
 
-If the authentication is successful, there are two types of returned data:
+If the authentication is successful, there are three types of returned data:
 
 - An object with a `location` property: This means the authentication requires more actions, which happens when using third-party authentication providers, such as [Google](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/google/index.html.md). In that case, you need to redirect the customer to the location to complete their authentication.
   - Refer to the [Third-Party Login in Storefront](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/customers/third-party-login/index.html.md) guide for an example implementation.
+- An object with `verification_required: true`: This means the authentication requires email verification before a token can be issued. The object includes verification details like expiry time. Verification is only required if the `require_verification` option is enabled in the [Emailpass Auth Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/emailpass/index.html.md).
 - A string: This means the authentication was successful, and the user is logged in. The JS SDK automatically stores the JWT token or session cookie for you and includes it in the headers of all requests to the Medusa API. All requests you send afterwards will be authenticated with the stored token or session cookie.
 
 If the authentication fails, the `catch` block will be executed, and you can handle the error accordingly.
@@ -92600,7 +93296,8 @@ for (const product of products) {
   for (const variant of product.variants) {
     // @ts-ignore
     const calculatedPrice = variant.calculated_price as CalculatedPriceSet
-    const hasOriginalPrice = calculatedPrice?.original_amount
+    const hasOriginalPrice = calculatedPrice?.original_amount && 
+      calculatedPrice.original_amount !== calculatedPrice.calculated_amount
     const originalPrice = hasOriginalPrice ? calculatedPrice.original_amount : 
     calculatedPrice.calculated_amount
     const salePrice = hasOriginalPrice ? calculatedPrice.calculated_amount : 
@@ -127839,6 +128536,20 @@ To learn more about the commerce features that Medusa provides, check out Medusa
 - [retrieve](https://docs.medusajs.com/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.retrieve/index.html.md)
 - [update](https://docs.medusajs.com/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.update/index.html.md)
 - [updateRules](https://docs.medusajs.com/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.updateRules/index.html.md)
+- [create](https://docs.medusajs.com/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.create/index.html.md)
+- [delete](https://docs.medusajs.com/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.delete/index.html.md)
+- [list](https://docs.medusajs.com/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.list/index.html.md)
+- [retrieve](https://docs.medusajs.com/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.retrieve/index.html.md)
+- [update](https://docs.medusajs.com/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.update/index.html.md)
+- [addPolicies](https://docs.medusajs.com/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.addPolicies/index.html.md)
+- [create](https://docs.medusajs.com/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.create/index.html.md)
+- [delete](https://docs.medusajs.com/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.delete/index.html.md)
+- [list](https://docs.medusajs.com/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.list/index.html.md)
+- [listPolicies](https://docs.medusajs.com/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listPolicies/index.html.md)
+- [mePermissions](https://docs.medusajs.com/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.mePermissions/index.html.md)
+- [removePolicy](https://docs.medusajs.com/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removePolicy/index.html.md)
+- [retrieve](https://docs.medusajs.com/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.retrieve/index.html.md)
+- [update](https://docs.medusajs.com/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.update/index.html.md)
 - [create](https://docs.medusajs.com/references/js_sdk/admin/RefundReason/methods/js_sdk.admin.RefundReason.create/index.html.md)
 - [delete](https://docs.medusajs.com/references/js_sdk/admin/RefundReason/methods/js_sdk.admin.RefundReason.delete/index.html.md)
 - [list](https://docs.medusajs.com/references/js_sdk/admin/RefundReason/methods/js_sdk.admin.RefundReason.list/index.html.md)
@@ -127959,7 +128670,6 @@ To learn more about the commerce features that Medusa provides, check out Medusa
 - [login](https://docs.medusajs.com/references/js-sdk/auth/login/index.html.md)
 - [logout](https://docs.medusajs.com/references/js-sdk/auth/logout/index.html.md)
 - [refresh](https://docs.medusajs.com/references/js-sdk/auth/refresh/index.html.md)
-- [register](https://docs.medusajs.com/references/js-sdk/auth/register/index.html.md)
 - [resetPassword](https://docs.medusajs.com/references/js-sdk/auth/resetPassword/index.html.md)
 - [updateProvider](https://docs.medusajs.com/references/js-sdk/auth/updateProvider/index.html.md)
 
@@ -133368,7 +134078,34 @@ With these changes, the `LocalizedClientLink` component now creates links withou
 
 ***
 
-## 7. Update Server Functions to Use Country Code from Cookie
+## 7. Update Checkout Components
+
+The checkout flow components also need to be updated to handle URLs without country codes. This includes forms and buttons that redirect to other checkout steps.
+
+### Update Checkout Navigation
+
+In checkout components that handle navigation between steps (such as shipping, payment, and review), ensure that any redirect URLs or form actions don't include the country code prefix.
+
+For example, if you have checkout step components that redirect to delivery or payment URLs, update them to use the new URL structure:
+
+```tsx
+// Before: redirect(`/${countryCode}/checkout/delivery`)
+// After: redirect(`/checkout/delivery`)
+```
+
+### Update Form Actions in Checkout
+
+If your checkout forms have action URLs that include country codes, update them to the new structure. This is particularly important for:
+
+- Shipping address forms
+- Payment method selection
+- Order review and confirmation
+
+Look for any hardcoded URLs in checkout components and remove the country code prefix.
+
+***
+
+## 8. Update Server Functions to Use Country Code from Cookie
 
 Finally, you'll update the server functions in the Next.js Starter Storefront to retrieve the country code from the cookie instead of receiving it as a parameter.
 
@@ -135315,6 +136052,12 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [GET /admin/workflows-executions/{workflow_id}/subscribe](https://docs.medusajs.com/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idsubscribe)
 - [GET /admin/workflows-executions/{workflow_id}/{transaction_id}](https://docs.medusajs.com/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idtransaction_id)
 - [GET /admin/workflows-executions/{workflow_id}/{transaction_id}/subscribe](https://docs.medusajs.com/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idtransaction_idsubscribe)
+- [POST /auth/mfa/challenges/{id}/verify](https://docs.medusajs.com/api/admin#multi-factor-authentication_postmfachallengesidverify)
+- [GET /auth/mfa/factors](https://docs.medusajs.com/api/admin#multi-factor-authentication_getmfafactors)
+- [POST /auth/mfa/factors](https://docs.medusajs.com/api/admin#multi-factor-authentication_postmfafactors)
+- [DELETE /auth/mfa/factors/{id}](https://docs.medusajs.com/api/admin#auth_deletemfafactorsid)
+- [POST /auth/mfa/factors/{id}/verify](https://docs.medusajs.com/api/admin#multi-factor-authentication_postmfafactorsidverify)
+- [POST /auth/mfa/recovery-codes](https://docs.medusajs.com/api/admin#multi-factor-authentication_postmfarecoverycodes)
 - [POST /auth/session](https://docs.medusajs.com/api/admin#auth_postsession)
 - [DELETE /auth/session](https://docs.medusajs.com/api/admin#auth_deletesession)
 - [POST /auth/token/refresh](https://docs.medusajs.com/api/admin#auth_postadminauthtokenrefresh)
@@ -135327,11 +136070,18 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 
 ## Store API Reference
 
+- [POST /auth/customer/emailpass/verification/confirm](https://docs.medusajs.com/api/store#auth_postactor_typeauth_providerverificationconfirm)
 - [POST /auth/customer/{auth_provider}](https://docs.medusajs.com/api/store#auth_postactor_typeauth_provider)
 - [POST /auth/customer/{auth_provider}/callback](https://docs.medusajs.com/api/store#auth_postactor_typeauth_providercallback)
 - [POST /auth/customer/{auth_provider}/register](https://docs.medusajs.com/api/store#auth_postactor_typeauth_provider_register)
 - [POST /auth/customer/{auth_provider}/reset-password](https://docs.medusajs.com/api/store#auth_postactor_typeauth_providerresetpassword)
 - [POST /auth/customer/{auth_provider}/update](https://docs.medusajs.com/api/store#auth_postactor_typeauth_providerupdate)
+- [POST /auth/mfa/challenges/{id}/verify](https://docs.medusajs.com/api/store#auth_postmfachallengesidverify)
+- [GET /auth/mfa/factors](https://docs.medusajs.com/api/store#auth_getmfafactors)
+- [POST /auth/mfa/factors](https://docs.medusajs.com/api/store#auth_postmfafactors)
+- [DELETE /auth/mfa/factors/{id}](https://docs.medusajs.com/api/store#auth_deletemfafactorsid)
+- [POST /auth/mfa/factors/{id}/verify](https://docs.medusajs.com/api/store#auth_postmfafactorsidverify)
+- [POST /auth/mfa/recovery-codes](https://docs.medusajs.com/api/store#auth_postmfarecoverycodes)
 - [POST /auth/session](https://docs.medusajs.com/api/store#auth_postsession)
 - [DELETE /auth/session](https://docs.medusajs.com/api/store#auth_deletesession)
 - [POST /auth/token/refresh](https://docs.medusajs.com/api/store#auth_postadminauthtokenrefresh)
@@ -140543,6 +141293,175 @@ export default function LabelWithInputs() {
         </RadioGroup>
       </div>
     </form>
+  )
+}
+
+```
+
+
+# OTP Input
+
+A component that renders a form input field for one-time passwords (OTP) using Medusa's design system.
+
+The `OtpInput` component is useful for scenarios where you need to input a code sent via email or SMS for verification purposes.
+
+In this guide, you'll learn how to use the OTP Input component.
+
+The `OTPInput` component is available since v4.1.13 of `@medusajs/ui`.
+
+```tsx
+import { OtpInput } from "@medusajs/ui"
+import { useState } from "react"
+
+export default function OtpInputDemo() {
+  const [otp, setOtp] = useState("")
+  return (
+    <div className="w-[250px]">
+      <OtpInput value={otp} onChange={setOtp} />
+    </div>
+  )
+}
+
+```
+
+## Usage
+
+```tsx
+import { OtpInput } from "@medusajs/ui"
+```
+
+```tsx
+const [otp, setOtp] = useState("")
+
+return <OtpInput value={otp} onChange={setOtp} />
+```
+
+***
+
+## API Reference
+
+### OtpInput Props
+
+A controlled segmented input for one-time passwords, PINs, and short numeric verification codes.
+
+- autoFocus: (boolean) Whether the inputs should focus the first field on mount.
+- disabled: (boolean) Whether the inputs are disabled.
+- groupSize: (number) How many digits to show before rendering a separator. Default: 3
+- inputClassName: (string) Additional class name for each input.
+- length: (number) The number of digits in the code. Default: 6
+- onChange: (signature) Called with the sanitized code whenever it changes.
+- onComplete: (signature) Called when the sanitized code reaches the configured length.
+- readOnly: (boolean) Whether the inputs are read-only.
+- separator: (ReactReactNode) The separator rendered between groups. Default: "-"
+- value: (string) The controlled code value.
+- aria-label: (string) Defines a string value that labels the current element. Default: "One-time password"
+
+***
+
+## Examples
+
+### Handle OTP Completion
+
+Use the `onComplete` callback to react when the user fills in the full code. This is useful to automatically submit the code for verification once it's complete:
+
+```tsx
+import { OtpInput, Text } from "@medusajs/ui"
+import { useState } from "react"
+
+export default function OtpInputOnComplete() {
+  const [otp, setOtp] = useState("")
+  const [submitted, setSubmitted] = useState<string | null>(null)
+
+  return (
+    <div className="flex w-[250px] flex-col items-center gap-y-3">
+      <OtpInput
+        value={otp}
+        onChange={(value) => {
+          setOtp(value)
+          if (submitted) {
+            setSubmitted(null)
+          }
+        }}
+        onComplete={(value) => setSubmitted(value)}
+      />
+      {submitted && <Text size="small">Submitted code: {submitted}</Text>}
+    </div>
+  )
+}
+
+```
+
+### 4-Digit PIN
+
+By default, the OTP input renders a 6-digit code. Use the `length` and `groupSize` props to render a shorter code without a separator:
+
+```tsx
+import { OtpInput } from "@medusajs/ui"
+import { useState } from "react"
+
+export default function OtpInputPin() {
+  const [pin, setPin] = useState("")
+  return (
+    <div className="w-[250px]">
+      <OtpInput value={pin} onChange={setPin} length={4} groupSize={4} />
+    </div>
+  )
+}
+
+```
+
+### Custom Group Size
+
+By default, the OTP input groups digits in sets of `3`. Use the `groupSize` prop to control how many digits are rendered between each separator:
+
+```tsx
+import { OtpInput } from "@medusajs/ui"
+import { useState } from "react"
+
+export default function OtpInputGroupSize() {
+  const [otp, setOtp] = useState("")
+  return (
+    <div className="w-[250px]">
+      <OtpInput value={otp} onChange={setOtp} groupSize={2} />
+    </div>
+  )
+}
+
+```
+
+### Custom Separator
+
+By default, the OTP input uses `-` as the separator. You can change it by setting the `separator` prop. It can be a string or a React node:
+
+```tsx
+import { OtpInput } from "@medusajs/ui"
+import { useState } from "react"
+
+export default function OtpInputCustomSeparator() {
+  const [otp, setOtp] = useState("")
+  return (
+    <div className="w-[250px]">
+      <OtpInput value={otp} onChange={setOtp} separator="•" />
+    </div>
+  )
+}
+
+```
+
+### Error State
+
+You can leverage the native `aria-invalid` property to show an error state on the OTP input:
+
+```tsx
+import { OtpInput } from "@medusajs/ui"
+import { useState } from "react"
+
+export default function OtpInputError() {
+  const [otp, setOtp] = useState("123")
+  return (
+    <div className="w-[250px]">
+      <OtpInput value={otp} onChange={setOtp} aria-invalid={true} />
+    </div>
   )
 }
 

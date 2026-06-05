@@ -95,18 +95,20 @@ class OasSchemaHelper {
           propertySchema.items &&
           !("$ref" in propertySchema.items)
         ) {
+          const arrayLevel = maybeIncrementLevel(level, "array")
           propertySchema.items =
-            this.namedSchemaToReference(
-              propertySchema.items,
-              maybeIncrementLevel(level, "array")
-            ) || propertySchema.items
+            this.namedSchemaToReference(propertySchema.items, arrayLevel) ||
+            this.schemaChildrenToRefs(propertySchema.items, arrayLevel)
         } else if (
           propertySchema.oneOf ||
           propertySchema.allOf ||
           propertySchema.anyOf
         ) {
           // if the property is a combination of types, go through each of
-          // the types and try to convert them to references.
+          // the types and try to convert them to references. Fall back to
+          // `schemaChildrenToRefs` so nested named schemas inside an
+          // unnamed composed entry (e.g. an `allOf` member from an
+          // intersection) still get extracted to `$ref`.
           const schemaTarget =
             propertySchema.oneOf || propertySchema.allOf || propertySchema.anyOf
           schemaTarget!.forEach((item, index) => {
@@ -114,19 +116,23 @@ class OasSchemaHelper {
               return
             }
 
+            const composedLevel = maybeIncrementLevel(level, "allOf")
             schemaTarget![index] =
-              this.namedSchemaToReference(
-                item,
-                maybeIncrementLevel(level, "allOf")
-              ) || item
+              this.namedSchemaToReference(item, composedLevel) ||
+              this.schemaChildrenToRefs(item, composedLevel)
           })
         }
 
+        const objectLevel = maybeIncrementLevel(level, "object")
         properties![property] =
           this.namedSchemaToReference(
             propertySchema as OpenApiSchema,
-            maybeIncrementLevel(level, "object")
-          ) || propertySchema
+            objectLevel
+          ) ||
+          this.schemaChildrenToRefs(
+            propertySchema as OpenApiSchema,
+            objectLevel
+          )
       })
     }
 

@@ -444,6 +444,14 @@ const generatedgeneratedStorefrontDevelopmentSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "link",
+              "path": "/storefront-development/customers/verify-account",
+              "title": "Register Customer with Email Verification",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
               "path": "/storefront-development/customers/login",
               "title": "Login Customer",
               "children": []
