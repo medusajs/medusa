@@ -1,57 +1,90 @@
 #!/usr/bin/env bash
 #
-# Manages labels on a GitHub issue.
-# Usage: ./scripts/labels.sh [issue_number] <action> <label>
+# Manages labels on a GitHub issue / PR with a hardcoded allowlist.
 #
-# action: add | remove
+# Usage:
+#   GITHUB_EVENT_NUMBER=123 ./scripts/labels.sh \
+#       --workflow <triage|review> \
+#       --action <add|remove> \
+#       --label <label>
 #
-# If issue_number is not provided as first arg, reads from the workflow event payload.
-# Examples:
-#   ./scripts/labels.sh 123 add bug
-#   ./scripts/labels.sh 123 remove needs-triage
-#   ./scripts/labels.sh add bug          (issue from event payload)
+# The issue / PR number is pinned to GITHUB_EVENT_NUMBER so a prompt-injection
+# cannot redirect label changes to a different issue.
+#
+# Only labels in the hardcoded allowlist for the given workflow are accepted.
+# Anything else is rejected (not silently dropped) so misuse surfaces in logs.
 #
 
 set -euo pipefail
 
-# Detect whether first arg is an issue number or an action
-if [[ $# -eq 3 ]]; then
-  ISSUE="$1"
-  ACTION="$2"
-  LABEL="$3"
-elif [[ $# -eq 2 ]]; then
-  ISSUE=$(jq -r '.issue.number // empty' "${GITHUB_EVENT_PATH:?GITHUB_EVENT_PATH not set}")
-  ACTION="$1"
-  LABEL="$2"
-else
-  echo "Usage: $0 [issue_number] <add|remove> <label>" >&2
-  exit 1
-fi
+WORKFLOW=""
+ACTION=""
+LABEL=""
 
-if ! [[ "$ISSUE" =~ ^[0-9]+$ ]]; then
-  echo "Error: no valid issue number provided or found in event payload" >&2
+require_value() {
+  if [[ $# -lt 2 || -z "${2:-}" || "$2" == --* ]]; then
+    echo "Error: $1 requires a value" >&2
+    exit 1
+  fi
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --workflow) require_value "$@"; WORKFLOW="$2"; shift 2 ;;
+    --action)   require_value "$@"; ACTION="$2";   shift 2 ;;
+    --label)    require_value "$@"; LABEL="$2";    shift 2 ;;
+    *)
+      echo "Error: unknown argument '$1'" >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [[ -z "$WORKFLOW" || -z "$ACTION" || -z "$LABEL" ]]; then
+  echo "Usage: $0 --workflow <triage|review> --action <add|remove> --label <label>" >&2
   exit 1
 fi
 
 case "$ACTION" in
   add|remove) ;;
   *)
-    echo "Error: action must be 'add' or 'remove', got '$ACTION'" >&2
+    echo "Error: --action must be 'add' or 'remove'" >&2
     exit 1
     ;;
 esac
 
-# Verify the label exists in the repo
-VALID_LABELS=$(gh label list --limit 500 --json name --jq '.[].name')
-if ! echo "$VALID_LABELS" | grep -qxF "$LABEL"; then
-  echo "Warning: label '$LABEL' does not exist in the repo, skipping" >&2
-  exit 0
+ISSUE="${GITHUB_EVENT_NUMBER:-}"
+if ! [[ "$ISSUE" =~ ^[0-9]+$ ]]; then
+  echo "Error: GITHUB_EVENT_NUMBER must be a numeric issue/PR number" >&2
+  exit 1
+fi
+
+# Hardcoded per-workflow allowlists.
+TRIAGE_LABELS=("type: bug" "requires-more" "requires-team" "help-wanted" "good-first-issue" "feedback")
+REVIEW_LABELS=("initial-approval" "requires-more" "requires-team")
+
+case "$WORKFLOW" in
+  triage) ALLOWED=("${TRIAGE_LABELS[@]}") ;;
+  review) ALLOWED=("${REVIEW_LABELS[@]}") ;;
+  *)
+    echo "Error: --workflow must be 'triage' or 'review'" >&2
+    exit 1
+    ;;
+esac
+
+OK=0
+for L in "${ALLOWED[@]}"; do
+  if [[ "$L" == "$LABEL" ]]; then OK=1; break; fi
+done
+if [[ "$OK" -ne 1 ]]; then
+  echo "Error: label '$LABEL' is not in the $WORKFLOW allowlist" >&2
+  exit 1
 fi
 
 if [[ "$ACTION" == "add" ]]; then
   gh issue edit "$ISSUE" --add-label "$LABEL"
-  echo "Added label '$LABEL' to issue #$ISSUE"
+  echo "Added label '$LABEL' to #$ISSUE"
 else
   gh issue edit "$ISSUE" --remove-label "$LABEL"
-  echo "Removed label '$LABEL' from issue #$ISSUE"
+  echo "Removed label '$LABEL' from #$ISSUE"
 fi
