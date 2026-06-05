@@ -10,7 +10,6 @@
  *
  */
 export const toHandle = (value: string): string => {
-  
   let handle = value
     .toLowerCase()
     .replace(/ß/g, "ss")

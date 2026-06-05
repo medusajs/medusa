@@ -42,25 +42,25 @@ describe("toHandle and isValidHandle", function () {
       { input: "hello__world", output: "hello-world" },
       { input: "hello - world", output: "hello-world" },
       { input: "hello _ world", output: "hello-world" },
-      { input: "hello/world", output: "helloworld" },        // forward slash
-      { input: "hello:world", output: "helloworld" },        // colon
-      { input: "hello?world", output: "helloworld" },        // question mark
-      { input: "hello#world", output: "helloworld" },        // hash
-      { input: "hello&world", output: "helloworld" },        // ampersand
-      { input: "hello=world", output: "helloworld" },        // equals
-      { input: "hello+world", output: "helloworld" },        // plus
-      { input: "hello,world", output: "helloworld" },        // comma
-      { input: "hello;world", output: "helloworld" },        // semicolon
-      { input: "hello(world)", output: "helloworld" },       // parentheses
-      { input: "hello[world]", output: "helloworld" },       // brackets
-      { input: "hello{world}", output: "helloworld" },       // braces
-      { input: "hello|world", output: "helloworld" },        // pipe
-      { input: "hello\\world", output: "helloworld" },       // backslash
-      { input: "hello`world", output: "helloworld" },        // backtick
-      { input: "hello~world", output: "helloworld" },        // tilde
-      { input: "hello*world", output: "helloworld" },        // asterisk
-      { input: "hello^world", output: "helloworld" },        // caret
-      { input: "hello<world>", output: "helloworld" },       // angle brackets
+      { input: "hello/world", output: "helloworld" }, // forward slash
+      { input: "hello:world", output: "helloworld" }, // colon
+      { input: "hello?world", output: "helloworld" }, // question mark
+      { input: "hello#world", output: "helloworld" }, // hash
+      { input: "hello&world", output: "helloworld" }, // ampersand
+      { input: "hello=world", output: "helloworld" }, // equals
+      { input: "hello+world", output: "helloworld" }, // plus
+      { input: "hello,world", output: "helloworld" }, // comma
+      { input: "hello;world", output: "helloworld" }, // semicolon
+      { input: "hello(world)", output: "helloworld" }, // parentheses
+      { input: "hello[world]", output: "helloworld" }, // brackets
+      { input: "hello{world}", output: "helloworld" }, // braces
+      { input: "hello|world", output: "helloworld" }, // pipe
+      { input: "hello\\world", output: "helloworld" }, // backslash
+      { input: "hello`world", output: "helloworld" }, // backtick
+      { input: "hello~world", output: "helloworld" }, // tilde
+      { input: "hello*world", output: "helloworld" }, // asterisk
+      { input: "hello^world", output: "helloworld" }, // caret
+      { input: "hello<world>", output: "helloworld" }, // angle brackets
 
       // Persian / Farsi
       { input: "سلام-دنیا", output: "سلام-دنیا" },
@@ -149,18 +149,17 @@ describe("toHandle and isValidHandle", function () {
       { input: "---a---b---", output: "a-b" },
 
       // Emoji and special Unicode
-      { input: "hello😀world", output: "helloworld" },        // emoji
-      { input: "hello→world", output: "helloworld" },        // arrows
-      { input: "hello★world", output: "helloworld" },        // stars
-      { input: "hello™world", output: "helloworld" },        // symbols
+      { input: "hello😀world", output: "helloworld" }, // emoji
+      { input: "hello→world", output: "helloworld" }, // arrows
+      { input: "hello★world", output: "helloworld" }, // stars
+      { input: "hello™world", output: "helloworld" }, // symbols
 
       // Zero-width characters
-      { input: "hello\u200Bworld", output: "helloworld" },   // zero-width space
-      { input: "hello\u200Cworld", output: "helloworld" },   // zero-width non-joiner
+      { input: "hello\u200Bworld", output: "helloworld" }, // zero-width space
+      { input: "hello\u200Cworld", output: "helloworld" }, // zero-width non-joiner
 
       // Mixed scripts with special chars
       { input: "hello@привет#世界", output: "helloпривет世界" },
-
     ]
 
     const failures: Array<{ input: string; expected: any; received: any }> = []
@@ -172,7 +171,7 @@ describe("toHandle and isValidHandle", function () {
         failures.push({
           input,
           expected: output,
-          received: handle
+          received: handle,
         })
       }
     })
@@ -180,10 +179,13 @@ describe("toHandle and isValidHandle", function () {
     if (failures.length > 0) {
       throw new Error(
         `Found ${failures.length} failing test case(s):\n\n` +
-        failures.map(f =>
-          `  "${f.input}" → expected "${f.expected}", got "${f.received}"`
-        ).join('\n') +
-        `\n\nTotal: ${expectations.length} test cases, ${failures.length} failed`
+          failures
+            .map(
+              (f) =>
+                `  "${f.input}" → expected "${f.expected}", got "${f.received}"`
+            )
+            .join("\n") +
+          `\n\nTotal: ${expectations.length} test cases, ${failures.length} failed`
       )
     }
 

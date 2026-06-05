@@ -98,7 +98,11 @@ describe("isValidHandle", function () {
       { input: "我的-产品", isValid: true },
     ]
 
-    const failures: Array<{ input: string; expected: boolean; received: boolean }> = []
+    const failures: Array<{
+      input: string
+      expected: boolean
+      received: boolean
+    }> = []
 
     expectations.forEach((expectation) => {
       const result = isValidHandle(expectation.input)
@@ -106,7 +110,7 @@ describe("isValidHandle", function () {
         failures.push({
           input: expectation.input,
           expected: expectation.isValid,
-          received: result
+          received: result,
         })
       }
     })
@@ -115,9 +119,12 @@ describe("isValidHandle", function () {
     if (failures.length > 0) {
       throw new Error(
         `Found ${failures.length} failing test case(s):\n` +
-        failures.map(f =>
-          `  "${f.input}" → expected ${f.expected}, got ${f.received}`
-        ).join('\n')
+          failures
+            .map(
+              (f) =>
+                `  "${f.input}" → expected ${f.expected}, got ${f.received}`
+            )
+            .join("\n")
       )
     }
 
@@ -182,7 +189,7 @@ describe("isValidHandle", function () {
     if (failures.length > 0) {
       throw new Error(
         `These special character slugs should be invalid but passed validation:\n` +
-        failures.map(f => `  "${f}"`).join('\n')
+          failures.map((f) => `  "${f}"`).join("\n")
       )
     }
 
@@ -222,7 +229,7 @@ describe("isValidHandle", function () {
     if (failures.length > 0) {
       throw new Error(
         `These unicode special character slugs should be invalid but passed validation:\n` +
-        failures.map(f => `  "${f}"`).join('\n')
+          failures.map((f) => `  "${f}"`).join("\n")
       )
     }
 
