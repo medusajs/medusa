@@ -122,7 +122,7 @@ export interface StoreUpdateCartLineItem {
   metadata?: Record<string, unknown> | null
 }
 
-export interface StoreAddCartShippingMethods {
+export interface StoreAddCartShippingMethodsBase {
   /**
    * The id of the chosen shipping option.
    */
@@ -134,6 +134,10 @@ export interface StoreAddCartShippingMethods {
    */
   data?: Record<string, unknown>
 }
+
+export type StoreAddCartShippingMethods =
+  | StoreAddCartShippingMethodsBase
+  | StoreAddCartShippingMethodsBase[]
 
 export interface StoreCompleteCart {
   idempotency_key?: string
