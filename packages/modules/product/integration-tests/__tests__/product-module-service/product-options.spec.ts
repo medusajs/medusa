@@ -135,7 +135,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
               products: [
                 {
                   id: productOne.id,
-                }
+                },
               ],
             },
           ])
@@ -211,7 +211,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
               products: [
                 {
                   id: productOne.id,
-                }
+                },
               ],
             },
           ])
@@ -243,7 +243,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
                   id: "product-1",
                   handle: "product-1",
                   title: "product 1",
-                }
+                },
               ],
             })
           )
@@ -307,6 +307,46 @@ moduleIntegrationTestRunner<IProductModuleService>({
             `ProductOption with id: does-not-exist was not found`
           )
         })
+
+        it("should throw when changing a global option to exclusive", async () => {
+          let error
+
+          try {
+            await service.updateProductOptions(optionId, {
+              is_exclusive: true,
+            })
+          } catch (e) {
+            error = e
+          }
+
+          expect(error?.message).toEqual(
+            `Cannot change product option: ${optionId} from global to exclusive.`
+          )
+        })
+
+        it("should currently allow changing an exclusive option to global", async () => {
+          const [exclusiveOption] = await service.createProductOptions([
+            {
+              title: "exclusive option",
+              is_exclusive: true,
+              values: ["v1"],
+            },
+          ])
+
+          expect(exclusiveOption.is_exclusive).toBe(true)
+
+          const updated = await service.updateProductOptions(
+            exclusiveOption.id,
+            { is_exclusive: false }
+          )
+
+          expect(updated.is_exclusive).toBe(false)
+
+          const retrieved = await service.retrieveProductOption(
+            exclusiveOption.id
+          )
+          expect(retrieved.is_exclusive).toBe(false)
+        })
       })
 
       describe("createOptions", () => {
@@ -331,7 +371,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(productOption).toEqual(
             expect.objectContaining({
               title: "test",
-              products: []
+              products: [],
             })
           )
         })
