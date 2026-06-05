@@ -11,47 +11,56 @@ export const processProductOptionsForImportStepId =
   "process-product-options-for-import"
 
 /**
+ * A product option entry from the import payload. When `id` is set, the
+ * product is linked to that existing option. Otherwise, a new option is
+ * created — defaulting to `is_exclusive: true` unless the import explicitly
+ * sets it to `false`.
+ */
+export type ImportProductOptionInput = ProductTypes.CreateProductOptionDTO & {
+  id?: string
+}
+
+/**
  * The data to process products with options during import.
  */
 export type ProcessProductOptionsForImportInput = {
   /**
    * The products to process. Each product can optionally have an `options` field
-   * containing the product options to create.
+   * referencing existing options by id or describing new options to create.
    */
   products: (Omit<UpdateProductWorkflowInputDTO, "option_ids"> & {
     /**
-     * The product options to create for the product.
+     * The product options to attach (when `id` is set) or create (when `id`
+     * is absent) for the product.
      */
-    options?: ProductTypes.CreateProductOptionDTO[]
+    options?: ImportProductOptionInput[]
   })[]
 }
 
 /**
  * This step processes products with options during import. It performs the following actions:
- * 
- * 1. Creates product options.
- * 2. Transforms `product.options` in the input to `product.option_ids`.
- * 3. Transforms variant options from `{title: value}` to `{optionId: value}`.
- * 
+ *
+ * 1. Links products to existing options when an `id` is provided on the option entry.
+ * 2. Creates new options for entries without an `id`, defaulting to `is_exclusive: true` unless the entry specifies otherwise.
+ * 3. Transforms `product.options` in the input to `product.option_ids`.
+ *
  * @since 2.16.0
- * 
+ *
  * @example
  * const data = processProductOptionsForImportStep({
  *   products: [
  *     {
  *       title: "T-Shirt",
  *       options: [
- *         {
- *           title: "Size",
- *           values: ["S", "M", "L"]
- *         }
+ *         // Reuse an existing (typically global) option:
+ *         { id: "opt_existing", title: "Size", values: ["S", "M", "L"] },
+ *         // Or create a new exclusive option (the default):
+ *         { title: "Color", values: ["Red", "Blue"] },
  *       ],
  *       variants: [
  *         {
- *           title: "T-Shirt - Small",
- *           options: {
- *             Size: "S"
- *           }
+ *           title: "T-Shirt - Small / Red",
+ *           options: { Size: "S", Color: "Red" }
  *         }
  *       ]
  *     }
@@ -70,48 +79,51 @@ export const processProductOptionsForImportStep = createStep(
 
     const processedProducts: UpdateProductWorkflowInputDTO[] = []
 
-    const allOptions: ProductTypes.CreateProductOptionDTO[] = []
-    const productIndices: number[] = [] // Maps option index to product index
+    // Walk every product's options once: each option either references an
+    // existing id (link) or is queued for creation. Track the (product,
+    // option) coordinates of every queued entry so we can splice the
+    // newly-created ids back into the right slot after the create call.
+    const optionsToCreate: ProductTypes.CreateProductOptionDTO[] = []
+    const createTargets: { productIndex: number; optionIndex: number }[] = []
 
-    data.products.forEach((product, index) => {
-      (product.options ?? []).forEach((option) => {
-        allOptions.push(option)
-        productIndices.push(index)
+    data.products.forEach((product, productIndex) => {
+      ;(product.options ?? []).forEach((option, optionIndex) => {
+        if (option.id) {
+          return
+        }
+        const { id: _unusedId, ...rest } = option
+        optionsToCreate.push({
+          ...rest,
+          is_exclusive: option.is_exclusive ?? true,
+        })
+        createTargets.push({ productIndex, optionIndex })
       })
     })
 
     const createdOptions =
-      allOptions.length > 0
-        ? await productService.createProductOptions(allOptions.map(option => ({
-          ...option,
-          is_exclusive: true // Until we change the CSV logic to pass option id in there, we have to default to exclusive
-        })))
+      optionsToCreate.length > 0
+        ? await productService.createProductOptions(optionsToCreate)
         : []
     const createdOptionIds = createdOptions.map((opt) => opt.id)
 
-    const productOptionsMap = new Map<
-      number,
-      ProductTypes.ProductOptionDTO[]
-    >()
-    createdOptions.forEach((option, index) => {
-      const productIndex = productIndices[index]
-      if (!productOptionsMap.has(productIndex)) {
-        productOptionsMap.set(productIndex, [])
-      }
-      productOptionsMap.get(productIndex)!.push(option)
+    const createdIdByCoord = new Map<string, string>()
+    createdOptions.forEach((opt, idx) => {
+      const { productIndex, optionIndex } = createTargets[idx]
+      createdIdByCoord.set(`${productIndex}:${optionIndex}`, opt.id)
     })
 
-    data.products.forEach((product, index) => {
-      const createdOptionsForProduct = productOptionsMap.get(index)
+    data.products.forEach((product, productIndex) => {
+      const options = product.options ?? []
+      const optionIds = options
+        .map((opt, optionIndex) =>
+          opt.id ?? createdIdByCoord.get(`${productIndex}:${optionIndex}`)
+        )
+        .filter((id): id is string => !!id)
 
-      if (createdOptionsForProduct && createdOptionsForProduct.length) {
-        // Transform product to use option_ids instead of options
+      if (optionIds.length) {
         const transformedProduct: any = deepCopy(product)
         delete transformedProduct.options
-        transformedProduct.option_ids = createdOptionsForProduct.map(
-          (opt) => opt.id
-        )
-
+        transformedProduct.option_ids = optionIds
         processedProducts.push(transformedProduct)
       } else {
         processedProducts.push(product)

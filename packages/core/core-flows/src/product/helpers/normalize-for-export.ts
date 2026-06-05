@@ -155,6 +155,7 @@ const normalizeVariantForExport = (
       const prodOptions = options.find(
         (prodOption) => prodOption.id === option.option_id
       )
+      acc[beautifyKey(`variant_option_${idx + 1}_id`)] = prodOptions?.id!
       acc[beautifyKey(`variant_option_${idx + 1}_name`)] = prodOptions?.title!
       acc[beautifyKey(`variant_option_${idx + 1}_value`)] = option.value
       return acc

@@ -1348,4 +1348,85 @@ describe("CSV processor", () => {
       expect(result.toCreate["test-product"]).toBeUndefined()
     })
   })
+
+  describe("Variant Option Id / Is Exclusive columns", () => {
+    const baseRow = (overrides: Record<string, any> = {}) => ({
+      "Product Handle": "p1",
+      "Product Title": "P1",
+      "Product Status": "draft",
+      "Variant Title": "v1",
+      "Variant Option 1 Name": "Color",
+      "Variant Option 1 Value": "Red",
+      ...overrides,
+    })
+
+    const runRow = (row: Record<string, any>) => {
+      const normalized = CSVNormalizer.preProcess(row, 1)
+      return new CSVNormalizer([normalized]).proccess()
+    }
+
+    it("carries the option id when the row has a Variant Option N Id column", () => {
+      const result = runRow(
+        baseRow({ "Variant Option 1 Id": "opt_existing" })
+      )
+
+      expect(result.toCreate["p1"].options).toEqual([
+        { title: "Color", values: ["Red"], id: "opt_existing" },
+      ])
+    })
+
+    it("carries is_exclusive when the row has a Variant Option N Is Exclusive column", () => {
+      const result = runRow(
+        baseRow({ "Variant Option 1 Is Exclusive": "false" })
+      )
+
+      expect(result.toCreate["p1"].options).toEqual([
+        { title: "Color", values: ["Red"], is_exclusive: false },
+      ])
+    })
+
+    it("ignores Is Exclusive values it cannot parse as boolean", () => {
+      const result = runRow(
+        baseRow({ "Variant Option 1 Is Exclusive": "garbage" })
+      )
+
+      expect(result.toCreate["p1"].options).toEqual([
+        { title: "Color", values: ["Red"] },
+      ])
+    })
+
+    it("does not emit id or is_exclusive when the row has neither column", () => {
+      const result = runRow(baseRow())
+
+      expect(result.toCreate["p1"].options).toEqual([
+        { title: "Color", values: ["Red"] },
+      ])
+    })
+
+    it("merges across multiple rows of the same product (first non-empty wins)", () => {
+      const row1 = baseRow({
+        "Variant Title": "v1",
+        "Variant Option 1 Id": "opt_global_color",
+      })
+      const row2 = baseRow({
+        "Variant Title": "v2",
+        // Different value, no id supplied — should not clobber opt_global_color
+        "Variant Option 1 Value": "Blue",
+      })
+
+      const normalized = [row1, row2].map((r, i) =>
+        CSVNormalizer.preProcess(r, i + 1)
+      )
+      const result = new CSVNormalizer(normalized).proccess()
+
+      expect(result.toCreate["p1"].options).toHaveLength(1)
+      expect(result.toCreate["p1"].options[0]).toEqual(
+        expect.objectContaining({
+          title: "Color",
+          values: expect.arrayContaining(["Red", "Blue"]),
+          id: "opt_global_color",
+        })
+      )
+    })
+  })
 })

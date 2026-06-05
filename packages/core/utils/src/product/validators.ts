@@ -30,9 +30,20 @@ export const CreateVariantPrice = z.object({
   rules: z.record(z.string(), z.string()).optional(),
 })
 
+// Note: this validator is only used by the CSV import flow
+// (core-flows/src/product/steps/normalize-products{,-to-chunks}.ts). The
+// public POST /admin/products and POST /admin/product-options routes use
+// their own schemas in packages/medusa/src/api/admin. Widening this schema
+// affects the import flow only.
+//
+// `id` lets a CSV row link the product to an existing option instead of
+// creating a fresh one; `is_exclusive` lets a row authored outside Medusa
+// opt out of the exclusive-by-default behavior when creating a new option.
 export const CreateProductOption = z.object({
-  title: z.string(),
-  values: z.array(z.string()),
+  id: z.string().optional(),
+  title: z.string().optional(),
+  values: z.array(z.string()).optional(),
+  is_exclusive: booleanString().optional(),
 })
 
 export const CreateProductVariant = z
@@ -103,6 +114,7 @@ export const UpdateProductOption = z.object({
   id: z.string().optional(),
   title: z.string().optional(),
   values: z.array(z.string()).optional(),
+  is_exclusive: booleanString().optional(),
 })
 
 export const UpdateVariantPrice = z.object({
