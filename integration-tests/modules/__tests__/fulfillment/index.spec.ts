@@ -223,8 +223,8 @@ medusaIntegrationTestRunner({
               labels: [
                 {
                   tracking_number: "test-tracking-number",
-                  tracking_url: "test-tracking-url",
-                  label_url: "test-label-url",
+                  tracking_url: "https://example.com/tracking",
+                  label_url: "https://example.com/label",
                 },
               ],
             },
@@ -253,8 +253,8 @@ medusaIntegrationTestRunner({
             labels: [
               {
                 tracking_number: "test-tracking-number",
-                tracking_url: "test-tracking-url",
-                label_url: "test-label-url",
+                tracking_url: "https://example.com/tracking",
+                label_url: "https://example.com/label",
               },
             ],
           },
@@ -271,8 +271,8 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: expect.any(String),
                 tracking_number: "test-tracking-number",
-                tracking_url: "test-tracking-url",
-                label_url: "test-label-url",
+                tracking_url: "https://example.com/tracking",
+                label_url: "https://example.com/label",
               }),
             ],
           })
@@ -298,8 +298,8 @@ medusaIntegrationTestRunner({
               labels: [
                 {
                   tracking_number: "test-tracking-number",
-                  tracking_url: "test-tracking-url",
-                  label_url: "test-label-url",
+                  tracking_url: "https://example.com/tracking",
+                  label_url: "https://example.com/label",
                 },
               ],
             },
