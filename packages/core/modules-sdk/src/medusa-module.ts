@@ -10,15 +10,15 @@ import {
   ModuleExports,
   ModuleJoinerConfig,
   ModuleResolution,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
   promiseAll,
   simpleHash,
   stringifyCircular,
-} from "@medusajs/utils"
-import { asValue } from "@medusajs/deps/awilix"
+} from "@zjedene-medusa/utils"
+import { asValue } from "@zjedene-medusa/deps/awilix"
 import { EOL } from "os"
 import {
   moduleLoader,

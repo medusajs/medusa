@@ -1,7 +1,7 @@
-import { createOrderCreditLinesWorkflow } from "@medusajs/core-flows"
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { IOrderModuleService, OrderDTO } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import { createOrderCreditLinesWorkflow } from "@zjedene-medusa/core-flows"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
+import { IOrderModuleService, OrderDTO } from "@zjedene-medusa/types"
+import { Modules } from "@zjedene-medusa/utils"
 import { createOrderFixture, prepareDataFixtures } from "./__fixtures__"
 
 jest.setTimeout(50000)

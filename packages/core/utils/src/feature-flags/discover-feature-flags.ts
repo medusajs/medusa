@@ -1,4 +1,4 @@
-import { FlagSettings } from "@medusajs/types"
+import { FlagSettings } from "@zjedene-medusa/types"
 import { readdir } from "fs/promises"
 import { join, normalize } from "path"
 import { dynamicImport, isString, readDirRecursive } from "../common"

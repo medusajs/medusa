@@ -1,5 +1,5 @@
-import { ThumbnailBadge } from "@medusajs/icons";
-import { AdminProduct, HttpTypes } from "@medusajs/types";
+import { ThumbnailBadge } from "@zjedene-medusa/icons";
+import { AdminProduct, HttpTypes } from "@zjedene-medusa/types";
 import {
   Button,
   Checkbox,
@@ -10,7 +10,7 @@ import {
   Tooltip,
   clx,
   usePrompt,
-} from "@medusajs/ui";
+} from "@zjedene-medusa/ui";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useUpdateProduct } from "../../../../../hooks/api/products";

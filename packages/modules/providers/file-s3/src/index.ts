@@ -1,4 +1,4 @@
-import { ModuleProvider, Modules } from "@medusajs/framework/utils"
+import { ModuleProvider, Modules } from "@zjedene-medusa/framework/utils"
 import { S3FileService } from "./services/s3-file"
 
 const services = [S3FileService]

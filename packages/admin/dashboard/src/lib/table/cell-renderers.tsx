@@ -1,6 +1,6 @@
 import React from "react"
-import { Badge, StatusBadge, Tooltip } from "@medusajs/ui"
-import { HttpTypes } from "@medusajs/types"
+import { Badge, StatusBadge, Tooltip } from "@zjedene-medusa/ui"
+import { HttpTypes } from "@zjedene-medusa/types"
 import ReactCountryFlag from "react-country-flag"
 import { getCountryByIso2 } from "../data/countries"
 import { ProductCell } from "../../components/table/table-cells/product/product-cell"

@@ -1,7 +1,7 @@
-import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
-import { Modules } from "@medusajs/framework/utils"
+import { moduleIntegrationTestRunner } from "@zjedene-medusa/test-utils"
+import { Modules } from "@zjedene-medusa/framework/utils"
 import { resolve } from "path"
-import { IAnalyticsModuleService } from "@medusajs/types"
+import { IAnalyticsModuleService } from "@zjedene-medusa/types"
 import { AnalyticsProviderServiceFixtures } from "../__fixtures__/providers/default-provider"
 
 jest.setTimeout(100000)

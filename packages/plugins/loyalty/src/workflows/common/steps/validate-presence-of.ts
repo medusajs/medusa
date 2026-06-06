@@ -1,5 +1,5 @@
-import { MedusaError } from "@medusajs/framework/utils";
-import { createStep } from "@medusajs/framework/workflows-sdk";
+import { MedusaError } from "@zjedene-medusa/framework/utils";
+import { createStep } from "@zjedene-medusa/framework/workflows-sdk";
 
 /**
  * Input to validate that a required entity is present.

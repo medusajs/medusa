@@ -1,6 +1,6 @@
-import { ModuleExports } from "@medusajs/types"
+import { ModuleExports } from "@zjedene-medusa/types"
 import { ModuleService } from "./services/module-service"
-import { Module } from "@medusajs/utils"
+import { Module } from "@zjedene-medusa/utils"
 
 const moduleExports: ModuleExports = {
   service: ModuleService,

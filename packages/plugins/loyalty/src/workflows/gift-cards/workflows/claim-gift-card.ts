@@ -1,12 +1,12 @@
-import { MedusaError } from "@medusajs/framework/utils"
-import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+import { MedusaError } from "@zjedene-medusa/framework/utils"
+import { useQueryGraphStep } from "@zjedene-medusa/medusa/core-flows"
 import {
   createStep,
   createWorkflow,
   transform,
   WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk"
-import { CustomerDTO } from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/workflows-sdk"
+import { CustomerDTO } from "@zjedene-medusa/framework/types"
 
 import { ModuleGiftCard } from "../../../types"
 import { claimStoreCreditAccountWorkflow } from "../../store-credit/workflows/claim-store-credit-account"

@@ -2,8 +2,8 @@ import {
   ProductTypes,
   SalesChannelTypes,
   ShippingProfileDTO,
-} from "@medusajs/framework/types"
-import { MedusaError } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/types"
+import { MedusaError } from "@zjedene-medusa/framework/utils"
 
 const basicFieldsToOmit = [
   // Fields with slightly different naming

@@ -1,4 +1,4 @@
-import { QueryContextType } from "@medusajs/types"
+import { QueryContextType } from "@zjedene-medusa/types"
 
 type QueryContexFnType = {
   (query: Record<string, unknown>): Record<string, unknown>

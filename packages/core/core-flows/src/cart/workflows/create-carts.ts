@@ -4,12 +4,12 @@ import {
   CreateCartDTO,
   CreateCartWorkflowInputDTO,
   CreateLineItemDTO,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   CartWorkflowEvents,
   deduplicate,
   MedusaError,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import {
   createHook,
   createWorkflow,
@@ -17,7 +17,7 @@ import {
   transform,
   WorkflowData,
   WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { emitEventStep } from "../../common/steps/emit-event"
 import {
   createCartsStep,
@@ -90,8 +90,8 @@ export const createCartWorkflowId = "create-cart"
  * You can consume the `setPricingContext` hook to add the `location_id` context to the prices calculation:
  *
  * ```ts
- * import { createCartWorkflow } from "@medusajs/medusa/core-flows";
- * import { StepResponse } from "@medusajs/workflows-sdk";
+ * import { createCartWorkflow } from "@zjedene-medusa/medusa/core-flows";
+ * import { StepResponse } from "@zjedene-medusa/workflows-sdk";
  *
  * createCartWorkflow.hooks.setPricingContext((
  *   { region, variantIds, salesChannel, customerData, additional_data }, { container }

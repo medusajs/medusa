@@ -1,4 +1,4 @@
-import { Alert, Button, Container, Heading, Text } from "@medusajs/ui"
+import { Alert, Button, Container, Heading, Text } from "@zjedene-medusa/ui"
 import { useCallback, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
@@ -12,7 +12,7 @@ import {
 import { ActiveLocalesSection } from "./components/active-locales-section/active-locales-section"
 import { TranslationListSection } from "./components/translation-list-section/translation-list-section"
 import { TranslationsCompletionSection } from "./components/translations-completion-section/translations-completion-section"
-import { ListCheckbox } from "@medusajs/icons"
+import { ListCheckbox } from "@zjedene-medusa/icons"
 
 export type TranslatableEntity = {
   label: string

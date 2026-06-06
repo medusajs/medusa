@@ -1,5 +1,5 @@
-import { isPresent } from "@medusajs/framework/utils";
-import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
+import { isPresent } from "@zjedene-medusa/framework/utils";
+import { createStep, StepResponse } from "@zjedene-medusa/framework/workflows-sdk";
 import {
   ILoyaltyModuleService,
   ModuleCreateGiftCard,

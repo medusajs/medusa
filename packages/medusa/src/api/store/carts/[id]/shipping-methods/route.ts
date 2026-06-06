@@ -1,6 +1,6 @@
-import { addShippingMethodToCartWorkflow } from "@medusajs/core-flows"
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
+import { addShippingMethodToCartWorkflow } from "@zjedene-medusa/core-flows"
+import { MedusaRequest, MedusaResponse } from "@zjedene-medusa/framework/http"
+import { AdditionalData, HttpTypes } from "@zjedene-medusa/framework/types"
 import { refetchCart } from "../../helpers"
 
 export const POST = async (

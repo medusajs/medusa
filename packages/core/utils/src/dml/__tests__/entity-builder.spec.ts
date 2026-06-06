@@ -2,7 +2,7 @@ import {
   ArrayType,
   EntityMetadata,
   MetadataStorage,
-} from "@medusajs/deps/mikro-orm/core"
+} from "@zjedene-medusa/deps/mikro-orm/core"
 import { expectTypeOf } from "expect-type"
 import { DmlEntity } from "../entity"
 import { model } from "../entity-builder"

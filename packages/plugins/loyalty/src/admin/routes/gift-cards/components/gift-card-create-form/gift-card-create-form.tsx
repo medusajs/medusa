@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { HttpTypes } from "@medusajs/framework/types"
+import { HttpTypes } from "@zjedene-medusa/framework/types"
 import {
   Button,
   CurrencyInput,
@@ -9,10 +9,10 @@ import {
   Text,
   Textarea,
   toast,
-} from "@medusajs/ui"
+} from "@zjedene-medusa/ui"
 import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
-import { z } from "@medusajs/framework/zod"
+import { z } from "@zjedene-medusa/framework/zod"
 import { Combobox } from "../../../../components/combobox"
 import { Form } from "../../../../components/form"
 import { RouteFocusModal, useRouteModal } from "../../../../components/modals"

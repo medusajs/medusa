@@ -2,9 +2,9 @@ import {
   authenticate,
   validateAndTransformBody,
   validateAndTransformQuery,
-} from "@medusajs/framework";
-import { MiddlewareRoute } from "@medusajs/medusa";
-import { StoreGetCartsCart } from "@medusajs/medusa/api/store/carts/validators";
+} from "@zjedene-medusa/framework";
+import { MiddlewareRoute } from "@zjedene-medusa/medusa";
+import { StoreGetCartsCart } from "@zjedene-medusa/medusa/api/store/carts/validators";
 import { retrieveTransformQueryConfig } from "./query-config";
 import {
   StoreAddGiftCardToCart,

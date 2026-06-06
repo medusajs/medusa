@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { AdminCampaign } from "@medusajs/types"
-import { Button, CurrencyInput, Input, toast } from "@medusajs/ui"
+import { AdminCampaign } from "@zjedene-medusa/types"
+import { Button, CurrencyInput, Input, toast } from "@zjedene-medusa/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"

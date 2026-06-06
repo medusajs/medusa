@@ -1,4 +1,4 @@
-import { KebabCase, SnakeCase } from "@medusajs/types"
+import { KebabCase, SnakeCase } from "@zjedene-medusa/types"
 import { camelToSnakeCase, kebabCase, lowerCaseFirst } from "../common"
 import { CommonEvents } from "./common-events"
 

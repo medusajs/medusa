@@ -8,7 +8,7 @@ import {
   createWorkflow,
   StepResponse,
   WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 
 // Mock counters to track execution attempts
 export const retryIntervalStep1InvokeMock = jest.fn()

@@ -1,6 +1,6 @@
 import { codegen } from "@graphql-codegen/core"
 import * as typescriptPlugin from "@graphql-codegen/typescript"
-import { ModuleJoinerConfig } from "@medusajs/types"
+import { ModuleJoinerConfig } from "@zjedene-medusa/types"
 import {
   EnumTypeDefinitionNode,
   EnumValueDefinitionNode,
@@ -61,12 +61,12 @@ async function generateTypes({
 }) {
   const fileSystem = new FileSystem(outputDir)
 
-  let output = 'import "@medusajs/framework/types"\n'
+  let output = 'import "@zjedene-medusa/framework/types"\n'
   output += await codegen(config)
   const entryPoints = buildEntryPointsTypeMap({ schema: output, joinerConfigs })
 
   const remoteQueryEntryPoints = `
-declare module '@medusajs/framework/types' {
+declare module '@zjedene-medusa/framework/types' {
   interface ${interfaceName} {
 ${entryPoints
   .map((entry) => `    ${entry.entryPoint}: ${entry.entityType}`)

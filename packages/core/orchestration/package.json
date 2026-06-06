@@ -1,5 +1,5 @@
 {
-  "name": "@medusajs/orchestration",
+  "name": "@zjedene-medusa/orchestration",
   "version": "2.15.5",
   "description": "Medusa utilities to orchestrate modules",
   "main": "dist/index.js",
@@ -26,11 +26,11 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "2.15.5"
+    "@zjedene-medusa/types": "2.15.5"
   },
   "dependencies": {
-    "@medusajs/deps": "2.15.5",
-    "@medusajs/utils": "2.15.5",
+    "@zjedene-medusa/deps": "2.15.5",
+    "@zjedene-medusa/utils": "2.15.5",
     "ulid": "^2.3.0"
   },
   "scripts": {

@@ -1,13 +1,13 @@
-import { createRegionsWorkflow } from "@medusajs/core-flows"
-import { HttpTypes } from "@medusajs/framework/types"
+import { createRegionsWorkflow } from "@zjedene-medusa/core-flows"
+import { HttpTypes } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework/http"
 import { refetchRegion } from "./helpers"
 
 export const GET = async (

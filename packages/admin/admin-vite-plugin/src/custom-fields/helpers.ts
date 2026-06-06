@@ -1,7 +1,7 @@
 import {
   CustomFieldModel,
   isValidCustomFieldModel,
-} from "@medusajs/admin-shared"
+} from "@zjedene-medusa/admin-shared"
 import {
   ExportDefaultDeclaration,
   isCallExpression,

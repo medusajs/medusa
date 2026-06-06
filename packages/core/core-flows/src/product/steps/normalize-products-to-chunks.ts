@@ -1,13 +1,13 @@
 import { CsvError, parse, Parser } from "csv-parse"
-import type { HttpTypes, IFileModuleService } from "@medusajs/framework/types"
+import type { HttpTypes, IFileModuleService } from "@zjedene-medusa/framework/types"
 import {
   CSVNormalizer,
   MedusaError,
   Modules,
   productValidators,
-} from "@medusajs/framework/utils"
-import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { MedusaErrorTypes } from "@medusajs/utils"
+} from "@zjedene-medusa/framework/utils"
+import { createStep, StepResponse } from "@zjedene-medusa/framework/workflows-sdk"
+import { MedusaErrorTypes } from "@zjedene-medusa/utils"
 
 /**
  * The CSV file content to parse.

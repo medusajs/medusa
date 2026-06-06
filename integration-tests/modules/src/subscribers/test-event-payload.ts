@@ -1,4 +1,4 @@
-import { SubscriberConfig } from "@medusajs/medusa"
+import { SubscriberConfig } from "@zjedene-medusa/medusa"
 
 const testEventPayloadHandlerMock = jest.fn()
 

@@ -2,7 +2,7 @@ import {
   IEventBusModuleService,
   Logger,
   StoreTypes,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 
 export type InitializeModuleInjectableDependencies = {
   logger?: Logger

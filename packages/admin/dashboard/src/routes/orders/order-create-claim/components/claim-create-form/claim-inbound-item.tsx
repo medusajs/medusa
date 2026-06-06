@@ -1,6 +1,6 @@
-import { ChatBubble, DocumentText, XCircle, XMark } from "@medusajs/icons"
-import { AdminOrderLineItem, HttpTypes } from "@medusajs/types"
-import { IconButton, Input, Text } from "@medusajs/ui"
+import { ChatBubble, DocumentText, XCircle, XMark } from "@zjedene-medusa/icons"
+import { AdminOrderLineItem, HttpTypes } from "@zjedene-medusa/types"
+import { IconButton, Input, Text } from "@zjedene-medusa/ui"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 

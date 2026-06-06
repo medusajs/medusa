@@ -1,10 +1,10 @@
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
 import path from "path"
 
 jest.setTimeout(100000)
 
-import { createProductsWorkflow } from "@medusajs/core-flows"
-import { Modules } from "@medusajs/utils"
+import { createProductsWorkflow } from "@zjedene-medusa/core-flows"
+import { Modules } from "@zjedene-medusa/utils"
 import { TranslationModule } from "../__fixtures__/translation-test/src/modules/translation/service"
 
 const createTranslations = async (container, inputs) => {

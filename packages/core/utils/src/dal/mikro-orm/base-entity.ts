@@ -4,7 +4,7 @@ import {
   OnInit,
   OptionalProps,
   PrimaryKey,
-} from "@medusajs/deps/mikro-orm/core"
+} from "@zjedene-medusa/deps/mikro-orm/core"
 import { generateEntityId } from "../../common"
 
 @Entity({ abstract: true })

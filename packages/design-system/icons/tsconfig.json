@@ -23,7 +23,7 @@
     "baseUrl": "src",
     "declarationDir": "dist",
     "paths": {
-      "@medusajs/icon": ["src/index.ts"]
+      "@zjedene-medusa/icon": ["src/index.ts"]
     }
   },
   "include": ["src"],

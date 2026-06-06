@@ -1,4 +1,4 @@
-import { MetadataStorage } from "@medusajs/deps/mikro-orm/core"
+import { MetadataStorage } from "@zjedene-medusa/deps/mikro-orm/core"
 
 export function Searchable() {
   return function (target, propertyName) {

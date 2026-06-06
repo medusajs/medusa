@@ -3,8 +3,8 @@ import {
   Shopping,
   TriangleRightMini,
   TruckFast,
-} from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
+} from "@zjedene-medusa/icons"
+import { HttpTypes } from "@zjedene-medusa/types"
 import {
   Badge,
   Button,
@@ -16,7 +16,7 @@ import {
   StatusBadge,
   Text,
   Tooltip,
-} from "@medusajs/ui"
+} from "@zjedene-medusa/ui"
 import { Accordion } from "radix-ui"
 import { Link } from "react-router-dom"
 

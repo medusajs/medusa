@@ -1,9 +1,9 @@
 import {
   validateAndTransformBody,
   validateAndTransformQuery,
-} from "@medusajs/framework"
-import { maybeApplyLinkFilter, MiddlewareRoute } from "@medusajs/framework/http"
-import { PolicyOperation } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework"
+import { maybeApplyLinkFilter, MiddlewareRoute } from "@zjedene-medusa/framework/http"
+import { PolicyOperation } from "@zjedene-medusa/framework/utils"
 import { createLinkBody } from "../../utils/validators"
 import * as QueryConfig from "./query-config"
 import { Entities } from "./query-config"

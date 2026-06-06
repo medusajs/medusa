@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router-dom"
 import { EditProductMediaForm } from "../edit-product-media-form"
 import { ProductMediaGallery } from "../product-media-gallery"
 import { ProductMediaViewContext } from "./product-media-view-context"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 
 type ProductMediaViewProps = {
   product: HttpTypes.AdminProduct

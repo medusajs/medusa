@@ -1,7 +1,7 @@
 const path = require("path")
 const express = require("express")
 const getPort = require("get-port")
-const { isObject } = require("@medusajs/framework/utils")
+const { isObject } = require("@zjedene-medusa/framework/utils")
 const { setContainer } = require("./use-container")
 const { setPort, setExpressServer } = require("./use-api")
 
@@ -12,7 +12,7 @@ async function bootstrapApp({ cwd, env = {} } = {}) {
     Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
   }
 
-  const loaders = require("@medusajs/medusa/dist/loaders").default
+  const loaders = require("@zjedene-medusa/medusa/dist/loaders").default
 
   const { container, shutdown } = await loaders({
     directory: path.resolve(cwd || process.cwd()),

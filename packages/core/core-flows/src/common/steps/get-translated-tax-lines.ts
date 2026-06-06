@@ -1,9 +1,9 @@
-import { ItemTaxLineDTO, ShippingTaxLineDTO } from "@medusajs/framework/types"
+import { ItemTaxLineDTO, ShippingTaxLineDTO } from "@zjedene-medusa/framework/types"
 import {
   applyTranslationsToTaxLines,
   FeatureFlag,
-} from "@medusajs/framework/utils"
-import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/utils"
+import { createStep, StepResponse } from "@zjedene-medusa/framework/workflows-sdk"
 export const getTranslatedTaxLinesStepId = "get-translated-tax-lines-step"
 
 export interface GetTranslatedTaxLinesStepInput {

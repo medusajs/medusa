@@ -1,10 +1,10 @@
-import { hasPermission } from "@medusajs/framework"
+import { hasPermission } from "@zjedene-medusa/framework"
 import {
   arrayDifference,
   ContainerRegistrationKeys,
   MedusaError,
-} from "@medusajs/framework/utils"
-import { createStep } from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/utils"
+import { createStep } from "@zjedene-medusa/framework/workflows-sdk"
 
 /**
  * @ignore

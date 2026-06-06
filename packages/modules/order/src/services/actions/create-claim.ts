@@ -2,7 +2,7 @@ import {
   Context,
   CreateOrderChangeActionDTO,
   OrderTypes,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   ChangeActionType,
   ClaimType,
@@ -12,7 +12,7 @@ import {
   isString,
   promiseAll,
   toMikroORMEntity,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { OrderClaim, OrderClaimItem, Return, ReturnItem } from "@models"
 
 function createClaimAndReturnEntities(em, data, order) {

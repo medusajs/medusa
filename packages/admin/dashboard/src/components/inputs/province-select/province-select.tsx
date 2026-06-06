@@ -4,7 +4,7 @@ import {
   useImperativeHandle,
   useRef,
 } from "react"
-import { Select } from "@medusajs/ui"
+import { Select } from "@zjedene-medusa/ui"
 import { useTranslation } from "react-i18next"
 import { getCountryProvinceObjectByIso2 } from "../../../lib/data/country-states"
 

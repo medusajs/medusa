@@ -4,7 +4,7 @@ import {
   parallelize,
   StepResponse,
   WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 
 const step_1_background = createStep(
   {

@@ -1,4 +1,4 @@
-import { TranslationTypes } from "@medusajs/framework/types"
+import { TranslationTypes } from "@zjedene-medusa/framework/types"
 
 export const createLocaleFixture: TranslationTypes.CreateLocaleDTO = {
   code: "test-LC",

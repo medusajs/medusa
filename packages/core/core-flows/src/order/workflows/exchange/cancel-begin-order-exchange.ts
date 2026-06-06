@@ -2,15 +2,15 @@ import {
   OrderChangeDTO,
   OrderDTO,
   OrderExchangeDTO,
-} from "@medusajs/framework/types"
-import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/types"
+import { ChangeActionType, OrderChangeStatus } from "@zjedene-medusa/framework/utils"
 import {
   WorkflowData,
   createStep,
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import {
   deleteExchangesStep,

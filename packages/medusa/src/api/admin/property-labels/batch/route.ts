@@ -1,10 +1,10 @@
-import { batchPropertyLabelsWorkflow } from "@medusajs/core-flows"
+import { batchPropertyLabelsWorkflow } from "@zjedene-medusa/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
-import { HttpTypes } from "@medusajs/framework/types"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/http"
+import { HttpTypes } from "@zjedene-medusa/framework/types"
+import { ContainerRegistrationKeys } from "@zjedene-medusa/framework/utils"
 
 /**
  * Batch create, update, and delete property labels.

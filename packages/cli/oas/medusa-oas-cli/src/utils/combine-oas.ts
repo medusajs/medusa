@@ -1,4 +1,4 @@
-import { upperCaseFirst } from "@medusajs/utils"
+import { upperCaseFirst } from "@zjedene-medusa/utils"
 import { OpenAPIObject } from "openapi3-ts"
 
 export async function combineOAS(

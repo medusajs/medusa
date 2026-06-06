@@ -1,4 +1,4 @@
-import { model } from "@medusajs/framework/utils"
+import { model } from "@zjedene-medusa/framework/utils"
 
 const XModel2 = model.define("x_module_model_2", {
   id: model.id().primaryKey(),

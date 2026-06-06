@@ -69,7 +69,7 @@ export type ItemTaxCalculationLine = {
  * import {
  *   ITaxProvider,
  *   Logger
- * } from "@medusajs/framework/types"
+ * } from "@zjedene-medusa/framework/types"
  * 
  * type InjectedDependencies = {
  *   logger: Logger

@@ -1,8 +1,8 @@
-import { InputConfigModules } from "@medusajs/types"
-import { FeatureFlag } from "@medusajs/utils"
+import { InputConfigModules } from "@zjedene-medusa/types"
+import { FeatureFlag } from "@zjedene-medusa/utils"
 import { EnvFeatureFlag } from "./src/feature-flags/env-ff"
 
-const { defineConfig } = require("@medusajs/framework/utils")
+const { defineConfig } = require("@zjedene-medusa/framework/utils")
 
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME

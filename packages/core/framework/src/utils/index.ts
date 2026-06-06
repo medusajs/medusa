@@ -1,5 +1,5 @@
-import "@medusajs/types"
-import "@medusajs/utils"
+import "@zjedene-medusa/types"
+import "@zjedene-medusa/utils"
 import "../types/container"
 
-export * from "@medusajs/utils"
+export * from "@zjedene-medusa/utils"

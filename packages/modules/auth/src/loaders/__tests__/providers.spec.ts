@@ -1,5 +1,5 @@
-import { asValue } from "@medusajs/deps/awilix"
-import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "@zjedene-medusa/deps/awilix"
+import { createMedusaContainer } from "@zjedene-medusa/utils"
 import loadProviders from "../providers"
 import AuthMfaProviderService from "../../services/mfa-provider"
 

@@ -1,9 +1,9 @@
 import {
   addDraftOrderPromotionWorkflow,
   removeDraftOrderPromotionsWorkflow,
-} from "@medusajs/core-flows"
-import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework"
-import { HttpTypes } from "@medusajs/types"
+} from "@zjedene-medusa/core-flows"
+import { AuthenticatedMedusaRequest, MedusaResponse } from "@zjedene-medusa/framework"
+import { HttpTypes } from "@zjedene-medusa/types"
 import {
   AdminAddDraftOrderPromotionsType,
   AdminRemoveDraftOrderPromotionsType,

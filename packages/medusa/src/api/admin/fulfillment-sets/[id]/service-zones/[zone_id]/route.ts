@@ -1,24 +1,24 @@
 import {
   deleteServiceZonesWorkflow,
   updateServiceZonesWorkflow,
-} from "@medusajs/core-flows"
+} from "@zjedene-medusa/core-flows"
 import {
   AdminFulfillmentSetResponse,
   AdminServiceZoneResponse,
   HttpTypes,
   IFulfillmentModuleService,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
   Modules,
   remoteQueryObjectFromString,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework/http"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminServiceZonesParams>,

@@ -1,5 +1,5 @@
-import { HttpTypes } from "@medusajs/types"
-import { Alert, Button, Text } from "@medusajs/ui"
+import { HttpTypes } from "@zjedene-medusa/types"
+import { Alert, Button, Text } from "@zjedene-medusa/ui"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { getCountryProvinceObjectByIso2 } from "../../../../../lib/data/country-states"

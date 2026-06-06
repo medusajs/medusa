@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import { i18n } from "../components/utilities/i18n"
 
 export enum PromotionStatus {

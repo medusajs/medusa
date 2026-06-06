@@ -13,7 +13,7 @@
 |
 */
 
-import { Client, type ClientConfig } from "@medusajs/deps/pg"
+import { Client, type ClientConfig } from "@zjedene-medusa/deps/pg"
 import { parse } from "pg-connection-string"
 
 /**

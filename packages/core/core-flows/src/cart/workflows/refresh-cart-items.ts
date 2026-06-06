@@ -1,5 +1,5 @@
-import type { AdditionalData } from "@medusajs/framework/types"
-import { isDefined, PromotionActions } from "@medusajs/framework/utils"
+import type { AdditionalData } from "@zjedene-medusa/framework/types"
+import { isDefined, PromotionActions } from "@zjedene-medusa/framework/utils"
 import {
   createHook,
   createWorkflow,
@@ -7,7 +7,7 @@ import {
   when,
   WorkflowData,
   WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../common"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import {
@@ -109,8 +109,8 @@ export const refreshCartItemsWorkflowId = "refresh-cart-items"
  * You can consume the `setPricingContext` hook to add the `location_id` context to the prices calculation:
  *
  * ```ts
- * import { refreshCartItemsWorkflow } from "@medusajs/medusa/core-flows";
- * import { StepResponse } from "@medusajs/workflows-sdk";
+ * import { refreshCartItemsWorkflow } from "@zjedene-medusa/medusa/core-flows";
+ * import { StepResponse } from "@zjedene-medusa/workflows-sdk";
  *
  * refreshCartItemsWorkflow.hooks.setPricingContext((
  *   { cart, items, additional_data }, { container }

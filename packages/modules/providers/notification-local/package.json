@@ -1,5 +1,5 @@
 {
-  "name": "@medusajs/notification-local",
+  "name": "@zjedene-medusa/notification-local",
   "version": "2.15.5",
   "description": "Local (logging) notification provider for Medusa, useful for testing purposes and log audits",
   "main": "dist/index.js",
@@ -26,10 +26,10 @@
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.15.5"
+    "@zjedene-medusa/framework": "2.15.5"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.15.5"
+    "@zjedene-medusa/framework": "2.15.5"
   },
   "keywords": [
     "medusa-provider",

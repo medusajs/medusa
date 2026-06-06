@@ -1,6 +1,6 @@
-import { ITaxModuleService } from "@medusajs/framework/types"
-import { Module, Modules, toMikroORMEntity } from "@medusajs/framework/utils"
-import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import { ITaxModuleService } from "@zjedene-medusa/framework/types"
+import { Module, Modules, toMikroORMEntity } from "@zjedene-medusa/framework/utils"
+import { moduleIntegrationTestRunner } from "@zjedene-medusa/test-utils"
 import { TaxModuleService } from "@services"
 import { setupTaxStructure } from "../utils/setup-tax-structure"
 

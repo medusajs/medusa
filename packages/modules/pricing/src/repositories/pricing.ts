@@ -5,19 +5,19 @@ import {
   MikroOrmBase,
   normalizeCurrencyCode,
   PriceListStatus,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 
 import {
   Knex,
   SqlEntityManager,
-} from "@medusajs/framework/mikro-orm/postgresql"
+} from "@zjedene-medusa/framework/mikro-orm/postgresql"
 import {
   CalculatedPriceSetDTO,
   Context,
   PricingContext,
   PricingFilters,
   PricingRepositoryService,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 
 export class PricingRepository
   extends MikroOrmBase

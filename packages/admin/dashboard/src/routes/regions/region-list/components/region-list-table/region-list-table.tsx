@@ -1,5 +1,5 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
-import type { HttpTypes } from "@medusajs/types"
+import { PencilSquare, Trash } from "@zjedene-medusa/icons"
+import type { HttpTypes } from "@zjedene-medusa/types"
 import {
   Button,
   Container,
@@ -7,7 +7,7 @@ import {
   Text,
   toast,
   usePrompt,
-} from "@medusajs/ui"
+} from "@zjedene-medusa/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"

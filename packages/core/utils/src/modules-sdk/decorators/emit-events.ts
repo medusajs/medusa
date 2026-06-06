@@ -1,6 +1,6 @@
 import { MessageAggregator } from "../../event-bus"
 import { InjectIntoContext } from "./inject-into-context"
-import { MessageAggregatorFormat } from "@medusajs/types"
+import { MessageAggregatorFormat } from "@zjedene-medusa/types"
 
 /**
  * @internal this decorator is not meant to be used except by the internal team for now

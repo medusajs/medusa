@@ -10,7 +10,7 @@ import {
   RepositoryService,
   RepositoryTransformOptions,
   UpsertWithReplaceConfig,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 import {
   EntityClass,
   EntityManager,
@@ -21,8 +21,8 @@ import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   ReferenceKind,
-} from "@medusajs/deps/mikro-orm/core"
-import { SqlEntityManager } from "@medusajs/deps/mikro-orm/postgresql"
+} from "@zjedene-medusa/deps/mikro-orm/core"
+import { SqlEntityManager } from "@zjedene-medusa/deps/mikro-orm/postgresql"
 import {
   arrayDifference,
   isString,

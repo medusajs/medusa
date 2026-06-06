@@ -1,6 +1,6 @@
 import { pathToRegexp } from "path-to-regexp"
 import type { MiddlewareVerb, RouteVerb } from "./types"
-import { isString } from "@medusajs/utils"
+import { isString } from "@zjedene-medusa/utils"
 
 export class RoutesFinder<
   T extends

@@ -1,17 +1,17 @@
-import { moduleProviderLoader } from "@medusajs/framework/modules-sdk"
+import { moduleProviderLoader } from "@zjedene-medusa/framework/modules-sdk"
 import {
   LoaderOptions,
   ModuleProvider,
   ModulesSdkTypes,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   lowerCaseFirst,
   promiseAll,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { FulfillmentProviderService } from "@services"
 import { FulfillmentIdentifiersRegistrationName } from "@types"
-import { Lifetime, asFunction, asValue } from "@medusajs/framework/awilix"
+import { Lifetime, asFunction, asValue } from "@zjedene-medusa/framework/awilix"
 
 const registrationFn = async (klass, container, pluginOptions) => {
   const key = FulfillmentProviderService.getRegistrationIdentifier(

@@ -1,4 +1,4 @@
-import { InternalModuleDeclaration, LoaderOptions } from "@medusajs/types"
+import { InternalModuleDeclaration, LoaderOptions } from "@zjedene-medusa/types"
 import { mikroOrmConnectionLoader } from "./mikro-orm-connection-loader"
 
 /**

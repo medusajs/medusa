@@ -1,4 +1,4 @@
-import { model } from "@medusajs/framework/utils"
+import { model } from "@zjedene-medusa/framework/utils"
 
 import { ShippingOption } from "./shipping-option"
 

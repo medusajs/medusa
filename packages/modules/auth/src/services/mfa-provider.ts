@@ -5,7 +5,7 @@ import {
   IAuthMfaProvider,
   AuthMfaProvider,
   RecoveryCodeAuthMfaProvider,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import { AuthMfaProviderRegistrationPrefix } from "@types"
 
 type InjectedDependencies = {

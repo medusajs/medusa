@@ -1,13 +1,13 @@
-import { MikroORM, MikroORMOptions } from "@medusajs/deps/mikro-orm/core"
+import { MikroORM, MikroORMOptions } from "@zjedene-medusa/deps/mikro-orm/core"
 import {
   MigrateOptions,
   MigrationResult,
   UmzugMigration,
-} from "@medusajs/deps/mikro-orm/migrations"
+} from "@zjedene-medusa/deps/mikro-orm/migrations"
 import {
   defineConfig,
   PostgreSqlDriver,
-} from "@medusajs/deps/mikro-orm/postgresql"
+} from "@zjedene-medusa/deps/mikro-orm/postgresql"
 import { EventEmitter } from "events"
 import { access, mkdir, rename, writeFile } from "fs/promises"
 import { basename, dirname, join } from "path"
@@ -16,17 +16,17 @@ import { CustomDBMigrator } from "../dal/mikro-orm/custom-db-migrator"
 
 // Define the replacement mappings
 const replacements = [
-  // MikroORM imports - replace mikro-orm/{subpath} with @medusajs/framework/mikro-orm/{subpath}
+  // MikroORM imports - replace mikro-orm/{subpath} with @zjedene-medusa/framework/mikro-orm/{subpath}
   {
     pattern: /from\s+['"]@?mikro-orm\/([^'"]+)['"]/g,
     // eslint-disable-next-line quotes
-    replacement: 'from "@medusajs/framework/mikro-orm/$1"',
+    replacement: 'from "@zjedene-medusa/framework/mikro-orm/$1"',
   },
-  // PG imports - replace pg with @medusajs/framework/pg
+  // PG imports - replace pg with @zjedene-medusa/framework/pg
   {
     pattern: /from\s+['"]pg['"]/g,
     // eslint-disable-next-line quotes
-    replacement: 'from "@medusajs/framework/pg"',
+    replacement: 'from "@zjedene-medusa/framework/pg"',
   },
 ]
 

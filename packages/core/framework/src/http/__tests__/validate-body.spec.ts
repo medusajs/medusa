@@ -1,5 +1,5 @@
-import { MedusaError } from "@medusajs/utils"
-import { z, ZodNullable, ZodObject, ZodOptional } from "@medusajs/deps/zod"
+import { MedusaError } from "@zjedene-medusa/utils"
+import { z, ZodNullable, ZodObject, ZodOptional } from "@zjedene-medusa/deps/zod"
 import { MedusaRequest, MedusaResponse } from "../types"
 import { validateAndTransformBody } from "../utils/validate-body"
 

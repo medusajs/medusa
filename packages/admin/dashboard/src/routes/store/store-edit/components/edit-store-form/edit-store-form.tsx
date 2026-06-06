@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { HttpTypes } from "@medusajs/types"
-import { Button, Input, Select, toast } from "@medusajs/ui"
+import { HttpTypes } from "@zjedene-medusa/types"
+import { Button, Input, Select, toast } from "@zjedene-medusa/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"

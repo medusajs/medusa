@@ -1,4 +1,4 @@
-import { QueryCondition, QueryValue, SimpleQueryValue } from "@medusajs/types"
+import { QueryCondition, QueryValue, SimpleQueryValue } from "@zjedene-medusa/types"
 import { isBoolean, isDefined, isObject, isString } from "../../../common"
 
 /*

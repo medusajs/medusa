@@ -8,8 +8,8 @@ import { CampaignSection } from "./components/campaign-section"
 import { PromotionConditionsSection } from "./components/promotion-conditions-section"
 import { PromotionGeneralSection } from "./components/promotion-general-section"
 import { promotionLoader } from "./loader"
-import { AdminPromotionRule } from "@medusajs/types"
-import { BasePromotionRuleValue } from "@medusajs/types/dist/http/promotion/common"
+import { AdminPromotionRule } from "@zjedene-medusa/types"
+import { BasePromotionRuleValue } from "@zjedene-medusa/types/dist/http/promotion/common"
 
 export type ExtendedPromotionRule = Omit<AdminPromotionRule, "values"> & {
   attribute_label?: string

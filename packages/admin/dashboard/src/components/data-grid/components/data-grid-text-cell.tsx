@@ -1,4 +1,4 @@
-import { clx } from "@medusajs/ui"
+import { clx } from "@zjedene-medusa/ui"
 import { useEffect, useRef, useState } from "react"
 import { Controller, ControllerRenderProps } from "react-hook-form"
 

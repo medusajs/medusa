@@ -11,7 +11,7 @@ jest.mock("../log-message")
 jest.mock("os", () => ({
   homedir: jest.fn().mockReturnValue("/mock/home"),
 }))
-jest.mock("@medusajs/telemetry", () => ({
+jest.mock("@zjedene-medusa/telemetry", () => ({
   Store: jest.fn(),
   track: jest.fn(),
 }))
@@ -50,7 +50,7 @@ describe("promptClaudeCodePlugin", () => {
     // Set up Store mock
     mockGetConfig = jest.fn().mockReturnValue(false)
     mockSetConfig = jest.fn()
-    const telemetry = jest.requireMock("@medusajs/telemetry")
+    const telemetry = jest.requireMock("@zjedene-medusa/telemetry")
     MockStore = telemetry.Store
     mockTrack = telemetry.track
     MockStore.mockImplementation(() => ({

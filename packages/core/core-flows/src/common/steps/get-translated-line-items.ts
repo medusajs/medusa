@@ -1,10 +1,10 @@
-import { ProductVariantDTO } from "@medusajs/framework/types"
-import { applyTranslations, FeatureFlag } from "@medusajs/framework/utils"
+import { ProductVariantDTO } from "@zjedene-medusa/framework/types"
+import { applyTranslations, FeatureFlag } from "@zjedene-medusa/framework/utils"
 import {
   createStep,
   StepFunction,
   StepResponse,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { applyTranslationsToItems } from "../utils/apply-translations-to-items"
 
 export interface GetTranslatedLineItemsStepInput<T> {

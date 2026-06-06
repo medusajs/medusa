@@ -1,6 +1,6 @@
-import PaymentModule from "@medusajs/payment"
+import PaymentModule from "@zjedene-medusa/payment"
 
-export * from "@medusajs/payment"
+export * from "@zjedene-medusa/payment"
 
 export default PaymentModule
-export const discoveryPath = require.resolve("@medusajs/payment")
+export const discoveryPath = require.resolve("@zjedene-medusa/payment")

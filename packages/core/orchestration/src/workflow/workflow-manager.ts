@@ -1,4 +1,4 @@
-import { Context, MedusaContainer } from "@medusajs/types"
+import { Context, MedusaContainer } from "@zjedene-medusa/types"
 import {
   DistributedTransactionType,
   OrchestratorBuilder,

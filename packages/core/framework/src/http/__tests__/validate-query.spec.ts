@@ -1,4 +1,4 @@
-import { z } from "@medusajs/deps/zod"
+import { z } from "@zjedene-medusa/deps/zod"
 import { MedusaNextFunction, MedusaRequest, MedusaResponse } from "../types"
 import { RestrictedFields } from "../utils/restricted-fields"
 import { validateAndTransformQuery } from "../utils/validate-query"

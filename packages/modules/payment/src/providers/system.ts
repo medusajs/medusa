@@ -27,12 +27,12 @@ import {
   UpdatePaymentInput,
   UpdatePaymentOutput,
   WebhookActionResult,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   AbstractPaymentProvider,
   PaymentActions,
   PaymentSessionStatus,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 
 export class SystemPaymentProvider extends AbstractPaymentProvider {
   static identifier = "system"

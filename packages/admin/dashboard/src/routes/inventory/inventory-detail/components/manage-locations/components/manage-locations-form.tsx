@@ -2,8 +2,8 @@ import {
   AdminInventoryItem,
   AdminStockLocation,
   HttpTypes,
-} from "@medusajs/types"
-import { Button, Text, toast } from "@medusajs/ui"
+} from "@zjedene-medusa/types"
+import { Button, Text, toast } from "@zjedene-medusa/ui"
 import { useTranslation } from "react-i18next"
 import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 import { useBatchInventoryItemLocationLevels } from "../../../../../../hooks/api/inventory"

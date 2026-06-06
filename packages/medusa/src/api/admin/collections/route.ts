@@ -1,13 +1,13 @@
-import { createCollectionsWorkflow } from "@medusajs/core-flows"
+import { createCollectionsWorkflow } from "@zjedene-medusa/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
-import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/http"
+import { AdditionalData, HttpTypes } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { refetchCollection } from "./helpers"
 import { AdminCreateCollectionType } from "./validators"
 

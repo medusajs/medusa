@@ -1,5 +1,5 @@
 import { CreateWorkflowComposerContext, WorkflowData } from "./type"
-import { OrchestrationUtils } from "@medusajs/utils"
+import { OrchestrationUtils } from "@zjedene-medusa/utils"
 
 /**
  * This function is used to run multiple steps in parallel. The result of each step will be returned as part of the result array.
@@ -13,7 +13,7 @@ import { OrchestrationUtils } from "@medusajs/utils"
  *   createWorkflow,
  *   parallelize,
  *   WorkflowResponse
- * } from "@medusajs/framework/workflows-sdk"
+ * } from "@zjedene-medusa/framework/workflows-sdk"
  * import {
  *   createProductStep,
  *   createPricesStep,

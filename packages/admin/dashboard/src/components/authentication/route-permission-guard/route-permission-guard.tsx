@@ -1,5 +1,5 @@
-import { ExclamationCircle } from "@medusajs/icons"
-import { Container, Heading, Text } from "@medusajs/ui"
+import { ExclamationCircle } from "@zjedene-medusa/icons"
+import { Container, Heading, Text } from "@zjedene-medusa/ui"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Navigate, Outlet, useMatches } from "react-router-dom"

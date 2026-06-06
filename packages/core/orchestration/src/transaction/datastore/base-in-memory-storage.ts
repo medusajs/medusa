@@ -1,4 +1,4 @@
-import { TransactionState } from "@medusajs/utils"
+import { TransactionState } from "@zjedene-medusa/utils"
 import { TransactionCheckpoint } from "../distributed-transaction"
 import { TransactionOptions } from "../types"
 import { DistributedTransactionStorage } from "./abstract-storage"

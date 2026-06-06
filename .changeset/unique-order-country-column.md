@@ -1,5 +1,5 @@
 ---
-"@medusajs/dashboard": patch
+"@zjedene-medusa/dashboard": patch
 ---
 
 fix(dashboard): use a unique order country table column id

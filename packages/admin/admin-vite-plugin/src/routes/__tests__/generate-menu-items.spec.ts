@@ -20,7 +20,7 @@ vi.mock("fs/promises", () => ({
 
 const mockFileContents = [
   `
-    import { defineRouteConfig } from "@medusajs/admin-sdk"
+    import { defineRouteConfig } from "@zjedene-medusa/admin-sdk"
 
     const Page = () => {
         return <div>Page 1</div>
@@ -34,7 +34,7 @@ const mockFileContents = [
     export default Page
     `,
   `
-    import { defineRouteConfig } from "@medusajs/admin-sdk"
+    import { defineRouteConfig } from "@zjedene-medusa/admin-sdk"
 
     const Page = () => {
         return <div>Page 2</div>
@@ -47,7 +47,7 @@ const mockFileContents = [
     export default Page
   `,
   `
-    import { defineRouteConfig } from "@medusajs/admin-sdk"
+    import { defineRouteConfig } from "@zjedene-medusa/admin-sdk"
 
     const Page = () => {
         return <div>Page 2</div>
@@ -152,7 +152,7 @@ describe("generateMenuItems", () => {
 
     const mockFileContentsWithRank = [
       `
-        import { defineRouteConfig } from "@medusajs/admin-sdk"
+        import { defineRouteConfig } from "@zjedene-medusa/admin-sdk"
 
         const Page = () => {
             return <div>Analytics</div>
@@ -167,7 +167,7 @@ describe("generateMenuItems", () => {
         export default Page
       `,
       `
-        import { defineRouteConfig } from "@medusajs/admin-sdk"
+        import { defineRouteConfig } from "@zjedene-medusa/admin-sdk"
 
         const Page = () => {
             return <div>Reports</div>
@@ -222,7 +222,7 @@ describe("generateMenuItems", () => {
 
   it("should handle translationNs field", async () => {
     const mockFileWithTranslation = `
-      import { defineRouteConfig } from "@medusajs/admin-sdk"
+      import { defineRouteConfig } from "@zjedene-medusa/admin-sdk"
 
       const Page = () => {
           return <div>Custom Page</div>
@@ -275,7 +275,7 @@ describe("generateMenuItems", () => {
 
     const mockMixedContents = [
       `
-        import { defineRouteConfig } from "@medusajs/admin-sdk"
+        import { defineRouteConfig } from "@zjedene-medusa/admin-sdk"
 
         const Page = () => {
             return <div>First</div>
@@ -289,7 +289,7 @@ describe("generateMenuItems", () => {
         export default Page
       `,
       `
-        import { defineRouteConfig } from "@medusajs/admin-sdk"
+        import { defineRouteConfig } from "@zjedene-medusa/admin-sdk"
 
         const Page = () => {
             return <div>Second</div>
@@ -302,7 +302,7 @@ describe("generateMenuItems", () => {
         export default Page
       `,
       `
-        import { defineRouteConfig } from "@medusajs/admin-sdk"
+        import { defineRouteConfig } from "@zjedene-medusa/admin-sdk"
 
         const Page = () => {
             return <div>Third</div>

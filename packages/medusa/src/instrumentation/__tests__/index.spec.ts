@@ -2,7 +2,7 @@ import { resolve } from "path"
 import { errorHandlerMock } from "../__fixtures__/routers/middlewares"
 import { createServer } from "../__fixtures__/server"
 import { instrumentHttpLayer } from "../index"
-import { MedusaError } from "@medusajs/framework/utils"
+import { MedusaError } from "@zjedene-medusa/framework/utils"
 
 jest.setTimeout(30000)
 

@@ -1,4 +1,4 @@
-import { Badge, createDataTableColumnHelper } from "@medusajs/ui";
+import { Badge, createDataTableColumnHelper } from "@zjedene-medusa/ui";
 import { useMemo } from "react";
 import { AdminStoreCreditAccount } from "../../../../../types";
 import { formatAmount } from "../../../../utils/format-amount";

@@ -1,6 +1,6 @@
-import { XMark } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
-import { Avatar, IconButton, Skeleton, Text } from "@medusajs/ui"
+import { XMark } from "@zjedene-medusa/icons"
+import { HttpTypes } from "@zjedene-medusa/types"
+import { Avatar, IconButton, Skeleton, Text } from "@zjedene-medusa/ui"
 import { useCustomer } from "../../hooks/api/customers"
 
 interface CustomerCardProps {

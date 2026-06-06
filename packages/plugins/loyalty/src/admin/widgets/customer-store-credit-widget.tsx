@@ -1,5 +1,5 @@
-import { defineWidgetConfig } from "@medusajs/admin-sdk";
-import { Container } from "@medusajs/ui";
+import { defineWidgetConfig } from "@zjedene-medusa/admin-sdk";
+import { Container } from "@zjedene-medusa/ui";
 import { useParams } from "react-router-dom";
 import { Header } from "../components/header";
 import { NoRecords } from "../components/no-records";

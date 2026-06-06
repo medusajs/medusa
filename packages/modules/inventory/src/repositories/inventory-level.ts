@@ -1,10 +1,10 @@
-import { Context } from "@medusajs/framework/types"
+import { Context } from "@zjedene-medusa/framework/types"
 import {
   BigNumber,
   MathBN,
   mikroOrmBaseRepositoryFactory,
-} from "@medusajs/framework/utils"
-import { SqlEntityManager } from "@medusajs/framework/mikro-orm/postgresql"
+} from "@zjedene-medusa/framework/utils"
+import { SqlEntityManager } from "@zjedene-medusa/framework/mikro-orm/postgresql"
 import { InventoryLevel } from "@models"
 
 export class InventoryLevelRepository extends mikroOrmBaseRepositoryFactory(

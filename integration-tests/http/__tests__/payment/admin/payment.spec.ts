@@ -1,6 +1,6 @@
-import { refundPaymentsWorkflow } from "@medusajs/core-flows"
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { ClaimType } from "@medusajs/utils"
+import { refundPaymentsWorkflow } from "@zjedene-medusa/core-flows"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
+import { ClaimType } from "@zjedene-medusa/utils"
 import {
   adminHeaders,
   createAdminUser,

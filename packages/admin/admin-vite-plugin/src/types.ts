@@ -3,7 +3,7 @@ import type {
   CustomFieldModel,
   CustomFieldZone,
   InjectionZone,
-} from "@medusajs/admin-shared"
+} from "@zjedene-medusa/admin-shared"
 import type * as Vite from "vite"
 
 export type ExtensionGraph = Map<string, Set<string>>

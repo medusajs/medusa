@@ -1,4 +1,4 @@
-import { RemoteQueryFunction } from "@medusajs/types"
+import { RemoteQueryFunction } from "@zjedene-medusa/types"
 
 /**
  * The computed inventory availability for variants in a given sales channel.

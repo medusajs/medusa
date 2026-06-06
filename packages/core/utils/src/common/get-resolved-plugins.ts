@@ -1,4 +1,4 @@
-import { ConfigModule, PluginDetails } from "@medusajs/types"
+import { ConfigModule, PluginDetails } from "@zjedene-medusa/types"
 import fs from "fs/promises"
 import path from "path"
 import { isString } from "./is-string"

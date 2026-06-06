@@ -1,14 +1,14 @@
 import {
   CreateSalesChannelDTO,
   SalesChannelDTO,
-} from "@medusajs/framework/types"
-import { SalesChannelWorkflowEvents } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/types"
+import { SalesChannelWorkflowEvents } from "@zjedene-medusa/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   transform,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { emitEventStep } from "../../common/steps/emit-event"
 import { createSalesChannelsStep } from "../steps/create-sales-channels"
 

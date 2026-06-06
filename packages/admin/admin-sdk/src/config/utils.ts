@@ -1,4 +1,4 @@
-import type { CustomFieldModelFormMap } from "@medusajs/admin-shared"
+import type { CustomFieldModelFormMap } from "@zjedene-medusa/admin-shared"
 import { z, ZodFirstPartySchemaTypes } from "zod"
 import {
   CustomFieldConfig,
@@ -62,8 +62,8 @@ export function unstable_defineCustomFieldsConfig<
  *
  * @example
  * ```ts
- * import { unstable_createFormHelper, unstable_defineCustomFieldsConfig } from "@medusajs/admin-sdk"
- * import type { HttpTypes } from "@medusajs/types"
+ * import { unstable_createFormHelper, unstable_defineCustomFieldsConfig } from "@zjedene-medusa/admin-sdk"
+ * import type { HttpTypes } from "@zjedene-medusa/types"
  * import type { Brand } from "../../types/brand"
  *
  * type ExtendedProduct = HttpTypes.Product & {

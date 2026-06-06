@@ -1,5 +1,5 @@
 ---
-"@medusajs/medusa": patch
+"@zjedene-medusa/medusa": patch
 ---
 
 fix(medusa): add missing policies for translation module

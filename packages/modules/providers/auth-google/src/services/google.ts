@@ -5,11 +5,11 @@ import {
   AuthIdentityProviderService,
   GoogleAuthProviderOptions,
   Logger,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   AbstractAuthModuleProvider,
   MedusaError,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import jwt, { type JwtPayload } from "jsonwebtoken"
 
 type InjectedDependencies = {

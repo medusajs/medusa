@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Heading, Text, toast } from "@medusajs/ui"
+import { Button, Heading, Text, toast } from "@zjedene-medusa/ui"
 import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
-import { z } from "@medusajs/framework/zod"
+import { z } from "@zjedene-medusa/framework/zod"
 import { Combobox } from "../../../../../components/combobox"
 import { Form } from "../../../../../components/form"
 import {

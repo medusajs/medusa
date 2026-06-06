@@ -1,10 +1,10 @@
-import { batchPromotionRulesWorkflow } from "@medusajs/core-flows"
+import { batchPromotionRulesWorkflow } from "@zjedene-medusa/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
-import { BatchMethodRequest, HttpTypes } from "@medusajs/framework/types"
-import { RuleType } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/http"
+import { BatchMethodRequest, HttpTypes } from "@zjedene-medusa/framework/types"
+import { RuleType } from "@zjedene-medusa/framework/utils"
 import { refetchBatchRules } from "../../../helpers"
 
 export const POST = async (

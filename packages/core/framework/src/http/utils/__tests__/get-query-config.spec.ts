@@ -1,4 +1,4 @@
-import { QueryConfig, RequestQueryFields } from "@medusajs/types"
+import { QueryConfig, RequestQueryFields } from "@zjedene-medusa/types"
 import { prepareListQuery } from "../get-query-config"
 
 describe("prepareListQuery", () => {

@@ -1,4 +1,4 @@
-import { BigNumberInput, CartLikeWithTotals } from "@medusajs/types"
+import { BigNumberInput, CartLikeWithTotals } from "@zjedene-medusa/types"
 import { defaultCurrencies } from "../../defaults/currencies"
 import { BigNumber, getEpsilonFromDecimalPrecision } from "../big-number"
 import { calculateCreditLinesTotal } from "../credit-lines"

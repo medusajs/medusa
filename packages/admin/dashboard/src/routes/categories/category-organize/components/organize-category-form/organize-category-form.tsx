@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query"
 
 import { UniqueIdentifier } from "@dnd-kit/core"
-import { Spinner } from "@medusajs/icons"
-import { FetchError } from "@medusajs/js-sdk"
-import { HttpTypes } from "@medusajs/types"
-import { toast } from "@medusajs/ui"
+import { Spinner } from "@zjedene-medusa/icons"
+import { FetchError } from "@zjedene-medusa/js-sdk"
+import { HttpTypes } from "@zjedene-medusa/types"
+import { toast } from "@zjedene-medusa/ui"
 import { useState } from "react"
 import { RouteFocusModal } from "../../../../../components/modals"
 import {

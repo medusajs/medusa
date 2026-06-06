@@ -1,8 +1,8 @@
 import {
   TransactionContext,
   WorkflowStepHandlerArguments,
-} from "@medusajs/orchestration"
-import { OrchestrationUtils } from "@medusajs/utils"
+} from "@zjedene-medusa/orchestration"
+import { OrchestrationUtils } from "@zjedene-medusa/utils"
 import { resolveValue } from "./helpers"
 import { proxify } from "./helpers/proxy"
 import { StepExecutionContext, WorkflowData } from "./type"
@@ -36,7 +36,7 @@ type Func<T, U> = (input: T, context: StepExecutionContext) => U | Promise<U>
  *   createWorkflow,
  *   transform,
  *   WorkflowResponse
- * } from "@medusajs/framework/workflows-sdk"
+ * } from "@zjedene-medusa/framework/workflows-sdk"
  * import { step1, step2 } from "./steps"
  *
  * type WorkflowInput = {

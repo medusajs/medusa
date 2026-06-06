@@ -1,10 +1,10 @@
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { ICartModuleService, IPromotionModuleService } from "@medusajs/types"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
+import { ICartModuleService, IPromotionModuleService } from "@zjedene-medusa/types"
 import {
   Modules,
   PromotionStatus,
   PromotionType,
-} from "@medusajs/utils"
+} from "@zjedene-medusa/utils"
 import {
   adminHeaders,
   createAdminUser,

@@ -2,13 +2,13 @@ import {
   CustomerGroupUpdatableFields,
   FilterableCustomerGroupProps,
   ICustomerModuleService,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   Modules,
   getSelectsAndRelationsFromObjectArray,
   promiseAll,
-} from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/utils"
+import { StepResponse, createStep } from "@zjedene-medusa/framework/workflows-sdk"
 
 /**
  * The data to update customer groups.

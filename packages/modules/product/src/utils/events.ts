@@ -3,7 +3,7 @@ import {
   moduleEventBuilderFactory,
   Modules,
   ProductEvents,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 
 export const eventBuilders = {
   createdProductCategory: moduleEventBuilderFactory({

@@ -16,9 +16,9 @@ export type InMemoryCacheModuleOptions = {
   ttl?: number
 }
 
-declare module "@medusajs/types" {
+declare module "@zjedene-medusa/types" {
   interface ModuleOptions {
-    "@medusajs/cache-inmemory": InMemoryCacheModuleOptions
-    "@medusajs/medusa/cache-inmemory": InMemoryCacheModuleOptions
+    "@zjedene-medusa/cache-inmemory": InMemoryCacheModuleOptions
+    "@zjedene-medusa/medusa/cache-inmemory": InMemoryCacheModuleOptions
   }
 }

@@ -35,5 +35,5 @@ export function updatePackageVersions(
 function shouldUpdateVersion(dependency: string): boolean {
   // UI package follows different versioning, so we can't update it following
   // the same logic as other Medusa packages
-  return dependency.startsWith("@medusajs/") && dependency !== "@medusajs/ui"
+  return dependency.startsWith("@zjedene-medusa/") && dependency !== "@zjedene-medusa/ui"
 }

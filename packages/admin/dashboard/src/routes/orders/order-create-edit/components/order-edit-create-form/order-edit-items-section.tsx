@@ -1,5 +1,5 @@
-import { AdminOrder, AdminOrderPreview } from "@medusajs/types"
-import { Button, Heading, Input, toast } from "@medusajs/ui"
+import { AdminOrder, AdminOrderPreview } from "@zjedene-medusa/types"
+import { Button, Heading, Input, toast } from "@zjedene-medusa/ui"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import {

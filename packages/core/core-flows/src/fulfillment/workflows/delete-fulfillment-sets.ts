@@ -1,7 +1,7 @@
-import { createWorkflow, WorkflowData } from "@medusajs/framework/workflows-sdk"
+import { createWorkflow, WorkflowData } from "@zjedene-medusa/framework/workflows-sdk"
 import { deleteFulfillmentSetsStep } from "../steps"
 import { removeRemoteLinkStep } from "../../common"
-import { Modules } from "@medusajs/framework/utils"
+import { Modules } from "@zjedene-medusa/framework/utils"
 
 /**
  * The data to delete one or more fulfillment sets.

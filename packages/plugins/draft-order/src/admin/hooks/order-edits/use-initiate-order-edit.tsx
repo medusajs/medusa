@@ -1,5 +1,5 @@
-import { HttpTypes } from "@medusajs/types"
-import { toast } from "@medusajs/ui"
+import { HttpTypes } from "@zjedene-medusa/types"
+import { toast } from "@zjedene-medusa/ui"
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useDraftOrderBeginEdit } from "../api/draft-orders"

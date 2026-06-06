@@ -5,7 +5,7 @@ import {
   HttpTypes,
   PaginatedResponse,
   SelectParams,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 
 import { Client } from "../client.js"
 import { ClientHeaders } from "../types.js"

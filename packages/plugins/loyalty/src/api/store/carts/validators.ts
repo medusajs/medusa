@@ -1,4 +1,4 @@
-import { z } from "@medusajs/framework/zod";
+import { z } from "@zjedene-medusa/framework/zod";
 
 export type StoreAddGiftCardToCartType = z.infer<typeof StoreAddGiftCardToCart>;
 export const StoreAddGiftCardToCart = z.strictObject({

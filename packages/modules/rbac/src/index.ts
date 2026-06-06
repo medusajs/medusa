@@ -1,4 +1,4 @@
-import { Module, Modules } from "@medusajs/framework/utils"
+import { Module, Modules } from "@zjedene-medusa/framework/utils"
 import { RbacModuleService } from "@services"
 import initialDataLoader from "./loaders/initial-data"
 

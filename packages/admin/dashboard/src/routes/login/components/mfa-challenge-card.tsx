@@ -1,4 +1,4 @@
-import type { AuthTypes } from "@medusajs/types"
+import type { AuthTypes } from "@zjedene-medusa/types"
 import AvatarBox from "../../../components/common/logo-box/avatar-box"
 import { MfaChallengeForm } from "./mfa-challenge-form"
 

@@ -1,5 +1,5 @@
-import { asValue } from "@medusajs/deps/awilix"
-import { RemoteFetchDataCallback } from "@medusajs/orchestration"
+import { asValue } from "@zjedene-medusa/deps/awilix"
+import { RemoteFetchDataCallback } from "@zjedene-medusa/orchestration"
 import {
   ConfigModule,
   ExternalModuleDeclaration,
@@ -16,7 +16,7 @@ import {
   ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
   RemoteQueryFunction,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
@@ -34,7 +34,7 @@ import {
   ModulesSdkUtils,
   promiseAll,
   registerFeatureFlag,
-} from "@medusajs/utils"
+} from "@zjedene-medusa/utils"
 import { Link } from "./link"
 import {
   MedusaModule,

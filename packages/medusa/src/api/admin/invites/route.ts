@@ -1,14 +1,14 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework/http"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 
-import { createInvitesWorkflow } from "@medusajs/core-flows"
-import { HttpTypes } from "@medusajs/framework/types"
+import { createInvitesWorkflow } from "@zjedene-medusa/core-flows"
+import { HttpTypes } from "@zjedene-medusa/framework/types"
 import { refetchInvite } from "./helpers"
 
 export const GET = async (

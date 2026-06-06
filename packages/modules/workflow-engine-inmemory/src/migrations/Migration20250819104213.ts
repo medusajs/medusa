@@ -1,4 +1,4 @@
-import { Migration } from "@medusajs/framework/mikro-orm/migrations"
+import { Migration } from "@zjedene-medusa/framework/mikro-orm/migrations"
 
 export class Migration20250819104213 extends Migration {
   override async up(): Promise<void> {

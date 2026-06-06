@@ -1,4 +1,4 @@
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@zjedene-medusa/utils"
 import { join } from "path"
 import { container } from "../../container"
 import { logger } from "../../logger"

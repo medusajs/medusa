@@ -1,4 +1,4 @@
-import { ClientHeaders, FetchError } from "@medusajs/js-sdk"
+import { ClientHeaders, FetchError } from "@zjedene-medusa/js-sdk"
 import {
   QueryKey,
   useMutation,
@@ -16,7 +16,7 @@ import {
 } from "../../../types"
 import { queryKeysFactory } from "../../lib/query-key"
 import { sdk } from "../../lib/sdk"
-import { AdminOrderListResponse } from "@medusajs/framework/types"
+import { AdminOrderListResponse } from "@zjedene-medusa/framework/types"
 
 const _giftCardQueryKey = queryKeysFactory("gift-card")
 

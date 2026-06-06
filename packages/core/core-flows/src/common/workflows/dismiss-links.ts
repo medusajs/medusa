@@ -1,9 +1,9 @@
-import type { LinkDefinition } from "@medusajs/framework/types"
+import type { LinkDefinition } from "@zjedene-medusa/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { dismissRemoteLinkStep } from "../steps/dismiss-remote-links"
 
 export const dismissLinksWorkflowId = "dismiss-link"
@@ -20,7 +20,7 @@ export const dismissLinksWorkflowId = "dismiss-link"
  * .run({
  *   input: [
  *     {
- *       // import { Modules } from "@medusajs/framework/utils"
+ *       // import { Modules } from "@zjedene-medusa/framework/utils"
  *       [Modules.PRODUCT]: {
  *         product_id: "prod_123",
  *       },

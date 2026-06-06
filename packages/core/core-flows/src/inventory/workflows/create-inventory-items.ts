@@ -3,10 +3,10 @@ import {
   WorkflowResponse,
   createWorkflow,
   transform,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { createInventoryItemsStep } from "../steps"
 
-import type { InventoryTypes } from "@medusajs/framework/types"
+import type { InventoryTypes } from "@zjedene-medusa/framework/types"
 import { createInventoryLevelsWorkflow } from "./create-inventory-levels"
 
 /**

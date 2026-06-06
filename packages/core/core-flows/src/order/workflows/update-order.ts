@@ -1,14 +1,14 @@
-import type { OrderDTO, OrderWorkflow } from "@medusajs/framework/types"
+import type { OrderDTO, OrderWorkflow } from "@zjedene-medusa/framework/types"
 import {
   OrderPreviewDTO,
   RegisterOrderChangeDTO,
   UpdateOrderDTO,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   MedusaError,
   OrderWorkflowEvents,
   validateEmail,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -17,7 +17,7 @@ import {
   parallelize,
   transform,
   when,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 
 import { emitEventStep, useQueryGraphStep } from "../../common"
 import {

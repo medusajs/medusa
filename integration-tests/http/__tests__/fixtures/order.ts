@@ -1,16 +1,16 @@
-import { addShippingMethodToCartWorkflow } from "@medusajs/core-flows"
+import { addShippingMethodToCartWorkflow } from "@zjedene-medusa/core-flows"
 import {
   AdminInventoryItem,
   AdminProduct,
   AdminShippingProfile,
   AdminStockLocation,
   MedusaContainer,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 import {
   ContainerRegistrationKeys,
   Modules,
   ProductStatus,
-} from "@medusajs/utils"
+} from "@zjedene-medusa/utils"
 import {
   adminHeaders,
   generatePublishableKey,

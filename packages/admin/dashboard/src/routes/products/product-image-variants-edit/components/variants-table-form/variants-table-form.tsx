@@ -1,4 +1,4 @@
-import { Button, Checkbox, toast } from "@medusajs/ui"
+import { Button, Checkbox, toast } from "@zjedene-medusa/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import {
@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { keepPreviousData } from "@tanstack/react-query"
 import * as zod from "zod"
 
-import { AdminProduct } from "@medusajs/types"
+import { AdminProduct } from "@zjedene-medusa/types"
 
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"

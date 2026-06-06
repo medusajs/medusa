@@ -1,4 +1,4 @@
-import { Switch } from "@medusajs/ui";
+import { Switch } from "@zjedene-medusa/ui";
 import { ReactNode } from "react";
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
 import { Form } from "./form";

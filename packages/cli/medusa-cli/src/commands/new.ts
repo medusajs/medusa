@@ -9,14 +9,14 @@ import hostedGitInfo from "hosted-git-info"
 import isValid from "is-valid-path"
 import sysPath from "path"
 import prompts from "prompts"
-import { Pool } from "@medusajs/deps/pg"
+import { Pool } from "@zjedene-medusa/deps/pg"
 import url from "url"
-import { track } from "@medusajs/telemetry"
+import { track } from "@zjedene-medusa/telemetry"
 // @ts-ignore
 import inquirer from "inquirer"
 import { createDatabase } from "pg-god"
 
-import { getNodeVersion, MIN_SUPPORTED_NODE_VERSION } from "@medusajs/utils"
+import { getNodeVersion, MIN_SUPPORTED_NODE_VERSION } from "@zjedene-medusa/utils"
 import reporter from "../reporter"
 import { PanicId } from "../reporter/panic-handler"
 import { getPackageManager } from "../util/package-manager"
@@ -306,7 +306,7 @@ const runMigrations = async (rootPath) => {
 
   const cliPath = sysPath.join(
     `node_modules`,
-    `@medusajs`,
+    `@zjedene-medusa`,
     `medusa-cli`,
     `cli.js`
   )

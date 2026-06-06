@@ -1,9 +1,9 @@
 import {
   getSelectsAndRelationsFromObjectArray,
   Modules,
-} from "@medusajs/framework/utils"
-import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { IRbacModuleService, UpdateRbacRoleDTO } from "@medusajs/types"
+} from "@zjedene-medusa/framework/utils"
+import { createStep, StepResponse } from "@zjedene-medusa/framework/workflows-sdk"
+import { IRbacModuleService, UpdateRbacRoleDTO } from "@zjedene-medusa/types"
 
 /**
  * @ignore

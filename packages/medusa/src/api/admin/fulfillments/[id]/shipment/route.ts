@@ -1,9 +1,9 @@
-import { createShipmentWorkflow } from "@medusajs/core-flows"
-import { HttpTypes } from "@medusajs/framework/types"
+import { createShipmentWorkflow } from "@zjedene-medusa/core-flows"
+import { HttpTypes } from "@zjedene-medusa/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework/http"
 import { refetchFulfillment } from "../../helpers"
 
 export const POST = async (

@@ -3,14 +3,14 @@ import {
   WorkflowManager,
   WorkflowStepHandler,
   WorkflowStepHandlerArguments,
-} from "@medusajs/orchestration"
+} from "@zjedene-medusa/orchestration"
 import {
   getCallerFilePath,
   isDefined,
   isString,
   OrchestrationUtils,
   registerDevServerResource,
-} from "@medusajs/utils"
+} from "@zjedene-medusa/utils"
 import { ulid } from "ulid"
 import { resolveValue, StepResponse } from "./helpers"
 import { createStepHandler } from "./helpers/create-step-handler"
@@ -395,7 +395,7 @@ export function wrapConditionalStep(
  * import {
  *   createStep,
  *   StepResponse
- * } from "@medusajs/framework/workflows-sdk"
+ * } from "@zjedene-medusa/framework/workflows-sdk"
  *
  * interface CreateProductInput {
  *   title: string

@@ -1,17 +1,17 @@
-import { createShippingOptionsWorkflow } from "@medusajs/core-flows"
+import { createShippingOptionsWorkflow } from "@zjedene-medusa/core-flows"
 import {
   FulfillmentWorkflow,
   IOrderModuleService,
   IRegionModuleService,
   IStockLocationService,
   StockLocationDTO,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 import {
   ContainerRegistrationKeys,
   Modules,
   ProductStatus,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@zjedene-medusa/utils"
 
 const providerId = "manual_test-provider"
 const providerIdCalculated = "manual-calculated_test-provider-calculated"

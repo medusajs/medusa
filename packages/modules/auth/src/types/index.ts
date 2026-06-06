@@ -2,7 +2,7 @@ import {
   Logger,
   ModuleProviderExports,
   ModuleServiceInitializeOptions,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 
 export type InitializeModuleInjectableDependencies = {
   logger?: Logger
@@ -104,9 +104,9 @@ export interface MedusaCloudAuthProviderOptions {
   disabled: boolean
 }
 
-declare module "@medusajs/types" {
+declare module "@zjedene-medusa/types" {
   interface ModuleOptions {
-    "@medusajs/auth": AuthModuleOptions
-    "@medusajs/medusa/auth": AuthModuleOptions
+    "@zjedene-medusa/auth": AuthModuleOptions
+    "@zjedene-medusa/medusa/auth": AuthModuleOptions
   }
 }

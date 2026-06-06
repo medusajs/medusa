@@ -1,4 +1,4 @@
-import { AdminShippingProfileResponse } from "@medusajs/types"
+import { AdminShippingProfileResponse } from "@zjedene-medusa/types"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"

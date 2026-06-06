@@ -1,5 +1,5 @@
-import { ILockingProvider } from "@medusajs/framework/types"
-import { isDefined } from "@medusajs/framework/utils"
+import { ILockingProvider } from "@zjedene-medusa/framework/types"
+import { isDefined } from "@zjedene-medusa/framework/utils"
 
 type LockInfo = {
   ownerId: string | null

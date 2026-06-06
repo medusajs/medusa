@@ -1,6 +1,6 @@
 import { ErrorMessage } from "@hookform/error-message";
-import { ExclamationCircle } from "@medusajs/icons";
-import { Tooltip, clx } from "@medusajs/ui";
+import { ExclamationCircle } from "@zjedene-medusa/icons";
+import { Tooltip, clx } from "@zjedene-medusa/ui";
 import { PropsWithChildren } from "react";
 import { get } from "react-hook-form";
 import { DataGridCellContainerProps, DataGridErrorRenderProps } from "../types";

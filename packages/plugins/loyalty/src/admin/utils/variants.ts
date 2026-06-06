@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types";
+import { HttpTypes } from "@zjedene-medusa/types";
 import { ProductCreateSchemaType } from "../routes/gift-cards/gift-card-products/components/gift-card-product-create-form/types";
 import { castNumber } from "./validations";
 

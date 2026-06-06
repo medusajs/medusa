@@ -1,7 +1,7 @@
 import "./types"
 import { FulfillmentModuleService } from "@services"
 import loadProviders from "./loaders/providers"
-import { Module, Modules } from "@medusajs/framework/utils"
+import { Module, Modules } from "@zjedene-medusa/framework/utils"
 
 export default Module(Modules.FULFILLMENT, {
   service: FulfillmentModuleService,

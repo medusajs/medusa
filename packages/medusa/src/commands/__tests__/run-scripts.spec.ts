@@ -1,40 +1,40 @@
-import { MedusaAppLoader } from "@medusajs/framework"
-import { LinkLoader } from "@medusajs/framework/links"
-import { MigrationScriptsMigrator } from "@medusajs/framework/migrations"
-import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import { MedusaAppLoader } from "@zjedene-medusa/framework"
+import { LinkLoader } from "@zjedene-medusa/framework/links"
+import { MigrationScriptsMigrator } from "@zjedene-medusa/framework/migrations"
+import { MedusaModule } from "@zjedene-medusa/framework/modules-sdk"
 import {
   ContainerRegistrationKeys,
   getResolvedPlugins,
-} from "@medusajs/framework/utils"
-import { WorkflowLoader } from "@medusajs/framework/workflows"
-import { MedusaContainer } from "@medusajs/types"
+} from "@zjedene-medusa/framework/utils"
+import { WorkflowLoader } from "@zjedene-medusa/framework/workflows"
+import { MedusaContainer } from "@zjedene-medusa/types"
 import { runMigrationScripts } from "../db/run-scripts"
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
-jest.mock("@medusajs/framework", () => ({
+jest.mock("@zjedene-medusa/framework", () => ({
   MedusaAppLoader: jest.fn(),
 }))
 
-jest.mock("@medusajs/framework/links", () => ({
+jest.mock("@zjedene-medusa/framework/links", () => ({
   LinkLoader: jest.fn(),
 }))
 
-jest.mock("@medusajs/framework/workflows", () => ({
+jest.mock("@zjedene-medusa/framework/workflows", () => ({
   WorkflowLoader: jest.fn(),
 }))
 
-jest.mock("@medusajs/framework/migrations", () => ({
+jest.mock("@zjedene-medusa/framework/migrations", () => ({
   MigrationScriptsMigrator: jest.fn(),
 }))
 
-jest.mock("@medusajs/framework/modules-sdk", () => ({
+jest.mock("@zjedene-medusa/framework/modules-sdk", () => ({
   MedusaModule: {
     clearInstances: jest.fn(),
   },
 }))
 
-jest.mock("@medusajs/framework/utils", () => ({
+jest.mock("@zjedene-medusa/framework/utils", () => ({
   ContainerRegistrationKeys: {
     CONFIG_MODULE: "configModule",
     QUERY: "query",

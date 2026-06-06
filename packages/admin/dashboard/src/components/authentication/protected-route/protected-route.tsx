@@ -1,4 +1,4 @@
-import { Spinner } from "@medusajs/icons"
+import { Spinner } from "@zjedene-medusa/icons"
 import { useMemo } from "react"
 import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { useMePermissions } from "../../../hooks/api/rbac-roles"

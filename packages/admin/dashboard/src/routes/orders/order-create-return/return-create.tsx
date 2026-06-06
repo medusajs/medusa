@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 
-import { toast } from "@medusajs/ui"
+import { toast } from "@zjedene-medusa/ui"
 
 import { RouteFocusModal } from "../../../components/modals"
 import { ReturnCreateForm } from "./components/return-create-form"

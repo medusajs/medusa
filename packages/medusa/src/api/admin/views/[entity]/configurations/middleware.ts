@@ -2,8 +2,8 @@ import {
   MedusaNextFunction,
   MedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/http"
+import { ContainerRegistrationKeys } from "@zjedene-medusa/framework/utils"
 import ViewConfigurationsFeatureFlag from "../../../../../feature-flags/view-configurations"
 
 export const ensureViewConfigurationsEnabled = async (

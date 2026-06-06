@@ -1,7 +1,7 @@
-import { updateProductVariantsWorkflow } from "@medusajs/core-flows"
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { IProductModuleService } from "@medusajs/types"
-import { MedusaError, Modules } from "@medusajs/utils"
+import { updateProductVariantsWorkflow } from "@zjedene-medusa/core-flows"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
+import { IProductModuleService } from "@zjedene-medusa/types"
+import { MedusaError, Modules } from "@zjedene-medusa/utils"
 
 jest.setTimeout(50000)
 

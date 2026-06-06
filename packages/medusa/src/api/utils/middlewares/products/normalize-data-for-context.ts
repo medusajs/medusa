@@ -1,10 +1,10 @@
-import { MedusaError } from "@medusajs/framework/utils"
+import { MedusaError } from "@zjedene-medusa/framework/utils"
 import { NextFunction } from "express"
 import {
   AuthenticatedMedusaRequest,
   refetchEntities,
   refetchEntity,
-} from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework/http"
 import { DEFAULT_PRICE_FIELD_PATHS } from "./constants"
 
 type PricingContextOptions = {

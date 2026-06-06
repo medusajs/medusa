@@ -5,7 +5,7 @@ import {
   CustomFieldModel,
   InjectionZone,
   NestedRoutePosition,
-} from "@medusajs/admin-shared"
+} from "@zjedene-medusa/admin-shared"
 import { ComponentType } from "react"
 import { LoaderFunction } from "react-router-dom"
 import { z } from "zod"

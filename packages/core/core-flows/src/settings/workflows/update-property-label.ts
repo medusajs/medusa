@@ -1,9 +1,9 @@
-import { SettingsTypes } from "@medusajs/framework/types"
+import { SettingsTypes } from "@zjedene-medusa/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { updatePropertyLabelsStep } from "../steps"
 
 export interface UpdatePropertyLabelsWorkflowInput {

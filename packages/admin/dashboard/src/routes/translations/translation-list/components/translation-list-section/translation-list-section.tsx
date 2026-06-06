@@ -1,4 +1,4 @@
-import { Button, Container, Text } from "@medusajs/ui"
+import { Button, Container, Text } from "@zjedene-medusa/ui"
 import { Link } from "react-router-dom"
 import { TranslatableEntity } from "../../translation-list"
 import { useTranslation } from "react-i18next"

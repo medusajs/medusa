@@ -1,5 +1,5 @@
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { HttpTypes } from "@medusajs/types"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
+import { HttpTypes } from "@zjedene-medusa/types"
 import {
   ApiKeyType,
   ModuleRegistrationName,
@@ -8,7 +8,7 @@ import {
   ProductStatus,
   PromotionStatus,
   PromotionType,
-} from "@medusajs/utils"
+} from "@zjedene-medusa/utils"
 import {
   adminHeaders,
   createAdminUser,

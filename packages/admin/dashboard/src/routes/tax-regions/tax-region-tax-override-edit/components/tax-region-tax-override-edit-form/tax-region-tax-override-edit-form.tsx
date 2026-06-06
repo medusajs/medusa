@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { MagnifyingGlass } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
+import { MagnifyingGlass } from "@zjedene-medusa/icons"
+import { HttpTypes } from "@zjedene-medusa/types"
 import {
   Button,
   clx,
@@ -12,7 +12,7 @@ import {
   Select,
   Text,
   toast,
-} from "@medusajs/ui"
+} from "@zjedene-medusa/ui"
 import { useFieldArray, useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"

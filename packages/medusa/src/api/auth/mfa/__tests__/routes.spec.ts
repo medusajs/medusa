@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import { AuthEvents, Modules } from "@medusajs/framework/utils"
+import { AuthEvents, Modules } from "@zjedene-medusa/framework/utils"
 import { POST as validateCallback } from "../../[actor_type]/[auth_provider]/callback/route"
 import { POST as authenticate } from "../../[actor_type]/[auth_provider]/route"
 import { POST as verifyChallenge } from "../challenges/[id]/verify/route"

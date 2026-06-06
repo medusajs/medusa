@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/checkbox"
 import { DropdownMenu } from "@/components/dropdown-menu"
 import { IconButton } from "@/components/icon-button"
 import { Tooltip } from "@/components/tooltip"
-import { Adjustments } from "@medusajs/icons"
+import { Adjustments } from "@zjedene-medusa/icons"
 import { clx } from "@/utils/clx"
 
 import { useDataTableContext } from "../context/use-data-table-context"

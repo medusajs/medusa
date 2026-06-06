@@ -1,4 +1,4 @@
-import { Modules, ProductOptionWorkflowEvents } from "@medusajs/framework/utils"
+import { Modules, ProductOptionWorkflowEvents } from "@zjedene-medusa/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -6,7 +6,7 @@ import {
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { emitEventStep } from "../../common/steps/emit-event"
 import { removeRemoteLinkStep } from "../../common/steps/remove-remote-links"
 import { deleteProductOptionsStep } from "../steps"

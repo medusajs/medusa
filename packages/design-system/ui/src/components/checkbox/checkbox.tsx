@@ -1,6 +1,6 @@
 "use client"
 
-import { CheckMini, MinusMini } from "@medusajs/icons"
+import { CheckMini, MinusMini } from "@zjedene-medusa/icons"
 import { Checkbox as RadixCheckbox } from "radix-ui"
 import * as React from "react"
 

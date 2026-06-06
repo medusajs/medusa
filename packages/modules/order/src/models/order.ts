@@ -1,4 +1,4 @@
-import { model, OrderStatus } from "@medusajs/framework/utils"
+import { model, OrderStatus } from "@zjedene-medusa/framework/utils"
 import { Return } from "@models"
 import { OrderAddress } from "./address"
 import { OrderCreditLine } from "./credit-line"

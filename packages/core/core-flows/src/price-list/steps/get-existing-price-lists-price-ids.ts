@@ -1,6 +1,6 @@
-import type { IPricingModuleService } from "@medusajs/framework/types"
-import { Modules } from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+import type { IPricingModuleService } from "@zjedene-medusa/framework/types"
+import { Modules } from "@zjedene-medusa/framework/utils"
+import { StepResponse, createStep } from "@zjedene-medusa/framework/workflows-sdk"
 
 /**
  * The data to retrieve the prices of price lists.

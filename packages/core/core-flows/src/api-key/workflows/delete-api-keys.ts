@@ -1,7 +1,7 @@
-import { createWorkflow, WorkflowData } from "@medusajs/framework/workflows-sdk"
+import { createWorkflow, WorkflowData } from "@zjedene-medusa/framework/workflows-sdk"
 import { removeRemoteLinkStep } from "../../common/steps/remove-remote-links"
 import { deleteApiKeysStep } from "../steps"
-import { Modules } from "@medusajs/framework/utils"
+import { Modules } from "@zjedene-medusa/framework/utils"
 
 /**
  * The data to delete API keys.

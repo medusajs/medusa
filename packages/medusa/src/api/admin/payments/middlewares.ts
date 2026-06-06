@@ -1,9 +1,9 @@
 import {
   validateAndTransformBody,
   validateAndTransformQuery,
-} from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
-import { PolicyOperation } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework"
+import { MiddlewareRoute } from "@zjedene-medusa/framework/http"
+import { PolicyOperation } from "@zjedene-medusa/framework/utils"
 import * as queryConfig from "./query-config"
 import { Entities } from "./query-config"
 import {

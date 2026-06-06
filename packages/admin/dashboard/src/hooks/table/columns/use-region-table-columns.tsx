@@ -13,7 +13,7 @@ import {
   RegionCell,
   RegionHeader,
 } from "../../../components/table/table-cells/region/region-cell"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 
 const columnHelper = createColumnHelper<HttpTypes.AdminRegion>()
 

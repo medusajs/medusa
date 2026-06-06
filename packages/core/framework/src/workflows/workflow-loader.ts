@@ -1,6 +1,6 @@
-import { MedusaContainer } from "@medusajs/types"
-import { isFileSkipped } from "@medusajs/utils"
-import { MedusaWorkflow } from "@medusajs/workflows-sdk"
+import { MedusaContainer } from "@zjedene-medusa/types"
+import { isFileSkipped } from "@zjedene-medusa/utils"
+import { MedusaWorkflow } from "@zjedene-medusa/workflows-sdk"
 import { logger } from "../logger"
 import { ResourceLoader } from "../utils/resource-loader"
 

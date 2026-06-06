@@ -1,5 +1,5 @@
-import { ProductTypes } from "@medusajs/framework/types"
-import { ProductStatus, toHandle } from "@medusajs/framework/utils"
+import { ProductTypes } from "@zjedene-medusa/framework/types"
+import { ProductStatus, toHandle } from "@zjedene-medusa/framework/utils"
 import { ProductImage } from "@models"
 import faker from "faker"
 

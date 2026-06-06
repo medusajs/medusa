@@ -1,15 +1,15 @@
 import {
   createUserAccountWorkflow,
   setAuthAppMetadataWorkflow,
-} from "@medusajs/core-flows"
+} from "@zjedene-medusa/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework/http"
 import {
   ContainerRegistrationKeys,
   MedusaError,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,

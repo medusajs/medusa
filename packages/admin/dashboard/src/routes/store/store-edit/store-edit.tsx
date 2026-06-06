@@ -1,4 +1,4 @@
-import { Heading } from "@medusajs/ui"
+import { Heading } from "@zjedene-medusa/ui"
 import { useTranslation } from "react-i18next"
 import { RouteDrawer } from "../../../components/modals"
 import { useStore } from "../../../hooks/api/store"

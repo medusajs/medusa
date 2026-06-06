@@ -1,6 +1,6 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
-import { Container, Heading, Text, toast, usePrompt } from "@medusajs/ui"
+import { PencilSquare, Trash } from "@zjedene-medusa/icons"
+import { HttpTypes } from "@zjedene-medusa/types"
+import { Container, Heading, Text, toast, usePrompt } from "@zjedene-medusa/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 

@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, CurrencyInput, Heading, Textarea, toast } from "@medusajs/ui"
+import { Button, CurrencyInput, Heading, Textarea, toast } from "@zjedene-medusa/ui"
 import { useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
-import { z } from "@medusajs/framework/zod"
+import { z } from "@zjedene-medusa/framework/zod"
 
 import { AdminStoreCreditAccount } from "../../../../../types"
 import { Form } from "../../../../components/form"

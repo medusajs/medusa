@@ -1,6 +1,6 @@
-import { SettingsTypes } from "@medusajs/framework/types"
-import { Modules } from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+import { SettingsTypes } from "@zjedene-medusa/framework/types"
+import { Modules } from "@zjedene-medusa/framework/utils"
+import { StepResponse, createStep } from "@zjedene-medusa/framework/workflows-sdk"
 
 /**
  * Input data for creating property labels step.

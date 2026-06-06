@@ -1,5 +1,5 @@
 import "./types"
-import { Module } from "@medusajs/framework/utils"
+import { Module } from "@zjedene-medusa/framework/utils"
 import TranslationModuleService from "@services/translation-module"
 import loadDefaults from "./loaders/defaults"
 

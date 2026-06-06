@@ -6,7 +6,7 @@ import {
   ModulesSdkTypes,
   ProjectConfigOptions,
   UserTypes,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   arrayDifference,
   CommonEvents,
@@ -21,7 +21,7 @@ import {
   moduleEventBuilderFactory,
   Modules,
   UserEvents,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import jwt, { JwtPayload, SignOptions, VerifyOptions } from "jsonwebtoken"
 import crypto from "node:crypto"
 

@@ -1,4 +1,4 @@
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { MiddlewareRoute } from "@zjedene-medusa/framework/http"
 import { storeLocalesRoutesMiddlewares } from "./locales/middlewares"
 import { storeReturnsRoutesMiddlewares } from "./returns/middlewares"
 

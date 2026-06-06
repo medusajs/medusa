@@ -1,10 +1,10 @@
-import { Modules } from "@medusajs/framework/utils"
+import { Modules } from "@zjedene-medusa/framework/utils"
 import {
   createStep,
   createWorkflow,
   parallelize,
   StepResponse,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 
 const step_2 = createStep(
   {

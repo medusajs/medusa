@@ -1,5 +1,5 @@
-import { ExclamationCircle, PlusMini } from "@medusajs/icons";
-import { Button, clx, Text } from "@medusajs/ui";
+import { ExclamationCircle, PlusMini } from "@zjedene-medusa/icons";
+import { Button, clx, Text } from "@zjedene-medusa/ui";
 import { Link } from "react-router-dom";
 
 type ActionProps = {

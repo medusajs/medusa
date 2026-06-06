@@ -1,12 +1,12 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
-import { HttpTypes } from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/http"
+import { HttpTypes } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   FeatureFlag,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import {
   ruleQueryConfigurations,
   validateRuleAttribute,
@@ -15,7 +15,7 @@ import {
 import {
   ApplicationMethodTargetTypeValues,
   RuleTypeValues,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 import IndexEngineFeatureFlag from "../../../../../../feature-flags/index-engine"
 
 /*

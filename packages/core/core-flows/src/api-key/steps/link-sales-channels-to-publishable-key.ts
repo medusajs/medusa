@@ -1,10 +1,10 @@
-import type { LinkWorkflowInput } from "@medusajs/framework/types"
+import type { LinkWorkflowInput } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   Modules,
   promiseAll,
-} from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/utils"
+import { StepResponse, createStep } from "@zjedene-medusa/framework/workflows-sdk"
 
 /**
  * The data to manage the sales channels of a publishable API key.

@@ -1,12 +1,12 @@
-import { PencilSquare } from "@medusajs/icons"
-import { Button, Container, Heading } from "@medusajs/ui"
+import { PencilSquare } from "@zjedene-medusa/icons"
+import { Button, Container, Heading } from "@zjedene-medusa/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import {
   Action,
   ActionMenu,

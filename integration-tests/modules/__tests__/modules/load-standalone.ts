@@ -1,7 +1,7 @@
-import { MedusaApp } from "@medusajs/modules-sdk"
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { IProductModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import { MedusaApp } from "@zjedene-medusa/modules-sdk"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
+import { IProductModuleService } from "@zjedene-medusa/types"
+import { Modules } from "@zjedene-medusa/utils"
 
 jest.setTimeout(30000)
 

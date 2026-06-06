@@ -1,4 +1,4 @@
-import { track } from "@medusajs/telemetry"
+import { track } from "@zjedene-medusa/telemetry"
 import cluster from "cluster"
 import express from "express"
 import http from "http"
@@ -19,10 +19,10 @@ import {
   isPresent,
   isProduction,
   promiseAll,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 
-import { MedusaModule } from "@medusajs/framework/modules-sdk"
-import { Logger, MedusaContainer } from "@medusajs/framework/types"
+import { MedusaModule } from "@zjedene-medusa/framework/modules-sdk"
+import { Logger, MedusaContainer } from "@zjedene-medusa/framework/types"
 import { parse } from "url"
 import RbacFeatureFlag from "../feature-flags/rbac"
 import loaders, { initializeContainer } from "../loaders"

@@ -1,15 +1,15 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework/http"
 import { AdminUpdateViewConfigurationType } from "../validators"
-import { HttpTypes } from "@medusajs/framework/types"
+import { HttpTypes } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
   Modules,
-} from "@medusajs/framework/utils"
-import { updateViewConfigurationWorkflow } from "@medusajs/core-flows"
+} from "@zjedene-medusa/framework/utils"
+import { updateViewConfigurationWorkflow } from "@zjedene-medusa/core-flows"
 
 /**
  * @since 2.10.3

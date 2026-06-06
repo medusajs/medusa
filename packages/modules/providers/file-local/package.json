@@ -1,5 +1,5 @@
 {
-  "name": "@medusajs/file-local",
+  "name": "@zjedene-medusa/file-local",
   "version": "2.15.5",
   "description": "Local filesystem file storage for Medusa",
   "main": "dist/index.js",
@@ -26,10 +26,10 @@
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.15.5"
+    "@zjedene-medusa/framework": "2.15.5"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.15.5"
+    "@zjedene-medusa/framework": "2.15.5"
   },
   "keywords": [
     "medusa-plugin",

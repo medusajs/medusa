@@ -1,4 +1,4 @@
-import { Checkbox } from "@medusajs/ui";
+import { Checkbox } from "@zjedene-medusa/ui";
 import { Controller, ControllerRenderProps } from "react-hook-form";
 import { useCombinedRefs } from "../../../utils/refs";
 import { useDataGridCell, useDataGridCellError } from "../hooks";

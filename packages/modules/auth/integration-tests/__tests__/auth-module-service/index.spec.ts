@@ -1,7 +1,7 @@
-import { IAuthModuleService } from "@medusajs/framework/types"
-import { Module, Modules } from "@medusajs/framework/utils"
+import { IAuthModuleService } from "@zjedene-medusa/framework/types"
+import { Module, Modules } from "@zjedene-medusa/framework/utils"
 import { AuthModuleService } from "@services"
-import { moduleIntegrationTestRunner, SuiteOptions } from "@medusajs/test-utils"
+import { moduleIntegrationTestRunner, SuiteOptions } from "@zjedene-medusa/test-utils"
 import { resolve } from "path"
 
 let moduleOptions = {

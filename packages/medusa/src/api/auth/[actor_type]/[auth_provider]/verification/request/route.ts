@@ -1,5 +1,5 @@
-import { requestVerificationWorkflow } from "@medusajs/core-flows"
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { requestVerificationWorkflow } from "@zjedene-medusa/core-flows"
+import { MedusaRequest, MedusaResponse } from "@zjedene-medusa/framework/http"
 import { VerificationRequestType } from "../../../../validators"
 
 export const POST = async (

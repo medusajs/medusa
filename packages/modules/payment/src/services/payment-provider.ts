@@ -32,8 +32,8 @@ import {
   UpdatePaymentInput,
   UpdatePaymentOutput,
   WebhookActionResult,
-} from "@medusajs/framework/types"
-import { ModulesSdkUtils } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/types"
+import { ModulesSdkUtils } from "@zjedene-medusa/framework/utils"
 import { PaymentProvider } from "@models"
 
 type InjectedDependencies = {

@@ -3,13 +3,13 @@ import {
   IEventBusModuleService,
   MedusaContainer,
   Subscriber,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 import {
   isFileSkipped,
   kebabCase,
   Modules,
   registerDevServerResource,
-} from "@medusajs/utils"
+} from "@zjedene-medusa/utils"
 import { parse } from "path"
 import { configManager } from "../config"
 import { container } from "../container"

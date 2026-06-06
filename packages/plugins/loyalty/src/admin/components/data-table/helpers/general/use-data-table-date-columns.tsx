@@ -2,7 +2,7 @@ import {
   createDataTableColumnHelper,
   DataTableColumnDef,
   Tooltip,
-} from "@medusajs/ui";
+} from "@zjedene-medusa/ui";
 import { useMemo } from "react";
 import { useDate } from "../../../../hooks/common/use-date";
 

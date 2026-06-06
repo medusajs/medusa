@@ -1,4 +1,4 @@
-import { Skeleton } from "@medusajs/ui";
+import { Skeleton } from "@zjedene-medusa/ui";
 import { ColumnDef } from "@tanstack/react-table";
 
 type DataGridSkeletonProps<TData> = {

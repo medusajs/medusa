@@ -1,4 +1,4 @@
-import { ClientHeaders, FetchError } from "@medusajs/js-sdk";
+import { ClientHeaders, FetchError } from "@zjedene-medusa/js-sdk";
 import {
   QueryKey,
   useMutation,

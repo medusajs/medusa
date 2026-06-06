@@ -1,8 +1,8 @@
-jest.mock("@medusajs/core-flows", () => ({
+jest.mock("@zjedene-medusa/core-flows", () => ({
   requestVerificationWorkflow: jest.fn(),
 }))
 
-import { requestVerificationWorkflow } from "@medusajs/core-flows"
+import { requestVerificationWorkflow } from "@zjedene-medusa/core-flows"
 import { POST as confirmVerification } from "../../[actor_type]/[auth_provider]/verification/confirm/route"
 import { POST as requestVerification } from "../../[actor_type]/[auth_provider]/verification/request/route"
 import { POST as register } from "../../[actor_type]/[auth_provider]/register/route"

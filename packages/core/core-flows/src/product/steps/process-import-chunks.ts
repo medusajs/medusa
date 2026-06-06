@@ -1,5 +1,5 @@
-import { Modules } from "@medusajs/framework/utils"
-import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@zjedene-medusa/framework/utils"
+import { createStep, StepResponse } from "@zjedene-medusa/framework/workflows-sdk"
 import { batchProductsWorkflow } from "../workflows/batch-products"
 
 export const processImportChunksStepId = "process-import-chunks"

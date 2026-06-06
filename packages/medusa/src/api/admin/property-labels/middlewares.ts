@@ -2,7 +2,7 @@ import {
   MiddlewareRoute,
   validateAndTransformBody,
   validateAndTransformQuery,
-} from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework/http"
 import { ensureViewConfigurationsEnabled } from "../views/[entity]/configurations/middleware"
 import * as QueryConfig from "./query-config"
 import {

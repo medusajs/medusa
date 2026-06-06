@@ -1,5 +1,5 @@
-import { HttpTypes } from "@medusajs/framework/types";
-import { FetchError } from "@medusajs/js-sdk";
+import { HttpTypes } from "@zjedene-medusa/framework/types";
+import { FetchError } from "@zjedene-medusa/js-sdk";
 import {
   QueryKey,
   useMutation,

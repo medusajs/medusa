@@ -1,13 +1,13 @@
 import {
   PricingTypes,
   UpdatePriceListPricesWorkflowDTO,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   parallelize,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { updatePriceListPricesStep } from "../steps/update-price-list-prices"
 import { validatePriceListsStep } from "../steps/validate-price-lists"
 import { validateVariantPriceLinksStep } from "../steps/validate-variant-price-links"

@@ -4,20 +4,20 @@ import {
   ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
   PlannerActionLinkDescriptor,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 
-import { EntitySchema, MikroORM } from "@medusajs/framework/mikro-orm/core"
+import { EntitySchema, MikroORM } from "@zjedene-medusa/framework/mikro-orm/core"
 import {
   DatabaseSchema,
   PostgreSqlDriver,
-} from "@medusajs/framework/mikro-orm/postgresql"
+} from "@zjedene-medusa/framework/mikro-orm/postgresql"
 import {
   arrayDifference,
   DALUtils,
   executeWithConcurrency,
   ModulesSdkUtils,
   normalizeMigrationSQL,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { generateEntity } from "../utils"
 
 /**

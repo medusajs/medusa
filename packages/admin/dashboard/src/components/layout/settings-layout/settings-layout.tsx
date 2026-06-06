@@ -1,5 +1,5 @@
-import { ArrowUturnLeft, MinusMini } from "@medusajs/icons"
-import { clx, Divider, IconButton, Text } from "@medusajs/ui"
+import { ArrowUturnLeft, MinusMini } from "@zjedene-medusa/icons"
+import { clx, Divider, IconButton, Text } from "@zjedene-medusa/ui"
 import { Collapsible as RadixCollapsible } from "radix-ui"
 import { Fragment, useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"

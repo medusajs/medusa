@@ -1,9 +1,9 @@
-import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework"
-import { HttpTypes } from "@medusajs/framework/types"
+import { AuthenticatedMedusaRequest, MedusaResponse } from "@zjedene-medusa/framework"
+import { HttpTypes } from "@zjedene-medusa/framework/types"
 import {
   declineOrderTransferRequestWorkflow,
   getOrderDetailWorkflow,
-} from "@medusajs/core-flows"
+} from "@zjedene-medusa/core-flows"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<

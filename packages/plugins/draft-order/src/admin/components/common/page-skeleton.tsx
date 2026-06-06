@@ -1,4 +1,4 @@
-import { clx, Skeleton } from "@medusajs/ui"
+import { clx, Skeleton } from "@zjedene-medusa/ui"
 
 interface PageSkeletonProps {
   mainSections?: number

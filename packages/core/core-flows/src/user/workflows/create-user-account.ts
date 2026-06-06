@@ -1,10 +1,10 @@
-import type { CreateUserDTO, UserDTO } from "@medusajs/framework/types"
+import type { CreateUserDTO, UserDTO } from "@zjedene-medusa/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   transform,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { setAuthAppMetadataStep } from "../../auth"
 import { createUsersWorkflow } from "./create-users"
 

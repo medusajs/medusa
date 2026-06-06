@@ -1,13 +1,13 @@
 import {
   CreateViewConfigurationDTO,
   ViewConfigurationDTO,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   when,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import {
   createViewConfigurationStep,
   setActiveViewConfigurationStep,

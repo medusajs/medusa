@@ -1,4 +1,4 @@
-import { Input, Text, Textarea } from "@medusajs/ui";
+import { Input, Text, Textarea } from "@zjedene-medusa/ui";
 import { UseFormReturn } from "react-hook-form";
 import { Form } from "../../../../../components/form";
 import { HandleInput } from "../../../../../components/handle-input";

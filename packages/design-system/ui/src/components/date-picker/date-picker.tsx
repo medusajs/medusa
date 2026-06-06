@@ -5,7 +5,7 @@ import {
   CalendarDateTime,
   getLocalTimeZone,
 } from "@internationalized/date"
-import { CalendarMini, Clock, XMarkMini } from "@medusajs/icons"
+import { CalendarMini, Clock, XMarkMini } from "@zjedene-medusa/icons"
 import { cva } from "cva"
 import * as React from "react"
 import {

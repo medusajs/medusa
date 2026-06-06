@@ -1,4 +1,4 @@
-import { FileSystem } from "@medusajs/utils"
+import { FileSystem } from "@zjedene-medusa/utils"
 import { join } from "path"
 import { configManager } from "../../config"
 import { featureFlagsLoader } from "../feature-flag-loader"

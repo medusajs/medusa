@@ -6,7 +6,7 @@ import {
   InternalModuleDeclaration,
   ModulesSdkTypes,
   SettingsTypes,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   EmitEvents,
   InjectManager,
@@ -14,8 +14,8 @@ import {
   MedusaContext,
   MedusaError,
   MedusaService,
-} from "@medusajs/framework/utils"
-import { MedusaModule } from "@medusajs/framework/modules-sdk"
+} from "@zjedene-medusa/framework/utils"
+import { MedusaModule } from "@zjedene-medusa/framework/modules-sdk"
 import { ViewConfiguration, UserPreference, PropertyLabel } from "@/models"
 import {
   EntityDiscoveryService,

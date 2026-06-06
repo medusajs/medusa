@@ -4,7 +4,7 @@ import os from "os"
 import path from "path"
 import inquirer from "inquirer"
 import logMessage from "./log-message.js"
-import pkg from '@medusajs/telemetry';
+import pkg from '@zjedene-medusa/telemetry';
 const { Store, track } = pkg
 
 const CLAUDE_DIR = path.join(os.homedir(), ".claude")

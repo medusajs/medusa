@@ -1,10 +1,10 @@
-import { updateOrderChangeWorkflow } from "@medusajs/core-flows"
-import { HttpTypes, RemoteQueryFunction } from "@medusajs/framework/types"
+import { updateOrderChangeWorkflow } from "@zjedene-medusa/core-flows"
+import { HttpTypes, RemoteQueryFunction } from "@zjedene-medusa/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/http"
+import { ContainerRegistrationKeys } from "@zjedene-medusa/framework/utils"
 
 /**
  * @since 2.12.0

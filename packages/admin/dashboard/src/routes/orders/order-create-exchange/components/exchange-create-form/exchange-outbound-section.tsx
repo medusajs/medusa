@@ -3,8 +3,8 @@ import {
   AdminInventoryLevel,
   AdminOrder,
   AdminOrderPreview,
-} from "@medusajs/types"
-import { Alert, Button, Heading, Text, toast } from "@medusajs/ui"
+} from "@zjedene-medusa/types"
+import { Alert, Button, Heading, Text, toast } from "@zjedene-medusa/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useFieldArray, UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"

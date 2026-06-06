@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { XMarkMini } from "@medusajs/icons"
+import { XMarkMini } from "@zjedene-medusa/icons"
 import {
   Button,
   Checkbox,
@@ -10,7 +10,7 @@ import {
   Text,
   clx,
   toast,
-} from "@medusajs/ui"
+} from "@zjedene-medusa/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"

@@ -1,13 +1,13 @@
 import type {
   BatchWorkflowInput,
   LinkDefinition,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   parallelize,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { createRemoteLinkStep } from "../steps/create-remote-links"
 import { dismissRemoteLinkStep } from "../steps/dismiss-remote-links"
 import { updateRemoteLinksStep } from "../steps/update-remote-links"
@@ -27,7 +27,7 @@ export const batchLinksWorkflowId = "batch-links"
  *   input: {
  *     create: [
  *       {
- *         // import { Modules } from "@medusajs/framework/utils"
+ *         // import { Modules } from "@zjedene-medusa/framework/utils"
  *         [Modules.PRODUCT]: {
  *           product_id: "prod_123",
  *         },
@@ -38,7 +38,7 @@ export const batchLinksWorkflowId = "batch-links"
  *     ],
  *     update: [
  *       {
- *         // import { Modules } from "@medusajs/framework/utils"
+ *         // import { Modules } from "@zjedene-medusa/framework/utils"
  *         [Modules.PRODUCT]: {
  *           product_id: "prod_321",
  *         },
@@ -54,7 +54,7 @@ export const batchLinksWorkflowId = "batch-links"
  *     ],
  *     delete: [
  *       {
- *         // import { Modules } from "@medusajs/framework/utils"
+ *         // import { Modules } from "@zjedene-medusa/framework/utils"
  *         [Modules.PRODUCT]: {
  *           product_id: "prod_321",
  *         },

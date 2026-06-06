@@ -1,6 +1,6 @@
-import { logger } from "@medusajs/framework/logger"
-import { MedusaContainer } from "@medusajs/framework/types"
-import { GracefulShutdownServer, promiseAll } from "@medusajs/framework/utils"
+import { logger } from "@zjedene-medusa/framework/logger"
+import { MedusaContainer } from "@zjedene-medusa/framework/types"
+import { GracefulShutdownServer, promiseAll } from "@zjedene-medusa/framework/utils"
 import express from "express"
 import getPort from "get-port"
 import { resolve } from "path"
@@ -18,7 +18,7 @@ async function bootstrapApp({
     res.status(200).send("OK")
   })
 
-  const loaders = require("@medusajs/medusa/loaders/index").default
+  const loaders = require("@zjedene-medusa/medusa/loaders/index").default
 
   try {
     const { container, shutdown } = await loaders({

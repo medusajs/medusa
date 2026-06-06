@@ -1,5 +1,5 @@
-import { HttpTypes } from "@medusajs/types";
-import { Container, Heading } from "@medusajs/ui";
+import { HttpTypes } from "@zjedene-medusa/types";
+import { Container, Heading } from "@zjedene-medusa/ui";
 import { Link } from "react-router-dom";
 import { IconAvatar } from "../../../../../components/icon-avatar";
 import { ChannelIcon } from "../../../../../components/icons/channel-icon";

@@ -1,4 +1,4 @@
-import { PromotionTypeValues } from "@medusajs/framework/types"
+import { PromotionTypeValues } from "@zjedene-medusa/framework/types"
 
 export interface CreatePromotionDTO {
   code: string

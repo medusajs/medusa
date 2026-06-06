@@ -6,9 +6,9 @@
  * not being properly cleared.
  */
 
-import { IWorkflowEngineService } from "@medusajs/framework/types"
-import { Modules } from "@medusajs/framework/utils"
-import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import { IWorkflowEngineService } from "@zjedene-medusa/framework/types"
+import { Modules } from "@zjedene-medusa/framework/utils"
+import { moduleIntegrationTestRunner } from "@zjedene-medusa/test-utils"
 import { ulid } from "ulid"
 import {
   retryIntervalStep1InvokeMock,

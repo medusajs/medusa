@@ -1,4 +1,4 @@
-import { FindConfig, QueryConfig, RequestQueryFields } from "@medusajs/types"
+import { FindConfig, QueryConfig, RequestQueryFields } from "@zjedene-medusa/types"
 import {
   buildOrder,
   FeatureFlag,
@@ -9,7 +9,7 @@ import {
   PolicyDefinition,
   promiseAll,
   stringToSelectRelationObject,
-} from "@medusajs/utils"
+} from "@zjedene-medusa/utils"
 import { AuthContext, MedusaRequest } from "../types"
 import {
   AllowedFieldFilter,

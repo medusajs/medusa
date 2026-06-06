@@ -1,4 +1,4 @@
-import { CreatePriceRuleDTO } from "@medusajs/framework/types"
+import { CreatePriceRuleDTO } from "@zjedene-medusa/framework/types"
 
 export * from "./data"
 

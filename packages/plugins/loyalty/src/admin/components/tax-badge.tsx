@@ -1,5 +1,5 @@
-import { TaxExclusive, TaxInclusive } from "@medusajs/icons";
-import { Tooltip } from "@medusajs/ui";
+import { TaxExclusive, TaxInclusive } from "@zjedene-medusa/icons";
+import { Tooltip } from "@zjedene-medusa/ui";
 
 type IncludesTaxTooltipProps = {
   includesTax?: boolean;

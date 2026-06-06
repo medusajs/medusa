@@ -1,4 +1,4 @@
-import { Drawer, clx } from "@medusajs/ui"
+import { Drawer, clx } from "@zjedene-medusa/ui"
 import {
   ComponentPropsWithoutRef,
   PropsWithChildren,

@@ -1,4 +1,4 @@
-import { Heading, Input } from "@medusajs/ui"
+import { Heading, Input } from "@zjedene-medusa/ui"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 

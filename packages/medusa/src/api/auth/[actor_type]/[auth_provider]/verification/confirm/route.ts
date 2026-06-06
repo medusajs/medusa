@@ -1,6 +1,6 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { IAuthModuleService } from "@medusajs/framework/types"
-import { Modules } from "@medusajs/framework/utils"
+import { MedusaRequest, MedusaResponse } from "@zjedene-medusa/framework/http"
+import { IAuthModuleService } from "@zjedene-medusa/framework/types"
+import { Modules } from "@zjedene-medusa/framework/utils"
 import { VerificationConfirmRequestType } from "../../../../validators"
 
 export const POST = async (

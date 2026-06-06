@@ -1,4 +1,4 @@
-import { defineConfig } from "@medusajs/utils"
+import { defineConfig } from "@zjedene-medusa/utils"
 
 throw new Error("Uncaught error in medusa-config-throwing.js")
 

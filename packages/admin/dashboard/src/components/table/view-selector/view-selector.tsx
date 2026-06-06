@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Button, Tooltip, DropdownMenu, usePrompt } from "@medusajs/ui"
+import { Button, Tooltip, DropdownMenu, usePrompt } from "@zjedene-medusa/ui"
 import {
   Eye,
   Plus,
@@ -8,7 +8,7 @@ import {
   Star,
   CheckCircleSolid,
   ArrowUturnLeft,
-} from "@medusajs/icons"
+} from "@zjedene-medusa/icons"
 import {
   useViewConfigurations,
   useViewConfiguration,

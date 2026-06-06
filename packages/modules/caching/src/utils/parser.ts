@@ -1,5 +1,5 @@
-import { ModuleJoinerConfig } from "@medusajs/framework/types"
-import { isObject } from "@medusajs/framework/utils"
+import { ModuleJoinerConfig } from "@zjedene-medusa/framework/types"
+import { isObject } from "@zjedene-medusa/framework/utils"
 import {
   GraphQLObjectType,
   GraphQLSchema,

@@ -3,8 +3,8 @@ import {
   AdminCreateShippingOptionPriceWithCurrency,
   AdminCreateShippingOptionPriceWithRegion,
   HttpTypes,
-} from "@medusajs/types"
-import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
+} from "@zjedene-medusa/types"
+import { Button, ProgressStatus, ProgressTabs, toast } from "@zjedene-medusa/ui"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 

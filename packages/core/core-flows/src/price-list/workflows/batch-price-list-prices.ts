@@ -1,14 +1,14 @@
 import {
   BatchPriceListPricesWorkflowDTO,
   BatchPriceListPricesWorkflowResult,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { createPriceListPricesWorkflow } from "./create-price-list-prices"
 import { removePriceListPricesWorkflow } from "./remove-price-list-prices"
 import { updatePriceListPricesWorkflow } from "./update-price-list-prices"

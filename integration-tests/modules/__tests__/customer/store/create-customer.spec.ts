@@ -1,7 +1,7 @@
-import { IAuthModuleService } from "@medusajs/types"
+import { IAuthModuleService } from "@zjedene-medusa/types"
 
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
+import { ContainerRegistrationKeys, Modules } from "@zjedene-medusa/utils"
 import jwt from "jsonwebtoken"
 import {
   adminHeaders,

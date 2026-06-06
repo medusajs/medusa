@@ -1,4 +1,4 @@
-import { FlagSettings } from "@medusajs/framework/feature-flags"
+import { FlagSettings } from "@zjedene-medusa/framework/feature-flags"
 
 const RbacFilterFieldsFeatureFlag: FlagSettings = {
   key: "rbac_filter_fields",

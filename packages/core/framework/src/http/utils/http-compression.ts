@@ -1,6 +1,6 @@
 import compression from "compression"
-import type { ConfigModule } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import type { ConfigModule } from "@zjedene-medusa/types"
+import { ContainerRegistrationKeys } from "@zjedene-medusa/utils"
 
 import { HttpCompressionOptions, ProjectConfigOptions } from "../../config"
 import type { MedusaRequest, MedusaResponse } from "../types"

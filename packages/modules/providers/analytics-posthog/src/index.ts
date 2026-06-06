@@ -1,4 +1,4 @@
-import { ModuleProvider, Modules } from "@medusajs/framework/utils"
+import { ModuleProvider, Modules } from "@zjedene-medusa/framework/utils"
 import { PosthogAnalyticsService } from "./services/posthog-analytics"
 
 const services = [PosthogAnalyticsService]

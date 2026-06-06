@@ -1,5 +1,5 @@
 // TODO: Comment temporarely and we will re enable it in the near future #14478
-// import { EventOptions } from "@medusajs/types"
+// import { EventOptions } from "@zjedene-medusa/types"
 
 /**
  * @category Cart
@@ -1008,7 +1008,7 @@ export const TranslationWorkflowEvents = {
 } as const
 
 // TODO: Comment temporarely and we will re enable it in the near future #14478
-// declare module "@medusajs/types" {
+// declare module "@zjedene-medusa/types" {
 //   export interface EventBusEventsOptions {
 //     // Cart events
 //     [CartWorkflowEvents.CREATED]?: EventOptions

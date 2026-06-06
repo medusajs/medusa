@@ -1,8 +1,8 @@
-import { Heading, Input, Select, clx } from "@medusajs/ui"
+import { Heading, Input, Select, clx } from "@zjedene-medusa/ui"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import { Control } from "react-hook-form"
 import { AddressSchema } from "../../../lib/schemas"
 import { Form } from "../../common/form"

@@ -3,7 +3,7 @@ import {
   Context,
   FindConfig,
   IModuleService,
-} from "@medusajs/types";
+} from "@zjedene-medusa/types";
 import {
   ModuleCreateGiftCard,
   ModuleGiftCard,

@@ -1,5 +1,5 @@
 ---
-"@medusajs/dashboard": patch
+"@zjedene-medusa/dashboard": patch
 ---
 
 csv accepted mime type to include `application/vnd.ms-excel`

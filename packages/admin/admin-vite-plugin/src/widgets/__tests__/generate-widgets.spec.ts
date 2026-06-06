@@ -20,7 +20,7 @@ vi.mock("fs/promises", () => ({
 
 const mockFileContents = [
   `
-    import { defineWidgetConfig } from "@medusajs/admin-sdk"
+    import { defineWidgetConfig } from "@zjedene-medusa/admin-sdk"
 
     const Widget = () => {
         return <div>Widget 1</div>

@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import { ColumnAdapter } from "../../hooks/table/columns/use-configurable-table-columns"
 
 export const orderColumnAdapter: ColumnAdapter<HttpTypes.AdminOrder> = {

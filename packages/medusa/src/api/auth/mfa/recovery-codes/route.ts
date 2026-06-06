@@ -1,9 +1,9 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
-import { IAuthModuleService } from "@medusajs/framework/types"
-import { AuthEvents, MedusaError, Modules } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/http"
+import { IAuthModuleService } from "@zjedene-medusa/framework/types"
+import { AuthEvents, MedusaError, Modules } from "@zjedene-medusa/framework/utils"
 import { AuthMfaGenerateRecoveryCodesRequestType } from "../../validators"
 
 export const POST = async (

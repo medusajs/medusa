@@ -1,4 +1,4 @@
-import { Divider, Heading } from "@medusajs/ui";
+import { Divider, Heading } from "@zjedene-medusa/ui";
 import { UseFormReturn } from "react-hook-form";
 import { GiftCardProductCreateFormDenominations } from "./gift-card-product-create-form-denominations";
 import { GiftCardProductCreateFormGeneral } from "./gift-card-product-create-form-general";

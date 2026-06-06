@@ -1,4 +1,4 @@
-import { defineJoinerConfig, Modules } from "@medusajs/framework/utils"
+import { defineJoinerConfig, Modules } from "@zjedene-medusa/framework/utils"
 
 export const joinerConfig = defineJoinerConfig(Modules.API_KEY, {
   linkableKeys: {

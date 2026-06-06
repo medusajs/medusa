@@ -1,4 +1,4 @@
-import { PolicyDefinition, toPascalCase } from "@medusajs/framework/utils"
+import { PolicyDefinition, toPascalCase } from "@zjedene-medusa/framework/utils"
 import { defaultPolicyOperations } from "./default-policy-operations"
 
 export const generateResourcePolicies = (resources: string[]) => {

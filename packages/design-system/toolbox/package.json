@@ -1,10 +1,10 @@
 {
-  "name": "@medusajs/toolbox",
+  "name": "@zjedene-medusa/toolbox",
   "private": true,
   "version": "2.15.5",
   "description": "CLI tool for importing Figma designs for Medusa UI",
   "license": "MIT",
-  "author": "Kasper Kristensen <kasper@medusajs.com>",
+  "author": "Kasper Kristensen <kasper@zjedene-medusa.com>",
   "bin": "./bin/toolbox.js",
   "scripts": {
     "build": "yarn run -T tsup"

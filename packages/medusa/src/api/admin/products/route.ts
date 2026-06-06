@@ -1,16 +1,16 @@
-import { createProductsWorkflow } from "@medusajs/core-flows"
+import { createProductsWorkflow } from "@zjedene-medusa/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
   refetchEntities,
   refetchEntity,
-} from "@medusajs/framework/http"
-import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/http"
+import { AdditionalData, HttpTypes } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   FeatureFlag,
   isPresent,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import IndexEngineFeatureFlag from "../../../feature-flags/index-engine"
 import { remapKeysForProduct, remapProductResponse } from "./helpers"
 

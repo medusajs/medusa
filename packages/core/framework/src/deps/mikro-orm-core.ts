@@ -1,1 +1,1 @@
-export * from "@medusajs/deps/mikro-orm/core"
+export * from "@zjedene-medusa/deps/mikro-orm/core"

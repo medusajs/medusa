@@ -1,4 +1,4 @@
-import * as utils from "@medusajs/framework/utils"
+import * as utils from "@zjedene-medusa/framework/utils"
 import path from "path"
 import * as instrumentationFixture from "../__fixtures__/instrumentation"
 import * as instrumentationFailureFixture from "../__fixtures__/instrumentation-failure/instrumentation"
@@ -9,7 +9,7 @@ const logger = {
   error: jest.fn(),
 }
 
-jest.mock("@medusajs/framework/config", () => {
+jest.mock("@zjedene-medusa/framework/config", () => {
   return {
     configManager: {
       config: {},
@@ -25,8 +25,8 @@ jest.mock("@medusajs/framework/config", () => {
 describe("start", () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    jest.doMock("@medusajs/framework/utils", () => ({
-      ...jest.requireActual("@medusajs/framework/utils"),
+    jest.doMock("@zjedene-medusa/framework/utils", () => ({
+      ...jest.requireActual("@zjedene-medusa/framework/utils"),
       createMedusaContainer: jest.fn(() => ({
         resolve: jest.fn(() => logger),
       })),

@@ -1,5 +1,5 @@
-import { ArrowsPointingOut, CircleSliders } from "@medusajs/icons"
-import { clx } from "@medusajs/ui"
+import { ArrowsPointingOut, CircleSliders } from "@zjedene-medusa/icons"
+import { clx } from "@zjedene-medusa/ui"
 import { useCallback, useEffect, useRef, useState } from "react"
 import CurrencyInput, {
   CurrencyInputProps,

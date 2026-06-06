@@ -1,5 +1,5 @@
 import { UniqueIdentifier } from "@dnd-kit/core"
-import { Badge } from "@medusajs/ui"
+import { Badge } from "@zjedene-medusa/ui"
 import { useMemo, useState } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 

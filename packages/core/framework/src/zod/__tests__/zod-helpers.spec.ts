@@ -1,5 +1,5 @@
-import { MedusaError } from "@medusajs/utils"
-import { z } from "@medusajs/deps/zod"
+import { MedusaError } from "@zjedene-medusa/utils"
+import { z } from "@zjedene-medusa/deps/zod"
 import { zodValidator } from "../zod-helpers"
 
 describe("zodValidator", () => {

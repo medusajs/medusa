@@ -1,6 +1,6 @@
-import { PencilSquare } from "@medusajs/icons"
-import { ApplicationMethodTargetTypeValues } from "@medusajs/types"
-import { Badge, Container, Heading } from "@medusajs/ui"
+import { PencilSquare } from "@zjedene-medusa/icons"
+import { ApplicationMethodTargetTypeValues } from "@zjedene-medusa/types"
+import { Badge, Container, Heading } from "@zjedene-medusa/ui"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"

@@ -2,4 +2,4 @@ export type {
   MiddlewareFunction,
   MiddlewareRoute,
   MiddlewaresConfig,
-} from "@medusajs/framework"
+} from "@zjedene-medusa/framework"

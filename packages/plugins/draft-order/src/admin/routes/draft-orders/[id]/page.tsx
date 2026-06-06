@@ -6,7 +6,7 @@ import {
   useParams,
 } from "react-router-dom"
 
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import { PageSkeleton } from "../../../components/common/page-skeleton"
 import { ActiveOrderChange } from "../../../components/draft-orders/active-order-changes"
 import { ActivitySection } from "../../../components/draft-orders/activity-section"

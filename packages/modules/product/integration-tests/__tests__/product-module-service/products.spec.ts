@@ -2,8 +2,8 @@ import {
   IProductModuleService,
   ProductCategoryDTO,
   ProductTagDTO,
-} from "@medusajs/framework/types"
-import { kebabCase, Modules, ProductStatus } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/types"
+import { kebabCase, Modules, ProductStatus } from "@zjedene-medusa/framework/utils"
 import {
   Product,
   ProductCategory,
@@ -13,7 +13,7 @@ import {
 } from "@models"
 import { setTimeout } from "timers/promises"
 
-import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import { moduleIntegrationTestRunner } from "@zjedene-medusa/test-utils"
 import { UpdateProductInput } from "@types"
 import {
   buildProductAndRelationsData,

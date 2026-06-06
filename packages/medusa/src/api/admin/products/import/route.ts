@@ -1,10 +1,10 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
-import { HttpTypes } from "@medusajs/framework/types"
-import { MedusaError } from "@medusajs/framework/utils"
-import { importProductsWorkflow } from "@medusajs/core-flows"
+} from "@zjedene-medusa/framework/http"
+import { HttpTypes } from "@zjedene-medusa/framework/types"
+import { MedusaError } from "@zjedene-medusa/framework/utils"
+import { importProductsWorkflow } from "@zjedene-medusa/core-flows"
 
 /**
  * @deprecated use `POST /admin/products/imports` instead.

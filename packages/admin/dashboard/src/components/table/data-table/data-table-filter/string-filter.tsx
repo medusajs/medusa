@@ -1,4 +1,4 @@
-import { Input, Label, clx } from "@medusajs/ui"
+import { Input, Label, clx } from "@zjedene-medusa/ui"
 import debounce from "lodash.debounce"
 import { Popover as RadixPopover } from "radix-ui"
 import { ChangeEvent, useCallback, useEffect, useState } from "react"

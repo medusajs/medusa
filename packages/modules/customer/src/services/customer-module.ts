@@ -11,7 +11,7 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 
 import {
   EmitEvents,
@@ -20,7 +20,7 @@ import {
   isString,
   MedusaContext,
   MedusaService,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import {
   Customer,
   CustomerAddress,

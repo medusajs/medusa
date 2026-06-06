@@ -1,7 +1,7 @@
-import { Tooltip } from "@medusajs/ui"
+import { Tooltip } from "@zjedene-medusa/ui"
 import { useTranslation } from "react-i18next"
 
-import { SalesChannelDTO } from "@medusajs/types"
+import { SalesChannelDTO } from "@zjedene-medusa/types"
 import { PlaceholderCell } from "../../common/placeholder-cell"
 
 type SalesChannelsCellProps = {

@@ -1,4 +1,4 @@
-import { clx } from "@medusajs/ui"
+import { clx } from "@zjedene-medusa/ui"
 import { ComponentPropsWithoutRef } from "react"
 import { Link } from "react-router-dom"
 

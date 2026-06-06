@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 

@@ -1,9 +1,9 @@
-import { MEDUSA_CLI_PATH } from "@medusajs/framework"
+import { MEDUSA_CLI_PATH } from "@zjedene-medusa/framework"
 import {
   ContainerRegistrationKeys,
   FeatureFlag,
-} from "@medusajs/framework/utils"
-import { Store } from "@medusajs/telemetry"
+} from "@zjedene-medusa/framework/utils"
+import { Store } from "@zjedene-medusa/telemetry"
 import boxen from "boxen"
 import { ChildProcess, execSync, fork } from "child_process"
 import chokidar, { FSWatcher } from "chokidar"

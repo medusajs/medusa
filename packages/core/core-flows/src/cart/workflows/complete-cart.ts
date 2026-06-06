@@ -4,14 +4,14 @@ import {
   LinkDefinition,
   PromotionDTO,
   UsageComputedActions,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   EventPriority,
   isDefined,
   Modules,
   OrderStatus,
   OrderWorkflowEvents,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import {
   createHook,
   createWorkflow,
@@ -20,7 +20,7 @@ import {
   when,
   WorkflowData,
   WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import {
   createRemoteLinkStep,
   emitEventStep,
@@ -105,13 +105,13 @@ export const completeCartWorkflowId = "complete-cart"
  *   createWorkflow,
  *   when,
  *   WorkflowResponse
- * } from "@medusajs/framework/workflows-sdk"
+ * } from "@zjedene-medusa/framework/workflows-sdk"
  * import {
  *   useQueryGraphStep,
  *   completeCartWorkflow,
  *   acquireLockStep,
  *   releaseLockStep
- * } from "@medusajs/framework/workflows-sdk"
+ * } from "@zjedene-medusa/framework/workflows-sdk"
  * import digitalProductOrderOrderLink from "../../links/digital-product-order"
  *
  * type WorkflowInput = {
@@ -179,9 +179,9 @@ export const completeCartWorkflowId = "complete-cart"
  * you can cancel the order if the validation fails. For example:
  *
  * ```ts
- * import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
- * import { MedusaError } from "@medusajs/framework/utils"
- * import { cancelOrderWorkflow } from "@medusajs/medusa/core-flows"
+ * import { createStep, StepResponse } from "@zjedene-medusa/framework/workflows-sdk"
+ * import { MedusaError } from "@zjedene-medusa/framework/utils"
+ * import { cancelOrderWorkflow } from "@zjedene-medusa/medusa/core-flows"
  *
  * type StepInput = {
  *   order_id: string
@@ -224,8 +224,8 @@ export const completeCartWorkflowId = "complete-cart"
  *   createWorkflow,
  *   when,
  *   WorkflowResponse
- * } from "@medusajs/framework/workflows-sdk"
- * import { useQueryGraphStep } from "@medusajs/framework/workflows-sdk"
+ * } from "@zjedene-medusa/framework/workflows-sdk"
+ * import { useQueryGraphStep } from "@zjedene-medusa/framework/workflows-sdk"
  * import ticketOrderLink from "../../links/ticket-order"
  *
  * type WorkflowInput = {

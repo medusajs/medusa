@@ -1,6 +1,6 @@
-import { Button, Heading, IconButton, Input, Label } from "@medusajs/ui"
+import { Button, Heading, IconButton, Input, Label } from "@zjedene-medusa/ui"
 import { useFieldArray, UseFormReturn, useWatch } from "react-hook-form"
-import { XMarkMini } from "@medusajs/icons"
+import { XMarkMini } from "@zjedene-medusa/icons"
 import { useTranslation } from "react-i18next"
 
 import { ProductCreateSchemaType } from "../../../../types"

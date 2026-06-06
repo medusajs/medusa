@@ -1,5 +1,5 @@
-import { Plus, ReceiptPercent } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
+import { Plus, ReceiptPercent } from "@zjedene-medusa/icons"
+import { HttpTypes } from "@zjedene-medusa/types"
 import {
   Button,
   clx,
@@ -9,7 +9,7 @@ import {
   Text,
   toast,
   usePrompt,
-} from "@medusajs/ui"
+} from "@zjedene-medusa/ui"
 import { Link, useNavigate } from "react-router-dom"
 import { useConvertDraftOrder } from "../../hooks/api/draft-orders"
 import { getLocaleAmount, getStylizedAmount } from "../../lib/data/currencies"

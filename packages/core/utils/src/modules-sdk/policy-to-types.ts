@@ -6,7 +6,7 @@ import { Policy, PolicyOperation, PolicyResource } from "./define-policies"
  * Generates TypeScript type definitions for RBAC Resource, Operation, and Policy.
  * Creates two files:
  * - "policy-types.d.ts" - Ambient type declarations with global types
- * - "policy-bindings.d.ts" - Module augmentation for @medusajs/framework/utils
+ * - "policy-bindings.d.ts" - Module augmentation for @zjedene-medusa/framework/utils
  *
  * @param outputDir - Directory where the type definition files should be created
  */
@@ -77,9 +77,9 @@ declare const Policy: PolicyType;
   // File 2: policy-bindings.d.ts - Module augmentation
   const policyBindingsContents = `/// <reference path="./policy-types.d.ts" />
 
-// Module augmentation for @medusajs/framework/utils
+// Module augmentation for @zjedene-medusa/framework/utils
 // Types and globals are defined in policy-types.d.ts
-declare module "@medusajs/framework/utils" {
+declare module "@zjedene-medusa/framework/utils" {
   export const PolicyResource: PolicyResourceType;
   export const PolicyOperation: PolicyOperationType;
   export const Policy: PolicyType;

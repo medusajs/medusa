@@ -1,5 +1,5 @@
-import { ApiLoader } from "@medusajs/framework"
-import { Logger } from "@medusajs/framework/types"
+import { ApiLoader } from "@zjedene-medusa/framework"
+import { Logger } from "@zjedene-medusa/framework/types"
 import { CONFIG, FileChangeAction } from "../types"
 import { ModuleCacheManager } from "../module-cache-manager"
 import { BaseReloader } from "./base"

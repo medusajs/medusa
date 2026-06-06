@@ -6,8 +6,8 @@ import {
   FolderOpenIllustration,
   TagIllustration,
   TriangleRightMini,
-} from "@medusajs/icons"
-import { Badge, clx, IconButton } from "@medusajs/ui"
+} from "@zjedene-medusa/icons"
+import { Badge, clx, IconButton } from "@zjedene-medusa/ui"
 import { HandleProps } from "./types"
 
 export interface TreeItemProps

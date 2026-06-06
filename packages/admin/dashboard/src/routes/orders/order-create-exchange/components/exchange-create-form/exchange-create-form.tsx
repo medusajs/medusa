@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { InformationCircleSolid, PencilSquare } from "@medusajs/icons"
-import { AdminExchange, AdminOrder, AdminOrderPreview } from "@medusajs/types"
+import { InformationCircleSolid, PencilSquare } from "@zjedene-medusa/icons"
+import { AdminExchange, AdminOrder, AdminOrderPreview } from "@zjedene-medusa/types"
 import {
   Button,
   CurrencyInput,
@@ -10,7 +10,7 @@ import {
   toast,
   Tooltip,
   usePrompt,
-} from "@medusajs/ui"
+} from "@zjedene-medusa/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -24,7 +24,7 @@ import { Form } from "../../../../../components/common/form"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { CreateExchangeSchemaType, ExchangeCreateSchema } from "./schema"
 
-import { AdminReturn } from "@medusajs/types"
+import { AdminReturn } from "@zjedene-medusa/types"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form/keybound-form.tsx"
 import {
   useCancelExchangeRequest,

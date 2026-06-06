@@ -3,7 +3,7 @@ import {
   ItemTaxLineDTO,
   MedusaContainer,
   ShippingTaxLineDTO,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 
 /**
  * Applies translations to tax lines. If you are using a tax provider that doesn't have TaxRates defined in the database,

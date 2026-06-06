@@ -1,4 +1,4 @@
-import { z } from "@medusajs/framework/zod"
+import { z } from "@zjedene-medusa/framework/zod"
 
 const geoZoneBaseSchema = z.object({
   country_code: z.string(),

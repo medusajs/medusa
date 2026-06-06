@@ -1,9 +1,9 @@
-import { FilterableOrderProps } from "@medusajs/framework/types"
+import { FilterableOrderProps } from "@zjedene-medusa/framework/types"
 import {
   WorkflowData,
   createWorkflow,
   transform,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import { notifyOnFailureStep, sendNotificationsStep } from "../../notification"
 import { exportOrdersStep } from "../steps"

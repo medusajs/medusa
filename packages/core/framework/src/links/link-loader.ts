@@ -1,5 +1,5 @@
-import { Logger } from "@medusajs/types"
-import { dynamicImport, promiseAll, readDirRecursive } from "@medusajs/utils"
+import { Logger } from "@zjedene-medusa/types"
+import { dynamicImport, promiseAll, readDirRecursive } from "@zjedene-medusa/utils"
 import { Dirent } from "fs"
 import { access } from "fs/promises"
 import { join } from "path"

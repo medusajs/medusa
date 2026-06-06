@@ -1,4 +1,4 @@
-import { ICacheService } from "@medusajs/framework/types"
+import { ICacheService } from "@zjedene-medusa/framework/types"
 import { Redis } from "ioredis"
 import { RedisCacheModuleOptions } from "../types"
 

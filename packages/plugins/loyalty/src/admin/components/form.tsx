@@ -1,11 +1,11 @@
-import { InformationCircleSolid } from "@medusajs/icons";
+import { InformationCircleSolid } from "@zjedene-medusa/icons";
 import {
   Hint as HintComponent,
   Label as LabelComponent,
   Text,
   Tooltip,
   clx,
-} from "@medusajs/ui";
+} from "@zjedene-medusa/ui";
 import { Label as RadixLabel, Slot } from "radix-ui";
 import React, {
   ReactNode,

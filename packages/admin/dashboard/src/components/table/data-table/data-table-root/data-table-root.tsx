@@ -1,4 +1,4 @@
-import { CommandBar, Table, clx } from "@medusajs/ui"
+import { CommandBar, Table, clx } from "@zjedene-medusa/ui"
 import {
   ColumnDef,
   Table as ReactTable,

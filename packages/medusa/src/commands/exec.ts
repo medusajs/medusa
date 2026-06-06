@@ -1,9 +1,9 @@
-import { ExecArgs } from "@medusajs/framework/types"
+import { ExecArgs } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   dynamicImport,
   isFileSkipped,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import express from "express"
 import { existsSync } from "fs"
 import path from "path"

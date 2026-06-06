@@ -1,13 +1,13 @@
-import { createRbacPoliciesWorkflow } from "@medusajs/core-flows"
+import { createRbacPoliciesWorkflow } from "@zjedene-medusa/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework/http"
 import {
   ContainerRegistrationKeys,
   defineFileConfig,
   FeatureFlag,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import RbacFeatureFlag from "../../../../feature-flags/rbac"
 import { AdminCreateRbacPolicyType } from "./validators"
 

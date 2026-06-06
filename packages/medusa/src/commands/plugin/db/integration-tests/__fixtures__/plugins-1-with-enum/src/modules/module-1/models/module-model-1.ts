@@ -1,4 +1,4 @@
-import { model } from "@medusajs/framework/utils"
+import { model } from "@zjedene-medusa/framework/utils"
 
 // This enum export previously caused plugin:db:generate to crash
 export enum MyStatus {

@@ -1,4 +1,4 @@
-import { Photo } from "@medusajs/icons"
+import { Photo } from "@zjedene-medusa/icons"
 
 interface ThumbnailProps {
   thumbnail?: string | null

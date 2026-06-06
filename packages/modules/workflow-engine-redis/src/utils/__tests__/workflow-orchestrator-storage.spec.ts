@@ -1,4 +1,4 @@
-import { Logger, ModulesSdkTypes } from "@medusajs/framework/types"
+import { Logger, ModulesSdkTypes } from "@zjedene-medusa/framework/types"
 import { Queue, Worker } from "bullmq"
 import Redis from "ioredis"
 import { RedisDistributedTransactionStorage } from "../workflow-orchestrator-storage"

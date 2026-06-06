@@ -1,4 +1,4 @@
-import { PromotionUtils, model } from "@medusajs/framework/utils"
+import { PromotionUtils, model } from "@zjedene-medusa/framework/utils"
 import ApplicationMethod from "./application-method"
 import Campaign from "./campaign"
 import PromotionRule from "./promotion-rule"

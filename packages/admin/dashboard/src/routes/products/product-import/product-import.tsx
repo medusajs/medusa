@@ -1,11 +1,11 @@
-import { Button, Heading, Text, toast } from "@medusajs/ui"
+import { Button, Heading, Text, toast } from "@zjedene-medusa/ui"
 import { RouteDrawer, useRouteModal } from "../../../components/modals"
 import { useTranslation } from "react-i18next"
 import { useMemo, useState } from "react"
 import { useConfirmImportProducts, useImportProducts } from "../../../hooks/api"
 import { UploadImport } from "./components/upload-import"
 import { ImportSummary } from "./components/import-summary"
-import { Trash } from "@medusajs/icons"
+import { Trash } from "@zjedene-medusa/icons"
 import { FilePreview } from "../../../components/common/file-preview"
 import { getProductImportCsvTemplate } from "./helpers/import-template"
 

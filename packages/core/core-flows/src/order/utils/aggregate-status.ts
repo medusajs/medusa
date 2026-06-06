@@ -1,10 +1,10 @@
-import type { OrderDetailDTO } from "@medusajs/framework/types"
+import type { OrderDetailDTO } from "@zjedene-medusa/framework/types"
 import {
   defaultCurrencies,
   getEpsilonFromDecimalPrecision,
   isDefined,
   MathBN,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 
 export const getLastPaymentStatus = (order: OrderDetailDTO) => {
   const PaymentStatus = {

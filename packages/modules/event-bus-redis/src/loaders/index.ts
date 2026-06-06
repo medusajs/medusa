@@ -1,5 +1,5 @@
-import { asValue } from "@medusajs/framework/awilix"
-import { LoaderOptions } from "@medusajs/framework/types"
+import { asValue } from "@zjedene-medusa/framework/awilix"
+import { LoaderOptions } from "@zjedene-medusa/framework/types"
 import Redis from "ioredis"
 import { EOL } from "os"
 import { EventBusRedisModuleOptions } from "../types"

@@ -22,7 +22,7 @@ vi.mock("fs/promises", () => ({
 
 const mockFileContents = [
   `
-    import { defineRouteConfig } from "@medusajs/admin-sdk"
+    import { defineRouteConfig } from "@zjedene-medusa/admin-sdk"
 
     const Page = () => {
         return <div>Page 1</div>
@@ -36,7 +36,7 @@ const mockFileContents = [
     export default Page
     `,
   `
-    import { defineRouteConfig } from "@medusajs/admin-sdk"
+    import { defineRouteConfig } from "@zjedene-medusa/admin-sdk"
 
     const Page = () => {
         return <div>Page 2</div>
@@ -66,7 +66,7 @@ const expectedRoutesWithoutLoaders = `
 const mockFileContentsWithParallel = [
   // Parent route
   `
-    import { defineRouteConfig } from "@medusajs/admin-sdk"
+    import { defineRouteConfig } from "@zjedene-medusa/admin-sdk"
     const Page = () => {
         return <div>Brands</div>
     }
@@ -77,7 +77,7 @@ const mockFileContentsWithParallel = [
   `,
   // Parallel route
   `
-    import { defineRouteConfig } from "@medusajs/admin-sdk"
+    import { defineRouteConfig } from "@zjedene-medusa/admin-sdk"
     const Page = () => {
         return <div>Create Brand</div>
     }
@@ -105,7 +105,7 @@ const expectedRoutesWithParallel = `
 
 const mockFileContentsWithHandleLoader = [
   `
-    import { defineRouteConfig } from "@medusajs/admin-sdk"
+    import { defineRouteConfig } from "@zjedene-medusa/admin-sdk"
 
     const Page = () => {
         return <div>Page 1</div>
@@ -126,7 +126,7 @@ const mockFileContentsWithHandleLoader = [
     export default Page
   `,
   `
-    import { defineRouteConfig } from "@medusajs/admin-sdk"
+    import { defineRouteConfig } from "@zjedene-medusa/admin-sdk"
 
     const Page = () => {
         return <div>Page 2</div>

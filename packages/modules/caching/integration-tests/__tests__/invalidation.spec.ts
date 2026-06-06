@@ -1,7 +1,7 @@
-import { Modules } from "@medusajs/framework/utils"
-import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
-import { ICachingModuleService } from "@medusajs/framework/types"
-import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import { Modules } from "@zjedene-medusa/framework/utils"
+import { moduleIntegrationTestRunner } from "@zjedene-medusa/test-utils"
+import { ICachingModuleService } from "@zjedene-medusa/framework/types"
+import { MedusaModule } from "@zjedene-medusa/framework/modules-sdk"
 import { EventBusServiceMock } from "../__fixtures__/event-bus-mock"
 
 jest.setTimeout(30000)

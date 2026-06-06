@@ -1,4 +1,4 @@
-import { model } from "@medusajs/framework/utils"
+import { model } from "@zjedene-medusa/framework/utils"
 import { OrderLineItemAdjustment } from "./line-item-adjustment"
 import { OrderLineItemTaxLine } from "./line-item-tax-line"
 

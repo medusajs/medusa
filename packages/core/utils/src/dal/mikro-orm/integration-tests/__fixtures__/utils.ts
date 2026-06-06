@@ -6,7 +6,7 @@ import {
   PrimaryKey,
   Property,
   Rel,
-} from "@medusajs/deps/mikro-orm/core"
+} from "@zjedene-medusa/deps/mikro-orm/core"
 import { Searchable } from "../../decorators/searchable"
 
 // Circular dependency one level

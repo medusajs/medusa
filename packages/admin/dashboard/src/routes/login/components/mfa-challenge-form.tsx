@@ -1,5 +1,5 @@
-import { Button, Heading, Hint, Input, OtpInput, Text } from "@medusajs/ui"
-import type { AuthTypes } from "@medusajs/types"
+import { Button, Heading, Hint, Input, OtpInput, Text } from "@zjedene-medusa/ui"
+import type { AuthTypes } from "@zjedene-medusa/types"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"

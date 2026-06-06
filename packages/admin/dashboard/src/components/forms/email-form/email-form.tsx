@@ -1,4 +1,4 @@
-import { Input, clx } from "@medusajs/ui"
+import { Input, clx } from "@zjedene-medusa/ui"
 import { Control } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"

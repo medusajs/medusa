@@ -12,7 +12,7 @@ import {
   SoftDeleteReturn,
   UpdateRegionDTO,
   UpsertRegionDTO,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   arrayDifference,
   EmitEvents,
@@ -26,7 +26,7 @@ import {
   normalizeCurrencyCode,
   promiseAll,
   removeUndefined,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { Country, Region } from "@models"
 import { UpdateRegionInput } from "@types"
 

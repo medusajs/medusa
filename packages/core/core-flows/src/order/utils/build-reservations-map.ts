@@ -1,4 +1,4 @@
-import type { ReservationItemDTO } from "@medusajs/framework/types"
+import type { ReservationItemDTO } from "@zjedene-medusa/framework/types"
 
 /**
  * Builds a map of reservations by line item id.

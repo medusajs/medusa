@@ -1,4 +1,4 @@
-import { ModuleDefinition } from "@medusajs/types"
+import { ModuleDefinition } from "@zjedene-medusa/types"
 import { ModulesDefinition } from "../../definitions"
 import { MODULE_SCOPE } from "../../types"
 import { registerMedusaModule } from "../register-modules"

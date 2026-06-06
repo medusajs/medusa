@@ -1,5 +1,5 @@
-import { DMLSchema, EntityConstructor, EntityIndex } from "@medusajs/types"
-import { MetadataStorage } from "@medusajs/deps/mikro-orm/core"
+import { DMLSchema, EntityConstructor, EntityIndex } from "@zjedene-medusa/types"
+import { MetadataStorage } from "@zjedene-medusa/deps/mikro-orm/core"
 import { arrayDifference } from "../../../common"
 
 /*

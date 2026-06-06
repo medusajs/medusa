@@ -1,5 +1,5 @@
-import { createSelectParams } from "@medusajs/medusa/api/utils/validators";
-import { z } from "@medusajs/framework/zod";
+import { createSelectParams } from "@zjedene-medusa/medusa/api/utils/validators";
+import { z } from "@zjedene-medusa/framework/zod";
 
 export type StoreGetGiftCardsParamsType = z.infer<
   typeof StoreGetGiftCardParams

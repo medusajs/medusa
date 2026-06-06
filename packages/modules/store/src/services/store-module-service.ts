@@ -6,7 +6,7 @@ import {
   IStoreModuleService,
   ModulesSdkTypes,
   StoreTypes,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   EmitEvents,
   getDuplicates,
@@ -19,7 +19,7 @@ import {
   normalizeCurrencyCode,
   promiseAll,
   removeUndefined,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 
 import { Store, StoreCurrency, StoreLocale } from "@models"
 import { UpdateStoreInput } from "@types"

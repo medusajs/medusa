@@ -11,16 +11,16 @@ import {
   InferEntityType,
   IProductModuleService,
   ProductDTO,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   kebabCase,
   Module,
   Modules,
   ProductStatus,
   toMikroORMEntity,
-} from "@medusajs/framework/utils"
-import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
-import { SqlEntityManager } from "@medusajs/framework/mikro-orm/postgresql"
+} from "@zjedene-medusa/framework/utils"
+import { moduleIntegrationTestRunner } from "@zjedene-medusa/test-utils"
+import { SqlEntityManager } from "@zjedene-medusa/framework/mikro-orm/postgresql"
 import {
   ProductCategoryService,
   ProductModuleService,

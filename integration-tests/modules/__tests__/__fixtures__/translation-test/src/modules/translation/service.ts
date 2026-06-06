@@ -1,4 +1,4 @@
-import { MedusaService } from "@medusajs/framework/utils"
+import { MedusaService } from "@zjedene-medusa/framework/utils"
 import { Translation } from "./models"
 
 export class TranslationModule extends MedusaService({

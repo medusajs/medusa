@@ -43,7 +43,7 @@ function createTailwindConfig(
 
   try {
     dashboard = path.join(
-      path.dirname(require.resolve("@medusajs/dashboard")),
+      path.dirname(require.resolve("@zjedene-medusa/dashboard")),
       "**/*.{js,ts,jsx,tsx}"
     )
   } catch (_e) {
@@ -54,7 +54,7 @@ function createTailwindConfig(
 
   try {
     ui = path.join(
-      path.dirname(require.resolve("@medusajs/ui")),
+      path.dirname(require.resolve("@zjedene-medusa/ui")),
       "**/*.{js,ts,jsx,tsx}"
     )
   } catch (_e) {
@@ -80,7 +80,7 @@ function createTailwindConfig(
   }
 
   const config: Config = {
-    presets: [require("@medusajs/ui-preset")],
+    presets: [require("@zjedene-medusa/ui-preset")],
     content: [
       html,
       root,

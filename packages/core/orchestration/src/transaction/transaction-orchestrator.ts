@@ -18,7 +18,7 @@ import {
   TransactionStepStatus,
 } from "./types"
 
-import { Context } from "@medusajs/types"
+import { Context } from "@zjedene-medusa/types"
 import {
   isDefined,
   isErrorLike,
@@ -28,7 +28,7 @@ import {
   promiseAll,
   serializeError,
   TransactionStepState,
-} from "@medusajs/utils"
+} from "@zjedene-medusa/utils"
 import { EventEmitter } from "events"
 import {
   PermanentStepFailureError,

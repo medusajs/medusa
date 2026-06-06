@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import {
   Avatar,
   clx,
@@ -7,7 +7,7 @@ import {
   Skeleton,
   Text,
   Tooltip,
-} from "@medusajs/ui"
+} from "@zjedene-medusa/ui"
 import { Collapsible } from "radix-ui"
 import { ReactNode, useMemo, useState } from "react"
 import { Link } from "react-router-dom"

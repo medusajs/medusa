@@ -2,7 +2,7 @@ import {
   AdminProduct,
   AdminProductCategory,
   AdminShippingProfile,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 import { getLinkedFields } from "../../../dashboard-app"
 
 export const PRODUCT_DETAIL_FIELDS = getLinkedFields(

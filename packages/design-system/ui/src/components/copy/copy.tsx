@@ -7,7 +7,7 @@ import {
   CheckCircleSolid,
   SquareTwoStack,
   SquareTwoStackMini,
-} from "@medusajs/icons"
+} from "@zjedene-medusa/icons"
 import copy from "copy-to-clipboard"
 import { Slot } from "radix-ui"
 import React, { useState } from "react"

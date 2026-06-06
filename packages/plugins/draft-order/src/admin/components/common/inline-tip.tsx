@@ -1,4 +1,4 @@
-import { clx } from "@medusajs/ui"
+import { clx } from "@zjedene-medusa/ui"
 import { ComponentPropsWithoutRef, forwardRef } from "react"
 
 interface InlineTipProps extends ComponentPropsWithoutRef<"div"> {
@@ -22,7 +22,7 @@ interface InlineTipProps extends ComponentPropsWithoutRef<"div"> {
  * </InlineTip>
  * ```
  *
- * TODO: Move to `@medusajs/ui` package.
+ * TODO: Move to `@zjedene-medusa/ui` package.
  */
 export const InlineTip = forwardRef<HTMLDivElement, InlineTipProps>(
   ({ variant = "tip", label, className, children, ...props }, ref) => {

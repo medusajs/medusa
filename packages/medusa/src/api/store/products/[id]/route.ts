@@ -1,10 +1,10 @@
-import { MedusaResponse } from "@medusajs/framework/http"
-import { HttpTypes, QueryContextType } from "@medusajs/framework/types"
+import { MedusaResponse } from "@zjedene-medusa/framework/http"
+import { HttpTypes, QueryContextType } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
   QueryContext,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { wrapVariantsWithInventoryQuantityForSalesChannel } from "../../../utils/middlewares"
 import {
   filterOutInternalProductCategories,

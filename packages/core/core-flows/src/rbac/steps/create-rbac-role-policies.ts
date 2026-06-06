@@ -1,6 +1,6 @@
-import { Modules } from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
-import { CreateRbacRolePolicyDTO, IRbacModuleService } from "@medusajs/types"
+import { Modules } from "@zjedene-medusa/framework/utils"
+import { StepResponse, createStep } from "@zjedene-medusa/framework/workflows-sdk"
+import { CreateRbacRolePolicyDTO, IRbacModuleService } from "@zjedene-medusa/types"
 
 /**
  * @ignore

@@ -1,6 +1,6 @@
-import { Filter as MikroORMFilter } from "@medusajs/deps/mikro-orm/core"
-import { TSMigrationGenerator } from "@medusajs/deps/mikro-orm/migrations"
-import { ModuleServiceInitializeOptions } from "@medusajs/types"
+import { Filter as MikroORMFilter } from "@zjedene-medusa/deps/mikro-orm/core"
+import { TSMigrationGenerator } from "@zjedene-medusa/deps/mikro-orm/migrations"
+import { ModuleServiceInitializeOptions } from "@zjedene-medusa/types"
 import { isString, retryExecution, stringifyCircular } from "../../common"
 import { normalizeMigrationSQL } from "../utils"
 import { CustomDBMigrator } from "./custom-db-migrator"
@@ -8,7 +8,7 @@ import { CustomDBMigrator } from "./custom-db-migrator"
 type FilterDef = Parameters<typeof MikroORMFilter>[0]
 
 const expectedMigrationsImportStatement =
-  'import { Migration } from "@medusajs/framework/mikro-orm/migrations"'
+  'import { Migration } from "@zjedene-medusa/framework/mikro-orm/migrations"'
 
 export class CustomTsMigrationGenerator extends TSMigrationGenerator {
   // TODO: temporary fix to drop unique constraint before creating unique index
@@ -98,7 +98,7 @@ export async function mikroOrmCreateConnection(
   }
 
   const { MikroORM, defineConfig } = await import(
-    "@medusajs/deps/mikro-orm/postgresql"
+    "@zjedene-medusa/deps/mikro-orm/postgresql"
   )
   const mikroOrmConfig = defineConfig({
     discovery: { disableDynamicFileAccess: true, warnWhenNoEntities: false },

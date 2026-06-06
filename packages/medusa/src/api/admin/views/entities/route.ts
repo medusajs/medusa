@@ -1,9 +1,9 @@
-import { HttpTypes, SettingsTypes } from "@medusajs/framework/types"
+import { HttpTypes, SettingsTypes } from "@zjedene-medusa/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
-import { Modules } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/http"
+import { Modules } from "@zjedene-medusa/framework/utils"
 
 /**
  * List all available entities that can be used for view configurations.

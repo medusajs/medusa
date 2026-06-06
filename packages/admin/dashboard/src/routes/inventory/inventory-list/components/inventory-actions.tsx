@@ -1,9 +1,9 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@zjedene-medusa/icons"
 
 import { ActionMenu } from "../../../../components/common/action-menu"
-import { AdminInventoryItem } from "@medusajs/types"
+import { AdminInventoryItem } from "@zjedene-medusa/types"
 import { useDeleteInventoryItem } from "../../../../hooks/api/inventory"
-import { usePrompt } from "@medusajs/ui"
+import { usePrompt } from "@zjedene-medusa/ui"
 import { useTranslation } from "react-i18next"
 
 export const InventoryActions = ({ item }: { item: AdminInventoryItem }) => {

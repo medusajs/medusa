@@ -1,4 +1,4 @@
-import { PropertyMetadata, PropertyType } from "@medusajs/types"
+import { PropertyMetadata, PropertyType } from "@zjedene-medusa/types"
 import { ComputedProperty } from "./computed"
 import { NullableModifier } from "./nullable"
 
@@ -34,7 +34,7 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
    * This method indicates that a property's value can be `null`.
    *
    * @example
-   * import { model } from "@medusajs/framework/utils"
+   * import { model } from "@zjedene-medusa/framework/utils"
    *
    * const MyCustom = model.define("my_custom", {
    *   price: model.bigNumber().nullable(),
@@ -55,7 +55,7 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
    * computed on the fly.
    *
    * @example
-   * import { model } from "@medusajs/framework/utils"
+   * import { model } from "@zjedene-medusa/framework/utils"
    *
    * const MyCustom = model.define("my_custom", {
    *  calculated_price: model.bigNumber().computed(),
@@ -77,7 +77,7 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
    * Medusa generates the name.
    *
    * @example
-   * import { model } from "@medusajs/framework/utils"
+   * import { model } from "@zjedene-medusa/framework/utils"
    *
    * const MyCustom = model.define("my_custom", {
    *   id: model.id(),
@@ -103,7 +103,7 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
    * Medusa generates the name.
    *
    * @example
-   * import { model } from "@medusajs/framework/utils"
+   * import { model } from "@zjedene-medusa/framework/utils"
    *
    * const User = model.define("user", {
    *   email: model.text().unique(),
@@ -125,7 +125,7 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
    * @param {T} value - The default value.
    *
    * @example
-   * import { model } from "@medusajs/framework/utils"
+   * import { model } from "@zjedene-medusa/framework/utils"
    *
    * const MyCustom = model.define("my_custom", {
    *   color: model

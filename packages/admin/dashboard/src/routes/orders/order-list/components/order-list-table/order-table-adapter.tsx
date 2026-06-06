@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import {
   createTableAdapter,
   TableAdapter,
@@ -8,7 +8,7 @@ import { orderColumnAdapter } from "../../../../../lib/table/entity-adapters"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useRegions, useSalesChannels } from "../../../../../hooks/api"
-import { createDataTableFilterHelper, DataTableFilter } from "@medusajs/ui"
+import { createDataTableFilterHelper, DataTableFilter } from "@zjedene-medusa/ui"
 import { useDataTableDateFilters } from "../../../../../components/data-table/helpers/general/use-data-table-date-filters"
 
 /**

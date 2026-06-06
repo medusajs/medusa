@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Heading } from "@medusajs/ui"
+import { Button, Heading } from "@zjedene-medusa/ui"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { KeyboundForm } from "../../../../components/common/keybound-form"

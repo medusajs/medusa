@@ -1,5 +1,5 @@
-import { ModuleJoinerConfig } from "@medusajs/framework/types"
-import { LINKS, Modules } from "@medusajs/framework/utils"
+import { ModuleJoinerConfig } from "@zjedene-medusa/framework/types"
+import { LINKS, Modules } from "@zjedene-medusa/framework/utils"
 
 export const CustomerAccountHolder: ModuleJoinerConfig = {
   serviceName: LINKS.CustomerAccountHolder,

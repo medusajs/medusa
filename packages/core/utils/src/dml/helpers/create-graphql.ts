@@ -1,4 +1,4 @@
-import type { PropertyType } from "@medusajs/types"
+import type { PropertyType } from "@zjedene-medusa/types"
 import { DmlEntity } from "../entity"
 import { getForeignKey } from "./entity-builder"
 import { parseEntityName } from "./entity-builder/parse-entity-name"

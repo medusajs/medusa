@@ -4,7 +4,7 @@ import {
   PropertyType,
   RelationshipMetadata,
   RelationshipType,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 import {
   BeforeCreate,
   BeforeUpdate,
@@ -17,7 +17,7 @@ import {
   OnInit,
   Property,
   rel,
-} from "@medusajs/deps/mikro-orm/core"
+} from "@zjedene-medusa/deps/mikro-orm/core"
 import { camelToSnakeCase, pluralize } from "../../../common"
 import { DmlEntity } from "../../entity"
 import { BelongsTo } from "../../relations"

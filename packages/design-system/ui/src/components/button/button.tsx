@@ -3,7 +3,7 @@ import { Slot } from "radix-ui"
 import * as React from "react"
 
 import { clx } from "@/utils/clx"
-import { Spinner } from "@medusajs/icons"
+import { Spinner } from "@zjedene-medusa/icons"
 
 const buttonVariants = cva({
   base: clx(

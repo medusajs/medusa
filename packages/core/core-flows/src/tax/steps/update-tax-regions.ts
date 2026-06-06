@@ -1,13 +1,13 @@
 import {
   ITaxModuleService,
   UpdateTaxRegionDTO,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   Modules,
   getSelectsAndRelationsFromObjectArray,
   removeUndefined,
-} from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/utils"
+import { StepResponse, createStep } from "@zjedene-medusa/framework/workflows-sdk"
 
 /**
  * The tax regions to update.

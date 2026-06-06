@@ -1,7 +1,7 @@
 import {
   CreateNotificationDTO,
   INotificationModuleService,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   CommonEvents,
   composeMessage,
@@ -9,11 +9,11 @@ import {
   Modules,
   NotificationEvents,
   NotificationStatus,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-} from "@medusajs/test-utils"
+} from "@zjedene-medusa/test-utils"
 import { NotificationModuleService } from "@services"
 import { resolve } from "path"
 

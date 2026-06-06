@@ -1,6 +1,6 @@
-import { OrderCreditLineDTO } from "@medusajs/types"
-import { ArrowDownRightMini, DocumentText, XCircle } from "@medusajs/icons"
-import { AdminOrder, AdminPayment, HttpTypes } from "@medusajs/types"
+import { OrderCreditLineDTO } from "@zjedene-medusa/types"
+import { ArrowDownRightMini, DocumentText, XCircle } from "@zjedene-medusa/icons"
+import { AdminOrder, AdminPayment, HttpTypes } from "@zjedene-medusa/types"
 import {
   Badge,
   Button,
@@ -11,7 +11,7 @@ import {
   toast,
   Tooltip,
   usePrompt,
-} from "@medusajs/ui"
+} from "@zjedene-medusa/ui"
 import { format } from "date-fns"
 import { Trans, useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"

@@ -1,14 +1,14 @@
-import { HttpTypes } from "@medusajs/framework/types"
+import { HttpTypes } from "@zjedene-medusa/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework/http"
 import { getRuleAttributesMap, validateRuleType } from "../../utils"
 import {
   ApplicationMethodTargetTypeValues,
   ApplicationMethodTypeValues,
   PromotionTypeValues,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminGetPromotionRuleParams>,

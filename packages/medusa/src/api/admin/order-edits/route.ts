@@ -1,9 +1,9 @@
-import { beginOrderEditOrderWorkflow } from "@medusajs/core-flows"
-import { HttpTypes } from "@medusajs/framework/types"
+import { beginOrderEditOrderWorkflow } from "@zjedene-medusa/core-flows"
+import { HttpTypes } from "@zjedene-medusa/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework/http"
 import { AdminPostOrderEditsReqSchemaType } from "./validators"
 
 export const POST = async (

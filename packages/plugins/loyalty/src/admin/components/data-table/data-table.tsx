@@ -14,7 +14,7 @@ import {
   DataTable as Primitive,
   Text,
   useDataTable,
-} from "@medusajs/ui";
+} from "@zjedene-medusa/ui";
 import React, { ReactNode, useCallback, useMemo } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useQueryParams } from "../../hooks/common/use-query-params";

@@ -11,8 +11,8 @@ import { Context } from "../shared-context"
  * #### Example
  *
  * ```ts
- * import { ILockingProvider } from "@medusajs/framework/types"
- * import { Logger } from "@medusajs/framework/types"
+ * import { ILockingProvider } from "@zjedene-medusa/framework/types"
+ * import { Logger } from "@zjedene-medusa/framework/types"
  *
  * type InjectedDependencies = {
  *   logger: Logger
@@ -80,7 +80,7 @@ export interface ILockingProvider {
    * 
    * ```ts
    * // other imports...
-   * import { Context } from "@medusajs/framework/types"
+   * import { Context } from "@zjedene-medusa/framework/types"
    * import { setTimeout } from "node:timers/promises"
    * 
    * class MyLockingProviderService implements ILockingProvider {
@@ -259,7 +259,7 @@ export interface ILockingProvider {
    * 
    * ```ts
    * // other imports...
-   * import { promiseAll } from "@medusajs/framework/utils"
+   * import { promiseAll } from "@zjedene-medusa/framework/utils"
    * 
    * class MyLockingProviderService implements ILockingProvider {
    *   // ...

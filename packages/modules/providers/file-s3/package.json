@@ -1,5 +1,5 @@
 {
-  "name": "@medusajs/file-s3",
+  "name": "@zjedene-medusa/file-s3",
   "version": "2.15.5",
   "description": "S3 protocol file storage for Medusa. Supports any S3-compatible storage provider",
   "main": "dist/index.js",
@@ -26,7 +26,7 @@
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.15.5"
+    "@zjedene-medusa/framework": "2.15.5"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.556.0",
@@ -35,7 +35,7 @@
     "ulid": "^2.3.0"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.15.5"
+    "@zjedene-medusa/framework": "2.15.5"
   },
   "keywords": [
     "medusa-plugin",

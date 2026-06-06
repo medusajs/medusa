@@ -5,7 +5,7 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
@@ -13,7 +13,7 @@ import {
   inventoryItemLevelsQueryKeys,
   inventoryItemsQueryKeys,
 } from "./inventory.tsx"
-import { FetchError } from "@medusajs/js-sdk"
+import { FetchError } from "@zjedene-medusa/js-sdk"
 
 const RESERVATION_ITEMS_QUERY_KEY = "reservation_items" as const
 export const reservationItemsQueryKeys = queryKeysFactory(

@@ -1,6 +1,6 @@
-import { Trash } from "@medusajs/icons"
-import { AdminShippingProfileResponse } from "@medusajs/types"
-import { toast, usePrompt } from "@medusajs/ui"
+import { Trash } from "@zjedene-medusa/icons"
+import { AdminShippingProfileResponse } from "@zjedene-medusa/types"
+import { toast, usePrompt } from "@zjedene-medusa/ui"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"

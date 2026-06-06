@@ -1,14 +1,14 @@
 import type {
   BigNumberInput,
   IInventoryService,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   MathBN,
   MedusaError,
   Modules,
   promiseAll,
-} from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/utils"
+import { StepResponse, createStep } from "@zjedene-medusa/framework/workflows-sdk"
 
 /**
  * The details of the cart items to confirm their inventory availability.

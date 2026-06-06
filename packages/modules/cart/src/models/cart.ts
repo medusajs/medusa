@@ -1,4 +1,4 @@
-import { model } from "@medusajs/framework/utils"
+import { model } from "@zjedene-medusa/framework/utils"
 import Address from "./address"
 import CreditLine from "./credit-line"
 import LineItem from "./line-item"

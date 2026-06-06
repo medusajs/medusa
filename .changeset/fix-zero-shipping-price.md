@@ -1,5 +1,5 @@
 ---
-"@medusajs/dashboard": patch
+"@zjedene-medusa/dashboard": patch
 ---
 
 fix(dashboard): preserve zero-amount shipping option prices on re-save

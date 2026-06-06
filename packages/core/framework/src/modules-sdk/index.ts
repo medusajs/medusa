@@ -1,1 +1,1 @@
-export * from "@medusajs/modules-sdk"
+export * from "@zjedene-medusa/modules-sdk"

@@ -21,7 +21,7 @@ import {
   PricingTypes,
   UpsertPricePreferenceDTO,
   UpsertPriceSetDTO,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   arrayDifference,
   deduplicate,
@@ -43,7 +43,7 @@ import {
   PricingRuleOperator,
   promiseAll,
   removeNullish,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 
 import {
   Price,
@@ -54,7 +54,7 @@ import {
   PriceSet,
 } from "@models"
 
-import { Collection } from "@medusajs/framework/mikro-orm/core"
+import { Collection } from "@zjedene-medusa/framework/mikro-orm/core"
 import { ServiceTypes } from "@types"
 import { validatePriceListDates } from "@utils"
 import { joinerConfig } from "../joiner-config"

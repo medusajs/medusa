@@ -6,13 +6,13 @@ import {
   OrderWorkflow,
   PromotionDTO,
   ReturnDTO,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   ChangeActionType,
   OrderChangeStatus,
   deepFlatMap,
   isDefined,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -20,7 +20,7 @@ import {
   createWorkflow,
   transform,
   when,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import { updateOrderClaimsStep } from "../../steps/claim/update-order-claims"
 import { previewOrderChangeStep } from "../../steps/preview-order-change"

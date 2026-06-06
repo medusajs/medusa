@@ -1,5 +1,5 @@
-import { XMark } from "@medusajs/icons";
-import { Alert, Button, IconButton, Input, Text } from "@medusajs/ui";
+import { XMark } from "@zjedene-medusa/icons";
+import { Alert, Button, IconButton, Input, Text } from "@zjedene-medusa/ui";
 import { UseFormReturn, useFieldArray } from "react-hook-form";
 import { Form } from "../../../../../components/form";
 import { ProductCreateSchemaType } from "./types";

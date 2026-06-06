@@ -1,14 +1,14 @@
-import { RemoteJoiner } from "@medusajs/framework/orchestration"
-import CustomerModule from "@medusajs/medusa/customer"
-import RegionModule from "@medusajs/medusa/region"
-import { MedusaModule } from "@medusajs/modules-sdk"
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { RemoteJoiner } from "@zjedene-medusa/framework/orchestration"
+import CustomerModule from "@zjedene-medusa/medusa/customer"
+import RegionModule from "@zjedene-medusa/medusa/region"
+import { MedusaModule } from "@zjedene-medusa/modules-sdk"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
 import {
   IRegionModuleService,
   ModuleJoinerConfig,
   RemoteQueryFunction,
-} from "@medusajs/types"
-import { ContainerRegistrationKeys, defineLink, Modules } from "@medusajs/utils"
+} from "@zjedene-medusa/types"
+import { ContainerRegistrationKeys, defineLink, Modules } from "@zjedene-medusa/utils"
 import { createAdminUser } from "../../..//helpers/create-admin-user"
 import { adminHeaders } from "../../../helpers/create-admin-user"
 

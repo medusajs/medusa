@@ -1,13 +1,13 @@
-import { updateCartPromotionsWorkflow } from "@medusajs/core-flows"
-import { StepResponse } from "@medusajs/framework/workflows-sdk"
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { ICartModuleService, IPromotionModuleService } from "@medusajs/types"
+import { updateCartPromotionsWorkflow } from "@zjedene-medusa/core-flows"
+import { StepResponse } from "@zjedene-medusa/framework/workflows-sdk"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
+import { ICartModuleService, IPromotionModuleService } from "@zjedene-medusa/types"
 import {
   Modules,
   PromotionActions,
   PromotionStatus,
   PromotionType,
-} from "@medusajs/utils"
+} from "@zjedene-medusa/utils"
 import {
   adminHeaders,
   createAdminUser,

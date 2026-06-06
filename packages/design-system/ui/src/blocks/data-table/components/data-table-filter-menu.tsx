@@ -5,7 +5,7 @@ import { DropdownMenu } from "@/components/dropdown-menu"
 import { IconButton } from "@/components/icon-button"
 import { Skeleton } from "@/components/skeleton"
 import { Tooltip } from "@/components/tooltip"
-import { Funnel } from "@medusajs/icons"
+import { Funnel } from "@zjedene-medusa/icons"
 
 interface DataTableFilterMenuProps {
   /**

@@ -1,4 +1,4 @@
-import { FlagSettings, Logger } from "@medusajs/types"
+import { FlagSettings, Logger } from "@zjedene-medusa/types"
 import { discoverFeatureFlagsFromDir } from "./discover-feature-flags"
 import { FlagRouter } from "./flag-router"
 import { registerFeatureFlag } from "./register-flag"

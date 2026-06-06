@@ -2,7 +2,7 @@ import {
   BigNumberInput,
   InferEntityType,
   PromotionTypes,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
@@ -10,7 +10,7 @@ import {
   ComputedActions,
   MathBN,
   MedusaError,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { Promotion } from "@models"
 import { areRulesValidForContext } from "../validations"
 import { sortShippingLineByPriceAscending } from "./sort-by-price"

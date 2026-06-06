@@ -1,10 +1,10 @@
-import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { createStep, StepResponse } from "@zjedene-medusa/framework/workflows-sdk"
 import {
   applyTranslations,
   ContainerRegistrationKeys,
   FeatureFlag,
   Modules,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 
 export const updateOrderTaxLinesTranslationsStepId =
   "update-order-tax-lines-translations"

@@ -1,9 +1,9 @@
-import { ModuleJoinerConfig } from "@medusajs/framework/types"
+import { ModuleJoinerConfig } from "@zjedene-medusa/framework/types"
 import {
   FeatureFlag,
   MEDUSA_SKIP_FILE,
   Modules,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 
 export const ProductTranslation: ModuleJoinerConfig = {
   [MEDUSA_SKIP_FILE]: !(

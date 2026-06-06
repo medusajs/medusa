@@ -6,12 +6,12 @@ import {
   ComputeActionContext,
   InferEntityType,
   PromotionDTO,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   CampaignBudgetType,
   ComputedActions,
   MathBN,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { Promotion } from "@models"
 
 /**

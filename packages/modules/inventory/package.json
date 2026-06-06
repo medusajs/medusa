@@ -1,5 +1,5 @@
 {
-  "name": "@medusajs/inventory",
+  "name": "@zjedene-medusa/inventory",
   "version": "2.15.5",
   "description": "Inventory Module for Medusa",
   "main": "dist/index.js",
@@ -23,11 +23,11 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/framework": "2.15.5",
-    "@medusajs/test-utils": "2.15.5"
+    "@zjedene-medusa/framework": "2.15.5",
+    "@zjedene-medusa/test-utils": "2.15.5"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.15.5"
+    "@zjedene-medusa/framework": "2.15.5"
   },
   "scripts": {
     "watch": "yarn run -T tsc --build --watch",

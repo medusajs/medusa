@@ -1,17 +1,17 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework/http"
 import {
   AdminTranslationSettings,
   HttpTypes,
   ITranslationModuleService,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   defineFileConfig,
   FeatureFlag,
   Modules,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import TranslationFeatureFlag from "../../../../feature-flags/translation"
 
 /**

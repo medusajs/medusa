@@ -1,9 +1,9 @@
-import type { PricingWorkflow } from "@medusajs/framework/types"
+import type { PricingWorkflow } from "@zjedene-medusa/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { createPricePreferencesStep } from "../steps"
 
 /**

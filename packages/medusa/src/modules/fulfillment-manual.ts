@@ -1,6 +1,6 @@
-import ManualFulfillmentModule from "@medusajs/fulfillment-manual"
+import ManualFulfillmentModule from "@zjedene-medusa/fulfillment-manual"
 
-export * from "@medusajs/fulfillment-manual"
+export * from "@zjedene-medusa/fulfillment-manual"
 
 export default ManualFulfillmentModule
-export const discoveryPath = require.resolve("@medusajs/fulfillment-manual")
+export const discoveryPath = require.resolve("@zjedene-medusa/fulfillment-manual")

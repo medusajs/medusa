@@ -1,4 +1,4 @@
-import { Button, DropdownMenu } from "@medusajs/ui"
+import { Button, DropdownMenu } from "@zjedene-medusa/ui"
 import { ReactNode } from "react"
 import { useSearchParams } from "react-router-dom"
 import { useDocumentDirection } from "../../../hooks/use-document-direction"

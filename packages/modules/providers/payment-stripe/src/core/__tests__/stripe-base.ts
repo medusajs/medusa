@@ -1,7 +1,7 @@
-import { PaymentActions } from "@medusajs/framework/utils"
+import { PaymentActions } from "@zjedene-medusa/framework/utils"
 import Stripe from "stripe"
 import StripeProviderService from "../../services/stripe-provider"
-import { ProviderWebhookPayload } from "@medusajs/framework/types"
+import { ProviderWebhookPayload } from "@zjedene-medusa/framework/types"
 
 const buildProvider = () => {
   return new StripeProviderService(

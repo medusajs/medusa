@@ -27,7 +27,7 @@ describe("gqlSchemaToTypes", () => {
     })
 
     const expectedTypes = `
-    import "@medusajs/framework/types"
+    import "@zjedene-medusa/framework/types"
     export type Maybe<T> = T | null;
     export type InputMaybe<T> = Maybe<T>;
     export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -46,7 +46,7 @@ describe("gqlSchemaToTypes", () => {
 
     export type Test = | 'test-a' | 'Test_B';
 
-    declare module '@medusajs/framework/types' {
+    declare module '@zjedene-medusa/framework/types' {
       interface RemoteQueryEntryPoints {
 
       }

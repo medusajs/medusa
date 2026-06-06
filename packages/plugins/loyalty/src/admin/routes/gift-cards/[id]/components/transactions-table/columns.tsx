@@ -1,4 +1,4 @@
-import { Badge, createDataTableColumnHelper, Text } from "@medusajs/ui";
+import { Badge, createDataTableColumnHelper, Text } from "@zjedene-medusa/ui";
 import { useMemo } from "react";
 
 import { AdminTransaction } from "../../../../../../types";

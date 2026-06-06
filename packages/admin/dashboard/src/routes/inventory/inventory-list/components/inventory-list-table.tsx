@@ -1,4 +1,4 @@
-import { Button, Container, Heading, Text } from "@medusajs/ui"
+import { Button, Container, Heading, Text } from "@zjedene-medusa/ui"
 
 import { RowSelectionState } from "@tanstack/react-table"
 import { useState } from "react"

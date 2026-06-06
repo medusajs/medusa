@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 import { UseFormReturn } from "react-hook-form"
-import { z } from "@medusajs/framework/zod"
+import { z } from "@zjedene-medusa/framework/zod"
 import { MediaSchema } from "../routes/gift-cards/gift-card-products/components/gift-card-product-create-form/schema"
 import {
   EditProductMediaSchemaType,

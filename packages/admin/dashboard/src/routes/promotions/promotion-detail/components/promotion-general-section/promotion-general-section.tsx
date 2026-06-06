@@ -1,5 +1,5 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
+import { PencilSquare, Trash } from "@zjedene-medusa/icons"
+import { HttpTypes } from "@zjedene-medusa/types"
 import {
   Badge,
   Container,
@@ -8,7 +8,7 @@ import {
   StatusBadge,
   Text,
   usePrompt,
-} from "@medusajs/ui"
+} from "@zjedene-medusa/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 

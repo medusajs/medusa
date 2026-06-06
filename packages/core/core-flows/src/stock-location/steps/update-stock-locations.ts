@@ -2,11 +2,11 @@ import {
   FilterableStockLocationProps,
   IStockLocationService,
   UpdateStockLocationInput,
-} from "@medusajs/framework/types"
-import { getSelectsAndRelationsFromObjectArray } from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/types"
+import { getSelectsAndRelationsFromObjectArray } from "@zjedene-medusa/framework/utils"
+import { StepResponse, createStep } from "@zjedene-medusa/framework/workflows-sdk"
 
-import { Modules } from "@medusajs/framework/utils"
+import { Modules } from "@zjedene-medusa/framework/utils"
 
 /**
  * The data to update stock locations.

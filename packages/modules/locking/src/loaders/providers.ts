@@ -1,13 +1,13 @@
-import { moduleProviderLoader } from "@medusajs/framework/modules-sdk"
+import { moduleProviderLoader } from "@zjedene-medusa/framework/modules-sdk"
 import {
   LoaderOptions,
   ModuleProvider,
   ModulesSdkTypes,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   getProviderRegistrationKey,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { LockingProviderService } from "@services"
 import {
   LockingDefaultProvider,
@@ -19,7 +19,7 @@ import {
   aliasTo,
   asFunction,
   asValue,
-} from "@medusajs/framework/awilix"
+} from "@zjedene-medusa/framework/awilix"
 import { InMemoryLockingProvider } from "../providers/in-memory"
 
 const registrationFn = async (klass, container, { id }) => {

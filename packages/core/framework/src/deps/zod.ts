@@ -1,1 +1,1 @@
-export * from "@medusajs/deps/zod"
+export * from "@zjedene-medusa/deps/zod"

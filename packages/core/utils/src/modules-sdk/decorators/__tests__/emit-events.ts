@@ -1,6 +1,6 @@
 import { EmitEvents } from "../emit-events"
 import { MedusaContext } from "../context-parameter"
-import { Context } from "@medusajs/types"
+import { Context } from "@zjedene-medusa/types"
 import { InjectSharedContext } from "../inject-shared-context"
 
 describe("EmitEvents", () => {

@@ -1,4 +1,4 @@
-import { RelationshipType } from "@medusajs/types"
+import { RelationshipType } from "@zjedene-medusa/types"
 import { IsRelationship } from "./base"
 
 const IsNullableModifier = Symbol.for("isNullableModifier")

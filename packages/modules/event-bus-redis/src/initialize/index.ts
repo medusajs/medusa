@@ -1,10 +1,10 @@
-import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import { MedusaModule } from "@zjedene-medusa/framework/modules-sdk"
 import {
   ExternalModuleDeclaration,
   IEventBusService,
   InternalModuleDeclaration,
-} from "@medusajs/framework/types"
-import { Modules } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/types"
+import { Modules } from "@zjedene-medusa/framework/utils"
 import { EventBusRedisModuleOptions } from "../types"
 
 export const initialize = async (
@@ -13,7 +13,7 @@ export const initialize = async (
   const serviceKey = Modules.EVENT_BUS
   const loaded = await MedusaModule.bootstrap<IEventBusService>({
     moduleKey: serviceKey,
-    defaultPath: "@medusajs/event-bus-redis",
+    defaultPath: "@zjedene-medusa/event-bus-redis",
     declaration: options as
       | InternalModuleDeclaration
       | ExternalModuleDeclaration,

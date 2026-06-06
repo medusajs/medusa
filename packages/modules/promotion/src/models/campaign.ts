@@ -1,4 +1,4 @@
-import { model } from "@medusajs/framework/utils"
+import { model } from "@zjedene-medusa/framework/utils"
 import CampaignBudget from "./campaign-budget"
 import Promotion from "./promotion"
 

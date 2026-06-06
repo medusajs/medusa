@@ -1,6 +1,6 @@
-import { InformationCircle } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
-import { Switch, Tooltip } from "@medusajs/ui"
+import { InformationCircle } from "@zjedene-medusa/icons"
+import { HttpTypes } from "@zjedene-medusa/types"
+import { Switch, Tooltip } from "@zjedene-medusa/ui"
 import { useCallback, useMemo } from "react"
 
 import { useTranslation } from "react-i18next"

@@ -1,4 +1,4 @@
-import { HttpTypes, SelectParams } from "@medusajs/types"
+import { HttpTypes, SelectParams } from "@zjedene-medusa/types"
 import { Client, FetchError } from "../client.js"
 import { ClientHeaders } from "../types.js"
 

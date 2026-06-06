@@ -1,9 +1,9 @@
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
 import {
   createStoreCreditAccountsWorkflow,
   creditAccountsWorkflow,
   debitAccountsWorkflow,
-} from "@medusajs/loyalty-plugin/workflows"
+} from "@zjedene-medusa/loyalty-plugin/workflows"
 import {
   adminHeaders,
   createAdminUser,

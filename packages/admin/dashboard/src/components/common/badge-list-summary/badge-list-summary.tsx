@@ -1,4 +1,4 @@
-import { Badge, Tooltip, clx } from "@medusajs/ui"
+import { Badge, Tooltip, clx } from "@zjedene-medusa/ui"
 import { useTranslation } from "react-i18next"
 
 type BadgeListSummaryProps = {

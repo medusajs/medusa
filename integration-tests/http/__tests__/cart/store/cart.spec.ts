@@ -3,8 +3,8 @@ import {
   createCartCreditLinesWorkflow,
   updateCartsStep,
   updateCartPromotionsWorkflow,
-} from "@medusajs/core-flows"
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+} from "@zjedene-medusa/core-flows"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
 import {
   Modules,
   PaymentSessionStatus,
@@ -15,7 +15,7 @@ import {
   PromotionRuleOperator,
   PromotionStatus,
   PromotionType,
-} from "@medusajs/utils"
+} from "@zjedene-medusa/utils"
 import { setTimeout } from "timers/promises"
 import {
   createAdminUser,
@@ -28,7 +28,7 @@ import { medusaTshirtProduct } from "../../../__fixtures__/product"
 import {
   createWorkflow,
   WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 
 jest.setTimeout(100000)
 

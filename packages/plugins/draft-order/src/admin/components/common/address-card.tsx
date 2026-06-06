@@ -1,6 +1,6 @@
-import { XMark } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
-import { Badge, IconButton, Skeleton, Text } from "@medusajs/ui"
+import { XMark } from "@zjedene-medusa/icons"
+import { HttpTypes } from "@zjedene-medusa/types"
+import { Badge, IconButton, Skeleton, Text } from "@zjedene-medusa/ui"
 import { useCustomerAddress } from "../../hooks/api/customers"
 import { getFormattedAddress } from "../../lib/utils/address-utils"
 

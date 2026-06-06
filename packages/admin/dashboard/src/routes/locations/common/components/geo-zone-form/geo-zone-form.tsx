@@ -1,4 +1,4 @@
-import { Button, Checkbox } from "@medusajs/ui"
+import { Button, Checkbox } from "@zjedene-medusa/ui"
 import {
   OnChangeFn,
   RowSelectionState,

@@ -1,5 +1,5 @@
 {
-  "name": "@medusajs/js-sdk",
+  "name": "@zjedene-medusa/js-sdk",
   "version": "2.15.5",
   "description": "SDK for the Medusa API",
   "main": "dist/index.js",
@@ -29,7 +29,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "2.15.5"
+    "@zjedene-medusa/types": "2.15.5"
   },
   "dependencies": {
     "fetch-event-stream": "^0.1.5",

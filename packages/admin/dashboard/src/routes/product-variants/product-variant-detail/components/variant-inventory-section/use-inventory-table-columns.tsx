@@ -1,4 +1,4 @@
-import { AdminInventoryItem, AdminProductVariant } from "@medusajs/types"
+import { AdminInventoryItem, AdminProductVariant } from "@zjedene-medusa/types"
 
 import { InventoryActions } from "./inventory-actions"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"

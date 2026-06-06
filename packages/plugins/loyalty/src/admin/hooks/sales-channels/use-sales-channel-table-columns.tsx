@@ -1,5 +1,5 @@
-import { HttpTypes } from "@medusajs/types";
-import { createDataTableColumnHelper, Tooltip } from "@medusajs/ui";
+import { HttpTypes } from "@zjedene-medusa/types";
+import { createDataTableColumnHelper, Tooltip } from "@zjedene-medusa/ui";
 import { useMemo } from "react";
 import { DataTableStatusCell } from "../../components/data-table/components/data-table-status-cell/data-table-status-cell";
 import { useDataTableDateColumns } from "../../components/data-table/helpers/general/use-data-table-date-columns";

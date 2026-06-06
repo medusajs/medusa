@@ -48,7 +48,7 @@ describe("replace-zod-imports codemod", () => {
 
       const result = fs.readFileSync(testFile, "utf8")
       expect(result).toBe(
-        `import { z, ZodSchema } from "@medusajs/framework/zod"`
+        `import { z, ZodSchema } from "@zjedene-medusa/framework/zod"`
       )
     })
 
@@ -59,7 +59,7 @@ describe("replace-zod-imports codemod", () => {
       await replaceZodImports.run({ dryRun: false })
 
       const result = fs.readFileSync(testFile, "utf8")
-      expect(result).toBe(`import { z } from "@medusajs/framework/zod"`)
+      expect(result).toBe(`import { z } from "@zjedene-medusa/framework/zod"`)
     })
   })
 
@@ -71,7 +71,7 @@ describe("replace-zod-imports codemod", () => {
       await replaceZodImports.run({ dryRun: false })
 
       const result = fs.readFileSync(testFile, "utf8")
-      expect(result).toBe(`import { z as zod } from "@medusajs/framework/zod"`)
+      expect(result).toBe(`import { z as zod } from "@zjedene-medusa/framework/zod"`)
     })
 
     it("should transform default imports with identifier z to named imports", async () => {
@@ -81,7 +81,7 @@ describe("replace-zod-imports codemod", () => {
       await replaceZodImports.run({ dryRun: false })
 
       const result = fs.readFileSync(testFile, "utf8")
-      expect(result).toBe(`import { z } from "@medusajs/framework/zod"`)
+      expect(result).toBe(`import { z } from "@zjedene-medusa/framework/zod"`)
     })
   })
 
@@ -93,7 +93,7 @@ describe("replace-zod-imports codemod", () => {
       await replaceZodImports.run({ dryRun: false })
 
       const result = fs.readFileSync(testFile, "utf8")
-      expect(result).toBe(`import { z as z } from "@medusajs/framework/zod"`)
+      expect(result).toBe(`import { z as z } from "@zjedene-medusa/framework/zod"`)
     })
 
     it("should transform namespace imports with custom identifier", async () => {
@@ -104,7 +104,7 @@ describe("replace-zod-imports codemod", () => {
 
       const result = fs.readFileSync(testFile, "utf8")
       expect(result).toBe(
-        `import { z as validator } from "@medusajs/framework/zod"`
+        `import { z as validator } from "@zjedene-medusa/framework/zod"`
       )
     })
 
@@ -115,7 +115,7 @@ describe("replace-zod-imports codemod", () => {
       await replaceZodImports.run({ dryRun: false })
 
       const result = fs.readFileSync(testFile, "utf8")
-      expect(result).toBe(`import { z as zod } from "@medusajs/framework/zod"`)
+      expect(result).toBe(`import { z as zod } from "@zjedene-medusa/framework/zod"`)
     })
   })
 
@@ -128,7 +128,7 @@ describe("replace-zod-imports codemod", () => {
 
       const result = fs.readFileSync(testFile, "utf8")
       expect(result).toBe(
-        `import type { ZodSchema } from "@medusajs/framework/zod"`
+        `import type { ZodSchema } from "@zjedene-medusa/framework/zod"`
       )
     })
   })
@@ -141,7 +141,7 @@ describe("replace-zod-imports codemod", () => {
       await replaceZodImports.run({ dryRun: false })
 
       const result = fs.readFileSync(testFile, "utf8")
-      expect(result).toBe(`const zod = require("@medusajs/framework/zod")`)
+      expect(result).toBe(`const zod = require("@zjedene-medusa/framework/zod")`)
     })
 
     it("should transform require with single quotes", async () => {
@@ -151,7 +151,7 @@ describe("replace-zod-imports codemod", () => {
       await replaceZodImports.run({ dryRun: false })
 
       const result = fs.readFileSync(testFile, "utf8")
-      expect(result).toBe(`const z = require("@medusajs/framework/zod")`)
+      expect(result).toBe(`const z = require("@zjedene-medusa/framework/zod")`)
     })
   })
 
@@ -167,10 +167,10 @@ const zodRequire = require("zod")`
       await replaceZodImports.run({ dryRun: false })
 
       const result = fs.readFileSync(testFile, "utf8")
-      const expected = `import { z } from "@medusajs/framework/zod"
+      const expected = `import { z } from "@zjedene-medusa/framework/zod"
 import { something } from "other-package"
-import type { ZodSchema } from "@medusajs/framework/zod"
-const zodRequire = require("@medusajs/framework/zod")`
+import type { ZodSchema } from "@zjedene-medusa/framework/zod"
+const zodRequire = require("@zjedene-medusa/framework/zod")`
       expect(result).toBe(expected)
     })
   })
@@ -227,13 +227,13 @@ const zodRequire = require("@medusajs/framework/zod")`
       const result = await replaceZodImports.run({ dryRun: false })
 
       expect(fs.readFileSync(file1, "utf8")).toBe(
-        `import { z } from "@medusajs/framework/zod"`
+        `import { z } from "@zjedene-medusa/framework/zod"`
       )
       expect(fs.readFileSync(file2, "utf8")).toBe(
-        `const z = require("@medusajs/framework/zod")`
+        `const z = require("@zjedene-medusa/framework/zod")`
       )
       expect(fs.readFileSync(file3, "utf8")).toBe(
-        `import type { ZodType } from "@medusajs/framework/zod"`
+        `import type { ZodType } from "@zjedene-medusa/framework/zod"`
       )
       expect(result.filesModified).toBeGreaterThanOrEqual(3)
       expect(result.errors).toBe(0)
@@ -285,7 +285,7 @@ export function validate() {
 
       const result = fs.readFileSync(testFile, "utf8")
       const expected = `// Header comment
-import { z } from "@medusajs/framework/zod"
+import { z } from "@zjedene-medusa/framework/zod"
 
 // Function comment
 export function validate() {
@@ -315,7 +315,7 @@ export function validate() {
 
       // Regular file should be modified
       const regularContent = fs.readFileSync(regularFile, "utf8")
-      expect(regularContent).toBe(`import { z } from "@medusajs/framework/zod"`)
+      expect(regularContent).toBe(`import { z } from "@zjedene-medusa/framework/zod"`)
 
       // Result should only count the regular file
       expect(result.filesModified).toBe(1)

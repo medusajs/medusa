@@ -1,4 +1,4 @@
-import { defineLink } from "@medusajs/framework/utils";
+import { defineLink } from "@zjedene-medusa/framework/utils";
 import LoyaltyModule from "../modules/loyalty";
 import StoreCreditModule from "../modules/store-credit";
 

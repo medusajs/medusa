@@ -1,5 +1,5 @@
-import { LinkLoader, MedusaAppLoader } from "@medusajs/framework"
-import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import { LinkLoader, MedusaAppLoader } from "@zjedene-medusa/framework"
+import { MedusaModule } from "@zjedene-medusa/framework/modules-sdk"
 import {
   ContainerRegistrationKeys,
   FileSystem,
@@ -8,8 +8,8 @@ import {
   gqlSchemaToTypes,
   mergePluginModules,
   validateModuleName,
-} from "@medusajs/framework/utils"
-import { Logger, MedusaContainer } from "@medusajs/types"
+} from "@zjedene-medusa/framework/utils"
+import { Logger, MedusaContainer } from "@zjedene-medusa/types"
 import path, { join } from "path"
 
 export async function generateTypes({

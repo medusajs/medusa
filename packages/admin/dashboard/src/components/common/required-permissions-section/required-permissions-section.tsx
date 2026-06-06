@@ -1,4 +1,4 @@
-import { Badge, Container, Heading, Text } from "@medusajs/ui"
+import { Badge, Container, Heading, Text } from "@zjedene-medusa/ui"
 import { useTranslation } from "react-i18next"
 import { useRequiredPermissions } from "../../../providers/permissions-provider"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"

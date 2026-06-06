@@ -1,4 +1,4 @@
-import inject from "@medusajs/admin-vite-plugin"
+import inject from "@zjedene-medusa/admin-vite-plugin"
 import react from "@vitejs/plugin-react"
 import { defineConfig, loadEnv } from "vite"
 import inspect from "vite-plugin-inspect"

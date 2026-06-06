@@ -1,6 +1,6 @@
-import { PencilSquare, Trash } from "@medusajs/icons";
-import { AdminSalesChannel, HttpTypes } from "@medusajs/types";
-import { Checkbox, Container, toast, usePrompt } from "@medusajs/ui";
+import { PencilSquare, Trash } from "@zjedene-medusa/icons";
+import { AdminSalesChannel, HttpTypes } from "@zjedene-medusa/types";
+import { Checkbox, Container, toast, usePrompt } from "@zjedene-medusa/ui";
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 

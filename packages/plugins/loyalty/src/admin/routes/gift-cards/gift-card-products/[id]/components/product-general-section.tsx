@@ -1,6 +1,6 @@
-import { PencilSquare, Trash } from "@medusajs/icons";
-import { HttpTypes } from "@medusajs/types";
-import { Container, Heading, StatusBadge, usePrompt } from "@medusajs/ui";
+import { PencilSquare, Trash } from "@zjedene-medusa/icons";
+import { HttpTypes } from "@zjedene-medusa/types";
+import { Container, Heading, StatusBadge, usePrompt } from "@zjedene-medusa/ui";
 import { useNavigate } from "react-router-dom";
 import { ActionMenu } from "../../../../../components/action-menu";
 import { SectionRow } from "../../../../../components/section-row";

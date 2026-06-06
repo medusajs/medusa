@@ -1,4 +1,4 @@
-import { Module } from "@medusajs/framework/utils"
+import { Module } from "@zjedene-medusa/framework/utils"
 import TestService from "./service"
 
 export const TEST_MODULE = "test"

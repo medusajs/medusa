@@ -1,5 +1,5 @@
-import { FetchError } from "@medusajs/js-sdk"
-import { HttpTypes, LinkMethodRequest } from "@medusajs/types"
+import { FetchError } from "@zjedene-medusa/js-sdk"
+import { HttpTypes, LinkMethodRequest } from "@zjedene-medusa/types"
 import {
   QueryKey,
   UseMutationOptions,

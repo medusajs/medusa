@@ -1,5 +1,5 @@
 import { CreateApiKeyDTO } from "@types"
-import { ApiKeyType } from "@medusajs/framework/utils"
+import { ApiKeyType } from "@zjedene-medusa/framework/utils"
 
 export const createSecretKeyFixture: CreateApiKeyDTO = {
   title: "Secret key",

@@ -1,14 +1,14 @@
-import { logger } from "@medusajs/framework"
-import type { Logger } from "@medusajs/framework/types"
+import { logger } from "@zjedene-medusa/framework"
+import type { Logger } from "@zjedene-medusa/framework/types"
 import {
   defineMikroOrmCliConfig,
   DmlEntity,
   dynamicImport,
   isFileSkipped,
   toUnixSlash,
-} from "@medusajs/framework/utils"
-import { MetadataStorage } from "@medusajs/framework/mikro-orm/core"
-import { MikroORM } from "@medusajs/framework/mikro-orm/postgresql"
+} from "@zjedene-medusa/framework/utils"
+import { MetadataStorage } from "@zjedene-medusa/framework/mikro-orm/core"
+import { MikroORM } from "@zjedene-medusa/framework/mikro-orm/postgresql"
 import { glob } from "glob"
 import { dirname, join } from "path"
 import { setTimeout } from "timers/promises"

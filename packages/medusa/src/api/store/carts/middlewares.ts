@@ -1,8 +1,8 @@
 import {
   validateAndTransformBody,
   validateAndTransformQuery,
-} from "@medusajs/framework"
-import { authenticate, MiddlewareRoute } from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework"
+import { authenticate, MiddlewareRoute } from "@zjedene-medusa/framework/http"
 import { ensurePublishableKeyAndSalesChannelMatch } from "../../utils/middlewares/common/ensure-pub-key-sales-channel-match"
 import { maybeAttachPublishableKeyScopes } from "../../utils/middlewares/common/maybe-attach-pub-key-scopes"
 import * as OrderQueryConfig from "../orders/query-config"

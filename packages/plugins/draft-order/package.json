@@ -1,5 +1,5 @@
 {
-  "name": "@medusajs/draft-order",
+  "name": "@zjedene-medusa/draft-order",
   "version": "2.15.5",
   "description": "A draft order plugin for Medusa.",
   "author": "Medusa (https://medusajs.com)",
@@ -42,9 +42,9 @@
     "@ariakit/react": "^0.4.15",
     "@babel/runtime": "^7.26.10",
     "@hookform/resolvers": "3.4.2",
-    "@medusajs/js-sdk": "2.15.5",
     "@tanstack/react-query": "5.64.2",
     "@uiw/react-json-view": "^2.0.0-alpha.17",
+    "@zjedene-medusa/js-sdk": "2.15.5",
     "date-fns": "^3.6.0",
     "lodash.debounce": "^4.0.8",
     "lodash.isequal": "^4.5.0",
@@ -53,40 +53,40 @@
     "react-hook-form": "7.49.1"
   },
   "devDependencies": {
-    "@medusajs/admin-sdk": "2.15.5",
-    "@medusajs/cli": "2.15.5",
-    "@medusajs/framework": "2.15.5",
-    "@medusajs/icons": "2.15.5",
-    "@medusajs/test-utils": "2.15.5",
-    "@medusajs/types": "2.15.5",
-    "@medusajs/ui": "4.1.15",
-    "@medusajs/ui-preset": "2.15.5"
+    "@zjedene-medusa/admin-sdk": "2.15.5",
+    "@zjedene-medusa/cli": "2.15.5",
+    "@zjedene-medusa/framework": "2.15.5",
+    "@zjedene-medusa/icons": "2.15.5",
+    "@zjedene-medusa/test-utils": "2.15.5",
+    "@zjedene-medusa/types": "2.15.5",
+    "@zjedene-medusa/ui": "4.1.15",
+    "@zjedene-medusa/ui-preset": "2.15.5"
   },
   "peerDependencies": {
-    "@medusajs/admin-sdk": "2.15.5",
-    "@medusajs/cli": "2.15.5",
-    "@medusajs/framework": "2.15.5",
-    "@medusajs/icons": "2.15.5",
-    "@medusajs/test-utils": "2.15.5",
-    "@medusajs/ui": "4.1.15",
+    "@zjedene-medusa/admin-sdk": "2.15.5",
+    "@zjedene-medusa/cli": "2.15.5",
+    "@zjedene-medusa/framework": "2.15.5",
+    "@zjedene-medusa/icons": "2.15.5",
+    "@zjedene-medusa/test-utils": "2.15.5",
+    "@zjedene-medusa/ui": "4.1.15",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "6.30.3"
   },
   "peerDependenciesMeta": {
-    "@medusajs/admin-sdk": {
+    "@zjedene-medusa/admin-sdk": {
       "optional": true
     },
-    "@medusajs/cli": {
+    "@zjedene-medusa/cli": {
       "optional": true
     },
-    "@medusajs/icons": {
+    "@zjedene-medusa/icons": {
       "optional": true
     },
-    "@medusajs/test-utils": {
+    "@zjedene-medusa/test-utils": {
       "optional": true
     },
-    "@medusajs/ui": {
+    "@zjedene-medusa/ui": {
       "optional": true
     },
     "react": {

@@ -12,8 +12,8 @@ afterEach(async () => {
 
 describe("getResolvedPlugins | relative paths", () => {
   test("resolve configured plugins", async () => {
-    await fs.createJson("node_modules/@medusajs/draft-order/package.json", {
-      name: "@medusajs/draft-order",
+    await fs.createJson("node_modules/@zjedene-medusa/draft-order/package.json", {
+      name: "@zjedene-medusa/draft-order",
       version: "1.0.0",
     })
 
@@ -33,7 +33,7 @@ describe("getResolvedPlugins | relative paths", () => {
             },
           },
           {
-            resolve: "@medusajs/draft-order",
+            resolve: "@zjedene-medusa/draft-order",
             options: {},
           },
         ],
@@ -44,13 +44,13 @@ describe("getResolvedPlugins | relative paths", () => {
     expect(plugins).toEqual(
       expect.arrayContaining([
         {
-          id: "@medusajs/draft-order",
+          id: "@zjedene-medusa/draft-order",
           modules: [],
-          name: "@medusajs/draft-order",
+          name: "@zjedene-medusa/draft-order",
           options: {},
           resolve: path.join(
             fs.basePath,
-            "node_modules/@medusajs/draft-order/.medusa/server/src"
+            "node_modules/@zjedene-medusa/draft-order/.medusa/server/src"
           ),
           version: "1.0.0",
         },
@@ -68,8 +68,8 @@ describe("getResolvedPlugins | relative paths", () => {
   })
 
   test("scan plugin modules", async () => {
-    await fs.createJson("node_modules/@medusajs/draft-order/package.json", {
-      name: "@medusajs/draft-order",
+    await fs.createJson("node_modules/@zjedene-medusa/draft-order/package.json", {
+      name: "@zjedene-medusa/draft-order",
       version: "1.0.0",
     })
     await fs.createJson("plugins/dummy/package.json", {
@@ -114,13 +114,13 @@ describe("getResolvedPlugins | relative paths", () => {
         ],
       },
       {
-        id: "@medusajs/draft-order",
+        id: "@zjedene-medusa/draft-order",
         modules: [],
-        name: "@medusajs/draft-order",
+        name: "@zjedene-medusa/draft-order",
         options: {},
         resolve: path.join(
           fs.basePath,
-          "node_modules/@medusajs/draft-order/.medusa/server/src"
+          "node_modules/@zjedene-medusa/draft-order/.medusa/server/src"
         ),
         version: "1.0.0",
       },
@@ -128,8 +128,8 @@ describe("getResolvedPlugins | relative paths", () => {
   })
 
   test("throw error when package.json file is missing", async () => {
-    await fs.createJson("node_modules/@medusajs/draft-order/package.json", {
-      name: "@medusajs/draft-order",
+    await fs.createJson("node_modules/@zjedene-medusa/draft-order/package.json", {
+      name: "@zjedene-medusa/draft-order",
       version: "1.0.0",
     })
 
@@ -155,8 +155,8 @@ describe("getResolvedPlugins | relative paths", () => {
   })
 
   test("resolve admin source from medusa-plugin-options file", async () => {
-    await fs.createJson("node_modules/@medusajs/draft-order/package.json", {
-      name: "@medusajs/draft-order",
+    await fs.createJson("node_modules/@zjedene-medusa/draft-order/package.json", {
+      name: "@zjedene-medusa/draft-order",
       version: "1.0.0",
     })
     await fs.createJson("plugins/dummy/package.json", {
@@ -185,7 +185,7 @@ describe("getResolvedPlugins | relative paths", () => {
             },
           },
           {
-            resolve: "@medusajs/draft-order",
+            resolve: "@zjedene-medusa/draft-order",
             options: {},
           },
         ],
@@ -214,13 +214,13 @@ describe("getResolvedPlugins | relative paths", () => {
         ],
       },
       {
-        id: "@medusajs/draft-order",
+        id: "@zjedene-medusa/draft-order",
         modules: [],
-        name: "@medusajs/draft-order",
+        name: "@zjedene-medusa/draft-order",
         options: {},
         resolve: path.join(
           fs.basePath,
-          "node_modules/@medusajs/draft-order/.medusa/server/src"
+          "node_modules/@zjedene-medusa/draft-order/.medusa/server/src"
         ),
         version: "1.0.0",
       },
@@ -230,8 +230,8 @@ describe("getResolvedPlugins | relative paths", () => {
 
 describe("getResolvedPlugins | package reference", () => {
   test("resolve configured plugins", async () => {
-    await fs.createJson("node_modules/@medusajs/draft-order/package.json", {
-      name: "@medusajs/draft-order",
+    await fs.createJson("node_modules/@zjedene-medusa/draft-order/package.json", {
+      name: "@zjedene-medusa/draft-order",
       version: "1.0.0",
     })
     await fs.createJson("package.json", {})
@@ -269,13 +269,13 @@ describe("getResolvedPlugins | package reference", () => {
         modules: [],
       },
       {
-        id: "@medusajs/draft-order",
+        id: "@zjedene-medusa/draft-order",
         modules: [],
-        name: "@medusajs/draft-order",
+        name: "@zjedene-medusa/draft-order",
         options: {},
         resolve: path.join(
           fs.basePath,
-          "node_modules/@medusajs/draft-order/.medusa/server/src"
+          "node_modules/@zjedene-medusa/draft-order/.medusa/server/src"
         ),
         version: "1.0.0",
       },
@@ -283,8 +283,8 @@ describe("getResolvedPlugins | package reference", () => {
   })
 
   test("scan plugin modules", async () => {
-    await fs.createJson("node_modules/@medusajs/draft-order/package.json", {
-      name: "@medusajs/draft-order",
+    await fs.createJson("node_modules/@zjedene-medusa/draft-order/package.json", {
+      name: "@zjedene-medusa/draft-order",
       version: "1.0.0",
     })
     await fs.createJson("package.json", {})
@@ -333,13 +333,13 @@ describe("getResolvedPlugins | package reference", () => {
         ],
       },
       {
-        id: "@medusajs/draft-order",
+        id: "@zjedene-medusa/draft-order",
         modules: [],
-        name: "@medusajs/draft-order",
+        name: "@zjedene-medusa/draft-order",
         options: {},
         resolve: path.join(
           fs.basePath,
-          "node_modules/@medusajs/draft-order/.medusa/server/src"
+          "node_modules/@zjedene-medusa/draft-order/.medusa/server/src"
         ),
         version: "1.0.0",
       },
@@ -347,8 +347,8 @@ describe("getResolvedPlugins | package reference", () => {
   })
 
   test("throw error when package.json file is missing", async () => {
-    await fs.createJson("node_modules/@medusajs/draft-order/package.json", {
-      name: "@medusajs/draft-order",
+    await fs.createJson("node_modules/@zjedene-medusa/draft-order/package.json", {
+      name: "@zjedene-medusa/draft-order",
       version: "1.0.0",
     })
     const resolvePlugins = async () =>
@@ -363,7 +363,7 @@ describe("getResolvedPlugins | package reference", () => {
               },
             },
             {
-              resolve: "@medusajs/draft-order",
+              resolve: "@zjedene-medusa/draft-order",
               options: {},
             },
           ],

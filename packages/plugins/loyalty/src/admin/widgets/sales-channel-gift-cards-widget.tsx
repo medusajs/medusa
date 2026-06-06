@@ -1,4 +1,4 @@
-import { defineWidgetConfig } from "@medusajs/admin-sdk";
+import { defineWidgetConfig } from "@zjedene-medusa/admin-sdk";
 import { useParams } from "react-router-dom";
 import { useSalesChannel } from "../hooks/api/sales-channels";
 import { SalesChannelGiftCardsSection } from "./sales-channel-gift-cards/sales-channel-gift-cards-section";

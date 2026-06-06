@@ -1,7 +1,7 @@
 import copy from "copy-to-clipboard";
 import { useState } from "react";
 
-import { clx, toast, Tooltip } from "@medusajs/ui";
+import { clx, toast, Tooltip } from "@zjedene-medusa/ui";
 
 type DisplayIdProps = {
   id: string;

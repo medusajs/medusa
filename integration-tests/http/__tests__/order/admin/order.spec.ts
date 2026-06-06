@@ -1,6 +1,6 @@
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { AdminShippingOption } from "@medusajs/types"
-import { ModuleRegistrationName, Modules, ProductStatus } from "@medusajs/utils"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
+import { AdminShippingOption } from "@zjedene-medusa/types"
+import { ModuleRegistrationName, Modules, ProductStatus } from "@zjedene-medusa/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -14,11 +14,11 @@ import {
   updateOrderChangeActionsWorkflow,
   updateOrderChangesWorkflow,
   updateOrderShippingMethodsStep,
-} from "@medusajs/core-flows"
+} from "@zjedene-medusa/core-flows"
 import {
   createWorkflow,
   WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 
 jest.setTimeout(300000)
 
@@ -4012,7 +4012,7 @@ medusaIntegrationTestRunner({
 
         const registeredCustomerToken = (
           await api.post("/auth/customer/emailpass/register", {
-            email: "registered@medusajs.com",
+            email: "registered@zjedene-medusa.com",
             password: "password",
           })
         ).data.token
@@ -4020,7 +4020,7 @@ medusaIntegrationTestRunner({
         const customer = (
           await api.post(
             "/store/customers",
-            { email: "registered@medusajs.com" },
+            { email: "registered@zjedene-medusa.com" },
             {
               headers: {
                 ...storeHeaders.headers,

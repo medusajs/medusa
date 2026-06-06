@@ -1,4 +1,4 @@
-import { Popover, Text } from "@medusajs/ui"
+import { Popover, Text } from "@zjedene-medusa/ui"
 import { ReactNode, useState } from "react"
 import { useTranslation } from "react-i18next"
 

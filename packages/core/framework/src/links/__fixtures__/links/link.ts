@@ -1,4 +1,4 @@
-import { defineLink, MedusaService, model, Module } from "@medusajs/utils"
+import { defineLink, MedusaService, model, Module } from "@zjedene-medusa/utils"
 
 const model1 = model.define("model-1", {
   id: model.id().primaryKey(),

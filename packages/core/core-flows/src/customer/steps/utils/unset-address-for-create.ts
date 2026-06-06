@@ -1,8 +1,8 @@
 import {
   CreateCustomerAddressDTO,
   ICustomerModuleService,
-} from "@medusajs/framework/types"
-import { StepResponse } from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/types"
+import { StepResponse } from "@zjedene-medusa/framework/workflows-sdk"
 
 export const unsetForCreate = async (
   data: CreateCustomerAddressDTO[],

@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types";
+import { HttpTypes } from "@zjedene-medusa/types";
 import { Thumbnail } from "../../thumbnail";
 
 type ProductCellProps = {

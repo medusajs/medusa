@@ -1,5 +1,5 @@
-import { z, ZodError } from "@medusajs/deps/zod"
-import { isObject, MedusaError } from "@medusajs/utils"
+import { z, ZodError } from "@zjedene-medusa/deps/zod"
+import { isObject, MedusaError } from "@zjedene-medusa/utils"
 
 /**
  * Zod v4 does not export public issue types, so we use internal types from z.core.

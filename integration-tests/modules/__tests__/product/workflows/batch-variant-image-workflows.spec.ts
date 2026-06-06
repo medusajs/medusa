@@ -1,10 +1,10 @@
 import {
   batchImageVariantsWorkflow,
   batchVariantImagesWorkflow,
-} from "@medusajs/core-flows"
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { IProductModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+} from "@zjedene-medusa/core-flows"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
+import { IProductModuleService } from "@zjedene-medusa/types"
+import { Modules } from "@zjedene-medusa/utils"
 
 jest.setTimeout(50000)
 

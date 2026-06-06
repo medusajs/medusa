@@ -1,9 +1,9 @@
-import { deleteRbacRolePoliciesWorkflow } from "@medusajs/core-flows"
+import { deleteRbacRolePoliciesWorkflow } from "@zjedene-medusa/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
-import { defineFileConfig, FeatureFlag } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/http"
+import { defineFileConfig, FeatureFlag } from "@zjedene-medusa/framework/utils"
 import RbacFeatureFlag from "../../../../../../../feature-flags/rbac"
 
 /**

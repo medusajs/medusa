@@ -1,4 +1,4 @@
-import { SqlEntityManager } from "@medusajs/framework/mikro-orm/postgresql"
+import { SqlEntityManager } from "@zjedene-medusa/framework/mikro-orm/postgresql"
 import {
   Constructor,
   Context,
@@ -11,7 +11,7 @@ import {
   Logger,
   ModulesSdkTypes,
   RemoteQueryFunction,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   MikroOrmBaseRepository as BaseRepository,
   ContainerRegistrationKeys,
@@ -22,7 +22,7 @@ import {
   ModulesSdkUtils,
   promiseAll,
   toMikroORMEntity,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { IndexData, IndexMetadata, IndexRelation, IndexSync } from "@models"
 import { schemaObjectRepresentationPropertiesToOmit } from "@types"
 import {

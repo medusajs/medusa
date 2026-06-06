@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { HttpTypes } from "@medusajs/types"
-import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
+import { HttpTypes } from "@zjedene-medusa/types"
+import { Button, ProgressStatus, ProgressTabs, toast } from "@zjedene-medusa/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
-import { z } from "@medusajs/framework/zod"
+import { z } from "@zjedene-medusa/framework/zod"
 import { KeyboundForm } from "../../../../../components/keybound-form"
 import {
   RouteFocusModal,

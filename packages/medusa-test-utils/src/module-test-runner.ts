@@ -1,4 +1,4 @@
-import { logger } from "@medusajs/framework/logger"
+import { logger } from "@zjedene-medusa/framework/logger"
 import {
   ContainerRegistrationKeys,
   DmlEntity,
@@ -8,7 +8,7 @@ import {
   ModulesSdkUtils,
   normalizeImportPathWithSource,
   toMikroOrmEntities,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import * as fs from "fs"
 import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
 import { initModules, InitModulesOptions } from "./init-modules"
@@ -152,7 +152,7 @@ class ModuleTestRunner<TService = any> {
   }
 
   private initializeConfig(moduleModels?: any[]): void {
-    const moduleSdkImports = require("@medusajs/framework/modules-sdk")
+    const moduleSdkImports = require("@zjedene-medusa/framework/modules-sdk")
 
     // Use a unique connection for all the entire suite
     this.connection = ModulesSdkUtils.createPgConnection(this.dbConfig)

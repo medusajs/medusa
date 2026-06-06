@@ -1,4 +1,4 @@
-import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
+import { createStep, StepResponse } from "@zjedene-medusa/framework/workflows-sdk";
 import {
   IStoreCreditModuleService,
   ModuleCreditAccount,

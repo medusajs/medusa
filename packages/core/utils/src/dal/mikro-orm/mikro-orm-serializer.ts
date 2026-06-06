@@ -10,7 +10,7 @@ import {
   ReferenceKind,
   SerializationContext,
   Utils,
-} from "@medusajs/deps/mikro-orm/core"
+} from "@zjedene-medusa/deps/mikro-orm/core"
 
 const STATIC_OPTIONS_SHAPE = {
   populate: true as string[] | boolean,

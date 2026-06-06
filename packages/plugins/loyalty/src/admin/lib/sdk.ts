@@ -1,4 +1,4 @@
-import Medusa from "@medusajs/js-sdk";
+import Medusa from "@zjedene-medusa/js-sdk";
 
 export const sdk = new Medusa({
   baseUrl: "/",

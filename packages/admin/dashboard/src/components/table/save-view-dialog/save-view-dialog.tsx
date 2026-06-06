@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Button, Input, Label, Drawer, Heading, Text } from "@medusajs/ui"
+import { Button, Input, Label, Drawer, Heading, Text } from "@zjedene-medusa/ui"
 import { useForm } from "react-hook-form"
 import {
   useViewConfigurations,

@@ -1,4 +1,4 @@
-import { ProductStatus } from "@medusajs/utils"
+import { ProductStatus } from "@zjedene-medusa/utils"
 
 export const medusaTshirtProduct = {
   title: "Medusa T-Shirt",

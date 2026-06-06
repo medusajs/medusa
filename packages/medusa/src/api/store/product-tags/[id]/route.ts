@@ -1,12 +1,12 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
-import { StoreProductTagResponse } from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/http"
+import { StoreProductTagResponse } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 
 import { StoreProductTagParamsType } from "../validators"
 

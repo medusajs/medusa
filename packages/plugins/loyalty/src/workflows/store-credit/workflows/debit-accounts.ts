@@ -1,4 +1,4 @@
-import { createWorkflow, WorkflowResponse } from "@medusajs/framework/workflows-sdk";
+import { createWorkflow, WorkflowResponse } from "@zjedene-medusa/framework/workflows-sdk";
 import { ModuleDebitAccount } from "../../../types/store-credit";
 import { debitAccountStep } from "../steps/debit-account";
 

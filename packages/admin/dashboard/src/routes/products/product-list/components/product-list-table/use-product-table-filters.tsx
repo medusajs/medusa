@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { createDataTableFilterHelper } from "@medusajs/ui"
-import { HttpTypes } from "@medusajs/types"
+import { createDataTableFilterHelper } from "@zjedene-medusa/ui"
+import { HttpTypes } from "@zjedene-medusa/types"
 import { useDataTableDateFilters } from "../../../../../components/data-table/helpers/general/use-data-table-date-filters"
 import { useProductTypes } from "../../../../../hooks/api/product-types"
 import { useProductTags } from "../../../../../hooks/api"
@@ -10,7 +10,7 @@ import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
 const filterHelper = createDataTableFilterHelper<HttpTypes.AdminProduct>()
 
 /**
- * Hook to create filters in the format expected by @medusajs/ui DataTable
+ * Hook to create filters in the format expected by @zjedene-medusa/ui DataTable
  */
 export const useProductTableFilters = () => {
   const { t } = useTranslation()

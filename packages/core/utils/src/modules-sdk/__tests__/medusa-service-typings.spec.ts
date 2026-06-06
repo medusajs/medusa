@@ -1,7 +1,7 @@
 import { expectTypeOf } from "expect-type"
 import { model } from "../../dml"
 import { MedusaService } from "../medusa-service"
-import { InferTypeOf } from "@medusajs/types"
+import { InferTypeOf } from "@zjedene-medusa/types"
 
 const Blog = model.define("Blog", {
   id: model.text(),

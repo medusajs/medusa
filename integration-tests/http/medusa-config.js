@@ -1,4 +1,4 @@
-const { defineConfig, Modules } = require("@medusajs/utils")
+const { defineConfig, Modules } = require("@zjedene-medusa/utils")
 const os = require("os")
 const path = require("path")
 
@@ -11,7 +11,7 @@ process.env.DATABASE_URL = DB_URL
 process.env.LOG_LEVEL = "error"
 
 const customFulfillmentProvider = {
-  resolve: "@medusajs/fulfillment-manual",
+  resolve: "@zjedene-medusa/fulfillment-manual",
   id: "test-provider",
 }
 
@@ -23,7 +23,7 @@ const customFulfillmentProviderCalculated = {
 
 const modules = {
   [Modules.FULFILLMENT]: {
-    /** @type {import('@medusajs/fulfillment').FulfillmentModuleOptions} */
+    /** @type {import('@zjedene-medusa/fulfillment').FulfillmentModuleOptions} */
     options: {
       providers: [
         customFulfillmentProvider,
@@ -32,11 +32,11 @@ const modules = {
     },
   },
   [Modules.NOTIFICATION]: {
-    resolve: "@medusajs/notification",
+    resolve: "@zjedene-medusa/notification",
     options: {
       providers: [
         {
-          resolve: "@medusajs/notification-local",
+          resolve: "@zjedene-medusa/notification-local",
           id: "local",
           options: {
             name: "Local Notification Provider",
@@ -47,11 +47,11 @@ const modules = {
     },
   },
   [Modules.FILE]: {
-    resolve: "@medusajs/file",
+    resolve: "@zjedene-medusa/file",
     options: {
       providers: [
         {
-          resolve: "@medusajs/file-local",
+          resolve: "@zjedene-medusa/file-local",
           id: "local",
           options: {
             // This is the directory where we can reliably write in CI environments
@@ -63,18 +63,18 @@ const modules = {
     },
   },
   [Modules.INDEX]: {
-    resolve: "@medusajs/index",
+    resolve: "@zjedene-medusa/index",
     disable: process.env.ENABLE_INDEX_MODULE !== "true",
   },
   [Modules.RBAC]: {
-    resolve: "@medusajs/rbac",
+    resolve: "@zjedene-medusa/rbac",
     disable: process.env.MEDUSA_FF_RBAC !== "true",
   },
 }
 
 if (process.env.MEDUSA_FF_TRANSLATION === "true") {
   modules[Modules.TRANSLATION] = {
-    resolve: "@medusajs/translation",
+    resolve: "@zjedene-medusa/translation",
   }
 }
 
@@ -95,7 +95,7 @@ module.exports = defineConfig({
   modules,
   plugins: [
     {
-      resolve: "@medusajs/loyalty-plugin",
+      resolve: "@zjedene-medusa/loyalty-plugin",
       options: {},
     },
   ],

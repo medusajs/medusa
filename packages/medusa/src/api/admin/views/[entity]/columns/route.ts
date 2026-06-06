@@ -1,9 +1,9 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
-import { HttpTypes, SettingsTypes } from "@medusajs/framework/types"
-import { MedusaError, Modules } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/http"
+import { HttpTypes, SettingsTypes } from "@zjedene-medusa/framework/types"
+import { MedusaError, Modules } from "@zjedene-medusa/framework/utils"
 
 /**
  * Get available columns for an entity.

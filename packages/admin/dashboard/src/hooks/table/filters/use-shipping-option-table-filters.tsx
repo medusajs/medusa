@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 
 import { Filter } from "../../../components/table/data-table"
 

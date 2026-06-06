@@ -1,6 +1,6 @@
-import { addDraftOrderShippingMethodsWorkflow } from "@medusajs/core-flows"
-import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework"
-import { HttpTypes } from "@medusajs/types"
+import { addDraftOrderShippingMethodsWorkflow } from "@zjedene-medusa/core-flows"
+import { AuthenticatedMedusaRequest, MedusaResponse } from "@zjedene-medusa/framework"
+import { HttpTypes } from "@zjedene-medusa/types"
 import { AdminAddDraftOrderShippingMethodType } from "../../../validators"
 
 export const POST = async (

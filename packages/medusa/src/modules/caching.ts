@@ -1,6 +1,6 @@
-import CacheModule from "@medusajs/caching"
+import CacheModule from "@zjedene-medusa/caching"
 
-export * from "@medusajs/caching"
+export * from "@zjedene-medusa/caching"
 
 export default CacheModule
-export const discoveryPath = require.resolve("@medusajs/caching")
+export const discoveryPath = require.resolve("@zjedene-medusa/caching")

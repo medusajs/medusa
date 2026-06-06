@@ -1,17 +1,17 @@
 import {
   deleteCustomerAddressesWorkflow,
   updateCustomerAddressesWorkflow,
-} from "@medusajs/core-flows"
+} from "@zjedene-medusa/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
-import { HttpTypes, MedusaContainer } from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/http"
+import { HttpTypes, MedusaContainer } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
   remoteQueryObjectFromString,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { refetchCustomer } from "../../../helpers"
 
 export const GET = async (

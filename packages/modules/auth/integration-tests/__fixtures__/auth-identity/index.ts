@@ -1,4 +1,4 @@
-import { IAuthModuleService } from "@medusajs/framework/types"
+import { IAuthModuleService } from "@zjedene-medusa/framework/types"
 import { AuthIdentity } from "@models"
 
 export async function createAuthIdentities(

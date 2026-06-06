@@ -1,6 +1,6 @@
-import { Constructor, Context, DAL } from "@medusajs/framework/types"
-import { MikroOrmBaseRepository, toMikroORMEntity } from "@medusajs/framework/utils"
-import { LoadStrategy, raw } from "@medusajs/framework/mikro-orm/core"
+import { Constructor, Context, DAL } from "@zjedene-medusa/framework/types"
+import { MikroOrmBaseRepository, toMikroORMEntity } from "@zjedene-medusa/framework/utils"
+import { LoadStrategy, raw } from "@zjedene-medusa/framework/mikro-orm/core"
 import {
   Order,
   OrderClaim,

@@ -3,7 +3,7 @@ import {
   ComputeActionItemLine,
   InferEntityType,
   PromotionTypes,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   ApplicationMethodTargetType,
   ApplicationMethodType,
@@ -11,7 +11,7 @@ import {
   MathBN,
   MedusaError,
   PromotionType,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { areRulesValidForContext } from "../validations"
 import { computeActionForBudgetExceeded } from "./usage"
 import { Promotion } from "@models"

@@ -1,4 +1,4 @@
-import { PromotionActions } from "@medusajs/framework/utils"
+import { PromotionActions } from "@zjedene-medusa/framework/utils"
 import {
   createHook,
   createWorkflow,
@@ -7,7 +7,7 @@ import {
   when,
   WorkflowData,
   WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../common"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import {
@@ -70,7 +70,7 @@ export const updateCartPromotionsWorkflowId = "update-cart-promotions"
  *   input: {
  *     cart_id: "cart_123",
  *     promo_codes: ["10OFF"],
- *     // imported from @medusajs/framework/utils
+ *     // imported from @zjedene-medusa/framework/utils
  *     action: PromotionActions.ADD,
  *   }
  * })

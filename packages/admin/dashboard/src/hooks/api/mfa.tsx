@@ -4,8 +4,8 @@ import type {
   AuthMfaRecoveryCodesResponse,
   AuthMfaSetupResponse,
   FetchError,
-} from "@medusajs/js-sdk"
-import type { AuthTypes } from "@medusajs/types"
+} from "@zjedene-medusa/js-sdk"
+import type { AuthTypes } from "@zjedene-medusa/types"
 import {
   QueryKey,
   UseMutationOptions,

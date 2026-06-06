@@ -6,8 +6,8 @@ import {
   Hint,
   OtpInput,
   Text,
-} from "@medusajs/ui"
-import type { AuthMfaSetupResponse } from "@medusajs/js-sdk"
+} from "@zjedene-medusa/ui"
+import type { AuthMfaSetupResponse } from "@zjedene-medusa/js-sdk"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import {

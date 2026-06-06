@@ -1,8 +1,8 @@
-import { MedusaStoreRequest } from "@medusajs/framework/http"
+import { MedusaStoreRequest } from "@zjedene-medusa/framework/http"
 import {
   MedusaPricingContext,
   TaxCalculationContext,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 
 export type StoreRequestWithContext<
   Body,

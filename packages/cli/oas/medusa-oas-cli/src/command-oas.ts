@@ -15,7 +15,7 @@ import { isFile } from "./utils/fs-utils"
  * Constants
  */
 // Medusa core package directory
-const medusaPackagePath = path.dirname(require.resolve("@medusajs/medusa"))
+const medusaPackagePath = path.dirname(require.resolve("@zjedene-medusa/medusa"))
 const basePath = path.resolve(__dirname, "../")
 
 /**

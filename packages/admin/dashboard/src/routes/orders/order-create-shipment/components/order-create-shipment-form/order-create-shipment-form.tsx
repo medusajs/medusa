@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { Button, clx, Heading, Input, Switch, toast } from "@medusajs/ui"
+import { Button, clx, Heading, Input, Switch, toast } from "@zjedene-medusa/ui"
 import { useFieldArray, useForm } from "react-hook-form"
 
 import { Form } from "../../../../../components/common/form"

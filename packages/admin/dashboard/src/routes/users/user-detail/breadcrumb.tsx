@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import { UIMatch } from "react-router-dom"
 import { useUser } from "../../../hooks/api/users"
 

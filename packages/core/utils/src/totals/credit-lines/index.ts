@@ -1,4 +1,4 @@
-import { BigNumberInput } from "@medusajs/types"
+import { BigNumberInput } from "@zjedene-medusa/types"
 import { isDefined } from "../../common"
 import { defaultCurrencies } from "../../defaults/currencies"
 import { BigNumber, getEpsilonFromDecimalPrecision } from "../big-number"

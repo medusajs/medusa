@@ -33,14 +33,14 @@ import {
   UpdatePaymentInput,
   UpdatePaymentOutput,
   WebhookActionResult,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   AbstractPaymentProvider,
   isDefined,
   isPresent,
   PaymentActions,
   PaymentSessionStatus,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { MedusaPaymentsOptions } from "../types"
 import {
   getAmountFromSmallestUnit,

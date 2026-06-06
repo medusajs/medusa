@@ -1,5 +1,5 @@
-import { ExclamationCircle, SquareTwoStack } from "@medusajs/icons"
-import { toast, Text, IconButton, Tooltip } from "@medusajs/ui"
+import { ExclamationCircle, SquareTwoStack } from "@zjedene-medusa/icons"
+import { toast, Text, IconButton, Tooltip } from "@zjedene-medusa/ui"
 import copy from "copy-to-clipboard"
 import { useTranslation } from "react-i18next"
 import { Navigate, useLocation, useRouteError } from "react-router-dom"

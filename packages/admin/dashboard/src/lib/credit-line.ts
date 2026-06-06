@@ -1,4 +1,4 @@
-import { OrderCreditLineDTO } from "@medusajs/types"
+import { OrderCreditLineDTO } from "@zjedene-medusa/types"
 
 export const getTotalCreditLines = (creditLines: OrderCreditLineDTO[]) =>
   creditLines.reduce((acc, creditLine) => {

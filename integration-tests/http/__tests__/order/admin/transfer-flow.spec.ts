@@ -1,5 +1,5 @@
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { Modules } from "@medusajs/utils"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
+import { Modules } from "@zjedene-medusa/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -197,7 +197,7 @@ medusaIntegrationTestRunner({
             "/admin/customers",
             {
               first_name: "guest",
-              email: "guest@medusajs.com",
+              email: "guest@zjedene-medusa.com",
             },
             adminHeaders
           )
@@ -217,7 +217,7 @@ medusaIntegrationTestRunner({
         expect(err.response.data).toEqual(
           expect.objectContaining({
             type: "invalid_data",
-            message: `Cannot transfer order: ${order.id} to a guest customer account: guest@medusajs.com`,
+            message: `Cannot transfer order: ${order.id} to a guest customer account: guest@zjedene-medusa.com`,
           })
         )
       })

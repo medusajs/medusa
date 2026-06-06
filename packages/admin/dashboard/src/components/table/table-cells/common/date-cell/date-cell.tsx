@@ -1,4 +1,4 @@
-import { Tooltip } from "@medusajs/ui"
+import { Tooltip } from "@zjedene-medusa/ui"
 import { useTranslation } from "react-i18next"
 import { PlaceholderCell } from "../placeholder-cell"
 import { useDate } from "../../../../../hooks/use-date"

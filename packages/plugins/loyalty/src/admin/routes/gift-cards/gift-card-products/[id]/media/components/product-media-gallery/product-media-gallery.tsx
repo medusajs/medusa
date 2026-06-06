@@ -4,7 +4,7 @@ import {
   Trash,
   TriangleLeftMini,
   TriangleRightMini,
-} from "@medusajs/icons";
+} from "@zjedene-medusa/icons";
 import {
   Button,
   IconButton,
@@ -12,11 +12,11 @@ import {
   Tooltip,
   clx,
   usePrompt,
-} from "@medusajs/ui";
+} from "@zjedene-medusa/ui";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import { HttpTypes } from "@medusajs/types";
+import { HttpTypes } from "@zjedene-medusa/types";
 import { RouteFocusModal } from "../../../../../../../components/modals";
 import { useUpdateProduct } from "../../../../../../../hooks/api/products";
 

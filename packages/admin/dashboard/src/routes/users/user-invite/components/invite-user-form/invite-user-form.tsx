@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ArrowPath, Link, Trash } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
+import { ArrowPath, Link, Trash } from "@zjedene-medusa/icons"
+import { HttpTypes } from "@zjedene-medusa/types"
 import {
   Alert,
   Button,
@@ -11,7 +11,7 @@ import {
   Text,
   Tooltip,
   usePrompt,
-} from "@medusajs/ui"
+} from "@zjedene-medusa/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import copy from "copy-to-clipboard"
 import { format } from "date-fns"

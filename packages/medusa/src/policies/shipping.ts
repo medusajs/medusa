@@ -1,4 +1,4 @@
-import { definePolicies } from "@medusajs/framework/utils"
+import { definePolicies } from "@zjedene-medusa/framework/utils"
 import { generateResourcePolicies } from "../utils"
 
 const shippingResources = [

@@ -1,10 +1,10 @@
-import { INotificationModuleService } from "@medusajs/framework/types"
+import { INotificationModuleService } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   Modules,
   pickValueFromObject,
   promiseAll,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { SubscriberArgs, SubscriberConfig } from "../types/subscribers"
 
 type HandlerConfig = {

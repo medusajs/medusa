@@ -3,7 +3,7 @@ import {
   Modules,
   OrderStatus,
   OrderWorkflowEvents,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import {
   createStep,
   createWorkflow,
@@ -12,12 +12,12 @@ import {
   transform,
   WorkflowData,
   WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import type {
   ConfirmVariantInventoryWorkflowInputDTO,
   IOrderModuleService,
   OrderDTO,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import { emitEventStep, useRemoteQueryStep } from "../../common"
 import { validateDraftOrderStep } from "../steps/validate-draft-order"
 import { acquireLockStep, releaseLockStep } from "../../locking"

@@ -1,6 +1,6 @@
 import { Product, ProductOption } from "@models"
 
-import { Context, DAL, InferEntityType } from "@medusajs/framework/types"
+import { Context, DAL, InferEntityType } from "@zjedene-medusa/framework/types"
 import {
   arrayDifference,
   buildQuery,
@@ -9,11 +9,11 @@ import {
   isPresent,
   mergeMetadata,
   deepCopy,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import {
   SqlEntityManager,
   wrap,
-} from "@medusajs/framework/mikro-orm/postgresql"
+} from "@zjedene-medusa/framework/mikro-orm/postgresql"
 
 export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
   Product

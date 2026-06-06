@@ -1,10 +1,10 @@
 import * as zod from "zod"
 
-import { Button, Input, toast } from "@medusajs/ui"
+import { Button, Input, toast } from "@zjedene-medusa/ui"
 import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { AdminInventoryItem } from "@medusajs/types"
+import { AdminInventoryItem } from "@zjedene-medusa/types"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"

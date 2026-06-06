@@ -1,4 +1,4 @@
-import { validateAndTransformQuery } from "@medusajs/framework"
+import { validateAndTransformQuery } from "@zjedene-medusa/framework"
 import {
   applyDefaultFilters,
   applyParamsAsFilters,
@@ -6,8 +6,8 @@ import {
   clearFiltersByKey,
   maybeApplyLinkFilter,
   MiddlewareRoute,
-} from "@medusajs/framework/http"
-import { ProductStatus } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/http"
+import { ProductStatus } from "@zjedene-medusa/framework/utils"
 import {
   filterByValidSalesChannels,
   normalizeDataForContext,

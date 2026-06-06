@@ -4,7 +4,7 @@ import {
   LinkDefinition,
   LoadedModule,
   ModuleJoinerRelationship,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 
 import {
   isObject,
@@ -14,7 +14,7 @@ import {
   Modules,
   promiseAll,
   toPascalCase,
-} from "@medusajs/utils"
+} from "@zjedene-medusa/utils"
 import { MedusaModule } from "./medusa-module"
 import { convertRecordsToLinkDefinition } from "./utils/convert-data-to-link-definition"
 import { linkingErrorMessage } from "./utils/linking-error"

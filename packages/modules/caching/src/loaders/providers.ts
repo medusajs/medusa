@@ -1,9 +1,9 @@
-import { moduleProviderLoader } from "@medusajs/framework/modules-sdk"
-import { LoaderOptions, ModulesSdkTypes } from "@medusajs/framework/types"
+import { moduleProviderLoader } from "@zjedene-medusa/framework/modules-sdk"
+import { LoaderOptions, ModulesSdkTypes } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   getProviderRegistrationKey,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { CachingProviderService } from "@services"
 import {
   CachingDefaultProvider,

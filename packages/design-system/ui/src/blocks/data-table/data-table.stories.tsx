@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
 
 import { Container } from "@/components/container"
-import { PencilSquare, Trash } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@zjedene-medusa/icons"
 import { Button } from "../../components/button"
 import { Heading } from "../../components/heading"
 import { TooltipProvider } from "../../components/tooltip"

@@ -1,7 +1,7 @@
-import { PaymentModuleOptions } from "@medusajs/framework/types"
-import { Modules, PaymentWebhookEvents } from "@medusajs/framework/utils"
+import { PaymentModuleOptions } from "@zjedene-medusa/framework/types"
+import { Modules, PaymentWebhookEvents } from "@zjedene-medusa/framework/utils"
 
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { MedusaRequest, MedusaResponse } from "@zjedene-medusa/framework/http"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   try {

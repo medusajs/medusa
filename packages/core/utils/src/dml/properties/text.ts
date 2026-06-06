@@ -23,7 +23,7 @@ export class TextProperty extends BaseProperty<string> {
    * This method indicates that the property is the data model's primary key.
    *
    * @example
-   * import { model } from "@medusajs/framework/utils"
+   * import { model } from "@zjedene-medusa/framework/utils"
    *
    * const Product = model.define("Product", {
    *   code: model.text().primaryKey(),
@@ -42,7 +42,7 @@ export class TextProperty extends BaseProperty<string> {
    * This method indicates that a text property is searchable.
    *
    * @example
-   * import { model } from "@medusajs/framework/utils"
+   * import { model } from "@zjedene-medusa/framework/utils"
    *
    * const MyCustom = model.define("my_custom", {
    *   name: model.text().searchable(),
@@ -65,7 +65,7 @@ export class TextProperty extends BaseProperty<string> {
    * See [Translate Custom Data Models](https://docs.medusajs.com/resources/commerce-modules/translation/custom-data-models) for more information.
    *
    * @example
-   * import { model } from "@medusajs/framework/utils"
+   * import { model } from "@zjedene-medusa/framework/utils"
    *
    * const Store = model.define("store", {
    *   name: model.text().translatable(),

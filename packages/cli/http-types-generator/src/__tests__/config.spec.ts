@@ -14,8 +14,8 @@ describe("Config", () => {
       const config = Config.load({})
       expect(config.tsconfig).toBe("tsconfig.json")
       expect(config.publicPrefixes).toEqual(["Admin", "Store"])
-      expect(config.importSources.commonRequest).toBe("@medusajs/framework/types")
-      expect(config.importSources.dal).toBe("@medusajs/framework/types")
+      expect(config.importSources.commonRequest).toBe("@zjedene-medusa/framework/types")
+      expect(config.importSources.dal).toBe("@zjedene-medusa/framework/types")
       expect(config.outputBase).toBe("src/types/http")
     })
 

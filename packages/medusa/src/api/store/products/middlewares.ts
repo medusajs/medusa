@@ -1,4 +1,4 @@
-import { validateAndTransformQuery } from "@medusajs/framework"
+import { validateAndTransformQuery } from "@zjedene-medusa/framework"
 import {
   applyDefaultFilters,
   applyParamsAsFilters,
@@ -9,13 +9,13 @@ import {
   MedusaRequest,
   MedusaResponse,
   MiddlewareRoute,
-} from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework/http"
 import {
   ContainerRegistrationKeys,
   FeatureFlag,
   isPresent,
   ProductStatus,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import IndexEngineFeatureFlag from "../../../feature-flags/index-engine"
 import {
   filterByValidSalesChannels,

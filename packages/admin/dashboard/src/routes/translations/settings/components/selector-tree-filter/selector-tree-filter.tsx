@@ -1,5 +1,5 @@
-import { Collapse, DescendingSorting } from "@medusajs/icons"
-import { Button, clx, IconButton, Input, Tooltip } from "@medusajs/ui"
+import { Collapse, DescendingSorting } from "@zjedene-medusa/icons"
+import { Button, clx, IconButton, Input, Tooltip } from "@zjedene-medusa/ui"
 import { SegmentedControl } from "../../../../../components/common/segmented-control"
 import { useTranslation } from "react-i18next"
 import { useState } from "react"

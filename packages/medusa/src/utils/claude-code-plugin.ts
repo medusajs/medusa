@@ -1,4 +1,4 @@
-import { Store, track } from "@medusajs/telemetry"
+import { Store, track } from "@zjedene-medusa/telemetry"
 import { spawnSync } from "child_process"
 import fs from "fs"
 import os from "os"

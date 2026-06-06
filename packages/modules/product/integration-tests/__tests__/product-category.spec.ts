@@ -1,13 +1,13 @@
 import { ProductCategoryService } from "@services"
 
-import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import { moduleIntegrationTestRunner } from "@zjedene-medusa/test-utils"
 import {
   eletronicsCategoriesData,
   productCategoriesData,
   productCategoriesRankData,
 } from "../__fixtures__/product-category/data"
-import { IProductModuleService } from "@medusajs/framework/types"
-import { Modules } from "@medusajs/framework/utils"
+import { IProductModuleService } from "@zjedene-medusa/framework/types"
+import { Modules } from "@zjedene-medusa/framework/utils"
 
 jest.setTimeout(30000)
 

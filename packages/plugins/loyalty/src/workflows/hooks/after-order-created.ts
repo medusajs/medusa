@@ -1,5 +1,5 @@
-import { StepResponse } from "@medusajs/framework/workflows-sdk"
-import { completeCartWorkflow } from "@medusajs/medusa/core-flows"
+import { StepResponse } from "@zjedene-medusa/framework/workflows-sdk"
+import { completeCartWorkflow } from "@zjedene-medusa/medusa/core-flows"
 import { confirmCartCreditLinesWorkflow } from "../carts/workflows/confirm-cart-credit-lines"
 import { cloneCartGiftCardsToOrderWorkflow } from "../orders/workflows/link-gift-cards-to-order"
 ;(completeCartWorkflow.hooks as any).orderCreated(

@@ -2,7 +2,7 @@ import {
   createStep,
   createWorkflow,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@zjedene-medusa/workflows-sdk"
 
 export const productWorkflowId = "product-notifier-workflow"
 

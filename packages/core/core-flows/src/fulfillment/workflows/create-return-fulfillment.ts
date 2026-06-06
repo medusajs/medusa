@@ -2,13 +2,13 @@ import {
   FulfillmentDTO,
   FulfillmentWorkflow,
   StockLocationDTO,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   transform,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { createReturnFulfillmentStep } from "../steps"
 import { useRemoteQueryStep } from "../../common"
 

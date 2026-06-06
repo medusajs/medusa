@@ -3,7 +3,7 @@ import {
   type ZodNullable,
   type ZodObject,
   type ZodOptional,
-} from "@medusajs/framework/zod"
+} from "@zjedene-medusa/framework/zod"
 
 /**
  * Wraps the original schema to a function to accept and merge

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 
-import { AdminApiKeyResponse, AdminSalesChannelResponse } from "@medusajs/types"
+import { AdminApiKeyResponse, AdminSalesChannelResponse } from "@zjedene-medusa/types"
 import { RouteFocusModal } from "../../../components/modals"
 import { useApiKey } from "../../../hooks/api/api-keys"
 import { ApiKeySalesChannelsForm } from "./components/api-key-sales-channels-form"

@@ -1,18 +1,18 @@
-import { CreateCartCreditLineDTO } from "@medusajs/framework/types";
-import { MathBN, MedusaError, Modules } from "@medusajs/framework/utils";
+import { CreateCartCreditLineDTO } from "@zjedene-medusa/framework/types";
+import { MathBN, MedusaError, Modules } from "@zjedene-medusa/framework/utils";
 import {
   createCartCreditLinesWorkflow,
   createLinksWorkflow,
   refreshCartItemsWorkflow,
   useQueryGraphStep,
-} from "@medusajs/medusa/core-flows";
+} from "@zjedene-medusa/medusa/core-flows";
 import {
   createStep,
   createWorkflow,
   StepResponse,
   transform,
   WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk";
+} from "@zjedene-medusa/framework/workflows-sdk";
 import { PluginModule } from "../../../types";
 import { PluginCartDTO } from "../../../types/cart";
 import { ModuleGiftCard } from "../../../types/loyalty";

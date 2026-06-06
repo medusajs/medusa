@@ -1,5 +1,5 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { defineFileConfig, FeatureFlag } from "@medusajs/utils"
+import { MedusaRequest, MedusaResponse } from "@zjedene-medusa/framework/http"
+import { defineFileConfig, FeatureFlag } from "@zjedene-medusa/utils"
 
 defineFileConfig({
   isDisabled: () => !FeatureFlag.isFeatureEnabled("custom_ff"),

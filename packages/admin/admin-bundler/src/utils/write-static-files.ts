@@ -18,7 +18,7 @@ export async function writeStaticFiles(plugins?: string[]) {
 
 async function writeCSSFile(outDir: string) {
   const css = outdent`
-    @import "@medusajs/dashboard/css";
+    @import "@zjedene-medusa/dashboard/css";
 
     @tailwind base;
     @tailwind components;
@@ -34,7 +34,7 @@ function getPluginName(index: number) {
 
 async function writeEntryFile(outDir: string, plugins?: string[]) {
   const entry = outdent`
-    import App from "@medusajs/dashboard";
+    import App from "@zjedene-medusa/dashboard";
     import React from "react";
     import ReactDOM from "react-dom/client";
     import "./index.css";

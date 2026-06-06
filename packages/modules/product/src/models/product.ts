@@ -1,4 +1,4 @@
-import { model, ProductUtils } from "@medusajs/framework/utils"
+import { model, ProductUtils } from "@zjedene-medusa/framework/utils"
 
 import ProductCategory from "./product-category"
 import ProductCollection from "./product-collection"

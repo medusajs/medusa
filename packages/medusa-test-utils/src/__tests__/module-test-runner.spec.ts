@@ -1,4 +1,4 @@
-import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+import { ContainerRegistrationKeys, Modules } from "@zjedene-medusa/framework/utils"
 import TestService from "../__fixtures__/test-module/service"
 import InternalService from "../__fixtures__/test-module/services/internal"
 import { moduleIntegrationTestRunner } from "../module-test-runner"

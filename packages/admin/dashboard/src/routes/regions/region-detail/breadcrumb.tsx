@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import { UIMatch } from "react-router-dom"
 import { useRegion } from "../../../hooks/api/regions"
 import { REGION_DETAIL_FIELDS } from "./constants"

@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Plus, ThumbnailBadge } from "@medusajs/icons"
-import { Button, Checkbox, clx, CommandBar, toast, Tooltip } from "@medusajs/ui"
+import { Plus, ThumbnailBadge } from "@zjedene-medusa/icons"
+import { Button, Checkbox, clx, CommandBar, toast, Tooltip } from "@zjedene-medusa/ui"
 import { Fragment, useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"

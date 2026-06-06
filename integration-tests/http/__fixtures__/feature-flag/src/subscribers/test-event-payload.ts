@@ -1,4 +1,4 @@
-import { defineFileConfig, FeatureFlag } from "@medusajs/framework/utils"
+import { defineFileConfig, FeatureFlag } from "@zjedene-medusa/framework/utils"
 
 const testProductCreatedHandlerMock = jest.fn()
 

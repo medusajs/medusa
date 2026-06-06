@@ -1,4 +1,4 @@
-import { createStep } from "@medusajs/framework/workflows-sdk"
+import { createStep } from "@zjedene-medusa/framework/workflows-sdk"
 
 export const waitConfirmationProductImportStepId =
   "wait-confirmation-product-import"

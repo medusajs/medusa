@@ -2,16 +2,16 @@ import {
   CustomerDTO,
   OrderCreditLineDTO,
   OrderDTO,
-} from "@medusajs/framework/types"
-import { MathBN, MedusaError } from "@medusajs/framework/utils"
-import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+} from "@zjedene-medusa/framework/types"
+import { MathBN, MedusaError } from "@zjedene-medusa/framework/utils"
+import { useQueryGraphStep } from "@zjedene-medusa/medusa/core-flows"
 import {
   createStep,
   createWorkflow,
   StepResponse,
   transform,
   when,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import {
   IStoreCreditModuleService,
   ModuleStoreCreditAccount,

@@ -1,8 +1,8 @@
-import { WorkflowManager } from "@medusajs/orchestration"
+import { WorkflowManager } from "@zjedene-medusa/orchestration"
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
-} from "@medusajs/utils"
+} from "@zjedene-medusa/utils"
 import { asValue } from "../../deps/awilix"
 import { join } from "path"
 import { logger } from "../../logger"

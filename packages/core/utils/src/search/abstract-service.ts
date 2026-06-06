@@ -1,10 +1,10 @@
-import { SearchTypes } from "@medusajs/types"
+import { SearchTypes } from "@zjedene-medusa/types"
 
 /**
  * ## Overview
  *
  * A search service class is in a TypeScript or JavaScript file created in the `src/services` directory. The class must extend the `AbstractSearchService` class imported
- *  from the `@medusajs/utils` package.
+ *  from the `@zjedene-medusa/utils` package.
  *
  * Based on services’ naming conventions, the file’s name should be the slug version of the search service’s name without `service`, and the class’s name should be the
  * pascal case of the search service’s name following by `Service`.
@@ -12,7 +12,7 @@ import { SearchTypes } from "@medusajs/types"
  * For example, create the `MySearchService` class in the file `src/services/my-search.ts`:
  *
  * ```ts title="src/services/my-search.ts"
- * import { AbstractSearchService } from "@medusajs/utils"
+ * import { AbstractSearchService } from "@zjedene-medusa/utils"
  *
  * class MySearchService extends AbstractSearchService {
  *   isDefault = false
@@ -121,7 +121,7 @@ export abstract class AbstractSearchService
    *
    * @example
    * // ...
-   * import { ProductService } from "@medusajs/medusa"
+   * import { ProductService } from "@zjedene-medusa/medusa"
    *
    * type InjectedDependencies = {
    *   productService: ProductService

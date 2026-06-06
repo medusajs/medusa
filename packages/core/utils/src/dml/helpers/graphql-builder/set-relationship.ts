@@ -1,4 +1,4 @@
-import { RelationshipMetadata } from "@medusajs/types"
+import { RelationshipMetadata } from "@zjedene-medusa/types"
 import { DmlEntity } from "../../entity"
 import { HasMany, HasOne } from "../../relations"
 import { ManyToMany as DmlManyToMany } from "../../relations/many-to-many"

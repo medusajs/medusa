@@ -1,6 +1,6 @@
-import SettingsModule from "@medusajs/settings"
+import SettingsModule from "@zjedene-medusa/settings"
 
-export * from "@medusajs/settings"
+export * from "@zjedene-medusa/settings"
 
 export default SettingsModule
-export const discoveryPath = require.resolve("@medusajs/settings")
+export const discoveryPath = require.resolve("@zjedene-medusa/settings")

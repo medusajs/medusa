@@ -3,8 +3,8 @@ import * as QueryConfig from "./query-config"
 import {
   validateAndTransformBody,
   validateAndTransformQuery,
-} from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework"
+import { MiddlewareRoute } from "@zjedene-medusa/framework/http"
 
 import {
   AdminCreateRbacPolicy,

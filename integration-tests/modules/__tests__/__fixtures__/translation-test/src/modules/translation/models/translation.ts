@@ -1,4 +1,4 @@
-import { model } from "@medusajs/framework/utils";
+import { model } from "@zjedene-medusa/framework/utils";
 
 export default model.define("translation", {
   id: model.id({ prefix: "i18n" }).primaryKey(),

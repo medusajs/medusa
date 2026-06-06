@@ -1,8 +1,8 @@
-import { Button, Input, Select, Text, Textarea, toast } from "@medusajs/ui"
+import { Button, Input, Select, Text, Textarea, toast } from "@zjedene-medusa/ui"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import { Form } from "../../../../../components/common/form"
 import { SwitchBox } from "../../../../../components/common/switch-box"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"

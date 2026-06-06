@@ -2,8 +2,8 @@ import {
   InferEntityType,
   LoaderOptions,
   ModulesSdkTypes,
-} from "@medusajs/framework/types"
-import { WILDCARD } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/types"
+import { WILDCARD } from "@zjedene-medusa/framework/utils"
 import { RbacPolicy, RbacRole, RbacRolePolicy } from "@models"
 
 export default async ({

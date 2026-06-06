@@ -1,5 +1,5 @@
-import { MedusaContainer } from "@medusajs/types"
-import { dynamicImport, isFileSkipped, Modules } from "@medusajs/utils"
+import { MedusaContainer } from "@zjedene-medusa/types"
+import { dynamicImport, isFileSkipped, Modules } from "@zjedene-medusa/utils"
 import { basename } from "path"
 import { logger } from "../logger"
 import { Migrator } from "./migrator"

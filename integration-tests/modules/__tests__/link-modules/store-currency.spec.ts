@@ -1,6 +1,6 @@
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { ICurrencyModuleService, IStoreModuleService } from "@medusajs/types"
-import { Modules, remoteQueryObjectFromString } from "@medusajs/utils"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
+import { ICurrencyModuleService, IStoreModuleService } from "@zjedene-medusa/types"
+import { Modules, remoteQueryObjectFromString } from "@zjedene-medusa/utils"
 
 jest.setTimeout(50000)
 

@@ -1,11 +1,11 @@
-import { TaxCalculationContext } from "@medusajs/framework/types"
+import { TaxCalculationContext } from "@zjedene-medusa/framework/types"
 import { NextFunction } from "express"
 import {
   AuthenticatedMedusaRequest,
   MedusaRequest,
   refetchEntity,
-} from "@medusajs/framework/http"
-import { MedusaError } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/http"
+import { MedusaError } from "@zjedene-medusa/framework/utils"
 import { StoreRequestWithContext } from "../../../store/types"
 import { DEFAULT_PRICE_FIELD_PATHS } from "./constants"
 

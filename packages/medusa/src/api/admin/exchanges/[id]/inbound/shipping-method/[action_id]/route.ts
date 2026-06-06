@@ -1,16 +1,16 @@
 import {
   removeReturnShippingMethodWorkflow,
   updateReturnShippingMethodWorkflow,
-} from "@medusajs/core-flows"
+} from "@zjedene-medusa/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
-import { AdminOrderPreview, HttpTypes } from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/http"
+import { AdminOrderPreview, HttpTypes } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { defaultAdminDetailsReturnFields } from "../../../../../returns/query-config"
 
 export const POST = async (

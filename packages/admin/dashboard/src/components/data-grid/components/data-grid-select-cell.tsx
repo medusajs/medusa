@@ -1,6 +1,6 @@
 // Not currently used, re-implement or delete depending on whether there is a need for it in the future.
 
-// import { Select, clx } from "@medusajs/ui"
+// import { Select, clx } from "@zjedene-medusa/ui"
 // import { Controller } from "react-hook-form"
 // import { useDataGridCell } from "../hooks"
 // import { DataGridCellProps } from "../types"

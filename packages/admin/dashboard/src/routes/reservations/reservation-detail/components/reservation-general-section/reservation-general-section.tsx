@@ -1,8 +1,8 @@
-import { AdminReservationResponse } from "@medusajs/types"
-import { Container, Heading } from "@medusajs/ui"
+import { AdminReservationResponse } from "@zjedene-medusa/types"
+import { Container, Heading } from "@zjedene-medusa/ui"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { PencilSquare } from "@medusajs/icons"
+import { PencilSquare } from "@zjedene-medusa/icons"
 import { SectionRow } from "../../../../../components/common/section"
 import { useInventoryItem } from "../../../../../hooks/api/inventory"
 import { useStockLocation } from "../../../../../hooks/api/stock-locations"

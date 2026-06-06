@@ -5,7 +5,7 @@ type McloudArgs = {
   args?: string[]
 }
 
-const MCLOUD_PACKAGE = "@medusajs/mcloud"
+const MCLOUD_PACKAGE = "@zjedene-medusa/mcloud"
 
 function isMcloudInstalled() {
   const result = spawnSync("mcloud", ["--version"], {

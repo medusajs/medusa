@@ -31,7 +31,7 @@ describe("transformModules", () => {
 
     expect(modules).toEqual({
       cache: {
-        resolve: "@medusajs/medusa/cache-inmemory",
+        resolve: "@zjedene-medusa/medusa/cache-inmemory",
       },
     })
   })

@@ -1,7 +1,7 @@
-import type { InventoryTypes } from "@medusajs/framework/types"
-import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import type { InventoryTypes } from "@zjedene-medusa/framework/types"
+import { createStep, StepResponse } from "@zjedene-medusa/framework/workflows-sdk"
 
-import { Modules } from "@medusajs/framework/utils"
+import { Modules } from "@zjedene-medusa/framework/utils"
 
 /**
  * The data to create reservation items.

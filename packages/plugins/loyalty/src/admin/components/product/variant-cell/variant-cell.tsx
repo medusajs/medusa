@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types";
+import { HttpTypes } from "@zjedene-medusa/types";
 import { PlaceholderCell } from "../../placeholder-cell";
 
 type VariantCellProps = {

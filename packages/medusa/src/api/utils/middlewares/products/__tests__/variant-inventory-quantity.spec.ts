@@ -4,15 +4,15 @@ import {
   getTotalVariantAvailability,
   getVariantAvailability,
   MedusaError,
-} from "@medusajs/framework/utils"
-import { MedusaRequest, MedusaStoreRequest } from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework/utils"
+import { MedusaRequest, MedusaStoreRequest } from "@zjedene-medusa/framework/http"
 import {
   wrapVariantsWithInventoryQuantityForSalesChannel,
   wrapVariantsWithTotalInventoryQuantity,
 } from "../variant-inventory-quantity"
 
-jest.mock("@medusajs/framework/utils", () => {
-  const originalModule = jest.requireActual("@medusajs/framework/utils")
+jest.mock("@zjedene-medusa/framework/utils", () => {
+  const originalModule = jest.requireActual("@zjedene-medusa/framework/utils")
   return {
     ...originalModule,
     getTotalVariantAvailability: jest.fn(),

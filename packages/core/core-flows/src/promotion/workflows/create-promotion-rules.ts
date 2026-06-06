@@ -1,12 +1,12 @@
 import {
   AddPromotionRulesWorkflowDTO,
   PromotionRuleDTO,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { addRulesToPromotionsStep } from "../steps"
 
 export const createPromotionRulesWorkflowId = "create-promotion-rules-workflow"
@@ -21,7 +21,7 @@ export const createPromotionRulesWorkflowId = "create-promotion-rules-workflow"
  * const { result } = await createPromotionRulesWorkflow(container)
  * .run({
  *   input: {
- *     // import { RuleType } from "@medusajs/framework/utils"
+ *     // import { RuleType } from "@zjedene-medusa/framework/utils"
  *     rule_type: RuleType.RULES,
  *     data: {
  *       id: "promo_123",

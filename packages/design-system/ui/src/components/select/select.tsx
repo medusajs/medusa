@@ -1,6 +1,6 @@
 "use client"
 
-import { Check, TrianglesMini } from "@medusajs/icons"
+import { Check, TrianglesMini } from "@zjedene-medusa/icons"
 import { cva } from "cva"
 import { Select as RadixSelect } from "radix-ui"
 import * as React from "react"

@@ -7,7 +7,7 @@ import {
   InformationCircleSolid,
   XCircleSolid,
   XMarkMini,
-} from "@medusajs/icons"
+} from "@zjedene-medusa/icons"
 import * as React from "react"
 
 import { IconButton } from "@/components/icon-button"

@@ -1,5 +1,5 @@
 import "./types"
-import { Module, Modules } from "@medusajs/framework/utils"
+import { Module, Modules } from "@zjedene-medusa/framework/utils"
 import { default as loadHash } from "./loaders/hash"
 import { default as loadProviders } from "./loaders/providers"
 import CachingModuleService from "./services/cache-module"

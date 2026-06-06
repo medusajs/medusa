@@ -1,4 +1,4 @@
-import { LinkModulesExtraFields, ModuleJoinerConfig } from "@medusajs/types"
+import { LinkModulesExtraFields, ModuleJoinerConfig } from "@zjedene-medusa/types"
 import {
   camelToSnakeCase,
   getCallerFilePath,

@@ -1,6 +1,6 @@
 import { RegionModuleService } from "./services"
 import loadDefaults from "./loaders/defaults"
-import { Module, Modules } from "@medusajs/framework/utils"
+import { Module, Modules } from "@zjedene-medusa/framework/utils"
 
 export default Module(Modules.REGION, {
   service: RegionModuleService,

@@ -1,4 +1,4 @@
-import { Module } from "@medusajs/framework/utils";
+import { Module } from "@zjedene-medusa/framework/utils";
 import { PluginModule } from "../../types";
 import StoreCreditService from "./service";
 

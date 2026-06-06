@@ -1,4 +1,4 @@
-import { Badge, StatusBadge, Tooltip } from "@medusajs/ui"
+import { Badge, StatusBadge, Tooltip } from "@zjedene-medusa/ui"
 import ReactCountryFlag from "react-country-flag"
 import { getCountryByIso2 } from "./data/countries"
 import { getStylizedAmount } from "./money-amount-helpers"

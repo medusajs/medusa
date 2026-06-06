@@ -1,13 +1,13 @@
 import type {
   AdditionalData,
   UpdateCampaignDTO,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createHook,
   createWorkflow,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { updateCampaignsStep } from "../steps"
 
 /**

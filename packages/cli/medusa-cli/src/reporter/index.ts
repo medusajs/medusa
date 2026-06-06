@@ -1,4 +1,4 @@
-import { track } from "@medusajs/telemetry"
+import { track } from "@zjedene-medusa/telemetry"
 import ora from "ora"
 import stackTrace from "stack-trace"
 import { ulid } from "ulid"

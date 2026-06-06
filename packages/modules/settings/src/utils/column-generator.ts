@@ -1,9 +1,9 @@
-import { SettingsTypes } from "@medusajs/framework/types"
+import { SettingsTypes } from "@zjedene-medusa/framework/types"
 import {
   GraphQLObjectType,
   isEnumType,
   isScalarType,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import {
   ComputedColumnDefinition,
   getComputedColumnRegistry,

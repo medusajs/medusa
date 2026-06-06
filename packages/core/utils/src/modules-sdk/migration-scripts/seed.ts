@@ -1,5 +1,5 @@
-import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
-import { EntitySchema } from "@medusajs/deps/mikro-orm/core"
+import { LoaderOptions, Logger, ModulesSdkTypes } from "@zjedene-medusa/types"
+import { EntitySchema } from "@zjedene-medusa/deps/mikro-orm/core"
 import { EOL } from "os"
 import { resolve } from "path"
 import { dynamicImport, isFileSkipped } from "../../common"

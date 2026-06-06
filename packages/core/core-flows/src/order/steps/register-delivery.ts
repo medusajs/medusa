@@ -1,9 +1,9 @@
 import {
   IOrderModuleService,
   RegisterOrderDeliveryDTO,
-} from "@medusajs/framework/types"
-import { ModuleRegistrationName } from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/types"
+import { ModuleRegistrationName } from "@zjedene-medusa/framework/utils"
+import { StepResponse, createStep } from "@zjedene-medusa/framework/workflows-sdk"
 
 export const registerOrderDeliveryStepId = "register-order-delivery"
 /**

@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { AuthTypes } from "@medusajs/types"
-import { Alert, Button, Heading, Hint, Input, Text } from "@medusajs/ui"
+import type { AuthTypes } from "@zjedene-medusa/types"
+import { Alert, Button, Heading, Hint, Input, Text } from "@zjedene-medusa/ui"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"

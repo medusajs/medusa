@@ -1,4 +1,4 @@
-import { FileSystem } from "@medusajs/utils"
+import { FileSystem } from "@zjedene-medusa/utils"
 import fs from "fs/promises"
 import path from "path"
 import { LocalFileService } from "../../src/services/local-file"

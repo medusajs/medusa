@@ -1,5 +1,5 @@
-import { Key, ShieldCheck } from "@medusajs/icons"
-import type { AuthMfaSetupResponse } from "@medusajs/js-sdk"
+import { Key, ShieldCheck } from "@zjedene-medusa/icons"
+import type { AuthMfaSetupResponse } from "@zjedene-medusa/js-sdk"
 import {
   Badge,
   Button,
@@ -8,8 +8,8 @@ import {
   Text,
   toast,
   usePrompt,
-} from "@medusajs/ui"
-import type { AuthTypes } from "@medusajs/types"
+} from "@zjedene-medusa/ui"
+import type { AuthTypes } from "@zjedene-medusa/types"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import {

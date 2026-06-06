@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import {
   Button,
   Divider,
@@ -9,7 +9,7 @@ import {
   Label,
   Switch,
   toast,
-} from "@medusajs/ui"
+} from "@zjedene-medusa/ui"
 import { Fragment, useCallback } from "react"
 import { Control, useForm, UseFormSetValue, useWatch } from "react-hook-form"
 import { z } from "zod"

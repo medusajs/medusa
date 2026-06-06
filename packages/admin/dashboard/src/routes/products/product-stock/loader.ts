@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import { defer, LoaderFunctionArgs } from "react-router-dom"
 import { sdk } from "../../../lib/client"
 import { PRODUCT_VARIANT_IDS_KEY } from "../common/constants"

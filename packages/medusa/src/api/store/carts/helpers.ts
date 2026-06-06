@@ -1,9 +1,9 @@
-import { MedusaContainer } from "@medusajs/framework/types"
+import { MedusaContainer } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
   remoteQueryObjectFromString,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 
 export const refetchCart = async (
   id: string,

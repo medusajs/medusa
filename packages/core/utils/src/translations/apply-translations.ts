@@ -1,4 +1,4 @@
-import { MedusaContainer, RemoteQueryFunction } from "@medusajs/types"
+import { MedusaContainer, RemoteQueryFunction } from "@zjedene-medusa/types"
 import { ContainerRegistrationKeys } from "../common/container"
 import { isObject } from "../common/is-object"
 import { FeatureFlag } from "../feature-flags/flag-router"

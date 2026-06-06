@@ -2,15 +2,15 @@ import {
   AdditionalData,
   PricingTypes,
   ProductTypes,
-} from "@medusajs/framework/types"
-import { ProductVariantWorkflowEvents } from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/types"
+import { ProductVariantWorkflowEvents } from "@zjedene-medusa/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createHook,
   createWorkflow,
   transform,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { emitEventStep } from "../../common"
 import { updatePriceSetsStep } from "../../pricing"
 import {

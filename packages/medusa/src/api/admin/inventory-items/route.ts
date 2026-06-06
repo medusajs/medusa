@@ -1,15 +1,15 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework/http"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 
-import { createInventoryItemsWorkflow } from "@medusajs/core-flows"
+import { createInventoryItemsWorkflow } from "@zjedene-medusa/core-flows"
 import { refetchInventoryItem } from "./helpers"
-import { HttpTypes } from "@medusajs/framework/types"
+import { HttpTypes } from "@zjedene-medusa/framework/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<

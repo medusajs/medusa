@@ -1,13 +1,13 @@
-import { processPaymentWorkflowId } from "@medusajs/core-flows"
+import { processPaymentWorkflowId } from "@zjedene-medusa/core-flows"
 import {
   IPaymentModuleService,
   ProviderWebhookPayload,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   Modules,
   PaymentActions,
   PaymentWebhookEvents,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { SubscriberArgs, SubscriberConfig } from "../types/subscribers"
 
 type SerializedBuffer = {

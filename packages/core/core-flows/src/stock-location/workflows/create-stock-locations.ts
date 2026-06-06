@@ -3,9 +3,9 @@ import {
   WorkflowResponse,
   createHook,
   createWorkflow,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 
-import type { CreateStockLocationInput } from "@medusajs/framework/types"
+import type { CreateStockLocationInput } from "@zjedene-medusa/framework/types"
 import { createStockLocations } from "../steps"
 
 /**

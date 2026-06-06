@@ -1,6 +1,6 @@
-import { MedusaContainer } from "@medusajs/types"
-import { Modules, composeMessage } from "@medusajs/utils"
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { MedusaContainer } from "@zjedene-medusa/types"
+import { Modules, composeMessage } from "@zjedene-medusa/utils"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
 import testEventPayloadHandlerMock from "../../src/subscribers/test-event-payload"
 
 jest.setTimeout(30000)

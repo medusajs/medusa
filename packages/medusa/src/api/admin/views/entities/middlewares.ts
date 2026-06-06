@@ -1,4 +1,4 @@
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { MiddlewareRoute } from "@zjedene-medusa/framework/http"
 import { ensureViewConfigurationsEnabled } from "../[entity]/configurations/middleware"
 
 export const entitiesRoutesMiddlewares: MiddlewareRoute[] = [

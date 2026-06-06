@@ -1,4 +1,4 @@
-import { model } from "@medusajs/framework/utils"
+import { model } from "@zjedene-medusa/framework/utils"
 import { AuthIdentity } from "./auth-identity"
 
 export const AuthMfaRecoveryCode = model

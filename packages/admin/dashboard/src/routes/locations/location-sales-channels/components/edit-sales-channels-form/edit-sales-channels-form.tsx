@@ -1,11 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import {
   Button,
   createDataTableColumnHelper,
   DataTableRowSelectionState,
   toast,
-} from "@medusajs/ui"
+} from "@zjedene-medusa/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"

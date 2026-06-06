@@ -1,9 +1,9 @@
-import { MedusaContainer } from "@medusajs/types"
+import { MedusaContainer } from "@zjedene-medusa/types"
 import {
   ContainerRegistrationKeys,
   useCache,
   WILDCARD,
-} from "@medusajs/utils"
+} from "@zjedene-medusa/utils"
 import { FlagRouter } from "../feature-flags/flag-router"
 
 export type PermissionAction = {

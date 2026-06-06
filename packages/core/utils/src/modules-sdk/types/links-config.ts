@@ -5,7 +5,7 @@ import {
   InferDmlEntityNameFromConfig,
   Prettify,
   SnakeCase,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 import { PrimaryKeyModifier } from "../../dml/properties/primary-key"
 
 /**

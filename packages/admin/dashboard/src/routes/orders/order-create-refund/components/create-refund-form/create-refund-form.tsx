@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import {
   Button,
   CurrencyInput,
@@ -7,7 +7,7 @@ import {
   Select,
   Textarea,
   toast,
-} from "@medusajs/ui"
+} from "@zjedene-medusa/ui"
 import { useEffect, useMemo, useState } from "react"
 import { formatValue } from "react-currency-input-field"
 import { useForm } from "react-hook-form"

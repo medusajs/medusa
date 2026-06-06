@@ -1,4 +1,4 @@
-import { CampaignBudgetType } from "@medusajs/framework/utils"
+import { CampaignBudgetType } from "@zjedene-medusa/framework/utils"
 
 export const defaultCampaignsData = [
   {

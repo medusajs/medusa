@@ -4,7 +4,7 @@ import {
   createWorkflow,
   transform,
   when,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { createRbacRolePoliciesStep } from "../steps"
 import { validateUserPermissionsStep } from "../steps/validate-user-permissions"
 

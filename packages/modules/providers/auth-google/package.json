@@ -1,5 +1,5 @@
 {
-  "name": "@medusajs/auth-google",
+  "name": "@zjedene-medusa/auth-google",
   "version": "2.15.5",
   "description": "Google OAuth authentication provider for Medusa",
   "main": "dist/index.js",
@@ -26,13 +26,13 @@
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.15.5"
+    "@zjedene-medusa/framework": "2.15.5"
   },
   "dependencies": {
     "jsonwebtoken": "^9.0.2"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.15.5"
+    "@zjedene-medusa/framework": "2.15.5"
   },
   "keywords": [
     "medusa-provider",

@@ -1,4 +1,4 @@
-import { ProductVariantDTO } from "@medusajs/framework/types"
+import { ProductVariantDTO } from "@zjedene-medusa/framework/types"
 
 const VARIANT_PREFIX = "variant_"
 const PRODUCT_PREFIX = "product_"

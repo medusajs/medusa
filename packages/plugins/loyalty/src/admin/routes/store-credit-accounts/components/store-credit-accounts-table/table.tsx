@@ -1,4 +1,4 @@
-import { Container } from "@medusajs/ui";
+import { Container } from "@zjedene-medusa/ui";
 import { Fragment } from "react";
 import { Outlet } from "react-router-dom";
 

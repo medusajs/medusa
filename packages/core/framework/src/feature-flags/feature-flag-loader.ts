@@ -1,10 +1,10 @@
-import { trackFeatureFlag } from "@medusajs/telemetry"
+import { trackFeatureFlag } from "@zjedene-medusa/telemetry"
 import {
   ContainerRegistrationKeys,
   discoverAndRegisterFeatureFlags,
   FeatureFlag,
   FlagRouter,
-} from "@medusajs/utils"
+} from "@zjedene-medusa/utils"
 import { asFunction } from "../deps/awilix"
 import { normalize } from "path"
 import { configManager } from "../config"

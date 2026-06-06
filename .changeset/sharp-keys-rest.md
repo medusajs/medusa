@@ -1,5 +1,5 @@
 ---
-"@medusajs/utils": patch
+"@zjedene-medusa/utils": patch
 ---
 
 fix(utils): preserve auth MFA defaults when auth options are customized

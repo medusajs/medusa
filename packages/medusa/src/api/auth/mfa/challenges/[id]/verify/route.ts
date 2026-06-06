@@ -1,10 +1,10 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { ConfigModule, IAuthModuleService } from "@medusajs/framework/types"
+import { MedusaRequest, MedusaResponse } from "@zjedene-medusa/framework/http"
+import { ConfigModule, IAuthModuleService } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
   Modules,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { generateJwtTokenForAuthIdentity } from "../../../../utils/generate-jwt-token"
 import { AuthMfaVerifyChallengeRequestType } from "../../../../validators"
 

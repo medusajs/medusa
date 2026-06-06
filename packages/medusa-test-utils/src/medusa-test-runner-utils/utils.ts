@@ -1,4 +1,4 @@
-import { isObject } from "@medusajs/framework/utils"
+import { isObject } from "@zjedene-medusa/framework/utils"
 
 export function applyEnvVarsToProcess(env?: Record<any, any>) {
   if (isObject(env)) {

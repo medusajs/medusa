@@ -1,4 +1,4 @@
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@zjedene-medusa/utils")
 
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
@@ -12,13 +12,13 @@ const enableMedusaV2 = process.env.MEDUSA_FF_MEDUSA_V2 == "true"
 
 const customPaymentProvider = {
   resolve: {
-    services: [require("@medusajs/payment/dist/providers/system").default],
+    services: [require("@zjedene-medusa/payment/dist/providers/system").default],
   },
   id: "default_2",
 }
 
 const customFulfillmentProvider = {
-  resolve: "@medusajs/fulfillment-manual",
+  resolve: "@zjedene-medusa/fulfillment-manual",
   id: "test-provider",
 }
 
@@ -42,29 +42,29 @@ module.exports = {
     [Modules.AUTH]: true,
     [Modules.USER]: {
       scope: "internal",
-      resolve: "@medusajs/user",
+      resolve: "@zjedene-medusa/user",
       options: {
         jwt_secret: "test",
       },
     },
     [Modules.CACHE]: {
-      resolve: "@medusajs/cache-inmemory",
+      resolve: "@zjedene-medusa/cache-inmemory",
       options: { ttl: 0 }, // Cache disabled
     },
     [Modules.STOCK_LOCATION]: {
-      resolve: "@medusajs/stock-location",
+      resolve: "@zjedene-medusa/stock-location",
       options: {},
     },
     [Modules.INVENTORY]: {
-      resolve: "@medusajs/inventory",
+      resolve: "@zjedene-medusa/inventory",
       options: {},
     },
     [Modules.FILE]: {
-      resolve: "@medusajs/file",
+      resolve: "@zjedene-medusa/file",
       options: {
         providers: [
           {
-            resolve: "@medusajs/file-local",
+            resolve: "@zjedene-medusa/file-local",
             id: "local",
           },
         ],
@@ -85,24 +85,24 @@ module.exports = {
     [Modules.CURRENCY]: true,
     [Modules.ORDER]: true,
     [Modules.PAYMENT]: {
-      resolve: "@medusajs/payment",
-      /** @type {import('@medusajs/payment').PaymentModuleOptions}*/
+      resolve: "@zjedene-medusa/payment",
+      /** @type {import('@zjedene-medusa/payment').PaymentModuleOptions}*/
       options: {
         providers: [customPaymentProvider],
       },
     },
     [Modules.FULFILLMENT]: {
-      /** @type {import('@medusajs/fulfillment').FulfillmentModuleOptions} */
+      /** @type {import('@zjedene-medusa/fulfillment').FulfillmentModuleOptions} */
       options: {
         providers: [customFulfillmentProvider],
       },
     },
     [Modules.NOTIFICATION]: {
-      /** @type {import('@medusajs/types').LocalNotificationServiceOptions} */
+      /** @type {import('@zjedene-medusa/types').LocalNotificationServiceOptions} */
       options: {
         providers: [
           {
-            resolve: "@medusajs/notification-local",
+            resolve: "@zjedene-medusa/notification-local",
             id: "local-notification-provider",
             options: {
               name: "Local Notification Provider",

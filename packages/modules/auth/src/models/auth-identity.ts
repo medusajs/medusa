@@ -1,4 +1,4 @@
-import { model } from "@medusajs/framework/utils"
+import { model } from "@zjedene-medusa/framework/utils"
 import { AuthMfaFactor } from "./auth-mfa-factor"
 import { AuthMfaRecoveryCode } from "./auth-mfa-recovery-code"
 import { AuthVerificationToken } from "./auth-verification-token"

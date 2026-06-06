@@ -3,12 +3,12 @@ import {
   IEventBusModuleService,
   INotificationModuleService,
   Logger,
-} from "@medusajs/types"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
+} from "@zjedene-medusa/types"
+import { ContainerRegistrationKeys, Modules } from "@zjedene-medusa/utils"
 import {
   TestEventUtils,
   medusaIntegrationTestRunner,
-} from "@medusajs/test-utils"
+} from "@zjedene-medusa/test-utils"
 
 jest.setTimeout(50000)
 
@@ -31,7 +31,7 @@ medusaIntegrationTestRunner({
         it("should successfully send a notification for an available channel", async () => {
           const logSpy = jest.spyOn(logger, "info")
           const notification = {
-            to: "test@medusajs.com",
+            to: "test@zjedene-medusa.com",
             channel: "email",
             template: "order-created",
             data: { username: "john-doe" },
@@ -50,14 +50,14 @@ medusaIntegrationTestRunner({
           expect(result).toEqual(
             expect.objectContaining({
               id: expect.any(String),
-              to: "test@medusajs.com",
+              to: "test@zjedene-medusa.com",
               provider_id: "local-notification-provider",
             })
           )
 
           expect(result).toEqual(
             expect.objectContaining({
-              to: "test@medusajs.com",
+              to: "test@zjedene-medusa.com",
               channel: "email",
               data: {
                 username: "john-doe",
@@ -75,7 +75,7 @@ medusaIntegrationTestRunner({
 
           expect(fromDB).toEqual(
             expect.objectContaining({
-              to: "test@medusajs.com",
+              to: "test@zjedene-medusa.com",
               channel: "email",
               data: {
                 username: "john-doe",
@@ -92,13 +92,13 @@ medusaIntegrationTestRunner({
           expect(fromDB).not.toHaveProperty("content")
 
           expect(logSpy).toHaveBeenCalledWith(
-            `Attempting to send a notification to: 'test@medusajs.com' on the channel: 'email' with template: 'order-created' and data: '{\"username\":\"john-doe\"}'`
+            `Attempting to send a notification to: 'test@zjedene-medusa.com' on the channel: 'email' with template: 'order-created' and data: '{\"username\":\"john-doe\"}'`
           )
         })
 
         it("should throw an exception if there is no provider for the channel", async () => {
           const notification = {
-            to: "test@medusajs.com",
+            to: "test@zjedene-medusa.com",
             template: "order-created",
             channel: "sms",
           } as CreateNotificationDTO
@@ -116,13 +116,13 @@ medusaIntegrationTestRunner({
 
         it("should allow listing all notifications with filters", async () => {
           const notification1 = {
-            to: "test@medusajs.com",
+            to: "test@zjedene-medusa.com",
             channel: "email",
             template: "order-created",
           } as CreateNotificationDTO
 
           const notification2 = {
-            to: "test@medusajs.com",
+            to: "test@zjedene-medusa.com",
             channel: "log",
             template: "product-created",
           } as CreateNotificationDTO
@@ -135,7 +135,7 @@ medusaIntegrationTestRunner({
           expect(notifications).toHaveLength(1)
           expect(notifications[0]).toEqual(
             expect.objectContaining({
-              to: "test@medusajs.com",
+              to: "test@zjedene-medusa.com",
               channel: "log",
               template: "product-created",
             })
@@ -144,13 +144,13 @@ medusaIntegrationTestRunner({
 
         it("should allow retrieving a notification", async () => {
           const notification1 = {
-            to: "test@medusajs.com",
+            to: "test@zjedene-medusa.com",
             channel: "email",
             template: "order-created",
           } as CreateNotificationDTO
 
           const notification2 = {
-            to: "test@medusajs.com",
+            to: "test@zjedene-medusa.com",
             channel: "log",
             template: "product-created",
           } as CreateNotificationDTO
@@ -163,7 +163,7 @@ medusaIntegrationTestRunner({
           const notification = await service.retrieveNotification(first.id)
           expect(notification).toEqual(
             expect.objectContaining({
-              to: "test@medusajs.com",
+              to: "test@zjedene-medusa.com",
               channel: "email",
               template: "order-created",
             })
@@ -189,7 +189,7 @@ medusaIntegrationTestRunner({
             data: {
               order: {
                 id: "1234",
-                email: "test@medusajs.com",
+                email: "test@zjedene-medusa.com",
               },
             },
           })
@@ -198,12 +198,12 @@ medusaIntegrationTestRunner({
           const notifications = await service.listNotifications()
 
           expect(logSpy).toHaveBeenCalledWith(
-            `Attempting to send a notification to: 'test@medusajs.com' on the channel: 'email' with template: 'order-created-template' and data: '{\"order_id\":\"1234\"}'`
+            `Attempting to send a notification to: 'test@zjedene-medusa.com' on the channel: 'email' with template: 'order-created-template' and data: '{\"order_id\":\"1234\"}'`
           )
           expect(notifications).toHaveLength(1)
           expect(notifications[0]).toEqual(
             expect.objectContaining({
-              to: "test@medusajs.com",
+              to: "test@zjedene-medusa.com",
               channel: "email",
               template: "order-created-template",
             })

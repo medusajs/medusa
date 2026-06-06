@@ -36,8 +36,8 @@ export class Config {
     outputBase: "src/types/http",
     tsconfig: "tsconfig.json",
     importSources: {
-      commonRequest: "@medusajs/framework/types",
-      dal: "@medusajs/framework/types",
+      commonRequest: "@zjedene-medusa/framework/types",
+      dal: "@zjedene-medusa/framework/types",
     },
     validatorPathPattern: "/api/([^/]+)/([^/]+)/validators\\.ts$",
     publicPrefixes: ["Admin", "Store"],

@@ -9,7 +9,7 @@ import {
   InferDmlEntityNameFromConfig,
   PropertyType,
   QueryCondition,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 import { isObject, isString, toCamelCase, upperCaseFirst } from "../common"
 import { transformIndexWhere } from "./helpers/entity-builder/build-indexes"
 import { DMLSchemaWithBigNumber } from "./helpers/entity-builder/create-big-number-properties"
@@ -37,7 +37,7 @@ export type TranslatableEntityEntry = {
  * Keys are entity names (PascalCase), values are Sets of field names.
  *
  * @example
- * import { DmlEntity } from "@medusajs/framework/utils"
+ * import { DmlEntity } from "@zjedene-medusa/framework/utils"
  *
  * const translatables = DmlEntity.getTranslatableEntities()
  * // Returns: [{ entity: "Store", fields: ["name"] }]
@@ -158,7 +158,7 @@ export class DmlEntity<
    * of field names that are marked as translatable.
    *
    * @example
-   * import { DmlEntity } from "@medusajs/framework/utils"
+   * import { DmlEntity } from "@zjedene-medusa/framework/utils"
    *
    * const translatables = DmlEntity.getTranslatableEntities()
    * // Returns: [{ entity: "Store", fields: ["name"] }]
@@ -214,7 +214,7 @@ export class DmlEntity<
    * action should be cascaded to.
    *
    * @example
-   * import { model } from "@medusajs/framework/utils"
+   * import { model } from "@zjedene-medusa/framework/utils"
    *
    * const Store = model.define("store", {
    *   id: model.id(),
@@ -260,7 +260,7 @@ export class DmlEntity<
    * An example of a simple index:
    *
    * ```ts
-   * import { model } from "@medusajs/framework/utils"
+   * import { model } from "@zjedene-medusa/framework/utils"
    *
    * const MyCustom = model.define("my_custom", {
    *   id: model.id(),
@@ -278,7 +278,7 @@ export class DmlEntity<
    * To add a condition on the index, use the `where` option:
    *
    * ```ts
-   * import { model } from "@medusajs/framework/utils"
+   * import { model } from "@zjedene-medusa/framework/utils"
    *
    * const MyCustom = model.define("my_custom", {
    *   id: model.id(),
@@ -299,7 +299,7 @@ export class DmlEntity<
    * The condition can also be a negation. For example:
    *
    * ```ts
-   * import { model } from "@medusajs/framework/utils"
+   * import { model } from "@zjedene-medusa/framework/utils"
    *
    * const MyCustom = model.define("my_custom", {
    *   id: model.id(),

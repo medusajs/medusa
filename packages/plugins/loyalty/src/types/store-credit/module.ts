@@ -1,4 +1,4 @@
-import { BigNumberValue } from "@medusajs/framework/types";
+import { BigNumberValue } from "@zjedene-medusa/framework/types";
 
 /* Entity: StoreCreditAccount */
 

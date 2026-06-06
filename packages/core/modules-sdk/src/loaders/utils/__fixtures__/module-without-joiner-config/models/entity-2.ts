@@ -1,4 +1,4 @@
-import { Entity, Property } from "@medusajs/deps/mikro-orm/core"
+import { Entity, Property } from "@zjedene-medusa/deps/mikro-orm/core"
 
 @Entity()
 export class Entity2 {

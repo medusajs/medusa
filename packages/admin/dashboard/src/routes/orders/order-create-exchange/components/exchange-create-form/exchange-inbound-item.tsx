@@ -4,13 +4,13 @@ import {
   ReceiptPercent,
   XCircle,
   XMark,
-} from "@medusajs/icons"
+} from "@zjedene-medusa/icons"
 import {
   AdminOrderLineItem,
   AdminOrderLinePreview,
   HttpTypes,
-} from "@medusajs/types"
-import { IconButton, Input, Text, Tooltip } from "@medusajs/ui"
+} from "@zjedene-medusa/types"
+import { IconButton, Input, Text, Tooltip } from "@zjedene-medusa/ui"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 

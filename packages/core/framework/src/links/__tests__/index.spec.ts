@@ -1,6 +1,6 @@
 import { join } from "path"
 import { LinkLoader } from "../link-loader"
-import { MedusaModule } from "@medusajs/modules-sdk"
+import { MedusaModule } from "@zjedene-medusa/modules-sdk"
 
 describe("LinkLoader", () => {
   const rootDir = join(__dirname, "../__fixtures__", "links")

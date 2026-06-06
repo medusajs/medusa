@@ -16,8 +16,8 @@ describe("generateContainerTypes", function () {
           __definition: {
             key: "foo-cache",
             label: "Cache",
-            defaultPackage: "@medusajs/foo-cache",
-            resolvePath: "@medusajs/foo-cache",
+            defaultPackage: "@zjedene-medusa/foo-cache",
+            resolvePath: "@zjedene-medusa/foo-cache",
             defaultModuleDeclaration: {
               scope: "internal",
             },
@@ -34,9 +34,9 @@ describe("generateContainerTypes", function () {
     expect(await fileSystem.exists("modules-bindings.d.ts")).toBeTruthy()
     expect(await fileSystem.contents("modules-bindings.d.ts"))
       .toMatchInlineSnapshot(`
-      "import type FooCache from '@medusajs/foo-cache'
+      "import type FooCache from '@zjedene-medusa/foo-cache'
 
-      declare module '@medusajs/framework/types' {
+      declare module '@zjedene-medusa/framework/types' {
         interface ModulesImplementations {
           'foo-cache': InstanceType<(typeof FooCache)['service']>
         }
@@ -51,8 +51,8 @@ describe("generateContainerTypes", function () {
           __definition: {
             key: "cache",
             label: "Cache",
-            defaultPackage: "@medusajs/foo-cache",
-            resolvePath: "@medusajs/foo-cache",
+            defaultPackage: "@zjedene-medusa/foo-cache",
+            resolvePath: "@zjedene-medusa/foo-cache",
             defaultModuleDeclaration: {
               scope: "internal",
             },
@@ -69,9 +69,9 @@ describe("generateContainerTypes", function () {
     expect(await fileSystem.exists("modules-bindings.d.ts")).toBeTruthy()
     expect(await fileSystem.contents("modules-bindings.d.ts"))
       .toMatchInlineSnapshot(`
-      "import type { ICacheService } from '@medusajs/framework/types'
+      "import type { ICacheService } from '@zjedene-medusa/framework/types'
 
-      declare module '@medusajs/framework/types' {
+      declare module '@zjedene-medusa/framework/types' {
         interface ModulesImplementations {
           'cache': ICacheService
         }
@@ -106,7 +106,7 @@ describe("generateContainerTypes", function () {
       .toMatchInlineSnapshot(`
       "import type Bar from '../../foo/bar'
 
-      declare module '@medusajs/framework/types' {
+      declare module '@zjedene-medusa/framework/types' {
         interface ModulesImplementations {
           'bar': InstanceType<(typeof Bar)['service']>
         }

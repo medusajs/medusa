@@ -1,4 +1,4 @@
-import { PropertyType } from "@medusajs/types"
+import { PropertyType } from "@zjedene-medusa/types"
 import { ComputedProperty } from "./computed"
 
 const IsNullableModifier = Symbol.for("isNullableModifier")

@@ -1,8 +1,8 @@
 import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework";
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils";
+} from "@zjedene-medusa/framework";
+import { ContainerRegistrationKeys } from "@zjedene-medusa/framework/utils";
 
 import {
   AdminCreditStoreCreditAccountParams,

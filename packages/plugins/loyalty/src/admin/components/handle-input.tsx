@@ -1,4 +1,4 @@
-import { Input, Text } from "@medusajs/ui";
+import { Input, Text } from "@zjedene-medusa/ui";
 import { ComponentProps, ElementRef, forwardRef } from "react";
 
 export const HandleInput = forwardRef<

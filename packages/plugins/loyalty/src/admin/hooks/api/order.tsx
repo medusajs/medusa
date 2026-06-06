@@ -1,4 +1,4 @@
-import { FetchError } from "@medusajs/js-sdk";
+import { FetchError } from "@zjedene-medusa/js-sdk";
 import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { queryKeysFactory } from "../../lib/query-key";
 import { sdk } from "../../lib/sdk";

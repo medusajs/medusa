@@ -1,4 +1,4 @@
-import { Kbd, Text, clx } from "@medusajs/ui"
+import { Kbd, Text, clx } from "@zjedene-medusa/ui"
 import { Collapsible as RadixCollapsible } from "radix-ui"
 import {
   PropsWithChildren,

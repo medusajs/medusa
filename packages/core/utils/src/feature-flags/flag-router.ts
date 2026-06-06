@@ -1,4 +1,4 @@
-import { FeatureFlagTypes } from "@medusajs/types"
+import { FeatureFlagTypes } from "@zjedene-medusa/types"
 import { isObject, isString } from "../common"
 
 export class FlagRouter implements FeatureFlagTypes.IFlagRouter {

@@ -1,5 +1,5 @@
-import { Spinner, TriangleDownMini } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
+import { Spinner, TriangleDownMini } from "@zjedene-medusa/icons"
+import { HttpTypes } from "@zjedene-medusa/types"
 import {
   clx,
   CodeBlock,
@@ -7,7 +7,7 @@ import {
   Heading,
   IconButton,
   Text,
-} from "@medusajs/ui"
+} from "@zjedene-medusa/ui"
 import { format } from "date-fns"
 import { Collapsible as RadixCollapsible } from "radix-ui"
 import { useEffect, useRef, useState } from "react"

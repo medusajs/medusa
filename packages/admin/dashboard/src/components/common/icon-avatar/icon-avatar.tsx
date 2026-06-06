@@ -1,4 +1,4 @@
-import { clx } from "@medusajs/ui"
+import { clx } from "@zjedene-medusa/ui"
 import { PropsWithChildren } from "react"
 
 type IconAvatarProps = PropsWithChildren<{
@@ -10,7 +10,7 @@ type IconAvatarProps = PropsWithChildren<{
 /**
  * Use this component when a design calls for an avatar with an icon.
  *
- * The `<Avatar/>` component from `@medusajs/ui` does not support passing an icon as a child.
+ * The `<Avatar/>` component from `@zjedene-medusa/ui` does not support passing an icon as a child.
  */
 export const IconAvatar = ({
   size = "small",

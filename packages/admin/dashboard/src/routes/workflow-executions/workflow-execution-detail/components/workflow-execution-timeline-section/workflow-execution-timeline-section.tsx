@@ -1,5 +1,5 @@
-import { ArrowPathMini, MinusMini, PlusMini } from "@medusajs/icons"
-import { Container, DropdownMenu, Heading, Text, clx } from "@medusajs/ui"
+import { ArrowPathMini, MinusMini, PlusMini } from "@zjedene-medusa/icons"
+import { Container, DropdownMenu, Heading, Text, clx } from "@zjedene-medusa/ui"
 import {
   motion,
   useAnimationControls,
@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import {
   STEP_ERROR_STATES,
   STEP_INACTIVE_STATES,

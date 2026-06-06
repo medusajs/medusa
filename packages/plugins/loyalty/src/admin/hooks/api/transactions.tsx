@@ -1,4 +1,4 @@
-import { ClientHeaders, FetchError } from "@medusajs/js-sdk";
+import { ClientHeaders, FetchError } from "@zjedene-medusa/js-sdk";
 import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
 import {
   AdminGetTransactionsParams,

@@ -1,6 +1,6 @@
-import IndexModule from "@medusajs/index"
+import IndexModule from "@zjedene-medusa/index"
 
-export * from "@medusajs/index"
+export * from "@zjedene-medusa/index"
 
 export default IndexModule
-export const discoveryPath = require.resolve("@medusajs/index")
+export const discoveryPath = require.resolve("@zjedene-medusa/index")

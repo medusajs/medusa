@@ -1,16 +1,16 @@
 import {
   assignUserRolesWorkflow,
   removeUserRolesWorkflow,
-} from "@medusajs/core-flows"
+} from "@zjedene-medusa/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@zjedene-medusa/framework/http"
 import {
   ContainerRegistrationKeys,
   MedusaError,
-} from "@medusajs/framework/utils"
-import { HttpTypes } from "@medusajs/types"
+} from "@zjedene-medusa/framework/utils"
+import { HttpTypes } from "@zjedene-medusa/types"
 
 /**
  * @ignore

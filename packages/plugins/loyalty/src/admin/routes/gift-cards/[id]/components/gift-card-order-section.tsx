@@ -1,5 +1,5 @@
-import { ShoppingCart } from "@medusajs/icons";
-import { Container } from "@medusajs/ui";
+import { ShoppingCart } from "@zjedene-medusa/icons";
+import { Container } from "@zjedene-medusa/ui";
 import { AdminGiftCard } from "../../../../../types";
 import { Header } from "../../../../components/header";
 import { SidebarLink } from "../../../../components/sidebar-link";

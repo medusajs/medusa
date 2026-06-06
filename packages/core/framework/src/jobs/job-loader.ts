@@ -1,17 +1,17 @@
-import type { SchedulerOptions } from "@medusajs/orchestration"
-import { MedusaContainer } from "@medusajs/types"
+import type { SchedulerOptions } from "@zjedene-medusa/orchestration"
+import { MedusaContainer } from "@zjedene-medusa/types"
 import {
   dynamicImport,
   isFileSkipped,
   isObject,
   MedusaError,
   registerDevServerResource,
-} from "@medusajs/utils"
+} from "@zjedene-medusa/utils"
 import {
   createStep,
   createWorkflow,
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@zjedene-medusa/workflows-sdk"
 import { ResourceLoader } from "../utils/resource-loader"
 
 type CronJobConfig = {

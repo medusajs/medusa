@@ -1,5 +1,5 @@
-import { validateAndTransformQuery } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { validateAndTransformQuery } from "@zjedene-medusa/framework"
+import { MiddlewareRoute } from "@zjedene-medusa/framework/http"
 import { ensureViewConfigurationsEnabled } from "../configurations/middleware"
 import { AdminGetColumnsParams } from "./validators"
 

@@ -1,5 +1,5 @@
 {
-  "name": "@medusajs/deps",
+  "name": "@zjedene-medusa/deps",
   "version": "2.15.5",
   "description": "Dependencies for Medusa",
   "main": "dist/index.js",

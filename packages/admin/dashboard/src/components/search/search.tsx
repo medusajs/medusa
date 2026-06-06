@@ -6,7 +6,7 @@ import {
   IconButton,
   Kbd,
   Text,
-} from "@medusajs/ui"
+} from "@zjedene-medusa/ui"
 import { Command } from "cmdk"
 import { Dialog as RadixDialog } from "radix-ui"
 import {
@@ -31,7 +31,7 @@ import {
   Plus,
   Spinner,
   TriangleDownMini,
-} from "@medusajs/icons"
+} from "@zjedene-medusa/icons"
 import { matchSorter } from "match-sorter"
 
 import { useSearch } from "../../providers/search-provider"

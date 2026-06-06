@@ -1,6 +1,6 @@
-import CustomerModule from "@medusajs/customer"
+import CustomerModule from "@zjedene-medusa/customer"
 
-export * from "@medusajs/customer"
+export * from "@zjedene-medusa/customer"
 
 export default CustomerModule
-export const discoveryPath = require.resolve("@medusajs/customer")
+export const discoveryPath = require.resolve("@zjedene-medusa/customer")

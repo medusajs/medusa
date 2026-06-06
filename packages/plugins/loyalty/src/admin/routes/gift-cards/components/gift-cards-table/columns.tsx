@@ -1,4 +1,4 @@
-import { createDataTableColumnHelper, Text } from "@medusajs/ui";
+import { createDataTableColumnHelper, Text } from "@zjedene-medusa/ui";
 import { useMemo } from "react";
 import { AdminGiftCard } from "../../../../../types";
 import { formatAmount } from "../../../../utils/format-amount";

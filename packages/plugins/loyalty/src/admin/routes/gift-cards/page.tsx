@@ -1,5 +1,5 @@
-import { defineRouteConfig } from "@medusajs/admin-sdk";
-import { Toaster } from "@medusajs/ui";
+import { defineRouteConfig } from "@zjedene-medusa/admin-sdk";
+import { Toaster } from "@zjedene-medusa/ui";
 import GiftCardIcon from "../../components/icons/gift-card-icon";
 import { TwoColumnLayout } from "../../components/layouts/two-column";
 import GiftCardProductsSection from "./components/gift-card-products-section";

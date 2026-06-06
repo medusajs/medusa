@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import { ColumnDef } from "@tanstack/react-table"
 import { TFunction } from "i18next"
 import { useMemo } from "react"

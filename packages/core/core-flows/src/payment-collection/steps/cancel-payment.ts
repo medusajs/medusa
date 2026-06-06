@@ -1,10 +1,10 @@
-import type { IPaymentModuleService, Logger } from "@medusajs/framework/types"
+import type { IPaymentModuleService, Logger } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   Modules,
   promiseAll,
-} from "@medusajs/framework/utils"
-import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/utils"
+import { createStep, StepResponse } from "@zjedene-medusa/framework/workflows-sdk"
 
 /**
  * The data to cancel payments.

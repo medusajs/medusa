@@ -1,4 +1,4 @@
-import { clx } from "@medusajs/ui"
+import { clx } from "@zjedene-medusa/ui"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { PlaceholderCell } from "../placeholder-cell"
 

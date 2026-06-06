@@ -6,7 +6,7 @@ import {
   TextCell,
   TextHeader,
 } from "../../../components/table/table-cells/common/text-cell"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 
 const columnHelper = createColumnHelper<HttpTypes.AdminCustomerGroup>()
 

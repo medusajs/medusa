@@ -18,7 +18,7 @@ export class AutoIncrementProperty extends BaseProperty<number> {
    * This method indicates that the property is the data model's primary key.
    *
    * @example
-   * import { model } from "@medusajs/framework/utils"
+   * import { model } from "@zjedene-medusa/framework/utils"
    *
    * const Product = model.define("Product", {
    *   id: model.autoincrement().primaryKey(),
@@ -37,7 +37,7 @@ export class AutoIncrementProperty extends BaseProperty<number> {
    * This method indicates that a serial property is searchable.
    *
    * @example
-   * import { model } from "@medusajs/framework/utils"
+   * import { model } from "@zjedene-medusa/framework/utils"
    *
    * const MyCustom = model.define("my_custom", {
    *   name: model.autoincrement().searchable(),

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react"
 import * as React from "react"
 
-import { Plus } from "@medusajs/icons"
+import { Plus } from "@zjedene-medusa/icons"
 import { IconButton } from "./icon-button"
 
 describe("IconButton", () => {

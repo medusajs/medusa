@@ -1,4 +1,4 @@
-import { Link } from "@medusajs/modules-sdk"
+import { Link } from "@zjedene-medusa/modules-sdk"
 import {
   ConfigModule,
   IAnalyticsModuleService,
@@ -34,12 +34,12 @@ import {
   Logger,
   ModuleImplementations,
   RemoteQueryFunction,
-} from "@medusajs/types"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
+} from "@zjedene-medusa/types"
+import { ContainerRegistrationKeys, Modules } from "@zjedene-medusa/utils"
 import { AwilixContainer, ResolveOptions } from "../deps/awilix"
 import { Knex } from "../deps/mikro-orm-knex"
 
-declare module "@medusajs/types" {
+declare module "@zjedene-medusa/types" {
   export interface ModuleImplementations {
     /**
      * @deprecated use {@link ContainerRegistrationKeys.LINK} instead.

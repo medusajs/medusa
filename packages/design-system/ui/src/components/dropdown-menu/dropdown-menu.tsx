@@ -1,6 +1,6 @@
 "use client"
 
-import { CheckMini, ChevronRightMini, EllipseMiniSolid } from "@medusajs/icons"
+import { CheckMini, ChevronRightMini, EllipseMiniSolid } from "@zjedene-medusa/icons"
 import { DropdownMenu as RadixDropdownMenu } from "radix-ui"
 import * as React from "react"
 

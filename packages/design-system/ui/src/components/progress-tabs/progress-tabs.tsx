@@ -4,7 +4,7 @@ import {
   CheckCircleSolid,
   CircleDottedLine,
   CircleHalfSolid,
-} from "@medusajs/icons"
+} from "@zjedene-medusa/icons"
 import { Tabs as RadixTabs } from "radix-ui"
 import * as React from "react"
 

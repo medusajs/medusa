@@ -1,5 +1,5 @@
 import input from "@inquirer/input"
-import type { Logger } from "@medusajs/framework/types"
+import type { Logger } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   createClient,
@@ -7,7 +7,7 @@ import {
   dbExists,
   EnvEditor,
   parseConnectionString,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { basename } from "path"
 import slugify from "slugify"
 import { initializeContainer } from "../../loaders"

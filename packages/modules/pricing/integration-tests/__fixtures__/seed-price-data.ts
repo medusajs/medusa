@@ -1,4 +1,4 @@
-import { SqlEntityManager } from "@medusajs/framework/mikro-orm/postgresql"
+import { SqlEntityManager } from "@zjedene-medusa/framework/mikro-orm/postgresql"
 import { createPrices, defaultPricesData } from "./price"
 import { createPriceRules, defaultPriceRuleData } from "./price-rule"
 import { createPriceSets, defaultPriceSetsData } from "./price-set"

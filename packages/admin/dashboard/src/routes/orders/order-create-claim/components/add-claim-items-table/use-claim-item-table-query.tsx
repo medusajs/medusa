@@ -1,7 +1,7 @@
 import {
   DateComparisonOperator,
   NumericalComparisonOperator,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
 export type ReturnItemTableQuery = {

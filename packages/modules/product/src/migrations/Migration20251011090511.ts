@@ -1,4 +1,4 @@
-import { Migration } from "@medusajs/framework/mikro-orm/migrations"
+import { Migration } from "@zjedene-medusa/framework/mikro-orm/migrations"
 
 export class Migration20251011090511 extends Migration {
   // UP: Fixes the bug by dropping the bad index from product_collection.

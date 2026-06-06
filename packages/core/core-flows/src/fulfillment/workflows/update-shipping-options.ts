@@ -1,11 +1,11 @@
-import type { FulfillmentWorkflow } from "@medusajs/framework/types"
+import type { FulfillmentWorkflow } from "@zjedene-medusa/framework/types"
 import {
   createWorkflow,
   parallelize,
   transform,
   WorkflowData,
   WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import {
   setShippingOptionsPricesStep,
   upsertShippingOptionsStep,
@@ -15,7 +15,7 @@ import { validateShippingOptionPricesStep } from "../steps/validate-shipping-opt
 import {
   ShippingOptionPriceType,
   ShippingOptionWorkflowEvents,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { emitEventStep } from "../../common"
 
 /**

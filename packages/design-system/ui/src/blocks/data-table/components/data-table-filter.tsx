@@ -1,4 +1,4 @@
-import { CheckMini, EllipseMiniSolid, XMark, XMarkMini, MagnifyingGlass } from "@medusajs/icons"
+import { CheckMini, EllipseMiniSolid, XMark, XMarkMini, MagnifyingGlass } from "@zjedene-medusa/icons"
 import * as React from "react"
 
 import { useDataTableContext } from "@/blocks/data-table/context/use-data-table-context"

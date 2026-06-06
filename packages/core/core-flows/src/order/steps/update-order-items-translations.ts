@@ -1,16 +1,16 @@
-import { MedusaContainer } from "@medusajs/framework"
+import { MedusaContainer } from "@zjedene-medusa/framework"
 import {
   IOrderModuleService,
   ProductVariantDTO,
   RemoteQueryFunction,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   deduplicate,
   FeatureFlag,
   Modules,
-} from "@medusajs/framework/utils"
-import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/utils"
+import { createStep, StepResponse } from "@zjedene-medusa/framework/workflows-sdk"
 import { applyTranslationsToItems } from "../../common/utils/apply-translations-to-items"
 import { productVariantsFields } from "../utils/fields"
 

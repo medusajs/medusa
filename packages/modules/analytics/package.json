@@ -1,5 +1,5 @@
 {
-  "name": "@medusajs/analytics",
+  "name": "@zjedene-medusa/analytics",
   "version": "2.15.5",
   "description": "Medusa Analytics module",
   "main": "dist/index.js",
@@ -32,10 +32,10 @@
     "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.ts\""
   },
   "devDependencies": {
-    "@medusajs/framework": "2.15.5",
-    "@medusajs/test-utils": "2.15.5"
+    "@zjedene-medusa/framework": "2.15.5",
+    "@zjedene-medusa/test-utils": "2.15.5"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.15.5"
+    "@zjedene-medusa/framework": "2.15.5"
   }
 }

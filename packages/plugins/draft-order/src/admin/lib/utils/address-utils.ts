@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import { getCountryByIso2 } from "../data/countries"
 
 export function isSameAddress(

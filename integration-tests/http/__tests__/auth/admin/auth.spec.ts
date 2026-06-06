@@ -1,7 +1,7 @@
-import { generateResetPasswordTokenWorkflow } from "@medusajs/core-flows"
-import { IAuthModuleService } from "@medusajs/framework/types"
-import { AuthWorkflowEvents, Modules } from "@medusajs/framework/utils"
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { generateResetPasswordTokenWorkflow } from "@zjedene-medusa/core-flows"
+import { IAuthModuleService } from "@zjedene-medusa/framework/types"
+import { AuthWorkflowEvents, Modules } from "@zjedene-medusa/framework/utils"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
 import jwt from "jsonwebtoken"
 import {
   adminHeaders,

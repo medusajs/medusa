@@ -5,14 +5,14 @@ import {
   createShipmentWorkflowId,
   updateFulfillmentWorkflow,
   updateFulfillmentWorkflowId,
-} from "@medusajs/core-flows"
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+} from "@zjedene-medusa/core-flows"
+import { medusaIntegrationTestRunner } from "@zjedene-medusa/test-utils"
 import {
   IFulfillmentModuleService,
   MedusaContainer,
   StockLocationDTO,
-} from "@medusajs/types"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
+} from "@zjedene-medusa/types"
+import { ContainerRegistrationKeys, Modules } from "@zjedene-medusa/utils"
 import {
   generateCreateFulfillmentData,
   generateCreateShippingOptionsData,

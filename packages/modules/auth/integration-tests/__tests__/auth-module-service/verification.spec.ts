@@ -5,13 +5,13 @@ import {
   AuthIdentityProviderService,
   AuthTypes,
   IAuthModuleService,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   AbstractAuthModuleProvider,
   MedusaError,
   Modules,
-} from "@medusajs/framework/utils"
-import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+} from "@zjedene-medusa/framework/utils"
+import { moduleIntegrationTestRunner } from "@zjedene-medusa/test-utils"
 import { generateTotpCode } from "../../../src/utils/totp"
 
 jest.setTimeout(30000)

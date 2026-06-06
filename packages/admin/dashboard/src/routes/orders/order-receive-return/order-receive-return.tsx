@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useTranslation } from "react-i18next"
-import { Heading, toast } from "@medusajs/ui"
+import { Heading, toast } from "@zjedene-medusa/ui"
 import { useEffect } from "react"
 
 import { useOrder, useOrderPreview } from "../../../hooks/api/orders"

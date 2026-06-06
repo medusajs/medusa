@@ -1,4 +1,4 @@
-import { Container, Text } from "@medusajs/ui";
+import { Container, Text } from "@zjedene-medusa/ui";
 import { Link } from "react-router-dom";
 import { AdminGiftCard } from "../../../../../types";
 import { Header } from "../../../../components/header";

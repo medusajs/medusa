@@ -19,7 +19,7 @@ function getPrefix(type: "warn" | "info" | "error") {
       ? colors.green
       : colors.red
 
-  const prefix = typeColor("[@medusajs/admin-vite-plugin]")
+  const prefix = typeColor("[@zjedene-medusa/admin-vite-plugin]")
 
   return `${timestamp} ${prefix}`
 }

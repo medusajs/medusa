@@ -1,4 +1,4 @@
-import { AuthTypes, HttpTypes } from "@medusajs/types"
+import { AuthTypes, HttpTypes } from "@zjedene-medusa/types"
 import { Client } from "../client.js"
 import { ClientHeaders, Config } from "../types.js"
 

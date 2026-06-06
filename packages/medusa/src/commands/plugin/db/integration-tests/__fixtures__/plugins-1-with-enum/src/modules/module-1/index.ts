@@ -1,4 +1,4 @@
-import { MedusaService, Module } from "@medusajs/framework/utils"
+import { MedusaService, Module } from "@zjedene-medusa/framework/utils"
 export default Module("module1_with_enum", {
   service: class Module1Service extends MedusaService({}) {},
 })

@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { AdminPromotion, AdminPromotionRule } from "@medusajs/types"
-import { Button } from "@medusajs/ui"
+import { AdminPromotion, AdminPromotionRule } from "@zjedene-medusa/types"
+import { Button } from "@zjedene-medusa/ui"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"

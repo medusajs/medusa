@@ -4,7 +4,7 @@ import {
   isObject,
   isString,
   pickValueFromObject,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 
 /**
  * The rule engine here is kept inside the module as of now, but it could be moved

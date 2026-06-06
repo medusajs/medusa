@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import {
   Badge,
   Button,
@@ -9,7 +9,7 @@ import {
   Text,
   toast,
   Tooltip,
-} from "@medusajs/ui"
+} from "@zjedene-medusa/ui"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Control, useForm, UseFormSetValue, useWatch } from "react-hook-form"
 import { useParams } from "react-router-dom"
@@ -23,7 +23,7 @@ import {
   Trash,
   TriangleRightMini,
   TruckFast,
-} from "@medusajs/icons"
+} from "@zjedene-medusa/icons"
 import isEqual from "lodash.isequal"
 import { Accordion } from "radix-ui"
 import { ConditionalTooltip } from "../../../../components/common/conditional-tooltip"

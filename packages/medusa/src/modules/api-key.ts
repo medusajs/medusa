@@ -1,5 +1,5 @@
-import ApiKeyModule from "@medusajs/api-key"
+import ApiKeyModule from "@zjedene-medusa/api-key"
 
-export * from "@medusajs/api-key"
+export * from "@zjedene-medusa/api-key"
 export default ApiKeyModule
-export const discoveryPath = require.resolve("@medusajs/api-key")
+export const discoveryPath = require.resolve("@zjedene-medusa/api-key")

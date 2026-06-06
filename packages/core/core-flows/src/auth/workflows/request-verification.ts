@@ -1,11 +1,11 @@
-import type { AuthTypes } from "@medusajs/framework/types"
-import { AuthWorkflowEvents } from "@medusajs/framework/utils"
+import type { AuthTypes } from "@zjedene-medusa/framework/types"
+import { AuthWorkflowEvents } from "@zjedene-medusa/framework/utils"
 import {
   createWorkflow,
   transform,
   WorkflowData,
   WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { emitEventStep } from "../../common"
 import { requestVerificationStep } from "../steps"
 

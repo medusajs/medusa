@@ -1,5 +1,5 @@
-import { Tag } from "@medusajs/icons";
-import { Container } from "@medusajs/ui";
+import { Tag } from "@zjedene-medusa/icons";
+import { Container } from "@zjedene-medusa/ui";
 import { Link } from "react-router-dom";
 import { Header } from "../../../components/header";
 import { NoRecords } from "../../../components/no-records";

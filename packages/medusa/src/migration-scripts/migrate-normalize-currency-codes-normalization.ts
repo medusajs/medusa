@@ -1,6 +1,6 @@
-import { ContainerRegistrationKeys, promiseAll } from "@medusajs/framework/utils"
-import { createStep, createWorkflow, StepResponse, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
-import { ExecArgs } from "@medusajs/types"
+import { ContainerRegistrationKeys, promiseAll } from "@zjedene-medusa/framework/utils"
+import { createStep, createWorkflow, StepResponse, WorkflowResponse } from "@zjedene-medusa/framework/workflows-sdk"
+import { ExecArgs } from "@zjedene-medusa/types"
 
 type CurrencyRecord = { id: string; currency_code: string }
 

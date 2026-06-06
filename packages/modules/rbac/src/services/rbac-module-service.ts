@@ -3,7 +3,7 @@ import {
   FilterableRbacRoleProps,
   FindConfig,
   RbacRoleDTO,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   InjectManager,
   InjectTransactionManager,
@@ -12,7 +12,7 @@ import {
   Policy,
   promiseAll,
   WILDCARD,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import {
   CreateRbacRoleParentDTO,
   InferEntityType,
@@ -20,7 +20,7 @@ import {
   ModulesSdkTypes,
   RbacRoleParentDTO,
   UpdateRbacRoleParentDTO,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 import { RbacPolicy, RbacRole, RbacRoleParent, RbacRolePolicy } from "@models"
 import { RbacRepository } from "../repositories"
 

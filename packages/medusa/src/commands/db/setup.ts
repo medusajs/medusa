@@ -1,4 +1,4 @@
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import { ContainerRegistrationKeys } from "@zjedene-medusa/framework/utils"
 import { initializeContainer } from "../../loaders"
 import { dbCreate } from "./create"
 import { migrate } from "./migrate"

@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types";
+import { HttpTypes } from "@zjedene-medusa/types";
 import { useQueryParams } from "../../hooks/common/use-query-params";
 
 type UseSalesChannelTableQueryProps = {

@@ -1,4 +1,4 @@
-import { CustomerDTO } from "@medusajs/framework/types";
+import { CustomerDTO } from "@zjedene-medusa/framework/types";
 
 /**
  * The status of a gift card.

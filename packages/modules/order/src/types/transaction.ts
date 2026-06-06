@@ -1,3 +1,3 @@
-import { OrderTypes } from "@medusajs/framework/types"
+import { OrderTypes } from "@zjedene-medusa/framework/types"
 
 export type OrderTransactionDTO = OrderTypes.OrderTransactionDTO

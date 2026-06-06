@@ -2,7 +2,7 @@ import { promptClaudeCodePlugin } from "../claude-code-plugin"
 import { spawnSync } from "child_process"
 import fs from "fs"
 import confirm from "@inquirer/confirm"
-import { Store, track } from "@medusajs/telemetry"
+import { Store, track } from "@zjedene-medusa/telemetry"
 
 jest.mock("child_process")
 jest.mock("fs")
@@ -13,7 +13,7 @@ jest.mock("@inquirer/confirm", () => ({
 jest.mock("os", () => ({
   homedir: jest.fn().mockReturnValue("/mock/home"),
 }))
-jest.mock("@medusajs/telemetry", () => ({
+jest.mock("@zjedene-medusa/telemetry", () => ({
   Store: jest.fn(),
   track: jest.fn(),
 }))

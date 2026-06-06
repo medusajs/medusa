@@ -1,4 +1,4 @@
-import { InputFileConfig } from "@medusajs/types"
+import { InputFileConfig } from "@zjedene-medusa/types"
 import { getCallerFilePath } from "./get-caller-file-path"
 
 export const MEDUSA_SKIP_FILE = Symbol.for("__MEDUSA_SKIP_FILE__")

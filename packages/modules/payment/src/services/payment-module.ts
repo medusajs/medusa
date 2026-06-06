@@ -38,7 +38,7 @@ import {
   UpdatePaymentSessionDTO,
   UpsertPaymentCollectionDTO,
   WebhookActionResult,
-} from "@medusajs/framework/types"
+} from "@zjedene-medusa/framework/types"
 import {
   BigNumber,
   defaultCurrencies,
@@ -56,7 +56,7 @@ import {
   PaymentCollectionStatus,
   PaymentSessionStatus,
   promiseAll,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import {
   AccountHolder,
   Capture,

@@ -1,9 +1,9 @@
-import { container, MedusaAppLoader } from "@medusajs/framework"
-import { IModuleService, Logger } from "@medusajs/framework/types"
+import { container, MedusaAppLoader } from "@zjedene-medusa/framework"
+import { IModuleService, Logger } from "@zjedene-medusa/framework/types"
 import {
   ContainerRegistrationKeys,
   dynamicImport,
-} from "@medusajs/framework/utils"
+} from "@zjedene-medusa/framework/utils"
 import { join, relative } from "path"
 import { ModuleCacheManager } from "../module-cache-manager"
 import { CONFIG, FileChangeAction } from "../types"

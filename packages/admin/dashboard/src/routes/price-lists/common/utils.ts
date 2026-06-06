@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@zjedene-medusa/types"
 import { TFunction } from "i18next"
 import { json } from "react-router-dom"
 import { castNumber } from "../../../lib/cast-number"

@@ -3,7 +3,7 @@ import {
   RelationshipOptions,
   RelationshipType,
   RelationshipTypes,
-} from "@medusajs/types"
+} from "@zjedene-medusa/types"
 
 export const IsRelationship = Symbol.for("isRelationship")
 
@@ -48,7 +48,7 @@ export abstract class BaseRelationship<T> implements RelationshipType<T> {
    * This method indicates that the relationship is searchable
    *
    * @example
-   * import { model } from "@medusajs/framework/utils"
+   * import { model } from "@zjedene-medusa/framework/utils"
    *
    * const Product = model.define("Product", {
    *   variants: model.hasMany(() => ProductVariant).searchable(),

@@ -2,10 +2,10 @@ import {
   WorkflowData,
   createWorkflow,
   transform,
-} from "@medusajs/framework/workflows-sdk"
+} from "@zjedene-medusa/framework/workflows-sdk"
 import { emitEventStep } from "../../common/steps/emit-event"
 import { deleteTranslationsStep } from "../steps"
-import { TranslationWorkflowEvents } from "@medusajs/framework/utils"
+import { TranslationWorkflowEvents } from "@zjedene-medusa/framework/utils"
 
 /**
  * The IDs of the translations to delete.

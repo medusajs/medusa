@@ -3,7 +3,7 @@ import {
   ModulesSdkUtils,
   retryExecution,
   stringifyCircular,
-} from "@medusajs/utils"
+} from "@zjedene-medusa/utils"
 import { asValue } from "../deps/awilix"
 import { configManager } from "../config"
 import { container } from "../container"

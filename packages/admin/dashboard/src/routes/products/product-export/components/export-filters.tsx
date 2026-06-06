@@ -1,4 +1,4 @@
-import { Heading, Text } from "@medusajs/ui"
+import { Heading, Text } from "@zjedene-medusa/ui"
 import { DataTableFilter } from "../../../../components/table/data-table/data-table-filter"
 import { useTranslation } from "react-i18next"
 import { useProductTableFilters } from "../../../../hooks/table/filters"

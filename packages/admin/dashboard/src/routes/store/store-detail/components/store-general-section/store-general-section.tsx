@@ -1,6 +1,6 @@
-import { PencilSquare } from "@medusajs/icons"
-import { AdminStore } from "@medusajs/types"
-import { Badge, Container, Heading, Text } from "@medusajs/ui"
+import { PencilSquare } from "@zjedene-medusa/icons"
+import { AdminStore } from "@zjedene-medusa/types"
+import { Badge, Container, Heading, Text } from "@zjedene-medusa/ui"
 import { useTranslation } from "react-i18next"
 
 import { Link } from "react-router-dom"
