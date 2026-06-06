@@ -179,13 +179,13 @@ describe("toHandle and isValidHandle", function () {
     if (failures.length > 0) {
       throw new Error(
         `Found ${failures.length} failing test case(s):\n\n` +
-          failures
-            .map(
-              (f) =>
-                `  "${f.input}" → expected "${f.expected}", got "${f.received}"`
-            )
-            .join("\n") +
-          `\n\nTotal: ${expectations.length} test cases, ${failures.length} failed`
+        failures
+          .map(
+            (f) =>
+              `  "${f.input}" → expected "${f.expected}", got "${f.received}"`
+          )
+          .join("\n") +
+        `\n\nTotal: ${expectations.length} test cases, ${failures.length} failed`
       )
     }
 
@@ -258,5 +258,32 @@ describe("toHandle and isValidHandle", function () {
     }
     // Should have multiple unique handles (very unlikely to have collisions)
     expect(handles.size).toBeGreaterThan(1)
+  })
+})
+
+it("should produce handles that isValidHandle accepts (invariant)", () => {
+  const titles = [
+    // Japanese modifier letters
+    "ラーメン", // prolonged sound mark ー
+    "様々", // iteration mark 々
+    "コーヒー", // coffee
+    "サーバー", // server
+    "人々", // people
+    "時々", // sometimes
+    "さまざま", // various
+    // Other scripts
+    "کتاب فارسی",
+    "الكتاب العربي",
+    "我的产品",
+    "안녕하세요",
+    "привет мир",
+    "café",
+    "straße",
+  ]
+
+  titles.forEach((title) => {
+    const handle = toHandle(title)
+    const isValid = isValidHandle(handle)
+    expect(isValid).toBe(true)
   })
 })

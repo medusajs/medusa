@@ -31,11 +31,8 @@ export const isValidHandle = (value: string): boolean => {
     return false
   }
 
-  // Allow only:
-  // \p{Ll} = lowercase letters (a-z, and lowercase from other scripts)
-  // \p{Lo} = case-less letters (Arabic, Persian, Chinese, Japanese, Korean, etc.)
-  // \p{N} = numbers (0-9 and numbers from other scripts)
-  // Hyphens (not at start/end, no consecutive)
-  // Note: .toLowerCase() is NOT applied to preserve case rejection
-  return /^[\p{Ll}\p{Lo}\p{N}]+(?:-[\p{Ll}\p{Lo}\p{N}]+)*$/u.test(value)
+  // Allow: lowercase letters, case-less letters, modifier letters, numbers
+  return /^[\p{Ll}\p{Lo}\p{Lm}\p{N}]+(?:-[\p{Ll}\p{Lo}\p{Lm}\p{N}]+)*$/u.test(
+    value
+  )
 }
