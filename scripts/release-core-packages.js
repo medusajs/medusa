@@ -1,0 +1,431 @@
+// scripts/release-core-packages.js
+//
+// Releases the core package chain at a given version, in dependency order.
+// Ported from medusa-freshbox (incl. validateCrossDependencies, commit b353d2e15a)
+// and adapted for the @zjedene-medusa scope.
+//
+// Improvements over the original:
+// - Cross-dependency updates are workspace-wide: after publishing a package,
+//   EVERY workspace package.json referencing it is updated (not just a
+//   hardcoded list). This covers non-core packages too (ui, js-sdk,
+//   admin-sdk, types, test-utils) — see fork-adoption-playbook A5 rule 2.
+//
+// NOTE: this script does NOT auto-commit. Commit the version-bumped
+// package.json files after a successful release.
+//
+// Usage: node scripts/release-core-packages.js <version>
+const { execSync } = require("child_process")
+const fs = require("fs")
+const path = require("path")
+const { promisify } = require("util")
+const sleep = promisify(setTimeout)
+
+// Configuration
+const SCOPE = "@zjedene-medusa"
+const DELAY_BETWEEN_PUBLISHES = 10000 // 10 seconds delay between publishes
+const MAX_RETRIES = 3
+const RETRY_DELAY = 30000 // 30 seconds delay before retry
+
+// Core packages to publish, in dependency order
+const CORE_PACKAGES = [
+  {
+    name: `${SCOPE}/utils`,
+    publishName: `${SCOPE}/utils`,
+    path: "packages/core/utils",
+  },
+  {
+    name: `${SCOPE}/orchestration`,
+    publishName: `${SCOPE}/orchestration`,
+    path: "packages/core/orchestration",
+  },
+  {
+    name: `${SCOPE}/modules-sdk`,
+    publishName: `${SCOPE}/modules-sdk`,
+    path: "packages/core/modules-sdk",
+  },
+  {
+    name: `${SCOPE}/workflows-sdk`,
+    publishName: `${SCOPE}/workflows-sdk`,
+    path: "packages/core/workflows-sdk",
+  },
+  {
+    name: `${SCOPE}/cli`,
+    publishName: `${SCOPE}/cli`,
+    path: "packages/cli/medusa-cli",
+  },
+  {
+    name: `${SCOPE}/framework`,
+    publishName: `${SCOPE}/framework`,
+    path: "packages/core/framework",
+  },
+  {
+    name: `${SCOPE}/dashboard`,
+    publishName: `${SCOPE}/dashboard`,
+    path: "packages/admin/dashboard",
+  },
+  {
+    name: `${SCOPE}/admin-bundler`,
+    publishName: `${SCOPE}/admin-bundler`,
+    path: "packages/admin/admin-bundler",
+  },
+  {
+    name: `${SCOPE}/medusa`,
+    publishName: `${SCOPE}/medusa`,
+    path: "packages/medusa",
+  },
+]
+
+// All workspace package.json files (excludes node_modules, dist, www)
+function findWorkspacePackageJsons() {
+  const output = execSync(
+    `find packages integration-tests -name "package.json" -not -path "*/node_modules/*" -not -path "*/dist/*"`,
+    { encoding: "utf8" }
+  )
+  return output
+    .split("\n")
+    .filter(Boolean)
+    .map((p) => path.join(process.cwd(), p))
+}
+
+async function verifyPackageVersion(pkg, expectedVersion, maxAttempts = 10) {
+  console.log(
+    `\n🔍 Verifying ${pkg.publishName}@${expectedVersion} on npm registry...`
+  )
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      // Clear yarn cache
+      execSync(`yarn cache clean`, { stdio: "inherit" })
+
+      const output = execSync(`npm view ${pkg.publishName} dist-tags.latest`, {
+        encoding: "utf8",
+        stdio: ["pipe", "pipe", "pipe"],
+      })
+
+      const publishedVersion = output.trim()
+      if (publishedVersion === expectedVersion) {
+        console.log(
+          `✅ Verified ${pkg.publishName}@${expectedVersion} is available`
+        )
+        return true
+      }
+
+      console.log(
+        `⏳ Attempt ${attempt}/${maxAttempts} - Found version ${publishedVersion}, waiting for ${expectedVersion}...`
+      )
+      await sleep(30000)
+    } catch (error) {
+      console.log(
+        `⏳ Attempt ${attempt}/${maxAttempts} - Package not found, retrying...`
+      )
+      await sleep(30000)
+    }
+  }
+
+  throw new Error(
+    `Failed to verify ${pkg.publishName}@${expectedVersion} after ${maxAttempts} attempts`
+  )
+}
+
+function updatePackageVersion(packagePath, newVersion) {
+  const packageJsonPath = path.join(process.cwd(), packagePath, "package.json")
+
+  if (!fs.existsSync(packageJsonPath)) {
+    throw new Error(`Package.json not found at ${packageJsonPath}`)
+  }
+
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"))
+  const oldVersion = packageJson.version
+  packageJson.version = newVersion
+
+  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + "\n")
+  return oldVersion
+}
+
+// Update a published package's version in EVERY workspace package that
+// references it (dependencies, peerDependencies, devDependencies).
+// Workspace-wide on purpose: hardcoded dependent lists were the root cause
+// of the ui@4.1.5 phantom-version incident (playbook A5 rule 2).
+function updateDependentsAcrossWorkspace(dependencyName, newVersion) {
+  const dependencyTypes = [
+    "dependencies",
+    "peerDependencies",
+    "devDependencies",
+  ]
+  const updatedIn = []
+
+  for (const packageJsonPath of findWorkspacePackageJsons()) {
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"))
+    let updated = false
+
+    dependencyTypes.forEach((depType) => {
+      if (
+        packageJson[depType] &&
+        packageJson[depType][dependencyName] &&
+        packageJson[depType][dependencyName] !== newVersion
+      ) {
+        packageJson[depType][dependencyName] = newVersion
+        updated = true
+      }
+    })
+
+    if (updated) {
+      fs.writeFileSync(
+        packageJsonPath,
+        JSON.stringify(packageJson, null, 2) + "\n"
+      )
+      updatedIn.push(path.relative(process.cwd(), packageJsonPath))
+    }
+  }
+
+  if (updatedIn.length > 0) {
+    console.log(
+      `✅ Updated ${dependencyName} to ${newVersion} in:\n${updatedIn
+        .map((p) => `  - ${p}`)
+        .join("\n")}`
+    )
+  }
+}
+
+// Pre-publish validation: every @zjedene-medusa/* dependency referenced by a
+// package about to be published must either be part of this release or
+// already exist on the npm registry. Halts the release on phantom versions.
+function validateCrossDependencies(newVersion) {
+  const corePackageNames = CORE_PACKAGES.map((pkg) => pkg.name)
+  const errors = []
+
+  for (const pkg of CORE_PACKAGES) {
+    const packageJsonPath = path.join(process.cwd(), pkg.path, "package.json")
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"))
+
+    const depTypes = ["dependencies", "peerDependencies", "devDependencies"]
+
+    for (const depType of depTypes) {
+      const deps = packageJson[depType] || {}
+      for (const [depName, depVersion] of Object.entries(deps)) {
+        if (!depName.startsWith(`${SCOPE}/`)) continue
+
+        // If this dep is a core package, it will be published at newVersion — OK
+        if (corePackageNames.includes(depName)) continue
+
+        // For non-core @zjedene-medusa/* deps, check if the version exists on npm
+        try {
+          const output = execSync(`npm view ${depName}@${depVersion} version`, {
+            encoding: "utf8",
+            stdio: ["pipe", "pipe", "pipe"],
+          }).trim()
+
+          if (!output) {
+            errors.push(
+              `${pkg.name} -> ${depName}@${depVersion} (${depType}): version not found on npm`
+            )
+          }
+        } catch (error) {
+          errors.push(
+            `${pkg.name} -> ${depName}@${depVersion} (${depType}): version not found on npm`
+          )
+        }
+      }
+    }
+  }
+
+  return errors
+}
+
+function isAlreadyPublished(pkg, version) {
+  try {
+    const output = execSync(`npm view ${pkg.publishName}@${version} version`, {
+      encoding: "utf8",
+      stdio: ["pipe", "pipe", "pipe"],
+    }).trim()
+    return output === version
+  } catch {
+    return false
+  }
+}
+
+async function buildAndPublishPackage(pkg, newVersion) {
+  console.log(`\n🏗️  Processing ${pkg.publishName}...`)
+
+  // Skip if already published (npm returns 403 on republish)
+  if (isAlreadyPublished(pkg, newVersion)) {
+    console.log(
+      `⏭️  ${pkg.publishName}@${newVersion} already published, skipping...`
+    )
+
+    // Still update version in package.json and dependent packages
+    updatePackageVersion(pkg.path, newVersion)
+    updateDependentsAcrossWorkspace(pkg.publishName, newVersion)
+
+    return true
+  }
+
+  // Update package version
+  try {
+    const oldVersion = updatePackageVersion(pkg.path, newVersion)
+    console.log(
+      `✅ Updated ${pkg.publishName} from ${oldVersion} to ${newVersion}`
+    )
+  } catch (error) {
+    console.error(
+      `❌ Failed to update version for ${pkg.publishName}:`,
+      error.message
+    )
+    return false
+  }
+
+  // Build
+  console.log(`\n🏗️  Building ${pkg.path}...`)
+  try {
+    execSync("yarn build", {
+      cwd: path.join(process.cwd(), pkg.path),
+      stdio: "inherit",
+    })
+    console.log(`✅ Build successful for ${pkg.publishName}`)
+  } catch (error) {
+    console.error(`❌ Build failed for ${pkg.publishName}:`, error.message)
+    return false
+  }
+
+  // Publish
+  let retries = 0
+  while (retries < MAX_RETRIES) {
+    try {
+      console.log(`\n📦 Publishing ${pkg.publishName}...`)
+
+      execSync(`yarn cache clean`, { stdio: "inherit" })
+
+      execSync(
+        `npm publish --tag ${
+          newVersion.includes("-") ? "beta" : "latest"
+        } --access public`,
+        {
+          cwd: path.join(process.cwd(), pkg.path),
+          stdio: "inherit",
+        }
+      )
+
+      await verifyPackageVersion(pkg, newVersion)
+
+      console.log(`✅ Successfully published ${pkg.publishName}`)
+
+      // Update this package's version in every dependent workspace package
+      updateDependentsAcrossWorkspace(pkg.publishName, newVersion)
+
+      return true
+    } catch (error) {
+      retries++
+      console.error(
+        `❌ Failed to publish ${pkg.publishName} (attempt ${retries}/${MAX_RETRIES})`
+      )
+      console.error(error.message)
+
+      if (retries < MAX_RETRIES) {
+        console.log(
+          `⏳ Waiting ${RETRY_DELAY / 1000} seconds before retrying...`
+        )
+        await sleep(RETRY_DELAY)
+      }
+    }
+  }
+
+  return false
+}
+
+async function main() {
+  // Get version from command line argument
+  const newVersion = process.argv[2]
+  if (!newVersion) {
+    console.error("❌ Please provide a version number")
+    console.log("Usage: node scripts/release-core-packages.js <version>")
+    console.log("Example: node scripts/release-core-packages.js 2.15.5")
+    process.exit(1)
+  }
+
+  if (!/^\d+\.\d+\.\d+(-\w+(\.\d+)?)?$/.test(newVersion)) {
+    console.error(
+      "❌ Invalid version format. Please use semantic versioning (e.g., 2.15.5 or 2.15.5-beta.1)"
+    )
+    process.exit(1)
+  }
+
+  // Confirm with user
+  console.log(
+    `\n🚀 Preparing to release version ${newVersion} for core packages in this order:`
+  )
+  CORE_PACKAGES.forEach((pkg) => {
+    console.log(`- ${pkg.publishName} (${pkg.path})`)
+  })
+  console.log(
+    "\nAfter each publish, the new version is propagated to every workspace package that references it."
+  )
+
+  // Validate cross-dependencies before publishing
+  console.log("\n🔍 Validating cross-dependencies...")
+  const validationErrors = validateCrossDependencies(newVersion)
+
+  if (validationErrors.length > 0) {
+    console.error("\n❌ Cross-dependency validation failed:")
+    validationErrors.forEach((err) => console.error(`  - ${err}`))
+    console.error(
+      `\nFix these version references before publishing. Non-core ${SCOPE}/* dependencies must point to versions that exist on npm.`
+    )
+    process.exit(1)
+  }
+  console.log("✅ All cross-dependencies valid\n")
+
+  // Wait for 5 seconds to allow cancellation
+  console.log("\n⚠️  Press Ctrl+C within 5 seconds to cancel...")
+  await sleep(5000)
+
+  // Process each package sequentially
+  for (const pkg of CORE_PACKAGES) {
+    console.log(`\n\n📦 Processing ${pkg.publishName}...`)
+
+    const success = await buildAndPublishPackage(pkg, newVersion)
+
+    if (!success) {
+      console.error(
+        `\n❌ Failed to process ${pkg.publishName}. Stopping release process.`
+      )
+      process.exit(1)
+    }
+
+    console.log(`\n✅ Successfully processed ${pkg.publishName}`)
+
+    // Add delay before next package unless it's the last one
+    if (CORE_PACKAGES.indexOf(pkg) < CORE_PACKAGES.length - 1) {
+      console.log(
+        `\n⏳ Waiting ${
+          DELAY_BETWEEN_PUBLISHES / 1000
+        } seconds before processing next package...`
+      )
+      await sleep(DELAY_BETWEEN_PUBLISHES)
+    }
+  }
+
+  // Summary
+  console.log("\n✨ Release completed successfully!")
+  console.log("\nPackages updated and published in order:")
+  CORE_PACKAGES.forEach((pkg) => {
+    console.log(`- ${pkg.publishName}@${newVersion}`)
+  })
+  console.log(
+    "\n📝 Remember: this script does not auto-commit. Commit the version-bumped package.json files now."
+  )
+
+  // Installation instructions
+  console.log("\n📋 Installation Instructions for Users:")
+  console.log("Run these commands to ensure you get the latest versions:")
+  console.log("\n```bash")
+  console.log("yarn cache clean")
+  console.log("rm -rf node_modules yarn.lock")
+  console.log("yarn install")
+  console.log("```")
+}
+
+// Run the script
+main().catch((error) => {
+  console.error("❌ Error during release:", error)
+  process.exit(1)
+})
