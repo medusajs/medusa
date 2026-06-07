@@ -11,7 +11,7 @@ const _Order = model
   .define("Order", {
     id: model.id({ prefix: "order" }).primaryKey(),
     display_id: model.autoincrement().searchable(),
-    custom_display_id: model.text().nullable(),
+    custom_display_id: model.text().searchable().nullable(),
     region_id: model.text().nullable(),
     customer_id: model.text().nullable(),
     version: model.number().default(1),
