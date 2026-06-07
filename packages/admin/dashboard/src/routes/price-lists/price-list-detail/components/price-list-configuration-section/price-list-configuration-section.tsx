@@ -7,10 +7,7 @@ import { DateRangeDisplay } from "../../../../../components/common/date-range-di
 import { ListSummary } from "../../../../../components/common/list-summary"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { useCustomerGroups } from "../../../../../hooks/api/customer-groups"
-import {
-  useCustomerGroupPermissions,
-  usePriceListPermissions,
-} from "../../../../../hooks/use-resource-permissions"
+import { usePriceListPermissions } from "../../../../../hooks/use-resource-permissions"
 import { PermissionGuard } from "../../../../../components/common/permission-guard"
 
 type PriceListConfigurationSectionProps = {
