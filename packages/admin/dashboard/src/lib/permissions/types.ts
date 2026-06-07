@@ -57,6 +57,7 @@ export type PermissionResource =
   | "shipping_profile"
   | "shipping_option"
   | "tax_region"
+  | "tax_rate"
   | "api_key"
   | "return_reason"
   | "refund_reason"

@@ -12,6 +12,7 @@ import { TaxRegionOverrideSection } from "./components/tax-region-override-secti
 import { TaxRegionSublevelAlert } from "./components/tax-region-sublevel-alert"
 import { TaxRegionProviderSection } from "./tax-region-provider-section"
 import { taxRegionLoader } from "./loader"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const TaxRegionDetail = () => {
   const { id } = useParams()
@@ -47,6 +48,7 @@ export const TaxRegionDetail = () => {
         after: getWidgets("tax.details.after"),
         before: getWidgets("tax.details.before"),
       }}
+      showRequiredPermissions
     >
       <TaxRegionSublevelAlert
         taxRegion={taxRegion}
@@ -58,7 +60,9 @@ export const TaxRegionDetail = () => {
         taxRegion={taxRegion}
         showSublevelRegions={showSublevelRegions}
       />
-      <TaxRegionOverrideSection taxRegion={taxRegion} />
+      <PermissionGuard permission="tax_rate:read">
+        <TaxRegionOverrideSection taxRegion={taxRegion} />
+      </PermissionGuard>
       <TaxRegionProviderSection taxRegion={taxRegion} />
     </SingleColumnPage>
   )

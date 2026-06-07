@@ -8,6 +8,7 @@ import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { useExtension } from "../../../providers/extension-provider"
 import { TaxRegionProvinceOverrideSection } from "./components/tax-region-province-override-section"
 import { taxRegionLoader } from "./loader"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const TaxRegionDetail = () => {
   const { province_id } = useParams()
@@ -41,9 +42,12 @@ export const TaxRegionDetail = () => {
         after: getWidgets("tax.details.after"),
         before: getWidgets("tax.details.before"),
       }}
+      showRequiredPermissions
     >
       <TaxRegionProvinceDetailSection taxRegion={taxRegion} />
-      <TaxRegionProvinceOverrideSection taxRegion={taxRegion} />
+      <PermissionGuard permission="tax_rate:read">
+        <TaxRegionProvinceOverrideSection taxRegion={taxRegion} />
+      </PermissionGuard>
     </SingleColumnPage>
   )
 }

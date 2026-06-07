@@ -178,3 +178,12 @@ export const useReturnReasonPermissions = () =>
  */
 export const useRefundReasonPermissions = () =>
   useResourcePermissions("refund_reason")
+
+/**
+ * Hook for checking tax region-specific permissions. Provinces, tax rates, and
+ * tax overrides are all part of the `tax_region` resource.
+ */
+export const useTaxRegionPermissions = () =>
+  useResourcePermissions("tax_region")
+
+export const useTaxRatePermissions = () => useResourcePermissions("tax_rate")

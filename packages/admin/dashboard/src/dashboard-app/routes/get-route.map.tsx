@@ -2171,9 +2171,14 @@ export function getRouteMap({
             },
             {
               path: "tax-regions",
-              element: <Outlet />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("taxRegions.domain"),
+                permissions: "tax_region:read",
               },
               children: [
                 {
@@ -2185,6 +2190,7 @@ export function getRouteMap({
                       path: "create",
                       lazy: () =>
                         import("../../routes/tax-regions/tax-region-create"),
+                      handle: { permissions: "tax_region:create" },
                     },
                   ],
                 },
@@ -2214,6 +2220,7 @@ export function getRouteMap({
                           path: "edit",
                           lazy: () =>
                             import("../../routes/tax-regions/tax-region-edit"),
+                          handle: { permissions: "tax_region:update" },
                         },
                         {
                           path: "provinces/create",
@@ -2221,6 +2228,7 @@ export function getRouteMap({
                             import(
                               "../../routes/tax-regions/tax-region-province-create"
                             ),
+                          handle: { permissions: "tax_region:create" },
                         },
                         {
                           path: "overrides/create",
@@ -2228,6 +2236,12 @@ export function getRouteMap({
                             import(
                               "../../routes/tax-regions/tax-region-tax-override-create"
                             ),
+                          handle: {
+                            permissions: [
+                              "tax_region:update",
+                              "tax_rate:create",
+                            ],
+                          },
                         },
                         {
                           path: "overrides/:tax_rate_id/edit",
@@ -2235,6 +2249,12 @@ export function getRouteMap({
                             import(
                               "../../routes/tax-regions/tax-region-tax-override-edit"
                             ),
+                          handle: {
+                            permissions: [
+                              "tax_region:update",
+                              "tax_rate:update",
+                            ],
+                          },
                         },
                         {
                           path: "tax-rates/create",
@@ -2242,6 +2262,12 @@ export function getRouteMap({
                             import(
                               "../../routes/tax-regions/tax-region-tax-rate-create"
                             ),
+                          handle: {
+                            permissions: [
+                              "tax_region:update",
+                              "tax_rate:create",
+                            ],
+                          },
                         },
                         {
                           path: "tax-rates/:tax_rate_id/edit",
@@ -2249,6 +2275,12 @@ export function getRouteMap({
                             import(
                               "../../routes/tax-regions/tax-region-tax-rate-edit"
                             ),
+                          handle: {
+                            permissions: [
+                              "tax_region:update",
+                              "tax_rate:update",
+                            ],
+                          },
                         },
                       ],
                     },
@@ -2276,6 +2308,12 @@ export function getRouteMap({
                             import(
                               "../../routes/tax-regions/tax-region-tax-rate-create"
                             ),
+                          handle: {
+                            permissions: [
+                              "tax_region:update",
+                              "tax_rate:create",
+                            ],
+                          },
                         },
                         {
                           path: "tax-rates/:tax_rate_id/edit",
@@ -2283,6 +2321,12 @@ export function getRouteMap({
                             import(
                               "../../routes/tax-regions/tax-region-tax-rate-edit"
                             ),
+                          handle: {
+                            permissions: [
+                              "tax_region:update",
+                              "tax_rate:update",
+                            ],
+                          },
                         },
                         {
                           path: "overrides/create",
@@ -2290,6 +2334,12 @@ export function getRouteMap({
                             import(
                               "../../routes/tax-regions/tax-region-tax-override-create"
                             ),
+                          handle: {
+                            permissions: [
+                              "tax_region:update",
+                              "tax_rate:create",
+                            ],
+                          },
                         },
                         {
                           path: "overrides/:tax_rate_id/edit",
@@ -2297,6 +2347,12 @@ export function getRouteMap({
                             import(
                               "../../routes/tax-regions/tax-region-tax-override-edit"
                             ),
+                          handle: {
+                            permissions: [
+                              "tax_region:update",
+                              "tax_rate:update",
+                            ],
+                          },
                         },
                       ],
                     },
