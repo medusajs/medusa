@@ -7,6 +7,7 @@ import { CampaignPromotionSection } from "./components/campaign-promotion-sectio
 import { CampaignSpend } from "./components/campaign-spend"
 import { campaignLoader } from "./loader"
 
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import { TwoColumnPage } from "../../../components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
@@ -53,11 +54,14 @@ export const CampaignDetail = () => {
       hasOutlet
       showJSON
       showMetadata
+      showRequiredPermissions
       data={campaign}
     >
       <TwoColumnPage.Main>
         <CampaignGeneralSection campaign={campaign} />
-        <CampaignPromotionSection campaign={campaign} />
+        <PermissionGuard permission="promotion:read">
+          <CampaignPromotionSection campaign={campaign} />
+        </PermissionGuard>
       </TwoColumnPage.Main>
       <TwoColumnPage.Sidebar>
         <CampaignConfigurationSection campaign={campaign} />

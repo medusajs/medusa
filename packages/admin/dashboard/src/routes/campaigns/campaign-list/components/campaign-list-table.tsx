@@ -6,7 +6,10 @@ import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
-import { ActionMenu } from "../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../components/common/action-menu"
 import { _DataTable } from "../../../../components/table/data-table"
 import {
   useCampaigns,
@@ -15,11 +18,13 @@ import {
 import { useCampaignTableColumns } from "../../../../hooks/table/columns/use-campaign-table-columns"
 import { useCampaignTableQuery } from "../../../../hooks/table/query/use-campaign-table-query"
 import { useDataTable } from "../../../../hooks/use-data-table"
+import { useCampaignPermissions } from "../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 20
 
 export const CampaignListTable = () => {
   const { t } = useTranslation()
+  const { canCreate } = useCampaignPermissions()
   const { raw, searchParams } = useCampaignTableQuery({ pageSize: PAGE_SIZE })
 
   const {
@@ -51,11 +56,13 @@ export const CampaignListTable = () => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h1">{t("campaigns.domain")}</Heading>
-        <Link to="/campaigns/create">
-          <Button size="small" variant="secondary">
-            {t("actions.create")}
-          </Button>
-        </Link>
+        {canCreate && (
+          <Link to="/campaigns/create">
+            <Button size="small" variant="secondary">
+              {t("actions.create")}
+            </Button>
+          </Link>
+        )}
       </div>
 
       <_DataTable
@@ -81,6 +88,7 @@ export const CampaignListTable = () => {
 const CampaignActions = ({ campaign }: { campaign: AdminCampaign }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
+  const { canUpdate, canDelete } = useCampaignPermissions()
   const { mutateAsync } = useDeleteCampaign(campaign.id)
 
   const handleDelete = async () => {
@@ -111,30 +119,37 @@ const CampaignActions = ({ campaign }: { campaign: AdminCampaign }) => {
     })
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `/campaigns/${campaign.id}/edit`,
-            },
-          ],
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          to: `/campaigns/${campaign.id}/edit`,
         },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ],
+          icon: <Trash />,
+          label: t("actions.delete"),
+          onClick: handleDelete,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }
 
 const columnHelper = createColumnHelper<AdminCampaign>()

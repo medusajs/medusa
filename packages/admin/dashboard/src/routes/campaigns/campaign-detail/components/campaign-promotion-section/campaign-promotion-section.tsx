@@ -6,7 +6,10 @@ import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useAddOrRemoveCampaignPromotions } from "../../../../../hooks/api/campaigns"
 import { usePromotions } from "../../../../../hooks/api/promotions"
@@ -14,6 +17,10 @@ import { usePromotionTableColumns } from "../../../../../hooks/table/columns/use
 import { usePromotionTableFilters } from "../../../../../hooks/table/filters/use-promotion-table-filters"
 import { usePromotionTableQuery } from "../../../../../hooks/table/query/use-promotion-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import {
+  useCampaignPermissions,
+  usePromotionPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type CampaignPromotionSectionProps = {
   campaign: AdminCampaign
@@ -27,7 +34,13 @@ export const CampaignPromotionSection = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const { t } = useTranslation()
   const prompt = usePrompt()
-  const columns = useColumns()
+  const { canUpdate: canUpdateCampaign } = useCampaignPermissions()
+  const { canUpdate: canUpdatePromotion, canRead: canReadPromotion } =
+    usePromotionPermissions()
+
+  const canManage = canUpdateCampaign && canUpdatePromotion && canReadPromotion
+
+  const columns = useColumns({ canManage, canUpdatePromotion })
   const filters = usePromotionTableFilters()
   const { searchParams, raw } = usePromotionTableQuery({ pageSize: PAGE_SIZE })
   const { promotions, count, isLoading, isError, error } = usePromotions({
@@ -41,7 +54,7 @@ export const CampaignPromotionSection = ({
     count,
     getRowId: (row) => row.id,
     enablePagination: true,
-    enableRowSelection: true,
+    enableRowSelection: canManage,
     pageSize: PAGE_SIZE,
     rowSelection: {
       state: rowSelection,
@@ -82,11 +95,13 @@ export const CampaignPromotionSection = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("promotions.domain")}</Heading>
-        <Link to={`/campaigns/${campaign.id}/add-promotions`}>
-          <Button variant="secondary" size="small">
-            {t("general.add")}
-          </Button>
-        </Link>
+        {canManage && (
+          <Link to={`/campaigns/${campaign.id}/add-promotions`}>
+            <Button variant="secondary" size="small">
+              {t("general.add")}
+            </Button>
+          </Link>
+        )}
       </div>
 
       <_DataTable
@@ -106,13 +121,17 @@ export const CampaignPromotionSection = ({
           { key: "updated_at", label: t("fields.updatedAt") },
         ]}
         queryObject={raw}
-        commands={[
-          {
-            action: handleRemove,
-            label: t("actions.remove"),
-            shortcut: "r",
-          },
-        ]}
+        commands={
+          canManage
+            ? [
+                {
+                  action: handleRemove,
+                  label: t("actions.remove"),
+                  shortcut: "r",
+                },
+              ]
+            : []
+        }
         noRecords={{
           message: t("campaigns.promotions.list.noRecordsMessage"),
         }}
@@ -124,9 +143,13 @@ export const CampaignPromotionSection = ({
 const PromotionActions = ({
   promotion,
   campaignId,
+  canManage,
+  canUpdatePromotion,
 }: {
   promotion: AdminPromotion
   campaignId: string
+  canManage: boolean
+  canUpdatePromotion: boolean
 }) => {
   const { t } = useTranslation()
   const { mutateAsync } = useAddOrRemoveCampaignPromotions(campaignId)
@@ -154,84 +177,107 @@ const PromotionActions = ({
     })
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  if (canUpdatePromotion) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `/promotions/${promotion.id}/edit`,
-            },
-          ],
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          to: `/promotions/${promotion.id}/edit`,
         },
+      ],
+    })
+  }
+
+  if (canManage) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.remove"),
-              onClick: handleRemove,
-            },
-          ],
+          icon: <Trash />,
+          label: t("actions.remove"),
+          onClick: handleRemove,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }
 
 const columnHelper = createColumnHelper<AdminPromotion>()
 
-const useColumns = () => {
+const useColumns = ({
+  canManage,
+  canUpdatePromotion,
+}: {
+  canManage: boolean
+  canUpdatePromotion: boolean
+}) => {
   const columns = usePromotionTableColumns()
 
   return useMemo(
     () => [
-      columnHelper.display({
-        id: "select",
-        header: ({ table }) => {
-          return (
-            <Checkbox
-              checked={
-                table.getIsSomePageRowsSelected()
-                  ? "indeterminate"
-                  : table.getIsAllPageRowsSelected()
-              }
-              onCheckedChange={(value) =>
-                table.toggleAllPageRowsSelected(!!value)
-              }
-            />
-          )
-        },
-        cell: ({ row }) => {
-          return (
-            <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            />
-          )
-        },
-      }),
+      ...(canManage
+        ? [
+            columnHelper.display({
+              id: "select",
+              header: ({ table }) => {
+                return (
+                  <Checkbox
+                    checked={
+                      table.getIsSomePageRowsSelected()
+                        ? "indeterminate"
+                        : table.getIsAllPageRowsSelected()
+                    }
+                    onCheckedChange={(value) =>
+                      table.toggleAllPageRowsSelected(!!value)
+                    }
+                  />
+                )
+              },
+              cell: ({ row }) => {
+                return (
+                  <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                    }}
+                  />
+                )
+              },
+            }),
+          ]
+        : []),
       ...columns,
-      columnHelper.display({
-        id: "actions",
-        cell: ({ row, table }) => {
-          const { campaignId } = table.options.meta as {
-            campaignId: string
-          }
+      ...(canManage || canUpdatePromotion
+        ? [
+            columnHelper.display({
+              id: "actions",
+              cell: ({ row, table }) => {
+                const { campaignId } = table.options.meta as {
+                  campaignId: string
+                }
 
-          return (
-            <PromotionActions
-              promotion={row.original}
-              campaignId={campaignId}
-            />
-          )
-        },
-      }),
+                return (
+                  <PromotionActions
+                    promotion={row.original}
+                    campaignId={campaignId}
+                    canManage={canManage}
+                    canUpdatePromotion={canUpdatePromotion}
+                  />
+                )
+              },
+            }),
+          ]
+        : []),
     ],
-    [columns]
+    [columns, canManage, canUpdatePromotion]
   )
 }

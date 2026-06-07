@@ -643,8 +643,14 @@ export function getRouteMap({
             {
               path: "/campaigns",
               errorElement: <ErrorBoundary />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("campaigns.domain"),
+                permissions: "campaign:read",
               },
               children: [
                 {
@@ -655,6 +661,7 @@ export function getRouteMap({
                 {
                   path: "create",
                   lazy: () => import("../../routes/campaigns/campaign-create"),
+                  handle: { permissions: "campaign:create" },
                 },
                 {
                   path: ":id",
@@ -678,16 +685,19 @@ export function getRouteMap({
                       path: "edit",
                       lazy: () =>
                         import("../../routes/campaigns/campaign-edit"),
+                      handle: { permissions: "campaign:update" },
                     },
                     {
                       path: "configuration",
                       lazy: () =>
                         import("../../routes/campaigns/campaign-configuration"),
+                      handle: { permissions: "campaign:update" },
                     },
                     {
                       path: "edit-budget",
                       lazy: () =>
                         import("../../routes/campaigns/campaign-budget-edit"),
+                      handle: { permissions: "campaign:update" },
                     },
                     {
                       path: "add-promotions",
@@ -695,6 +705,13 @@ export function getRouteMap({
                         import(
                           "../../routes/campaigns/add-campaign-promotions"
                         ),
+                      handle: {
+                        permissions: [
+                          "campaign:update",
+                          "prmotion:read",
+                          "promotion:update",
+                        ],
+                      },
                     },
                   ],
                 },
