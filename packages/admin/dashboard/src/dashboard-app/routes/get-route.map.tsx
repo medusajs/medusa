@@ -1282,9 +1282,14 @@ export function getRouteMap({
             {
               path: "regions",
               errorElement: <ErrorBoundary />,
-              element: <Outlet />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("regions.domain"),
+                permissions: "region:read",
               },
               children: [
                 {
@@ -1294,6 +1299,9 @@ export function getRouteMap({
                     {
                       path: "create",
                       lazy: () => import("../../routes/regions/region-create"),
+                      handle: {
+                        permissions: ["region:create", "currency:read"],
+                      },
                     },
                   ],
                 },
@@ -1318,16 +1326,19 @@ export function getRouteMap({
                     {
                       path: "edit",
                       lazy: () => import("../../routes/regions/region-edit"),
+                      handle: { permissions: "region:update" },
                     },
                     {
                       path: "countries/add",
                       lazy: () =>
                         import("../../routes/regions/region-add-countries"),
+                      handle: { permissions: "region:update" },
                     },
                     {
                       path: "metadata/edit",
                       lazy: () =>
                         import("../../routes/regions/region-metadata"),
+                      handle: { permissions: "region:update" },
                     },
                   ],
                 },

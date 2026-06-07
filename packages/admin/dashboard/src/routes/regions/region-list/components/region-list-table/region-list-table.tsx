@@ -14,18 +14,23 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useDeleteRegion, useRegions } from "../../../../../hooks/api/regions"
 import { useRegionTableColumns } from "../../../../../hooks/table/columns/use-region-table-columns"
 import { useRegionTableFilters } from "../../../../../hooks/table/filters/use-region-table-filters"
 import { useRegionTableQuery } from "../../../../../hooks/table/query/use-region-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useRegionPermissions } from "../../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 20
 
 export const RegionListTable = () => {
   const { t } = useTranslation()
+  const { canCreate } = useRegionPermissions()
 
   const { searchParams, raw } = useRegionTableQuery({ pageSize: PAGE_SIZE })
   const {
@@ -69,11 +74,13 @@ export const RegionListTable = () => {
             {t("regions.subtitle")}
           </Text>
         </div>
-        <Link to="/settings/regions/create">
-          <Button size="small" variant="secondary">
-            {t("actions.create")}
-          </Button>
-        </Link>
+        {canCreate && (
+          <Link to="/settings/regions/create">
+            <Button size="small" variant="secondary">
+              {t("actions.create")}
+            </Button>
+          </Link>
+        )}
       </div>
 
       <_DataTable
@@ -103,6 +110,7 @@ export const RegionListTable = () => {
 const RegionActions = ({ region }: { region: HttpTypes.AdminRegion }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
+  const { canUpdate, canDelete } = useRegionPermissions()
 
   const { mutateAsync } = useDeleteRegion(region.id)
 
@@ -132,30 +140,37 @@ const RegionActions = ({ region }: { region: HttpTypes.AdminRegion }) => {
     })
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              label: t("actions.edit"),
-              to: `/settings/regions/${region.id}/edit`,
-              icon: <PencilSquare />,
-            },
-          ],
+          label: t("actions.edit"),
+          to: `/settings/regions/${region.id}/edit`,
+          icon: <PencilSquare />,
         },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              label: t("actions.delete"),
-              onClick: handleDelete,
-              icon: <Trash />,
-            },
-          ],
+          label: t("actions.delete"),
+          onClick: handleDelete,
+          icon: <Trash />,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }
 
 const columnHelper = createColumnHelper<HttpTypes.AdminRegion>()

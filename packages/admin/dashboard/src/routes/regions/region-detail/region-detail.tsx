@@ -66,6 +66,7 @@ export const RegionDetail = () => {
       data={region}
       showMetadata
       showJSON
+      showRequiredPermissions
     >
       <RegionGeneralSection
         region={region}

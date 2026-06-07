@@ -29,6 +29,7 @@ const useSettingRoutes = (): INavItem[] => {
   const canReadPolicies = hasPermission("rbac_policy:read")
   const canReadProductTags = hasPermission("product_tag:read")
   const canReadProductTypes = hasPermission("product_type:read")
+  const canReadRegions = hasPermission("region:read")
 
   return useMemo(
     () => [
@@ -56,10 +57,14 @@ const useSettingRoutes = (): INavItem[] => {
             },
           ]
         : []),
-      {
-        label: t("regions.domain"),
-        to: "/settings/regions",
-      },
+      ...(canReadRegions
+        ? [
+            {
+              label: t("regions.domain"),
+              to: "/settings/regions",
+            },
+          ]
+        : []),
       {
         label: t("taxRegions.domain"),
         to: "/settings/tax-regions",
@@ -112,6 +117,7 @@ const useSettingRoutes = (): INavItem[] => {
       canReadPolicies,
       canReadProductTags,
       canReadProductTypes,
+      canReadRegions,
     ]
   )
 }
