@@ -3,6 +3,7 @@ import { HttpTypes } from "@medusajs/types"
 import {
   Container,
   createDataTableColumnHelper,
+  DataTableAction,
   toast,
   usePrompt,
 } from "@medusajs/ui"
@@ -17,11 +18,13 @@ import {
 } from "../../../../../hooks/api"
 import { useRefundReasonTableColumns } from "../../../../../hooks/table/columns"
 import { useRefundReasonTableQuery } from "../../../../../hooks/table/query"
+import { useRefundReasonPermissions } from "../../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 20
 
 export const RefundReasonListTable = () => {
   const { t } = useTranslation()
+  const { canCreate } = useRefundReasonPermissions()
   const { searchParams } = useRefundReasonTableQuery({
     pageSize: PAGE_SIZE,
   })
@@ -58,12 +61,16 @@ export const RefundReasonListTable = () => {
             description: t("general.noRecordsMessageFiltered"),
           },
         }}
-        actions={[
-          {
-            label: t("actions.create"),
-            to: "create",
-          },
-        ]}
+        actions={
+          canCreate
+            ? [
+                {
+                  label: t("actions.create"),
+                  to: "create",
+                },
+              ]
+            : []
+        }
         isLoading={isLoading}
         enableSearch={true}
       />
@@ -78,6 +85,7 @@ const useColumns = () => {
   const prompt = usePrompt()
   const navigate = useNavigate()
   const base = useRefundReasonTableColumns()
+  const { canUpdate, canDelete } = useRefundReasonPermissions()
 
   const { mutateAsync } = useDeleteRefundReasonLazy()
 
@@ -111,28 +119,42 @@ const useColumns = () => {
   return useMemo(
     () => [
       ...base,
-      columnHelper.action({
-        actions: (ctx) => [
-          [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              onClick: () =>
-                navigate(
-                  `/settings/refund-reasons/${ctx.row.original.id}/edit`
-                ),
-            },
-          ],
-          [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: () => handleDelete(ctx.row.original),
-            },
-          ],
-        ],
-      }),
+      ...(canUpdate || canDelete
+        ? [
+            columnHelper.action({
+              actions: (ctx) => {
+                const groups: DataTableAction<HttpTypes.AdminRefundReason>[][] =
+                  []
+
+                if (canUpdate) {
+                  groups.push([
+                    {
+                      icon: <PencilSquare />,
+                      label: t("actions.edit"),
+                      onClick: () =>
+                        navigate(
+                          `/settings/refund-reasons/${ctx.row.original.id}/edit`
+                        ),
+                    },
+                  ])
+                }
+
+                if (canDelete) {
+                  groups.push([
+                    {
+                      icon: <Trash />,
+                      label: t("actions.delete"),
+                      onClick: () => handleDelete(ctx.row.original),
+                    },
+                  ])
+                }
+
+                return groups
+              },
+            }),
+          ]
+        : []),
     ],
-    [base, handleDelete, navigate, t]
+    [base, handleDelete, navigate, t, canUpdate, canDelete]
   )
 }

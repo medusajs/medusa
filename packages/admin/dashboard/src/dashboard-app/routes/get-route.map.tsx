@@ -2338,9 +2338,14 @@ export function getRouteMap({
             },
             {
               path: "refund-reasons",
-              element: <Outlet />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("refundReasons.domain"),
+                permissions: "refund_reason:read",
               },
               children: [
                 {
@@ -2354,6 +2359,7 @@ export function getRouteMap({
                         import(
                           "../../routes/refund-reasons/refund-reason-create"
                         ),
+                      handle: { permissions: "refund_reason:create" },
                     },
 
                     {
@@ -2365,6 +2371,7 @@ export function getRouteMap({
                             import(
                               "../../routes/refund-reasons/refund-reason-edit"
                             ),
+                          handle: { permissions: "refund_reason:update" },
                         },
                       ],
                     },

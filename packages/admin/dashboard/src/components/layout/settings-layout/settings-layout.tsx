@@ -31,6 +31,7 @@ const useSettingRoutes = (): INavItem[] => {
   const canReadProductTypes = hasPermission("product_type:read")
   const canReadRegions = hasPermission("region:read")
   const canReadReturnReasons = hasPermission("return_reason:read")
+  const canReadRefundReasons = hasPermission("refund_reason:read")
 
   return useMemo(
     () => [
@@ -78,10 +79,14 @@ const useSettingRoutes = (): INavItem[] => {
             },
           ]
         : []),
-      {
-        label: t("refundReasons.domain"),
-        to: "/settings/refund-reasons",
-      },
+      ...(canReadRefundReasons
+        ? [
+            {
+              label: t("refundReasons.domain"),
+              to: "/settings/refund-reasons",
+            },
+          ]
+        : []),
       {
         label: t("salesChannels.domain"),
         to: "/settings/sales-channels",
@@ -124,6 +129,7 @@ const useSettingRoutes = (): INavItem[] => {
       canReadProductTypes,
       canReadRegions,
       canReadReturnReasons,
+      canReadRefundReasons,
     ]
   )
 }

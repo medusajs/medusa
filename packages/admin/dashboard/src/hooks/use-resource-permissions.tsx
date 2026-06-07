@@ -172,3 +172,9 @@ export const useRegionPermissions = () => useResourcePermissions("region")
  */
 export const useReturnReasonPermissions = () =>
   useResourcePermissions("return_reason")
+
+/**
+ * Hook for checking refund reason-specific permissions.
+ */
+export const useRefundReasonPermissions = () =>
+  useResourcePermissions("refund_reason")
