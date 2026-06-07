@@ -3,6 +3,7 @@ import { HttpTypes } from "@medusajs/types"
 import {
   Container,
   createDataTableColumnHelper,
+  DataTableAction,
   toast,
   usePrompt,
 } from "@medusajs/ui"
@@ -17,6 +18,7 @@ import {
   useDeleteSalesChannelLazy,
   useSalesChannels,
 } from "../../../../hooks/api/sales-channels"
+import { useSalesChannelPermissions } from "../../../../hooks/use-resource-permissions"
 
 type SalesChannelWithIsDefault = HttpTypes.AdminSalesChannel & {
   is_default?: boolean
@@ -26,6 +28,7 @@ const PAGE_SIZE = 20
 
 export const SalesChannelListTable = () => {
   const { t } = useTranslation()
+  const { canCreate } = useSalesChannelPermissions()
 
   const { store } = useStore()
 
@@ -69,10 +72,14 @@ export const SalesChannelListTable = () => {
         emptyState={emptyState}
         heading={t("salesChannels.domain")}
         subHeading={t("salesChannels.subtitle")}
-        action={{
-          label: t("actions.create"),
-          to: "/settings/sales-channels/create",
-        }}
+        action={
+          canCreate
+            ? {
+                label: t("actions.create"),
+                to: "/settings/sales-channels/create",
+              }
+            : undefined
+        }
         rowHref={(row) => `/settings/sales-channels/${row.id}`}
       />
     </Container>
@@ -88,6 +95,7 @@ const useColumns = () => {
   const prompt = usePrompt()
   const navigate = useNavigate()
   const base = hooks.useSalesChannelTableColumns()
+  const { canUpdate, canDelete } = useSalesChannelPermissions()
 
   const { mutateAsync } = useDeleteSalesChannelLazy()
 
@@ -123,36 +131,50 @@ const useColumns = () => {
   return useMemo(
     () => [
       ...base,
-      columnHelper.action({
-        actions: (ctx) => {
-          const disabledTooltip = ctx.row.original.is_default
-            ? t("salesChannels.tooltip.cannotDeleteDefault")
-            : undefined
+      ...(canUpdate || canDelete
+        ? [
+            columnHelper.action({
+              actions: (ctx) => {
+                const disabledTooltip = ctx.row.original.is_default
+                  ? t("salesChannels.tooltip.cannotDeleteDefault")
+                  : undefined
 
-          return [
-            [
-              {
-                icon: <PencilSquare />,
-                label: t("actions.edit"),
-                onClick: () =>
-                  navigate(
-                    `/settings/sales-channels/${ctx.row.original.id}/edit`
-                  ),
+                const groups: (DataTableAction<SalesChannelWithIsDefault> & {
+                  disabled?: boolean
+                  disabledTooltip?: string
+                })[][] = []
+
+                if (canUpdate) {
+                  groups.push([
+                    {
+                      icon: <PencilSquare />,
+                      label: t("actions.edit"),
+                      onClick: () =>
+                        navigate(
+                          `/settings/sales-channels/${ctx.row.original.id}/edit`
+                        ),
+                    },
+                  ])
+                }
+
+                if (canDelete) {
+                  groups.push([
+                    {
+                      icon: <Trash />,
+                      label: t("actions.delete"),
+                      onClick: () => handleDelete(ctx.row.original),
+                      disabled: ctx.row.original.is_default,
+                      disabledTooltip,
+                    },
+                  ])
+                }
+
+                return groups
               },
-            ],
-            [
-              {
-                icon: <Trash />,
-                label: t("actions.delete"),
-                onClick: () => handleDelete(ctx.row.original),
-                disabled: ctx.row.original.is_default,
-                disabledTooltip,
-              },
-            ],
+            }),
           ]
-        },
-      }),
+        : []),
     ],
-    [base, handleDelete, navigate, t]
+    [base, handleDelete, navigate, t, canUpdate, canDelete]
   )
 }

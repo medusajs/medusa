@@ -1,5 +1,6 @@
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { SingleColumnPage } from "../../../components/layout/pages"
 import { useSalesChannel } from "../../../hooks/api/sales-channels"
@@ -32,10 +33,13 @@ export const SalesChannelDetail = () => {
       }}
       showJSON
       showMetadata
+      showRequiredPermissions
       data={sales_channel}
     >
       <SalesChannelGeneralSection salesChannel={sales_channel} />
-      <SalesChannelProductSection salesChannel={sales_channel} />
+      <PermissionGuard permission="product:read">
+        <SalesChannelProductSection salesChannel={sales_channel} />
+      </PermissionGuard>
     </SingleColumnPage>
   )
 }

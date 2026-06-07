@@ -1580,9 +1580,14 @@ export function getRouteMap({
             {
               path: "sales-channels",
               errorElement: <ErrorBoundary />,
-              element: <Outlet />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("salesChannels.domain"),
+                permissions: "sales_channel:read",
               },
               children: [
                 {
@@ -1596,6 +1601,7 @@ export function getRouteMap({
                         import(
                           "../../routes/sales-channels/sales-channel-create"
                         ),
+                      handle: { permissions: "sales_channel:create" },
                     },
                   ],
                 },
@@ -1623,6 +1629,7 @@ export function getRouteMap({
                         import(
                           "../../routes/sales-channels/sales-channel-edit"
                         ),
+                      handle: { permissions: "sales_channel:update" },
                     },
                     {
                       path: "add-products",
@@ -1630,6 +1637,9 @@ export function getRouteMap({
                         import(
                           "../../routes/sales-channels/sales-channel-add-products"
                         ),
+                      handle: {
+                        permissions: ["sales_channel:update", "product:read"],
+                      },
                     },
                     {
                       path: "metadata/edit",
@@ -1637,6 +1647,7 @@ export function getRouteMap({
                         import(
                           "../../routes/sales-channels/sales-channel-metadata"
                         ),
+                      handle: { permissions: "sales_channel:update" },
                     },
                   ],
                 },

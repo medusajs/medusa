@@ -14,7 +14,10 @@ import { Link } from "react-router-dom"
 
 import { HttpTypes, SalesChannelDTO } from "@medusajs/types"
 import { keepPreviousData } from "@tanstack/react-query"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useProducts } from "../../../../../hooks/api/products"
 import { useSalesChannelRemoveProducts } from "../../../../../hooks/api/sales-channels"
@@ -22,6 +25,7 @@ import { useProductTableColumns } from "../../../../../hooks/table/columns/use-p
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useSalesChannelPermissions } from "../../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 10
 
@@ -32,6 +36,7 @@ type SalesChannelProductSectionProps = {
 export const SalesChannelProductSection = ({
   salesChannel,
 }: SalesChannelProductSectionProps) => {
+  const { canUpdate } = useSalesChannelPermissions()
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   const { searchParams, raw } = useProductTableQuery({ pageSize: PAGE_SIZE })
@@ -51,7 +56,7 @@ export const SalesChannelProductSection = ({
     }
   )
 
-  const columns = useColumns()
+  const columns = useColumns(canUpdate)
   const filters = useProductTableFilters(["sales_channel_id"])
 
   const { table } = useDataTable({
@@ -59,7 +64,7 @@ export const SalesChannelProductSection = ({
     columns,
     count,
     enablePagination: true,
-    enableRowSelection: true,
+    enableRowSelection: canUpdate,
     pageSize: PAGE_SIZE,
     getRowId: (row) => row.id,
     rowSelection: {
@@ -112,23 +117,31 @@ export const SalesChannelProductSection = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.domain")}</Heading>
-        <Link to={`/settings/sales-channels/${salesChannel.id}/add-products`}>
-          <Button size="small" variant="secondary">
-            {t("general.add")}
-          </Button>
-        </Link>
+        {canUpdate && (
+          <Link
+            to={`/settings/sales-channels/${salesChannel.id}/add-products`}
+          >
+            <Button size="small" variant="secondary">
+              {t("general.add")}
+            </Button>
+          </Link>
+        )}
       </div>
       <_DataTable
         table={table}
         columns={columns}
         pageSize={PAGE_SIZE}
-        commands={[
-          {
-            action: handleRemove,
-            label: t("actions.remove"),
-            shortcut: "r",
-          },
-        ]}
+        commands={
+          canUpdate
+            ? [
+                {
+                  action: handleRemove,
+                  label: t("actions.remove"),
+                  shortcut: "r",
+                },
+              ]
+            : []
+        }
         count={count}
         pagination
         search
@@ -152,39 +165,43 @@ export const SalesChannelProductSection = ({
 
 const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
 
-const useColumns = () => {
+const useColumns = (canUpdate: boolean) => {
   const base = useProductTableColumns()
 
   return useMemo(
     () => [
-      columnHelper.display({
-        id: "select",
-        header: ({ table }) => {
-          return (
-            <Checkbox
-              checked={
-                table.getIsSomePageRowsSelected()
-                  ? "indeterminate"
-                  : table.getIsAllPageRowsSelected()
-              }
-              onCheckedChange={(value) =>
-                table.toggleAllPageRowsSelected(!!value)
-              }
-            />
-          )
-        },
-        cell: ({ row }) => {
-          return (
-            <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            />
-          )
-        },
-      }),
+      ...(canUpdate
+        ? [
+            columnHelper.display({
+              id: "select",
+              header: ({ table }) => {
+                return (
+                  <Checkbox
+                    checked={
+                      table.getIsSomePageRowsSelected()
+                        ? "indeterminate"
+                        : table.getIsAllPageRowsSelected()
+                    }
+                    onCheckedChange={(value) =>
+                      table.toggleAllPageRowsSelected(!!value)
+                    }
+                  />
+                )
+              },
+              cell: ({ row }) => {
+                return (
+                  <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                    }}
+                  />
+                )
+              },
+            }),
+          ]
+        : []),
       ...base,
       columnHelper.display({
         id: "actions",
@@ -197,21 +214,24 @@ const useColumns = () => {
             <ProductListCellActions
               productId={row.original.id}
               salesChannelId={salesChannelId}
+              canUpdate={canUpdate}
             />
           )
         },
       }),
     ],
-    [base]
+    [base, canUpdate]
   )
 }
 
 const ProductListCellActions = ({
   salesChannelId,
   productId,
+  canUpdate,
 }: {
   productId: string
   salesChannelId: string
+  canUpdate: boolean
 }) => {
   const { t } = useTranslation()
 
@@ -228,28 +248,29 @@ const ProductListCellActions = ({
     })
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = [
+    {
+      actions: [
         {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `/products/${productId}`,
-            },
-          ],
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          to: `/products/${productId}`,
         },
+      ],
+    },
+  ]
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.remove"),
-              onClick: onRemove,
-            },
-          ],
+          icon: <Trash />,
+          label: t("actions.remove"),
+          onClick: onRemove,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  return <ActionMenu groups={groups} />
 }

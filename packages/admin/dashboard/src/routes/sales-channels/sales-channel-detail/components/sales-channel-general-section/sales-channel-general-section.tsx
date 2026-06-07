@@ -11,8 +11,12 @@ import { useTranslation } from "react-i18next"
 
 import { SalesChannelDTO } from "@medusajs/types"
 import { useNavigate } from "react-router-dom"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { useDeleteSalesChannel } from "../../../../../hooks/api/sales-channels"
+import { useSalesChannelPermissions } from "../../../../../hooks/use-resource-permissions"
 
 type SalesChannelGeneralSectionProps = {
   salesChannel: SalesChannelDTO
@@ -24,6 +28,7 @@ export const SalesChannelGeneralSection = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
+  const { canUpdate, canDelete } = useSalesChannelPermissions()
 
   const { mutateAsync } = useDeleteSalesChannel(salesChannel.id)
 
@@ -62,9 +67,11 @@ export const SalesChannelGeneralSection = ({
           <StatusBadge color={salesChannel.is_disabled ? "red" : "green"}>
             {t(`general.${salesChannel.is_disabled ? "disabled" : "enabled"}`)}
           </StatusBadge>
-          <ActionMenu
-            groups={[
-              {
+          {(() => {
+            const groups: ActionGroup[] = []
+
+            if (canUpdate) {
+              groups.push({
                 actions: [
                   {
                     icon: <PencilSquare />,
@@ -72,8 +79,11 @@ export const SalesChannelGeneralSection = ({
                     to: `/settings/sales-channels/${salesChannel.id}/edit`,
                   },
                 ],
-              },
-              {
+              })
+            }
+
+            if (canDelete) {
+              groups.push({
                 actions: [
                   {
                     icon: <Trash />,
@@ -81,9 +91,11 @@ export const SalesChannelGeneralSection = ({
                     onClick: handleDelete,
                   },
                 ],
-              },
-            ]}
-          />
+              })
+            }
+
+            return groups.length > 0 ? <ActionMenu groups={groups} /> : null
+          })()}
         </div>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
