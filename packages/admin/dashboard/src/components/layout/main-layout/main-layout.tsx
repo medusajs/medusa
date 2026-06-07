@@ -38,6 +38,7 @@ import {
   useCustomerPermissions,
   useInventoryItemPermissions,
   useOrderPermissions,
+  usePriceListPermissions,
   usePromotionPermissions,
   useReservationItemPermissions,
 } from "../../../hooks/use-resource-permissions"
@@ -200,6 +201,7 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
   const { canRead: canReadReservations } = useReservationItemPermissions()
   const { canRead: canReadPromotions } = usePromotionPermissions()
   const { canRead: canReadCampaigns } = useCampaignPermissions()
+  const { canRead: canReadPriceLists } = usePriceListPermissions()
 
   const canReadProducts = hasPermission("product:read")
   const canReadProductCollections = hasPermission("product_collection:read")
@@ -304,11 +306,15 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
           },
         ]
       : []),
-    {
-      icon: <CurrencyDollar />,
-      label: t("priceLists.domain"),
-      to: "/price-lists",
-    },
+    ...(canReadPriceLists
+      ? [
+          {
+            icon: <CurrencyDollar />,
+            label: t("priceLists.domain"),
+            to: "/price-lists",
+          },
+        ]
+      : []),
   ]
 }
 

@@ -5,6 +5,7 @@ import { PriceListConfigurationSection } from "./components/price-list-configura
 import { PriceListGeneralSection } from "./components/price-list-general-section"
 import { PriceListProductSection } from "./components/price-list-product-section"
 
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import { TwoColumnPage } from "../../../components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
@@ -41,10 +42,13 @@ export const PriceListDetails = () => {
       data={price_list}
       showJSON
       showMetadata
+      showRequiredPermissions
     >
       <TwoColumnPage.Main>
         <PriceListGeneralSection priceList={price_list} />
-        <PriceListProductSection priceList={price_list} />
+        <PermissionGuard permission="product:read">
+          <PriceListProductSection priceList={price_list} />
+        </PermissionGuard>
       </TwoColumnPage.Main>
       <TwoColumnPage.Sidebar>
         <PriceListConfigurationSection priceList={price_list} />

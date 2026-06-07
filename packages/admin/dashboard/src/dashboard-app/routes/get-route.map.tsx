@@ -794,8 +794,14 @@ export function getRouteMap({
             {
               path: "/price-lists",
               errorElement: <ErrorBoundary />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("priceLists.domain"),
+                permissions: "price_list:read",
               },
               children: [
                 {
@@ -807,6 +813,9 @@ export function getRouteMap({
                       path: "create",
                       lazy: () =>
                         import("../../routes/price-lists/price-list-create"),
+                      handle: {
+                        permissions: ["price_list:create", "product:read"],
+                      },
                     },
                   ],
                 },
@@ -832,6 +841,7 @@ export function getRouteMap({
                       path: "edit",
                       lazy: () =>
                         import("../../routes/price-lists/price-list-edit"),
+                      handle: { permissions: "price_list:update" },
                     },
                     {
                       path: "configuration",
@@ -839,6 +849,7 @@ export function getRouteMap({
                         import(
                           "../../routes/price-lists/price-list-configuration"
                         ),
+                      handle: { permissions: "price_list:update" },
                     },
                     {
                       path: "products/add",
@@ -846,6 +857,9 @@ export function getRouteMap({
                         import(
                           "../../routes/price-lists/price-list-prices-add"
                         ),
+                      handle: {
+                        permissions: ["price_list:update", "product:read"],
+                      },
                     },
                     {
                       path: "products/edit",
@@ -853,11 +867,15 @@ export function getRouteMap({
                         import(
                           "../../routes/price-lists/price-list-prices-edit"
                         ),
+                      handle: {
+                        permissions: ["price_list:update", "product:read"],
+                      },
                     },
                     {
                       path: "metadata/edit",
                       lazy: () =>
                         import("../../routes/price-lists/price-list-metadata"),
+                      handle: { permissions: "price_list:update" },
                     },
                   ],
                 },

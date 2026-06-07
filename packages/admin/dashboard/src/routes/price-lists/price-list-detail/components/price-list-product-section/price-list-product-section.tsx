@@ -15,6 +15,7 @@ import { useProductTableColumns } from "../../../../../hooks/table/columns/use-p
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { usePriceListPermissions } from "../../../../../hooks/use-resource-permissions"
 
 type PriceListProductSectionProps = {
   priceList: HttpTypes.AdminPriceList
@@ -29,6 +30,7 @@ export const PriceListProductSection = ({
   const { t } = useTranslation()
   const navigate = useNavigate()
   const prompt = usePrompt()
+  const { canUpdate } = usePriceListPermissions()
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
@@ -47,7 +49,7 @@ export const PriceListProductSection = ({
   )
 
   const filters = useProductTableFilters()
-  const columns = useColumns(priceList)
+  const columns = useColumns(priceList, canUpdate)
   const { mutateAsync } = usePriceListLinkProducts(priceList.id)
 
   const { table } = useDataTable({
@@ -55,7 +57,7 @@ export const PriceListProductSection = ({
     count,
     columns,
     enablePagination: true,
-    enableRowSelection: true,
+    enableRowSelection: canUpdate,
     pageSize: PAGE_SIZE,
     getRowId: (row) => row.id,
     rowSelection: {
@@ -114,24 +116,26 @@ export const PriceListProductSection = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("priceLists.products.header")}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("priceLists.products.actions.addProducts"),
-                  to: "products/add",
-                  icon: <Plus />,
-                },
-                {
-                  label: t("priceLists.products.actions.editPrices"),
-                  to: "products/edit",
-                  icon: <PencilSquare />,
-                },
-              ],
-            },
-          ]}
-        />
+        {canUpdate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("priceLists.products.actions.addProducts"),
+                    to: "products/add",
+                    icon: <Plus />,
+                  },
+                  {
+                    label: t("priceLists.products.actions.editPrices"),
+                    to: "products/edit",
+                    icon: <PencilSquare />,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       <_DataTable
         table={table}
@@ -146,18 +150,22 @@ export const PriceListProductSection = ({
           { key: "created_at", label: t("fields.createdAt") },
           { key: "updated_at", label: t("fields.updatedAt") },
         ]}
-        commands={[
-          {
-            action: handleEdit,
-            label: t("actions.edit"),
-            shortcut: "e",
-          },
-          {
-            action: handleDelete,
-            label: t("actions.delete"),
-            shortcut: "d",
-          },
-        ]}
+        commands={
+          canUpdate
+            ? [
+                {
+                  action: handleEdit,
+                  label: t("actions.edit"),
+                  shortcut: "e",
+                },
+                {
+                  action: handleDelete,
+                  label: t("actions.delete"),
+                  shortcut: "d",
+                },
+              ]
+            : []
+        }
         pagination
         search
         prefix={PREFIX}
@@ -239,47 +247,61 @@ const ProductRowAction = ({
 
 const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
 
-const useColumns = (priceList: HttpTypes.AdminPriceList) => {
+const useColumns = (
+  priceList: HttpTypes.AdminPriceList,
+  canUpdate: boolean
+) => {
   const base = useProductTableColumns()
 
   return useMemo(
     () => [
-      columnHelper.display({
-        id: "select",
-        header: ({ table }) => {
-          return (
-            <Checkbox
-              checked={
-                table.getIsSomePageRowsSelected()
-                  ? "indeterminate"
-                  : table.getIsAllPageRowsSelected()
-              }
-              onCheckedChange={(value) =>
-                table.toggleAllPageRowsSelected(!!value)
-              }
-            />
-          )
-        },
-        cell: ({ row }) => {
-          return (
-            <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            />
-          )
-        },
-      }),
+      ...(canUpdate
+        ? [
+            columnHelper.display({
+              id: "select",
+              header: ({ table }) => {
+                return (
+                  <Checkbox
+                    checked={
+                      table.getIsSomePageRowsSelected()
+                        ? "indeterminate"
+                        : table.getIsAllPageRowsSelected()
+                    }
+                    onCheckedChange={(value) =>
+                      table.toggleAllPageRowsSelected(!!value)
+                    }
+                  />
+                )
+              },
+              cell: ({ row }) => {
+                return (
+                  <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                    }}
+                  />
+                )
+              },
+            }),
+          ]
+        : []),
       ...base,
-      columnHelper.display({
-        id: "actions",
-        cell: ({ row }) => (
-          <ProductRowAction product={row.original} priceList={priceList} />
-        ),
-      }),
+      ...(canUpdate
+        ? [
+            columnHelper.display({
+              id: "actions",
+              cell: ({ row }) => (
+                <ProductRowAction
+                  product={row.original}
+                  priceList={priceList}
+                />
+              ),
+            }),
+          ]
+        : []),
     ],
-    [base, priceList]
+    [base, priceList, canUpdate]
   )
 }
