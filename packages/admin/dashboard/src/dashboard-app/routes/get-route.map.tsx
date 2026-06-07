@@ -2295,9 +2295,14 @@ export function getRouteMap({
             },
             {
               path: "return-reasons",
-              element: <Outlet />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("returnReasons.domain"),
+                permissions: "return_reason:read",
               },
               children: [
                 {
@@ -2311,6 +2316,7 @@ export function getRouteMap({
                         import(
                           "../../routes/return-reasons/return-reason-create"
                         ),
+                      handle: { permissions: "return_reason:create" },
                     },
 
                     {
@@ -2322,6 +2328,7 @@ export function getRouteMap({
                             import(
                               "../../routes/return-reasons/return-reason-edit"
                             ),
+                          handle: { permissions: "return_reason:update" },
                         },
                       ],
                     },

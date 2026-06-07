@@ -166,3 +166,9 @@ export const usePricePermissions = () => useResourcePermissions("price")
  * Hook for checking region-specific permissions.
  */
 export const useRegionPermissions = () => useResourcePermissions("region")
+
+/**
+ * Hook for checking return reason-specific permissions.
+ */
+export const useReturnReasonPermissions = () =>
+  useResourcePermissions("return_reason")
