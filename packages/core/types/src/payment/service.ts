@@ -29,6 +29,7 @@ import {
   CreatePaymentSessionDTO,
   CreateRefundDTO,
   CreateRefundReasonDTO,
+  DeletePaymentMethodDTO,
   PaymentCollectionUpdatableFields,
   ProviderWebhookPayload,
   UpdateAccountHolderDTO,
@@ -1081,6 +1082,48 @@ export interface IPaymentModuleService extends IModuleService {
     data: CreatePaymentMethodDTO,
     sharedContext?: Context
   ): Promise<PaymentMethodDTO>
+
+  /**
+   * This method deletes payment methods.
+   *
+   * @param {DeletePaymentMethodDTO[]} data - The payment methods to delete.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the payment methods are deleted.
+   *
+   * @example
+   * await paymentModuleService.deletePaymentMethods([
+   *   {
+   *     id: "pm_123",
+   *     provider_id: "pp_stripe_stripe",
+   *   },
+   *   {
+   *     id: "pm_456",
+   *     provider_id: "pp_stripe_stripe",
+   *   },
+   * ])
+   */
+  deletePaymentMethods(
+    data: DeletePaymentMethodDTO[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  /**
+   * This method deletes a payment method.
+   *
+   * @param {DeletePaymentMethodDTO} data - The payment method to delete.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the payment method is deleted.
+   *
+   * @example
+   * await paymentModuleService.deletePaymentMethods({
+   *   id: "pm_123",
+   *   provider_id: "pp_stripe_stripe",
+   * })
+   */
+  deletePaymentMethods(
+    data: DeletePaymentMethodDTO,
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method retrieves a paginated list of captures based on optional filters and configuration.
