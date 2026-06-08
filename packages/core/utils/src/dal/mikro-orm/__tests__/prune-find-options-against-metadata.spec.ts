@@ -182,14 +182,17 @@ describe("pruneFindOptionsAgainstMetadata", () => {
       expect(optsFalse.populate).toBe(false)
     })
 
-    it("drops scalar names from populate", () => {
-      const options = { populate: ["title", "children"] }
+    it("keeps scalar names in populate (Medusa convention)", () => {
+      // Medusa's buildQuery sends `relations` paths into MikroORM's
+      // populate where the trailing segment is often a scalar projection,
+      // e.g. "payment_sessions.amount". The prune must not drop those.
+      const options = { populate: ["title", "children.title"] }
       const { droppedPopulate } = pruneFindOptionsAgainstMetadata(
         parentMeta,
         options
       )
-      expect(options.populate).toEqual(["children"])
-      expect(droppedPopulate).toEqual(["title"])
+      expect(options.populate).toEqual(["title", "children.title"])
+      expect(droppedPopulate).toEqual([])
     })
 
     it("drops populate entries that don't exist on the entity", () => {

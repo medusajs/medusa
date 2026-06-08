@@ -48,33 +48,6 @@ const isFieldPathResolvable = (
   return true
 }
 
-const isPopulatePathResolvable = (
-  rootMeta: EntityMetadata<any>,
-  path: string
-): boolean => {
-  if (path === "*") {
-    return true
-  }
-  const segments = path.split(".")
-  let currentMeta: EntityMetadata<any> | undefined = rootMeta
-  for (let i = 0; i < segments.length; i++) {
-    const segment = stripStrategy(segments[i])
-    const isLast = i === segments.length - 1
-    if (segment === "*") {
-      return isLast && !!currentMeta
-    }
-    if (!currentMeta) {
-      return false
-    }
-    const prop = currentMeta.properties?.[segment]
-    if (!prop?.targetMeta) {
-      return false
-    }
-    currentMeta = prop.targetMeta
-  }
-  return true
-}
-
 /**
  * Drop entries from `options.fields` and `options.populate` whose dotted
  * paths can't be resolved against the local entity's MikroORM metadata.
@@ -116,7 +89,12 @@ export function pruneFindOptionsAgainstMetadata(
       if (typeof p !== "string") {
         return true
       }
-      if (isPopulatePathResolvable(meta, p)) {
+      // Populate uses the same resolvability rule as fields: non-final
+      // segments must be real relations, the final segment can be a
+      // scalar. Medusa's buildQuery routinely sends paths like
+      // "payments.captures.amount" through populate from the `relations`
+      // config, where the trailing segment is a scalar projection.
+      if (isFieldPathResolvable(meta, p)) {
         return true
       }
       droppedPopulate.push(p)
