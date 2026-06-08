@@ -1089,6 +1089,8 @@ export interface IPaymentModuleService extends IModuleService {
    * @param {DeletePaymentMethodDTO[]} data - The payment methods to delete.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the payment methods are deleted.
+   * 
+   * @since 2.15.6
    *
    * @example
    * await paymentModuleService.deletePaymentMethods([
@@ -1113,6 +1115,8 @@ export interface IPaymentModuleService extends IModuleService {
    * @param {DeletePaymentMethodDTO} data - The payment method to delete.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the payment method is deleted.
+   * 
+   * @since 2.15.6
    *
    * @example
    * await paymentModuleService.deletePaymentMethods({
