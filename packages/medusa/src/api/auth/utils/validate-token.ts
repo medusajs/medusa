@@ -72,7 +72,7 @@ export const validateToken = () => {
       // Atomically verify and delete the single-use token row. Storing the
       // fingerprint on a dedicated table (not on provider_metadata) keeps it
       // safe from the password provider's metadata-merge on write.
-      consumed = await authModule.consumePasswordResetToken({
+      await authModule.consumePasswordResetToken({
         jti: token.jti,
         provider: auth_provider,
         entity_id: token.entity_id,
@@ -83,7 +83,7 @@ export const validateToken = () => {
 
     const [providerIdentity] = await authModule.listProviderIdentities(
       {
-        entity_id: consumed.entity_id,
+        entity_id: token.entity_id,
         provider: auth_provider,
       },
       {
