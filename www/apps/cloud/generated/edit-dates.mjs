@@ -22,7 +22,7 @@ export const generatedEditDates = {
   "app/pricing/page.mdx": "2025-09-05T10:31:59.059Z",
   "app/sign-up/page.mdx": "2026-06-08T13:05:06.313Z",
   "app/comparison/page.mdx": "2026-05-22T09:49:03.229Z",
-  "app/billing/plans/page.mdx": "2026-06-05T10:02:53.455Z",
+  "app/billing/plans/page.mdx": "2026-06-08T14:16:45.255Z",
   "app/cache/page.mdx": "2025-11-12T14:37:24.809Z",
   "app/deployments/troubleshooting/page.mdx": "2026-05-22T09:21:28.119Z",
   "app/emails/page.mdx": "2026-04-10T11:40:04.389Z",
@@ -37,7 +37,7 @@ export const generatedEditDates = {
   "app/environments/subdomains/page.mdx": "2026-04-14T10:50:18.756Z",
   "app/ip-addresses/page.mdx": "2026-04-14T10:43:16.892Z",
   "app/monitoring/http/page.mdx": "2026-04-22T14:42:22.622Z",
-  "app/monitoring/page.mdx": "2026-04-17T09:53:24.133Z",
+  "app/monitoring/page.mdx": "2026-06-08T14:16:22.810Z",
   "app/monitoring/servers/page.mdx": "2026-04-17T09:52:51.174Z",
   "app/monitoring/workers/page.mdx": "2026-04-17T09:52:32.919Z",
   "app/cli/commands/environments/page.mdx": "2026-04-29T08:40:05.024Z",
@@ -113,5 +113,6 @@ export const generatedEditDates = {
   "public/raw-mdx/usage/page.mdx": "2026-05-12T10:49:54.290Z",
   "public/raw-mdx/user/page.mdx": "2026-05-12T10:49:54.291Z",
   "app/deployments/fix-with-ai/page.mdx": "2026-05-22T09:18:36.373Z",
-  "app/get-started/page.mdx": "2026-05-27T00:36:28.665Z"
+  "app/get-started/page.mdx": "2026-05-27T00:36:28.665Z",
+  "app/first-project/page.mdx": "2026-06-08T14:16:09.467Z"
 }
