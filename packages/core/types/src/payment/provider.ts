@@ -220,6 +220,22 @@ export interface ListPaymentMethodsInput extends PaymentProviderInput {}
 export interface SavePaymentMethodInput extends PaymentProviderInput {}
 
 /**
+ * The data to delete a payment method.
+ */
+export interface DeletePaymentMethodInput
+  extends Omit<PaymentProviderInput, "data"> {
+  /**
+   * The payment method's data.
+   */
+  data: {
+    /**
+     * The ID of the payment method in the payment provider.
+     */
+    id: string
+  } & Record<string, unknown>
+}
+
+/**
  * The data to get the payment status.
  */
 export interface GetPaymentStatusInput extends PaymentProviderInput {}
@@ -351,6 +367,11 @@ export interface SavePaymentMethodOutput extends PaymentProviderOutput {
    */
   id: string
 }
+
+/**
+ * The result of deleting a payment method.
+ */
+export interface DeletePaymentMethodOutput extends PaymentProviderOutput {}
 
 /**
  * The result of getting the payment status.
@@ -677,6 +698,41 @@ export interface IPaymentProvider {
   savePaymentMethod?(
     data: SavePaymentMethodInput
   ): Promise<SavePaymentMethodOutput>
+
+  /**
+   * This method is used to delete a customer's saved payment method from the
+   * third-party payment provider. A payment provider that supports saving payment methods
+   * should implement this method.
+   *
+   * @param data - The details of the payment method to delete.
+   * @returns The result of deleting the payment method. If an error occurs, throw it.
+   *
+   * @example
+   * import { MedusaError } from "@medusajs/framework/utils"
+   *
+   * class MyPaymentProviderService extends AbstractPaymentProvider<
+   *   Options
+   * > {
+   *   async deletePaymentMethod({ data }: DeletePaymentMethodInput) {
+  *     const paymentMethodId = data.id
+   *
+   *     if (!paymentMethodId) {
+   *       throw new MedusaError(
+   *         MedusaError.Types.INVALID_DATA,
+   *         "Missing payment method ID."
+   *       )
+   *     }
+   *
+   *    // assuming you have a client that deletes the payment method
+   *    await this.client.deletePaymentMethod(paymentMethodId)
+   *
+   *   return {}
+   *  }
+   * }
+   */
+  deletePaymentMethod?(
+    data: DeletePaymentMethodInput
+  ): Promise<DeletePaymentMethodOutput>
 
   getPaymentStatus(data: GetPaymentStatusInput): Promise<GetPaymentStatusOutput>
 
