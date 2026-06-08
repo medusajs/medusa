@@ -1,0 +1,108 @@
+---
+sidebar_position: 3
+sidebar_label: "Manage Policies"
+tags:
+    - user guide
+    - rbac
+    - policies
+products:
+  - rbac
+---
+
+export const metadata = {
+  title: `Manage Policies in Medusa Admin`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to manage policies in your store using Role-Based Access Control (RBAC).
+
+<Note>
+
+This feature is available under the `rbac` feature flag. Learn how to enable it in the [Feature Flags guide](!docs!/learn/debugging-and-testing/feature-flags).
+
+</Note>
+
+## What are Policies?
+
+Policies define specific permissions that control what actions can be performed in your store. Each policy grants permission for a particular operation (like "create", "read", "update", "delete") on a specific resource (like "product", "order", "customer").
+
+---
+
+## View Policies
+
+You can view all admin policies by going to Settings → Users → Policies. In the list, you can see policy details such as the name, resource, operation, and description. You can also search, filter, and sort policies to find specific items.
+
+---
+
+## View Policy Details
+
+To view the details of a policy:
+
+1. Go to Settings → Users → Policies.
+2. Click on the policy in the list.
+
+This opens the policy's details page where you can also manage the policy.
+
+---
+
+## Create a New Policy
+
+To create a new policy:
+
+1. Go to Settings → Users → Policies.
+2. Click the Create button.
+3. In the form that opens:
+    - Enter the policy's unique key (used for identification).
+    - Enter the policy's display name.
+    - Select the resource this policy applies to (e.g., "product", "order").
+    - Select the operation this policy allows (e.g., "create", "read", "update", "delete").
+    - Optionally, enter a description.
+4. Click the Create button.
+
+The policy is created and you're taken to its details page.
+
+---
+
+## Edit Policy Details
+
+To edit a policy's details:
+
+1. Go to the policy's details page.
+2. In the General section, click the three-dots icon and choose Edit.
+3. In the form that opens, edit the policy's name, resource, operation, and description.
+4. Click Save.
+
+<Note>
+
+You cannot change a policy's unique key after creation. The key is used to identify the policy throughout the system.
+
+</Note>
+
+---
+
+## View Policy Usage
+
+To see which roles include a specific policy:
+
+1. Go to the policy's details page.
+2. In the Roles section, you'll see all roles that include this policy.
+
+This helps you understand the impact of modifying or deleting a policy.
+
+---
+
+## Delete a Policy
+
+<Note type="warning">
+
+Deleting a policy is irreversible. All roles that include this policy will lose that permission.
+
+</Note>
+
+To delete a policy:
+
+1. Go to Settings → Users → Policies.
+2. Find the policy in the list and click on it.
+3. In the General section, click the three-dots icon and choose Delete.
+4. Confirm deletion by entering the policy's key and clicking Delete.

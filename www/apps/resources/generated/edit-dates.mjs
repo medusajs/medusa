@@ -97,7 +97,7 @@ export const generatedEditDates = {
   "app/commerce-modules/user/_events/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/user/module-options/page.mdx": "2025-10-31T10:08:14.831Z",
   "app/commerce-modules/user/user-creation-flows/page.mdx": "2025-02-26T11:35:54.685Z",
-  "app/commerce-modules/user/page.mdx": "2025-04-17T08:48:17.980Z",
+  "app/commerce-modules/user/page.mdx": "2026-06-08T19:55:38.740Z",
   "app/commerce-modules/page.mdx": "2026-04-20T10:41:32.836Z",
   "app/create-medusa-app/page.mdx": "2026-04-23T11:32:54.312Z",
   "app/deployment/admin/vercel/page.mdx": "2024-10-16T08:10:29.377Z",
@@ -7576,5 +7576,6 @@ export const generatedEditDates = {
   "app/commerce-modules/auth/mfa/page.mdx": "2026-06-03T19:24:39.126Z",
   "app/commerce-modules/auth/email-verification/page.mdx": "2026-06-05T10:33:10.552Z",
   "app/storefront-development/customers/verify-account/page.mdx": "2026-06-02T11:24:01.444Z",
-  "references/events/Auth/variables/events.Auth.AuthEvents/page.mdx": "2026-06-03T06:24:01.642Z"
+  "references/events/Auth/variables/events.Auth.AuthEvents/page.mdx": "2026-06-03T06:24:01.642Z",
+  "app/commerce-modules/user/rbac/page.mdx": "2026-06-08T19:55:34.163Z"
 }

@@ -308,6 +308,16 @@ export const sidebar = [
                 title: "Manage Invites",
                 path: "/settings/users/invites",
               },
+              {
+                type: "link",
+                title: "Manage User Roles",
+                path: "/settings/users/roles",
+              },
+              {
+                type: "link",
+                title: "Manage Policies",
+                path: "/settings/users/policies",
+              },
             ],
           },
           {
