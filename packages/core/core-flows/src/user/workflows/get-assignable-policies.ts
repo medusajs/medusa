@@ -12,12 +12,14 @@ import {
 /**
  * @ignore
  * @featureFlag rbac
+ * @since 2.15.6
  */
 export type GetAssignablePoliciesWorkflowInput = GetAssignablePoliciesStepInput
 
 /**
  * @ignore
  * @featureFlag rbac
+ * @since 2.15.6
  */
 export type GetAssignablePoliciesWorkflowOutput =
   GetAssignablePoliciesStepOutput
@@ -25,6 +27,7 @@ export type GetAssignablePoliciesWorkflowOutput =
 /**
  * @ignore
  * @featureFlag rbac
+ * @since 2.15.6
  */
 export const getAssignablePoliciesWorkflowId =
   "get-assignable-policies-workflow"
@@ -34,6 +37,7 @@ export const getAssignablePoliciesWorkflowId =
  *
  * @ignore
  * @featureFlag rbac
+ * @since 2.15.6
  */
 export const getAssignablePoliciesWorkflow = createWorkflow(
   getAssignablePoliciesWorkflowId,
