@@ -101225,8 +101225,8 @@ const handleDelete = async (method: SavedPaymentMethod) => {
   try {
     await deleteSavedPaymentMethod(accountHolderId, method.id)
     // Remove the deleted method from the list
-    setSavedPaymentMethods(prev => 
-      prev.filter(pm => pm.id !== method.id)
+    setSavedPaymentMethods((prev) => 
+      prev.filter((pm) => pm.id !== method.id)
     )
     // Clear selection if deleted method was selected
     if (selectedPaymentMethod === method.id) {
