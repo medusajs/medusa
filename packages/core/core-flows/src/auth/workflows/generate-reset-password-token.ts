@@ -2,14 +2,16 @@ import type { ProjectConfigOptions } from "@medusajs/framework/types"
 import {
   AuthWorkflowEvents,
   generateJwtToken,
-  MedusaError,
 } from "@medusajs/framework/utils"
 import {
   createWorkflow,
   transform,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { emitEventStep, useRemoteQueryStep } from "../../common"
+import { emitEventStep } from "../../common"
+import { createPasswordResetTokenStep } from "../steps"
+
+const RESET_PASSWORD_TOKEN_TTL_SECONDS = 15 * 60
 
 /**
  * This workflow generates a reset password token for a user. It's used by the
@@ -50,43 +52,31 @@ export const generateResetPasswordTokenWorkflow = createWorkflow(
     jwtOptions?: ProjectConfigOptions["http"]["jwtOptions"]
     metadata?: Record<string, unknown>
   }) => {
-    const providerIdentities = useRemoteQueryStep({
-      entry_point: "provider_identity",
-      fields: ["auth_identity_id", "provider_metadata"],
-      variables: {
-        filters: {
-          entity_id: input.entityId,
-          provider: input.provider,
-        },
-      },
+    const resetToken = createPasswordResetTokenStep({
+      entityId: input.entityId,
+      provider: input.provider,
+      ttlSeconds: RESET_PASSWORD_TOKEN_TTL_SECONDS,
     })
 
     const token = transform(
-      { input, providerIdentities },
-      ({ input, providerIdentities }) => {
-        const providerIdentity = providerIdentities?.[0]
-
-        if (!providerIdentity) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Provider identity with entity_id ${input.entityId} and provider ${input.provider} not found`
-          )
-        }
-
-        const token = generateJwtToken(
+      { input, resetToken },
+      ({ input, resetToken }) => {
+        return generateJwtToken(
           {
             entity_id: input.entityId,
             provider: input.provider,
             actor_type: input.actorType,
+            purpose: "reset",
           },
           {
             secret: input.secret,
-            expiresIn: "15m",
-            jwtOptions: input.jwtOptions,
+            expiresIn: `${RESET_PASSWORD_TOKEN_TTL_SECONDS}s`,
+            jwtOptions: {
+              ...input.jwtOptions,
+              jwtid: resetToken.jti,
+            },
           }
         )
-
-        return token
       }
     )
 
