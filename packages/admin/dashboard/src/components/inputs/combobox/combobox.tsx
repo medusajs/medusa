@@ -81,7 +81,7 @@ const ComboboxImpl = <T extends Value = string>(
   ref: ForwardedRef<HTMLInputElement>
 ) => {
   const [open, setOpen] = useState(false)
-  const [isPending, startTransition] = useTransition()
+  const [isPending] = useTransition()
   const { t } = useTranslation()
 
   const comboboxRef = useRef<HTMLInputElement>(null)
@@ -133,6 +133,9 @@ const ComboboxImpl = <T extends Value = string>(
     }
 
     setUncontrolledSearchValue("")
+    if (onSearchValueChange) {
+      onSearchValueChange("")
+    }
   }
 
   const handleSearchChange = (query: string) => {
@@ -194,14 +197,15 @@ const ComboboxImpl = <T extends Value = string>(
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setUncontrolledSearchValue("")
+      if (onSearchValueChange) {
+        onSearchValueChange("")
+      }
     }
 
     setOpen(open)
   }
 
-  const hasValue = isArrayValue
-    ? selectedValues?.length > 0
-    : !!selectedValues
+  const hasValue = isArrayValue ? selectedValues?.length > 0 : !!selectedValues
 
   const showTag = hasValue && isArrayValue
   const showSelected = showTag && !searchValue && !open
@@ -232,9 +236,9 @@ const ComboboxImpl = <T extends Value = string>(
       setOpen={handleOpenChange}
       selectedValue={selectedValues}
       setSelectedValue={(value) => handleValueChange(value as T)}
-      value={uncontrolledSearchValue}
+      value={searchValue}
       setValue={(query) => {
-        startTransition(() => handleSearchChange(query))
+        handleSearchChange(query)
       }}
     >
       <div
