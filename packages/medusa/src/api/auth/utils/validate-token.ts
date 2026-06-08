@@ -63,11 +63,6 @@ export const validateToken = () => {
 
     const authModule = req.scope.resolve<IAuthModuleService>(Modules.AUTH)
 
-    let consumed: {
-      auth_identity_id: string
-      provider_identity_id: string
-      entity_id: string
-    }
     try {
       // Atomically verify and delete the single-use token row. Storing the
       // fingerprint on a dedicated table (not on provider_metadata) keeps it
