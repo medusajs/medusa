@@ -6,7 +6,6 @@ import {
   ContainerRegistrationKeys,
   defineFileConfig,
   FeatureFlag,
-  MedusaError,
 } from "@medusajs/framework/utils"
 
 import RbacFeatureFlag from "../../../../../../feature-flags/rbac"
