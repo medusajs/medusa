@@ -24,18 +24,16 @@ export const GET = async (
   const policyId = req.params.id
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const { data: existing } = await query.graph({
-    entity: "rbac_policy",
-    fields: ["id"],
-    filters: { id: policyId },
-  })
-
-  if (!existing.length) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_FOUND,
-      `Policy with id: ${policyId} not found`
-    )
-  }
+  await query.graph(
+    {
+      entity: "rbac_policy",
+      fields: ["id"],
+      filters: { id: policyId },
+    },
+    {
+      throwIfKeyNotFound: true,
+    }
+  )
 
   const { data: links, metadata } = await query.graph({
     entity: "rbac_role_policy",
