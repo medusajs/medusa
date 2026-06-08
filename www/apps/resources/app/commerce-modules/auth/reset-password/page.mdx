@@ -29,10 +29,13 @@ Refer to this [Medusa Admin User Guide](!user-guide!/reset-password) to learn ho
 Users of any actor type (admin, customer, or custom actor type) can request to reset their password. The flow for resetting a password is as follows:
 
 1. The user requests to reset their password either through the frontend (for example, [Medusa Admin](!user-guide!/reset-password)) or the [Generate Reset Password Token API route](../authentication-route/page.mdx#generate-reset-password-token-route).
-2. The Medusa application generates a password reset token and emits the `auth.password_reset` event.
+2. The Medusa application generates a secure, single-use password reset token and emits the `auth.password_reset` event.
+    - The token is cryptographically secure and expires automatically (default: 15 minutes).
+    - Each new password reset request invalidates any previous tokens for the same user.
     - At this point, you can handle the event to send a notification to the user with instructions on how to reset their password.
 3. The user receives the notification and clicks on the link to reset their password.
     - The user can reset their password either through the frontend (for example, [Medusa Admin](!user-guide!/reset-password)) or the [Reset Password API route](../authentication-route/page.mdx#reset-password-route).
+    - The token is automatically consumed and deleted upon successful password reset, preventing reuse.
 
 In this guide, you'll implement a subscriber that handles the `auth.password_reset` event to send an email notification to the user with instructions on how to reset their password.
 

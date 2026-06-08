@@ -30394,6 +30394,23 @@ In the example above, you use the `emailpass` provider, so you have to pass an o
 
 If the returned `success` property is `true`, the password has been reset successfully.
 
+### Secure Password Reset Flow
+
+For production applications, use the secure password reset flow instead of directly calling `updateProvider`. This flow uses single-use tokens for enhanced security:
+
+1. **Generate Reset Token**: Use the [generateResetPasswordTokenWorkflow](undefined/references/medusa-workflows/generateResetPasswordTokenWorkflow) or the password reset API endpoint to create a secure, time-limited token.
+
+2. **Token Validation**: The generated JWT contains a `jti` (JWT ID) claim that references a single-use token stored securely in the database.
+
+3. **Password Update**: When the user submits their new password, the system verifies the token and atomically consumes it to prevent reuse.
+
+This approach provides the following security benefits:
+
+- **Single-use tokens**: Each token can only be used once and is automatically invalidated after use
+- **Time-limited**: Tokens expire automatically (default: 15 minutes)
+- **Automatic invalidation**: New reset requests invalidate any previous tokens for the same user
+- **Secure storage**: Token fingerprints are stored separately from user metadata
+
 
 # Auth Identity and Actor Types
 
@@ -32507,6 +32524,7 @@ Learn more about why modules are isolated in [this documentation](undefined/docs
 
 - [Basic User Authentication](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#1-basic-authentication-flow): Authenticate users using their email and password credentials.
 - [Third-Party and Social Authentication](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#2-third-party-service-authenticate-flow): Authenticate users using third-party services and social platforms, such as [Google](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/google) and [GitHub](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/github).
+- [Secure Password Reset](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/reset-password): Enable secure password reset using single-use, time-limited tokens with automatic invalidation and secure token storage.
 - [Authenticate Custom Actor Types](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/create-actor-type): Create custom user or actor types, such as managers, authenticate them in your application, and guard routes based on the custom user types.
 - [Email Verification](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/email-verification): Require email verification for new registrations and authentications.
 - [Multi-Factor Authentication (MFA)](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/mfa): Add an extra layer of security with time-based one-time passwords (TOTP), backup recovery codes, and configurable disable policies.
@@ -32640,10 +32658,13 @@ Refer to this [Medusa Admin User Guide](undefined/user-guide/reset-password) to 
 Users of any actor type (admin, customer, or custom actor type) can request to reset their password. The flow for resetting a password is as follows:
 
 1. The user requests to reset their password either through the frontend (for example, [Medusa Admin](undefined/user-guide/reset-password)) or the [Generate Reset Password Token API route](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#generate-reset-password-token-route).
-2. The Medusa application generates a password reset token and emits the `auth.password_reset` event.
+2. The Medusa application generates a secure, single-use password reset token and emits the `auth.password_reset` event.
+   - The token is cryptographically secure and expires automatically (default: 15 minutes).
+   - Each new password reset request invalidates any previous tokens for the same user.
    - At this point, you can handle the event to send a notification to the user with instructions on how to reset their password.
 3. The user receives the notification and clicks on the link to reset their password.
    - The user can reset their password either through the frontend (for example, [Medusa Admin](undefined/user-guide/reset-password)) or the [Reset Password API route](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#reset-password-route).
+   - The token is automatically consumed and deleted upon successful password reset, preventing reuse.
 
 In this guide, you'll implement a subscriber that handles the `auth.password_reset` event to send an email notification to the user with instructions on how to reset their password.
 
