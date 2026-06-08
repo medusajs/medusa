@@ -161,7 +161,12 @@
     "release:next": "chgstangeset publish --no-git-tags --snapshot --tag next",
     "version:next": "changeset version --snapshot next",
     "release": "changeset publish",
-    "version": "changeset version && yarn install --no-immutable"
+    "version": "changeset version && yarn install --no-immutable",
+    "publish:status": "bash scripts/publish-status.sh",
+    "publish:remaining": "bash scripts/publish-all.sh",
+    "release:core": "node scripts/release-core-packages.js",
+    "release:core-flows": "node scripts/release-workflow.js",
+    "release:changed": "node scripts/release-changed-packages.js"
   },
   "dependencies": {
     "@changesets/changelog-github": "^0.4.8",

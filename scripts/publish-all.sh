@@ -17,7 +17,9 @@ fi
 
 cd "$(dirname "$0")/.." || exit 1
 
-find packages -name "package.json" -not -path "*/node_modules/*" -not -path "*/dist/*" -not -path "*/__*/*" -maxdepth 4 | while read f; do
+# Process substitution (not `find | while`) so an `exit` inside the loop
+# propagates to the script's real exit code instead of dying in a subshell.
+while read -r f; do
   dir=$(dirname "$f")
   name=$(node -e "console.log(require('./$f').name || '')")
   version=$(node -e "console.log(require('./$f').version || '')")
@@ -46,4 +48,4 @@ find packages -name "package.json" -not -path "*/node_modules/*" -not -path "*/d
       echo "SKIP: $name@$version already published"
     fi
   fi
-done
+done < <(find packages -name "package.json" -not -path "*/node_modules/*" -not -path "*/dist/*" -not -path "*/__*/*" -maxdepth 4)
