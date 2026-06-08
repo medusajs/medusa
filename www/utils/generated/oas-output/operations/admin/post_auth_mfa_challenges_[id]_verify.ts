@@ -7,6 +7,9 @@
  *   Verify a multi-factor authentication (MFA) challenge issued during login. On success, this
  *   completes the authentication flow and returns a JWT token that can be used to authenticate
  *   subsequent requests.
+ * externalDocs:
+ *   description: Learn more about MFA in Medusa
+ *   url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
  * x-authenticated: false
  * parameters:
  *   - name: id

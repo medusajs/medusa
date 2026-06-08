@@ -16,6 +16,7 @@ class EventsGenerator extends AbstractGenerator {
       checker: this.checker!,
       generatorEventManager: this.generatorEventManager,
     })
+    const events: Record<string, unknown>[] = []
 
     await Promise.all(
       this.program!.getSourceFiles().map(async (file) => {
@@ -38,7 +39,6 @@ class EventsGenerator extends AbstractGenerator {
         }
         ts.forEachChild(file, pushNodesToArr)
 
-        const events: Record<string, unknown>[] = []
         await this.eventsKindGenerator!.populateWorkflows()
 
         const documentChild = async (node: ts.Node) => {
@@ -55,14 +55,14 @@ class EventsGenerator extends AbstractGenerator {
           fileNodes.map(async (node) => await documentChild(node))
         )
 
-        if (!this.options.dryRun) {
-          this.writeJson(events)
-        }
-
         this.generatorEventManager.emit(GeneratorEvent.FINISHED_GENERATE_EVENT)
-        console.log(`[EVENTS] Finished generating OAS for ${file.fileName}.`)
+        console.log(`[EVENTS] Finished generating for ${file.fileName}.`)
       })
     )
+
+    if (!this.options.dryRun) {
+      this.writeJson(events)
+    }
   }
 
   /**
@@ -77,7 +77,7 @@ class EventsGenerator extends AbstractGenerator {
       super.isFileIncluded(fileName) &&
       minimatch(
         getBasePath(fileName),
-        "packages/core/utils/src/core-flows/events.ts",
+        "packages/core/utils/src/**/events.ts",
         {
           matchBase: true,
         }

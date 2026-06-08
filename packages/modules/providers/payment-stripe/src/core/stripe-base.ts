@@ -11,6 +11,8 @@ import {
   CreateAccountHolderOutput,
   DeleteAccountHolderInput,
   DeleteAccountHolderOutput,
+  DeletePaymentMethodInput,
+  DeletePaymentMethodOutput,
   DeletePaymentInput,
   DeletePaymentOutput,
   GetPaymentStatusInput,
@@ -598,6 +600,26 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     return { id: resp.id, data: resp as unknown as Record<string, unknown> }
   }
 
+  async deletePaymentMethod({
+    context,
+    data,
+  }: DeletePaymentMethodInput): Promise<DeletePaymentMethodOutput> {
+    const paymentMethodId = data?.id as string | undefined
+
+    if (!paymentMethodId) {
+      throw this.buildError(
+        "Payment method ID not set while deleting a payment method",
+        new Error("Missing payment method ID")
+      )
+    }
+
+    await this.stripe_.paymentMethods.detach(paymentMethodId, {
+      idempotencyKey: context?.idempotency_key,
+    })
+
+    return {}
+  }
+
   private getStatus(paymentIntent: Stripe.PaymentIntent): {
     data: Stripe.PaymentIntent
     status: PaymentSessionStatus
@@ -634,6 +656,15 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     const intent = event.data.object as Stripe.PaymentIntent
 
     const { currency } = intent
+
+    // Payment intents created by Medusa always carry the originating payment
+    // session id in their metadata (see `initiatePayment`). An intent without
+    // one did not originate from this Medusa instance - e.g. an event from
+    // another integration sharing the same Stripe account - and must not be
+    // acted upon, so we treat it as an unsupported event.
+    if (!intent.metadata?.session_id) {
+      return { action: PaymentActions.NOT_SUPPORTED }
+    }
 
     switch (event.type) {
       case "payment_intent.created":

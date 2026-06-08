@@ -21,6 +21,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            path: "/first-project",
+            title: "Create First Project",
+          },
+          {
+            type: "link",
             path: "/faq",
             title: "FAQ",
           },

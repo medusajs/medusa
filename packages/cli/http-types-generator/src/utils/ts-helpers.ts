@@ -93,6 +93,95 @@ export class TsHelpers {
     return TsHelpers.isOperatorMapMember(type)
   }
 
+  /** Zod wrapper class names whose first type argument is the wrapped schema. */
+  private static readonly ZOD_WRAPPER_NAMES = new Set([
+    "ZodOptional",
+    "ZodNullable",
+    "ZodDefault",
+    "ZodPipe",
+    "ZodEffects",
+    "ZodReadonly",
+    "ZodLazy",
+    "ZodCatch",
+    "ZodBranded",
+  ])
+
+  /**
+   * Structurally inspects a Zod schema's TypeScript type to determine whether
+   * it represents an `OperatorMap` (the union produced by `createOperatorMap()`).
+   *
+   * This is used as a fallback when the schema's `_output` cannot be fully
+   * resolved by the TypeScript compiler (e.g. because `applyAndAndOrOperators`
+   * introduces a `z.lazy()` circular reference). Instead of relying on
+   * `_output`, walk the Zod type-argument tree: unwrap `ZodOptional`/
+   * `ZodNullable`/`ZodDefault`/`ZodPipe`/..., descend into `ZodUnion` options,
+   * and look for a `ZodObject` whose shape contains the operator keys
+   * (`$eq`, `$ne`, `$in`, ...).
+   */
+  static isOperatorMapZodSchema(
+    checker: ts.TypeChecker,
+    zodType: ts.Type
+  ): boolean {
+    return TsHelpers.checkOperatorMapZod(checker, zodType, new Set())
+  }
+
+  private static checkOperatorMapZod(
+    checker: ts.TypeChecker,
+    type: ts.Type,
+    seen: Set<ts.Type>
+  ): boolean {
+    if (seen.has(type)) {
+      return false
+    }
+    seen.add(type)
+
+    const name = type.getSymbol()?.getName() ?? ""
+
+    if (TsHelpers.ZOD_WRAPPER_NAMES.has(name)) {
+      const args = checker.getTypeArguments(type as ts.TypeReference) ?? []
+      for (const arg of args) {
+        if (TsHelpers.checkOperatorMapZod(checker, arg, seen)) {
+          return true
+        }
+      }
+      return false
+    }
+
+    if (name === "ZodUnion" || name === "ZodDiscriminatedUnion") {
+      const args = checker.getTypeArguments(type as ts.TypeReference) ?? []
+      for (const arg of args) {
+        // The first type argument is typically the tuple of options.
+        // Iterate the tuple's own type arguments to reach each option.
+        const tupleArgs =
+          checker.getTypeArguments(arg as ts.TypeReference) ?? []
+        if (tupleArgs.length > 0) {
+          for (const t of tupleArgs) {
+            if (TsHelpers.checkOperatorMapZod(checker, t, seen)) {
+              return true
+            }
+          }
+        } else if (TsHelpers.checkOperatorMapZod(checker, arg, seen)) {
+          return true
+        }
+      }
+      return false
+    }
+
+    if (name === "ZodObject") {
+      const args = checker.getTypeArguments(type as ts.TypeReference) ?? []
+      if (args.length === 0) {
+        return false
+      }
+      const shapeProps = args[0].getProperties().map((p) => p.name)
+      const matchCount = TsHelpers.OPERATOR_MAP_PROPS.filter((op) =>
+        shapeProps.includes(op)
+      ).length
+      return matchCount >= 4
+    }
+
+    return false
+  }
+
   /**
    * Returns a simplified display string for a TypeScript type, suitable for
    * use in error messages and diagnostics.
