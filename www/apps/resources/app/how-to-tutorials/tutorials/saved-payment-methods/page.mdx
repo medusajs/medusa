@@ -967,7 +967,207 @@ Once the order is placed successfully, you can check it in the Medusa Admin dash
 
 You've added support for saved payment methods in your Medusa application and Next.js Starter Storefront, allowing customers to save their payment methods during checkout and use them in future orders.
 
-You can add more features to the saved payment methods, such as allowing customers to delete saved payment methods. You can use [Stripe's APIs](https://docs.stripe.com/api/payment_methods/detach) in the storefront or add an [API route](!docs!/learn/fundamentals/api-routes) in Medusa to delete the saved payment method.
+---
+
+## Step 6: Delete Saved Payment Methods
+
+<Note>
+
+This step is available starting from Medusa [v2.13.6](https://github.com/medusajs/medusa/releases/tag/v2.13.6).
+
+</Note>
+
+You can also allow customers to delete their saved payment methods. The Payment Module provides a `deletePaymentMethods` method that removes saved payment methods from third-party providers like Stripe.
+
+### Create Delete API Route
+
+First, create an API route to delete a saved payment method. Create the file `src/api/store/payment-methods/[account_holder_id]/[payment_method_id]/route.ts`:
+
+```ts title="src/api/store/payment-methods/[account_holder_id]/[payment_method_id]/route.ts"
+import { MedusaError } from "@medusajs/framework/utils"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+
+export async function DELETE(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { account_holder_id, payment_method_id } = req.params
+  const query = req.scope.resolve("query")
+  const paymentModuleService = req.scope.resolve("payment")
+
+  const { data: [accountHolder] } = await query.graph({
+    entity: "account_holder",
+    fields: [
+      "data",
+      "provider_id",
+    ],
+    filters: {
+      id: account_holder_id,
+    },
+  })
+
+  if (!accountHolder) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND, 
+      "Account holder not found"
+    )
+  }
+
+  await paymentModuleService.deletePaymentMethods({
+    id: payment_method_id,
+    provider_id: accountHolder.provider_id,
+    context: {
+      account_holder: {
+        data: {
+          id: accountHolder.data.id,
+        },
+      },
+    },
+  })
+
+  res.json({
+    success: true,
+  })
+}
+```
+
+This API route accepts the account holder ID and payment method ID as path parameters, then uses the Payment Module's `deletePaymentMethods` method to remove the payment method from the third-party provider.
+
+### Protect the Delete API Route
+
+Add the delete route to your middleware protection in `src/api/middlewares.ts`:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/payment-methods/:account_holder_id",
+      method: "GET",
+      middlewares: [
+        authenticate("customer", ["bearer", "session"]),
+      ],
+    },
+    {
+      matcher: "/store/payment-methods/:account_holder_id/:payment_method_id",
+      method: "DELETE",
+      middlewares: [
+        authenticate("customer", ["bearer", "session"]),
+      ],
+    },
+  ],
+})
+```
+
+### Add Delete Functionality to Storefront
+
+In `src/lib/data/payment.ts`, add a function to delete saved payment methods:
+
+```ts title="src/lib/data/payment.ts" badgeLabel="Storefront" badgeColor="blue"
+export const deleteSavedPaymentMethod = async (
+  accountHolderId: string,
+  paymentMethodId: string
+) => {
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  return sdk.client.fetch<{ success: boolean }>(
+    `/store/payment-methods/${accountHolderId}/${paymentMethodId}`,
+    {
+      method: "DELETE",
+      headers,
+    }
+  )
+}
+```
+
+Then, update the `StripeSavedPaymentMethodsContainer` component in `src/modules/checkout/components/payment-container/index.tsx` to include delete functionality:
+
+```tsx title="src/modules/checkout/components/payment-container/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+// Add this import
+import { deleteSavedPaymentMethod } from "@lib/data/payment"
+
+// Add this function inside StripeSavedPaymentMethodsContainer
+const handleDelete = async (method: SavedPaymentMethod) => {
+  const accountHolderId = (
+    paymentSession?.context?.account_holder as Record<string, string>
+  )?.id
+
+  if (!accountHolderId) {
+    return
+  }
+
+  try {
+    await deleteSavedPaymentMethod(accountHolderId, method.id)
+    // Remove the deleted method from the list
+    setSavedPaymentMethods((prev) => 
+      prev.filter((pm) => pm.id !== method.id)
+    )
+    // Clear selection if deleted method was selected
+    if (selectedPaymentMethod === method.id) {
+      setSelectedPaymentMethod(null)
+    }
+  } catch (error) {
+    setError("Failed to delete payment method")
+  }
+}
+
+// Update the return statement to include delete button
+return (
+  <div className="flex flex-col gap-y-2">
+    <Text className="txt-medium-plus text-ui-fg-base">
+      Choose a saved payment method:
+    </Text>
+    {savedPaymentMethods.map((method) => (
+      <div 
+        key={method.id}
+        className={`flex items-center justify-between p-4 border rounded-lg ${
+          selectedPaymentMethod === method.id ? "border-ui-border-interactive" : ""
+        }`}
+      >
+        <div 
+          className="flex items-center gap-x-4 cursor-pointer flex-1"
+          role="button"
+          onClick={() => handleSelect(method)}
+        >
+          <input
+            type="radio"
+            name="saved-payment-method" 
+            value={method.id}
+            checked={selectedPaymentMethod === method.id}
+            className="h-4 w-4 text-ui-fg-interactive"
+            onChange={(e) => {
+              if (e.target.checked) {
+                handleSelect(method)
+              }
+            }}
+          />
+          <div className="flex flex-col">
+            <span className="text-sm font-medium text-ui-fg-base">
+              {capitalize(method.data.card.brand)} •••• {method.data.card.last4}
+            </span>
+            <span className="text-xs text-ui-fg-subtle">
+              Expires {method.data.card.exp_month}/{method.data.card.exp_year}
+            </span>
+          </div>
+        </div>
+        <Button
+          variant="secondary"
+          size="small"
+          onClick={(e) => {
+            e.stopPropagation()
+            handleDelete(method)
+          }}
+        >
+          Delete
+        </Button>
+      </div>
+    ))}
+  </div>
+)
+```
+
+This adds a delete button to each saved payment method that allows customers to remove methods they no longer want to use.
 
 If you're new to Medusa, check out the [main documentation](!docs!/learn), where you'll get a more in-depth learning of all the concepts you've used in this guide and more.
 
