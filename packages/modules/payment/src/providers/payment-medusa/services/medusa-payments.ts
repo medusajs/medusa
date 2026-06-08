@@ -13,6 +13,8 @@ import {
   CreateAccountHolderOutput,
   DeleteAccountHolderInput,
   DeleteAccountHolderOutput,
+  DeletePaymentMethodInput,
+  DeletePaymentMethodOutput,
   DeletePaymentInput,
   DeletePaymentOutput,
   GetPaymentStatusInput,
@@ -627,6 +629,33 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
       id: paymentMethodSession.id,
       data: paymentMethodSession as unknown as Record<string, unknown>,
     }
+  }
+
+  async deletePaymentMethod({
+    context,
+    data,
+  }: DeletePaymentMethodInput): Promise<DeletePaymentMethodOutput> {
+    const paymentMethodId = data?.id as string | undefined
+
+    if (!paymentMethodId) {
+      throw new Error(
+        "Payment method ID not set while deleting a payment method"
+      )
+    }
+
+    await this.executeWithRetry(() => {
+      return this.request<{ payment_method: any }>(
+        `/payment-methods/${paymentMethodId}`,
+        {
+          method: "DELETE",
+          body: {
+            idempotency_key: context?.idempotency_key,
+          },
+        }
+      )
+    })
+
+    return {}
   }
 
   private getStatus(payment: MedusaPayment) {

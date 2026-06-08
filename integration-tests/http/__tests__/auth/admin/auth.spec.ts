@@ -230,6 +230,124 @@ medusaIntegrationTestRunner({
         expect(login.data).toEqual({ token: expect.any(String) })
       })
 
+      it("should reject replaying a reset token after a successful password update", async () => {
+        await api.post("/auth/user/emailpass/register", {
+          email: "replay@medusa-commerce.com",
+          password: "secret_password",
+        })
+
+        const { result: resetToken } = await generateResetPasswordTokenWorkflow(
+          container
+        ).run({
+          input: {
+            entityId: "replay@medusa-commerce.com",
+            actorType: "user",
+            provider: "emailpass",
+            secret: "test",
+          },
+        })
+
+        const firstUse = await api.post(
+          `/auth/user/emailpass/update`,
+          { password: "first_new_password" },
+          { headers: { authorization: `Bearer ${resetToken}` } }
+        )
+        expect(firstUse.status).toEqual(200)
+
+        const replay = await api
+          .post(
+            `/auth/user/emailpass/update`,
+            { password: "attacker_password" },
+            { headers: { authorization: `Bearer ${resetToken}` } }
+          )
+          .catch((e) => e)
+
+        expect(replay.response.status).toEqual(401)
+        expect(replay.response.data.message).toEqual("Invalid token")
+
+        const attackerLogin = await api
+          .post("/auth/user/emailpass", {
+            email: "replay@medusa-commerce.com",
+            password: "attacker_password",
+          })
+          .catch((e) => e)
+        expect(attackerLogin.response.status).toEqual(401)
+
+        const legitLogin = await api.post("/auth/user/emailpass", {
+          email: "replay@medusa-commerce.com",
+          password: "first_new_password",
+        })
+        expect(legitLogin.status).toEqual(200)
+      })
+
+      it("should invalidate previously issued reset tokens when a new one is generated", async () => {
+        await api.post("/auth/user/emailpass/register", {
+          email: "reissue@medusa-commerce.com",
+          password: "secret_password",
+        })
+
+        const { result: firstToken } = await generateResetPasswordTokenWorkflow(
+          container
+        ).run({
+          input: {
+            entityId: "reissue@medusa-commerce.com",
+            actorType: "user",
+            provider: "emailpass",
+            secret: "test",
+          },
+        })
+
+        const { result: secondToken } =
+          await generateResetPasswordTokenWorkflow(container).run({
+            input: {
+              entityId: "reissue@medusa-commerce.com",
+              actorType: "user",
+              provider: "emailpass",
+              secret: "test",
+            },
+          })
+
+        const oldTokenAttempt = await api
+          .post(
+            `/auth/user/emailpass/update`,
+            { password: "attacker_password" },
+            { headers: { authorization: `Bearer ${firstToken}` } }
+          )
+          .catch((e) => e)
+        expect(oldTokenAttempt.response.status).toEqual(401)
+        expect(oldTokenAttempt.response.data.message).toEqual("Invalid token")
+
+        const newTokenUse = await api.post(
+          `/auth/user/emailpass/update`,
+          { password: "new_password" },
+          { headers: { authorization: `Bearer ${secondToken}` } }
+        )
+        expect(newTokenUse.status).toEqual(200)
+      })
+
+      it("should reject session bearer tokens on the password update endpoint", async () => {
+        await api.post("/auth/user/emailpass/register", {
+          email: "session@medusa-commerce.com",
+          password: "secret_password",
+        })
+
+        const login = await api.post("/auth/user/emailpass", {
+          email: "session@medusa-commerce.com",
+          password: "secret_password",
+        })
+
+        const attempt = await api
+          .post(
+            `/auth/user/emailpass/update`,
+            { password: "new_password" },
+            { headers: { authorization: `Bearer ${login.data.token}` } }
+          )
+          .catch((e) => e)
+
+        expect(attempt.response.status).toEqual(401)
+        expect(attempt.response.data.message).toEqual("Invalid token")
+      })
+
       it("should ensure you can only update password", async () => {
         // Register user
         await api.post("/auth/user/emailpass/register", {
