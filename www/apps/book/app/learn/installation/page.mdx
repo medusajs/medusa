@@ -60,7 +60,22 @@ To create a Medusa application, use the `create-medusa-app` command:
 
 <Note title="Tip">
 
-Considering using `yarn` or `pnpm` as your package manager for quicker installations and better performance. `npm` installations are generally slower.
+Consider using `yarn` or `pnpm` as your package manager for quicker installations and better performance. `npm` installations are generally slower.
+
+</Note>
+
+<Note title="Bun Compatibility">
+
+If you're using Bun and encounter interactive prompt errors during installation (such as `EPERM: operation not permitted, read`), use `npx` to run the installation initially, then switch to Bun for subsequent commands:
+
+```bash
+npx create-medusa-app@latest my-medusa-store
+cd my-medusa-store
+# Now you can use bun for other commands
+bun install
+```
+
+This avoids issues with Bun's handling of interactive prompts during the creation process.
 
 </Note>
 

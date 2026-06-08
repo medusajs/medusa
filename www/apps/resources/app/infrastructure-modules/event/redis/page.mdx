@@ -66,6 +66,60 @@ module.exports = defineConfig({
 })
 ```
 
+### Full Configuration Example
+
+Here's a complete configuration example without ellipses, showing all typical options:
+
+```ts title="medusa-config.ts"
+import { defineConfig, loadEnv, Modules } from "@medusajs/framework/utils"
+
+loadEnv(process.env.NODE_ENV || "development", process.cwd())
+
+module.exports = defineConfig({
+  projectConfig: {
+    databaseUrl: process.env.DATABASE_URL,
+    redisUrl: process.env.REDIS_URL,
+  },
+  modules: [
+    {
+      resolve: "@medusajs/medusa/event-bus-redis",
+      options: {
+        redisUrl: process.env.EVENTS_REDIS_URL,
+        queueName: "events-queue",
+        redisOptions: {
+          retryDelayOnFailover: 100,
+          maxRetriesPerRequest: 3,
+        },
+        queueOptions: {
+          defaultJobOptions: {
+            removeOnComplete: 10,
+            removeOnFail: 10,
+          },
+        },
+        jobOptions: {
+          removeOnComplete: {
+            age: 3600, // 1 hour
+            count: 1000,
+          },
+          removeOnFail: {
+            age: 3600, // 1 hour  
+            count: 1000,
+          },
+          attempts: 3,
+          backoff: {
+            type: "exponential",
+            delay: 2000,
+          },
+        },
+        workerOptions: {
+          concurrency: 10,
+        },
+      },
+    },
+  ],
+})
+```
+
 ### Environment Variables
 
 Make sure to add the following environment variables:
