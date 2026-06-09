@@ -4,6 +4,7 @@ sidebar_label: cancelOrderWorkflow
 sidebar_description: Cancel an order.
 tags:
   - inventory
+  - locking
   - logger
   - payment
   - event bus
@@ -28,7 +29,7 @@ make changes to custom models linked to the order.
 
 You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around canceling an order.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/f04adb17d322dd6a5e17eca2498df9d05c75f6f0/packages/core/core-flows/src/order/workflows/cancel-order.ts#L125" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/core/core-flows/src/order/workflows/cancel-order.ts#L133" />
 
 ## Examples
 
@@ -159,7 +160,7 @@ This hook is executed after the order is canceled. You can consume this hook to 
 import { cancelOrderWorkflow } from "@medusajs/medusa/core-flows"
 
 cancelOrderWorkflow.hooks.orderCanceled(
-  (async ({ order }, { container }) => {
+  (async ({}, { container }) => {
     //TODO
   })
 )
@@ -169,7 +170,7 @@ cancelOrderWorkflow.hooks.orderCanceled(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Order.Workflows_Order/page.mdx#__type-2)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"order","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="orderCanceled"/>
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Order.Workflows_Order/page.mdx#__type-2)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="orderCanceled"/>
 
 ## Emitted Events
 

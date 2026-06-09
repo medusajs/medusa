@@ -76,7 +76,8 @@ const withMDX = mdx({
           },
           useBaseUrl:
             process.env.NODE_ENV === "production" ||
-            process.env.VERCEL_ENV === "production",
+            process.env.VERCEL_ENV === "production" ||
+            !!process.env.CLOUDFLARE_ENV,
         },
       ],
       [localLinksRehypePlugin],
@@ -128,11 +129,16 @@ const nextConfig = {
 
   transpilePackages: ["docs-ui"],
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/cloud",
+  outputFileTracingRoot: new URL("../../", import.meta.url).pathname,
   outputFileTracingIncludes: {
     "/md\\-content/\\[\\[\\.\\.\\.slug\\]\\]": ["./app/**/*.mdx"],
   },
   outputFileTracingExcludes: {
-    "*": ["node_modules/@medusajs/icons"],
+    "*": [
+      "node_modules/@medusajs/icons",
+      "../**/.open-next/**",
+      "../!(cloud)/.next/**",
+    ],
   },
   experimental: {
     optimizePackageImports: ["@medusajs/icons", "@medusajs/ui"],
@@ -159,10 +165,24 @@ const nextConfig = {
       basePath: false,
       permanent: true,
     },
+    {
+      source: "/cloud/loyalty-plugin",
+      destination: "/resources/commerce-modules/loyalty",
+      basePath: false,
+      permanent: true,
+    },
   ],
   rewrites: async () => {
     return {
       beforeFiles: [
+        {
+          source: "/index.html.md",
+          destination: "/md-content",
+        },
+        {
+          source: "/index.md",
+          destination: "/md-content",
+        },
         {
           source: "/:path*/index.html.md",
           destination: "/md-content/:path*",
@@ -176,7 +196,7 @@ const nextConfig = {
           destination: "/md-content/:path*",
         },
         {
-          source: "/:path((?!md-content).+)/",
+          source: "/:first((?!md-content)[^/]+)/:rest*/",
           has: [
             {
               type: "header",
@@ -184,7 +204,7 @@ const nextConfig = {
               value: ".*(text/markdown|text/plain).*",
             },
           ],
-          destination: "/md-content/:path",
+          destination: "/md-content/:first/:rest*",
         },
         {
           source: "/",
@@ -198,7 +218,7 @@ const nextConfig = {
           destination: "/md-content",
         },
         {
-          source: "/:path((?!md-content).+)",
+          source: "/:first((?!md-content)[^/]+)/:rest*",
           has: [
             {
               type: "header",
@@ -206,7 +226,7 @@ const nextConfig = {
               value: ".*(text/markdown|text/plain).*",
             },
           ],
-          destination: "/md-content/:path",
+          destination: "/md-content/:first/:rest*",
         },
       ],
     }

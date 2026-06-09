@@ -579,6 +579,82 @@ medusaIntegrationTestRunner({
 
         listReservationItemsSpy.mockRestore()
       })
+
+      describe("reserved_quantity consistency after soft-delete and restore", () => {
+        let reservationId: string
+        let inventoryService: any
+
+        const getLevel = async () => {
+          const res = await api.get(
+            `/admin/inventory-items/${inventoryItem1.id}/location-levels?location_id[]=${stockLocation1.id}&fields=reserved_quantity,available_quantity,stocked_quantity`,
+            adminHeaders
+          )
+          return res.data.inventory_levels[0]
+        }
+
+        beforeEach(async () => {
+          inventoryService = appContainer.resolve(Modules.INVENTORY)
+
+          await api.post(
+            `/admin/inventory-items/${inventoryItem1.id}/location-levels`,
+            { location_id: stockLocation1.id, stocked_quantity: 10 },
+            adminHeaders
+          )
+
+          const res = await api.post(
+            `/admin/reservations`,
+            {
+              line_item_id: "line-item-id-1",
+              inventory_item_id: inventoryItem1.id,
+              location_id: stockLocation1.id,
+              quantity: 5,
+            },
+            adminHeaders
+          )
+          reservationId = res.data.reservation.id
+        })
+
+        // Scenario 1: a single soft-delete + restore cycle must leave reserved_quantity unchanged.
+        it("should restore reserved_quantity to its pre-deletion value after a soft-delete/restore cycle", async () => {
+          const before = await getLevel()
+          expect(before.reserved_quantity).toBe(5)
+          expect(before.available_quantity).toBe(5)
+
+          await inventoryService.softDeleteReservationItems([reservationId])
+
+          const afterDelete = await getLevel()
+          expect(afterDelete.reserved_quantity).toBe(0)
+
+          await inventoryService.restoreReservationItems([reservationId])
+
+          const afterRestore = await getLevel()
+
+          expect(afterRestore.reserved_quantity).toBe(5)
+          expect(afterRestore.available_quantity).toBe(5)
+        })
+
+        // Scenario 2: multiple delete/restore cycles don't cause negative reserved_quantity
+        it("should not accumulate negative reserved_quantity across repeated soft-delete/restore cycles", async () => {
+          for (let i = 0; i < 3; i++) {
+            await inventoryService.softDeleteReservationItems([reservationId])
+            await inventoryService.restoreReservationItems([reservationId])
+          }
+
+          // Final deletion: leaves no visible reservation records.
+          await inventoryService.softDeleteReservationItems([reservationId])
+
+          const reservations = await api.get(
+            `/admin/reservations?inventory_item_id[]=${inventoryItem1.id}`,
+            adminHeaders
+          )
+          expect(reservations.data.reservations).toHaveLength(0)
+
+          const level = await getLevel()
+
+          expect(level.reserved_quantity).toBe(0)
+          expect(level.available_quantity).toBe(10)
+        })
+      })
     })
   },
 })

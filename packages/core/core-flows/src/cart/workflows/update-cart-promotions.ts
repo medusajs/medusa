@@ -22,6 +22,7 @@ import {
 } from "../steps"
 import { updateCartPromotionsStep } from "../steps/update-cart-promotions"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
+import { promotionContextResult } from "../utils/schemas"
 import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 
 /**
@@ -48,11 +49,11 @@ export type UpdateCartPromotionsWorkflowInput = {
     | PromotionActions.ADD
     | PromotionActions.REMOVE
     | PromotionActions.REPLACE
-    /**
-     * Wether to force the refresh of the cart payment collection. If the caller doesn't refresh it explicitly,
-     * you should probably set this property to true.
-     */
-    force_refresh_payment_collection?: boolean
+  /**
+   * Wether to force the refresh of the cart payment collection. If the caller doesn't refresh it explicitly,
+   * you should probably set this property to true.
+   */
+  force_refresh_payment_collection?: boolean
 }
 
 export const updateCartPromotionsWorkflowId = "update-cart-promotions"
@@ -79,6 +80,7 @@ export const updateCartPromotionsWorkflowId = "update-cart-promotions"
  * Update a cart's applied promotions to add, replace, or remove them.
  *
  * @property hooks.validate - This hook is executed before all operations. You can consume this hook to perform any custom validation. If validation fails, you can throw an error to stop the workflow execution.
+ * @property hooks.setPromotionContext - This hook is executed after the cart is fetched and before promotion rules are evaluated. You can consume this hook to add custom rules that determine whether a promotion is applied. The returned object is merged on top of the cart context, allowing you to override existing context.
  */
 export const updateCartPromotionsWorkflow = createWorkflow(
   {
@@ -86,6 +88,16 @@ export const updateCartPromotionsWorkflow = createWorkflow(
     idempotent: false,
   },
   (input: WorkflowData<UpdateCartPromotionsWorkflowInput>) => {
+    const cartId = transform({ input }, ({ input }) => {
+      return input.cart_id ?? input.cart?.id
+    })
+
+    acquireLockStep({
+      key: cartId,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const fetchCart = when("should-fetch-cart", { input }, ({ input }) => {
       return !input.cart
     }).then(() => {
@@ -105,12 +117,6 @@ export const updateCartPromotionsWorkflow = createWorkflow(
 
     validateCartStep({ cart })
 
-    acquireLockStep({
-      key: cart.id,
-      timeout: 2,
-      ttl: 10,
-    })
-
     const validate = createHook("validate", {
       input,
       cart,
@@ -124,6 +130,19 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       return data.input.action || PromotionActions.ADD
     })
 
+    const setPromotionContext = createHook(
+      "setPromotionContext",
+      {
+        cart,
+        action,
+        promo_codes,
+      },
+      {
+        resultValidator: promotionContextResult,
+      }
+    )
+    const setPromotionContextResult = setPromotionContext.getResult()
+
     const promotionCodesToApply = getPromotionCodesToApply({
       cart: cart,
       promo_codes,
@@ -133,6 +152,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
     const actions = getActionsToComputeFromPromotionsStep({
       computeActionContext: cart,
       promotionCodesToApply,
+      additional_promotion_context: setPromotionContextResult,
     })
 
     const {
@@ -141,6 +161,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       shippingMethodAdjustmentsToCreate,
       shippingMethodAdjustmentIdsToRemove,
       computedPromotionCodes,
+      skippedPromoCodes,
     } = prepareAdjustmentsFromPromotionActionsStep({ actions })
 
     parallelize(
@@ -169,11 +190,12 @@ export const updateCartPromotionsWorkflow = createWorkflow(
     })
 
     releaseLockStep({
-      key: cart.id,
+      key: cartId,
     })
 
-    return new WorkflowResponse(void 0, {
-      hooks: [validate],
-    })
+    return new WorkflowResponse(
+      { skipped_promo_codes: skippedPromoCodes },
+      { hooks: [validate, setPromotionContext] as const }
+    )
   }
 )

@@ -1,0 +1,185 @@
+import { 
+  Tabs,
+  TabsContent,
+  TabsContentWrapper,
+  TabsList,
+  TabsTrigger,
+  Link,
+  Prerequisites
+} from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Medusa MCP Remote Server`,
+}
+
+# {metadata.title}
+
+The Medusa documentation provides a remote Model Context Protocol (MCP) server that allows you to find information from the Medusa documentation right in your IDEs or AI tools, such as Cursor.
+
+Medusa hosts a Streamable HTTP MCP server at `https://docs.medusajs.com/mcp` that you can add to AI agents supporting MCP server connections.
+
+## Authentication
+
+This MCP server is available for [Cloud](!cloud!) users only. It requires authenticating with your Cloud account to use it.
+
+The MCP server supports two authentication methods:
+
+1. OAuth: This is the recommended authentication method. It allows you to authenticate with your Cloud account without generating a token manually. When you connect to the MCP server, you will be prompted to log into your Cloud account in a browser window to authenticate.
+2. [Personal Access Key](!cloud!/access-keys#manage-personal-access-keys): Use your Cloud personal access key as a Bearer token in the Authorization header when connecting to the MCP server. This is useful for AI agents like OpenCode that may have issues with OAuth authentication flows.
+
+---
+
+## Connect to the Medusa MCP Server
+
+<Prerequisites
+  items={[
+    {
+      text: "Cloud account",
+      link: "!cloud!"
+    }
+  ]}
+/>
+
+### Claude Code
+
+To connect to the Medusa MCP server in Claude Code, run the following command in your terminal:
+
+```sh
+claude mcp add --transport http medusa https://docs.medusajs.com/mcp
+```
+
+Then, start Claude Code and authenticate with your Cloud account:
+
+```sh
+claude
+/mcp
+```
+
+Then, select the `medusa` MCP server and choose "Authenticate". This will open a browser window where you can log into your Cloud account to authenticate.
+
+### Cursor
+
+Cursor has known issues with OAuth authentication flows. So, to connect to the Medusa MCP server in Cursor, [create a personal access key in your Cloud account](!cloud!/access-keys#manage-personal-access-keys) first.
+
+Then, add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://cursor.com/docs/mcp):
+
+```json title=".cursor/mcp.json"
+{
+  "mcpServers": {
+    "medusa": {
+      "url": "https://docs.medusajs.com/mcp",
+      "headers": {
+        "Authorization": "Bearer {token}"
+      }
+    }
+  }
+}
+```
+
+Replace `{token}` with the personal access key you generated in your Cloud account.
+
+You can then start using the Medusa MCP server in Cursor.
+
+### VS Code
+
+<Link href="https://vscode.dev/redirect/mcp/install?name=medusa&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fdocs.medusajs.com%2Fmcp%22%7D" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Medusa MCP server to VSCode.
+
+To manually connect to the Medusa MCP server in VSCode, add the following to your `.vscode/mcp.json` file in your workspace:
+
+```json title=".vscode/mcp.json"
+{
+  "servers": {
+    "medusa": {
+      "type": "http",
+      "url": "https://docs.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+Then, once you start the MCP server connection, you will be prompted to authenticate with your Cloud account in a browser window. Log in to authenticate and start using the Medusa MCP server in VSCode.
+
+### OpenCode
+
+OpenCode has known issues with OAuth authentication flows. So, to connect to the Medusa MCP server in OpenCode, [create a personal access key in your Cloud account](!cloud!/access-keys#manage-personal-access-keys) first.
+
+Then, add the following to your [OpenCode config file](https://opencode.ai/docs/config/) (for example, `~/.config/opencode/opencode.json`):
+
+```json title="~/.config/opencode/opencode.json"
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "medusa": {
+      "type": "remote",
+      "url": "https://docs.medusajs.com/mcp",
+      "headers": {
+        "Authorization": "Bearer {token}"
+      },
+      "oauth": false
+    }
+  },
+}
+```
+
+Replace `{token}` with the personal access key you generated in your Cloud account.
+
+You can then start using the Medusa MCP server in OpenCode.
+
+---
+
+## How to Use the MCP Server
+
+After connecting to the Medusa MCP server in your AI tool or IDE, you can start asking questions or requesting your AI assistant to build Medusa customizations. It will fetch the relevant information from the Medusa documentation and provide you with accurate answers, code snippets, and explanations.
+
+For example, you can ask:
+
+1. "Create a Product Review module for Medusa. Refer to the Medusa documentation for information."
+2. "How to update Medusa to the latest version?"
+3. "Explain the Medusa workflow system."
+4. "Integrate Medusa with X provider. Refer to the Medusa documentation for information."
+
+---
+
+## MCP Server Prompts
+
+The MCP server provides prompts with step-by-step instructions for common tasks. These are useful for your AI agent to learn how to perform specific tasks and what information it should look for in the documentation.
+
+The MCP server provides prompts for the following tasks:
+
+<Note title="Tip">
+
+When integrating third-party providers, consider adding the [Context7 MCP server](https://github.com/upstash/context7#installation). It retrieves the latest information from the provider's documentation, which is essential for successful integration.
+
+</Note>
+
+1. Integrate a third-party payment provider with Medusa. For example:
+
+```bash title="Example prompt"
+Integrate PayPal as a payment provider in my Medusa store.
+```
+
+2. Integrate a third-party fulfillment provider with Medusa. For example:
+
+```bash title="Example prompt"
+Integrate ShipStation as a fulfillment provider in my Medusa store.
+```
+
+3. Extend the Product Module with custom properties and features. For example:
+
+```bash title="Example prompt"
+Implement a brand feature to allow merchants to associate products with brands
+```
+
+---
+
+## Submit Feedback with the MCP Server
+
+If you run into any issues or have suggestions to improve Medusa, you can ask your AI agent to submit feedback. It will use the MCP server to submit feedback to our team.
+
+For example, you can ask:
+
+```bash title="Example prompt"
+Submit feedback that the documentation on how to create a custom payment provider is outdated and needs to be updated.
+```
+
+You can submit feedback about the documentation, the developer experience, the MCP server, or any other aspect of Medusa. Your feedback will help us improve Medusa for everyone.

@@ -1,4 +1,4 @@
-import { getOsShortcut, Kbd } from "docs-ui"
+import { getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
 
 export const metadata = {
   title: `Environments`,
@@ -23,7 +23,7 @@ Environments are useful to test changes in production-like conditions before act
 There are two types of environments:
 
 - [Long-lived environments](./long-lived/page.mdx): These are environments that you create for specific branches in your GitHub repository, such as Production or Staging environments.
-- [Short-lived Preview environments](./preview/page.mdx): These are environments automatically created for each pull request (PR) towards a branch that has a long-lived environment in Cloud. They're created as a preview for the PR, and are destroyed once the PR is merged or closed.
+- [Short-lived Preview environments](./preview/page.mdx): These are environments automatically created for each pull request (PR) towards a branch that has an environment in Cloud. They're created as a preview for the PR, and are destroyed once the PR is merged or closed.
 
 ---
 
@@ -37,10 +37,30 @@ You can also navigate to a project's overview page from the [command palette](..
 
 </Note>
 
-1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-2. Click on the project whose environments you want to view.
 
-In the project's dashboard, you'll find a card for every long-lived environment in your project. For example, you may have Production and Staging cards.
+<Tabs defaultValue="classic">
+  <TabsList>
+    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
+    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
+  </TabsList>
+  <TabsContentWrapper>
+    <TabsContent value="classic">
+
+    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
+    2. Click on the project card in the organization's dashboard.
+
+    </TabsContent>
+    <TabsContent value="global-sidebar">
+
+    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
+    2. Click on the project name in the sidebar.
+    3. Click on **Overview** in the sidebar under the project.
+
+    </TabsContent>
+  </TabsContentWrapper>
+</Tabs>
+
+In the project's dashboard, you'll find a card for every long-lived environment in your project. Production environments are displayed first, followed by other environments. For example, you may have Production and Staging cards.
 
 You'll also find a table listing all the preview environments created for the project below the long-lived environment cards.
 

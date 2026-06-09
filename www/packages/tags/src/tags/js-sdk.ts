@@ -116,6 +116,14 @@ export const jsSdk = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/promotion"
   },
   {
+    "title": "rbacPolicy",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/rbacPolicy"
+  },
+  {
+    "title": "rbacRole",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/rbacRole"
+  },
+  {
     "title": "refundReason",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/refundReason"
   },
@@ -206,10 +214,6 @@ export const jsSdk = [
   {
     "title": "refresh",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/refresh"
-  },
-  {
-    "title": "register",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/register"
   },
   {
     "title": "resetPassword",

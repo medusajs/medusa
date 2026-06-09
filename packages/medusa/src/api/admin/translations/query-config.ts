@@ -13,6 +13,7 @@ export const defaultAdminTranslationFields = [
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminTranslationFields,
+  entity: Entities.translation,
   isList: false,
 }
 

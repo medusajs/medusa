@@ -2507,6 +2507,31 @@
       "languageLabel": "Language",
       "usageInsightsLabel": "Usage insights"
     },
+    "mfa": {
+      "title": "Two-factor authentication",
+      "description": "Require an authenticator app when signing in.",
+      "status": "Status",
+      "method": "Method",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "pending": "Pending setup",
+      "authenticatorApp": "Authenticator app",
+      "noMethod": "No authentication method enabled",
+      "setupTitle": "Set up authenticator app",
+      "setupAuthenticatorApp": "Set up authenticator app",
+      "setupDescription": "Scan the QR code with your authenticator app, then enter the 6-digit code to finish setup.",
+      "setupError": "The authenticator app could not be set up.",
+      "verifyError": "The verification code could not be confirmed.",
+      "qrError": "The QR code could not be generated.",
+      "recoveryCodesTitle": "Recovery codes",
+      "recoveryCodesDescription": "Copy and store these recovery codes in case you lose access to your authenticator app.",
+      "recoveryCodesError": "Recovery codes could not be generated.",
+      "disableTitle": "Disable two-factor authentication",
+      "disableDescription": "You are about to disable two-factor authentication for your account.",
+      "disableChallengeDescription": "Enter the 6-digit code from your authenticator app to disable two-factor authentication.",
+      "disableError": "Two-factor authentication could not be disabled.",
+      "disableSuccess": "Two-factor authentication disabled"
+    },
     "edit": {
       "header": "Edit Profile",
       "languageHint": "The language you want to use in the admin dashboard. This doesn't change the language of your store.",
@@ -2522,6 +2547,7 @@
     "editUser": "Edit User",
     "inviteUser": "Invite User",
     "inviteUserHint": "Invite a new user to your store.",
+    "inviteRolesTooltip": "If no role is selected, the user will be invited with a superuser role.",
     "sendInvite": "Send invite",
     "pendingInvites": "Pending Invites",
     "deleteInviteWarning": "You are about to delete the invite for {{email}}. This action cannot be undone.",
@@ -2553,6 +2579,127 @@
     "deleteUserWarning": "You are about to delete the user {{name}}. This action cannot be undone.",
     "deleteUserSuccess": "User {{name}} deleted successfully",
     "invite": "Invite"
+  },
+  "roles": {
+    "domain": "Roles",
+    "subtitle": "Manage access roles and permissions.",
+    "create": {
+      "header": "Create role",
+      "hint": "Create a role to manage access in your admin.",
+      "successToast": "Role {{name}} created",
+      "tabs": {
+        "details": "Details",
+        "permissions": "Permissions"
+      },
+      "permissions": {
+        "empty": {
+          "heading": "No permissions",
+          "description": "There are no permissions to select."
+        },
+        "filtered": {
+          "heading": "No results",
+          "description": "No permissions match the current filter criteria."
+        }
+      }
+    },
+    "edit": {
+      "header": "Edit role",
+      "successToast": "Role {{name}} updated"
+    },
+    "delete": {
+      "title": "Delete role",
+      "description": "You are about to delete the role {{name}}. This action cannot be undone.",
+      "successToast": "Role {{name}} deleted"
+    },
+    "fields": {
+      "permissions": "Permissions"
+    },
+    "actions": {
+      "managePermissions": "Manage permissions"
+    },
+    "users": {
+      "alreadyAddedTooltip": "User already has this role.",
+      "unassignableRoleTooltip": "You don't have access to assign this role — your permissions don't cover all of its policies.",
+      "add": {
+        "successToast_one": "User was successfully added to the role.",
+        "successToast_other": "Users were successfully added to the role.",
+        "list": {
+          "noRecordsMessage": "Create a user first."
+        }
+      },
+      "remove": {
+        "title_one": "Remove user",
+        "title_other": "Remove users",
+        "description_one": "You are about to remove {{count}} user from the role. This action cannot be undone.",
+        "description_other": "You are about to remove {{count}} users from the role. This action cannot be undone."
+      },
+      "list": {
+        "noRecordsMessage": "This role doesn't have users."
+      }
+    },
+    "permissions": {
+      "header": "Manage permissions",
+      "hint": "Select permissions that this role should include.",
+      "empty": {
+        "heading": "No permissions",
+        "description": "There are no permissions to select."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No permissions match the current filter criteria."
+      }
+    },
+    "list": {
+      "empty": {
+        "heading": "No roles found",
+        "description": "Create roles to manage access in your admin."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No roles match the current filter criteria."
+      }
+    }
+  },
+  "policies": {
+    "domain": "Policies",
+    "subtitle": "Define the permissions that roles can grant.",
+    "create": {
+      "header": "Create policy",
+      "hint": "Define a new permission that can be attached to roles.",
+      "successToast": "Policy {{key}} created"
+    },
+    "edit": {
+      "header": "Edit policy",
+      "successToast": "Policy {{key}} updated"
+    },
+    "delete": {
+      "title": "Delete policy",
+      "description": "You are about to delete the policy {{key}}. This action cannot be undone.",
+      "successToast": "Policy {{key}} deleted"
+    },
+    "fields": {
+      "roles": "Roles",
+      "users": "Users"
+    },
+    "list": {
+      "empty": {
+        "heading": "No policies found",
+        "description": "Create policies to manage the permissions roles can grant."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No policies match the current filter criteria."
+      }
+    },
+    "roles": {
+      "list": {
+        "noRecordsMessage": "No roles include this policy yet."
+      },
+      "empty": {
+        "heading": "No roles",
+        "description": "No roles include this policy yet."
+      }
+    }
   },
   "translations": {
     "domain": "Translations",
@@ -2945,7 +3092,21 @@
   "login": {
     "forgotPassword": "Forgot password? - <0>Reset</0>",
     "title": "Welcome to Medusa",
-    "hint": "Sign in to access the account area"
+    "hint": "Sign in to access the account area",
+    "mfa": {
+      "title": "Two-factor authentication",
+      "description": "Enter the 6-digit code from your authenticator app.",
+      "recoveryDescription": "Enter one of your recovery codes.",
+      "recoveryCodePlaceholder": "Recovery code",
+      "verify": "Verify",
+      "verifyError": "The verification code could not be confirmed.",
+      "completeError": "Authentication could not be completed.",
+      "backToLogin": "Back to login",
+      "useRecoveryCodePrompt": "Lost access to your authenticator app?",
+      "useRecoveryCode": "Use a recovery code",
+      "useAuthenticatorPrompt": "Have access to your authenticator app?",
+      "useAuthenticator": "Use an authenticator code"
+    }
   },
   "invite": {
     "title": "Welcome to Medusa",
@@ -3247,11 +3408,13 @@
     "region": "Region",
     "discount": "Discount",
     "role": "Role",
+    "resource": "Resource",
     "sent": "Sent",
     "salesChannels": "Sales Channels",
     "product": "Product",
     "createdAt": "Created",
     "updatedAt": "Updated",
+    "operation": "Operation",
     "revokedAt": "Revoked at",
     "true": "True",
     "false": "False",
@@ -3338,6 +3501,57 @@
     "login": {
       "authenticationFailed": "Authentication failed",
       "cloud": "Log in with Medusa Cloud"
+    }
+  },
+  "permissions": {
+    "accessDenied": {
+      "title": "Access Denied",
+      "description": "You don't have permission to access this page.",
+      "requiredPermission": "Required permission: {{permission}}",
+      "action": "You don't have permission to perform this action."
+    },
+    "requiredPermissions": {
+      "title": "Required permissions",
+      "none": "No permissions declared in this view.",
+      "anyOf": "Any of",
+      "allOf": "All of",
+      "source": "Source: {{source}}"
+    },
+    "resources": {
+      "customer": "Customer",
+      "customer_group": "Customer Group",
+      "order": "Order",
+      "product": "Product",
+      "product_category": "Product Category",
+      "product_collection": "Product Collection",
+      "product_tag": "Product Tag",
+      "product_type": "Product Type",
+      "inventory": "Inventory",
+      "reservation": "Reservation",
+      "promotion": "Promotion",
+      "campaign": "Campaign",
+      "price_list": "Price List",
+      "region": "Region",
+      "store": "Store",
+      "user": "User",
+      "role": "Role",
+      "permission": "Permission",
+      "sales_channel": "Sales Channel",
+      "stock_location": "Stock Location",
+      "shipping_profile": "Shipping Profile",
+      "shipping_option": "Shipping Option",
+      "tax_region": "Tax Region",
+      "api_key": "API Key",
+      "return_reason": "Return Reason",
+      "refund_reason": "Refund Reason",
+      "workflow": "Workflow",
+      "translation": "Translation"
+    },
+    "actions": {
+      "read": "View",
+      "create": "Create",
+      "update": "Edit",
+      "delete": "Delete"
     }
   }
 }

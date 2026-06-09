@@ -187,6 +187,11 @@ export interface CreateRefundDTO {
    * a user's ID.
    */
   created_by?: string
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown>
 }
 
 /**
@@ -412,4 +417,31 @@ export interface CreatePaymentMethodDTO {
    * Necessary context data for the associated payment provider.
    */
   context: PaymentProviderContext
+}
+
+/**
+ * The payment method to be deleted.
+ * 
+ * @since 2.15.6
+ */
+export interface DeletePaymentMethodDTO {
+  /**
+   * The ID of the payment method in the payment provider.
+   */
+  id: string
+
+  /**
+   * The provider's ID.
+   */
+  provider_id: string
+
+  /**
+   * Data for the associated payment provider to delete the payment method.
+   */
+  data?: Record<string, unknown>
+
+  /**
+   * Necessary context data for the associated payment provider.
+   */
+  context?: PaymentProviderContext
 }

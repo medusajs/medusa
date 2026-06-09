@@ -1,0 +1,10 @@
+type: object
+description: The details of marking an order fulfillment as delivered.
+x-schemaName: AdminMarkOrderFulfillmentAsDelivered
+properties:
+  no_notification:
+    type: boolean
+    title: no_notification
+    description: >-
+      Whether to send a notification to the customer about the fulfillment being
+      marked as delivered.

@@ -113,78 +113,72 @@
  *     required: false
  *     schema:
  *       type: object
- *       description: Filter by a shipping option type's creation date.
  *       properties:
  *         $and:
  *           type: array
  *           description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
  *           items:
  *             type: object
- *           title: $and
  *         $or:
  *           type: array
  *           description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
  *           items:
  *             type: object
- *           title: $or
  *         $eq:
  *           oneOf:
  *             - type: string
  *               title: $eq
- *               description: Filter by an exact match.
+ *               description: Filter by exact value.
  *             - type: array
- *               description: Filter by an exact match.
+ *               title: $eq
+ *               description: Filter by exact value.
  *               items:
  *                 type: string
- *                 title: $eq
- *                 description: Filter by an exact match.
  *         $ne:
  *           type: string
  *           title: $ne
- *           description: Filter by values not equal to this parameter.
+ *           description: Filter by not equal to the given value.
  *         $in:
  *           type: array
- *           description: Filter by values in this array.
+ *           title: $in
+ *           description: Filter by values included in the given array.
  *           items:
  *             type: string
- *             title: $in
- *             description: Filter by values in this array.
  *         $nin:
  *           type: array
- *           description: Filter by values not in this array.
+ *           title: $nin
+ *           description: Filter by values not included in the given array.
  *           items:
  *             type: string
- *             title: $nin
- *             description: Filter by values not in this array.
  *         $not:
  *           oneOf:
  *             - type: string
  *               title: $not
- *               description: Filter by values not matching the conditions in this parameter.
+ *               description: Filter by not equal to the given value.
  *             - type: object
+ *               title: $not
  *               description: Filter by values not matching the conditions in this parameter.
  *             - type: array
+ *               title: $not
  *               description: Filter by values not matching the conditions in this parameter.
  *               items:
  *                 type: string
- *                 title: $not
- *                 description: Filter by values not matching the conditions in this parameter.
  *         $gt:
  *           type: string
  *           title: $gt
- *           description: Filter by values greater than this parameter. Useful for numbers and dates only.
+ *           description: Filter by values greater than the given value.
  *         $gte:
  *           type: string
  *           title: $gte
- *           description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
+ *           description: Filter by values greater than or equal to the given value.
  *         $lt:
  *           type: string
  *           title: $lt
- *           description: Filter by values less than this parameter. Useful for numbers and dates only.
+ *           description: Filter by values less than the given value.
  *         $lte:
  *           type: string
  *           title: $lte
- *           description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
+ *           description: Filter by values less than or equal to the given value.
  *         $like:
  *           type: string
  *           title: $like
@@ -203,108 +197,100 @@
  *           description: Filter to apply on full-text properties.
  *         $overlap:
  *           type: array
- *           description: Filter arrays that have overlapping values with this parameter.
+ *           title: $overlap
+ *           description: Filter to apply on array properties to find overlapping values.
  *           items:
  *             type: string
- *             title: $overlap
- *             description: Filter arrays that have overlapping values with this parameter.
  *         $contains:
  *           type: array
- *           description: Filter arrays that contain some of the values of this parameter.
+ *           title: $contains
+ *           description: Filter to apply on array properties to find contained values.
  *           items:
  *             type: string
- *             title: $contains
- *             description: Filter arrays that contain some of the values of this parameter.
  *         $contained:
  *           type: array
- *           description: Filter arrays that contain all values of this parameter.
+ *           title: $contained
+ *           description: Filter to apply on array properties to find contained values.
  *           items:
  *             type: string
- *             title: $contained
- *             description: Filter arrays that contain all values of this parameter.
  *         $exists:
  *           type: boolean
  *           title: $exists
- *           description: Filter by whether a value for this parameter exists (not `null`).
+ *           description: Filter by whether a value exists or not.
  *       title: created_at
+ *       description: The shipping option type's created at.
  *   - name: updated_at
  *     in: query
  *     description: Filter by a shipping option type's update date.
  *     required: false
  *     schema:
  *       type: object
- *       description: Filter by a shipping option type's update date.
  *       properties:
  *         $and:
  *           type: array
  *           description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
  *           items:
  *             type: object
- *           title: $and
  *         $or:
  *           type: array
  *           description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
  *           items:
  *             type: object
- *           title: $or
  *         $eq:
  *           oneOf:
  *             - type: string
  *               title: $eq
- *               description: Filter by an exact match.
+ *               description: Filter by exact value.
  *             - type: array
- *               description: Filter by an exact match.
+ *               title: $eq
+ *               description: Filter by exact value.
  *               items:
  *                 type: string
- *                 title: $eq
- *                 description: Filter by an exact match.
  *         $ne:
  *           type: string
  *           title: $ne
- *           description: Filter by values not equal to this parameter.
+ *           description: Filter by not equal to the given value.
  *         $in:
  *           type: array
- *           description: Filter by values in this array.
+ *           title: $in
+ *           description: Filter by values included in the given array.
  *           items:
  *             type: string
- *             title: $in
- *             description: Filter by values in this array.
  *         $nin:
  *           type: array
- *           description: Filter by values not in this array.
+ *           title: $nin
+ *           description: Filter by values not included in the given array.
  *           items:
  *             type: string
- *             title: $nin
- *             description: Filter by values not in this array.
  *         $not:
  *           oneOf:
  *             - type: string
  *               title: $not
- *               description: Filter by values not matching the conditions in this parameter.
+ *               description: Filter by not equal to the given value.
  *             - type: object
+ *               title: $not
  *               description: Filter by values not matching the conditions in this parameter.
  *             - type: array
+ *               title: $not
  *               description: Filter by values not matching the conditions in this parameter.
  *               items:
  *                 type: string
- *                 title: $not
- *                 description: Filter by values not matching the conditions in this parameter.
  *         $gt:
  *           type: string
  *           title: $gt
- *           description: Filter by values greater than this parameter. Useful for numbers and dates only.
+ *           description: Filter by values greater than the given value.
  *         $gte:
  *           type: string
  *           title: $gte
- *           description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
+ *           description: Filter by values greater than or equal to the given value.
  *         $lt:
  *           type: string
  *           title: $lt
- *           description: Filter by values less than this parameter. Useful for numbers and dates only.
+ *           description: Filter by values less than the given value.
  *         $lte:
  *           type: string
  *           title: $lte
- *           description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
+ *           description: Filter by values less than or equal to the given value.
  *         $like:
  *           type: string
  *           title: $like
@@ -323,108 +309,100 @@
  *           description: Filter to apply on full-text properties.
  *         $overlap:
  *           type: array
- *           description: Filter arrays that have overlapping values with this parameter.
+ *           title: $overlap
+ *           description: Filter to apply on array properties to find overlapping values.
  *           items:
  *             type: string
- *             title: $overlap
- *             description: Filter arrays that have overlapping values with this parameter.
  *         $contains:
  *           type: array
- *           description: Filter arrays that contain some of the values of this parameter.
+ *           title: $contains
+ *           description: Filter to apply on array properties to find contained values.
  *           items:
  *             type: string
- *             title: $contains
- *             description: Filter arrays that contain some of the values of this parameter.
  *         $contained:
  *           type: array
- *           description: Filter arrays that contain all values of this parameter.
+ *           title: $contained
+ *           description: Filter to apply on array properties to find contained values.
  *           items:
  *             type: string
- *             title: $contained
- *             description: Filter arrays that contain all values of this parameter.
  *         $exists:
  *           type: boolean
  *           title: $exists
- *           description: Filter by whether a value for this parameter exists (not `null`).
+ *           description: Filter by whether a value exists or not.
  *       title: updated_at
+ *       description: The shipping option type's updated at.
  *   - name: deleted_at
  *     in: query
  *     description: Filter by a shipping option type's deletion date.
  *     required: false
  *     schema:
  *       type: object
- *       description: Filter by a shipping option type's deletion date.
  *       properties:
  *         $and:
  *           type: array
  *           description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
  *           items:
  *             type: object
- *           title: $and
  *         $or:
  *           type: array
  *           description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
  *           items:
  *             type: object
- *           title: $or
  *         $eq:
  *           oneOf:
  *             - type: string
  *               title: $eq
- *               description: Filter by an exact match.
+ *               description: Filter by exact value.
  *             - type: array
- *               description: Filter by an exact match.
+ *               title: $eq
+ *               description: Filter by exact value.
  *               items:
  *                 type: string
- *                 title: $eq
- *                 description: Filter by an exact match.
  *         $ne:
  *           type: string
  *           title: $ne
- *           description: Filter by values not equal to this parameter.
+ *           description: Filter by not equal to the given value.
  *         $in:
  *           type: array
- *           description: Filter by values in this array.
+ *           title: $in
+ *           description: Filter by values included in the given array.
  *           items:
  *             type: string
- *             title: $in
- *             description: Filter by values in this array.
  *         $nin:
  *           type: array
- *           description: Filter by values not in this array.
+ *           title: $nin
+ *           description: Filter by values not included in the given array.
  *           items:
  *             type: string
- *             title: $nin
- *             description: Filter by values not in this array.
  *         $not:
  *           oneOf:
  *             - type: string
  *               title: $not
- *               description: Filter by values not matching the conditions in this parameter.
+ *               description: Filter by not equal to the given value.
  *             - type: object
+ *               title: $not
  *               description: Filter by values not matching the conditions in this parameter.
  *             - type: array
+ *               title: $not
  *               description: Filter by values not matching the conditions in this parameter.
  *               items:
  *                 type: string
- *                 title: $not
- *                 description: Filter by values not matching the conditions in this parameter.
  *         $gt:
  *           type: string
  *           title: $gt
- *           description: Filter by values greater than this parameter. Useful for numbers and dates only.
+ *           description: Filter by values greater than the given value.
  *         $gte:
  *           type: string
  *           title: $gte
- *           description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
+ *           description: Filter by values greater than or equal to the given value.
  *         $lt:
  *           type: string
  *           title: $lt
- *           description: Filter by values less than this parameter. Useful for numbers and dates only.
+ *           description: Filter by values less than the given value.
  *         $lte:
  *           type: string
  *           title: $lte
- *           description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
+ *           description: Filter by values less than or equal to the given value.
  *         $like:
  *           type: string
  *           title: $like
@@ -443,30 +421,28 @@
  *           description: Filter to apply on full-text properties.
  *         $overlap:
  *           type: array
- *           description: Filter arrays that have overlapping values with this parameter.
+ *           title: $overlap
+ *           description: Filter to apply on array properties to find overlapping values.
  *           items:
  *             type: string
- *             title: $overlap
- *             description: Filter arrays that have overlapping values with this parameter.
  *         $contains:
  *           type: array
- *           description: Filter arrays that contain some of the values of this parameter.
+ *           title: $contains
+ *           description: Filter to apply on array properties to find contained values.
  *           items:
  *             type: string
- *             title: $contains
- *             description: Filter arrays that contain some of the values of this parameter.
  *         $contained:
  *           type: array
- *           description: Filter arrays that contain all values of this parameter.
+ *           title: $contained
+ *           description: Filter to apply on array properties to find contained values.
  *           items:
  *             type: string
- *             title: $contained
- *             description: Filter arrays that contain all values of this parameter.
  *         $exists:
  *           type: boolean
  *           title: $exists
- *           description: Filter by whether a value for this parameter exists (not `null`).
+ *           description: Filter by whether a value exists or not.
  *       title: deleted_at
+ *       description: The shipping option type's deleted at.
  *   - name: $and
  *     in: query
  *     description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
@@ -487,6 +463,20 @@
  *       items:
  *         type: object
  *       title: $or
+ *   - name: description
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: description
+ *           description: Filter by a shipping option type's description.
+ *         - type: array
+ *           description: Filter by shipping option type descriptions.
+ *           items:
+ *             type: string
+ *             title: description
+ *             description: A description.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

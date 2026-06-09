@@ -2,12 +2,21 @@ import React, { useMemo } from "react"
 import { createDataTableColumnHelper } from "@medusajs/ui"
 import { HttpTypes } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
-import { getCellRenderer, getColumnValue } from "../../../lib/table/cell-renderers"
+import {
+  getCellRenderer,
+  getColumnValue,
+} from "../../../lib/table/cell-renderers"
 
 export interface ColumnAdapter<TData> {
-  getColumnAlignment?: (column: HttpTypes.AdminColumn) => "left" | "center" | "right"
+  getColumnAlignment?: (
+    column: HttpTypes.AdminColumn
+  ) => "left" | "center" | "right"
   getCustomAccessor?: (field: string, column: HttpTypes.AdminColumn) => any
-  transformCellValue?: (value: any, row: TData, column: HttpTypes.AdminColumn) => React.ReactNode
+  transformCellValue?: (
+    value: any,
+    row: TData,
+    column: HttpTypes.AdminColumn
+  ) => React.ReactNode
 }
 
 export function useConfigurableTableColumns<TData = any>(
@@ -23,25 +32,22 @@ export function useConfigurableTableColumns<TData = any>(
       return []
     }
 
-    return apiColumns.map(apiColumn => {
+    return apiColumns.map((apiColumn) => {
       let renderType = apiColumn.computed?.type
 
       if (!renderType) {
-        if (apiColumn.semantic_type === 'timestamp') {
-          renderType = 'timestamp'
-        } else if (apiColumn.field === 'display_id') {
-          renderType = 'display_id'
-        } else if (apiColumn.field === 'total') {
-          renderType = 'total'
-        } else if (apiColumn.semantic_type === 'currency') {
-          renderType = 'currency'
+        if (apiColumn.semantic_type === "timestamp") {
+          renderType = "timestamp"
+        } else if (apiColumn.field === "display_id") {
+          renderType = "display_id"
+        } else if (apiColumn.field === "total") {
+          renderType = "total"
+        } else if (apiColumn.semantic_type === "currency") {
+          renderType = "currency"
         }
       }
 
-      const renderer = getCellRenderer(
-        renderType,
-        apiColumn.data_type
-      )
+      const renderer = getCellRenderer(renderType, apiColumn.data_type)
 
       const headerAlign = adapter?.getColumnAlignment
         ? adapter.getColumnAlignment(apiColumn)
@@ -52,11 +58,15 @@ export function useConfigurableTableColumns<TData = any>(
       return columnHelper.accessor(accessor, {
         id: apiColumn.field,
         header: () => apiColumn.name,
-        cell: ({ getValue, row }: { getValue: any, row: any }) => {
+        cell: ({ getValue, row }: { getValue: any; row: any }) => {
           const value = getValue()
 
           if (adapter?.transformCellValue) {
-            const transformed = adapter.transformCellValue(value, row.original, apiColumn)
+            const transformed = adapter.transformCellValue(
+              value,
+              row.original,
+              apiColumn
+            )
             if (transformed !== null) {
               return transformed
             }
@@ -76,7 +86,9 @@ export function useConfigurableTableColumns<TData = any>(
   }, [entity, apiColumns, adapter, t])
 }
 
-function getDefaultColumnAlignment(column: HttpTypes.AdminColumn): "left" | "center" | "right" {
+function getDefaultColumnAlignment(
+  column: HttpTypes.AdminColumn
+): "left" | "center" | "right" {
   if (column.semantic_type === "currency" || column.data_type === "currency") {
     return "right"
   }
@@ -99,9 +111,11 @@ function getDefaultColumnAlignment(column: HttpTypes.AdminColumn): "left" | "cen
     return "center"
   }
 
-  if (column.computed?.type === "country_code" ||
+  if (
+    column.computed?.type === "country_code" ||
     column.field === "country" ||
-    column.field.includes("country_code")) {
+    column.field.includes("country_code")
+  ) {
     return "center"
   }
 

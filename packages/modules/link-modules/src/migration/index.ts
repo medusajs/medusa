@@ -425,9 +425,7 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
     descriptor: PlannerActionLinkDescriptor
   ) {
     await orm.em.getDriver().getConnection().execute(`
-      ALTER TABLE "${this.#schema}"."${oldName}" RENAME TO "${
-      this.#schema
-    }"."${newName}";
+      ALTER TABLE "${this.#schema}"."${oldName}" RENAME TO "${newName}";
       UPDATE "${this.#schema}"."${
       this.tableName
     }" SET table_name = '${newName}', link_descriptor = '${JSON.stringify(
@@ -513,23 +511,45 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
   async executePlan(actionPlan: LinkMigrationsPlannerAction[]): Promise<void> {
     const orm = await this.createORM()
 
+    // Separate single-connection ORM used exclusively to hold advisory locks.
+    const lockOrm = await DALUtils.mikroOrmCreateConnection(
+      { ...this.#dbConfig, pool: { min: 1, max: 1 } },
+      [],
+      ""
+    )
+    const lockConn = lockOrm.em.getDriver().getConnection()
+
     try {
       const concurrency = parseInt(process.env.DB_MIGRATION_CONCURRENCY ?? "1")
       await executeWithConcurrency(
         actionPlan.map((action) => {
           return async () => {
-            switch (action.action) {
-              case "delete":
-                return await this.dropLinkTable(orm, action.tableName)
-              case "create":
-                return await this.createLinkTable(orm, action)
-              case "update":
-                const sql = `SET LOCAL search_path TO "${this.#schema}"; \n\n${
-                  action.sql
-                }`
-                return await orm.em.getDriver().getConnection().execute(sql)
-              default:
-                return
+            const lockKey = `db-link-migration:${action.tableName}`
+
+            await lockConn.execute("BEGIN")
+            await lockConn.execute(
+              `SELECT pg_advisory_xact_lock(hashtext('${lockKey}'))`
+            )
+
+            try {
+              switch (action.action) {
+                case "delete":
+                  await this.dropLinkTable(orm, action.tableName)
+                  break
+                case "create":
+                  await this.createLinkTable(orm, action)
+                  break
+                case "update":
+                  const sql = `SET LOCAL search_path TO "${
+                    this.#schema
+                  }"; \n\n${action.sql}`
+                  await orm.em.getDriver().getConnection().execute(sql)
+                  break
+                default:
+                  break
+              }
+            } finally {
+              await lockConn.execute("COMMIT")
             }
           }
         }),
@@ -537,6 +557,7 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
       )
     } finally {
       await orm.close(true)
+      await lockOrm.close(true)
     }
   }
 }

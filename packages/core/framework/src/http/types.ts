@@ -210,8 +210,12 @@ export interface AuthContext {
   actor_id: string
   actor_type: string
   auth_identity_id: string
+  auth_provider?: string
   app_metadata: Record<string, unknown>
   user_metadata: Record<string, unknown>
+  entity_id?: string
+  purpose?: string
+  jti?: string
 }
 
 export interface PublishableKeyContext {

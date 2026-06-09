@@ -7,17 +7,17 @@
  *   - line_item
  *   - customer
  *   - id
- *   - code
- *   - status
- *   - value
- *   - currency_code
  *   - customer_id
- *   - reference_id
- *   - note
- *   - reference
- *   - expires_at
+ *   - currency_code
+ *   - status
  *   - created_at
  *   - updated_at
+ *   - reference
+ *   - reference_id
+ *   - value
+ *   - code
+ *   - note
+ *   - expires_at
  * properties:
  *   line_item:
  *     $ref: "#/components/schemas/AdminOrderLineItem"

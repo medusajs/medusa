@@ -1,5 +1,5 @@
 import { z } from "@medusajs/framework/zod"
-import { AddressPayload } from "../../utils/common-validators"
+import { AddressPayload, safeHttpUrl } from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -57,7 +57,6 @@ const AdminGetOrdersParamsBase = createFindParams({
     status: z
       .union([z.string(), z.array(z.string()), createOperatorMap()])
       .optional(),
-    name: z.union([z.string(), z.array(z.string())]).optional(),
     sales_channel_id: z.array(z.string()).optional(),
     region_id: z.union([z.string(), z.array(z.string())]).optional(),
     customer_id: z.union([z.string(), z.array(z.string())]).optional(),
@@ -107,8 +106,8 @@ export const AdminOrderCreateFulfillment = WithAdditionalData(
 
 const Label = z.object({
   tracking_number: z.string(),
-  tracking_url: z.string(),
-  label_url: z.string(),
+  tracking_url: safeHttpUrl,
+  label_url: safeHttpUrl,
 })
 
 export type AdminOrderCreateShipmentType = z.infer<typeof OrderCreateShipment>

@@ -116,3 +116,58 @@ properties:
       - timestamp
       - metric
       - relationship
+  render_mode:
+    type: string
+    title: render_mode
+    description: The column's render mode.
+  filter:
+    type: object
+    description: The column's filter.
+    required:
+      - enabled
+    properties:
+      enabled:
+        type: boolean
+        title: enabled
+        description: Whether the column's filter is enabled.
+      operators:
+        type: array
+        description: The filter's operators.
+        items:
+          type: string
+          title: operators
+          description: An operator for the column's filter.
+      enumValues:
+        type: array
+        description: The filter's enum values, if the filter supports enums.
+        items:
+          type: string
+          title: enumValues
+          description: An enum value for the column's filter.
+      relationship:
+        $ref: ./RelationshipFilterConfig.yaml
+  source:
+    type: object
+    description: >-
+      The column's source details. Only available if the column is from a
+      source.
+    required:
+      - module
+      - entity
+    properties:
+      module:
+        type: string
+        title: module
+        description: The source's module.
+      entity:
+        type: string
+        title: entity
+        description: The source's entity.
+  custom_label:
+    type: boolean
+    title: custom_label
+    description: Whether the column has a custom label.
+  label_id:
+    type: string
+    title: label_id
+    description: The ID of the column's label, if it has a custom label.

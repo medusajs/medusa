@@ -14,7 +14,8 @@ import { queryKeysFactory } from "../../lib/query-key-factory"
 const USERS_QUERY_KEY = "users" as const
 const usersQueryKeys = {
   ...queryKeysFactory(USERS_QUERY_KEY),
-  me: () => [USERS_QUERY_KEY, "me"],
+  me: (query?: HttpTypes.AdminUserParams) =>
+    [USERS_QUERY_KEY, "me", query ? { query } : undefined].filter((k) => !!k),
 }
 
 export const useMe = (
@@ -28,7 +29,7 @@ export const useMe = (
 ) => {
   const { data, ...rest } = useQuery({
     queryFn: () => sdk.admin.user.me(query),
-    queryKey: usersQueryKeys.me(),
+    queryKey: usersQueryKeys.me(query),
     ...options,
   })
 
@@ -79,26 +80,6 @@ export const useUsers = (
   })
 
   return { ...data, ...rest }
-}
-
-export const useCreateUser = (
-  query?: HttpTypes.AdminUserParams,
-  options?: UseMutationOptions<
-    HttpTypes.AdminUserResponse,
-    FetchError,
-    HttpTypes.AdminCreateUser,
-    QueryKey
-  >
-) => {
-  return useMutation({
-    mutationFn: (payload) => sdk.admin.user.create(payload, query),
-    onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: usersQueryKeys.lists() })
-
-      options?.onSuccess?.(data, variables, context)
-    },
-    ...options,
-  })
 }
 
 export const useUpdateUser = (

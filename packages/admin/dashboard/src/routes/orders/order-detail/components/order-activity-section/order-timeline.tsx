@@ -6,9 +6,10 @@ import { PropsWithChildren, ReactNode, useMemo, useState } from "react"
 import {
   AdminClaim,
   AdminExchange,
-  AdminFulfillment,
   AdminOrder,
+  AdminOrderAddress,
   AdminOrderChange,
+  AdminOrderItem,
   AdminReturn,
 } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
@@ -35,15 +36,16 @@ import { getPaymentsFromOrder } from "../../../../../lib/orders"
 import ActivityItems from "./activity-items"
 import ChangeDetailsTooltip from "./change-details-tooltip"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
+import { ExtendedOrderFulfillment, ExtendedOrder } from "../../constants"
 
 type OrderTimelineProps = {
-  order: AdminOrder
+  order: ExtendedOrder
 }
 
 /**
  * Arbitrary high limit to ensure all notes are fetched
  */
-const NOTE_LIMIT = 9999
+// const NOTE_LIMIT = 9999
 
 /**
  * Order Changes that are not related to RMA flows
@@ -111,18 +113,17 @@ export const OrderTimeline = ({ order }: OrderTimelineProps) => {
 }
 
 type Activity = {
-  title: string
-  timestamp: string | Date
+  title: ReactNode
+  timestamp: string | Date | null
   children?: ReactNode
-  itemsToSend?: (
+  itemsToSend?:
     | AdminClaim["additional_items"]
     | AdminExchange["additional_items"]
-  )[]
   itemsToReturn?: AdminReturn["items"]
   itemsMap?: Map<string, AdminOrderLineItem>
 }
 
-const useActivityItems = (order: AdminOrder): Activity[] => {
+const useActivityItems = (order: ExtendedOrder): Activity[] => {
   const { t } = useTranslation()
 
   const { order: initialOrder = order } = useOrder(
@@ -146,7 +147,7 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
   })
 
   const rmaChanges = orderChanges.filter(
-    (oc) => !NON_RMA_CHANGE_TYPES.includes(oc.change_type)
+    (oc) => !NON_RMA_CHANGE_TYPES.includes(oc.change_type!)
   )
 
   const missingLineItemIds = getMissingLineItemIds(order, rmaChanges)
@@ -160,7 +161,7 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
     {
       enabled: !!rmaChanges.length,
     }
-  )
+  ) as { order_items: (AdminOrderItem & { quantity: number })[] | undefined }
 
   const itemsMap = useMemo(() => {
     const _itemsMap = new Map(order?.items?.map((i) => [i.id, i]))
@@ -193,7 +194,8 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
 
   const payments = getPaymentsFromOrder(order)
 
-  const notes = []
+  // This isn't set anywhere
+  const notes: any[] = []
   const isLoading = false
   // const { notes, isLoading, isError, error } = useNotes(
   //   {
@@ -307,7 +309,7 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
           timestamp: fulfillment.shipped_at,
           children: (
             <div className="text-ui-fg-subtle flex flex-col gap-y-2">
-              <FulfillmentCreatedBody fulfillment={fulfillment} isShipment />
+              <FulfillmentCreatedBody fulfillment={fulfillment} />
               {fulfillment.marked_shipped_by && (
                 <div className="flex items-center gap-x-2 text-sm">
                   {t("fields.by")} <By id={fulfillment.marked_shipped_by} />
@@ -345,7 +347,11 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
         itemsMap,
         children: (
           <div className="text-ui-fg-subtle flex flex-col gap-y-2">
-            <ReturnBody orderReturn={ret} isCreated={!ret.canceled_at} />
+            <ReturnBody
+              orderReturn={ret}
+              isCreated={!ret.canceled_at}
+              isReceived={false}
+            />
             {ret.created_by && !ret.canceled_at && (
               <div className="flex items-center gap-x-2 text-sm">
                 {t("fields.by")} <By id={ret.created_by} />
@@ -372,7 +378,9 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
           timestamp: ret.received_at,
           itemsToReturn: ret?.items,
           itemsMap,
-          children: <ReturnBody orderReturn={ret} isReceived />,
+          children: (
+            <ReturnBody orderReturn={ret} isCreated={false} isReceived />
+          ),
         })
       }
     }
@@ -444,7 +452,7 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
       }
 
       items.push({
-        title: t(`orders.activity.events.edit.${edit.status}`, {
+        title: t(`orders.activity.events.edit.${edit.status}` as any, {
           editId: edit.id.slice(-7),
         }),
         timestamp:
@@ -505,14 +513,16 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
               previous={
                 <p className="txt-compact-small text-ui-fg-subtle">
                   {getFormattedAddress({
-                    address: update.actions[0].details.old,
+                    address: update.actions[0].details
+                      ?.old as AdminOrderAddress,
                   }).join(", ")}
                 </p>
               }
               next={
                 <p className="txt-compact-small text-ui-fg-subtle">
                   {getFormattedAddress({
-                    address: update.actions[0].details.new,
+                    address: update.actions[0].details
+                      ?.new as AdminOrderAddress,
                   }).join(", ")}
                 </p>
               }
@@ -521,7 +531,7 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
           timestamp: update.created_at,
           children: (
             <div className="text-ui-fg-subtle mt-2 flex gap-x-2 text-sm">
-              {t("fields.by")} <By id={update.created_by} />
+              {t("fields.by")} <By id={update.created_by || "-"} />
             </div>
           ),
         })
@@ -535,14 +545,16 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
               previous={
                 <p className="txt-compact-small text-ui-fg-subtle">
                   {getFormattedAddress({
-                    address: update.actions[0].details.old,
+                    address: update.actions[0].details
+                      ?.old as AdminOrderAddress,
                   }).join(", ")}
                 </p>
               }
               next={
                 <p className="txt-compact-small text-ui-fg-subtle">
                   {getFormattedAddress({
-                    address: update.actions[0].details.new,
+                    address: update.actions[0].details
+                      ?.new as AdminOrderAddress,
                   }).join(", ")}
                 </p>
               }
@@ -551,7 +563,7 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
           timestamp: update.created_at,
           children: (
             <div className="text-ui-fg-subtle mt-2 flex gap-x-2 text-sm">
-              {t("fields.by")} <By id={update.created_by} />
+              {t("fields.by")} <By id={update.created_by || "-"} />
             </div>
           ),
         })
@@ -564,12 +576,12 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
               title={t(`orders.activity.events.update_order.email`)}
               previous={
                 <p className="txt-compact-small text-ui-fg-subtle">
-                  {update.actions[0].details.old}
+                  {update.actions[0].details?.old as string}
                 </p>
               }
               next={
                 <p className="txt-compact-small text-ui-fg-subtle">
-                  {update.actions[0].details.new}
+                  {update.actions[0].details?.new as string}
                 </p>
               }
             />
@@ -577,7 +589,7 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
           timestamp: update.created_at,
           children: (
             <div className="text-ui-fg-subtle mt-2 flex gap-x-2 text-sm">
-              {t("fields.by")} <By id={update.created_by} />
+              {t("fields.by")} <By id={update.created_by || "-"} />
             </div>
           ),
         })
@@ -600,7 +612,10 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
     }
 
     const sortedActivities = items.sort((a, b) => {
-      return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      return (
+        new Date(b.timestamp as string | Date).getTime() -
+        new Date(a.timestamp as string | Date).getTime()
+      )
     })
 
     if (initialOrder.created_at) {
@@ -631,8 +646,8 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
 }
 
 type OrderActivityItemProps = PropsWithChildren<{
-  title: string
-  timestamp: string | Date
+  title: ReactNode
+  timestamp: string | Date | null
   isFirst?: boolean
   itemsToSend?:
     | AdminClaim["additional_items"]
@@ -670,8 +685,10 @@ const OrderActivityItem = ({
         <div className="flex items-center justify-between">
           {itemsToSend?.length || itemsToReturn?.length ? (
             <ActivityItems
-              key={title}
-              title={title}
+              key={typeof title === "string" ? title : title?.toString()}
+              title={
+                typeof title === "string" ? title : title?.toString() || ""
+              }
               itemsToSend={itemsToSend}
               itemsToReturn={itemsToReturn}
               itemsMap={itemsMap}
@@ -824,7 +841,7 @@ const OrderActivityCollapsible = ({
 const FulfillmentCreatedBody = ({
   fulfillment,
 }: {
-  fulfillment: AdminFulfillment
+  fulfillment: ExtendedOrderFulfillment
 }) => {
   const { t } = useTranslation()
 
@@ -1144,7 +1161,10 @@ const OrderEditBody = ({ edit }: { edit: AdminOrderChange }) => {
           const lineItem = orderItem.item
 
           return (
-            <div className="group flex items-start gap-x-4 py-3 first:pt-0 last:pb-0">
+            <div
+              key={orderItem.item_id}
+              className="group flex items-start gap-x-4 py-3 first:pt-0 last:pb-0"
+            >
               <Thumbnail src={lineItem.thumbnail} />
               <div>
                 <Text
@@ -1207,7 +1227,7 @@ const TransferOrderRequestBody = ({
   const { t } = useTranslation()
 
   const action = transfer.actions[0]
-  const { customer } = useCustomer(action.reference_id)
+  const { customer } = useCustomer(action.reference_id ?? "")
 
   const isCompleted = !!transfer.confirmed_at
 
@@ -1239,7 +1259,8 @@ const TransferOrderRequestBody = ({
   return (
     <div>
       <Text size="small" className="text-ui-fg-subtle">
-        {t("orders.activity.from")}: {action.details?.original_email}
+        {t("orders.activity.from")}:{" "}
+        {action.details?.original_email as string | undefined}
       </Text>
 
       <Text size="small" className="text-ui-fg-subtle">

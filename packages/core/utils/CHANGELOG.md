@@ -1,5 +1,96 @@
 # @medusajs/utils
 
+## 2.15.5
+
+### Patch Changes
+
+- [#15496](https://github.com/medusajs/medusa/pull/15496) [`ace1822bccbb21afa533665937460140e36aa995`](https://github.com/medusajs/medusa/commit/ace1822bccbb21afa533665937460140e36aa995) Thanks [@christiananese](https://github.com/christiananese)! - Add auth verification primitives for emailpass.
+
+- [#15493](https://github.com/medusajs/medusa/pull/15493) [`c8e37903177c2551ec27ba5f881804e351e819c4`](https://github.com/medusajs/medusa/commit/c8e37903177c2551ec27ba5f881804e351e819c4) Thanks [@christiananese](https://github.com/christiananese)! - Prepare new Medusa apps for admin MFA
+
+- [#15495](https://github.com/medusajs/medusa/pull/15495) [`8122633a8b33164a6094f5a39896e356efde1747`](https://github.com/medusajs/medusa/commit/8122633a8b33164a6094f5a39896e356efde1747) Thanks [@christiananese](https://github.com/christiananese)! - feat(auth): emit MFA lifecycle events
+
+- [#15518](https://github.com/medusajs/medusa/pull/15518) [`c7258f2ca2da8c09df430d81121ea8eae7f75cd9`](https://github.com/medusajs/medusa/commit/c7258f2ca2da8c09df430d81121ea8eae7f75cd9) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(utils): add mfa to inline snapshot test assertion
+
+- [#14593](https://github.com/medusajs/medusa/pull/14593) [`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911) Thanks [@fPolic](https://github.com/fPolic)! - feat(dashboard,framework,rbac,js-sdk,types,utils,medusa): rbac admin dashboard utils
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.5
+
+## 2.15.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- [#15275](https://github.com/medusajs/medusa/pull/15275) [`3063ea20314843c23ad8077ce5e2f5c01ce2c54c`](https://github.com/medusajs/medusa/commit/3063ea20314843c23ad8077ce5e2f5c01ce2c54c) Thanks [@Suh0161](https://github.com/Suh0161)! - fix(utils): implement tokenized free text search to support multi-word queries across different columns (e.g. first + last name)
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.3
+
+## 2.15.2
+
+### Patch Changes
+
+- [#15382](https://github.com/medusajs/medusa/pull/15382) [`9990b69ab76f1a575c6a68875627d16764cc1564`](https://github.com/medusajs/medusa/commit/9990b69ab76f1a575c6a68875627d16764cc1564) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(utils): disable generating snapshots on running migrations
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- [#15293](https://github.com/medusajs/medusa/pull/15293) [`75b23ffcdf5afeedb5321689cbd844342f218846`](https://github.com/medusajs/medusa/commit/75b23ffcdf5afeedb5321689cbd844342f218846) Thanks [@Chicolll](https://github.com/Chicolll)! - fix(utils): preserve casing in toCamelCase for PascalCase identifiers with digits
+
+- [#15013](https://github.com/medusajs/medusa/pull/15013) [`667f3e213d847e2a44ba486522f9fb7b36c69e9a`](https://github.com/medusajs/medusa/commit/667f3e213d847e2a44ba486522f9fb7b36c69e9a) Thanks [@asynchroza](https://github.com/asynchroza)! - fix(utils): skip empty string translations when applying locale
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.0
+
+## 2.14.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.14.2
+
+## 2.14.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.14.1
+
+## 2.14.0
+
+### Patch Changes
+
+- [#14309](https://github.com/medusajs/medusa/pull/14309) [`843dbfe7c8f27b732486c7a8da7b6d63f2fdf967`](https://github.com/medusajs/medusa/commit/843dbfe7c8f27b732486c7a8da7b6d63f2fdf967) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(): upgrade zod to latest
+
+- [#13975](https://github.com/medusajs/medusa/pull/13975) [`67499a8aa6b3b53cbdecb5be9fcc358b4e466696`](https://github.com/medusajs/medusa/commit/67499a8aa6b3b53cbdecb5be9fcc358b4e466696) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(currency,payment,pricing,region,order,store,cart,core-flows,medusa,utils): repo wide currency_code normalization
+
+- [#14650](https://github.com/medusajs/medusa/pull/14650) [`965adfe2fc15a024270ac384f819479e8b274e10`](https://github.com/medusajs/medusa/commit/965adfe2fc15a024270ac384f819479e8b274e10) Thanks [@adrien2p](https://github.com/adrien2p)! - Feat(view configuration): Generic introspection and generation
+
+- [#14711](https://github.com/medusajs/medusa/pull/14711) [`9e145bfb27cb5792f7b8d1331f2b076fb00355d9`](https://github.com/medusajs/medusa/commit/9e145bfb27cb5792f7b8d1331f2b076fb00355d9) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(loyalty-plugin,medusa,utils): open source loyalty plugin
+
+- [#14436](https://github.com/medusajs/medusa/pull/14436) [`32533eb829d904d4c1a89c841f06d9c209460ac7`](https://github.com/medusajs/medusa/commit/32533eb829d904d4c1a89c841f06d9c209460ac7) Thanks [@bhagwatiprasad](https://github.com/bhagwatiprasad)! - fix(medusa, utils): add delay between module migrations to prevent timestamp collision
+
+- Updated dependencies []:
+  - @medusajs/deps@2.14.0
+
 ## 2.13.6
 
 ### Patch Changes

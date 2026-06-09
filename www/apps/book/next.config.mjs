@@ -75,7 +75,8 @@ const withMDX = mdx({
           },
           useBaseUrl:
             process.env.NODE_ENV === "production" ||
-            process.env.VERCEL_ENV === "production",
+            process.env.VERCEL_ENV === "production" ||
+            !!process.env.CLOUDFLARE_ENV,
         },
       ],
       [localLinksRehypePlugin],
@@ -125,20 +126,28 @@ const nextConfig = {
     return {
       beforeFiles: [
         {
+          source: "/index.html.md",
+          destination: "/md-content",
+        },
+        {
+          source: "/index.md",
+          destination: "/md-content",
+        },
+        {
+          source: "/:path*/index.html.md",
+          destination: "/md-content/:path*",
+        },
+        {
+          source: "/:path*/index.md",
+          destination: "/md-content/:path*",
+        },
+        {
+          source: "/:path*.md",
+          destination: "/md-content/:path*",
+        },
+        {
           source:
-            "/:path((?!resources|api|ui|user-guide|cloud).*)index.html.md",
-          destination: "/md-content/:path*",
-        },
-        {
-          source: "/:path((?!resources|api|ui|user-guide|cloud).*)index.md",
-          destination: "/md-content/:path*",
-        },
-        {
-          source: "/:path((?!resources|api|ui|user-guide|cloud).*).md",
-          destination: "/md-content/:path*",
-        },
-        {
-          source: "/:path((?!resources|api|ui|user-guide|cloud|md-content).+)/",
+            "/:first((?!resources|api|ui|user-guide|cloud|md-content)[^/]+)/:rest*/",
           has: [
             {
               type: "header",
@@ -146,7 +155,7 @@ const nextConfig = {
               value: ".*(text/markdown|text/plain).*",
             },
           ],
-          destination: "/md-content/:path",
+          destination: "/md-content/:first/:rest*",
         },
         {
           source: "/",
@@ -160,7 +169,8 @@ const nextConfig = {
           destination: "/md-content",
         },
         {
-          source: "/:path((?!resources|api|ui|user-guide|cloud|md-content).+)",
+          source:
+            "/:first((?!resources|api|ui|user-guide|cloud|md-content)[^/]+)/:rest*",
           has: [
             {
               type: "header",
@@ -168,7 +178,7 @@ const nextConfig = {
               value: ".*(text/markdown|text/plain).*",
             },
           ],
-          destination: "/md-content/:path",
+          destination: "/md-content/:first/:rest*",
         },
       ],
       fallback: [
@@ -215,6 +225,20 @@ const nextConfig = {
           basePath: false,
         },
         {
+          source: "/v1/api",
+          destination: `${
+            process.env.NEXT_PUBLIC_API_V1_URL || "https://localhost:3001"
+          }/v1/api`,
+          basePath: false,
+        },
+        {
+          source: "/v1/api/:path*",
+          destination: `${
+            process.env.NEXT_PUBLIC_API_V1_URL || "https://localhost:3001"
+          }/v1/api/:path*`,
+          basePath: false,
+        },
+        {
           source: "/v1",
           destination: `${
             process.env.NEXT_PUBLIC_DOCS_V1_URL || "https://localhost:3001"
@@ -248,10 +272,69 @@ const nextConfig = {
           destination: `${process.env.NEXT_PUBLIC_CLOUD_URL || "https://localhost:3001"}/cloud/:path*`,
           basePath: false,
         },
+        // MCP OAuth discovery — RFC 9728 path-component variants (strip /mcp suffix)
+        {
+          source: "/.well-known/oauth-protected-resource/mcp",
+          destination: `${
+            process.env.NEXT_MCP_BASE_URL || "http://localhost:3001"
+          }/.well-known/oauth-protected-resource`,
+          basePath: false,
+        },
+        {
+          source: "/.well-known/oauth-authorization-server/mcp",
+          destination: `${
+            process.env.NEXT_MCP_BASE_URL || "http://localhost:3001"
+          }/.well-known/oauth-authorization-server`,
+          basePath: false,
+        },
+        {
+          source: "/.well-known/openid-configuration/mcp",
+          destination: `${
+            process.env.NEXT_MCP_BASE_URL || "http://localhost:3001"
+          }/.well-known/openid-configuration`,
+          basePath: false,
+        },
+        // MCP OAuth discovery — standard paths
+        {
+          source: "/.well-known/oauth-protected-resource",
+          destination: `${
+            process.env.NEXT_MCP_BASE_URL || "http://localhost:3001"
+          }/.well-known/oauth-protected-resource`,
+          basePath: false,
+        },
+        {
+          source: "/.well-known/oauth-authorization-server",
+          destination: `${
+            process.env.NEXT_MCP_BASE_URL || "http://localhost:3001"
+          }/.well-known/oauth-authorization-server`,
+          basePath: false,
+        },
+        {
+          source: "/.well-known/openid-configuration",
+          destination: `${
+            process.env.NEXT_MCP_BASE_URL || "http://localhost:3001"
+          }/.well-known/openid-configuration`,
+          basePath: false,
+        },
+        // MCP Dynamic Client Registration
+        {
+          source: "/register",
+          destination: `${
+            process.env.NEXT_MCP_BASE_URL || "http://localhost:3001"
+          }/oauth/register`,
+          basePath: false,
+        },
+        {
+          source: "/oauth/register",
+          destination: `${
+            process.env.NEXT_MCP_BASE_URL || "http://localhost:3001"
+          }/oauth/register`,
+          basePath: false,
+        },
         {
           source: "/mcp",
           destination:
-            process.env.NEXT_MCP_SERVER_URL || "https://localhost:3001/mcp",
+            process.env.NEXT_MCP_SERVER_URL || "http://localhost:3001/mcp",
           basePath: false,
         },
       ],
@@ -275,11 +358,16 @@ const nextConfig = {
 
     return catchBadRedirects(result)
   },
+  outputFileTracingRoot: new URL("../../", import.meta.url).pathname,
   outputFileTracingIncludes: {
     "/md\\-content/\\[\\.\\.\\.slug\\]": ["./app/**/*.mdx"],
   },
   outputFileTracingExcludes: {
-    "*": ["node_modules/@medusajs/icons"],
+    "*": [
+      "node_modules/@medusajs/icons",
+      "../**/.open-next/**",
+      "../!(book)/.next/**",
+    ],
   },
   experimental: {
     optimizePackageImports: ["@medusajs/icons", "@medusajs/ui"],

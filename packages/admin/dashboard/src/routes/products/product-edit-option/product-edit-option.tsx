@@ -14,7 +14,7 @@ export const ProductEditOption = () => {
     fields: "-type,-collection,-tags,-images,-variants,-sales_channels",
   })
 
-  const option = product?.options.find((o) => o.id === option_id)
+  const option = product?.options?.find((o) => o.id === option_id)
 
   if (!isPending && !isFetching && !option) {
     throw json({ message: `An option with ID ${option_id} was not found` }, 404)

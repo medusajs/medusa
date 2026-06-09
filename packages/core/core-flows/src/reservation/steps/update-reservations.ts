@@ -17,6 +17,14 @@ export type UpdateReservationsStepInput =
   InventoryTypes.UpdateReservationItemInput[]
 
 export const updateReservationsStepId = "update-reservations-step"
+
+type UpdateReservationsCompensationInput = {
+  dataBeforeUpdate: InventoryTypes.ReservationItemDTO[]
+  selects: string[]
+  relations: string[]
+  inventoryItemIds: string[]
+}
+
 /**
  * This step updates one or more reservations.
  *
@@ -34,28 +42,42 @@ export const updateReservationsStep = createStep(
     const inventoryModuleService = container.resolve<IInventoryService>(
       Modules.INVENTORY
     )
+    const locking = container.resolve(Modules.LOCKING)
 
     if (!data.length) {
-      return new StepResponse([], {
+      return new StepResponse<
+        InventoryTypes.ReservationItemDTO[],
+        UpdateReservationsCompensationInput
+      >([], {
         dataBeforeUpdate: [],
         selects: [],
         relations: [],
+        inventoryItemIds: [],
       })
     }
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data)
-    const dataBeforeUpdate = await inventoryModuleService.listReservationItems(
-      { id: data.map((d) => d.id) },
-      { relations, select: selects }
+    const selectsWithInventoryItem = Array.from(
+      new Set([...selects, "inventory_item_id"])
     )
 
-    const updatedReservations =
-      await inventoryModuleService.updateReservationItems(data)
+    const dataBeforeUpdate = await inventoryModuleService.listReservationItems(
+      { id: data.map((d) => d.id) },
+      { relations, select: selectsWithInventoryItem }
+    )
+
+    const inventoryItemIds = dataBeforeUpdate.map((r) => r.inventory_item_id)
+    const lockingKeys = Array.from(new Set(inventoryItemIds))
+
+    const updatedReservations = await locking.execute(lockingKeys, async () => {
+      return await inventoryModuleService.updateReservationItems(data)
+    })
 
     return new StepResponse(updatedReservations, {
       dataBeforeUpdate,
       selects,
       relations,
+      inventoryItemIds,
     })
   },
   async (revertInput, { container }) => {
@@ -63,16 +85,26 @@ export const updateReservationsStep = createStep(
       return
     }
 
-    const { dataBeforeUpdate = [], selects, relations } = revertInput
+    const {
+      dataBeforeUpdate = [],
+      selects,
+      relations,
+      inventoryItemIds = [],
+    } = revertInput
 
     const inventoryModuleService = container.resolve<IInventoryService>(
       Modules.INVENTORY
     )
+    const locking = container.resolve(Modules.LOCKING)
 
-    await inventoryModuleService.updateReservationItems(
-      dataBeforeUpdate.map((data) =>
-        convertItemResponseToUpdateRequest(data, selects, relations)
+    const lockingKeys = Array.from(new Set(inventoryItemIds))
+
+    await locking.execute(lockingKeys, async () => {
+      await inventoryModuleService.updateReservationItems(
+        dataBeforeUpdate.map((data) =>
+          convertItemResponseToUpdateRequest(data, selects, relations)
+        )
       )
-    )
+    })
   }
 )

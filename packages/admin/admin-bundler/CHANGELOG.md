@@ -1,5 +1,86 @@
 # @medusajs/admin-bundler
 
+## 2.15.5
+
+### Patch Changes
+
+- Updated dependencies [[`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911)]:
+  - @medusajs/dashboard@2.15.5
+  - @medusajs/admin-shared@2.15.5
+  - @medusajs/admin-vite-plugin@2.15.5
+
+## 2.15.4
+
+### Patch Changes
+
+- Updated dependencies [[`8a4a9c5507463dc3db5a4e122e59f80d718564d9`](https://github.com/medusajs/medusa/commit/8a4a9c5507463dc3db5a4e122e59f80d718564d9)]:
+  - @medusajs/dashboard@2.15.4
+  - @medusajs/admin-shared@2.15.4
+  - @medusajs/admin-vite-plugin@2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- Updated dependencies [[`f2def586bb52f37752a3b06e673d69095a2551d8`](https://github.com/medusajs/medusa/commit/f2def586bb52f37752a3b06e673d69095a2551d8)]:
+  - @medusajs/dashboard@2.15.3
+  - @medusajs/admin-shared@2.15.3
+  - @medusajs/admin-vite-plugin@2.15.3
+
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.15.2
+  - @medusajs/admin-vite-plugin@2.15.2
+  - @medusajs/dashboard@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.15.1
+  - @medusajs/admin-vite-plugin@2.15.1
+  - @medusajs/dashboard@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- Updated dependencies [[`e86b075cb60fe721b256c1a4921892a30c918efd`](https://github.com/medusajs/medusa/commit/e86b075cb60fe721b256c1a4921892a30c918efd), [`34f326d729aa9e1bafd6ef644ccb47621bf2a14e`](https://github.com/medusajs/medusa/commit/34f326d729aa9e1bafd6ef644ccb47621bf2a14e), [`4aa09402d73767b71c276460d64be7d3ce6281ca`](https://github.com/medusajs/medusa/commit/4aa09402d73767b71c276460d64be7d3ce6281ca), [`cf84d11241a8857efa6b284e578413e1ce8d47ef`](https://github.com/medusajs/medusa/commit/cf84d11241a8857efa6b284e578413e1ce8d47ef), [`deb8872f8bc9dc509e5233549292bcd5c80527d7`](https://github.com/medusajs/medusa/commit/deb8872f8bc9dc509e5233549292bcd5c80527d7)]:
+  - @medusajs/dashboard@2.15.0
+  - @medusajs/admin-shared@2.15.0
+  - @medusajs/admin-vite-plugin@2.15.0
+
+## 2.14.2
+
+### Patch Changes
+
+- Updated dependencies [[`411cacfdfa4db48daf1f6d38eecda04031351d5a`](https://github.com/medusajs/medusa/commit/411cacfdfa4db48daf1f6d38eecda04031351d5a), [`d29b9a1d80580d4b5dce926387c465260936e5ec`](https://github.com/medusajs/medusa/commit/d29b9a1d80580d4b5dce926387c465260936e5ec), [`ab8416d2de6eb043013d7cfbe78bb31449baf3cd`](https://github.com/medusajs/medusa/commit/ab8416d2de6eb043013d7cfbe78bb31449baf3cd), [`a3cdc47038d101b94d077fc67d18b2c0643b69b0`](https://github.com/medusajs/medusa/commit/a3cdc47038d101b94d077fc67d18b2c0643b69b0), [`a1a8c5044b8b4fddb6968579c8ceb6263c12b02c`](https://github.com/medusajs/medusa/commit/a1a8c5044b8b4fddb6968579c8ceb6263c12b02c), [`8d8a1e709a5e889dd2d2b0a895decdedbfc81595`](https://github.com/medusajs/medusa/commit/8d8a1e709a5e889dd2d2b0a895decdedbfc81595), [`e434f5f117d8a19752ff50b2f1a49a6af7164df1`](https://github.com/medusajs/medusa/commit/e434f5f117d8a19752ff50b2f1a49a6af7164df1)]:
+  - @medusajs/dashboard@2.14.2
+  - @medusajs/admin-shared@2.14.2
+  - @medusajs/admin-vite-plugin@2.14.2
+
+## 2.14.1
+
+### Patch Changes
+
+- Updated dependencies [[`8797afff772b7bf8d86a1e689ef1285e51a92576`](https://github.com/medusajs/medusa/commit/8797afff772b7bf8d86a1e689ef1285e51a92576)]:
+  - @medusajs/dashboard@2.14.1
+  - @medusajs/admin-shared@2.14.1
+  - @medusajs/admin-vite-plugin@2.14.1
+
+## 2.14.0
+
+### Patch Changes
+
+- Updated dependencies [[`843dbfe7c8f27b732486c7a8da7b6d63f2fdf967`](https://github.com/medusajs/medusa/commit/843dbfe7c8f27b732486c7a8da7b6d63f2fdf967), [`22077f13bd4f0161697e8e9cc4b54004387778a7`](undefined), [`bfe70fe540b8f3756e9e78e479b637a86d097a45`](undefined), [`e5ad0c2302f644ee8edfadeae1c6e604ba3f437c`](undefined), [`2ae3978edb454efb0b647889071bd2b8349299f0`](https://github.com/medusajs/medusa/commit/2ae3978edb454efb0b647889071bd2b8349299f0)]:
+  - @medusajs/dashboard@2.14.0
+  - @medusajs/admin-shared@2.14.0
+  - @medusajs/admin-vite-plugin@2.14.0
+
 ## 2.13.6
 
 ### Patch Changes

@@ -1,9 +1,5 @@
-import {
-  definePolicies,
-  PolicyDefinition,
-  toPascalCase,
-} from "@medusajs/framework/utils"
-import { defaultPolicyOperations } from "../utils/default-policy-operations"
+import { definePolicies } from "@medusajs/framework/utils"
+import { generateResourcePolicies } from "../utils"
 
 const shippingResources = [
   "shipping_option",
@@ -12,21 +8,9 @@ const shippingResources = [
   "fulfillment",
   "fulfillment_provider",
   "fulfillment_set",
+  "service_zone",
 ]
 
-const policies: PolicyDefinition[] = []
-
-for (const resource of shippingResources) {
-  for (const operation of defaultPolicyOperations) {
-    const policyName = toPascalCase(operation) + toPascalCase(resource)
-
-    policies.push({
-      name: policyName,
-      resource: resource,
-      operation: operation,
-      description: `${toPascalCase(operation)} ${resource.replace(/_/g, " ")}`,
-    })
-  }
-}
-
-export const shippingPolicies = definePolicies(policies)
+export const shippingPolicies = definePolicies(
+  generateResourcePolicies(shippingResources)
+)

@@ -1,0 +1,259 @@
+name: Draft Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (e.g. 2.14.0) — omit to auto-detect from latest published tag"
+        required: false
+        type: string
+      additional_instructions:
+        description: "Additional instructions for Claude (e.g. 'Make sure to highlight the new Subscriptions module' or 'The cart breaking change is the most important one')"
+        required: false
+        type: string
+concurrency:
+  group: draft-release
+  cancel-in-progress: false
+
+jobs:
+  draft-release:
+    name: Generate draft release with Claude
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
+      - name: Determine release version and tag
+        id: version
+        run: |
+          git fetch --tags
+
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            # Auto-detect: use the latest stable tag
+            VERSION=$(git tag --sort=-version:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1 | sed 's/^v//')
+          fi
+
+          TAG="v$VERSION"
+
+          # If the tag doesn't exist yet (draft created before publishing), use HEAD as range end
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            RANGE_END="$TAG"
+          else
+            RANGE_END="HEAD"
+            echo "Tag $TAG not found — using HEAD as range end"
+          fi
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "range_end=$RANGE_END" >> "$GITHUB_OUTPUT"
+          echo "Resolved release tag: $TAG (range end: $RANGE_END)"
+
+      - name: Find previous release tag
+        id: previous
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          PREVIOUS_TAG=$(git tag --sort=-version:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | grep -v "^${TAG}$" | head -1)
+          echo "tag=$PREVIOUS_TAG" >> "$GITHUB_OUTPUT"
+          echo "Previous release tag: $PREVIOUS_TAG"
+
+      - name: Gather commit and PR metadata
+        id: commits
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          RANGE_END: ${{ steps.version.outputs.range_end }}
+          PREVIOUS_TAG: ${{ steps.previous.outputs.tag }}
+          REPO: ${{ github.repository }}
+        run: |
+          echo "Collecting commits between $PREVIOUS_TAG and $RANGE_END..."
+
+          # Build JSON array of commits with PR metadata
+          node --input-type=module << 'EOF'
+          import { execSync } from "child_process"
+          import { writeFileSync } from "fs"
+
+          const tag = process.env.RANGE_END
+          const previousTag = process.env.PREVIOUS_TAG
+          const repo = process.env.REPO
+
+          // Get raw commit log
+          const logOutput = execSync(
+            `git log "${previousTag}..${tag}" --pretty=format:'%H|||%s|||%an|||%ae'`,
+            { encoding: "utf8", maxBuffer: 10 * 1024 * 1024 }
+          ).trim()
+
+          if (!logOutput) {
+            writeFileSync("/tmp/commits.json", JSON.stringify([]))
+            process.exit(0)
+          }
+
+          const commits = logOutput.split("\n").map((line) => {
+            const [hash, subject, author, email] = line.split("|||")
+            const prMatch = subject.match(/\(#(\d+)\)/)
+            return {
+              hash: hash?.trim(),
+              subject: subject?.trim(),
+              author: author?.trim(),
+              email: email?.trim(),
+              pr_number: prMatch ? prMatch[1] : null,
+              pr_title: null,
+              pr_author_login: null,
+              pr_labels: [],
+            }
+          }).filter(c => c.hash)
+
+          // Enrich with PR metadata for commits that reference a PR
+          for (const commit of commits) {
+            if (!commit.pr_number) continue
+            try {
+              const prData = JSON.parse(
+                execSync(
+                  `gh pr view ${commit.pr_number} --repo ${repo} --json number,title,author,labels`,
+                  { encoding: "utf8" }
+                )
+              )
+              commit.pr_title = prData.title
+              commit.pr_author_login = prData.author?.login ?? null
+              commit.pr_labels = (prData.labels ?? []).map((l) => l.name)
+            } catch {
+              // PR lookup failed — use commit metadata as fallback
+            }
+          }
+
+          writeFileSync("/tmp/commits.json", JSON.stringify(commits, null, 2))
+          console.log(`Collected ${commits.length} commits`)
+          EOF
+
+      - name: Detect breaking changes
+        id: changesets
+        run: |
+          RANGE_END="${{ steps.version.outputs.range_end }}"
+          PREVIOUS_TAG="${{ steps.previous.outputs.tag }}"
+
+          # Method 1: changeset files with a minor bump
+          # ("@medusajs/package-name": minor)
+          MINOR_CHANGESETS=$(
+            git log "${PREVIOUS_TAG}..${RANGE_END}" --diff-filter=A --format="%H" -- ".changeset/*.md" \
+              | while read -r hash; do
+                  git diff-tree --no-commit-id -r --name-only --diff-filter=A "$hash" -- ".changeset/*.md" \
+                    | while read -r file; do
+                        git show "${hash}:${file}" 2>/dev/null
+                      done
+                done \
+              | grep -c '": minor' || true
+          )
+
+          # Method 2: PRs labelled "breaking-change" in the commit range
+          LABEL_BREAKING=$(node --input-type=module << 'EOF'
+          import { readFileSync } from "fs"
+          const commits = JSON.parse(readFileSync("/tmp/commits.json", "utf8"))
+          const count = commits.filter(c => c.pr_labels?.includes("breaking-change")).length
+          process.stdout.write(String(count))
+          EOF
+          )
+
+          BREAKING_CHANGES=$((MINOR_CHANGESETS + LABEL_BREAKING))
+
+          echo "minor_changesets=$BREAKING_CHANGES" >> "$GITHUB_OUTPUT"
+          echo "Breaking changes detected — minor changesets: $MINOR_CHANGESETS, breaking-change label: $LABEL_BREAKING, total: $BREAKING_CHANGES"
+
+      - name: Build Claude prompt
+        id: prompt
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          PREVIOUS_TAG="${{ steps.previous.outputs.tag }}"
+          REPO="${{ github.repository }}"
+          MINOR_CHANGESETS="${{ steps.changesets.outputs.minor_changesets }}"
+          ADDITIONAL_INSTRUCTIONS="${{ github.event.inputs.additional_instructions }}"
+          COMMITS=$(cat /tmp/commits.json)
+
+          DELIMITER="CLAUDE_PROMPT_EOF"
+          {
+            echo "CLAUDE_PROMPT<<${DELIMITER}"
+            cat << PROMPT
+          IMPORTANT: Before doing anything else, you MUST read all four skill files below using the Read tool. Do not write a single word of release notes until you have read all of them.
+
+          Step 1 — You MUST load the /writing-releases skill and read all its files, especially the SKILL.md which defines the rules, format, structure, and constraints for writing release notes. Then read the reference files that it links to.
+
+          Step 2 — Write GitHub release notes for Medusa ${TAG} by strictly following every rule in those files.
+
+          IMPORTANT: Only create /tmp/release-notes.md using the Write tool. Do not use git commands. Do not create any other files.
+
+          Context:
+          - Repository: ${REPO}
+          - Previous release: ${PREVIOUS_TAG}
+          - Current release: ${TAG}
+          - Number of commits with minor changesets (breaking changes): ${MINOR_CHANGESETS}
+
+          The commit and PR metadata is provided below as JSON. Each entry has:
+          - hash: commit hash
+          - subject: commit message subject
+          - author: git author name
+          - pr_number: PR number (if any)
+          - pr_title: PR title from GitHub (if available)
+          - pr_author_login: GitHub username of PR author (if available)
+          - pr_labels: labels on the PR
+
+          Commits JSON:
+          ${COMMITS}
+          PROMPT
+
+            if [ -n "$ADDITIONAL_INSTRUCTIONS" ]; then
+              cat << EXTRA
+
+          Additional instructions from the release author (apply these when writing, but you MUST still read and follow the skill files from Step 1 — they define the format, structure, and constraints that cannot be overridden):
+          ${ADDITIONAL_INSTRUCTIONS}
+          EXTRA
+            fi
+
+            cat << PROMPT
+
+          Write the complete release notes markdown to /tmp/release-notes.md.
+          PROMPT
+            echo "${DELIMITER}"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Generate release notes with Claude
+        uses: anthropics/claude-code-base-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+          prompt: ${{ steps.prompt.outputs.CLAUDE_PROMPT }}
+          allowed_tools: "Skill,Read,Write,Bash(cat /tmp/commits.json,git show:*)"
+          max_turns: 25
+
+      - name: Create draft GitHub release
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          PREVIOUS_TAG="${{ steps.previous.outputs.tag }}"
+
+          if [ ! -f /tmp/release-notes.md ]; then
+            echo "ERROR: /tmp/release-notes.md was not created by Claude"
+            exit 1
+          fi
+
+          ARGS=(
+            "$TAG"
+            --title "$TAG"
+            --notes-file /tmp/release-notes.md
+            --draft
+            --target "${{ github.sha }}"
+          )
+
+          gh release create "${ARGS[@]}"
+          echo "Draft release created for $TAG"

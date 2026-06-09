@@ -1,5 +1,4 @@
-import { getCleanMd, PLAINTEXT_DOC_MESSAGE } from "docs-utils"
-import { existsSync } from "fs"
+import { addExtraToMd, getCleanMd, workerCompatibleFetch } from "docs-utils"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
@@ -13,21 +12,42 @@ import {
 import type { Plugin } from "unified"
 
 type Params = {
-  params: Promise<{ slug: string[] }>
+  params: Promise<{ slug?: string[] }>
 }
 
 export async function GET(req: NextRequest, { params }: Params) {
-  const { slug = ["/"] } = await params
+  const { slug: rawSlug } = await params
+  const slug = rawSlug?.filter(Boolean) ?? []
+  const origin = process.env.NEXT_PUBLIC_BASE_URL || new URL(req.url).origin
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
 
-  // keep this so that Vercel keeps the files in deployment
-  const basePath = path.join(process.cwd(), "app")
-  const filePath = path.join(basePath, ...slug, "page.mdx")
+  const fileContent = await workerCompatibleFetch<string | null>({
+    url: `${origin}${basePath}/raw-mdx/${[...slug, "page.mdx"].join("/")}`,
+    responseTransformer: async (res) => {
+      if (!res.ok) {
+        return null
+      }
+      return await res.text()
+    },
+    fallbackAction: async () => {
+      try {
+        const { promises: fs } = await import("fs")
+        return await fs.readFile(
+          path.join(process.cwd(), "app", ...slug, "page.mdx"),
+          "utf-8"
+        )
+      } catch {
+        return null
+      }
+    },
+    useRemote: !!process.env.CLOUDFLARE_ENV,
+  })
 
-  if (!existsSync(filePath)) {
+  if (!fileContent) {
     return notFound()
   }
 
-  const cleanMdContent = await getCleanMd_(filePath, {
+  const cleanMdContent = await getCleanMd_(fileContent, {
     before: [
       [
         crossProjectLinksPlugin,
@@ -56,7 +76,8 @@ export async function GET(req: NextRequest, { params }: Params) {
           },
           useBaseUrl:
             process.env.NODE_ENV === "production" ||
-            process.env.VERCEL_ENV === "production",
+            process.env.VERCEL_ENV === "production" ||
+            !!process.env.CLOUDFLARE_ENV,
         },
       ],
       [localLinksRehypePlugin],
@@ -75,11 +96,14 @@ export async function GET(req: NextRequest, { params }: Params) {
       host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     })
 
+    const urlObj = new URL(req.url)
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL || ""}${process.env.NEXT_PUBLIC_BASE_PATH || ""}${urlObj.pathname}`
+
     client.capture({
       distinctId: "anonymous",
       event: "md_content_requested_agents",
       properties: {
-        $current_url: req.url,
+        $current_url: url,
         $raw_user_agent: req.headers.get("user-agent") || undefined,
       },
     })
@@ -87,18 +111,24 @@ export async function GET(req: NextRequest, { params }: Params) {
     await client.shutdown()
   }
 
-  return new NextResponse(cleanMdContent + PLAINTEXT_DOC_MESSAGE, {
-    headers: {
-      "Content-Type": "text/markdown",
-      "Cache-Control": "public, max-age=3600, must-revalidate",
-    },
-    status: 200,
-  })
+  return new NextResponse(
+    addExtraToMd(cleanMdContent, {
+      baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "",
+      basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
+    }),
+    {
+      headers: {
+        "Content-Type": "text/markdown",
+        "Cache-Control": "public, max-age=3600, must-revalidate",
+      },
+      status: 200,
+    }
+  )
 }
 
 const getCleanMd_ = unstable_cache(
-  async (filePath: string, plugins?: { before?: Plugin[]; after?: Plugin[] }) =>
-    getCleanMd({ file: filePath, plugins }),
+  async (content: string, plugins?: { before?: Plugin[]; after?: Plugin[] }) =>
+    getCleanMd({ file: content, type: "content", plugins }),
   ["clean-md"],
   {
     revalidate: 3600,

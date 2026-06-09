@@ -24,12 +24,20 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateSalesChannelsExistStep"
   },
   {
+    "title": "requestVerificationStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/requestVerificationStep"
+  },
+  {
     "title": "setAuthAppMetadataStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setAuthAppMetadataStep"
   },
   {
     "title": "addShippingMethodToCartStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/addShippingMethodToCartStep"
+  },
+  {
+    "title": "compensatePaymentIfNeededStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/compensatePaymentIfNeededStep"
   },
   {
     "title": "confirmInventoryStep",
@@ -128,6 +136,10 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateAndReturnShippingMethodsDataStep"
   },
   {
+    "title": "validateCartItemsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateCartItemsStep"
+  },
+  {
     "title": "validateCartPaymentsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateCartPaymentsStep"
   },
@@ -156,8 +168,28 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateVariantPricesStep"
   },
   {
+    "title": "retrieveGiftCardBalanceStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/retrieveGiftCardBalanceStep"
+  },
+  {
+    "title": "validateCartGiftCardStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateCartGiftCardStep"
+  },
+  {
+    "title": "validateCustomerStoreCreditAccountStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateCustomerStoreCreditAccountStep"
+  },
+  {
     "title": "validateExistingPaymentCollectionStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateExistingPaymentCollectionStep"
+  },
+  {
+    "title": "validateGiftCardInCartStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateGiftCardInCartStep"
+  },
+  {
+    "title": "validateGiftCardStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateGiftCardStep"
   },
   {
     "title": "createEntitiesStep",
@@ -380,6 +412,30 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateFulfillmentDeliverabilityStep"
   },
   {
+    "title": "createGiftCardsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createGiftCardsStep"
+  },
+  {
+    "title": "deleteGiftCardsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteGiftCardsStep"
+  },
+  {
+    "title": "retrieveGiftCardsBalanceStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/retrieveGiftCardsBalanceStep"
+  },
+  {
+    "title": "updateGiftCardsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateGiftCardsStep"
+  },
+  {
+    "title": "validateClaimGiftCardInputStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateClaimGiftCardInputStep"
+  },
+  {
+    "title": "validateGiftCardRedeemStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateGiftCardRedeemStep"
+  },
+  {
     "title": "adjustInventoryLevelsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/adjustInventoryLevelsStep"
   },
@@ -554,10 +610,6 @@ export const step = [
   {
     "title": "exportOrdersStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/exportOrdersStep"
-  },
-  {
-    "title": "listOrderChangeActionsByTypeStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/listOrderChangeActionsByTypeStep"
   },
   {
     "title": "previewOrderChangeStep",
@@ -1280,12 +1332,24 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateSalesChannelsStep"
   },
   {
+    "title": "createPropertyLabelsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPropertyLabelsStep"
+  },
+  {
     "title": "createViewConfigurationStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createViewConfigurationStep"
   },
   {
+    "title": "deletePropertyLabelsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deletePropertyLabelsStep"
+  },
+  {
     "title": "setActiveViewConfigurationStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setActiveViewConfigurationStep"
+  },
+  {
+    "title": "updatePropertyLabelsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updatePropertyLabelsStep"
   },
   {
     "title": "updateViewConfigurationStep",
@@ -1334,6 +1398,30 @@ export const step = [
   {
     "title": "updateStoresStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateStoresStep"
+  },
+  {
+    "title": "createStoreCreditAccountsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createStoreCreditAccountsStep"
+  },
+  {
+    "title": "creditAccountStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/creditAccountStep"
+  },
+  {
+    "title": "debitAccountStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/debitAccountStep"
+  },
+  {
+    "title": "validateClaimStoreCreditAccountInputStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateClaimStoreCreditAccountInputStep"
+  },
+  {
+    "title": "validateSourceStoreCreditAccountsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateSourceStoreCreditAccountsStep"
+  },
+  {
+    "title": "validateStoreCreditAccountInputStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateStoreCreditAccountInputStep"
   },
   {
     "title": "createTaxRateRulesStep",

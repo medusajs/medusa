@@ -11,6 +11,7 @@ import {
   CreatePaymentSessionDTO,
   CreateRefundDTO,
   DAL,
+  DeletePaymentMethodDTO,
   FilterablePaymentCollectionProps,
   FilterablePaymentMethodProps,
   FilterablePaymentProviderProps,
@@ -41,7 +42,9 @@ import {
 } from "@medusajs/framework/types"
 import {
   BigNumber,
+  defaultCurrencies,
   EmitEvents,
+  getEpsilonFromDecimalPrecision,
   InjectManager,
   InjectTransactionManager,
   isPresent,
@@ -861,6 +864,7 @@ export default class PaymentModuleService
       {
         select: [
           "id",
+          "currency_code",
           "data",
           "provider_id",
           "payment_collection_id",
@@ -912,7 +916,17 @@ export default class PaymentModuleService
 
     const totalRefundedAmount = MathBN.add(refundedAmount, data.amount)
 
-    if (MathBN.lt(capturedAmount, totalRefundedAmount)) {
+    const upperCurCode = payment.currency_code?.toUpperCase() as string
+    const currencyEpsilon = getEpsilonFromDecimalPrecision(
+      defaultCurrencies[upperCurCode]?.decimal_digits
+    )
+
+    if (
+      MathBN.lt(
+        MathBN.sub(capturedAmount, totalRefundedAmount),
+        -currencyEpsilon
+      )
+    ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `You cannot refund more than what is captured on the payment.`
@@ -926,6 +940,7 @@ export default class PaymentModuleService
         created_by: data.created_by,
         note: data.note,
         refund_reason_id: data.refund_reason_id,
+        metadata: data.metadata,
       },
       sharedContext
     )
@@ -970,15 +985,18 @@ export default class PaymentModuleService
       sharedContext
     )
 
-    await this.paymentProviderService_.cancelPayment(payment.provider_id, {
-      data: payment.data!,
-      context: {
-        idempotency_key: payment.id,
-      },
-    })
+    const { data } = await this.paymentProviderService_.cancelPayment(
+      payment.provider_id,
+      {
+        data: payment.data!,
+        context: {
+          idempotency_key: payment.id,
+        },
+      }
+    )
 
     await this.paymentService_.update(
-      { id: paymentId, canceled_at: new Date() },
+      { id: paymentId, canceled_at: new Date(), data },
       sharedContext
     )
 
@@ -1297,6 +1315,38 @@ export default class PaymentModuleService
     })
 
     return Array.isArray(data) ? normalizedResponse : normalizedResponse[0]
+  }
+
+  deletePaymentMethods(
+    data: DeletePaymentMethodDTO,
+    sharedContext?: Context
+  ): Promise<void>
+
+  deletePaymentMethods(
+    data: DeletePaymentMethodDTO[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  @InjectManager()
+  @EmitEvents()
+  async deletePaymentMethods(
+    data: DeletePaymentMethodDTO | DeletePaymentMethodDTO[],
+    @MedusaContext() sharedContext?: Context
+  ): Promise<void> {
+    const input = Array.isArray(data) ? data : [data]
+
+    await promiseAll(
+      input.map((item) =>
+        this.paymentProviderService_.deletePaymentMethod(item.provider_id, {
+          context: item.context,
+          data: {
+            ...item.data,
+            id: item.id,
+          },
+        })
+      ),
+      { aggregateErrors: true }
+    )
   }
 
   @InjectManager()
