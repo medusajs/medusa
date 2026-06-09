@@ -992,6 +992,48 @@
   "GET /admin/translations/statistics": {
     "js-sdk": "sdk.admin.translation.statistics({\n  entity_type: \"product\"\n})\n.then(({ statistics }) => {\n  console.log(statistics)\n})"
   },
+  "GET /admin/rbac/roles": {
+    "js-sdk": "sdk.admin.rbacRole.list()\n.then(({ roles, count, limit, offset }) => {\n  console.log(roles)\n})"
+  },
+  "GET /admin/rbac/roles/{id}": {
+    "js-sdk": "sdk.admin.rbacRole.retrieve(\"role_123\")\n.then(({ role }) => {\n  console.log(role)\n})"
+  },
+  "POST /admin/rbac/roles": {
+    "js-sdk": "sdk.admin.rbacRole.create({\n  name: \"Editor\",\n  description: \"Can edit content\"\n})\n.then(({ role }) => {\n  console.log(role)\n})"
+  },
+  "POST /admin/rbac/roles/{id}": {
+    "js-sdk": "sdk.admin.rbacRole.update(\"role_123\", {\n  name: \"Senior Editor\"\n})\n.then(({ role }) => {\n  console.log(role)\n})"
+  },
+  "DELETE /admin/rbac/roles/{id}": {
+    "js-sdk": "sdk.admin.rbacRole.delete(\"role_123\")\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
+  },
+  "GET /admin/rbac/roles/{roleid}/policies": {
+    "js-sdk": "sdk.admin.rbacRole.listPolicies(\"role_123\")\n.then(({ policies, count, limit, offset }) => {\n  console.log(policies)\n})"
+  },
+  "POST /admin/rbac/roles/{roleid}/policies": {
+    "js-sdk": "sdk.admin.rbacRole.addPolicies(\"role_123\", {\n  policies: [\"policy_123\", \"policy_456\"]\n})\n.then(({ policies }) => {\n  console.log(policies)\n})"
+  },
+  "DELETE /admin/rbac/roles/{roleid}/policies/{policyid}": {
+    "js-sdk": "sdk.admin.rbacRole.removePolicy(\"role_123\", \"policy_456\")\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
+  },
+  "GET /admin/rbac/me/permissions": {
+    "js-sdk": "sdk.admin.rbacRole.mePermissions().then(({ permissions }) => {\n  console.log(permissions) // [\"product:read\", \"customer:read\", ...]\n})"
+  },
+  "GET /admin/rbac/policies": {
+    "js-sdk": "sdk.admin.rbacPolicy.list()\n.then(({ policies, count, limit, offset }) => {\n  console.log(policies)\n})"
+  },
+  "GET /admin/rbac/policies/{id}": {
+    "js-sdk": "sdk.admin.rbacPolicy.retrieve(\"policy_123\")\n.then(({ policy }) => {\n  console.log(policy)\n})"
+  },
+  "POST /admin/rbac/policies": {
+    "js-sdk": "sdk.admin.rbacPolicy.create({\n  key: \"product.read\",\n  resource: \"product\",\n  operation: \"read\"\n})\n.then(({ policy }) => {\n  console.log(policy)\n})"
+  },
+  "POST /admin/rbac/policies/{id}": {
+    "js-sdk": "sdk.admin.rbacPolicy.update(\"policy_123\", {\n  name: \"Read Products\",\n  description: \"Allows reading product information\"\n})\n.then(({ policy }) => {\n  console.log(policy)\n})"
+  },
+  "DELETE /admin/rbac/policies/{id}": {
+    "js-sdk": "sdk.admin.rbacPolicy.delete(\"policy_123\")\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
+  },
   "GET /auth/mfa/factors": {
     "js-sdk": "const { mfa_factors } = await sdk.auth.mfa.list()"
   },
@@ -1009,9 +1051,6 @@
   },
   "POST /auth/mfa/challenges/{id}/verify": {
     "js-sdk": "const result = await sdk.auth.login(\"user\", \"emailpass\", {\n  email: \"user@example.com\",\n  password: \"secret\"\n})\n\nif (typeof result === \"object\" && \"mfa_challenge\" in result) {\n  await sdk.auth.mfa.verifyChallenge(result.mfa_challenge.id, {\n    method: \"totp\",\n    code: \"123456\"\n  })\n}"
-  },
-  "POST /auth/{actor}/{method}/register": {
-    "js-sdk": "await sdk.auth.register(\n  \"customer\",\n  \"emailpass\",\n  {\n    email: \"customer@gmail.com\",\n    password: \"supersecret\"\n  }\n)\n\n// all subsequent requests will use the token in the header\nconst { customer } = await sdk.store.customer.create({\n  email: \"customer@gmail.com\",\n  password: \"supersecret\"\n})"
   },
   "POST /auth/{actor}/{method}": {
     "js-sdk": "const result = await sdk.auth.login(\n  \"customer\",\n  \"emailpass\",\n  {\n    email: \"customer@gmail.com\",\n    password: \"supersecret\"\n  }\n)\n\nif (typeof result !== \"string\") {\n  alert(\"Authentication requires additional steps\")\n  // replace with the redirect logic of your application\n  window.location.href = result.location\n  return\n}\n\n// customer is now authenticated\n// all subsequent requests will use the token in the header\nconst { customer } = await sdk.store.customer.retrieve()"

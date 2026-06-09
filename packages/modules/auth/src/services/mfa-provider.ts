@@ -1,45 +1,12 @@
-import { AuthTypes, Context, Logger } from "@medusajs/framework/types"
+import { 
+  AuthTypes, 
+  Context, 
+  Logger,
+  IAuthMfaProvider,
+  AuthMfaProvider,
+  RecoveryCodeAuthMfaProvider,
+} from "@medusajs/framework/types"
 import { AuthMfaProviderRegistrationPrefix } from "@types"
-
-export interface IAuthMfaProvider {
-  method: AuthTypes.AuthMfaChallengeMethod
-
-  canVerifyForAuthIdentity(
-    data: { auth_identity_id: string },
-    sharedContext?: Context
-  ): Promise<boolean>
-
-  verify(
-    data: {
-      auth_identity_id: string
-      code: string
-    },
-    sharedContext?: Context
-  ): Promise<boolean>
-}
-
-export interface AuthMfaProvider extends IAuthMfaProvider {
-  method: AuthTypes.AuthMfaProvider
-
-  start(
-    data: AuthTypes.AuthMfaStartDTO,
-    sharedContext?: Context
-  ): Promise<AuthTypes.AuthMfaStartResponse>
-
-  verifySetup(
-    data: AuthTypes.AuthMfaVerifyDTO,
-    sharedContext?: Context
-  ): Promise<AuthTypes.AuthMfaDTO>
-}
-
-export interface RecoveryCodeAuthMfaProvider extends IAuthMfaProvider {
-  method: "recovery_code"
-
-  generateCodes(
-    data: { auth_identity_id: string; count: number },
-    sharedContext?: Context
-  ): Promise<string[]>
-}
 
 type InjectedDependencies = {
   logger?: Logger

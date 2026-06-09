@@ -94,7 +94,10 @@ export const validateUserPermissionsStep = createStep(
     })
 
     if (!allowed) {
-      throw new MedusaError(MedusaError.Types.FORBIDDEN, "Forbidden")
+      throw new MedusaError(
+        MedusaError.Types.FORBIDDEN,
+        "You do not have access to some of the policies you are trying to assign."
+      )
     }
   }
 )
