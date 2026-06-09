@@ -25,3 +25,9 @@ export const ShippingProfileDetailBreadcrumb = (
 
   return <span>{shipping_profile.name}</span>
 }
+
+export const seo = (
+  match: UIMatch<HttpTypes.AdminShippingProfileResponse>
+) => ({
+  title: match.data?.shipping_profile?.name,
+})

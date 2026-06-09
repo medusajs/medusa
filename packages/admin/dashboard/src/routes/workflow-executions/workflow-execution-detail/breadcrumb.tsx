@@ -24,3 +24,9 @@ export const WorkflowExecutionDetailBreadcrumb = (
 
   return <span>{cleanId}</span>
 }
+
+export const seo = (
+  match: UIMatch<HttpTypes.AdminWorkflowExecutionResponse>
+) => ({
+  title: match.data?.workflow_execution?.id?.replace("wf_exec_", ""),
+})

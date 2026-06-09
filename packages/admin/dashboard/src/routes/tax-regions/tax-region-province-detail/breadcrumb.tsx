@@ -30,3 +30,17 @@ export const TaxRegionDetailBreadcrumb = (
 
   return <span>{isValid ? getProvinceByIso2(provinceCode) : provinceCode}</span>
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminTaxRegionResponse>) => {
+  const taxRegion = match.data?.tax_region
+
+  if (!taxRegion) {
+    return { title: undefined }
+  }
+
+  const countryCode = taxRegion.country_code?.toUpperCase()
+  const provinceCode = taxRegion.province_code?.toUpperCase()
+  const isValid = isProvinceInCountry(countryCode, provinceCode)
+
+  return { title: isValid ? getProvinceByIso2(provinceCode) : provinceCode }
+}

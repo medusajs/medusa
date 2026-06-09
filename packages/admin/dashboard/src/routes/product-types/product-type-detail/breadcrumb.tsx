@@ -22,3 +22,7 @@ export const ProductTypeDetailBreadcrumb = (
 
   return <span>{product_type.value}</span>
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminProductTypeResponse>) => ({
+  title: match.data?.product_type?.value,
+})

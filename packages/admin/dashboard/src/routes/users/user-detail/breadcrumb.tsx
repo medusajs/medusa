@@ -22,3 +22,15 @@ export const UserDetailBreadcrumb = (props: UserDetailBreadcrumbProps) => {
 
   return <span>{display}</span>
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminUserResponse>) => {
+  const user = match.data?.user
+
+  if (!user) {
+    return { title: undefined }
+  }
+
+  const name = [user.first_name, user.last_name].filter(Boolean).join(" ")
+
+  return { title: name || user.email }
+}

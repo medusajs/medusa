@@ -27,3 +27,17 @@ export const CustomerDetailBreadcrumb = (
 
   return <span>{display}</span>
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminCustomerResponse>) => {
+  const customer = match.data?.customer
+
+  if (!customer) {
+    return { title: undefined }
+  }
+
+  const name = [customer.first_name, customer.last_name]
+    .filter(Boolean)
+    .join(" ")
+
+  return { title: name || customer.email }
+}

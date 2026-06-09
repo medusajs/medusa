@@ -29,3 +29,7 @@ export const ProductVariantDetailBreadcrumb = (
 
   return <span>{variant.title}</span>
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminProductVariantResponse>) => ({
+  title: match.data?.variant?.title,
+})

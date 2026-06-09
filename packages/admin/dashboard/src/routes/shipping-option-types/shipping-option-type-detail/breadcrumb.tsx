@@ -22,3 +22,9 @@ export const ShippingOptionTypeDetailBreadcrumb = (
 
   return <span>{shipping_option_type.label}</span>
 }
+
+export const seo = (
+  match: UIMatch<HttpTypes.AdminShippingOptionTypeResponse>
+) => ({
+  title: match.data?.shipping_option_type?.label,
+})

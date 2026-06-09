@@ -27,3 +27,15 @@ export const ReservationDetailBreadcrumb = (
 
   return <span>{display}</span>
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminReservationResponse>) => {
+  const reservation = match.data?.reservation
+
+  return {
+    title: reservation
+      ? reservation.inventory_item?.title ??
+        reservation.inventory_item?.sku ??
+        reservation.id
+      : undefined,
+  }
+}

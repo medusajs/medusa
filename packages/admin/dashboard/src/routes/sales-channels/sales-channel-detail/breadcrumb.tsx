@@ -21,3 +21,7 @@ export const SalesChannelDetailBreadcrumb = (
 
   return <span>{sales_channel.name}</span>
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminSalesChannelResponse>) => ({
+  title: match.data?.sales_channel?.name,
+})

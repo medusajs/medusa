@@ -21,3 +21,7 @@ export const CollectionDetailBreadcrumb = (
 
   return <span>{collection.title}</span>
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminCollectionResponse>) => ({
+  title: match.data?.collection?.title,
+})

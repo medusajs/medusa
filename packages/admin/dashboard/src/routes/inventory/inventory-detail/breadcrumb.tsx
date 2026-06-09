@@ -29,3 +29,11 @@ export const InventoryDetailBreadcrumb = (
 
   return <span>{inventory_item.title ?? inventory_item.sku ?? id}</span>
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminInventoryItemResponse>) => {
+  const item = match.data?.inventory_item
+
+  return {
+    title: item ? item.title ?? item.sku ?? match.params.id : undefined,
+  }
+}

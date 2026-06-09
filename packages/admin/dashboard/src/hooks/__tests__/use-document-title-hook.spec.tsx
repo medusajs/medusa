@@ -42,7 +42,7 @@ describe("useDocumentTitle", () => {
     expect(result.current).toBe("Products - Medusa")
   })
 
-  it("uses the most specific (last) breadcrumb match", () => {
+  it("uses a route's seo resolver for detail pages", () => {
     useMatchesMock.mockReturnValue([
       {
         id: "products",
@@ -56,24 +56,11 @@ describe("useDocumentTitle", () => {
         pathname: "/products/prod_1",
         params: { id: "prod_1" },
         data: { product: { title: "Medusa Sweatpants" } },
-        handle: { breadcrumb: () => "Edit" },
-      },
-    ])
-
-    const { result } = renderHook(() => useDocumentTitle())
-
-    expect(result.current).toBe("Edit - Medusa")
-  })
-
-  it("falls back to loader data when breadcrumb returns a React element", () => {
-    useMatchesMock.mockReturnValue([
-      {
-        id: "product-detail",
-        pathname: "/products/prod_1",
-        params: { id: "prod_1" },
-        data: { product: { title: "Medusa Sweatpants" } },
         handle: {
           breadcrumb: () => createElement("span", null, "Hidden"),
+          seo: (match: { data: { product: { title: string } } }) => ({
+            title: match.data?.product?.title,
+          }),
         },
       },
     ])
@@ -81,5 +68,54 @@ describe("useDocumentTitle", () => {
     const { result } = renderHook(() => useDocumentTitle())
 
     expect(result.current).toBe("Medusa Sweatpants - Medusa")
+  })
+
+  it("uses the most specific (last) match that yields a title", () => {
+    useMatchesMock.mockReturnValue([
+      {
+        id: "products",
+        pathname: "/products",
+        params: {},
+        data: undefined,
+        handle: { breadcrumb: () => "Products" },
+      },
+      {
+        id: "product-detail",
+        pathname: "/products/prod_1",
+        params: { id: "prod_1" },
+        data: { product: { title: "Medusa Sweatpants" } },
+        handle: { seo: () => ({ title: "Medusa Sweatpants" }) },
+      },
+    ])
+
+    const { result } = renderHook(() => useDocumentTitle())
+
+    expect(result.current).toBe("Medusa Sweatpants - Medusa")
+  })
+
+  it("skips a detail match without a title and uses the parent breadcrumb", () => {
+    useMatchesMock.mockReturnValue([
+      {
+        id: "products",
+        pathname: "/products",
+        params: {},
+        data: undefined,
+        handle: { breadcrumb: () => "Products" },
+      },
+      {
+        id: "product-detail",
+        pathname: "/products/prod_1",
+        params: { id: "prod_1" },
+        data: undefined,
+        handle: {
+          breadcrumb: () => createElement("span", null, "Hidden"),
+          seo: () => ({ title: undefined }),
+        },
+      },
+    ])
+
+    const { result } = renderHook(() => useDocumentTitle())
+
+    expect(result.current).toBe("Products - Medusa")
   })
 })
