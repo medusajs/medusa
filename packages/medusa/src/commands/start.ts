@@ -12,7 +12,7 @@ import {
   FeatureFlag,
   FileSystem,
   generateContainerTypes,
-  generateMedusaEnvTypes,
+  generatePluginAugmentations,
   generatePolicyTypes,
   getResolvedPlugins,
   gqlSchemaToTypes,
@@ -313,7 +313,7 @@ async function start(args: {
           ContainerRegistrationKeys.CONFIG_MODULE
         )
         const plugins = await getResolvedPlugins(directory, configModule, true)
-        fileGenPromises.push(generateMedusaEnvTypes({ directory, plugins }))
+        fileGenPromises.push(generatePluginAugmentations({ directory, plugins }))
 
         await promiseAll(fileGenPromises)
         logger.debug("Generated policy types")

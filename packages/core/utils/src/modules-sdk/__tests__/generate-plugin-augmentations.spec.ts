@@ -1,9 +1,9 @@
 import { PluginDetails } from "@medusajs/types"
 import path from "path"
 import { FileSystem } from "../../common/file-system"
-import { generateMedusaEnvTypes } from "../generate-medusa-env-types"
+import { generatePluginAugmentations } from "../generate-plugin-augmentations"
 
-const BASE_DIR = path.join(__dirname, "sample-proj-env-types")
+const BASE_DIR = path.join(__dirname, "sample-proj-plugin-augmentations")
 const fs = new FileSystem(BASE_DIR)
 
 afterEach(async () => {
@@ -24,7 +24,7 @@ function makePlugin(
   }
 }
 
-describe("generateMedusaEnvTypes", () => {
+describe("generatePluginAugmentations", () => {
   it("should emit a reference for plugin that exposes root types via exports map", async () => {
     await fs.createJson(`node_modules/@my-org/plugin-a/package.json`, {
       name: "@my-org/plugin-a",
@@ -35,7 +35,7 @@ describe("generateMedusaEnvTypes", () => {
       },
     })
 
-    await generateMedusaEnvTypes({
+    await generatePluginAugmentations({
       directory: BASE_DIR,
       plugins: [
         makePlugin("@my-org/plugin-a", {
@@ -44,7 +44,7 @@ describe("generateMedusaEnvTypes", () => {
       ],
     })
 
-    const content = await fs.contents(".medusa/types/medusa-env.d.ts")
+    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
     expect(content).toContain('/// <reference types="@my-org/plugin-a" />')
   })
 
@@ -54,12 +54,12 @@ describe("generateMedusaEnvTypes", () => {
       exports: { ".": { types: "./index.d.ts" }, "./package.json": "./package.json" },
     })
 
-    await generateMedusaEnvTypes({
+    await generatePluginAugmentations({
       directory: BASE_DIR,
       plugins: [makePlugin("@my-org/backend-plugin")],
     })
 
-    const content = await fs.contents(".medusa/types/medusa-env.d.ts")
+    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
     expect(content).toContain('/// <reference types="@my-org/backend-plugin" />')
   })
 
@@ -69,7 +69,7 @@ describe("generateMedusaEnvTypes", () => {
       exports: { "./admin": "./admin.js", "./package.json": "./package.json" },
     })
 
-    await generateMedusaEnvTypes({
+    await generatePluginAugmentations({
       directory: BASE_DIR,
       plugins: [
         makePlugin("@my-org/no-types", {
@@ -78,13 +78,13 @@ describe("generateMedusaEnvTypes", () => {
       ],
     })
 
-    const content = await fs.contents(".medusa/types/medusa-env.d.ts")
+    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
     expect(content).not.toContain("@my-org/no-types")
     expect(content).toContain("No plugin type packages detected")
   })
 
   it("skips the project-plugin entry", async () => {
-    await generateMedusaEnvTypes({
+    await generatePluginAugmentations({
       directory: BASE_DIR,
       plugins: [
         makePlugin("project-plugin", {
@@ -93,7 +93,7 @@ describe("generateMedusaEnvTypes", () => {
       ],
     })
 
-    const content = await fs.contents(".medusa/types/medusa-env.d.ts")
+    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
     expect(content).not.toContain("project-plugin")
   })
 
@@ -109,37 +109,39 @@ describe("generateMedusaEnvTypes", () => {
       },
     })
 
-    await generateMedusaEnvTypes({
+    await generatePluginAugmentations({
       directory: BASE_DIR,
       plugins: [makePlugin("@my-org/nested")],
     })
 
-    const content = await fs.contents(".medusa/types/medusa-env.d.ts")
+    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
     expect(content).toContain('/// <reference types="@my-org/nested" />')
   })
 
   it("writes multiple references when several plugins have root types", async () => {
     await fs.createJson(`node_modules/@my-org/plugin-a/package.json`, {
+      name: "@my-org/plugin-a",
       exports: { ".": { types: "./index.d.ts" }, "./package.json": "./package.json" },
     })
     await fs.createJson(`node_modules/@my-org/plugin-b/package.json`, {
+      name: "@my-org/plugin-b",
       exports: { ".": { types: "./index.d.ts" }, "./package.json": "./package.json" },
     })
 
-    await generateMedusaEnvTypes({
+    await generatePluginAugmentations({
       directory: BASE_DIR,
       plugins: [makePlugin("@my-org/plugin-a"), makePlugin("@my-org/plugin-b")],
     })
 
-    const content = await fs.contents(".medusa/types/medusa-env.d.ts")
+    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
     expect(content).toContain('/// <reference types="@my-org/plugin-a" />')
     expect(content).toContain('/// <reference types="@my-org/plugin-b" />')
   })
 
   it("generates placeholder file when no plugins have root types", async () => {
-    await generateMedusaEnvTypes({ directory: BASE_DIR, plugins: [] })
+    await generatePluginAugmentations({ directory: BASE_DIR, plugins: [] })
 
-    const content = await fs.contents(".medusa/types/medusa-env.d.ts")
+    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
     expect(content).toContain("No plugin type packages detected")
     expect(content).toContain("export {}")
   })

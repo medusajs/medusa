@@ -4,7 +4,7 @@ import {
   ContainerRegistrationKeys,
   FileSystem,
   generateContainerTypes,
-  generateMedusaEnvTypes,
+  generatePluginAugmentations,
   getResolvedPlugins,
   gqlSchemaToTypes,
   mergePluginModules,
@@ -69,8 +69,8 @@ export async function generateTypes({
     logger.debug("Generated modules types")
   }
 
-  await generateMedusaEnvTypes({ directory, plugins })
-  logger.debug("Generated plugin env types")
+  await generatePluginAugmentations({ directory, plugins })
+  logger.debug("Generated plugin augmentation types")
 
   logger.info("Types generated successfully")
 }
