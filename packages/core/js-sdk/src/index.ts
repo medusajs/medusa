@@ -52,7 +52,6 @@ export {
   type AuthMfaVerifyChallengePayload,
   type AuthMfaVerifyPayload,
   type AuthRedirectResponse,
-  type AuthRegisterOptions,
   type AuthRegisterResponse,
 } from "./auth/index.js"
 export { Store } from "./store/index.js"

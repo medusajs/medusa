@@ -31,7 +31,7 @@ export type AuthMfaRequiredResponse = {
 /**
  * Response returned when authentication succeeds but must be completed with
  * verification before issuing a token.
- * 
+ *
  * @since 2.15.5
  */
 export type AuthVerificationRequiredResponse = {
@@ -47,23 +47,10 @@ export type AuthVerificationRequiredResponse = {
 
 /**
  * Response returned from a registration attempt.
- * 
+ *
  * @since 2.15.5
  */
 export type AuthRegisterResponse = string | AuthVerificationRequiredResponse
-
-/**
- * Options used when registering with an auth provider.
- * 
- * @since 2.15.5
- */
-export type AuthRegisterOptions = {
-  /**
-   * Return verification state instead of throwing when registration
-   * requires verification before a token can be issued.
-   */
-  returnVerification?: boolean
-}
 
 /**
  * Response returned from an authentication attempt.
@@ -202,7 +189,7 @@ export type AuthMfaVerifyChallengePayload = {
 
 /**
  * Payload used to request a verification token.
- * 
+ *
  * @since 2.15.5
  */
 export type AuthVerificationRequestPayload = {
@@ -218,7 +205,7 @@ export type AuthVerificationRequestPayload = {
 
 /**
  * Payload used to confirm a verification token.
- * 
+ *
  * @since 2.15.5
  */
 export type AuthVerificationConfirmPayload = {
@@ -230,7 +217,7 @@ export type AuthVerificationConfirmPayload = {
 
 /**
  * Response returned after requesting a verification token.
- * 
+ *
  * @since 2.15.5
  */
 export type AuthVerificationRequestResponse = {
@@ -242,7 +229,7 @@ export type AuthVerificationRequestResponse = {
 
 /**
  * Response returned after confirming verification.
- * 
+ *
  * @since 2.15.5
  */
 export type AuthVerificationConfirmResponse = {
@@ -471,7 +458,7 @@ export class Auth {
 
   /**
    * Methods for requesting and confirming verification.
-   * 
+   *
    * @since 2.15.5
    */
   verification = {
@@ -563,11 +550,10 @@ export class Auth {
    *   password: "supersecret"
    * })
    */
-  register = (async (
+  register = async (
     actor: string,
     method: string,
-    payload: HttpTypes.AdminSignUpWithEmailPassword | Record<string, unknown>,
-    options?: AuthRegisterOptions
+    payload: HttpTypes.AdminSignUpWithEmailPassword | Record<string, unknown>
   ): Promise<AuthRegisterResponse> => {
     const { token, verification_required, verification } =
       await this.client.fetch<AuthProviderResponse>(
@@ -579,36 +565,20 @@ export class Auth {
       )
 
     if (verification_required && verification) {
-      if (options?.returnVerification) {
-        return {
-          verification_required: true,
-          verification,
-        }
+      return {
+        verification_required: true,
+        verification,
       }
-
-      throw new Error("Unexpected registration response")
     }
 
     if (!token) {
       throw new Error("Unexpected registration response")
     }
 
+    // The reason we don't use setToken_ (i.e. start a session) here is because the token doesn't have any actor types attached to it yet.
+    // The token should be sent in a separate request to create an actor type, after which we can initiate the session.
     this.client.setToken(token)
-
     return token
-  }) as {
-    (
-      actor: string,
-      method: string,
-      payload: HttpTypes.AdminSignUpWithEmailPassword | Record<string, unknown>,
-      options: AuthRegisterOptions & { returnVerification: true }
-    ): Promise<AuthRegisterResponse>
-    (
-      actor: string,
-      method: string,
-      payload: HttpTypes.AdminSignUpWithEmailPassword | Record<string, unknown>,
-      options?: AuthRegisterOptions
-    ): Promise<string>
   }
 
   /**
