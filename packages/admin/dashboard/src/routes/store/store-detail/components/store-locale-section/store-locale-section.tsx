@@ -20,6 +20,7 @@ import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useLocalesTableColumns } from "../../../common/hooks/use-locales-table-columns"
 import { useLocalesTableQuery } from "../../../common/hooks/use-locales-table-query"
 import { useLocales } from "../../../../../hooks/api"
+import { useStorePermissions } from "../../../../../hooks/use-resource-permissions"
 
 type StoreLocaleSectionProps = {
   store: HttpTypes.AdminStore
@@ -29,6 +30,7 @@ const PAGE_SIZE = 10
 
 export const StoreLocaleSection = ({ store }: StoreLocaleSectionProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  const { canUpdate } = useStorePermissions()
 
   const { searchParams, raw } = useLocalesTableQuery({ pageSize: PAGE_SIZE })
 
@@ -43,7 +45,7 @@ export const StoreLocaleSection = ({ store }: StoreLocaleSectionProps) => {
     }
   )
 
-  const columns = useColumns()
+  const columns = useColumns({ canUpdate })
 
   const { table } = useDataTable({
     data: locales ?? [],
@@ -55,7 +57,7 @@ export const StoreLocaleSection = ({ store }: StoreLocaleSectionProps) => {
       updater: setRowSelection,
     },
     enablePagination: true,
-    enableRowSelection: true,
+    enableRowSelection: canUpdate,
     pageSize: PAGE_SIZE,
     meta: {
       storeId: store.id,
@@ -112,19 +114,21 @@ export const StoreLocaleSection = ({ store }: StoreLocaleSectionProps) => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("store.locales")}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  icon: <Plus />,
-                  label: t("actions.add"),
-                  to: "locales",
-                },
-              ],
-            },
-          ]}
-        />
+        {canUpdate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    icon: <Plus />,
+                    label: t("actions.add"),
+                    to: "locales",
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       <_DataTable
         orderBy={[
@@ -140,7 +144,7 @@ export const StoreLocaleSection = ({ store }: StoreLocaleSectionProps) => {
         isLoading={!store.supported_locales?.length ? false : isLoading}
         queryObject={raw}
       />
-      <CommandBar open={!!Object.keys(rowSelection).length}>
+      <CommandBar open={canUpdate && !!Object.keys(rowSelection).length}>
         <CommandBar.Bar>
           <CommandBar.Value>
             {t("general.countSelected", {
@@ -224,59 +228,66 @@ const LocaleActions = ({
 
 const columnHelper = createColumnHelper<HttpTypes.AdminLocale>()
 
-const useColumns = () => {
+const useColumns = ({ canUpdate }: { canUpdate: boolean }) => {
   const base = useLocalesTableColumns()
-  const { t } = useTranslation()
 
   return useMemo(
     () => [
-      columnHelper.display({
-        id: "select",
-        header: ({ table }) => {
-          return (
-            <Checkbox
-              checked={
-                table.getIsSomePageRowsSelected()
-                  ? "indeterminate"
-                  : table.getIsAllPageRowsSelected()
-              }
-              onCheckedChange={(value) =>
-                table.toggleAllPageRowsSelected(!!value)
-              }
-            />
-          )
-        },
-        cell: ({ row }) => {
-          return (
-            <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            />
-          )
-        },
-      }),
+      ...(canUpdate
+        ? [
+            columnHelper.display({
+              id: "select",
+              header: ({ table }) => {
+                return (
+                  <Checkbox
+                    checked={
+                      table.getIsSomePageRowsSelected()
+                        ? "indeterminate"
+                        : table.getIsAllPageRowsSelected()
+                    }
+                    onCheckedChange={(value) =>
+                      table.toggleAllPageRowsSelected(!!value)
+                    }
+                  />
+                )
+              },
+              cell: ({ row }) => {
+                return (
+                  <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                    }}
+                  />
+                )
+              },
+            }),
+          ]
+        : []),
       ...base,
-      columnHelper.display({
-        id: "actions",
-        cell: ({ row, table }) => {
-          const { supportedLocales, storeId } = table.options.meta as {
-            supportedLocales: HttpTypes.AdminStoreLocale[]
-            storeId: string
-          }
+      ...(canUpdate
+        ? [
+            columnHelper.display({
+              id: "actions",
+              cell: ({ row, table }) => {
+                const { supportedLocales, storeId } = table.options.meta as {
+                  supportedLocales: HttpTypes.AdminStoreLocale[]
+                  storeId: string
+                }
 
-          return (
-            <LocaleActions
-              storeId={storeId}
-              locale={row.original}
-              supportedLocales={supportedLocales}
-            />
-          )
-        },
-      }),
+                return (
+                  <LocaleActions
+                    storeId={storeId}
+                    locale={row.original}
+                    supportedLocales={supportedLocales}
+                  />
+                )
+              },
+            }),
+          ]
+        : []),
     ],
-    [base, t]
+    [base, canUpdate]
   )
 }

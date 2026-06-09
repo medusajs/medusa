@@ -39,6 +39,7 @@ export type PermissionResource =
   | "product_variant"
   | "product_option"
   | "price"
+  | "price_preference"
   | "currency"
   | "inventory"
   | "inventory_item"

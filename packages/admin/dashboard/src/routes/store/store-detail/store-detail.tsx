@@ -10,6 +10,7 @@ import { useExtension } from "../../../providers/extension-provider"
 import { StoreCurrencySection } from "./components/store-currency-section"
 import { StoreLocaleSection } from "./components/store-locale-section"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const StoreDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof storeLoader>>
@@ -39,9 +40,12 @@ export const StoreDetail = () => {
       hasOutlet
       showMetadata
       showJSON
+      showRequiredPermissions
     >
       <StoreGeneralSection store={store} />
-      <StoreCurrencySection store={store} />
+      <PermissionGuard permission="currency:read">
+        <StoreCurrencySection store={store} />
+      </PermissionGuard>
       {isTranslationsEnabled && <StoreLocaleSection store={store} />}
     </SingleColumnPage>
   )

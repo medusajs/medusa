@@ -35,13 +35,18 @@ const useSettingRoutes = (): INavItem[] => {
   const canReadSalesChannels = hasPermission("sales_channel:read")
   const canReadTaxRegions = hasPermission("tax_region:read")
   const canReadStockLocations = hasPermission("stock_location:read")
+  const canReadStore = hasPermission("store:read")
 
   return useMemo(
     () => [
-      {
-        label: t("store.domain"),
-        to: "/settings/store",
-      },
+      ...(canReadStore
+        ? [
+            {
+              label: t("store.domain"),
+              to: "/settings/store",
+            },
+          ]
+        : []),
       {
         label: t("users.domain"),
         to: "/settings/users",
@@ -148,6 +153,7 @@ const useSettingRoutes = (): INavItem[] => {
       canReadSalesChannels,
       canReadTaxRegions,
       canReadStockLocations,
+      canReadStore,
     ]
   )
 }

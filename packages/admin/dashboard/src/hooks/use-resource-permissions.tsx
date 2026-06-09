@@ -106,6 +106,10 @@ export const useFulfillmentSetPermissions = () =>
 export const useFulfillmentProviderPermissions = () =>
   useResourcePermissions("fulfillment_provider")
 
+export const useStorePermissions = () => useResourcePermissions("store")
+
+export const useCurrencyPermissions = () => useResourcePermissions("currency")
+
 export const useShippingProfilePermissions = () =>
   useResourcePermissions("shipping_profile")
 
@@ -177,6 +181,9 @@ export const useCampaignPermissions = () => useResourcePermissions("campaign")
  */
 export const usePriceListPermissions = () =>
   useResourcePermissions("price_list")
+
+export const usePricePreferencePermissions = () =>
+  useResourcePermissions("price_preference")
 
 export const usePricePermissions = () => useResourcePermissions("price")
 

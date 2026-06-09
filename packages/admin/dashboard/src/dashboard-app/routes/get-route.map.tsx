@@ -1347,26 +1347,45 @@ export function getRouteMap({
             {
               path: "store",
               errorElement: <ErrorBoundary />,
-              lazy: () => import("../../routes/store/store-detail"),
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("store.domain"),
+                permissions: "store:read",
               },
               children: [
                 {
-                  path: "edit",
-                  lazy: () => import("../../routes/store/store-edit"),
-                },
-                {
-                  path: "currencies",
-                  lazy: () => import("../../routes/store/store-add-currencies"),
-                },
-                {
-                  path: "locales",
-                  lazy: () => import("../../routes/store/store-add-locales"),
-                },
-                {
-                  path: "metadata/edit",
-                  lazy: () => import("../../routes/store/store-metadata"),
+                  path: "",
+                  lazy: () => import("../../routes/store/store-detail"),
+                  children: [
+                    {
+                      path: "edit",
+                      lazy: () => import("../../routes/store/store-edit"),
+                      handle: { permissions: "store:update" },
+                    },
+                    {
+                      path: "currencies",
+                      lazy: () =>
+                        import("../../routes/store/store-add-currencies"),
+                      handle: {
+                        permissions: ["store:update", "currency:read"],
+                      },
+                    },
+                    {
+                      path: "locales",
+                      lazy: () =>
+                        import("../../routes/store/store-add-locales"),
+                      handle: { permissions: "store:update" },
+                    },
+                    {
+                      path: "metadata/edit",
+                      lazy: () => import("../../routes/store/store-metadata"),
+                      handle: { permissions: "store:update" },
+                    },
+                  ],
                 },
               ],
             },
