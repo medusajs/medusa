@@ -129,6 +129,10 @@ export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.api_key,
         operation: PolicyOperation.update,
       },
+      {
+        resource: Entities.sales_channel,
+        operation: PolicyOperation.update,
+      },
     ],
   },
 ]

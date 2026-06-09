@@ -99,6 +99,10 @@ export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.campaign,
         operation: PolicyOperation.update,
       },
+      {
+        resource: Entities.promotion,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
