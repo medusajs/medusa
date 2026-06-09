@@ -11904,7 +11904,7 @@ export default defineMiddlewares({
       policies: [
         { 
           resource: "custom_resource", 
-          operation: PolicyOperation.read 
+          operation: PolicyOperation.read, 
         },
       ],
     },
@@ -11943,7 +11943,7 @@ export const POST = async (
     filters: { id: userId },
   })
 
-  const roleIds = users?.[0]?.rbac_roles?.map(r => r.id) ?? []
+  const roleIds = users?.[0]?.rbac_roles?.map((r) => r.id) ?? []
 
   // Check if user has required permission
   const allowed = await hasPermission({
@@ -48156,7 +48156,7 @@ const checkUserPermissionStep = createStep(
       filters: { id: userId },
     })
 
-    const roleIds = users?.[0]?.rbac_roles?.map(r => r.id) ?? []
+    const roleIds = users?.[0]?.rbac_roles?.map((r) => r.id) ?? []
 
     // Check permission
     const allowed = await hasPermission({
@@ -48197,7 +48197,7 @@ export const customRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       { 
         resource: "custom_resource", 
-        operation: PolicyOperation.read 
+        operation: PolicyOperation.read, 
       },
     ],
   },
