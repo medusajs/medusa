@@ -29,7 +29,6 @@ import {
   useMemo,
   useRef,
   useState,
-  useTransition,
 } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -81,7 +80,6 @@ const ComboboxImpl = <T extends Value = string>(
   ref: ForwardedRef<HTMLInputElement>
 ) => {
   const [open, setOpen] = useState(false)
-  const [isPending] = useTransition()
   const { t } = useTranslation()
 
   const comboboxRef = useRef<HTMLInputElement>(null)
@@ -359,7 +357,6 @@ const ComboboxImpl = <T extends Value = string>(
         style={{
           pointerEvents: open ? "auto" : "none",
         }}
-        aria-busy={isPending}
       >
         {results.map(({ value, label, disabled }) => (
           <PrimitiveComboboxItem
@@ -408,7 +405,7 @@ const ComboboxImpl = <T extends Value = string>(
           <Fragment>
             <PrimitiveSeparator className="bg-ui-border-base -mx-1" />
             <PrimitiveComboboxItem
-              value={uncontrolledSearchValue}
+              value={searchValue}
               focusOnHover
               setValueOnClick={false}
               className="transition-fg bg-ui-bg-base data-[active-item=true]:bg-ui-bg-base-hover group mt-1 flex cursor-pointer items-center gap-x-2 rounded-[4px] px-2 py-1.5"
