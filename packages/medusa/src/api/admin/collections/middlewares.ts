@@ -110,6 +110,10 @@ export const adminCollectionRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.product_collection,
         operation: PolicyOperation.update,
       },
+      {
+        resource: Entities.product,
+        operation: PolicyOperation.update,
+      },
     ],
   },
 ]

@@ -1,5 +1,6 @@
 export enum Entities {
   product_collection = "product_collection",
+  product = "product",
 }
 
 export const defaultAdminCollectionFields = [
