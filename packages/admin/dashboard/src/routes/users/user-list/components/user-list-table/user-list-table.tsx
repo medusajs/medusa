@@ -11,10 +11,15 @@ import { useDataTableDateColumns } from "../../../../../components/data-table/he
 import { useDataTableDateFilters } from "../../../../../components/data-table/helpers/general/use-data-table-date-filters"
 import { useUsers } from "../../../../../hooks/api/users"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
+import {
+  useInvitePermissions,
+  useUserPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 20
 
 export const UserListTable = () => {
+  const { canCreate: canInvite } = useInvitePermissions()
   const { q, order, offset } = useQueryParams(["q", "order", "offset"])
   const { users, count, isPending, isError, error } = useUsers(
     {
@@ -49,10 +54,14 @@ export const UserListTable = () => {
         heading={t("users.domain")}
         rowHref={(row) => `${row.id}`}
         isLoading={isPending}
-        action={{
-          label: t("users.invite"),
-          to: "invite",
-        }}
+        action={
+          canInvite
+            ? {
+                label: t("users.invite"),
+                to: "invite",
+              }
+            : undefined
+        }
         emptyState={{
           empty: {
             heading: t("users.list.empty.heading"),
@@ -73,6 +82,7 @@ const columnHelper = createDataTableColumnHelper<HttpTypes.AdminUser>()
 const useColumns = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { canUpdate } = useUserPermissions()
 
   const dateColumns = useDataTableDateColumns<HttpTypes.AdminUser>()
 
@@ -106,19 +116,23 @@ const useColumns = () => {
         sortDescLabel: t("filters.sorting.alphabeticallyDesc"),
       }),
       ...dateColumns,
-      columnHelper.action({
-        actions: [
-          {
-            label: t("actions.edit"),
-            icon: <PencilSquare />,
-            onClick: (ctx) => {
-              navigate(`${ctx.row.original.id}/edit`)
-            },
-          },
-        ],
-      }),
+      ...(canUpdate
+        ? [
+            columnHelper.action({
+              actions: [
+                {
+                  label: t("actions.edit"),
+                  icon: <PencilSquare />,
+                  onClick: (ctx) => {
+                    navigate(`${ctx.row.original.id}/edit`)
+                  },
+                },
+              ],
+            }),
+          ]
+        : []),
     ],
-    [t, navigate, dateColumns]
+    [t, navigate, dateColumns, canUpdate]
   )
 }
 

@@ -1,5 +1,6 @@
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { SingleColumnPage } from "../../../components/layout/pages"
 import { useApiKey } from "../../../hooks/api/api-keys"
@@ -35,6 +36,7 @@ export const ApiKeyManagementDetail = () => {
     <SingleColumnPage
       hasOutlet
       showJSON
+      showRequiredPermissions
       widgets={{
         before: getWidgets("api_key.details.before"),
         after: getWidgets("api_key.details.after"),
@@ -42,7 +44,11 @@ export const ApiKeyManagementDetail = () => {
       data={api_key}
     >
       <ApiKeyGeneralSection apiKey={api_key} />
-      {isPublishable && <ApiKeySalesChannelSection apiKey={api_key} />}
+      {isPublishable && (
+        <PermissionGuard permission="sales_channel:read">
+          <ApiKeySalesChannelSection apiKey={api_key} />
+        </PermissionGuard>
+      )}
     </SingleColumnPage>
   )
 }

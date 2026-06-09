@@ -18,6 +18,7 @@ export const ApiKeyManagementList = () => {
         before: getWidgets("api_key.list.before"),
         after: getWidgets("api_key.list.after"),
       }}
+      showRequiredPermissions
     >
       <ApiKeyManagementListTable keyType={keyType} />
     </SingleColumnPage>

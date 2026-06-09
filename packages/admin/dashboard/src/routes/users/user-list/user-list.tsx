@@ -11,6 +11,7 @@ export const UserList = () => {
         after: getWidgets("user.list.after"),
         before: getWidgets("user.list.before"),
       }}
+      showRequiredPermissions
     >
       <UserListTable />
     </SingleColumnPage>

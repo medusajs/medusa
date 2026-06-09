@@ -1392,9 +1392,14 @@ export function getRouteMap({
             {
               path: "users",
               errorElement: <ErrorBoundary />,
-              element: <Outlet />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("users.domain"),
+                permissions: "user:read",
               },
               children: [
                 {
@@ -1437,10 +1442,12 @@ export function getRouteMap({
                     {
                       path: "edit",
                       lazy: () => import("../../routes/users/user-edit"),
+                      handle: { permissions: "user:update" },
                     },
                     {
                       path: "metadata/edit",
                       lazy: () => import("../../routes/users/user-metadata"),
+                      handle: { permissions: "user:update" },
                     },
                   ],
                 },
@@ -2140,9 +2147,14 @@ export function getRouteMap({
             },
             {
               path: "publishable-api-keys",
-              element: <Outlet />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("apiKeyManagement.domain.publishable"),
+                permissions: "api_key:read",
               },
               children: [
                 {
@@ -2162,6 +2174,7 @@ export function getRouteMap({
                             import(
                               "../../routes/api-key-management/api-key-management-create"
                             ),
+                          handle: { permissions: "api_key:create" },
                         },
                       ],
                     },
@@ -2191,6 +2204,7 @@ export function getRouteMap({
                         import(
                           "../../routes/api-key-management/api-key-management-edit"
                         ),
+                      handle: { permissions: "api_key:update" },
                     },
                     {
                       path: "sales-channels",
@@ -2198,6 +2212,9 @@ export function getRouteMap({
                         import(
                           "../../routes/api-key-management/api-key-management-sales-channels"
                         ),
+                      handle: {
+                        permissions: ["api_key:update", "sales_channel:read"],
+                      },
                     },
                   ],
                 },
@@ -2205,9 +2222,14 @@ export function getRouteMap({
             },
             {
               path: "secret-api-keys",
-              element: <Outlet />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("apiKeyManagement.domain.secret"),
+                permissions: "api_key:read",
               },
               children: [
                 {
@@ -2227,6 +2249,7 @@ export function getRouteMap({
                             import(
                               "../../routes/api-key-management/api-key-management-create"
                             ),
+                          handle: { permissions: "api_key:create" },
                         },
                       ],
                     },
@@ -2256,6 +2279,7 @@ export function getRouteMap({
                         import(
                           "../../routes/api-key-management/api-key-management-edit"
                         ),
+                      handle: { permissions: "api_key:update" },
                     },
                   ],
                 },

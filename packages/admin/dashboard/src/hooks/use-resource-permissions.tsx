@@ -167,6 +167,16 @@ export const useInventoryLevelPermissions = () =>
 export const useUserPermissions = () => useResourcePermissions("user")
 
 /**
+ * Hook for checking invite-specific permissions.
+ */
+export const useInvitePermissions = () => useResourcePermissions("invite")
+
+/**
+ * Hook for checking API key-specific permissions.
+ */
+export const useApiKeyPermissions = () => useResourcePermissions("api_key")
+
+/**
  * Hook for checking promotion-specific permissions.
  */
 export const usePromotionPermissions = () => useResourcePermissions("promotion")

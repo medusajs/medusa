@@ -51,6 +51,7 @@ export type PermissionResource =
   | "region"
   | "store"
   | "user"
+  | "invite"
   | "rbac_role"
   | "rbac_policy"
   | "sales_channel"

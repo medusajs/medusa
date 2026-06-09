@@ -3,8 +3,12 @@ import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, Text, toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { useDeleteUser } from "../../../../../hooks/api/users"
+import { useUserPermissions } from "../../../../../hooks/use-resource-permissions"
 
 type UserGeneralSectionProps = {
   user: HttpTypes.AdminUser
@@ -14,6 +18,7 @@ export const UserGeneralSection = ({ user }: UserGeneralSectionProps) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const prompt = usePrompt()
+  const { canUpdate, canDelete } = useUserPermissions()
 
   const { mutateAsync } = useDeleteUser(user.id)
 
@@ -50,9 +55,11 @@ export const UserGeneralSection = ({ user }: UserGeneralSectionProps) => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{user.email}</Heading>
-        <ActionMenu
-          groups={[
-            {
+        {(() => {
+          const groups: ActionGroup[] = []
+
+          if (canUpdate) {
+            groups.push({
               actions: [
                 {
                   label: t("actions.edit"),
@@ -60,8 +67,11 @@ export const UserGeneralSection = ({ user }: UserGeneralSectionProps) => {
                   icon: <PencilSquare />,
                 },
               ],
-            },
-            {
+            })
+          }
+
+          if (canDelete) {
+            groups.push({
               actions: [
                 {
                   label: t("actions.delete"),
@@ -69,9 +79,11 @@ export const UserGeneralSection = ({ user }: UserGeneralSectionProps) => {
                   icon: <Trash />,
                 },
               ],
-            },
-          ]}
-        />
+            })
+          }
+
+          return groups.length > 0 ? <ActionMenu groups={groups} /> : null
+        })()}
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">

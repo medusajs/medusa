@@ -36,6 +36,7 @@ const useSettingRoutes = (): INavItem[] => {
   const canReadTaxRegions = hasPermission("tax_region:read")
   const canReadStockLocations = hasPermission("stock_location:read")
   const canReadStore = hasPermission("store:read")
+  const canReadUsers = hasPermission("user:read")
 
   return useMemo(
     () => [
@@ -47,10 +48,14 @@ const useSettingRoutes = (): INavItem[] => {
             },
           ]
         : []),
-      {
-        label: t("users.domain"),
-        to: "/settings/users",
-      },
+      ...(canReadUsers
+        ? [
+            {
+              label: t("users.domain"),
+              to: "/settings/users",
+            },
+          ]
+        : []),
       ...(canReadRoles
         ? [
             {
@@ -154,29 +159,37 @@ const useSettingRoutes = (): INavItem[] => {
       canReadTaxRegions,
       canReadStockLocations,
       canReadStore,
+      canReadUsers,
     ]
   )
 }
 
 const useDeveloperRoutes = (): INavItem[] => {
   const { t } = useTranslation()
+  const { hasPermission } = usePermissions()
+
+  const canReadApiKeys = hasPermission("api_key:read")
 
   return useMemo(
     () => [
-      {
-        label: t("apiKeyManagement.domain.publishable"),
-        to: "/settings/publishable-api-keys",
-      },
-      {
-        label: t("apiKeyManagement.domain.secret"),
-        to: "/settings/secret-api-keys",
-      },
+      ...(canReadApiKeys
+        ? [
+            {
+              label: t("apiKeyManagement.domain.publishable"),
+              to: "/settings/publishable-api-keys",
+            },
+            {
+              label: t("apiKeyManagement.domain.secret"),
+              to: "/settings/secret-api-keys",
+            },
+          ]
+        : []),
       {
         label: t("workflowExecutions.domain"),
         to: "/settings/workflows",
       },
     ],
-    [t]
+    [t, canReadApiKeys]
   )
 }
 
