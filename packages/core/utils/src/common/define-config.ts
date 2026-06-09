@@ -492,7 +492,7 @@ function normalizeProjectConfig(
     oauthCallbackUrl: process.env.MEDUSA_CLOUD_OAUTH_CALLBACK_URL,
     oauthDisabled:
       process.env.MEDUSA_CLOUD_OAUTH_DISABLED === "true" ? true : undefined,
-    oauth_jwks_uri: process.env.MEDUSA_CLOUD_OAUTH_JWKS_URL,
+    oauth_jwks_uri: process.env.MEDUSA_CLOUD_OAUTH_JWKS_ENDPOINT,
     ...cloud,
   }
   const hasCloudOptions = Object.values(mergedCloudOptions).some(
