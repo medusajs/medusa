@@ -41,6 +41,8 @@ const RESET_PASSWORD_TOKEN_TTL_SECONDS = 15 * 60
  * @summary
  *
  * Generate a reset password token for a user or customer.
+ *
+ * @since 2.15.6
  */
 export const generateResetPasswordTokenWorkflow = createWorkflow(
   "generate-reset-password-token",
