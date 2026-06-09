@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 
 import { useLogout } from "../../hooks/api/auth"
 import { queryClient } from "../../lib/query-client"
+import { usePermissions } from "../permissions-provider"
 import { KeybindContext } from "./keybind-context"
 import { Shortcut } from "./types"
 import { findShortcut } from "./utils"
@@ -97,6 +98,7 @@ export const useShortcuts = ({
 export const useGlobalShortcuts = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { hasPermission } = usePermissions()
 
   const { mutateAsync } = useLogout()
 
@@ -118,6 +120,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.navigation.goToOrders"),
       type: "pageShortcut",
       to: "/orders",
+      permission: "order:read",
     },
     {
       keys: {
@@ -126,6 +129,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.navigation.goToProducts"),
       type: "pageShortcut",
       to: "/products",
+      permission: "product:read",
     },
     {
       keys: {
@@ -134,6 +138,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.navigation.goToCollections"),
       type: "pageShortcut",
       to: "/collections",
+      permission: "product_collection:read",
     },
     {
       keys: {
@@ -142,6 +147,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.navigation.goToCategories"),
       type: "pageShortcut",
       to: "/categories",
+      permission: "product_category:read",
     },
     {
       keys: {
@@ -150,6 +156,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.navigation.goToCustomers"),
       type: "pageShortcut",
       to: "/customers",
+      permission: "customer:read",
     },
     {
       keys: {
@@ -158,6 +165,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.navigation.goToCustomerGroups"),
       type: "pageShortcut",
       to: "/customer-groups",
+      permission: "customer_group:read",
     },
     {
       keys: {
@@ -166,6 +174,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.navigation.goToInventory"),
       type: "pageShortcut",
       to: "/inventory",
+      permission: "inventory_item:read",
     },
     {
       keys: {
@@ -174,6 +183,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.navigation.goToReservations"),
       type: "pageShortcut",
       to: "/reservations",
+      permission: "reservation:read",
     },
     {
       keys: {
@@ -182,6 +192,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.navigation.goToPriceLists"),
       type: "pageShortcut",
       to: "/price-lists",
+      permission: "price_list:read",
     },
     {
       keys: {
@@ -190,6 +201,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.navigation.goToPromotions"),
       type: "pageShortcut",
       to: "/promotions",
+      permission: "promotion:read",
     },
     {
       keys: {
@@ -198,6 +210,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.navigation.goToCampaigns"),
       type: "pageShortcut",
       to: "/campaigns",
+      permission: "campaign:read",
     },
     // Settings
     {
@@ -215,6 +228,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.settings.goToStore"),
       type: "settingShortcut",
       to: "/settings/store",
+      permission: "store:read",
     },
     {
       keys: {
@@ -223,6 +237,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.settings.goToUsers"),
       type: "settingShortcut",
       to: "/settings/users",
+      permission: "user:read",
     },
     {
       keys: {
@@ -231,6 +246,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.settings.goToRegions"),
       type: "settingShortcut",
       to: "/settings/regions",
+      permission: "region:read",
     },
     {
       keys: {
@@ -239,6 +255,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.settings.goToTaxRegions"),
       type: "settingShortcut",
       to: "/settings/tax-regions",
+      permission: "tax_region:read",
     },
     {
       keys: {
@@ -247,6 +264,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.settings.goToSalesChannels"),
       type: "settingShortcut",
       to: "/settings/sales-channels",
+      permission: "sales_channel:read",
     },
     {
       keys: {
@@ -255,6 +273,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.settings.goToProductTypes"),
       type: "settingShortcut",
       to: "/settings/product-types",
+      permission: "product_type:read",
     },
     {
       keys: {
@@ -263,6 +282,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.settings.goToLocations"),
       type: "settingShortcut",
       to: "/settings/locations",
+      permission: "stock_location:read",
     },
     {
       keys: {
@@ -271,6 +291,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.settings.goToReturnReasons"),
       type: "settingShortcut",
       to: "/settings/return-reasons",
+      permission: "return_reason:read",
     },
     {
       keys: {
@@ -279,6 +300,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.settings.goToPublishableApiKeys"),
       type: "settingShortcut",
       to: "/settings/publishable-api-keys",
+      permission: "api_key:read",
     },
     {
       keys: {
@@ -287,6 +309,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.settings.goToSecretApiKeys"),
       type: "settingShortcut",
       to: "/settings/secret-api-keys",
+      permission: "api_key:read",
     },
     {
       keys: {
@@ -295,6 +318,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.settings.goToWorkflows"),
       type: "settingShortcut",
       to: "/settings/workflows",
+      permission: "workflow_execution:read",
     },
     {
       keys: {
@@ -315,5 +339,7 @@ export const useGlobalShortcuts = () => {
     },
   ]
 
-  return globalShortcuts
+  return globalShortcuts.filter(
+    (shortcut) => !shortcut.permission || hasPermission(shortcut.permission)
+  )
 }

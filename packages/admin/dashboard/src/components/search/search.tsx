@@ -34,6 +34,7 @@ import {
 } from "@medusajs/icons"
 import { matchSorter } from "match-sorter"
 
+import { usePermissions } from "../../providers/permissions-provider"
 import { useSearch } from "../../providers/search-provider"
 import { Skeleton } from "../common/skeleton"
 import { Thumbnail } from "../common/thumbnail"
@@ -43,7 +44,7 @@ import {
   SEARCH_LIMIT_INCREMENT,
 } from "./constants"
 import { SearchArea } from "./types"
-import { useSearchResults } from "./use-search-results"
+import { SEARCH_AREA_RESOURCE, useSearchResults } from "./use-search-results"
 import { useDocumentDirection } from "../../hooks/use-document-direction"
 
 export const Search = () => {
@@ -367,11 +368,21 @@ const CommandInput = forwardRef<
     ref
   ) => {
     const { t } = useTranslation()
+    const { hasPermission } = usePermissions()
     const innerRef = useRef<HTMLInputElement>(null)
     const direction = useDocumentDirection()
     useImperativeHandle<HTMLInputElement | null, HTMLInputElement | null>(
       ref,
       () => innerRef.current
+    )
+
+    const availableAreas = useMemo(
+      () =>
+        SEARCH_AREAS.filter((a) => {
+          const resource = SEARCH_AREA_RESOURCE[a]
+          return resource ? hasPermission(`${resource}:read`) : true
+        }),
+      [hasPermission]
     )
 
     return (
@@ -399,7 +410,7 @@ const CommandInput = forwardRef<
                 value={area}
                 onValueChange={(v) => setArea(v as SearchArea)}
               >
-                {SEARCH_AREAS.map((area) => (
+                {availableAreas.map((area) => (
                   <Fragment key={area}>
                     {area === "command" && <DropdownMenu.Separator />}
                     <DropdownMenu.RadioItem value={area}>

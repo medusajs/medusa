@@ -26,9 +26,44 @@ import {
   useVariants,
 } from "../../hooks/api"
 import { useReturnReasons } from "../../hooks/api/return-reasons"
+import type { PermissionResource } from "../../lib/permissions"
 import { Shortcut, ShortcutType } from "../../providers/keybind-provider"
 import { useGlobalShortcuts } from "../../providers/keybind-provider/hooks"
+import { usePermissions } from "../../providers/permissions-provider"
 import { DynamicSearchResult, SearchArea } from "./types"
+
+/**
+ * Maps each searchable dynamic area to the permission resource that gates
+ * reading it. Areas without an entry (e.g. "all", "command", "navigation")
+ * are never used for dynamic resource lookups and don't need gating.
+ */
+export const SEARCH_AREA_RESOURCE: Record<
+  Exclude<SearchArea, "all" | "command" | "navigation">,
+  PermissionResource
+> = {
+  order: "order",
+  product: "product",
+  productVariant: "product_variant",
+  collection: "product_collection",
+  category: "product_category",
+  inventory: "inventory_item",
+  customer: "customer",
+  customerGroup: "customer_group",
+  promotion: "promotion",
+  campaign: "campaign",
+  priceList: "price_list",
+  user: "user",
+  region: "region",
+  taxRegion: "tax_region",
+  returnReason: "return_reason",
+  salesChannel: "sales_channel",
+  productType: "product_type",
+  productTag: "product_tag",
+  location: "stock_location",
+  shippingProfile: "shipping_profile",
+  publishableApiKey: "api_key",
+  secretApiKey: "api_key",
+}
 
 type UseSearchProps = {
   q?: string
@@ -98,8 +133,22 @@ const useDynamicSearchResults = (
   q?: string
 ) => {
   const { t } = useTranslation()
+  const { hasPermission } = usePermissions()
 
   const debouncedSearch = useDebouncedSearch(q, 300)
+
+  const isAreaSearchable = useCallback(
+    (area: SearchArea): boolean => {
+      if (!isAreaEnabled(currentArea, area)) {
+        return false
+      }
+      const resource = SEARCH_AREA_RESOURCE[area] as
+        | PermissionResource
+        | undefined
+      return resource ? hasPermission(`${resource}:read`) : true
+    },
+    [currentArea, hasPermission]
+  )
 
   const orderResponse = useOrders(
     {
@@ -108,7 +157,7 @@ const useDynamicSearchResults = (
       fields: "id,display_id,email",
     },
     {
-      enabled: isAreaEnabled(currentArea, "order"),
+      enabled: isAreaSearchable("order"),
       placeholderData: keepPreviousData,
     }
   )
@@ -122,7 +171,7 @@ const useDynamicSearchResults = (
         "id,title,thumbnail,-type,-collection,-options,-tags,-images,-variants,-sales_channels",
     },
     {
-      enabled: isAreaEnabled(currentArea, "product"),
+      enabled: isAreaSearchable("product"),
       placeholderData: keepPreviousData,
     }
   )
@@ -134,7 +183,7 @@ const useDynamicSearchResults = (
       fields: "id,title,sku,product_id",
     },
     {
-      enabled: isAreaEnabled(currentArea, "productVariant"),
+      enabled: isAreaSearchable("productVariant"),
       placeholderData: keepPreviousData,
     }
   )
@@ -147,7 +196,7 @@ const useDynamicSearchResults = (
       fields: "id,name",
     },
     {
-      enabled: isAreaEnabled(currentArea, "category"),
+      enabled: isAreaSearchable("category"),
       placeholderData: keepPreviousData,
     }
   )
@@ -159,7 +208,7 @@ const useDynamicSearchResults = (
       fields: "id,title",
     },
     {
-      enabled: isAreaEnabled(currentArea, "collection"),
+      enabled: isAreaSearchable("collection"),
       placeholderData: keepPreviousData,
     }
   )
@@ -171,7 +220,7 @@ const useDynamicSearchResults = (
       fields: "id,email,first_name,last_name",
     },
     {
-      enabled: isAreaEnabled(currentArea, "customer"),
+      enabled: isAreaSearchable("customer"),
       placeholderData: keepPreviousData,
     }
   )
@@ -183,7 +232,7 @@ const useDynamicSearchResults = (
       fields: "id,name",
     },
     {
-      enabled: isAreaEnabled(currentArea, "customerGroup"),
+      enabled: isAreaSearchable("customerGroup"),
       placeholderData: keepPreviousData,
     }
   )
@@ -195,7 +244,7 @@ const useDynamicSearchResults = (
       fields: "id,title,sku",
     },
     {
-      enabled: isAreaEnabled(currentArea, "inventory"),
+      enabled: isAreaSearchable("inventory"),
       placeholderData: keepPreviousData,
     }
   )
@@ -207,7 +256,7 @@ const useDynamicSearchResults = (
       fields: "id,code,status",
     },
     {
-      enabled: isAreaEnabled(currentArea, "promotion"),
+      enabled: isAreaSearchable("promotion"),
       placeholderData: keepPreviousData,
     }
   )
@@ -219,7 +268,7 @@ const useDynamicSearchResults = (
       fields: "id,name",
     },
     {
-      enabled: isAreaEnabled(currentArea, "campaign"),
+      enabled: isAreaSearchable("campaign"),
       placeholderData: keepPreviousData,
     }
   )
@@ -231,7 +280,7 @@ const useDynamicSearchResults = (
       fields: "id,title",
     },
     {
-      enabled: isAreaEnabled(currentArea, "priceList"),
+      enabled: isAreaSearchable("priceList"),
       placeholderData: keepPreviousData,
     }
   )
@@ -243,7 +292,7 @@ const useDynamicSearchResults = (
       fields: "id,email,first_name,last_name",
     },
     {
-      enabled: isAreaEnabled(currentArea, "user"),
+      enabled: isAreaSearchable("user"),
       placeholderData: keepPreviousData,
     }
   )
@@ -255,7 +304,7 @@ const useDynamicSearchResults = (
       fields: "id,name",
     },
     {
-      enabled: isAreaEnabled(currentArea, "region"),
+      enabled: isAreaSearchable("region"),
       placeholderData: keepPreviousData,
     }
   )
@@ -267,7 +316,7 @@ const useDynamicSearchResults = (
       fields: "id,country_code,province_code",
     },
     {
-      enabled: isAreaEnabled(currentArea, "taxRegion"),
+      enabled: isAreaSearchable("taxRegion"),
       placeholderData: keepPreviousData,
     }
   )
@@ -279,7 +328,7 @@ const useDynamicSearchResults = (
       fields: "id,label,value",
     },
     {
-      enabled: isAreaEnabled(currentArea, "returnReason"),
+      enabled: isAreaSearchable("returnReason"),
       placeholderData: keepPreviousData,
     }
   )
@@ -291,7 +340,7 @@ const useDynamicSearchResults = (
       fields: "id,name",
     },
     {
-      enabled: isAreaEnabled(currentArea, "salesChannel"),
+      enabled: isAreaSearchable("salesChannel"),
       placeholderData: keepPreviousData,
     }
   )
@@ -303,7 +352,7 @@ const useDynamicSearchResults = (
       fields: "id,value",
     },
     {
-      enabled: isAreaEnabled(currentArea, "productType"),
+      enabled: isAreaSearchable("productType"),
       placeholderData: keepPreviousData,
     }
   )
@@ -315,7 +364,7 @@ const useDynamicSearchResults = (
       fields: "id,value",
     },
     {
-      enabled: isAreaEnabled(currentArea, "productTag"),
+      enabled: isAreaSearchable("productTag"),
       placeholderData: keepPreviousData,
     }
   )
@@ -327,7 +376,7 @@ const useDynamicSearchResults = (
       fields: "id,name",
     },
     {
-      enabled: isAreaEnabled(currentArea, "location"),
+      enabled: isAreaSearchable("location"),
       placeholderData: keepPreviousData,
     }
   )
@@ -339,7 +388,7 @@ const useDynamicSearchResults = (
       fields: "id,name",
     },
     {
-      enabled: isAreaEnabled(currentArea, "shippingProfile"),
+      enabled: isAreaSearchable("shippingProfile"),
       placeholderData: keepPreviousData,
     }
   )
@@ -352,7 +401,7 @@ const useDynamicSearchResults = (
       type: "publishable",
     },
     {
-      enabled: isAreaEnabled(currentArea, "publishableApiKey"),
+      enabled: isAreaSearchable("publishableApiKey"),
       placeholderData: keepPreviousData,
     }
   )
@@ -365,7 +414,7 @@ const useDynamicSearchResults = (
       type: "secret",
     },
     {
-      enabled: isAreaEnabled(currentArea, "secretApiKey"),
+      enabled: isAreaSearchable("secretApiKey"),
       placeholderData: keepPreviousData,
     }
   )
@@ -425,7 +474,7 @@ const useDynamicSearchResults = (
     const groups = Object.entries(responseMap)
       .map(([key, response]) => {
         const area = key as SearchArea
-        if (isAreaEnabled(currentArea, area) || currentArea === "all") {
+        if (isAreaSearchable(area)) {
           return transformDynamicSearchResults(
             area,
             limit,
@@ -439,7 +488,7 @@ const useDynamicSearchResults = (
       .filter(Boolean) // Remove null values
 
     return groups
-  }, [responseMap, currentArea, limit, t])
+  }, [responseMap, isAreaSearchable, limit, t])
 
   const isAreaFetching = useCallback(
     (area: SearchArea): boolean => {
