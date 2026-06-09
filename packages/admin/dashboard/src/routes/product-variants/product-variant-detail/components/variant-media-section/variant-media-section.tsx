@@ -16,8 +16,11 @@ type VariantMediaSectionProps = {
 
 export const VariantMediaSection = ({ variant }: VariantMediaSectionProps) => {
   const { t } = useTranslation()
-  const { hasPermission } = usePermissions()
-  const canUpdate = hasPermission("product:update")
+  const { hasAllPermissions } = usePermissions()
+  const canUpdate = hasAllPermissions([
+    "product:update",
+    "product_variant:update",
+  ])
 
   // show only variant scoped images
   const media = (variant.images || []).filter((image) =>

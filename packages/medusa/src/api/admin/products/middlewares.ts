@@ -120,14 +120,6 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.product,
         operation: PolicyOperation.create,
       },
-      {
-        resource: Entities.inventory_item,
-        operation: PolicyOperation.create,
-      },
-      {
-        resource: Entities.price,
-        operation: PolicyOperation.create,
-      },
     ],
   },
   {
@@ -148,7 +140,11 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.product,
-        operation: [PolicyOperation.create, PolicyOperation.update],
+        operation: [
+          PolicyOperation.create,
+          PolicyOperation.update,
+          PolicyOperation.delete,
+        ],
       },
     ],
   },
@@ -166,16 +162,34 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/products/import",
     middlewares: [upload.single("file")],
+    policies: [
+      {
+        resource: Entities.product,
+        operation: [PolicyOperation.create, PolicyOperation.update],
+      },
+    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/products/imports",
     middlewares: [validateAndTransformBody(AdminImportProducts)],
+    policies: [
+      {
+        resource: Entities.product,
+        operation: [PolicyOperation.create, PolicyOperation.update],
+      },
+    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/products/import/:transaction_id/confirm",
     middlewares: [],
+    policies: [
+      {
+        resource: Entities.product,
+        operation: [PolicyOperation.create, PolicyOperation.update],
+      },
+    ],
   },
   {
     method: ["GET"],
@@ -196,6 +210,12 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.product,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -239,6 +259,10 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.product_variant,
         operation: PolicyOperation.create,
       },
+      {
+        resource: Entities.product,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -265,6 +289,10 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
           PolicyOperation.delete,
         ],
       },
+      {
+        resource: Entities.product,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -274,6 +302,16 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
     middlewares: [validateAndTransformBody(AdminBatchImageVariant)],
+    policies: [
+      {
+        resource: Entities.product_variant,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.product,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -282,6 +320,16 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
     middlewares: [validateAndTransformBody(AdminBatchVariantImages)],
+    policies: [
+      {
+        resource: Entities.product_variant,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.product,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   // Note: New endpoint in v2
   {
@@ -304,6 +352,16 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveProductQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.product_variant,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.product,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["DELETE"],
@@ -318,6 +376,10 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
       {
         resource: Entities.product_variant,
         operation: PolicyOperation.delete,
+      },
+      {
+        resource: Entities.product,
+        operation: PolicyOperation.update,
       },
     ],
   },
@@ -354,6 +416,16 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveProductQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.product_option,
+        operation: PolicyOperation.create,
+      },
+      {
+        resource: Entities.product,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
@@ -364,6 +436,16 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.product_option,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.product,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -379,6 +461,10 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
       {
         resource: Entities.product_option,
         operation: PolicyOperation.delete,
+      },
+      {
+        resource: Entities.product,
+        operation: PolicyOperation.update,
       },
     ],
   },
@@ -412,6 +498,10 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
           PolicyOperation.delete,
         ],
       },
+      {
+        resource: Entities.product_variant,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -428,6 +518,10 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
       {
         resource: Entities.inventory_item,
         operation: PolicyOperation.create,
+      },
+      {
+        resource: Entities.product_variant,
+        operation: PolicyOperation.update,
       },
     ],
   },
@@ -447,6 +541,10 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.inventory_item,
         operation: PolicyOperation.update,
       },
+      {
+        resource: Entities.product_variant,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -463,6 +561,10 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
       {
         resource: Entities.inventory_item,
         operation: PolicyOperation.delete,
+      },
+      {
+        resource: Entities.product_variant,
+        operation: PolicyOperation.update,
       },
     ],
   },

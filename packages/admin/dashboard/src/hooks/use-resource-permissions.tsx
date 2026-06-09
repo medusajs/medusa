@@ -151,6 +151,12 @@ export const useCustomerGroupPermissions = () =>
 export const useProductPermissions = () => useResourcePermissions("product")
 
 /**
+ * Hook for checking product variant-specific permissions.
+ */
+export const useProductVariantPermissions = () =>
+  useResourcePermissions("product_variant")
+
+/**
  * Hook for checking inventory-specific permissions.
  */
 export const useInventoryPermissions = () => useResourcePermissions("inventory")

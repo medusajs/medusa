@@ -28,10 +28,10 @@ export function VariantInventorySection({
   const { hasAllPermissions } = usePermissions()
 
   const canUpdate = hasAllPermissions([
-    "product:update",
+    "inventory_item:create",
+    "inventory_item:update",
+    "inventory_item:delete",
     "product_variant:update",
-    "inventory:update",
-    "inventory_level:update",
   ])
 
   const columns = useInventoryTableColumns()
@@ -89,8 +89,13 @@ export function VariantInventorySection({
 
 export function InventorySectionPlaceholder() {
   const { t } = useTranslation()
-  const { hasPermission } = usePermissions()
-  const canUpdate = hasPermission("product:update")
+  const { hasAllPermissions } = usePermissions()
+  // The "edit" link targets the variant edit form (updateProductVariant), which
+  // is gated product_variant:update + product:update at the HTTP layer.
+  const canUpdate = hasAllPermissions([
+    "product:update",
+    "product_variant:update",
+  ])
 
   return (
     <Container className="divide-y p-0">

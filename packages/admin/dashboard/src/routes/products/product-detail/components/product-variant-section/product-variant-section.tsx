@@ -58,7 +58,10 @@ export const ProductVariantSection = ({
     "product_variant:create",
   ])
   const canReadInventory = hasPermission("inventory_level:read")
-  const canDelete = hasPermission("product_variant:delete")
+  const canDelete = hasAllPermissions([
+    "product_variant:delete",
+    "product:update",
+  ])
   const canUpdatePrices = hasAllPermissions([
     "product:update",
     "product_variant:update",
