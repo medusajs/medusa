@@ -42,13 +42,18 @@ export class MedusaCloudAuthService extends AbstractAuthModuleProvider {
     this.config_ = options
     this.logger_ = logger
 
-    if (options.oauth_jwks_uri) {
-      this.jwks_ = jwksClient({
-        jwksUri: options.oauth_jwks_uri,
-        cache: true,
-        rateLimit: true,
-      })
+    if (!options.oauth_jwks_uri) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Medusa Cloud auth provider requires 'oauth_jwks_uri' option to be set"
+      )
     }
+
+    this.jwks_ = jwksClient({
+      jwksUri: options.oauth_jwks_uri,
+      cache: true,
+      rateLimit: true,
+    })
   }
 
   protected getSigningKey_ = (
