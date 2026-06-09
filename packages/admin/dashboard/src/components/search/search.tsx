@@ -46,6 +46,7 @@ import {
 import { SearchArea } from "./types"
 import { SEARCH_AREA_RESOURCE, useSearchResults } from "./use-search-results"
 import { useDocumentDirection } from "../../hooks/use-document-direction"
+import { PermissionResource } from "../../lib/permissions"
 
 export const Search = () => {
   const [area, setArea] = useState<SearchArea>("all")
@@ -379,7 +380,7 @@ const CommandInput = forwardRef<
     const availableAreas = useMemo(
       () =>
         SEARCH_AREAS.filter((a) => {
-          const resource = SEARCH_AREA_RESOURCE[a]
+          const resource = SEARCH_AREA_RESOURCE[a] as PermissionResource
           return resource ? hasPermission(`${resource}:read`) : true
         }),
       [hasPermission]
