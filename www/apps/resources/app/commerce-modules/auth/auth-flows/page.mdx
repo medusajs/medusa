@@ -291,20 +291,3 @@ The method accepts as a first parameter the ID of the provider, and as a second 
 In the example above, you use the `emailpass` provider, so you have to pass an object having `entity_id` and `password` properties.
 
 If the returned `success` property is `true`, the password has been reset successfully.
-
-### Secure Password Reset Flow
-
-For production applications, use the secure password reset flow instead of directly calling `updateProvider`. This flow uses single-use tokens for enhanced security:
-
-1. **Generate Reset Token**: Use the [generateResetPasswordTokenWorkflow](/references/medusa-workflows/generateResetPasswordTokenWorkflow) or the password reset API endpoint to create a secure, time-limited token.
-
-2. **Token Validation**: The generated JWT contains a `jti` (JWT ID) claim that references a single-use token stored securely in the database.
-
-3. **Password Update**: When the user submits their new password, the system verifies the token and atomically consumes it to prevent reuse.
-
-This approach provides the following security benefits:
-
-- **Single-use tokens**: Each token can only be used once and is automatically invalidated after use
-- **Time-limited**: Tokens expire automatically (default: 15 minutes) 
-- **Automatic invalidation**: New reset requests invalidate any previous tokens for the same user
-- **Secure storage**: Token fingerprints are stored separately from user metadata

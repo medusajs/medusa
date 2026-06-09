@@ -748,10 +748,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/user"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/user/rbac/page.mdx",
-    "pathname": "/commerce-modules/user/rbac"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/user/user-creation-flows/page.mdx",
     "pathname": "/commerce-modules/user/user-creation-flows"
   },

@@ -307,6 +307,7 @@ Multiple shipping methods support is available since Medusa [v2.15.6](https://gi
 The [Add Shipping Method to Cart API route](!api!/store#carts_postcartsidshippingmethods) supports adding multiple shipping methods to a cart in a single request by passing an array of shipping method objects instead of a single object.
 
 This is useful for scenarios where:
+
 - Items require different shipping methods based on their shipping profiles
 - Customers want to split their order across multiple carriers
 - Different fulfillment providers handle different product types
@@ -360,7 +361,8 @@ This is useful for scenarios where:
 </CodeTabs>
 
 When adding multiple shipping methods, Medusa automatically:
-- Removes any existing shipping methods that conflict with the new ones based on shipping profile
+
+- Removes any existing shipping methods that conflict with the new ones based on the shipping profile
 - Validates that each shipping option can be applied to the cart
 - Ensures pricing is calculated correctly for all methods
 

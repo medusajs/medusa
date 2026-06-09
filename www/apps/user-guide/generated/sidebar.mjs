@@ -491,22 +491,6 @@ export const generatedSidebars = [
                 "title": "Manage Invites",
                 "path": "/settings/users/invites",
                 "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "title": "Manage User Roles",
-                "path": "/settings/users/roles",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "title": "Manage Policies",
-                "path": "/settings/users/policies",
-                "children": []
               }
             ]
           },
