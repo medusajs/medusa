@@ -10,6 +10,7 @@ import { TwoColumnPage } from "../../../components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
 import LocationsFulfillmentProvidersSection from "./components/location-fulfillment-providers-section/location-fulfillment-providers-section"
 import { LOCATION_DETAILS_FIELD } from "./constants"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const LocationDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -52,13 +53,18 @@ export const LocationDetail = () => {
       showMetadata
       showJSON
       hasOutlet
+      showRequiredPermissions
     >
       <TwoColumnPage.Main>
         <LocationGeneralSection location={location} />
       </TwoColumnPage.Main>
       <TwoColumnPage.Sidebar>
-        <LocationsSalesChannelsSection location={location} />
-        <LocationsFulfillmentProvidersSection location={location} />
+        <PermissionGuard permission="sales_channel:read">
+          <LocationsSalesChannelsSection location={location} />
+        </PermissionGuard>
+        <PermissionGuard permission="fulfillment_provider:read">
+          <LocationsFulfillmentProvidersSection location={location} />
+        </PermissionGuard>
       </TwoColumnPage.Sidebar>
     </TwoColumnPage>
   )

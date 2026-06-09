@@ -8,6 +8,7 @@ import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { IconAvatar } from "../../../../../components/common/icon-avatar"
 import { ListSummary } from "../../../../../components/common/list-summary"
 import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
+import { useStockLocationPermissions } from "../../../../../hooks/use-resource-permissions"
 
 type LocationsSalesChannelsSectionProps = {
   location: HttpTypes.AdminStockLocation
@@ -17,6 +18,8 @@ function LocationsSalesChannelsSection({
   location,
 }: LocationsSalesChannelsSectionProps) {
   const { t } = useTranslation()
+  const { canUpdate } = useStockLocationPermissions()
+
   const { count } = useSalesChannels({ limit: 1, fields: "id" })
 
   const hasConnectedChannels = !!location.sales_channels?.length
@@ -25,19 +28,21 @@ function LocationsSalesChannelsSection({
     <Container className="flex flex-col px-6 py-4">
       <div className="flex items-center justify-between">
         <Heading level="h2">{t("stockLocations.salesChannels.header")}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("actions.edit"),
-                  to: "sales-channels",
-                  icon: <PencilSquare />,
-                },
-              ],
-            },
-          ]}
-        />
+        {canUpdate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.edit"),
+                    to: "sales-channels",
+                    icon: <PencilSquare />,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       {hasConnectedChannels ? (
         <div className="flex flex-col gap-y-4 pt-4">
@@ -62,10 +67,14 @@ function LocationsSalesChannelsSection({
       ) : (
         <NoRecords
           className="h-fit pb-2 pt-6"
-          action={{
-            label: t("stockLocations.salesChannels.action"),
-            to: "sales-channels",
-          }}
+          action={
+            canUpdate
+              ? {
+                  label: t("stockLocations.salesChannels.action"),
+                  to: "sales-channels",
+                }
+              : undefined
+          }
           message={t("stockLocations.salesChannels.noChannels")}
         />
       )}

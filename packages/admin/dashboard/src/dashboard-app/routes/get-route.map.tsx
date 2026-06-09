@@ -1656,24 +1656,36 @@ export function getRouteMap({
             {
               path: "locations",
               errorElement: <ErrorBoundary />,
-              element: <Outlet />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("locations.domain"),
+                permissions: "stock_location:read",
               },
               children: [
                 {
                   path: "",
                   lazy: () => import("../../routes/locations/location-list"),
+                  handle: { permissions: "stock_location:read" },
                 },
                 {
                   path: "create",
                   lazy: () => import("../../routes/locations/location-create"),
+                  handle: { permissions: "stock_location:create" },
                 },
                 {
                   path: "shipping-profiles",
-                  element: <Outlet />,
+                  element: (
+                    <PermissionsRequirementsProvider>
+                      <RoutePermissionGuard />
+                    </PermissionsRequirementsProvider>
+                  ),
                   handle: {
                     breadcrumb: () => t("shippingProfile.domain"),
+                    permissions: "shipping_profile:read",
                   },
                   children: [
                     {
@@ -1689,6 +1701,7 @@ export function getRouteMap({
                             import(
                               "../../routes/shipping-profiles/shipping-profile-create"
                             ),
+                          handle: { permissions: "shipping_profile:create" },
                         },
                       ],
                     },
@@ -1717,6 +1730,7 @@ export function getRouteMap({
                             import(
                               "../../routes/shipping-profiles/shipping-profile-metadata"
                             ),
+                          handle: { permissions: "shipping_profile:update" },
                         },
                       ],
                     },
@@ -1725,9 +1739,14 @@ export function getRouteMap({
                 {
                   path: "shipping-option-types",
                   errorElement: <ErrorBoundary />,
-                  element: <Outlet />,
+                  element: (
+                    <PermissionsRequirementsProvider>
+                      <RoutePermissionGuard />
+                    </PermissionsRequirementsProvider>
+                  ),
                   handle: {
                     breadcrumb: () => t("shippingOptionTypes.domain"),
+                    permissions: "shipping_option_type:read",
                   },
                   children: [
                     {
@@ -1743,6 +1762,9 @@ export function getRouteMap({
                             import(
                               "../../routes/shipping-option-types/shipping-option-type-create"
                             ),
+                          handle: {
+                            permissions: "shipping_option_type:create",
+                          },
                         },
                       ],
                     },
@@ -1771,6 +1793,9 @@ export function getRouteMap({
                             import(
                               "../../routes/shipping-option-types/shipping-option-type-edit"
                             ),
+                          handle: {
+                            permissions: "shipping_option_type:update",
+                          },
                         },
                       ],
                     },
@@ -1798,6 +1823,7 @@ export function getRouteMap({
                       path: "edit",
                       lazy: () =>
                         import("../../routes/locations/location-edit"),
+                      handle: { permissions: "stock_location:update" },
                     },
                     {
                       path: "sales-channels",
@@ -1805,6 +1831,12 @@ export function getRouteMap({
                         import(
                           "../../routes/locations/location-sales-channels"
                         ),
+                      handle: {
+                        permissions: [
+                          "stock_location:update",
+                          "sales_channel:read",
+                        ],
+                      },
                     },
                     {
                       path: "fulfillment-providers",
@@ -1812,11 +1844,13 @@ export function getRouteMap({
                         import(
                           "../../routes/locations/location-fulfillment-providers"
                         ),
+                      handle: { permissions: "stock_location:update" },
                     },
                     {
                       path: "metadata/edit",
                       lazy: () =>
                         import("../../routes/locations/location-metadata"),
+                      handle: { permissions: "stock_location:update" },
                     },
                     {
                       path: "fulfillment-set/:fset_id",
@@ -1827,6 +1861,13 @@ export function getRouteMap({
                             import(
                               "../../routes/locations/location-service-zone-create"
                             ),
+                          handle: {
+                            permissions: [
+                              "stock_location:update",
+                              "fulfillment_set:create",
+                              "service_zone:create",
+                            ],
+                          },
                         },
                         {
                           path: "service-zone/:zone_id",
@@ -1837,6 +1878,13 @@ export function getRouteMap({
                                 import(
                                   "../../routes/locations/location-service-zone-edit"
                                 ),
+                              handle: {
+                                permissions: [
+                                  "stock_location:update",
+                                  "fulfillment_set:update",
+                                  "service_zone:update",
+                                ],
+                              },
                             },
                             {
                               path: "areas",
@@ -1844,6 +1892,13 @@ export function getRouteMap({
                                 import(
                                   "../../routes/locations/location-service-zone-manage-areas"
                                 ),
+                              handle: {
+                                permissions: [
+                                  "stock_location:update",
+                                  "fulfillment_set:update",
+                                  "service_zone:update",
+                                ],
+                              },
                             },
                             {
                               path: "shipping-option",
@@ -1854,6 +1909,12 @@ export function getRouteMap({
                                     import(
                                       "../../routes/locations/location-service-zone-shipping-option-create"
                                     ),
+                                  handle: {
+                                    permissions: [
+                                      "stock_location:update",
+                                      "shipping_option:create",
+                                    ],
+                                  },
                                 },
                                 {
                                   path: ":so_id",
@@ -1864,6 +1925,12 @@ export function getRouteMap({
                                         import(
                                           "../../routes/locations/location-service-zone-shipping-option-edit"
                                         ),
+                                      handle: {
+                                        permissions: [
+                                          "stock_location:update",
+                                          "shipping_option:update",
+                                        ],
+                                      },
                                     },
                                     {
                                       path: "pricing",
@@ -1871,6 +1938,12 @@ export function getRouteMap({
                                         import(
                                           "../../routes/locations/location-service-zone-shipping-option-pricing"
                                         ),
+                                      handle: {
+                                        permissions: [
+                                          "stock_location:update",
+                                          "shipping_option:update",
+                                        ],
+                                      },
                                     },
                                   ],
                                 },

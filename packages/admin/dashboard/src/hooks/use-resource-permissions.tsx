@@ -91,6 +91,24 @@ export const useFulfillmentPermissions = () =>
 export const useStockLocationPermissions = () =>
   useResourcePermissions("stock_location")
 
+export const useShippingOptionPermissions = () =>
+  useResourcePermissions("shipping_option")
+
+export const useShippingOptionTypePermissions = () =>
+  useResourcePermissions("shipping_option_type")
+
+export const useServiceZonePermissions = () =>
+  useResourcePermissions("service_zone")
+
+export const useFulfillmentSetPermissions = () =>
+  useResourcePermissions("fulfillment_set")
+
+export const useFulfillmentProviderPermissions = () =>
+  useResourcePermissions("fulfillment_provider")
+
+export const useShippingProfilePermissions = () =>
+  useResourcePermissions("shipping_profile")
+
 export const useReturnPermissions = () => useResourcePermissions("return")
 
 export const useOrderClaimPermissions = () =>

@@ -23,7 +23,10 @@ import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { IconAvatar } from "../../../../../components/common/icon-avatar"
 import { LinkButton } from "../../../../../components/common/link-button"
@@ -48,9 +51,19 @@ import {
   isReturnOption,
 } from "../../../../../lib/shipping-options"
 import {
+  useFulfillmentProviderPermissions,
+  useFulfillmentSetPermissions,
+  useInventoryPermissions,
+  useServiceZonePermissions,
+  useShippingOptionPermissions,
+  useShippingProfilePermissions,
+  useStockLocationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
+import {
   FulfillmentSetType,
   ShippingOptionPriceType,
 } from "../../../common/constants"
+import { PermissionGuard } from "../../../../../components/common/permission-guard"
 
 type LocationGeneralSectionProps = {
   location: HttpTypes.AdminStockLocation
@@ -77,23 +90,27 @@ export const LocationGeneralSection = ({
         </div>
       </Container>
 
-      <FulfillmentSet
-        locationId={location.id}
-        locationName={location.name}
-        type={FulfillmentSetType.Pickup}
-        fulfillmentSet={location.fulfillment_sets?.find(
-          (f) => f.type === FulfillmentSetType.Pickup
-        )}
-      />
+      <PermissionGuard permission="fulfillment_set:read">
+        <FulfillmentSet
+          locationId={location.id}
+          locationName={location.name}
+          type={FulfillmentSetType.Pickup}
+          fulfillmentSet={location.fulfillment_sets?.find(
+            (f) => f.type === FulfillmentSetType.Pickup
+          )}
+        />
+      </PermissionGuard>
 
-      <FulfillmentSet
-        locationId={location.id}
-        locationName={location.name}
-        type={FulfillmentSetType.Shipping}
-        fulfillmentSet={location.fulfillment_sets?.find(
-          (f) => f.type === FulfillmentSetType.Shipping
-        )}
-      />
+      <PermissionGuard permission="fulfillment_set:read">
+        <FulfillmentSet
+          locationId={location.id}
+          locationName={location.name}
+          type={FulfillmentSetType.Shipping}
+          fulfillmentSet={location.fulfillment_sets?.find(
+            (f) => f.type === FulfillmentSetType.Shipping
+          )}
+        />
+      </PermissionGuard>
     </>
   )
 }
@@ -111,6 +128,17 @@ function ShippingOption({
 }: ShippingOptionProps) {
   const prompt = usePrompt()
   const { t } = useTranslation()
+  const { canUpdate: canUpdateLocation } = useStockLocationPermissions()
+  const {
+    canUpdate: canUpdateShippingOption,
+    canDelete: canDeleteShippingOption,
+  } = useShippingOptionPermissions()
+  const { canRead: canReadShippingProfiles } = useShippingProfilePermissions()
+  const { canRead: canReadFulfillmentProviders } =
+    useFulfillmentProviderPermissions()
+
+  const canUpdate = canUpdateLocation && canUpdateShippingOption
+  const canDelete = canUpdateLocation && canDeleteShippingOption
 
   const isStoreOption = isOptionEnabledInStore(option)
 
@@ -150,8 +178,9 @@ function ShippingOption({
     <div className="flex items-center justify-between px-3 py-2">
       <div className="flex-1">
         <Text size="small" weight="plus">
-          {option.name} - {option.shipping_profile.name} (
-          {formatProvider(option.provider_id)})
+          {option.name}{" "}
+          {canReadShippingProfiles && `- ${option.shipping_profile.name}`} (
+          {canReadFulfillmentProviders && formatProvider(option.provider_id)})
         </Text>
       </div>
       <Badge
@@ -162,9 +191,11 @@ function ShippingOption({
       >
         {isStoreOption ? t("general.store") : t("general.admin")}
       </Badge>
-      <ActionMenu
-        groups={[
-          {
+      {(() => {
+        const groups: ActionGroup[] = []
+
+        if (canUpdate) {
+          groups.push({
             actions: [
               {
                 icon: <PencilSquare />,
@@ -179,8 +210,11 @@ function ShippingOption({
                 to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${option.service_zone_id}/shipping-option/${option.id}/pricing`,
               },
             ],
-          },
-          {
+          })
+        }
+
+        if (canDelete) {
+          groups.push({
             actions: [
               {
                 label: t("actions.delete"),
@@ -188,9 +222,11 @@ function ShippingOption({
                 onClick: handleDelete,
               },
             ],
-          },
-        ]}
-      />
+          })
+        }
+
+        return groups.length > 0 ? <ActionMenu groups={groups} /> : null
+      })()}
     </div>
   )
 }
@@ -209,6 +245,9 @@ function ServiceZoneOptions({
   type,
 }: ServiceZoneOptionsProps) {
   const { t } = useTranslation()
+  const { canUpdate: canUpdateLocation } = useStockLocationPermissions()
+  const { canCreate: canCreateShippingOption } = useShippingOptionPermissions()
+  const canCreateOption = canUpdateLocation && canCreateShippingOption
 
   const shippingOptions = zone.shipping_options.filter(
     (o) => !isReturnOption(o)
@@ -224,11 +263,13 @@ function ServiceZoneOptions({
           <span className="text-ui-fg-subtle txt-small self-center font-medium">
             {t(`stockLocations.shippingOptions.create.${type}.label`)}
           </span>
-          <LinkButton
-            to={`/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-option/create`}
-          >
-            {t("stockLocations.shippingOptions.create.action")}
-          </LinkButton>
+          {canCreateOption && (
+            <LinkButton
+              to={`/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-option/create`}
+            >
+              {t("stockLocations.shippingOptions.create.action")}
+            </LinkButton>
+          )}
         </div>
 
         {!!shippingOptions.length && (
@@ -252,11 +293,13 @@ function ServiceZoneOptions({
           <span className="text-ui-fg-subtle txt-small self-center font-medium">
             {t("stockLocations.shippingOptions.create.returns.label")}
           </span>
-          <LinkButton
-            to={`/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-option/create?is_return`}
-          >
-            {t("stockLocations.shippingOptions.create.action")}
-          </LinkButton>
+          {canCreateOption && (
+            <LinkButton
+              to={`/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-option/create?is_return`}
+            >
+              {t("stockLocations.shippingOptions.create.action")}
+            </LinkButton>
+          )}
         </div>
 
         {!!returnOptions.length && (
@@ -292,6 +335,16 @@ function ServiceZone({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const [open, setOpen] = useState(true)
+  const { canUpdate: canUpdateLocation } = useStockLocationPermissions()
+  const { canUpdate: canUpdateFulfillmentSet } = useFulfillmentSetPermissions()
+  const { canUpdate: canUpdateServiceZone, canDelete: canDeleteServiceZone } =
+    useServiceZonePermissions()
+  const { canRead: canReadShippingOptions } = useShippingOptionPermissions()
+
+  const canEditZone =
+    canUpdateLocation && canUpdateFulfillmentSet && canUpdateServiceZone
+  const canDeleteZone =
+    canUpdateLocation && canUpdateFulfillmentSet && canDeleteServiceZone
 
   const { mutateAsync: deleteZone } = useDeleteFulfillmentServiceZone(
     fulfillmentSetId,
@@ -378,37 +431,45 @@ function ServiceZone({
               inline
               n={1}
             />
-            <span>·</span>
-            <Text className="text-ui-fg-subtle txt-small">
-              {t(`stockLocations.shippingOptions.fields.count.${type}`, {
-                count: shippingOptionsCount,
-              })}
-            </Text>
-            <span>·</span>
-            <Text className="text-ui-fg-subtle txt-small">
-              {t("stockLocations.shippingOptions.fields.count.returns", {
-                count: returnOptionsCount,
-              })}
-            </Text>
+            {canReadShippingOptions && (
+              <>
+                <span>·</span>
+                <Text className="text-ui-fg-subtle txt-small">
+                  {t(`stockLocations.shippingOptions.fields.count.${type}`, {
+                    count: shippingOptionsCount,
+                  })}
+                </Text>
+                <span>·</span>
+                <Text className="text-ui-fg-subtle txt-small">
+                  {t("stockLocations.shippingOptions.fields.count.returns", {
+                    count: returnOptionsCount,
+                  })}
+                </Text>
+              </>
+            )}
           </div>
         </div>
 
         <div className="flex grow-0 items-center gap-4">
-          <IconButton
-            size="small"
-            onClick={() => setOpen((s) => !s)}
-            variant="transparent"
-          >
-            <TriangleDownMini
-              style={{
-                transform: `rotate(${!open ? 0 : 180}deg)`,
-                transition: ".2s transform ease-in-out",
-              }}
-            />
-          </IconButton>
-          <ActionMenu
-            groups={[
-              {
+          {canReadShippingOptions && (
+            <IconButton
+              size="small"
+              onClick={() => setOpen((s) => !s)}
+              variant="transparent"
+            >
+              <TriangleDownMini
+                style={{
+                  transform: `rotate(${!open ? 0 : 180}deg)`,
+                  transition: ".2s transform ease-in-out",
+                }}
+              />
+            </IconButton>
+          )}
+          {(() => {
+            const groups: ActionGroup[] = []
+
+            if (canEditZone) {
+              groups.push({
                 actions: [
                   {
                     label: t("actions.edit"),
@@ -421,8 +482,11 @@ function ServiceZone({
                     to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/areas`,
                   },
                 ],
-              },
-              {
+              })
+            }
+
+            if (canDeleteZone) {
+              groups.push({
                 actions: [
                   {
                     label: t("actions.delete"),
@@ -430,12 +494,14 @@ function ServiceZone({
                     onClick: handleDelete,
                   },
                 ],
-              },
-            ]}
-          />
+              })
+            }
+
+            return groups.length > 0 ? <ActionMenu groups={groups} /> : null
+          })()}
         </div>
       </div>
-      {open && (
+      {open && canReadShippingOptions && (
         <ServiceZoneOptions
           fulfillmentSetId={fulfillmentSetId}
           locationId={locationId}
@@ -457,12 +523,25 @@ type FulfillmentSetProps = {
 function FulfillmentSet(props: FulfillmentSetProps) {
   const { t } = useTranslation()
   const prompt = usePrompt()
+  const { canUpdate: canUpdateLocation } = useStockLocationPermissions()
+  const {
+    canCreate: canCreateFulfillmentSet,
+    canDelete: canDeleteFulfillmentSet,
+  } = useFulfillmentSetPermissions()
+  const { canCreate: canCreateServiceZone, canRead: canReadServiceZones } =
+    useServiceZonePermissions()
+
+  const canEnable = canUpdateLocation && canCreateFulfillmentSet
+  const canDisable = canUpdateLocation && canDeleteFulfillmentSet
+
+  const canCreateZone = canUpdateLocation && canCreateServiceZone
 
   const { fulfillmentSet, locationName, locationId, type } = props
 
   const fulfillmentSetExists = !!fulfillmentSet
 
-  const hasServiceZones = !!fulfillmentSet?.service_zones.length
+  const hasServiceZones =
+    !!fulfillmentSet?.service_zones.length && canReadServiceZones
 
   const { mutateAsync: createFulfillmentSet } =
     useCreateStockLocationFulfillmentSet(locationId)
@@ -514,38 +593,43 @@ function FulfillmentSet(props: FulfillmentSetProps) {
     })
   }
 
-  const groups = fulfillmentSet
-    ? [
+  const groups: ActionGroup[] = []
+
+  if (fulfillmentSet) {
+    if (canCreateZone) {
+      groups.push({
+        actions: [
+          {
+            icon: <Plus />,
+            label: t("stockLocations.serviceZones.create.action"),
+            to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`,
+          },
+        ],
+      })
+    }
+
+    if (canDisable) {
+      groups.push({
+        actions: [
+          {
+            icon: <Trash />,
+            label: t("actions.disable"),
+            onClick: handleDelete,
+          },
+        ],
+      })
+    }
+  } else if (canEnable) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <Plus />,
-              label: t("stockLocations.serviceZones.create.action"),
-              to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`,
-            },
-          ],
+          icon: <Plus />,
+          label: t("actions.enable"),
+          onClick: handleCreate,
         },
-        {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.disable"),
-              onClick: handleDelete,
-            },
-          ],
-        },
-      ]
-    : [
-        {
-          actions: [
-            {
-              icon: <Plus />,
-              label: t("actions.enable"),
-              onClick: handleCreate,
-            },
-          ],
-        },
-      ]
+      ],
+    })
+  }
 
   return (
     <Container className="p-0">
@@ -561,7 +645,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
               )}
             </StatusBadge>
 
-            <ActionMenu groups={groups} />
+            {groups.length > 0 && <ActionMenu groups={groups} />}
           </div>
         </div>
 
@@ -570,10 +654,14 @@ function FulfillmentSet(props: FulfillmentSetProps) {
             <NoRecords
               message={t("stockLocations.serviceZones.fields.noRecords")}
               className="h-fit"
-              action={{
-                to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`,
-                label: t("stockLocations.serviceZones.create.action"),
-              }}
+              action={
+                canCreateZone
+                  ? {
+                      to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`,
+                      label: t("stockLocations.serviceZones.create.action"),
+                    }
+                  : undefined
+              }
             />
           </div>
         )}
@@ -599,6 +687,8 @@ function FulfillmentSet(props: FulfillmentSetProps) {
 const Actions = ({ location }: { location: HttpTypes.AdminStockLocation }) => {
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const { canUpdate, canDelete } = useStockLocationPermissions()
+  const { canRead: canReadInventory } = useInventoryPermissions()
   const { mutateAsync } = useDeleteStockLocation(location.id)
   const prompt = usePrompt()
 
@@ -633,33 +723,36 @@ const Actions = ({ location }: { location: HttpTypes.AdminStockLocation }) => {
     })
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const firstGroupActions = [
+    canUpdate
+      ? {
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          to: `edit`,
+        }
+      : null,
+    canReadInventory
+      ? {
+          icon: <ArchiveBox />,
+          label: t("stockLocations.edit.viewInventory"),
+          to: `/inventory?location_id=${location.id}`,
+        }
+      : null,
+  ].filter(Boolean) as ActionGroup["actions"]
+
+  const groups: ActionGroup[] = [{ actions: firstGroupActions }]
+
+  if (canDelete) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `edit`,
-            },
-            {
-              icon: <ArchiveBox />,
-              label: t("stockLocations.edit.viewInventory"),
-              to: `/inventory?location_id=${location.id}`,
-            },
-          ],
+          icon: <Trash />,
+          label: t("actions.delete"),
+          onClick: handleDelete,
         },
-        {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ],
-        },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  return <ActionMenu groups={groups} />
 }

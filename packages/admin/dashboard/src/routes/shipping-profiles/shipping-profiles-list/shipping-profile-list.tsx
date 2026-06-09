@@ -11,6 +11,7 @@ export const ShippingProfileList = () => {
         before: getWidgets("shipping_profile.list.before"),
         after: getWidgets("shipping_profile.list.after"),
       }}
+      showRequiredPermissions
     >
       <ShippingProfileListTable />
     </SingleColumnPage>
