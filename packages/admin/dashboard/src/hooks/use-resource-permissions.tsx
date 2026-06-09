@@ -222,3 +222,21 @@ export const useTaxRegionPermissions = () =>
   useResourcePermissions("tax_region")
 
 export const useTaxRatePermissions = () => useResourcePermissions("tax_rate")
+
+/**
+ * Hook for checking workflow execution-specific permissions.
+ */
+export const useWorkflowExecutionPermissions = () =>
+  useResourcePermissions("workflow_execution")
+
+/**
+ * Hook for checking translation-specific permissions.
+ */
+export const useTranslationPermissions = () =>
+  useResourcePermissions("translation")
+
+/**
+ * Hook for checking translation setting-specific permissions.
+ */
+export const useTranslationSettingPermissions = () =>
+  useResourcePermissions("translation_setting")

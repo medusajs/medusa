@@ -13,6 +13,7 @@ export const WorkflowExcecutionList = () => {
         before: getWidgets("workflow.list.before"),
       }}
       hasOutlet={false}
+      showRequiredPermissions
     >
       <WorkflowExecutionListTable />
     </SingleColumnPage>
