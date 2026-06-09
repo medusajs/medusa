@@ -221,7 +221,20 @@ export class LocalFileService extends AbstractFileProviderService {
   }
 
   private getUploadFilePath = (baseDir: string, fileKey: string) => {
-    return path.join(baseDir, fileKey)
+    const resolvedBase = path.resolve(baseDir)
+    const resolved = path.resolve(resolvedBase, fileKey)
+    const relative = path.relative(resolvedBase, resolved)
+    if (
+      relative === ".." ||
+      relative.startsWith(`..${path.sep}`) ||
+      path.isAbsolute(relative)
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Invalid file key: ${fileKey}`
+      )
+    }
+    return resolved
   }
 
   private getUploadFileUrl = (fileKey: string) => {

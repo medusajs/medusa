@@ -4,7 +4,10 @@ export function MedusaContext() {
     propertyKey: string | symbol,
     parameterIndex: number
   ) {
-    target.MedusaContextIndex_ ??= {}
+    if (!Object.prototype.hasOwnProperty.call(target, "MedusaContextIndex_")) {
+      target.MedusaContextIndex_ = { ...(target.MedusaContextIndex_ ?? {}) }
+    }
+
     target.MedusaContextIndex_[propertyKey] = parameterIndex
   }
 }
