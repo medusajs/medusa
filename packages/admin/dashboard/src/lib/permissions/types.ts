@@ -67,8 +67,9 @@ export type PermissionResource =
   | "api_key"
   | "return_reason"
   | "refund_reason"
-  | "workflow"
+  | "workflow_execution"
   | "translation"
+  | "translation_setting"
 
 /**
  * Operations that can be performed on resources.

@@ -37,6 +37,7 @@ const useSettingRoutes = (): INavItem[] => {
   const canReadStockLocations = hasPermission("stock_location:read")
   const canReadStore = hasPermission("store:read")
   const canReadUsers = hasPermission("user:read")
+  const canReadTranslations = hasPermission("translation:read")
 
   return useMemo(
     () => [
@@ -136,7 +137,7 @@ const useSettingRoutes = (): INavItem[] => {
             },
           ]
         : []),
-      ...(isTranslationsEnabled
+      ...(isTranslationsEnabled && canReadTranslations
         ? [
             {
               label: t("translations.domain"),
@@ -148,6 +149,7 @@ const useSettingRoutes = (): INavItem[] => {
     [
       t,
       isTranslationsEnabled,
+      canReadTranslations,
       canReadRoles,
       canReadPolicies,
       canReadProductTags,
@@ -169,6 +171,7 @@ const useDeveloperRoutes = (): INavItem[] => {
   const { hasPermission } = usePermissions()
 
   const canReadApiKeys = hasPermission("api_key:read")
+  const canReadWorkflows = hasPermission("workflow_execution:read")
 
   return useMemo(
     () => [
@@ -184,12 +187,16 @@ const useDeveloperRoutes = (): INavItem[] => {
             },
           ]
         : []),
-      {
-        label: t("workflowExecutions.domain"),
-        to: "/settings/workflows",
-      },
+      ...(canReadWorkflows
+        ? [
+            {
+              label: t("workflowExecutions.domain"),
+              to: "/settings/workflows",
+            },
+          ]
+        : []),
     ],
-    [t, canReadApiKeys]
+    [t, canReadApiKeys, canReadWorkflows]
   )
 }
 

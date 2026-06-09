@@ -18,10 +18,21 @@ import {
 
 export const adminTranslationsRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/translations/*",
+    // Match all translations routes except the settings subtree, which is
+    // guarded by its own `translation_setting` policy below.
+    matcher: /^\/admin\/translations(?!\/settings(\/|$))(\/.*)?$/,
     policies: [
       {
         resource: Entities.translation,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
+  {
+    matcher: "/admin/translations/settings/*",
+    policies: [
+      {
+        resource: Entities.translation_setting,
         operation: PolicyOperation.read,
       },
     ],
@@ -35,12 +46,6 @@ export const adminTranslationsRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.translation,
-        operation: PolicyOperation.read,
-      },
-    ],
   },
   {
     method: ["POST"],
@@ -52,11 +57,11 @@ export const adminTranslationsRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.translation,
-        operation: PolicyOperation.create,
-      },
-      {
-        resource: Entities.translation,
-        operation: PolicyOperation.update,
+        operation: [
+          PolicyOperation.create,
+          PolicyOperation.update,
+          PolicyOperation.delete,
+        ],
       },
     ],
   },
@@ -73,12 +78,6 @@ export const adminTranslationsRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       validateAndTransformQuery(AdminTranslationSettingsParams, {}),
     ],
-    policies: [
-      {
-        resource: Entities.translation_setting,
-        operation: PolicyOperation.read,
-      },
-    ],
   },
   {
     method: ["POST"],
@@ -87,11 +86,11 @@ export const adminTranslationsRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.translation_setting,
-        operation: PolicyOperation.create,
-      },
-      {
-        resource: Entities.translation_setting,
-        operation: PolicyOperation.update,
+        operation: [
+          PolicyOperation.create,
+          PolicyOperation.update,
+          PolicyOperation.delete,
+        ],
       },
     ],
   },
@@ -103,12 +102,6 @@ export const adminTranslationsRoutesMiddlewares: MiddlewareRoute[] = [
         AdminTranslationEntitiesParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.translation,
-        operation: PolicyOperation.read,
-      },
     ],
   },
 ]

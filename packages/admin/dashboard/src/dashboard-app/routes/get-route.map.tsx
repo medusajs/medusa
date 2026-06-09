@@ -2048,9 +2048,14 @@ export function getRouteMap({
             {
               path: "workflows",
               errorElement: <ErrorBoundary />,
-              element: <Outlet />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("workflowExecutions.domain"),
+                permissions: "workflow_execution:read",
               },
               children: [
                 {
@@ -2565,8 +2570,14 @@ export function getRouteMap({
             {
               path: "translations",
               errorElement: <ErrorBoundary />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("translations.domain"),
+                permissions: "translation:read",
               },
               children: [
                 {
@@ -2577,6 +2588,13 @@ export function getRouteMap({
                     {
                       path: "settings",
                       lazy: () => import("../../routes/translations/settings"),
+                      handle: {
+                        permissions: [
+                          "translation_setting:create",
+                          "translation_setting:update",
+                          "translation_setting:delete",
+                        ],
+                      },
                     },
                   ],
                 },
@@ -2584,10 +2602,15 @@ export function getRouteMap({
                   path: "edit",
                   lazy: () =>
                     import("../../routes/translations/translations-edit"),
+                  // Read-only users can open the editor in view mode; the form
+                  // itself disables inputs + hides save actions without
+                  // translation:create + translation:update.
+                  handle: { permissions: "translation:read" },
                 },
                 {
                   path: "add-locales",
                   lazy: () => import("../../routes/translations/add-locales"),
+                  handle: { permissions: "store:update" },
                 },
               ],
             },

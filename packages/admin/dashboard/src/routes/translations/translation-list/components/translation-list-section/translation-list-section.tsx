@@ -2,6 +2,7 @@ import { Button, Container, Text } from "@medusajs/ui"
 import { Link } from "react-router-dom"
 import { TranslatableEntity } from "../../translation-list"
 import { useTranslation } from "react-i18next"
+import { useTranslationPermissions } from "../../../../../hooks/use-resource-permissions"
 
 type TranslationListSectionProps = {
   entities: TranslatableEntity[]
@@ -13,6 +14,8 @@ export const TranslationListSection = ({
   hasLocales = false,
 }: TranslationListSectionProps) => {
   const { t } = useTranslation()
+  const { canCreate, canUpdate } = useTranslationPermissions()
+  const canEdit = canCreate && canUpdate
 
   return (
     <Container className="divide-y p-0">
@@ -38,7 +41,7 @@ export const TranslationListSection = ({
               size="small"
               disabled={!hasLocales || !entity.totalCount}
             >
-              Edit
+              {canEdit ? t("actions.edit") : t("actions.view")}
             </Button>
           </Link>
         </div>

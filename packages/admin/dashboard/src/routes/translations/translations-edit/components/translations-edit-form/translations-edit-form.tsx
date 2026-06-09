@@ -17,6 +17,7 @@ import {
 } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useBatchTranslations } from "../../../../../hooks/api/translations"
+import { useTranslationPermissions } from "../../../../../hooks/use-resource-permissions"
 
 const EntityTranslationsSchema = z.object({
   id: z.string().nullish(),
@@ -130,7 +131,9 @@ function extendSnapshot(
   return { ...snapshot, entities: extendedEntities }
 }
 
-function snapshotToFormValues(snapshot: LocaleSnapshot): TranslationsFormSchema {
+function snapshotToFormValues(
+  snapshot: LocaleSnapshot
+): TranslationsFormSchema {
   return { entities: snapshot.entities }
 }
 
@@ -192,7 +195,10 @@ function computeChanges(
   return { hasChanges, payload }
 }
 
-const columnHelper = createDataGridHelper<TranslationRow, TranslationsFormSchema>()
+const columnHelper = createDataGridHelper<
+  TranslationRow,
+  TranslationsFormSchema
+>()
 
 const FIELD_COLUMN_WIDTH = 350
 
@@ -216,11 +222,13 @@ function useTranslationsGridColumns({
   availableLocales,
   selectedLocale,
   dynamicColumnWidth,
+  canEdit,
 }: {
   entities: TranslationReference[]
   availableLocales: AdminStoreLocale[]
   selectedLocale: string
   dynamicColumnWidth: number
+  canEdit: boolean
 }) {
   const { t } = useTranslation()
 
@@ -320,7 +328,7 @@ function useTranslationsGridColumns({
           cell: (context) => {
             const row = context.row.original
 
-            if (isEntityRow(row)) {
+            if (isEntityRow(row) || !canEdit) {
               return <DataGrid.ReadonlyCell context={context} isMultiLine />
             }
 
@@ -341,7 +349,14 @@ function useTranslationsGridColumns({
     }
 
     return columns
-  }, [t, availableLocales, selectedLocale, entities, dynamicColumnWidth])
+  }, [
+    t,
+    availableLocales,
+    selectedLocale,
+    entities,
+    dynamicColumnWidth,
+    canEdit,
+  ])
 }
 
 type TranslationsEditFormProps = {
@@ -369,6 +384,8 @@ export const TranslationsEditForm = ({
 }: TranslationsEditFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess, setCloseOnEscape } = useRouteModal()
+  const { canCreate, canUpdate } = useTranslationPermissions()
+  const canEdit = canCreate && canUpdate
 
   const containerRef = useRef<HTMLDivElement>(null)
   const [dynamicColumnWidth, setDynamicColumnWidth] = useState(400)
@@ -480,6 +497,7 @@ export const TranslationsEditForm = ({
     availableLocales,
     selectedLocale,
     dynamicColumnWidth,
+    canEdit,
   })
 
   const { mutateAsync, isPending, invalidateQueries } =
@@ -663,6 +681,7 @@ export const TranslationsEditForm = ({
           <div ref={containerRef} className="size-full">
             <DataGrid
               showColumnsDropdown={false}
+              disableInteractions={!canEdit}
               columns={columns}
               data={rows}
               getSubRows={(row) => {
@@ -713,18 +732,22 @@ export const TranslationsEditForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <Button
-              size="small"
-              type="button"
-              variant="secondary"
-              onClick={() => handleSave(false)}
-              isLoading={isLoading}
-            >
-              {t("actions.saveChanges")}
-            </Button>
-            <Button size="small" type="submit" isLoading={isLoading}>
-              {t("actions.saveAndClose")}
-            </Button>
+            {canEdit && (
+              <>
+                <Button
+                  size="small"
+                  type="button"
+                  variant="secondary"
+                  onClick={() => handleSave(false)}
+                  isLoading={isLoading}
+                >
+                  {t("actions.saveChanges")}
+                </Button>
+                <Button size="small" type="submit" isLoading={isLoading}>
+                  {t("actions.saveAndClose")}
+                </Button>
+              </>
+            )}
           </div>
         </RouteFocusModal.Footer>
       </KeyboundForm>
