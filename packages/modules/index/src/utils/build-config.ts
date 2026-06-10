@@ -1207,7 +1207,7 @@ function buildSchemaFromFilterableLinks(
       }
 
       const normalizedEntity = lowerCaseFirst(kebabCase(entity))
-      const events = `@Listeners(values: ["${serviceName}.${normalizedEntity}.created", "${serviceName}.${normalizedEntity}.updated", "${serviceName}.${normalizedEntity}.deleted"])`
+      const events = `@Listeners(values: ["${serviceName}.${normalizedEntity}.created", "${serviceName}.${normalizedEntity}.updated", "${serviceName}.${normalizedEntity}.deleted", "${serviceName}.${normalizedEntity}.restored"])`
 
       const fieldDefinitions = fields
         .map((field) => {
