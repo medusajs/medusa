@@ -28,6 +28,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       files: ["src/workflows/**/*.{ts,tsx}", "**/workflows/**/*.{ts,tsx}"],
       rules: {
         [ruleId("no-async-workflow-constructor")]: "error",
+        [ruleId("no-conditional-expressions-in-workflow")]: "error",
         [ruleId("no-if-in-workflow-constructor")]: "error",
       },
     },

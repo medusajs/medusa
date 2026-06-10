@@ -92,8 +92,33 @@ export function isWorkflowConstructorFunction(
 }
 
 /**
+ * Returns true when `fn` is the first argument to a `.then(...)` call whose
+ * receiver is a `when(...)` call against a tracked `when` import binding.
+ *
+ * The `.then(...)` callback runs at workflow-definition time, same as the
+ * workflow constructor itself — anything you can't do in the constructor,
+ * you also can't do here.
+ */
+export function isWhenThenCallbackFunction(
+  fn: FunctionLike,
+  bindings: WorkflowSdkBindings
+): boolean {
+  const parent = fn.parent
+  if (!parent || parent.type !== AST_NODE_TYPES.CallExpression) return false
+  if (parent.arguments[0] !== fn) return false
+  const callee = parent.callee
+  if (callee.type !== AST_NODE_TYPES.MemberExpression) return false
+  if (callee.property.type !== AST_NODE_TYPES.Identifier) return false
+  if (callee.property.name !== "then") return false
+  const receiver = callee.object
+  if (receiver.type !== AST_NODE_TYPES.CallExpression) return false
+  if (receiver.callee.type !== AST_NODE_TYPES.Identifier) return false
+  return bindings.when.has(receiver.callee.name)
+}
+
+/**
  * True when `node` lives directly inside a workflow constructor body — not
- * inside a nested `createStep` / `transform` / `when().then()` callback.
+ * inside a nested `createStep` / `transform` callback.
  *
  * Implementation: the immediately-enclosing function must itself be the
  * workflow constructor. Nested step/transform callbacks become the
@@ -107,4 +132,42 @@ export function isInWorkflowConstructor(
   const fn = getEnclosingFunction(node)
   if (!fn) return false
   return isWorkflowConstructorFunction(fn, bindings)
+}
+
+/**
+ * True when `node` lives inside the *body* of a function that runs at
+ * workflow-*definition* time — either the workflow constructor itself, or
+ * a `when(...).then(callback)` callback. Both are subject to the same
+ * "no conditional control flow, no value manipulation" constraints.
+ *
+ * Excludes nodes inside `fn.params` (default-parameter expressions) — those
+ * are arguably def-time too, but they're rarely the source of the bugs
+ * these rules target and treating them as in-scope produces noisy
+ * false-positives on legitimate defaults. Carve out if a rule emerges
+ * that genuinely cares.
+ *
+ * Nested `createStep` / `transform` callbacks are *execution-time*; they
+ * naturally fall out because they become the immediately-enclosing function.
+ */
+export function isInWorkflowDefinitionScope(
+  node: TSESTree.Node,
+  bindings: WorkflowSdkBindings
+): boolean {
+  const fn = getEnclosingFunction(node)
+  if (!fn) return false
+  if (
+    !isWorkflowConstructorFunction(fn, bindings) &&
+    !isWhenThenCallbackFunction(fn, bindings)
+  ) {
+    return false
+  }
+
+  let current: TSESTree.Node = node
+  let parent: TSESTree.Node | undefined = current.parent
+  while (parent && parent !== fn) {
+    current = parent
+    parent = current.parent
+  }
+  if (!parent) return false
+  return !(fn.params as TSESTree.Node[]).includes(current)
 }

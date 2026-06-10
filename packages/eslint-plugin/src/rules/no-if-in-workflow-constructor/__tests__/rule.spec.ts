@@ -47,16 +47,19 @@ ruleTester.run("no-if-in-workflow-constructor", rule, {
         })
       `,
     },
-    // `if` inside when().then() callback is fine.
+    // `if` inside a createStep nested inside a when().then() callback is fine.
     {
       code: `
-        import { createWorkflow, when } from "@medusajs/framework/workflows-sdk"
+        import { createWorkflow, createStep, when } from "@medusajs/framework/workflows-sdk"
         createWorkflow("my-workflow", (input) => {
           when({ input }, (data) => data.input.foo).then(() => {
-            if (input) {
-              return 1
-            }
-            return 2
+            const step = createStep("s", () => {
+              if (input) {
+                return 1
+              }
+              return 2
+            })
+            return step
           })
         })
       `,
@@ -148,6 +151,36 @@ ruleTester.run("no-if-in-workflow-constructor", rule, {
         { messageId: "ifInWorkflowConstructor" },
         { messageId: "ifInWorkflowConstructor" },
       ],
+    },
+    // `if` directly inside a when().then() callback is also flagged — the
+    // callback runs at workflow-definition time, just like the constructor.
+    {
+      code: `
+        import { createWorkflow, when } from "@medusajs/framework/workflows-sdk"
+        createWorkflow("my-workflow", (input) => {
+          when({ input }, (data) => data.input.foo).then(() => {
+            if (input) {
+              return 1
+            }
+            return 2
+          })
+        })
+      `,
+      errors: [{ messageId: "ifInWorkflowConstructor" }],
+    },
+    // Aliased `when` import is tracked too.
+    {
+      code: `
+        import { createWorkflow, when as w } from "@medusajs/framework/workflows-sdk"
+        createWorkflow("my-workflow", (input) => {
+          w({ input }, (data) => data.input.foo).then(() => {
+            if (input) {
+              return 1
+            }
+          })
+        })
+      `,
+      errors: [{ messageId: "ifInWorkflowConstructor" }],
     },
   ],
 })

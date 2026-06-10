@@ -1,7 +1,7 @@
 import { createRule } from "../../create-rule"
 import {
   createWorkflowSdkBindings,
-  isInWorkflowConstructor,
+  isInWorkflowDefinitionScope,
   trackWorkflowSdkImports,
 } from "../../util/workflow-scope"
 
@@ -13,11 +13,11 @@ export const rule = createRule<[], MessageIds>({
     type: "problem",
     docs: {
       description:
-        "Disallow `if`/`else` statements directly inside a `createWorkflow` constructor. Use `when().then()` for conditional flow.",
+        "Disallow `if`/`else` statements directly inside a `createWorkflow` constructor or a `when().then()` callback. Both run at definition time — use `when(...).then(...)` to conditionally execute steps.",
     },
     messages: {
       ifInWorkflowConstructor:
-        "Do not use `if` statements inside a workflow constructor — they run at definition time, not execution time. Use `when(...).then(...)` from `@medusajs/framework/workflows-sdk` to conditionally execute steps.",
+        "Do not use `if` statements inside a workflow constructor or a `when().then()` callback — both run at definition time, not execution time. Use `when(...).then(...)` from `@medusajs/framework/workflows-sdk` to conditionally execute steps.",
     },
     schema: [],
   },
@@ -32,7 +32,7 @@ export const rule = createRule<[], MessageIds>({
 
       IfStatement(node) {
         if (bindings.createWorkflow.size === 0) return
-        if (!isInWorkflowConstructor(node, bindings)) return
+        if (!isInWorkflowDefinitionScope(node, bindings)) return
         context.report({
           node,
           messageId: "ifInWorkflowConstructor",
