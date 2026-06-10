@@ -258,10 +258,6 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.order_claim,
         operation: PolicyOperation.update,
       },
-      {
-        resource: Entities.order_claim,
-        operation: PolicyOperation.update,
-      },
     ],
   },
   {
@@ -342,6 +338,10 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.order_claim,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.order,
         operation: PolicyOperation.update,
       },
     ],

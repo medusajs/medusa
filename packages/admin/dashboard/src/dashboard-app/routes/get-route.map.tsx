@@ -495,7 +495,10 @@ export function getRouteMap({
                       lazy: () =>
                         import("../../routes/orders/order-create-claim"),
                       handle: {
-                        permissions: ["order:update", "order_claim:create"],
+                        permissions: [
+                          "order_claim:create",
+                          "order_claim:update",
+                        ],
                       },
                     },
                     {
