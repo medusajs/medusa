@@ -99,7 +99,7 @@ export const useCreateProductType = (
   return useMutation({
     mutationFn: (payload) => sdk.admin.productType.create(payload),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: productTypesQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: productTypesQueryKeys.all })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -121,7 +121,7 @@ export const useUpdateProductType = (
       queryClient.invalidateQueries({
         queryKey: productTypesQueryKeys.detail(id),
       })
-      queryClient.invalidateQueries({ queryKey: productTypesQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: productTypesQueryKeys.all })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -143,7 +143,7 @@ export const useDeleteProductType = (
       queryClient.invalidateQueries({
         queryKey: productTypesQueryKeys.detail(id),
       })
-      queryClient.invalidateQueries({ queryKey: productTypesQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: productTypesQueryKeys.all })
 
       options?.onSuccess?.(data, variables, context)
     },

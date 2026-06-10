@@ -22,7 +22,7 @@ export const ProductCreateOrganizationSection = ({
   const { t } = useTranslation()
 
   const collections = useComboboxData({
-    queryKey: ["product_collections"],
+    queryKey: ["collections"],
     queryFn: (params) => sdk.admin.productCollection.list(params),
     getOptions: (data) =>
       data.collections.map((collection) => ({
@@ -42,7 +42,7 @@ export const ProductCreateOrganizationSection = ({
   })
 
   const tags = useComboboxData({
-    queryKey: ["product_tags"],
+    queryKey: ["tags"],
     queryFn: (params) => sdk.admin.productTag.list(params),
     getOptions: (data) =>
       data.product_tags.map((tag) => ({
@@ -52,7 +52,7 @@ export const ProductCreateOrganizationSection = ({
   })
 
   const shippingProfiles = useComboboxData({
-    queryKey: ["shipping_profiles"],
+    queryKey: ["shipping_profile"],
     queryFn: (params) => sdk.admin.shippingProfile.list(params),
     getOptions: (data) =>
       data.shipping_profiles.map((shippingProfile) => ({

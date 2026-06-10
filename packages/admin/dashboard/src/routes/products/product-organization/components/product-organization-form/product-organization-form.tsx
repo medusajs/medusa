@@ -39,7 +39,7 @@ export const ProductOrganizationForm = ({
   const fields = getFormFields("product", "organize")
 
   const collections = useComboboxData({
-    queryKey: ["product_collections"],
+    queryKey: ["collections"],
     queryFn: (params) => sdk.admin.productCollection.list(params),
     getOptions: (data) =>
       data.collections.map((collection) => ({

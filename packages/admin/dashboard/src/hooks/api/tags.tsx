@@ -101,7 +101,7 @@ export const useCreateProductTag = (
     mutationFn: async (data) => sdk.admin.productTag.create(data, query),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: productTagsQueryKeys.lists(),
+        queryKey: productTagsQueryKeys.all,
       })
 
       options?.onSuccess?.(data, variables, context)
@@ -123,7 +123,7 @@ export const useUpdateProductTag = (
     mutationFn: async (data) => sdk.admin.productTag.update(id, data, query),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: productTagsQueryKeys.lists(),
+        queryKey: productTagsQueryKeys.all,
       })
       queryClient.invalidateQueries({
         queryKey: productTagsQueryKeys.detail(data.product_tag.id, query),
@@ -147,7 +147,7 @@ export const useDeleteProductTag = (
     mutationFn: async () => sdk.admin.productTag.delete(id),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: productTagsQueryKeys.lists(),
+        queryKey: productTagsQueryKeys.all,
       })
       queryClient.invalidateQueries({
         queryKey: productTagsQueryKeys.detail(id),

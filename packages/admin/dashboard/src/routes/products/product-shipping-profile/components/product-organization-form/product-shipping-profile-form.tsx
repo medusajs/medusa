@@ -31,7 +31,7 @@ export const ProductShippingProfileForm = ({
   const { handleSuccess } = useRouteModal()
 
   const shippingProfiles = useComboboxData({
-    queryKey: ["shipping_profiles"],
+    queryKey: ["shipping_profile"],
     queryFn: (params) => sdk.admin.shippingProfile.list(params),
     getOptions: (data) =>
       data.shipping_profiles.map((shippingProfile) => ({

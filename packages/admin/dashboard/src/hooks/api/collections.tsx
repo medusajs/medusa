@@ -99,7 +99,7 @@ export const useUpdateCollection = (
   return useMutation({
     mutationFn: (payload) => sdk.admin.productCollection.update(id, payload),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.all })
       queryClient.invalidateQueries({
         queryKey: collectionsQueryKeys.detail(id),
       })
@@ -122,7 +122,7 @@ export const useUpdateCollectionProducts = (
     mutationFn: (payload) =>
       sdk.admin.productCollection.updateProducts(id, payload),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.all })
       queryClient.invalidateQueries({
         queryKey: collectionsQueryKeys.detail(id),
       })
@@ -149,7 +149,7 @@ export const useCreateCollection = (
   return useMutation({
     mutationFn: (payload) => sdk.admin.productCollection.create(payload),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.all })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -168,7 +168,7 @@ export const useDeleteCollection = (
   return useMutation({
     mutationFn: () => sdk.admin.productCollection.delete(id),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.all })
       queryClient.invalidateQueries({
         queryKey: collectionsQueryKeys.detail(id),
       })
