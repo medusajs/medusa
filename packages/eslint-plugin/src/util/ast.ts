@@ -20,3 +20,21 @@ export const isNonLiteralRef = (node: TSESTree.Node): boolean => {
   }
   return true
 }
+
+/**
+ * True when `node` represents an explicit `undefined` value — either the
+ * `undefined` identifier or `void <expr>` (which always evaluates to
+ * `undefined`).
+ */
+export const isUndefinedExpression = (node: TSESTree.Node): boolean => {
+  if (node.type === AST_NODE_TYPES.Identifier && node.name === "undefined") {
+    return true
+  }
+  if (
+    node.type === AST_NODE_TYPES.UnaryExpression &&
+    node.operator === "void"
+  ) {
+    return true
+  }
+  return false
+}

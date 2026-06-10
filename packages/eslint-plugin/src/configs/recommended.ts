@@ -37,6 +37,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("no-spread-in-workflow")]: "error",
         [ruleId("no-throw-in-transform")]: "error",
         [ruleId("no-try-catch-in-workflow")]: "error",
+        [ruleId("workflow-must-return-workflow-response")]: "error",
       },
     },
   ]

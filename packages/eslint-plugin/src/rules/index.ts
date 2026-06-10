@@ -9,6 +9,7 @@ import { rule as noNewDateInWorkflow } from "./no-new-date-in-workflow"
 import { rule as noSpreadInWorkflow } from "./no-spread-in-workflow"
 import { rule as noThrowInTransform } from "./no-throw-in-transform"
 import { rule as noTryCatchInWorkflow } from "./no-try-catch-in-workflow"
+import { rule as workflowMustReturnWorkflowResponse } from "./workflow-must-return-workflow-response"
 
 export const rules = {
   "no-async-workflow-constructor": noAsyncWorkflowConstructor,
@@ -21,4 +22,5 @@ export const rules = {
   "no-spread-in-workflow": noSpreadInWorkflow,
   "no-throw-in-transform": noThrowInTransform,
   "no-try-catch-in-workflow": noTryCatchInWorkflow,
+  "workflow-must-return-workflow-response": workflowMustReturnWorkflowResponse,
 } as unknown as NonNullable<ESLint.Plugin["rules"]>
