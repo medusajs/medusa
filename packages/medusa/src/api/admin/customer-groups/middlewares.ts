@@ -99,6 +99,10 @@ export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.customer_group,
         operation: PolicyOperation.update,
       },
+      {
+        resource: Entities.customer,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {

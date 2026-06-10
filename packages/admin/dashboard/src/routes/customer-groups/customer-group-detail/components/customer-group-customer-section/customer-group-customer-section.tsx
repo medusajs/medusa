@@ -156,7 +156,9 @@ const CustomerActions = ({
   const { t } = useTranslation()
   const { mutateAsync } = useRemoveCustomersFromGroup(customerGroupId)
   const { canUpdate: canEditCustomer } = useCustomerPermissions()
-  const { canUpdate: canManageMembers } = useCustomerGroupPermissions()
+  const { canUpdate: canUpdateCustomerGroup } = useCustomerGroupPermissions()
+
+  const canManageMembers = canUpdateCustomerGroup && canEditCustomer
 
   const prompt = usePrompt()
 
