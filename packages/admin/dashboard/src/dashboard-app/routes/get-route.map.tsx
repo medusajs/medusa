@@ -517,7 +517,10 @@ export function getRouteMap({
                       lazy: () =>
                         import("../../routes/orders/order-create-edit"),
                       handle: {
-                        permissions: ["order:update", "order_change:create"],
+                        permissions: [
+                          "order_change:create",
+                          "order_change:update",
+                        ],
                       },
                     },
                     {

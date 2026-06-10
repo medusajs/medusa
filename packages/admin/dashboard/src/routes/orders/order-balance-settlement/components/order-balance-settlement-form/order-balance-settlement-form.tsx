@@ -25,6 +25,7 @@ import {
   useCreateOrderCreditLine,
   useRefundPayment,
 } from "../../../../../hooks/api"
+import { useCreditLinePermissions } from "../../../../../hooks/use-resource-permissions"
 import { currencies } from "../../../../../lib/data/currencies"
 import { formatCurrency } from "../../../../../lib/format-currency"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
@@ -60,6 +61,7 @@ export const OrderBalanceSettlementForm = ({
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const { handleSuccess } = useRouteModal()
+  const { canCreate: canCreateCreditLine } = useCreditLinePermissions()
   const paymentId = searchParams.get("paymentId")
   const payments = getPaymentsFromOrder(order)
   const pendingDifference = order.summary.pending_difference * -1
@@ -206,16 +208,18 @@ export const OrderBalanceSettlementForm = ({
                   className={clx("basis-1/2")}
                 />
 
-                <RadioGroup.ChoiceBox
-                  value={"credit_line"}
-                  description={t(
-                    "orders.balanceSettlement.settlementTypes.creditLineDescription"
-                  )}
-                  label={t(
-                    "orders.balanceSettlement.settlementTypes.creditLine"
-                  )}
-                  className={clx("basis-1/2")}
-                />
+                {canCreateCreditLine && (
+                  <RadioGroup.ChoiceBox
+                    value={"credit_line"}
+                    description={t(
+                      "orders.balanceSettlement.settlementTypes.creditLineDescription"
+                    )}
+                    label={t(
+                      "orders.balanceSettlement.settlementTypes.creditLine"
+                    )}
+                    className={clx("basis-1/2")}
+                  />
+                )}
               </RadioGroup>
             </div>
 

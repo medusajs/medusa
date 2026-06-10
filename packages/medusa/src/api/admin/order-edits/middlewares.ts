@@ -86,7 +86,7 @@ export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.order_change,
-        operation: PolicyOperation.delete,
+        operation: PolicyOperation.update,
       },
     ],
   },
@@ -134,6 +134,10 @@ export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.order_change,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.order,
         operation: PolicyOperation.update,
       },
     ],

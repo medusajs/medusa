@@ -136,6 +136,9 @@ export const usePaymentCollectionPermissions = () =>
 
 export const usePaymentPermissions = () => useResourcePermissions("payment")
 
+export const useCreditLinePermissions = () =>
+  useResourcePermissions("credit_line")
+
 export const useReservationItemPermissions = () =>
   useResourcePermissions("reservation_item")
 
