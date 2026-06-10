@@ -98,14 +98,6 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
-              "title": "Create MFA Provider",
-              "path": "https://docs.medusajs.com/resources/references/mfa-module-provider",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "ref",
               "title": "Create Notification Provider",
               "path": "https://docs.medusajs.com/resources/references/notification-provider-module",
               "children": []
@@ -116,14 +108,6 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "type": "ref",
               "title": "Create Payment Provider",
               "path": "https://docs.medusajs.com/resources/references/payment/provider",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "ref",
-              "title": "Create Recovery Code MFA Provider",
-              "path": "https://docs.medusajs.com/resources/references/recovery-code-mfa-module-provider",
               "children": []
             },
             {

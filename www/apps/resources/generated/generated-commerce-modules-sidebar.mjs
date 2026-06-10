@@ -512,22 +512,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
-              "title": "Create MFA Provider",
-              "path": "https://docs.medusajs.com/resources/references/mfa-module-provider",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "ref",
-              "title": "Create Recovery Code MFA Provider",
-              "path": "https://docs.medusajs.com/resources/references/recovery-code-mfa-module-provider",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "ref",
               "title": "Custom Admin Authentication",
               "path": "https://docs.medusajs.com/resources/how-to-tutorials/how-to/admin/auth",
               "children": []

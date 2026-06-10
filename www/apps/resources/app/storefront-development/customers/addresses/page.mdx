@@ -92,6 +92,7 @@ export const highlights = [
         <ul>
           {addresses.map((address) => (
             <li key={address.id}>
+              {address.address_name && `${address.address_name} - `}
               City: {address.city} - 
               Country: {address.country_code}
             </li>
@@ -176,6 +177,7 @@ export const addHighlights = [
     const { setCustomer } = useCustomer()
 
     const [loading, setLoading] = useState(false)
+    const [addressName, setAddressName] = useState("")
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [address1, setAddress1] = useState("")
@@ -193,6 +195,7 @@ export const addHighlights = [
       setLoading(false)
 
       sdk.store.customer.createAddress({
+        address_name: addressName,
         first_name: firstName,
         last_name: lastName,
         address_1: address1,
@@ -211,6 +214,12 @@ export const addHighlights = [
 
     return (
       <form>
+        <input 
+          type="text" 
+          placeholder="Address Name" 
+          value={addressName}
+          onChange={(e) => setAddressName(e.target.value)}
+        />
         <input 
           type="text" 
           placeholder="First Name" 
@@ -288,6 +297,7 @@ export const addHighlights = [
 
   ```ts
   sdk.store.customer.createAddress({
+    address_name: addressName,
     first_name: firstName,
     last_name: lastName,
     address_1: address1,
@@ -356,6 +366,9 @@ export const editHighlights = [
       (address) => address.id === id
     )
     const [loading, setLoading] = useState(false)
+    const [addressName, setAddressName] = useState(
+      address?.address_name || ""
+    )
     const [firstName, setFirstName] = useState(
       address?.first_name || ""
     )
@@ -394,6 +407,7 @@ export const editHighlights = [
       setLoading(true)
 
       sdk.store.customer.updateAddress(address.id, {
+        address_name: addressName,
         first_name: firstName,
         last_name: lastName,
         address_1: address1,
@@ -412,6 +426,12 @@ export const editHighlights = [
 
     return (
       <form>
+        <input 
+          type="text" 
+          placeholder="Address Name" 
+          value={addressName}
+          onChange={(e) => setAddressName(e.target.value)}
+        />
         <input 
           type="text" 
           placeholder="First Name" 
@@ -489,6 +509,7 @@ export const editHighlights = [
 
   ```ts
   sdk.store.customer.updateAddress(address.id, {
+    address_name: addressName,
     first_name: firstName,
     last_name: lastName,
     address_1: address1,
