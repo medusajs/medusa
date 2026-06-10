@@ -326,7 +326,17 @@ const Fulfillment = ({
     throw error
   }
 
-  const isValidUrl = (url?: string) => url && url.length > 0 && url !== "#"
+  const isValidUrl = (url?: string) => {
+    if (!url || url.length === 0 || url === "#") {
+      return false
+    }
+    try {
+      const parsed = new URL(url)
+      return parsed.protocol === "http:" || parsed.protocol === "https:"
+    } catch {
+      return false
+    }
+  }
 
   return (
     <Container className="divide-y p-0">

@@ -192,13 +192,32 @@ export const addShippingMethodToCartWorkflow = createWorkflow(
       }
     )
 
-    const currentShippingMethods = transform({ cart }, ({ cart }) =>
-      cart.shipping_methods.map((sm) => sm.id)
+    const currentCollidingShippingProfileMethodIds = transform(
+      { input, shippingOptions, cart },
+      ({ input, shippingOptions, cart }) => {
+        const incomingProfileIds = new Set(
+          input.options
+            .map(
+              (o) =>
+                shippingOptions.find((so) => so.id === o.id)
+                  ?.shipping_profile_id
+            )
+            .filter(Boolean)
+        )
+
+        return cart.shipping_methods
+          .filter(
+            (sm) =>
+              !sm.shipping_option?.shipping_profile_id ||
+              incomingProfileIds.has(sm.shipping_option.shipping_profile_id)
+          )
+          .map((sm) => sm.id)
+      }
     )
 
     const [, createdShippingMethods] = parallelize(
       removeShippingMethodFromCartStep({
-        shipping_method_ids: currentShippingMethods,
+        shipping_method_ids: currentCollidingShippingProfileMethodIds,
       }),
       addShippingMethodToCartStep({
         shipping_methods: shippingMethodInput,

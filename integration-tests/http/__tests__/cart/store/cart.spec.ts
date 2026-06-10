@@ -3097,11 +3097,7 @@ medusaIntegrationTestRunner({
             )
 
             const error = await api
-              .post(
-                `/store/carts/${emptyCart.id}/complete`,
-                {},
-                storeHeaders
-              )
+              .post(`/store/carts/${emptyCart.id}/complete`, {}, storeHeaders)
               .catch((e) => e)
 
             expect(error.response.status).toEqual(400)
@@ -3119,9 +3115,7 @@ medusaIntegrationTestRunner({
                   sales_channel_id: salesChannel.id,
                   region_id: region.id,
                   shipping_address: shippingAddressData,
-                  items: [
-                    { variant_id: product.variants[0].id, quantity: 1 },
-                  ],
+                  items: [{ variant_id: product.variants[0].id, quantity: 1 }],
                 },
                 storeHeadersWithCustomer
               )
@@ -3431,6 +3425,503 @@ medusaIntegrationTestRunner({
             expect(response.response.data.message).toEqual(
               "The cart items require shipping profiles that are not satisfied by the current shipping methods"
             )
+          })
+
+          it("should complete a cart that spans two shipping profiles when each profile has a shipping method", async () => {
+            // --- Profile A setup ---
+            const stockLocationA = (
+              await api.post(
+                `/admin/stock-locations`,
+                { name: "location-profile-a" },
+                adminHeaders
+              )
+            ).data.stock_location
+
+            await api.post(
+              `/admin/stock-locations/${stockLocationA.id}/sales-channels`,
+              { add: [salesChannel.id] },
+              adminHeaders
+            )
+
+            const shippingProfileA = (
+              await api.post(
+                `/admin/shipping-profiles`,
+                { name: "profile-a", type: "default" },
+                adminHeaders
+              )
+            ).data.shipping_profile
+
+            const fulfillmentSetA = (
+              await api.post(
+                `/admin/stock-locations/${stockLocationA.id}/fulfillment-sets?fields=*fulfillment_sets`,
+                { name: "fs-profile-a", type: "test-type" },
+                adminHeaders
+              )
+            ).data.stock_location.fulfillment_sets[0]
+
+            const serviceZoneA = (
+              await api.post(
+                `/admin/fulfillment-sets/${fulfillmentSetA.id}/service-zones`,
+                {
+                  name: "sz-profile-a",
+                  geo_zones: [{ type: "country", country_code: "US" }],
+                },
+                adminHeaders
+              )
+            ).data.fulfillment_set.service_zones[0]
+
+            await api.post(
+              `/admin/stock-locations/${stockLocationA.id}/fulfillment-providers`,
+              { add: ["manual_test-provider"] },
+              adminHeaders
+            )
+
+            const shippingOptionA = (
+              await api.post(
+                `/admin/shipping-options`,
+                {
+                  name: "shipping-option-a",
+                  service_zone_id: serviceZoneA.id,
+                  shipping_profile_id: shippingProfileA.id,
+                  provider_id: "manual_test-provider",
+                  price_type: "flat",
+                  type: {
+                    label: "Standard",
+                    description: "Standard",
+                    code: "standard",
+                  },
+                  prices: [{ currency_code: "usd", amount: 500 }],
+                  rules: [],
+                },
+                adminHeaders
+              )
+            ).data.shipping_option
+
+            const productA = (
+              await api.post(
+                `/admin/products`,
+                {
+                  title: "Product Profile A",
+                  status: ProductStatus.PUBLISHED,
+                  options: [{ title: "Size", values: ["One"] }],
+                  variants: [
+                    {
+                      title: "One",
+                      sku: "product-a-sku",
+                      options: { Size: "One" },
+                      manage_inventory: false,
+                      prices: [{ amount: 1000, currency_code: "usd" }],
+                    },
+                  ],
+                  shipping_profile_id: shippingProfileA.id,
+                },
+                adminHeaders
+              )
+            ).data.product
+
+            // --- Profile B setup ---
+            const stockLocationB = (
+              await api.post(
+                `/admin/stock-locations`,
+                { name: "location-profile-b" },
+                adminHeaders
+              )
+            ).data.stock_location
+
+            await api.post(
+              `/admin/stock-locations/${stockLocationB.id}/sales-channels`,
+              { add: [salesChannel.id] },
+              adminHeaders
+            )
+
+            const shippingProfileB = (
+              await api.post(
+                `/admin/shipping-profiles`,
+                { name: "profile-b", type: "default" },
+                adminHeaders
+              )
+            ).data.shipping_profile
+
+            const fulfillmentSetB = (
+              await api.post(
+                `/admin/stock-locations/${stockLocationB.id}/fulfillment-sets?fields=*fulfillment_sets`,
+                { name: "fs-profile-b", type: "test-type" },
+                adminHeaders
+              )
+            ).data.stock_location.fulfillment_sets[0]
+
+            const serviceZoneB = (
+              await api.post(
+                `/admin/fulfillment-sets/${fulfillmentSetB.id}/service-zones`,
+                {
+                  name: "sz-profile-b",
+                  geo_zones: [{ type: "country", country_code: "US" }],
+                },
+                adminHeaders
+              )
+            ).data.fulfillment_set.service_zones[0]
+
+            await api.post(
+              `/admin/stock-locations/${stockLocationB.id}/fulfillment-providers`,
+              { add: ["manual_test-provider"] },
+              adminHeaders
+            )
+
+            const shippingOptionB = (
+              await api.post(
+                `/admin/shipping-options`,
+                {
+                  name: "shipping-option-b",
+                  service_zone_id: serviceZoneB.id,
+                  shipping_profile_id: shippingProfileB.id,
+                  provider_id: "manual_test-provider",
+                  price_type: "flat",
+                  type: {
+                    label: "Express",
+                    description: "Express",
+                    code: "express",
+                  },
+                  prices: [{ currency_code: "usd", amount: 1000 }],
+                  rules: [],
+                },
+                adminHeaders
+              )
+            ).data.shipping_option
+
+            const productB = (
+              await api.post(
+                `/admin/products`,
+                {
+                  title: "Product Profile B",
+                  status: ProductStatus.PUBLISHED,
+                  options: [{ title: "Size", values: ["One"] }],
+                  variants: [
+                    {
+                      title: "One",
+                      sku: "product-b-sku",
+                      options: { Size: "One" },
+                      manage_inventory: false,
+                      prices: [{ amount: 2000, currency_code: "usd" }],
+                    },
+                  ],
+                  shipping_profile_id: shippingProfileB.id,
+                },
+                adminHeaders
+              )
+            ).data.product
+
+            // --- Cart with items from both profiles ---
+            const cart = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  shipping_address: shippingAddressData,
+                  items: [
+                    { variant_id: productA.variants[0].id, quantity: 1 },
+                    { variant_id: productB.variants[0].id, quantity: 1 },
+                  ],
+                },
+                storeHeadersWithCustomer
+              )
+            ).data.cart
+
+            // Add shipping method for profile A
+            await api.post(
+              `/store/carts/${cart.id}/shipping-methods`,
+              { option_id: shippingOptionA.id },
+              storeHeaders
+            )
+
+            // Add shipping method for profile B — with the fix this should NOT remove profile A's method
+            const cartAfterBothMethods = (
+              await api.post(
+                `/store/carts/${cart.id}/shipping-methods`,
+                { option_id: shippingOptionB.id },
+                storeHeaders
+              )
+            ).data.cart
+
+            // Both methods must be present and shipping total must reflect both (500 + 1000 = 1500)
+            expect(cartAfterBothMethods.shipping_methods).toHaveLength(2)
+            expect(
+              cartAfterBothMethods.shipping_methods
+                .map((sm) => sm.shipping_option_id)
+                .sort()
+            ).toEqual([shippingOptionA.id, shippingOptionB.id].sort())
+            expect(cartAfterBothMethods.shipping_total).toEqual(1500)
+
+            const paymentCollection = (
+              await api.post(
+                `/store/payment-collections`,
+                { cart_id: cart.id },
+                storeHeaders
+              )
+            ).data.payment_collection
+
+            await api.post(
+              `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+              { provider_id: "pp_system_default" },
+              storeHeaders
+            )
+
+            const response = await api.post(
+              `/store/carts/${cart.id}/complete`,
+              {},
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.type).toEqual("order")
+            expect(response.data.order).toEqual(
+              expect.objectContaining({
+                id: expect.any(String),
+                shipping_total: 1500,
+              })
+            )
+          })
+
+          it("should auto-remove a shipping method when the last item for its profile is removed from the cart", async () => {
+            // --- Profile A setup ---
+            const stockLocationA = (
+              await api.post(
+                `/admin/stock-locations`,
+                { name: "location-orphan-a" },
+                adminHeaders
+              )
+            ).data.stock_location
+
+            await api.post(
+              `/admin/stock-locations/${stockLocationA.id}/sales-channels`,
+              { add: [salesChannel.id] },
+              adminHeaders
+            )
+
+            const shippingProfileA = (
+              await api.post(
+                `/admin/shipping-profiles`,
+                { name: "profile-orphan-a", type: "default" },
+                adminHeaders
+              )
+            ).data.shipping_profile
+
+            const fulfillmentSetA = (
+              await api.post(
+                `/admin/stock-locations/${stockLocationA.id}/fulfillment-sets?fields=*fulfillment_sets`,
+                { name: "fs-orphan-a", type: "test-type" },
+                adminHeaders
+              )
+            ).data.stock_location.fulfillment_sets[0]
+
+            const serviceZoneA = (
+              await api.post(
+                `/admin/fulfillment-sets/${fulfillmentSetA.id}/service-zones`,
+                {
+                  name: "sz-orphan-a",
+                  geo_zones: [{ type: "country", country_code: "US" }],
+                },
+                adminHeaders
+              )
+            ).data.fulfillment_set.service_zones[0]
+
+            await api.post(
+              `/admin/stock-locations/${stockLocationA.id}/fulfillment-providers`,
+              { add: ["manual_test-provider"] },
+              adminHeaders
+            )
+
+            const shippingOptionA = (
+              await api.post(
+                `/admin/shipping-options`,
+                {
+                  name: "shipping-option-orphan-a",
+                  service_zone_id: serviceZoneA.id,
+                  shipping_profile_id: shippingProfileA.id,
+                  provider_id: "manual_test-provider",
+                  price_type: "flat",
+                  type: {
+                    label: "Standard",
+                    description: "Standard",
+                    code: "standard",
+                  },
+                  prices: [{ currency_code: "usd", amount: 500 }],
+                  rules: [],
+                },
+                adminHeaders
+              )
+            ).data.shipping_option
+
+            const productA = (
+              await api.post(
+                `/admin/products`,
+                {
+                  title: "Product Orphan Profile A",
+                  status: ProductStatus.PUBLISHED,
+                  options: [{ title: "Size", values: ["One"] }],
+                  variants: [
+                    {
+                      title: "One",
+                      sku: "product-orphan-a-sku",
+                      options: { Size: "One" },
+                      manage_inventory: false,
+                      prices: [{ amount: 1000, currency_code: "usd" }],
+                    },
+                  ],
+                  shipping_profile_id: shippingProfileA.id,
+                },
+                adminHeaders
+              )
+            ).data.product
+
+            // --- Profile B setup ---
+            const stockLocationB = (
+              await api.post(
+                `/admin/stock-locations`,
+                { name: "location-orphan-b" },
+                adminHeaders
+              )
+            ).data.stock_location
+
+            await api.post(
+              `/admin/stock-locations/${stockLocationB.id}/sales-channels`,
+              { add: [salesChannel.id] },
+              adminHeaders
+            )
+
+            const shippingProfileB = (
+              await api.post(
+                `/admin/shipping-profiles`,
+                { name: "profile-orphan-b", type: "default" },
+                adminHeaders
+              )
+            ).data.shipping_profile
+
+            const fulfillmentSetB = (
+              await api.post(
+                `/admin/stock-locations/${stockLocationB.id}/fulfillment-sets?fields=*fulfillment_sets`,
+                { name: "fs-orphan-b", type: "test-type" },
+                adminHeaders
+              )
+            ).data.stock_location.fulfillment_sets[0]
+
+            const serviceZoneB = (
+              await api.post(
+                `/admin/fulfillment-sets/${fulfillmentSetB.id}/service-zones`,
+                {
+                  name: "sz-orphan-b",
+                  geo_zones: [{ type: "country", country_code: "US" }],
+                },
+                adminHeaders
+              )
+            ).data.fulfillment_set.service_zones[0]
+
+            await api.post(
+              `/admin/stock-locations/${stockLocationB.id}/fulfillment-providers`,
+              { add: ["manual_test-provider"] },
+              adminHeaders
+            )
+
+            const shippingOptionB = (
+              await api.post(
+                `/admin/shipping-options`,
+                {
+                  name: "shipping-option-orphan-b",
+                  service_zone_id: serviceZoneB.id,
+                  shipping_profile_id: shippingProfileB.id,
+                  provider_id: "manual_test-provider",
+                  price_type: "flat",
+                  type: {
+                    label: "Express",
+                    description: "Express",
+                    code: "express",
+                  },
+                  prices: [{ currency_code: "usd", amount: 1000 }],
+                  rules: [],
+                },
+                adminHeaders
+              )
+            ).data.shipping_option
+
+            const productB = (
+              await api.post(
+                `/admin/products`,
+                {
+                  title: "Product Orphan Profile B",
+                  status: ProductStatus.PUBLISHED,
+                  options: [{ title: "Size", values: ["One"] }],
+                  variants: [
+                    {
+                      title: "One",
+                      sku: "product-orphan-b-sku",
+                      options: { Size: "One" },
+                      manage_inventory: false,
+                      prices: [{ amount: 2000, currency_code: "usd" }],
+                    },
+                  ],
+                  shipping_profile_id: shippingProfileB.id,
+                },
+                adminHeaders
+              )
+            ).data.product
+
+            // --- Cart with items from both profiles ---
+            const cart = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  shipping_address: shippingAddressData,
+                  items: [
+                    { variant_id: productA.variants[0].id, quantity: 1 },
+                    { variant_id: productB.variants[0].id, quantity: 1 },
+                  ],
+                },
+                storeHeadersWithCustomer
+              )
+            ).data.cart
+
+            // Add shipping methods for both profiles
+            await api.post(
+              `/store/carts/${cart.id}/shipping-methods`,
+              [
+                { option_id: shippingOptionA.id },
+                { option_id: shippingOptionB.id },
+              ],
+              storeHeaders
+            )
+
+            // Confirm both shipping methods are present
+            const cartWithBothMethods = (
+              await api.get(`/store/carts/${cart.id}`, storeHeaders)
+            ).data.cart
+
+            expect(cartWithBothMethods.shipping_methods).toHaveLength(2)
+
+            // Find the line item for profile A's product
+            const lineItemA = cartWithBothMethods.items.find(
+              (item) => item.variant_id === productA.variants[0].id
+            )
+
+            // Remove the last item belonging to profile A (quantity 0 triggers removal)
+            await api.post(
+              `/store/carts/${cart.id}/line-items/${lineItemA.id}`,
+              { quantity: 0 },
+              storeHeaders
+            )
+
+            // Profile A's shipping method should have been auto-removed
+            const cartAfterRemoval = (
+              await api.get(`/store/carts/${cart.id}`, storeHeaders)
+            ).data.cart
+
+            expect(cartAfterRemoval.shipping_methods).toHaveLength(1)
+            expect(
+              cartAfterRemoval.shipping_methods[0].shipping_option_id
+            ).toEqual(shippingOptionB.id)
           })
         })
       })
@@ -6027,8 +6518,8 @@ medusaIntegrationTestRunner({
 
         it("should report only skipped codes when mixing valid and limit-exceeded promotions", async () => {
           const promotionModuleService = appContainer.resolve(Modules.PROMOTION)
-          const exceededPromotion = await promotionModuleService.createPromotions(
-            {
+          const exceededPromotion =
+            await promotionModuleService.createPromotions({
               code: "EXCEEDED_50OFF",
               type: PromotionType.STANDARD,
               status: PromotionStatus.ACTIVE,
@@ -6041,8 +6532,7 @@ medusaIntegrationTestRunner({
                 apply_to_quantity: 1,
                 currency_code: "usd",
               },
-            }
-          )
+            })
 
           cart = (
             await api.post(

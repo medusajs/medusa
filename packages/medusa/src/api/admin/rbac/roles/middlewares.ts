@@ -38,6 +38,22 @@ export const adminRbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["GET"],
+    matcher: "/admin/rbac/roles/assignable",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetRbacRolesParams,
+        QueryConfig.listTransformQueryConfig
+      ),
+    ],
+    policies: [
+      {
+        resource: Entities.rbac_role,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
+  {
+    method: ["GET"],
     matcher: "/admin/rbac/roles/:id",
     middlewares: [
       validateAndTransformQuery(

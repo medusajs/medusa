@@ -20,7 +20,7 @@ describe("Email password auth provider", () => {
         logger: console as any,
       },
       {
-        require_verification: true,
+        require_verification: ["customer", "user"],
       }
     )
   })
@@ -126,7 +126,7 @@ describe("Email password auth provider", () => {
     )
   })
 
-  it("marks new identities as unverified when verification is required", async () => {
+  it("marks new identities as unverified when actor_type is in require_verification", async () => {
     const authServiceSpies = {
       retrieve: jest.fn().mockImplementation(() => {
         throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
@@ -145,7 +145,10 @@ describe("Email password auth provider", () => {
     }
 
     const resp = await verifyingEmailpassService.register(
-      { body: { email: "test@admin.com", password: "test" } },
+      {
+        body: { email: "test@admin.com", password: "test" },
+        actor_type: "customer",
+      },
       authServiceSpies
     )
 
@@ -163,6 +166,277 @@ describe("Email password auth provider", () => {
         provider_metadata: {
           requires_verification: true,
         },
+      })
+    )
+  })
+
+  it("skips verification when actor_type is not in require_verification", async () => {
+    const authServiceSpies = {
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+      create: jest.fn().mockImplementation((data) => {
+        return {
+          provider_identities: [
+            {
+              entity_id: data.entity_id,
+              provider: "emailpass",
+              provider_metadata: data.provider_metadata,
+            },
+          ],
+        }
+      }),
+    }
+
+    // verifyingEmailpassService is configured with ["customer", "user"];
+    // "vendor" is not in the list, so verification should be skipped.
+    await verifyingEmailpassService.register(
+      {
+        body: { email: "vendor@admin.com", password: "test" },
+        actor_type: "vendor",
+      },
+      authServiceSpies
+    )
+
+    expect(authServiceSpies.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        provider_metadata: expect.not.objectContaining({
+          requires_verification: expect.anything(),
+        }),
+      })
+    )
+  })
+
+  it("requires verification for every actor type listed in require_verification", async () => {
+    const customService = new EmailPassAuthService(
+      {
+        logger: console as any,
+      },
+      {
+        require_verification: ["customer", "vendor", "service"],
+      }
+    )
+
+    const authServiceSpies = {
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+      create: jest.fn().mockImplementation((data) => {
+        return {
+          provider_identities: [
+            {
+              entity_id: data.entity_id,
+              provider: "emailpass",
+              provider_metadata: data.provider_metadata,
+            },
+          ],
+        }
+      }),
+    }
+
+    for (const actor_type of ["customer", "vendor", "service"]) {
+      const resp = await customService.register(
+        {
+          body: { email: `${actor_type}@admin.com`, password: "test" },
+          actor_type,
+        },
+        authServiceSpies
+      )
+
+      expect(resp).toEqual(
+        expect.objectContaining({
+          success: true,
+          authIdentity: expect.objectContaining({
+            provider_identities: [
+              expect.objectContaining({
+                entity_id: `${actor_type}@admin.com`,
+                provider_metadata: expect.objectContaining({
+                  requires_verification: true,
+                }),
+              }),
+            ],
+          }),
+        })
+      )
+    }
+  })
+
+  it("skips verification for actor types not listed in require_verification", async () => {
+    const customService = new EmailPassAuthService(
+      {
+        logger: console as any,
+      },
+      {
+        require_verification: ["customer"],
+      }
+    )
+
+    const authServiceSpies = {
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+      create: jest.fn().mockImplementation((data) => {
+        return {
+          provider_identities: [
+            {
+              entity_id: data.entity_id,
+              provider: "emailpass",
+              provider_metadata: data.provider_metadata,
+            },
+          ],
+        }
+      }),
+    }
+
+    for (const actor_type of ["user", "vendor", "anything-else"]) {
+      const resp = await customService.register(
+        {
+          body: { email: `${actor_type}@admin.com`, password: "test" },
+          actor_type,
+        },
+        authServiceSpies
+      )
+
+      expect(resp).toEqual(
+        expect.objectContaining({
+          success: true,
+          authIdentity: expect.objectContaining({
+            provider_identities: [
+              expect.objectContaining({
+                entity_id: `${actor_type}@admin.com`,
+                provider_metadata: expect.not.objectContaining({
+                  requires_verification: expect.anything(),
+                }),
+              }),
+            ],
+          }),
+        })
+      )
+    }
+
+    for (const call of authServiceSpies.create.mock.calls) {
+      expect(call[0].provider_metadata).not.toHaveProperty(
+        "requires_verification"
+      )
+    }
+  })
+
+  it("never requires verification when require_verification is an empty array", async () => {
+    const customService = new EmailPassAuthService(
+      {
+        logger: console as any,
+      },
+      {
+        require_verification: [],
+      }
+    )
+
+    const authServiceSpies = {
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+      create: jest.fn().mockImplementation((data) => {
+        return {
+          provider_identities: [
+            {
+              entity_id: data.entity_id,
+              provider: "emailpass",
+              provider_metadata: data.provider_metadata,
+            },
+          ],
+        }
+      }),
+    }
+
+    await customService.register(
+      {
+        body: { email: "customer@admin.com", password: "test" },
+        actor_type: "customer",
+      },
+      authServiceSpies
+    )
+
+    expect(authServiceSpies.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        provider_metadata: expect.not.objectContaining({
+          requires_verification: expect.anything(),
+        }),
+      })
+    )
+  })
+
+  it("never requires verification when require_verification is omitted", async () => {
+    const defaultService = new EmailPassAuthService(
+      {
+        logger: console as any,
+      },
+      {}
+    )
+
+    const authServiceSpies = {
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+      create: jest.fn().mockImplementation((data) => {
+        return {
+          provider_identities: [
+            {
+              entity_id: data.entity_id,
+              provider: "emailpass",
+              provider_metadata: data.provider_metadata,
+            },
+          ],
+        }
+      }),
+    }
+
+    for (const actor_type of ["customer", "user", "vendor"]) {
+      await defaultService.register(
+        {
+          body: { email: `${actor_type}@admin.com`, password: "test" },
+          actor_type,
+        },
+        authServiceSpies
+      )
+
+      expect(authServiceSpies.create).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          provider_metadata: expect.not.objectContaining({
+            requires_verification: expect.anything(),
+          }),
+        })
+      )
+    }
+  })
+
+  it("skips verification when actor_type is not provided", async () => {
+    const authServiceSpies = {
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+      create: jest.fn().mockImplementation((data) => {
+        return {
+          provider_identities: [
+            {
+              entity_id: data.entity_id,
+              provider: "emailpass",
+              provider_metadata: data.provider_metadata,
+            },
+          ],
+        }
+      }),
+    }
+
+    await verifyingEmailpassService.register(
+      { body: { email: "no-actor@admin.com", password: "test" } },
+      authServiceSpies
+    )
+
+    expect(authServiceSpies.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        provider_metadata: expect.not.objectContaining({
+          requires_verification: expect.anything(),
+        }),
       })
     )
   })

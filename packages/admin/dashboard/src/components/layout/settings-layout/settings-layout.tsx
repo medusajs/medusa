@@ -10,6 +10,7 @@ import { INavItem, NavItem } from "../nav-item"
 import { Shell } from "../shell"
 import { UserMenu } from "../user-menu"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { usePermissions } from "../../../providers/permissions-provider"
 
 export const SettingsLayout = () => {
   return (
@@ -21,7 +22,11 @@ export const SettingsLayout = () => {
 
 const useSettingRoutes = (): INavItem[] => {
   const isTranslationsEnabled = useFeatureFlag("translation")
+  const { hasPermission } = usePermissions()
   const { t } = useTranslation()
+
+  const canReadRoles = hasPermission("rbac_role:read")
+  const canReadPolicies = hasPermission("rbac_policy:read")
 
   return useMemo(
     () => [
@@ -33,6 +38,22 @@ const useSettingRoutes = (): INavItem[] => {
         label: t("users.domain"),
         to: "/settings/users",
       },
+      ...(canReadRoles
+        ? [
+            {
+              label: t("roles.domain"),
+              to: "/settings/roles",
+            },
+          ]
+        : []),
+      ...(canReadPolicies
+        ? [
+            {
+              label: t("policies.domain"),
+              to: "/settings/policies",
+            },
+          ]
+        : []),
       {
         label: t("regions.domain"),
         to: "/settings/regions",
@@ -74,7 +95,7 @@ const useSettingRoutes = (): INavItem[] => {
           ]
         : []),
     ],
-    [t, isTranslationsEnabled]
+    [t, isTranslationsEnabled, canReadRoles, canReadPolicies]
   )
 }
 

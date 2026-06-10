@@ -1,4 +1,5 @@
 export { AuthIdentity } from "./auth-identity"
+export { AuthPasswordResetToken } from "./auth-password-reset-token"
 export { AuthVerificationToken } from "./auth-verification-token"
 export { AuthMfaFactor } from "./auth-mfa-factor"
 export { AuthMfaRecoveryCode } from "./auth-mfa-recovery-code"

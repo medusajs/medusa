@@ -60,7 +60,6 @@
     "@types/node-emoji": "^1.8.2",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.2.25",
-    "@types/uuid": "^9.0.1",
     "@types/validator": "^13.7.17",
     "@types/wait-on": "^5.3.1",
     "@types/yargs": "^15.0.15",
@@ -177,6 +176,7 @@
   "resolutions": {
     "@redocly/cli/react": "^17.0.1",
     "@redocly/cli/react-dom": "^17.0.1",
+    "lodash": "^4.18.1",
     "pg": "8.16.3",
     "@changesets/get-github-info@^0.5.2": "patch:@changesets/get-github-info@npm:^0.5.2#.yarn/patches/changesets-github-info.patch",
     "@types/react": "^18.3.2",

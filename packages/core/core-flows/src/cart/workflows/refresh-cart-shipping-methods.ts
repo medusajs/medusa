@@ -94,6 +94,8 @@ export const refreshCartShippingMethodsWorkflow = createWorkflow(
           "shipping_methods.shipping_option_id",
           "shipping_methods.data",
           "total",
+          "items.requires_shipping",
+          "items.variant.product.shipping_profile.id",
         ],
         filters: { id: cartId },
         options: {
@@ -153,7 +155,18 @@ export const refreshCartShippingMethodsWorkflow = createWorkflow(
       const shippingMethodsData = transform(
         { cart, shippingOptions },
         ({ cart, shippingOptions }) => {
-          const { shipping_methods: shippingMethods = [] } = cart
+          const { shipping_methods: shippingMethods = [], items = [] } = cart
+
+          // Collect profile IDs still required by remaining cart items so that
+          // shipping methods for profiles with no matching items can be dropped.
+          // Avoid clearing shipping methods for single-method carts.
+          const shouldCleanupOrphanProfiles = shippingMethods.length > 1
+          const requiredProfileIds = new Set(
+            (items as any[])
+              .filter((item) => item.requires_shipping)
+              .map((item) => item.variant?.product?.shipping_profile?.id)
+              .filter(Boolean)
+          )
 
           const validShippingMethods = shippingMethods.filter(
             (shippingMethod) => {
@@ -169,11 +182,24 @@ export const refreshCartShippingMethodsWorkflow = createWorkflow(
 
               // The shipping method is only valid if both the shipping option and the price is found
               // for the context of the cart. The invalid options will lead to a deleted shipping method
-              if (isPresent(shippingOption) && isDefined(shippingOptionPrice)) {
-                return true
+              if (
+                !isPresent(shippingOption) ||
+                !isDefined(shippingOptionPrice)
+              ) {
+                return false
               }
 
-              return false
+              // Remove shipping methods whose profile is no longer required by any remaining item.
+              const profileId = shippingOption.shipping_profile_id
+              if (
+                shouldCleanupOrphanProfiles &&
+                profileId &&
+                !requiredProfileIds.has(profileId)
+              ) {
+                return false
+              }
+
+              return true
             }
           )
 

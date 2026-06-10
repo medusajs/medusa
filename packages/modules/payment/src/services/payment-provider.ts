@@ -12,6 +12,8 @@ import {
   DAL,
   DeleteAccountHolderInput,
   DeleteAccountHolderOutput,
+  DeletePaymentMethodInput,
+  DeletePaymentMethodOutput,
   DeletePaymentInput,
   DeletePaymentOutput,
   GetPaymentStatusInput,
@@ -230,6 +232,21 @@ Please make sure that the provider is registered in the container and it is conf
     }
 
     return await provider.savePaymentMethod(input)
+  }
+
+  async deletePaymentMethod(
+    providerId: string,
+    input: DeletePaymentMethodInput
+  ): Promise<DeletePaymentMethodOutput> {
+    const provider = this.retrieveProvider(providerId)
+    if (!provider.deletePaymentMethod) {
+      this.#logger.warn(
+        `Provider ${providerId} does not support deleting payment methods`
+      )
+      return {}
+    }
+
+    return await provider.deletePaymentMethod(input)
   }
 
   async getWebhookActionAndData(
