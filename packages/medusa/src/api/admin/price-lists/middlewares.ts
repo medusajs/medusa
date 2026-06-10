@@ -143,8 +143,8 @@ export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
     ],
     policies: [
       {
-        resource: Entities.price,
-        operation: PolicyOperation.ALL,
+        resource: Entities.price_list,
+        operation: PolicyOperation.update,
       },
     ],
   },
