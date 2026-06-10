@@ -623,9 +623,9 @@ medusaIntegrationTestRunner({
             )
           ).data.cart
 
-          // Each POST replaces the cart's shipping methods with a single
-          // method for the chosen option. Under the fix, the calculated
-          // provider sees only the items for that option's profile/location:
+          // Methods for different shipping profiles stack on the cart.
+          // Under the fix, each calculated provider call sees only the
+          // items for that option's profile/location:
           //   optionA: 2 * 1.5 = 3     optionB: 1 * 1.5 = 1.5
           // Under the bug, each provider call receives the full cart
           // (3 units total) and both amounts collapse to 4.5.
@@ -634,6 +634,7 @@ medusaIntegrationTestRunner({
             { option_id: shippingOptionCalculated.id, data: {} },
             storeHeaders
           )
+          expect(respA.data.cart.shipping_methods).toHaveLength(1)
           const methodA = respA.data.cart.shipping_methods.find(
             (m) => m.shipping_option_id === shippingOptionCalculated.id
           )
@@ -645,11 +646,67 @@ medusaIntegrationTestRunner({
             { option_id: shippingOptionCalculatedB.id, data: {} },
             storeHeaders
           )
+          expect(respB.data.cart.shipping_methods).toHaveLength(2)
           const methodB = respB.data.cart.shipping_methods.find(
             (m) => m.shipping_option_id === shippingOptionCalculatedB.id
           )
           expect(methodB).toBeDefined()
           expect(methodB.amount).toBe(1.5)
+
+          // Method A stacks alongside method B and keeps its profile-scoped
+          // price after the refresh that follows adding method B. Under the
+          // bug the refresh reprices it against the full cart, turning it
+          // into 4.5.
+          const methodAAfterB = respB.data.cart.shipping_methods.find(
+            (m) => m.shipping_option_id === shippingOptionCalculated.id
+          )
+          expect(methodAAfterB).toBeDefined()
+          expect(methodAAfterB.amount).toBe(3)
+          expect(respB.data.cart.shipping_total).toBe(4.5)
+        })
+
+        it("POST /store/carts/:id/shipping-methods prices each option from its own profile's items when added in one call", async () => {
+          cart = (
+            await api.post(
+              `/store/carts`,
+              {
+                region_id: region.id,
+                sales_channel_id: salesChannel.id,
+                currency_code: "usd",
+                email: "test@admin.com",
+                shipping_address: { country_code: "us" },
+                items: [
+                  { variant_id: product.variants[0].id, quantity: 2 },
+                  { variant_id: productB.variants[0].id, quantity: 1 },
+                ],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const response = await api.post(
+            `/store/carts/${cart.id}/shipping-methods?fields=*shipping_methods`,
+            [
+              { option_id: shippingOptionCalculated.id, data: {} },
+              { option_id: shippingOptionCalculatedB.id, data: {} },
+            ],
+            storeHeaders
+          )
+
+          expect(response.data.cart.shipping_methods).toHaveLength(2)
+          expect(response.data.cart.shipping_methods).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                shipping_option_id: shippingOptionCalculated.id,
+                amount: 3,
+              }),
+              expect.objectContaining({
+                shipping_option_id: shippingOptionCalculatedB.id,
+                amount: 1.5,
+              }),
+            ])
+          )
+          expect(response.data.cart.shipping_total).toBe(4.5)
         })
 
         it("POST /store/shipping-options/:id/calculate prices each option from only its own location's items", async () => {
