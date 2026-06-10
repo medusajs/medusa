@@ -8,7 +8,12 @@ import {
   SqlEntityManager,
 } from "@medusajs/framework/mikro-orm/postgresql"
 import { createDatabase, dropDatabase } from "pg-god"
-import { execOrTimeout } from "./medusa-test-runner-utils"
+import {
+  createPostgresDatabaseTemplate,
+  dropPostgresDatabaseTemplate,
+  execOrTimeout,
+  restorePostgresDatabaseFromTemplate,
+} from "./medusa-test-runner-utils"
 
 const DB_HOST = process.env.DB_HOST ?? "localhost"
 const DB_USERNAME = process.env.DB_USERNAME ?? ""
@@ -20,6 +25,30 @@ const pgGodCredentials = {
   password: DB_PASSWORD,
   host: DB_HOST,
   port: parseInt(DB_PORT),
+}
+
+function formatError(error: unknown) {
+  if (error instanceof Error) {
+    const pgError = error as Error & {
+      code?: string
+      detail?: string
+      hint?: string
+      where?: string
+    }
+
+    return [
+      pgError.message,
+      pgError.code && `code: ${pgError.code}`,
+      pgError.detail && `detail: ${pgError.detail}`,
+      pgError.hint && `hint: ${pgError.hint}`,
+      pgError.where && `where: ${pgError.where}`,
+      pgError.stack,
+    ]
+      .filter(Boolean)
+      .join("\n")
+  }
+
+  return String(error)
 }
 
 export function getDatabaseURL(dbName?: string): string {
@@ -215,6 +244,47 @@ export const dbTestUtilFactory = (): any => ({
       )
     } catch (error) {
       logger.error("Error creating database:", error)
+      throw error
+    }
+  },
+
+  snapshot: async function ({
+    databaseName,
+    templateName,
+  }: {
+    databaseName: string
+    templateName: string
+  }) {
+    try {
+      await createPostgresDatabaseTemplate({ databaseName, templateName })
+    } catch (error) {
+      logger.error(`Error creating database template:\n${formatError(error)}`)
+      throw error
+    }
+  },
+
+  restore: async function ({
+    databaseName,
+    templateName,
+  }: {
+    databaseName: string
+    templateName: string
+  }) {
+    try {
+      await restorePostgresDatabaseFromTemplate({ databaseName, templateName })
+    } catch (error) {
+      logger.error(
+        `Error restoring database from template:\n${formatError(error)}`
+      )
+      throw error
+    }
+  },
+
+  dropTemplate: async function (templateName: string) {
+    try {
+      await dropPostgresDatabaseTemplate(templateName)
+    } catch (error) {
+      logger.error(`Error dropping database template:\n${formatError(error)}`)
       throw error
     }
   },

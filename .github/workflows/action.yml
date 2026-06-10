@@ -129,7 +129,17 @@ jobs:
         env:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
+          # Test databases are disposable, so trade durability for speed.
+          PGDATA: /var/lib/postgresql/data
+          POSTGRES_INITDB_ARGS: >-
+            --set fsync=off
+            --set synchronous_commit=off
+            --set full_page_writes=off
+            --set wal_level=minimal
+            --set max_wal_senders=0
+            --set autovacuum=off
         options: >-
+          --tmpfs /var/lib/postgresql/data:rw
           --health-cmd pg_isready
           --health-interval 1s
           --health-timeout 10s
@@ -207,7 +217,17 @@ jobs:
         env:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
+          # Test databases are disposable, so trade durability for speed.
+          PGDATA: /var/lib/postgresql/data
+          POSTGRES_INITDB_ARGS: >-
+            --set fsync=off
+            --set synchronous_commit=off
+            --set full_page_writes=off
+            --set wal_level=minimal
+            --set max_wal_senders=0
+            --set autovacuum=off
         options: >-
+          --tmpfs /var/lib/postgresql/data:rw
           --health-cmd pg_isready
           --health-interval 1s
           --health-timeout 10s
@@ -285,7 +305,17 @@ jobs:
         env:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
+          # Test databases are disposable, so trade durability for speed.
+          PGDATA: /var/lib/postgresql/data
+          POSTGRES_INITDB_ARGS: >-
+            --set fsync=off
+            --set synchronous_commit=off
+            --set full_page_writes=off
+            --set wal_level=minimal
+            --set max_wal_senders=0
+            --set autovacuum=off
         options: >-
+          --tmpfs /var/lib/postgresql/data:rw
           --health-cmd pg_isready
           --health-interval 1s
           --health-timeout 10s
