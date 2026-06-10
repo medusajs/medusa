@@ -1,9 +1,10 @@
 import type { TSESTree } from "@typescript-eslint/utils"
 import { AST_NODE_TYPES } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
-
-const WORKFLOWS_SDK_SOURCE = "@medusajs/framework/workflows-sdk"
-const CREATE_WORKFLOW = "createWorkflow"
+import {
+  createWorkflowSdkBindings,
+  trackWorkflowSdkImports,
+} from "../../util/workflow-scope"
 
 type MessageIds = "asyncWorkflowConstructor"
 
@@ -24,26 +25,17 @@ export const rule = createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const createWorkflowLocalNames = new Set<string>()
+    const bindings = createWorkflowSdkBindings()
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== WORKFLOWS_SDK_SOURCE) return
-        for (const specifier of node.specifiers) {
-          if (
-            specifier.type === AST_NODE_TYPES.ImportSpecifier &&
-            specifier.imported.type === AST_NODE_TYPES.Identifier &&
-            specifier.imported.name === CREATE_WORKFLOW
-          ) {
-            createWorkflowLocalNames.add(specifier.local.name)
-          }
-        }
+        trackWorkflowSdkImports(node, bindings)
       },
 
       CallExpression(node) {
         if (
           node.callee.type !== AST_NODE_TYPES.Identifier ||
-          !createWorkflowLocalNames.has(node.callee.name)
+          !bindings.createWorkflow.has(node.callee.name)
         ) {
           return
         }
