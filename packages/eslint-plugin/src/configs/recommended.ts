@@ -30,6 +30,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("no-async-workflow-constructor")]: "error",
         [ruleId("no-conditional-expressions-in-workflow")]: "error",
         [ruleId("no-console-log-in-workflow")]: "warn",
+        [ruleId("no-direct-variable-mutation-in-workflow")]: "error",
         [ruleId("no-if-in-workflow-constructor")]: "error",
         [ruleId("no-loops-in-workflow")]: "error",
         [ruleId("no-spread-in-workflow")]: "error",
