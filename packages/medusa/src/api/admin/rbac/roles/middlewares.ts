@@ -78,6 +78,12 @@ export const adminRbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+    policies: [
+      {
+        resource: Entities.rbac_role,
+        operation: PolicyOperation.create,
+      },
+    ],
   },
   {
     method: ["POST"],
