@@ -78,8 +78,13 @@ medusaIntegrationTestRunner({
           }),
         ])
 
+        const customDisplayId = "custom-display-id-1234"
+        await dbConnection("order")
+          .update({ custom_display_id: customDisplayId })
+          .where({ id: order.id })
+
         response = await api.get(
-          `/admin/orders?q=${order.custom_display_id}`,
+          `/admin/orders?q=${customDisplayId}`,
           adminHeaders
         )
 
