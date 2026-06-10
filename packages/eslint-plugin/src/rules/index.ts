@@ -3,10 +3,12 @@ import { rule as noAsyncWorkflowConstructor } from "./no-async-workflow-construc
 import { rule as noConditionalExpressionsInWorkflow } from "./no-conditional-expressions-in-workflow"
 import { rule as noConsoleLogInWorkflow } from "./no-console-log-in-workflow"
 import { rule as noIfInWorkflowConstructor } from "./no-if-in-workflow-constructor"
+import { rule as noTryCatchInWorkflow } from "./no-try-catch-in-workflow"
 
 export const rules = {
   "no-async-workflow-constructor": noAsyncWorkflowConstructor,
   "no-conditional-expressions-in-workflow": noConditionalExpressionsInWorkflow,
   "no-console-log-in-workflow": noConsoleLogInWorkflow,
   "no-if-in-workflow-constructor": noIfInWorkflowConstructor,
+  "no-try-catch-in-workflow": noTryCatchInWorkflow,
 } as unknown as NonNullable<ESLint.Plugin["rules"]>
