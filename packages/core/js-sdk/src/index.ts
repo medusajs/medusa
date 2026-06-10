@@ -4,6 +4,9 @@ import { Client } from "./client.js"
 import { Store } from "./store/index.js"
 import { Config } from "./types.js"
 
+/**
+ * The main Medusa SDK class providing access to admin, store, and auth functionality.
+ */
 class Medusa {
   public client: Client
 
@@ -19,10 +22,20 @@ class Medusa {
     this.auth = new Auth(this.client, config)
   }
 
+  /**
+   * This method sets the locale for the SDK client.
+   *
+   * @param locale - The locale to set.
+   */
   setLocale(locale: string) {
     this.client.setLocale(locale)
   }
 
+  /**
+   * This method retrieves the current locale of the SDK client.
+   *
+   * @returns The current locale.
+   */
   getLocale() {
     return this.client.locale
   }

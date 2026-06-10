@@ -252,6 +252,12 @@ type AuthProviderResponse = {
   verification?: AuthTypes.AuthVerification
 }
 
+/**
+ * The SDK's authentication methods. This class provides methods for authentication operations
+ * including login, registration, MFA management, and verification.
+ *
+ * @tags auth
+ */
 export class Auth {
   private client: Client
   private config: Config
