@@ -13,6 +13,9 @@ const defaultStoreCustomersFields = [
   "*addresses",
 ]
 
+/**
+ * Query configuration for retrieving a single customer in store endpoints.
+ */
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreCustomersFields,
   allowed: [
@@ -22,6 +25,9 @@ export const retrieveTransformQueryConfig = {
   isList: false,
 }
 
+/**
+ * Default fields returned when retrieving customer addresses in store endpoints.
+ */
 export const defaultStoreCustomerAddressFields = [
   "id",
   "address_name",
@@ -43,11 +49,17 @@ export const defaultStoreCustomerAddressFields = [
   "updated_at",
 ]
 
+/**
+ * Query configuration for retrieving a single customer address in store endpoints.
+ */
 export const retrieveAddressTransformQueryConfig = {
   defaults: defaultStoreCustomerAddressFields,
   isList: false,
 }
 
+/**
+ * Query configuration for listing customer addresses in store endpoints.
+ */
 export const listAddressesTransformQueryConfig = {
   ...retrieveAddressTransformQueryConfig,
   isList: true,
