@@ -29,6 +29,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       rules: {
         [ruleId("no-async-workflow-constructor")]: "error",
         [ruleId("no-conditional-expressions-in-workflow")]: "error",
+        [ruleId("no-console-log-in-workflow")]: "warn",
         [ruleId("no-if-in-workflow-constructor")]: "error",
       },
     },
