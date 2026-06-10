@@ -39,10 +39,6 @@ const HomepageStartPrompt = () => {
               text: "Learn more",
               link: "/start",
             },
-            {
-              text: "Manual Setup",
-              link: "/learn/installation",
-            },
           ]}
           className="!justify-start"
         />
@@ -51,7 +47,7 @@ const HomepageStartPrompt = () => {
         </h2>
         <p className="txt-large text-medusa-fg-base">
           Use this prompt with any AI agent to install and deploy a
-          Medusa-powered ecommerce store, or <a href="/learn/installation" className="text-medusa-fg-interactive hover:underline">follow the manual installation guide</a>.
+          Medusa-powered ecommerce store.
         </p>
       </div>
       <div

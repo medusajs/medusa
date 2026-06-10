@@ -26,17 +26,6 @@ curl -X GET https://localhost:9000/store/products \
 
 Where `your-publishable-api-key` is your publishable API key.
 
-### Multiple Publishable API Keys
-
-If you have multiple publishable API keys, Medusa automatically uses the first one created when no specific key is provided in the request header. If you need to use a different key, you must explicitly specify it in the `x-publishable-api-key` header.
-
-To override the automatic selection:
-
-```bash
-curl -X GET https://localhost:9000/store/products \
-  -H "x-publishable-api-key: pk_your_specific_key"
-```
-
 ---
 
 ## Additional Resources

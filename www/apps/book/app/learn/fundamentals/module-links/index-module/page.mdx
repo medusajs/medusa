@@ -165,29 +165,6 @@ export const GET = async (
 
 This will return all products that are linked to the sales channel with the ID `sc_123`.
 
-### Sales Channel Filtering for Multi-Vendor Setups
-
-For multi-vendor marketplaces where you need to filter products based on sales channels, the Index Module provides the most efficient solution. Unlike Query Graph which has limitations with cross-module filtering, the Index Module enables complex filtering across linked data models.
-
-For example, to filter vendor products by multiple sales channels:
-
-```ts title="src/api/custom/vendor-products/route.ts"
-const { data: products } = await query.index({
-  entity: "product",
-  fields: ["*", "sales_channels.*", "vendor.*"],
-  filters: {
-    sales_channels: {
-      id: ["sc_vendor_1", "sc_vendor_2"],
-    },
-    vendor: {
-      id: "vendor_123",
-    },
-  },
-})
-```
-
-This query efficiently filters products by both vendor and sales channels in a single operation.
-
 The `index` method accepts an object with the same properties as the `graph` method's parameter:
 
 - `entity`: The data model's name, as specified in the first parameter of the `model.define` method used for the data model's definition.
@@ -866,6 +843,29 @@ export const retrieveBrandsWorkflow = createWorkflow(
 ```
 
 This will retrieve all brands that are linked to at least one product.
+
+### Sales Channel Filtering for Multi-Vendor Setups
+
+For multi-vendor marketplaces where you need to filter products based on sales channels, the Index Module provides the most efficient solution. Unlike Query which has limitations with cross-module filtering, the Index Module enables complex filtering across linked data models.
+
+For example, to filter vendor products by multiple sales channels:
+
+```ts title="src/api/custom/vendor-products/route.ts"
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "sales_channels.*", "vendor.*"],
+  filters: {
+    sales_channels: {
+      id: ["sc_vendor_1", "sc_vendor_2"],
+    },
+    vendor: {
+      id: "vendor_123",
+    },
+  },
+})
+```
+
+This query efficiently filters products by both vendor and sales channels in a single operation.
 
 ### Retrieve Localized Data
 

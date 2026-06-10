@@ -64,21 +64,6 @@ Consider using `yarn` or `pnpm` as your package manager for quicker installation
 
 </Note>
 
-<Note title="Bun Compatibility">
-
-If you're using Bun and encounter interactive prompt errors during installation (such as `EPERM: operation not permitted, read`), use `npx` to run the installation initially, then switch to Bun for subsequent commands:
-
-```bash
-npx create-medusa-app@latest my-medusa-store
-cd my-medusa-store
-# Now you can use bun for other commands
-bun install
-```
-
-This avoids issues with Bun's handling of interactive prompts during the creation process.
-
-</Note>
-
 <CodeTabs group="npm2yarn">
   <CodeTab label="yarn" value="yarn">
 
