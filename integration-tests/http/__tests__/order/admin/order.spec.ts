@@ -78,6 +78,18 @@ medusaIntegrationTestRunner({
           }),
         ])
 
+        response = await api.get(
+          `/admin/orders?q=${order.custom_display_id}`,
+          adminHeaders
+        )
+
+        expect(response.data.orders).toHaveLength(1)
+        expect(response.data.orders).toEqual([
+          expect.objectContaining({
+            id: order.id,
+          }),
+        ])
+
         response = await api.get(`/admin/orders?q=2345`, adminHeaders)
 
         expect(response.data.orders).toHaveLength(0)
