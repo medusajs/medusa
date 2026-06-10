@@ -75,6 +75,10 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.capture,
         operation: PolicyOperation.create,
       },
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -91,6 +95,10 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
       {
         resource: Entities.refund,
         operation: PolicyOperation.create,
+      },
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
       },
     ],
   },

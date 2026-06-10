@@ -38,6 +38,10 @@ export const adminPaymentCollectionsMiddlewares: MiddlewareRoute[] = [
         resource: Entities.payment_collection,
         operation: PolicyOperation.create,
       },
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -53,6 +57,10 @@ export const adminPaymentCollectionsMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.payment_collection,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.order,
         operation: PolicyOperation.update,
       },
     ],
@@ -72,6 +80,10 @@ export const adminPaymentCollectionsMiddlewares: MiddlewareRoute[] = [
         resource: Entities.payment_collection,
         operation: PolicyOperation.update,
       },
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -82,6 +94,10 @@ export const adminPaymentCollectionsMiddlewares: MiddlewareRoute[] = [
       {
         resource: Entities.payment_collection,
         operation: PolicyOperation.delete,
+      },
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
       },
     ],
   },

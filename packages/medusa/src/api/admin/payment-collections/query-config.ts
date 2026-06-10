@@ -1,5 +1,6 @@
 export enum Entities {
   payment_collection = "payment_collection",
+  order = "order",
 }
 
 export const defaultPaymentCollectionFields = [
