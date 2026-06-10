@@ -81,7 +81,7 @@ const ComboboxImpl = <T extends Value = string>(
   ref: ForwardedRef<HTMLInputElement>
 ) => {
   const [open, setOpen] = useState(false)
-  const [isPending, startTransition] = useTransition()
+  const [isPending] = useTransition()
   const { t } = useTranslation()
 
   const comboboxRef = useRef<HTMLInputElement>(null)
@@ -234,7 +234,7 @@ const ComboboxImpl = <T extends Value = string>(
       setSelectedValue={(value) => handleValueChange(value as T)}
       value={uncontrolledSearchValue}
       setValue={(query) => {
-        startTransition(() => handleSearchChange(query))
+        handleSearchChange(query)
       }}
     >
       <div

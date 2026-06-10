@@ -59,7 +59,7 @@ export const ProductOrganizationForm = ({
   })
 
   const tags = useComboboxData({
-    queryKey: ["product_tags"],
+    queryKey: ["tags"],
     queryFn: (params) => sdk.admin.productTag.list(params),
     getOptions: (data) =>
       data.product_tags.map((tag) => ({
@@ -196,6 +196,8 @@ export const ProductOrganizationForm = ({
                         options={tags.options}
                         onSearchValueChange={tags.onSearchValueChange}
                         searchValue={tags.searchValue}
+                        fetchNextPage={tags.fetchNextPage}
+                        isFetchingNextPage={tags.isFetchingNextPage}
                       />
                     </Form.Control>
                     <Form.ErrorMessage />
