@@ -105,8 +105,12 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [validateAndTransformBody(AdminBatchInventoryItemLevels)],
     policies: [
       {
-        resource: Entities.inventory_item,
-        operation: PolicyOperation.ALL,
+        resource: Entities.inventory_level,
+        operation: [
+          PolicyOperation.create,
+          PolicyOperation.update,
+          PolicyOperation.delete,
+        ],
       },
     ],
   },
@@ -170,7 +174,11 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.inventory_level,
-        operation: PolicyOperation.ALL,
+        operation: [
+          PolicyOperation.create,
+          PolicyOperation.update,
+          PolicyOperation.delete,
+        ],
       },
     ],
   },

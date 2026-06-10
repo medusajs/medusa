@@ -1178,7 +1178,9 @@ export function getRouteMap({
                       handle: {
                         permissions: [
                           "inventory_level:read",
+                          "inventory_level:create",
                           "inventory_level:update",
+                          "inventory_level:delete",
                         ],
                       },
                     },
