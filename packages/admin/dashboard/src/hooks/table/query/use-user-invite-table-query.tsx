@@ -3,11 +3,13 @@ import { useQueryParams } from "../../use-query-params"
 type UseUserInviteTableQueryProps = {
   prefix?: string
   pageSize?: number
+  fields?: string
 }
 
 export const useUserInviteTableQuery = ({
   prefix,
   pageSize = 20,
+  fields,
 }: UseUserInviteTableQueryProps) => {
   const queryObject = useQueryParams(
     ["offset", "q", "order", "created_at", "updated_at"],
@@ -23,6 +25,7 @@ export const useUserInviteTableQuery = ({
     created_at: created_at ? JSON.parse(created_at) : undefined,
     updated_at: updated_at ? JSON.parse(updated_at) : undefined,
     q,
+    fields,
   }
 
   return {

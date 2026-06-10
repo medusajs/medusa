@@ -15311,7 +15311,7 @@ type Input = {
   title: string
 }
 
-const createPostStep = createStep(
+export const createPostStep = createStep(
   "create-post", 
   async (input: Input, { container }) => {
     const blogModuleService: BlogModuleService = container.resolve(
@@ -27543,6 +27543,48 @@ For example, you can ask:
 2. "How to update Medusa to the latest version?"
 3. "Explain the Medusa workflow system."
 4. "Integrate Medusa with X provider. Refer to the Medusa documentation for information."
+
+***
+
+## MCP Server Prompts
+
+The MCP server provides prompts with step-by-step instructions for common tasks. These are useful for your AI agent to learn how to perform specific tasks and what information it should look for in the documentation.
+
+The MCP server provides prompts for the following tasks:
+
+When integrating third-party providers, consider adding the [Context7 MCP server](https://github.com/upstash/context7#installation). It retrieves the latest information from the provider's documentation, which is essential for successful integration.
+
+1. Integrate a third-party payment provider with Medusa. For example:
+
+```bash title="Example prompt"
+Integrate PayPal as a payment provider in my Medusa store.
+```
+
+2. Integrate a third-party fulfillment provider with Medusa. For example:
+
+```bash title="Example prompt"
+Integrate ShipStation as a fulfillment provider in my Medusa store.
+```
+
+3. Extend the Product Module with custom properties and features. For example:
+
+```bash title="Example prompt"
+Implement a brand feature to allow merchants to associate products with brands
+```
+
+***
+
+## Submit Feedback with the MCP Server
+
+If you run into any issues or have suggestions to improve Medusa, you can ask your AI agent to submit feedback. It will use the MCP server to submit feedback to our team.
+
+For example, you can ask:
+
+```bash title="Example prompt"
+Submit feedback that the documentation on how to create a custom payment provider is outdated and needs to be updated.
+```
+
+You can submit feedback about the documentation, the developer experience, the MCP server, or any other aspect of Medusa. Your feedback will help us improve Medusa for everyone.
 
 
 # Build with AI Assistants and LLMs
@@ -53602,10 +53644,60 @@ This documentation page includes the list of all events emitted by [Medusa's wor
 
 |Event|Description|
 |---|---|
+|auth.mfa\_enabled|Emitted when an MFA factor is enabled for an auth identity.|
+|auth.mfa\_disabled|Emitted when an MFA factor is disabled for an auth identity.|
+|auth.mfa\_recovery\_codes\_generated|Emitted when recovery codes are generated for an auth identity.|
 |auth.password\_reset|Emitted when a reset password token is generated. You can listen to this event
 to send a reset password email to the user or customer, for example.|
 |auth.verification\_requested|Emitted when a verification token is generated. You can listen to
 this event and decide how to deliver the token to the user or customer.|
+
+### auth.mfa\_enabled&#xA;
+
+Emitted when an MFA factor is enabled for an auth identity.
+
+#### Payload
+
+```ts
+{
+  auth_identity_id, // The ID of the auth identity for which the MFA factor was enabled.
+  mfa_id, // The ID of the MFA factor that was enabled.
+  provider, // The provider of the MFA factor that was enabled.
+}
+```
+
+***
+
+### auth.mfa\_disabled&#xA;
+
+Emitted when an MFA factor is disabled for an auth identity.
+
+#### Payload
+
+```ts
+{
+  auth_identity_id, // The ID of the auth identity for which the MFA factor was disabled.
+  mfa_id, // The ID of the MFA factor that was disabled.
+  provider, // The provider of the MFA factor that was disabled.
+}
+```
+
+***
+
+### auth.mfa\_recovery\_codes\_generated&#xA;
+
+Emitted when recovery codes are generated for an auth identity.
+
+#### Payload
+
+```ts
+{
+  auth_identity_id, // The ID of the auth identity for which the recovery codes were generated.
+  count, // (number) The number of recovery codes that were generated.
+}
+```
+
+***
 
 ### auth.password\_reset
 
@@ -53977,79 +54069,6 @@ The following workflows emit this event when they're executed. These workflows a
 
 ***
 
-## Order Edit Events
-
-### Summary
-
-|Event|Description|
-|---|---|
-|order-edit.requested|Emitted when an order edit is requested.|
-|order-edit.confirmed|Emitted when an order edit request is confirmed.|
-|order-edit.canceled|Emitted when an order edit request is canceled.|
-
-### order-edit.requested&#xA;
-
-Emitted when an order edit is requested.
-
-#### Payload
-
-```ts
-{
-  order_id, // The ID of the order
-  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [requestOrderEditRequestWorkflow](https://docs.medusajs.com/references/medusa-workflows/requestOrderEditRequestWorkflow/index.html.md)
-
-***
-
-### order-edit.confirmed&#xA;
-
-Emitted when an order edit request is confirmed.
-
-#### Payload
-
-```ts
-{
-  order_id, // The ID of the order
-  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [confirmOrderEditRequestWorkflow](https://docs.medusajs.com/references/medusa-workflows/confirmOrderEditRequestWorkflow/index.html.md)
-
-***
-
-### order-edit.canceled&#xA;
-
-Emitted when an order edit request is canceled.
-
-#### Payload
-
-```ts
-{
-  order_id, // The ID of the order
-  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [cancelBeginOrderEditWorkflow](https://docs.medusajs.com/references/medusa-workflows/cancelBeginOrderEditWorkflow/index.html.md)
-
-***
-
 ## Order Events
 
 ### Summary
@@ -54328,6 +54347,79 @@ The following workflows emit this event when they're executed. These workflows a
 
 ***
 
+## Order Edit Events
+
+### Summary
+
+|Event|Description|
+|---|---|
+|order-edit.requested|Emitted when an order edit is requested.|
+|order-edit.confirmed|Emitted when an order edit request is confirmed.|
+|order-edit.canceled|Emitted when an order edit request is canceled.|
+
+### order-edit.requested&#xA;
+
+Emitted when an order edit is requested.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [requestOrderEditRequestWorkflow](https://docs.medusajs.com/references/medusa-workflows/requestOrderEditRequestWorkflow/index.html.md)
+
+***
+
+### order-edit.confirmed&#xA;
+
+Emitted when an order edit request is confirmed.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [confirmOrderEditRequestWorkflow](https://docs.medusajs.com/references/medusa-workflows/confirmOrderEditRequestWorkflow/index.html.md)
+
+***
+
+### order-edit.canceled&#xA;
+
+Emitted when an order edit request is canceled.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [cancelBeginOrderEditWorkflow](https://docs.medusajs.com/references/medusa-workflows/cancelBeginOrderEditWorkflow/index.html.md)
+
+***
+
 ## Payment Events
 
 ### Summary
@@ -54376,6 +54468,82 @@ Emitted when a payment is refunded.
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
 - [refundPaymentWorkflow](https://docs.medusajs.com/references/medusa-workflows/refundPaymentWorkflow/index.html.md)
+
+***
+
+## Product Events
+
+### Summary
+
+|Event|Description|
+|---|---|
+|product.updated|Emitted when products are updated.|
+|product.created|Emitted when products are created.|
+|product.deleted|Emitted when products are deleted.|
+
+### product.updated
+
+Emitted when products are updated.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the product
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [updateProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateProductsWorkflow/index.html.md)
+- [batchProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchProductsWorkflow/index.html.md)
+- [importProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/importProductsWorkflow/index.html.md)
+
+***
+
+### product.created
+
+Emitted when products are created.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the product
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [createProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createProductsWorkflow/index.html.md)
+- [batchProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchProductsWorkflow/index.html.md)
+- [importProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/importProductsWorkflow/index.html.md)
+
+***
+
+### product.deleted
+
+Emitted when products are deleted.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the product
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [deleteProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteProductsWorkflow/index.html.md)
+- [batchProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchProductsWorkflow/index.html.md)
+- [importProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/importProductsWorkflow/index.html.md)
 
 ***
 
@@ -54805,82 +54973,6 @@ The following workflows emit this event when they're executed. These workflows a
 
 ***
 
-## Product Events
-
-### Summary
-
-|Event|Description|
-|---|---|
-|product.updated|Emitted when products are updated.|
-|product.created|Emitted when products are created.|
-|product.deleted|Emitted when products are deleted.|
-
-### product.updated
-
-Emitted when products are updated.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the product
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [updateProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateProductsWorkflow/index.html.md)
-- [batchProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchProductsWorkflow/index.html.md)
-- [importProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/importProductsWorkflow/index.html.md)
-
-***
-
-### product.created
-
-Emitted when products are created.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the product
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [createProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createProductsWorkflow/index.html.md)
-- [batchProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchProductsWorkflow/index.html.md)
-- [importProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/importProductsWorkflow/index.html.md)
-
-***
-
-### product.deleted
-
-Emitted when products are deleted.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the product
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [deleteProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteProductsWorkflow/index.html.md)
-- [batchProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchProductsWorkflow/index.html.md)
-- [importProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/importProductsWorkflow/index.html.md)
-
-***
-
 ## Region Events
 
 ### Summary
@@ -55021,76 +55113,6 @@ The following workflows emit this event when they're executed. These workflows a
 
 ***
 
-## Shipping Option Type Events
-
-### Summary
-
-|Event|Description|
-|---|---|
-|shipping-option-type.updated|Emitted when shipping option types are updated.|
-|shipping-option-type.created|Emitted when shipping option types are created.|
-|shipping-option-type.deleted|Emitted when shipping option types are deleted.|
-
-### shipping-option-type.updated&#xA;
-
-Emitted when shipping option types are updated.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the shipping option type
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [updateShippingOptionTypesWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateShippingOptionTypesWorkflow/index.html.md)
-
-***
-
-### shipping-option-type.created&#xA;
-
-Emitted when shipping option types are created.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the shipping option type
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [createShippingOptionTypesWorkflow](https://docs.medusajs.com/references/medusa-workflows/createShippingOptionTypesWorkflow/index.html.md)
-
-***
-
-### shipping-option-type.deleted&#xA;
-
-Emitted when shipping option types are deleted.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the shipping option type
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [deleteShippingOptionTypesWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteShippingOptionTypesWorkflow/index.html.md)
-
-***
-
 ## Shipping Option Events
 
 ### Summary
@@ -55158,6 +55180,76 @@ Emitted when shipping options are deleted.
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
 - [deleteShippingOptionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteShippingOptionsWorkflow/index.html.md)
+
+***
+
+## Shipping Option Type Events
+
+### Summary
+
+|Event|Description|
+|---|---|
+|shipping-option-type.updated|Emitted when shipping option types are updated.|
+|shipping-option-type.created|Emitted when shipping option types are created.|
+|shipping-option-type.deleted|Emitted when shipping option types are deleted.|
+
+### shipping-option-type.updated&#xA;
+
+Emitted when shipping option types are updated.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the shipping option type
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [updateShippingOptionTypesWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateShippingOptionTypesWorkflow/index.html.md)
+
+***
+
+### shipping-option-type.created&#xA;
+
+Emitted when shipping option types are created.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the shipping option type
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [createShippingOptionTypesWorkflow](https://docs.medusajs.com/references/medusa-workflows/createShippingOptionTypesWorkflow/index.html.md)
+
+***
+
+### shipping-option-type.deleted&#xA;
+
+Emitted when shipping option types are deleted.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the shipping option type
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [deleteShippingOptionTypesWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteShippingOptionTypesWorkflow/index.html.md)
 
 ***
 

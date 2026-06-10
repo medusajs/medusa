@@ -2,17 +2,37 @@ import type { IAuthModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
+/**
+ * Input for the create password reset token step.
+ *
+ * @since 2.15.6
+ */
 export type CreatePasswordResetTokenStepInput = {
+  /** The entity ID for which to create the password reset token. */
   entityId: string
+  /** The auth provider name. */
   provider: string
+  /** Time-to-live for the token in seconds. */
   ttlSeconds: number
 }
 
+/**
+ * Output from the create password reset token step.
+ *
+ * @since 2.15.6
+ */
 export type CreatePasswordResetTokenStepOutput = {
+  /** The JWT ID (JTI) for the password reset token. */
   jti: string
+  /** The expiration date and time of the token in ISO format. */
   expiresAt: string
 }
 
+/**
+ * The ID of the create password reset token step.
+ *
+ * @since 2.15.6
+ */
 export const createPasswordResetTokenStepId = "create-password-reset-token"
 
 /**
@@ -24,6 +44,8 @@ export const createPasswordResetTokenStepId = "create-password-reset-token"
  * Issuing a new token automatically invalidates any prior password-reset
  * tokens for the same provider identity. Compensation consumes the token
  * (best-effort) if the workflow rolls back.
+ *
+ * @since 2.15.6
  */
 export const createPasswordResetTokenStep = createStep(
   createPasswordResetTokenStepId,

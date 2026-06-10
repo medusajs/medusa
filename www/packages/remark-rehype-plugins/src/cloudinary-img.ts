@@ -2,7 +2,7 @@ import type { Transformer } from "unified"
 import type { CloudinaryConfig, UnistNode, UnistTree } from "types"
 
 const cloudinaryImageRegex =
-  /^https:\/\/res.cloudinary.com\/.*\/upload\/v[0-9]+\/(?<imageId>.*)$/
+  /^https:\/\/res.cloudinary.com\/(?<cloudName>[^/]+)\/.*\/upload\/v[0-9]+\/(?<imageId>.*)$/
 
 export function cloudinaryImgRehypePlugin({
   cloudinaryConfig,
@@ -60,9 +60,16 @@ export function cloudinaryImgRehypePlugin({
         return
       }
 
+      const cloudName =
+        cloudinaryConfig.cloudName || matchingRegex.groups.cloudName
+
+      if (!cloudName) {
+        return
+      }
+
       const cloudinary = new Cloudinary({
         cloud: {
-          cloudName: cloudinaryConfig.cloudName,
+          cloudName,
         },
       })
       const image = cloudinary.image(
