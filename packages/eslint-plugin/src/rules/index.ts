@@ -11,6 +11,7 @@ import { rule as noSpreadInWorkflow } from "./no-spread-in-workflow"
 import { rule as noThrowInTransform } from "./no-throw-in-transform"
 import { rule as noTryCatchInWorkflow } from "./no-try-catch-in-workflow"
 import { rule as stepMustReturnStepResponse } from "./step-must-return-step-response"
+import { rule as workflowIdMatchesExportOrFilename } from "./workflow-id-matches-export-or-filename"
 import { rule as workflowMustReturnWorkflowResponse } from "./workflow-must-return-workflow-response"
 
 export const rules = {
@@ -26,5 +27,6 @@ export const rules = {
   "no-throw-in-transform": noThrowInTransform,
   "no-try-catch-in-workflow": noTryCatchInWorkflow,
   "step-must-return-step-response": stepMustReturnStepResponse,
+  "workflow-id-matches-export-or-filename": workflowIdMatchesExportOrFilename,
   "workflow-must-return-workflow-response": workflowMustReturnWorkflowResponse,
 } as unknown as NonNullable<ESLint.Plugin["rules"]>

@@ -83,3 +83,26 @@ export const walkAst = (
  */
 export const isFunctionNode = (node: TSESTree.Node): boolean =>
   FUNCTION_NODE_TYPES.has(node.type)
+
+/**
+ * Returns the name of the `VariableDeclarator` that directly initializes
+ * `call`, e.g. `export const myWorkflow = createWorkflow(...)` → `"myWorkflow"`.
+ *
+ * Only matches when the call is the direct initializer of an identifier-bound
+ * declarator — not when nested inside an object/array/etc. on the right-hand
+ * side. Returns `null` otherwise.
+ */
+export const getInitializedVariableName = (
+  call: TSESTree.CallExpression
+): string | null => {
+  const parent = call.parent
+  if (
+    parent &&
+    parent.type === AST_NODE_TYPES.VariableDeclarator &&
+    parent.init === call &&
+    parent.id.type === AST_NODE_TYPES.Identifier
+  ) {
+    return parent.id.name
+  }
+  return null
+}
