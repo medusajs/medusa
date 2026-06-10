@@ -47,7 +47,7 @@ async function populateData(
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ getContainer, dbConnection, api, dbConfig }) => {
+  testSuite: ({ getContainer, dbConnection, api, dbConfig, dbUtils }) => {
     let indexEngine: IndexTypes.IIndexService
     let appContainer
 
@@ -60,8 +60,10 @@ medusaIntegrationTestRunner({
       process.env.ENABLE_INDEX_MODULE = "false"
     })
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+      await dbUtils.snapshot()
     })
 
     describe("Index engine syncing", () => {

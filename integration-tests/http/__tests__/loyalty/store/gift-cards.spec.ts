@@ -17,11 +17,11 @@ const giftCardPayload = {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let customer
     let storeHeaders
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
       const publishableKey = await generatePublishableKey(getContainer())
       storeHeaders = generateStoreHeaders({ publishableKey })
@@ -32,6 +32,8 @@ medusaIntegrationTestRunner({
 
       storeHeaders.headers["Authorization"] = `Bearer ${user.jwt}`
       customer = user.customer
+
+      await dbUtils.snapshot()
     })
 
     describe("POST /admin/gift-cards", () => {

@@ -28,13 +28,15 @@ const getUploadReq = (files: { name: string; content: string }[]) => {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     afterAll(async () => {
       await fs.rm(path.join(os.tmpdir(), "uploads"), { recursive: true })
     })
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
+
+      await dbUtils.snapshot()
     })
 
     describe("POST /admin/uploads", () => {

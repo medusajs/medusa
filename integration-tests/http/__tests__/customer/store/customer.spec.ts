@@ -11,15 +11,17 @@ import { createAuthenticatedCustomer } from "../../../../modules/helpers/create-
 jest.setTimeout(50000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let appContainer: MedusaContainer
     let storeHeaders
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       appContainer = getContainer()
       const publishableKey = await generatePublishableKey(appContainer)
       storeHeaders = generateStoreHeaders({ publishableKey })
       await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+      await dbUtils.snapshot()
     })
 
     describe("POST /store/customers", () => {

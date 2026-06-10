@@ -9,7 +9,7 @@ import { updateInventoryItemsWorkflow } from "@medusajs/core-flows"
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let inventoryItem1
     let inventoryItem2
     let stockLocation1
@@ -18,7 +18,7 @@ medusaIntegrationTestRunner({
 
     let shippingProfile
     let container
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
 
       container = getContainer()
@@ -68,6 +68,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.inventory_item
+
+      await dbUtils.snapshot()
     })
 
     describe("Inventory Items", () => {

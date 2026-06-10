@@ -10,13 +10,15 @@ import { createOrderSeeder } from "../../fixtures/order"
 jest.setTimeout(300000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let container
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      await dbUtils.snapshot()
     })
 
     describe("POST /admin/orders/:id/cancel - Cancel completed orders", () => {
@@ -28,18 +30,11 @@ medusaIntegrationTestRunner({
         })
         const order = seeder.order
 
-        await api.post(
-          `/admin/orders/${order.id}/complete`,
-          {},
-          adminHeaders
-        )
+        await api.post(`/admin/orders/${order.id}/complete`, {}, adminHeaders)
 
         // Verify order is completed
         const completedOrder = (
-          await api.get(
-            `/admin/orders/${order.id}`,
-            adminHeaders
-          )
+          await api.get(`/admin/orders/${order.id}`, adminHeaders)
         ).data.order
 
         expect(completedOrder.status).toBe("completed")
@@ -64,17 +59,10 @@ medusaIntegrationTestRunner({
         })
         const order = seeder.order
 
-        await api.post(
-          `/admin/orders/${order.id}/complete`,
-          {},
-          adminHeaders
-        )
+        await api.post(`/admin/orders/${order.id}/complete`, {}, adminHeaders)
 
         const orderBeforeCancelAttempt = (
-          await api.get(
-            `/admin/orders/${order.id}`,
-            adminHeaders
-          )
+          await api.get(`/admin/orders/${order.id}`, adminHeaders)
         ).data.order
 
         // Act: Attempt to cancel the completed order
@@ -84,10 +72,7 @@ medusaIntegrationTestRunner({
 
         // Assert: Order status should remain completed
         const orderAfterCancelAttempt = (
-          await api.get(
-            `/admin/orders/${order.id}`,
-            adminHeaders
-          )
+          await api.get(`/admin/orders/${order.id}`, adminHeaders)
         ).data.order
 
         expect(orderAfterCancelAttempt.status).toBe("completed")

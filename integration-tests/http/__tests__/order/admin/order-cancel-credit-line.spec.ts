@@ -10,13 +10,15 @@ import { createOrderSeeder } from "../../fixtures/order"
 jest.setTimeout(300000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let container
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      await dbUtils.snapshot()
     })
 
     describe("POST /admin/orders/:id/cancel - Credit Line Calculation with Multiple Payments", () => {
@@ -240,9 +242,7 @@ medusaIntegrationTestRunner({
 
           const creditLineFromCancel =
             totalCreditLineAmount - creditLineAmountFromRefund
-          expect(creditLineFromCancel).toBe(
-            paymentAmount - partialRefundAmount
-          )
+          expect(creditLineFromCancel).toBe(paymentAmount - partialRefundAmount)
         })
 
         it("should handle order with all payments canceled - zero credit line", async () => {

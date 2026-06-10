@@ -13,7 +13,7 @@ import { createOrderSeeder } from "../../fixtures/order"
 jest.setTimeout(300000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let order,
       draftOrder,
       seeder,
@@ -21,7 +21,7 @@ medusaIntegrationTestRunner({
       customer,
       storeHeadersWithCustomer
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const container = getContainer()
 
       await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
@@ -78,6 +78,8 @@ medusaIntegrationTestRunner({
       )
 
       draftOrder = draftOrderResposne.data.draft_order
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /store/orders", () => {

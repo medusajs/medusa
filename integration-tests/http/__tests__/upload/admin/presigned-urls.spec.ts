@@ -27,9 +27,11 @@ const getUploadReq = (file: File) => {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
-    beforeEach(async () => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
+
+      await dbUtils.snapshot()
     })
 
     describe("POST /admin/uploads/presigned-urls", () => {

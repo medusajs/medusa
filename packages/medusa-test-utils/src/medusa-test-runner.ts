@@ -28,8 +28,8 @@ export interface MedusaSuiteOptions {
   api: any
   dbUtils: {
     create: (dbName: string) => Promise<void>
-    snapshot: (options: { templateName?: string }) => Promise<void>
-    restore: (options: { templateName?: string }) => Promise<void>
+    snapshot: (options?: { templateName?: string }) => Promise<void>
+    restore: (options?: { templateName?: string }) => Promise<void>
     dropTemplate: (templateName: string) => Promise<void>
     teardown: (options: { schema?: string }) => Promise<void>
     shutdown: (dbName: string) => Promise<void>

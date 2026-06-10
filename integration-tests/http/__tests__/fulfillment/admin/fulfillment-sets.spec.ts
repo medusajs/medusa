@@ -10,10 +10,10 @@ const { medusaIntegrationTestRunner } = require("@medusajs/test-utils")
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let fulfillmentSet1
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
 
       // fulfillmentSet1 = (
@@ -35,6 +35,8 @@ medusaIntegrationTestRunner({
         name: "Test fulfillment set",
         type: "pickup",
       })
+
+      await dbUtils.snapshot()
     })
 
     describe("POST /admin/fulfillment-sets/:id", () => {

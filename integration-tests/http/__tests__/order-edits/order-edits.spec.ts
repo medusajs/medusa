@@ -20,7 +20,7 @@ import { medusaTshirtProduct } from "../../__fixtures__/product"
 jest.setTimeout(300000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let order
     let taxLine
     let shippingOption
@@ -38,7 +38,7 @@ medusaIntegrationTestRunner({
 
     const shippingProviderId = "manual_test-provider"
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
@@ -371,6 +371,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.shipping_option
+
+      await dbUtils.snapshot()
     })
 
     describe("Order Edits lifecycle", () => {
@@ -886,7 +888,8 @@ medusaIntegrationTestRunner({
 
         // Remove item
         await api.post(
-          `/admin/order-edits/${order.id}/items/item/${order.items.find((i) => i.subtitle === "M shirt").id
+          `/admin/order-edits/${order.id}/items/item/${
+            order.items.find((i) => i.subtitle === "M shirt").id
           }`,
           { quantity: 0 },
           adminHeaders
@@ -894,7 +897,8 @@ medusaIntegrationTestRunner({
 
         // Update item
         await api.post(
-          `/admin/order-edits/${order.id}/items/item/${order.items.find((i) => i.subtitle === "L shirt").id
+          `/admin/order-edits/${order.id}/items/item/${
+            order.items.find((i) => i.subtitle === "L shirt").id
           }`,
           { quantity: 2 },
           adminHeaders

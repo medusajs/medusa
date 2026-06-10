@@ -26,10 +26,10 @@ async function createAccount(input, container) {
 jest.setTimeout(60 * 1000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let customer, storeHeaders
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
       const publishableKey = await generatePublishableKey(getContainer())
       storeHeaders = generateStoreHeaders({ publishableKey })
@@ -39,6 +39,8 @@ medusaIntegrationTestRunner({
       })
       storeHeaders.headers["Authorization"] = `Bearer ${user.jwt}`
       customer = user.customer
+
+      await dbUtils.snapshot()
     })
 
     describe("claimStoreCreditAccountWorkflow", () => {

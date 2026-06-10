@@ -13,11 +13,13 @@ const env = { MEDUSA_FF_VIEW_CONFIGURATIONS: true }
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
-    beforeEach(async () => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
+    beforeAll(async () => {
       const container = getContainer()
       await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /admin/views/:entity/columns", () => {

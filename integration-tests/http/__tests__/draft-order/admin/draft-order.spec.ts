@@ -18,7 +18,7 @@ import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 jest.setTimeout(300000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let region: HttpTypes.AdminRegion
     let salesChannel: HttpTypes.AdminSalesChannel
     let stockLocation: HttpTypes.AdminStockLocation
@@ -28,7 +28,7 @@ medusaIntegrationTestRunner({
     let apiKey: HttpTypes.AdminApiKeyResponse["api_key"]
     let userId: string
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const container = getContainer()
 
       await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
@@ -172,6 +172,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.draft_order
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /draft-orders", () => {

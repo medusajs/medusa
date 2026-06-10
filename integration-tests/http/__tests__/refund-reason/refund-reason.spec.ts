@@ -9,12 +9,12 @@ import { updateRefundReasonsWorkflow } from "@medusajs/core-flows"
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let refundReason1
     let refundReason2
     let appContainer
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       appContainer = getContainer()
       await createAdminUser(dbConnection, adminHeaders, appContainer)
 
@@ -33,6 +33,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.refund_reason
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /admin/refund-reasons", () => {

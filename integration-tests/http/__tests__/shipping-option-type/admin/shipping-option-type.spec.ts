@@ -1,15 +1,18 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { adminHeaders, createAdminUser, } from "../../../../helpers/create-admin-user"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   env: {},
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let type1
     let type2
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
@@ -36,6 +39,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.shipping_option_type
+
+      await dbUtils.snapshot()
     })
 
     describe("/admin/shipping-option-types", () => {
@@ -66,7 +71,10 @@ medusaIntegrationTestRunner({
       })
 
       it("returns a list of shipping option types matching free text search param", async () => {
-        const res = await api.get("/admin/shipping-option-types?q=st1", adminHeaders)
+        const res = await api.get(
+          "/admin/shipping-option-types?q=st1",
+          adminHeaders
+        )
 
         expect(res.status).toEqual(200)
 
@@ -83,7 +91,10 @@ medusaIntegrationTestRunner({
       })
 
       it("returns a list of shipping option types matching code search param", async () => {
-        const res = await api.get("/admin/shipping-option-types?code=test1", adminHeaders)
+        const res = await api.get(
+          "/admin/shipping-option-types?code=test1",
+          adminHeaders
+        )
 
         expect(res.status).toEqual(200)
 

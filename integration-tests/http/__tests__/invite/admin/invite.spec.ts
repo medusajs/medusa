@@ -9,9 +9,9 @@ jest.setTimeout(30000)
 process.env.MEDUSA_FF_RBAC = "true"
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let invite
-    beforeEach(async () => {
+    beforeAll(async () => {
       const appContainer = getContainer()
       await createAdminUser(dbConnection, adminHeaders, appContainer)
 
@@ -24,6 +24,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.invite
+
+      await dbUtils.snapshot()
     })
 
     describe("Admin invites", () => {

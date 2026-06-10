@@ -12,7 +12,7 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let container: MedusaContainer
     let region: RegionDTO
 
@@ -20,7 +20,7 @@ medusaIntegrationTestRunner({
       container = getContainer()
     })
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, container)
 
       region = (
@@ -35,6 +35,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.region
+
+      await dbUtils.snapshot()
     })
 
     describe("update region workflow", () => {

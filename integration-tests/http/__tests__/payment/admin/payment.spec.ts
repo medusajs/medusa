@@ -10,7 +10,7 @@ import { createOrderSeeder } from "../../fixtures/order"
 jest.setTimeout(50000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let container
     let order
 
@@ -64,7 +64,7 @@ medusaIntegrationTestRunner({
       )
     }
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
@@ -90,6 +90,8 @@ medusaIntegrationTestRunner({
         { items: [{ id: order.items[0].id, quantity: 1 }] },
         adminHeaders
       )
+
+      await dbUtils.snapshot()
     })
 
     describe("with outstanding amount due to claim", () => {

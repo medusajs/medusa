@@ -17,14 +17,16 @@ import { IWorkflowEngineService } from "@medusajs/framework/types"
 jest.setTimeout(300000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let container
     let workflowOrcModule: IWorkflowEngineService
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
       workflowOrcModule = container.resolve(Modules.WORKFLOW_ENGINE)
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /admin/workflow-executions", () => {
@@ -96,103 +98,147 @@ medusaIntegrationTestRunner({
     })
 
     describe("POST /admin/workflows-executions/[workflow_id]/steps/failure", function () {
-        it("should set step as failed", async () => {
-            const stepId = 'test-step'
-            const step = createStep({
-                name: stepId,
-                async: true,
-            }, () => { })
+      it("should set step as failed", async () => {
+        const stepId = "test-step"
+        const step = createStep(
+          {
+            name: stepId,
+            async: true,
+          },
+          () => {}
+        )
 
-            const workflowId =
-              "workflow-f" + Math.random().toString(36).substring(2, 15)
-            createWorkflow({
-                name: workflowId,
-                retentionTime: 60,
-            }, () => {
-                step()
-                return new WorkflowResponse(void 0)
-            })
+        const workflowId =
+          "workflow-f" + Math.random().toString(36).substring(2, 15)
+        createWorkflow(
+          {
+            name: workflowId,
+            retentionTime: 60,
+          },
+          () => {
+            step()
+            return new WorkflowResponse(void 0)
+          }
+        )
 
-            const transactionId =
-              "trx_123_f" + Math.random().toString(36).substring(2, 15)
-            const engine = container.resolve(Modules.WORKFLOW_ENGINE) as IWorkflowEngineService
-            await engine.run(workflowId, {
-                transactionId
-            })
-            let workflowDetail = (await api.get(`/admin/workflows-executions/${workflowId}/${transactionId}`, adminHeaders)).data.workflow_execution
-
-            expect(workflowDetail.state).toBe(TransactionState.INVOKING)
-
-            const setFailureResponse = await api.post(`/admin/workflows-executions/${workflowId}/steps/failure`, {
-                transaction_id: transactionId,
-                step_id: stepId
-            }, adminHeaders)
-
-            expect(setFailureResponse.status).toBe(200)
-            expect(setFailureResponse.data).toEqual(
-                expect.objectContaining({
-                    success: true,
-                })
-            )
-
-            workflowDetail = (await api.get(`/admin/workflows-executions/${workflowId}/${transactionId}`, adminHeaders)).data.workflow_execution
-            
-            expect(workflowDetail).toEqual(
-                expect.objectContaining({
-                    state: TransactionState.REVERTED,
-                })
-            )
+        const transactionId =
+          "trx_123_f" + Math.random().toString(36).substring(2, 15)
+        const engine = container.resolve(
+          Modules.WORKFLOW_ENGINE
+        ) as IWorkflowEngineService
+        await engine.run(workflowId, {
+          transactionId,
         })
+        let workflowDetail = (
+          await api.get(
+            `/admin/workflows-executions/${workflowId}/${transactionId}`,
+            adminHeaders
+          )
+        ).data.workflow_execution
+
+        expect(workflowDetail.state).toBe(TransactionState.INVOKING)
+
+        const setFailureResponse = await api.post(
+          `/admin/workflows-executions/${workflowId}/steps/failure`,
+          {
+            transaction_id: transactionId,
+            step_id: stepId,
+          },
+          adminHeaders
+        )
+
+        expect(setFailureResponse.status).toBe(200)
+        expect(setFailureResponse.data).toEqual(
+          expect.objectContaining({
+            success: true,
+          })
+        )
+
+        workflowDetail = (
+          await api.get(
+            `/admin/workflows-executions/${workflowId}/${transactionId}`,
+            adminHeaders
+          )
+        ).data.workflow_execution
+
+        expect(workflowDetail).toEqual(
+          expect.objectContaining({
+            state: TransactionState.REVERTED,
+          })
+        )
+      })
     })
 
     describe("POST /admin/workflows-executions/[workflow_id]/steps/success", function () {
-        it("should set step as successful", async () => {
-            const stepId = 'test-step'
-            const step = createStep({
-                name: stepId,
-                async: true,
-            }, () => { })
+      it("should set step as successful", async () => {
+        const stepId = "test-step"
+        const step = createStep(
+          {
+            name: stepId,
+            async: true,
+          },
+          () => {}
+        )
 
-            const workflowId =
-              "workflow_s" + Math.random().toString(36).substring(2, 15)
-            createWorkflow({
-                name: workflowId,
-                retentionTime: 60,
-            }, () => {
-                step()
-                return new WorkflowResponse(void 0)
-            })
+        const workflowId =
+          "workflow_s" + Math.random().toString(36).substring(2, 15)
+        createWorkflow(
+          {
+            name: workflowId,
+            retentionTime: 60,
+          },
+          () => {
+            step()
+            return new WorkflowResponse(void 0)
+          }
+        )
 
-            const transactionId =
-              "trx_123_s" + Math.random().toString(36).substring(2, 15)
-            const engine = container.resolve(Modules.WORKFLOW_ENGINE) as IWorkflowEngineService
-            await engine.run(workflowId, {
-                transactionId
-            })
-            let workflowDetail = (await api.get(`/admin/workflows-executions/${workflowId}/${transactionId}`, adminHeaders)).data.workflow_execution
-
-            expect(workflowDetail.state).toBe(TransactionState.INVOKING)
-
-            const setSuccessResponse = await api.post(`/admin/workflows-executions/${workflowId}/steps/success`, {
-                transaction_id: transactionId,
-                step_id: stepId
-            }, adminHeaders)
-
-            expect(setSuccessResponse.status).toBe(200)
-            expect(setSuccessResponse.data).toEqual(
-                expect.objectContaining({
-                    success: true,
-                })
-            )
-
-            workflowDetail = (await api.get(`/admin/workflows-executions/${workflowId}/${transactionId}`, adminHeaders)).data.workflow_execution
-            
-            expect(workflowDetail).toEqual(
-                expect.objectContaining({
-                    state: TransactionState.DONE,
-                })
-            )
+        const transactionId =
+          "trx_123_s" + Math.random().toString(36).substring(2, 15)
+        const engine = container.resolve(
+          Modules.WORKFLOW_ENGINE
+        ) as IWorkflowEngineService
+        await engine.run(workflowId, {
+          transactionId,
         })
+        let workflowDetail = (
+          await api.get(
+            `/admin/workflows-executions/${workflowId}/${transactionId}`,
+            adminHeaders
+          )
+        ).data.workflow_execution
+
+        expect(workflowDetail.state).toBe(TransactionState.INVOKING)
+
+        const setSuccessResponse = await api.post(
+          `/admin/workflows-executions/${workflowId}/steps/success`,
+          {
+            transaction_id: transactionId,
+            step_id: stepId,
+          },
+          adminHeaders
+        )
+
+        expect(setSuccessResponse.status).toBe(200)
+        expect(setSuccessResponse.data).toEqual(
+          expect.objectContaining({
+            success: true,
+          })
+        )
+
+        workflowDetail = (
+          await api.get(
+            `/admin/workflows-executions/${workflowId}/${transactionId}`,
+            adminHeaders
+          )
+        ).data.workflow_execution
+
+        expect(workflowDetail).toEqual(
+          expect.objectContaining({
+            state: TransactionState.DONE,
+          })
+        )
+      })
     })
 
     describe("Workflow Orchestrator module subscribe", function () {

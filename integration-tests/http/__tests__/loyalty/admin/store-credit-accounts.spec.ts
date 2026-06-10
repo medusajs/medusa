@@ -19,16 +19,18 @@ const storeCreditAccountResponse = {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let adminUser
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const user = await createAdminUser(
         dbConnection,
         adminHeaders,
         getContainer()
       )
       adminUser = user.user
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /admin/store-credit-accounts", () => {

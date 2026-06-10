@@ -17,10 +17,10 @@ jest.setTimeout(30000)
 process.env.MEDUSA_FF_RBAC = "true"
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let user, container, authIdentity
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       const { user: adminUser, authIdentity: authId } = await createAdminUser(
         dbConnection,
@@ -30,6 +30,8 @@ medusaIntegrationTestRunner({
 
       user = adminUser
       authIdentity = authId
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /admin/users/:id", () => {
