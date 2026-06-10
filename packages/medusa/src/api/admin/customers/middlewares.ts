@@ -115,6 +115,10 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.customer_address,
         operation: PolicyOperation.create,
       },
+      {
+        resource: Entities.customer,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -148,6 +152,10 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.customer_address,
         operation: PolicyOperation.update,
       },
+      {
+        resource: Entities.customer,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -163,6 +171,10 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
       {
         resource: Entities.customer_address,
         operation: PolicyOperation.delete,
+      },
+      {
+        resource: Entities.customer,
+        operation: PolicyOperation.update,
       },
     ],
   },
@@ -195,6 +207,10 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.customer,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.customer_group,
         operation: PolicyOperation.update,
       },
     ],

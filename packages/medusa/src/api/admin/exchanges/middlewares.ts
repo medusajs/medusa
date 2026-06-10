@@ -291,6 +291,10 @@ export const adminExchangeRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.order_exchange,
         operation: PolicyOperation.update,
       },
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -300,7 +304,7 @@ export const adminExchangeRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.order_exchange,
-        operation: PolicyOperation.update,
+        operation: PolicyOperation.delete,
       },
     ],
   },
