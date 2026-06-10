@@ -198,6 +198,136 @@ describe("defineConfig", function () {
     )
   })
 
+  it("should include auth mfa encryption key when auth options are customized", function () {
+    const originalEnv = { ...process.env }
+    process.env.AUTH_MFA_ENCRYPTION_KEY = "test-mfa-key"
+
+    let config!: ReturnType<typeof defineConfig>
+    try {
+      config = defineConfig({
+        modules: [
+          {
+            resolve: "@medusajs/medusa/auth",
+            options: {
+              providers: [
+                {
+                  resolve: "@medusajs/medusa/auth-emailpass",
+                  id: "emailpass",
+                  options: {
+                    require_verification: true,
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      })
+    } finally {
+      process.env = { ...originalEnv }
+    }
+
+    expect(config.modules?.[Modules.AUTH]).toEqual(
+      expect.objectContaining({
+        options: expect.objectContaining({
+          mfa: {
+            encryption_key: "test-mfa-key",
+          },
+          providers: [
+            {
+              resolve: "@medusajs/medusa/auth-emailpass",
+              id: "emailpass",
+              options: {
+                require_verification: true,
+              },
+            },
+          ],
+        }),
+      })
+    )
+  })
+
+  it("should include auth mfa encryption key when object-style auth options are customized", function () {
+    const originalEnv = { ...process.env }
+    process.env.AUTH_MFA_ENCRYPTION_KEY = "test-mfa-key"
+
+    let config!: ReturnType<typeof defineConfig>
+    try {
+      config = defineConfig({
+        modules: {
+          auth: {
+            options: {
+              providers: [
+                {
+                  resolve: "@medusajs/medusa/auth-emailpass",
+                  id: "emailpass",
+                  options: {
+                    require_verification: true,
+                  },
+                },
+              ],
+            },
+          },
+        },
+      })
+    } finally {
+      process.env = { ...originalEnv }
+    }
+
+    expect(config.modules?.[Modules.AUTH]).toEqual(
+      expect.objectContaining({
+        options: expect.objectContaining({
+          mfa: {
+            encryption_key: "test-mfa-key",
+          },
+          providers: [
+            {
+              resolve: "@medusajs/medusa/auth-emailpass",
+              id: "emailpass",
+              options: {
+                require_verification: true,
+              },
+            },
+          ],
+        }),
+      })
+    )
+  })
+
+  it("should preserve custom auth mfa encryption key", function () {
+    const originalEnv = { ...process.env }
+    process.env.AUTH_MFA_ENCRYPTION_KEY = "test-mfa-key"
+
+    let config!: ReturnType<typeof defineConfig>
+    try {
+      config = defineConfig({
+        modules: [
+          {
+            resolve: "@medusajs/medusa/auth",
+            options: {
+              mfa: {
+                encryption_key: "custom-mfa-key",
+                challenge_ttl_seconds: 600,
+              },
+            },
+          },
+        ],
+      })
+    } finally {
+      process.env = { ...originalEnv }
+    }
+
+    expect(config.modules?.[Modules.AUTH]).toEqual(
+      expect.objectContaining({
+        options: expect.objectContaining({
+          mfa: {
+            encryption_key: "custom-mfa-key",
+            challenge_ttl_seconds: 600,
+          },
+        }),
+      })
+    )
+  })
+
   it("should merge custom modules", function () {
     expect(
       defineConfig({
@@ -3038,5 +3168,104 @@ describe("defineConfig", function () {
         },
       }
     `)
+  })
+
+  describe("secret defaults", function () {
+    const originalNodeEnv = process.env.NODE_ENV
+    const originalJwtSecret = process.env.JWT_SECRET
+    const originalCookieSecret = process.env.COOKIE_SECRET
+
+    afterEach(() => {
+      process.env.NODE_ENV = originalNodeEnv
+      if (originalJwtSecret === undefined) {
+        delete process.env.JWT_SECRET
+      } else {
+        process.env.JWT_SECRET = originalJwtSecret
+      }
+      if (originalCookieSecret === undefined) {
+        delete process.env.COOKIE_SECRET
+      } else {
+        process.env.COOKIE_SECRET = originalCookieSecret
+      }
+    })
+
+    it("should apply the default secret in non-production environments when no env vars are set", function () {
+      process.env.NODE_ENV = "development"
+      delete process.env.JWT_SECRET
+      delete process.env.COOKIE_SECRET
+
+      const config = defineConfig()
+
+      expect(config.projectConfig.http.jwtSecret).toBe("supersecret")
+      expect(config.projectConfig.http.cookieSecret).toBe("supersecret")
+      expect((config.modules!["user"] as any).options.jwt_secret).toBe(
+        "supersecret"
+      )
+    })
+
+    it("should not apply the default secret when NODE_ENV is production", function () {
+      process.env.NODE_ENV = "production"
+      delete process.env.JWT_SECRET
+      delete process.env.COOKIE_SECRET
+
+      const config = defineConfig()
+
+      expect(config.projectConfig.http.jwtSecret).toBeUndefined()
+      expect(config.projectConfig.http.cookieSecret).toBeUndefined()
+      expect(
+        (config.modules!["user"] as any).options.jwt_secret
+      ).toBeUndefined()
+    })
+
+    it("should not apply the default secret when NODE_ENV is prod", function () {
+      process.env.NODE_ENV = "prod"
+      delete process.env.JWT_SECRET
+      delete process.env.COOKIE_SECRET
+
+      const config = defineConfig()
+
+      expect(config.projectConfig.http.jwtSecret).toBeUndefined()
+      expect(config.projectConfig.http.cookieSecret).toBeUndefined()
+      expect(
+        (config.modules!["user"] as any).options.jwt_secret
+      ).toBeUndefined()
+    })
+
+    it("should use the configured env var secrets in production", function () {
+      process.env.NODE_ENV = "production"
+      process.env.JWT_SECRET = "prod-jwt-secret"
+      process.env.COOKIE_SECRET = "prod-cookie-secret"
+
+      const config = defineConfig()
+
+      expect(config.projectConfig.http.jwtSecret).toBe("prod-jwt-secret")
+      expect(config.projectConfig.http.cookieSecret).toBe("prod-cookie-secret")
+      expect((config.modules!["user"] as any).options.jwt_secret).toBe(
+        "prod-jwt-secret"
+      )
+    })
+
+    it("should prefer user-provided jwtSecret in production over the missing env var", function () {
+      process.env.NODE_ENV = "production"
+      delete process.env.JWT_SECRET
+      delete process.env.COOKIE_SECRET
+
+      const config = defineConfig({
+        projectConfig: {
+          http: {
+            jwtSecret: "configured-jwt-secret",
+            cookieSecret: "configured-cookie-secret",
+          },
+        } as any,
+      })
+
+      expect(config.projectConfig.http.jwtSecret).toBe("configured-jwt-secret")
+      expect(config.projectConfig.http.cookieSecret).toBe(
+        "configured-cookie-secret"
+      )
+      expect((config.modules!["user"] as any).options.jwt_secret).toBe(
+        "configured-jwt-secret"
+      )
+    })
   })
 })
