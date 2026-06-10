@@ -166,6 +166,22 @@ export function isStepCallbackFunction(
 }
 
 /**
+ * Returns true when `node` is a `new StepResponse(...)` or
+ * `new WorkflowResponse(...)` whose callee identifier resolves to a tracked
+ * workflows-sdk import binding.
+ */
+export function isResponseConstructor(
+  node: TSESTree.NewExpression,
+  bindings: WorkflowSdkBindings
+): boolean {
+  if (node.callee.type !== AST_NODE_TYPES.Identifier) return false
+  return (
+    bindings.stepResponse.has(node.callee.name) ||
+    bindings.workflowResponse.has(node.callee.name)
+  )
+}
+
+/**
  * True when `node` lives directly inside a `transform(...)` callback — not
  * inside a further-nested function.
  */

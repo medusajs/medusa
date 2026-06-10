@@ -38,3 +38,48 @@ export const isUndefinedExpression = (node: TSESTree.Node): boolean => {
   }
   return false
 }
+
+const FUNCTION_NODE_TYPES = new Set<string>([
+  AST_NODE_TYPES.ArrowFunctionExpression,
+  AST_NODE_TYPES.FunctionExpression,
+  AST_NODE_TYPES.FunctionDeclaration,
+])
+
+/**
+ * Recursively walks the AST rooted at `node`, calling `visit` for every
+ * descendant (including `node` itself). When `visit` returns `false` the walk
+ * does not descend into that subtree's children — useful for "skip nested
+ * function bodies" patterns.
+ *
+ * Skips the `parent` back-reference. Generic over the standard TSESTree shape;
+ * does not know about parser-specific extension keys.
+ */
+export const walkAst = (
+  node: TSESTree.Node | null | undefined,
+  visit: (node: TSESTree.Node) => boolean | void
+): void => {
+  if (!node) return
+  if (visit(node) === false) return
+
+  for (const key of Object.keys(node)) {
+    if (key === "parent") continue
+    const value = (node as unknown as Record<string, unknown>)[key]
+    if (!value) continue
+    if (Array.isArray(value)) {
+      for (const child of value) {
+        if (child && typeof child === "object" && "type" in child) {
+          walkAst(child as TSESTree.Node, visit)
+        }
+      }
+    } else if (typeof value === "object" && "type" in (value as object)) {
+      walkAst(value as TSESTree.Node, visit)
+    }
+  }
+}
+
+/**
+ * True for `ArrowFunctionExpression`, `FunctionExpression`, and
+ * `FunctionDeclaration`.
+ */
+export const isFunctionNode = (node: TSESTree.Node): boolean =>
+  FUNCTION_NODE_TYPES.has(node.type)
