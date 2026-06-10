@@ -1,5 +1,6 @@
 export enum Entities {
   fulfillment = "fulfillment",
+  order = "order",
 }
 
 export const defaultAdminFulfillmentsFields = [

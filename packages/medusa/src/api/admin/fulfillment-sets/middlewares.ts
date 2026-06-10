@@ -51,6 +51,10 @@ export const adminFulfillmentSetsRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.service_zone,
         operation: PolicyOperation.create,
       },
+      {
+        resource: Entities.stock_location,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -71,6 +75,10 @@ export const adminFulfillmentSetsRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.service_zone,
         operation: PolicyOperation.delete,
       },
+      {
+        resource: Entities.stock_location,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -81,6 +89,10 @@ export const adminFulfillmentSetsRoutesMiddlewares: MiddlewareRoute[] = [
       {
         resource: Entities.fulfillment_set,
         operation: PolicyOperation.delete,
+      },
+      {
+        resource: Entities.stock_location,
+        operation: PolicyOperation.update,
       },
     ],
   },
@@ -101,6 +113,10 @@ export const adminFulfillmentSetsRoutesMiddlewares: MiddlewareRoute[] = [
       },
       {
         resource: Entities.service_zone,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.stock_location,
         operation: PolicyOperation.update,
       },
     ],

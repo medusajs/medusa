@@ -36,6 +36,10 @@ export const adminFulfillmentsRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.fulfillment,
         operation: PolicyOperation.update,
       },
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -53,6 +57,10 @@ export const adminFulfillmentsRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.fulfillment,
         operation: PolicyOperation.create,
       },
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -68,6 +76,10 @@ export const adminFulfillmentsRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.fulfillment,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.order,
         operation: PolicyOperation.update,
       },
     ],
