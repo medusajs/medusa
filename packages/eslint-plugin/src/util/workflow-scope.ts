@@ -117,6 +117,38 @@ export function isWhenThenCallbackFunction(
 }
 
 /**
+ * Returns true when `fn` is a callback argument to a `transform(...)` call
+ * whose callee resolves to a tracked `transform` import binding.
+ *
+ * `transform(data, ...callbacks)` accepts one or more callback arguments after
+ * the data argument at index 0 — any of them counts.
+ */
+export function isTransformCallbackFunction(
+  fn: FunctionLike,
+  bindings: WorkflowSdkBindings
+): boolean {
+  const parent = fn.parent
+  if (!parent || parent.type !== AST_NODE_TYPES.CallExpression) return false
+  const argIndex = parent.arguments.indexOf(fn as TSESTree.CallExpressionArgument)
+  if (argIndex < 1) return false
+  if (parent.callee.type !== AST_NODE_TYPES.Identifier) return false
+  return bindings.transform.has(parent.callee.name)
+}
+
+/**
+ * True when `node` lives directly inside a `transform(...)` callback — not
+ * inside a further-nested function.
+ */
+export function isInTransformCallback(
+  node: TSESTree.Node,
+  bindings: WorkflowSdkBindings
+): boolean {
+  const fn = getEnclosingFunction(node)
+  if (!fn) return false
+  return isTransformCallbackFunction(fn, bindings)
+}
+
+/**
  * True when `node` lives directly inside a workflow constructor body — not
  * inside a nested `createStep` / `transform` callback.
  *
