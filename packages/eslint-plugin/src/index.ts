@@ -2,8 +2,7 @@ import type { ESLint, Linter } from "eslint"
 import { rules } from "./rules"
 import { buildRecommended } from "./configs/recommended"
 import { buildStrict } from "./configs/strict"
-
-const PLUGIN_NAME = "@medusajs/eslint-plugin"
+import { PLUGIN_NAME } from "./constants"
 
 const plugin = {
   meta: { name: PLUGIN_NAME },

@@ -5,8 +5,10 @@ describe("@medusajs/eslint-plugin", () => {
     expect(plugin.meta).toEqual({ name: "@medusajs/eslint-plugin" })
   })
 
-  it("registers an empty rules map for now", () => {
-    expect(plugin.rules).toEqual({})
+  it("registers the no-async-workflow-constructor rule", () => {
+    expect(Object.keys(plugin.rules)).toContain(
+      "no-async-workflow-constructor"
+    )
   })
 
   it("ships recommended and strict flat configs", () => {
