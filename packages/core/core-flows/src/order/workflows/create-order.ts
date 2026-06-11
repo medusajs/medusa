@@ -90,6 +90,9 @@ function getOrderInput(data) {
  */
 export type CreateOrderWorkflowInput = CreateOrderDTO & AdditionalData
 
+/**
+ * The ID of the create order workflow.
+ */
 export const createOrdersWorkflowId = "create-orders"
 /**
  * This workflow creates an order. It's used by the [Create Draft Order Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftorders), but

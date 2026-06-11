@@ -1,3 +1,37 @@
+/**
+ * Wraps a database operation in a transaction with optional isolation level.
+ * 
+ * This utility provides transaction management for database operations,
+ * supporting nested transactions, isolation levels, and automatic rollback
+ * on errors. It can reuse existing transactions when nested transactions
+ * are disabled for performance optimization.
+ * 
+ * @param manager - The database manager or entity manager that supports transactions
+ * @param task - The async function to execute within the transaction context
+ * @param options - Transaction configuration options
+ * @param options.isolationLevel - Database isolation level for the transaction (e.g., 'READ_COMMITTED', 'SERIALIZABLE')
+ * @param options.transaction - Existing transaction to reuse if nested transactions are disabled
+ * @param options.enableNestedTransactions - Whether to allow nested transactions (default: false)
+ * @returns Promise resolving to the result of the task function
+ * 
+ * @example
+ * ```typescript
+ * const result = await transactionWrapper(
+ *   entityManager,
+ *   async (transactionManager) => {
+ *     await service1.create(data1, { manager: transactionManager })
+ *     await service2.update(id, data2, { manager: transactionManager })
+ *     return "success"
+ *   },
+ *   { 
+ *     isolationLevel: 'READ_COMMITTED',
+ *     enableNestedTransactions: true
+ *   }
+ * )
+ * ```
+ * 
+ * @throws {Error} When the task function throws an error (triggers automatic rollback)
+ */
 export async function transactionWrapper<TManager = unknown>(
   manager: any,
   task: (transactionManager: any) => Promise<any>,

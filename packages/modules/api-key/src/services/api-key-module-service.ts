@@ -41,6 +41,36 @@ type InjectedDependencies = {
   apiKeyService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
+/**
+ * Service for managing API keys in the Medusa application.
+ * 
+ * This service provides methods for creating, updating, authenticating, and managing
+ * API keys. It handles both publishable keys (for frontend use) and secret keys
+ * (for backend use) with proper hashing and security measures.
+ * 
+ * The service automatically generates secure tokens, handles revocation with timestamps,
+ * and provides authentication mechanisms for validating API key access.
+ * 
+ * @example
+ * ```typescript
+ * const apiKeyModuleService = container.resolve("apiKeyModuleService")
+ * 
+ * // Create a new secret API key
+ * const secretKey = await apiKeyModuleService.createApiKeys({
+ *   title: "Backend API Key",
+ *   type: "secret"
+ * })
+ * 
+ * // Create a publishable key
+ * const publishableKey = await apiKeyModuleService.createApiKeys({
+ *   title: "Frontend API Key",
+ *   type: "publishable"
+ * })
+ * 
+ * // Authenticate a key
+ * const authResult = await apiKeyModuleService.authenticate("sk_abc123...")
+ * ```
+ */
 export class ApiKeyModuleService
   extends MedusaService<{
     ApiKey: { dto: ApiKeyTypes.ApiKeyDTO }
@@ -120,6 +150,44 @@ export class ApiKeyModuleService
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO>
 
+  /**
+   * Creates one or more API keys with the provided data.
+   * 
+   * This method generates secure tokens based on the API key type:
+   * - Secret keys: Prefixed with 'sk_' and hashed with a salt for security
+   * - Publishable keys: Prefixed with 'pk_' and stored as plaintext
+   * 
+   * The raw token is only returned during creation for secret keys, as this is the
+   * only time the full token will be available to the user.
+   * 
+   * @param data - The API key data or array of API key data to create
+   * @param sharedContext - The shared context for the operation
+   * @returns The created API key(s) with raw tokens included
+   * 
+   * @example
+   * ```typescript
+   * // Create a secret key
+   * const secretKey = await apiKeyModuleService.createApiKeys({
+   *   title: "My Secret Key",
+   *   type: "secret"
+   * })
+   * console.log(secretKey.token) // sk_abc123... (full token)
+   * 
+   * // Create a publishable key
+   * const publishableKey = await apiKeyModuleService.createApiKeys({
+   *   title: "My Publishable Key", 
+   *   type: "publishable"
+   * })
+   * 
+   * // Create multiple keys
+   * const keys = await apiKeyModuleService.createApiKeys([
+   *   { title: "Key 1", type: "secret" },
+   *   { title: "Key 2", type: "publishable" }
+   * ])
+   * ```
+   * 
+   * @throws {MedusaError} When API key data validation fails
+   */
   @InjectManager()
   @EmitEvents()
   //@ts-expect-error
@@ -385,6 +453,46 @@ export class ApiKeyModuleService
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO[]>
 
+  /**
+   * Revokes one or more API keys, making them invalid for authentication.
+   * 
+   * This method sets a revocation timestamp on the API key(s), which can be
+   * immediate or scheduled for the future using the `revoke_in` parameter.
+   * Revoked keys cannot be used for authentication and are required to be
+   * revoked before deletion.
+   * 
+   * @param idOrSelector - The API key ID or filter criteria to select keys for revocation
+   * @param data - The revocation data including who is revoking and optional delay
+   * @param sharedContext - The shared context for the operation
+   * @returns The revoked API key(s)
+   * 
+   * @example
+   * ```typescript
+   * // Revoke immediately
+   * const revokedKey = await apiKeyModuleService.revoke(
+   *   "apk_123",
+   *   { revoked_by: "user_456" }
+   * )
+   * 
+   * // Revoke after 1 hour
+   * const delayedRevoke = await apiKeyModuleService.revoke(
+   *   "apk_123",
+   *   { 
+   *     revoked_by: "user_456",
+   *     revoke_in: 3600 // seconds
+   *   }
+   * )
+   * 
+   * // Revoke multiple keys
+   * const revokedKeys = await apiKeyModuleService.revoke(
+   *   { type: "secret" },
+   *   { revoked_by: "admin_123" }
+   * )
+   * ```
+   * 
+   * @throws {MedusaError} When trying to revoke already revoked keys
+   * @throws {MedusaError} When required revocation data is missing
+   */
   @InjectManager()
   @EmitEvents()
   async revoke(
@@ -436,6 +544,37 @@ export class ApiKeyModuleService
     return revokedApiKeys
   }
 
+  /**
+   * Authenticates an API token and returns the associated API key if valid.
+   * 
+   * This method validates secret API keys by:
+   * 1. Finding keys with matching redacted token (optimization)
+   * 2. Checking if the key is not revoked or revoked in the future
+   * 3. Computing the hash of the provided token with the stored salt
+   * 4. Comparing the computed hash with the stored hash
+   * 
+   * Publishable keys are validated by direct string comparison.
+   * 
+   * @param token - The API token to authenticate (e.g., "sk_abc123..." or "pk_def456...")
+   * @param sharedContext - The shared context for the operation
+   * @returns The authenticated API key data or false if authentication fails
+   * 
+   * @example
+   * ```typescript
+   * // Authenticate a token
+   * const authResult = await apiKeyModuleService.authenticate("sk_abc123...")
+   * 
+   * if (authResult) {
+   *   console.log(`Authenticated as: ${authResult.title}`)
+   *   // Proceed with authorized operation
+   * } else {
+   *   console.log("Authentication failed")
+   *   // Handle unauthorized access
+   * }
+   * ```
+   * 
+   * @returns False if token is invalid, revoked, or doesn't exist
+   */
   @InjectManager()
   async authenticate(
     token: string,
