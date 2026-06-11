@@ -52,6 +52,7 @@ The `recommended` configuration is the default preset for Medusa projects. It in
 - TypeScript parser configuration with project support
 - Common file patterns to ignore (`.medusa/`, `dist/`, `node_modules/`, etc.)
 - Base plugin setup for TypeScript and TSX files
+- Essential workflow rules that catch common errors and enforce best practices
 
 ```js title="eslint.config.js"
 import medusa from "@medusajs/eslint-plugin"
@@ -61,7 +62,7 @@ export default [...medusa.configs.recommended]
 
 ### Strict
 
-The `strict` configuration extends the recommended preset and enables additional, more opinionated rules:
+The `strict` configuration extends the recommended preset and enables additional rules that require TypeScript type information. These rules are more comprehensive but slower to run:
 
 ```js title="eslint.config.js"
 import medusa from "@medusajs/eslint-plugin"
@@ -69,15 +70,40 @@ import medusa from "@medusajs/eslint-plugin"
 export default [...medusa.configs.strict]
 ```
 
-## Status
+Note: The strict configuration requires TypeScript type information, so ensure your `parserOptions.project` or `parserOptions.projectService` is properly configured in your ESLint setup.
 
-The plugin is currently in pre-release status. It ships with the package scaffold and configuration presets, but no specific rules are implemented yet. Rules will be added incrementally in future releases.
+## Available Rules
 
-The planned rules will cover:
+The plugin currently provides workflow-specific rules to catch common errors and enforce best practices:
+
+### Workflow Rules (Recommended Configuration)
+
+- `no-async-workflow-constructor` - Prevents async functions in workflow constructors
+- `no-conditional-expressions-in-workflow` - Disallows conditional expressions in workflow definitions
+- `no-console-log-in-workflow` - Prevents console.log usage in workflows
+- `no-direct-variable-mutation-in-workflow` - Prevents direct variable mutation in workflows
+- `no-if-in-workflow-constructor` - Disallows if statements in workflow constructors
+- `no-loops-in-workflow` - Prevents loops in workflow definitions
+- `no-new-date-in-workflow` - Disallows `new Date()` calls in workflow constructors (use `transform` or `createStep` instead)
+- `no-spread-in-workflow` - Prevents spread operators in workflow definitions
+- `no-throw-in-transform` - Disallows throwing errors in transform functions
+- `no-try-catch-in-workflow` - Prevents try-catch blocks in workflow constructors
+- `step-id-kebab-case` - Ensures step IDs use kebab-case naming (warning level)
+- `step-must-return-step-response` - Requires steps to return StepResponse objects
+- `workflow-id-matches-export-or-filename` - Ensures workflow IDs match their export names or filenames (warning level)
+- `workflow-must-return-workflow-response` - Requires workflows to return WorkflowResponse objects
+
+### Type-Aware Rules (Strict Configuration Only)
+
+- `no-workflow-call-without-container` - Warns when calling workflows without proper container setup (requires TypeScript type information)
+- `no-non-serializable-step-return` - Prevents non-serializable types (Map, Set, WeakMap, WeakSet) in step returns (requires TypeScript type information, applies to workflow directories only)
+
+### Planned Rules
+
+Future releases will add rules for:
 
 - **API Routes**: Enforce proper route structure, request/response typing, and error handling patterns
 - **Modules**: Validate service patterns, dependency injection, and module structure
-- **Workflows**: Ensure correct step definitions, compensation functions, and workflow composition
 - **Subscribers**: Verify event handling patterns and subscription setup
 - **Scheduled Jobs**: Validate job configuration and execution patterns
 - **Admin Extensions**: Enforce widget and UI route conventions
@@ -106,7 +132,11 @@ yarn workspace @medusajs/eslint-plugin watch
 
 ### TypeScript Project Detection
 
-If you encounter issues with TypeScript project detection, ensure your `tsconfig.json` is properly configured and accessible from your ESLint configuration location.
+If you encounter issues with TypeScript project detection, ensure your `tsconfig.json` is properly configured and accessible from your ESLint configuration location. This is particularly important when using the `strict` configuration, which includes type-aware rules.
+
+### Strict Configuration Performance
+
+The strict configuration includes rules that require TypeScript type information. These rules are more thorough but can be slower to run on large codebases. If you experience performance issues, consider using only the `recommended` configuration for faster linting.
 
 ### Peer Dependency Warnings
 

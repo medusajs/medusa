@@ -7577,5 +7577,5 @@ export const generatedEditDates = {
   "app/commerce-modules/auth/email-verification/page.mdx": "2026-06-05T10:33:10.552Z",
   "app/storefront-development/customers/verify-account/page.mdx": "2026-06-02T11:24:01.444Z",
   "references/events/Auth/variables/events.Auth.AuthEvents/page.mdx": "2026-06-03T06:24:01.642Z",
-  "app/medusa-eslint-plugin/page.mdx": "2026-06-11T06:34:17.918Z"
+  "app/medusa-eslint-plugin/page.mdx": "2026-06-11T08:47:49.399Z"
 }
