@@ -85,6 +85,24 @@ export const isFunctionNode = (node: TSESTree.Node): boolean =>
   FUNCTION_NODE_TYPES.has(node.type)
 
 /**
+ * Returns the static key name of an object-literal property when it can be
+ * resolved without scope analysis — either an `Identifier` key or a string
+ * `Literal` key. Returns `null` for computed keys, non-`Property` elements
+ * (spread, methods written as `SpreadElement`), and numeric/template keys.
+ */
+export const getPropertyKeyName = (
+  prop: TSESTree.ObjectLiteralElement
+): string | null => {
+  if (prop.type !== AST_NODE_TYPES.Property || prop.computed) return null
+  const key = prop.key
+  if (key.type === AST_NODE_TYPES.Identifier) return key.name
+  if (key.type === AST_NODE_TYPES.Literal && typeof key.value === "string") {
+    return key.value
+  }
+  return null
+}
+
+/**
  * Returns the name of the `VariableDeclarator` that directly initializes
  * `call`, e.g. `export const myWorkflow = createWorkflow(...)` → `"myWorkflow"`.
  *

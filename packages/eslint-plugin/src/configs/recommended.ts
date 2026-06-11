@@ -59,6 +59,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       ],
       rules: {
         [ruleId("data-model-table-name-snake-case")]: "warn",
+        [ruleId("no-reserved-default-properties-in-model")]: "error",
       },
     },
   ]

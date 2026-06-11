@@ -9,6 +9,7 @@ import { rule as noIfInWorkflowConstructor } from "./no-if-in-workflow-construct
 import { rule as noLoopsInWorkflow } from "./no-loops-in-workflow"
 import { rule as noNewDateInWorkflow } from "./no-new-date-in-workflow"
 import { rule as noNonSerializableStepReturn } from "./no-non-serializable-step-return"
+import { rule as noReservedDefaultPropertiesInModel } from "./no-reserved-default-properties-in-model"
 import { rule as noSpreadInWorkflow } from "./no-spread-in-workflow"
 import { rule as noThrowInTransform } from "./no-throw-in-transform"
 import { rule as noTryCatchInWorkflow } from "./no-try-catch-in-workflow"
@@ -29,6 +30,7 @@ export const rules = {
   "no-loops-in-workflow": noLoopsInWorkflow,
   "no-new-date-in-workflow": noNewDateInWorkflow,
   "no-non-serializable-step-return": noNonSerializableStepReturn,
+  "no-reserved-default-properties-in-model": noReservedDefaultPropertiesInModel,
   "no-spread-in-workflow": noSpreadInWorkflow,
   "no-throw-in-transform": noThrowInTransform,
   "no-try-catch-in-workflow": noTryCatchInWorkflow,
