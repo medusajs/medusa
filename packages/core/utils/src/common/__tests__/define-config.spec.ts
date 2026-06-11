@@ -2,6 +2,39 @@ import { Modules } from "../../modules-sdk"
 import { DEFAULT_STORE_RESTRICTED_FIELDS, defineConfig } from "../define-config"
 
 describe("defineConfig", function () {
+  const CLOUD_ENV_VARS = [
+    "MEDUSA_CLOUD_ENVIRONMENT_HANDLE",
+    "MEDUSA_CLOUD_SANDBOX_HANDLE",
+    "MEDUSA_CLOUD_API_KEY",
+    "MEDUSA_CLOUD_WEBHOOK_SECRET",
+    "MEDUSA_CLOUD_EMAILS_ENDPOINT",
+    "MEDUSA_CLOUD_PAYMENTS_ENDPOINT",
+    "MEDUSA_CLOUD_OAUTH_AUTHORIZE_ENDPOINT",
+    "MEDUSA_CLOUD_OAUTH_TOKEN_ENDPOINT",
+    "MEDUSA_CLOUD_OAUTH_CALLBACK_URL",
+    "MEDUSA_CLOUD_OAUTH_DISABLED",
+    "MEDUSA_CLOUD_OAUTH_JWKS_ENDPOINT",
+    "MEDUSA_CLOUD_OAUTH_AUDIENCE",
+  ]
+  const savedCloudEnv: Record<string, string | undefined> = {}
+
+  beforeEach(() => {
+    CLOUD_ENV_VARS.forEach((key) => {
+      savedCloudEnv[key] = process.env[key]
+      delete process.env[key]
+    })
+  })
+
+  afterEach(() => {
+    CLOUD_ENV_VARS.forEach((key) => {
+      if (savedCloudEnv[key] === undefined) {
+        delete process.env[key]
+      } else {
+        process.env[key] = savedCloudEnv[key]
+      }
+    })
+  })
+
   it("should merge empty config with the defaults", function () {
     expect(defineConfig()).toMatchInlineSnapshot(`
       {
