@@ -124,8 +124,14 @@ export const updatePaymentSessionsStep = createStep(
         // The in-place update failed (e.g. the provider payment no longer
         // exists). Fall back to the original behaviour for this session: delete
         // it so the caller can recreate a fresh session. Best-effort and
-        // swallowed, mirroring deletePaymentSessionsStep, so a single stale
-        // session can't fail the whole operation.
+        // swallowed so a single stale session can't fail the whole operation.
+        //
+        // Unlike deletePaymentSessionsStep, a fallback-deleted session is
+        // intentionally NOT recreated on compensation (it isn't added to
+        // `reverts`): it only reaches this branch because its provider payment
+        // was already gone, so there is nothing to restore — recreating would
+        // just mint a brand-new provider payment during a rollback. The next
+        // re-initialisation creates a fresh session anyway.
         logger.warn(
           `In-place payment session update failed for ${session.id}; deleting it so it can be recreated - ${e}`
         )
