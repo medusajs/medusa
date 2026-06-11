@@ -1,5 +1,6 @@
 import type { ESLint } from "eslint"
 import { rule as dataModelTableNameSnakeCase } from "./data-model-table-name-snake-case"
+import { rule as linkCreateKeysModulesEnum } from "./link-create-keys-modules-enum"
 import { rule as linkNoCrossModuleRelationship } from "./link-no-cross-module-relationship"
 import { rule as linkUsesLinkableProperties } from "./link-uses-linkable-properties"
 import { rule as loaderMustBeExportedInModuleDefinition } from "./loader-must-be-exported-in-module-definition"
@@ -30,6 +31,7 @@ import { rule as workflowMustReturnWorkflowResponse } from "./workflow-must-retu
 
 export const rules = {
   "data-model-table-name-snake-case": dataModelTableNameSnakeCase,
+  "link-create-keys-modules-enum": linkCreateKeysModulesEnum,
   "link-no-cross-module-relationship": linkNoCrossModuleRelationship,
   "link-uses-linkable-properties": linkUsesLinkableProperties,
   "loader-must-be-exported-in-module-definition":
