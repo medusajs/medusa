@@ -3,6 +3,7 @@ import { MedusaError } from "@medusajs/framework/utils"
 import {
   createStep,
   createWorkflow,
+  transform,
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
@@ -70,6 +71,15 @@ export type MarkPaymentCollectionAsPaidInput = {
    * The ID of the user marking the payment collection as completed.
    */
   captured_by?: string
+  /**
+   * The ID of the payment provider to record the captured payment under.
+   * Useful when the payment was collected through a specific provider
+   * (for example a POS or cash provider) rather than the system default.
+   *
+   * Defaults to the system (manual) payment provider when omitted, preserving
+   * the previous behavior.
+   */
+  provider_id?: string
 }
 
 const systemPaymentProviderId = "pp_system_default"
@@ -106,10 +116,15 @@ export const markPaymentCollectionAsPaid = createWorkflow(
 
     throwUnlessPaymentCollectionNotPaid({ paymentCollection })
 
+    const providerId = transform(
+      { input },
+      (data) => data.input.provider_id ?? systemPaymentProviderId
+    )
+
     const paymentSession = createPaymentSessionsWorkflow.runAsStep({
       input: {
         payment_collection_id: paymentCollection.id,
-        provider_id: systemPaymentProviderId,
+        provider_id: providerId,
         data: {},
         context: {},
       },

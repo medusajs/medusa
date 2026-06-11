@@ -1,7 +1,7 @@
 /**
  * The data required to create a single-use password reset token.
  *
- * @since 2.15.6
+ * @since 2.16.0
  */
 export type CreatePasswordResetTokenDTO = {
   /**
@@ -22,7 +22,7 @@ export type CreatePasswordResetTokenDTO = {
 /**
  * The data returned when issuing a password reset token.
  *
- * @since 2.15.6
+ * @since 2.16.0
  */
 export type CreatePasswordResetTokenResponse = {
   /**
@@ -39,7 +39,7 @@ export type CreatePasswordResetTokenResponse = {
 /**
  * The data required to consume a previously-issued password reset token.
  *
- * @since 2.15.6
+ * @since 2.16.0
  */
 export type ConsumePasswordResetTokenDTO = {
   /**
@@ -59,7 +59,7 @@ export type ConsumePasswordResetTokenDTO = {
 /**
  * The data returned when a password reset token is successfully consumed.
  *
- * @since 2.15.6
+ * @since 2.16.0
  */
 export type ConsumePasswordResetTokenResponse = {
   /** The ID of the auth identity associated with the consumed token. */
