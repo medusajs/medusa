@@ -3,7 +3,11 @@ import {
   CustomerDTO,
   PaymentSessionDTO,
 } from "@medusajs/framework/types"
-import { isPresent, Modules } from "@medusajs/framework/utils"
+import {
+  isPresent,
+  Modules,
+  PaymentSessionStatus,
+} from "@medusajs/framework/utils"
 import {
   createWorkflow,
   transform,
@@ -13,8 +17,9 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import {
-  createOrUpdatePaymentSessionStep,
   createPaymentAccountHolderStep,
+  createPaymentSessionStep,
+  updatePaymentSessionStep,
 } from "../steps"
 import { deletePaymentSessionsWorkflow } from "./delete-payment-sessions"
 
@@ -184,30 +189,68 @@ export const createPaymentSessionsWorkflow = createWorkflow(
     // Reuse an existing unconfirmed session for the same provider/currency by
     // updating its amount in place (keeping the same provider payment, e.g. the
     // same Stripe PaymentIntent) instead of always deleting and recreating it.
-    // This must run BEFORE the delete so the reused session can be excluded from
-    // deletion.
-    const resolveInput = transform(
+    // The reusable session is resolved BEFORE the delete so it can be excluded
+    // from deletion.
+    //
+    // Reusable = an unconfirmed session for the SAME provider and currency. A
+    // confirmed session's amount can't be changed, and a provider can't change a
+    // session's currency, so those must be recreated. Currency is compared
+    // case-insensitively to avoid silently falling through to a new session
+    // (and a new provider payment) on a casing mismatch.
+    const reusableSession = transform(
       { paymentSessionInput, paymentCollection },
       ({ paymentSessionInput, paymentCollection }) => {
-        return {
-          ...paymentSessionInput,
-          existing_sessions: paymentCollection?.payment_sessions ?? [],
-        }
+        const targetCurrency = (
+          paymentSessionInput.currency_code ?? ""
+        ).toLowerCase()
+
+        return (
+          (paymentCollection?.payment_sessions ?? []).find(
+            (s) =>
+              s.provider_id === paymentSessionInput.provider_id &&
+              (s.currency_code ?? "").toLowerCase() === targetCurrency &&
+              (s.status === PaymentSessionStatus.PENDING ||
+                s.status === PaymentSessionStatus.REQUIRES_MORE)
+          ) ?? null
+        )
       }
     )
 
-    const resolved = createOrUpdatePaymentSessionStep(resolveInput)
+    const updatedSession = when(
+      { reusableSession },
+      ({ reusableSession }) => !!reusableSession
+    ).then(() => {
+      return updatePaymentSessionStep({
+        id: reusableSession.id,
+        amount: paymentSessionInput.amount,
+        currency_code: paymentSessionInput.currency_code,
+      })
+    })
+
+    const createdSession = when(
+      { reusableSession },
+      ({ reusableSession }) => !reusableSession
+    ).then(() => {
+      return createPaymentSessionStep(paymentSessionInput)
+    })
+
+    // Exactly one of the two branches runs, so one of these is always defined.
+    const session = transform(
+      { updatedSession, createdSession },
+      ({ updatedSession, createdSession }) =>
+        (updatedSession || createdSession) as PaymentSessionDTO
+    )
 
     // Note: We delete every OTHER existing session (we don't support split
     // payments at the moment); the reused session, if any, is excluded so its
     // provider payment survives. When we are ready to accept split payments,
     // this along with other workflows need to be handled correctly.
     const deletePaymentSessionInput = transform(
-      { paymentCollection, resolved },
-      ({ paymentCollection, resolved }) => {
+      { paymentCollection, reusableSession },
+      ({ paymentCollection, reusableSession }) => {
         const ids = (
           paymentCollection?.payment_sessions?.map((ps) => ps.id) || []
-        ).filter((id) => id !== resolved.reused_session_id)
+        ).filter((id) => id !== reusableSession?.id)
 
         return { ids }
       }
@@ -217,8 +260,6 @@ export const createPaymentSessionsWorkflow = createWorkflow(
       input: deletePaymentSessionInput,
     })
 
-    const created = transform({ resolved }, ({ resolved }) => resolved.session)
-
-    return new WorkflowResponse(created)
+    return new WorkflowResponse(session)
   }
 )

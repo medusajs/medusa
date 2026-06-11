@@ -141,8 +141,9 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
         )
 
         if (valueIsEqual) {
-          // Compare case-insensitively (matching createOrUpdatePaymentSessionStep)
-          // so a case-only difference isn't treated as a real currency change.
+          // Compare case-insensitively (matching the reuse check in
+          // createPaymentSessionsWorkflow) so a case-only difference isn't
+          // treated as a real currency change.
           return (
             (cart.payment_collection.currency_code ?? "").toLowerCase() !==
             (cart.currency_code ?? "").toLowerCase()
@@ -159,8 +160,9 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
       // sessions on a currency change) is deleted so the caller recreates it.
       const partitionedSessions = transform({ cart }, ({ cart }) => {
         const sessions = cart.payment_collection?.payment_sessions ?? []
-        // Compare case-insensitively (matching createOrUpdatePaymentSessionStep):
-        // a provider can't change a payment's currency, so a case-only mismatch
+        // Compare case-insensitively (matching the reuse check in
+        // createPaymentSessionsWorkflow): a provider can't change a payment's
+        // currency, so a case-only mismatch
         // must not force a delete (which would lose the provider payment) when
         // the session could be updated in place.
         const currencyChanged =
