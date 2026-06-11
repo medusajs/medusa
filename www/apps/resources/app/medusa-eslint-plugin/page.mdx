@@ -1,0 +1,117 @@
+---
+generate_toc: true
+---
+
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa ESLint Plugin`,
+}
+
+# {metadata.title}
+
+The Medusa ESLint Plugin is an official ESLint plugin that helps enforce Medusa's framework conventions across your project. It provides automated static analysis to ensure your code follows best practices for API routes, modules, workflows, subscribers, scheduled jobs, admin extensions, and module links.
+
+<Prerequisites items={[
+  {
+    text: "ESLint v9.0.0+",
+    link: "https://eslint.org/docs/latest/use/getting-started"
+  },
+  {
+    text: "TypeScript v4.8.0+",
+    link: "https://www.typescriptlang.org/download"
+  }
+]} />
+
+## Installation
+
+Install the plugin as a development dependency in your Medusa project:
+
+```bash npm2yarn
+npm install -D @medusajs/eslint-plugin eslint
+```
+
+Note that `eslint` is a peer dependency and must be installed in your project.
+
+## Usage
+
+The plugin supports ESLint's flat configuration format. Add it to your `eslint.config.js` file:
+
+```js title="eslint.config.js"
+import medusa from "@medusajs/eslint-plugin"
+
+export default [...medusa.configs.recommended]
+```
+
+## Configurations
+
+### Recommended
+
+The `recommended` configuration is the default preset for Medusa projects. It includes:
+
+- TypeScript parser configuration with project support
+- Common file patterns to ignore (`.medusa/`, `dist/`, `node_modules/`, etc.)
+- Base plugin setup for TypeScript and TSX files
+
+```js title="eslint.config.js"
+import medusa from "@medusajs/eslint-plugin"
+
+export default [...medusa.configs.recommended]
+```
+
+### Strict
+
+The `strict` configuration extends the recommended preset and enables additional, more opinionated rules:
+
+```js title="eslint.config.js"
+import medusa from "@medusajs/eslint-plugin"
+
+export default [...medusa.configs.strict]
+```
+
+## Status
+
+The plugin is currently in pre-release status. It ships with the package scaffold and configuration presets, but no specific rules are implemented yet. Rules will be added incrementally in future releases.
+
+The planned rules will cover:
+
+- **API Routes**: Enforce proper route structure, request/response typing, and error handling patterns
+- **Modules**: Validate service patterns, dependency injection, and module structure
+- **Workflows**: Ensure correct step definitions, compensation functions, and workflow composition
+- **Subscribers**: Verify event handling patterns and subscription setup
+- **Scheduled Jobs**: Validate job configuration and execution patterns
+- **Admin Extensions**: Enforce widget and UI route conventions
+- **Module Links**: Ensure proper module linking and relationship definitions
+
+## Migration from Legacy Configuration
+
+If you're upgrading from ESLint's legacy configuration format, update your configuration to use the flat config format as shown in the usage examples above.
+
+## Development
+
+For contributors working on the plugin:
+
+```bash
+# Build the plugin
+yarn workspace @medusajs/eslint-plugin build
+
+# Run tests
+yarn workspace @medusajs/eslint-plugin test
+
+# Watch mode during development
+yarn workspace @medusajs/eslint-plugin watch
+```
+
+## Troubleshooting
+
+### TypeScript Project Detection
+
+If you encounter issues with TypeScript project detection, ensure your `tsconfig.json` is properly configured and accessible from your ESLint configuration location.
+
+### Peer Dependency Warnings
+
+Make sure you have compatible versions of the peer dependencies:
+- ESLint v9.0.0 or higher
+- TypeScript v4.8.0 or higher
+
+For specific version compatibility, check the plugin's `package.json` file.
