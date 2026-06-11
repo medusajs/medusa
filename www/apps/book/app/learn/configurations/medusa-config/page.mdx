@@ -34,7 +34,7 @@ module.exports = defineConfig({
 
 The `defineConfig` utility accepts an object having the following properties:
 
-- [projectConfig](#project-configurations-projectConfig): Essential configurations related to the Medusa application, such as database and CORS configurations.
+- [projectConfig](#project-configurations-projectConfig): Essential configurations related to the Medusa application, such as database, CORS, and cloud configurations.
 - [admin](#admin-configurations-admin): Configurations related to the Medusa Admin.
 - [modules](#module-configurations-modules): Configurations related to registered modules.
 - [plugins](#plugin-configurations-plugins): Configurations related to registered plugins.
@@ -938,6 +938,79 @@ module.exports = defineConfig({
   // ...
 })
 ```
+
+### cloud
+
+The `projectConfig.cloud` configuration specifies Medusa Cloud-specific configurations for services like OAuth, emails, and payments when your application integrates with Medusa Cloud.
+
+This configuration is an object that accepts the following properties:
+
+#### cloud.environmentHandle
+
+The `projectConfig.cloud.environmentHandle` configuration specifies the environment handle of the Medusa Cloud environment.
+
+#### Example
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    cloud: {
+      environmentHandle: process.env.MEDUSA_CLOUD_ENVIRONMENT_HANDLE,
+      // ...
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+#### cloud.oauthJwksUri
+
+The `projectConfig.cloud.oauthJwksUri` configuration specifies the JWKS URI for the Medusa Cloud OAuth service. This is used to verify the JWT tokens issued by the Medusa Cloud OAuth service.
+
+If not provided, an error is thrown when trying to use the Medusa Cloud OAuth service.
+
+#### Example
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    cloud: {
+      oauthJwksUri: process.env.MEDUSA_CLOUD_OAUTH_JWKS_ENDPOINT,
+      // ...
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+#### cloud.oauthAudience
+
+The `projectConfig.cloud.oauthAudience` configuration specifies the expected `aud` claim of id_tokens issued by the Medusa Cloud OAuth service.
+
+If not provided, an error is thrown when trying to use the Medusa Cloud OAuth service.
+
+#### Example
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    cloud: {
+      oauthAudience: process.env.MEDUSA_CLOUD_OAUTH_AUDIENCE,
+      // ...
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+<Note>
+
+Learn more about Medusa Cloud OAuth configuration in the [Cloud documentation](!cloud!/user).
+
+</Note>
 
 ---
 

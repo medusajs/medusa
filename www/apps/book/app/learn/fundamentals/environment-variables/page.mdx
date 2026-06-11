@@ -220,6 +220,28 @@ You should opt for setting configurations in `medusa-config.ts` where possible. 
     </Table.Row>
     <Table.Row>
       <Table.Cell>
+        `MEDUSA_CLOUD_OAUTH_JWKS_ENDPOINT`
+      </Table.Cell>
+      <Table.Cell>
+        The JWKS URI for the Medusa Cloud OAuth service. Used to verify JWT tokens issued by the Medusa Cloud OAuth service. Only used if [projectConfig.cloud.oauthJwksUri](../../configurations/medusa-config/page.mdx#cloud-oauthJwksUri) isn't set in `medusa-config.ts`. **Required when using Medusa Cloud OAuth authentication.**
+      </Table.Cell>
+      <Table.Cell>
+        \-
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `MEDUSA_CLOUD_OAUTH_AUDIENCE`
+      </Table.Cell>
+      <Table.Cell>
+        The expected `aud` claim of id_tokens issued by the Medusa Cloud OAuth service. Only used if [projectConfig.cloud.oauthAudience](../../configurations/medusa-config/page.mdx#cloud-oauthAudience) isn't set in `medusa-config.ts`. **Required when using Medusa Cloud OAuth authentication.**
+      </Table.Cell>
+      <Table.Cell>
+        \-
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
         `MEDUSA_BACKEND_URL`
       </Table.Cell>
       <Table.Cell>
