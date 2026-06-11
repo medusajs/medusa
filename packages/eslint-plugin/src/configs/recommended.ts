@@ -42,6 +42,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       rules: {
         [ruleId("service-constructor-must-call-super")]: "error",
         [ruleId("service-methods-must-be-async")]: "error",
+        [ruleId("use-inject-manager-on-public-methods")]: "warn",
       },
     },
   ]

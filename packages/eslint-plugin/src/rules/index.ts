@@ -9,6 +9,7 @@ import { rule as noSpreadInWorkflow } from "./no-spread-in-workflow"
 import { rule as noTryCatchInWorkflow } from "./no-try-catch-in-workflow"
 import { rule as serviceConstructorMustCallSuper } from "./service-constructor-must-call-super"
 import { rule as serviceMethodsMustBeAsync } from "./service-methods-must-be-async"
+import { rule as useInjectManagerOnPublicMethods } from "./use-inject-manager-on-public-methods"
 
 export const rules = {
   "no-async-workflow-constructor": noAsyncWorkflowConstructor,
@@ -21,4 +22,5 @@ export const rules = {
   "no-try-catch-in-workflow": noTryCatchInWorkflow,
   "service-constructor-must-call-super": serviceConstructorMustCallSuper,
   "service-methods-must-be-async": serviceMethodsMustBeAsync,
+  "use-inject-manager-on-public-methods": useInjectManagerOnPublicMethods,
 } as unknown as NonNullable<ESLint.Plugin["rules"]>
