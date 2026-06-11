@@ -1,5 +1,8 @@
 import { SelectParams } from "../../common"
 
+/**
+ * The data to create a cart.
+ */
 export interface StoreCreateCart {
   /**
    * The ID of the region that the cart is created in.
@@ -53,6 +56,9 @@ export interface StoreCreateCart {
   locale?: string | null
 }
 
+/**
+ * The data to update a cart.
+ */
 export interface StoreUpdateCart {
   /**
    * The ID of the region that the cart is in.
@@ -94,8 +100,14 @@ export interface StoreUpdateCart {
   locale?: string | null
 }
 
+/**
+ * The data to update a cart's customer.
+ */
 export interface StoreUpdateCartCustomer {}
 
+/**
+ * The data to add a line item to a cart.
+ */
 export interface StoreAddCartLineItem {
   /**
    * The ID of the product variant to add to the cart.
@@ -111,6 +123,9 @@ export interface StoreAddCartLineItem {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The data to update a line item in a cart.
+ */
 export interface StoreUpdateCartLineItem {
   /**
    * The item's quantity.
@@ -149,10 +164,16 @@ export type StoreAddCartShippingMethods =
   | StoreAddCartShippingMethodsBase
   | StoreAddCartShippingMethodsBase[]
 
+/**
+ * The data to complete a cart.
+ */
 export interface StoreCompleteCart {
   idempotency_key?: string
 }
 
+/**
+ * The address details.
+ */
 export interface StoreAddAddress {
   /**
    * The first name of the address.
@@ -210,6 +231,9 @@ export interface StoreAddAddress {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The data to remove promotions from a cart.
+ */
 export interface StoreCartRemovePromotion {
   /**
    * The promotion codes to remove from the cart.
@@ -217,6 +241,9 @@ export interface StoreCartRemovePromotion {
   promo_codes: string[]
 }
 
+/**
+ * The data to add promotions to a cart.
+ */
 export interface StoreCartAddPromotion {
   /**
    * The promotion codes to add to the cart.
@@ -224,4 +251,7 @@ export interface StoreCartAddPromotion {
   promo_codes: string[]
 }
 
+/**
+ * The filters to apply when calculating taxes for a cart.
+ */
 export interface StoreCalculateCartTaxes extends SelectParams {}
