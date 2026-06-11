@@ -8,7 +8,11 @@ import {
   IPaymentModuleService,
   IRegionModuleService,
 } from "@medusajs/types"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+  Modules,
+} from "@medusajs/utils"
 
 jest.setTimeout(50000)
 
@@ -370,6 +374,107 @@ medusaIntegrationTestRunner({
           expect(sessions[0].id).toEqual(second.id)
 
           updateSpy.mockRestore()
+        })
+
+        it("should create a fresh session (without failing) when the reused session was deleted before it could be retrieved", async () => {
+          const { result: first } = await createPaymentSessionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              payment_collection_id: paymentCollection.id,
+              provider_id: "pp_system_default",
+              context: {},
+              data: {},
+            },
+          })
+
+          // Simulate the reusable session being deleted out-of-band between the
+          // caller resolving it (from the payment-collection query) and the
+          // update step retrieving it: retrieve throws NOT_FOUND, so the
+          // workflow must fall back to a fresh session instead of failing the
+          // route.
+          const retrieveSpy = jest
+            .spyOn(paymentModule, "retrievePaymentSession")
+            .mockRejectedValueOnce(
+              new MedusaError(
+                MedusaError.Types.NOT_FOUND,
+                `Payment session with id: ${first.id} was not found`
+              )
+            )
+
+          const { result: second, errors } =
+            await createPaymentSessionsWorkflow(appContainer).run({
+              input: {
+                payment_collection_id: paymentCollection.id,
+                provider_id: "pp_system_default",
+                context: {},
+                data: {},
+              },
+              throwOnError: false,
+            })
+
+          expect(retrieveSpy).toHaveBeenCalled()
+          expect(errors).toEqual([])
+
+          // A brand-new session replaces the stale one (no failure), and the
+          // stale session is gone.
+          expect(second.id).not.toEqual(first.id)
+
+          const sessions = await paymentModule.listPaymentSessions({
+            payment_collection_id: paymentCollection.id,
+          })
+
+          expect(sessions).toHaveLength(1)
+          expect(sessions[0].id).toEqual(second.id)
+
+          retrieveSpy.mockRestore()
+        })
+
+        it("should fail (without deleting and recreating the session) when retrieving the reused session errors transiently", async () => {
+          const { result: first } = await createPaymentSessionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              payment_collection_id: paymentCollection.id,
+              provider_id: "pp_system_default",
+              context: {},
+              data: {},
+            },
+          })
+
+          // A transient (non-NOT_FOUND) error on retrieve must propagate and
+          // fail the step rather than deleting the still-existing session and
+          // recreating it — recreating would spawn a new provider payment, the
+          // exact proliferation this flow avoids.
+          const retrieveSpy = jest
+            .spyOn(paymentModule, "retrievePaymentSession")
+            .mockRejectedValueOnce(new Error("connection terminated unexpectedly"))
+
+          const { errors } = await createPaymentSessionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              payment_collection_id: paymentCollection.id,
+              provider_id: "pp_system_default",
+              context: {},
+              data: {},
+            },
+            throwOnError: false,
+          })
+
+          expect(retrieveSpy).toHaveBeenCalled()
+          expect(errors).not.toEqual([])
+
+          // The original session is untouched: neither deleted nor replaced by a
+          // fresh one (which would mean a new provider payment).
+          const sessions = await paymentModule.listPaymentSessions({
+            payment_collection_id: paymentCollection.id,
+          })
+
+          expect(sessions).toHaveLength(1)
+          expect(sessions[0].id).toEqual(first.id)
+
+          retrieveSpy.mockRestore()
         })
 
         describe("compensation", () => {

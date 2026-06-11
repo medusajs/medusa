@@ -4,7 +4,11 @@ import {
   Logger,
   PaymentSessionDTO,
 } from "@medusajs/framework/types"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+  Modules,
+} from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 /**
@@ -33,14 +37,16 @@ export interface UpdatePaymentSessionStepInput {
  */
 export interface UpdatePaymentSessionStepOutput {
   /**
-   * The updated payment session, or `null` if the in-place update failed and the
-   * session was deleted as a fallback.
+   * The updated payment session, or `null` if it could not be updated in place
+   * (the session was already gone, or the in-place update failed and it was
+   * deleted as a fallback).
    */
   session: PaymentSessionDTO | null
   /**
-   * Whether the session was updated in place. `false` means the in-place update
+   * Whether the session was updated in place. `false` means the session could
+   * not be updated in place — it was already deleted, or the in-place update
    * failed (e.g. the provider payment no longer exists) and the session was
-   * deleted, so the caller should create a fresh session instead.
+   * deleted — so the caller should create a fresh session instead.
    */
   updated: boolean
 }
@@ -66,9 +72,12 @@ export const updatePaymentSessionStepId = "update-payment-session"
  * amount is reverted, so a downstream failure leaves the provider payment as it
  * was before this step ran.
  *
- * If the in-place update fails (for example the provider payment no longer
- * exists), the session is deleted as a best-effort fallback and `updated: false`
- * is returned — mirroring {@link updatePaymentSessionsStep} — so the caller can
+ * If the session can no longer be updated in place — either it was deleted
+ * before this step could retrieve it (a concurrent refresh, re-init, or
+ * refund-recreate races the caller that resolved it as reusable) or the
+ * in-place update fails (for example the provider payment no longer exists) —
+ * the session is deleted as a best-effort fallback and `updated: false` is
+ * returned — mirroring {@link updatePaymentSessionsStep} — so the caller can
  * create a fresh session instead of failing the whole operation.
  *
  * @example
@@ -84,58 +93,79 @@ export const updatePaymentSessionStep = createStep(
     const logger = container.resolve<Logger>(ContainerRegistrationKeys.LOGGER)
     const service = container.resolve<IPaymentModuleService>(Modules.PAYMENT)
 
-    const session = await service.retrievePaymentSession(input.id, {
-      select: ["id", "amount", "currency_code", "data"],
-    })
-
+    let session: PaymentSessionDTO | undefined
     try {
-      const updated = await service.updatePaymentSession({
-        id: input.id,
-        amount: input.amount,
-        currency_code: input.currency_code,
-        // Pass the existing session's data so the provider targets the same
-        // underlying payment (e.g. the same Stripe PaymentIntent) instead of
-        // creating a new one.
-        data: session.data,
+      session = await service.retrievePaymentSession(input.id, {
+        select: ["id", "amount", "currency_code", "data"],
       })
-
-      // Captured for compensation: the amount we updated FROM, plus the
-      // POST-update provider data. Reverting must pass the post-update data
-      // (new amount) with the old amount so a provider no-op guard (data amount
-      // === target) sees a delta and actually resets the provider payment.
-      return new StepResponse<UpdatePaymentSessionStepOutput, RevertData>(
-        { session: updated, updated: true },
-        {
-          id: session.id,
-          amount: session.amount,
-          currency_code: session.currency_code,
-          data: updated.data,
-        }
-      )
     } catch (e) {
-      // The in-place update failed (e.g. the provider payment no longer exists).
-      // Delete the stale session as a best-effort fallback so the caller can
-      // create a fresh one, rather than failing the whole operation. Mirrors
-      // updatePaymentSessionsStep. No revert data is returned: the session is
-      // gone and its provider payment was already missing, so there is nothing
-      // to restore on compensation.
-      logger.warn(
-        `In-place update of payment session ${input.id} failed; deleting it so a fresh session can be created - ${e}`
-      )
+      // A NOT_FOUND means the session was deleted in the window between the
+      // caller resolving it as reusable (from the payment-collection query) and
+      // this step running — e.g. a concurrent refresh, payment re-init, or
+      // refund-recreate. Fall through to the fresh-session fallback below rather
+      // than failing the whole operation. Any other error (e.g. a transient DB
+      // failure) propagates: deleting and recreating a session that still exists
+      // would spawn a new provider payment, the exact proliferation this avoids.
+      if (!(e instanceof MedusaError && e.type === MedusaError.Types.NOT_FOUND)) {
+        throw e
+      }
+    }
 
+    if (session) {
       try {
-        await service.deletePaymentSession(input.id)
-      } catch (deleteError) {
-        logger.error(
-          `Failed to delete payment session ${input.id} after a failed in-place update - ${deleteError}`
+        const updated = await service.updatePaymentSession({
+          id: input.id,
+          amount: input.amount,
+          currency_code: input.currency_code,
+          // Pass the existing session's data so the provider targets the same
+          // underlying payment (e.g. the same Stripe PaymentIntent) instead of
+          // creating a new one.
+          data: session.data,
+        })
+
+        // Captured for compensation: the amount we updated FROM, plus the
+        // POST-update provider data. Reverting must pass the post-update data
+        // (new amount) with the old amount so a provider no-op guard (data
+        // amount === target) sees a delta and actually resets the provider
+        // payment.
+        return new StepResponse<UpdatePaymentSessionStepOutput, RevertData>(
+          { session: updated, updated: true },
+          {
+            id: session.id,
+            amount: session.amount,
+            currency_code: session.currency_code,
+            data: updated.data,
+          }
+        )
+      } catch (e) {
+        // The in-place update failed (e.g. the provider payment no longer
+        // exists). Fall through to the best-effort delete + fresh-session
+        // fallback below, rather than failing the whole operation. Mirrors
+        // updatePaymentSessionsStep.
+        logger.warn(
+          `In-place update of payment session ${input.id} failed; deleting it so a fresh session can be created - ${e}`
         )
       }
-
-      return new StepResponse<UpdatePaymentSessionStepOutput, RevertData>({
-        session: null,
-        updated: false,
-      })
     }
+
+    // Fallback: the session was deleted out from under us (retrieve threw
+    // NOT_FOUND) or the in-place update failed. Best-effort delete so no stale
+    // session lingers (a no-op when it's already gone), then return
+    // `updated: false` with no revert data — the session is gone (or its
+    // provider payment was already missing), so there is nothing to restore on
+    // compensation — and the caller creates a fresh session.
+    try {
+      await service.deletePaymentSession(input.id)
+    } catch (deleteError) {
+      logger.error(
+        `Failed to delete payment session ${input.id} before a fresh session is created - ${deleteError}`
+      )
+    }
+
+    return new StepResponse<UpdatePaymentSessionStepOutput, RevertData>({
+      session: null,
+      updated: false,
+    })
   },
   async (revert: RevertData | undefined, { container }) => {
     if (!revert) {
