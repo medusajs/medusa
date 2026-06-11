@@ -1,10 +1,10 @@
 import type { TSESTree } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
 import { resolveStaticStringValue } from "../../util/ast"
+import { FRAMEWORK_UTILS_SOURCE } from "../../constants"
 
 type MessageIds = "invalidModuleName"
 
-const FRAMEWORK_UTILS = "@medusajs/framework/utils"
 const MODULE_NAME = "Module"
 const VALID_NAME_RE = /^[a-zA-Z0-9_]+$/
 
@@ -28,7 +28,7 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== FRAMEWORK_UTILS) return
+        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) return
         for (const specifier of node.specifiers) {
           if (
             specifier.type === "ImportSpecifier" &&

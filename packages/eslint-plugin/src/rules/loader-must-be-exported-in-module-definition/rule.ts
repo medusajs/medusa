@@ -2,10 +2,10 @@ import * as fs from "fs"
 import * as path from "path"
 import { parse } from "@typescript-eslint/typescript-estree"
 import { createRule } from "../../create-rule"
+import { FRAMEWORK_UTILS_SOURCE } from "../../constants"
 
 type MessageIds = "loaderNotRegistered"
 
-const FRAMEWORK_UTILS = "@medusajs/framework/utils"
 const MODULE_NAME = "Module"
 const INDEX_CANDIDATES = ["index.ts", "index.tsx", "index.js", "index.mjs", "index.cjs"]
 const SUPPORTED_EXTENSIONS = [".ts", ".tsx", ".js", ".mjs", ".cjs"]
@@ -68,7 +68,7 @@ function collectRegisteredLoaders(indexPath: string): Set<string> | null {
   for (const node of ast.body) {
     if (node.type !== "ImportDeclaration") continue
     const src = typeof node.source.value === "string" ? node.source.value : ""
-    if (src === FRAMEWORK_UTILS) {
+    if (src === FRAMEWORK_UTILS_SOURCE) {
       for (const spec of node.specifiers) {
         if (
           spec.type === "ImportSpecifier" &&

@@ -3,10 +3,10 @@ import { AST_NODE_TYPES } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
 import { resolveStaticStringValue } from "../../util/ast"
 import { SNAKE_CASE_RE, toSnake } from "../../util/strings"
+import { FRAMEWORK_UTILS_SOURCE } from "../../constants"
 
 type MessageIds = "invalidTableName"
 
-const FRAMEWORK_UTILS = "@medusajs/framework/utils"
 const MODEL_IMPORT = "model"
 const DEFINE_METHOD = "define"
 
@@ -31,7 +31,7 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== FRAMEWORK_UTILS) return
+        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) return
         for (const specifier of node.specifiers) {
           if (
             specifier.type === AST_NODE_TYPES.ImportSpecifier &&
