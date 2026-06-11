@@ -180,4 +180,100 @@ Learn more about workflows in [this documentation](!docs!/learn/fundamentals/wor
 
 ---
 
+## Product Handle Utilities
+
+Medusa provides utility functions to create and validate URL-friendly handles for products and other entities. These functions support Unicode characters from any language, including Persian, Arabic, Japanese, Chinese, Korean, Russian, and more.
+
+### toHandle
+
+The `toHandle` function converts a string value into a URL-friendly handle.
+
+<Note>
+
+Enhanced Unicode support for `toHandle` is available since Medusa [v2.15.6](https://github.com/medusajs/medusa/releases/tag/v2.15.6). Previously, the function only supported ASCII characters.
+
+</Note>
+
+```ts
+import { toHandle } from "@medusajs/framework/utils"
+
+// Basic usage
+const handle = toHandle("My Product Name")
+// Returns: "my-product-name"
+
+// Unicode support
+const persianHandle = toHandle("کتاب فارسی")
+// Returns: "کتاب-فارسی"
+
+const japaneseHandle = toHandle("私の製品")
+// Returns: "私の-製品"
+
+// Special characters are removed
+const cleanHandle = toHandle("Product's Name & More!")
+// Returns: "products-name-more"
+```
+
+**Behavior:**
+- Converts to lowercase
+- Preserves letters from any language script
+- Removes special characters (apostrophes, punctuation, symbols)
+- Replaces spaces and underscores with hyphens
+- Collapses multiple hyphens into a single hyphen
+- Falls back to a random suffix if the result is empty
+
+### isValidHandle
+
+The `isValidHandle` function validates that a handle is URL-friendly and follows Medusa's conventions.
+
+<Note>
+
+Enhanced Unicode support for `isValidHandle` is available since Medusa [v2.15.6](https://github.com/medusajs/medusa/releases/tag/v2.15.6). The function now supports Unicode characters while rejecting uppercase ASCII letters for consistency.
+
+</Note>
+
+```ts
+import { isValidHandle } from "@medusajs/framework/utils"
+
+// Valid handles
+console.log(isValidHandle("my-product-123")) // true
+console.log(isValidHandle("کتاب-فارسی")) // true
+console.log(isValidHandle("私の-製品")) // true
+
+// Invalid handles
+console.log(isValidHandle("Hello-World")) // false (uppercase letters)
+console.log(isValidHandle("my product")) // false (spaces)
+console.log(isValidHandle("-product")) // false (leading hyphen)
+console.log(isValidHandle("product-")) // false (trailing hyphen)
+console.log(isValidHandle("product--name")) // false (consecutive hyphens)
+```
+
+**Validation Rules:**
+- Must contain only lowercase letters, case-less letters (Arabic, Persian, etc.), numbers, and hyphens
+- Uppercase ASCII letters (A-Z) are rejected to maintain consistency
+- No spaces, leading/trailing hyphens, or consecutive hyphens
+- Supports Unicode letters from any language script
+
+### Usage in Product Creation
+
+These utilities are used automatically when creating products, but you can also use them manually:
+
+```ts
+import { toHandle, isValidHandle } from "@medusajs/framework/utils"
+
+// Manual handle creation
+const productTitle = "الكتاب العربي الجديد"
+const suggestedHandle = toHandle(productTitle)
+
+if (isValidHandle(suggestedHandle)) {
+  // Use the handle for product creation
+  const product = await productService.createProducts({
+    title: productTitle,
+    handle: suggestedHandle,
+    // ...other product data
+  })
+}
+```
+
+---
+
 <CommerceModuleSections />
