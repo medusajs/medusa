@@ -103,6 +103,22 @@ export const getPropertyKeyName = (
 }
 
 /**
+ * Returns the first non-computed `Property` on `obj` whose static key name
+ * matches `name`, or `null` if none exists. Skips `SpreadElement`s and any
+ * `Property` with a computed/non-string/non-identifier key.
+ */
+export const findProperty = (
+  obj: TSESTree.ObjectExpression,
+  name: string
+): TSESTree.Property | null => {
+  for (const prop of obj.properties) {
+    if (prop.type !== AST_NODE_TYPES.Property) continue
+    if (getPropertyKeyName(prop) === name) return prop
+  }
+  return null
+}
+
+/**
  * Returns the name of the `VariableDeclarator` that directly initializes
  * `call`, e.g. `export const myWorkflow = createWorkflow(...)` → `"myWorkflow"`.
  *

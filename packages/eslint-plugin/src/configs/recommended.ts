@@ -88,6 +88,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       ],
       rules: {
         [ruleId("link-uses-linkable-properties")]: "warn",
+        [ruleId("read-only-link-requires-field")]: "error",
       },
     },
   ]
