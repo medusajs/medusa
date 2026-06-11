@@ -27,7 +27,6 @@ moduleIntegrationTestRunner({
         await createCampaigns(MikroOrmWrapper.forkManager())
       })
 
-      // Regression for https://github.com/medusajs/medusa/issues/14899
       // A non-tax-inclusive promotion records its adjustment excl-tax, but a
       // later tax-inclusive promotion measures the remaining applicable amount
       // against the incl-tax `original_total`. Without reconciling the two tax

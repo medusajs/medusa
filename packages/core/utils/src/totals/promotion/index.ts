@@ -82,7 +82,7 @@ function getLineItemOriginalTotal(lineItem) {
   return MathBN.div(lineItem.original_total, lineItem.quantity)
 }
 
-// Applied amounts are accumulated excl-tax; convert to incl-tax for tax-inclusive promotions before subtracting (issue #14899).
+// Applied amounts are accumulated excl-tax; convert to incl-tax for tax-inclusive promotions before subtracting.
 function getAppliedValueInPromotionBase(promotion, lineItem) {
   if (!promotion.is_tax_inclusive) {
     return promotion.applied_value
