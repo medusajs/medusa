@@ -471,6 +471,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "path": "/commerce-modules/auth/authentication-route",
               "title": "Auth Flow with Routes",
               "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/auth/mfa",
+              "title": "Multi-Factor Authentication",
+              "children": []
             }
           ]
         },
@@ -531,6 +539,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "title": "Phone Authentication",
               "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/phone-auth",
               "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/auth/email-verification",
+              "title": "Send Email Verification",
+              "children": []
             }
           ]
         },
@@ -566,6 +582,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "ref",
               "title": "Register Customer in Storefront",
               "path": "https://docs.medusajs.com/resources/storefront-development/customers/register",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Register Customer with Email Verification in Storefront",
+              "path": "https://docs.medusajs.com/resources/storefront-development/customers/verify-account",
               "children": []
             },
             {
@@ -714,6 +738,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "ref",
+                      "title": "requestVerificationWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/requestVerificationWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
                       "title": "setAuthAppMetadataWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/setAuthAppMetadataWorkflow",
                       "children": []
@@ -729,6 +761,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                   "autogenerate_as_ref": true,
                   "sort_sidebar": "alphabetize",
                   "children": [
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "requestVerificationStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/requestVerificationStep",
+                      "children": []
+                    },
                     {
                       "loaded": true,
                       "isPathHref": true,
@@ -782,14 +822,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                   "type": "ref",
                   "title": "refresh",
                   "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/refresh",
-                  "children": []
-                },
-                {
-                  "loaded": true,
-                  "isPathHref": true,
-                  "type": "ref",
-                  "title": "register",
-                  "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/register",
                   "children": []
                 },
                 {
@@ -2758,6 +2790,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "ref",
               "title": "Register Customer in Storefront",
               "path": "https://docs.medusajs.com/resources/storefront-development/customers/register",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Register Customer with Email Verification in Storefront",
+              "path": "https://docs.medusajs.com/resources/storefront-development/customers/verify-account",
               "children": []
             },
             {

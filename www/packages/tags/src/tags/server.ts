@@ -4,6 +4,10 @@ export const server = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/create-actor-type"
   },
   {
+    "title": "Send Email Verification",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/auth/email-verification"
+  },
+  {
     "title": "Reset Password Email",
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/reset-password"
   },
