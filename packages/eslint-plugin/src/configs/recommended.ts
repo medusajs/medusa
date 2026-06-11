@@ -44,6 +44,15 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       },
     },
     {
+      files: ["src/modules/**/*.{ts,tsx}", "**/modules/**/*.{ts,tsx}"],
+      rules: {
+        [ruleId("medusa-context-on-context-param")]: "warn",
+        [ruleId("service-constructor-must-call-super")]: "error",
+        [ruleId("service-methods-must-be-async")]: "error",
+        [ruleId("use-inject-manager-on-public-methods")]: "warn",
+      }
+    },
+    {
       files: [
         "src/modules/**/index.{ts,js}",
         "**/modules/**/index.{ts,js}",

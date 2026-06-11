@@ -16,3 +16,7 @@ export const PLUGIN_NAME = `${PLUGIN_NAMESPACE}/eslint-plugin`
 
 /** Build the fully-qualified rule id a consumer would use in their config. */
 export const ruleId = (name: string): string => `${PLUGIN_NAMESPACE}/${name}`
+
+/** Public entry-point sources that rules inspect imports from. */
+export const FRAMEWORK_UTILS_SOURCE = "@medusajs/framework/utils"
+export const WORKFLOWS_SDK_SOURCE = "@medusajs/framework/workflows-sdk"

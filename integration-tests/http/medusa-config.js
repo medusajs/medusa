@@ -21,7 +21,23 @@ const customFulfillmentProviderCalculated = {
   id: "test-provider-calculated",
 }
 
+// A second instance of the built-in system payment provider, registered under a
+// distinct id (`pp_system_default_2`) so tests can assert a non-default provider
+// is honored. The always-present `pp_system_default` is unaffected.
+const customPaymentProvider = {
+  resolve: {
+    services: [require("@medusajs/payment/dist/providers/system").default],
+  },
+  id: "default_2",
+}
+
 const modules = {
+  [Modules.PAYMENT]: {
+    resolve: "@medusajs/payment",
+    options: {
+      providers: [customPaymentProvider],
+    },
+  },
   [Modules.FULFILLMENT]: {
     /** @type {import('@medusajs/fulfillment').FulfillmentModuleOptions} */
     options: {
