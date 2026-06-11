@@ -53,6 +53,7 @@ The `recommended` configuration is the default preset for Medusa projects. It in
 - Common file patterns to ignore (`.medusa/`, `dist/`, `node_modules/`, etc.)
 - Base plugin setup for TypeScript and TSX files
 - Essential service rules for module development
+- Module rules for data models, loaders, and naming conventions
 - Essential workflow rules that catch common errors and enforce best practices
 
 ```js title="eslint.config.js"
@@ -86,6 +87,15 @@ These rules enforce Medusa's service patterns for classes extending `MedusaServi
 - `service-methods-must-be-async` - Ensures all public methods on service classes are async or return a Promise
 - `use-inject-manager-on-public-methods` - Ensures service methods that accept `Context` parameters use proper injection decorators: `@InjectManager()` for public methods, `@InjectTransactionManager()` for protected/private methods (warning level)
 
+### Module Rules (Recommended Configuration)
+
+These rules enforce Medusa's module development conventions:
+
+- `data-model-table-name-snake-case` - Ensures table names passed to `model.define()` use snake_case naming (warning level)
+- `loader-must-be-exported-in-module-definition` - Ensures loader files are registered in the module's `loaders` array (warning level)
+- `module-name-snake-case` - Ensures module names use valid naming conventions (alphanumeric characters and underscores only)
+- `no-reserved-default-properties-in-model` - Prevents use of reserved default properties in data models
+
 ### Workflow Rules (Recommended Configuration)
 
 - `no-async-workflow-constructor` - Prevents async functions in workflow constructors
@@ -113,7 +123,6 @@ These rules enforce Medusa's service patterns for classes extending `MedusaServi
 Future releases will add additional rules for:
 
 - **API Routes**: Enforce proper route structure, request/response typing, and error handling patterns
-- **Additional Module Rules**: Extended validation for module patterns beyond basic service structure
 - **Subscribers**: Verify event handling patterns and subscription setup
 - **Scheduled Jobs**: Validate job configuration and execution patterns
 - **Admin Extensions**: Enforce widget and UI route conventions
