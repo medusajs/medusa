@@ -95,6 +95,7 @@ These rules enforce Medusa's module development conventions:
 - `loader-must-be-exported-in-module-definition` - Ensures loader files are registered in the module's `loaders` array (warning level)
 - `module-name-snake-case` - Ensures module names use valid naming conventions (alphanumeric characters and underscores only)
 - `no-reserved-default-properties-in-model` - Prevents use of reserved default properties in data models
+- `link-no-cross-module-relationship` - Prevents direct data model relationships across modules; enforces using `defineLink` for cross-module relationships instead
 
 ### Workflow Rules (Recommended Configuration)
 
@@ -108,10 +109,19 @@ These rules enforce Medusa's module development conventions:
 - `no-spread-in-workflow` - Prevents spread operators in workflow definitions
 - `no-throw-in-transform` - Disallows throwing errors in transform functions
 - `no-try-catch-in-workflow` - Prevents try-catch blocks in workflow constructors
+- `link-create-keys-modules-enum` - Prefers `Modules.*` enum members over bare string keys in link calls and remote-link workflow steps (warning level)
+- `prefer-link-over-remote-link` - Prefers `link` over `remoteLink` for module relationships (warning level)
 - `step-id-kebab-case` - Ensures step IDs use kebab-case naming (warning level)
 - `step-must-return-step-response` - Requires steps to return StepResponse objects
 - `workflow-id-matches-export-or-filename` - Ensures workflow IDs match their export names or filenames (warning level)
 - `workflow-must-return-workflow-response` - Requires workflows to return WorkflowResponse objects
+
+### Module Links Rules (Recommended Configuration)
+
+These rules enforce proper module linking patterns when defining relationships between modules:
+
+- `link-uses-linkable-properties` - Ensures `defineLink` uses linkable properties from module definitions (warning level)
+- `read-only-link-requires-field` - Requires a `field` property when defining read-only links
 
 ### Type-Aware Rules (Strict Configuration Only)
 
@@ -126,7 +136,6 @@ Future releases will add additional rules for:
 - **Subscribers**: Verify event handling patterns and subscription setup
 - **Scheduled Jobs**: Validate job configuration and execution patterns
 - **Admin Extensions**: Enforce widget and UI route conventions
-- **Module Links**: Ensure proper module linking and relationship definitions
 
 ## Migration from Legacy Configuration
 
