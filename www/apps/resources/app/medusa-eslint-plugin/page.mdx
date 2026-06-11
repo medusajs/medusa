@@ -52,6 +52,7 @@ The `recommended` configuration is the default preset for Medusa projects. It in
 - TypeScript parser configuration with project support
 - Common file patterns to ignore (`.medusa/`, `dist/`, `node_modules/`, etc.)
 - Base plugin setup for TypeScript and TSX files
+- Essential service rules for module development
 - Essential workflow rules that catch common errors and enforce best practices
 
 ```js title="eslint.config.js"
@@ -74,7 +75,16 @@ Note: The strict configuration requires TypeScript type information, so ensure y
 
 ## Available Rules
 
-The plugin currently provides workflow-specific rules to catch common errors and enforce best practices:
+The plugin provides rules across different areas to catch common errors and enforce best practices:
+
+### Service Rules (Recommended Configuration)
+
+These rules enforce Medusa's service patterns for classes extending `MedusaService(...)` or classes with names ending in "Service":
+
+- `medusa-context-on-context-param` - Ensures service method parameters typed `Context` are decorated with `@MedusaContext()` (warning level)
+- `service-constructor-must-call-super` - Requires service constructors that extend `MedusaService(...)` to call `super(...arguments)`
+- `service-methods-must-be-async` - Ensures all public methods on service classes are async or return a Promise
+- `use-inject-manager-on-public-methods` - Ensures service methods that accept `Context` parameters use proper injection decorators: `@InjectManager()` for public methods, `@InjectTransactionManager()` for protected/private methods (warning level)
 
 ### Workflow Rules (Recommended Configuration)
 
@@ -100,10 +110,10 @@ The plugin currently provides workflow-specific rules to catch common errors and
 
 ### Planned Rules
 
-Future releases will add rules for:
+Future releases will add additional rules for:
 
 - **API Routes**: Enforce proper route structure, request/response typing, and error handling patterns
-- **Modules**: Validate service patterns, dependency injection, and module structure
+- **Additional Module Rules**: Extended validation for module patterns beyond basic service structure
 - **Subscribers**: Verify event handling patterns and subscription setup
 - **Scheduled Jobs**: Validate job configuration and execution patterns
 - **Admin Extensions**: Enforce widget and UI route conventions
