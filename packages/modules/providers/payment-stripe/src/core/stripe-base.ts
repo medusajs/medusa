@@ -11,6 +11,8 @@ import {
   CreateAccountHolderOutput,
   DeleteAccountHolderInput,
   DeleteAccountHolderOutput,
+  DeletePaymentMethodInput,
+  DeletePaymentMethodOutput,
   DeletePaymentInput,
   DeletePaymentOutput,
   GetPaymentStatusInput,
@@ -596,6 +598,26 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     )
 
     return { id: resp.id, data: resp as unknown as Record<string, unknown> }
+  }
+
+  async deletePaymentMethod({
+    context,
+    data,
+  }: DeletePaymentMethodInput): Promise<DeletePaymentMethodOutput> {
+    const paymentMethodId = data?.id as string | undefined
+
+    if (!paymentMethodId) {
+      throw this.buildError(
+        "Payment method ID not set while deleting a payment method",
+        new Error("Missing payment method ID")
+      )
+    }
+
+    await this.stripe_.paymentMethods.detach(paymentMethodId, {
+      idempotencyKey: context?.idempotency_key,
+    })
+
+    return {}
   }
 
   private getStatus(paymentIntent: Stripe.PaymentIntent): {
