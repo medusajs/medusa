@@ -191,6 +191,11 @@ export class MedusaCloudAuthService extends AbstractAuthModuleProvider {
 
     let payload: JwtPayload
     try {
+      this.logger_.info(
+        `id_token decoded: ${JSON.stringify(
+          jwt.decode(idToken, { complete: true })
+        )}, expected audience: ${this.getClientId()}`
+      )
       const decoded = await verifyJwt(idToken, this.getSigningKey_, {
         algorithms: ["RS256"],
         audience: this.getClientId(),
