@@ -65,16 +65,34 @@ export const adminWorkflowsExecutionsMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/workflows-executions/:workflow_id/run",
     middlewares: [validateAndTransformBody(AdminCreateWorkflowsRun)],
+    policies: [
+      {
+        resource: Entities.workflow_execution,
+        operation: PolicyOperation.create,
+      },
+    ],
   },
   {
     method: ["POST"],
 
     matcher: "/admin/workflows-executions/:workflow_id/steps/success",
     middlewares: [validateAndTransformBody(AdminCreateWorkflowsAsyncResponse)],
+    policies: [
+      {
+        resource: Entities.workflow_execution,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/workflows-executions/:workflow_id/steps/failure",
     middlewares: [validateAndTransformBody(AdminCreateWorkflowsAsyncResponse)],
+    policies: [
+      {
+        resource: Entities.workflow_execution,
+        operation: PolicyOperation.update,
+      },
+    ],
   },
 ]

@@ -384,8 +384,8 @@ export const TranslationsEditForm = ({
 }: TranslationsEditFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess, setCloseOnEscape } = useRouteModal()
-  const { canCreate, canUpdate } = useTranslationPermissions()
-  const canEdit = canCreate && canUpdate
+  const { canCreate, canUpdate, canDelete } = useTranslationPermissions()
+  const canEdit = canCreate && canUpdate && canDelete
 
   const containerRef = useRef<HTMLDivElement>(null)
   const [dynamicColumnWidth, setDynamicColumnWidth] = useState(400)

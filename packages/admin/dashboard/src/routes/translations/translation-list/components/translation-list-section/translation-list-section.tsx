@@ -14,8 +14,8 @@ export const TranslationListSection = ({
   hasLocales = false,
 }: TranslationListSectionProps) => {
   const { t } = useTranslation()
-  const { canCreate, canUpdate } = useTranslationPermissions()
-  const canEdit = canCreate && canUpdate
+  const { canCreate, canUpdate, canDelete } = useTranslationPermissions()
+  const canEdit = canCreate && canUpdate && canDelete
 
   return (
     <Container className="divide-y p-0">

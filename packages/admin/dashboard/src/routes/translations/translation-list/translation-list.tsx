@@ -34,9 +34,11 @@ export const TranslationList = () => {
   const {
     canCreate: canCreateSettings,
     canUpdate: canUpdateSettings,
+    canDelete: canDeleteSettings,
     canRead: canReadTranslationSettings,
   } = useTranslationSettingPermissions()
-  const canManageEntities = canCreateSettings && canUpdateSettings
+  const canManageEntities =
+    canCreateSettings && canUpdateSettings && canDeleteSettings
   const { canRead: canReadStore } = useStorePermissions()
 
   const { store, isPending, isError, error } = useStore(undefined, {
