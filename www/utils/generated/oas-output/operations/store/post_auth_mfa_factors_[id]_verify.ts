@@ -8,6 +8,9 @@
  *   it. A successful verification enables the factor, after which it can be used to verify MFA
  *   challenges during login.
  * x-authenticated: true
+ * externalDocs:
+ *   description: Learn more about MFA in Medusa
+ *   url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
  * parameters:
  *   - name: id
  *     in: path

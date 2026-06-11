@@ -8,73 +8,90 @@ export default function () {
   Handlebars.registerHelper(
     "eventsListing",
     function (this: DeclarationReflection) {
-      const content: string[] = []
+      let eventVariables = this.children || []
 
-      const subtitleLevel = (this.children?.length ?? 0) > 1 ? 3 : 2
-      const showHeader = (this.children?.length ?? 0) > 1
-
-      function parseChildren(children: DeclarationReflection[]) {
-        let count = 0
-        children.forEach((child, index) => {
-          content.push(
-            formatEventsType(child as DeclarationReflection, {
-              subtitleLevel,
-              showHeader,
-            })
-          )
-          if (index < children!.length - 1) {
-            content.push("")
-            content.push("---")
-            content.push("")
-          }
-          count++
-        })
-
-        return count
+      if (!eventVariables.length) {
+        return ""
       }
 
       if (this.kind === ReflectionKind.Module) {
-        const sortedChildren = sortChildren(
-          this.children?.map((child) => child.children || []).flat() || []
-        )
-        parseChildren(sortedChildren)
-      } else {
-        parseChildren(sortChildren(this.children || []))
+        eventVariables = eventVariables
+          .map((eventVariable) => eventVariable.children || [])
+          .flat()
       }
+
+      const combinedEventVariables =
+        combineEventVariablesByCategory(eventVariables)
+
+      const content: string[] = []
+      // Sort categories alphabetically
+      const eventVariableCatEntries = Object.entries(
+        combinedEventVariables
+      ).sort(([catA], [catB]) => catA.localeCompare(catB))
+      const hasMoreThanOneCategory = eventVariableCatEntries.length > 1
+
+      eventVariableCatEntries.forEach(([category, events], index) => {
+        const subtitleLevel = hasMoreThanOneCategory ? 3 : 2
+        const showHeader = category && hasMoreThanOneCategory
+        content.push(
+          formatEvents(events, {
+            subtitleLevel,
+            header: showHeader ? category : undefined,
+          })
+        )
+        if (index < eventVariableCatEntries.length - 1) {
+          content.push("")
+          content.push("---")
+          content.push("")
+        }
+      })
 
       return content.join("\n")
     }
   )
 }
 
-function formatEventsType(
-  eventVariable: DeclarationReflection,
+function combineEventVariablesByCategory(children: DeclarationReflection[]) {
+  const combined: Record<string, DeclarationReflection[]> = {}
+
+  children.forEach((child) => {
+    if (
+      child.type?.type !== "reflection" ||
+      !child.type.declaration?.children
+    ) {
+      return
+    }
+    const header =
+      child.comment?.blockTags
+        .find((tag) => tag.tag === "@category")
+        ?.content.map((content) => content.text)
+        .join("") || ""
+
+    if (!combined[header]) {
+      combined[header] = []
+    }
+    combined[header].push(...child.type.declaration.children)
+  })
+
+  return combined
+}
+
+function formatEvents(
+  eventProperties: DeclarationReflection[],
   {
     subtitleLevel = 3,
-    showHeader = true,
+    header = "",
   }: {
     subtitleLevel?: number
-    showHeader?: boolean
+    header?: string
   }
 ) {
-  if (eventVariable.type?.type !== "reflection") {
-    return ""
-  }
   const content: string[] = []
   const subHeaderPrefix = "#".repeat(subtitleLevel)
-  const header =
-    eventVariable.comment?.blockTags
-      .find((tag) => tag.tag === "@category")
-      ?.content.map((content) => content.text)
-      .join("") || ""
-  if (showHeader) {
+  if (header) {
     content.push(`${"#".repeat(subtitleLevel - 1)} ${header} Events`)
   }
   content.push("")
-
-  const eventProperties = (
-    eventVariable.type.declaration.children || []
-  ).filter((child) => (getEventWorkflows(child)?.length || 0) > 0)
 
   content.push(`${subHeaderPrefix} Summary`)
   content.push("")
@@ -96,6 +113,9 @@ function formatEventsType(
         .find((tag) => tag.tag === "@eventName")
         ?.content.map((content) => content.text)
         .join("") || ""
+    if (!eventName) {
+      return
+    }
     eventName = `[${eventName}](#${getEventNameSlug(eventName)})`
     const eventDescription = event.comment?.summary
       .map((content) => content.text)
@@ -150,6 +170,9 @@ function formatEventsType(
       .find((tag) => tag.tag === "@eventName")
       ?.content.map((content) => content.text)
       .join("")
+    if (!eventName) {
+      return
+    }
     const eventDescription = event.comment?.summary
       .map((content) => content.text)
       .join("")
@@ -192,14 +215,18 @@ function formatEventsType(
     content.push("")
     content.push(eventPayload || "")
     content.push("")
-    content.push(
-      `${subHeaderPrefix}# Workflows Emitting this Event\n\nThe following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.`
-    )
-    content.push("")
-    workflows?.forEach((workflow) => {
-      content.push(`- [${workflow}](/references/medusa-workflows/${workflow})`)
-    })
-    content.push("")
+    if (workflows?.length) {
+      content.push(
+        `${subHeaderPrefix}# Workflows Emitting this Event\n\nThe following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.`
+      )
+      content.push("")
+      workflows.forEach((workflow) => {
+        content.push(
+          `- [${workflow}](/references/medusa-workflows/${workflow})`
+        )
+      })
+      content.push("")
+    }
     if (index < eventProperties.length - 1) {
       content.push("---")
       content.push("")
@@ -264,10 +291,5 @@ function getEventWorkflows(event: DeclarationReflection): string[] | undefined {
     ?.content.map((content) => content.text)
     .join("")
     .split(", ")
-}
-
-function sortChildren(ref: DeclarationReflection[]) {
-  return ref.sort((a, b) => {
-    return a.name.localeCompare(b.name)
-  })
+    .filter((text) => text.trim().length > 0)
 }

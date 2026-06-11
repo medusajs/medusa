@@ -52,6 +52,8 @@ const cartFields = [
   "shipping_methods.tax_lines.provider_id",
   "shipping_methods.shipping_option_id",
   "shipping_methods.amount",
+  "shipping_methods.name",
+  "shipping_methods.id",
   "customer.id",
   "customer.email",
   "customer.metadata",
