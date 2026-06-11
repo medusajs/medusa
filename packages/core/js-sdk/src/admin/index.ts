@@ -47,8 +47,8 @@ import { WorkflowExecution } from "./workflow-execution.js"
 import { ShippingOptionType } from "./shipping-option-type.js"
 import { Locale } from "./locale.js"
 import { Translation } from "./translation.js"
-import { RbacRole } from "./rbac-role"
-import { RbacPolicy } from "./rbac-policy"
+import { RbacRole } from "./rbac-role.js"
+import { RbacPolicy } from "./rbac-policy.js"
 
 /**
  * The admin client provides access to admin-related resources.

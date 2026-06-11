@@ -139,35 +139,6 @@ describe("Auth", () => {
     expect(storage.setItem).not.toHaveBeenCalled()
   })
 
-  it("throws from register by default when verification is required", async () => {
-    server.use(
-      http.post(
-        `${baseUrl}/auth/user/emailpass/register`,
-        async ({ request }) => {
-          expect(await request.json()).toEqual({
-            email: "test@example.com",
-            password: "secret",
-          })
-
-          return HttpResponse.json({
-            verification_required: true,
-            verification: verification,
-          })
-        }
-      )
-    )
-
-    const auth = createAuth()
-
-    await expect(
-      auth.register("user", "emailpass", {
-        email: "test@example.com",
-        password: "secret",
-      })
-    ).rejects.toThrow("Unexpected registration response")
-    expect(storage.setItem).not.toHaveBeenCalled()
-  })
-
   it("returns a verification requirement from register when opted in", async () => {
     server.use(
       http.post(
@@ -187,17 +158,10 @@ describe("Auth", () => {
     )
 
     const auth = createAuth()
-    const result = await auth.register(
-      "user",
-      "emailpass",
-      {
-        email: "test@example.com",
-        password: "secret",
-      },
-      {
-        returnVerification: true,
-      }
-    )
+    const result = await auth.register("user", "emailpass", {
+      email: "test@example.com",
+      password: "secret",
+    })
 
     expect(result).toEqual({
       verification_required: true,
