@@ -103,6 +103,22 @@ export const getPropertyKeyName = (
 }
 
 /**
+ * Returns the first non-computed `Property` on `obj` whose static key name
+ * matches `name`, or `null` if none exists. Skips `SpreadElement`s and any
+ * `Property` with a computed/non-string/non-identifier key.
+ */
+export const findProperty = (
+  obj: TSESTree.ObjectExpression,
+  name: string
+): TSESTree.Property | null => {
+  for (const prop of obj.properties) {
+    if (prop.type !== AST_NODE_TYPES.Property) continue
+    if (getPropertyKeyName(prop) === name) return prop
+  }
+  return null
+}
+
+/**
  * Returns the name of the `VariableDeclarator` that directly initializes
  * `call`, e.g. `export const myWorkflow = createWorkflow(...)` → `"myWorkflow"`.
  *
@@ -196,6 +212,35 @@ export const resolveStaticStringValue = (
     }
   }
   return null
+}
+
+/**
+ * Returns the expression a function returns, when it can be determined
+ * statically:
+ * - Arrow with expression body: that expression.
+ * - Arrow or function with a single top-level `return <expr>`: that expression.
+ * Returns `null` otherwise (multiple returns, bare `return`, void). Does not
+ * descend into nested functions.
+ */
+export const getReturnedExpression = (
+  fn: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression
+): TSESTree.Expression | null => {
+  if (
+    fn.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+    fn.body.type !== AST_NODE_TYPES.BlockStatement
+  ) {
+    return fn.body
+  }
+  const body = fn.body
+  if (body.type !== AST_NODE_TYPES.BlockStatement) return null
+  let found: TSESTree.Expression | null = null
+  for (const stmt of body.body) {
+    if (stmt.type !== AST_NODE_TYPES.ReturnStatement) continue
+    if (!stmt.argument) return null
+    if (found) return null
+    found = stmt.argument
+  }
+  return found
 }
 
 /*
