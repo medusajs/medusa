@@ -43,5 +43,14 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("workflow-must-return-workflow-response")]: "error",
       },
     },
+    {
+      files: [
+        "src/modules/**/index.{ts,js}",
+        "**/modules/**/index.{ts,js}",
+      ],
+      rules: {
+        [ruleId("module-name-snake-case")]: "error",
+      },
+    },
   ]
 }

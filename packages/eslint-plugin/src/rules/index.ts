@@ -1,4 +1,5 @@
 import type { ESLint } from "eslint"
+import { rule as moduleNameSnakeCase } from "./module-name-snake-case"
 import { rule as noAsyncWorkflowConstructor } from "./no-async-workflow-constructor"
 import { rule as noConditionalExpressionsInWorkflow } from "./no-conditional-expressions-in-workflow"
 import { rule as noConsoleLogInWorkflow } from "./no-console-log-in-workflow"
@@ -17,6 +18,7 @@ import { rule as workflowIdMatchesExportOrFilename } from "./workflow-id-matches
 import { rule as workflowMustReturnWorkflowResponse } from "./workflow-must-return-workflow-response"
 
 export const rules = {
+  "module-name-snake-case": moduleNameSnakeCase,
   "no-async-workflow-constructor": noAsyncWorkflowConstructor,
   "no-conditional-expressions-in-workflow": noConditionalExpressionsInWorkflow,
   "no-console-log-in-workflow": noConsoleLogInWorkflow,
