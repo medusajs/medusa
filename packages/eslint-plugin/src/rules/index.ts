@@ -23,6 +23,7 @@ import { rule as serviceConstructorMustCallSuper } from "./service-constructor-m
 import { rule as serviceMethodsMustBeAsync } from "./service-methods-must-be-async"
 import { rule as useInjectManagerOnPublicMethods } from "./use-inject-manager-on-public-methods"
 import { rule as noWorkflowCallWithoutContainer } from "./no-workflow-call-without-container"
+import { rule as preferContainerRegistrationKeysQuery } from "./prefer-container-registration-keys-query"
 import { rule as preferLinkOverRemoteLink } from "./prefer-link-over-remote-link"
 import { rule as stepIdKebabCase } from "./step-id-kebab-case"
 import { rule as stepMustReturnStepResponse } from "./step-must-return-step-response"
@@ -55,6 +56,8 @@ export const rules = {
   "service-methods-must-be-async": serviceMethodsMustBeAsync,
   "use-inject-manager-on-public-methods": useInjectManagerOnPublicMethods,
   "no-workflow-call-without-container": noWorkflowCallWithoutContainer,
+  "prefer-container-registration-keys-query":
+    preferContainerRegistrationKeysQuery,
   "prefer-link-over-remote-link": preferLinkOverRemoteLink,
   "step-id-kebab-case": stepIdKebabCase,
   "step-must-return-step-response": stepMustReturnStepResponse,
