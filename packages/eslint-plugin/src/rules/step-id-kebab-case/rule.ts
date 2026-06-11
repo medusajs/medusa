@@ -11,29 +11,29 @@ import {
 type MessageIds = "notKebabCase" | "idMismatch"
 
 /**
- * Strips a trailing `workflow` segment from a kebab string. `hello-workflow`
- * → `hello`. A bare `workflow` (no preceding segment) is left untouched —
+ * Strips a trailing `step` segment from a kebab string. `fetch-customers-step`
+ * → `fetch-customers`. A bare `step` (no preceding segment) is left untouched —
  * stripping would yield an empty id.
  */
-function stripWorkflowSuffix(kebab: string): string {
-  const stripped = kebab.replace(/-workflow$/, "")
+function stripStepSuffix(kebab: string): string {
+  const stripped = kebab.replace(/-step$/, "")
   return stripped.length > 0 ? stripped : kebab
 }
 
 export const rule = createRule<[], MessageIds>({
-  name: "workflow-id-matches-export-or-filename",
+  name: "step-id-kebab-case",
   meta: {
     type: "suggestion",
     docs: {
       description:
-        "Workflow id (first argument of `createWorkflow`) must be kebab-case and should match the exported workflow name or filename.",
+        "Step id (first argument of `createStep`) must be a kebab-case string literal and should match the enclosing variable name or filename (trailing `Step` segment stripped).",
     },
     fixable: "code",
     messages: {
       notKebabCase:
-        "Workflow id `{{id}}` must be kebab-case (lowercase letters, digits, and hyphens; starting with a letter).",
+        "Step id `{{id}}` must be kebab-case (lowercase letters, digits, and hyphens; starting with a letter).",
       idMismatch:
-        "Workflow id `{{id}}` should match the exported workflow name or filename (expected `{{expected}}`).",
+        "Step id `{{id}}` should match the enclosing variable name or filename (expected `{{expected}}`).",
     },
     schema: [],
   },
@@ -47,9 +47,9 @@ export const rule = createRule<[], MessageIds>({
       },
 
       CallExpression(node) {
-        if (bindings.createWorkflow.size === 0) return
+        if (bindings.createStep.size === 0) return
         if (node.callee.type !== AST_NODE_TYPES.Identifier) return
-        if (!bindings.createWorkflow.has(node.callee.name)) return
+        if (!bindings.createStep.has(node.callee.name)) return
 
         const idArg = node.arguments[0]
         if (!idArg) return
@@ -64,8 +64,8 @@ export const rule = createRule<[], MessageIds>({
         const fileStem = getFilenameStem(context.filename)
 
         const expected =
-          (varName ? stripWorkflowSuffix(toKebab(varName)) : null) ??
-          (fileStem ? stripWorkflowSuffix(toKebab(fileStem)) : null)
+          (varName ? stripStepSuffix(toKebab(varName)) : null) ??
+          (fileStem ? stripStepSuffix(toKebab(fileStem)) : null)
 
         if (!isKebab) {
           context.report({
@@ -73,7 +73,7 @@ export const rule = createRule<[], MessageIds>({
             messageId: "notKebabCase",
             data: { id },
             fix(fixer) {
-              const replacement = expected ?? toKebab(id)
+              const replacement = expected ?? stripStepSuffix(toKebab(id))
               if (!KEBAB_CASE_RE.test(replacement)) return null
               return fixer.replaceText(idArg, `${quote}${replacement}${quote}`)
             },
