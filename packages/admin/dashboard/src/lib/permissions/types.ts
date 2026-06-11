@@ -70,6 +70,8 @@ export type PermissionResource =
   | "workflow_execution"
   | "translation"
   | "translation_setting"
+  | "notification"
+  | "file"
 
 /**
  * Operations that can be performed on resources.
