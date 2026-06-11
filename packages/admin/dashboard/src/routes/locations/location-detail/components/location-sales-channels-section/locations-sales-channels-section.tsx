@@ -8,7 +8,10 @@ import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { IconAvatar } from "../../../../../components/common/icon-avatar"
 import { ListSummary } from "../../../../../components/common/list-summary"
 import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
-import { useStockLocationPermissions } from "../../../../../hooks/use-resource-permissions"
+import {
+  useSalesChannelPermissions,
+  useStockLocationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type LocationsSalesChannelsSectionProps = {
   location: HttpTypes.AdminStockLocation
@@ -18,7 +21,9 @@ function LocationsSalesChannelsSection({
   location,
 }: LocationsSalesChannelsSectionProps) {
   const { t } = useTranslation()
-  const { canUpdate } = useStockLocationPermissions()
+  const { canUpdate: canUpdateLocation } = useStockLocationPermissions()
+  const { canRead: canReadSalesChannel } = useSalesChannelPermissions()
+  const canUpdate = canUpdateLocation && canReadSalesChannel
 
   const { count } = useSalesChannels({ limit: 1, fields: "id" })
 

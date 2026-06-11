@@ -1,5 +1,6 @@
 export enum Entities {
   shipping_option = "shipping_option",
+  stock_location = "stock_location",
 }
 
 export const defaultAdminShippingOptionFields = [

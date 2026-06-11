@@ -41,6 +41,10 @@ export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.tax_rate,
         operation: PolicyOperation.create,
       },
+      {
+        resource: Entities.tax_region,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -58,6 +62,10 @@ export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.tax_rate,
         operation: PolicyOperation.update,
       },
+      {
+        resource: Entities.tax_region,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -68,6 +76,20 @@ export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetTaxRateParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+    ],
+  },
+  {
+    method: "DELETE",
+    matcher: "/admin/tax-rates/:id",
+    policies: [
+      {
+        resource: Entities.tax_rate,
+        operation: PolicyOperation.delete,
+      },
+      {
+        resource: Entities.tax_region,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -101,6 +123,10 @@ export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.tax_rate,
         operation: PolicyOperation.update,
       },
+      {
+        resource: Entities.tax_region,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -115,6 +141,10 @@ export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.tax_rate,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.tax_region,
         operation: PolicyOperation.update,
       },
     ],

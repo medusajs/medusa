@@ -105,6 +105,10 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.stock_location,
         operation: PolicyOperation.update,
       },
+      {
+        resource: Entities.fulfillment_set,
+        operation: PolicyOperation.create,
+      },
     ],
   },
   {
@@ -121,6 +125,10 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
       {
         resource: Entities.stock_location,
         operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.sales_channel,
+        operation: PolicyOperation.read,
       },
     ],
   },

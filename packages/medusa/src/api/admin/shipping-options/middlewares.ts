@@ -79,6 +79,10 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.shipping_option,
         operation: PolicyOperation.create,
       },
+      {
+        resource: Entities.stock_location,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -96,6 +100,10 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.shipping_option,
         operation: PolicyOperation.update,
       },
+      {
+        resource: Entities.stock_location,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -105,6 +113,10 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
       {
         resource: Entities.shipping_option,
         operation: PolicyOperation.delete,
+      },
+      {
+        resource: Entities.stock_location,
+        operation: PolicyOperation.update,
       },
     ],
   },
@@ -129,6 +141,10 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.shipping_option,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.stock_location,
         operation: PolicyOperation.update,
       },
     ],
