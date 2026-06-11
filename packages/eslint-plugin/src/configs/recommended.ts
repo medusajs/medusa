@@ -37,6 +37,8 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("no-spread-in-workflow")]: "error",
         [ruleId("no-throw-in-transform")]: "error",
         [ruleId("no-try-catch-in-workflow")]: "error",
+        [ruleId("link-create-keys-modules-enum")]: "warn",
+        [ruleId("prefer-link-over-remote-link")]: "warn",
         [ruleId("step-id-kebab-case")]: "warn",
         [ruleId("step-must-return-step-response")]: "error",
         [ruleId("workflow-id-matches-export-or-filename")]: "warn",
@@ -77,7 +79,18 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       ],
       rules: {
         [ruleId("data-model-table-name-snake-case")]: "warn",
+        [ruleId("link-no-cross-module-relationship")]: "error",
         [ruleId("no-reserved-default-properties-in-model")]: "error",
+      },
+    },
+    {
+      files: [
+        "src/links/**/*.{ts,tsx,js,mjs,cjs}",
+        "**/src/links/**/*.{ts,tsx,js,mjs,cjs}",
+      ],
+      rules: {
+        [ruleId("link-uses-linkable-properties")]: "warn",
+        [ruleId("read-only-link-requires-field")]: "error",
       },
     },
   ]
