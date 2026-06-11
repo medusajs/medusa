@@ -78,13 +78,22 @@ export const ApiKeyCreateForm = ({ keyType }: ApiKeyCreateFormProps) => {
     )
   })
 
-  const handleCopyToken = () => {
-    if (!createdKey) {
+  const handleCopyToken = async () => {
+    if (!createdKey?.token) {
       toast.error(t("apiKeyManagement.create.copySecretTokenFailure"))
+      return
     }
 
-    navigator.clipboard.writeText(createdKey?.token ?? "")
-    toast.success(t("apiKeyManagement.create.copySecretTokenSuccess"))
+    try {
+      if (!window.isSecureContext || !navigator.clipboard?.writeText) {
+        throw new Error("Clipboard API unavailable")
+      }
+
+      await navigator.clipboard.writeText(createdKey.token)
+      toast.success(t("apiKeyManagement.create.copySecretTokenSuccess"))
+    } catch {
+      toast.error(t("apiKeyManagement.create.copySecretTokenFailure"))
+    }
   }
 
   const handleGoToSecretKey = () => {
@@ -188,7 +197,9 @@ export const ApiKeyCreateForm = ({ keyType }: ApiKeyCreateFormProps) => {
               variant="secondary"
               type="button"
               className="w-full"
-              onClick={handleCopyToken}
+              onClick={() => {
+                void handleCopyToken()
+              }}
             >
               {t("apiKeyManagement.actions.copy")}
             </Button>

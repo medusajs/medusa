@@ -12,7 +12,9 @@ import {
   FeatureFlag,
   FileSystem,
   generateContainerTypes,
+  generatePluginAugmentations,
   generatePolicyTypes,
+  getResolvedPlugins,
   gqlSchemaToTypes,
   GracefulShutdownServer,
   isFileSkipped,
@@ -303,6 +305,12 @@ async function start(args: {
             })
           )
         }
+
+        const configModule = container.resolve(
+          ContainerRegistrationKeys.CONFIG_MODULE
+        )
+        const plugins = await getResolvedPlugins(directory, configModule, true)
+        fileGenPromises.push(generatePluginAugmentations({ directory, plugins }))
 
         await promiseAll(fileGenPromises)
         logger.debug("Generated policy types")

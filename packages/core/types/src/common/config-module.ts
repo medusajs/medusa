@@ -293,6 +293,16 @@ export type MedusaCloudOptions = {
    * Whether the Medusa Cloud OAuth service is disabled.
    */
   oauthDisabled?: boolean
+  /**
+   * The JWKS URI for the Medusa Cloud OAuth service. This is used to verify the JWT tokens issued by the Medusa Cloud OAuth service.
+   * If not provided, an error is thrown when trying to use the Medusa Cloud OAuth service.
+   */
+  oauthJwksUri?: string
+  /**
+   * The expected `aud` claim of id_tokens issued by the Medusa Cloud OAuth service.
+   * If not provided, an error is thrown when trying to use the Medusa Cloud OAuth service.
+   */
+  oauthAudience?: string
 }
 
 /**
