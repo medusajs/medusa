@@ -1,4 +1,5 @@
 export * from "./auth-identity"
 export * from "./verification"
 export * from "./mfa"
+export * from "./password-reset"
 export * from "./provider"
