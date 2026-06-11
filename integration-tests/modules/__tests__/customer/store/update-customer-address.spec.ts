@@ -30,7 +30,7 @@ medusaIntegrationTestRunner({
         storeHeaders = generateStoreHeaders({ publishableKey })
       })
 
-      it.only("should update a customer address", async () => {
+      it("should update a customer address", async () => {
         const { customer, jwt } = await createAuthenticatedCustomer(
           api,
           storeHeaders

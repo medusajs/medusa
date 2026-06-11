@@ -580,6 +580,7 @@ medusaIntegrationTestRunner({
       let inventoryItemLarge
       let inventoryItemMedium
       let inventoryItemSmall
+      let inventoryOrder
 
       beforeEach(async () => {
         const container = getContainer()
@@ -789,7 +790,7 @@ medusaIntegrationTestRunner({
 
         const orderModule = container.resolve(Modules.ORDER)
 
-        order = await orderModule.createOrders({
+        inventoryOrder = await orderModule.createOrders({
           region_id: region.id,
           email: "foo@bar.com",
           items: [
@@ -866,14 +867,14 @@ medusaIntegrationTestRunner({
         let edit = (
           await api.post(
             `/admin/order-edits`,
-            { order_id: order.id },
+            { order_id: inventoryOrder.id },
             adminHeaders
           )
         ).data.order_change
 
         // Add item
         await api.post(
-          `/admin/order-edits/${order.id}/items`,
+          `/admin/order-edits/${inventoryOrder.id}/items`,
           {
             items: [
               {
@@ -888,8 +889,8 @@ medusaIntegrationTestRunner({
 
         // Remove item
         await api.post(
-          `/admin/order-edits/${order.id}/items/item/${
-            order.items.find((i) => i.subtitle === "M shirt").id
+          `/admin/order-edits/${inventoryOrder.id}/items/item/${
+            inventoryOrder.items.find((i) => i.subtitle === "M shirt").id
           }`,
           { quantity: 0 },
           adminHeaders
@@ -897,8 +898,8 @@ medusaIntegrationTestRunner({
 
         // Update item
         await api.post(
-          `/admin/order-edits/${order.id}/items/item/${
-            order.items.find((i) => i.subtitle === "L shirt").id
+          `/admin/order-edits/${inventoryOrder.id}/items/item/${
+            inventoryOrder.items.find((i) => i.subtitle === "L shirt").id
           }`,
           { quantity: 2 },
           adminHeaders
@@ -906,7 +907,7 @@ medusaIntegrationTestRunner({
 
         edit = (
           await api.post(
-            `/admin/order-edits/${order.id}/request`,
+            `/admin/order-edits/${inventoryOrder.id}/request`,
             {},
             adminHeaders
           )
@@ -914,17 +915,18 @@ medusaIntegrationTestRunner({
 
         edit = (
           await api.post(
-            `/admin/order-edits/${order.id}/confirm`,
+            `/admin/order-edits/${inventoryOrder.id}/confirm`,
             {},
             adminHeaders
           )
         ).data.order_change
 
-        order = (await api.get(`/admin/orders/${order.id}`, adminHeaders)).data
-          .order
+        inventoryOrder = (
+          await api.get(`/admin/orders/${inventoryOrder.id}`, adminHeaders)
+        ).data.order
 
-        expect(order.items.length).toBe(2)
-        expect(order.items).toEqual(
+        expect(inventoryOrder.items.length).toBe(2)
+        expect(inventoryOrder.items).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
               subtitle: "L shirt",
@@ -958,14 +960,14 @@ medusaIntegrationTestRunner({
         let edit = (
           await api.post(
             `/admin/order-edits`,
-            { order_id: order.id },
+            { order_id: inventoryOrder.id },
             adminHeaders
           )
         ).data.order_change
 
         // Add item
         await api.post(
-          `/admin/order-edits/${order.id}/items`,
+          `/admin/order-edits/${inventoryOrder.id}/items`,
           {
             items: [
               {
@@ -980,7 +982,7 @@ medusaIntegrationTestRunner({
 
         edit = (
           await api.post(
-            `/admin/order-edits/${order.id}/request`,
+            `/admin/order-edits/${inventoryOrder.id}/request`,
             {},
             adminHeaders
           )
@@ -988,17 +990,18 @@ medusaIntegrationTestRunner({
 
         edit = (
           await api.post(
-            `/admin/order-edits/${order.id}/confirm`,
+            `/admin/order-edits/${inventoryOrder.id}/confirm`,
             {},
             adminHeaders
           )
         ).data.order_change
 
-        order = (await api.get(`/admin/orders/${order.id}`, adminHeaders)).data
-          .order
+        inventoryOrder = (
+          await api.get(`/admin/orders/${inventoryOrder.id}`, adminHeaders)
+        ).data.order
 
-        expect(order.items.length).toBe(3)
-        expect(order.items).toEqual(
+        expect(inventoryOrder.items.length).toBe(3)
+        expect(inventoryOrder.items).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
               subtitle: "L shirt",

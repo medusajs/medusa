@@ -1,146 +1,45 @@
+import { ModulesSdkTypes } from "@medusajs/framework/types"
+import { toMikroORMEntity } from "@medusajs/framework/utils"
+import { IndexData } from "@models"
+import { buildSchemaObjectRepresentation, Configuration } from "@utils"
+import { baseGraphqlSchema } from "../../src/utils/base-graphql-schema"
+import { DataSynchronizer } from "../../src/services/data-synchronizer"
 import {
-  configLoader,
-  container,
-  logger,
-  MedusaAppLoader,
-  Migrator,
-} from "@medusajs/framework"
-import { asValue } from "@medusajs/framework/awilix"
-import { MedusaAppOutput, MedusaModule } from "@medusajs/framework/modules-sdk"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
-import { initDb, TestDatabaseUtils } from "@medusajs/test-utils"
-import { IndexTypes, ModulesSdkTypes } from "@medusajs/types"
-import { Configuration } from "@utils"
-import path from "path"
-import { setTimeout } from "timers/promises"
-import { EventBusServiceMock } from "../__fixtures__"
-import { dbName } from "../__fixtures__/medusa-config"
+  createIndexTestBed,
+  IndexModuleTestBed,
+  schema,
+} from "../__fixtures__"
 import { updateRemovedSchema } from "../__fixtures__/update-removed-schema"
 import { updatedSchema } from "../__fixtures__/updated-schema"
 
-const eventBusMock = new EventBusServiceMock()
-const queryMock = {
-  graph: jest.fn().mockImplementation(async () => ({ data: [] })),
-}
-
-const dbUtils = TestDatabaseUtils.dbTestUtilFactory()
-
 jest.setTimeout(300000)
 
-let isFirstTime = true
-let medusaAppLoader!: MedusaAppLoader
-let index: IndexTypes.IIndexService
-
-const beforeAll_ = async () => {
-  try {
-    await configLoader(
-      path.join(__dirname, "./../__fixtures__"),
-      "medusa-config"
-    )
-
-    console.log(`Creating database ${dbName}`)
-    await dbUtils.create(dbName)
-    dbUtils.pgConnection_ = await initDb()
-
-    container.register({
-      [ContainerRegistrationKeys.LOGGER]: asValue(logger),
-      [ContainerRegistrationKeys.PG_CONNECTION]: asValue(dbUtils.pgConnection_),
-    })
-
-    medusaAppLoader = new MedusaAppLoader()
-
-    // Migrations
-
-    const migrator = new Migrator({ container })
-    await migrator.ensureMigrationsTable()
-
-    await medusaAppLoader.runModulesMigrations()
-    const linkPlanner = await medusaAppLoader.getLinksExecutionPlanner()
-    const plan = await linkPlanner.createPlan()
-    await linkPlanner.executePlan(plan)
-
-    // Clear partially loaded instances
-    MedusaModule.clearInstances()
-
-    // Bootstrap modules
-    const globalApp = await medusaAppLoader.load()
-    container.register({
-      [ContainerRegistrationKeys.QUERY]: asValue(queryMock),
-      [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(queryMock),
-      [Modules.EVENT_BUS]: asValue(eventBusMock),
-    })
-
-    index = container.resolve(Modules.INDEX)
-
-    await globalApp.onApplicationStart()
-    await setTimeout(1000)
-
-    return globalApp
-  } catch (error) {
-    console.error("Error initializing", error?.message)
-    throw error
-  }
-}
-
-const beforeEach_ = async () => {
-  jest.clearAllMocks()
-
-  if (isFirstTime) {
-    isFirstTime = false
-    return
-  }
-
-  try {
-    await medusaAppLoader.runModulesLoader()
-  } catch (error) {
-    console.error("Error runner modules loaders", error?.message)
-    throw error
-  }
-}
-
-const afterEach_ = async () => {
-  try {
-    await dbUtils.teardown({ schema: "public" })
-  } catch (error) {
-    console.error("Error tearing down database:", error?.message)
-    throw error
-  }
+const buildRepresentation = (moduleSchema: string) => {
+  return buildSchemaObjectRepresentation(baseGraphqlSchema + moduleSchema)
+    .objectRepresentation
 }
 
 describe("IndexModuleService syncIndexConfig", function () {
-  let medusaApp: MedusaAppOutput
+  let testBed: IndexModuleTestBed
   let indexMetadataService: ModulesSdkTypes.IMedusaInternalService<any>
   let indexSyncService: ModulesSdkTypes.IMedusaInternalService<any>
-  let dataSynchronizer: ModulesSdkTypes.IMedusaInternalService<any>
-  let onApplicationPrepareShutdown!: () => Promise<void>
-  let onApplicationShutdown!: () => Promise<void>
+  let dataSynchronizer: DataSynchronizer
 
   beforeAll(async () => {
-    medusaApp = await beforeAll_()
-    onApplicationPrepareShutdown = medusaApp.onApplicationPrepareShutdown
-    onApplicationShutdown = medusaApp.onApplicationShutdown
+    // Starting the module in worker mode runs the initial configuration
+    // sync against the configured schema
+    testBed = await createIndexTestBed({ schema })
+
+    indexMetadataService = testBed.container.resolve("indexMetadataService")
+    indexSyncService = testBed.container.resolve("indexSyncService")
+    dataSynchronizer = testBed.container.resolve("dataSynchronizer")
   })
 
   afterAll(async () => {
-    await onApplicationPrepareShutdown()
-    await onApplicationShutdown()
-    await dbUtils.shutdown(dbName)
+    await testBed.teardown()
   })
-
-  beforeEach(async () => {
-    await beforeEach_()
-
-    index = container.resolve(Modules.INDEX)
-    indexMetadataService = (index as any).indexMetadataService_
-    indexSyncService = (index as any).indexSyncService_
-    dataSynchronizer = (index as any).dataSynchronizer_
-  })
-
-  afterEach(afterEach_)
 
   it("should full sync all entities when the config has changed", async () => {
-    await setTimeout(1000)
-
     const currentMetadata = await indexMetadataService.list()
 
     expect(currentMetadata).toHaveLength(7)
@@ -189,15 +88,10 @@ describe("IndexModuleService syncIndexConfig", function () {
     })
     expect(indexSync).toHaveLength(7)
 
-    // update config schema
-    ;(index as any).schemaObjectRepresentation_ = null
-    ;(index as any).moduleOptions_ ??= {}
-    ;(index as any).moduleOptions_.schema = updatedSchema
-    ;(index as any).buildSchemaObjectRepresentation_()
-
+    // The module restarts with an updated schema config
     let configurationChecker = new Configuration({
-      logger,
-      schemaObjectRepresentation: (index as any).schemaObjectRepresentation_,
+      logger: testBed.logger.asLogger(),
+      schemaObjectRepresentation: buildRepresentation(updatedSchema),
       indexMetadataService,
       indexSyncService,
       dataSynchronizer,
@@ -269,22 +163,21 @@ describe("IndexModuleService syncIndexConfig", function () {
       ])
     )
 
-    await (index as any).dataSynchronizer_.syncEntities(syncRequired)
+    await dataSynchronizer.syncEntities(syncRequired)
+
+    // Seed an index entry for an entity that is about to be removed from
+    // the schema to assert its data is cleaned up
+    const manager = testBed.forkManager()
+    await manager
+      .getRepository(toMikroORMEntity(IndexData))
+      .upsertMany([
+        { id: "price_set_1", name: "PriceSet", data: { id: "price_set_1" } },
+      ])
 
     // Sync again removing entities not linked
-    ;(index as any).schemaObjectRepresentation_ = null
-    ;(index as any).moduleOptions_ ??= {}
-    ;(index as any).moduleOptions_.schema = updateRemovedSchema
-    ;(index as any).buildSchemaObjectRepresentation_()
-
-    const spyDataSynchronizer_ = jest.spyOn(
-      (index as any).dataSynchronizer_,
-      "removeEntities"
-    )
-
     configurationChecker = new Configuration({
-      logger,
-      schemaObjectRepresentation: (index as any).schemaObjectRepresentation_,
+      logger: testBed.logger.asLogger(),
+      schemaObjectRepresentation: buildRepresentation(updateRemovedSchema),
       indexMetadataService,
       indexSyncService,
       dataSynchronizer,
@@ -319,6 +212,10 @@ describe("IndexModuleService syncIndexConfig", function () {
       ])
     )
 
-    expect(spyDataSynchronizer_).toHaveBeenCalledTimes(1)
+    // The index data of the removed entities has been deleted
+    const priceSetEntries = await testBed
+      .forkManager()
+      .find(toMikroORMEntity(IndexData), { name: "PriceSet" })
+    expect(priceSetEntries).toHaveLength(0)
   })
 })
