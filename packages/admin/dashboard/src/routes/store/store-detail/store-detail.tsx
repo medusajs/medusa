@@ -46,7 +46,9 @@ export const StoreDetail = () => {
       <PermissionGuard permission="currency:read">
         <StoreCurrencySection store={store} />
       </PermissionGuard>
-      {isTranslationsEnabled && <StoreLocaleSection store={store} />}
+      <PermissionGuard permission="store_locale:read">
+        {isTranslationsEnabled && <StoreLocaleSection store={store} />}
+      </PermissionGuard>
     </SingleColumnPage>
   )
 }

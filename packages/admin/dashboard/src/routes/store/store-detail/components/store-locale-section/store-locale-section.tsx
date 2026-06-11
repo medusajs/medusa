@@ -20,7 +20,10 @@ import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useLocalesTableColumns } from "../../../common/hooks/use-locales-table-columns"
 import { useLocalesTableQuery } from "../../../common/hooks/use-locales-table-query"
 import { useLocales } from "../../../../../hooks/api"
-import { useStorePermissions } from "../../../../../hooks/use-resource-permissions"
+import {
+  useStoreLocalePermissions,
+  useStorePermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type StoreLocaleSectionProps = {
   store: HttpTypes.AdminStore
@@ -31,6 +34,7 @@ const PAGE_SIZE = 10
 export const StoreLocaleSection = ({ store }: StoreLocaleSectionProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const { canUpdate } = useStorePermissions()
+  const { canRead: canReadLocales } = useStoreLocalePermissions()
 
   const { searchParams, raw } = useLocalesTableQuery({ pageSize: PAGE_SIZE })
 
@@ -41,7 +45,7 @@ export const StoreLocaleSection = ({ store }: StoreLocaleSectionProps) => {
     },
     {
       placeholderData: keepPreviousData,
-      enabled: !!store.supported_locales?.length,
+      enabled: !!store.supported_locales?.length && canReadLocales,
     }
   )
 

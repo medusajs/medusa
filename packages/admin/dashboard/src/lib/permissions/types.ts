@@ -72,6 +72,7 @@ export type PermissionResource =
   | "translation_setting"
   | "notification"
   | "file"
+  | "store_locale"
 
 /**
  * Operations that can be performed on resources.

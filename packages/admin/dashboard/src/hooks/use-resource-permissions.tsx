@@ -144,6 +144,9 @@ export const useFilePermissions = () => useResourcePermissions("file")
 export const useNotificationPermissions = () =>
   useResourcePermissions("notification")
 
+export const useStoreLocalePermissions = () =>
+  useResourcePermissions("store_locale")
+
 export const useReservationItemPermissions = () =>
   useResourcePermissions("reservation_item")
 

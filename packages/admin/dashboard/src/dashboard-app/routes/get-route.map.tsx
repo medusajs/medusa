@@ -1386,7 +1386,9 @@ export function getRouteMap({
                       path: "locales",
                       lazy: () =>
                         import("../../routes/store/store-add-locales"),
-                      handle: { permissions: "store:update" },
+                      handle: {
+                        permissions: ["store:update", "store_locale:read"],
+                      },
                     },
                     {
                       path: "metadata/edit",
@@ -2622,7 +2624,9 @@ export function getRouteMap({
                 {
                   path: "add-locales",
                   lazy: () => import("../../routes/translations/add-locales"),
-                  handle: { permissions: "store:update" },
+                  handle: {
+                    permissions: ["store:update", "store_locale:read"],
+                  },
                 },
               ],
             },
