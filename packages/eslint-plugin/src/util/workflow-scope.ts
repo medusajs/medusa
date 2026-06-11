@@ -1,7 +1,8 @@
 import type { TSESTree } from "@typescript-eslint/utils"
 import { AST_NODE_TYPES } from "@typescript-eslint/utils"
+import { WORKFLOWS_SDK_SOURCE } from "../constants"
 
-export const WORKFLOWS_SDK_SOURCE = "@medusajs/framework/workflows-sdk"
+export { WORKFLOWS_SDK_SOURCE }
 
 export const CREATE_WORKFLOW = "createWorkflow"
 export const CREATE_STEP = "createStep"

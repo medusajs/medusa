@@ -37,5 +37,12 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("no-try-catch-in-workflow")]: "error",
       },
     },
+    {
+      files: ["src/modules/**/*.{ts,tsx}", "**/modules/**/*.{ts,tsx}"],
+      rules: {
+        [ruleId("service-constructor-must-call-super")]: "error",
+        [ruleId("service-methods-must-be-async")]: "error",
+      },
+    },
   ]
 }

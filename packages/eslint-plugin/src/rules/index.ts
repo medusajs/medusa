@@ -7,6 +7,8 @@ import { rule as noIfInWorkflowConstructor } from "./no-if-in-workflow-construct
 import { rule as noLoopsInWorkflow } from "./no-loops-in-workflow"
 import { rule as noSpreadInWorkflow } from "./no-spread-in-workflow"
 import { rule as noTryCatchInWorkflow } from "./no-try-catch-in-workflow"
+import { rule as serviceConstructorMustCallSuper } from "./service-constructor-must-call-super"
+import { rule as serviceMethodsMustBeAsync } from "./service-methods-must-be-async"
 
 export const rules = {
   "no-async-workflow-constructor": noAsyncWorkflowConstructor,
@@ -17,4 +19,6 @@ export const rules = {
   "no-loops-in-workflow": noLoopsInWorkflow,
   "no-spread-in-workflow": noSpreadInWorkflow,
   "no-try-catch-in-workflow": noTryCatchInWorkflow,
+  "service-constructor-must-call-super": serviceConstructorMustCallSuper,
+  "service-methods-must-be-async": serviceMethodsMustBeAsync,
 } as unknown as NonNullable<ESLint.Plugin["rules"]>
