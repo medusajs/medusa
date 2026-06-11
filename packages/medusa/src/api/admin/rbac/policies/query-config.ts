@@ -21,3 +21,19 @@ export const listTransformQueryConfig = {
   defaultLimit: 20,
   isList: true,
 }
+
+export const defaultAdminRbacPolicyRolesFields = [
+  "id",
+  "role.id",
+  "role.name",
+  "role.description",
+  "role.created_at",
+  "role.updated_at",
+  "role.users.id",
+]
+
+export const listRbacPolicyRolesTransformQueryConfig = {
+  defaults: defaultAdminRbacPolicyRolesFields,
+  defaultLimit: 10,
+  isList: true,
+}

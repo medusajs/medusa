@@ -1,3 +1,6 @@
+import { InlineIcon } from "docs-ui"
+import { EllipsisHorizontal } from "@medusajs/icons"
+
 export const metadata = {
   title: `Manage User Account on Cloud`,
 }
@@ -39,4 +42,53 @@ Under the "Sign-in methods" section, you can connect or disconnect your email an
 
 If you disconnect any sign-in method, you won't be able to use that method to sign in to your Cloud account anymore.
 
-![The Authentication settings with the Sign-in methods section](https://res.cloudinary.com/dza7lstvk/image/upload/v1765975168/Cloud/CleanShot_2025-12-17_at_14.05.59_2x_d5wvbx.png)
+---
+
+## Configure Two-Factor Authentication
+
+Cloud supports Two-Factor Authentication (2FA) to enhance the security of your account. 2FA requires a second authentication factor when signing in to your Cloud dashboard.
+
+To configure 2FA for your account:
+
+1. [Open the organization's settings](../organizations/page.mdx#view-organization-settings).
+2. Click on the "Authentication" tab.
+3. In the **Two-Factor Authentication** section, you'll see the current status of 2FA for your account.
+
+Medusa supports setting up 2FA using authenticator apps like Google Authenticator or 1Password.
+
+### Set Up 2FA with Authenticator App
+
+If 2FA is not enabled for your account:
+
+1. Click the **Set up** button in the Two-Factor Authentication section next to the "Authenticator app" card.
+2. In the setup modal:
+  - Scan the QR code with your authenticator app (such as Google Authenticator, Authy, or 1Password).
+    - Alternatively, manually enter the provided setup key in your authenticator app.
+  - Enter the 6-digit verification code from your authenticator app to verify the setup.
+  - Click **Set up** to enable 2FA.
+3. Save your recovery codes:
+   - You'll see 8 recovery codes that can be used to access your account if you lose your authenticator device.
+   - Click **Copy All** to copy all codes, or **Download** to save them as a file.
+   - Store these codes in a secure location.
+4. Click **Done** to complete the setup.
+
+Once 2FA is enabled, you'll be prompted to enter a 6-digit code from your authenticator app each time you sign in.
+
+### Disable 2FA
+
+If 2FA is already enabled and you want to disable it:
+
+1. Click the <InlineIcon alt="three-dots" Icon={EllipsisHorizontal} /> icon in the "Authenticator app" card.
+2. Select **Disable** from the dropdown.
+3. In the confirmation pop-up, click the **Disable** button.
+4. Enter a 6-digit verification code from your authenticator app to confirm the action.
+5. Click **Disable** to remove 2FA from your account.
+
+### Login with Recovery Codes
+
+If you enabled 2FA with an authenticator app but lose access to it, you can use one of the recovery codes to sign in to your account:
+
+1. After you sign in, click the "Use recovery code" link in the 2FA verification step.
+2. Enter one of your recovery codes and click the **Verify Code** button to sign in.
+
+You can only use a recovery code once. After using a recovery code, make sure to disable then re-enable 2FA to generate new recovery codes and keep them in a secure place.

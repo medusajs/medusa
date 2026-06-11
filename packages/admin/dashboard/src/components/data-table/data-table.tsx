@@ -13,6 +13,7 @@ import {
   DataTableFilteringState,
   DataTablePaginationState,
   DataTableSortingState,
+  Tooltip,
 } from "@medusajs/ui"
 import React, { ReactNode, useCallback, useMemo } from "react"
 import { useTranslation } from "react-i18next"
@@ -30,6 +31,7 @@ type ColumnOrderState = string[]
 type DataTableActionProps = {
   label: string
   disabled?: boolean
+  tooltip?: ReactNode
 } & (
   | {
       to: string
@@ -510,6 +512,7 @@ const useDataTableTranslations = () => {
 const DataTableAction = ({
   label,
   disabled,
+  tooltip,
   ...props
 }: DataTableActionProps) => {
   const buttonProps = {
@@ -520,14 +523,28 @@ const DataTableAction = ({
   }
 
   if ("to" in props) {
-    return (
+    const linkButton = disabled ? (
+      <Button {...buttonProps}>{label}</Button>
+    ) : (
       <Button {...buttonProps} asChild>
         <Link to={props.to}>{label}</Link>
       </Button>
     )
+
+    return tooltip ? (
+      <Tooltip content={tooltip}>{linkButton}</Tooltip>
+    ) : (
+      linkButton
+    )
   }
 
-  return (
+  return tooltip ? (
+    <Tooltip content={tooltip}>
+      <Button {...buttonProps} onClick={props.onClick}>
+        {label}
+      </Button>
+    </Tooltip>
+  ) : (
     <Button {...buttonProps} onClick={props.onClick}>
       {label}
     </Button>
