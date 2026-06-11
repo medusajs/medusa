@@ -1,3 +1,5 @@
+import { AdminRbacRole } from "../../rbac/admin/entities"
+
 export interface AdminInvite {
   /**
    * The invite's ID.
@@ -23,6 +25,10 @@ export interface AdminInvite {
    * Key-value pairs of custom data.
    */
   metadata?: Record<string, unknown>
+  /**
+   * The RBAC roles assigned to the invite.
+   */
+  rbac_roles?: AdminRbacRole[]
   /**
    * The date that the invite was created.
    */

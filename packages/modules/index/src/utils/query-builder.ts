@@ -385,11 +385,8 @@ export class QueryBuilder {
                   builder.whereRaw(`${aliasMapping[attr]}.id = ?`, subValue)
                 } else {
                   builder.whereRaw(
-                    `${aliasMapping[attr]}.data @> '${getPathOperation(
-                      attr,
-                      field as string[],
-                      subValue
-                    )}'::jsonb`
+                    `${aliasMapping[attr]}.data @> ?::jsonb`,
+                    [getPathOperation(attr, field as string[], subValue)]
                   )
                 }
               } else if (operator === "IN" || operator === "NOT IN") {
@@ -497,11 +494,8 @@ export class QueryBuilder {
               builder.whereRaw(`${aliasMapping[attr]}.id = ?`, value)
             } else {
               builder.whereRaw(
-                `${aliasMapping[attr]}.data @> '${getPathOperation(
-                  attr,
-                  field as string[],
-                  value
-                )}'::jsonb`
+                `${aliasMapping[attr]}.data @> ?::jsonb`,
+                [getPathOperation(attr, field as string[], value)]
               )
             }
           } else {

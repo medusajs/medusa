@@ -27,8 +27,12 @@ import {
   AuthMfaVerifyDTO,
   ConfirmAuthVerificationDTO,
   ConfirmAuthVerificationResponse,
+  ConsumePasswordResetTokenDTO,
+  ConsumePasswordResetTokenResponse,
   CreateAuthVerificationTokenDTO,
   CreateAuthVerificationTokenResponse,
+  CreatePasswordResetTokenDTO,
+  CreatePasswordResetTokenResponse,
   RequestAuthVerificationDTO,
   RequestAuthVerificationResponse,
 } from "./common"
@@ -127,6 +131,36 @@ export interface IAuthModuleService extends IModuleService {
     provider: string,
     providerData: Record<string, unknown>
   ): Promise<AuthenticationResponse>
+
+  /**
+   * Issue a single-use password reset token bound to a provider identity.
+   * The returned `jti` should be embedded as the JWT's `jti` claim so the
+   * password-update flow can verify it against the stored token on use.
+   * Issuing a new token invalidates any prior reset tokens for the same
+   * provider identity.
+   *
+   * @param {CreatePasswordResetTokenDTO} data - Provider, entity, and optional TTL.
+   * @param {Context} sharedContext - Shared transaction context.
+   * @returns {Promise<CreatePasswordResetTokenResponse>} The opaque `jti` and its expiration.
+   */
+  createPasswordResetToken(
+    data: CreatePasswordResetTokenDTO,
+    sharedContext?: Context
+  ): Promise<CreatePasswordResetTokenResponse>
+
+  /**
+   * Verify a previously-issued password reset token and atomically consume
+   * it. Throws if the token is unknown, expired, or bound to a different
+   * provider/entity. After a successful call the token cannot be reused.
+   *
+   * @param {ConsumePasswordResetTokenDTO} data - The `jti` and the expected provider/entity binding.
+   * @param {Context} sharedContext - Shared transaction context.
+   * @returns {Promise<ConsumePasswordResetTokenResponse>} The auth + provider identity IDs the token belonged to.
+   */
+  consumePasswordResetToken(
+    data: ConsumePasswordResetTokenDTO,
+    sharedContext?: Context
+  ): Promise<ConsumePasswordResetTokenResponse>
 
   /**
    * When authenticating users with a third-party provider, such as Google, the user performs an

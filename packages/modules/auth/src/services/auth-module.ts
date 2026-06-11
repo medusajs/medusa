@@ -27,6 +27,7 @@ import {
   AuthIdentity,
   AuthMfaFactor,
   AuthMfaRecoveryCode,
+  AuthPasswordResetToken,
   ProviderIdentity,
 } from "@models"
 import { AuthModuleOptions } from "@types"
@@ -38,6 +39,7 @@ type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   authIdentityService: ModulesSdkTypes.IMedusaInternalService<any>
   authVerificationTokenService: ModulesSdkTypes.IMedusaInternalService<any>
+  authPasswordResetTokenService: ModulesSdkTypes.IMedusaInternalService<any>
   authMfaFactorService: ModulesSdkTypes.IMedusaInternalService<any>
   authMfaRecoveryCodeService: ModulesSdkTypes.IMedusaInternalService<any>
   providerIdentityService: ModulesSdkTypes.IMedusaInternalService<any>
@@ -61,6 +63,9 @@ export default class AuthModuleService
   protected authVerificationTokenService_: ModulesSdkTypes.IMedusaInternalService<
     InferEntityType<typeof AuthVerificationToken>
   >
+  protected authPasswordResetTokenService_: ModulesSdkTypes.IMedusaInternalService<
+    InferEntityType<typeof AuthPasswordResetToken>
+  >
   protected authMfaFactorService_: ModulesSdkTypes.IMedusaInternalService<
     InferEntityType<typeof AuthMfaFactor>
   >
@@ -79,6 +84,7 @@ export default class AuthModuleService
     {
       authIdentityService,
       authVerificationTokenService,
+      authPasswordResetTokenService,
       authMfaFactorService,
       authMfaRecoveryCodeService,
       providerIdentityService,
@@ -96,6 +102,7 @@ export default class AuthModuleService
     this.baseRepository_ = baseRepository
     this.authIdentityService_ = authIdentityService
     this.authVerificationTokenService_ = authVerificationTokenService
+    this.authPasswordResetTokenService_ = authPasswordResetTokenService
     this.authMfaFactorService_ = authMfaFactorService
     this.authMfaRecoveryCodeService_ = authMfaRecoveryCodeService
     this.authProviderService_ = authProviderService
@@ -1050,6 +1057,138 @@ export default class AuthModuleService
     if (tokenIds.length) {
       await this.authVerificationTokenService_.delete(tokenIds, sharedContext)
     }
+  }
+
+  @InjectManager()
+  async createPasswordResetToken(
+    data: AuthTypes.CreatePasswordResetTokenDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.CreatePasswordResetTokenResponse> {
+    return await this.createPasswordResetToken_(data, sharedContext)
+  }
+
+  @InjectTransactionManager()
+  protected async createPasswordResetToken_(
+    data: AuthTypes.CreatePasswordResetTokenDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.CreatePasswordResetTokenResponse> {
+    const [providerIdentity] = await this.providerIdentityService_.list(
+      { provider: data.provider, entity_id: data.entity_id },
+      {},
+      sharedContext
+    )
+
+    if (!providerIdentity) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Provider identity with entity_id ${data.entity_id} and provider ${data.provider} not found`
+      )
+    }
+
+    await this.invalidatePasswordResetTokens_(
+      providerIdentity.id,
+      sharedContext
+    )
+
+    const jti = crypto.randomUUID()
+    const expiresAt = new Date(
+      Date.now() + this.getPasswordResetTokenTtlMs_(data.ttl_seconds ?? 900)
+    )
+
+    await this.authPasswordResetTokenService_.create(
+      {
+        auth_identity_id: providerIdentity.auth_identity_id,
+        provider_identity_id: providerIdentity.id,
+        entity_id: providerIdentity.entity_id,
+        token_hash: this.hashVerificationToken_(jti),
+        expires_at: expiresAt,
+      },
+      sharedContext
+    )
+
+    return { jti, expires_at: expiresAt }
+  }
+
+  @InjectManager()
+  async consumePasswordResetToken(
+    data: AuthTypes.ConsumePasswordResetTokenDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.ConsumePasswordResetTokenResponse> {
+    return await this.consumePasswordResetToken_(data, sharedContext)
+  }
+
+  @InjectTransactionManager()
+  protected async consumePasswordResetToken_(
+    data: AuthTypes.ConsumePasswordResetTokenDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.ConsumePasswordResetTokenResponse> {
+    const [resetToken] = await this.authPasswordResetTokenService_.list(
+      { token_hash: this.hashVerificationToken_(data.jti) },
+      {},
+      sharedContext
+    )
+
+    if (!resetToken) {
+      throw new MedusaError(MedusaError.Types.UNAUTHORIZED, "Invalid token")
+    }
+
+    if (new Date(resetToken.expires_at).getTime() <= Date.now()) {
+      await this.authPasswordResetTokenService_.delete(
+        resetToken.id,
+        sharedContext
+      )
+      throw new MedusaError(MedusaError.Types.UNAUTHORIZED, "Invalid token")
+    }
+
+    const providerIdentity = await this.providerIdentityService_.retrieve(
+      resetToken.provider_identity_id,
+      {},
+      sharedContext
+    )
+
+    if (
+      providerIdentity.provider !== data.provider ||
+      providerIdentity.entity_id !== data.entity_id
+    ) {
+      throw new MedusaError(MedusaError.Types.UNAUTHORIZED, "Invalid token")
+    }
+
+    await this.authPasswordResetTokenService_.delete(
+      resetToken.id,
+      sharedContext
+    )
+
+    return {
+      auth_identity_id: resetToken.auth_identity_id!,
+      provider_identity_id: resetToken.provider_identity_id!,
+      entity_id: resetToken.entity_id,
+    }
+  }
+
+  protected async invalidatePasswordResetTokens_(
+    providerIdentityId: string,
+    sharedContext: Context = {}
+  ): Promise<void> {
+    const existing = await this.authPasswordResetTokenService_.list(
+      { provider_identity_id: providerIdentityId },
+      { select: ["id"] },
+      sharedContext
+    )
+    const ids = existing.map((token) => token.id)
+
+    if (ids.length) {
+      await this.authPasswordResetTokenService_.delete(ids, sharedContext)
+    }
+  }
+
+  protected getPasswordResetTokenTtlMs_(ttlSeconds: number): number {
+    if (!Number.isInteger(ttlSeconds) || ttlSeconds < 1) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Password reset token TTL must be a positive integer"
+      )
+    }
+    return ttlSeconds * 1000
   }
 
   protected async serializeVerificationToken_(
