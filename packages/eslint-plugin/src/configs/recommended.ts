@@ -52,5 +52,14 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("module-name-snake-case")]: "error",
       },
     },
+    {
+      files: [
+        "src/modules/**/models/**/*.{ts,js}",
+        "**/modules/**/models/**/*.{ts,js}",
+      ],
+      rules: {
+        [ruleId("data-model-table-name-snake-case")]: "warn",
+      },
+    },
   ]
 }

@@ -2,7 +2,7 @@ import { AST_NODE_TYPES } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
 import { getInitializedVariableName } from "../../util/ast"
 import { getFilenameStem } from "../../util/filename"
-import { KEBAB_CASE_RE, toKebab } from "../../util/kebab-case"
+import { KEBAB_CASE_RE, toKebab } from "../../util/strings"
 import {
   createWorkflowSdkBindings,
   trackWorkflowSdkImports,
