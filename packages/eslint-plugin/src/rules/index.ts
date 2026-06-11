@@ -23,6 +23,7 @@ import { rule as readOnlyLinkRequiresField } from "./read-only-link-requires-fie
 import { rule as serviceConstructorMustCallSuper } from "./service-constructor-must-call-super"
 import { rule as serviceMethodsMustBeAsync } from "./service-methods-must-be-async"
 import { rule as useInjectManagerOnPublicMethods } from "./use-inject-manager-on-public-methods"
+import { rule as useQueryContextUtility } from "./use-query-context-utility"
 import { rule as noWorkflowCallWithoutContainer } from "./no-workflow-call-without-container"
 import { rule as preferContainerRegistrationKeysQuery } from "./prefer-container-registration-keys-query"
 import { rule as preferLinkOverRemoteLink } from "./prefer-link-over-remote-link"
@@ -57,6 +58,7 @@ export const rules = {
   "service-constructor-must-call-super": serviceConstructorMustCallSuper,
   "service-methods-must-be-async": serviceMethodsMustBeAsync,
   "use-inject-manager-on-public-methods": useInjectManagerOnPublicMethods,
+  "use-query-context-utility": useQueryContextUtility,
   "no-workflow-call-without-container": noWorkflowCallWithoutContainer,
   "prefer-container-registration-keys-query":
     preferContainerRegistrationKeysQuery,
