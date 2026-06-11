@@ -468,10 +468,7 @@ export function getRouteMap({
                       lazy: () =>
                         import("../../routes/orders/order-allocate-items"),
                       handle: {
-                        permissions: [
-                          "order:update",
-                          "reservation_item:create",
-                        ],
+                        permissions: ["reservation_item:create"],
                       },
                     },
                     {

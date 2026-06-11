@@ -101,7 +101,7 @@ export const OrderSummarySection = ({
   const { canCreate: canCreateRefund } = useRefundPermissions()
 
   const canReceiveReturn = canUpdateReturn && canUpdateOrder
-  const canAllocate = canCreateReservation && canUpdateOrder
+  const canAllocate = canCreateReservation
   const canMarkAsPaid = canUpdatePaymentCollection && canUpdateOrder
   const canRefund = canCreateRefund && canUpdateOrder
 
