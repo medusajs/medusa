@@ -56,7 +56,7 @@ export const ProductMediaGallery = ({ product }: ProductMediaGalleryProps) => {
   )
 
   const handleDownloadCurrent = () => {
-    if (isPending) {
+    if (isPending || !media[curr]) {
       return
     }
 
@@ -72,6 +72,10 @@ export const ProductMediaGallery = ({ product }: ProductMediaGalleryProps) => {
   }
 
   const handleDeleteCurrent = async () => {
+    if (!media[curr]) {
+      return
+    }
+
     const current = media[curr]
 
     const res = await prompt({
@@ -93,7 +97,7 @@ export const ProductMediaGallery = ({ product }: ProductMediaGalleryProps) => {
         .map((i) => ({ id: i.id, url: i.url })) || []
 
     if (curr === media.length - 1) {
-      setCurr((prev) => prev - 1)
+      setCurr((prev) => Math.max(0, prev - 1))
     }
 
     await mutateAsync({
@@ -193,6 +197,10 @@ const Canvas = ({ media, curr }: { media: Media[]; curr: number }) => {
     )
   }
 
+  if (!media[curr]) {
+    return null
+  }
+
   return (
     <div className="bg-ui-bg-subtle relative size-full overflow-hidden">
       <div className="flex size-full items-center justify-center p-6">
@@ -265,7 +273,7 @@ const Preview = ({
       </IconButton>
       <div className="flex items-center gap-x-2">
         {visibleItems.map((item) => {
-          const isCurrentImage = item.id === media[curr].id
+          const isCurrentImage = item.id === media[curr]?.id
           const originalIndex = media.findIndex((i) => i.id === item.id)
 
           return (

@@ -9793,6 +9793,9 @@
         "inviteUserHint": {
           "type": "string"
         },
+        "inviteRolesTooltip": {
+          "type": "string"
+        },
         "sendInvite": {
           "type": "string"
         },
@@ -9897,6 +9900,7 @@
         "editUser",
         "inviteUser",
         "inviteUserHint",
+        "inviteRolesTooltip",
         "sendInvite",
         "pendingInvites",
         "deleteInviteWarning",
@@ -9911,6 +9915,432 @@
         "deleteUserWarning",
         "deleteUserSuccess",
         "invite"
+      ],
+      "additionalProperties": false
+    },
+    "roles": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "create": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "hint": {
+              "type": "string"
+            },
+            "successToast": {
+              "type": "string"
+            },
+            "tabs": {
+              "type": "object",
+              "properties": {
+                "details": {
+                  "type": "string"
+                },
+                "permissions": {
+                  "type": "string"
+                }
+              },
+              "required": ["details", "permissions"],
+              "additionalProperties": false
+            },
+            "permissions": {
+              "type": "object",
+              "properties": {
+                "empty": {
+                  "type": "object",
+                  "properties": {
+                    "heading": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["heading", "description"],
+                  "additionalProperties": false
+                },
+                "filtered": {
+                  "type": "object",
+                  "properties": {
+                    "heading": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["heading", "description"],
+                  "additionalProperties": false
+                }
+              },
+              "required": ["empty", "filtered"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["header", "hint", "successToast", "tabs", "permissions"],
+          "additionalProperties": false
+        },
+        "edit": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "successToast": {
+              "type": "string"
+            }
+          },
+          "required": ["header", "successToast"],
+          "additionalProperties": false
+        },
+        "delete": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "successToast": {
+              "type": "string"
+            }
+          },
+          "required": ["title", "description", "successToast"],
+          "additionalProperties": false
+        },
+        "fields": {
+          "type": "object",
+          "properties": {
+            "permissions": {
+              "type": "string"
+            }
+          },
+          "required": ["permissions"],
+          "additionalProperties": false
+        },
+        "actions": {
+          "type": "object",
+          "properties": {
+            "managePermissions": {
+              "type": "string"
+            }
+          },
+          "required": ["managePermissions"],
+          "additionalProperties": false
+        },
+        "users": {
+          "type": "object",
+          "properties": {
+            "alreadyAddedTooltip": {
+              "type": "string"
+            },
+            "unassignableRoleTooltip": {
+              "type": "string"
+            },
+            "add": {
+              "type": "object",
+              "properties": {
+                "successToast_one": {
+                  "type": "string"
+                },
+                "successToast_other": {
+                  "type": "string"
+                },
+                "list": {
+                  "type": "object",
+                  "properties": {
+                    "noRecordsMessage": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["noRecordsMessage"],
+                  "additionalProperties": false
+                }
+              },
+              "required": ["successToast_one", "successToast_other", "list"],
+              "additionalProperties": false
+            },
+            "remove": {
+              "type": "object",
+              "properties": {
+                "title_one": {
+                  "type": "string"
+                },
+                "title_other": {
+                  "type": "string"
+                },
+                "description_one": {
+                  "type": "string"
+                },
+                "description_other": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "title_one",
+                "title_other",
+                "description_one",
+                "description_other"
+              ],
+              "additionalProperties": false
+            },
+            "list": {
+              "type": "object",
+              "properties": {
+                "noRecordsMessage": {
+                  "type": "string"
+                }
+              },
+              "required": ["noRecordsMessage"],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "alreadyAddedTooltip",
+            "unassignableRoleTooltip",
+            "add",
+            "remove",
+            "list"
+          ],
+          "additionalProperties": false
+        },
+        "permissions": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "hint": {
+              "type": "string"
+            },
+            "empty": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["heading", "description"],
+              "additionalProperties": false
+            },
+            "filtered": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["heading", "description"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["header", "hint", "empty", "filtered"],
+          "additionalProperties": false
+        },
+        "list": {
+          "type": "object",
+          "properties": {
+            "empty": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["heading", "description"],
+              "additionalProperties": false
+            },
+            "filtered": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["heading", "description"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["empty", "filtered"],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "domain",
+        "subtitle",
+        "create",
+        "edit",
+        "delete",
+        "fields",
+        "actions",
+        "users",
+        "permissions",
+        "list"
+      ],
+      "additionalProperties": false
+    },
+    "policies": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "create": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "hint": {
+              "type": "string"
+            },
+            "successToast": {
+              "type": "string"
+            }
+          },
+          "required": ["header", "hint", "successToast"],
+          "additionalProperties": false
+        },
+        "edit": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "successToast": {
+              "type": "string"
+            }
+          },
+          "required": ["header", "successToast"],
+          "additionalProperties": false
+        },
+        "delete": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "successToast": {
+              "type": "string"
+            }
+          },
+          "required": ["title", "description", "successToast"],
+          "additionalProperties": false
+        },
+        "fields": {
+          "type": "object",
+          "properties": {
+            "roles": {
+              "type": "string"
+            },
+            "users": {
+              "type": "string"
+            }
+          },
+          "required": ["roles", "users"],
+          "additionalProperties": false
+        },
+        "list": {
+          "type": "object",
+          "properties": {
+            "empty": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["heading", "description"],
+              "additionalProperties": false
+            },
+            "filtered": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["heading", "description"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["empty", "filtered"],
+          "additionalProperties": false
+        },
+        "roles": {
+          "type": "object",
+          "properties": {
+            "list": {
+              "type": "object",
+              "properties": {
+                "noRecordsMessage": {
+                  "type": "string"
+                }
+              },
+              "required": ["noRecordsMessage"],
+              "additionalProperties": false
+            },
+            "empty": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["heading", "description"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["list", "empty"],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "domain",
+        "subtitle",
+        "create",
+        "edit",
+        "delete",
+        "fields",
+        "list",
+        "roles"
       ],
       "additionalProperties": false
     },
@@ -12534,6 +12964,9 @@
         "role": {
           "type": "string"
         },
+        "resource": {
+          "type": "string"
+        },
         "sent": {
           "type": "string"
         },
@@ -12547,6 +12980,9 @@
           "type": "string"
         },
         "updatedAt": {
+          "type": "string"
+        },
+        "operation": {
           "type": "string"
         },
         "revokedAt": {
@@ -12799,11 +13235,13 @@
         "region",
         "discount",
         "role",
+        "resource",
         "sent",
         "salesChannels",
         "product",
         "createdAt",
         "updatedAt",
+        "operation",
         "revokedAt",
         "true",
         "false",
@@ -13087,6 +13525,9 @@
             "description": {
               "type": "string"
             },
+            "action": {
+              "type": "string"
+            },
             "requiredPermission": {
               "type": "string"
             }
@@ -13167,6 +13608,12 @@
             "user": {
               "type": "string"
             },
+            "role": {
+              "type": "string"
+            },
+            "permission": {
+              "type": "string"
+            },
             "sales_channel": {
               "type": "string"
             },
@@ -13215,6 +13662,8 @@
             "region",
             "store",
             "user",
+            "role",
+            "permission",
             "sales_channel",
             "stock_location",
             "shipping_profile",
@@ -13290,6 +13739,7 @@
     "priceLists",
     "profile",
     "users",
+    "roles",
     "translations",
     "store",
     "regions",

@@ -60,6 +60,9 @@ You can also navigate to an environment's variables from the [command palette](.
 4. In the "Add new environment variables" section, you can add environment variables either for the backend or storefront. There are different ways you can add environment variables:
     - **Manually**:
       - Enter the key and value of the environment variable in the respective fields.
+      - Use the **Sensitive** toggle to mark variables containing secrets that should be masked in the interface.
+      - Use the **Build** toggle to make the variable available during build time.
+      - Use the **Runtime** toggle to make the variable available during runtime (enabled by default).
       - Click the "Add another" button to add another variable.
     - **Paste `.env` format**:
       - If you copied environment variables in a `.env` file format, you can paste them directly into the "Key" field. The environment variables will be pre-filled for you.
@@ -96,7 +99,10 @@ You can also navigate to an environment's variables from the [command palette](.
 
 ![Edit environment variable in the environment's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1767790460/Cloud/CleanShot_2026-01-07_at_14.54.07_2x_xtkek9.png)
 
-7. In the side window that opens, you can edit the variable's key, value, and whether it's sensitive.
+7. In the side window that opens, you can edit the variable's key, value, and configure its settings:
+   - **Sensitive**: Whether the variable contains secrets that should be masked in the interface
+   - **Build**: Whether the variable is available during build time
+   - **Runtime**: Whether the variable is available during runtime
 8. Once you're done, click the "Save" button.
 
 <Note title="Important">
