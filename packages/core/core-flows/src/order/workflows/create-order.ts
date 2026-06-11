@@ -210,7 +210,7 @@ export const createOrderWorkflow = createWorkflow(
      * Load the customer together with their groups so that customer-group-scoped
      * price lists are matched when pricing the initial line items. The
      * find-or-create-customer step does not load groups, so without this the
-     * pricing context would be missing `customer.groups.id` (issue #15116).
+     * pricing context would be missing `customer.groups.id`.
      */
     const customerId = transform(
       { customerData },
