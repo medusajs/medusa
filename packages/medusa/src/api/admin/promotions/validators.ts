@@ -16,11 +16,22 @@ import {
 } from "../../utils/validators"
 import { CreateCampaign } from "../campaigns/validators"
 
+/**
+ * Parameters for retrieving a single promotion.
+ */
 export type AdminGetPromotionParamsType = z.infer<
   typeof AdminGetPromotionParams
 >
+/**
+ * Validation schema for parameters when retrieving a single promotion.
+ * Includes field selection capabilities.
+ */
 export const AdminGetPromotionParams = createSelectParams()
 
+/**
+ * Filter fields schema for retrieving promotions.
+ * Defines the available query parameters for filtering promotion lists.
+ */
 export const AdminGetPromotionsParamsFields = z.object({
   q: z.string().optional(),
   code: z
@@ -40,9 +51,16 @@ export const AdminGetPromotionsParamsFields = z.object({
   deleted_at: createOperatorMap().optional(),
 })
 
+/**
+ * Parameters for retrieving a list of promotions with pagination and filtering.
+ */
 export type AdminGetPromotionsParamsType = z.infer<
   typeof AdminGetPromotionsParams
 >
+/**
+ * Validation schema for parameters when retrieving a list of promotions.
+ * Supports pagination, field selection, filtering, and logical operators.
+ */
 export const AdminGetPromotionsParams = createFindParams({
   limit: 50,
   offset: 0,
@@ -51,18 +69,32 @@ export const AdminGetPromotionsParams = createFindParams({
   .merge(applyAndAndOrOperators(AdminGetPromotionsParamsFields))
   .strict()
 
+/**
+ * Parameters for retrieving promotion rules.
+ */
 export type AdminGetPromotionRuleParamsType = z.infer<
   typeof AdminGetPromotionRuleParams
 >
+/**
+ * Validation schema for parameters when retrieving promotion rules.
+ * Used to filter rules by promotion type and application method configuration.
+ */
 export const AdminGetPromotionRuleParams = z.object({
   promotion_type: z.string().optional(),
   application_method_type: z.string().optional(),
   application_method_target_type: z.string().optional(),
 })
 
+/**
+ * Parameters for retrieving promotion rule types with field selection.
+ */
 export type AdminGetPromotionRuleTypeParamsType = z.infer<
   typeof AdminGetPromotionRuleTypeParams
 >
+/**
+ * Validation schema for parameters when retrieving promotion rule types.
+ * Combines field selection capabilities with rule type filtering.
+ */
 export const AdminGetPromotionRuleTypeParams = createSelectParams().merge(
   z.object({
     promotion_type: z.string().optional(),
@@ -71,9 +103,16 @@ export const AdminGetPromotionRuleTypeParams = createSelectParams().merge(
   })
 )
 
+/**
+ * Parameters for retrieving promotion rule values with pagination and filtering.
+ */
 export type AdminGetPromotionsRuleValueParamsType = z.infer<
   typeof AdminGetPromotionsRuleValueParams
 >
+/**
+ * Validation schema for parameters when retrieving promotion rule values.
+ * Supports pagination and filtering by search query, value, and target type.
+ */
 export const AdminGetPromotionsRuleValueParams = createFindParams({
   limit: 100,
   offset: 0,
@@ -85,9 +124,16 @@ export const AdminGetPromotionsRuleValueParams = createFindParams({
   })
 )
 
+/**
+ * Data required to create a promotion rule.
+ */
 export type AdminCreatePromotionRuleType = z.infer<
   typeof AdminCreatePromotionRule
 >
+/**
+ * Validation schema for creating a promotion rule.
+ * Defines the operator, attribute, and values that determine rule conditions.
+ */
 export const AdminCreatePromotionRule = z
   .object({
     operator: z.nativeEnum(PromotionRuleOperator),
@@ -97,9 +143,16 @@ export const AdminCreatePromotionRule = z
   })
   .strict()
 
+/**
+ * Data required to update a promotion rule.
+ */
 export type AdminUpdatePromotionRuleType = z.infer<
   typeof AdminUpdatePromotionRule
 >
+/**
+ * Validation schema for updating a promotion rule.
+ * Includes the rule ID and optional fields for modification.
+ */
 export const AdminUpdatePromotionRule = z
   .object({
     id: z.string(),
@@ -110,9 +163,16 @@ export const AdminUpdatePromotionRule = z
   })
   .strict()
 
+/**
+ * Data required to create an application method for a promotion.
+ */
 export type AdminCreateApplicationMethodType = z.infer<
   typeof AdminCreateApplicationMethod
 >
+/**
+ * Validation schema for creating a promotion application method.
+ * Defines how a promotion discount is calculated and applied.
+ */
 export const AdminCreateApplicationMethod = z
   .object({
     description: z.string().nullish(),
@@ -129,9 +189,16 @@ export const AdminCreateApplicationMethod = z
   })
   .strict()
 
+/**
+ * Data required to update an application method for a promotion.
+ */
 export type AdminUpdateApplicationMethodType = z.infer<
   typeof AdminUpdateApplicationMethod
 >
+/**
+ * Validation schema for updating a promotion application method.
+ * All fields are optional to support partial updates.
+ */
 export const AdminUpdateApplicationMethod = z
   .object({
     description: z.string().nullish(),
@@ -146,6 +213,13 @@ export const AdminUpdateApplicationMethod = z
   })
   .strict()
 
+/**
+ * Validation refinement function for promotion data.
+ * Ensures business rule consistency for promotion creation.
+ * 
+ * @param promo - The promotion data to validate
+ * @returns True if validation passes, false otherwise
+ */
 const promoRefinement = (promo) => {
   if (promo.campaign && promo.campaign_id) {
     return false
@@ -163,7 +237,14 @@ const promoRefinement = (promo) => {
   return true
 }
 
+/**
+ * Data required to create a promotion.
+ */
 export type AdminCreatePromotionType = z.infer<typeof CreatePromotion>
+/**
+ * Base validation schema for creating a promotion.
+ * Contains core promotion fields without additional business logic.
+ */
 export const CreatePromotion = z
   .object({
     code: z.string(),
@@ -179,6 +260,10 @@ export const CreatePromotion = z
   })
   .strict()
 
+/**
+ * Validation schema for creating a promotion with business rule enforcement.
+ * Includes refinements for buyget promotions and automatic promotion limits.
+ */
 export const AdminCreatePromotion = WithAdditionalData(
   CreatePromotion,
   (schema) => {
@@ -207,7 +292,14 @@ export const AdminCreatePromotion = WithAdditionalData(
   }
 )
 
+/**
+ * Data required to update a promotion.
+ */
 export type AdminUpdatePromotionType = z.infer<typeof UpdatePromotion>
+/**
+ * Base validation schema for updating a promotion.
+ * All fields are optional to support partial updates.
+ */
 export const UpdatePromotion = z
   .object({
     code: z.string().optional(),
@@ -221,6 +313,11 @@ export const UpdatePromotion = z
   })
   .strict()
 
+/**
+ * Validation schema for updating a promotion with business rule enforcement.
+ * Unlike creation, this schema does not enforce buyget rules since buy rules
+ * are managed through dedicated endpoints and validated by the promotion module.
+ */
 export const AdminUpdatePromotion = WithAdditionalData(
   UpdatePromotion,
   (schema) => {
