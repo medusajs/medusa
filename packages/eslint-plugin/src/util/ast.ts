@@ -106,3 +106,41 @@ export const getInitializedVariableName = (
   }
   return null
 }
+
+/*
+ * True when `fn`'s return type annotation is a `Promise<...>` reference.
+ *
+ * Shallow check — looks only at the outermost type reference's name. Doesn't
+ * unwrap unions/intersections (`Promise<X> | null` returns false) or aliases
+ * (a `type MyPromise = Promise<X>` returns false). Good enough for rules that
+ * want to give `async`-equivalent return types a pass without paying for full
+ * type-aware analysis.
+ */
+export const returnTypeIsPromise = (
+  fn:
+    | TSESTree.FunctionExpression
+    | TSESTree.FunctionDeclaration
+    | TSESTree.ArrowFunctionExpression
+    | TSESTree.TSEmptyBodyFunctionExpression
+): boolean => {
+  const annotation = fn.returnType?.typeAnnotation
+  if (!annotation) return false
+  if (annotation.type !== AST_NODE_TYPES.TSTypeReference) return false
+  const name = annotation.typeName
+  if (name.type !== AST_NODE_TYPES.Identifier) return false
+  return name.name === "Promise"
+}
+
+/**
+ * Returns the `constructor` `MethodDefinition` on a class body, or `null` if
+ * the class has none.
+ */
+export const findConstructor = (
+  node: TSESTree.ClassDeclaration | TSESTree.ClassExpression
+): TSESTree.MethodDefinition | null => {
+  for (const member of node.body.body) {
+    if (member.type !== AST_NODE_TYPES.MethodDefinition) continue
+    if (member.kind === "constructor") return member
+  }
+  return null
+}
