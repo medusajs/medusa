@@ -842,6 +842,11 @@ function processEntity(
               objectName: intermediateEntityName,
               prefix: kebabCasedServiceName,
             }),
+            buildModuleResourceEventName({
+              action: CommonEvents.RESTORED,
+              objectName: intermediateEntityName,
+              prefix: kebabCasedServiceName,
+            }),
           ]
           intermediateEntityObjectRepresentationRef.moduleConfig =
             intermediateEntityModule
