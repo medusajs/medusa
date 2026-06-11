@@ -224,11 +224,12 @@ export const UpdatePromotion = z
 export const AdminUpdatePromotion = WithAdditionalData(
   UpdatePromotion,
   (schema) => {
+    // Unlike create, the update payload is partial: buy rules live on the
+    // persisted promotion and are managed through dedicated endpoints (e.g.
+    // `/admin/promotions/:id/buy-rules/batch`), so the create-time buyget
+    // refinement is intentionally not applied here. Buyget consistency is
+    // still validated by the promotion module against the persisted values.
     return schema
-      .refine(promoRefinement, {
-        message:
-          "Buyget promotions require at least one buy rule and quantities to be defined",
-      })
       .refine(
         (data) => {
           // Automatic promotions cannot have a limit
