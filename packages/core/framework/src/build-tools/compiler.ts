@@ -4,6 +4,7 @@ import chokidar from "chokidar"
 import { access, constants, copyFile, mkdir, rm } from "fs/promises"
 import path from "path"
 import type tsStatic from "typescript"
+import { shouldIgnoreFile } from "./compiler-utils"
 
 /**
  * The compiler exposes the opinionated APIs for compiling Medusa
@@ -36,12 +37,7 @@ export class Compiler {
     this.#tsConfigPath = path.join(this.#projectRoot, "tsconfig.json")
     this.#adminOnlyDistFolder = path.join(this.#projectRoot, ".medusa/admin")
     this.#pluginsDistFolder = path.join(this.#projectRoot, ".medusa/server")
-    this.#backendIgnoreFiles = [
-      "integration-tests",
-      "test",
-      "unit-tests",
-      "src/admin",
-    ]
+    this.#backendIgnoreFiles = ["src/admin"]
   }
 
   /**
@@ -191,9 +187,7 @@ export class Compiler {
     const ts = await this.#loadTSCompiler()
     const filesToCompile = tsConfig.fileNames.filter((fileName) => {
       const relativeFileName = path.relative(this.#projectRoot, fileName)
-      return !chunksToIgnore.some((chunk) =>
-        relativeFileName.includes(`${chunk}`)
-      )
+      return !shouldIgnoreFile(relativeFileName, chunksToIgnore)
     })
 
     /**
@@ -500,6 +494,11 @@ export class Compiler {
         "private",
         ".medusa",
         ...this.#backendIgnoreFiles,
+        (filePath: string) =>
+          shouldIgnoreFile(
+            path.relative(this.#projectRoot, filePath),
+            []
+          ),
       ],
     })
 
