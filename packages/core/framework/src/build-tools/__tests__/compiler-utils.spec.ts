@@ -23,6 +23,28 @@ describe("shouldIgnoreFile", () => {
     })
   })
 
+  describe("convention-based test files", () => {
+    it.each([
+      ["src/services/order.test.ts", ".test.ts"],
+      ["src/services/order.spec.ts", ".spec.ts"],
+      ["src/services/order.test.js", ".test.js"],
+      ["src/services/order.spec.js", ".spec.js"],
+      ["src/api/routes/order.test.tsx", ".test.tsx"],
+      ["src/deep/nested/helper.spec.ts", "deeply nested .spec.ts"],
+      ["order.test.ts", ".test.ts at root"],
+    ])("ignores %s (%s file)", (filePath) => {
+      expect(shouldIgnoreFile(filePath, projectIgnorePatterns)).toBe(true)
+    })
+
+    it.each([
+      ["src/services/test.ts", "file named test.ts"],
+      ["src/services/spec.ts", "file named spec.ts"],
+      ["src/services/latest.ts", "file ending with test substring"],
+    ])("keeps %s (%s)", (filePath) => {
+      expect(shouldIgnoreFile(filePath, projectIgnorePatterns)).toBe(false)
+    })
+  })
+
   describe("project-specific ignore patterns", () => {
     it.each([
       ["src/admin/widgets/foo.ts", "src/admin/ widget"],
