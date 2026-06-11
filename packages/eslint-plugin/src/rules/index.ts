@@ -8,6 +8,7 @@ import { rule as moduleNameSnakeCase } from "./module-name-snake-case"
 import { rule as noAsyncWorkflowConstructor } from "./no-async-workflow-constructor"
 import { rule as noConditionalExpressionsInWorkflow } from "./no-conditional-expressions-in-workflow"
 import { rule as noConsoleLogInWorkflow } from "./no-console-log-in-workflow"
+import { rule as noDeprecatedRemoteQueryConfig } from "./no-deprecated-remote-query-config"
 import { rule as noDirectVariableMutationInWorkflow } from "./no-direct-variable-mutation-in-workflow"
 import { rule as noIfInWorkflowConstructor } from "./no-if-in-workflow-constructor"
 import { rule as medusaContextOnContextParam } from "./medusa-context-on-context-param"
@@ -22,7 +23,9 @@ import { rule as readOnlyLinkRequiresField } from "./read-only-link-requires-fie
 import { rule as serviceConstructorMustCallSuper } from "./service-constructor-must-call-super"
 import { rule as serviceMethodsMustBeAsync } from "./service-methods-must-be-async"
 import { rule as useInjectManagerOnPublicMethods } from "./use-inject-manager-on-public-methods"
+import { rule as useQueryContextUtility } from "./use-query-context-utility"
 import { rule as noWorkflowCallWithoutContainer } from "./no-workflow-call-without-container"
+import { rule as preferContainerRegistrationKeysQuery } from "./prefer-container-registration-keys-query"
 import { rule as preferLinkOverRemoteLink } from "./prefer-link-over-remote-link"
 import { rule as stepIdKebabCase } from "./step-id-kebab-case"
 import { rule as stepMustReturnStepResponse } from "./step-must-return-step-response"
@@ -40,6 +43,7 @@ export const rules = {
   "no-async-workflow-constructor": noAsyncWorkflowConstructor,
   "no-conditional-expressions-in-workflow": noConditionalExpressionsInWorkflow,
   "no-console-log-in-workflow": noConsoleLogInWorkflow,
+  "no-deprecated-remote-query-config": noDeprecatedRemoteQueryConfig,
   "no-direct-variable-mutation-in-workflow": noDirectVariableMutationInWorkflow,
   "no-if-in-workflow-constructor": noIfInWorkflowConstructor,
   "medusa-context-on-context-param": medusaContextOnContextParam,
@@ -54,7 +58,10 @@ export const rules = {
   "service-constructor-must-call-super": serviceConstructorMustCallSuper,
   "service-methods-must-be-async": serviceMethodsMustBeAsync,
   "use-inject-manager-on-public-methods": useInjectManagerOnPublicMethods,
+  "use-query-context-utility": useQueryContextUtility,
   "no-workflow-call-without-container": noWorkflowCallWithoutContainer,
+  "prefer-container-registration-keys-query":
+    preferContainerRegistrationKeysQuery,
   "prefer-link-over-remote-link": preferLinkOverRemoteLink,
   "step-id-kebab-case": stepIdKebabCase,
   "step-must-return-step-response": stepMustReturnStepResponse,
