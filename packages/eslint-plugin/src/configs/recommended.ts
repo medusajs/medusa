@@ -54,6 +54,15 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
     },
     {
       files: [
+        "src/modules/**/loaders/**/*.{ts,tsx,js,mjs,cjs}",
+        "**/modules/**/loaders/**/*.{ts,tsx,js,mjs,cjs}",
+      ],
+      rules: {
+        [ruleId("loader-must-be-exported-in-module-definition")]: "warn",
+      },
+    },
+    {
+      files: [
         "src/modules/**/models/**/*.{ts,js}",
         "**/modules/**/models/**/*.{ts,js}",
       ],

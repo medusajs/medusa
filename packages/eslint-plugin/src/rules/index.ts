@@ -1,5 +1,6 @@
 import type { ESLint } from "eslint"
 import { rule as dataModelTableNameSnakeCase } from "./data-model-table-name-snake-case"
+import { rule as loaderMustBeExportedInModuleDefinition } from "./loader-must-be-exported-in-module-definition"
 import { rule as moduleNameSnakeCase } from "./module-name-snake-case"
 import { rule as noAsyncWorkflowConstructor } from "./no-async-workflow-constructor"
 import { rule as noConditionalExpressionsInWorkflow } from "./no-conditional-expressions-in-workflow"
@@ -21,6 +22,8 @@ import { rule as workflowMustReturnWorkflowResponse } from "./workflow-must-retu
 
 export const rules = {
   "data-model-table-name-snake-case": dataModelTableNameSnakeCase,
+  "loader-must-be-exported-in-module-definition":
+    loaderMustBeExportedInModuleDefinition,
   "module-name-snake-case": moduleNameSnakeCase,
   "no-async-workflow-constructor": noAsyncWorkflowConstructor,
   "no-conditional-expressions-in-workflow": noConditionalExpressionsInWorkflow,
