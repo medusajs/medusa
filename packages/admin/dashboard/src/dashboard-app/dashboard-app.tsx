@@ -493,17 +493,19 @@ export class DashboardApp {
 
       let order: number
 
-      if(suffix.endsWith(".before")){
+      if(suffix.endsWith("before")){
         order = BEFORE_ORDER
-        suffix = suffix.replace(/.before$/, "")
+        suffix = suffix.replace(/before$/, "")
       }
-      else if(suffix.endsWith(".after")){
+      else if(suffix.endsWith("after")){
         order = AFTER_ORDER
-        suffix = suffix.replace(/.after$/, "")
+        suffix = suffix.replace(/after$/, "")
       }
       else {
         order = AFTER_ORDER
       }
+
+      suffix = suffix.replace(/\.$/, "") // Remove trailing dot if exists
 
       const mainSection = sections.includes("main") ? "main" : sections[0]
       const section = suffix || mainSection
