@@ -148,95 +148,52 @@ export class CacheInvalidationParser {
   }
 
   /**
-   * Get the expected type for a relationship field
+   * Get the relationship type between two entities
    */
   private getRelationshipType(
-    parentType: string | null,
+    parentType: string | undefined,
     fieldName: string
   ): string | undefined {
-    if (!parentType || !this.typeMap.has(parentType)) {
+    if (!parentType) {
       return undefined
     }
 
-    const type = this.typeMap.get(parentType)!
-    const field = type.getFields()[fieldName]
+    const type = this.typeMap.get(parentType)
+    if (!type) {
+      return undefined
+    }
 
+    const field = type.getFields()[fieldName]
     if (!field) {
       return undefined
     }
 
-    let fieldType = field.type
-
-    // Unwrap NonNull and List wrappers
-    if (isNonNullType(fieldType)) {
-      fieldType = fieldType.ofType
+    if (isListType(field.type)) {
+      return field.type.ofType.name
+    } else if (isNonNullType(field.type)) {
+      return field.type.ofType.name
+    } else {
+      return field.type.name
     }
-    if (isListType(fieldType)) {
-      fieldType = fieldType.ofType
-    }
-    if (isNonNullType(fieldType)) {
-      fieldType = fieldType.ofType
-    }
-
-    if (isObjectType(fieldType)) {
-      return fieldType.name
-    }
-
-    return undefined
   }
 
   /**
-   * Build invalidation events based on parsed entities
+   * Build cache invalidation keys for an entity
    */
-  buildInvalidationEvents(
-    entities: EntityReference[],
-    operation: "created" | "updated" | "deleted" = "updated"
-  ): InvalidationEvent[] {
-    const events: InvalidationEvent[] = []
-    const processedEntities = new Set<string>()
-
-    entities.forEach((entity) => {
-      const entityKey = `${entity.type}:${entity.id}`
-
-      if (processedEntities.has(entityKey)) {
-        return
-      }
-      processedEntities.add(entityKey)
-
-      const relatedEntities = entities.filter(
-        (e) => e.type !== entity.type || e.id !== entity.id
-      )
-
-      const affectedKeys = this.buildAffectedCacheKeys(entity, operation)
-
-      events.push({
-        entityType: entity.type,
-        entityId: entity.id,
-        relatedEntities,
-        cacheKeys: affectedKeys,
-      })
-    })
-
-    return events
-  }
-
-  /**
-   * Build list of cache keys that should be invalidated
-   */
-  private buildAffectedCacheKeys(
+  buildAffectedCacheKeys(
     entity: EntityReference,
-    operation: "created" | "updated" | "deleted" = "updated"
-  ): string[] {
+    operation: string
+  ): Set<string> {
     const keys = new Set<string>()
 
+    // Add entity-specific cache keys
     keys.add(`${entity.type}:${entity.id}`)
 
-    // Add list key only if entity was found in an array context or if an event of type created or
-    // deleted is triggered
-    if (entity.isInArray || ["created", "deleted"].includes(operation)) {
+    // Add list cache keys for created, deleted, and updated operations
+    if (entity.isInArray || ["created", "deleted", "updated"].includes(operation)) {
       keys.add(`${entity.type}:list:*`)
     }
 
-    return Array.from(keys)
+    return keys
   }
 }
