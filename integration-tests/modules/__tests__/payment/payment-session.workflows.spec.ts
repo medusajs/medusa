@@ -325,6 +325,53 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should create a fresh session (without failing) when the in-place update fails for a stale provider payment", async () => {
+          const { result: first } = await createPaymentSessionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              payment_collection_id: paymentCollection.id,
+              provider_id: "pp_system_default",
+              context: {},
+              data: {},
+            },
+          })
+
+          // Simulate the provider payment having vanished out-of-band: the
+          // in-place update throws, so the workflow must fall back to a fresh
+          // session instead of failing the route.
+          const updateSpy = jest
+            .spyOn(paymentModule, "updatePaymentSession")
+            .mockRejectedValueOnce(new Error("No such payment_intent"))
+
+          const { result: second, errors } =
+            await createPaymentSessionsWorkflow(appContainer).run({
+              input: {
+                payment_collection_id: paymentCollection.id,
+                provider_id: "pp_system_default",
+                context: {},
+                data: {},
+              },
+              throwOnError: false,
+            })
+
+          expect(updateSpy).toHaveBeenCalled()
+          expect(errors).toEqual([])
+
+          // A brand-new session replaces the stale one (no failure), and the
+          // stale session is gone.
+          expect(second.id).not.toEqual(first.id)
+
+          const sessions = await paymentModule.listPaymentSessions({
+            payment_collection_id: paymentCollection.id,
+          })
+
+          expect(sessions).toHaveLength(1)
+          expect(sessions[0].id).toEqual(second.id)
+
+          updateSpy.mockRestore()
+        })
+
         describe("compensation", () => {
           it("should delete created payment collection if a subsequent step fails", async () => {
             const workflow = createPaymentSessionsWorkflow(appContainer)
