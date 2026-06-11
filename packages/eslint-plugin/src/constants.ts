@@ -20,3 +20,11 @@ export const ruleId = (name: string): string => `${PLUGIN_NAMESPACE}/${name}`
 /** Public entry-point sources that rules inspect imports from. */
 export const FRAMEWORK_UTILS_SOURCE = "@medusajs/framework/utils"
 export const WORKFLOWS_SDK_SOURCE = "@medusajs/framework/workflows-sdk"
+export const FRAMEWORK_TYPES_SOURCE = "@medusajs/framework/types"
+export const LEGACY_TYPES_SOURCE = "@medusajs/types"
+
+/** All sources that expose Medusa type declarations. */
+export const TYPES_SOURCES: ReadonlySet<string> = new Set([
+  FRAMEWORK_TYPES_SOURCE,
+  LEGACY_TYPES_SOURCE,
+])
