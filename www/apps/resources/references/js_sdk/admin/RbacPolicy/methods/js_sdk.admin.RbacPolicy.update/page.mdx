@@ -1,0 +1,32 @@
+import { TypeList } from "docs-ui"
+
+# update
+
+This method updates an RBAC policy's details. It sends a request to the
+Update RBAC Policy API route.
+
+:::note
+
+This is available starting from [Medusa v2.15.5](https://github.com/medusajs/medusa/releases/tag/v2.15.5).
+
+:::
+
+## Example
+
+```ts
+sdk.admin.rbacPolicy.update("policy_123", {
+  name: "Read Products",
+  description: "Allows reading product information"
+})
+.then(({ policy }) => {
+  console.log(policy)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The policy's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminUpdateRbacPolicy](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateRbacPolicy/page.mdx)","description":"The data to update in the policy.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"key","type":"`string`","description":"The policy's unique key.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"resource","type":"`string`","description":"The resource the policy applies to.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"operation","type":"`string`","description":"The operation the policy allows.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`null` \\| `string`","description":"The policy's name.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"The policy's description.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Custom key-value pairs that can be added to the policy.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"query","type":"[AdminRbacPolicyParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminRbacPolicyParams/page.mdx)","description":"Configure the fields to retrieve in the policy.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="update"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminRbacPolicyResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminRbacPolicyResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The policy's details.","expandable":false,"children":[{"name":"policy","type":"[AdminRbacPolicy](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminRbacPolicy/page.mdx)","description":"The policy's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The policy's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The policy's unique key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"resource","type":"`string`","description":"The resource the policy applies to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"operation","type":"`string`","description":"The operation the policy allows.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`null` \\| `string`","description":"The policy's name.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"The policy's description.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Custom key-value pairs that can be added to the policy.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string`","description":"The date the policy was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string`","description":"The date the policy was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string`","description":"The date the policy was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"inherited_from_role_id","type":"`null` \\| `string`","description":"The role ID the policy is inherited from, if any.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}],"since":"2.15.5"}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="update"/>

@@ -22,6 +22,7 @@ export type AdminMarkPaymentCollectionPaidType = z.infer<
 export const AdminMarkPaymentCollectionPaid = z
   .object({
     order_id: z.string(),
+    provider_id: z.string().optional(),
   })
   .strict()
 

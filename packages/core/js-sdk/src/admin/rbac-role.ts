@@ -240,6 +240,99 @@ export class RbacRole {
   }
 
   /**
+   * This method retrieves a paginated list of users associated with an RBAC role.
+   * It sends a request to the List Role Users API route.
+   *
+   * @param roleId - The role's ID.
+   * @param queryParams - Filters and pagination configurations.
+   * @param headers - Headers to pass in the request.
+   * @returns The paginated list of users.
+   *
+   * @example
+   * sdk.admin.rbacRole.listUsers("role_123")
+   * .then(({ users, count, limit, offset }) => {
+   *   console.log(users)
+   * })
+   */
+  async listUsers(
+    roleId: string,
+    queryParams?: HttpTypes.AdminRbacRoleUserListParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminRbacRoleUserListResponse>(
+      `/admin/rbac/roles/${roleId}/users`,
+      {
+        query: queryParams,
+        headers,
+      }
+    )
+  }
+
+  /**
+   * This method adds users to an RBAC role. It sends a request to the
+   * Add Role Users API route.
+   *
+   * @param roleId - The role's ID.
+   * @param body - The users to add to the role.
+   * @param headers - Headers to pass in the request.
+   * @returns The role's users.
+   *
+   * @example
+   * sdk.admin.rbacRole.addUsers("role_123", {
+   *   users: ["user_123"]
+   * })
+   * .then(({ users }) => {
+   *   console.log(users)
+   * })
+   */
+  async addUsers(
+    roleId: string,
+    body: HttpTypes.AdminAssignRoleUsers,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminRbacRoleUsersResponse>(
+      `/admin/rbac/roles/${roleId}/users`,
+      {
+        method: "POST",
+        headers,
+        body,
+      }
+    )
+  }
+
+  /**
+   * This method removes users from an RBAC role. It sends a request to the
+   * Remove Role Users API route.
+   *
+   * @param roleId - The role's ID.
+   * @param body - The users to remove from the role.
+   * @param headers - Headers to pass in the request.
+   * @returns The removal's details.
+   *
+   * @example
+   * sdk.admin.rbacRole.removeUsers("role_123", {
+   *   users: ["user_123"]
+   * })
+   * .then(({ deleted }) => {
+   *   console.log(deleted)
+   * })
+   */
+  async removeUsers(
+    roleId: string,
+    body: HttpTypes.AdminRemoveRoleUsers,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminRbacRoleUsersDeleteResponse>(
+      `/admin/rbac/roles/${roleId}/users`,
+      {
+        method: "DELETE",
+        headers,
+        body,
+      }
+    )
+  }
+
+  /**
    * This method adds policies to an RBAC role. It sends a request to the
    * Add Role Policies API route.
    *
@@ -317,6 +410,27 @@ export class RbacRole {
       `/admin/rbac/me/permissions`,
       {
         method: "GET",
+        headers,
+      }
+    )
+  }
+
+  /**
+   * Lists the roles the authenticated actor is allowed to assign.
+   *
+   * @param queryParams - Filters and pagination configurations.
+   * @param headers - Headers to pass in the request.
+   * @returns The assignable roles.
+   */
+  async listAssignable(
+    queryParams?: HttpTypes.AdminRbacRoleListParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminRbacAssignableRolesListResponse>(
+      `/admin/rbac/roles/assignable`,
+      {
+        method: "GET",
+        query: queryParams,
         headers,
       }
     )

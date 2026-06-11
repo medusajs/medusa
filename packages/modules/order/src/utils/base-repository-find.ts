@@ -1,5 +1,9 @@
 import { Constructor, Context, DAL } from "@medusajs/framework/types"
-import { MikroOrmBaseRepository, toMikroORMEntity } from "@medusajs/framework/utils"
+import {
+  MikroOrmBaseRepository,
+  pruneFindOptionsAgainstMetadata,
+  toMikroORMEntity,
+} from "@medusajs/framework/utils"
 import { LoadStrategy, raw } from "@medusajs/framework/mikro-orm/core"
 import {
   Order,
@@ -77,6 +81,11 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
     const config = mapRepositoryToOrderModel(findOptions_, isRelatedEntity)
     config.options ??= {}
     config.options.populate ??= []
+
+    pruneFindOptionsAgainstMetadata(
+      manager.getDriver().getMetadata().get(entity.name),
+      config.options
+    )
 
     const strategy = findOptions_.options.strategy ?? LoadStrategy.JOINED
     let orderAlias = "o0"
@@ -238,6 +247,13 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
     const isRelatedEntity = entity.name !== Order.name
 
     const config = mapRepositoryToOrderModel(findOptions_, isRelatedEntity)
+    config.options ??= {}
+    config.options.populate ??= []
+
+    pruneFindOptionsAgainstMetadata(
+      manager.getDriver().getMetadata().get(entity.name),
+      config.options
+    )
 
     let orderAlias = "o0"
     if (isRelatedEntity) {

@@ -4852,9 +4852,7 @@ medusaIntegrationTestRunner({
           await addToCartWorkflow(appContainer).run({
             input: {
               cart_id: cart.id,
-              items: [
-                { variant_id: product.variants[0].id, quantity: 1 },
-              ],
+              items: [{ variant_id: product.variants[0].id, quantity: 1 }],
             },
           })
 
@@ -5144,12 +5142,57 @@ medusaIntegrationTestRunner({
           })
 
           expect(
-            // @ts-ignore
+            // @ts-expect-error - transaction.context.invoke is private but we can still access it at runtime
             transaction.context.invoke["fetch-cart"].output.output.data
               .shipping_address.metadata
           ).toEqual({
             testing_tax: true,
           })
+        })
+
+        it("should include shipping method id and name in tax calculation context", async () => {
+          const cart = await cartModuleService.createCarts({
+            currency_code: "dkk",
+            region_id: defaultRegion.id,
+            shipping_address: {
+              country_code: "dk",
+            },
+            items: [
+              {
+                quantity: 1,
+                unit_price: 5000,
+                title: "Test item",
+              },
+            ],
+          })
+
+          await cartModuleService.addShippingMethods(cart.id, [
+            {
+              name: "Standard Shipping",
+              amount: 1000,
+              shipping_option_id: "so_test_option",
+            },
+          ])
+
+          const { transaction } = await updateTaxLinesWorkflow(
+            appContainer
+          ).run({
+            input: {
+              cart_id: cart.id,
+            },
+            throwOnError: false,
+          })
+
+          const fetchedCart =
+            // @ts-expect-error - transaction.context.invoke is private but we can still access it at runtime
+            transaction.context.invoke["fetch-cart"].output.output.data
+
+          expect(fetchedCart.shipping_methods).toHaveLength(1)
+          expect(fetchedCart.shipping_methods[0].id).toBeDefined()
+          expect(fetchedCart.shipping_methods[0].name).toBeDefined()
+          expect(fetchedCart.shipping_methods[0].name).toEqual(
+            "Standard Shipping"
+          )
         })
       })
 
