@@ -26,7 +26,6 @@ import {
   DashboardPlugin,
   DisplayExtension,
   DisplayMap,
-  ExtensionApi,
   FormExtension,
   FormField,
   FormFieldExtension,
@@ -468,7 +467,7 @@ export class DashboardApp {
     return this.i18nResources
   }
 
-  get api(): ExtensionApi {
+  get api() {
     return {
       getMenu: this.getMenu.bind(this),
       getWidgets: this.getWidgets.bind(this),

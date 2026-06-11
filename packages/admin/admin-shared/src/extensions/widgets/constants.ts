@@ -236,10 +236,4 @@ export const INJECTION_ZONES = [
   ...RETURN_REASON_INJECTION_ZONES,
   ...REFUND_REASON_INJECTION_ZONES,
   ...INVENTORY_ITEM_INJECTION_ZONES,
-  "draft-order.details.before",
-  "draft-order.details.after",
-  "draft-order.details.side.before",
-  "draft-order.details.side.after",
-  "draft-order.list.before",
-  "draft-order.list.after",
 ] as const

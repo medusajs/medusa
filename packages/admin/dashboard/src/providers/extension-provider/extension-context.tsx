@@ -1,4 +1,8 @@
 import { createContext } from "react"
-import { ExtensionApi } from "../../dashboard-app/types"
+import { DashboardApp } from "../../dashboard-app"
 
-export const ExtensionContext = createContext<ExtensionApi | null>(null)
+type ExtensionContextValue = DashboardApp["api"]
+
+export const ExtensionContext = createContext<ExtensionContextValue | null>(
+  null
+)

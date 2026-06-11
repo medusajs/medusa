@@ -133,36 +133,6 @@ export type MenuMap = Map<MenuItemKey, INavItem[]>
 
 export type WidgetMap = Map<InjectionZone, React.ComponentType[]>
 
-/**
- * The public extension API exposed by the dashboard to extensions (widgets,
- * routes, etc.) through the {@link ExtensionContext}.
- *
- * This is the single source of truth for the shape of `DashboardApp.api`: the
- * class is annotated with this type, and the context, provider, and
- * `useExtension` hook all consume it. It lives in this leaf types module — which
- * only references other type definitions — so it can be emitted into the public
- * `.d.ts` of `@medusajs/dashboard/hooks` without pulling the whole application
- * graph into declaration emit (which is what makes types "not nameable").
- */
-export type ExtensionApi = {
-  getMenu: (path: MenuItemKey) => INavItem[]
-  getWidgets: (zone: InjectionZone) => ComponentType[]
-  getFormFields: (
-    model: CustomFieldModel,
-    zone: CustomFieldFormZone,
-    tab?: CustomFieldFormTab
-  ) => FormField[]
-  getFormConfigs: (
-    model: CustomFieldModel,
-    zone: CustomFieldFormZone
-  ) => ConfigField[]
-  getDisplays: (
-    model: CustomFieldModel,
-    zone: CustomFieldContainerZone
-  ) => ComponentType<{ data: any }>[]
-  getI18nResources: () => I18nExtension
-}
-
 export type DashboardPlugin = {
   formModule: FormModule
   displayModule: DisplayModule
