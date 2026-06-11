@@ -125,7 +125,7 @@ export interface StoreUpdateCartLineItem {
 /**
  * The base shipping method data to add to a cart.
  *
- * @since 2.15.6
+ * @since 2.16.0
  */
 export interface StoreAddCartShippingMethodsBase {
   /**
@@ -143,7 +143,7 @@ export interface StoreAddCartShippingMethodsBase {
 /**
  * The shipping methods data to add to a cart. Can be a single method or multiple methods.
  *
- * @since 2.15.6
+ * @since 2.16.0
  */
 export type StoreAddCartShippingMethods =
   | StoreAddCartShippingMethodsBase
