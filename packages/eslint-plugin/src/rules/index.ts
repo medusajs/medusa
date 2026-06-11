@@ -1,4 +1,7 @@
 import type { ESLint } from "eslint"
+import { rule as dataModelTableNameSnakeCase } from "./data-model-table-name-snake-case"
+import { rule as loaderMustBeExportedInModuleDefinition } from "./loader-must-be-exported-in-module-definition"
+import { rule as moduleNameSnakeCase } from "./module-name-snake-case"
 import { rule as noAsyncWorkflowConstructor } from "./no-async-workflow-constructor"
 import { rule as noConditionalExpressionsInWorkflow } from "./no-conditional-expressions-in-workflow"
 import { rule as noConsoleLogInWorkflow } from "./no-console-log-in-workflow"
@@ -8,6 +11,7 @@ import { rule as medusaContextOnContextParam } from "./medusa-context-on-context
 import { rule as noLoopsInWorkflow } from "./no-loops-in-workflow"
 import { rule as noNewDateInWorkflow } from "./no-new-date-in-workflow"
 import { rule as noNonSerializableStepReturn } from "./no-non-serializable-step-return"
+import { rule as noReservedDefaultPropertiesInModel } from "./no-reserved-default-properties-in-model"
 import { rule as noSpreadInWorkflow } from "./no-spread-in-workflow"
 import { rule as noThrowInTransform } from "./no-throw-in-transform"
 import { rule as noTryCatchInWorkflow } from "./no-try-catch-in-workflow"
@@ -21,6 +25,10 @@ import { rule as workflowIdMatchesExportOrFilename } from "./workflow-id-matches
 import { rule as workflowMustReturnWorkflowResponse } from "./workflow-must-return-workflow-response"
 
 export const rules = {
+  "data-model-table-name-snake-case": dataModelTableNameSnakeCase,
+  "loader-must-be-exported-in-module-definition":
+    loaderMustBeExportedInModuleDefinition,
+  "module-name-snake-case": moduleNameSnakeCase,
   "no-async-workflow-constructor": noAsyncWorkflowConstructor,
   "no-conditional-expressions-in-workflow": noConditionalExpressionsInWorkflow,
   "no-console-log-in-workflow": noConsoleLogInWorkflow,
@@ -30,6 +38,7 @@ export const rules = {
   "no-loops-in-workflow": noLoopsInWorkflow,
   "no-new-date-in-workflow": noNewDateInWorkflow,
   "no-non-serializable-step-return": noNonSerializableStepReturn,
+  "no-reserved-default-properties-in-model": noReservedDefaultPropertiesInModel,
   "no-spread-in-workflow": noSpreadInWorkflow,
   "no-throw-in-transform": noThrowInTransform,
   "no-try-catch-in-workflow": noTryCatchInWorkflow,

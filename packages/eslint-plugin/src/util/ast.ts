@@ -1,4 +1,4 @@
-import type { TSESTree } from "@typescript-eslint/utils"
+import type { TSESLint, TSESTree } from "@typescript-eslint/utils"
 import { AST_NODE_TYPES } from "@typescript-eslint/utils"
 
 /**
@@ -85,6 +85,24 @@ export const isFunctionNode = (node: TSESTree.Node): boolean =>
   FUNCTION_NODE_TYPES.has(node.type)
 
 /**
+ * Returns the static key name of an object-literal property when it can be
+ * resolved without scope analysis — either an `Identifier` key or a string
+ * `Literal` key. Returns `null` for computed keys, non-`Property` elements
+ * (spread, methods written as `SpreadElement`), and numeric/template keys.
+ */
+export const getPropertyKeyName = (
+  prop: TSESTree.ObjectLiteralElement
+): string | null => {
+  if (prop.type !== AST_NODE_TYPES.Property || prop.computed) return null
+  const key = prop.key
+  if (key.type === AST_NODE_TYPES.Identifier) return key.name
+  if (key.type === AST_NODE_TYPES.Literal && typeof key.value === "string") {
+    return key.value
+  }
+  return null
+}
+
+/**
  * Returns the name of the `VariableDeclarator` that directly initializes
  * `call`, e.g. `export const myWorkflow = createWorkflow(...)` → `"myWorkflow"`.
  *
@@ -103,6 +121,79 @@ export const getInitializedVariableName = (
     parent.id.type === AST_NODE_TYPES.Identifier
   ) {
     return parent.id.name
+  }
+  return null
+}
+
+/**
+ * Walks the scope chain starting at `scope`, returning the first variable that
+ * matches `name`. Returns `null` if no enclosing scope binds the name.
+ */
+export const findVariableInScope = (
+  scope: TSESLint.Scope.Scope | null,
+  name: string
+): TSESLint.Scope.Variable | null => {
+  let current: TSESLint.Scope.Scope | null = scope
+  while (current) {
+    const found = current.variables.find((v) => v.name === name)
+    if (found) return found
+    current = current.upper
+  }
+  return null
+}
+
+/**
+ * If `variable` has exactly one definition and that definition is a `const`
+ * declaration initialized with a string literal, returns the literal's value.
+ * Returns `null` otherwise — including for `let`/`var`, non-literal initializers,
+ * and variables with multiple definitions (which can't be trusted as constants).
+ */
+export const getConstStringInit = (
+  variable: TSESLint.Scope.Variable
+): string | null => {
+  if (variable.defs.length !== 1) return null
+  const def = variable.defs[0]
+  if (def.type !== "Variable") return null
+  if (
+    def.parent?.type !== AST_NODE_TYPES.VariableDeclaration ||
+    def.parent.kind !== "const"
+  ) {
+    return null
+  }
+  const init = def.node.init
+  if (
+    !init ||
+    init.type !== AST_NODE_TYPES.Literal ||
+    typeof init.value !== "string"
+  ) {
+    return null
+  }
+  return init.value
+}
+
+/**
+ * Resolves `node` to a string value when possible:
+ * - If `node` is a string `Literal`, returns its value.
+ * - If `node` is an `Identifier` that resolves to a single `const` string
+ *   initializer in an enclosing scope, returns that literal's value.
+ *
+ * `reportNode` is the node a rule should anchor its diagnostic on — the
+ * literal itself when the value is inline, the identifier when resolved via
+ * scope. Returns `null` when the value cannot be statically resolved.
+ */
+export const resolveStaticStringValue = (
+  node: TSESTree.Node,
+  scope: TSESLint.Scope.Scope
+): { value: string; reportNode: TSESTree.Node } | null => {
+  if (node.type === AST_NODE_TYPES.Literal && typeof node.value === "string") {
+    return { value: node.value, reportNode: node }
+  }
+  if (node.type === AST_NODE_TYPES.Identifier) {
+    const variable = findVariableInScope(scope, node.name)
+    const literal = variable && getConstStringInit(variable)
+    if (literal !== null) {
+      return { value: literal, reportNode: node }
+    }
   }
   return null
 }

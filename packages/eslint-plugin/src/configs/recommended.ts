@@ -50,6 +50,34 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("service-constructor-must-call-super")]: "error",
         [ruleId("service-methods-must-be-async")]: "error",
         [ruleId("use-inject-manager-on-public-methods")]: "warn",
+      }
+    },
+    {
+      files: [
+        "src/modules/**/index.{ts,js}",
+        "**/modules/**/index.{ts,js}",
+      ],
+      rules: {
+        [ruleId("module-name-snake-case")]: "error",
+      },
+    },
+    {
+      files: [
+        "src/modules/**/loaders/**/*.{ts,tsx,js,mjs,cjs}",
+        "**/modules/**/loaders/**/*.{ts,tsx,js,mjs,cjs}",
+      ],
+      rules: {
+        [ruleId("loader-must-be-exported-in-module-definition")]: "warn",
+      },
+    },
+    {
+      files: [
+        "src/modules/**/models/**/*.{ts,js}",
+        "**/modules/**/models/**/*.{ts,js}",
+      ],
+      rules: {
+        [ruleId("data-model-table-name-snake-case")]: "warn",
+        [ruleId("no-reserved-default-properties-in-model")]: "error",
       },
     },
   ]
