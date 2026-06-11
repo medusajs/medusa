@@ -80,5 +80,14 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("no-reserved-default-properties-in-model")]: "error",
       },
     },
+    {
+      files: [
+        "src/links/**/*.{ts,tsx,js,mjs,cjs}",
+        "**/src/links/**/*.{ts,tsx,js,mjs,cjs}",
+      ],
+      rules: {
+        [ruleId("link-uses-linkable-properties")]: "warn",
+      },
+    },
   ]
 }
