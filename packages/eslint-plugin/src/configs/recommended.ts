@@ -47,6 +47,12 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       },
     },
     {
+      files: ["src/api/**/*.{ts,tsx}", "**/api/**/*.{ts,tsx}"],
+      rules: {
+        [ruleId("no-deprecated-remote-query-config")]: "warn",
+      },
+    },
+    {
       files: ["src/modules/**/*.{ts,tsx}", "**/modules/**/*.{ts,tsx}"],
       rules: {
         [ruleId("medusa-context-on-context-param")]: "warn",

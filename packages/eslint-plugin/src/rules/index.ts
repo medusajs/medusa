@@ -8,6 +8,7 @@ import { rule as moduleNameSnakeCase } from "./module-name-snake-case"
 import { rule as noAsyncWorkflowConstructor } from "./no-async-workflow-constructor"
 import { rule as noConditionalExpressionsInWorkflow } from "./no-conditional-expressions-in-workflow"
 import { rule as noConsoleLogInWorkflow } from "./no-console-log-in-workflow"
+import { rule as noDeprecatedRemoteQueryConfig } from "./no-deprecated-remote-query-config"
 import { rule as noDirectVariableMutationInWorkflow } from "./no-direct-variable-mutation-in-workflow"
 import { rule as noIfInWorkflowConstructor } from "./no-if-in-workflow-constructor"
 import { rule as medusaContextOnContextParam } from "./medusa-context-on-context-param"
@@ -41,6 +42,7 @@ export const rules = {
   "no-async-workflow-constructor": noAsyncWorkflowConstructor,
   "no-conditional-expressions-in-workflow": noConditionalExpressionsInWorkflow,
   "no-console-log-in-workflow": noConsoleLogInWorkflow,
+  "no-deprecated-remote-query-config": noDeprecatedRemoteQueryConfig,
   "no-direct-variable-mutation-in-workflow": noDirectVariableMutationInWorkflow,
   "no-if-in-workflow-constructor": noIfInWorkflowConstructor,
   "medusa-context-on-context-param": medusaContextOnContextParam,
