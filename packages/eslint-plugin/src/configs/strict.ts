@@ -12,6 +12,12 @@ export function buildStrict(plugin: unknown): Linter.Config[] {
   return [
     ...buildRecommended(plugin),
     {
+      files: ["**/*.{ts,tsx}"],
+      rules: {
+        [ruleId("no-workflow-call-without-container")]: "warn",
+      },
+    },
+    {
       files: ["src/workflows/**/*.{ts,tsx}", "**/workflows/**/*.{ts,tsx}"],
       rules: {
         [ruleId("no-non-serializable-step-return")]: "error",
