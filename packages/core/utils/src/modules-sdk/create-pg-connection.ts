@@ -37,6 +37,10 @@ export function createPgConnection(options: Options) {
       connectionTimeoutMillis: connectionTimeoutMillis as number, // Fail fast on slow connects
       keepAlive: keepAlive as boolean, // Prevent connections from being dropped
       keepAliveInitialDelayMillis: keepAliveInitialDelayMillis as number, // Start keepalive probes after 10s
+      ...(driverOptions?.password ? { password: driverOptions.password } : {}),
+      ...(driverOptions?.expirationChecker
+        ? { expirationChecker: driverOptions.expirationChecker }
+        : {}),
     },
     pool: {
       propagateCreateError: false, // Don't fail entire pool on one bad connection
