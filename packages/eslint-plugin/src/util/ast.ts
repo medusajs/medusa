@@ -198,6 +198,35 @@ export const resolveStaticStringValue = (
   return null
 }
 
+/**
+ * Returns the expression a function returns, when it can be determined
+ * statically:
+ * - Arrow with expression body: that expression.
+ * - Arrow or function with a single top-level `return <expr>`: that expression.
+ * Returns `null` otherwise (multiple returns, bare `return`, void). Does not
+ * descend into nested functions.
+ */
+export const getReturnedExpression = (
+  fn: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression
+): TSESTree.Expression | null => {
+  if (
+    fn.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+    fn.body.type !== AST_NODE_TYPES.BlockStatement
+  ) {
+    return fn.body
+  }
+  const body = fn.body
+  if (body.type !== AST_NODE_TYPES.BlockStatement) return null
+  let found: TSESTree.Expression | null = null
+  for (const stmt of body.body) {
+    if (stmt.type !== AST_NODE_TYPES.ReturnStatement) continue
+    if (!stmt.argument) return null
+    if (found) return null
+    found = stmt.argument
+  }
+  return found
+}
+
 /*
  * True when `fn`'s return type annotation is a `Promise<...>` reference.
  *
