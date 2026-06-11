@@ -493,8 +493,7 @@ function normalizeProjectConfig(
     oauthDisabled:
       process.env.MEDUSA_CLOUD_OAUTH_DISABLED === "true" ? true : undefined,
     oauthJwksUri: process.env.MEDUSA_CLOUD_OAUTH_JWKS_ENDPOINT,
-    oauthAudience:
-      process.env.MEDUSA_CLOUD_OAUTH_AUDIENCE ?? "ai.prod.medusajs.cloud",
+    oauthAudience: process.env.MEDUSA_CLOUD_OAUTH_AUDIENCE,
     ...cloud,
   }
   const hasCloudOptions = Object.values(mergedCloudOptions).some(
