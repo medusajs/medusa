@@ -52,6 +52,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       rules: {
         [ruleId("no-deprecated-remote-query-config")]: "warn",
         [ruleId("route-file-naming")]: "error",
+        [ruleId("route-handler-exports-uppercase")]: "error",
       },
     },
     {
