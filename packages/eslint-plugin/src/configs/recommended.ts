@@ -38,11 +38,19 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("no-throw-in-transform")]: "error",
         [ruleId("no-try-catch-in-workflow")]: "error",
         [ruleId("link-create-keys-modules-enum")]: "warn",
+        [ruleId("prefer-container-registration-keys-query")]: "warn",
         [ruleId("prefer-link-over-remote-link")]: "warn",
         [ruleId("step-id-kebab-case")]: "warn",
+        [ruleId("use-query-context-utility")]: "warn",
         [ruleId("step-must-return-step-response")]: "error",
         [ruleId("workflow-id-matches-export-or-filename")]: "warn",
         [ruleId("workflow-must-return-workflow-response")]: "error",
+      },
+    },
+    {
+      files: ["src/api/**/*.{ts,tsx}", "**/api/**/*.{ts,tsx}"],
+      rules: {
+        [ruleId("no-deprecated-remote-query-config")]: "warn",
       },
     },
     {
