@@ -44,6 +44,7 @@ import {
 } from "../../../../../hooks/api/returns"
 import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
+import { useOrderPermissions } from "../../../../../hooks/use-resource-permissions"
 import { sdk } from "../../../../../lib/client"
 import { currencies } from "../../../../../lib/data/currencies"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
@@ -68,6 +69,7 @@ export const ReturnCreateForm = ({
 }: ReturnCreateFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+  const { canUpdate: canConfirm } = useOrderPermissions()
 
   const itemsMap = useMemo(
     () => new Map((order.items || []).map((i) => [i.id, i])),
@@ -779,15 +781,17 @@ export const ReturnCreateForm = ({
                   {t("orders.returns.cancel.title")}
                 </Button>
               </RouteFocusModal.Close>
-              <Button
-                key="submit-button"
-                type="submit"
-                variant="primary"
-                size="small"
-                isLoading={isRequestLoading}
-              >
-                {t("orders.returns.confirm")}
-              </Button>
+              {canConfirm && (
+                <Button
+                  key="submit-button"
+                  type="submit"
+                  variant="primary"
+                  size="small"
+                  isLoading={isRequestLoading}
+                >
+                  {t("orders.returns.confirm")}
+                </Button>
+              )}
             </div>
           </div>
         </RouteFocusModal.Footer>

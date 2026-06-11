@@ -120,6 +120,10 @@ export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.sales_channel,
         operation: PolicyOperation.update,
       },
+      {
+        resource: Entities.product,
+        operation: PolicyOperation.update,
+      },
     ],
   },
 ]

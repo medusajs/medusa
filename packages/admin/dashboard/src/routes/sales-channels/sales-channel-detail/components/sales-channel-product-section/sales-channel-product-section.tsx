@@ -25,7 +25,10 @@ import { useProductTableColumns } from "../../../../../hooks/table/columns/use-p
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useSalesChannelPermissions } from "../../../../../hooks/use-resource-permissions"
+import {
+  useProductPermissions,
+  useSalesChannelPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 10
 
@@ -36,7 +39,9 @@ type SalesChannelProductSectionProps = {
 export const SalesChannelProductSection = ({
   salesChannel,
 }: SalesChannelProductSectionProps) => {
-  const { canUpdate } = useSalesChannelPermissions()
+  const { canUpdate: canUpdateSalesChannel } = useSalesChannelPermissions()
+  const { canUpdate: canUpdateProduct } = useProductPermissions()
+  const canUpdate = canUpdateSalesChannel && canUpdateProduct
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   const { searchParams, raw } = useProductTableQuery({ pageSize: PAGE_SIZE })

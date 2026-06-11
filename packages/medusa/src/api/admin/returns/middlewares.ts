@@ -207,6 +207,10 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.return,
         operation: PolicyOperation.update,
       },
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
     ],
   },
   {
@@ -278,6 +282,10 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.return,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.order,
         operation: PolicyOperation.update,
       },
     ],

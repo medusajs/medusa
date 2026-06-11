@@ -460,7 +460,7 @@ export function getRouteMap({
                       lazy: () =>
                         import("../../routes/orders/order-receive-return"),
                       handle: {
-                        permissions: ["order:update", "return:update"],
+                        permissions: ["return:update"],
                       },
                     },
                     {
@@ -484,7 +484,7 @@ export function getRouteMap({
                       lazy: () =>
                         import("../../routes/orders/order-create-return"),
                       handle: {
-                        permissions: ["order:update", "return:create"],
+                        permissions: ["return:create", "return:update"],
                       },
                     },
                     {
@@ -1672,7 +1672,11 @@ export function getRouteMap({
                           "../../routes/sales-channels/sales-channel-add-products"
                         ),
                       handle: {
-                        permissions: ["sales_channel:update", "product:read"],
+                        permissions: [
+                          "sales_channel:update",
+                          "product:read",
+                          "product:update",
+                        ],
                       },
                     },
                     {

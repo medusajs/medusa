@@ -100,7 +100,7 @@ export const OrderSummarySection = ({
     usePaymentCollectionPermissions()
   const { canCreate: canCreateRefund } = useRefundPermissions()
 
-  const canReceiveReturn = canUpdateReturn && canUpdateOrder
+  const canReceiveReturn = canUpdateReturn
   const canAllocate = canCreateReservation
   const canMarkAsPaid = canUpdatePaymentCollection && canUpdateOrder
   const canRefund = canCreateRefund && canUpdateOrder
@@ -327,16 +327,19 @@ const Header = ({
   orderPreview?: AdminOrderPreview
 }) => {
   const { t } = useTranslation()
-  const { canUpdate: canUpdateOrder } = useOrderPermissions()
-  const { canCreate: canCreateOrderChange } = useOrderChangePermissions()
-  const { canCreate: canCreateReturn } = useReturnPermissions()
-  const { canCreate: canCreateExchange } = useOrderExchangePermissions()
-  const { canCreate: canCreateClaim } = useOrderClaimPermissions()
+  const { canCreate: canCreateOrderChange, canUpdate: canUpdateOrderChange } =
+    useOrderChangePermissions()
+  const { canCreate: canCreateReturn, canUpdate: canUpdateReturn } =
+    useReturnPermissions()
+  const { canCreate: canCreateExchange, canUpdate: canUpdateExchange } =
+    useOrderExchangePermissions()
+  const { canCreate: canCreateClaim, canUpdate: canUpdateClaim } =
+    useOrderClaimPermissions()
 
-  const canEditOrder = canCreateOrderChange && canUpdateOrder
-  const canCreateReturnAction = canCreateReturn && canUpdateOrder
-  const canCreateExchangeAction = canCreateExchange && canUpdateOrder
-  const canCreateClaimAction = canCreateClaim && canUpdateOrder
+  const canEditOrder = canCreateOrderChange && canUpdateOrderChange
+  const canCreateReturnAction = canCreateReturn && canUpdateReturn
+  const canCreateExchangeAction = canCreateExchange && canUpdateExchange
+  const canCreateClaimAction = canCreateClaim && canUpdateClaim
 
   // is ture if there is no shipped items ATM
   const shouldDisableReturn = order.items.every(
