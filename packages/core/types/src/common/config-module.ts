@@ -298,6 +298,11 @@ export type MedusaCloudOptions = {
    * If not provided, an error is thrown when trying to use the Medusa Cloud OAuth service.
    */
   oauthJwksUri?: string
+  /**
+   * The expected `aud` claim of id_tokens issued by the Medusa Cloud OAuth service.
+   * If not provided, an error is thrown when trying to use the Medusa Cloud OAuth service.
+   */
+  oauthAudience?: string
 }
 
 /**

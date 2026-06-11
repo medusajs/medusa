@@ -49,6 +49,13 @@ export class MedusaCloudAuthService extends AbstractAuthModuleProvider {
       )
     }
 
+    if (!options.oauth_audience) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Medusa Cloud auth provider requires 'oauth_audience' option to be set"
+      )
+    }
+
     this.jwks_ = jwksClient({
       jwksUri: options.oauth_jwks_uri,
       cache: true,
@@ -191,14 +198,9 @@ export class MedusaCloudAuthService extends AbstractAuthModuleProvider {
 
     let payload: JwtPayload
     try {
-      this.logger_.info(
-        `id_token decoded: ${JSON.stringify(
-          jwt.decode(idToken, { complete: true })
-        )}, expected audience: ${this.getClientId()}`
-      )
       const decoded = await verifyJwt(idToken, this.getSigningKey_, {
         algorithms: ["RS256"],
-        audience: this.getClientId(),
+        audience: this.config_.oauth_audience,
       })
       if (!decoded || typeof decoded === "string") {
         throw new Error("Invalid id_token")
