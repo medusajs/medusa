@@ -51,6 +51,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       files: ["src/api/**/*.{ts,tsx}", "**/api/**/*.{ts,tsx}"],
       rules: {
         [ruleId("no-deprecated-remote-query-config")]: "warn",
+        [ruleId("route-file-naming")]: "error",
       },
     },
     {

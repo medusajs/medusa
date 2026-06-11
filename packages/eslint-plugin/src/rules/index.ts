@@ -20,6 +20,7 @@ import { rule as noSpreadInWorkflow } from "./no-spread-in-workflow"
 import { rule as noThrowInTransform } from "./no-throw-in-transform"
 import { rule as noTryCatchInWorkflow } from "./no-try-catch-in-workflow"
 import { rule as readOnlyLinkRequiresField } from "./read-only-link-requires-field"
+import { rule as routeFileNaming } from "./route-file-naming"
 import { rule as serviceConstructorMustCallSuper } from "./service-constructor-must-call-super"
 import { rule as serviceMethodsMustBeAsync } from "./service-methods-must-be-async"
 import { rule as useInjectManagerOnPublicMethods } from "./use-inject-manager-on-public-methods"
@@ -55,6 +56,7 @@ export const rules = {
   "no-throw-in-transform": noThrowInTransform,
   "no-try-catch-in-workflow": noTryCatchInWorkflow,
   "read-only-link-requires-field": readOnlyLinkRequiresField,
+  "route-file-naming": routeFileNaming,
   "service-constructor-must-call-super": serviceConstructorMustCallSuper,
   "service-methods-must-be-async": serviceMethodsMustBeAsync,
   "use-inject-manager-on-public-methods": useInjectManagerOnPublicMethods,
