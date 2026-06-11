@@ -1,5 +1,5 @@
 import { z } from "@medusajs/framework/zod"
-import { AddressPayload } from "../../utils/common-validators"
+import { AddressPayload, safeHttpUrl } from "../../utils/common-validators"
 import { createSelectParams } from "../../utils/validators"
 
 export const AdminFulfillmentParams = createSelectParams()
@@ -15,8 +15,8 @@ const AdminCreateFulfillmentItem = z.object({
 
 const AdminCreateFulfillmentLabel = z.object({
   tracking_number: z.string(),
-  tracking_url: z.string(),
-  label_url: z.string(),
+  tracking_url: safeHttpUrl,
+  label_url: safeHttpUrl,
 })
 
 export type AdminCreateFulfillmentType = z.infer<typeof AdminCreateFulfillment>

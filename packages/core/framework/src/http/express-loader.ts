@@ -15,6 +15,27 @@ const NOISY_ENDPOINTS_CHUNKS = ["@fs", "@id", "@vite", "@react", "node_modules"]
 
 const isHealthCheck = (req: MedusaRequest) => req.path === "/health"
 
+/**
+ * Resolves the `sameSite` and `secure` flags used for the session cookie.
+ *
+ * In production/staging the cookie must be `Secure`, but `sameSite` is kept
+ * at `"lax"` rather than `"none"` to prevent CSRF: `SameSite=none` allows the
+ * cookie to be attached to cross-site POSTs from a malicious page, which is
+ * the root cause of GHSA-jhvc-qx3m-6r3q.
+ */
+export function resolveSessionCookieSecurity({
+  isProduction,
+  isStaging,
+}: {
+  isProduction: boolean
+  isStaging: boolean
+}): { sameSite: "lax" | boolean; secure: boolean } {
+  if (isProduction || isStaging) {
+    return { sameSite: "lax", secure: true }
+  }
+  return { sameSite: false, secure: false }
+}
+
 export async function expressLoader({
   app,
   container,
@@ -34,12 +55,10 @@ export async function expressLoader({
   const isTest = NODE_ENV === "test"
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
-  let sameSite: string | boolean = false
-  let secure = false
-  if (isProduction || isStaging) {
-    secure = true
-    sameSite = "none"
-  }
+  const { sameSite, secure } = resolveSessionCookieSecurity({
+    isProduction,
+    isStaging,
+  })
 
   const { http, sessionOptions, cookieOptions } = configModule.projectConfig
   const sessionOpts = {

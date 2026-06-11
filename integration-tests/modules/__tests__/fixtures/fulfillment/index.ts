@@ -46,8 +46,8 @@ export function generateCreateFulfillmentData(
     labels: data.labels ?? [
       {
         tracking_number: "test-tracking-number_" + randomString,
-        tracking_url: "test-tracking-url_" + randomString,
-        label_url: "test-label-url_" + randomString,
+        tracking_url: "https://example.com/tracking/" + randomString,
+        label_url: "https://example.com/label/" + randomString,
       },
     ],
     order_id: data.order_id,

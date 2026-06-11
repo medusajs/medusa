@@ -16,10 +16,15 @@ const _rbacRolesQueryKeys = queryKeysFactory(
   RBAC_ROLES_QUERY_KEY
 ) as TQueryKey<"rbac_roles"> & {
   policies: (roleId: string, query?: any) => any[]
+  users: (roleId: string, query?: any) => any[]
 }
 
 _rbacRolesQueryKeys.policies = function (roleId: string, query?: any) {
   return [this.detail(roleId), "policies", query].filter(Boolean)
+}
+
+_rbacRolesQueryKeys.users = function (roleId: string, query?: any) {
+  return [this.detail(roleId), "users", query].filter(Boolean)
 }
 
 export const rbacRolesQueryKeys = _rbacRolesQueryKeys
@@ -89,6 +94,28 @@ export const useRbacRolePolicies = (
   return { ...data, ...rest }
 }
 
+export const useRbacRoleUsers = (
+  roleId: string,
+  query?: HttpTypes.AdminRbacRoleUserListParams,
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminRbacRoleUserListResponse,
+      FetchError,
+      HttpTypes.AdminRbacRoleUserListResponse,
+      QueryKey
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: () => sdk.admin.rbacRole.listUsers(roleId, query),
+    queryKey: rbacRolesQueryKeys.users(roleId, query),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
 export const useCreateRbacRole = (
   options?: UseMutationOptions<
     HttpTypes.AdminRbacRoleResponse,
@@ -147,6 +174,25 @@ export const useDeleteRbacRole = (
   })
 }
 
+export const useDeleteRbacRoleLazy = (
+  options?: UseMutationOptions<
+    HttpTypes.AdminRbacRoleDeleteResponse,
+    FetchError,
+    string
+  >
+) => {
+  return useMutation({
+    mutationFn: (id: string) => sdk.admin.rbacRole.delete(id),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.details() })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useAddRbacRolePolicies = (
   roleId: string,
   options?: UseMutationOptions<
@@ -164,6 +210,31 @@ export const useAddRbacRolePolicies = (
       queryClient.invalidateQueries({
         queryKey: rbacRolesQueryKeys.detail(roleId),
       })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useAddRbacRolePoliciesById = (
+  options?: UseMutationOptions<
+    HttpTypes.AdminRbacPolicyListResponse,
+    FetchError,
+    { roleId: string; policies: string[] }
+  >
+) => {
+  return useMutation({
+    mutationFn: ({ roleId, policies }) =>
+      sdk.admin.rbacRole.addPolicies(roleId, { policies }),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: rbacRolesQueryKeys.policies(variables.roleId),
+      })
+      queryClient.invalidateQueries({
+        queryKey: rbacRolesQueryKeys.detail(variables.roleId),
+      })
+      queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -196,6 +267,56 @@ export const useRemoveRbacRolePolicy = (
   })
 }
 
+export const useAddRbacRoleUsers = (
+  roleId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminRbacRoleUsersResponse,
+    FetchError,
+    HttpTypes.AdminAssignRoleUsers["users"]
+  >
+) => {
+  return useMutation({
+    mutationFn: (users) => sdk.admin.rbacRole.addUsers(roleId, { users }),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: rbacRolesQueryKeys.users(roleId),
+      })
+      queryClient.invalidateQueries({
+        queryKey: rbacRolesQueryKeys.detail(roleId),
+      })
+      queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useRemoveRbacRoleUsers = (
+  roleId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminRbacRoleUsersDeleteResponse,
+    FetchError,
+    HttpTypes.AdminRemoveRoleUsers["users"]
+  >
+) => {
+  return useMutation({
+    mutationFn: (users) => sdk.admin.rbacRole.removeUsers(roleId, { users }),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: rbacRolesQueryKeys.users(roleId),
+      })
+      queryClient.invalidateQueries({
+        queryKey: rbacRolesQueryKeys.detail(roleId),
+      })
+      queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 const ME_PERMISSIONS_QUERY_KEY = ["me-permissions"] as const
 
 export const mePermissionsQueryKey = ME_PERMISSIONS_QUERY_KEY
@@ -217,6 +338,33 @@ export const useMePermissions = (
   return useQuery({
     queryFn: () => sdk.admin.rbacRole.mePermissions(),
     queryKey: mePermissionsQueryKey,
+    staleTime: 5 * 60 * 1000,
+    ...options,
+  })
+}
+
+const ASSIGNABLE_ROLES_QUERY_KEY = ["rbac_assignable_roles"] as const
+
+export const assignableRolesQueryKey = ASSIGNABLE_ROLES_QUERY_KEY
+
+/**
+ * Fetches the roles the authenticated actor is allowed to assign.
+ */
+export const useRbacAssignableRoles = (
+  query?: HttpTypes.AdminRbacRoleListParams,
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminRbacAssignableRolesListResponse,
+      FetchError,
+      HttpTypes.AdminRbacAssignableRolesListResponse,
+      QueryKey
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  return useQuery({
+    queryFn: () => sdk.admin.rbacRole.listAssignable(query),
+    queryKey: [...ASSIGNABLE_ROLES_QUERY_KEY, query],
     staleTime: 5 * 60 * 1000,
     ...options,
   })

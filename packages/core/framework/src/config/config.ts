@@ -1,4 +1,4 @@
-import { deepCopy, isDefined } from "@medusajs/utils"
+import { deepCopy, isDefined, isProduction } from "@medusajs/utils"
 import { logger } from "../logger"
 import { ConfigModule } from "./types"
 
@@ -14,7 +14,7 @@ export class ConfigManager {
    * @private
    */
   get #isProduction(): boolean {
-    return ["production", "prod"].includes(process.env.NODE_ENV || "")
+    return isProduction()
   }
 
   /**

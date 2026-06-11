@@ -122,6 +122,16 @@ export default class UserModuleService
       sharedContext
     )
 
+    // Reject tokens that have been rotated (e.g. by a resend). Without this
+    // check, any previously-issued JWT remains valid for the full TTL even
+    // after `refreshInviteTokens_` writes a new token to the DB.
+    if (token !== invite.token) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The invite token is invalid"
+      )
+    }
+
     if (invite.expires_at < new Date()) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
