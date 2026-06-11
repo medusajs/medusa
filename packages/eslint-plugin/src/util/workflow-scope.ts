@@ -7,12 +7,16 @@ export const CREATE_WORKFLOW = "createWorkflow"
 export const CREATE_STEP = "createStep"
 export const TRANSFORM = "transform"
 export const WHEN = "when"
+export const WORKFLOW_RESPONSE = "WorkflowResponse"
+export const STEP_RESPONSE = "StepResponse"
 
 export type WorkflowSdkBindings = {
   createWorkflow: Set<string>
   createStep: Set<string>
   transform: Set<string>
   when: Set<string>
+  workflowResponse: Set<string>
+  stepResponse: Set<string>
 }
 
 export function createWorkflowSdkBindings(): WorkflowSdkBindings {
@@ -21,6 +25,8 @@ export function createWorkflowSdkBindings(): WorkflowSdkBindings {
     createStep: new Set(),
     transform: new Set(),
     when: new Set(),
+    workflowResponse: new Set(),
+    stepResponse: new Set(),
   }
 }
 
@@ -29,6 +35,8 @@ const TRACKED_IMPORTS = [
   CREATE_STEP,
   TRANSFORM,
   WHEN,
+  WORKFLOW_RESPONSE,
+  STEP_RESPONSE,
 ] as const
 
 type TrackedImport = (typeof TRACKED_IMPORTS)[number]
@@ -38,6 +46,8 @@ const BUCKET_BY_IMPORT: Record<TrackedImport, keyof WorkflowSdkBindings> = {
   [CREATE_STEP]: "createStep",
   [TRANSFORM]: "transform",
   [WHEN]: "when",
+  [WORKFLOW_RESPONSE]: "workflowResponse",
+  [STEP_RESPONSE]: "stepResponse",
 }
 
 export function trackWorkflowSdkImports(
@@ -114,6 +124,74 @@ export function isWhenThenCallbackFunction(
   if (receiver.type !== AST_NODE_TYPES.CallExpression) return false
   if (receiver.callee.type !== AST_NODE_TYPES.Identifier) return false
   return bindings.when.has(receiver.callee.name)
+}
+
+/**
+ * Returns true when `fn` is a callback argument to a `transform(...)` call
+ * whose callee resolves to a tracked `transform` import binding.
+ *
+ * `transform(data, ...callbacks)` accepts one or more callback arguments after
+ * the data argument at index 0 — any of them counts.
+ */
+export function isTransformCallbackFunction(
+  fn: FunctionLike,
+  bindings: WorkflowSdkBindings
+): boolean {
+  const parent = fn.parent
+  if (!parent || parent.type !== AST_NODE_TYPES.CallExpression) return false
+  const argIndex = parent.arguments.indexOf(fn as TSESTree.CallExpressionArgument)
+  if (argIndex < 1) return false
+  if (parent.callee.type !== AST_NODE_TYPES.Identifier) return false
+  return bindings.transform.has(parent.callee.name)
+}
+
+/**
+ * Returns true when `fn` is the main callback (arg index 1) of a
+ * `createStep(...)` call whose callee resolves to a tracked `createStep`
+ * import binding.
+ *
+ * `createStep(id, mainFn, compensationFn?)` — only the main fn is checked.
+ * Compensation callbacks are not required to return anything, so they are
+ * intentionally excluded.
+ */
+export function isStepCallbackFunction(
+  fn: FunctionLike,
+  bindings: WorkflowSdkBindings
+): boolean {
+  const parent = fn.parent
+  if (!parent || parent.type !== AST_NODE_TYPES.CallExpression) return false
+  if (parent.arguments[1] !== fn) return false
+  if (parent.callee.type !== AST_NODE_TYPES.Identifier) return false
+  return bindings.createStep.has(parent.callee.name)
+}
+
+/**
+ * Returns true when `node` is a `new StepResponse(...)` or
+ * `new WorkflowResponse(...)` whose callee identifier resolves to a tracked
+ * workflows-sdk import binding.
+ */
+export function isResponseConstructor(
+  node: TSESTree.NewExpression,
+  bindings: WorkflowSdkBindings
+): boolean {
+  if (node.callee.type !== AST_NODE_TYPES.Identifier) return false
+  return (
+    bindings.stepResponse.has(node.callee.name) ||
+    bindings.workflowResponse.has(node.callee.name)
+  )
+}
+
+/**
+ * True when `node` lives directly inside a `transform(...)` callback — not
+ * inside a further-nested function.
+ */
+export function isInTransformCallback(
+  node: TSESTree.Node,
+  bindings: WorkflowSdkBindings
+): boolean {
+  const fn = getEnclosingFunction(node)
+  if (!fn) return false
+  return isTransformCallbackFunction(fn, bindings)
 }
 
 /**
