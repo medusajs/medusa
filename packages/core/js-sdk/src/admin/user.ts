@@ -175,7 +175,7 @@ export class User {
     queryParams?: HttpTypes.AdminRbacRoleUserListParams,
     headers?: ClientHeaders
   ) {
-    return this.client.fetch<HttpTypes.AdminGetUserRolesParams>(
+    return this.client.fetch<HttpTypes.AdminUserRoleListResponse>(
       `/admin/users/${id}/roles`,
       {
         query: queryParams,

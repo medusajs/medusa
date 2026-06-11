@@ -2,8 +2,10 @@ import { useLoaderData, useParams } from "react-router-dom"
 
 import { useUser } from "../../../hooks/api/users"
 import { UserGeneralSection } from "./components/user-general-section"
+import { UserRoleSection } from "./components/user-role-section"
 import { userLoader } from "./loader"
 
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { SingleColumnPage } from "../../../components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
@@ -42,6 +44,9 @@ export const UserDetail = () => {
       }}
     >
       <UserGeneralSection user={user} />
+      <PermissionGuard permission="rbac_role:read">
+        <UserRoleSection user={user} />
+      </PermissionGuard>
     </SingleColumnPage>
   )
 }
