@@ -422,7 +422,7 @@ export interface CreatePaymentMethodDTO {
 /**
  * The payment method to be deleted.
  * 
- * @since 2.15.6
+ * @since 2.16.0
  */
 export interface DeletePaymentMethodDTO {
   /**
