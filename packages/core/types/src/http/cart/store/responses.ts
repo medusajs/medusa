@@ -11,9 +11,9 @@ export interface StoreCartResponse {
 
 export type StoreCompleteCartResponse =
   | {
-    /**
-     * The response's type. If `cart`, then an error has occurred.
-     */
+      /**
+       * The response's type. If `cart`, then an error has occurred.
+       */
       type: "cart"
       /**
        * The cart's details.
@@ -38,10 +38,10 @@ export type StoreCompleteCartResponse =
       }
     }
   | {
-    /**
-     * The response's type. If `order`, then the cart
-     * was completed and an order was placed.
-     */
+      /**
+       * The response's type. If `order`, then the cart
+       * was completed and an order was placed.
+       */
       type: "order"
       /**
        * The order's details.

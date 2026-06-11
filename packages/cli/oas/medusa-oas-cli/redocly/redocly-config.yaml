@@ -149,9 +149,13 @@ decorators:
         - StoreGiftCardInvitation
       StoreTransactionGroup:
         - StoreStoreCreditAccount
+      StoreOrderLineItem:
+        - StoreOrderLineItem
       AdminProductImage:
         - AdminProduct
         - AdminProductVariant
+      StoreOrderShippingMethod:
+        - StoreOrderShippingMethod
 theme:
   openapi:
     theme:

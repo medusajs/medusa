@@ -199,6 +199,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "loaded": true,
                   "isPathHref": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/requestVerificationWorkflow",
+                  "title": "requestVerificationWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/setAuthAppMetadataWorkflow",
                   "title": "setAuthAppMetadataWorkflow",
                   "description": "",
@@ -212,6 +221,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
               "type": "sub-category",
               "title": "Steps",
               "children": [
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/requestVerificationStep",
+                  "title": "requestVerificationStep",
+                  "description": "",
+                  "children": []
+                },
                 {
                   "loaded": true,
                   "isPathHref": true,
@@ -474,6 +492,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "loaded": true,
                   "isPathHref": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/steps/compensatePaymentIfNeededStep",
+                  "title": "compensatePaymentIfNeededStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/steps/confirmInventoryStep",
                   "title": "confirmInventoryStep",
                   "description": "",
@@ -710,6 +737,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/validateAndReturnShippingMethodsDataStep",
                   "title": "validateAndReturnShippingMethodsDataStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/validateCartItemsStep",
+                  "title": "validateCartItemsStep",
                   "description": "",
                   "children": []
                 },

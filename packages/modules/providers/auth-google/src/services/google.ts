@@ -10,11 +10,23 @@ import {
   AbstractAuthModuleProvider,
   MedusaError,
 } from "@medusajs/framework/utils"
-import jwt, { type JwtPayload } from "jsonwebtoken"
+import jwt, { type JwtHeader, type JwtPayload } from "jsonwebtoken"
+import jwksClient, { JwksClient } from "jwks-rsa"
+import { promisify } from "util"
+
+const verifyJwt = promisify<
+  string,
+  jwt.Secret | jwt.GetPublicKeyOrSecret,
+  jwt.VerifyOptions,
+  JwtPayload | string | undefined
+>(jwt.verify)
 
 type InjectedDependencies = {
   logger: Logger
 }
+
+const GOOGLE_JWKS_URI = "https://www.googleapis.com/oauth2/v3/certs"
+const GOOGLE_ISSUERS = ["https://accounts.google.com", "accounts.google.com"]
 
 interface LocalServiceConfig extends GoogleAuthProviderOptions {}
 export class GoogleAuthService extends AbstractAuthModuleProvider {
@@ -23,6 +35,7 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
 
   protected config_: LocalServiceConfig
   protected logger_: Logger
+  protected jwks_: JwksClient
 
   static validateOptions(options: GoogleAuthProviderOptions) {
     if (!options.clientId) {
@@ -46,6 +59,28 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
     super(...arguments)
     this.config_ = options
     this.logger_ = logger
+    this.jwks_ = jwksClient({
+      jwksUri: GOOGLE_JWKS_URI,
+      cache: true,
+      rateLimit: true,
+    })
+  }
+
+  protected getSigningKey_ = (
+    header: JwtHeader,
+    callback: (err: Error | null, key?: string) => void
+  ) => {
+    if (!header.kid) {
+      callback(new Error("ID token is missing 'kid' header"))
+      return
+    }
+    this.jwks_.getSigningKey(header.kid, (err, key) => {
+      if (err || !key) {
+        callback(err ?? new Error("Unable to resolve signing key"))
+        return
+      }
+      callback(null, key.getPublicKey())
+    })
   }
 
   async register(_): Promise<AuthenticationResponse> {
@@ -143,15 +178,35 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
       return { success: false, error: "No ID found" }
     }
 
-    const jwtData = jwt.decode(idToken, {
-      complete: true,
-    }) as JwtPayload
-    const payload = jwtData.payload
+    let payload: JwtPayload
+    try {
+      const decoded = await verifyJwt(idToken, this.getSigningKey_, {
+        algorithms: ["RS256"],
+        audience: this.config_.clientId,
+        issuer: GOOGLE_ISSUERS,
+      })
+      if (!decoded || typeof decoded === "string") {
+        throw new Error("Invalid id_token")
+      }
+      payload = decoded
+    } catch (err) {
+      throw new MedusaError(
+        MedusaError.Types.UNAUTHORIZED,
+        `Could not verify Google id_token: ${err.message}`
+      )
+    }
 
     if (!payload.email_verified) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Email not verified, cannot proceed with authentication"
+      )
+    }
+
+    if (!payload.sub) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "id_token is missing 'sub' claim"
       )
     }
 

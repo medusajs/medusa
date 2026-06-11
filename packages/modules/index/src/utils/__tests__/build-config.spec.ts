@@ -1836,6 +1836,240 @@ describe("buildSchemaObjectRepresentation", () => {
     )
   })
 
+  it("should set inSchemaRef for two entities (Alpha and Beta) when both are linked to Product", () => {
+    const productSchema = `
+      type Product {
+        id: ID!
+        title: String!
+      }
+    `
+
+    const customSchema = `
+      type Alpha {
+        id: ID!
+        product_id: ID!
+        product: Product!
+      }
+
+      type Beta {
+        id: ID!
+        product_id: ID!
+        product: Product!
+      }
+    `
+
+    const productModuleJoinerConfig = {
+      serviceName: "ProductService",
+      schema: productSchema,
+      alias: [
+        {
+          name: "product",
+          entity: "Product",
+        },
+      ],
+      linkableKeys: {
+        product_id: "Product",
+      },
+    }
+
+    const customModuleJoinerConfig = {
+      serviceName: "CustomService",
+      schema: customSchema,
+      alias: [
+        {
+          name: "alpha",
+          entity: "Alpha",
+        },
+        {
+          name: "beta",
+          entity: "Beta",
+        },
+      ],
+      linkableKeys: {
+        alpha_id: "Alpha",
+        beta_id: "Beta",
+      },
+    }
+
+    const alphaProductLinkModuleJoinerConfig = {
+      serviceName: "AlphaProductLinkService",
+      isLink: true,
+      schema: `
+       type AlphaProductLink {
+        id: ID!
+        alpha_id: ID!
+        product_id: ID!
+        alpha: Alpha!
+        product: Product!
+       }
+
+       extend type Alpha {
+        alpha_product_link: AlphaProductLink!
+       }
+
+       extend type Product {
+        alpha_product_link: AlphaProductLink!
+       }
+      `,
+      alias: [
+        {
+          name: "alpha_product_link",
+          entity: "AlphaProductLink",
+        },
+      ],
+      relationships: [
+        {
+          serviceName: "CustomService",
+          foreignKey: "alpha_id",
+          entity: "Alpha",
+        },
+        {
+          serviceName: "ProductService",
+          foreignKey: "product_id",
+          entity: "Product",
+        },
+      ],
+      extends: [
+        {
+          serviceName: "CustomService",
+          relationship: {
+            fieldAlias: {
+              product: "alpha_product_link.product",
+            },
+            serviceName: "AlphaProductLinkService",
+            primaryKey: "alpha_id",
+          },
+        },
+        {
+          serviceName: "ProductService",
+          relationship: {
+            fieldAlias: {
+              alphas: "alpha_product_link.alpha",
+              isList: true,
+            },
+            serviceName: "AlphaProductLinkService",
+            primaryKey: "product_id",
+            isList: true,
+          },
+        },
+      ],
+    }
+
+    const betaProductLinkModuleJoinerConfig = {
+      serviceName: "BetaProductLinkService",
+      isLink: true,
+      schema: `
+       type BetaProductLink {
+        id: ID!
+        beta_id: ID!
+        product_id: ID!
+        beta: Beta!
+        product: Product!
+       }
+
+       extend type Beta {
+        beta_product_link: BetaProductLink!
+       }
+
+       extend type Product {
+        beta_product_link: BetaProductLink!
+       }
+      `,
+      alias: [
+        {
+          name: "beta_product_link",
+          entity: "BetaProductLink",
+        },
+      ],
+      relationships: [
+        {
+          serviceName: "CustomService",
+          foreignKey: "beta_id",
+          entity: "Beta",
+        },
+        {
+          serviceName: "ProductService",
+          foreignKey: "product_id",
+          entity: "Product",
+        },
+      ],
+      extends: [
+        {
+          serviceName: "CustomService",
+          relationship: {
+            fieldAlias: {
+              product: "beta_product_link.product",
+            },
+            serviceName: "BetaProductLinkService",
+            primaryKey: "beta_id",
+          },
+        },
+        {
+          serviceName: "ProductService",
+          relationship: {
+            fieldAlias: {
+              betas: "beta_product_link.beta",
+              isList: true,
+            },
+            serviceName: "BetaProductLinkService",
+            primaryKey: "product_id",
+            isList: true,
+          },
+        },
+      ],
+    }
+
+    ;(MedusaModule.getAllJoinerConfigs as jest.Mock).mockReturnValue([
+      productModuleJoinerConfig,
+      customModuleJoinerConfig,
+      alphaProductLinkModuleJoinerConfig,
+      betaProductLinkModuleJoinerConfig,
+    ])
+
+    const indexSchema = `
+      type Product @Listeners(values: ["product.created"]) {
+        id: ID
+        title: String
+        alphas: [Alpha]
+        betas: [Beta]
+      }
+
+      type Alpha @Listeners(values: ["custom.alpha.created"]) {
+        id: ID
+        product: Product
+      }
+
+      type Beta @Listeners(values: ["custom.beta.created"]) {
+        id: ID
+        product: Product
+      }
+    `
+
+    const { objectRepresentation } =
+      buildSchemaObjectRepresentation(indexSchema)
+
+    const alphaParentWithSchemaRef = objectRepresentation["Alpha"].parents.find(
+      (parent) => parent.inSchemaRef?.entity === "Product"
+    )
+    const betaParentWithSchemaRef = objectRepresentation["Beta"].parents.find(
+      (parent) => parent.inSchemaRef?.entity === "Product"
+    )
+
+    expect(alphaParentWithSchemaRef).toBeDefined()
+    expect(alphaParentWithSchemaRef).toEqual(
+      expect.objectContaining({
+        inSchemaRef: objectRepresentation["Product"],
+      })
+    )
+
+    expect(betaParentWithSchemaRef).toBeDefined()
+    expect(betaParentWithSchemaRef).toEqual(
+      expect.objectContaining({
+        inSchemaRef: objectRepresentation["Product"],
+      })
+    )
+  })
+
   it("should throw an error when an entity with listeners doesn't have a corresponding module", () => {
     const indexSchema = `
       type Product @Listeners(values: ["product.created"]) { 

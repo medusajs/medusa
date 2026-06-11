@@ -79,7 +79,7 @@ jobs:
         if: steps.changed-files.outputs.has_files == 'true'
         uses: anthropics/claude-code-base-action@beta
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
           allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*,git log:*,git status:*,ls:*)"
           max_turns: 30
           prompt: |
@@ -142,7 +142,7 @@ jobs:
 
       - name: Create Pull Request
         if: steps.changed-files.outputs.has_files == 'true'
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@38e0b6e68b4c852a5500a94740f0e535e0d7ba54  # v4
         with:
           token: ${{ secrets.REFERENCE_PAT }}
           commit-message: "docs: add TSDocs for ${{ github.sha }}"

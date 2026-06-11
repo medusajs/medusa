@@ -169,6 +169,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "OTP Input",
+            path: "/components/otp-input",
+          },
+          {
+            type: "link",
             title: "Progress Accordion",
             path: "/components/progress-accordion",
           },

@@ -103,7 +103,7 @@ jobs:
         if: steps.check.outputs.needs_docs == 'true'
         uses: anthropics/claude-code-base-action@beta
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
           prompt: ${{ steps.extract-prompt.outputs.CLAUDE_PROMPT }}
           allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*,ls:*,find:*,cat:*)"
           max_turns: 40
@@ -174,7 +174,7 @@ jobs:
 
       - name: Create Pull Request
         if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@38e0b6e68b4c852a5500a94740f0e535e0d7ba54  # v4
         with:
           token: ${{ secrets.REFERENCE_PAT }}
           commit-message: "chore(docs): automated cloud documentation update"

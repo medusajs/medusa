@@ -24,7 +24,7 @@ const myWorkflow = createWorkflow(
     const data = createShippingOptionRulesStep({
       "data": [{
         "attribute": "{value}",
-        "operator": "gt",
+        "operator": "in",
         "value": "{value}",
         "shipping_option_id": "{value}"
       }]

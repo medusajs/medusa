@@ -5,7 +5,16 @@ import {
 } from "@medusajs/framework/http"
 import { validateScopeProviderAssociation } from "./utils/validate-scope-provider-association"
 import { validateToken } from "./utils/validate-token"
-import { ResetPasswordRequest } from "./validators"
+import {
+  AuthMfaCreateFactorRequest,
+  AuthMfaDisableFactorRequest,
+  AuthMfaGenerateRecoveryCodesRequest,
+  AuthMfaVerifyChallengeRequest,
+  AuthMfaVerifyFactorRequest,
+  VerificationConfirmRequest,
+  VerificationRequest,
+  ResetPasswordRequest,
+} from "./validators"
 
 export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -22,6 +31,48 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/auth/token/refresh",
     middlewares: [authenticate("*", "bearer", { allowUnregistered: true })],
+  },
+  {
+    method: ["POST"],
+    matcher: "/auth/mfa/challenges/:id/verify",
+    middlewares: [validateAndTransformBody(AuthMfaVerifyChallengeRequest)],
+  },
+  {
+    method: ["GET"],
+    matcher: "/auth/mfa/factors",
+    middlewares: [authenticate("*", ["session", "bearer"])],
+  },
+  {
+    method: ["POST"],
+    matcher: "/auth/mfa/factors",
+    middlewares: [
+      authenticate("*", ["session", "bearer"]),
+      validateAndTransformBody(AuthMfaCreateFactorRequest),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/auth/mfa/factors/:id/verify",
+    middlewares: [
+      authenticate("*", ["session", "bearer"]),
+      validateAndTransformBody(AuthMfaVerifyFactorRequest),
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/auth/mfa/factors/:id",
+    middlewares: [
+      authenticate("*", ["session", "bearer"]),
+      validateAndTransformBody(AuthMfaDisableFactorRequest),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/auth/mfa/recovery-codes",
+    middlewares: [
+      authenticate("*", ["session", "bearer"]),
+      validateAndTransformBody(AuthMfaGenerateRecoveryCodesRequest),
+    ],
   },
   {
     method: ["POST"],
@@ -49,6 +100,22 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       validateScopeProviderAssociation(),
       validateAndTransformBody(ResetPasswordRequest),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/auth/:actor_type/:auth_provider/verification/request",
+    middlewares: [
+      validateScopeProviderAssociation(),
+      validateAndTransformBody(VerificationRequest),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/auth/:actor_type/:auth_provider/verification/confirm",
+    middlewares: [
+      validateScopeProviderAssociation(),
+      validateAndTransformBody(VerificationConfirmRequest),
     ],
   },
   {

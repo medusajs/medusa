@@ -1,20 +1,26 @@
-import { FetchError } from "@medusajs/js-sdk"
+import {
+  AuthLoginResponse,
+  AuthRegisterResponse,
+  FetchError,
+} from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import { UseMutationOptions, useMutation } from "@tanstack/react-query"
 import { sdk } from "../../lib/client"
 
 export const useSignInWithEmailPass = (
   options?: UseMutationOptions<
-    | string
-    | {
-        location: string
-      },
+    AuthLoginResponse,
     FetchError,
     HttpTypes.AdminSignUpWithEmailPassword
   >
 ) => {
   return useMutation({
-    mutationFn: (payload) => sdk.auth.login("user", "emailpass", payload),
+    mutationFn: (payload) =>
+      sdk.auth.login(
+        "user",
+        "emailpass",
+        payload
+      ) as Promise<AuthLoginResponse>,
     onSuccess: async (data, variables, context) => {
       options?.onSuccess?.(data, variables, context)
     },
@@ -24,7 +30,7 @@ export const useSignInWithEmailPass = (
 
 export const useSignUpWithEmailPass = (
   options?: UseMutationOptions<
-    string,
+    AuthRegisterResponse,
     FetchError,
     HttpTypes.AdminSignInWithEmailPassword
   >

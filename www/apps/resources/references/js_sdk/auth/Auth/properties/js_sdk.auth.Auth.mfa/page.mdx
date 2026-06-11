@@ -1,0 +1,315 @@
+import { TypeList } from "docs-ui"
+
+# mfa
+
+Methods for managing and completing multi-factor authentication (MFA).
+
+## list
+
+This method retrieves the MFA factors configured for the authenticated
+identity. It sends a request to the
+[List MFA Factors](https://docs.medusajs.com/api/admin#auth\_getmfa\_factors)
+API route.
+
+### Example
+
+```ts
+const { mfa_factors } = await sdk.auth.mfa.list()
+```
+
+### Parameters
+
+<TypeList types={[{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthMfaListResponse](../../../types/js_sdk.auth.AuthMfaListResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The configured MFA factors.","expandable":false,"children":[{"name":"mfa_factors","type":"[AuthMfaDTO](../../../../../auth/types/auth.AuthMfaDTO/page.mdx)[]","description":"The MFA factors configured for the authenticated identity.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The multi-factor authentication (MFA) configuration's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"[AuthMfaProvider](../../../../../auth/types/auth.AuthMfaProvider/page.mdx)","description":"The multi-factor authentication (MFA) provider used.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[AuthMfaStatus](../../../../../auth/types/auth.AuthMfaStatus/page.mdx)","description":"The status of this multi-factor authentication (MFA) configuration.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity_id","type":"`string`","description":"The ID of the authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity","type":"[AuthIdentityDTO](../../../../../auth/interfaces/auth.AuthIdentityDTO/page.mdx)","description":"The authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":true,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"Additional metadata for the multi-factor authentication (MFA) configuration.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## start
+
+This method starts MFA setup for the authenticated identity. It sends a
+request to the
+[Create MFA Factor](https://docs.medusajs.com/api/admin#auth\_postmfa\_factors)
+API route.
+
+### Example
+
+```ts
+const setup = await sdk.auth.mfa.start({
+  provider: "totp",
+  label: "Authenticator app"
+})
+
+// Render setup.otpauth_url as a QR code or show setup.secret manually.
+```
+
+### Parameters
+
+<TypeList types={[{"name":"body","type":"[AuthMfaStartPayload](../../../types/js_sdk.auth.AuthMfaStartPayload/page.mdx)","description":"The MFA setup details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"provider","type":"[AuthMfaProvider](../../../../../auth/types/auth.AuthMfaProvider/page.mdx)","description":"The MFA provider to set up.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"label","type":"`string` \\| `null`","description":"Optional label for the MFA factor.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"issuer","type":"`string`","description":"Optional issuer name. For TOTP, authenticator apps show this as the\nservice name.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"Optional metadata to store with the MFA factor.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthMfaSetupResponse](../../../types/js_sdk.auth.AuthMfaSetupResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The pending MFA factor and any setup details returned by the provider.","expandable":false,"children":[{"name":"mfa_factor","type":"[AuthMfaDTO](../../../../../auth/types/auth.AuthMfaDTO/page.mdx)","description":"The pending MFA factor.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The multi-factor authentication (MFA) configuration's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"[AuthMfaProvider](../../../../../auth/types/auth.AuthMfaProvider/page.mdx)","description":"The multi-factor authentication (MFA) provider used.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[AuthMfaStatus](../../../../../auth/types/auth.AuthMfaStatus/page.mdx)","description":"The status of this multi-factor authentication (MFA) configuration.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity_id","type":"`string`","description":"The ID of the authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity","type":"[AuthIdentityDTO](../../../../../auth/interfaces/auth.AuthIdentityDTO/page.mdx)","description":"The authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":true,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"Additional metadata for the multi-factor authentication (MFA) configuration.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"secret","type":"`string`","description":"The setup secret. For TOTP, this can be entered manually in an\nauthenticator app.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"otpauth_url","type":"`string`","description":"The setup URI. For TOTP, this can be rendered as a QR code.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## verify
+
+This method verifies a pending MFA factor setup. It sends a request to the
+[Verify MFA Factor](https://docs.medusajs.com/api/admin#auth\_postmfa\_factorsidverify)
+API route.
+
+### Example
+
+```ts
+const { mfa_factor } = await sdk.auth.mfa.verify("authmfa_123", {
+  code: "123456"
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the MFA factor to verify.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AuthMfaVerifyPayload](../../../types/js_sdk.auth.AuthMfaVerifyPayload/page.mdx)","description":"The verification details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The verification code from the MFA provider.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthMfaFactorResponse](../../../types/js_sdk.auth.AuthMfaFactorResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The verified MFA factor.","expandable":false,"children":[{"name":"mfa_factor","type":"[AuthMfaDTO](../../../../../auth/types/auth.AuthMfaDTO/page.mdx)","description":"The MFA factor.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The multi-factor authentication (MFA) configuration's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"[AuthMfaProvider](../../../../../auth/types/auth.AuthMfaProvider/page.mdx)","description":"The multi-factor authentication (MFA) provider used.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[AuthMfaStatus](../../../../../auth/types/auth.AuthMfaStatus/page.mdx)","description":"The status of this multi-factor authentication (MFA) configuration.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity_id","type":"`string`","description":"The ID of the authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity","type":"[AuthIdentityDTO](../../../../../auth/interfaces/auth.AuthIdentityDTO/page.mdx)","description":"The authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":true,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"Additional metadata for the multi-factor authentication (MFA) configuration.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## disable
+
+This method disables an MFA factor for the authenticated identity. It
+sends a request to the
+[Delete MFA Factor](https://docs.medusajs.com/api/admin#auth\_deletemfa\_factorsid)
+API route.
+
+### Example
+
+```ts
+const { mfa_factor } = await sdk.auth.mfa.disable("authmfa_123")
+```
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the MFA factor to disable.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AuthMfaDisablePayload](../../../types/js_sdk.auth.AuthMfaDisablePayload/page.mdx)","description":"Optional verification details required by the server configuration.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"method","type":"[AuthMfaChallengeMethod](../../../../../auth/types/auth.AuthMfaChallengeMethod/page.mdx)","description":"Optional challenge method used to authorize disabling MFA when configured.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"Optional verification code for the selected challenge method.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthMfaFactorResponse](../../../types/js_sdk.auth.AuthMfaFactorResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The disabled MFA factor.","expandable":false,"children":[{"name":"mfa_factor","type":"[AuthMfaDTO](../../../../../auth/types/auth.AuthMfaDTO/page.mdx)","description":"The MFA factor.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The multi-factor authentication (MFA) configuration's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"[AuthMfaProvider](../../../../../auth/types/auth.AuthMfaProvider/page.mdx)","description":"The multi-factor authentication (MFA) provider used.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[AuthMfaStatus](../../../../../auth/types/auth.AuthMfaStatus/page.mdx)","description":"The status of this multi-factor authentication (MFA) configuration.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity_id","type":"`string`","description":"The ID of the authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity","type":"[AuthIdentityDTO](../../../../../auth/interfaces/auth.AuthIdentityDTO/page.mdx)","description":"The authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":true,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"Additional metadata for the multi-factor authentication (MFA) configuration.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## generateRecoveryCodes
+
+This method generates new recovery codes for the authenticated identity.
+It sends a request to the
+[Generate MFA Recovery Codes](https://docs.medusajs.com/api/admin#auth\_postmfa\_recovery-codes)
+API route.
+
+### Example
+
+```ts
+const { recovery_codes } = await sdk.auth.mfa.generateRecoveryCodes()
+```
+
+### Parameters
+
+<TypeList types={[{"name":"body","type":"[AuthMfaGenerateRecoveryCodesPayload](../../../types/js_sdk.auth.AuthMfaGenerateRecoveryCodesPayload/page.mdx)","description":"Optional recovery code generation details.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"count","type":"`number`","description":"Number of recovery codes to generate.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthMfaRecoveryCodesResponse](../../../types/js_sdk.auth.AuthMfaRecoveryCodesResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The generated recovery codes.","expandable":false,"children":[{"name":"recovery_codes","type":"`string`[]","description":"The recovery codes. These are only returned once and should be stored by\nthe user.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## verifyChallenge
+
+This method verifies an MFA challenge returned from `sdk.auth.login` or
+`sdk.auth.callback`. It sends a request to the
+[Verify MFA Challenge](https://docs.medusajs.com/api/admin#auth\_postmfa\_challengesidverify)
+API route.
+
+If verification succeeds, the returned token is stored based on the SDK's
+auth configuration, matching `sdk.auth.login`.
+
+### Example
+
+```ts
+const result = await sdk.auth.login("user", "emailpass", {
+  email: "user@example.com",
+  password: "secret"
+})
+
+if (typeof result === "object" && "mfa_challenge" in result) {
+  await sdk.auth.mfa.verifyChallenge(result.mfa_challenge.id, {
+    method: "totp",
+    code: "123456"
+  })
+}
+```
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the MFA challenge to verify.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AuthMfaVerifyChallengePayload](../../../types/js_sdk.auth.AuthMfaVerifyChallengePayload/page.mdx)","description":"The challenge verification details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"method","type":"[AuthMfaChallengeMethod](../../../../../auth/types/auth.AuthMfaChallengeMethod/page.mdx)","description":"The MFA challenge method used for verification.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"The verification code for the selected challenge method.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"The authentication JWT token.","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+## list
+
+This method retrieves the MFA factors configured for the authenticated
+identity. It sends a request to the
+[List MFA Factors](https://docs.medusajs.com/api/admin#auth\_getmfa\_factors)
+API route.
+
+### Example
+
+```ts
+const { mfa_factors } = await sdk.auth.mfa.list()
+```
+
+### Parameters
+
+<TypeList types={[{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthMfaListResponse](../../../types/js_sdk.auth.AuthMfaListResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The configured MFA factors.","expandable":false,"children":[{"name":"mfa_factors","type":"[AuthMfaDTO](../../../../../auth/types/auth.AuthMfaDTO/page.mdx)[]","description":"The MFA factors configured for the authenticated identity.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The multi-factor authentication (MFA) configuration's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"[AuthMfaProvider](../../../../../auth/types/auth.AuthMfaProvider/page.mdx)","description":"The multi-factor authentication (MFA) provider used.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[AuthMfaStatus](../../../../../auth/types/auth.AuthMfaStatus/page.mdx)","description":"The status of this multi-factor authentication (MFA) configuration.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity_id","type":"`string`","description":"The ID of the authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity","type":"[AuthIdentityDTO](../../../../../auth/interfaces/auth.AuthIdentityDTO/page.mdx)","description":"The authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":true,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"Additional metadata for the multi-factor authentication (MFA) configuration.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## start
+
+This method starts MFA setup for the authenticated identity. It sends a
+request to the
+[Create MFA Factor](https://docs.medusajs.com/api/admin#auth\_postmfa\_factors)
+API route.
+
+### Example
+
+```ts
+const setup = await sdk.auth.mfa.start({
+  provider: "totp",
+  label: "Authenticator app"
+})
+
+// Render setup.otpauth_url as a QR code or show setup.secret manually.
+```
+
+### Parameters
+
+<TypeList types={[{"name":"body","type":"[AuthMfaStartPayload](../../../types/js_sdk.auth.AuthMfaStartPayload/page.mdx)","description":"The MFA setup details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"provider","type":"[AuthMfaProvider](../../../../../auth/types/auth.AuthMfaProvider/page.mdx)","description":"The MFA provider to set up.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"label","type":"`string` \\| `null`","description":"Optional label for the MFA factor.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"issuer","type":"`string`","description":"Optional issuer name. For TOTP, authenticator apps show this as the\nservice name.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"Optional metadata to store with the MFA factor.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthMfaSetupResponse](../../../types/js_sdk.auth.AuthMfaSetupResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The pending MFA factor and any setup details returned by the provider.","expandable":false,"children":[{"name":"mfa_factor","type":"[AuthMfaDTO](../../../../../auth/types/auth.AuthMfaDTO/page.mdx)","description":"The pending MFA factor.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The multi-factor authentication (MFA) configuration's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"[AuthMfaProvider](../../../../../auth/types/auth.AuthMfaProvider/page.mdx)","description":"The multi-factor authentication (MFA) provider used.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[AuthMfaStatus](../../../../../auth/types/auth.AuthMfaStatus/page.mdx)","description":"The status of this multi-factor authentication (MFA) configuration.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity_id","type":"`string`","description":"The ID of the authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity","type":"[AuthIdentityDTO](../../../../../auth/interfaces/auth.AuthIdentityDTO/page.mdx)","description":"The authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":true,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"Additional metadata for the multi-factor authentication (MFA) configuration.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"secret","type":"`string`","description":"The setup secret. For TOTP, this can be entered manually in an\nauthenticator app.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"otpauth_url","type":"`string`","description":"The setup URI. For TOTP, this can be rendered as a QR code.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## verify
+
+This method verifies a pending MFA factor setup. It sends a request to the
+[Verify MFA Factor](https://docs.medusajs.com/api/admin#auth\_postmfa\_factorsidverify)
+API route.
+
+### Example
+
+```ts
+const { mfa_factor } = await sdk.auth.mfa.verify("authmfa_123", {
+  code: "123456"
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the MFA factor to verify.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AuthMfaVerifyPayload](../../../types/js_sdk.auth.AuthMfaVerifyPayload/page.mdx)","description":"The verification details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The verification code from the MFA provider.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthMfaFactorResponse](../../../types/js_sdk.auth.AuthMfaFactorResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The verified MFA factor.","expandable":false,"children":[{"name":"mfa_factor","type":"[AuthMfaDTO](../../../../../auth/types/auth.AuthMfaDTO/page.mdx)","description":"The MFA factor.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The multi-factor authentication (MFA) configuration's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"[AuthMfaProvider](../../../../../auth/types/auth.AuthMfaProvider/page.mdx)","description":"The multi-factor authentication (MFA) provider used.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[AuthMfaStatus](../../../../../auth/types/auth.AuthMfaStatus/page.mdx)","description":"The status of this multi-factor authentication (MFA) configuration.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity_id","type":"`string`","description":"The ID of the authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity","type":"[AuthIdentityDTO](../../../../../auth/interfaces/auth.AuthIdentityDTO/page.mdx)","description":"The authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":true,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"Additional metadata for the multi-factor authentication (MFA) configuration.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## disable
+
+This method disables an MFA factor for the authenticated identity. It
+sends a request to the
+[Delete MFA Factor](https://docs.medusajs.com/api/admin#auth\_deletemfa\_factorsid)
+API route.
+
+### Example
+
+```ts
+const { mfa_factor } = await sdk.auth.mfa.disable("authmfa_123")
+```
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the MFA factor to disable.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AuthMfaDisablePayload](../../../types/js_sdk.auth.AuthMfaDisablePayload/page.mdx)","description":"Optional verification details required by the server configuration.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"method","type":"[AuthMfaChallengeMethod](../../../../../auth/types/auth.AuthMfaChallengeMethod/page.mdx)","description":"Optional challenge method used to authorize disabling MFA when configured.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"Optional verification code for the selected challenge method.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthMfaFactorResponse](../../../types/js_sdk.auth.AuthMfaFactorResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The disabled MFA factor.","expandable":false,"children":[{"name":"mfa_factor","type":"[AuthMfaDTO](../../../../../auth/types/auth.AuthMfaDTO/page.mdx)","description":"The MFA factor.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The multi-factor authentication (MFA) configuration's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"[AuthMfaProvider](../../../../../auth/types/auth.AuthMfaProvider/page.mdx)","description":"The multi-factor authentication (MFA) provider used.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[AuthMfaStatus](../../../../../auth/types/auth.AuthMfaStatus/page.mdx)","description":"The status of this multi-factor authentication (MFA) configuration.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity_id","type":"`string`","description":"The ID of the authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity","type":"[AuthIdentityDTO](../../../../../auth/interfaces/auth.AuthIdentityDTO/page.mdx)","description":"The authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":true,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"Additional metadata for the multi-factor authentication (MFA) configuration.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## generateRecoveryCodes
+
+This method generates new recovery codes for the authenticated identity.
+It sends a request to the
+[Generate MFA Recovery Codes](https://docs.medusajs.com/api/admin#auth\_postmfa\_recovery-codes)
+API route.
+
+### Example
+
+```ts
+const { recovery_codes } = await sdk.auth.mfa.generateRecoveryCodes()
+```
+
+### Parameters
+
+<TypeList types={[{"name":"body","type":"[AuthMfaGenerateRecoveryCodesPayload](../../../types/js_sdk.auth.AuthMfaGenerateRecoveryCodesPayload/page.mdx)","description":"Optional recovery code generation details.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"count","type":"`number`","description":"Number of recovery codes to generate.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthMfaRecoveryCodesResponse](../../../types/js_sdk.auth.AuthMfaRecoveryCodesResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The generated recovery codes.","expandable":false,"children":[{"name":"recovery_codes","type":"`string`[]","description":"The recovery codes. These are only returned once and should be stored by\nthe user.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## verifyChallenge
+
+This method verifies an MFA challenge returned from `sdk.auth.login` or
+`sdk.auth.callback`. It sends a request to the
+[Verify MFA Challenge](https://docs.medusajs.com/api/admin#auth\_postmfa\_challengesidverify)
+API route.
+
+If verification succeeds, the returned token is stored based on the SDK's
+auth configuration, matching `sdk.auth.login`.
+
+### Example
+
+```ts
+const result = await sdk.auth.login("user", "emailpass", {
+  email: "user@example.com",
+  password: "secret"
+})
+
+if (typeof result === "object" && "mfa_challenge" in result) {
+  await sdk.auth.mfa.verifyChallenge(result.mfa_challenge.id, {
+    method: "totp",
+    code: "123456"
+  })
+}
+```
+
+### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the MFA challenge to verify.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AuthMfaVerifyChallengePayload](../../../types/js_sdk.auth.AuthMfaVerifyChallengePayload/page.mdx)","description":"The challenge verification details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"method","type":"[AuthMfaChallengeMethod](../../../../../auth/types/auth.AuthMfaChallengeMethod/page.mdx)","description":"The MFA challenge method used for verification.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"The verification code for the selected challenge method.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"The authentication JWT token.","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>

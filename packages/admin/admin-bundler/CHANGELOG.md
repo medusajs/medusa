@@ -1,5 +1,59 @@
 # @medusajs/admin-bundler
 
+## 2.15.5
+
+### Patch Changes
+
+- Updated dependencies [[`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911)]:
+  - @medusajs/dashboard@2.15.5
+  - @medusajs/admin-shared@2.15.5
+  - @medusajs/admin-vite-plugin@2.15.5
+
+## 2.15.4
+
+### Patch Changes
+
+- Updated dependencies [[`8a4a9c5507463dc3db5a4e122e59f80d718564d9`](https://github.com/medusajs/medusa/commit/8a4a9c5507463dc3db5a4e122e59f80d718564d9)]:
+  - @medusajs/dashboard@2.15.4
+  - @medusajs/admin-shared@2.15.4
+  - @medusajs/admin-vite-plugin@2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- Updated dependencies [[`f2def586bb52f37752a3b06e673d69095a2551d8`](https://github.com/medusajs/medusa/commit/f2def586bb52f37752a3b06e673d69095a2551d8)]:
+  - @medusajs/dashboard@2.15.3
+  - @medusajs/admin-shared@2.15.3
+  - @medusajs/admin-vite-plugin@2.15.3
+
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.15.2
+  - @medusajs/admin-vite-plugin@2.15.2
+  - @medusajs/dashboard@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.15.1
+  - @medusajs/admin-vite-plugin@2.15.1
+  - @medusajs/dashboard@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- Updated dependencies [[`e86b075cb60fe721b256c1a4921892a30c918efd`](https://github.com/medusajs/medusa/commit/e86b075cb60fe721b256c1a4921892a30c918efd), [`34f326d729aa9e1bafd6ef644ccb47621bf2a14e`](https://github.com/medusajs/medusa/commit/34f326d729aa9e1bafd6ef644ccb47621bf2a14e), [`4aa09402d73767b71c276460d64be7d3ce6281ca`](https://github.com/medusajs/medusa/commit/4aa09402d73767b71c276460d64be7d3ce6281ca), [`cf84d11241a8857efa6b284e578413e1ce8d47ef`](https://github.com/medusajs/medusa/commit/cf84d11241a8857efa6b284e578413e1ce8d47ef), [`deb8872f8bc9dc509e5233549292bcd5c80527d7`](https://github.com/medusajs/medusa/commit/deb8872f8bc9dc509e5233549292bcd5c80527d7)]:
+  - @medusajs/dashboard@2.15.0
+  - @medusajs/admin-shared@2.15.0
+  - @medusajs/admin-vite-plugin@2.15.0
+
 ## 2.14.2
 
 ### Patch Changes
