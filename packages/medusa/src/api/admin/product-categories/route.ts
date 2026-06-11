@@ -6,6 +6,9 @@ import {
   refetchEntities,
 } from "@medusajs/framework/http"
 
+/**
+ * @oas [get] /admin/product-categories
+ */
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminProductCategoryListParams>,
   res: MedusaResponse<HttpTypes.AdminProductCategoryListResponse>
@@ -26,6 +29,9 @@ export const GET = async (
   })
 }
 
+/**
+ * @oas [post] /admin/product-categories
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     HttpTypes.AdminCreateProductCategory,
