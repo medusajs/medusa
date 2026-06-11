@@ -55,6 +55,7 @@ The `recommended` configuration is the default preset for Medusa projects. It in
 - Essential service rules for module development
 - Module rules for data models, loaders, and naming conventions
 - Essential workflow rules that catch common errors and enforce best practices
+- API rules for route handlers to maintain consistency with framework patterns
 
 ```js title="eslint.config.js"
 import medusa from "@medusajs/eslint-plugin"
@@ -112,7 +113,9 @@ These rules enforce Medusa's module development conventions:
 - `link-create-keys-modules-enum` - Prefers `Modules.*` enum members over bare string keys in link calls and remote-link workflow steps (warning level)
 - `prefer-link-over-remote-link` - Prefers `link` over `remoteLink` for module relationships (warning level)
 - `step-id-kebab-case` - Ensures step IDs use kebab-case naming (warning level)
+- `prefer-container-registration-keys-query` - Prefers `ContainerRegistrationKeys.*` enum members over magic strings in `resolve(...)` calls (warning level)
 - `step-must-return-step-response` - Requires steps to return StepResponse objects
+- `use-query-context-utility` - Suggests wrapping query context objects with the `QueryContext` utility function (warning level)
 - `workflow-id-matches-export-or-filename` - Ensures workflow IDs match their export names or filenames (warning level)
 - `workflow-must-return-workflow-response` - Requires workflows to return WorkflowResponse objects
 
@@ -123,6 +126,12 @@ These rules enforce proper module linking patterns when defining relationships b
 - `link-uses-linkable-properties` - Ensures `defineLink` uses linkable properties from module definitions (warning level)
 - `read-only-link-requires-field` - Requires a `field` property when defining read-only links
 
+### API Rules (Recommended Configuration)
+
+These rules enforce proper patterns in API route files:
+
+- `no-deprecated-remote-query-config` - Disallows `req.remoteQueryConfig`; suggests using `req.queryConfig` instead (deprecated since Medusa v2.2.0, warning level)
+
 ### Type-Aware Rules (Strict Configuration Only)
 
 - `no-workflow-call-without-container` - Warns when calling workflows without proper container setup (requires TypeScript type information)
@@ -132,7 +141,6 @@ These rules enforce proper module linking patterns when defining relationships b
 
 Future releases will add additional rules for:
 
-- **API Routes**: Enforce proper route structure, request/response typing, and error handling patterns
 - **Subscribers**: Verify event handling patterns and subscription setup
 - **Scheduled Jobs**: Validate job configuration and execution patterns
 - **Admin Extensions**: Enforce widget and UI route conventions
