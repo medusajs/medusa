@@ -375,6 +375,70 @@ medusaIntegrationTestRunner({
             expect(sessions).toHaveLength(0)
           })
 
+          it("should revert the in-place amount update of a reused session if a subsequent step fails", async () => {
+            // Seed an unconfirmed session that the next run will reuse.
+            const { result: first } = await createPaymentSessionsWorkflow(
+              appContainer
+            ).run({
+              input: {
+                payment_collection_id: paymentCollection.id,
+                provider_id: "pp_system_default",
+                context: {},
+                data: {},
+              },
+            })
+
+            // Change the collection amount so the reuse path updates the
+            // session's amount in place (1000 -> 2000) before the failing step.
+            await paymentModule.updatePaymentCollections(paymentCollection.id, {
+              amount: 2000,
+            })
+
+            const workflow = createPaymentSessionsWorkflow(appContainer)
+
+            workflow.appendAction("throw", createPaymentSessionsWorkflowId, {
+              invoke: async function failStep() {
+                throw new Error(
+                  `Failed to do something after creating payment sessions`
+                )
+              },
+            })
+
+            const { errors } = await workflow.run({
+              input: {
+                payment_collection_id: paymentCollection.id,
+                provider_id: "pp_system_default",
+                context: {},
+                data: {},
+              },
+              throwOnError: false,
+            })
+
+            expect(errors).toEqual([
+              {
+                action: "throw",
+                handlerType: "invoke",
+                error: expect.objectContaining({
+                  message: `Failed to do something after creating payment sessions`,
+                }),
+              },
+            ])
+
+            // The reused session is kept (not deleted) and its amount is reverted
+            // to the pre-update value, so the provider payment is left as it was.
+            const sessions = await paymentModule.listPaymentSessions({
+              payment_collection_id: paymentCollection.id,
+            })
+
+            expect(sessions).toHaveLength(1)
+            expect(sessions[0]).toEqual(
+              expect.objectContaining({
+                id: first.id,
+                amount: 1000,
+              })
+            )
+          })
+
           it("should not delete account holder if it exists before creating payment sessions", async () => {
             await createPaymentSessionsWorkflow(appContainer).run({
               input: {

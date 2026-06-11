@@ -3979,7 +3979,7 @@ medusaIntegrationTestRunner({
           // updated in place (keeping the same id / provider payment) rather
           // than being deleted and recreated.
           expect(updatedPaymentCollection.payment_sessions).toHaveLength(1)
-          expect(updatedPaymentCollection.payment_sessions[0]).toEqual(
+          expect(updatedPaymentCollection.payment_sessions?.[0]).toEqual(
             expect.objectContaining({
               id: paymentSession.id,
               amount: 5000,

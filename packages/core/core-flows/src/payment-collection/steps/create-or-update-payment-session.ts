@@ -1,4 +1,5 @@
 import {
+  BigNumberInput,
   IPaymentModuleService,
   Logger,
   PaymentSessionDTO,
@@ -40,7 +41,22 @@ export interface CreateOrUpdatePaymentSessionStepOutput {
 }
 
 type CompensateData = {
+  /**
+   * A newly-created session to delete on rollback (the create path).
+   */
   created_session_id: string | null
+  /**
+   * An in-place update to revert on rollback (the reuse path). Carries the
+   * amount we updated FROM plus the POST-update data, so a provider no-op guard
+   * (data amount === target) sees a delta and actually resets the provider
+   * payment — mirrors {@link updatePaymentSessionsStep}.
+   */
+  reverted_session?: {
+    id: string
+    amount: BigNumberInput
+    currency_code: string
+    data: Record<string, unknown>
+  }
 }
 
 export const createOrUpdatePaymentSessionStepId =
@@ -91,6 +107,11 @@ export const createOrUpdatePaymentSessionStep = createStep(
     )
 
     if (reusable) {
+      // Captured for compensation: the amount we updated FROM, so a rollback can
+      // reset the provider payment to its previous amount.
+      const previousAmount = reusable.amount
+      const previousCurrency = reusable.currency_code
+
       try {
         const updated = await service.updatePaymentSession({
           id: reusable.id,
@@ -107,7 +128,16 @@ export const createOrUpdatePaymentSessionStep = createStep(
           CompensateData
         >(
           { session: updated, reused_session_id: reusable.id },
-          { created_session_id: null }
+          {
+            created_session_id: null,
+            reverted_session: {
+              id: reusable.id,
+              amount: previousAmount,
+              currency_code: previousCurrency,
+              // POST-update data (see CompensateData.reverted_session).
+              data: updated.data,
+            },
+          }
         )
       } catch (e) {
         // In-place reuse failed (e.g. the provider payment no longer exists).
@@ -140,14 +170,42 @@ export const createOrUpdatePaymentSessionStep = createStep(
     )
   },
   async (compensateData: CompensateData | undefined, { container }) => {
-    // Mirror createPaymentSessionStep: only a newly-created session is rolled
-    // back. A reused/updated session is reverted by its own delete workflow.
-    if (!compensateData?.created_session_id) {
+    if (!compensateData) {
       return
     }
 
     const service = container.resolve<IPaymentModuleService>(Modules.PAYMENT)
 
-    await service.deletePaymentSession(compensateData.created_session_id)
+    // Create path: roll back the newly-created session (mirrors
+    // createPaymentSessionStep).
+    if (compensateData.created_session_id) {
+      await service.deletePaymentSession(compensateData.created_session_id)
+      return
+    }
+
+    // Reuse path: revert the in-place amount update so the provider payment
+    // (e.g. the same Stripe PaymentIntent) is reset to its previous amount.
+    // Best-effort and swallowed, mirroring updatePaymentSessionsStep's
+    // compensation, so a provider error during rollback can't fail the whole
+    // compensation chain.
+    const revert = compensateData.reverted_session
+    if (!revert) {
+      return
+    }
+
+    const logger = container.resolve<Logger>(ContainerRegistrationKeys.LOGGER)
+
+    try {
+      await service.updatePaymentSession({
+        id: revert.id,
+        amount: revert.amount,
+        currency_code: revert.currency_code,
+        data: revert.data,
+      })
+    } catch (e) {
+      logger.error(
+        `Failed to revert payment session ${revert.id} amount during compensation - ${e}`
+      )
+    }
   }
 )
