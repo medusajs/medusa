@@ -2,6 +2,39 @@ import { Modules } from "../../modules-sdk"
 import { DEFAULT_STORE_RESTRICTED_FIELDS, defineConfig } from "../define-config"
 
 describe("defineConfig", function () {
+  const CLOUD_ENV_VARS = [
+    "MEDUSA_CLOUD_ENVIRONMENT_HANDLE",
+    "MEDUSA_CLOUD_SANDBOX_HANDLE",
+    "MEDUSA_CLOUD_API_KEY",
+    "MEDUSA_CLOUD_WEBHOOK_SECRET",
+    "MEDUSA_CLOUD_EMAILS_ENDPOINT",
+    "MEDUSA_CLOUD_PAYMENTS_ENDPOINT",
+    "MEDUSA_CLOUD_OAUTH_AUTHORIZE_ENDPOINT",
+    "MEDUSA_CLOUD_OAUTH_TOKEN_ENDPOINT",
+    "MEDUSA_CLOUD_OAUTH_CALLBACK_URL",
+    "MEDUSA_CLOUD_OAUTH_DISABLED",
+    "MEDUSA_CLOUD_OAUTH_JWKS_ENDPOINT",
+    "MEDUSA_CLOUD_OAUTH_AUDIENCE",
+  ]
+  const savedCloudEnv: Record<string, string | undefined> = {}
+
+  beforeEach(() => {
+    CLOUD_ENV_VARS.forEach((key) => {
+      savedCloudEnv[key] = process.env[key]
+      delete process.env[key]
+    })
+  })
+
+  afterEach(() => {
+    CLOUD_ENV_VARS.forEach((key) => {
+      if (savedCloudEnv[key] === undefined) {
+        delete process.env[key]
+      } else {
+        process.env[key] = savedCloudEnv[key]
+      }
+    })
+  })
+
   it("should merge empty config with the defaults", function () {
     expect(defineConfig()).toMatchInlineSnapshot(`
       {
@@ -2524,7 +2557,9 @@ describe("defineConfig", function () {
                 "callback_url": "test-backend-url/app/login?auth_provider=cloud",
                 "disabled": true,
                 "environment_handle": "test-environment",
+                "oauth_audience": undefined,
                 "oauth_authorize_endpoint": "test-oauth-authorize-endpoint",
+                "oauth_jwks_uri": undefined,
                 "oauth_token_endpoint": "test-oauth-token-endpoint",
                 "sandbox_handle": undefined,
               },
@@ -2680,9 +2715,11 @@ describe("defineConfig", function () {
             "apiKey": "test-api-key",
             "emailsEndpoint": "test-emails-endpoint",
             "environmentHandle": "test-environment",
+            "oauthAudience": undefined,
             "oauthAuthorizeEndpoint": "test-oauth-authorize-endpoint",
             "oauthCallbackUrl": undefined,
             "oauthDisabled": true,
+            "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "test-oauth-token-endpoint",
             "paymentsEndpoint": "test-payments-endpoint",
             "sandboxHandle": undefined,
@@ -2748,7 +2785,9 @@ describe("defineConfig", function () {
                 "callback_url": "test-backend-url/app/login?auth_provider=cloud",
                 "disabled": true,
                 "environment_handle": undefined,
+                "oauth_audience": undefined,
                 "oauth_authorize_endpoint": "test-oauth-authorize-endpoint",
+                "oauth_jwks_uri": undefined,
                 "oauth_token_endpoint": "test-oauth-token-endpoint",
                 "sandbox_handle": "test-sandbox",
               },
@@ -2904,9 +2943,11 @@ describe("defineConfig", function () {
             "apiKey": "test-api-key",
             "emailsEndpoint": "test-emails-endpoint",
             "environmentHandle": undefined,
+            "oauthAudience": undefined,
             "oauthAuthorizeEndpoint": "test-oauth-authorize-endpoint",
             "oauthCallbackUrl": undefined,
             "oauthDisabled": true,
+            "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "test-oauth-token-endpoint",
             "paymentsEndpoint": "test-payments-endpoint",
             "sandboxHandle": "test-sandbox",
@@ -2981,7 +3022,9 @@ describe("defineConfig", function () {
                 "callback_url": "//app/login?auth_provider=cloud",
                 "disabled": true,
                 "environment_handle": "overriden-environment",
+                "oauth_audience": undefined,
                 "oauth_authorize_endpoint": "overriden-oauth-authorize-endpoint",
+                "oauth_jwks_uri": undefined,
                 "oauth_token_endpoint": "overriden-oauth-token-endpoint",
                 "sandbox_handle": undefined,
               },
@@ -3137,9 +3180,11 @@ describe("defineConfig", function () {
             "apiKey": "overriden-api-key",
             "emailsEndpoint": "overriden-emails-endpoint",
             "environmentHandle": "overriden-environment",
+            "oauthAudience": undefined,
             "oauthAuthorizeEndpoint": "overriden-oauth-authorize-endpoint",
             "oauthCallbackUrl": undefined,
             "oauthDisabled": true,
+            "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "overriden-oauth-token-endpoint",
             "paymentsEndpoint": "overriden-payments-endpoint",
             "sandboxHandle": undefined,

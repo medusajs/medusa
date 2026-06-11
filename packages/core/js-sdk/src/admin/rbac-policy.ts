@@ -1,6 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
-import { Client } from "../client"
-import { ClientHeaders } from "../types"
+import { Client } from "../client.js"
+import { ClientHeaders } from "../types.js"
 
 /**
  * This class is used to send requests to the RBAC Policy API routes.
@@ -210,6 +210,44 @@ export class RbacPolicy {
       `/admin/rbac/policies/${id}`,
       {
         method: "DELETE",
+        headers,
+      }
+    )
+  }
+
+  /**
+   * Lists the roles that include the given policy.
+   */
+  async listRoles(
+    id: string,
+    queryParams?: HttpTypes.AdminRbacPolicyRoleListParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminRbacPolicyRolesListResponse>(
+      `/admin/rbac/policies/${id}/roles`,
+      {
+        query: queryParams,
+        headers,
+      }
+    )
+  }
+
+  /**
+   * Lists the policies the authenticated actor is allowed to assign.
+   *
+   * @param queryParams - Filters and pagination configurations.
+   * @param headers - Headers to pass in the request.
+   * @returns The assignable policies.
+   */
+  async listAssignable(
+    queryParams?: HttpTypes.AdminRbacPolicyListParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminRbacAssignablePoliciesListResponse>(
+      `/admin/rbac/policies/assignable`,
+      {
+        method: "GET",
+        query: queryParams,
         headers,
       }
     )

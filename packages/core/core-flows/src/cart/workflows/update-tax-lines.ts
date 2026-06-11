@@ -39,6 +39,7 @@ const cartFields = [
   "items.title",
   "items.quantity",
   "items.unit_price",
+  "items.is_giftcard",
   "items.tax_lines.id",
   "items.tax_lines.description",
   "items.tax_lines.code",
