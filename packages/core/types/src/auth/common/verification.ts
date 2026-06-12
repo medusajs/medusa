@@ -1,10 +1,12 @@
 import { BaseFilterable } from "../../dal"
 
-export type AuthVerification = {
-  actor_type?: string | null
-  provider: string
+export type AuthVerificationDTO = {
   entity_id: string
-  expires_at?: Date | string
+  auth_identity_id: string
+  type: string
+  metadata?: Record<string, unknown> | null
+  verified_at?: Date | null
+  requested_at: Date
 }
 
 export type AuthVerificationTokenDTO = {
@@ -19,53 +21,25 @@ export type AuthVerificationTokenDTO = {
   deleted_at?: Date | null
 }
 
-export type CreateAuthVerificationTokenDTO = {
-  auth_identity_id: string
-  provider_identity_id: string
-  entity_id: string
-  expires_at: Date
-  metadata?: Record<string, unknown> | null
-}
-
-export type CreateAuthVerificationTokenResponse = {
-  token: string
-  verification_token: AuthVerificationTokenDTO
-}
-
 export type RequestAuthVerificationDTO = {
-  actor_type?: string | null
-  provider: string
   entity_id: string
-  ttl_seconds?: number
+  auth_identity_id: string
+  type: string
   metadata?: Record<string, unknown> | null
 }
 
-export type RequestAuthVerificationResponse = {
+export type RequestAuthVerificationResponse = AuthVerificationDTO & {
   token: string
-  verification: AuthVerification & {
-    auth_identity_id: string
-    provider_identity_id: string
-    metadata?: Record<string, unknown> | null
-  }
+  expires_at: Date
 }
 
-export type ConfirmAuthVerificationDTO = {
-  token: string
-  provider?: string
-}
+export type ConfirmAuthVerificationDTO = { token: string }
+export type ConfirmAuthVerificationResponse = AuthVerificationDTO
 
-export type ConfirmAuthVerificationResponse = {
-  verified: true
-  auth_identity_id: string
-  provider_identity_id: string
-  entity_id: string
-}
-
-export interface FilterableAuthVerificationTokenProps
-  extends BaseFilterable<FilterableAuthVerificationTokenProps> {
+export interface FilterableAuthVerificationProps
+  extends BaseFilterable<FilterableAuthVerificationProps> {
   id?: string[]
   auth_identity_id?: string
-  provider_identity_id?: string
   entity_id?: string
-  token_hash?: string
+  type?: string
 }

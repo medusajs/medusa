@@ -1,5 +1,5 @@
 import { AuthIdentityDTO } from "./auth-identity"
-import { AuthVerification } from "./verification"
+import { AuthVerificationDTO } from "./verification"
 import { AuthMfaChallengeDTO } from "./mfa"
 
 /**
@@ -26,7 +26,7 @@ export type AuthenticationResponse = {
   /**
    * The verification state to show to the caller.
    */
-  verification?: AuthVerification
+  verification?: AuthVerificationDTO
 
   /**
    * If an error occurs during the authentication process,

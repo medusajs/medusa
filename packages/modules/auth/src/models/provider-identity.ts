@@ -1,6 +1,5 @@
 import { model } from "@medusajs/framework/utils"
 import { AuthPasswordResetToken } from "./auth-password-reset-token"
-import { AuthVerificationToken } from "./auth-verification-token"
 import { AuthIdentity } from "./auth-identity"
 
 export const ProviderIdentity = model
@@ -10,9 +9,6 @@ export const ProviderIdentity = model
     provider: model.text(),
     auth_identity: model.belongsTo(() => AuthIdentity, {
       mappedBy: "provider_identities",
-    }),
-    verification_tokens: model.hasMany(() => AuthVerificationToken, {
-      mappedBy: "provider_identity",
     }),
     password_reset_tokens: model.hasMany(() => AuthPasswordResetToken, {
       mappedBy: "provider_identity",
@@ -28,5 +24,5 @@ export const ProviderIdentity = model
     },
   ])
   .cascades({
-    delete: ["verification_tokens", "password_reset_tokens"],
+    delete: ["password_reset_tokens"],
   })

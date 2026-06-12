@@ -8,6 +8,7 @@ export type ResetPasswordRequestType = z.infer<typeof ResetPasswordRequest>
 
 export const VerificationRequest = z.object({
   entity_id: z.string().min(1),
+  type: z.enum(["email", "phone_number"]),
   metadata: z.record(z.string(), z.unknown()).optional().default({}),
 })
 export type VerificationRequestType = z.infer<typeof VerificationRequest>

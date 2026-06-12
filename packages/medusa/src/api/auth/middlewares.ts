@@ -104,23 +104,17 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/auth/:actor_type/:auth_provider/verification/request",
-    middlewares: [
-      validateScopeProviderAssociation(),
-      validateAndTransformBody(VerificationRequest),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/auth/:actor_type/:auth_provider/verification/confirm",
-    middlewares: [
-      validateScopeProviderAssociation(),
-      validateAndTransformBody(VerificationConfirmRequest),
-    ],
-  },
-  {
-    method: ["POST"],
     matcher: "/auth/:actor_type/:auth_provider/update",
     middlewares: [validateScopeProviderAssociation(), validateToken()],
+  },
+  {
+    method: ["POST"],
+    matcher: "/auth/verification/request",
+    middlewares: [validateAndTransformBody(VerificationRequest)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/auth/verification/confirm",
+    middlewares: [validateAndTransformBody(VerificationConfirmRequest)],
   },
 ]

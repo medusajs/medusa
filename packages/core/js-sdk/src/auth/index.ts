@@ -42,7 +42,7 @@ export type AuthVerificationRequiredResponse = {
   /**
    * The verification state to show to the caller.
    */
-  verification: AuthTypes.AuthVerification
+  verification: AuthTypes.AuthVerificationDTO
 }
 
 /**
@@ -224,7 +224,7 @@ export type AuthVerificationRequestResponse = {
   /**
    * The verification state.
    */
-  verification: AuthTypes.AuthVerification
+  verification: AuthTypes.AuthVerificationDTO
 }
 
 /**
@@ -249,7 +249,7 @@ type AuthProviderResponse = {
   mfa_required?: true
   mfa_challenge?: AuthTypes.AuthMfaChallengeDTO
   verification_required?: true
-  verification?: AuthTypes.AuthVerification
+  verification?: AuthTypes.AuthVerificationDTO
 }
 
 export class Auth {
