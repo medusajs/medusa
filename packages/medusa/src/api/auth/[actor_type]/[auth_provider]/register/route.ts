@@ -28,17 +28,10 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     protocol: req.protocol,
   } as AuthenticationInput
 
-  const { success, error, authIdentity, verification } = await service.register(
+  const { success, error, authIdentity } = await service.register(
     auth_provider,
     authData
   )
-
-  if (success && verification) {
-    return res.status(200).json({
-      verification_required: true,
-      verification,
-    })
-  }
 
   if (success && authIdentity) {
     const { http } = config.projectConfig

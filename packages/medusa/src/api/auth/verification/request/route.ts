@@ -9,13 +9,14 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<VerificationRequestType>,
   res: MedusaResponse
 ) => {
-  const { entity_id, type, metadata } = req.validatedBody
+  const { entity_id, type, provider, metadata } = req.validatedBody
 
   const { result } = await requestVerificationWorkflow(req.scope).run({
     input: {
       auth_identity_id: req.auth_context.auth_identity_id,
       entity_id,
       type,
+      provider,
       metadata,
     },
   })

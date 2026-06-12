@@ -42,7 +42,7 @@ export type AuthVerificationRequiredResponse = {
   /**
    * The verification state to show to the caller.
    */
-  verification: AuthTypes.AuthVerificationDTO
+  verification?: AuthTypes.AuthVerificationDTO
 }
 
 /**
@@ -50,7 +50,7 @@ export type AuthVerificationRequiredResponse = {
  *
  * @since 2.15.5
  */
-export type AuthRegisterResponse = string | AuthVerificationRequiredResponse
+export type AuthRegisterResponse = string
 
 /**
  * Response returned from an authentication attempt.
@@ -198,21 +198,33 @@ export type AuthVerificationRequestPayload = {
    */
   entity_id: string
   /**
+   * The kind of entity being verified, such as `email` or `phone_number`.
+   */
+  type: string
+  /**
+   * The verification provider to use. Defaults to `token`.
+   */
+  provider?: string
+  /**
    * Optional metadata to include in the verification request event.
    */
   metadata?: Record<string, unknown>
 }
 
 /**
- * Payload used to confirm a verification token.
+ * Payload used to confirm a verification code.
  *
  * @since 2.15.5
  */
 export type AuthVerificationConfirmPayload = {
   /**
-   * The verification token delivered to the user.
+   * The verification code delivered to the user, such as an OTP or pseudorandom token.
    */
-  token: string
+  code: string
+  /**
+   * The verification provider to use. Defaults to `token`.
+   */
+  provider?: string
 }
 
 /**
@@ -234,13 +246,21 @@ export type AuthVerificationRequestResponse = {
  */
 export type AuthVerificationConfirmResponse = {
   /**
-   * The verified provider identity.
+   * The verified entity identifier.
    */
   entity_id: string
   /**
-   * Indicates the identity was verified.
+   * The kind of entity that was verified.
    */
-  verified: true
+  type: string
+  /**
+   * The verification provider that confirmed the verification.
+   */
+  provider: string
+  /**
+   * When the verification was confirmed.
+   */
+  verified_at: Date | string
 }
 
 type AuthProviderResponse = {
@@ -465,21 +485,17 @@ export class Auth {
     /**
      * This method requests a verification token for an auth identity.
      *
-     * @param actor - The actor type. For example, `user` for admin user, or `customer` for customer.
-     * @param provider - The authentication provider to use. For example, `emailpass`.
      * @param body - The verification request details.
-     * @param headers - Headers to pass in the request.
+     * @param headers - Headers to pass in the request. Must include a bearer token for the auth identity.
      *
      * @tags auth
      */
     request: async (
-      actor: string,
-      provider: string,
       body: AuthVerificationRequestPayload,
       headers?: ClientHeaders
     ) => {
       return await this.client.fetch<AuthVerificationRequestResponse>(
-        `/auth/${actor}/${provider}/verification/request`,
+        `/auth/verification/request`,
         {
           method: "POST",
           body,
@@ -489,23 +505,19 @@ export class Auth {
     },
 
     /**
-     * This method confirms a verification token.
+     * This method confirms a verification code.
      *
-     * @param actor - The actor type. For example, `user` for admin user, or `customer` for customer.
-     * @param provider - The authentication provider to use. For example, `emailpass`.
-     * @param body - The verification token details.
+     * @param body - The verification code details.
      * @param headers - Headers to pass in the request.
      *
      * @tags auth
      */
     confirm: async (
-      actor: string,
-      provider: string,
       body: AuthVerificationConfirmPayload,
       headers?: ClientHeaders
     ) => {
       return await this.client.fetch<AuthVerificationConfirmResponse>(
-        `/auth/${actor}/${provider}/verification/confirm`,
+        `/auth/verification/confirm`,
         {
           method: "POST",
           body,
@@ -555,21 +567,13 @@ export class Auth {
     method: string,
     payload: HttpTypes.AdminSignUpWithEmailPassword | Record<string, unknown>
   ): Promise<AuthRegisterResponse> => {
-    const { token, verification_required, verification } =
-      await this.client.fetch<AuthProviderResponse>(
-        `/auth/${actor}/${method}/register`,
-        {
-          method: "POST",
-          body: payload,
-        }
-      )
-
-    if (verification_required && verification) {
-      return {
-        verification_required: true,
-        verification,
+    const { token } = await this.client.fetch<AuthProviderResponse>(
+      `/auth/${actor}/${method}/register`,
+      {
+        method: "POST",
+        body: payload,
       }
-    }
+    )
 
     if (!token) {
       throw new Error("Unexpected registration response")
@@ -661,7 +665,7 @@ export class Auth {
       }
     )
 
-    if (verification_required && verification) {
+    if (verification_required) {
       return {
         verification_required: true,
         verification,

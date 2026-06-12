@@ -1,39 +1,40 @@
 import { BaseFilterable } from "../../dal"
 
 export type AuthVerificationDTO = {
+  id?: string
+  // The entity ID is an opaque field that can be an email, phone number, or any other identifier that needs verification.
   entity_id: string
   auth_identity_id: string
+  // The kind of entity being verified, such as `email` or `phone_number`.
   type: string
+  // The verification provider that handles requesting and confirming the verification, such as `token`.
+  provider: string
+  provider_metadata?: Record<string, unknown> | null
   metadata?: Record<string, unknown> | null
   verified_at?: Date | null
   requested_at: Date
-}
-
-export type AuthVerificationTokenDTO = {
-  id: string
-  auth_identity_id?: string
-  provider_identity_id?: string
-  entity_id: string
-  expires_at: Date
-  metadata?: Record<string, unknown> | null
-  created_at?: Date
-  updated_at?: Date
-  deleted_at?: Date | null
 }
 
 export type RequestAuthVerificationDTO = {
   entity_id: string
   auth_identity_id: string
   type: string
+  provider: string
   metadata?: Record<string, unknown> | null
 }
 
 export type RequestAuthVerificationResponse = AuthVerificationDTO & {
-  token: string
+  code: string
   expires_at: Date
 }
 
-export type ConfirmAuthVerificationDTO = { token: string }
+export type ConfirmAuthVerificationDTO = {
+  // The verification provider can decide if the auth identity is required to confirm the verification.
+  auth_identity_id?: string
+  code: string
+  provider?: string
+}
+
 export type ConfirmAuthVerificationResponse = AuthVerificationDTO
 
 export interface FilterableAuthVerificationProps
@@ -42,4 +43,5 @@ export interface FilterableAuthVerificationProps
   auth_identity_id?: string
   entity_id?: string
   type?: string
+  provider?: string
 }

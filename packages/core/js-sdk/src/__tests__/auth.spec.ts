@@ -20,10 +20,11 @@ const mfaChallenge = {
 }
 
 const verification = {
-  actor_type: "user",
-  provider: "emailpass",
   entity_id: "test@example.com",
-  expires_at: "2026-05-20T10:00:00.000Z",
+  auth_identity_id: "authid_123",
+  type: "email",
+  provider: "token",
+  requested_at: "2026-05-20T10:00:00.000Z",
 }
 
 const storage = {
@@ -128,37 +129,6 @@ describe("Auth", () => {
 
     const auth = createAuth()
     const result = await auth.login("user", "emailpass", {
-      email: "test@example.com",
-      password: "secret",
-    })
-
-    expect(result).toEqual({
-      verification_required: true,
-      verification: verification,
-    })
-    expect(storage.setItem).not.toHaveBeenCalled()
-  })
-
-  it("returns a verification requirement from register when opted in", async () => {
-    server.use(
-      http.post(
-        `${baseUrl}/auth/user/emailpass/register`,
-        async ({ request }) => {
-          expect(await request.json()).toEqual({
-            email: "test@example.com",
-            password: "secret",
-          })
-
-          return HttpResponse.json({
-            verification_required: true,
-            verification: verification,
-          })
-        }
-      )
-    )
-
-    const auth = createAuth()
-    const result = await auth.register("user", "emailpass", {
       email: "test@example.com",
       password: "secret",
     })
@@ -344,10 +314,12 @@ describe("Auth", () => {
   it("requests and confirms verification", async () => {
     server.use(
       http.post(
-        `${baseUrl}/auth/user/emailpass/verification/request`,
+        `${baseUrl}/auth/verification/request`,
         async ({ request }) => {
           expect(await request.json()).toEqual({
             entity_id: "test@example.com",
+            type: "email",
+            provider: "token",
             metadata: {
               source: "dashboard",
             },
@@ -362,15 +334,17 @@ describe("Auth", () => {
         }
       ),
       http.post(
-        `${baseUrl}/auth/user/emailpass/verification/confirm`,
+        `${baseUrl}/auth/verification/confirm`,
         async ({ request }) => {
           expect(await request.json()).toEqual({
-            token: "verify-token",
+            code: "verify-token",
           })
 
           return HttpResponse.json({
             entity_id: "test@example.com",
-            verified: true,
+            type: "email",
+            provider: "token",
+            verified_at: "2026-05-20T10:00:00.000Z",
           })
         }
       )
@@ -379,8 +353,10 @@ describe("Auth", () => {
     const auth = createAuth()
 
     await expect(
-      auth.verification.request("user", "emailpass", {
+      auth.verification.request({
         entity_id: "test@example.com",
+        type: "email",
+        provider: "token",
         metadata: {
           source: "dashboard",
         },
@@ -390,12 +366,14 @@ describe("Auth", () => {
     })
 
     await expect(
-      auth.verification.confirm("user", "emailpass", {
-        token: "verify-token",
+      auth.verification.confirm({
+        code: "verify-token",
       })
     ).resolves.toEqual({
       entity_id: "test@example.com",
-      verified: true,
+      type: "email",
+      provider: "token",
+      verified_at: "2026-05-20T10:00:00.000Z",
     })
     expect(storage.setItem).not.toHaveBeenCalled()
   })

@@ -32,8 +32,9 @@ export const requestVerificationWorkflow = createWorkflow(
       return {
         entity_id: result.entity_id,
         type: result.type,
+        provider: result.provider,
         auth_identity_id: result.auth_identity_id,
-        token: result.token,
+        code: result.code,
         expires_at: result.expires_at,
         metadata: result.metadata ?? {},
       }
@@ -47,7 +48,7 @@ export const requestVerificationWorkflow = createWorkflow(
     const verification = transform({ result }, (data) => {
       return {
         ...data.result,
-        token: undefined,
+        code: undefined,
         expires_at: undefined,
       }
     })

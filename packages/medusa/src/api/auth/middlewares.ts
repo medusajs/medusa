@@ -110,11 +110,20 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/auth/verification/request",
-    middlewares: [validateAndTransformBody(VerificationRequest)],
+    middlewares: [
+      authenticate("*", "bearer", { allowUnregistered: true }),
+      validateAndTransformBody(VerificationRequest),
+    ],
   },
   {
     method: ["POST"],
     matcher: "/auth/verification/confirm",
-    middlewares: [validateAndTransformBody(VerificationConfirmRequest)],
+    middlewares: [
+      authenticate("*", "bearer", {
+        allowUnregistered: true,
+        allowUnauthenticated: true,
+      }),
+      validateAndTransformBody(VerificationConfirmRequest),
+    ],
   },
 ]

@@ -424,11 +424,11 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<void>
 
   /**
-   * This method requests a verification token for a certain entity type - email, phone number, etc.
+   * This method requests a verification code for a certain entity type - email, phone number, etc.
    *
    * @param {RequestAuthVerificationDTO} data - The data required to request a verification.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<RequestAuthVerificationResponse>} The response containing the verification token.
+   * @returns {Promise<RequestAuthVerificationResponse>} The response containing the verification code.
    */
   requestAuthVerification(
     data: RequestAuthVerificationDTO,
@@ -436,7 +436,7 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<RequestAuthVerificationResponse>
 
   /**
-   * This method confirms a verification token for a certain entity type - email, phone number, etc.
+   * This method confirms a verification code for a certain entity type - email, phone number, etc.
    *
    * @param {ConfirmAuthVerificationDTO} data - The data required to confirm a verification.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.

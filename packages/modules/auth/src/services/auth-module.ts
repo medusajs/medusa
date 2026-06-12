@@ -34,6 +34,7 @@ import { AuthModuleOptions } from "@types"
 import { joinerConfig } from "../joiner-config"
 import AuthProviderService from "./auth-provider"
 import AuthMfaProviderService from "./mfa-provider"
+import AuthVerificationProviderService from "./verification-provider"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -45,6 +46,7 @@ type InjectedDependencies = {
   providerIdentityService: ModulesSdkTypes.IMedusaInternalService<any>
   authProviderService: AuthProviderService
   authMfaProviderService: AuthMfaProviderService
+  authVerificationProviderService: AuthVerificationProviderService
   logger?: Logger
   cache?: ICacheService
 }
@@ -78,6 +80,7 @@ export default class AuthModuleService
   >
   protected readonly authProviderService_: AuthProviderService
   protected readonly authMfaProviderService_: AuthMfaProviderService
+  protected readonly authVerificationProviderService_: AuthVerificationProviderService
   protected readonly cache_: ICacheService | undefined
   protected readonly moduleOptions_: AuthModuleOptions
 
@@ -91,6 +94,7 @@ export default class AuthModuleService
       providerIdentityService,
       authProviderService,
       authMfaProviderService,
+      authVerificationProviderService,
       baseRepository,
       cache,
     }: InjectedDependencies,
@@ -108,6 +112,7 @@ export default class AuthModuleService
     this.authMfaRecoveryCodeService_ = authMfaRecoveryCodeService
     this.authProviderService_ = authProviderService
     this.authMfaProviderService_ = authMfaProviderService
+    this.authVerificationProviderService_ = authVerificationProviderService
     this.providerIdentityService_ = providerIdentityService
     this.cache_ = cache
     this.moduleOptions_ = moduleOptions
@@ -661,47 +666,18 @@ export default class AuthModuleService
     data: AuthTypes.RequestAuthVerificationDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthTypes.RequestAuthVerificationResponse> {
-    const existingVerifications = await this.authVerificationService_.list(
-      {
-        auth_identity_id: data.auth_identity_id,
-        entity_id: data.entity_id,
-        type: data.type,
-      },
-      { take: 1, skip: 0 },
+    if (!data.provider) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Verification provider is required"
+      )
+    }
+
+    return await this.authVerificationProviderService_.request(
+      data.provider,
+      data,
       sharedContext
     )
-
-    const token = this.generateVerificationToken_()
-
-    let res
-    if (existingVerifications.length) {
-      res = await this.authVerificationService_.update(
-        {
-          id: existingVerifications[0].id,
-          token_hash: this.hashVerificationToken_(token),
-          requested_at: Date.now(),
-        },
-        sharedContext
-      )
-    } else {
-      res = await this.authVerificationService_.create(
-        {
-          auth_identity_id: data.auth_identity_id,
-          entity_id: data.entity_id,
-          type: data.type,
-          token_hash: this.hashVerificationToken_(token),
-          requested_at: Date.now(),
-          metadata: data.metadata ?? null,
-        },
-        sharedContext
-      )
-    }
-
-    return {
-      token,
-      expires_at: new Date(Date.now() + this.getVerificationTokenTtlMs_()),
-      ...res,
-    }
   }
 
   @InjectManager()
@@ -717,48 +693,13 @@ export default class AuthModuleService
     data: AuthTypes.ConfirmAuthVerificationDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthTypes.ConfirmAuthVerificationResponse> {
-    if (!data.token) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Verification token is required"
-      )
-    }
+    const provider = data.provider ?? "token"
 
-    const [verificationToken] = await this.authVerificationService_.list(
-      {
-        token_hash: this.hashVerificationToken_(data.token),
-      },
-      {},
+    return await this.authVerificationProviderService_.confirm(
+      provider,
+      { ...data, provider },
       sharedContext
     )
-
-    if (!verificationToken) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Verification token is invalid or already used"
-      )
-    }
-
-    const expiresAt =
-      verificationToken.requested_at.getTime() +
-      this.getVerificationTokenTtlMs_()
-
-    if (expiresAt <= Date.now()) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Verification token has expired"
-      )
-    }
-
-    const authVerification = await this.authVerificationService_.update(
-      {
-        id: verificationToken.id,
-        verified_at: Date.now(),
-      },
-      sharedContext
-    )
-
-    return authVerification
   }
 
   protected async applyMfaRequirement_(
@@ -1033,23 +974,8 @@ export default class AuthModuleService
     return ttlSeconds * 1000
   }
 
-  protected generateVerificationToken_(): string {
-    return crypto.randomBytes(32).toString("base64url")
-  }
-
   protected hashVerificationToken_(token: string): string {
     return crypto.createHash("sha256").update(token).digest("hex")
-  }
-
-  protected getVerificationTokenTtlMs_(ttlSeconds = 900): number {
-    if (!Number.isInteger(ttlSeconds) || ttlSeconds < 1) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Verification token TTL must be a positive integer"
-      )
-    }
-
-    return ttlSeconds * 1000
   }
 
   protected getMfaChallengeConfig_(): {

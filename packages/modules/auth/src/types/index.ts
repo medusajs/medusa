@@ -17,6 +17,11 @@ export const AuthMfaIdentifiersRegistrationName =
 
 export const AuthMfaProviderRegistrationPrefix = "mfa_"
 
+export const AuthVerificationIdentifiersRegistrationName =
+  "auth_verification_providers_identifier"
+
+export const AuthVerificationProviderRegistrationPrefix = "verif_"
+
 export type AuthMfaDisablePolicy = "challenge" | "session"
 
 export type AuthModuleOptions = Partial<ModuleServiceInitializeOptions> & {
@@ -84,6 +89,32 @@ export type AuthModuleOptions = Partial<ModuleServiceInitializeOptions> & {
       options?: Record<string, unknown>
     }[]
   }
+  /**
+   * Verification configuration.
+   */
+  verification?: {
+    /**
+     * Default TTL in seconds for token-based verifications.
+     */
+    ttl_seconds?: number
+    /**
+     * Additional verification providers to register.
+     */
+    providers?: {
+      /**
+       * The module provider to be registered
+       */
+      resolve?: string | ModuleProviderExports
+      /**
+       * The id of the provider
+       */
+      id: string
+      /**
+       * key value pair of the configuration to be passed to the provider constructor
+       */
+      options?: Record<string, unknown>
+    }[]
+  }
 }
 
 export type TotpMfaProviderOptions = {
@@ -92,6 +123,10 @@ export type TotpMfaProviderOptions = {
   digits?: number
   period?: number
   window?: number
+}
+
+export type TokenVerificationProviderOptions = {
+  ttl_seconds?: number
 }
 
 export interface MedusaCloudAuthProviderOptions {
