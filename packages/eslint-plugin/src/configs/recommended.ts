@@ -146,6 +146,15 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
     },
     {
       files: [
+        "src/admin/routes/**/*.{tsx,jsx}",
+        "**/admin/routes/**/*.{tsx,jsx}",
+      ],
+      rules: {
+        [ruleId("ui-route-file-name-page-tsx")]: "error",
+      },
+    },
+    {
+      files: [
         "src/links/**/*.{ts,tsx,js,mjs,cjs}",
         "**/src/links/**/*.{ts,tsx,js,mjs,cjs}",
       ],
