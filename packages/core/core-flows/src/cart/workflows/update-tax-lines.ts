@@ -112,6 +112,9 @@ export type UpdateTaxLinesWorkflowInput = {
   force_tax_calculation?: boolean
 }
 
+/**
+ * The ID of the workflow to update tax lines.
+ */
 export const updateTaxLinesWorkflowId = "update-tax-lines"
 /**
  * This workflow updates a cart's tax lines that are applied on line items and shipping methods. You can update the line item's quantity, unit price, and more. This workflow is executed

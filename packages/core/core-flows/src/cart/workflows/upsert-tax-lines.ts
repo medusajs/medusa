@@ -72,6 +72,8 @@ const cartFields = [
 
 /**
  * The details of the cart to upsert tax lines for.
+ *
+ * @since 2.15.6
  */
 export type UpsertTaxLinesWorkflowInput = {
   /**
@@ -105,6 +107,11 @@ export type UpsertTaxLinesWorkflowInput = {
   force_tax_calculation?: boolean
 }
 
+/**
+ * The ID of the workflow to upsert tax lines.
+ *
+ * @since 2.15.6
+ */
 export const upsertTaxLinesWorkflowId = "upsert-tax-lines"
 /**
  * This workflow upserts a cart's tax lines that are applied on line items and shipping methods. You can upsert the line item's quantity, unit price, and more. This workflow is executed
@@ -127,6 +134,8 @@ export const upsertTaxLinesWorkflowId = "upsert-tax-lines"
  * Update a cart's tax lines.
  *
  * @property hooks.setTaxLineContext - This hook is executed after the cart is fetched and before tax lines are calculated. You can consume this hook to add custom context to the tax calculation. The returned object is set as the additional_context property in the getItemTaxLinesStep input.
+ *
+ * @since 2.15.6
  */
 export const upsertTaxLinesWorkflow = createWorkflow(
   upsertTaxLinesWorkflowId,

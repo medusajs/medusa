@@ -142,6 +142,9 @@ function normalizeLineItemsForShipping(
   )
 }
 
+/**
+ * The ID of the step to retrieve tax lines for items.
+ */
 export const getItemTaxLinesStepId = "get-item-tax-lines"
 /**
  * This step retrieves the tax lines for an order or cart's line items and shipping methods.

@@ -165,6 +165,9 @@ export type UpdateOrderTaxLinesWorkflowInput = {
   shipping_address?: OrderWorkflowDTO["shipping_address"]
 }
 
+/**
+ * The ID of the workflow to update order tax lines.
+ */
 export const updateOrderTaxLinesWorkflowId = "update-order-tax-lines"
 /**
  * This workflow updates the tax lines of items and shipping methods in an order. It's used by
