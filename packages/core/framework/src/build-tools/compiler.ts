@@ -191,9 +191,21 @@ export class Compiler {
     const ts = await this.#loadTSCompiler()
     const filesToCompile = tsConfig.fileNames.filter((fileName) => {
       const relativeFileName = path.relative(this.#projectRoot, fileName)
-      return !chunksToIgnore.some((chunk) =>
-        relativeFileName.includes(`${chunk}`)
-      )
+      const segments = relativeFileName.split(path.sep)
+      return !chunksToIgnore.some((chunk) => {
+        const chunkSegments = chunk.split("/")
+        if (chunkSegments.length > 1) {
+          for (let i = 0; i <= segments.length - chunkSegments.length; i++) {
+            if (
+              segments.slice(i, i + chunkSegments.length).join("/") === chunk
+            ) {
+              return true
+            }
+          }
+          return false
+        }
+        return segments.includes(chunk)
+      })
     })
 
     /**
