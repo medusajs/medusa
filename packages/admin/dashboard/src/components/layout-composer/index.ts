@@ -1,4 +1,4 @@
-export { LayoutRenderer } from "./layout-renderer"
+export { LayoutComposer } from "./layout-composer"
 export {
   AFTER_ORDER,
   BEFORE_ORDER,

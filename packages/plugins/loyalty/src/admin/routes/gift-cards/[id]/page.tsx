@@ -1,6 +1,6 @@
-import { Outlet, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { LayoutComposer } from "@medusajs/dashboard/components";
 import { JsonViewSection } from "../../../components/json-view-section";
-import { TwoColumnLayout } from "../../../components/layouts/two-column";
 import { useGiftCard } from "../../../hooks/api/gift-cards";
 import GiftCardBalanceSection from "./components/gift-card-balance-section";
 import GiftCardGeneralSection from "./components/gift-card-general-section";
@@ -31,9 +31,12 @@ const GiftCardDetailsPage = () => {
     ?.store_credit_account;
 
   return (
-    <>
-      <TwoColumnLayout
-        firstCol={
+    <LayoutComposer
+      widgetsZonePrefix="gift_card.details"
+      preferredLayoutId="core:two-column"
+      data={giftCard}
+      sections={{
+        main: (
           <>
             <GiftCardGeneralSection giftCard={giftCard!} />
 
@@ -45,8 +48,8 @@ const GiftCardDetailsPage = () => {
 
             <JsonViewSection data={giftCard!} />
           </>
-        }
-        secondCol={
+        ),
+        side: (
           <>
             {storeCreditAccount && (
               <GiftCardBalanceSection
@@ -58,10 +61,9 @@ const GiftCardDetailsPage = () => {
             <GiftCardNoteSection giftCard={giftCard!} />
             <GiftCardOrderSection giftCard={giftCard!} />
           </>
-        }
-      />
-      <Outlet />
-    </>
+        ),
+      }}
+    />
   );
 };
 

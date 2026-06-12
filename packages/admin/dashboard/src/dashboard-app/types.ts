@@ -6,7 +6,7 @@ import {
   InjectionZone,
   NestedRoutePosition,
 } from "@medusajs/admin-shared"
-import { LayoutDefinition, SectionWidgetMap } from "../components/layout-renderer"
+import { LayoutDefinition, SectionWidgetMap } from "../components/layout-composer"
 import { ComponentType } from "react"
 import { LoaderFunction } from "react-router-dom"
 import { z } from "zod"

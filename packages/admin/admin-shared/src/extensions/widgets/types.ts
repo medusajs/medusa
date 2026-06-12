@@ -12,13 +12,13 @@ export interface InjectionZoneRegistry
  * and add it to package.json:
  * ```json
  * "files": [
-    ".medusa/server",
-    "index.d.ts"
-  ],
-  "exports": {
-    ".": {
-      "types": "./index.d.ts"
-    },
+ *   ".medusa/server",
+ *   "index.d.ts"
+ * ],
+ * "exports": {
+ *   ".": {
+ *     "types": "./index.d.ts"
+ *   },
  * ```
  * @example
  * my-plugin/index.d.ts

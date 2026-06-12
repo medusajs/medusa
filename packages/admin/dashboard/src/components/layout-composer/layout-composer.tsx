@@ -7,34 +7,53 @@ import type { LayoutSectionRegistry } from "./types"
 type Layouts = keyof LayoutSectionRegistry
 type SectionNameFor<TLayoutId extends Layouts> = LayoutSectionRegistry[TLayoutId]
 
-type LayoutRendererProps<
+type LayoutComposerProps<
   TLayoutId extends Layouts,
   TData
 > = {
-  route: string
+  /**
+   * The prefix used to derive widget injection zones, typically corresponds to the page. 
+   * E.g. `"login"`, `"product.list"`, `"product.details"` etc.
+   */
+  widgetsZonePrefix: string
+  /**
+   * The id of the layout that should be used to render the page. E.g `"core:two-column"` or `"core:single-column"`.
+   */
   preferredLayoutId: TLayoutId
+  /**
+   * The content to render in each section of the layout, keyed by the
+   * section names valid for `preferredLayoutId`.
+   */
   sections: Record<SectionNameFor<TLayoutId>, ReactNode>
+  /**
+   * Data passed to the layout components(core + widgets) as props
+   */
   data?: TData
+  /**
+   * Whether to render an `Outlet` after the layout, used to render modals such as drawers and dialogs.
+   * 
+   * @default true
+   */
   hasOutlet?: boolean
 }
 
-export const LayoutRenderer = <
+export const LayoutComposer = <
   TLayoutId extends Layouts,
   TData
 >({
-  route,
+  widgetsZonePrefix,
   preferredLayoutId,
   sections,
   data,
   hasOutlet = true,
-}: LayoutRendererProps<TLayoutId, TData>) => {
+}: LayoutComposerProps<TLayoutId, TData>) => {
   const { getWidgetsForSections, getLayout } = useExtension()
 
   // TODO: Implement switching between compatible layouts
   const layoutId = preferredLayoutId
 
   const layout = getLayout(layoutId)
-  const widgetsBySection = getWidgetsForSections(route, layout?.sections?.map((s) => s.id) ?? [])
+  const widgetsBySection = getWidgetsForSections(widgetsZonePrefix, layout?.sections?.map((s) => s.id) ?? [])
   const widgetProps = { data }
 
   const renderedSections: Record<string, ReactNode> = {}

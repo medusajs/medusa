@@ -19,7 +19,7 @@ import coreTranslations from "../i18n/translations"
 import { getRouteMap } from "./routes/get-route.map"
 import { createRouteMap, getRouteExtensions } from "./routes/utils"
 import { sortMenuItemsByRank } from "./utils/sort-menu-items-by-rank"
-import { CORE_LAYOUTS } from "../components/layout-renderer/core-layouts"
+import { CORE_LAYOUTS } from "../components/layout-composer/core-layouts"
 import {
   ConfigExtension,
   ConfigField,
@@ -47,7 +47,7 @@ import {
   BEFORE_ORDER,
   LayoutDefinition,
   SectionWidgetMap,
-} from "../components/layout-renderer"
+} from "../components/layout-composer"
 
 type DashboardAppProps = {
   plugins: DashboardPlugin[]

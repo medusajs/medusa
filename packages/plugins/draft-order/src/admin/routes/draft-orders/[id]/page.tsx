@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs, UIMatch, useParams } from "react-router-dom"
 
-import { LayoutRenderer } from "@medusajs/dashboard/components"
+import { LayoutComposer } from "@medusajs/dashboard/components"
 import { HttpTypes } from "@medusajs/types"
 import { PageSkeleton } from "../../../components/common/page-skeleton"
 import { ActiveOrderChange } from "../../../components/draft-orders/active-order-changes"
@@ -73,8 +73,8 @@ const ID = () => {
   }
 
   return (
-    <LayoutRenderer
-      route="draft_order.details"
+    <LayoutComposer
+      widgetsZonePrefix="draft_order.details"
       preferredLayoutId="core:two-column"
       data={order}
       sections={{

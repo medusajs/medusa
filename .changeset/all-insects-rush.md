@@ -4,4 +4,4 @@
 "@medusajs/dashboard": patch
 ---
 
-feat(admin-shared,dashboard,draft-order): LayoutRenderer, injection zones for plugins
+feat(admin-shared,dashboard,draft-order,loyalty): LayoutComposer, injection zones for plugins

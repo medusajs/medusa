@@ -2,4 +2,4 @@
  * Public component exports for `@medusajs/dashboard/components`.
  */
 
-export { LayoutRenderer } from "../components/layout-renderer"
+export { LayoutComposer } from "../components/layout-composer"

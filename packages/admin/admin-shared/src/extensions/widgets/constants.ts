@@ -226,6 +226,35 @@ const DRAFT_ORDER_INJECTION_ZONES = [
   "draft_order.list.after",
 ] as const
 
+const STORE_CREDIT_ACCOUNT_INJECTION_ZONES = [
+  "store_credit_account.details.before",
+  "store_credit_account.details.after",
+  "store_credit_account.details.side.before",
+  "store_credit_account.details.side.after",
+  "store_credit_account.list.before",
+  "store_credit_account.list.after",
+] as const
+
+const GIFT_CARD_INJECTION_ZONES = [
+  "gift_card.details.before",
+  "gift_card.details.after",
+  "gift_card.details.side.before",
+  "gift_card.details.side.after",
+  "gift_card.list.before",
+  "gift_card.list.after",
+  "gift_card.list.side.before",
+  "gift_card.list.side.after",
+] as const
+
+const GIFT_CARD_PRODUCT_INJECTION_ZONES = [
+  "gift_card_product.details.before",
+  "gift_card_product.details.after",
+  "gift_card_product.details.side.before",
+  "gift_card_product.details.side.after",
+  "gift_card_product.list.before",
+  "gift_card_product.list.after",
+] as const
+
 /**
  * All valid injection zones in the admin panel. An injection zone is a specific place
  * in the admin panel where a plugin can inject custom widgets.
@@ -262,4 +291,7 @@ export const INJECTION_ZONES = [
   ...ROLE_INJECTION_ZONES,
   ...POLICY_INJECTION_ZONES,
   ...DRAFT_ORDER_INJECTION_ZONES,
+  ...STORE_CREDIT_ACCOUNT_INJECTION_ZONES,
+  ...GIFT_CARD_INJECTION_ZONES,
+  ...GIFT_CARD_PRODUCT_INJECTION_ZONES,
 ] as const
