@@ -247,7 +247,7 @@ function collectValidationFromMiddlewaresFile(
 
 function getHandlerFunction(
   node: TSESTree.ExportNamedDeclaration
-): TSESTree.Node | null {
+): { fn: TSESTree.Node; method: string } | null {
   const decl = node.declaration
   if (!decl) return null
   if (decl.type === AST_NODE_TYPES.VariableDeclaration) {
@@ -259,7 +259,7 @@ function getHandlerFunction(
         (d.init.type === AST_NODE_TYPES.ArrowFunctionExpression ||
           d.init.type === AST_NODE_TYPES.FunctionExpression)
       ) {
-        return d.init
+        return { fn: d.init, method: d.id.name }
       }
     }
     return null
@@ -269,7 +269,7 @@ function getHandlerFunction(
     decl.id &&
     HTTP_METHODS.has(decl.id.name)
   ) {
-    return decl
+    return { fn: decl, method: decl.id.name }
   }
   return null
 }
@@ -333,22 +333,35 @@ export const rule = createRule<[], MessageIds>({
       routePath
     )
     if (!validation) return {}
-    const { body: flagBody, query: flagQuery } = validation
-    if (!flagBody && !flagQuery) return {}
+    if (validation.body.size === 0 && validation.query.size === 0) return {}
 
-    const handlerFns: Array<{ fn: TSESTree.Node; paramName: string }> = []
+    const methodApplies = (set: Set<string>, method: string): boolean =>
+      set.has("*") || set.has(method)
+
+    const handlerFns: Array<{
+      fn: TSESTree.Node
+      paramName: string
+      method: string
+    }> = []
 
     return {
       ExportNamedDeclaration(node) {
-        const fn = getHandlerFunction(node)
-        if (!fn) return
-        const param = getFirstParamName(fn)
+        const handler = getHandlerFunction(node)
+        if (!handler) return
+        const param = getFirstParamName(handler.fn)
         if (!param || param.pattern) return
-        handlerFns.push({ fn, paramName: param.name })
+        handlerFns.push({
+          fn: handler.fn,
+          paramName: param.name,
+          method: handler.method,
+        })
       },
       "Program:exit"() {
         for (const h of handlerFns) {
           const reqName = h.paramName
+          const flagBody = methodApplies(validation.body, h.method)
+          const flagQuery = methodApplies(validation.query, h.method)
+          if (!flagBody && !flagQuery) continue
           const visit = (node: TSESTree.Node): void => {
             if (
               node.type === AST_NODE_TYPES.MemberExpression &&
