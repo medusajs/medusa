@@ -9,6 +9,7 @@ import { rule as loaderMustBeExportedInModuleDefinition } from "./loader-must-be
 import { rule as moduleNameSnakeCase } from "./module-name-snake-case"
 import { rule as noAsyncWorkflowConstructor } from "./no-async-workflow-constructor"
 import { rule as noConditionalExpressionsInWorkflow } from "./no-conditional-expressions-in-workflow"
+import { rule as noConfigOnDynamicUiRoute } from "./no-config-on-dynamic-ui-route"
 import { rule as noConsoleLogInWorkflow } from "./no-console-log-in-workflow"
 import { rule as noDeprecatedRemoteQueryConfig } from "./no-deprecated-remote-query-config"
 import { rule as noDirectVariableMutationInWorkflow } from "./no-direct-variable-mutation-in-workflow"
@@ -64,6 +65,7 @@ export const rules = {
   "module-name-snake-case": moduleNameSnakeCase,
   "no-async-workflow-constructor": noAsyncWorkflowConstructor,
   "no-conditional-expressions-in-workflow": noConditionalExpressionsInWorkflow,
+  "no-config-on-dynamic-ui-route": noConfigOnDynamicUiRoute,
   "no-console-log-in-workflow": noConsoleLogInWorkflow,
   "no-deprecated-remote-query-config": noDeprecatedRemoteQueryConfig,
   "no-direct-variable-mutation-in-workflow": noDirectVariableMutationInWorkflow,
