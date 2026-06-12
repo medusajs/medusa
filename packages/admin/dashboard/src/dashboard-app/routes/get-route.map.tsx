@@ -2,6 +2,7 @@ import { HttpTypes } from "@medusajs/types"
 import { t } from "i18next"
 import { Outlet, RouteObject, UIMatch } from "react-router-dom"
 import { ProtectedRoute } from "../../components/authentication/protected-route"
+import { RoutePermissionGuard } from "../../components/authentication/route-permission-guard"
 import { MainLayout } from "../../components/layout/main-layout"
 import { PublicLayout } from "../../components/layout/public-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
@@ -643,9 +644,7 @@ export function getRouteMap({
                     {
                       path: "metadata/edit",
                       lazy: () =>
-                        import(
-                          "../../routes/price-lists/price-list-metadata"
-                        ),
+                        import("../../routes/price-lists/price-list-metadata"),
                     },
                   ],
                 },
@@ -664,8 +663,15 @@ export function getRouteMap({
                   children: [
                     {
                       path: "create",
-                      lazy: () =>
-                        import("../../routes/customers/customer-create"),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "customer:create" },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () =>
+                            import("../../routes/customers/customer-create"),
+                        },
+                      ],
                     },
                   ],
                 },
@@ -689,22 +695,43 @@ export function getRouteMap({
                   children: [
                     {
                       path: "edit",
-                      lazy: () =>
-                        import("../../routes/customers/customer-edit"),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "customer:update" },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () =>
+                            import("../../routes/customers/customer-edit"),
+                        },
+                      ],
                     },
                     {
                       path: "create-address",
-                      lazy: () =>
-                        import(
-                          "../../routes/customers/customer-create-address"
-                        ),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "customer:update" },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () =>
+                            import(
+                              "../../routes/customers/customer-create-address"
+                            ),
+                        },
+                      ],
                     },
                     {
                       path: "add-customer-groups",
-                      lazy: () =>
-                        import(
-                          "../../routes/customers/customers-add-customer-group"
-                        ),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "customer:update" },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () =>
+                            import(
+                              "../../routes/customers/customers-add-customer-group"
+                            ),
+                        },
+                      ],
                     },
                     {
                       path: ":order_id/transfer",
@@ -713,8 +740,15 @@ export function getRouteMap({
                     },
                     {
                       path: "metadata/edit",
-                      lazy: () =>
-                        import("../../routes/customers/customer-metadata"),
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "customer:update" },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () =>
+                            import("../../routes/customers/customer-metadata"),
+                        },
+                      ],
                     },
                   ],
                 },
@@ -1046,7 +1080,16 @@ export function getRouteMap({
                   children: [
                     {
                       path: "invite",
-                      lazy: () => import("../../routes/users/user-invite"),
+                      element: <RoutePermissionGuard />,
+                      handle: {
+                        permissions: ["invite:create", "invite:read"],
+                      },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () => import("../../routes/users/user-invite"),
+                        },
+                      ],
                     },
                   ],
                 },
@@ -1077,6 +1120,156 @@ export function getRouteMap({
                       lazy: () => import("../../routes/users/user-metadata"),
                     },
                   ],
+                },
+              ],
+            },
+            {
+              path: "roles",
+              errorElement: <ErrorBoundary />,
+              element: <RoutePermissionGuard />,
+              handle: {
+                breadcrumb: () => t("roles.domain"),
+                permissions: "rbac_role:read",
+              },
+              children: [
+                {
+                  path: "",
+                  lazy: () => import("../../routes/roles/role-list"),
+                  children: [
+                    {
+                      path: "create",
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "rbac_role:create" },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () => import("../../routes/roles/role-create"),
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  path: ":id",
+                  lazy: async () => {
+                    const { Component, Breadcrumb, loader } = await import(
+                      "../../routes/roles/role-detail"
+                    )
+
+                    return {
+                      Component,
+                      loader,
+                      handle: {
+                        breadcrumb: (
+                          match: UIMatch<HttpTypes.AdminRbacRoleResponse>
+                        ) => <Breadcrumb {...match} />,
+                      },
+                    }
+                  },
+                  children: [
+                    {
+                      path: "edit",
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "rbac_role:update" },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () => import("../../routes/roles/role-edit"),
+                        },
+                      ],
+                    },
+                    {
+                      path: "add-users",
+                      element: <RoutePermissionGuard />,
+                      handle: {
+                        permissions: ["user:update", "rbac_role:update"],
+                      },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () =>
+                            import("../../routes/roles/role-add-users"),
+                        },
+                      ],
+                    },
+                    {
+                      path: "permissions",
+                      element: <RoutePermissionGuard />,
+                      handle: { permissions: "rbac_role:update" },
+                      children: [
+                        {
+                          path: "",
+                          lazy: () =>
+                            import("../../routes/roles/role-permissions"),
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              path: "policies",
+              errorElement: <ErrorBoundary />,
+              element: <RoutePermissionGuard />,
+              handle: {
+                breadcrumb: () => t("policies.domain"),
+                permissions: "rbac_policy:read",
+              },
+              children: [
+                {
+                  path: "",
+                  lazy: () => import("../../routes/policies/policy-list"),
+                  // TODO: V1: policy CRUD lives in code (`definePolicies`).Uncomment
+                  // along with the matching list/detail action sites to
+                  // re-enable dashboard CRUD.
+                  // children: [
+                  //   {
+                  //     path: "create",
+                  //     element: <RoutePermissionGuard />,
+                  //     handle: { permissions: "rbac_policy:create" },
+                  //     children: [
+                  //       {
+                  //         path: "",
+                  //         lazy: () =>
+                  //           import("../../routes/policies/policy-create"),
+                  //       },
+                  //     ],
+                  //   },
+                  // ],
+                },
+                {
+                  path: ":id",
+                  lazy: async () => {
+                    const { Component, Breadcrumb, loader } = await import(
+                      "../../routes/policies/policy-detail"
+                    )
+
+                    return {
+                      Component,
+                      loader,
+                      handle: {
+                        breadcrumb: (
+                          match: UIMatch<HttpTypes.AdminRbacPolicyResponse>
+                        ) => <Breadcrumb {...match} />,
+                      },
+                    }
+                  },
+                  // TODO: V1: `edit` child kept commented out — see note above.
+                  // children: [
+                  //   {
+                  //     path: "edit",
+                  //     element: <RoutePermissionGuard />,
+                  //     handle: { permissions: "rbac_policy:update" },
+                  //     children: [
+                  //       {
+                  //         path: "",
+                  //         lazy: () =>
+                  //           import("../../routes/policies/policy-edit"),
+                  //       },
+                  //     ],
+                  //   },
+                  // ],
                 },
               ],
             },

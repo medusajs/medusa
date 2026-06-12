@@ -42,8 +42,8 @@ export default async function developPlugin({
      * flaky.
      */
     execFile(
-      yalcBin,
-      ["publish", "--push", "--no-scripts"],
+      process.execPath,
+      [yalcBin, "publish", "--push", "--no-scripts"],
       {
         cwd: directory,
       },

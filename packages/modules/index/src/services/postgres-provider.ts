@@ -47,6 +47,7 @@ export class PostgresProvider implements IndexTypes.StorageProvider {
     created: "onCreate",
     updated: "onUpdate",
     deleted: "onDelete",
+    restored: "onCreate",
     attached: "onAttach",
     detached: "onDetach",
   }

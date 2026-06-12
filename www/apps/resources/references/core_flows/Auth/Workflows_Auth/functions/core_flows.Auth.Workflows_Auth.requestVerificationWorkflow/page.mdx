@@ -1,0 +1,214 @@
+---
+slug: /references/medusa-workflows/requestVerificationWorkflow
+sidebar_label: requestVerificationWorkflow
+sidebar_description: ""
+tags:
+  - auth
+  - event bus
+  - workflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# requestVerificationWorkflow - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `requestVerificationWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/core/core-flows/src/auth/workflows/request-verification.ts#L14" />
+
+## Examples
+
+<CodeTabs group="workflow-exection">
+    <CodeTab label="API Route" value="api-route">
+    
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { requestVerificationWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await requestVerificationWorkflow(req.scope)
+    .run({
+      input: {
+        "provider": "{value}",
+        "entity_id": "{value}"
+      }
+    })
+
+  res.send(result)
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Subscriber" value="subscriber">
+    
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { requestVerificationWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await requestVerificationWorkflow(container)
+    .run({
+      input: {
+        "provider": "{value}",
+        "entity_id": "{value}"
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Scheduled Job" value="scheduled-job">
+    
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { requestVerificationWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await requestVerificationWorkflow(container)
+    .run({
+      input: {
+        "provider": "{value}",
+        "entity_id": "{value}"
+      }
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Another Workflow" value="another-workflow">
+    
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { requestVerificationWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = requestVerificationWorkflow
+      .runAsStep({
+        input: {
+          "provider": "{value}",
+          "entity_id": "{value}"
+        }
+      })
+  }
+)
+```
+
+    </CodeTab>
+  </CodeTabs>
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"requestVerificationWorkflow","steps":[{"type":"step","name":"requestVerificationStep","description":"","link":"../../../Steps_Auth/functions/core_flows.Auth.Steps_Auth.requestVerificationStep/page.mdx","depth":1},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":2}]}} />
+
+## Input
+
+<TypeList types={[{"name":"RequestAuthVerificationDTO","type":"[RequestAuthVerificationDTO](../../../../../auth/types/auth.RequestAuthVerificationDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actor_type","type":"`string` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"ttl_seconds","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="requestVerificationWorkflow"/>
+
+## Output
+
+<TypeList types={[{"name":"AuthVerification & object","type":"[AuthVerification](../../../../../auth/types/auth.AuthVerification/page.mdx) & `object`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AuthVerification","type":"[AuthVerification](../../../../../auth/types/auth.AuthVerification/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actor_type","type":"`string` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"expires_at","type":"`Date` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"auth_identity_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_identity_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="requestVerificationWorkflow"/>
+
+## Emitted Events
+
+This section lists the events that are either triggered by the `emitEventStep` in the workflow, or by another workflow executed within this workflow.
+
+:::note
+
+The `emitEventStep` only emits the event after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. If the workflow fails, it won't emit the event at all.
+
+:::
+
+You can listen to these events in a subscriber, as explained in the [Subscribers](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers) documentation.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+Event
+</Table.HeaderCell>
+      <Table.HeaderCell>
+Description
+</Table.HeaderCell>
+      <Table.HeaderCell>
+Payload
+</Table.HeaderCell>
+      <Table.HeaderCell>
+Action
+</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+`auth.verification_requested`
+
+<Tooltip text="This event was added in version v2.15.5"><Badge variant="blue">v2.15.5</Badge></Tooltip>
+
+</Table.Cell>
+      <Table.Cell>
+Emitted when a verification token is generated. You can listen to
+this event and decide how to deliver the token to the user or customer.
+</Table.Cell>
+      <Table.Cell>
+```ts blockStyle="inline"
+{
+  entity_id, // The identifier of the user or customer. For example, an email address.
+  actor_type, // The type of actor. For example, "customer", "user", or custom.
+  provider, // The auth provider that requested verification.
+  auth_identity_id, // The ID of the auth identity being verified.
+  provider_identity_id, // The ID of the provider identity being verified.
+  token, // The generated token.
+  expires_at, // The token expiry date.
+  metadata, // Optional custom metadata passed from the request.
+}
+```
+</Table.Cell>
+      <Table.Cell>
+<CopyGeneratedSnippetButton tooltipText="Copy subscriber for event" type="subscriber" options={{
+        event: "auth.verification_requested",
+        payload: `\`\`\`ts
+{
+  entity_id, // The identifier of the user or customer. For example, an email address.
+  actor_type, // The type of actor. For example, "customer", "user", or custom.
+  provider, // The auth provider that requested verification.
+  auth_identity_id, // The ID of the auth identity being verified.
+  provider_identity_id, // The ID of the provider identity being verified.
+  token, // The generated token.
+  expires_at, // The token expiry date.
+  metadata, // Optional custom metadata passed from the request.
+}
+\`\`\``
+        }}/>
+</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

@@ -1,6 +1,11 @@
 import path from "path"
 import { Transformer } from "unified"
-import { UnistNodeWithData, UnistTree, ComponentLinkFixerOptions } from "types"
+import {
+  UnistNodeWithData,
+  UnistTree,
+  ComponentLinkFixerOptions,
+  ExpressionJsVarLiteral,
+} from "types"
 import { FixLinkOptions, fixLinkUtil } from "../index.js"
 import getAttribute from "../utils/get-attribute.js"
 import { estreeToJs } from "docs-utils"
@@ -9,7 +14,7 @@ import { MD_LINK_REGEX } from "../constants.js"
 
 const VALUE_LINK_REGEX = /^(![a-z]+!|\.)/gm
 
-function matchMdLinks(
+async function matchMdLinks(
   str: string,
   linkOptions: Omit<FixLinkOptions, "linkedPath">
 ) {
@@ -21,7 +26,7 @@ function matchMdLinks(
       return
     }
 
-    const newUrl = fixLinkUtil({
+    const newUrl = await fixLinkUtil({
       ...linkOptions,
       linkedPath: linkMatches.groups.link,
     })
@@ -34,7 +39,7 @@ function matchMdLinks(
   return str
 }
 
-function matchValueLink(
+async function matchValueLink(
   str: string,
   linkOptions: Omit<FixLinkOptions, "linkedPath">
 ) {
@@ -55,7 +60,7 @@ export function componentLinkFixer(
   attributeName: string,
   options?: ComponentLinkFixerOptions
 ): Transformer {
-  const { filePath, basePath, checkLinksType = "md" } = options || {}
+  const { filePath, basePath, checkLinksType = "md", r2BaseUrl } = options || {}
   return async (tree, file) => {
     if (!file.cwd) {
       return
@@ -77,42 +82,62 @@ export function componentLinkFixer(
     )
     const appsPath = basePath || path.join(file.cwd, "app")
     const linkFn = checkLinksType === "md" ? matchMdLinks : matchValueLink
-    visit(tree as UnistTree, "mdxJsxFlowElement", (node: UnistNodeWithData) => {
-      if (node.name !== componentName) {
-        return
-      }
 
+    const nodesToProcess: UnistNodeWithData[] = []
+    visit(tree as UnistTree, "mdxJsxFlowElement", (node: UnistNodeWithData) => {
+      if (node.name === componentName) {
+        nodesToProcess.push(node)
+      }
+    })
+
+    const linkOptions = {
+      currentPageFilePath,
+      appsPath,
+      r2BaseUrl,
+    }
+
+    for (const node of nodesToProcess) {
       const attribute = getAttribute(node, attributeName)
 
       if (!attribute) {
-        return
-      }
-
-      const linkOptions = {
-        currentPageFilePath,
-        appsPath,
+        continue
       }
 
       if (typeof attribute.value === "string") {
         attribute.value =
-          linkFn(attribute.value, linkOptions) || attribute.value
-        return
+          (await linkFn(attribute.value, linkOptions)) || attribute.value
+        continue
       }
 
       if (!attribute.value.data?.estree) {
-        return
+        continue
       }
 
       const itemJsVar = estreeToJs(attribute.value.data.estree)
 
-      if (!itemJsVar || "name" in itemJsVar) {
-        return
+      if (
+        !itemJsVar ||
+        ("name" in itemJsVar &&
+          typeof (itemJsVar as Record<string, unknown>).name === "string")
+      ) {
+        continue
       }
 
+      const literals: ExpressionJsVarLiteral[] = []
       performActionOnLiteral(itemJsVar, (item) => {
-        item.original.value = linkFn(item.original.value as string, linkOptions)
-        item.original.raw = JSON.stringify(item.original.value)
+        literals.push(item)
       })
-    })
+
+      for (const item of literals) {
+        const newValue = await linkFn(
+          item.original.value as string,
+          linkOptions
+        )
+        if (newValue !== undefined) {
+          item.original.value = newValue
+          item.original.raw = JSON.stringify(newValue)
+        }
+      }
+    }
   }
 }

@@ -5,6 +5,7 @@ import {
   generateEditedDates,
   generateLlmsFull,
   generateSidebar,
+  copyMdxToPublic,
 } from "build-scripts"
 import {
   addUrlToRelativeLink,
@@ -46,6 +47,12 @@ async function main() {
       [localLinksRehypePlugin],
     ],
     after: [[addUrlToRelativeLink, { url: baseUrl }]],
+  }
+  if (process.env.CLOUDFLARE_ENV) {
+    await copyMdxToPublic({
+      srcDir: path.join(process.cwd(), "app"),
+      destDir: path.join(process.cwd(), "public", "raw-mdx"),
+    })
   }
   await generateLlmsFull({
     outputPath: path.join(process.cwd(), "public", "llms-full.txt"),

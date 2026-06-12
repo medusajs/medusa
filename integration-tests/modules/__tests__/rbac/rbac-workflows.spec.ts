@@ -20,7 +20,7 @@ function clearPolicies() {
 }
 
 medusaIntegrationTestRunner({
-  env: {},
+  env: { MEDUSA_FF_RBAC: true },
   testSuite: ({ getContainer }) => {
     describe("Workflows: RBAC", () => {
       let appContainer: MedusaContainer
@@ -915,7 +915,9 @@ medusaIntegrationTestRunner({
           }
 
           expect(error).toBeDefined()
-          expect(error.message).toContain("Forbidden")
+          expect(error.message).toContain(
+            "You do not have access to some of the policies you are trying to assign."
+          )
         })
 
         it("should allow user to create roles with policies they have access to", async () => {
