@@ -40,6 +40,7 @@ import { rule as stepIdKebabCase } from "./step-id-kebab-case"
 import { rule as stepMustReturnStepResponse } from "./step-must-return-step-response"
 import { rule as workflowIdMatchesExportOrFilename } from "./workflow-id-matches-export-or-filename"
 import { rule as workflowMustReturnWorkflowResponse } from "./workflow-must-return-workflow-response"
+import { rule as zodImportSource } from "./zod-import-source"
 
 export const rules = {
   "authenticate-flag-name-and-type": authenticateFlagNameAndType,
@@ -85,4 +86,5 @@ export const rules = {
   "step-must-return-step-response": stepMustReturnStepResponse,
   "workflow-id-matches-export-or-filename": workflowIdMatchesExportOrFilename,
   "workflow-must-return-workflow-response": workflowMustReturnWorkflowResponse,
+  "zod-import-source": zodImportSource,
 } as unknown as NonNullable<ESLint.Plugin["rules"]>

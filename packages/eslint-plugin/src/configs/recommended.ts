@@ -25,7 +25,8 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       rules: {},
     },
     {
-      files: ["**/*.{ts,tsx}"],
+      files: ["**/*.{ts,js}"],
+      ignores: ["src/admin/**", "**/src/admin/**"],
       rules: {
         [ruleId("no-async-workflow-constructor")]: "error",
         [ruleId("no-conditional-expressions-in-workflow")]: "error",
@@ -46,6 +47,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("step-must-return-step-response")]: "error",
         [ruleId("workflow-id-matches-export-or-filename")]: "warn",
         [ruleId("workflow-must-return-workflow-response")]: "error",
+        [ruleId("zod-import-source")]: "warn",
       },
     },
     {
