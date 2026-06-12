@@ -5350,7 +5350,7 @@ export const generatedEditDates = {
   "references/workflows/classes/workflows.WorkflowResponse/page.mdx": "2025-04-11T09:04:53.140Z",
   "references/workflows/interfaces/workflows.ApplyStepOptions/page.mdx": "2025-12-01T18:33:08.321Z",
   "references/workflows/types/workflows.WorkflowData/page.mdx": "2026-05-11T21:32:25.500Z",
-  "app/integrations/guides/resend/page.mdx": "2025-10-21T11:08:19.352Z",
+  "app/integrations/guides/resend/page.mdx": "2026-06-12T12:59:13.078Z",
   "references/api_key_models/variables/api_key_models.ApiKey/page.mdx": "2026-06-01T09:05:17.537Z",
   "references/cart/ICartModuleService/methods/cart.ICartModuleService.updateShippingMethods/page.mdx": "2025-10-21T08:10:43.389Z",
   "references/cart/interfaces/cart.UpdateShippingMethodDTO/page.mdx": "2025-06-25T10:11:35.052Z",
@@ -6233,7 +6233,7 @@ export const generatedEditDates = {
   "references/utils/Payment/variables/utils.Payment.PaymentEvents/page.mdx": "2025-06-05T19:05:53.491Z",
   "references/utils/types/utils.NormalizedRow/page.mdx": "2025-06-05T19:05:53.365Z",
   "references/utils/utils.Payment/page.mdx": "2025-06-05T19:05:53.489Z",
-  "app/integrations/guides/slack/page.mdx": "2025-06-26T12:57:20.880Z",
+  "app/integrations/guides/slack/page.mdx": "2026-06-12T12:59:08.464Z",
   "app/integrations/guides/sentry/page.mdx": "2025-10-02T10:30:51.194Z",
   "app/integrations/guides/mailchimp/page.mdx": "2026-01-12T12:02:36.772Z",
   "app/how-to-tutorials/tutorials/first-purchase-discounts/page.mdx": "2026-01-12T12:21:16.880Z",
@@ -7576,5 +7576,6 @@ export const generatedEditDates = {
   "app/commerce-modules/auth/mfa/page.mdx": "2026-06-02T13:48:59.663Z",
   "app/commerce-modules/auth/email-verification/page.mdx": "2026-06-02T11:04:44.946Z",
   "app/storefront-development/customers/verify-account/page.mdx": "2026-06-02T11:24:01.444Z",
-  "references/events/Auth/variables/events.Auth.AuthEvents/page.mdx": "2026-06-03T06:24:01.642Z"
+  "references/events/Auth/variables/events.Auth.AuthEvents/page.mdx": "2026-06-03T06:24:01.642Z",
+  "app/troubleshooting/modules/resolve-path/page.mdx": "2026-06-12T13:10:01.363Z"
 }

@@ -192,18 +192,6 @@ export const referencesSidebar = [
           },
         ],
       },
-      {
-        type: "category",
-        title: "Best Practices",
-        initialOpen: true,
-        children: [
-          {
-            type: "link",
-            title: "Database Snapshot",
-            path: "/test-tools-reference/database-snapshot",
-          },
-        ],
-      },
     ],
   },
   {

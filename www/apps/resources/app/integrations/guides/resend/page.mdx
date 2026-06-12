@@ -499,27 +499,11 @@ module.exports = defineConfig({
 })
 ```
 
-<Note title="Important: Module Provider Resolve Path">
-
-The `resolve` path must point to the **module directory** (like `./src/modules/resend`), not directly to a service file. Medusa's module loader looks for an `index.ts` file in this directory that exports the module definition using `ModuleProvider()`.
-
-**Correct structure:**
-```
-src/modules/resend/
-├── index.ts          # Exports ModuleProvider()
-└── service.ts        # Contains the service class
-```
-
-**Common mistake:** Pointing `resolve` to `./src/modules/resend/service` will cause the error:
-> "doesn't seem to have a main service exported -- make sure your module has a default export of a service."
-
-</Note>
-
 In the `modules` array, you pass a module object having the following properties:
 
 - `resolve`: The NPM package of the Notification Module. Since the Resend Module is a Notification Module Provider, it'll be passed in the options of the Notification Module.
 - `options`: An object of options to pass to the module. It has a `providers` property which is an array of module providers to register. Each module provider object has the following properties:
-    - `resolve`: The path to the **module directory** (not the service file) to register in the application. It can also be the name of an NPM package.
+    - `resolve`: The path to the module provider to register in the application. It can also be the name of an NPM package.
     - `id`: A unique ID, which Medusa will use along with the `identifier` static property that you set earlier in the class to identify this module provider.
     - `options`: An object of options to pass to the module provider. These are the options you expect and use in the module provider's service. You must also specify the `channels` option, which indicates the channels that this provider sends notifications through.
 
