@@ -54,6 +54,18 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("no-deprecated-remote-query-config")]: "warn",
         [ruleId("route-file-naming")]: "error",
         [ruleId("route-handler-exports-uppercase")]: "error",
+        [ruleId("route-params-must-be-defined")]: "error",
+      },
+    },
+    {
+      files: [
+        "src/api/**/*.{ts,tsx}",
+        "**/api/**/*.{ts,tsx}",
+        "src/admin/routes/**/*.{ts,tsx}",
+        "**/admin/routes/**/*.{ts,tsx}",
+      ],
+      rules: {
+        [ruleId("route-dynamic-folder-syntax")]: "error",
       },
     },
     {
