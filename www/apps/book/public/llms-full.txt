@@ -1832,7 +1832,7 @@ module.exports = defineConfig({
 
 The `defineConfig` utility accepts an object having the following properties:
 
-- [projectConfig](#project-configurations-projectConfig): Essential configurations related to the Medusa application, such as database, CORS, and cloud configurations.
+- [projectConfig](#project-configurations-projectConfig): Essential configurations related to the Medusa application, such as database and CORS configurations.
 - [admin](#admin-configurations-admin): Configurations related to the Medusa Admin.
 - [modules](#module-configurations-modules): Configurations related to registered modules.
 - [plugins](#plugin-configurations-plugins): Configurations related to registered plugins.
@@ -2527,75 +2527,6 @@ module.exports = defineConfig({
   // ...
 })
 ```
-
-### cloud
-
-The `projectConfig.cloud` configuration specifies Medusa Cloud-specific configurations for services like OAuth, emails, and payments when your application integrates with Medusa Cloud.
-
-This configuration is an object that accepts the following properties:
-
-#### cloud.environmentHandle
-
-The `projectConfig.cloud.environmentHandle` configuration specifies the environment handle of the Medusa Cloud environment.
-
-#### Example
-
-```ts title="medusa-config.ts"
-module.exports = defineConfig({
-  projectConfig: {
-    cloud: {
-      environmentHandle: process.env.MEDUSA_CLOUD_ENVIRONMENT_HANDLE,
-      // ...
-    },
-    // ...
-  },
-  // ...
-})
-```
-
-#### cloud.oauthJwksUri
-
-The `projectConfig.cloud.oauthJwksUri` configuration specifies the JWKS URI for the Medusa Cloud OAuth service. This is used to verify the JWT tokens issued by the Medusa Cloud OAuth service.
-
-If not provided, an error is thrown when trying to use the Medusa Cloud OAuth service.
-
-#### Example
-
-```ts title="medusa-config.ts"
-module.exports = defineConfig({
-  projectConfig: {
-    cloud: {
-      oauthJwksUri: process.env.MEDUSA_CLOUD_OAUTH_JWKS_ENDPOINT,
-      // ...
-    },
-    // ...
-  },
-  // ...
-})
-```
-
-#### cloud.oauthAudience
-
-The `projectConfig.cloud.oauthAudience` configuration specifies the expected `aud` claim of id\_tokens issued by the Medusa Cloud OAuth service.
-
-If not provided, an error is thrown when trying to use the Medusa Cloud OAuth service.
-
-#### Example
-
-```ts title="medusa-config.ts"
-module.exports = defineConfig({
-  projectConfig: {
-    cloud: {
-      oauthAudience: process.env.MEDUSA_CLOUD_OAUTH_AUDIENCE,
-      // ...
-    },
-    // ...
-  },
-  // ...
-})
-```
-
-Learn more about Medusa Cloud OAuth configuration in the [Cloud documentation](undefined/cloud/user).
 
 ***
 
@@ -14766,8 +14697,6 @@ You should opt for setting configurations in `medusa-config.ts` where possible. 
 ||URLs of clients that can access the Medusa backend's authentication routes. Only used if |\`http://localhost:7000,http://localhost:7001,http://localhost:5173\`|
 ||A random string used to create authentication tokens in the http layer. Only used if |-|
 |\`COOKIE\_SECRET\`|A random string used to create cookie tokens in the http layer. Only used if |-|
-|\`MEDUSA\_CLOUD\_OAUTH\_JWKS\_ENDPOINT\`|The JWKS URI for the Medusa Cloud OAuth service. Used to verify JWT tokens issued by the Medusa Cloud OAuth service. Only used if |-|
-|\`MEDUSA\_CLOUD\_OAUTH\_AUDIENCE\`|The expected |-|
 |\`MEDUSA\_BACKEND\_URL\`|The URL to the Medusa backend. Only used if |-|
 |\`DB\_HOST\`|The host for the database. It's used when generating migrations for a plugin, and when running integration tests.|\`localhost\`|
 |\`DB\_USERNAME\`|The username for the database. It's used when generating migrations for a plugin, and when running integration tests.|-|
@@ -31654,7 +31583,7 @@ In this guide, you'll learn how to enable email verification requirement for cus
 
 ### Prerequisites
 
-- [Medusa v2.15.6 or later](undefined/docs/learn/update)
+- [Medusa v2.16.0 or later](undefined/docs/learn/update)
 - [Notification Module Provider for the email channel, such as SendGrid or Resend](undefined/infrastructure-modules/notification#what-is-a-notification-module-provider)
 
 ## How Email Verification Works
@@ -31717,7 +31646,7 @@ module.exports = defineConfig({
 
 With this configuration, customers will be required to verify their email address after registering. You can specify multiple actor types in the array if needed. This includes previously registered customers as well.
 
-Before [Medusa v2.15.6](https://github.com/medusajs/medusa/releases/tag/v2.15.6), `require_verification` was a boolean option. To migrate from the previous version, change `require_verification: true` to `require_verification: ["customer"]`.
+Before [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0), `require_verification` was a boolean option. To migrate from the previous version, change `require_verification: true` to `require_verification: ["customer"]`.
 
 ***
 
@@ -33577,7 +33506,7 @@ A shipping method, represented by the [ShippingMethod data model](undefined/refe
 
 In the Medusa application, the shipping method is created from a shipping option, available through the [Fulfillment Module](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/fulfillment). Its ID is stored in the `shipping_option_id` property of the method.
 
-Adding multiple shipping methods in a single request is available since Medusa [v2.15.6](https://github.com/medusajs/medusa/releases/tag/v2.15.6).
+Adding multiple shipping methods in a single request is available since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
 
 ### data Property
 
@@ -34420,15 +34349,16 @@ The tax line workflows (`updateTaxLinesWorkflow`, `upsertTaxLinesWorkflow`, and 
 
 This is useful when you need to pass additional information to your tax provider that isn't included in the default cart or order data.
 
-For example, create the file `src/workflows/hooks/tax-context.ts`:
+For example, create the file `src/workflows/hooks/tax-context.ts` with the following content:
 
 ```ts title="src/workflows/hooks/tax-context.ts"
 import { updateTaxLinesWorkflow } from "@medusajs/medusa/core-flows"
+import { Modules } from "@medusajs/framework/utils"
 
 updateTaxLinesWorkflow.hooks.setTaxLineContext(
   async ({ cart, items, shipping_methods }, { container }) => {
     // Add custom logic to determine tax context
-    const customerModule = container.resolve("customerModuleService")
+    const customerModule = container.resolve(Modules.CUSTOMER)
     const customer = await customerModule.retrieveCustomer(cart.customer_id)
     
     return {
@@ -43084,96 +43014,6 @@ Learn more about workflows in [this documentation](undefined/docs/learn/fundamen
 
 ***
 
-## Product Handle Utilities
-
-Medusa provides utility functions to create and validate URL-friendly handles for products and other entities. These functions support Unicode characters from any language, including Persian, Arabic, Japanese, Chinese, Korean, Russian, and more.
-
-### toHandle
-
-The `toHandle` function converts a string value into a URL-friendly handle.
-
-Enhanced Unicode support for `toHandle` is available since Medusa [v2.15.6](https://github.com/medusajs/medusa/releases/tag/v2.15.6). Previously, the function only supported ASCII characters.
-
-```ts
-import { toHandle } from "@medusajs/framework/utils"
-
-// Basic usage
-const handle = toHandle("My Product Name")
-// Returns: "my-product-name"
-
-// Unicode support
-const persianHandle = toHandle("کتاب فارسی")
-// Returns: "کتاب-فارسی"
-
-const japaneseHandle = toHandle("私の製品")
-// Returns: "私の-製品"
-
-// Special characters are removed
-const cleanHandle = toHandle("Product's Name & More!")
-// Returns: "products-name-more"
-```
-
-**Behavior:**
-
-- Converts to lowercase
-- Preserves letters from any language script
-- Removes special characters (apostrophes, punctuation, symbols)
-- Replaces spaces and underscores with hyphens
-- Collapses multiple hyphens into a single hyphen
-- Falls back to a random suffix if the result is empty
-
-### isValidHandle
-
-The `isValidHandle` function validates that a handle is URL-friendly and follows Medusa's conventions.
-
-Enhanced Unicode support for `isValidHandle` is available since Medusa [v2.15.6](https://github.com/medusajs/medusa/releases/tag/v2.15.6). The function now supports Unicode characters while rejecting uppercase ASCII letters for consistency.
-
-```ts
-import { isValidHandle } from "@medusajs/framework/utils"
-
-// Valid handles
-console.log(isValidHandle("my-product-123")) // true
-console.log(isValidHandle("کتاب-فارسی")) // true
-console.log(isValidHandle("私の-製品")) // true
-
-// Invalid handles
-console.log(isValidHandle("Hello-World")) // false (uppercase letters)
-console.log(isValidHandle("my product")) // false (spaces)
-console.log(isValidHandle("-product")) // false (leading hyphen)
-console.log(isValidHandle("product-")) // false (trailing hyphen)
-console.log(isValidHandle("product--name")) // false (consecutive hyphens)
-```
-
-**Validation Rules:**
-
-- Must contain only lowercase letters, case-less letters (Arabic, Persian, etc.), numbers, and hyphens
-- Uppercase ASCII letters (A-Z) are rejected to maintain consistency
-- No spaces, leading/trailing hyphens, or consecutive hyphens
-- Supports Unicode letters from any language script
-
-### Usage in Product Creation
-
-These utilities are used automatically when creating products, but you can also use them manually:
-
-```ts
-import { toHandle, isValidHandle } from "@medusajs/framework/utils"
-
-// Manual handle creation
-const productTitle = "الكتاب العربي الجديد"
-const suggestedHandle = toHandle(productTitle)
-
-if (isValidHandle(suggestedHandle)) {
-  // Use the handle for product creation
-  const product = await productService.createProducts({
-    title: productTitle,
-    handle: suggestedHandle,
-    // ...other product data
-  })
-}
-```
-
-***
-
 
 # Configure Selling Products
 
@@ -45654,7 +45494,7 @@ All store credit activity is tracked through transactions, which are stored in t
 Each transaction includes:
 
 - `type`: `credit` (adding funds) or `debit` (spending funds)
-- `amount`: The transaction amount in the smallest currency unit.
+- `amount`: The transaction amount in the major currency unit (decimal).
   - If `type` is `credit`, the amount is added to the balance.
   - If `type` is `debit`, the amount is subtracted from the balance
 - `reference`: The name of the table that triggered the transaction (for example, `order`, `refund`, `promotion`, etc...)
