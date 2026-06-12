@@ -180,7 +180,7 @@ const DataTableTable = (props: DataTableTableProps) => {
             <div
               ref={scrollableRef}
               onScroll={handleHorizontalScroll}
-              className="min-h-0 w-full flex-1 overflow-auto overscroll-auto border-y"
+              className="min-h-0 w-full flex-1 overflow-x-auto border-y"
             >
               <Table className="relative isolate w-full">
                 <Table.Header
@@ -375,7 +375,7 @@ const DataTableTable = (props: DataTableTableProps) => {
           <div
             ref={scrollableRef}
             onScroll={handleHorizontalScroll}
-            className="min-h-0 w-full flex-1 overflow-auto overscroll-auto border-y"
+            className="min-h-0 w-full flex-1 overflow-x-auto border-y"
           >
             <Table className="relative isolate w-full">
               <Table.Header
