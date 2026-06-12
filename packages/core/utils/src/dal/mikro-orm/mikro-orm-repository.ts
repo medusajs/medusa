@@ -1296,6 +1296,15 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
         for (let i = 0; i < toUpdate.length; i += batchSize) {
           const chunk = toUpdate.slice(i, i + batchSize)
 
+          // Manually set updated_at since nativeUpdateMany bypasses
+          // MikroORM lifecycle hooks (onUpdate)
+          const now = new Date()
+          for (const item of chunk) {
+            if ("updated_at" in item) {
+              item.updated_at = now
+            }
+          }
+
           updatePromises.push(
             manager
               .getDriver()
