@@ -8,6 +8,18 @@ export type {
   UserPolicy,
 } from "./types"
 
-export { OPERATION_IMPLICATIONS } from "./constants"
+export {
+  DEFAULT_LANDING_ROUTES,
+  NO_PERMISSIONS_ROUTE,
+  OPERATION_IMPLICATIONS,
+} from "./constants"
+export type { LandingRoute } from "./constants"
 
-export { buildPermission, parsePermission } from "./utils"
+export {
+  buildPermission,
+  buildPermissionLookup,
+  checkPermissions,
+  parsePermission,
+} from "./utils"
+
+export { PermissionError, isPermissionError } from "./permission-error"

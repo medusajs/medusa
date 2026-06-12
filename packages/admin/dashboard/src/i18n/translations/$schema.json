@@ -13085,6 +13085,19 @@
           "required": ["title", "description", "requiredPermission"],
           "additionalProperties": false
         },
+        "noPermissions": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": ["title", "description"],
+          "additionalProperties": false
+        },
         "requiredPermissions": {
           "type": "object",
           "properties": {

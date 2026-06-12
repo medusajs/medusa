@@ -1,8 +1,7 @@
 import { PropsWithChildren, useCallback, useMemo } from "react"
 import {
   buildPermission,
-  OPERATION_IMPLICATIONS,
-  parsePermission,
+  buildPermissionLookup,
   type Permission,
   type PermissionOperation,
   type PermissionResource,
@@ -33,25 +32,10 @@ export const PermissionsProvider = ({
   isRbacEnabled = true,
   children,
 }: PermissionsProviderProps) => {
-  const permissionsMap = useMemo(() => {
-    const index: Record<Permission, true> = Object.create(null)
-
-    for (const granted of policy?.permissions ?? []) {
-      const parsed = parsePermission(granted)
-      if (!parsed) {
-        continue
-      }
-
-      const { resource, operation } = parsed
-      const impliedOperations = OPERATION_IMPLICATIONS[operation] || [operation]
-
-      for (const impliedOperation of impliedOperations) {
-        index[buildPermission(resource, impliedOperation)] = true
-      }
-    }
-
-    return index
-  }, [policy])
+  const permissionsMap = useMemo(
+    () => buildPermissionLookup(policy?.permissions ?? []),
+    [policy]
+  )
 
   const hasPermission = useCallback(
     (permission: Permission): boolean => {

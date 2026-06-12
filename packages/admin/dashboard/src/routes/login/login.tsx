@@ -31,7 +31,7 @@ export const Login = () => {
     ((token: string) => void | Promise<void>) | null
   >(null)
 
-  const from = location.state?.from?.pathname || "/orders"
+  const from = location.state?.from?.pathname || "/"
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),

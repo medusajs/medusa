@@ -3511,6 +3511,10 @@
       "requiredPermission": "Required permission: {{permission}}",
       "action": "You don't have permission to perform this action."
     },
+    "noPermissions": {
+      "title": "No permissions yet",
+      "description": "You don't have any permissions assigned yet. Reach out to your administrator to request access to the areas you need."
+    },
     "requiredPermissions": {
       "title": "Required permissions",
       "none": "No permissions declared in this view.",

@@ -9,7 +9,7 @@ import {
   useRegisterPermissions,
 } from "../../../providers/permissions-provider"
 
-type PermissionRouteHandle = {
+export type PermissionRouteHandle = {
   /**
    * The permissions required to access the route.
    */
@@ -26,13 +26,13 @@ type PermissionRouteHandle = {
   redirectTo?: string
 }
 
-type ResolvedRequirement = {
+export type ResolvedRequirement = {
   permissions: Permission[]
   requireAll: boolean
   redirectTo?: string
 }
 
-const readRequirementFromHandle = (
+export const readRequirementFromHandle = (
   handle: unknown
 ): ResolvedRequirement | undefined => {
   if (!handle || typeof handle !== "object") {
@@ -144,14 +144,14 @@ export const RoutePermissionGuard = () => {
 }
 
 interface AccessDeniedProps {
-  requirement: ResolvedRequirement
+  requirement?: ResolvedRequirement
 }
 
-const AccessDenied = ({ requirement }: AccessDeniedProps) => {
+export const AccessDenied = ({ requirement }: AccessDeniedProps) => {
   const { t } = useTranslation()
 
   return (
-    <div className="bg-ui-bg-subtle absolute bottom-0 left-0 right-0 top-0 flex min-h-screen items-center justify-center p-4">
+    <div className="flex min-h-[60vh] w-full items-center justify-center p-4">
       <Container className="max-w-md">
         <div className="flex flex-col items-center gap-y-4 py-8 text-center">
           <div className="bg-ui-bg-subtle flex h-12 w-12 items-center justify-center rounded-full">
@@ -163,11 +163,13 @@ const AccessDenied = ({ requirement }: AccessDeniedProps) => {
               {t("permissions.accessDenied.description")}
             </Text>
           </div>
-          <Text size="small" className="text-ui-fg-muted">
-            {t("permissions.accessDenied.requiredPermission", {
-              permission: requirement.permissions.join(", "),
-            })}
-          </Text>
+          {requirement?.permissions?.length ? (
+            <Text size="small" className="text-ui-fg-muted">
+              {t("permissions.accessDenied.requiredPermission", {
+                permission: requirement.permissions.join(", "),
+              })}
+            </Text>
+          ) : null}
         </div>
       </Container>
     </div>

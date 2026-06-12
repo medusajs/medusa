@@ -2248,6 +2248,10 @@
       "requiredPermission": "Permiso requerido: {{permission}}",
       "action": "No tienes permiso para realizar esta acción."
     },
+    "noPermissions": {
+      "title": "No tienes permisos todavía",
+      "description": "No tienes ningún permiso asignado todavía. Contacta a tu administrador para solicitar acceso a las áreas que necesitas."
+    },
     "requiredPermissions": {
       "title": "Permisos requeridos",
       "none": "No hay permisos declarados en esta vista.",

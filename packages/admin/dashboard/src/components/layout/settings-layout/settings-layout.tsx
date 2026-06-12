@@ -246,20 +246,28 @@ const SettingsSidebar = () => {
       </div>
       <div className="flex flex-1 flex-col">
         <div className="flex flex-1 flex-col overflow-y-auto">
-          <RadixCollapsibleSection
-            label={t("app.nav.settings.general")}
-            items={routes}
-          />
-          <div className="flex items-center justify-center px-3">
-            <Divider variant="dashed" />
-          </div>
-          <RadixCollapsibleSection
-            label={t("app.nav.settings.developer")}
-            items={developerRoutes}
-          />
-          <div className="flex items-center justify-center px-3">
-            <Divider variant="dashed" />
-          </div>
+          {routes.length > 0 && (
+            <Fragment>
+              <RadixCollapsibleSection
+                label={t("app.nav.settings.general")}
+                items={routes}
+              />
+              <div className="flex items-center justify-center px-3">
+                <Divider variant="dashed" />
+              </div>
+            </Fragment>
+          )}
+          {developerRoutes.length > 0 && (
+            <Fragment>
+              <RadixCollapsibleSection
+                label={t("app.nav.settings.developer")}
+                items={developerRoutes}
+              />
+              <div className="flex items-center justify-center px-3">
+                <Divider variant="dashed" />
+              </div>
+            </Fragment>
+          )}
           <RadixCollapsibleSection
             label={t("app.nav.settings.myAccount")}
             items={myAccountRoutes}

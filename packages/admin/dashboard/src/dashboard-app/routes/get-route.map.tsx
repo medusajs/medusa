@@ -32,6 +32,11 @@ export function getRouteMap({
               lazy: () => import("../../routes/home"),
             },
             {
+              path: "/no-permissions",
+              errorElement: <ErrorBoundary />,
+              lazy: () => import("../../routes/no-permissions"),
+            },
+            {
               path: "/products",
               errorElement: <ErrorBoundary />,
               element: (
