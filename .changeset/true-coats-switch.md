@@ -4,4 +4,4 @@
 "@medusajs/dashboard": patch
 ---
 
-feat(admin): add internal note support to order edits
+feat(dashboard,medusa,types): add internal note support to order edits

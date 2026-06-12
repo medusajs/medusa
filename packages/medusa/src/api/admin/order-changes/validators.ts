@@ -14,7 +14,7 @@ export const AdminOrderChangeParams = createSelectParams().merge(
 )
 
 export const AdminPostOrderChangesReqSchema = z.object({
-  carry_over_promotions: z.boolean().optional(),
+  carry_over_promotions: z.boolean().nullish(),
   internal_note: z.string().nullish(),
 })
 
