@@ -624,11 +624,9 @@ medusaIntegrationTestRunner({
           ).data.cart
 
           // Methods for different shipping profiles stack on the cart.
-          // Under the fix, each calculated provider call sees only the
+          // Each calculated provider call sees only the
           // items for that option's profile/location:
           //   optionA: 2 * 1.5 = 3     optionB: 1 * 1.5 = 1.5
-          // Under the bug, each provider call receives the full cart
-          // (3 units total) and both amounts collapse to 4.5.
           const respA = await api.post(
             `/store/carts/${cart.id}/shipping-methods?fields=*shipping_methods`,
             { option_id: shippingOptionCalculated.id, data: {} },
@@ -654,9 +652,7 @@ medusaIntegrationTestRunner({
           expect(methodB.amount).toBe(1.5)
 
           // Method A stacks alongside method B and keeps its profile-scoped
-          // price after the refresh that follows adding method B. Under the
-          // bug the refresh reprices it against the full cart, turning it
-          // into 4.5.
+          // price after the refresh that follows adding method B
           const methodAAfterB = respB.data.cart.shipping_methods.find(
             (m) => m.shipping_option_id === shippingOptionCalculated.id
           )
