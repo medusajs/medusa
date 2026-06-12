@@ -1,6 +1,12 @@
 import * as path from "path"
 
 /**
+ * Normalizes a filesystem path to POSIX separators so path matching works
+ * the same on Windows and POSIX hosts.
+ */
+export const toPosix = (p: string): string => p.replace(/\\/g, "/")
+
+/**
  * Returns the basename of `filename` without its extension, or `null` when
  * the filename is unusable as a naming hint — empty, synthetic (`<input>`),
  * or `index.<ext>` (carries no useful signal).

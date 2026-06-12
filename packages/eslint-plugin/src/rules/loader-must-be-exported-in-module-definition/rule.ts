@@ -3,16 +3,13 @@ import * as path from "path"
 import { parse } from "@typescript-eslint/typescript-estree"
 import { createRule } from "../../create-rule"
 import { FRAMEWORK_UTILS_SOURCE } from "../../constants"
+import { toPosix } from "../../util/filename"
 
 type MessageIds = "loaderNotRegistered"
 
 const MODULE_NAME = "Module"
 const INDEX_CANDIDATES = ["index.ts", "index.tsx", "index.js", "index.mjs", "index.cjs"]
 const SUPPORTED_EXTENSIONS = [".ts", ".tsx", ".js", ".mjs", ".cjs"]
-
-function toPosix(p: string): string {
-  return p.replace(/\\/g, "/")
-}
 
 function stripExt(p: string): string {
   const ext = path.extname(p)
