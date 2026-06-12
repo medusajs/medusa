@@ -85,7 +85,6 @@ export async function plugin(options: PluginOptions) {
         },
         output: {
           preserveModules: false,
-          interop: "auto",
           chunkFileNames: () => {
             return `_chunks/[name]-[hash]`
           },
