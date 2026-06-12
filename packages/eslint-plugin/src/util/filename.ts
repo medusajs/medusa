@@ -7,17 +7,6 @@ import * as path from "path"
 export const toPosix = (p: string): string => p.replace(/\\/g, "/")
 
 /**
- * True when `filename` lives under an `api/` directory — either `src/api/`
- * (the canonical Medusa layout) or a bare `api/` (nested project layouts).
- * Bails on synthetic / empty filenames.
- */
-export const isUnderApiDir = (filename: string | undefined): boolean => {
-  if (!filename || filename.startsWith("<")) return false
-  const posix = toPosix(filename)
-  return /(^|\/)src\/api\//.test(posix) || /(^|\/)api\//.test(posix)
-}
-
-/**
  * Returns the basename of `filename` without its extension, or `null` when
  * the filename is unusable as a naming hint — empty, synthetic (`<input>`),
  * or `index.<ext>` (carries no useful signal).

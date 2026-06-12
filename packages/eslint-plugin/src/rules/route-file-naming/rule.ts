@@ -1,7 +1,7 @@
 import * as path from "path"
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
-import { isUnderApiDir } from "../../util/filename"
+import { isUnderApiDir } from "../../util/api-route"
 
 type MessageIds = "wrongFileName" | "noHttpExports"
 

@@ -1,7 +1,8 @@
 import * as path from "path"
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
-import { isUnderApiDir, toPosix } from "../../util/filename"
+import { toPosix } from "../../util/filename"
+import { isUnderApiDir } from "../../util/api-route"
 
 type MessageIds =
   | "singularFilename"

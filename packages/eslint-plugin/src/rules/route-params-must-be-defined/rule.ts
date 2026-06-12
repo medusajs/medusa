@@ -1,23 +1,12 @@
 import * as path from "path"
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
-import { toPosix } from "../../util/filename"
+import { getApiRouteSegments } from "../../util/api-route"
 
 type MessageIds = "unknownRouteParam"
 
 const VALID_PARAM_FOLDER = /^\[([a-zA-Z_][a-zA-Z0-9_]*)\]$/
 const ROUTE_FILE_BASENAMES = new Set(["route.ts", "route.js"])
-
-function getApiRouteSegments(filename: string): string[] | null {
-  const posix = toPosix(filename)
-  const match =
-    posix.match(/(?:^|\/)src\/api\/(.+)$/) ??
-    posix.match(/(?:^|\/)api\/(.+)$/)
-  if (!match) return null
-  const segments = match[1].split("/")
-  segments.pop()
-  return segments
-}
 
 function collectParams(segments: string[]): Set<string> {
   const params = new Set<string>()

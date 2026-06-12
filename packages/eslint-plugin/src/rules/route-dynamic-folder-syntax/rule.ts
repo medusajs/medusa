@@ -1,5 +1,6 @@
 import { createRule } from "../../create-rule"
 import { toPosix } from "../../util/filename"
+import { getApiRouteSegments } from "../../util/api-route"
 
 type MessageIds = "invalidDynamicFolder" | "leadingDynamicFolder"
 
@@ -14,21 +15,17 @@ type RouteInfo = {
 }
 
 function getRouteInfo(filename: string): RouteInfo | null {
+  const apiSegments = getApiRouteSegments(filename)
+  if (apiSegments) {
+    const routeStartIndex =
+      apiSegments.length > 0 && API_ROUTE_GROUPS.has(apiSegments[0]) ? 1 : 0
+    return { segments: apiSegments, routeStartIndex }
+  }
+
   const posix = toPosix(filename)
-  const apiMatch =
-    posix.match(/(?:^|\/)src\/api\/(.+)$/) ??
-    posix.match(/(?:^|\/)api\/(.+)$/)
   const adminMatch =
     posix.match(/(?:^|\/)src\/admin\/routes\/(.+)$/) ??
     posix.match(/(?:^|\/)admin\/routes\/(.+)$/)
-
-  if (apiMatch) {
-    const segments = apiMatch[1].split("/")
-    segments.pop()
-    const routeStartIndex =
-      segments.length > 0 && API_ROUTE_GROUPS.has(segments[0]) ? 1 : 0
-    return { segments, routeStartIndex }
-  }
 
   if (adminMatch) {
     const segments = adminMatch[1].split("/")
