@@ -93,15 +93,16 @@ The tax line workflows (`updateTaxLinesWorkflow`, `upsertTaxLinesWorkflow`, and 
 
 This is useful when you need to pass additional information to your tax provider that isn't included in the default cart or order data.
 
-For example, create the file `src/workflows/hooks/tax-context.ts`:
+For example, create the file `src/workflows/hooks/tax-context.ts` with the following content:
 
 ```ts title="src/workflows/hooks/tax-context.ts"
 import { updateTaxLinesWorkflow } from "@medusajs/medusa/core-flows"
+import { Modules } from "@medusajs/framework/utils"
 
 updateTaxLinesWorkflow.hooks.setTaxLineContext(
   async ({ cart, items, shipping_methods }, { container }) => {
     // Add custom logic to determine tax context
-    const customerModule = container.resolve("customerModuleService")
+    const customerModule = container.resolve(Modules.CUSTOMER)
     const customer = await customerModule.retrieveCustomer(cart.customer_id)
     
     return {

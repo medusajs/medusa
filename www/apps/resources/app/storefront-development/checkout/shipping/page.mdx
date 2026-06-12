@@ -300,7 +300,7 @@ In the example above, you:
 
 <Note>
 
-Multiple shipping methods support is available since Medusa [v2.15.6](https://github.com/medusajs/medusa/releases/tag/v2.15.6).
+Multiple shipping methods support is available since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
 
 </Note>
 
@@ -312,53 +312,26 @@ This is useful for scenarios where:
 - Customers want to split their order across multiple carriers
 - Different fulfillment providers handle different product types
 
-<CodeTabs group="store-request">
-  <CodeTab label="React" value="react">
-
-  ```tsx
-  // Add multiple shipping methods
-  sdk.store.cart.addShippingMethod(cart.id, [
-    {
-      option_id: "standard_shipping_option",
-      data: {
-        carrier: "fedex",
-      },
+```tsx
+// Add multiple shipping methods
+sdk.store.cart.addShippingMethod(cart.id, [
+  {
+    option_id: "standard_shipping_option",
+    data: {
+      carrier: "fedex",
     },
-    {
-      option_id: "express_shipping_option", 
-      data: {
-        carrier: "ups",
-      },
+  },
+  {
+    option_id: "express_shipping_option", 
+    data: {
+      carrier: "ups",
     },
-  ])
-  .then(({ cart: updatedCart }) => {
-    setCart(updatedCart)
-  })
-  ```
-
-  </CodeTab>
-  <CodeTab label="JS SDK" value="js-sdk">
-
-  ```ts
-  // Add multiple shipping methods
-  await sdk.store.cart.addShippingMethod(cartId, [
-    {
-      option_id: "standard_shipping_option",
-      data: {
-        carrier: "fedex",
-      },
-    },
-    {
-      option_id: "express_shipping_option",
-      data: {
-        carrier: "ups",  
-      },
-    },
-  ])
-  ```
-
-  </CodeTab>
-</CodeTabs>
+  },
+])
+.then(({ cart: updatedCart }) => {
+  // handle updated cart
+})
+```
 
 When adding multiple shipping methods, Medusa automatically:
 

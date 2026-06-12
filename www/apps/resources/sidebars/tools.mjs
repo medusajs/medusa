@@ -44,11 +44,6 @@ export const toolsSidebar = [
         path: "/medusa-oas-cli",
         title: "medusa-oas-cli",
       },
-      {
-        type: "link",
-        path: "/medusa-eslint-plugin",
-        title: "Medusa ESLint Plugin",
-      },
     ],
   },
   {

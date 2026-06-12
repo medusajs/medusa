@@ -1152,10 +1152,6 @@ export const filesMap = [
     "pathname": "/medusa-container-resources"
   },
   {
-    "filePath": "/www/apps/resources/app/medusa-eslint-plugin/page.mdx",
-    "pathname": "/medusa-eslint-plugin"
-  },
-  {
     "filePath": "/www/apps/resources/app/medusa-workflows-reference/page.mdx",
     "pathname": "/medusa-workflows-reference"
   },
