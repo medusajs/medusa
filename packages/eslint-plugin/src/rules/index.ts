@@ -43,6 +43,7 @@ import { rule as pricesInMajorUnits } from "./prices-in-major-units"
 import { rule as stepIdKebabCase } from "./step-id-kebab-case"
 import { rule as stepMustReturnStepResponse } from "./step-must-return-step-response"
 import { rule as uiRouteFileNamePageTsx } from "./ui-route-file-name-page-tsx"
+import { rule as uiRouteMustHaveDefaultExport } from "./ui-route-must-have-default-export"
 import { rule as workflowIdMatchesExportOrFilename } from "./workflow-id-matches-export-or-filename"
 import { rule as workflowMustReturnWorkflowResponse } from "./workflow-must-return-workflow-response"
 import { rule as widgetMustExportConfig } from "./widget-must-export-config"
@@ -97,6 +98,7 @@ export const rules = {
   "step-id-kebab-case": stepIdKebabCase,
   "step-must-return-step-response": stepMustReturnStepResponse,
   "ui-route-file-name-page-tsx": uiRouteFileNamePageTsx,
+  "ui-route-must-have-default-export": uiRouteMustHaveDefaultExport,
   "workflow-id-matches-export-or-filename": workflowIdMatchesExportOrFilename,
   "workflow-must-return-workflow-response": workflowMustReturnWorkflowResponse,
   "widget-must-export-config": widgetMustExportConfig,
