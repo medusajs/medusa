@@ -66,9 +66,23 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
   protected stripe_: Stripe
   protected container_: Record<string, unknown>
 
+  // All Stripe provider variants share the same options, so warn only once
+  // even though the loader validates each registered service.
+  protected static hasWarnedMissingWebhookSecret = false
+
   static validateOptions(options: StripeOptions): void {
     if (!isDefined(options.apiKey)) {
       throw new Error("Required option `apiKey` is missing in Stripe plugin")
+    }
+
+    if (
+      !isDefined(options.webhookSecret) &&
+      !StripeBase.hasWarnedMissingWebhookSecret
+    ) {
+      StripeBase.hasWarnedMissingWebhookSecret = true
+      console.warn(
+        "Option `webhookSecret` is missing in Stripe plugin. Webhook signature verification will fail, so webhook-dependent payment flows (e.g. 3D Secure, Klarna/Affirm redirects, async capture) will not be able to update orders, leaving them pending after successful charges. Set `webhookSecret` if you rely on Stripe webhooks."
+      )
     }
   }
 
