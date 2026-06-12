@@ -1,3 +1,9 @@
+/**
+ * Type definition for items that contain variant information with shipping profile data.
+ * Used to type items when filtering by shipping profile.
+ * 
+ * @since 2.15.6
+ */
 type ItemWithShippingProfile = {
   variant?:
     | {
@@ -15,6 +21,12 @@ type ItemWithShippingProfile = {
  * Items with no linked shipping profile are excluded (unprofiled products
  * aren't shippable in Medusa's link-module model). A falsy `shippingProfileId`
  * returns `[]` rather than the full list to fail closed.
+ * 
+ * @param items - Array of items to filter, each potentially containing variant and shipping profile information
+ * @param shippingProfileId - The shipping profile ID to filter by
+ * @returns Filtered array of items that match the specified shipping profile ID
+ * 
+ * @since 2.15.6
  */
 export const filterCartItemsByShippingProfile = <T extends ItemWithShippingProfile>(
   items: T[] | undefined | null,
