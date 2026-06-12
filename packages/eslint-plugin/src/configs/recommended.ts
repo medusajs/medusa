@@ -136,6 +136,15 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
     },
     {
       files: [
+        "src/admin/widgets/**/*.{tsx,jsx}",
+        "**/admin/widgets/**/*.{tsx,jsx}",
+      ],
+      rules: {
+        [ruleId("widget-must-have-default-export")]: "error",
+      },
+    },
+    {
+      files: [
         "src/links/**/*.{ts,tsx,js,mjs,cjs}",
         "**/src/links/**/*.{ts,tsx,js,mjs,cjs}",
       ],
