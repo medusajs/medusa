@@ -159,6 +159,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         "**/admin/routes/**/page.{tsx,jsx}",
       ],
       rules: {
+        [ruleId("ui-route-config-via-define-route-config")]: "warn",
         [ruleId("ui-route-must-have-default-export")]: "error",
       },
     },

@@ -34,3 +34,15 @@ export function isAdminComponentFile(filename: string | undefined): boolean {
   if (!filename || filename.startsWith("<")) return false
   return isAdminWidgetFile(filename) || isAdminUiRoutePageFile(filename)
 }
+
+/**
+ * True when `filename` sits under a dynamic route segment — any path segment
+ * wrapped in brackets (`[id]`, `[...slug]`, `[[id]]`). Dynamic UI routes aren't
+ * added to the sidebar, so route `config` doesn't apply to them.
+ */
+export function isDynamicUiRoutePath(filename: string | undefined): boolean {
+  if (!filename) return false
+  return toPosix(filename)
+    .split("/")
+    .some((segment) => /^\[.+\]$/.test(segment))
+}
