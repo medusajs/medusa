@@ -39,11 +39,11 @@
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build"
   },
   "dependencies": {
-    "@mikro-orm/cli": "6.6.12",
-    "@mikro-orm/core": "6.6.12",
-    "@mikro-orm/knex": "6.6.12",
-    "@mikro-orm/migrations": "6.6.12",
-    "@mikro-orm/postgresql": "6.6.12",
+    "@mikro-orm/cli": "6.6.14",
+    "@mikro-orm/core": "6.6.14",
+    "@mikro-orm/knex": "6.6.14",
+    "@mikro-orm/migrations": "6.6.14",
+    "@mikro-orm/postgresql": "6.6.14",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/instrumentation-pg": "^0.52.0",
     "@opentelemetry/resources": "^2.0.0",

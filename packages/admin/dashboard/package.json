@@ -5,7 +5,7 @@
     "typecheck": "tsgo --noEmit -p tsconfig.typecheck.json",
     "generate:static": "node ./scripts/generate-currencies.js && prettier --write ./src/lib/currencies.ts",
     "dev": "../../../node_modules/.bin/vite",
-    "build": "yarn typecheck && yarn run -T tsup && node ./scripts/generate-types.js",
+    "build": "yarn typecheck && yarn run -T tsup",
     "build:preview": "../../../node_modules/.bin/vite build",
     "preview": "../../../node_modules/.bin/vite preview",
     "test": "../../../node_modules/.bin/vitest --run",
@@ -21,6 +21,16 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/app.mjs",
       "require": "./dist/app.js"
+    },
+    "./components": {
+      "types": "./dist/components.d.ts",
+      "import": "./dist/components.mjs",
+      "require": "./dist/components.js"
+    },
+    "./hooks": {
+      "types": "./dist/hooks.d.ts",
+      "import": "./dist/hooks.mjs",
+      "require": "./dist/hooks.js"
     },
     "./css": {
       "import": "./dist/app.css",
@@ -77,7 +87,7 @@
     "react-hook-form": "7.49.1",
     "react-i18next": "13.5.0",
     "react-jwt": "^1.2.0",
-    "react-router-dom": "^6.30.4",
+    "react-router-dom": "6.30.4",
     "zod": "4.2.0"
   },
   "devDependencies": {

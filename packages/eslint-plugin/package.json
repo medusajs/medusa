@@ -1,0 +1,57 @@
+{
+  "name": "@medusajs/eslint-plugin",
+  "version": "2.15.5",
+  "description": "Official ESLint plugin for Medusa projects. Enforces Medusa's framework conventions across API routes, modules, workflows, subscribers, jobs, admin extensions, and module links.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/eslint-plugin"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./configs/recommended": "./dist/configs/recommended.js",
+    "./configs/strict": "./dist/configs/strict.js"
+  },
+  "scripts": {
+    "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
+    "watch": "yarn run -T tsc --build --watch",
+    "test": "../../node_modules/.bin/jest --silent=false --bail --forceExit --testPathPattern=src"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/*.spec.*",
+    "!dist/**/*.test.*"
+  ],
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "medusa",
+    "medusajs"
+  ],
+  "author": "Medusa",
+  "license": "MIT",
+  "peerDependencies": {
+    "eslint": "^9.0.0",
+    "typescript": ">=4.8.0"
+  },
+  "dependencies": {
+    "@typescript-eslint/parser": "^8.0.0",
+    "@typescript-eslint/utils": "^8.0.0"
+  },
+  "devDependencies": {
+    "@types/eslint": "^9.6.1",
+    "@typescript-eslint/rule-tester": "^8.0.0",
+    "eslint": "^9.0.0",
+    "typescript": "^5.4.0"
+  }
+}
