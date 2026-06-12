@@ -465,12 +465,19 @@ The Notification Module accepts a `providers` option, which is an array of Notif
 
 To register the Slack Notification Module Provider, you add an object to the `providers` array with the following properties:
 
-- `resolve`: The NPM package or path to the module provider. In this case, it's the path to the `src/modules/slack` directory.
+- `resolve`: The path to the **module directory** (like `./src/modules/slack`), not to the service file. Medusa's module loader looks for an `index.ts` file in this directory that exports the module definition.
 - `id`: The ID of the module provider. The Notification Module Provider is then registered with the ID `np_{identifier}_{id}`, where:
     - `{identifier}`: The identifier static property defined in the Module Provider's service, which is `slack` in this case.
     - `{id}`: The ID set in this configuration, which is also `slack` in this case.
 - `options`: The options to pass to the module provider. These are the options you defined in the `Options` interface of the module provider's service.
     - You must also set a `channel` option that indicates the channel this provider is used to send notifications.
+
+<Note title="Important: Module Provider Resolve Path">
+
+The `resolve` path must point to the **module directory**, not directly to a service file. If you point to `./src/modules/slack/service`, you'll get the error:
+> "doesn't seem to have a main service exported -- make sure your module has a default export of a service."
+
+</Note>
 
 ### h. Set Options as Environment Variables
 

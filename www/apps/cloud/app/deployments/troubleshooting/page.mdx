@@ -71,6 +71,99 @@ You can replace `npm run postbuild` with the appropriate command for your packag
 
 ---
 
+## Out of Memory (OOM) Build Failures
+
+Exit code 137 indicates that your build process was killed by the system due to memory exhaustion. This commonly occurs with TypeScript-heavy monorepos during compilation.
+
+### Diagnosing Exit Code 137
+
+Check your build logs for these indicators:
+
+- **Exit code 137** at the end of the build process
+- **"Killed"** message during TypeScript compilation
+- Build terminating unexpectedly without clear error messages
+- Memory usage spikes in monitoring (if available)
+
+### Why Medusa Builds Are Memory-Intensive
+
+Medusa builds consume significant memory because:
+
+- **Large TypeScript codebase**: Type checking requires keeping the entire project in memory
+- **Multiple modules**: Each commerce module needs compilation and type checking
+- **Complex dependency graph**: Medusa's interconnected modules increase memory overhead
+- **Concurrent processes**: Build tooling may run multiple compilation tasks simultaneously
+
+### Remediation Strategies
+
+1. **Increase build memory allocation** (see [Node.js Heap Tuning](#nodejs-heap-tuning-for-large-builds) section)
+
+2. **Optimize build configuration**:
+   ```json title="tsconfig.json"
+   {
+     "compilerOptions": {
+       "incremental": true,
+       "tsBuildInfoFile": ".tsbuildinfo"
+     }
+   }
+   ```
+
+3. **Check for memory-intensive dependencies**:
+   - Review your `package.json` for large or duplicate packages
+   - Run `npm ls` to identify circular dependencies
+   - Consider using `npm-check-duplicates` to find redundant packages
+
+4. **Adjust monorepo structure**:
+   - Split large modules into smaller ones
+   - Use `tsconfig.json` `references` for better compilation isolation
+   - Implement lazy loading where possible
+
+---
+
+## Node.js Heap Tuning for Large Builds
+
+Large monorepos (especially TypeScript-heavy backends like Medusa) can run out of memory during builds, resulting in exit code 134 or "Reached heap limit" errors.
+
+### Identifying Heap Issues
+
+Look for these signs in your build logs:
+
+- Exit code 134
+- Messages like "Reached heap limit Allocation failed - JavaScript heap out of memory"
+- Build process terminates unexpectedly during TypeScript compilation
+
+### Increasing Node.js Heap Size
+
+Add the `NODE_OPTIONS` environment variable to increase the heap size:
+
+```bash
+NODE_OPTIONS=--max-old-space-size=4096
+```
+
+Or modify your `package.json` build script:
+
+```json title="package.json"
+{
+  "scripts": {
+    "build": "NODE_OPTIONS=--max-old-space-size=4096 medusa build"
+  }
+}
+```
+
+### Recommended Heap Sizes
+
+- **Small projects** (under 20 modules): 2048MB (`--max-old-space-size=2048`)
+- **Medium projects** (20-50 modules): 4096MB (`--max-old-space-size=4096`)
+- **Large projects** (50+ modules): 6144MB or 8192MB
+
+### Alternative Optimization Strategies
+
+- **Enable Turbo caching**: Add `turbo.json` to cache build outputs across deployments
+- **Split builds**: Use incremental builds where possible
+- **Remove unused dependencies**: Audit your `package.json` for packages you no longer need
+- **Optimize TypeScript configuration**: Use stricter `include`/`exclude` patterns in `tsconfig.json`
+
+---
+
 ## Troubleshooting Other Cloud Deployment Issues
 
 To troubleshoot other Cloud deployment issues, you can:
