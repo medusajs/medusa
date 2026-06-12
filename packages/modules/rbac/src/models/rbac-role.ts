@@ -14,6 +14,12 @@ const RbacRole = model
     parents: model.hasMany(() => RbacRoleParent, {
       mappedBy: "role",
     }),
+    children: model.hasMany(() => RbacRoleParent, {
+      mappedBy: "parent",
+    }),
+  })
+  .cascades({
+    delete: ["policies", "parents", "children"],
   })
   .indexes([
     {

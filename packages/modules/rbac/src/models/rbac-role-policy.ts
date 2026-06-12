@@ -5,7 +5,7 @@ import RbacRole from "./rbac-role"
 const RbacRolePolicy = model
   .define("rbac_role_policy", {
     id: model.id({ prefix: "rlpl" }).primaryKey(),
-    role: model.belongsTo(() => RbacRole),
+    role: model.belongsTo(() => RbacRole, { mappedBy: "policies" }),
     policy: model.belongsTo(() => RbacPolicy),
     metadata: model.json().nullable(),
   })
