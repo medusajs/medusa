@@ -26148,6 +26148,35 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
 Your hook handler then receives the passed data in the `additional_data` object.
 
+***
+
+## Hooks with Return Values
+
+Some workflow hooks expect you to return data from the hook handler. This data is then used in subsequent steps of the workflow.
+
+For example, the `setTaxLineContext` hook in tax-related workflows allows you to return custom context data that's passed to the tax provider during tax calculations:
+
+```ts title="src/workflows/hooks/tax-context.ts" highlights={taxContextHighlights}
+import { updateTaxLinesWorkflow } from "@medusajs/medusa/core-flows"
+
+updateTaxLinesWorkflow.hooks.setTaxLineContext(
+  async ({ cart, items, shipping_methods }, { container }) => {
+    // Add custom logic to determine tax context
+    const customerService = container.resolve("customerService")
+    const customer = await customerService.retrieve(cart.customer_id)
+    
+    return {
+      customer_type: customer.metadata?.type || "regular",
+      loyalty_tier: customer.metadata?.loyalty_tier || "bronze",
+    }
+  }
+)
+```
+
+The returned object from the hook handler is passed as `additional_context` to the tax provider, allowing you to customize tax calculations based on your business requirements.
+
+The `setTaxLineContext` hook is available in the `updateTaxLinesWorkflow`, `upsertTaxLinesWorkflow`, and `updateOrderTaxLinesWorkflow` workflows.
+
 
 # Workflow Timeout
 
@@ -34382,6 +34411,38 @@ await cartModuleService.setLineItemTaxLines(
   taxLines.filter((line) => "shipping_line_id" in line)
 )
 ```
+
+***
+
+## Customize Tax Context with Hooks
+
+The tax line workflows (`updateTaxLinesWorkflow`, `upsertTaxLinesWorkflow`, and `updateOrderTaxLinesWorkflow`) expose a `setTaxLineContext` hook that allows you to add custom context to tax calculations.
+
+This is useful when you need to pass additional information to your tax provider that isn't included in the default cart or order data.
+
+For example, create the file `src/workflows/hooks/tax-context.ts`:
+
+```ts title="src/workflows/hooks/tax-context.ts"
+import { updateTaxLinesWorkflow } from "@medusajs/medusa/core-flows"
+
+updateTaxLinesWorkflow.hooks.setTaxLineContext(
+  async ({ cart, items, shipping_methods }, { container }) => {
+    // Add custom logic to determine tax context
+    const customerModule = container.resolve("customerModuleService")
+    const customer = await customerModule.retrieveCustomer(cart.customer_id)
+    
+    return {
+      customer_type: customer.metadata?.type || "regular",
+      loyalty_tier: customer.metadata?.loyalty_tier || "bronze",
+      special_exemption: customer.metadata?.tax_exempt || false,
+    }
+  }
+)
+```
+
+The returned object is passed as `additional_context` to the [tax provider's `getTaxLines` method](undefined/references/tax/ITaxProvider/methods/tax.ITaxProvider.getTaxLines), allowing you to implement custom tax logic based on this context.
+
+Learn more about workflow hooks in the [Workflow Hooks guide](undefined/docs/learn/fundamentals/workflows/workflow-hooks).
 
 
 # Links between Currency Module and Other Modules

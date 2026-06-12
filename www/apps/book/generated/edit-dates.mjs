@@ -5,7 +5,7 @@ export const generatedEditDates = {
   "app/learn/page.mdx": "2026-04-29T12:58:00.989Z",
   "app/learn/fundamentals/modules/commerce-modules/page.mdx": "2025-04-17T08:51:32.723Z",
   "app/learn/fundamentals/workflows/retry-failed-steps/page.mdx": "2025-09-15T09:38:18.299Z",
-  "app/learn/fundamentals/workflows/workflow-hooks/page.mdx": "2025-09-16T15:52:33.602Z",
+  "app/learn/fundamentals/workflows/workflow-hooks/page.mdx": "2026-06-12T06:14:13.449Z",
   "app/learn/debugging-and-testing/logging/page.mdx": "2025-08-28T15:31:57.879Z",
   "app/learn/storefront-development/page.mdx": "2025-09-16T15:57:42.189Z",
   "app/learn/fundamentals/page.mdx": "2024-07-04T17:26:03+03:00",
