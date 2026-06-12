@@ -1209,6 +1209,13 @@ const OrderEditBody = ({ edit }: { edit: AdminOrderChange }) => {
           }
         />
       )}
+      {edit.internal_note && (
+        <div className="bg-ui-bg-component shadow-borders-base mt-2 w-fit rounded-r-2xl rounded-bl-md rounded-tl-xl px-3 py-1.5">
+          <Text size="xsmall" className="text-ui-fg-subtle">
+            {edit.internal_note}
+          </Text>
+        </div>
+      )}
       {userId && (
         <div className="flex items-center gap-x-2 text-sm">
           {t("fields.by")} <By id={userId} />
