@@ -22,6 +22,7 @@ import { useQueryGraphStep, validatePresenceOfStep } from "../../common"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import { calculateShippingOptionsPricesStep } from "../../fulfillment"
 import { cartFieldsForCalculateShippingOptionsPrices } from "../utils/fields"
+import { filterCartItemsByShippingProfile } from "../utils/filter-items-by-shipping-profile"
 import { shippingOptionsContextResult } from "../utils/schemas"
 import { getTranslatedShippingOptionsStep } from "../../common/steps/get-translated-shipping-option"
 
@@ -344,6 +345,10 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
               optionData: so.data,
               context: {
                 ...cart,
+                items: filterCartItemsByShippingProfile(
+                  cart.items,
+                  so.shipping_profile_id
+                ),
                 from_location:
                   fulfillmentSetLocationMap[so.service_zone.fulfillment_set_id],
               },

@@ -4,6 +4,7 @@ import type {
   ShippingTaxLineDTO,
 } from "@medusajs/framework/types"
 import {
+  createHook,
   createWorkflow,
   transform,
   when,
@@ -14,6 +15,7 @@ import { useQueryGraphStep } from "../../common"
 import { getItemTaxLinesStep } from "../../tax/steps/get-item-tax-lines"
 import { setOrderTaxLinesForItemsStep } from "../steps"
 import { getTranslatedTaxLinesStep } from "../../common/steps/get-translated-tax-lines"
+import { taxLineContextResult } from "../../cart/utils/schemas"
 
 const completeOrderFields = [
   "id",
@@ -184,6 +186,8 @@ export const updateOrderTaxLinesWorkflowId = "update-order-tax-lines"
  * @summary
  *
  * Update the tax lines of items and shipping methods in an order.
+ *
+ * @property hooks.setTaxLineContext - This hook is executed after the order is fetched and before tax lines are calculated. You can consume this hook to add custom context to the tax calculation. The returned object is set as the additional_context property in the getItemTaxLinesStep input.
  */
 export const updateOrderTaxLinesWorkflow = createWorkflow(
   updateOrderTaxLinesWorkflowId,
@@ -231,9 +235,30 @@ export const updateOrderTaxLinesWorkflow = createWorkflow(
       return orderShippingMethods
     })
 
+    const setTaxLineContext = createHook(
+      "setTaxLineContext",
+      {
+        order,
+        items,
+        shipping_methods: shippingMethods,
+      },
+      {
+        resultValidator: taxLineContextResult,
+      }
+    )
+
+    const setTaxLineContextResult = setTaxLineContext.getResult()
+
     const taxLineItems = getItemTaxLinesStep(
       transform(
-        { input, order, items, shippingMethods, isFullOrder },
+        {
+          input,
+          order,
+          items,
+          shippingMethods,
+          isFullOrder,
+          setTaxLineContextResult,
+        },
         (data) => {
           const shippingMethods = data.isFullOrder
             ? data.order.shipping_methods
@@ -250,6 +275,9 @@ export const updateOrderTaxLinesWorkflow = createWorkflow(
             force_tax_calculation: data.input.force_tax_calculation,
             is_return: data.input.is_return ?? false,
             shipping_address: data.input.shipping_address,
+            additional_context: data.setTaxLineContextResult
+              ? data.setTaxLineContextResult
+              : undefined,
           }
         }
       )
@@ -268,9 +296,14 @@ export const updateOrderTaxLinesWorkflow = createWorkflow(
         translatedTaxLines.shippingTaxLines as ShippingTaxLineDTO[],
     })
 
-    return new WorkflowResponse({
-      itemTaxLines: taxLineItems.lineItemTaxLines,
-      shippingTaxLines: taxLineItems.shippingMethodsTaxLines,
-    })
+    return new WorkflowResponse(
+      {
+        itemTaxLines: taxLineItems.lineItemTaxLines,
+        shippingTaxLines: taxLineItems.shippingMethodsTaxLines,
+      },
+      {
+        hooks: [setTaxLineContext],
+      }
+    )
   }
 )

@@ -25,12 +25,14 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       rules: {},
     },
     {
-      files: ["**/*.{ts,tsx}"],
+      files: ["**/*.{ts,js}"],
+      ignores: ["src/admin/**", "**/src/admin/**"],
       rules: {
         [ruleId("no-async-workflow-constructor")]: "error",
         [ruleId("no-conditional-expressions-in-workflow")]: "error",
         [ruleId("no-console-log-in-workflow")]: "warn",
         [ruleId("no-direct-variable-mutation-in-workflow")]: "error",
+        [ruleId("no-duplicate-step-id-in-workflow")]: "error",
         [ruleId("no-if-in-workflow-constructor")]: "error",
         [ruleId("no-loops-in-workflow")]: "error",
         [ruleId("no-new-date-in-workflow")]: "error",
@@ -40,17 +42,46 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("link-create-keys-modules-enum")]: "warn",
         [ruleId("prefer-container-registration-keys-query")]: "warn",
         [ruleId("prefer-link-over-remote-link")]: "warn",
+        [ruleId("prices-in-major-units")]: "warn",
         [ruleId("step-id-kebab-case")]: "warn",
         [ruleId("use-query-context-utility")]: "warn",
         [ruleId("step-must-return-step-response")]: "error",
         [ruleId("workflow-id-matches-export-or-filename")]: "warn",
         [ruleId("workflow-must-return-workflow-response")]: "error",
+        [ruleId("zod-import-source")]: "warn",
       },
     },
     {
       files: ["src/api/**/*.{ts,tsx}", "**/api/**/*.{ts,tsx}"],
       rules: {
+        [ruleId("authenticate-flag-name-and-type")]: "error",
         [ruleId("no-deprecated-remote-query-config")]: "warn",
+        [ruleId("no-service-mutations-in-api-route")]: "warn",
+        [ruleId("route-file-naming")]: "error",
+        [ruleId("route-handler-exports-uppercase")]: "error",
+        [ruleId("route-params-must-be-defined")]: "error",
+      },
+    },
+    {
+      files: [
+        "src/api/**/*.{ts,tsx}",
+        "**/api/**/*.{ts,tsx}",
+        "src/admin/routes/**/*.{ts,tsx}",
+        "**/admin/routes/**/*.{ts,tsx}",
+      ],
+      rules: {
+        [ruleId("route-dynamic-folder-syntax")]: "error",
+      },
+    },
+    {
+      files: [
+        "**/middleware.{ts,js}",
+        "**/middlewares.{ts,js}",
+      ],
+      rules: {
+        [ruleId("middleware-must-call-next")]: "warn",
+        [ruleId("middlewares-file-location-and-name")]: "error",
+        [ruleId("no-trailing-slash-in-route-matcher")]: "warn",
       },
     },
     {
