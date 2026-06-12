@@ -78,12 +78,19 @@ medusaIntegrationTestRunner({
           }),
         ])
 
+        response = await api.get(`/admin/orders?q=2345`, adminHeaders)
+
+        expect(response.data.orders).toHaveLength(0)
+        expect(response.data.orders).toEqual([])
+      })
+
+      it("should search orders by custom_display_id", async () => {
         const customDisplayId = "custom-display-id-1234"
         await dbConnection("order")
           .update({ custom_display_id: customDisplayId })
           .where({ id: order.id })
 
-        response = await api.get(
+        const response = await api.get(
           `/admin/orders?q=${customDisplayId}`,
           adminHeaders
         )
@@ -94,11 +101,6 @@ medusaIntegrationTestRunner({
             id: order.id,
           }),
         ])
-
-        response = await api.get(`/admin/orders?q=2345`, adminHeaders)
-
-        expect(response.data.orders).toHaveLength(0)
-        expect(response.data.orders).toEqual([])
       })
 
       it("should search orders by shipping address", async () => {
