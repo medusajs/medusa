@@ -46,7 +46,9 @@
   "scripts": {
     "build": "medusa plugin:build",
     "dev": "medusa plugin:develop",
-    "prepare": "cross-env NODE_ENV=production yarn run build"
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "link:watch": "medusa plugin:publish && medusa plugin:develop",
+    "watch": "medusa plugin:develop"
   },
   "devDependencies": {
     "@medusajs/admin-sdk": "2.15.5",
