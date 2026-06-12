@@ -51,6 +51,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
     {
       files: ["src/api/**/*.{ts,tsx}", "**/api/**/*.{ts,tsx}"],
       rules: {
+        [ruleId("authenticate-flag-name-and-type")]: "error",
         [ruleId("no-deprecated-remote-query-config")]: "warn",
         [ruleId("route-file-naming")]: "error",
         [ruleId("route-handler-exports-uppercase")]: "error",

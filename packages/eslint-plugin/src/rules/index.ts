@@ -1,4 +1,5 @@
 import type { ESLint } from "eslint"
+import { rule as authenticateFlagNameAndType } from "./authenticate-flag-name-and-type"
 import { rule as dataModelTableNameSnakeCase } from "./data-model-table-name-snake-case"
 import { rule as linkCreateKeysModulesEnum } from "./link-create-keys-modules-enum"
 import { rule as linkNoCrossModuleRelationship } from "./link-no-cross-module-relationship"
@@ -38,6 +39,7 @@ import { rule as workflowIdMatchesExportOrFilename } from "./workflow-id-matches
 import { rule as workflowMustReturnWorkflowResponse } from "./workflow-must-return-workflow-response"
 
 export const rules = {
+  "authenticate-flag-name-and-type": authenticateFlagNameAndType,
   "data-model-table-name-snake-case": dataModelTableNameSnakeCase,
   "link-create-keys-modules-enum": linkCreateKeysModulesEnum,
   "link-no-cross-module-relationship": linkNoCrossModuleRelationship,
