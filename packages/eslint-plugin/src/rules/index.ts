@@ -38,6 +38,7 @@ import { rule as useValidatedBodyOrQuery } from "./use-validated-body-or-query"
 import { rule as noWorkflowCallWithoutContainer } from "./no-workflow-call-without-container"
 import { rule as preferContainerRegistrationKeysQuery } from "./prefer-container-registration-keys-query"
 import { rule as preferLinkOverRemoteLink } from "./prefer-link-over-remote-link"
+import { rule as pricesInMajorUnits } from "./prices-in-major-units"
 import { rule as stepIdKebabCase } from "./step-id-kebab-case"
 import { rule as stepMustReturnStepResponse } from "./step-must-return-step-response"
 import { rule as workflowIdMatchesExportOrFilename } from "./workflow-id-matches-export-or-filename"
@@ -86,6 +87,7 @@ export const rules = {
   "prefer-container-registration-keys-query":
     preferContainerRegistrationKeysQuery,
   "prefer-link-over-remote-link": preferLinkOverRemoteLink,
+  "prices-in-major-units": pricesInMajorUnits,
   "step-id-kebab-case": stepIdKebabCase,
   "step-must-return-step-response": stepMustReturnStepResponse,
   "workflow-id-matches-export-or-filename": workflowIdMatchesExportOrFilename,
