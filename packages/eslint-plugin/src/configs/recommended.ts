@@ -77,6 +77,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       rules: {
         [ruleId("middleware-must-call-next")]: "warn",
         [ruleId("middlewares-file-location-and-name")]: "error",
+        [ruleId("no-trailing-slash-in-route-matcher")]: "warn",
       },
     },
     {

@@ -22,6 +22,7 @@ import { rule as noNonSerializableStepReturn } from "./no-non-serializable-step-
 import { rule as noReservedDefaultPropertiesInModel } from "./no-reserved-default-properties-in-model"
 import { rule as noSpreadInWorkflow } from "./no-spread-in-workflow"
 import { rule as noThrowInTransform } from "./no-throw-in-transform"
+import { rule as noTrailingSlashInRouteMatcher } from "./no-trailing-slash-in-route-matcher"
 import { rule as noTryCatchInWorkflow } from "./no-try-catch-in-workflow"
 import { rule as readOnlyLinkRequiresField } from "./read-only-link-requires-field"
 import { rule as routeDynamicFolderSyntax } from "./route-dynamic-folder-syntax"
@@ -65,6 +66,7 @@ export const rules = {
   "no-reserved-default-properties-in-model": noReservedDefaultPropertiesInModel,
   "no-spread-in-workflow": noSpreadInWorkflow,
   "no-throw-in-transform": noThrowInTransform,
+  "no-trailing-slash-in-route-matcher": noTrailingSlashInRouteMatcher,
   "no-try-catch-in-workflow": noTryCatchInWorkflow,
   "read-only-link-requires-field": readOnlyLinkRequiresField,
   "route-dynamic-folder-syntax": routeDynamicFolderSyntax,
