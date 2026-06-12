@@ -123,6 +123,18 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       },
     },
     {
+      // Whole admin-dashboard tree. Requires the `src/admin` segment pair so it
+      // does not match API admin routes (`src/api/admin/**`), which are server
+      // code where `process.env` is legitimate.
+      files: [
+        "src/admin/**/*.{ts,tsx,js,jsx}",
+        "**/src/admin/**/*.{ts,tsx,js,jsx}",
+      ],
+      rules: {
+        [ruleId("admin-env-vars-import-meta")]: "warn",
+      },
+    },
+    {
       files: [
         "src/admin/widgets/**/*.{tsx,jsx}",
         "**/admin/widgets/**/*.{tsx,jsx}",

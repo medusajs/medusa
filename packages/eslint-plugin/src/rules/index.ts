@@ -1,5 +1,6 @@
 import type { ESLint } from "eslint"
 import { rule as adminComponentMustBeArrowFunction } from "./admin-component-must-be-arrow-function"
+import { rule as adminEnvVarsImportMeta } from "./admin-env-vars-import-meta"
 import { rule as authenticateFlagNameAndType } from "./authenticate-flag-name-and-type"
 import { rule as dataModelTableNameSnakeCase } from "./data-model-table-name-snake-case"
 import { rule as linkCreateKeysModulesEnum } from "./link-create-keys-modules-enum"
@@ -55,6 +56,7 @@ import { rule as zodImportSource } from "./zod-import-source"
 
 export const rules = {
   "admin-component-must-be-arrow-function": adminComponentMustBeArrowFunction,
+  "admin-env-vars-import-meta": adminEnvVarsImportMeta,
   "authenticate-flag-name-and-type": authenticateFlagNameAndType,
   "data-model-table-name-snake-case": dataModelTableNameSnakeCase,
   "link-create-keys-modules-enum": linkCreateKeysModulesEnum,

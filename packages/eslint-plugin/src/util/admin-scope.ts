@@ -1,9 +1,21 @@
 import { toPosix } from "./filename"
 
+const ADMIN_FILE_RE = /(?:^|\/)src\/admin\//
 const WIDGET_RE = /(?:^|\/)src\/admin\/widgets\/[^/]+\.(?:tsx|jsx)$/
 const WIDGET_RE_NO_SRC = /(?:^|\/)admin\/widgets\/[^/]+\.(?:tsx|jsx)$/
 const UI_ROUTE_RE = /(?:^|\/)src\/admin\/routes\/.+\/page\.(?:tsx|jsx)$/
 const UI_ROUTE_RE_NO_SRC = /(?:^|\/)admin\/routes\/.+\/page\.(?:tsx|jsx)$/
+
+/**
+ * True when `filename` lives anywhere under the admin dashboard tree
+ * (`src/admin/**`). Deliberately requires the `src/admin` segment pair so it
+ * does NOT match API admin routes (`src/api/admin/**`), which are server code
+ * where `process.env` is legitimate. Bails on synthetic / empty filenames.
+ */
+export function isAdminFile(filename: string | undefined): boolean {
+  if (!filename || filename.startsWith("<")) return false
+  return ADMIN_FILE_RE.test(toPosix(filename))
+}
 
 /**
  * True when `filename` is an admin widget file —
