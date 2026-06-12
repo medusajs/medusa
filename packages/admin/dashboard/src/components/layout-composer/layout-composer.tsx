@@ -5,14 +5,12 @@ import { CORE_CONTENT_ORDER } from "./constants"
 import type { LayoutSectionRegistry } from "./types"
 
 type Layouts = keyof LayoutSectionRegistry
-type SectionNameFor<TLayoutId extends Layouts> = LayoutSectionRegistry[TLayoutId]
+type SectionNameFor<TLayoutId extends Layouts> =
+  LayoutSectionRegistry[TLayoutId]
 
-type LayoutComposerProps<
-  TLayoutId extends Layouts,
-  TData
-> = {
+type LayoutComposerProps<TLayoutId extends Layouts, TData> = {
   /**
-   * The prefix used to derive widget injection zones, typically corresponds to the page. 
+   * The prefix used to derive widget injection zones, typically corresponds to the page.
    * E.g. `"login"`, `"product.list"`, `"product.details"` etc.
    */
   widgetsZonePrefix: string
@@ -31,16 +29,13 @@ type LayoutComposerProps<
   data?: TData
   /**
    * Whether to render an `Outlet` after the layout, used to render modals such as drawers and dialogs.
-   * 
+   *
    * @default true
    */
   hasOutlet?: boolean
 }
 
-export const LayoutComposer = <
-  TLayoutId extends Layouts,
-  TData
->({
+export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   widgetsZonePrefix,
   preferredLayoutId,
   sections,
@@ -53,7 +48,10 @@ export const LayoutComposer = <
   const layoutId = preferredLayoutId
 
   const layout = getLayout(layoutId)
-  const widgetsBySection = getWidgetsForSections(widgetsZonePrefix, layout?.sections?.map((s) => s.id) ?? [])
+  const widgetsBySection = getWidgetsForSections(
+    widgetsZonePrefix,
+    layout?.sections?.map((s) => s.id) ?? []
+  )
   const widgetProps = { data }
 
   const renderedSections: Record<string, ReactNode> = {}

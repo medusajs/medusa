@@ -493,15 +493,13 @@ export class DashboardApp {
 
       let order: number
 
-      if(suffix.endsWith("before")){
+      if (suffix.endsWith("before")) {
         order = BEFORE_ORDER
         suffix = suffix.replace(/before$/, "")
-      }
-      else if(suffix.endsWith("after")){
+      } else if (suffix.endsWith("after")) {
         order = AFTER_ORDER
         suffix = suffix.replace(/after$/, "")
-      }
-      else {
+      } else {
         order = AFTER_ORDER
       }
 

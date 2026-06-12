@@ -1,21 +1,21 @@
-import { useParams } from "react-router-dom";
-import { LayoutComposer } from "@medusajs/dashboard/components";
-import { useStoreCreditAccount } from "../../../hooks/api/store-credit-accounts";
-import StoreCreditAccountBalanceSection from "./components/store-credit-account-balance-section";
-import StoreCreditAccountDetailsSection from "./components/store-credit-account-details-section";
-import StoreCreditAccountCustomerSection from "./components/store-credit-account-customer-section";
-import { TransactionsTable } from "./components/transactions-table/table";
-import StoreCreditAccountCodeSection from "./components/store-credit-account-code";
+import { useParams } from "react-router-dom"
+import { LayoutComposer } from "@medusajs/dashboard/components"
+import { useStoreCreditAccount } from "../../../hooks/api/store-credit-accounts"
+import StoreCreditAccountBalanceSection from "./components/store-credit-account-balance-section"
+import StoreCreditAccountDetailsSection from "./components/store-credit-account-details-section"
+import StoreCreditAccountCustomerSection from "./components/store-credit-account-customer-section"
+import { TransactionsTable } from "./components/transactions-table/table"
+import StoreCreditAccountCodeSection from "./components/store-credit-account-code"
 
 const StoreCreditAccountPage = () => {
-  const { id } = useParams();
+  const { id } = useParams()
 
   const { store_credit_account: storeCreditAccount } = useStoreCreditAccount(
     id!
-  );
+  )
 
   if (!storeCreditAccount) {
-    return;
+    return
   }
 
   return (
@@ -46,7 +46,7 @@ const StoreCreditAccountPage = () => {
         ),
       }}
     />
-  );
-};
+  )
+}
 
-export default StoreCreditAccountPage;
+export default StoreCreditAccountPage

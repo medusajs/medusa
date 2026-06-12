@@ -1,15 +1,14 @@
 import type { ComponentType, ReactNode } from "react"
 import type { CORE_LAYOUT_IDS } from "./constants"
 
-export type CoreLayoutId = (typeof CORE_LAYOUT_IDS)[keyof typeof CORE_LAYOUT_IDS]
-
+export type CoreLayoutId =
+  (typeof CORE_LAYOUT_IDS)[keyof typeof CORE_LAYOUT_IDS]
 
 export type WidgetRenderEntry = {
   order: number
   Component: ComponentType
 }
 export type SectionWidgetMap = Record<string, WidgetRenderEntry[]>
-
 
 export type LayoutDefinition = {
   id: string

@@ -1,7 +1,7 @@
-import { defineRouteConfig } from "@medusajs/admin-sdk";
-import { LayoutComposer } from "@medusajs/dashboard/components";
-import { Toaster } from "@medusajs/ui";
-import { GiftCardProductsTable } from "./components/gift-card-products-table/gift-card-products-table";
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+import { LayoutComposer } from "@medusajs/dashboard/components"
+import { Toaster } from "@medusajs/ui"
+import { GiftCardProductsTable } from "./components/gift-card-products-table/gift-card-products-table"
 
 const GiftCardProductsPage = () => {
   return (
@@ -16,11 +16,11 @@ const GiftCardProductsPage = () => {
 
       <Toaster />
     </>
-  );
-};
+  )
+}
 
 export const config = defineRouteConfig({
   label: "Gift Card Products",
-});
+})
 
-export default GiftCardProductsPage;
+export default GiftCardProductsPage

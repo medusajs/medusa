@@ -6,7 +6,10 @@ import {
   InjectionZone,
   NestedRoutePosition,
 } from "@medusajs/admin-shared"
-import { LayoutDefinition, SectionWidgetMap } from "../components/layout-composer"
+import {
+  LayoutDefinition,
+  SectionWidgetMap,
+} from "../components/layout-composer"
 import { ComponentType } from "react"
 import { LoaderFunction } from "react-router-dom"
 import { z } from "zod"
@@ -149,10 +152,7 @@ export type ExtensionApi = {
   getMenu: (path: MenuItemKey) => INavItem[]
   getWidgets: (zone: InjectionZone) => ComponentType[]
   getLayout: (layoutId: string) => LayoutDefinition | undefined
-  getWidgetsForSections: (
-    route: string,
-    sections: string[]
-  ) => SectionWidgetMap
+  getWidgetsForSections: (route: string, sections: string[]) => SectionWidgetMap
   getFormFields: (
     model: CustomFieldModel,
     zone: CustomFieldFormZone,
