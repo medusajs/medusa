@@ -55,6 +55,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       rules: {
         [ruleId("authenticate-flag-name-and-type")]: "error",
         [ruleId("no-deprecated-remote-query-config")]: "warn",
+        [ruleId("no-service-mutations-in-api-route")]: "warn",
         [ruleId("route-file-naming")]: "error",
         [ruleId("route-handler-exports-uppercase")]: "error",
         [ruleId("route-params-must-be-defined")]: "error",

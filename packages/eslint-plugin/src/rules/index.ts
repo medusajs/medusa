@@ -20,6 +20,7 @@ import { rule as noLoopsInWorkflow } from "./no-loops-in-workflow"
 import { rule as noNewDateInWorkflow } from "./no-new-date-in-workflow"
 import { rule as noNonSerializableStepReturn } from "./no-non-serializable-step-return"
 import { rule as noReservedDefaultPropertiesInModel } from "./no-reserved-default-properties-in-model"
+import { rule as noServiceMutationsInApiRoute } from "./no-service-mutations-in-api-route"
 import { rule as noSpreadInWorkflow } from "./no-spread-in-workflow"
 import { rule as noThrowInTransform } from "./no-throw-in-transform"
 import { rule as noTrailingSlashInRouteMatcher } from "./no-trailing-slash-in-route-matcher"
@@ -66,6 +67,7 @@ export const rules = {
   "no-new-date-in-workflow": noNewDateInWorkflow,
   "no-non-serializable-step-return": noNonSerializableStepReturn,
   "no-reserved-default-properties-in-model": noReservedDefaultPropertiesInModel,
+  "no-service-mutations-in-api-route": noServiceMutationsInApiRoute,
   "no-spread-in-workflow": noSpreadInWorkflow,
   "no-throw-in-transform": noThrowInTransform,
   "no-trailing-slash-in-route-matcher": noTrailingSlashInRouteMatcher,
