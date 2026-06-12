@@ -1,7 +1,7 @@
 import * as path from "path"
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
-import { toPosix } from "../../util/filename"
+import { isUnderApiDir } from "../../util/filename"
 
 type MessageIds = "lowercaseHandler"
 
@@ -16,11 +16,6 @@ const LOWERCASE_HTTP_METHODS = new Set([
 ])
 
 const ROUTE_FILE_BASENAMES = new Set(["route.ts", "route.js"])
-
-function isUnderApi(filename: string): boolean {
-  const posix = toPosix(filename)
-  return /(^|\/)src\/api\//.test(posix) || /(^|\/)api\//.test(posix)
-}
 
 export const rule = createRule<[], MessageIds>({
   name: "route-handler-exports-uppercase",
@@ -41,7 +36,7 @@ export const rule = createRule<[], MessageIds>({
   create(context) {
     const filename = context.filename
     if (!filename || filename.startsWith("<")) return {}
-    if (!isUnderApi(filename)) return {}
+    if (!isUnderApiDir(filename)) return {}
     if (!ROUTE_FILE_BASENAMES.has(path.basename(filename))) return {}
 
     function reportIdentifier(id: TSESTree.Identifier) {

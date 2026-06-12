@@ -70,6 +70,15 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       },
     },
     {
+      files: [
+        "**/middleware.{ts,js}",
+        "**/middlewares.{ts,js}",
+      ],
+      rules: {
+        [ruleId("middlewares-file-location-and-name")]: "error",
+      },
+    },
+    {
       files: ["src/modules/**/*.{ts,tsx}", "**/modules/**/*.{ts,tsx}"],
       rules: {
         [ruleId("medusa-context-on-context-param")]: "warn",

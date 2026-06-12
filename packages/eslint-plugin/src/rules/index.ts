@@ -14,6 +14,7 @@ import { rule as noDirectVariableMutationInWorkflow } from "./no-direct-variable
 import { rule as noDuplicateStepIdInWorkflow } from "./no-duplicate-step-id-in-workflow"
 import { rule as noIfInWorkflowConstructor } from "./no-if-in-workflow-constructor"
 import { rule as medusaContextOnContextParam } from "./medusa-context-on-context-param"
+import { rule as middlewaresFileLocationAndName } from "./middlewares-file-location-and-name"
 import { rule as noLoopsInWorkflow } from "./no-loops-in-workflow"
 import { rule as noNewDateInWorkflow } from "./no-new-date-in-workflow"
 import { rule as noNonSerializableStepReturn } from "./no-non-serializable-step-return"
@@ -55,6 +56,7 @@ export const rules = {
   "no-duplicate-step-id-in-workflow": noDuplicateStepIdInWorkflow,
   "no-if-in-workflow-constructor": noIfInWorkflowConstructor,
   "medusa-context-on-context-param": medusaContextOnContextParam,
+  "middlewares-file-location-and-name": middlewaresFileLocationAndName,
   "no-loops-in-workflow": noLoopsInWorkflow,
   "no-new-date-in-workflow": noNewDateInWorkflow,
   "no-non-serializable-step-return": noNonSerializableStepReturn,
