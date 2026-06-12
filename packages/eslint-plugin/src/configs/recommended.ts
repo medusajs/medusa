@@ -140,6 +140,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         "**/admin/widgets/**/*.{tsx,jsx}",
       ],
       rules: {
+        [ruleId("widget-must-export-config")]: "error",
         [ruleId("widget-must-have-default-export")]: "error",
       },
     },

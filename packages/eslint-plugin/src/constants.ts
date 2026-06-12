@@ -23,6 +23,7 @@ export const WORKFLOWS_SDK_SOURCE = "@medusajs/framework/workflows-sdk"
 export const FRAMEWORK_TYPES_SOURCE = "@medusajs/framework/types"
 export const FRAMEWORK_HTTP_SOURCE = "@medusajs/framework/http"
 export const LEGACY_TYPES_SOURCE = "@medusajs/types"
+export const ADMIN_SDK_SOURCE = "@medusajs/admin-sdk"
 
 /** All sources that expose Medusa type declarations. */
 export const TYPES_SOURCES: ReadonlySet<string> = new Set([

@@ -1,9 +1,9 @@
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/utils"
+import { ADMIN_SDK_SOURCE } from "../../constants"
 import { createRule } from "../../create-rule"
 
 type MessageIds = "mustBeStringLiteral" | "templateLiteralMustBeString"
 
-const ADMIN_SDK = "@medusajs/admin-sdk"
 const DEFINE_WIDGET_CONFIG = "defineWidgetConfig"
 
 function isStringLiteral(node: TSESTree.Node): boolean {
@@ -90,7 +90,7 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== ADMIN_SDK) return
+        if (node.source.value !== ADMIN_SDK_SOURCE) return
         for (const spec of node.specifiers) {
           if (
             spec.type === AST_NODE_TYPES.ImportSpecifier &&

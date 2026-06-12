@@ -44,6 +44,7 @@ import { rule as stepIdKebabCase } from "./step-id-kebab-case"
 import { rule as stepMustReturnStepResponse } from "./step-must-return-step-response"
 import { rule as workflowIdMatchesExportOrFilename } from "./workflow-id-matches-export-or-filename"
 import { rule as workflowMustReturnWorkflowResponse } from "./workflow-must-return-workflow-response"
+import { rule as widgetMustExportConfig } from "./widget-must-export-config"
 import { rule as widgetMustHaveDefaultExport } from "./widget-must-have-default-export"
 import { rule as widgetZoneMustBeStringLiteral } from "./widget-zone-must-be-string-literal"
 import { rule as zodImportSource } from "./zod-import-source"
@@ -96,6 +97,7 @@ export const rules = {
   "step-must-return-step-response": stepMustReturnStepResponse,
   "workflow-id-matches-export-or-filename": workflowIdMatchesExportOrFilename,
   "workflow-must-return-workflow-response": workflowMustReturnWorkflowResponse,
+  "widget-must-export-config": widgetMustExportConfig,
   "widget-must-have-default-export": widgetMustHaveDefaultExport,
   "widget-zone-must-be-string-literal": widgetZoneMustBeStringLiteral,
   "zod-import-source": zodImportSource,
