@@ -6,6 +6,8 @@ import {
 } from "@medusajs/framework/types"
 import {
   WorkflowData,
+  WorkflowResponse,
+  createHook,
   createWorkflow,
   transform,
   when,
@@ -15,6 +17,7 @@ import { acquireLockStep, releaseLockStep } from "../../locking"
 import { getItemTaxLinesStep } from "../../tax/steps/get-item-tax-lines"
 import { setTaxLinesForItemsStep, validateCartStep } from "../steps"
 import { getTranslatedTaxLinesStep } from "../../common/steps/get-translated-tax-lines"
+import { taxLineContextResult } from "../utils/schemas"
 
 const cartFields = [
   "id",
@@ -127,10 +130,12 @@ export const updateTaxLinesWorkflowId = "update-tax-lines"
  * @summary
  *
  * Update a cart's tax lines.
+ *
+ * @property hooks.setTaxLineContext - This hook is executed after the cart is fetched and before tax lines are calculated. You can consume this hook to add custom context to the tax calculation. The returned object is set as the additional_context property in the getItemTaxLinesStep input.
  */
 export const updateTaxLinesWorkflow = createWorkflow(
   updateTaxLinesWorkflowId,
-  (input: WorkflowData<UpdateTaxLinesWorkflowInput>): WorkflowData<void> => {
+  (input: WorkflowData<UpdateTaxLinesWorkflowInput>) => {
     const fetchCart = when("should-fetch-cart", { input }, ({ input }) => {
       return !input.cart
     }).then(() => {
@@ -159,12 +164,29 @@ export const updateTaxLinesWorkflow = createWorkflow(
       ttl: 10,
     })
 
+    const setTaxLineContext = createHook(
+      "setTaxLineContext",
+      {
+        cart,
+        items: cart.items,
+        shipping_methods: cart.shipping_methods,
+      },
+      {
+        resultValidator: taxLineContextResult,
+      }
+    )
+
+    const setTaxLineContextResult = setTaxLineContext.getResult()
+
     const taxLineItems = getItemTaxLinesStep(
-      transform({ input, cart }, (data) => ({
+      transform({ input, cart, setTaxLineContextResult }, (data) => ({
         orderOrCart: data.cart,
         items: data.cart.items,
         shipping_methods: data.cart.shipping_methods,
         force_tax_calculation: data.input.force_tax_calculation,
+        additional_context: data.setTaxLineContextResult
+          ? data.setTaxLineContextResult
+          : undefined,
       }))
     )
 
@@ -183,6 +205,10 @@ export const updateTaxLinesWorkflow = createWorkflow(
 
     releaseLockStep({
       key: cart.id,
+    })
+
+    return new WorkflowResponse(void 0, {
+      hooks: [setTaxLineContext],
     })
   }
 )
