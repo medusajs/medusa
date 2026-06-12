@@ -124,6 +124,18 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
     },
     {
       files: [
+        "src/admin/widgets/**/*.{tsx,jsx}",
+        "**/admin/widgets/**/*.{tsx,jsx}",
+        "src/admin/routes/**/page.{tsx,jsx}",
+        "**/admin/routes/**/page.{tsx,jsx}",
+      ],
+      rules: {
+        [ruleId("admin-component-must-be-arrow-function")]: "error",
+        [ruleId("widget-zone-must-be-string-literal")]: "error",
+      },
+    },
+    {
+      files: [
         "src/links/**/*.{ts,tsx,js,mjs,cjs}",
         "**/src/links/**/*.{ts,tsx,js,mjs,cjs}",
       ],

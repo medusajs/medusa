@@ -1,4 +1,5 @@
 import type { ESLint } from "eslint"
+import { rule as adminComponentMustBeArrowFunction } from "./admin-component-must-be-arrow-function"
 import { rule as authenticateFlagNameAndType } from "./authenticate-flag-name-and-type"
 import { rule as dataModelTableNameSnakeCase } from "./data-model-table-name-snake-case"
 import { rule as linkCreateKeysModulesEnum } from "./link-create-keys-modules-enum"
@@ -43,9 +44,11 @@ import { rule as stepIdKebabCase } from "./step-id-kebab-case"
 import { rule as stepMustReturnStepResponse } from "./step-must-return-step-response"
 import { rule as workflowIdMatchesExportOrFilename } from "./workflow-id-matches-export-or-filename"
 import { rule as workflowMustReturnWorkflowResponse } from "./workflow-must-return-workflow-response"
+import { rule as widgetZoneMustBeStringLiteral } from "./widget-zone-must-be-string-literal"
 import { rule as zodImportSource } from "./zod-import-source"
 
 export const rules = {
+  "admin-component-must-be-arrow-function": adminComponentMustBeArrowFunction,
   "authenticate-flag-name-and-type": authenticateFlagNameAndType,
   "data-model-table-name-snake-case": dataModelTableNameSnakeCase,
   "link-create-keys-modules-enum": linkCreateKeysModulesEnum,
@@ -92,5 +95,6 @@ export const rules = {
   "step-must-return-step-response": stepMustReturnStepResponse,
   "workflow-id-matches-export-or-filename": workflowIdMatchesExportOrFilename,
   "workflow-must-return-workflow-response": workflowMustReturnWorkflowResponse,
+  "widget-zone-must-be-string-literal": widgetZoneMustBeStringLiteral,
   "zod-import-source": zodImportSource,
 } as unknown as NonNullable<ESLint.Plugin["rules"]>
