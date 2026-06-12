@@ -3655,7 +3655,7 @@ __metadata:
     react-hook-form: 7.49.1
     react-i18next: 13.5.0
     react-jwt: ^1.2.0
-    react-router-dom: ^6.30.4
+    react-router-dom: 6.30.4
     typescript: 5.9.3
     zod: 4.2.0
   languageName: unknown
@@ -3714,7 +3714,7 @@ __metadata:
     "@medusajs/ui": 4.1.15
     react: ^18.3.1
     react-dom: ^18.3.1
-    react-router-dom: 6.30.3
+    react-router-dom: 6.30.4
   peerDependenciesMeta:
     "@medusajs/admin-sdk":
       optional: true
@@ -4003,7 +4003,7 @@ __metadata:
     "@medusajs/ui": 4.1.15
     react: ^18.3.1
     react-dom: ^18.3.1
-    react-router-dom: 6.30.3
+    react-router-dom: 6.30.4
   peerDependenciesMeta:
     "@medusajs/admin-sdk":
       optional: true
@@ -25044,7 +25044,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.30.4":
+"react-router-dom@npm:6.30.4":
   version: 6.30.4
   resolution: "react-router-dom@npm:6.30.4"
   dependencies:
