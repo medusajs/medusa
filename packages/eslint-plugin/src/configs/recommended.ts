@@ -75,6 +75,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         "**/middlewares.{ts,js}",
       ],
       rules: {
+        [ruleId("middleware-must-call-next")]: "warn",
         [ruleId("middlewares-file-location-and-name")]: "error",
       },
     },
