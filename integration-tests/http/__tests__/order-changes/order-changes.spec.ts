@@ -3,7 +3,7 @@ import {
   adminHeaders,
   createAdminUser,
 } from "../../../helpers/create-admin-user"
-import { createOrderSeeder } from "../../fixtures/order"
+import { createOrderSeeder } from "../fixtures/order"
 
 jest.setTimeout(300000)
 
