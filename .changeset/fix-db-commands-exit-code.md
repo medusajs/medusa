@@ -5,5 +5,4 @@
 ---
 
 fix(medusa, cli): db commands now exit with code 1 when container initialization fails
-
-fix(loyalty-plugin): add `@medusajs/medusa` to devDependencies and peerDependencies
+chore(loyalty,draft-order): update build process to handle plugin build without cyclic deps issue

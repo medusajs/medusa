@@ -44,9 +44,9 @@
     "plugin"
   ],
   "scripts": {
-    "build": "medusa plugin:build",
+    "build:plugin": "medusa plugin:build",
     "dev": "medusa plugin:develop",
-    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "prepare": "cross-env NODE_ENV=production yarn run build:plugin",
     "link:watch": "medusa plugin:publish && medusa plugin:develop",
     "watch": "medusa plugin:develop"
   },
@@ -54,8 +54,8 @@
     "@medusajs/admin-sdk": "2.15.5",
     "@medusajs/cli": "2.15.5",
     "@medusajs/framework": "2.15.5",
-    "@medusajs/medusa": "2.15.5",
     "@medusajs/icons": "2.15.5",
+    "@medusajs/medusa": "2.15.5",
     "@medusajs/test-utils": "2.15.5",
     "@medusajs/types": "2.15.5",
     "@medusajs/ui": "4.1.15",
@@ -70,8 +70,8 @@
     "@medusajs/admin-sdk": "2.15.5",
     "@medusajs/cli": "2.15.5",
     "@medusajs/framework": "2.15.5",
-    "@medusajs/medusa": "2.15.5",
     "@medusajs/icons": "2.15.5",
+    "@medusajs/medusa": "2.15.5",
     "@medusajs/test-utils": "2.15.5",
     "@medusajs/ui": "4.1.15",
     "react": "^18.3.1",

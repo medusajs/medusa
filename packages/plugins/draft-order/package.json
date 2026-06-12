@@ -33,9 +33,9 @@
     "medusa-v2"
   ],
   "scripts": {
-    "build": "medusa plugin:build",
+    "build:plugin": "medusa plugin:build",
     "dev": "medusa plugin:develop",
-    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "prepare": "cross-env NODE_ENV=production yarn run build:plugin",
     "link:watch": "medusa plugin:publish && medusa plugin:develop",
     "watch": "medusa plugin:develop"
   },
