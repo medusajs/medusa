@@ -1,79 +1,112 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useMemo } from "react"
 import type { LayoutPreference, WidgetPreference } from "@medusajs/admin-shared"
+import {
+  useDeleteLayoutConfiguration,
+  useLayoutConfiguration,
+  useSetLayoutConfiguration,
+} from "../../hooks/api/layouts"
 
-function storageKey(zone: string) {
-  return `medusa:layout:${zone}`
-}
+const EMPTY_PREFERENCE: LayoutPreference = { widgets: {} }
 
-function readPreference(zone: string): LayoutPreference {
-  try {
-    const raw = localStorage.getItem(storageKey(zone))
-    if (raw) {
-      return JSON.parse(raw) as LayoutPreference
-    }
-  } catch {
-    // ignore parse/storage errors
-  }
-  return { widgets: {} }
-}
+export type LayoutScope = "personal" | "default"
 
-function writePreference(zone: string, pref: LayoutPreference) {
-  try {
-    localStorage.setItem(storageKey(zone), JSON.stringify(pref))
-  } catch {
-    // ignore storage errors (e.g. private browsing quota)
-  }
+export type SetPreferenceOptions = {
+  /**
+   * Persist as the zone's system default (applies to all users) instead of the
+   * current user's personal configuration.
+   */
+  asDefault?: boolean
 }
 
 export type UseLayoutPreferenceReturn = {
+  /** The configuration the user is actively viewing for this zone. */
   preference: LayoutPreference
+  /** The current user's personal configuration, seeded from the default when unset. */
+  personalPreference: LayoutPreference
+  /** The zone's system default configuration. */
+  defaultPreference: LayoutPreference
+  /** Whether the current user has saved a personal configuration. */
+  hasPersonal: boolean
+  /** The persisted scope the user is actively viewing for this zone. */
+  activeScope: LayoutScope
+  isPending: boolean
   setWidgetPreference: (widgetId: string, update: WidgetPreference) => void
-  setPreference: (next: LayoutPreference) => void
+  setPreference: (next: LayoutPreference, options?: SetPreferenceOptions) => void
   resetPreference: () => void
 }
 
+function toPreference(
+  configuration?: { widgets?: LayoutPreference["widgets"] } | null
+): LayoutPreference | null {
+  const widgets = configuration?.widgets
+  return widgets ? { widgets } : null
+}
+
 export function useLayoutPreference(zone: string): UseLayoutPreferenceReturn {
-  const [preference, setPreference] = useState<LayoutPreference>(() =>
-    readPreference(zone)
+  const {
+    personal_configuration,
+    default_configuration,
+    active_scope,
+    isPending,
+  } = useLayoutConfiguration(zone)
+
+  const { mutate: setLayoutConfiguration } = useSetLayoutConfiguration(zone)
+  const { mutate: deleteLayoutConfiguration } =
+    useDeleteLayoutConfiguration(zone)
+
+  const hasPersonal = !!personal_configuration
+
+  const defaultPreference = useMemo(
+    () => toPreference(default_configuration?.configuration) ?? EMPTY_PREFERENCE,
+    [default_configuration]
   )
 
-  useEffect(() => {
-    setPreference(readPreference(zone))
-  }, [zone])
+  const personalPreference = useMemo(
+    () =>
+      toPreference(personal_configuration?.configuration) ?? defaultPreference,
+    [personal_configuration, defaultPreference]
+  )
+
+  const activeScope: LayoutScope = active_scope ?? "personal"
+
+  const preference =
+    activeScope === "default" ? defaultPreference : personalPreference
+
+  const setPreference = useCallback(
+    (next: LayoutPreference, options?: SetPreferenceOptions) => {
+      setLayoutConfiguration({
+        is_default: options?.asDefault ?? false,
+        configuration: { widgets: next.widgets },
+      })
+    },
+    [setLayoutConfiguration]
+  )
 
   const setWidgetPreference = useCallback(
     (widgetId: string, update: WidgetPreference) => {
-      setPreference((prev) => {
-        const next: LayoutPreference = {
-          ...prev,
-          widgets: {
-            ...prev.widgets,
-            [widgetId]: { ...prev.widgets[widgetId], ...update },
-          },
-        }
-        writePreference(zone, next)
-        return next
+      setPreference({
+        widgets: {
+          ...preference.widgets,
+          [widgetId]: { ...preference.widgets[widgetId], ...update },
+        },
       })
     },
-    [zone]
-  )
-
-  const commitPreference = useCallback(
-    (next: LayoutPreference) => {
-      writePreference(zone, next)
-      setPreference(next)
-    },
-    [zone]
+    [preference, setPreference]
   )
 
   const resetPreference = useCallback(() => {
-    commitPreference({ widgets: {} })
-  }, [commitPreference])
+    deleteLayoutConfiguration()
+  }, [deleteLayoutConfiguration])
 
   return {
     preference,
+    personalPreference,
+    defaultPreference,
+    hasPersonal,
+    activeScope,
+    isPending,
     setWidgetPreference,
-    setPreference: commitPreference,
+    setPreference,
     resetPreference,
   }
 }

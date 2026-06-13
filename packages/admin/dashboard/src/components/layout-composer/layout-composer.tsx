@@ -15,7 +15,7 @@ import {
 } from "@dnd-kit/core"
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable"
 import { AdjustmentsDone } from "@medusajs/icons"
-import { Button, IconButton } from "@medusajs/ui"
+import { Badge, Button, IconButton, usePrompt } from "@medusajs/ui"
 import {
   ComponentType,
   Fragment,
@@ -51,7 +51,7 @@ import type {
   Layouts,
   WidgetPreference,
 } from "@medusajs/admin-shared"
-import { useLayoutPreference } from "./use-layout-preference"
+import { useLayoutPreference, type LayoutScope } from "./use-layout-preference"
 
 type LayoutComposerProps<TLayoutId extends Layouts, TData> = {
   /**
@@ -113,12 +113,17 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   hasOutlet = true,
 }: LayoutComposerProps<TLayoutId, TData>) => {
   const { getWidgetsForSections, getLayout } = useExtension()
-  const { preference, setPreference } = useLayoutPreference(widgetsZonePrefix)
+  const { personalPreference, defaultPreference, activeScope, setPreference } =
+    useLayoutPreference(widgetsZonePrefix)
   const triggerHost = useLayoutCustomizerTriggerHost()
   const { t } = useTranslation()
+  const prompt = usePrompt()
 
   const [editMode, setEditMode] = useState(false)
   const [draft, setDraft] = useState<LayoutPreference | null>(null)
+  // Which configuration the current edit session is targeting: the user's
+  // personal layout or the zone's shared default.
+  const [editScope, setEditScope] = useState<LayoutScope>("personal")
   const [activeDragId, setActiveDragId] = useState<string | null>(null)
   // Last valid collision id during the current drag. Used to stabilize the
   // over-id when the cursor briefly leaves all droppables (column gutter,
@@ -147,8 +152,12 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     })
   }, [])
 
+  function preferenceForScope(scope: LayoutScope): LayoutPreference {
+    return scope === "default" ? defaultPreference : personalPreference
+  }
+
   const activePreference: LayoutPreference =
-    editMode && draft ? draft : preference
+    editMode && draft ? draft : preferenceForScope(activeScope)
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -239,12 +248,36 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   }
 
   function enterEdit() {
-    setDraft(preference)
+    setEditScope(activeScope)
+    setDraft(preferenceForScope(activeScope))
     setEditMode(true)
   }
 
-  function saveEdit() {
-    if (draft) setPreference(draft)
+  function switchScope(scope: LayoutScope) {
+    if (scope === editScope) return
+    setEditScope(scope)
+    setDraft(preferenceForScope(scope))
+  }
+
+  async function commitEdit() {
+    if (editScope === "default") {
+      const confirmed = await prompt({
+        title: t("layout.saveForEveryoneTitle", "Save layout for everyone"),
+        description: t(
+          "layout.saveForEveryoneDescription",
+          "This updates the default layout for this page for all users who haven't customized it themselves. Are you sure?"
+        ),
+        confirmText: t("layout.saveForEveryone", "Save for everyone"),
+        cancelText: t("actions.cancel", "Cancel"),
+      })
+      if (!confirmed) {
+        return
+      }
+    }
+
+    if (draft) setPreference(draft, { asDefault: editScope === "default" })
+    // The saved scope is persisted as the active view server-side, so the
+    // refetched configuration keeps showing it after exiting edit mode.
     setEditMode(false)
     setDraft(null)
   }
@@ -518,14 +551,36 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     : null
 
   // Customizer controls — all live in the single top-bar portal slot.
-  // Idle: the trigger icon. Editing: Clear + Save text buttons.
+  // Idle: the trigger icon. Editing: Personal/Default badges to switch which
+  // configuration is being edited (active one highlighted), Clear, and a Save
+  // button that targets the active scope ("Save for everyone" for the default).
   const controls = editMode ? (
     <div className="flex items-center gap-x-2">
+      <div className="flex items-center gap-x-1">
+        <Badge
+          size="xsmall"
+          color={editScope === "personal" ? "blue" : "grey"}
+          className="cursor-pointer"
+          onClick={() => switchScope("personal")}
+        >
+          {t("layout.personalView", "Personal")}
+        </Badge>
+        <Badge
+          size="xsmall"
+          color={editScope === "default" ? "blue" : "grey"}
+          className="cursor-pointer"
+          onClick={() => switchScope("default")}
+        >
+          {t("layout.defaultView", "Default")}
+        </Badge>
+      </div>
       <Button size="small" variant="secondary" onClick={cancelEdit}>
         {t("actions.clear", "Clear")}
       </Button>
-      <Button size="small" variant="primary" onClick={saveEdit}>
-        {t("actions.save", "Save")}
+      <Button size="small" variant="primary" onClick={commitEdit}>
+        {editScope === "default"
+          ? t("layout.saveForEveryone", "Save for everyone")
+          : t("actions.save", "Save")}
       </Button>
     </div>
   ) : (
