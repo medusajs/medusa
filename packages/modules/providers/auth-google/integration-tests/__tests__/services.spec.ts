@@ -1,14 +1,29 @@
-import { generateJwtToken, MedusaError } from "@medusajs/framework/utils"
+import { MedusaError } from "@medusajs/framework/utils"
+import crypto from "crypto"
+import jwt from "jsonwebtoken"
 import { GoogleAuthService } from "../../src/services/google"
 import { http, HttpResponse } from "msw"
 import { setupServer } from "msw/node"
 
 jest.setTimeout(100000)
 
+const { privateKey, publicKey } = crypto.generateKeyPairSync("rsa", {
+  modulusLength: 2048,
+})
+
+const KID = "test-kid"
+
+const jwkPublic = {
+  ...(publicKey.export({ format: "jwk" }) as Record<string, string>),
+  kid: KID,
+  use: "sig",
+  alg: "RS256",
+}
+
 const sampleIdPayload = {
   iss: "https://accounts.google.com",
-  azp: "199301612397-l1lrg08vd6dvu98r43l7ul0ri2rd2b6r.apps.googleusercontent.com",
-  aud: "199301612397-l1lrg08vd6dvu98r43l7ul0ri2rd2b6r.apps.googleusercontent.com",
+  azp: "test",
+  aud: "test",
   sub: "113664482950786663866",
   hd: "medusajs.com",
   email: "test@medusajs.com",
@@ -19,13 +34,23 @@ const sampleIdPayload = {
     "https://lh3.googleusercontent.com/a/ACg8ocJu6nzIGJRzHnl6peAh3fKOzOkrrRCWyMOMuIfCwePDG-ykulA=s96-c",
   given_name: "Test",
   family_name: "Admin",
-  iat: 1716891837,
 }
 
-const encodedIdToken = generateJwtToken(sampleIdPayload, {
-  secret: "test",
-  expiresIn: "1d",
-})
+const signIdToken = (payload: object, opts: jwt.SignOptions = {}) =>
+  jwt.sign(payload, privateKey.export({ format: "pem", type: "pkcs8" }), {
+    algorithm: "RS256",
+    keyid: KID,
+    expiresIn: "1d",
+    ...opts,
+  })
+
+const encodedIdToken = signIdToken(sampleIdPayload)
+
+const forgedIdToken = jwt.sign(
+  { ...sampleIdPayload, sub: "attacker-sub" },
+  "attacker-secret",
+  { algorithm: "HS256", keyid: KID, expiresIn: "1d" }
+)
 
 const baseUrl = "https://someurl.com"
 const callbackUrl = encodeURIComponent(
@@ -47,6 +72,10 @@ const defaultSpies = {
 
 // This is just a network-layer mocking, it doesn't start an actual server
 const server = setupServer(
+  http.get("https://www.googleapis.com/oauth2/v3/certs", () => {
+    return HttpResponse.json({ keys: [jwkPublic] })
+  }),
+
   http.post(
     "https://oauth2.googleapis.com/token",
     async ({ request, params, cookies }) => {
@@ -72,6 +101,21 @@ const server = setupServer(
             token_type: "Bearer",
             refresh_token: "test",
             id_token: encodedIdToken,
+          })
+        )
+      }
+
+      if (
+        url ===
+        `https://oauth2.googleapis.com/token?client_id=test&client_secret=test&code=forged-code&redirect_uri=${callbackUrl}&grant_type=authorization_code`
+      ) {
+        return new HttpResponse(
+          JSON.stringify({
+            access_token: "test",
+            expires_in: 3600,
+            token_type: "Bearer",
+            refresh_token: "test",
+            id_token: forgedIdToken,
           })
         )
       }
@@ -265,6 +309,27 @@ describe("Google auth provider", () => {
         ],
       },
     })
+  })
+
+  it("validate callback should reject a forged id_token whose signature does not match Google's JWKS", async () => {
+    state = {
+      somekey: {
+        callback_url: callbackUrl,
+      },
+    }
+
+    const res = await googleService.validateCallback(
+      {
+        query: {
+          code: "forged-code",
+          state: "somekey",
+        },
+      },
+      defaultSpies
+    )
+
+    expect(res.success).toBe(false)
+    expect(res.error).toMatch(/Could not verify Google id_token/i)
   })
 
   it("validate callback should return successfully on a correct code for an existing user", async () => {

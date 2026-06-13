@@ -1,20 +1,26 @@
-import { kebabCase } from "./to-kebab-case"
-
 /**
- * Helper method to create a to be URL friendly "handle" from
- * a string value.
+ * Helper method to create a URL-friendly "handle" from a string value.
  *
- * - Works by converting the value to lowercase
- * - Splits and remove accents from characters
- * - Removes all unallowed characters like a '"%$ and so on.
+ * - Converts the value to lowercase
+ * - Preserves letters from any language (Persian, Arabic, Japanese, Chinese, Korean, Russian, etc.)
+ * - Removes special characters (apostrophes, punctuation, symbols, etc.)
+ * - Replaces spaces and underscores with hyphens
+ * - Collapses multiple hyphens into a single hyphen
+ * - Falls back to a random suffix if the result is empty
+ *
  */
 export const toHandle = (value: string): string => {
-  return kebabCase(
-    value
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-  )
-    .replace(/[^a-z0-9A-Z-]/g, "")
-    .replace(/-{2,}/g, "-")
+  let handle = value
+    .toLowerCase()
+    .replace(/ß/g, "ss")
+    .replace(/[^\p{L}\p{N}\s_-]/gu, "")
+    .replace(/[\s_]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+
+  if (!handle) {
+    handle = `product-${Math.random().toString(36).substring(2, 8)}`
+  }
+
+  return handle
 }

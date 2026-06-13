@@ -197,10 +197,19 @@ const CreateView = ({
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
-      const authToken = await signUpEmailPass({
+      const signupResponse = await signUpEmailPass({
         email: data.email,
         password: data.password,
       })
+
+      // This should not happen since email verification is not enabled in the admin, but it should be covered as a scenario.
+      if (typeof signupResponse !== "string") {
+        throw new Error(
+          "Email verification is required, but not supported by this flow."
+        )
+      }
+
+      const authToken = signupResponse
 
       const invitePayload = {
         email: data.email,

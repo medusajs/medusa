@@ -1694,6 +1694,50 @@ medusaIntegrationTestRunner({
           ])
         )
       })
+
+      it("should apply price from price list associated to a customer group when items are provided at draft order creation", async () => {
+        const created = (
+          await api.post(
+            "/admin/draft-orders",
+            {
+              customer_id: customer.id,
+              region_id: region.id,
+              sales_channel_id: salesChannel.id,
+              shipping_address: {
+                address_1: "123 Main St",
+                city: "Anytown",
+                country_code: "US",
+                postal_code: "12345",
+                first_name: "Tony",
+              },
+              items: [
+                {
+                  variant_id: product.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.draft_order
+
+        const draftOrderWithItems = (
+          await api.get(
+            `/admin/draft-orders/${created.id}?fields=*items`,
+            adminHeaders
+          )
+        ).data.draft_order
+
+        expect(draftOrderWithItems.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              variant_id: product.variants[0].id,
+              unit_price: 2,
+              quantity: 1,
+            }),
+          ])
+        )
+      })
     })
   },
 })

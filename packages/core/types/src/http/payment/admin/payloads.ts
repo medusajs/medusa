@@ -50,6 +50,11 @@ export interface AdminMarkPaymentCollectionAsPaid {
    * The ID of the order this payment collection belongs to.
    */
   order_id: string
+  /**
+   * The ID of the payment provider to record the captured payment under.
+   * Defaults to the system (manual) payment provider when omitted.
+   */
+  provider_id?: string
 }
 
 /**
