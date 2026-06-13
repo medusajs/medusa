@@ -4,6 +4,7 @@ import path from "node:path"
 import type * as Vite from "vite"
 import { generateCustomFieldHashes } from "./custom-fields"
 import { generateI18nHash } from "./i18n"
+import { generateLayoutHash } from "./layouts"
 import { generateRouteHashes } from "./routes"
 import { MedusaVitePlugin } from "./types"
 import { AdminSubdirectory, isFileInAdminSubdirectory } from "./utils"
@@ -11,6 +12,7 @@ import {
   generateVirtualDisplayModule,
   generateVirtualFormModule,
   generateVirtualI18nModule,
+  generateVirtualLayoutModule,
   generateVirtualLinkModule,
   generateVirtualMenuItemModule,
   generateVirtualRouteModule,
@@ -87,6 +89,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     const formModule = await generateVirtualFormModule(sources, true)
     const displayModule = await generateVirtualDisplayModule(sources, true)
     const i18nModule = await generateVirtualI18nModule(sources, true)
+    const layoutModule = await generateVirtualLayoutModule(sources, true)
 
     // Create the index.js content that re-exports everything
     return `
@@ -97,14 +100,16 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     ${formModule.code}
     ${displayModule.code}
     ${i18nModule.code}
-    
+    ${layoutModule.code}
+
     const plugin = {
       widgetModule,
       routeModule,
       menuItemModule,
       formModule,
       displayModule,
-      i18nModule
+      i18nModule,
+      layoutModule
     }
 
     export default plugin
@@ -239,6 +244,11 @@ const loadConfigs: Record<string, ModuleConfig> = {
     moduleGenerator: async (sources) => generateVirtualI18nModule(sources),
     hashKey: vmod.virtual.i18n,
   },
+  [vmod.resolved.layout]: {
+    hashGenerator: async (sources) => generateLayoutHash(sources),
+    moduleGenerator: async (sources) => generateVirtualLayoutModule(sources),
+    hashKey: vmod.virtual.layout,
+  },
 }
 
 type WatcherConfig = {
@@ -312,6 +322,19 @@ const watcherConfigs: WatcherConfig[] = [
         virtualModule: vmod.virtual.i18n,
         resolvedModule: vmod.resolved.i18n,
         hashKey: "i18nHash",
+      },
+    ],
+  },
+  {
+    subdirectory: "layouts",
+    hashGenerator: async (sources) => ({
+      layoutConfigHash: await generateLayoutHash(sources),
+    }),
+    modules: [
+      {
+        virtualModule: vmod.virtual.layout,
+        resolvedModule: vmod.resolved.layout,
+        hashKey: "layoutConfigHash",
       },
     ],
   },

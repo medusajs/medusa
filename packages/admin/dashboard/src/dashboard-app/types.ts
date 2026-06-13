@@ -102,6 +102,10 @@ export type I18nModule = {
   resources: I18nExtension
 }
 
+export type LayoutModule = {
+  layouts: LayoutDefinition[]
+}
+
 export type MenuItemKey = "coreExtensions" | "settingsExtensions"
 
 export type FormField = FormFieldExtension & {
@@ -146,6 +150,7 @@ export type DashboardPlugin = {
   widgetModule: WidgetModule
   routeModule: RouteModule
   i18nModule?: I18nModule
+  layoutModule?: LayoutModule
 }
 
 export type ExtensionApi = {

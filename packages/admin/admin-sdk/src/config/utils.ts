@@ -3,6 +3,7 @@ import { z, ZodFirstPartySchemaTypes } from "zod"
 import {
   CustomFieldConfig,
   CustomFormField,
+  LayoutConfig,
   RouteConfig,
   WidgetConfig,
 } from "./types"
@@ -38,6 +39,16 @@ export function defineWidgetConfig(config: WidgetConfig) {
  * @returns The route configuration.
  */
 export function defineRouteConfig(config: RouteConfig) {
+  return createConfigHelper(config)
+}
+
+/**
+ * Define a custom layout configuration.
+ *
+ * @param config The layout configuration.
+ * @returns The layout configuration.
+ */
+export function defineLayoutConfig(config: LayoutConfig) {
   return createConfigHelper(config)
 }
 

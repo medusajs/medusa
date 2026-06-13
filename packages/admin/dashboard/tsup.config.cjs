@@ -18,6 +18,7 @@ export default defineConfig({
     "virtual:medusa/menu-items",
     "virtual:medusa/widgets",
     "virtual:medusa/i18n",
+    "virtual:medusa/layouts",
   ],
   tsconfig: "tsconfig.build.json",
   dts: {

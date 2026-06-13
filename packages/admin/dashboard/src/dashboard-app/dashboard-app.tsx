@@ -130,18 +130,16 @@ export class DashboardApp {
     return registry
   }
 
-  private populateLayouts(_plugins: DashboardPlugin[]) {
+  private populateLayouts(plugins: DashboardPlugin[]) {
     const registry = new Map<string, LayoutDefinition>()
 
     CORE_LAYOUTS.forEach((layout) => registry.set(layout.id, layout))
 
-    // TODO: layout virtual module for custom user layouts
-
-    // plugins.forEach((plugin) => {
-    //   plugin.layoutModule?.layouts?.forEach((layout) => {
-    //     registry.set(layout.id, layout)
-    //   })
-    // })
+    plugins.forEach((plugin) => {
+      plugin.layoutModule?.layouts?.forEach((layout) => {
+        registry.set(layout.id, layout)
+      })
+    })
 
     return registry
   }
