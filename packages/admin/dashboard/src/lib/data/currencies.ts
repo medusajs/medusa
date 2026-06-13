@@ -277,6 +277,12 @@ export const currencies: Record<string, CurrencyInfo> = {
     symbol_native: "kn",
     decimal_digits: 2,
   },
+  HTG: {
+    code: "HTG",
+    name: "Haitian Gourde",
+    symbol_native: "G",
+    decimal_digits: 2,
+  },
   HUF: {
     code: "HUF",
     name: "Hungarian Forint",

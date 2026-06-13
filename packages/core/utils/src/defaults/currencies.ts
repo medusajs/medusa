@@ -414,6 +414,15 @@ export const defaultCurrencies: Record<string, Currency> = {
     code: "HRK",
     name_plural: "Croatian kunas",
   },
+  HTG: {
+    symbol: "G",
+    name: "Haitian Gourde",
+    symbol_native: "G",
+    decimal_digits: 2,
+    rounding: 0,
+    code: "HTG",
+    name_plural: "Haitian gourdes",
+  },
   HUF: {
     symbol: "Ft",
     name: "Hungarian Forint",
