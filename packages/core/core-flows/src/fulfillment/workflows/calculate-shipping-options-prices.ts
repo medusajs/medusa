@@ -8,6 +8,7 @@ import {
 import { calculateShippingOptionsPricesStep } from "../steps"
 import { useQueryGraphStep } from "../../common"
 import { cartFieldsForCalculateShippingOptionsPrices } from "../../cart/utils/fields"
+import { filterCartItemsByShippingProfile } from "../../cart/utils/filter-items-by-shipping-profile"
 
 export const calculateShippingOptionsPricesWorkflowId =
   "calculate-shipping-options-prices-workflow"
@@ -58,7 +59,13 @@ export const calculateShippingOptionsPricesWorkflow = createWorkflow(
     const shippingOptionsQuery = useQueryGraphStep({
       entity: "shipping_option",
       filters: { id: ids },
-      fields: ["id", "provider_id", "data", "service_zone.fulfillment_set_id"],
+      fields: [
+        "id",
+        "provider_id",
+        "data",
+        "shipping_profile_id",
+        "service_zone.fulfillment_set_id",
+      ],
     }).config({ name: "shipping-options-query" })
 
     const cartQuery = useQueryGraphStep({
@@ -130,6 +137,10 @@ export const calculateShippingOptionsPricesWorkflow = createWorkflow(
           data: shippingOptionDataMap.get(shippingOption.id) ?? {},
           context: {
             ...cart,
+            items: filterCartItemsByShippingProfile(
+              cart.items,
+              shippingOption.shipping_profile_id
+            ),
             from_location: locations.find(
               (l) =>
                 l.id ===
