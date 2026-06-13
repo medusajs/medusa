@@ -1,0 +1,32 @@
+# Copy this file to your Medusa app root as `.dockerignore`.
+# Keeps the build context small and avoids leaking local state into the image.
+
+node_modules
+.medusa
+dist
+build
+.git
+.gitignore
+
+# Local env / secrets — provide these via Coolify env vars instead.
+.env
+.env.*
+!.env.example
+
+# Logs & caches
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.cache
+coverage
+.nyc_output
+
+# Editor / OS noise
+.vscode
+.idea
+.DS_Store
+
+# Docs / CI that don't belong in the image
+*.md
+!README.md

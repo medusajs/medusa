@@ -1,0 +1,69 @@
+# -----------------------------------------------------------------------------
+# Local development / self-contained stack for a Medusa app.
+#
+# For Coolify you'll typically run Postgres and Redis as separate managed
+# resources and deploy only the app from the Dockerfile (see docker/README.md).
+# This compose file is handy for running the whole thing locally, or as an
+# all-in-one Coolify "Docker Compose" deployment if you prefer one stack.
+#
+# Usage (from your Medusa app root, with the docker/ folder copied in):
+#   docker compose -f docker/docker-compose.yml up --build
+# -----------------------------------------------------------------------------
+
+services:
+  medusa:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        NODE_VERSION: "20"
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "9000:9000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://medusa:medusa@postgres:5432/medusa
+      REDIS_URL: redis://redis:6379
+      # Change these in real deployments — set them as Coolify env vars / secrets.
+      JWT_SECRET: ${JWT_SECRET:-supersecret-change-me}
+      COOKIE_SECRET: ${COOKIE_SECRET:-supersecret-change-me}
+      # CORS — set to your storefront / admin / auth origins.
+      STORE_CORS: ${STORE_CORS:-http://localhost:8000}
+      ADMIN_CORS: ${ADMIN_CORS:-http://localhost:9000}
+      AUTH_CORS: ${AUTH_CORS:-http://localhost:9000,http://localhost:8000}
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: medusa
+      POSTGRES_PASSWORD: medusa
+      POSTGRES_DB: medusa
+    volumes:
+      - medusa-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medusa"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - medusa-redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  medusa-postgres:
+  medusa-redis:
