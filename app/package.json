@@ -1,0 +1,41 @@
+{
+  "name": "medusa-app",
+  "version": "0.0.1",
+  "description": "Self-hostable Medusa application (deployable as-is with Docker/Coolify)",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "medusa build",
+    "seed": "medusa exec ./src/scripts/seed.ts",
+    "start": "medusa start",
+    "dev": "medusa develop",
+    "predeploy": "medusa db:migrate"
+  },
+  "dependencies": {
+    "@medusajs/admin-sdk": "2.15.5",
+    "@medusajs/cli": "2.15.5",
+    "@medusajs/framework": "2.15.5",
+    "@medusajs/medusa": "2.15.5",
+    "@mikro-orm/core": "6.4.3",
+    "@mikro-orm/knex": "6.4.3",
+    "@mikro-orm/migrations": "6.4.3",
+    "@mikro-orm/postgresql": "6.4.3",
+    "awilix": "^8.0.1",
+    "pg": "^8.13.0"
+  },
+  "devDependencies": {
+    "@medusajs/test-utils": "2.15.5",
+    "@mikro-orm/cli": "6.4.3",
+    "@swc/core": "1.5.7",
+    "@swc/jest": "^0.2.36",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.3.2",
+    "@types/react-dom": "^18.2.25",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2",
+    "vite": "^5.2.11"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

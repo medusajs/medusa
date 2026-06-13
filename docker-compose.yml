@@ -1,0 +1,80 @@
+# =============================================================================
+# One-click, self-contained Medusa deployment.
+#
+# Point Coolify at this repository, choose the "Docker Compose" build pack, and
+# it builds and runs everything needed: the Medusa app (server + admin),
+# PostgreSQL, and Redis. No manual setup.
+#
+# Locally:  docker compose up --build
+# Open:     http://localhost:9000/app   (admin dashboard)
+#
+# Set JWT_SECRET, COOKIE_SECRET and the *_CORS / admin values as environment
+# variables (in Coolify, or a root .env file) — the defaults below are only
+# meant to get you booted.
+# =============================================================================
+
+services:
+  medusa:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args:
+        NODE_VERSION: "20"
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "${PORT:-9000}:9000"
+    environment:
+      NODE_ENV: production
+      PORT: 9000
+      DATABASE_URL: postgres://medusa:${POSTGRES_PASSWORD:-medusa}@postgres:5432/medusa
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-please-change-this-jwt-secret}
+      COOKIE_SECRET: ${COOKIE_SECRET:-please-change-this-cookie-secret}
+      STORE_CORS: ${STORE_CORS:-http://localhost:8000}
+      ADMIN_CORS: ${ADMIN_CORS:-http://localhost:9000}
+      AUTH_CORS: ${AUTH_CORS:-http://localhost:9000,http://localhost:8000}
+      # Auto-create an admin user on first boot if both are set.
+      MEDUSA_ADMIN_EMAIL: ${MEDUSA_ADMIN_EMAIL:-}
+      MEDUSA_ADMIN_PASSWORD: ${MEDUSA_ADMIN_PASSWORD:-}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:9000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: medusa
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-medusa}
+      POSTGRES_DB: medusa
+    volumes:
+      - medusa-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medusa"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - medusa-redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  medusa-postgres:
+  medusa-redis:

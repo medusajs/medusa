@@ -1,0 +1,17 @@
+node_modules
+.medusa
+dist
+build
+.git
+
+# Local env / secrets — provide via Coolify env vars instead.
+.env
+.env.*
+!.env.template
+
+*.log
+.cache
+coverage
+.DS_Store
+.vscode
+.idea
