@@ -5,11 +5,9 @@ import {
   CustomFieldModel,
   InjectionZone,
   NestedRoutePosition,
-} from "@medusajs/admin-shared"
-import {
   LayoutDefinition,
   SectionWidgetMap,
-} from "../components/layout-composer"
+} from "@medusajs/admin-shared"
 import { ComponentType } from "react"
 import { LoaderFunction } from "react-router-dom"
 import { z } from "zod"
@@ -35,6 +33,7 @@ export type MenuItemExtension = {
 export type WidgetExtension = {
   Component: ComponentType
   zone: InjectionZone[]
+  widgetId?: string
 }
 
 export type DisplayExtension = {

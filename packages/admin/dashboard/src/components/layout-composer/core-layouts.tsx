@@ -1,4 +1,8 @@
-import { CORE_LAYOUT_IDS, LayoutComponentProps, LayoutDefinition } from "."
+import {
+  CORE_LAYOUT_IDS,
+  LayoutComponentProps,
+  LayoutDefinition,
+} from "@medusajs/admin-shared"
 import * as React from "react"
 
 const SingleColumnLayoutComponent = ({
@@ -25,22 +29,14 @@ const TwoColumnLayoutComponent = ({
 export const CORE_LAYOUTS: LayoutDefinition[] = [
   {
     id: CORE_LAYOUT_IDS.SINGLE_COLUMN,
-    sections: [
-      {
-        id: "main",
-      },
-    ],
+    sections: [{ id: "main", ordering: "list" }],
     Component: SingleColumnLayoutComponent,
   },
   {
     id: CORE_LAYOUT_IDS.TWO_COLUMN,
     sections: [
-      {
-        id: "main",
-      },
-      {
-        id: "side",
-      },
+      { id: "main", ordering: "list" },
+      { id: "side", ordering: "list" },
     ],
     Component: TwoColumnLayoutComponent,
   },

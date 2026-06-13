@@ -6,6 +6,10 @@ import {
   deepMerge,
   InjectionZone,
   NESTED_ROUTE_POSITIONS,
+  AFTER_ORDER,
+  BEFORE_ORDER,
+  LayoutDefinition,
+  SectionWidgetMap,
 } from "@medusajs/admin-shared"
 import * as React from "react"
 import {
@@ -42,12 +46,6 @@ import {
   WidgetMap,
   ZoneStructure,
 } from "./types"
-import {
-  AFTER_ORDER,
-  BEFORE_ORDER,
-  LayoutDefinition,
-  SectionWidgetMap,
-} from "../components/layout-composer"
 
 type DashboardAppProps = {
   plugins: DashboardPlugin[]
@@ -510,9 +508,10 @@ export class DashboardApp {
         result[section] = []
       }
 
-      extensions.forEach((ext) => {
+      extensions.forEach((ext, i) => {
         result[section].push({
           Component: ext.Component,
+          widgetId: ext.widgetId ?? `${zone}:${i}`,
           order: order,
         })
       })

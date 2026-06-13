@@ -1,12 +1,57 @@
-import { ReactNode } from "react"
+import {
+  CollisionDetection,
+  DndContext,
+  DragEndEvent,
+  DragOverEvent,
+  DragOverlay,
+  DragStartEvent,
+  KeyboardSensor,
+  PointerSensor,
+  closestCenter,
+  pointerWithin,
+  rectIntersection,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core"
+import { sortableKeyboardCoordinates } from "@dnd-kit/sortable"
+import { AdjustmentsDone } from "@medusajs/icons"
+import { Button, IconButton } from "@medusajs/ui"
+import {
+  ComponentType,
+  Fragment,
+  ReactElement,
+  ReactNode,
+  useCallback,
+  useRef,
+  useState,
+} from "react"
+import { createPortal } from "react-dom"
+import { useTranslation } from "react-i18next"
 import { Outlet } from "react-router-dom"
 import { useExtension } from "../../providers/extension-provider/use-extension"
-import { CORE_CONTENT_ORDER } from "./constants"
-import type { LayoutSectionRegistry } from "./types"
-
-type Layouts = keyof LayoutSectionRegistry
-type SectionNameFor<TLayoutId extends Layouts> =
-  LayoutSectionRegistry[TLayoutId]
+import { useLayoutCustomizerTriggerHost } from "./customizer-host"
+import { EntryProbe } from "./entry-probe"
+import {
+  DisplayEntry,
+  RawEntry,
+  buildCoreEntries,
+  buildDisplayEntries,
+  extractSectionElements,
+  getElementName,
+} from "./entries"
+import {
+  SectionDropzone,
+  getSectionIdFromTailId,
+  isSectionTailId,
+} from "./section-dropzone"
+import { SortableEntry } from "./sortable-entry"
+import type {
+  LayoutPreference,
+  SectionNameFor,
+  Layouts,
+  WidgetPreference,
+} from "@medusajs/admin-shared"
+import { useLayoutPreference } from "./use-layout-preference"
 
 type LayoutComposerProps<TLayoutId extends Layouts, TData> = {
   /**
@@ -35,6 +80,31 @@ type LayoutComposerProps<TLayoutId extends Layouts, TData> = {
   hasOutlet?: boolean
 }
 
+/**
+ * Resolves the section a drop landed in. `overId` may be a section body, a
+ * section's tail drop zone, or a specific entry.
+ */
+function resolveOverSection(
+  overId: string,
+  sectionIds: Set<string>,
+  widgetSectionMap: Record<string, string>
+): string | undefined {
+  if (sectionIds.has(overId)) {
+    return overId
+  }
+  if (isSectionTailId(overId)) {
+    const sectionId = getSectionIdFromTailId(overId)
+    return sectionIds.has(sectionId) ? sectionId : undefined
+  }
+  return widgetSectionMap[overId]
+}
+
+/** Whether a drop landed on a section body/tail (i.e. "append to end") rather
+ * than on a specific entry. */
+function isEndDropTarget(overId: string, sectionIds: Set<string>): boolean {
+  return sectionIds.has(overId) || isSectionTailId(overId)
+}
+
 export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   widgetsZonePrefix,
   preferredLayoutId,
@@ -43,41 +113,458 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   hasOutlet = true,
 }: LayoutComposerProps<TLayoutId, TData>) => {
   const { getWidgetsForSections, getLayout } = useExtension()
+  const { preference, setPreference } = useLayoutPreference(widgetsZonePrefix)
+  const triggerHost = useLayoutCustomizerTriggerHost()
+  const { t } = useTranslation()
+
+  const [editMode, setEditMode] = useState(false)
+  const [draft, setDraft] = useState<LayoutPreference | null>(null)
+  const [activeDragId, setActiveDragId] = useState<string | null>(null)
+  // Last valid collision id during the current drag. Used to stabilize the
+  // over-id when the cursor briefly leaves all droppables (column gutter,
+  // padding, etc.) so the insertion slot doesn't flicker.
+  const lastOverIdRef = useRef<string | null>(null)
+  // Entries whose content currently renders nothing. Core entries are derived
+  // statically from each section's JSX children, but some of those components
+  // conditionally render `null` — keeping them in the sortable set would leave
+  // bare 0-height control rows in edit mode. They report their emptiness from
+  // the DOM (see `useContentEmptyReport`) and we drop them from the layout
+  // until they have content again.
+  const [emptyWidgetIds, setEmptyWidgetIds] = useState<Set<string>>(new Set())
+
+  const reportEmptiness = useCallback((widgetId: string, isEmpty: boolean) => {
+    setEmptyWidgetIds((prev) => {
+      if (prev.has(widgetId) === isEmpty) {
+        return prev
+      }
+      const next = new Set(prev)
+      if (isEmpty) {
+        next.add(widgetId)
+      } else {
+        next.delete(widgetId)
+      }
+      return next
+    })
+  }, [])
+
+  const activePreference: LayoutPreference =
+    editMode && draft ? draft : preference
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
 
   // TODO: Implement switching between compatible layouts
   const layoutId = preferredLayoutId
 
   const layout = getLayout(layoutId)
-  const widgetsBySection = getWidgetsForSections(
+
+  const elementsBySection = extractSectionElements(
+    sections as Record<string, ReactNode>
+  )
+
+  const naturalWidgets = getWidgetsForSections(
     widgetsZonePrefix,
     layout?.sections?.map((s) => s.id) ?? []
   )
-  const widgetProps = { data }
 
-  const renderedSections: Record<string, ReactNode> = {}
-  for (const { id } of layout?.sections ?? []) {
-    const widgets = widgetsBySection[id] ?? []
-    const before = widgets.filter((w) => w.order < CORE_CONTENT_ORDER)
-    const after = widgets.filter((w) => w.order >= CORE_CONTENT_ORDER)
-    renderedSections[id] = (
-      <>
-        {before.map(({ Component }, i) => (
-          <Component key={i} {...widgetProps} />
-        ))}
-        {sections[id as SectionNameFor<TLayoutId>]}
-        {after.map(({ Component }, i) => (
-          <Component key={i} {...widgetProps} />
-        ))}
-      </>
-    )
+  // Build raw entries (core + widgets) at their natural sections/orders.
+  const rawEntries: RawEntry[] = []
+  const coreElementMap = new Map<string, ReactElement>()
+  for (const [sectionName, elements] of Object.entries(elementsBySection)) {
+    const coreEntries = buildCoreEntries(sectionName, elements)
+    for (const ce of coreEntries) {
+      rawEntries.push({ ...ce })
+    }
+    elements.forEach((el) => {
+      coreElementMap.set(`core:${sectionName}:${getElementName(el)}`, el)
+    })
+  }
+  for (const [naturalSection, widgets] of Object.entries(naturalWidgets)) {
+    for (const w of widgets) {
+      rawEntries.push({
+        widgetId: w.widgetId,
+        Component: w.Component,
+        order: w.order,
+        isCore: false,
+        naturalSection,
+      })
+    }
+  }
+
+  // Apply the active preference (draft when editing, persisted otherwise),
+  // keeping hidden entries with `hidden: true` so we can ghost them in edit mode.
+  const entriesBySection = buildDisplayEntries(rawEntries, activePreference)
+
+  function renderEntryContent(entry: DisplayEntry): ReactNode {
+    if (entry.isCore) {
+      const el = coreElementMap.get(entry.widgetId)
+      return el ?? null
+    }
+    const WidgetComponent = entry.Component as ComponentType<{
+      data?: unknown
+    }>
+    return <WidgetComponent data={data as unknown} />
+  }
+
+  function toggleHidden(widgetId: string) {
+    setDraft((prev) => {
+      if (!prev) return prev
+      const current = prev.widgets[widgetId] ?? {}
+      const nextWidget: WidgetPreference = {
+        ...current,
+        hidden: !current.hidden,
+      }
+      return {
+        ...prev,
+        widgets: { ...prev.widgets, [widgetId]: nextWidget },
+      }
+    })
+  }
+
+  function updateDraftWidget(widgetId: string, update: WidgetPreference) {
+    setDraft((prev) => {
+      if (!prev) return prev
+      return {
+        ...prev,
+        widgets: {
+          ...prev.widgets,
+          [widgetId]: { ...prev.widgets[widgetId], ...update },
+        },
+      }
+    })
+  }
+
+  function enterEdit() {
+    setDraft(preference)
+    setEditMode(true)
+  }
+
+  function saveEdit() {
+    if (draft) setPreference(draft)
+    setEditMode(false)
+    setDraft(null)
+  }
+
+  function cancelEdit() {
+    setEditMode(false)
+    setDraft(null)
+  }
+
+  function handleDragStart(event: DragStartEvent) {
+    setActiveDragId(event.active.id as string)
+    lastOverIdRef.current = null
+  }
+
+  /**
+   * Cursor-first collision detection with sticky fallback.
+   *
+   * 1. `pointerWithin` resolves the droppable the cursor is literally over —
+   *    immune to overlay-rect drift.
+   * 2. If the cursor is in dead space (column gutter, padding) `pointerWithin`
+   *    returns nothing. Rather than letting `rectIntersection` /
+   *    `closestCenter` pick whichever widget the overlay happens to mostly
+   *    cover (which flickers with tiny pointer movements), we reuse the last
+   *    valid over-id from this drag.
+   * 3. If we have no history yet (drag just started in dead space), fall back
+   *    through `rectIntersection` then `closestCenter`.
+   *
+   * Section dropzones are de-prioritized in favor of widgets so the slot
+   * anchors to a real entry whenever one is in range.
+   */
+  const collisionDetection: CollisionDetection = (args) => {
+    const sectionIdSet = new Set(layout?.sections.map((s) => s.id) ?? [])
+    // Section bodies and their tail drop zones are container targets — prefer a
+    // real entry over them whenever one is in range so the insertion slot
+    // anchors to a widget rather than the whole column or the end zone.
+    const isContainerId = (id: string) =>
+      sectionIdSet.has(id) || isSectionTailId(id)
+    const preferWidget = (
+      collisions: ReturnType<typeof closestCenter>
+    ): ReturnType<typeof closestCenter> => {
+      const widget = collisions.find((c) => !isContainerId(c.id as string))
+      return widget ? [widget] : collisions
+    }
+
+    const pointer = pointerWithin(args)
+    if (pointer.length > 0) {
+      const chosen = preferWidget(pointer)
+      if (chosen.length > 0) {
+        lastOverIdRef.current = chosen[0].id as string
+      }
+      return chosen
+    }
+
+    if (lastOverIdRef.current !== null) {
+      return [{ id: lastOverIdRef.current, data: { droppableContainer: null } }]
+    }
+
+    const rect = rectIntersection(args)
+    if (rect.length > 0) {
+      const chosen = preferWidget(rect)
+      if (chosen.length > 0) {
+        lastOverIdRef.current = chosen[0].id as string
+      }
+      return chosen
+    }
+
+    const closest = preferWidget(closestCenter(args))
+    if (closest.length > 0) {
+      lastOverIdRef.current = closest[0].id as string
+    }
+    return closest
+  }
+
+  /**
+   * Fires continuously while dragging. When the cursor crosses into a
+   * different section, we move the dragged item into that section's
+   * `SortableContext` immediately so the items there shift to make room
+   * *before* release. `handleDragEnd` still covers cross-section moves as a
+   * fallback for keyboard-driven drags that never fire `onDragOver`.
+   */
+  function handleDragOver(event: DragOverEvent) {
+    const { active, over } = event
+    if (!over || active.id === over.id) return
+
+    const activeWidgetId = active.id as string
+    const overId = over.id as string
+
+    const sectionIds = new Set(layout?.sections.map((s) => s.id) ?? [])
+
+    const widgetSectionMap: Record<string, string> = {}
+    for (const [sectionId, entries] of Object.entries(entriesBySection)) {
+      for (const e of entries) widgetSectionMap[e.widgetId] = sectionId
+    }
+    const naturalSectionMap: Record<string, string> = {}
+    for (const entry of rawEntries) {
+      naturalSectionMap[entry.widgetId] = entry.naturalSection
+    }
+
+    const activeSection = widgetSectionMap[activeWidgetId]
+    const overSection = resolveOverSection(overId, sectionIds, widgetSectionMap)
+    if (!activeSection || !overSection) return
+    if (activeSection === overSection) return
+
+    const targetEntries = entriesBySection[overSection] ?? []
+    const overIndex = targetEntries.findIndex((e) => e.widgetId === overId)
+
+    let newOrder: number
+    if (overIndex === -1) {
+      newOrder =
+        targetEntries.length > 0
+          ? Math.max(...targetEntries.map((e) => e.order)) + 1
+          : 1
+    } else {
+      const before = overIndex > 0 ? targetEntries[overIndex - 1] : null
+      const after = targetEntries[overIndex]
+      newOrder = before ? (before.order + after.order) / 2 : after.order - 1
+    }
+
+    const naturalSection = naturalSectionMap[activeWidgetId]
+    updateDraftWidget(activeWidgetId, {
+      order: newOrder,
+      section: overSection === naturalSection ? undefined : overSection,
+    })
+  }
+
+  function handleDragEnd(event: DragEndEvent) {
+    setActiveDragId(null)
+    lastOverIdRef.current = null
+    const { active, over } = event
+    if (!over || active.id === over.id) return
+
+    const activeWidgetId = active.id as string
+    const overId = over.id as string
+
+    const sectionIds = new Set(layout?.sections.map((s) => s.id) ?? [])
+
+    const widgetSectionMap: Record<string, string> = {}
+    for (const [sectionId, entries] of Object.entries(entriesBySection)) {
+      for (const e of entries) widgetSectionMap[e.widgetId] = sectionId
+    }
+    const naturalSectionMap: Record<string, string> = {}
+    for (const entry of rawEntries) {
+      naturalSectionMap[entry.widgetId] = entry.naturalSection
+    }
+
+    const activeSection = widgetSectionMap[activeWidgetId]
+    const overSection = resolveOverSection(overId, sectionIds, widgetSectionMap)
+    if (!activeSection || !overSection) return
+
+    const targetEntries = entriesBySection[overSection] ?? []
+
+    if (activeSection === overSection) {
+      // Dropped on the section body or its tail zone — move to the end.
+      if (isEndDropTarget(overId, sectionIds)) {
+        const maxOrder =
+          targetEntries.length > 0
+            ? Math.max(...targetEntries.map((e) => e.order)) + 1
+            : 1
+        updateDraftWidget(activeWidgetId, { order: maxOrder })
+        return
+      }
+
+      const oldIndex = targetEntries.findIndex(
+        (e) => e.widgetId === activeWidgetId
+      )
+      const newIndex = targetEntries.findIndex((e) => e.widgetId === overId)
+      if (oldIndex === -1 || newIndex === -1) return
+
+      const moved = targetEntries[oldIndex]
+      const target = targetEntries[newIndex]
+      const before = targetEntries[newIndex - (newIndex > oldIndex ? 0 : 1)]
+      const after = targetEntries[newIndex + (newIndex > oldIndex ? 1 : 0)]
+
+      let newOrder: number
+      if (!before || before.widgetId === moved.widgetId) {
+        newOrder = target.order - 1
+      } else if (!after || after.widgetId === moved.widgetId) {
+        newOrder = target.order + 1
+      } else {
+        newOrder = (before.order + after.order) / 2
+      }
+
+      updateDraftWidget(activeWidgetId, { order: newOrder })
+    } else {
+      const overIndex = targetEntries.findIndex((e) => e.widgetId === overId)
+      let newOrder: number
+
+      if (overIndex === -1) {
+        const maxOrder =
+          targetEntries.length > 0
+            ? Math.max(...targetEntries.map((e) => e.order)) + 1
+            : 1
+        newOrder = maxOrder
+      } else {
+        const before = overIndex > 0 ? targetEntries[overIndex - 1] : null
+        const after = targetEntries[overIndex]
+        newOrder = before ? (before.order + after.order) / 2 : after.order - 1
+      }
+
+      const naturalSection = naturalSectionMap[activeWidgetId]
+      updateDraftWidget(activeWidgetId, {
+        order: newOrder,
+        section: overSection === naturalSection ? undefined : overSection,
+      })
+    }
   }
 
   const LayoutComponent = layout?.Component
-  if (!LayoutComponent) return null
+  if (!LayoutComponent) {
+    return null
+  }
+
+  const renderedSections: Record<string, ReactNode> = {}
+  for (const section of layout.sections) {
+    const entries = entriesBySection[section.id] ?? []
+    const visibleEntries = editMode ? entries : entries.filter((e) => !e.hidden)
+
+    const renderedItems = visibleEntries.map((entry) => {
+      const content = renderEntryContent(entry)
+      if (!editMode) {
+        return <Fragment key={entry.widgetId}>{content}</Fragment>
+      }
+      // Entries that currently render nothing stay mounted as a probe — no
+      // chrome, no sortable — so they neither show a bare control row nor act
+      // as an invisible drop target, but can return if their content comes back.
+      if (emptyWidgetIds.has(entry.widgetId)) {
+        return (
+          <EntryProbe
+            key={entry.widgetId}
+            widgetId={entry.widgetId}
+            onEmptyChange={reportEmptiness}
+          >
+            {content}
+          </EntryProbe>
+        )
+      }
+      return (
+        <SortableEntry
+          key={entry.widgetId}
+          widgetId={entry.widgetId}
+          hidden={entry.hidden}
+          onToggleHidden={() => toggleHidden(entry.widgetId)}
+          onEmptyChange={reportEmptiness}
+        >
+          {content}
+        </SortableEntry>
+      )
+    })
+
+    if (editMode) {
+      renderedSections[section.id] = (
+        <SectionDropzone
+          section={section}
+          items={visibleEntries
+            .filter((e) => !emptyWidgetIds.has(e.widgetId))
+            .map((e) => e.widgetId)}
+        >
+          {renderedItems}
+        </SectionDropzone>
+      )
+    } else {
+      renderedSections[section.id] = renderedItems
+    }
+  }
+
+  // Active drag entry, used by DragOverlay to render the moving ghost.
+  const activeEntry = activeDragId
+    ? Object.values(entriesBySection)
+        .flat()
+        .find((e) => e.widgetId === activeDragId)
+    : null
+
+  // Customizer controls — all live in the single top-bar portal slot.
+  // Idle: the trigger icon. Editing: Clear + Save text buttons.
+  const controls = editMode ? (
+    <div className="flex items-center gap-x-2">
+      <Button size="small" variant="secondary" onClick={cancelEdit}>
+        {t("actions.clear", "Clear")}
+      </Button>
+      <Button size="small" variant="primary" onClick={saveEdit}>
+        {t("actions.save", "Save")}
+      </Button>
+    </div>
+  ) : (
+    <IconButton
+      size="small"
+      variant="transparent"
+      onClick={enterEdit}
+      aria-label={t("layout.customizeWidgets", "Customize widgets")}
+      className="text-ui-fg-muted hover:text-ui-fg-subtle"
+    >
+      <AdjustmentsDone />
+    </IconButton>
+  )
+
+  const layoutNode = <LayoutComponent sections={renderedSections} data={data} />
 
   return (
     <>
-      <LayoutComponent sections={renderedSections} data={data} />
+      {triggerHost ? createPortal(controls, triggerHost) : null}
+      {editMode ? (
+        <DndContext
+          sensors={sensors}
+          collisionDetection={collisionDetection}
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
+          onDragEnd={handleDragEnd}
+        >
+          {layoutNode}
+          <DragOverlay>
+            {activeEntry ? (
+              <div className="bg-ui-bg-base shadow-elevation-flyout ring-ui-border-base rounded-lg ring-1">
+                {renderEntryContent(activeEntry)}
+              </div>
+            ) : null}
+          </DragOverlay>
+        </DndContext>
+      ) : (
+        layoutNode
+      )}
       {hasOutlet && <Outlet />}
     </>
   )
