@@ -11,6 +11,14 @@ This documentation provides a reference to the `useQueryGraphStep` step. It belo
 
 This step fetches data across modules using the Query.
 
+<Note type="warning">
+
+**Important Filter Limitation**: Filters don't apply on fields of linked data models from other modules. For example, `filters: { fulfillments: { id: fulfillment_id } }` will produce a TypeScript error and won't work as expected.
+
+**Workaround**: Fetch all records first, then filter in JavaScript, or query the module link's table directly using the link's `entryPoint` property.
+
+</Note>
+
 Learn more in the [Query documentation](https://docs.medusajs.com/learn/fundamentals/module-links/query).
 
 ## Example
@@ -80,6 +88,42 @@ const { data: products } = useQueryGraphStep({
     }
   }
 })
+```
+
+### Correct vs Incorrect Filter Usage
+
+```ts
+// ❌ Incorrect - This will cause a TypeScript error
+// Filters on linked data models from other modules don't work
+const { data: orders } = useQueryGraphStep({
+  entity: "order",
+  fields: ["*", "fulfillments.*"],
+  filters: {
+    fulfillments: { 
+      id: fulfillment_id // This won't work!
+    }
+  }
+})
+
+// ✅ Correct - Filter by the entity's own fields
+const { data: orders } = useQueryGraphStep({
+  entity: "order",
+  fields: ["*", "fulfillments.*"],
+  filters: {
+    id: order_id, // Filter by order's own fields
+    status: "completed"
+  }
+})
+
+// ✅ Alternative - Filter in JavaScript after fetching
+const { data: orders } = useQueryGraphStep({
+  entity: "order",
+  fields: ["*", "fulfillments.*"]
+})
+
+const filteredOrders = orders.filter(order => 
+  order.fulfillments?.some(f => f.id === fulfillment_id)
+)
 ```
 
 ## Input
