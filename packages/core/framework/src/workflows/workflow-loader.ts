@@ -34,7 +34,10 @@ export class WorkflowLoader extends ResourceLoader {
    * therefore we only need to import them
    */
   async load() {
-    await super.discoverResources()
+    // Workflows register themselves as a side effect of importing the file, so
+    // unlike other loaders we also want to pick up workflows defined in an
+    // `index.[js,ts]` file (e.g. `src/workflows/<name>/index.ts`).
+    await super.discoverResources({ allowIndex: true })
 
     this.logger.debug(`Workflows registered.`)
   }
