@@ -688,6 +688,100 @@ medusaIntegrationTestRunner({
           ],
         })
       })
+
+      it("should use a custom alias when provided in InputOptions for a regular link", async () => {
+        const currencyLinks = CurrencyModule.linkable
+        const regionLinks = RegionModule.linkable
+
+        const link = defineLink(currencyLinks.currency, {
+          linkable: regionLinks.region,
+          alias: "primary_region",
+        })
+
+        const linkDefinition = MedusaModule.getCustomLinks()
+          .map((linkDefinition: any) => {
+            const definition = linkDefinition(
+              MedusaModule.getAllJoinerConfigs()
+            )
+            return definition.serviceName === link.serviceName && definition
+          })
+          .filter(Boolean)[0]
+
+        expect(link.serviceName).toEqual(
+          "CurrencyCurrencyRegionPrimaryRegionLink"
+        )
+        expect(link.entryPoint).toEqual("currency_primary_region")
+        expect(linkDefinition.relationships[1].alias).toEqual("primary_region")
+        expect(linkDefinition.extends[0].fieldAlias).toHaveProperty(
+          "primary_region"
+        )
+        expect(linkDefinition.extends[0].relationship.alias).toEqual(
+          "primary_region_link"
+        )
+      })
+
+      it("should allow two read-only links to the same module using distinct aliases", async () => {
+        const currencyLinks = CurrencyModule.linkable
+        const regionLinks = RegionModule.linkable
+
+        defineLink(
+          {
+            linkable: currencyLinks.currency,
+            field: "primary_region_id",
+          },
+          {
+            linkable: regionLinks.region,
+            alias: "primary_region",
+          },
+          { readOnly: true }
+        )
+
+        defineLink(
+          {
+            linkable: currencyLinks.currency,
+            field: "secondary_region_id",
+          },
+          {
+            linkable: regionLinks.region,
+            alias: "secondary_region",
+          },
+          { readOnly: true }
+        )
+
+        const readOnlyLinks = MedusaModule.getCustomLinks()
+          .map((linkDefinition: any) => {
+            const definition = linkDefinition(
+              MedusaModule.getAllJoinerConfigs()
+            )
+            return definition.isReadOnlyLink && definition
+          })
+          .filter(Boolean)
+
+        const primaryLink = readOnlyLinks.find((d: any) =>
+          d.extends.some(
+            (e: any) => e.relationship?.alias === "primary_region"
+          )
+        )
+        const secondaryLink = readOnlyLinks.find((d: any) =>
+          d.extends.some(
+            (e: any) => e.relationship?.alias === "secondary_region"
+          )
+        )
+
+        expect(primaryLink).toBeDefined()
+        expect(secondaryLink).toBeDefined()
+
+        expect(primaryLink.extends[0].relationship).toMatchObject({
+          alias: "primary_region",
+          foreignKey: "primary_region_id",
+          serviceName: "region",
+        })
+        expect(secondaryLink.extends[0].relationship).toMatchObject({
+          alias: "secondary_region",
+          foreignKey: "secondary_region_id",
+          serviceName: "region",
+        })
+      })
     })
   },
 })
