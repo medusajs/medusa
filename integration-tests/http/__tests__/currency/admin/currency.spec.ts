@@ -22,9 +22,13 @@ medusaIntegrationTestRunner({
         )
 
         expect(response.status).toEqual(200)
-        expect(response.data.currencies).toHaveLength(123)
+        expect(response.data.currencies).toHaveLength(124)
         expect(response.data.currencies).toEqual(
           expect.arrayContaining([
+            expect.objectContaining({
+              code: "gmd",
+              name: "Gambian Dalasi",
+            }),
             expect.objectContaining({
               code: "usd",
               name: "US Dollar",
