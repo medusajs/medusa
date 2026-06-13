@@ -5,7 +5,7 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 /**
  * @ignore
  * @featureFlag rbac
- * @since 2.15.6
+ * @since 2.16.0
  */
 export type GetAssignableRolesStepInput = {
   /**
@@ -35,7 +35,7 @@ type AssignableRole = {
 /**
  * @ignore
  * @featureFlag rbac
- * @since 2.15.6
+ * @since 2.16.0
  */
 export type GetAssignableRolesStepOutput = {
   roles: AssignableRole[]
@@ -45,7 +45,7 @@ export type GetAssignableRolesStepOutput = {
 /**
  * @ignore
  * @featureFlag rbac
- * @since 2.15.6
+ * @since 2.16.0
  */
 export const getAssignableRolesStepId = "get-assignable-roles"
 
@@ -54,7 +54,7 @@ export const getAssignableRolesStepId = "get-assignable-roles"
  *
  * @ignore
  * @featureFlag rbac
- * @since 2.15.6
+ * @since 2.16.0
  */
 export const getAssignableRolesStep = createStep(
   getAssignableRolesStepId,

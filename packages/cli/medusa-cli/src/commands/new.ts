@@ -14,7 +14,6 @@ import url from "url"
 import { track } from "@medusajs/telemetry"
 // @ts-ignore
 import inquirer from "inquirer"
-import { createDatabase } from "pg-god"
 
 import { getNodeVersion, MIN_SUPPORTED_NODE_VERSION } from "@medusajs/utils"
 import reporter from "../reporter"
@@ -250,22 +249,29 @@ Do you wish to continue with these credentials?
   return
 }
 
-const setupDB = async (dbName, dbCreds = {}) => {
+export const createDatabase = async (dbName, credentials) => {
+  const pool = new Pool(credentials)
+  try {
+    // `dbName` is always internally generated (`medusa-db-<base36>`) and is never
+    // user-supplied, so interpolating it here is safe. CREATE DATABASE also cannot
+    // use a parameterized identifier, so interpolation is the only option.
+    await pool.query(`CREATE DATABASE "${dbName}"`)
+  } finally {
+    await pool.end()
+  }
+}
+
+export const setupDB = async (dbName, dbCreds = {}) => {
   const credentials = Object.assign({}, defaultDBCreds, dbCreds)
 
   const dbActivity = reporter.activity(`Setting up database "${dbName}"...`)
-  await createDatabase(
-    {
-      databaseName: dbName,
-      errorIfExist: true,
-    },
-    credentials
-  )
+  await createDatabase(dbName, credentials)
     .then(() => {
       reporter.success(dbActivity, `Created database "${dbName}"`)
     })
     .catch((err) => {
-      if (err.name === "PDG_ERR::DuplicateDatabase") {
+      // Postgres raises 42P04 (duplicate_database) when the database already exists
+      if (err.code === "42P04") {
         reporter.success(
           dbActivity,
           `Database ${dbName} already exists; skipping setup`

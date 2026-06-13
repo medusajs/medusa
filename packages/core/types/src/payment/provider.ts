@@ -222,7 +222,7 @@ export interface SavePaymentMethodInput extends PaymentProviderInput {}
 /**
  * The data to delete a payment method.
  * 
- * @since 2.15.6
+ * @since 2.16.0
  */
 export interface DeletePaymentMethodInput
   extends Omit<PaymentProviderInput, "data"> {
@@ -373,7 +373,7 @@ export interface SavePaymentMethodOutput extends PaymentProviderOutput {
 /**
  * The result of deleting a payment method.
  * 
- * @since 2.15.6
+ * @since 2.16.0
  */
 export interface DeletePaymentMethodOutput extends PaymentProviderOutput {}
 
@@ -711,7 +711,7 @@ export interface IPaymentProvider {
    * @param data - The details of the payment method to delete.
    * @returns The result of deleting the payment method. If an error occurs, throw it.
    * 
-   * @since 2.15.6
+   * @since 2.16.0
    *
    * @example
    * import { MedusaError } from "@medusajs/framework/utils"

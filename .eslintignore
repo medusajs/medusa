@@ -40,6 +40,7 @@ packages/*
 !packages/modules/providers/locking-redis
 !packages/modules/index
 !packages/core/framework
+!packages/eslint-plugin
 
 
 **/models/*

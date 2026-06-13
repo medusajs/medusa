@@ -5,7 +5,7 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 /**
  * Input for the create password reset token step.
  *
- * @since 2.15.6
+ * @since 2.16.0
  */
 export type CreatePasswordResetTokenStepInput = {
   /** The entity ID for which to create the password reset token. */
@@ -19,7 +19,7 @@ export type CreatePasswordResetTokenStepInput = {
 /**
  * Output from the create password reset token step.
  *
- * @since 2.15.6
+ * @since 2.16.0
  */
 export type CreatePasswordResetTokenStepOutput = {
   /** The JWT ID (JTI) for the password reset token. */
@@ -31,7 +31,7 @@ export type CreatePasswordResetTokenStepOutput = {
 /**
  * The ID of the create password reset token step.
  *
- * @since 2.15.6
+ * @since 2.16.0
  */
 export const createPasswordResetTokenStepId = "create-password-reset-token"
 
@@ -45,7 +45,7 @@ export const createPasswordResetTokenStepId = "create-password-reset-token"
  * tokens for the same provider identity. Compensation consumes the token
  * (best-effort) if the workflow rolls back.
  *
- * @since 2.15.6
+ * @since 2.16.0
  */
 export const createPasswordResetTokenStep = createStep(
   createPasswordResetTokenStepId,
