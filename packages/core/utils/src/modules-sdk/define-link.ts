@@ -49,6 +49,7 @@ type CombinedSource = Record<any, any> & InputToJson
 type InputOptions = {
   linkable: CombinedSource | InputSource
   field?: string
+  alias?: string
   isList?: boolean
   deleteCascade?: boolean
   filterable?: string[]
@@ -165,7 +166,7 @@ function prepareServiceConfig(
 
     serviceConfig = {
       key: source.linkable,
-      alias: source.alias ?? camelToSnakeCase(source.field ?? ""),
+      alias: input.alias ?? source.alias ?? camelToSnakeCase(source.field ?? ""),
       field: input.field ?? source.field,
       primaryKey: source.primaryKey,
       isList: input.isList ?? false,
