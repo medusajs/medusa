@@ -1,3 +1,5 @@
+import { AdminLayoutWidgetPreference } from "./responses"
+
 export interface AdminSetLayoutConfiguration {
   /**
    * Whether to set the zone's system default configuration (applies to all
@@ -11,13 +13,6 @@ export interface AdminSetLayoutConfiguration {
     /**
      * Per-widget placement and visibility preferences, keyed by widget ID.
      */
-    widgets: Record<
-      string,
-      {
-        hidden?: boolean
-        section?: string
-        order?: number
-      }
-    >
+    widgets: Record<string, AdminLayoutWidgetPreference>
   }
 }

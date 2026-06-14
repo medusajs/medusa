@@ -16,7 +16,7 @@ const LAYOUTS_QUERY_KEY = "layouts" as const
 const _layoutsKeys = queryKeysFactory(
   LAYOUTS_QUERY_KEY
 ) as TQueryKey<"layouts"> & {
-  configuration: (zone: string) => any
+  configuration: (zone: string) => QueryKey
 }
 
 _layoutsKeys.configuration = function (zone: string) {

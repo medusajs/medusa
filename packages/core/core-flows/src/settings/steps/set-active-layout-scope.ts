@@ -4,7 +4,7 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 export type SetActiveLayoutScopeStepInput = {
   zone: string
   user_id: string
-  scope: "personal" | "default"
+  scope: "personal" | "default" | null
 }
 
 export const setActiveLayoutScopeStepId = "set-active-layout-scope"

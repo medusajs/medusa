@@ -9,7 +9,6 @@ import {
   PointerSensor,
   closestCenter,
   pointerWithin,
-  rectIntersection,
   useSensor,
   useSensors,
 } from "@dnd-kit/core"
@@ -219,9 +218,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
       elements,
       coreSeen
     )
-    for (const ce of entries) {
-      rawEntries.push({ ...ce })
-    }
+    rawEntries.push(...entries)
     for (const [id, el] of elementById) {
       coreElementMap.set(id, el)
     }
@@ -342,17 +339,35 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   }
 
   /**
+   * Move a widget into `overSection`, inserting it just before `overId` (or at
+   * the end when `overId` is the section body/tail). Pins the absolute section
+   * rather than a delta against the natural section, so the stored preference
+   * fully determines placement and a later change to the widget's registered
+   * zone can't drag a user-placed widget out from under them.
+   */
+  function moveToSection(
+    activeWidgetId: string,
+    overSection: string,
+    overId: string
+  ) {
+    const targetEntries = entriesBySection[overSection] ?? []
+    updateDraftWidget(activeWidgetId, {
+      order: insertOrderBefore(targetEntries, overId),
+      section: overSection,
+    })
+  }
+
+  /**
    * Cursor-first collision detection with sticky fallback.
    *
    * 1. `pointerWithin` resolves the droppable the cursor is literally over —
    *    immune to overlay-rect drift.
    * 2. If the cursor is in dead space (column gutter, padding) `pointerWithin`
-   *    returns nothing. Rather than letting `rectIntersection` /
-   *    `closestCenter` pick whichever widget the overlay happens to mostly
-   *    cover (which flickers with tiny pointer movements), we reuse the last
-   *    valid over-id from this drag.
+   *    returns nothing. Rather than letting `closestCenter` pick whichever
+   *    widget the overlay happens to mostly cover (which flickers with tiny
+   *    pointer movements), we reuse the last valid over-id from this drag.
    * 3. If we have no history yet (drag just started in dead space), fall back
-   *    through `rectIntersection` then `closestCenter`.
+   *    to `closestCenter`.
    *
    * Section dropzones are de-prioritized in favor of widgets so the slot
    * anchors to a real entry whenever one is in range.
@@ -383,15 +398,8 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
       return [{ id: lastOverIdRef.current, data: { droppableContainer: null } }]
     }
 
-    const rect = rectIntersection(args)
-    if (rect.length > 0) {
-      const chosen = preferWidget(rect)
-      if (chosen.length > 0) {
-        lastOverIdRef.current = chosen[0].id as string
-      }
-      return chosen
-    }
-
+    // No pointer hit and no history yet (drag just started in dead space) —
+    // anchor to the closest entry so we still have a slot.
     const closest = preferWidget(closestCenter(args))
     if (closest.length > 0) {
       lastOverIdRef.current = closest[0].id as string
@@ -422,17 +430,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     if (!activeSection || !overSection) return
     if (activeSection === overSection) return
 
-    const targetEntries = entriesBySection[overSection] ?? []
-    const newOrder = insertOrderBefore(targetEntries, overId)
-
-    // Pin the absolute section, not a delta against the current natural
-    // section. The widget's stored preference then fully determines its
-    // placement, so a later change to its registered zone (natural section)
-    // can't drag a user-placed widget out from under them.
-    updateDraftWidget(activeWidgetId, {
-      order: newOrder,
-      section: overSection,
-    })
+    moveToSection(activeWidgetId, overSection, overId)
   }
 
   function handleDragEnd(event: DragEndEvent) {
@@ -452,51 +450,48 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     )
     if (!activeSection || !overSection) return
 
+    // Cross-section moves are normally handled live by `handleDragOver`; this
+    // covers keyboard-driven drags that never fire it. Pins the absolute
+    // section the widget ends up in (see `moveToSection`).
+    if (activeSection !== overSection) {
+      moveToSection(activeWidgetId, overSection, overId)
+      return
+    }
+
     const targetEntries = entriesBySection[overSection] ?? []
 
-    // Always pin the absolute section the widget ends up in (see `handleDragOver`)
-    // so dragging — even a same-section reorder — anchors the widget there
-    // regardless of later changes to its registered zone.
-    if (activeSection === overSection) {
-      // Dropped on the section body or its tail zone — move to the end.
-      if (isEndDropTarget(overId, validSectionIds)) {
-        updateDraftWidget(activeWidgetId, {
-          order: appendOrder(targetEntries),
-          section: activeSection,
-        })
-        return
-      }
-
-      const oldIndex = targetEntries.findIndex(
-        (e) => e.widgetId === activeWidgetId
-      )
-      const newIndex = targetEntries.findIndex((e) => e.widgetId === overId)
-      if (oldIndex === -1 || newIndex === -1) return
-
-      const moved = targetEntries[oldIndex]
-      const target = targetEntries[newIndex]
-      const before = targetEntries[newIndex - (newIndex > oldIndex ? 0 : 1)]
-      const after = targetEntries[newIndex + (newIndex > oldIndex ? 1 : 0)]
-
-      let newOrder: number
-      if (!before || before.widgetId === moved.widgetId) {
-        newOrder = target.order - 1
-      } else if (!after || after.widgetId === moved.widgetId) {
-        newOrder = target.order + 1
-      } else {
-        newOrder = (before.order + after.order) / 2
-      }
-
+    // Dropped on the section body or its tail zone — move to the end.
+    if (isEndDropTarget(overId, validSectionIds)) {
       updateDraftWidget(activeWidgetId, {
-        order: newOrder,
+        order: appendOrder(targetEntries),
         section: activeSection,
       })
-    } else {
-      updateDraftWidget(activeWidgetId, {
-        order: insertOrderBefore(targetEntries, overId),
-        section: overSection,
-      })
+      return
     }
+
+    const oldIndex = targetEntries.findIndex(
+      (e) => e.widgetId === activeWidgetId
+    )
+    const newIndex = targetEntries.findIndex((e) => e.widgetId === overId)
+    if (oldIndex === -1 || newIndex === -1) return
+
+    // Insert between the two entries that flank the destination slot. Moving
+    // down lands after the target, moving up lands before it; the moved entry
+    // itself can never be a flank since `oldIndex !== newIndex`.
+    const movingDown = newIndex > oldIndex
+    const before = targetEntries[movingDown ? newIndex : newIndex - 1]
+    const after = targetEntries[movingDown ? newIndex + 1 : newIndex]
+
+    const newOrder = !before
+      ? after.order - 1
+      : !after
+        ? before.order + 1
+        : (before.order + after.order) / 2
+
+    updateDraftWidget(activeWidgetId, {
+      order: newOrder,
+      section: activeSection,
+    })
   }
 
   const LayoutComponent = layout?.Component
@@ -532,6 +527,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
         <SortableEntry
           key={entry.widgetId}
           widgetId={entry.widgetId}
+          order={entry.order}
           hidden={entry.hidden}
           onToggleHidden={() => toggleHidden(entry.widgetId)}
           onEmptyChange={reportEmptiness}

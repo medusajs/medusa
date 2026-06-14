@@ -7,6 +7,7 @@ import {
   UserPreferenceDTO,
   PropertyLabelDTO,
   LayoutConfigurationDTO,
+  LayoutConfigurationData,
   FilterableViewConfigurationProps,
   FilterableUserPreferenceProps,
   FilterableLayoutConfigurationProps,
@@ -16,7 +17,6 @@ import {
   CreateViewConfigurationDTO,
   UpdateViewConfigurationDTO,
   CreateLayoutConfigurationDTO,
-  UpdateLayoutConfigurationDTO,
   CreatePropertyLabelDTO,
   UpdatePropertyLabelDTO,
   UpsertPropertyLabelDTO,
@@ -195,7 +195,7 @@ export interface ISettingsModuleService extends IModuleService {
   setLayoutConfiguration(
     zone: string,
     userId: string,
-    data: UpdateLayoutConfigurationDTO["configuration"],
+    data: LayoutConfigurationData,
     sharedContext?: Context
   ): Promise<LayoutConfigurationDTO>
 
@@ -205,7 +205,7 @@ export interface ISettingsModuleService extends IModuleService {
    */
   setSystemDefaultLayoutConfiguration(
     zone: string,
-    data: UpdateLayoutConfigurationDTO["configuration"],
+    data: LayoutConfigurationData,
     sharedContext?: Context
   ): Promise<LayoutConfigurationDTO>
 

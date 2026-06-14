@@ -6,6 +6,7 @@ import { useContentEmptyReport } from "./use-content-empty-report"
 
 type SortableEntryProps = {
   widgetId: string
+  order: number
   hidden: boolean
   onToggleHidden: () => void
   onEmptyChange: (widgetId: string, isEmpty: boolean) => void
@@ -14,6 +15,7 @@ type SortableEntryProps = {
 
 export function SortableEntry({
   widgetId,
+  order,
   hidden,
   onToggleHidden,
   onEmptyChange,
@@ -79,7 +81,7 @@ export function SortableEntry({
           no z-index needed, which keeps Radix portal dropdowns above us. */}
       <div className="bg-ui-bg-base shadow-elevation-card-rest absolute right-2 top-2 flex items-center gap-x-1 rounded-md p-1">
         <span className="text-ui-fg-muted px-1 font-mono text-xs">
-          {widgetId}
+          {widgetId} ({order})
         </span>
         <IconButton
           size="2xsmall"

@@ -1,4 +1,4 @@
-interface AdminLayoutWidgetPreference {
+export interface AdminLayoutWidgetPreference {
   /**
    * Whether the widget is hidden.
    */
