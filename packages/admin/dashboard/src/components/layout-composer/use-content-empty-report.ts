@@ -15,9 +15,18 @@ export function useContentEmptyReport(
   onEmptyChange: (widgetId: string, isEmpty: boolean) => void
 ) {
   const ref = useRef<HTMLDivElement>(null)
+  // Remember the last value we reported so we only call up when emptiness
+  // actually changes. This keeps the hook self-contained: it doesn't rely on
+  // the caller passing a referentially stable `onEmptyChange` to avoid a render
+  // loop, since it no longer fires on every commit.
+  const lastReported = useRef<boolean | null>(null)
 
   useLayoutEffect(() => {
-    onEmptyChange(widgetId, ref.current?.childNodes.length === 0)
+    const isEmpty = ref.current?.childNodes.length === 0
+    if (lastReported.current !== isEmpty) {
+      lastReported.current = isEmpty
+      onEmptyChange(widgetId, isEmpty)
+    }
   })
 
   return ref

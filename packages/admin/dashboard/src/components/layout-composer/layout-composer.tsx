@@ -34,9 +34,11 @@ import { EntryProbe } from "./entry-probe"
 import {
   DisplayEntry,
   RawEntry,
+  appendOrder,
   buildCoreEntries,
   buildDisplayEntries,
   extractSectionElements,
+  insertOrderBefore,
 } from "./entries"
 import {
   SectionDropzone,
@@ -421,19 +423,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     if (activeSection === overSection) return
 
     const targetEntries = entriesBySection[overSection] ?? []
-    const overIndex = targetEntries.findIndex((e) => e.widgetId === overId)
-
-    let newOrder: number
-    if (overIndex === -1) {
-      newOrder =
-        targetEntries.length > 0
-          ? Math.max(...targetEntries.map((e) => e.order)) + 1
-          : 1
-    } else {
-      const before = overIndex > 0 ? targetEntries[overIndex - 1] : null
-      const after = targetEntries[overIndex]
-      newOrder = before ? (before.order + after.order) / 2 : after.order - 1
-    }
+    const newOrder = insertOrderBefore(targetEntries, overId)
 
     // Pin the absolute section, not a delta against the current natural
     // section. The widget's stored preference then fully determines its
@@ -470,12 +460,8 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     if (activeSection === overSection) {
       // Dropped on the section body or its tail zone — move to the end.
       if (isEndDropTarget(overId, validSectionIds)) {
-        const maxOrder =
-          targetEntries.length > 0
-            ? Math.max(...targetEntries.map((e) => e.order)) + 1
-            : 1
         updateDraftWidget(activeWidgetId, {
-          order: maxOrder,
+          order: appendOrder(targetEntries),
           section: activeSection,
         })
         return
@@ -506,23 +492,8 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
         section: activeSection,
       })
     } else {
-      const overIndex = targetEntries.findIndex((e) => e.widgetId === overId)
-      let newOrder: number
-
-      if (overIndex === -1) {
-        const maxOrder =
-          targetEntries.length > 0
-            ? Math.max(...targetEntries.map((e) => e.order)) + 1
-            : 1
-        newOrder = maxOrder
-      } else {
-        const before = overIndex > 0 ? targetEntries[overIndex - 1] : null
-        const after = targetEntries[overIndex]
-        newOrder = before ? (before.order + after.order) / 2 : after.order - 1
-      }
-
       updateDraftWidget(activeWidgetId, {
-        order: newOrder,
+        order: insertOrderBefore(targetEntries, overId),
         section: overSection,
       })
     }
@@ -595,7 +566,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
 
   // Customizer controls — all live in the single top-bar portal slot.
   // Idle: the trigger icon. Editing: Personal/Default badges to switch which
-  // configuration is being edited (active one highlighted), Clear, and a Save
+  // configuration is being edited (active one highlighted), Cancel, and a Save
   // button that targets the active scope ("Save for everyone" for the default).
   const controls = editMode ? (
     <div className="flex items-center gap-x-2">

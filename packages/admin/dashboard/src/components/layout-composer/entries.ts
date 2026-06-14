@@ -17,14 +17,6 @@ export type DisplayEntry = {
   isCore: boolean
 }
 
-export type CoreEntry = {
-  Component: ComponentType
-  widgetId: string
-  order: number
-  isCore: true
-  naturalSection: string
-}
-
 export type RawEntry = {
   widgetId: string
   Component: ComponentType
@@ -32,6 +24,12 @@ export type RawEntry = {
   isCore: boolean
   naturalSection: string
 }
+
+// Core entries render their content via `elementById`, not via their
+// `Component`, so the field only exists to satisfy the shared entry shape. A
+// single shared no-op stands in for all of them rather than minting one per
+// entry.
+const CORE_PLACEHOLDER: ComponentType = () => null
 
 /** Derives a stable string identifier from a React element's component type. */
 function getElementName(element: ReactElement): string {
@@ -59,7 +57,7 @@ export function getCoreEntryKey(element: ReactElement): string {
 }
 
 export type BuiltCoreEntries = {
-  entries: CoreEntry[]
+  entries: RawEntry[]
   /** Maps each entry's widgetId back to the element it should render. */
   elementById: Map<string, ReactElement>
 }
@@ -76,7 +74,7 @@ export function buildCoreEntries(
   // entries that live in different sections.
   seen: Map<string, number> = new Map()
 ): BuiltCoreEntries {
-  const entries: CoreEntry[] = []
+  const entries: RawEntry[] = []
   const elementById = new Map<string, ReactElement>()
 
   elements.forEach((el, i) => {
@@ -86,16 +84,11 @@ export function buildCoreEntries(
     seen.set(base, count + 1)
     const widgetId = count === 0 ? base : `${base}#${count + 1}`
 
-    function C(): null {
-      return null
-    }
-    C.displayName = name
-
     entries.push({
-      Component: C,
+      Component: CORE_PLACEHOLDER,
       widgetId,
       order: CORE_CONTENT_ORDER + i,
-      isCore: true as const,
+      isCore: true,
       naturalSection: sectionName,
     })
     elementById.set(widgetId, el)
@@ -171,4 +164,27 @@ export function buildDisplayEntries(
     result[k].sort((a, b) => a.order - b.order)
   }
   return result
+}
+
+/** Order value that appends an entry to the end of a section. */
+export function appendOrder(entries: DisplayEntry[]): number {
+  return entries.length > 0 ? Math.max(...entries.map((e) => e.order)) + 1 : 1
+}
+
+/**
+ * Order value that inserts an entry just before the entry identified by
+ * `overId` within `entries`. Falls back to appending when `overId` isn't a
+ * member of `entries` (e.g. a drop on the section body/tail).
+ */
+export function insertOrderBefore(
+  entries: DisplayEntry[],
+  overId: string
+): number {
+  const overIndex = entries.findIndex((e) => e.widgetId === overId)
+  if (overIndex === -1) {
+    return appendOrder(entries)
+  }
+  const before = overIndex > 0 ? entries[overIndex - 1] : null
+  const after = entries[overIndex]
+  return before ? (before.order + after.order) / 2 : after.order - 1
 }

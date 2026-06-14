@@ -66,19 +66,3 @@ export const useSetLayoutConfiguration = (
     },
   })
 }
-
-export const useDeleteLayoutConfiguration = (
-  zone: string,
-  options?: UseMutationOptions<{ success: boolean }, FetchError, void>
-) => {
-  return useMutation({
-    mutationFn: () => sdk.admin.layouts.deleteConfiguration(zone),
-    ...options,
-    onSuccess: async (data, variables, context) => {
-      await queryClient.invalidateQueries({
-        queryKey: layoutsQueryKeys.configuration(zone),
-      })
-      options?.onSuccess?.(data, variables, context)
-    },
-  })
-}

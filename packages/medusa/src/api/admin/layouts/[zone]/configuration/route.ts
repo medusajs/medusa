@@ -41,7 +41,7 @@ const getConfigurations = async (
     personal_configuration: personal ?? null,
     default_configuration: defaultConfiguration,
     active_scope: activeScope,
-  } as HttpTypes.AdminLayoutConfigurationResponse
+  }
 }
 
 export const GET = async (

@@ -37,7 +37,7 @@ export const LayoutCustomizerHostProvider = ({
 
 /**
  * Placeholder for the active `LayoutComposer`'s customizer controls
- * (trigger button at idle, Clear/Save while editing).
+ * (trigger button at idle, Cancel/Save while editing).
  */
 export const LayoutCustomizerSlot = () => {
   const ctx = useContext(LayoutCustomizerHostContext)
