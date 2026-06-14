@@ -65,19 +65,22 @@ export type BuiltCoreEntries = {
 
 export function buildCoreEntries(
   sectionName: string,
-  elements: ReactElement[]
+  elements: ReactElement[],
+  // Tracks how many times each base id has been used so duplicates (same
+  // component/name, or two anonymous elements) get distinct, deterministic ids
+  // instead of silently colliding on keys, drag ids, and preference lookups.
+  // The id intentionally omits the section, so a widget keeps its identity (and
+  // saved preference) when its natural section changes in code — which means
+  // dedup must be shared across sections by the caller to catch same-named
+  // entries that live in different sections.
+  seen: Map<string, number> = new Map()
 ): BuiltCoreEntries {
   const entries: CoreEntry[] = []
   const elementById = new Map<string, ReactElement>()
-  // Track how many times each base id has been used in this section so
-  // duplicates (same component/name, or two anonymous elements) get distinct,
-  // deterministic ids instead of silently colliding on keys, drag ids, and
-  // preference lookups.
-  const seen = new Map<string, number>()
 
   elements.forEach((el, i) => {
     const name = getCoreEntryKey(el)
-    const base = `core:${sectionName}:${name}`
+    const base = `core:${name}`
     const count = seen.get(base) ?? 0
     seen.set(base, count + 1)
     const widgetId = count === 0 ? base : `${base}#${count + 1}`

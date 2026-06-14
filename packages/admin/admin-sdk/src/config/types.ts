@@ -21,8 +21,8 @@ export interface WidgetConfig {
    *
    * If omitted, a stable id is derived from the widget's source file path at
    * build time. Provide an explicit id when you want customizations to survive
-   * the file being renamed or moved, or when a single source file is impossible
-   * to address uniquely.
+   * the file being renamed or moved. Plugins should include a unique prefix
+   * in their widget ids to avoid collisions with other plugins.
    */
   id?: string
 }

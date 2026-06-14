@@ -515,18 +515,23 @@ export class DashboardApp {
         const sourceId = ext.widgetId ?? `${zone}:${i}`
         result[section].push({
           Component: ext.Component,
-          widgetId: `widget:${section}:${sourceId}`,
+          // The id intentionally omits the section so a widget keeps its
+          // identity (and saved preference) when its zone moves to a different
+          // section of the same route.
+          widgetId: `widget:${sourceId}`,
           order: order,
         })
       })
     }
 
+    // Two widgets resolving to the same id (e.g. one source file injected into
+    // two zones) would collide as React keys, sortable ids, and preference
+    // keys. Suffix later occurrences deterministically so each entry stays
+    // addressable. Deduped across all sections — not per-section — since ids no
+    // longer carry their section, so the same source injected into two
+    // different sections would otherwise produce identical ids.
+    const seen = new Map<string, number>()
     for (const section of Object.keys(result)) {
-      // Two widgets resolving to the same id within a section (e.g. one source
-      // file injected into two zones of the same section) would collide as
-      // React keys, sortable ids, and preference keys. Suffix later
-      // occurrences deterministically so each entry stays addressable.
-      const seen = new Map<string, number>()
       for (const entry of result[section]) {
         const count = seen.get(entry.widgetId) ?? 0
         seen.set(entry.widgetId, count + 1)

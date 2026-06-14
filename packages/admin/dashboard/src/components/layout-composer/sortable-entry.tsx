@@ -78,6 +78,10 @@ export function SortableEntry({
       {/* Overlay rendered after children so it stacks above them by DOM order —
           no z-index needed, which keeps Radix portal dropdowns above us. */}
       <div className="bg-ui-bg-base shadow-elevation-card-rest absolute right-2 top-2 flex items-center gap-x-1 rounded-md p-1">
+        {/* TEMPORARY DEBUG: entry id — remove before merge */}
+        <span className="text-ui-fg-muted px-1 font-mono text-xs">
+          {widgetId}
+        </span>
         <IconButton
           size="2xsmall"
           variant="transparent"

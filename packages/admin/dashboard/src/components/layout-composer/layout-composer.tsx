@@ -208,8 +208,15 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   // Build raw entries (core + widgets) at their natural sections/orders.
   const rawEntries: RawEntry[] = []
   const coreElementMap = new Map<string, ReactElement>()
+  // Shared so duplicate ids are deduped across the whole page rather than
+  // per-section (ids no longer carry their section).
+  const coreSeen = new Map<string, number>()
   for (const [sectionName, elements] of Object.entries(elementsBySection)) {
-    const { entries, elementById } = buildCoreEntries(sectionName, elements)
+    const { entries, elementById } = buildCoreEntries(
+      sectionName,
+      elements,
+      coreSeen
+    )
     for (const ce of entries) {
       rawEntries.push({ ...ce })
     }
