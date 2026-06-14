@@ -181,16 +181,6 @@ export interface ISettingsModuleService extends IModuleService {
   ): Promise<void>
 
   /**
-   * Resolve the layout configuration that applies to a user for a zone.
-   * Falls back to the system default, then null.
-   */
-  getEffectiveLayoutConfiguration(
-    zone: string,
-    userId: string,
-    sharedContext?: Context
-  ): Promise<LayoutConfigurationDTO | null>
-
-  /**
    * Retrieve the system default layout configuration for a zone, if any.
    */
   getSystemDefaultLayoutConfiguration(

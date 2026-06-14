@@ -27,7 +27,10 @@ const validLayoutFile = `
 
     export const config = defineLayoutConfig({
         id: "three-column",
-        sections: ["main", "sidebar"],
+        sections: [
+            { id: "main", ordering: "list" },
+            { id: "sidebar", ordering: "list" },
+        ],
     })
 
     export default Layout
@@ -38,7 +41,7 @@ const layoutFileWithoutDefaultExport = `
 
     export const config = defineLayoutConfig({
         id: "no-default-export",
-        sections: ["main"],
+        sections: [{ id: "main", ordering: "list" }],
     })
 `
 

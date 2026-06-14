@@ -400,25 +400,6 @@ export default class SettingsModuleService
   }
 
   @InjectManager()
-  async getEffectiveLayoutConfiguration(
-    zone: string,
-    userId: string,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<SettingsTypes.LayoutConfigurationDTO | null> {
-    const [personal] = await this.listLayoutConfigurations(
-      { zone, user_id: userId },
-      { take: 1 },
-      sharedContext
-    )
-
-    if (personal) {
-      return personal
-    }
-
-    return this.getSystemDefaultLayoutConfiguration(zone, sharedContext)
-  }
-
-  @InjectManager()
   async getSystemDefaultLayoutConfiguration(
     zone: string,
     @MedusaContext() sharedContext: Context = {}
@@ -550,7 +531,6 @@ export default class SettingsModuleService
   }
 
   @InjectManager()
-  @EmitEvents()
   async setActiveLayoutScope(
     zone: string,
     userId: string,

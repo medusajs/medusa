@@ -245,6 +245,16 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     validSectionIds
   )
 
+  // Maps each entry's widgetId to the section it currently renders in. Shared by
+  // the collision detection and drag handlers to resolve the active/over
+  // sections of a move.
+  const widgetSectionMap: Record<string, string> = {}
+  for (const [sectionId, entries] of Object.entries(entriesBySection)) {
+    for (const e of entries) {
+      widgetSectionMap[e.widgetId] = sectionId
+    }
+  }
+
   function renderEntryContent(entry: DisplayEntry): ReactNode {
     if (entry.isCore) {
       const el = coreElementMap.get(entry.widgetId)
@@ -346,12 +356,11 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
    * anchors to a real entry whenever one is in range.
    */
   const collisionDetection: CollisionDetection = (args) => {
-    const sectionIdSet = new Set(layout?.sections.map((s) => s.id) ?? [])
     // Section bodies and their tail drop zones are container targets — prefer a
     // real entry over them whenever one is in range so the insertion slot
     // anchors to a widget rather than the whole column or the end zone.
     const isContainerId = (id: string) =>
-      sectionIdSet.has(id) || isSectionTailId(id)
+      validSectionIds.has(id) || isSectionTailId(id)
     const preferWidget = (
       collisions: ReturnType<typeof closestCenter>
     ): ReturnType<typeof closestCenter> => {
@@ -402,15 +411,12 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     const activeWidgetId = active.id as string
     const overId = over.id as string
 
-    const sectionIds = new Set(layout?.sections.map((s) => s.id) ?? [])
-
-    const widgetSectionMap: Record<string, string> = {}
-    for (const [sectionId, entries] of Object.entries(entriesBySection)) {
-      for (const e of entries) widgetSectionMap[e.widgetId] = sectionId
-    }
-
     const activeSection = widgetSectionMap[activeWidgetId]
-    const overSection = resolveOverSection(overId, sectionIds, widgetSectionMap)
+    const overSection = resolveOverSection(
+      overId,
+      validSectionIds,
+      widgetSectionMap
+    )
     if (!activeSection || !overSection) return
     if (activeSection === overSection) return
 
@@ -448,15 +454,12 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     const activeWidgetId = active.id as string
     const overId = over.id as string
 
-    const sectionIds = new Set(layout?.sections.map((s) => s.id) ?? [])
-
-    const widgetSectionMap: Record<string, string> = {}
-    for (const [sectionId, entries] of Object.entries(entriesBySection)) {
-      for (const e of entries) widgetSectionMap[e.widgetId] = sectionId
-    }
-
     const activeSection = widgetSectionMap[activeWidgetId]
-    const overSection = resolveOverSection(overId, sectionIds, widgetSectionMap)
+    const overSection = resolveOverSection(
+      overId,
+      validSectionIds,
+      widgetSectionMap
+    )
     if (!activeSection || !overSection) return
 
     const targetEntries = entriesBySection[overSection] ?? []
@@ -466,7 +469,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     // regardless of later changes to its registered zone.
     if (activeSection === overSection) {
       // Dropped on the section body or its tail zone — move to the end.
-      if (isEndDropTarget(overId, sectionIds)) {
+      if (isEndDropTarget(overId, validSectionIds)) {
         const maxOrder =
           targetEntries.length > 0
             ? Math.max(...targetEntries.map((e) => e.order)) + 1

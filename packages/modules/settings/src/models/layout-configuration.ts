@@ -13,7 +13,13 @@ export const LayoutConfiguration = model
       on: ["zone", "user_id"],
       unique: true,
     },
+    // Enforce at most one system default per zone. The `(zone, user_id)` unique
+    // index can't guarantee this because system defaults have `user_id = null`
+    // and Postgres treats NULLs as distinct, so it would allow duplicates. This
+    // partial unique index also serves the system-default lookup by zone.
     {
-      on: ["zone", "is_system_default"],
+      on: ["zone"],
+      unique: true,
+      where: "is_system_default = true",
     },
   ])

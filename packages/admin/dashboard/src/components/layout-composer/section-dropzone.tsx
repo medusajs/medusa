@@ -16,7 +16,7 @@ import type { LayoutSection } from "./types"
 // that renders it.
 const SECTION_TAIL_SUFFIX = "::tail"
 
-export const getSectionTailId = (sectionId: string) =>
+const getSectionTailId = (sectionId: string) =>
   `${sectionId}${SECTION_TAIL_SUFFIX}`
 
 export const isSectionTailId = (id: string) => id.endsWith(SECTION_TAIL_SUFFIX)

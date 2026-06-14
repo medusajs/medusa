@@ -1,3 +1,5 @@
+import { LayoutConfigurationData } from "./common"
+
 /**
  * The view configuration to be created.
  */
@@ -125,19 +127,7 @@ export interface CreateLayoutConfigurationDTO {
   /**
    * The layout configuration data.
    */
-  configuration: {
-    /**
-     * Per-widget placement and visibility preferences, keyed by widget ID.
-     */
-    widgets: Record<
-      string,
-      {
-        hidden?: boolean
-        section?: string
-        order?: number
-      }
-    >
-  }
+  configuration: LayoutConfigurationData
 }
 
 /**
@@ -147,19 +137,7 @@ export interface UpdateLayoutConfigurationDTO {
   /**
    * The layout configuration data.
    */
-  configuration?: {
-    /**
-     * Per-widget placement and visibility preferences, keyed by widget ID.
-     */
-    widgets: Record<
-      string,
-      {
-        hidden?: boolean
-        section?: string
-        order?: number
-      }
-    >
-  }
+  configuration?: LayoutConfigurationData
 }
 
 /**

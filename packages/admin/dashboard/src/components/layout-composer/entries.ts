@@ -34,7 +34,7 @@ export type RawEntry = {
 }
 
 /** Derives a stable string identifier from a React element's component type. */
-export function getElementName(element: ReactElement): string {
+function getElementName(element: ReactElement): string {
   const { type } = element
   if (typeof type === "string") return type
   return (

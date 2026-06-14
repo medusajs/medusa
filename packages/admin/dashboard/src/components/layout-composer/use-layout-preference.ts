@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from "react"
-import type { LayoutPreference, WidgetPreference } from "./types"
+import type { LayoutPreference } from "./types"
 import {
-  useDeleteLayoutConfiguration,
   useLayoutConfiguration,
   useSetLayoutConfiguration,
 } from "../../hooks/api/layouts"
@@ -19,23 +18,13 @@ export type SetPreferenceOptions = {
 }
 
 export type UseLayoutPreferenceReturn = {
-  /** The configuration the user is actively viewing for this zone. */
-  preference: LayoutPreference
   /** The current user's personal configuration, seeded from the default when unset. */
   personalPreference: LayoutPreference
   /** The zone's system default configuration. */
   defaultPreference: LayoutPreference
-  /** Whether the current user has saved a personal configuration. */
-  hasPersonal: boolean
   /** The persisted scope the user is actively viewing for this zone. */
   activeScope: LayoutScope
-  isPending: boolean
-  setWidgetPreference: (widgetId: string, update: WidgetPreference) => void
-  setPreference: (
-    next: LayoutPreference,
-    options?: SetPreferenceOptions
-  ) => void
-  resetPreference: () => void
+  setPreference: (next: LayoutPreference, options?: SetPreferenceOptions) => void
 }
 
 function toPreference(
@@ -46,18 +35,10 @@ function toPreference(
 }
 
 export function useLayoutPreference(zone: string): UseLayoutPreferenceReturn {
-  const {
-    personal_configuration,
-    default_configuration,
-    active_scope,
-    isPending,
-  } = useLayoutConfiguration(zone)
+  const { personal_configuration, default_configuration, active_scope } =
+    useLayoutConfiguration(zone)
 
   const { mutate: setLayoutConfiguration } = useSetLayoutConfiguration(zone)
-  const { mutate: deleteLayoutConfiguration } =
-    useDeleteLayoutConfiguration(zone)
-
-  const hasPersonal = !!personal_configuration
 
   const defaultPreference = useMemo(
     () =>
@@ -73,9 +54,6 @@ export function useLayoutPreference(zone: string): UseLayoutPreferenceReturn {
 
   const activeScope: LayoutScope = active_scope ?? "personal"
 
-  const preference =
-    activeScope === "default" ? defaultPreference : personalPreference
-
   const setPreference = useCallback(
     (next: LayoutPreference, options?: SetPreferenceOptions) => {
       setLayoutConfiguration({
@@ -86,31 +64,10 @@ export function useLayoutPreference(zone: string): UseLayoutPreferenceReturn {
     [setLayoutConfiguration]
   )
 
-  const setWidgetPreference = useCallback(
-    (widgetId: string, update: WidgetPreference) => {
-      setPreference({
-        widgets: {
-          ...preference.widgets,
-          [widgetId]: { ...preference.widgets[widgetId], ...update },
-        },
-      })
-    },
-    [preference, setPreference]
-  )
-
-  const resetPreference = useCallback(() => {
-    deleteLayoutConfiguration()
-  }, [deleteLayoutConfiguration])
-
   return {
-    preference,
     personalPreference,
     defaultPreference,
-    hasPersonal,
     activeScope,
-    isPending,
-    setWidgetPreference,
     setPreference,
-    resetPreference,
   }
 }
