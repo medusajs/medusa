@@ -8,10 +8,7 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/framework/workflows-sdk"
-import {
-  setActiveLayoutScopeStep,
-  setLayoutConfigurationStep,
-} from "../steps"
+import { setActiveLayoutScopeStep, setLayoutConfigurationStep } from "../steps"
 
 export type SetLayoutConfigurationWorkflowInput = {
   zone: string

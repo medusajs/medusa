@@ -67,9 +67,7 @@ const layoutFileWithoutConfigExport = `
 `
 
 function getExpectedNames(file: string, index: number) {
-  const hash = utils
-    .generateHash(utils.normalizePath(file))
-    .slice(0, 6)
+  const hash = utils.generateHash(utils.normalizePath(file)).slice(0, 6)
 
   return {
     componentName: `LayoutComponent${index}_${hash}`,

@@ -151,7 +151,9 @@ export function buildDisplayEntries(
   for (const entry of raw) {
     const pref = preference.widgets[entry.widgetId]
     const overrideSection =
-      pref?.section && validSections.has(pref.section) ? pref.section : undefined
+      pref?.section && validSections.has(pref.section)
+        ? pref.section
+        : undefined
     const effectiveSection = overrideSection ?? entry.naturalSection
     const effectiveOrder = pref?.order ?? entry.order
     const hidden = pref?.hidden ?? false

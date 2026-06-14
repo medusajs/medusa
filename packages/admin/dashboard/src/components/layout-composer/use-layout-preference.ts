@@ -31,7 +31,10 @@ export type UseLayoutPreferenceReturn = {
   activeScope: LayoutScope
   isPending: boolean
   setWidgetPreference: (widgetId: string, update: WidgetPreference) => void
-  setPreference: (next: LayoutPreference, options?: SetPreferenceOptions) => void
+  setPreference: (
+    next: LayoutPreference,
+    options?: SetPreferenceOptions
+  ) => void
   resetPreference: () => void
 }
 
@@ -57,7 +60,8 @@ export function useLayoutPreference(zone: string): UseLayoutPreferenceReturn {
   const hasPersonal = !!personal_configuration
 
   const defaultPreference = useMemo(
-    () => toPreference(default_configuration?.configuration) ?? EMPTY_PREFERENCE,
+    () =>
+      toPreference(default_configuration?.configuration) ?? EMPTY_PREFERENCE,
     [default_configuration]
   )
 
