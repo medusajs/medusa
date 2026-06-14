@@ -57967,7 +57967,7 @@ To implement these features, you'll be customizing the Medusa server and the Med
 
 You can follow this guide whether you're new to Medusa or an advanced Medusa developer.
 
-- [Quote Management Repository](https://github.com/medusajs/examples/tree/main/quote-management): Find the full code for this guide in this repository.
+- [Quote Management Repository](https://github.com/medusajs/examples/tree/main/quotes-management): Find the full code for this guide in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1741171875/OpenApi/quote-management_tbk552.yml): Import this OpenApi Specs file into tools like Postman.
 
 ***
