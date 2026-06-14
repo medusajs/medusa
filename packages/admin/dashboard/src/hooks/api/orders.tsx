@@ -420,12 +420,13 @@ export const useUpdateOrderChange = (
   options?: UseMutationOptions<
     HttpTypes.AdminOrderChangeResponse,
     FetchError,
-    { carry_over_promotions: boolean }
+    { carry_over_promotions?: boolean; internal_note?: string | null }
   >
 ) => {
   return useMutation({
-    mutationFn: (payload: { carry_over_promotions: boolean }) =>
-      sdk.admin.order.updateOrderChange(orderChangeId, payload),
+    mutationFn: (
+      payload: { carry_over_promotions?: boolean; internal_note?: string | null }
+    ) => sdk.admin.order.updateOrderChange(orderChangeId, payload),
     onSuccess: (data, variables, context) => {
       const orderId = data.order_change.order_id
 
