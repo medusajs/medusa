@@ -34,14 +34,15 @@ const mockFileContents = [
 `,
 ]
 
-// Stable hash of the admin-relative path "widgets/widget.tsx" — independent of
-// the absolute/OS path, so both the Unix and Windows cases share this id.
+// `<component-name>-<short hash>`. The hash is of the admin-relative path
+// "widgets/widget.tsx" — independent of the absolute/OS path, so both the Unix
+// and Windows cases share this id.
 const expectedWidgets = `
     widgets: [
         {
             Component: WidgetComponent0,
             zone: ["product.details.after"],
-            widgetId: "e4f795408134ca6368d50bb52d9684e7"
+            widgetId: "Widget-e4f7"
         }
     ]
 `

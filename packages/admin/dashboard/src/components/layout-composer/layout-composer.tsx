@@ -408,10 +408,6 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     for (const [sectionId, entries] of Object.entries(entriesBySection)) {
       for (const e of entries) widgetSectionMap[e.widgetId] = sectionId
     }
-    const naturalSectionMap: Record<string, string> = {}
-    for (const entry of rawEntries) {
-      naturalSectionMap[entry.widgetId] = entry.naturalSection
-    }
 
     const activeSection = widgetSectionMap[activeWidgetId]
     const overSection = resolveOverSection(overId, sectionIds, widgetSectionMap)
@@ -433,10 +429,13 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
       newOrder = before ? (before.order + after.order) / 2 : after.order - 1
     }
 
-    const naturalSection = naturalSectionMap[activeWidgetId]
+    // Pin the absolute section, not a delta against the current natural
+    // section. The widget's stored preference then fully determines its
+    // placement, so a later change to its registered zone (natural section)
+    // can't drag a user-placed widget out from under them.
     updateDraftWidget(activeWidgetId, {
       order: newOrder,
-      section: overSection === naturalSection ? undefined : overSection,
+      section: overSection,
     })
   }
 
@@ -455,10 +454,6 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     for (const [sectionId, entries] of Object.entries(entriesBySection)) {
       for (const e of entries) widgetSectionMap[e.widgetId] = sectionId
     }
-    const naturalSectionMap: Record<string, string> = {}
-    for (const entry of rawEntries) {
-      naturalSectionMap[entry.widgetId] = entry.naturalSection
-    }
 
     const activeSection = widgetSectionMap[activeWidgetId]
     const overSection = resolveOverSection(overId, sectionIds, widgetSectionMap)
@@ -466,6 +461,9 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
 
     const targetEntries = entriesBySection[overSection] ?? []
 
+    // Always pin the absolute section the widget ends up in (see `handleDragOver`)
+    // so dragging — even a same-section reorder — anchors the widget there
+    // regardless of later changes to its registered zone.
     if (activeSection === overSection) {
       // Dropped on the section body or its tail zone — move to the end.
       if (isEndDropTarget(overId, sectionIds)) {
@@ -473,7 +471,10 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
           targetEntries.length > 0
             ? Math.max(...targetEntries.map((e) => e.order)) + 1
             : 1
-        updateDraftWidget(activeWidgetId, { order: maxOrder })
+        updateDraftWidget(activeWidgetId, {
+          order: maxOrder,
+          section: activeSection,
+        })
         return
       }
 
@@ -497,7 +498,10 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
         newOrder = (before.order + after.order) / 2
       }
 
-      updateDraftWidget(activeWidgetId, { order: newOrder })
+      updateDraftWidget(activeWidgetId, {
+        order: newOrder,
+        section: activeSection,
+      })
     } else {
       const overIndex = targetEntries.findIndex((e) => e.widgetId === overId)
       let newOrder: number
@@ -514,10 +518,9 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
         newOrder = before ? (before.order + after.order) / 2 : after.order - 1
       }
 
-      const naturalSection = naturalSectionMap[activeWidgetId]
       updateDraftWidget(activeWidgetId, {
         order: newOrder,
-        section: overSection === naturalSection ? undefined : overSection,
+        section: overSection,
       })
     }
   }

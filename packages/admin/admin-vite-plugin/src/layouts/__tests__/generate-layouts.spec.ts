@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest"
 
 import fs from "fs/promises"
 import * as utils from "../../utils"
-import { generateLayoutHash, generateLayouts } from "../generate-layouts"
+import { generateLayouts } from "../generate-layouts"
 
 vi.mock("../../utils", async () => {
   const actual = await vi.importActual<typeof utils>("../../utils")
@@ -232,31 +232,5 @@ describe("generateLayouts", () => {
     expect(utils.normalizeString(result.code)).toEqual(
       utils.normalizeString("layouts: []")
     )
-  })
-})
-
-describe("generateLayoutHash", () => {
-  it("should generate a hash based on the sorted layout file paths", async () => {
-    const mockFiles = [
-      "Users/user/medusa/src/admin/layouts/two.tsx",
-      "Users/user/medusa/src/admin/layouts/one.tsx",
-    ]
-    vi.mocked(utils.crawl).mockResolvedValue(mockFiles)
-
-    const result = await generateLayoutHash(
-      new Set(["Users/user/medusa/src/admin"])
-    )
-
-    expect(result).toEqual(utils.generateHash([...mockFiles].sort().join("|")))
-  })
-
-  it("should generate an empty content hash when there are no files", async () => {
-    vi.mocked(utils.crawl).mockResolvedValue([])
-
-    const result = await generateLayoutHash(
-      new Set(["Users/user/medusa/src/admin"])
-    )
-
-    expect(result).toEqual(utils.generateHash(""))
   })
 })
