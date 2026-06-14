@@ -165,26 +165,3 @@ export function buildDisplayEntries(
   }
   return result
 }
-
-/** Order value that appends an entry to the end of a section. */
-export function appendOrder(entries: DisplayEntry[]): number {
-  return entries.length > 0 ? Math.max(...entries.map((e) => e.order)) + 1 : 1
-}
-
-/**
- * Order value that inserts an entry just before the entry identified by
- * `overId` within `entries`. Falls back to appending when `overId` isn't a
- * member of `entries` (e.g. a drop on the section body/tail).
- */
-export function insertOrderBefore(
-  entries: DisplayEntry[],
-  overId: string
-): number {
-  const overIndex = entries.findIndex((e) => e.widgetId === overId)
-  if (overIndex === -1) {
-    return appendOrder(entries)
-  }
-  const before = overIndex > 0 ? entries[overIndex - 1] : null
-  const after = entries[overIndex]
-  return before ? (before.order + after.order) / 2 : after.order - 1
-}

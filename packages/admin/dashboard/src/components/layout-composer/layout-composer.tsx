@@ -12,7 +12,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core"
-import { sortableKeyboardCoordinates } from "@dnd-kit/sortable"
+import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable"
 import { AdjustmentsDone } from "@medusajs/icons"
 import { Badge, Button, IconButton, usePrompt } from "@medusajs/ui"
 import {
@@ -33,11 +33,9 @@ import { EntryProbe } from "./entry-probe"
 import {
   DisplayEntry,
   RawEntry,
-  appendOrder,
   buildCoreEntries,
   buildDisplayEntries,
   extractSectionElements,
-  insertOrderBefore,
 } from "./entries"
 import {
   SectionDropzone,
@@ -280,19 +278,6 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     })
   }
 
-  function updateDraftWidget(widgetId: string, update: WidgetPreference) {
-    setDraft((prev) => {
-      if (!prev) return prev
-      return {
-        ...prev,
-        widgets: {
-          ...prev.widgets,
-          [widgetId]: { ...prev.widgets[widgetId], ...update },
-        },
-      }
-    })
-  }
-
   function enterEdit() {
     setEditScope(activeScope)
     setDraft(preferenceForScope(activeScope))
@@ -339,22 +324,39 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   }
 
   /**
-   * Move a widget into `overSection`, inserting it just before `overId` (or at
-   * the end when `overId` is the section body/tail). Pins the absolute section
-   * rather than a delta against the natural section, so the stored preference
-   * fully determines placement and a later change to the widget's registered
-   * zone can't drag a user-placed widget out from under them.
+   * Write sequential integer `order`s (0..n) for a section's entries into the
+   * draft, pinning each to `sectionId`. Renumbering the whole section on every
+   * move keeps orders as clean, collision-free integers — no fractional
+   * "insert between" values that drift over repeated edits. Pinning the
+   * absolute section (rather than a delta against the natural section) means the
+   * stored preference fully determines placement, so a later change to a
+   * widget's registered zone can't drag a user-placed widget out from under it.
+   */
+  function reindexSection(sectionId: string, orderedWidgetIds: string[]) {
+    setDraft((prev) => {
+      if (!prev) return prev
+      const widgets = { ...prev.widgets }
+      orderedWidgetIds.forEach((id, index) => {
+        widgets[id] = { ...widgets[id], section: sectionId, order: index }
+      })
+      return { ...prev, widgets }
+    })
+  }
+
+  /**
+   * Move a widget into `overSection`, inserting it just before `overId` — or at
+   * the end when `overId` is the section body/tail (and thus not one of the
+   * section's entries).
    */
   function moveToSection(
     activeWidgetId: string,
     overSection: string,
     overId: string
   ) {
-    const targetEntries = entriesBySection[overSection] ?? []
-    updateDraftWidget(activeWidgetId, {
-      order: insertOrderBefore(targetEntries, overId),
-      section: overSection,
-    })
+    const ids = (entriesBySection[overSection] ?? []).map((e) => e.widgetId)
+    const overIndex = ids.indexOf(overId)
+    ids.splice(overIndex === -1 ? ids.length : overIndex, 0, activeWidgetId)
+    reindexSection(overSection, ids)
   }
 
   /**
@@ -458,40 +460,16 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
       return
     }
 
-    const targetEntries = entriesBySection[overSection] ?? []
-
-    // Dropped on the section body or its tail zone — move to the end.
-    if (isEndDropTarget(overId, validSectionIds)) {
-      updateDraftWidget(activeWidgetId, {
-        order: appendOrder(targetEntries),
-        section: activeSection,
-      })
-      return
-    }
-
-    const oldIndex = targetEntries.findIndex(
-      (e) => e.widgetId === activeWidgetId
-    )
-    const newIndex = targetEntries.findIndex((e) => e.widgetId === overId)
+    const ids = (entriesBySection[overSection] ?? []).map((e) => e.widgetId)
+    const oldIndex = ids.indexOf(activeWidgetId)
+    // Dropped on the section body/tail → move to the end; otherwise to the slot
+    // of the entry under the cursor.
+    const newIndex = isEndDropTarget(overId, validSectionIds)
+      ? ids.length - 1
+      : ids.indexOf(overId)
     if (oldIndex === -1 || newIndex === -1) return
 
-    // Insert between the two entries that flank the destination slot. Moving
-    // down lands after the target, moving up lands before it; the moved entry
-    // itself can never be a flank since `oldIndex !== newIndex`.
-    const movingDown = newIndex > oldIndex
-    const before = targetEntries[movingDown ? newIndex : newIndex - 1]
-    const after = targetEntries[movingDown ? newIndex + 1 : newIndex]
-
-    const newOrder = !before
-      ? after.order - 1
-      : !after
-        ? before.order + 1
-        : (before.order + after.order) / 2
-
-    updateDraftWidget(activeWidgetId, {
-      order: newOrder,
-      section: activeSection,
-    })
+    reindexSection(activeSection, arrayMove(ids, oldIndex, newIndex))
   }
 
   const LayoutComponent = layout?.Component

@@ -1,4 +1,5 @@
 import { useSortable } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
 import { DotsSix, Eye, EyeSlash } from "@medusajs/icons"
 import { IconButton, clx } from "@medusajs/ui"
 import { ReactNode } from "react"
@@ -35,13 +36,12 @@ export function SortableEntry({
   // swaps us for a non-sortable probe so we don't leave a bare control row.
   const contentRef = useContentEmptyReport(widgetId, onEmptyChange)
 
-  // Strip the strategy's scaleX/scaleY (which would stretch the dragged item
-  // to match the swapped neighbor's box) and apply translate only. The actual
-  // dragged ghost is rendered separately via <DragOverlay>.
+  // `CSS.Translate.toString` applies translate only, dropping the strategy's
+  // scaleX/scaleY (which would stretch the dragged item to match the swapped
+  // neighbor's box). The actual dragged ghost is rendered separately via
+  // <DragOverlay>.
   const style = {
-    transform: transform
-      ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
-      : undefined,
+    transform: CSS.Translate.toString(transform),
     transition,
   }
 
