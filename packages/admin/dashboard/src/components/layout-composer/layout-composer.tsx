@@ -37,7 +37,6 @@ import {
   buildCoreEntries,
   buildDisplayEntries,
   extractSectionElements,
-  getElementName,
 } from "./entries"
 import {
   SectionDropzone,
@@ -105,6 +104,24 @@ function isEndDropTarget(overId: string, sectionIds: Set<string>): boolean {
   return sectionIds.has(overId) || isSectionTailId(overId)
 }
 
+/**
+ * Whether two preferences describe the same layout. A widget with no
+ * meaningful overrides is treated as absent so that toggling a setting and
+ * back — or simply switching between scopes without editing — doesn't register
+ * as a change.
+ */
+function isSamePreference(a: LayoutPreference, b: LayoutPreference): boolean {
+  const keys = new Set([...Object.keys(a.widgets), ...Object.keys(b.widgets)])
+  for (const key of keys) {
+    const aw = a.widgets[key]
+    const bw = b.widgets[key]
+    if (!!aw?.hidden !== !!bw?.hidden) return false
+    if (aw?.order !== bw?.order) return false
+    if (aw?.section !== bw?.section) return false
+  }
+  return true
+}
+
 export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   widgetsZonePrefix,
   preferredLayoutId,
@@ -159,6 +176,14 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   const activePreference: LayoutPreference =
     editMode && draft ? draft : preferenceForScope(activeScope)
 
+  // Whether the current draft actually differs from the persisted preference
+  // for the scope being edited. Switching between scopes without making edits
+  // leaves this false, so saving is a no-op confirmation we can streamline.
+  const hasChanges =
+    editMode && draft
+      ? !isSamePreference(draft, preferenceForScope(editScope))
+      : false
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -184,13 +209,13 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   const rawEntries: RawEntry[] = []
   const coreElementMap = new Map<string, ReactElement>()
   for (const [sectionName, elements] of Object.entries(elementsBySection)) {
-    const coreEntries = buildCoreEntries(sectionName, elements)
-    for (const ce of coreEntries) {
+    const { entries, elementById } = buildCoreEntries(sectionName, elements)
+    for (const ce of entries) {
       rawEntries.push({ ...ce })
     }
-    elements.forEach((el) => {
-      coreElementMap.set(`core:${sectionName}:${getElementName(el)}`, el)
-    })
+    for (const [id, el] of elementById) {
+      coreElementMap.set(id, el)
+    }
   }
   for (const [naturalSection, widgets] of Object.entries(naturalWidgets)) {
     for (const w of widgets) {
@@ -206,7 +231,12 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
 
   // Apply the active preference (draft when editing, persisted otherwise),
   // keeping hidden entries with `hidden: true` so we can ghost them in edit mode.
-  const entriesBySection = buildDisplayEntries(rawEntries, activePreference)
+  const validSectionIds = new Set(layout?.sections.map((s) => s.id) ?? [])
+  const entriesBySection = buildDisplayEntries(
+    rawEntries,
+    activePreference,
+    validSectionIds
+  )
 
   function renderEntryContent(entry: DisplayEntry): ReactNode {
     if (entry.isCore) {
@@ -260,7 +290,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   }
 
   async function commitEdit() {
-    if (editScope === "default") {
+    if (editScope === "default" && hasChanges) {
       const confirmed = await prompt({
         title: t("layout.saveForEveryoneTitle", "Save layout for everyone"),
         description: t(
@@ -575,10 +605,10 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
         </Badge>
       </div>
       <Button size="small" variant="secondary" onClick={cancelEdit}>
-        {t("actions.clear", "Clear")}
+        {t("actions.cancel", "Cancel")}
       </Button>
       <Button size="small" variant="primary" onClick={commitEdit}>
-        {editScope === "default"
+        {editScope === "default" && hasChanges
           ? t("layout.saveForEveryone", "Save for everyone")
           : t("actions.save", "Save")}
       </Button>

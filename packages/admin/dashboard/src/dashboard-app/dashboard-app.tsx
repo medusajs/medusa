@@ -509,15 +509,31 @@ export class DashboardApp {
       }
 
       extensions.forEach((ext, i) => {
+        // `ext.widgetId` is the build-time stable id (author id or file hash).
+        // The positional `${zone}:${i}` is only a defensive fallback for
+        // widgets registered without one (e.g. legacy/unbuilt bundles).
+        const sourceId = ext.widgetId ?? `${zone}:${i}`
         result[section].push({
           Component: ext.Component,
-          widgetId: ext.widgetId ?? `${zone}:${i}`,
+          widgetId: `widget:${section}:${sourceId}`,
           order: order,
         })
       })
     }
 
     for (const section of Object.keys(result)) {
+      // Two widgets resolving to the same id within a section (e.g. one source
+      // file injected into two zones of the same section) would collide as
+      // React keys, sortable ids, and preference keys. Suffix later
+      // occurrences deterministically so each entry stays addressable.
+      const seen = new Map<string, number>()
+      for (const entry of result[section]) {
+        const count = seen.get(entry.widgetId) ?? 0
+        seen.set(entry.widgetId, count + 1)
+        if (count > 0) {
+          entry.widgetId = `${entry.widgetId}#${count + 1}`
+        }
+      }
       result[section].sort((a, b) => a.order - b.order)
     }
 

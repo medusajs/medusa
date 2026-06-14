@@ -15,6 +15,16 @@ export interface WidgetConfig {
    * The injection zone or zones that the widget should be injected into.
    */
   zone: InjectionZone | InjectionZone[]
+  /**
+   * An optional stable identifier for the widget, used to persist the user's
+   * layout customizations (ordering, section, visibility) for this widget.
+   *
+   * If omitted, a stable id is derived from the widget's source file path at
+   * build time. Provide an explicit id when you want customizations to survive
+   * the file being renamed or moved, or when a single source file is impossible
+   * to address uniquely.
+   */
+  id?: string
 }
 
 export interface LayoutConfig {

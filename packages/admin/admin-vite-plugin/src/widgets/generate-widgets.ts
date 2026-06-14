@@ -12,12 +12,18 @@ import {
   traverse,
 } from "../babel"
 import { logger } from "../logger"
-import { getParserOptions, hasDefaultExport, normalizePath } from "../utils"
+import {
+  generateHash,
+  getParserOptions,
+  hasDefaultExport,
+  normalizePath,
+} from "../utils"
 import { getWidgetFilesFromSources } from "./helpers"
 
 type WidgetConfig = {
   Component: string
   zone: InjectionZone[]
+  widgetId: string
 }
 
 type ParsedWidgetConfig = {
@@ -58,9 +64,32 @@ function formatWidget(widget: WidgetConfig): string {
   return outdent`
     {
         Component: ${widget.Component},
-        zone: [${widget.zone.map((z) => `"${z}"`).join(", ")}]
+        zone: [${widget.zone.map((z) => `"${z}"`).join(", ")}],
+        widgetId: "${widget.widgetId}"
     }
   `
+}
+
+/**
+ * Derives a stable, machine-independent identifier for a widget.
+ *
+ * Prefers an explicit `id` from the widget config. Otherwise falls back to a
+ * hash of the file's path relative to the admin source root (the segment from
+ * `widgets/` onward) so the id is unaffected by where the project lives on disk
+ * or which machine builds it, and only changes if the file itself is renamed.
+ */
+function getWidgetId(idOverride: string | null, file: string): string {
+  if (idOverride) {
+    return idOverride
+  }
+
+  const normalized = normalizePath(file)
+  const marker = "/widgets/"
+  const markerIndex = normalized.lastIndexOf(marker)
+  const relative =
+    markerIndex >= 0 ? normalized.slice(markerIndex + 1) : normalized
+
+  return generateHash(relative)
 }
 
 async function parseFile(
@@ -113,8 +142,19 @@ async function parseFile(
     return null
   }
 
+  let idOverride: string | null = null
+
+  try {
+    idOverride = getWidgetIdOverride(ast)
+  } catch (e) {
+    logger.error(`An error occurred while reading the widget id.`, {
+      file,
+      error: e,
+    })
+  }
+
   const import_ = generateImport(file, index)
-  const widget = generateWidget(zone, index)
+  const widget = generateWidget(zone, index, getWidgetId(idOverride, file))
 
   return {
     widget,
@@ -137,11 +177,76 @@ function generateImport(file: string, index: number): string {
   )}, { config as ${generateWidgetConfigName(index)} } from "${path}"`
 }
 
-function generateWidget(zone: InjectionZone[], index: number): WidgetConfig {
+function generateWidget(
+  zone: InjectionZone[],
+  index: number,
+  widgetId: string
+): WidgetConfig {
   return {
     Component: generateWidgetComponentName(index),
     zone: zone,
+    widgetId,
   }
+}
+
+/**
+ * Extracts an explicit string `id` from the widget config, if present. Mirrors
+ * `getWidgetZone`'s traversal so it works for both bundled (`VariableDeclarator`)
+ * and unbundled (`ExportNamedDeclaration`) files.
+ */
+function getWidgetIdOverride(ast: ParseResult<File>): string | null {
+  let id: string | null = null
+  let found = false
+
+  const readId = (objectExpression: any) => {
+    const idProperty = objectExpression.properties.find(
+      (p: any) => p.type === "ObjectProperty" && p.key.name === "id"
+    )
+    if (idProperty?.type === "ObjectProperty") {
+      if (idProperty.value.type === "StringLiteral") {
+        id = idProperty.value.value
+      }
+      found = true
+    }
+  }
+
+  traverse(ast, {
+    VariableDeclarator(path) {
+      if (found) {
+        return
+      }
+      if (
+        path.node.id.type === "Identifier" &&
+        path.node.id.name === "config" &&
+        path.node.init?.type === "CallExpression"
+      ) {
+        const arg = path.node.init.arguments[0]
+        if (arg?.type === "ObjectExpression") {
+          readId(arg)
+        }
+      }
+    },
+    ExportNamedDeclaration(path) {
+      if (found) {
+        return
+      }
+      const declaration = path.node.declaration
+      if (
+        declaration?.type === "VariableDeclaration" &&
+        declaration.declarations[0]?.type === "VariableDeclarator" &&
+        declaration.declarations[0].id.type === "Identifier" &&
+        declaration.declarations[0].id.name === "config" &&
+        declaration.declarations[0].init?.type === "CallExpression"
+      ) {
+        const arg = declaration.declarations[0].init.arguments[0]
+        if (arg?.type === "ObjectExpression") {
+          readId(arg)
+        }
+      }
+    },
+  })
+
+  return id
 }
 
 async function getWidgetZone(
