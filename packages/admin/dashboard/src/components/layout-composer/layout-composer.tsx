@@ -49,7 +49,7 @@ import type {
   SectionNameFor,
   Layouts,
   WidgetPreference,
-} from "@medusajs/admin-shared"
+} from "./types"
 import { useLayoutPreference, type LayoutScope } from "./use-layout-preference"
 
 type LayoutComposerProps<TLayoutId extends Layouts, TData> = {

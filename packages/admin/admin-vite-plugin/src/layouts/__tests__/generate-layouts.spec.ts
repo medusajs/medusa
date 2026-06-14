@@ -33,22 +33,6 @@ const validLayoutFile = `
     export default Layout
 `
 
-const layoutFileWithReexportedConfig = `
-    import { defineLayoutConfig } from "@medusajs/admin-sdk"
-
-    const config = defineLayoutConfig({
-        id: "two-column",
-        sections: ["main", "sidebar"],
-    })
-
-    const Layout = () => {
-        return <div>Layout 2</div>
-    }
-
-    export { config }
-    export default Layout
-`
-
 const layoutFileWithoutDefaultExport = `
     import { defineLayoutConfig } from "@medusajs/admin-sdk"
 
@@ -66,12 +50,10 @@ const layoutFileWithoutConfigExport = `
     export default Layout
 `
 
-function getExpectedNames(file: string, index: number) {
-  const hash = utils.generateHash(utils.normalizePath(file)).slice(0, 6)
-
+function getExpectedNames(index: number) {
   return {
-    componentName: `LayoutComponent${index}_${hash}`,
-    configName: `LayoutConfig${index}_${hash}`,
+    componentName: `LayoutComponent${index}`,
+    configName: `LayoutConfig${index}`,
   }
 }
 
@@ -88,7 +70,7 @@ describe("generateLayouts", () => {
       new Set(["Users/user/medusa/src/admin"])
     )
 
-    const { componentName, configName } = getExpectedNames(mockFiles[0], 0)
+    const { componentName, configName } = getExpectedNames(0)
 
     expect(result.imports).toEqual([
       `import ${componentName}, { config as ${configName} } from "${mockFiles[0]}"`,
@@ -112,37 +94,11 @@ describe("generateLayouts", () => {
 
     const result = await generateLayouts(new Set(["C:\\medusa\\src\\admin"]))
 
-    const { componentName, configName } = getExpectedNames(mockFiles[0], 0)
+    const { componentName, configName } = getExpectedNames(0)
     const normalizedPath = utils.normalizePath(mockFiles[0])
 
     expect(result.imports).toEqual([
       `import ${componentName}, { config as ${configName} } from "${normalizedPath}"`,
-    ])
-    expect(utils.normalizeString(result.code)).toEqual(
-      utils.normalizeString(`
-        layouts: [
-          { ...${configName}, Component: ${componentName} }
-        ]
-      `)
-    )
-  })
-
-  it("should support a re-exported config", async () => {
-    const mockFiles = ["Users/user/medusa/src/admin/layouts/layout.tsx"]
-    vi.mocked(utils.crawl).mockResolvedValue(mockFiles)
-
-    vi.mocked(fs.readFile).mockImplementation(async () =>
-      Promise.resolve(layoutFileWithReexportedConfig)
-    )
-
-    const result = await generateLayouts(
-      new Set(["Users/user/medusa/src/admin"])
-    )
-
-    const { componentName, configName } = getExpectedNames(mockFiles[0], 0)
-
-    expect(result.imports).toEqual([
-      `import ${componentName}, { config as ${configName} } from "${mockFiles[0]}"`,
     ])
     expect(utils.normalizeString(result.code)).toEqual(
       utils.normalizeString(`
@@ -168,8 +124,8 @@ describe("generateLayouts", () => {
       new Set(["Users/user/medusa/src/admin"])
     )
 
-    const first = getExpectedNames(mockFiles[0], 0)
-    const second = getExpectedNames(mockFiles[1], 1)
+    const first = getExpectedNames(0)
+    const second = getExpectedNames(1)
 
     expect(result.imports).toEqual([
       `import ${first.componentName}, { config as ${first.configName} } from "${mockFiles[0]}"`,

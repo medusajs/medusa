@@ -1,9 +1,6 @@
-import {
-  CORE_LAYOUT_IDS,
-  LayoutComponentProps,
-  LayoutDefinition,
-} from "@medusajs/admin-shared"
 import * as React from "react"
+import { CORE_LAYOUT_IDS } from "./constants"
+import { LayoutComponentProps, LayoutDefinition } from "./types"
 
 const SingleColumnLayoutComponent = ({
   sections,

@@ -10,10 +10,14 @@ import {
   parse,
   ParseResult,
   traverse,
+  type ExportNamedDeclaration,
+  type NodePath,
+  type VariableDeclarator,
 } from "../babel"
 import { logger } from "../logger"
 import {
   generateHash,
+  getConfigObjectProperties,
   getParserOptions,
   hasDefaultExport,
   normalizePath,
@@ -74,9 +78,10 @@ function formatWidget(widget: WidgetConfig): string {
  * Derives a stable, machine-independent identifier for a widget.
  *
  * Prefers an explicit `id` from the widget config. Otherwise falls back to a
- * hash of the file's path relative to the admin source root (the segment from
- * `widgets/` onward) so the id is unaffected by where the project lives on disk
- * or which machine builds it, and only changes if the file itself is renamed.
+ * `Widget-<short hash>` id, where the hash is derived from the file's path
+ * relative to the admin source root (the segment from `widgets/` onward) so the
+ * id is unaffected by where the project lives on disk or which machine builds
+ * it, and only changes if the file itself is renamed.
  */
 function getWidgetId(idOverride: string | null, file: string): string {
   if (idOverride) {
@@ -89,7 +94,7 @@ function getWidgetId(idOverride: string | null, file: string): string {
   const relative =
     markerIndex >= 0 ? normalized.slice(markerIndex + 1) : normalized
 
-  return generateHash(relative)
+  return `Widget-${generateHash(relative).slice(0, 4)}`
 }
 
 async function parseFile(
@@ -190,16 +195,23 @@ function generateWidget(
 }
 
 /**
- * Extracts an explicit string `id` from the widget config, if present. Mirrors
- * `getWidgetZone`'s traversal so it works for both bundled (`VariableDeclarator`)
- * and unbundled (`ExportNamedDeclaration`) files.
+ * Extracts an explicit string `id` from the widget config, if present. Uses the
+ * shared `getConfigObjectProperties` helper so it works for both bundled
+ * (`VariableDeclarator`) and unbundled (`ExportNamedDeclaration`) files.
  */
 function getWidgetIdOverride(ast: ParseResult<File>): string | null {
   let id: string | null = null
   let found = false
 
-  const readId = (objectExpression: any) => {
-    const idProperty = objectExpression.properties.find(
+  const readId = (path: NodePath<VariableDeclarator | ExportNamedDeclaration>) => {
+    if (found) {
+      return
+    }
+    const properties = getConfigObjectProperties(path)
+    if (!properties) {
+      return
+    }
+    const idProperty = properties.find(
       (p: any) => p.type === "ObjectProperty" && p.key.name === "id"
     )
     if (idProperty?.type === "ObjectProperty") {
@@ -211,39 +223,8 @@ function getWidgetIdOverride(ast: ParseResult<File>): string | null {
   }
 
   traverse(ast, {
-    VariableDeclarator(path) {
-      if (found) {
-        return
-      }
-      if (
-        path.node.id.type === "Identifier" &&
-        path.node.id.name === "config" &&
-        path.node.init?.type === "CallExpression"
-      ) {
-        const arg = path.node.init.arguments[0]
-        if (arg?.type === "ObjectExpression") {
-          readId(arg)
-        }
-      }
-    },
-    ExportNamedDeclaration(path) {
-      if (found) {
-        return
-      }
-      const declaration = path.node.declaration
-      if (
-        declaration?.type === "VariableDeclaration" &&
-        declaration.declarations[0]?.type === "VariableDeclarator" &&
-        declaration.declarations[0].id.type === "Identifier" &&
-        declaration.declarations[0].id.name === "config" &&
-        declaration.declarations[0].init?.type === "CallExpression"
-      ) {
-        const arg = declaration.declarations[0].init.arguments[0]
-        if (arg?.type === "ObjectExpression") {
-          readId(arg)
-        }
-      }
-    },
+    VariableDeclarator: readId,
+    ExportNamedDeclaration: readId,
   })
 
   return id

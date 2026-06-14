@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react"
-import type { LayoutPreference, WidgetPreference } from "@medusajs/admin-shared"
+import type { LayoutPreference, WidgetPreference } from "./types"
 import {
   useDeleteLayoutConfiguration,
   useLayoutConfiguration,

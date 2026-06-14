@@ -1,23 +1,8 @@
-import type { ComponentType, ReactNode } from "react"
 import type { CORE_LAYOUT_IDS } from "./constants"
-
-export type CoreLayoutId =
-  (typeof CORE_LAYOUT_IDS)[keyof typeof CORE_LAYOUT_IDS]
 
 export type LayoutSection = {
   id: string
   ordering: "list" | "grid" | "horizontal"
-}
-
-export type LayoutComponentProps = {
-  sections: Record<string, ReactNode>
-  data?: unknown
-}
-
-export type LayoutDefinition = {
-  id: string
-  sections: LayoutSection[]
-  Component: ComponentType<LayoutComponentProps>
 }
 
 /**
@@ -54,23 +39,3 @@ export type Layouts = keyof LayoutSectionRegistry
  */
 export type SectionNameFor<TLayoutId extends Layouts> =
   LayoutSectionRegistry[TLayoutId]
-
-export type WidgetPreference = {
-  hidden?: boolean
-  /** Override which section this widget appears in */
-  section?: string
-  /** Override sort order within the section */
-  order?: number
-}
-
-/** Per-zone user preferences for widget placement and visibility. */
-export type LayoutPreference = {
-  widgets: Record<string, WidgetPreference>
-}
-
-export type WidgetRenderEntry = {
-  order: number
-  Component: ComponentType
-  widgetId: string
-}
-export type SectionWidgetMap = Record<string, WidgetRenderEntry[]>

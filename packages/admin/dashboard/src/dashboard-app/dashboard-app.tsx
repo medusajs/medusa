@@ -6,11 +6,12 @@ import {
   deepMerge,
   InjectionZone,
   NESTED_ROUTE_POSITIONS,
-  AFTER_ORDER,
-  BEFORE_ORDER,
+} from "@medusajs/admin-shared"
+import { AFTER_ORDER, BEFORE_ORDER } from "../components/layout-composer/constants"
+import {
   LayoutDefinition,
   SectionWidgetMap,
-} from "@medusajs/admin-shared"
+} from "../components/layout-composer/types"
 import * as React from "react"
 import {
   createBrowserRouter,

@@ -3,7 +3,7 @@ import outdent from "outdent"
 import { File, parse, ParseResult, traverse } from "../babel"
 import { logger } from "../logger"
 import {
-  generateHash,
+  getConfigObjectProperties,
   getParserOptions,
   hasDefaultExport,
   normalizePath,
@@ -92,9 +92,8 @@ async function parseFile(
     return null
   }
 
-  const hash = generateHash(normalizePath(file))
-  const componentName = `LayoutComponent${index}_${hash.slice(0, 6)}`
-  const configName = `LayoutConfig${index}_${hash.slice(0, 6)}`
+  const componentName = `LayoutComponent${index}`
+  const configName = `LayoutConfig${index}`
 
   return {
     import: generateImport(file, componentName, configName),
@@ -104,7 +103,7 @@ async function parseFile(
 }
 
 /**
- * Checks whether the file exports a named `config` symbol.
+ * Checks whether the file exports a `config` defined via `defineLayoutConfig(...)`.
  * This is a lightweight check — we don't validate the shape here; that
  * happens at runtime when the layout is registered.
  */
@@ -114,26 +113,7 @@ function hasConfigExport(ast: ParseResult<File>): boolean {
   traverse(ast, {
     ExportNamedDeclaration(path) {
       if (found) return
-      const { declaration, specifiers } = path.node
-
-      if (declaration?.type === "VariableDeclaration") {
-        if (
-          declaration.declarations.some(
-            (d) =>
-              d.type === "VariableDeclarator" &&
-              d.id.type === "Identifier" &&
-              d.id.name === "config"
-          )
-        ) {
-          found = true
-        }
-      }
-
-      if (
-        specifiers?.some(
-          (s) => s.type === "ExportSpecifier" && s.local.name === "config"
-        )
-      ) {
+      if (getConfigObjectProperties(path)) {
         found = true
       }
     },
@@ -149,12 +129,4 @@ function generateImport(
 ): string {
   const path = normalizePath(file)
   return `import ${componentName}, { config as ${configName} } from "${path}"`
-}
-
-export async function generateLayoutHash(
-  sources: Set<string>
-): Promise<string> {
-  const files = await getLayoutFilesFromSources(sources)
-  const content = files.sort().join("|")
-  return generateHash(content)
 }

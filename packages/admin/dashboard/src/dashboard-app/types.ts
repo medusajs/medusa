@@ -5,9 +5,11 @@ import {
   CustomFieldModel,
   InjectionZone,
   NestedRoutePosition,
+} from "@medusajs/admin-shared"
+import {
   LayoutDefinition,
   SectionWidgetMap,
-} from "@medusajs/admin-shared"
+} from "../components/layout-composer/types"
 import { ComponentType } from "react"
 import { LoaderFunction } from "react-router-dom"
 import { z } from "zod"

@@ -8,7 +8,7 @@ import {
 import { Text, clx } from "@medusajs/ui"
 import { ReactNode } from "react"
 import { useTranslation } from "react-i18next"
-import type { LayoutSection } from "@medusajs/admin-shared"
+import type { LayoutSection } from "./types"
 
 // A section's trailing drop zone gets its own droppable id, derived from the
 // section id, so the drag handlers can tell "dropped at the end of a section"

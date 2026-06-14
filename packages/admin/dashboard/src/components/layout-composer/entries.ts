@@ -6,7 +6,8 @@ import {
   ReactNode,
   isValidElement,
 } from "react"
-import { CORE_CONTENT_ORDER, LayoutPreference } from "@medusajs/admin-shared"
+import { CORE_CONTENT_ORDER } from "./constants"
+import { LayoutPreference } from "./types"
 
 export type DisplayEntry = {
   widgetId: string
