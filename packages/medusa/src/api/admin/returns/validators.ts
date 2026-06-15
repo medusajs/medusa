@@ -184,6 +184,7 @@ export type AdminPostReturnsDismissItemsActionReqSchemaType = z.infer<
 
 export const AdminPostReturnsConfirmRequestReqSchema = z.object({
   no_notification: z.boolean().optional(),
+  receive_now: z.boolean().optional(),
 })
 
 export type AdminPostReturnsConfirmRequestReqSchemaType = z.infer<

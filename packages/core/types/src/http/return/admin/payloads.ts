@@ -124,6 +124,11 @@ export interface AdminConfirmReturnRequest {
    * for return updates.
    */
   no_notification?: boolean
+  /**
+   * Whether to mark the return items as received immediately
+   * when confirming the return request.
+   */
+  receive_now?: boolean
 }
 
 export interface AdminUpdateReturnRequest {

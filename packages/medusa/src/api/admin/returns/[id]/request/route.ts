@@ -27,6 +27,7 @@ export const POST = async (
     input: {
       return_id: id,
       confirmed_by: req.auth_context.actor_id,
+      receive_now: req.validatedBody.receive_now,
     },
   })
 

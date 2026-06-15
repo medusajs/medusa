@@ -31,6 +31,7 @@ import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/
 import { previewOrderChangeStep, updateReturnsStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
 import { createReturnItemsFromActionsStep } from "../../steps/return/create-return-items-from-actions"
+import { receiveReturnStep } from "../../steps/return/receive-return"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
@@ -111,6 +112,34 @@ const confirmIfReturnItemsArePresent = createStep(
     )
   }
 )
+
+function prepareReceiveItems({
+  receiveNow,
+  returnId,
+  returnItems,
+  createdBy,
+}: {
+  receiveNow?: boolean
+  returnId: string
+  returnItems: OrderReturnItemDTO[]
+  createdBy?: string
+}) {
+  if (!receiveNow) {
+    return {
+      return_id: returnId,
+      items: [],
+    }
+  }
+
+  return {
+    return_id: returnId,
+    items: returnItems.map((item) => ({
+      id: item.item_id,
+      quantity: item.quantity,
+    })),
+    created_by: createdBy,
+  }
+}
 
 function prepareFulfillmentData({
   order,
@@ -214,6 +243,11 @@ export type ConfirmReturnRequestWorkflowInput = {
    * The ID of the user confirming the return request.
    */
   confirmed_by?: string
+  /**
+   * Whether to mark the return items as received immediately
+   * when confirming the return request.
+   */
+  receive_now?: boolean
 }
 
 export const confirmReturnRequestWorkflowId = "confirm-return-request"
@@ -366,6 +400,30 @@ export const confirmReturnRequestWorkflow = createWorkflow(
           return_id: orderReturn.id,
         },
       })
+    )
+
+    const receiveItems = transform(
+      {
+        receiveNow: input.receive_now ?? false,
+        returnId: orderReturn.id,
+        returnItems: createdReturnItems,
+        createdBy: input.confirmed_by,
+      },
+      prepareReceiveItems
+    )
+
+    receiveReturnStep(receiveItems)
+
+    when({ receiveNow: input.receive_now }, ({ receiveNow }) => !!receiveNow).then(
+      () => {
+        emitEventStep({
+          eventName: OrderWorkflowEvents.RETURN_RECEIVED,
+          data: {
+            order_id: order.id,
+            return_id: orderReturn.id,
+          },
+        })
+      }
     )
 
     createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
