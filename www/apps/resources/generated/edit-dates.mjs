@@ -213,7 +213,7 @@ export const generatedEditDates = {
   "app/infrastructure-modules/file/page.mdx": "2025-04-17T08:29:00.672Z",
   "app/infrastructure-modules/event/page.mdx": "2025-12-04T13:39:18.058Z",
   "app/infrastructure-modules/cache/create/page.mdx": "2025-03-27T14:53:13.309Z",
-  "app/admin-widget-injection-zones/page.mdx": "2025-08-28T16:47:14.680Z",
+  "app/admin-widget-injection-zones/page.mdx": "2026-06-15T15:11:53.236Z",
   "app/infrastructure-modules/notification/page.mdx": "2025-06-25T10:48:23.838Z",
   "app/infrastructure-modules/event/create/page.mdx": "2025-03-27T14:53:13.309Z",
   "references/core_flows/Order/functions/core_flows.Order.orderEditUpdateItemQuantityValidationStep/page.mdx": "2024-08-20T00:10:58.913Z",
@@ -7576,5 +7576,6 @@ export const generatedEditDates = {
   "app/commerce-modules/auth/mfa/page.mdx": "2026-06-09T08:32:15.517Z",
   "app/commerce-modules/auth/email-verification/page.mdx": "2026-06-05T10:33:10.552Z",
   "app/storefront-development/customers/verify-account/page.mdx": "2026-06-02T11:24:01.444Z",
-  "references/events/Auth/variables/events.Auth.AuthEvents/page.mdx": "2026-06-03T06:24:01.642Z"
+  "references/events/Auth/variables/events.Auth.AuthEvents/page.mdx": "2026-06-03T06:24:01.642Z",
+  "app/admin-components/components/layout-composer/page.mdx": "2026-06-15T15:12:29.821Z"
 }

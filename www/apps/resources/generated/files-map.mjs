@@ -24,6 +24,10 @@ export const filesMap = [
     "pathname": "/admin-components/components/json-view-section"
   },
   {
+    "filePath": "/www/apps/resources/app/admin-components/components/layout-composer/page.mdx",
+    "pathname": "/admin-components/components/layout-composer"
+  },
+  {
     "filePath": "/www/apps/resources/app/admin-components/components/section-row/page.mdx",
     "pathname": "/admin-components/components/section-row"
   },

@@ -10615,6 +10615,73 @@ Refer to the [Admin Widget Injection Zones](undefined/resources/admin-widget-inj
 
 ***
 
+## Custom Injection Zones
+
+Plugins can register custom injection zones to extend the widget system beyond the core zones. This is useful when creating custom admin pages or extending existing pages with plugin-specific zones.
+
+### Plugin-Defined Injection Zones
+
+To register custom injection zones in a plugin, augment the `InjectionZoneRegistry` interface through declaration merging. Create an `index.d.ts` file in your plugin root with the following structure:
+
+```ts title="my-plugin/index.d.ts"
+declare module "@medusajs/admin-shared" {
+  interface InjectionZoneRegistry {
+    "my-plugin.product-page.before": true
+    "my-plugin.product-page.after": true
+    "my-plugin.custom-section.side.before": true
+    "my-plugin.custom-section.side.after": true
+  }
+}
+```
+
+Make sure to include the declaration file in your plugin's package.json:
+
+```json title="my-plugin/package.json"
+{
+  "files": [
+    ".medusa/server",
+    "index.d.ts"
+  ],
+  "exports": {
+    ".": {
+      "types": "./index.d.ts"
+    }
+  }
+}
+```
+
+### Using Custom Injection Zones
+
+Once registered, custom injection zones can be used in widget configurations just like core zones:
+
+```tsx title="src/admin/widgets/my-custom-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+
+const MyCustomWidget = () => {
+  return <div>Custom Widget Content</div>
+}
+
+export const config = defineWidgetConfig({
+  zone: "my-plugin.product-page.before",
+})
+
+export default MyCustomWidget
+```
+
+### Custom Zone Naming Convention
+
+Custom injection zones should follow the pattern: `{plugin-name}.{page-context}.{position}`, where:
+
+- `plugin-name`: Your plugin's identifier
+- `page-context`: The page or section context
+- `position`: One of `before`, `after`, `side.before`, or `side.after`
+
+This naming convention helps avoid conflicts between different plugins and makes zones easier to identify.
+
+Custom injection zones are validated using a pattern check. If a zone doesn't match core injection zones, the system will show a warning but still allow the zone if it follows the expected pattern.
+
+***
+
 ## Admin Components List
 
 While the Medusa Admin uses the [Medusa UI](undefined/ui) components, it also expands on them for styling and design purposes.
@@ -131145,6 +131212,159 @@ export default ProductWidget
 ```
 
 This shows the JSON section at the top of the product page, passing it the object `{ name: "John" }`.
+
+
+# LayoutComposer
+
+The `LayoutComposer` component provides a flexible layout composition system for building admin pages with widget support. It manages the rendering of widgets in specific sections and supports different layout structures.
+
+## Usage
+
+Import the `LayoutComposer` component from `@medusajs/dashboard/components`:
+
+```tsx
+import { LayoutComposer } from "@medusajs/dashboard/components"
+```
+
+### Basic Example
+
+```tsx
+import { LayoutComposer } from "@medusajs/dashboard/components"
+
+const ProductDetailsPage = ({ product }) => {
+  return (
+    <LayoutComposer
+      widgetsZonePrefix="product.details"
+      preferredLayoutId="core:two-column"
+      data={product}
+      sections={{
+        main: (
+          <>
+            <ProductGeneralSection product={product} />
+            <ProductVariantsSection product={product} />
+          </>
+        ),
+        side: (
+          <>
+            <ProductMediaSection product={product} />
+            <ProductStatusSection product={product} />
+          </>
+        ),
+      }}
+    />
+  )
+}
+```
+
+### Single Column Layout
+
+```tsx
+import { LayoutComposer } from "@medusajs/dashboard/components"
+
+const ProductListPage = () => {
+  return (
+    <LayoutComposer
+      widgetsZonePrefix="product.list"
+      preferredLayoutId="core:single-column"
+      sections={{
+        main: <ProductDataTable />
+      }}
+    />
+  )
+}
+```
+
+## Props
+
+|Prop|Type|Description|
+|---|---|---|---|---|
+|\`widgetsZonePrefix\`|\`string\`|The prefix used to determine widget injection zones for the page. The component automatically appends |
+|\`preferredLayoutId\`|\`string\`|The ID of the preferred layout to use. Core layouts include |
+|\`sections\`|\`Record\<string, ReactNode>\`|Object mapping section names to their content. Available sections depend on the chosen layout.|
+|\`data\`|\`unknown\`|Data to be passed to widgets and layout components.|
+
+## Core Layouts
+
+The `LayoutComposer` comes with two built-in layouts:
+
+### Single Column Layout (`core:single-column`)
+
+Renders content in a single column with the following sections:
+
+- `main`: Primary content area
+
+### Two Column Layout (`core:two-column`)
+
+Renders content in two columns with the following sections:
+
+- `main`: Left column (main content)
+- `side`: Right column (sidebar content)
+
+## Widget Integration
+
+The `LayoutComposer` automatically renders widgets based on the `widgetsZonePrefix` prop. For each section, it looks for widgets registered to specific zones:
+
+- `{prefix}.before` - Widgets rendered before the main section content
+- `{prefix}.after` - Widgets rendered after the main section content
+- `{prefix}.side.before` - Widgets rendered before the side section content (two-column layout only)
+- `{prefix}.side.after` - Widgets rendered after the side section content (two-column layout only)
+
+For example, with `widgetsZonePrefix="product.details"`, the component will render widgets from:
+
+- `product.details.before`
+- `product.details.after`
+- `product.details.side.before`
+- `product.details.side.after`
+
+## Custom Layouts
+
+You can create custom layouts by registering them with the dashboard extension system. Custom layouts must implement the `LayoutDefinition` interface:
+
+```tsx
+import type { LayoutDefinition } from "@medusajs/dashboard/components"
+
+const customLayout: LayoutDefinition = {
+  id: "my-plugin:three-column",
+  sections: [
+    { id: "main" },
+    { id: "side" },
+    { id: "extra" }
+  ],
+  Component: ({ sections, data }) => (
+    <div className="grid grid-cols-3 gap-4">
+      <div>{sections.main}</div>
+      <div>{sections.side}</div>
+      <div>{sections.extra}</div>
+    </div>
+  )
+}
+```
+
+Then augment the `LayoutSectionRegistry` interface to add type safety:
+
+```ts
+declare module "@medusajs/dashboard/components" {
+  interface LayoutSectionRegistry {
+    "my-plugin:three-column": "main" | "side" | "extra"
+  }
+}
+```
+
+## Widget Ordering
+
+Widgets within each section are ordered using the `order` property. Common order constants are available:
+
+- `BEFORE_ORDER` (0): For widgets that should appear first
+- `CORE_CONTENT_ORDER` (100): For core content (default)
+- `AFTER_ORDER` (999): For widgets that should appear last
+
+```tsx
+import { 
+  BEFORE_ORDER, 
+  CORE_CONTENT_ORDER, 
+  AFTER_ORDER 
+} from "@medusajs/dashboard/components"
+```
 
 
 # Section Row - Admin Components

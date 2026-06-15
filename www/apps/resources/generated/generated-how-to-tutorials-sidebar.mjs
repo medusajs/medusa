@@ -376,6 +376,15 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/admin-components/components/layout-composer",
+                      "title": "LayoutComposer",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/admin-components/components/section-row",
                       "title": "Section Row",
                       "description": "",

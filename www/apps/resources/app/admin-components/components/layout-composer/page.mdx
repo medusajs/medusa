@@ -1,0 +1,230 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `LayoutComposer`,
+}
+
+# {metadata.title}
+
+The `LayoutComposer` component provides a flexible layout composition system for building admin pages with widget support. It manages the rendering of widgets in specific sections and supports different layout structures.
+
+## Usage
+
+Import the `LayoutComposer` component from `@medusajs/dashboard/components`:
+
+```tsx
+import { LayoutComposer } from "@medusajs/dashboard/components"
+```
+
+### Basic Example
+
+```tsx
+import { LayoutComposer } from "@medusajs/dashboard/components"
+
+const ProductDetailsPage = ({ product }) => {
+  return (
+    <LayoutComposer
+      widgetsZonePrefix="product.details"
+      preferredLayoutId="core:two-column"
+      data={product}
+      sections={{
+        main: (
+          <>
+            <ProductGeneralSection product={product} />
+            <ProductVariantsSection product={product} />
+          </>
+        ),
+        side: (
+          <>
+            <ProductMediaSection product={product} />
+            <ProductStatusSection product={product} />
+          </>
+        ),
+      }}
+    />
+  )
+}
+```
+
+### Single Column Layout
+
+```tsx
+import { LayoutComposer } from "@medusajs/dashboard/components"
+
+const ProductListPage = () => {
+  return (
+    <LayoutComposer
+      widgetsZonePrefix="product.list"
+      preferredLayoutId="core:single-column"
+      sections={{
+        main: <ProductDataTable />,
+      }}
+    />
+  )
+}
+```
+
+## Props
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Prop</Table.HeaderCell>
+      <Table.HeaderCell>Type</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+        `widgetsZonePrefix`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        `string`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        The prefix used to determine widget injection zones for the page. The component automatically appends `.before`, `.after`, `.side.before`, and `.side.after` to this prefix.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `preferredLayoutId`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        `string`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        The ID of the preferred layout to use. Core layouts include `"core:single-column"` and `"core:two-column"`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `sections`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        `Record<string, ReactNode>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Object mapping section names to their content. Available sections depend on the chosen layout.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `data`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        `unknown` (optional)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Data to be passed to widgets and layout components.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Core Layouts
+
+The `LayoutComposer` comes with two built-in layouts:
+
+### Single Column Layout (`core:single-column`)
+
+Renders content in a single column with the following sections:
+
+- `main`: Primary content area
+
+### Two Column Layout (`core:two-column`)
+
+Renders content in two columns with the following sections:
+
+- `main`: Left column (main content)
+- `side`: Right column (sidebar content)
+
+## Widget Integration
+
+The `LayoutComposer` automatically renders widgets based on the `widgetsZonePrefix` prop. For each section, it looks for widgets registered to specific zones:
+
+- `{prefix}.before` - Widgets rendered before the main section content
+- `{prefix}.after` - Widgets rendered after the main section content
+- `{prefix}.side.before` - Widgets rendered before the side section content (two-column layout only)
+- `{prefix}.side.after` - Widgets rendered after the side section content (two-column layout only)
+
+For example, with `widgetsZonePrefix="product.details"`, the component will render widgets from:
+
+- `product.details.before`
+- `product.details.after`
+- `product.details.side.before`
+- `product.details.side.after`
+
+## Custom Layouts
+
+You can create custom layouts by registering them with the dashboard extension system. Custom layouts must implement the `LayoutDefinition` interface:
+
+```tsx
+import type { LayoutDefinition } from "@medusajs/dashboard/components"
+
+const customLayout: LayoutDefinition = {
+  id: "my-plugin:three-column",
+  sections: [
+    { id: "main" },
+    { id: "side" },
+    { id: "extra" },
+  ],
+  Component: ({ sections, data }) => (
+    <div className="grid grid-cols-3 gap-4">
+      <div>{sections.main}</div>
+      <div>{sections.side}</div>
+      <div>{sections.extra}</div>
+    </div>
+  ),
+}
+```
+
+Then augment the `LayoutSectionRegistry` interface to add type safety:
+
+```ts
+declare module "@medusajs/dashboard/components" {
+  interface LayoutSectionRegistry {
+    "my-plugin:three-column": "main" | "side" | "extra"
+  }
+}
+```
+
+## Widget Ordering
+
+Widgets within each section are ordered using the `order` property. Common order constants are available:
+
+- `BEFORE_ORDER` (0): For widgets that should appear first
+- `CORE_CONTENT_ORDER` (100): For core content (default)
+- `AFTER_ORDER` (999): For widgets that should appear last
+
+```tsx
+import { 
+  BEFORE_ORDER, 
+  CORE_CONTENT_ORDER, 
+  AFTER_ORDER, 
+} from "@medusajs/dashboard/components"
+```
