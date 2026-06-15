@@ -42,6 +42,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("link-create-keys-modules-enum")]: "warn",
         [ruleId("prefer-container-registration-keys")]: "warn",
         [ruleId("prefer-link-over-remote-link")]: "warn",
+        [ruleId("prefer-modules-enum")]: "warn",
         [ruleId("prices-in-major-units")]: "warn",
         [ruleId("step-id-kebab-case")]: "warn",
         [ruleId("use-query-context-utility")]: "warn",

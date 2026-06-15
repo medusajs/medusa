@@ -46,6 +46,7 @@ import { rule as useValidatedBodyOrQuery } from "./use-validated-body-or-query"
 import { rule as noWorkflowCallWithoutContainer } from "./no-workflow-call-without-container"
 import { rule as preferContainerRegistrationKeys } from "./prefer-container-registration-keys"
 import { rule as preferLinkOverRemoteLink } from "./prefer-link-over-remote-link"
+import { rule as preferModulesEnum } from "./prefer-modules-enum"
 import { rule as pricesInMajorUnits } from "./prices-in-major-units"
 import { rule as primaryKeyRequired } from "./primary-key-required"
 import { rule as stepIdKebabCase } from "./step-id-kebab-case"
@@ -112,6 +113,7 @@ export const rules = {
   "no-workflow-call-without-container": noWorkflowCallWithoutContainer,
   "prefer-container-registration-keys": preferContainerRegistrationKeys,
   "prefer-link-over-remote-link": preferLinkOverRemoteLink,
+  "prefer-modules-enum": preferModulesEnum,
   "prices-in-major-units": pricesInMajorUnits,
   "primary-key-required": primaryKeyRequired,
   "step-id-kebab-case": stepIdKebabCase,

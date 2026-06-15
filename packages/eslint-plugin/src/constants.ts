@@ -30,3 +30,48 @@ export const TYPES_SOURCES: ReadonlySet<string> = new Set([
   FRAMEWORK_TYPES_SOURCE,
   LEGACY_TYPES_SOURCE,
 ])
+
+/** The name of the `Modules` enum as imported from `@medusajs/framework/utils`. */
+export const MODULES_ENUM = "Modules"
+
+/**
+ * Map of known `Modules.*` string values → enum member name.
+ * Sourced from `packages/core/utils/src/modules-sdk/definition.ts`.
+ *
+ * Used by any rule that wants to recognize a built-in module string value and
+ * suggest the corresponding `Modules.*` enum member (e.g.
+ * `link-create-keys-modules-enum`, `prefer-modules-enum`).
+ */
+export const MODULES_BY_VALUE: Record<string, string> = {
+  analytics: "ANALYTICS",
+  auth: "AUTH",
+  cache: "CACHE",
+  cart: "CART",
+  customer: "CUSTOMER",
+  event_bus: "EVENT_BUS",
+  inventory: "INVENTORY",
+  link_modules: "LINK",
+  payment: "PAYMENT",
+  pricing: "PRICING",
+  product: "PRODUCT",
+  promotion: "PROMOTION",
+  sales_channel: "SALES_CHANNEL",
+  tax: "TAX",
+  fulfillment: "FULFILLMENT",
+  stock_location: "STOCK_LOCATION",
+  user: "USER",
+  workflows: "WORKFLOW_ENGINE",
+  region: "REGION",
+  order: "ORDER",
+  api_key: "API_KEY",
+  store: "STORE",
+  currency: "CURRENCY",
+  file: "FILE",
+  notification: "NOTIFICATION",
+  index: "INDEX",
+  locking: "LOCKING",
+  settings: "SETTINGS",
+  caching: "CACHING",
+  translation: "TRANSLATION",
+  rbac: "RBAC",
+}
