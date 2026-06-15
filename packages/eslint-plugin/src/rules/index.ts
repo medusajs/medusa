@@ -44,6 +44,7 @@ import { rule as preferLinkOverRemoteLink } from "./prefer-link-over-remote-link
 import { rule as pricesInMajorUnits } from "./prices-in-major-units"
 import { rule as stepIdKebabCase } from "./step-id-kebab-case"
 import { rule as stepMustReturnStepResponse } from "./step-must-return-step-response"
+import { rule as subscriberConfigExportRequired } from "./subscriber-config-export-required"
 import { rule as subscriberDefaultExportMustBeAsync } from "./subscriber-default-export-must-be-async"
 import { rule as subscriberDefaultExportRequired } from "./subscriber-default-export-required"
 import { rule as uiRouteConfigViaDefineRouteConfig } from "./ui-route-config-via-define-route-config"
@@ -104,6 +105,7 @@ export const rules = {
   "prices-in-major-units": pricesInMajorUnits,
   "step-id-kebab-case": stepIdKebabCase,
   "step-must-return-step-response": stepMustReturnStepResponse,
+  "subscriber-config-export-required": subscriberConfigExportRequired,
   "subscriber-default-export-must-be-async": subscriberDefaultExportMustBeAsync,
   "subscriber-default-export-required": subscriberDefaultExportRequired,
   "ui-route-config-via-define-route-config": uiRouteConfigViaDefineRouteConfig,
