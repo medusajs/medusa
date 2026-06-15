@@ -66,6 +66,7 @@ export default [
     rules: {
       "@medusajs/admin-env-vars-import-meta": "warn",
       "@medusajs/admin-component-must-be-arrow-function": "error",
+      "@medusajs/admin-no-medusa-utils-import": "error",
     },
   },
   {
@@ -83,6 +84,15 @@ export default [
       "@medusajs/scheduled-job-default-export-async": "error",
       "@medusajs/scheduled-job-default-export-required": "error",
       "@medusajs/scheduled-job-schedule-valid-cron": "error",
+    },
+  },
+  {
+    files: ["**/*.{ts,tsx,js}"],
+    rules: {
+      "@medusajs/import-from-framework-not-internal": "warn",
+      "@medusajs/prefer-modules-enum": "warn",
+      "@medusajs/use-medusa-error-not-generic-error": "warn",
+      "@medusajs/no-mikroorm-direct-import": "warn",
     },
   },
   // Additional configurations for widgets and UI routes...
@@ -106,6 +116,27 @@ const url = process.env.VITE_BACKEND_URL
 // ✅ Correct - use import.meta.env
 const url = import.meta.env.VITE_BACKEND_URL
 ```
+
+### Framework Imports in Admin Code
+
+**Rule: `admin-no-medusa-utils-import`**
+
+Don't import Node-only framework modules in admin code as they break the browser bundle. These modules are designed for server-side use only.
+
+```tsx
+// ❌ Incorrect - Node-only modules break browser builds
+import { MedusaError } from "@medusajs/framework/utils"
+import { defineMiddlewares } from "@medusajs/framework/http"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+
+// ✅ Correct - Use browser-safe admin SDK
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+
+// ✅ Also correct - Types are erased at build time
+import type { HttpTypes } from "@medusajs/framework/types"
+```
+
+Move server logic to workflows, API routes, or module services and call them from the admin via the JS SDK.
 
 ### Component Structure
 
@@ -434,6 +465,74 @@ export const config = {
 ```
 
 **Note:** This rule is only enabled in the `strict` preset as it requires cross-file analysis and can be slower on large projects.
+
+---
+
+## General Development Rules
+
+### Framework Imports
+
+**Rule: `import-from-framework-not-internal`**
+
+Use the public `@medusajs/framework/*` entry points instead of deprecated standalone packages or internal build output.
+
+```ts
+// ❌ Incorrect - deprecated standalone package
+import { MedusaError } from "@medusajs/utils"
+
+// ✅ Correct - use framework entry point (autofix available)
+import { MedusaError } from "@medusajs/framework/utils"
+
+// ❌ Incorrect - internal dist import
+import { foo } from "@medusajs/medusa/dist/utils/foo"
+
+// ✅ Correct - use public API
+import { foo } from "@medusajs/framework/utils"
+```
+
+**Rule: `no-mikroorm-direct-import`**
+
+Don't import MikroORM or awilix directly. As of Medusa v2.11, they're bundled into `@medusajs/framework`.
+
+```ts
+// ❌ Incorrect - direct MikroORM import
+import { EntityManager } from "@mikro-orm/core"
+import { Container } from "awilix"
+
+// ✅ Correct - use framework re-exports (autofix available)
+import { EntityManager } from "@medusajs/framework/mikro-orm/core"
+import { Container } from "@medusajs/framework/awilix"
+```
+
+### Module Resolution
+
+**Rule: `prefer-modules-enum`**
+
+Use the `Modules` enum instead of magic strings when resolving modules from the container.
+
+```ts
+// ❌ Incorrect - magic string
+const productService = container.resolve("product")
+
+// ✅ Correct - use Modules enum (autofix available)
+import { Modules } from "@medusajs/framework/utils"
+const productService = container.resolve(Modules.PRODUCT)
+```
+
+### Error Handling
+
+**Rule: `use-medusa-error-not-generic-error`**
+
+Throw `MedusaError` instead of generic JavaScript errors. `MedusaError` carries a `type` that Medusa maps to the correct HTTP status and consistent client response.
+
+```ts
+// ❌ Incorrect - generic Error
+throw new Error("Something went wrong")
+
+// ✅ Correct - MedusaError with appropriate type
+import { MedusaError } from "@medusajs/framework/utils"
+throw new MedusaError(MedusaError.Types.NOT_FOUND, "Order not found")
+```
 
 ---
 
