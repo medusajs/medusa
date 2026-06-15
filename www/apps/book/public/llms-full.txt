@@ -8670,10 +8670,26 @@ export default [
 ]
 ```
 
-The recommended configuration automatically applies the appropriate rules to admin and subscriber files based on their file patterns:
+### Strict Configuration
+
+For additional rules that are more performance-intensive (including cross-file analysis), you can use the strict preset:
+
+```js title="eslint.config.mjs"
+import medusaPlugin from "@medusajs/eslint-plugin"
+
+export default [
+  ...medusaPlugin.configs.strict,
+  // your other ESLint configs...
+]
+```
+
+The strict configuration includes all recommended rules plus additional rules like `scheduled-job-name-unique` that ensure job names are unique across your entire project.
+
+The recommended configuration automatically applies the appropriate rules to admin, subscriber, and scheduled job files based on their file patterns:
 
 - Admin rules: `src/admin/**/*.{ts,tsx}` files
 - Subscriber rules: `src/subscribers/**/*.{ts,js}` files
+- Scheduled job rules: `src/jobs/**/*.{ts,js}` files
 
 ### Manual Configuration
 
@@ -8699,6 +8715,15 @@ export default [
       "@medusajs/subscriber-config-export-required": "error",
       "@medusajs/subscriber-default-export-must-be-async": "error",
       "@medusajs/subscriber-default-export-required": "error",
+    },
+  },
+  {
+    files: ["src/jobs/**/*.{ts,js}"],
+    rules: {
+      "@medusajs/scheduled-job-config-required": "error",
+      "@medusajs/scheduled-job-default-export-async": "error",
+      "@medusajs/scheduled-job-default-export-required": "error",
+      "@medusajs/scheduled-job-schedule-valid-cron": "error",
     },
   },
   // Additional configurations for widgets and UI routes...
@@ -8944,14 +8969,123 @@ export const config: SubscriberConfig = {
 
 ***
 
+## Scheduled Job Development Rules
+
+### Default Export
+
+**Rule: `scheduled-job-default-export-required`**
+
+Scheduled job files must export a handler function as the default export.
+
+```ts title="src/jobs/hello-world.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+
+// ✅ Required default export
+export default async function greetingJob(container: MedusaContainer) {
+  const logger = container.resolve("logger")
+  logger.info("Greeting!")
+}
+
+export const config = {
+  name: "greeting-every-minute",
+  schedule: "* * * * *",
+}
+```
+
+### Async Function Requirement
+
+**Rule: `scheduled-job-default-export-async`**
+
+The default-exported scheduled job handler function must be async. Scheduled jobs are always awaited by the framework.
+
+```ts
+// ❌ Incorrect - not async
+export default function greetingJob() {
+  // Handle the job...
+}
+
+// ✅ Correct - async function
+export default async function greetingJob() {
+  // Handle the job...
+}
+```
+
+### Config Export
+
+**Rule: `scheduled-job-config-required`**
+
+Scheduled job files must export a `config` object with `name` and `schedule` properties.
+
+```ts title="src/jobs/hello-world.ts"
+export default async function greetingJob() {
+  // Handle the job...
+}
+
+// ✅ Required config export
+export const config = {
+  name: "greeting-every-minute",    // Unique job name
+  schedule: "* * * * *",           // Cron expression or interval object
+}
+```
+
+### Valid Cron Expression
+
+**Rule: `scheduled-job-schedule-valid-cron`**
+
+When using cron-based scheduling, the `config.schedule` value must be a valid cron expression.
+
+```ts
+// ❌ Incorrect - invalid cron expression
+export const config = {
+  name: "my-job",
+  schedule: "* * * *", // Missing required field
+}
+
+// ✅ Correct - valid cron expression
+export const config = {
+  name: "my-job",
+  schedule: "0 0 * * *", // Daily at midnight
+}
+
+// ✅ Also correct - interval-based scheduling
+export const config = {
+  name: "my-job",
+  schedule: { interval: 60000 }, // Every minute
+}
+```
+
+### Unique Job Names
+
+**Rule: `scheduled-job-name-unique`** (strict preset only)
+
+Each scheduled job must have a unique `name` across all job files in the project.
+
+```ts title="src/jobs/sync-products.ts"
+export const config = {
+  name: "sync-products", // ❌ If another job already uses this name
+  schedule: "0 0 * * *",
+}
+```
+
+```ts title="src/jobs/daily-cleanup.ts"
+export const config = {
+  name: "sync-products", // ❌ Duplicate name - will cause conflict
+  schedule: "0 1 * * *",
+}
+```
+
+**Note:** This rule is only enabled in the `strict` preset as it requires cross-file analysis and can be slower on large projects.
+
+***
+
 ## Benefits
 
 Using the ESLint plugin provides several advantages:
 
-1. **Consistency**: Enforces consistent patterns across your admin customizations
-2. **Early Error Detection**: Catches common mistakes before runtime
+1. **Consistency**: Enforces consistent patterns across your admin customizations, subscribers, and scheduled jobs
+2. **Early Error Detection**: Catches common mistakes before runtime, including invalid cron expressions and configuration errors
 3. **Better Developer Experience**: Provides immediate feedback with auto-fixing capabilities
-4. **Framework Compatibility**: Ensures your code works correctly with the admin framework
+4. **Framework Compatibility**: Ensures your code works correctly with Medusa's admin, event, and job scheduling frameworks
 5. **Maintainability**: Makes your codebase easier to maintain and debug
 
 ***
@@ -8964,7 +9098,7 @@ Most modern code editors automatically pick up ESLint configuration. For the bes
 2. **Enable auto-fix on save** in your editor settings
 3. **Configure your editor** to show ESLint warnings and errors inline
 
-This provides real-time feedback while developing admin customizations.
+This provides real-time feedback while developing admin customizations, subscribers, and scheduled jobs.
 
 
 # Admin Development
