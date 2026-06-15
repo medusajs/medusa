@@ -206,6 +206,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("scheduled-job-config-required")]: "error",
         [ruleId("scheduled-job-default-export-async")]: "error",
         [ruleId("scheduled-job-default-export-required")]: "error",
+        [ruleId("scheduled-job-schedule-valid-cron")]: "error",
       },
     },
   ]
