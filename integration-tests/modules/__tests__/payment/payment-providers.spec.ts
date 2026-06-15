@@ -34,10 +34,12 @@ medusaIntegrationTestRunner({
             expect.objectContaining({
               id: "pp_system_default_2",
               is_enabled: true,
+              display_name: "Manual Payment",
             }),
             expect.objectContaining({
               id: "pp_system_default",
               is_enabled: true,
+              display_name: "Manual Payment",
             }),
           ])
         )

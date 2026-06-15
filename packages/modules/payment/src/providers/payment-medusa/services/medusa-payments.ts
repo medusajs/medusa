@@ -78,6 +78,7 @@ class CloudServiceError extends Error {
 
 export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymentsOptions> {
   static identifier = "medusa-payments"
+  static displayName = "Medusa Payments"
   protected readonly options_: MedusaPaymentsOptions
   protected container_: Record<string, unknown>
   // The stripe client is used to construct the webhook event, since we construct it the same way as Stripe does.

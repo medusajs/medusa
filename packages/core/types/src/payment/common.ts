@@ -601,6 +601,11 @@ export interface PaymentProviderDTO {
    * Whether the payment provider is enabled.
    */
   is_enabled: boolean
+
+  /**
+   * The payment provider's human-readable display name, if set by the provider.
+   */
+  display_name?: string | null
 }
 
 /**

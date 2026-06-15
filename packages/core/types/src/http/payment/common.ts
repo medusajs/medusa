@@ -29,6 +29,11 @@ export interface BasePaymentProvider {
    * The provider's ID.
    */
   id: string
+
+  /**
+   * The provider's human-readable display name, if set by the provider.
+   */
+  display_name?: string | null
 }
 
 /**

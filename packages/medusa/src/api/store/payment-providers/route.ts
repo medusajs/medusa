@@ -9,7 +9,6 @@ import {
 } from "@medusajs/framework/utils"
 import { HttpTypes } from "@medusajs/framework/types"
 
-// TODO: Add more fields to provider, such as default name and maybe logo.
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.StorePaymentProviderFilters>,
   res: MedusaResponse<HttpTypes.StorePaymentProviderListResponse>

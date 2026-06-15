@@ -36,6 +36,7 @@ import {
 
 export class SystemPaymentProvider extends AbstractPaymentProvider {
   static identifier = "system"
+  static displayName = "Manual Payment"
 
   async getStatus(_): Promise<string> {
     return "authorized"

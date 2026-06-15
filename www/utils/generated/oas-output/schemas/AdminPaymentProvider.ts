@@ -15,6 +15,11 @@
  *     type: boolean
  *     title: is_enabled
  *     description: Whether the payment provider is enabled.
- * 
+ *   display_name:
+ *     type: string
+ *     title: display_name
+ *     nullable: true
+ *     description: The payment provider's human-readable display name, if set by the provider.
+ *
 */
 

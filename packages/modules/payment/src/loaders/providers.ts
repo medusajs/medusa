@@ -13,7 +13,12 @@ import * as providers from "../providers"
 
 const PROVIDER_REGISTRATION_KEY = "payment_providers"
 
-const registrationFn = async (klass, container, pluginOptions) => {
+const registrationFn = async (
+  klass,
+  container,
+  pluginOptions,
+  displayNamesByKey?: Map<string, string | null>
+) => {
   if (!klass?.identifier) {
     throw new MedusaError(
       MedusaError.Types.INVALID_ARGUMENT,
@@ -32,6 +37,8 @@ const registrationFn = async (klass, container, pluginOptions) => {
   })
 
   container.registerAdd(PROVIDER_REGISTRATION_KEY, asValue(key))
+
+  displayNamesByKey?.set(key, klass.displayName ?? null)
 }
 
 export default async ({
@@ -52,9 +59,16 @@ export default async ({
     }
   }
 >): Promise<void> => {
-  await registrationFn(providers.SystemPaymentProvider, container, {
-    id: "default",
-  })
+  const displayNamesByKey = new Map<string, string | null>()
+
+  await registrationFn(
+    providers.SystemPaymentProvider,
+    container,
+    {
+      id: "default",
+    },
+    displayNamesByKey
+  )
 
   // We only want to register medusa payments if the options for it have been provided.
   const {
@@ -71,30 +85,37 @@ export default async ({
     webhook_secret &&
     (environment_handle || sandbox_handle)
   ) {
-    await registrationFn(providers.MedusaPaymentsProvider, container, {
-      options: {
-        api_key,
-        endpoint,
-        environment_handle,
-        sandbox_handle,
-        webhook_secret,
+    await registrationFn(
+      providers.MedusaPaymentsProvider,
+      container,
+      {
+        options: {
+          api_key,
+          endpoint,
+          environment_handle,
+          sandbox_handle,
+          webhook_secret,
+        },
+        id: "default",
       },
-      id: "default",
-    })
+      displayNamesByKey
+    )
   }
 
   await moduleProviderLoader({
     container,
     providers: options?.providers || [],
-    registerServiceFn: registrationFn,
+    registerServiceFn: (klass, container_, pluginOptions) =>
+      registrationFn(klass, container_, pluginOptions, displayNamesByKey),
   })
 
-  await registerProvidersInDb({ container })
+  await registerProvidersInDb({ container }, displayNamesByKey)
 }
 
-const registerProvidersInDb = async ({
-  container,
-}: LoaderOptions): Promise<void> => {
+const registerProvidersInDb = async (
+  { container }: LoaderOptions,
+  displayNamesByKey: Map<string, string | null>
+): Promise<void> => {
   const providersToLoad = container.resolve<string[]>(PROVIDER_REGISTRATION_KEY)
   const paymentProviderService = container.resolve<PaymentProviderService>(
     "paymentProviderService"
@@ -114,7 +135,11 @@ const registerProvidersInDb = async ({
   }
 
   for (const id of providersToLoad) {
-    upsertData.push({ id, is_enabled: true })
+    upsertData.push({
+      id,
+      is_enabled: true,
+      display_name: displayNamesByKey.get(id) ?? null,
+    })
   }
 
   await paymentProviderService.upsert(upsertData)

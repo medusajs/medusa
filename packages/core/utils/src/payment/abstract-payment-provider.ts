@@ -140,6 +140,24 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
   public static identifier: string
 
   /**
+   * An optional human-readable name for the payment provider. Unlike the
+   * `identifier`, which is used to build the provider's ID, the display name is
+   * meant to be shown to admins and customers (for example, in the storefront's
+   * checkout). When set, it's stored on the provider's `display_name` field and
+   * returned by the store and admin payment provider APIs.
+   *
+   * @example
+   * class MyPaymentProviderService extends AbstractPaymentProvider<
+   *   Options
+   * > {
+   *   static identifier = "my-payment"
+   *   static displayName = "My Payment"
+   *   // ...
+   * }
+   */
+  public static displayName?: string
+
+  /**
    * @ignore
    *
    * Return a unique identifier to retrieve the payment plugin provider
@@ -152,6 +170,15 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
     }
 
     return ctr.identifier
+  }
+
+  /**
+   * @ignore
+   *
+   * Return the provider's optional human-readable display name.
+   */
+  public getDisplayName(): string | undefined {
+    return (this.constructor as typeof AbstractPaymentProvider).displayName
   }
 
   /**

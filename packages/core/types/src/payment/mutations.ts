@@ -282,6 +282,11 @@ export interface CreatePaymentProviderDTO {
    * Whether the provider is enabled.
    */
   is_enabled?: boolean
+
+  /**
+   * The provider's human-readable display name.
+   */
+  display_name?: string | null
 }
 
 /**

@@ -33,7 +33,11 @@ export const retrieveTransformQueryConfig = {
   entity: Entities.payment,
 }
 
-export const defaultAdminPaymentPaymentProviderFields = ["id", "is_enabled"]
+export const defaultAdminPaymentPaymentProviderFields = [
+  "id",
+  "is_enabled",
+  "display_name",
+]
 
 export const listTransformPaymentProvidersQueryConfig = {
   defaults: defaultAdminPaymentPaymentProviderFields,
