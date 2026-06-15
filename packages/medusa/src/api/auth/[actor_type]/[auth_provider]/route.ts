@@ -17,7 +17,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const config: ConfigModule = req.scope.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
   )
-
+  const { http } = config.projectConfig
   const service: IAuthModuleService = req.scope.resolve(Modules.AUTH)
 
   const authData = {
@@ -47,10 +47,33 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
       }
     )
 
+    // Running a verification is about the auth identity, so we return a token to be able to authenticate the requests
+    // without giving any permissions until the verification is completed.
+    const permissionlessAuthIdentity = {
+      ...authIdentity,
+      app_metadata: {},
+      provider_identities: [],
+    }
+
+    const permissionlessToken = await generateJwtTokenForAuthIdentity(
+      {
+        authIdentity: permissionlessAuthIdentity,
+        actorType: actor_type,
+        authProvider: auth_provider,
+        container: req.scope,
+      },
+      {
+        secret: http.jwtSecret!,
+        expiresIn: http.jwtExpiresIn,
+        options: http.jwtOptions,
+      }
+    )
+
     if (requiresVerification && !verification?.verified_at) {
       return res.status(200).json({
         verification_required: true,
         verification,
+        token: permissionlessToken,
       })
     }
   }
@@ -63,8 +86,6 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   }
 
   if (success && authIdentity) {
-    const { http } = config.projectConfig
-
     const token = await generateJwtTokenForAuthIdentity(
       {
         authIdentity,

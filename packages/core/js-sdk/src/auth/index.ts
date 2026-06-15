@@ -43,6 +43,11 @@ export type AuthVerificationRequiredResponse = {
    * The verification state to show to the caller.
    */
   verification?: AuthTypes.AuthVerificationDTO
+
+  /**
+   * A token without an actor type (permissions) attached to it. Used to request and confirm verifications.
+   */
+  token?: string
 }
 
 /**
@@ -669,6 +674,7 @@ export class Auth {
       return {
         verification_required: true,
         verification,
+        token,
       }
     }
 
