@@ -120,6 +120,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("data-model-table-name-snake-case")]: "warn",
         [ruleId("link-no-cross-module-relationship")]: "error",
         [ruleId("no-reserved-default-properties-in-model")]: "error",
+        [ruleId("primary-key-required")]: "warn",
       },
     },
     {

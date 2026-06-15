@@ -47,6 +47,7 @@ import { rule as noWorkflowCallWithoutContainer } from "./no-workflow-call-witho
 import { rule as preferContainerRegistrationKeysQuery } from "./prefer-container-registration-keys-query"
 import { rule as preferLinkOverRemoteLink } from "./prefer-link-over-remote-link"
 import { rule as pricesInMajorUnits } from "./prices-in-major-units"
+import { rule as primaryKeyRequired } from "./primary-key-required"
 import { rule as stepIdKebabCase } from "./step-id-kebab-case"
 import { rule as stepMustReturnStepResponse } from "./step-must-return-step-response"
 import { rule as subscriberConfigExportRequired } from "./subscriber-config-export-required"
@@ -113,6 +114,7 @@ export const rules = {
     preferContainerRegistrationKeysQuery,
   "prefer-link-over-remote-link": preferLinkOverRemoteLink,
   "prices-in-major-units": pricesInMajorUnits,
+  "primary-key-required": primaryKeyRequired,
   "step-id-kebab-case": stepIdKebabCase,
   "step-must-return-step-response": stepMustReturnStepResponse,
   "subscriber-config-export-required": subscriberConfigExportRequired,
