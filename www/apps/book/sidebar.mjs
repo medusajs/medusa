@@ -602,6 +602,11 @@ export const sidebars = [
           },
           {
             type: "link",
+            path: "/learn/fundamentals/admin/eslint",
+            title: "ESLint Plugin",
+          },
+          {
+            type: "link",
             path: "/learn/fundamentals/admin/tips",
             title: "Tips",
           },

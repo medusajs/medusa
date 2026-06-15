@@ -36,6 +36,12 @@ VITE_MY_API_KEY=sk_123
 
 To access or use an environment variable starting with `VITE_`, use the `import.meta.env` object.
 
+<Note>
+
+The [Admin ESLint Plugin](../eslint/page.mdx) automatically detects and fixes usage of `process.env` in admin code, suggesting `import.meta.env` instead.
+
+</Note>
+
 For example:
 
 ```tsx highlights={[["8"]]}

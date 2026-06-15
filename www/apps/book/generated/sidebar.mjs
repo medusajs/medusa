@@ -1147,11 +1147,21 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "path": "/learn/fundamentals/admin/eslint",
+            "title": "ESLint Plugin",
+            "children": [],
+            "chapterTitle": "5.8. ESLint Plugin",
+            "number": "5.8."
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/learn/fundamentals/admin/tips",
             "title": "Tips",
             "children": [],
-            "chapterTitle": "5.8. Tips",
-            "number": "5.8."
+            "chapterTitle": "5.9. Tips",
+            "number": "5.9."
           }
         ],
         "chapterTitle": "5. Admin Development",

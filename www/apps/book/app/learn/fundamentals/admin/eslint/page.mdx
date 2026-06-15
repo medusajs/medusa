@@ -1,0 +1,249 @@
+export const metadata = {
+  title: `${pageNumber} Admin ESLint Plugin`,
+}
+
+# {metadata.title}
+
+When developing admin customizations, following consistent patterns and conventions ensures maintainable, error-free code. Medusa provides an ESLint plugin with rules specifically designed for admin widget and UI route development.
+
+## Installation
+
+Install the ESLint plugin in your Medusa project:
+
+```bash npm2yarn
+npm install --save-dev @medusajs/eslint-plugin
+```
+
+## Configuration
+
+### Automatic Configuration (Recommended)
+
+The easiest way to use the plugin is to extend the recommended configuration in your ESLint config file:
+
+```js title="eslint.config.mjs"
+import medusaPlugin from "@medusajs/eslint-plugin"
+
+export default [
+  ...medusaPlugin.configs.recommended,
+  // your other ESLint configs...
+]
+```
+
+The recommended configuration automatically applies the appropriate rules to admin files based on their file patterns.
+
+### Manual Configuration
+
+For more granular control, you can configure the rules manually:
+
+```js title="eslint.config.mjs"
+import medusaPlugin from "@medusajs/eslint-plugin"
+
+export default [
+  {
+    plugins: {
+      "@medusajs": medusaPlugin,
+    },
+    files: ["src/admin/**/*.{ts,tsx}"],
+    rules: {
+      "@medusajs/admin-env-vars-import-meta": "warn",
+      "@medusajs/admin-component-must-be-arrow-function": "error",
+    },
+  },
+  // Additional configurations for widgets and UI routes...
+]
+```
+
+---
+
+## Admin Development Rules
+
+### Environment Variables
+
+**Rule: `admin-env-vars-import-meta`**
+
+Admin code is bundled by Vite for the browser. Use `import.meta.env` instead of `process.env` for environment variables.
+
+```tsx
+// ❌ Incorrect - process.env is undefined in the browser
+const url = process.env.VITE_BACKEND_URL
+
+// ✅ Correct - use import.meta.env
+const url = import.meta.env.VITE_BACKEND_URL
+```
+
+### Component Structure
+
+**Rule: `admin-component-must-be-arrow-function`**
+
+Admin widgets and UI route components must be arrow functions for consistency and hot-reloading compatibility.
+
+```tsx
+// ❌ Incorrect - function declaration
+export default function MyWidget() {
+  return <div>Widget content</div>
+}
+
+// ✅ Correct - arrow function
+const MyWidget = () => {
+  return <div>Widget content</div>
+}
+
+export default MyWidget
+```
+
+---
+
+## Widget Development Rules
+
+### Default Export
+
+**Rule: `widget-must-have-default-export`**
+
+Widget files must export a React component as the default export.
+
+```tsx title="src/admin/widgets/product-widget.tsx"
+// ✅ Required default export
+const ProductWidget = () => {
+  return <div>Widget content</div>
+}
+
+export default ProductWidget
+```
+
+### Config Export
+
+**Rule: `widget-must-export-config`**
+
+Widget files must export a `config` object to define widget configuration.
+
+```tsx title="src/admin/widgets/product-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+
+const ProductWidget = () => {
+  return <div>Widget content</div>
+}
+
+// ✅ Required config export
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default ProductWidget
+```
+
+### Zone Definition
+
+**Rule: `widget-zone-must-be-string-literal`**
+
+Widget zones must be defined as string literals for static analysis and validation.
+
+```tsx
+// ❌ Incorrect - dynamic zone
+const zoneName = "product.details.before"
+export const config = defineWidgetConfig({
+  zone: zoneName,
+})
+
+// ✅ Correct - string literal
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+```
+
+---
+
+## UI Route Development Rules
+
+### File Naming
+
+**Rule: `ui-route-file-name-page-tsx`**
+
+UI route files must be named `page.tsx` or `page.jsx` to be recognized by the admin routing system.
+
+```
+src/admin/routes/
+├── brands/
+│   └── page.tsx    ✅ Correct filename
+├── products/
+│   └── list.tsx    ❌ Incorrect - should be page.tsx
+```
+
+### Default Export
+
+**Rule: `ui-route-must-have-default-export`**
+
+UI route files must export a React component as the default export.
+
+```tsx title="src/admin/routes/brands/page.tsx"
+// ✅ Required default export
+const BrandsPage = () => {
+  return <div>Brands listing</div>
+}
+
+export default BrandsPage
+```
+
+### Route Configuration
+
+**Rule: `ui-route-config-via-define-route-config`**
+
+When exporting route configuration, use the `defineRouteConfig` helper for type safety.
+
+```tsx title="src/admin/routes/brands/page.tsx"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+
+const BrandsPage = () => {
+  return <div>Brands listing</div>
+}
+
+// ✅ Use defineRouteConfig helper
+export const config = defineRouteConfig({
+  label: "Brands",
+  icon: TagSolid,
+})
+
+export default BrandsPage
+```
+
+**Rule: `no-config-on-dynamic-ui-route`**
+
+Dynamic routes (with `[param]` syntax) should not export route configuration, as the route config only applies to static routes.
+
+```tsx title="src/admin/routes/brands/[id]/page.tsx"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+
+const BrandDetailsPage = () => {
+  return <div>Brand details</div>
+}
+
+// ❌ Config on dynamic route has no effect
+export const config = defineRouteConfig({
+  label: "Brand Details", // This won't be used
+})
+
+export default BrandDetailsPage
+```
+
+---
+
+## Benefits
+
+Using the ESLint plugin provides several advantages:
+
+1. **Consistency**: Enforces consistent patterns across your admin customizations
+2. **Early Error Detection**: Catches common mistakes before runtime
+3. **Better Developer Experience**: Provides immediate feedback with auto-fixing capabilities
+4. **Framework Compatibility**: Ensures your code works correctly with the admin framework
+5. **Maintainability**: Makes your codebase easier to maintain and debug
+
+---
+
+## IDE Integration
+
+Most modern code editors automatically pick up ESLint configuration. For the best development experience:
+
+1. **VS Code**: Install the ESLint extension
+2. **Enable auto-fix on save** in your editor settings
+3. **Configure your editor** to show ESLint warnings and errors inline
+
+This provides real-time feedback while developing admin customizations.
