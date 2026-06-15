@@ -45,13 +45,21 @@ export interface GetItemTaxLinesStepInput {
    * The shipping address of the order.
    */
   shipping_address?: OrderWorkflowDTO["shipping_address"]
+  /**
+   * Additional context to forward to the underlying tax provider. This is
+   * typically populated by the `setTaxLineContext` hook of the cart and order
+   * tax workflows and allows passing custom data beyond the framework-provided
+   * fields.
+   */
+  additional_context?: Record<string, unknown>
 }
 
 function normalizeTaxModuleContext(
   orderOrCart: OrderWorkflowDTO | CartWorkflowDTO,
   forceTaxCalculation: boolean,
   isReturn?: boolean,
-  shippingAddress?: OrderWorkflowDTO["shipping_address"]
+  shippingAddress?: OrderWorkflowDTO["shipping_address"],
+  additionalContext?: Record<string, unknown>
 ): TaxCalculationContext | null {
   const address = shippingAddress ?? orderOrCart.shipping_address
   const shouldCalculateTax =
@@ -98,6 +106,7 @@ function normalizeTaxModuleContext(
       shipping_option_id: method.shipping_option_id,
       amount: method.amount,
     })),
+    additional_context: additionalContext,
   }
 }
 
@@ -174,6 +183,7 @@ export const getItemTaxLinesStep = createStep(
       force_tax_calculation: forceTaxCalculation = false,
       is_return: isReturn = false,
       shipping_address: shippingAddress,
+      additional_context: additionalContext,
     } = data
 
     const filteredItems = items.filter(
@@ -186,7 +196,8 @@ export const getItemTaxLinesStep = createStep(
       orderOrCart,
       forceTaxCalculation,
       isReturn,
-      shippingAddress
+      shippingAddress,
+      additionalContext
     )
 
     const stepResponseData = {

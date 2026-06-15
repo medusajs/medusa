@@ -23,5 +23,11 @@ export function buildStrict(plugin: unknown): Linter.Config[] {
         [ruleId("no-non-serializable-step-return")]: "error",
       },
     },
+    {
+      files: ["src/api/**/route.{ts,tsx,js}", "**/api/**/route.{ts,tsx,js}"],
+      rules: {
+        [ruleId("use-validated-body-or-query")]: "warn",
+      },
+    },
   ]
 }
