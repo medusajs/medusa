@@ -16,8 +16,20 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       ],
     },
     {
-      files: ["**/*.{ts,tsx}"],
+      // Register the plugin globally (no `files` key) so that EVERY file ESLint
+      // processes — including `.js`/`.mjs`/`.cjs`/`.jsx` files matched by the
+      // directory-scoped rule blocks below, and `eslint.config.js` itself — can
+      // resolve `@medusajs/*` rule references. A flat-config object without
+      // `files`/`ignores` applies to all linted files; if this registration is
+      // scoped to `.ts,.tsx` only, linting a `.js` file that a rules block
+      // matches fails with `Could not find plugin "@medusajs" in configuration`.
       plugins: { [PLUGIN_NAMESPACE]: plugin as never },
+    },
+    {
+      // The TypeScript parser and type-aware parser options only apply to TS
+      // source — keep them scoped so `.js`/`.mjs`/`.cjs` files are parsed with
+      // ESLint's default parser instead of being forced through the TS project.
+      files: ["**/*.{ts,tsx}"],
       languageOptions: {
         parser: require("@typescript-eslint/parser"),
         parserOptions: { project: true, sourceType: "module" },

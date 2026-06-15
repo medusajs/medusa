@@ -2,13 +2,20 @@ import { Compiler } from "@medusajs/framework/build-tools"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { initializeContainer } from "../loaders"
 import { generateTypes } from "./utils/generate-types"
+import { runLintStep } from "./utils/lint-project"
 
 export default async function build({
   directory,
   adminOnly,
+  lint,
+  fix,
+  quiet,
 }: {
   directory: string
   adminOnly: boolean
+  lint?: boolean
+  fix?: boolean
+  quiet?: boolean
 }) {
   const container = await initializeContainer(directory, {
     skipDbConnection: true,
@@ -26,6 +33,11 @@ export default async function build({
     logger.error("Error generating types", error)
     process.exit(1)
   }
+
+  // Lint after type generation. Like the compiler's treatment of type errors,
+  // this is non-blocking: lint problems are surfaced as warnings but never fail
+  // the build (failOnError: false).
+  await runLintStep({ directory, lint, fix, quiet, logger, failOnError: false })
 
   logger.info("Starting build...")
   const compiler = new Compiler(directory, logger)

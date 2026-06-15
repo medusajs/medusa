@@ -12,6 +12,7 @@ import path from "path"
 import BackendHmrFeatureFlag from "../feature-flags/backend-hmr"
 import { initializeContainer } from "../loaders"
 import { promptClaudeCodePlugin } from "../utils/claude-code-plugin"
+import { runLintStep } from "./utils/lint-project"
 
 const defaultConfig = {
   padding: 5,
@@ -19,9 +20,19 @@ const defaultConfig = {
   borderStyle: `double`,
 } as boxen.Options
 
-export default async function ({ types, directory }) {
+export default async function ({ types, directory, lint, fix }) {
   const container = await initializeContainer(directory)
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+
+  // Lint once at startup, before the dev server is forked. On lint errors this
+  // exits 1 and the child server process is never spawned.
+  await runLintStep({
+    directory,
+    lint,
+    fix,
+    logger,
+    failureSuffix: "Dev server not started.",
+  })
 
   const isBackendHmrEnabled = FeatureFlag.isFeatureEnabled(
     BackendHmrFeatureFlag.key
