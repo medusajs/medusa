@@ -2,21 +2,26 @@ import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
 import { objectHasProperty, resolveObjectExpression } from "../../util/ast"
 
-type MessageIds = "missingConfigExport" | "missingEventProperty"
+type MessageIds =
+  | "missingConfigExport"
+  | "missingNameProperty"
+  | "missingScheduleProperty"
 
 export const rule = createRule<[], MessageIds>({
-  name: "subscriber-config-export-required",
+  name: "scheduled-job-config-required",
   meta: {
     type: "problem",
     docs: {
       description:
-        "Subscriber files must export a `config` object with at least an `event` property.",
+        "Scheduled job files must export a `config` object with `name` and `schedule` properties.",
     },
     messages: {
       missingConfigExport:
-        "Subscriber files must have a named export `config` (a `SubscriberConfig`) with at least an `event` property.",
-      missingEventProperty:
-        "The subscriber `config` export must declare an `event` property naming the event(s) to subscribe to.",
+        "Scheduled job files must have a named export `config` with both a `name` and a `schedule` property.",
+      missingNameProperty:
+        "The scheduled job `config` export must declare a `name` property (a unique identifier for the job).",
+      missingScheduleProperty:
+        "The scheduled job `config` export must declare a `schedule` property (a cron expression string, or an object with an `interval` in milliseconds).",
     },
     schema: [],
   },
@@ -25,14 +30,15 @@ export const rule = createRule<[], MessageIds>({
     const sourceCode = context.sourceCode ?? context.getSourceCode()
 
     let hasConfigExport = false
-    // The resolved config object literal, used for the `event` check. Stays
+    // The resolved config object literal, used for the property checks. Stays
     // null when `config` is exported but can't be resolved to an object (e.g.
-    // a re-export or a non-object initializer) — the `event` check is skipped.
+    // a re-export or a non-object initializer) — the property checks are
+    // skipped.
     let configObject: TSESTree.ObjectExpression | null = null
 
     return {
       ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration) {
-        // export const config = { ... } | export const config: SubscriberConfig = { ... }
+        // export const config = { ... } | export const config: ConfigType = { ... }
         if (
           node.declaration &&
           node.declaration.type === AST_NODE_TYPES.VariableDeclaration
@@ -65,7 +71,7 @@ export const rule = createRule<[], MessageIds>({
 
           hasConfigExport = true
           // A re-export from another module can't be resolved locally — skip
-          // the `event` check (no false positive).
+          // the property checks (no false positive).
           if (node.source) {
             continue
           }
@@ -85,10 +91,21 @@ export const rule = createRule<[], MessageIds>({
           return
         }
 
-        if (configObject && objectHasProperty(configObject, "event") === false) {
+        if (!configObject) {
+          return
+        }
+
+        if (objectHasProperty(configObject, "name") === false) {
           context.report({
             node: configObject,
-            messageId: "missingEventProperty",
+            messageId: "missingNameProperty",
+          })
+        }
+
+        if (objectHasProperty(configObject, "schedule") === false) {
+          context.report({
+            node: configObject,
+            messageId: "missingScheduleProperty",
           })
         }
       },

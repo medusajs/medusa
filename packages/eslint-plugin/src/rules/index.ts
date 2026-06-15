@@ -33,6 +33,7 @@ import { rule as routeDynamicFolderSyntax } from "./route-dynamic-folder-syntax"
 import { rule as routeFileNaming } from "./route-file-naming"
 import { rule as routeHandlerExportsUppercase } from "./route-handler-exports-uppercase"
 import { rule as routeParamsMustBeDefined } from "./route-params-must-be-defined"
+import { rule as scheduledJobConfigRequired } from "./scheduled-job-config-required"
 import { rule as scheduledJobDefaultExportAsync } from "./scheduled-job-default-export-async"
 import { rule as scheduledJobDefaultExportRequired } from "./scheduled-job-default-export-required"
 import { rule as serviceConstructorMustCallSuper } from "./service-constructor-must-call-super"
@@ -95,6 +96,7 @@ export const rules = {
   "route-file-naming": routeFileNaming,
   "route-handler-exports-uppercase": routeHandlerExportsUppercase,
   "route-params-must-be-defined": routeParamsMustBeDefined,
+  "scheduled-job-config-required": scheduledJobConfigRequired,
   "scheduled-job-default-export-async": scheduledJobDefaultExportAsync,
   "scheduled-job-default-export-required": scheduledJobDefaultExportRequired,
   "service-constructor-must-call-super": serviceConstructorMustCallSuper,

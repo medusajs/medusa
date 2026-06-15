@@ -203,6 +203,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         "**/src/jobs/**/*.{ts,js}",
       ],
       rules: {
+        [ruleId("scheduled-job-config-required")]: "error",
         [ruleId("scheduled-job-default-export-async")]: "error",
         [ruleId("scheduled-job-default-export-required")]: "error",
       },
