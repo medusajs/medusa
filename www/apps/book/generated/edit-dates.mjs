@@ -147,5 +147,5 @@ export const generatedEditDates = {
   "app/learn/introduction/build-with-llms-ai/bloom/page.mdx": "2026-04-29T13:20:11.886Z",
   "app/learn/introduction/build-with-llms-ai/mcp-server/page.mdx": "2026-06-09T08:01:44.517Z",
   "app/learn/introduction/build-with-llms-ai/cloud-cli/page.mdx": "2026-05-05T11:18:36.186Z",
-  "app/learn/fundamentals/admin/eslint/page.mdx": "2026-06-15T06:31:38.313Z"
+  "app/learn/fundamentals/admin/eslint/page.mdx": "2026-06-15T07:25:38.047Z"
 }

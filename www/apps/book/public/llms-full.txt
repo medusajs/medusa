@@ -8643,9 +8643,9 @@ As explained in the [Environment Variables in Production section](#environment-v
 Instead, you can use the [Plugin Global Variables](#global-variables-in-plugins) described above to access the backend URL, base path, and storefront URL.
 
 
-# Admin ESLint Plugin
+# Medusa ESLint Plugin
 
-When developing admin customizations, following consistent patterns and conventions ensures maintainable, error-free code. Medusa provides an ESLint plugin with rules specifically designed for admin widget and UI route development.
+When developing admin customizations and event subscribers, following consistent patterns and conventions ensures maintainable, error-free code. Medusa provides an ESLint plugin with rules specifically designed for admin widget, UI route, and subscriber development.
 
 ## Installation
 
@@ -8670,7 +8670,10 @@ export default [
 ]
 ```
 
-The recommended configuration automatically applies the appropriate rules to admin files based on their file patterns.
+The recommended configuration automatically applies the appropriate rules to admin and subscriber files based on their file patterns:
+
+- Admin rules: `src/admin/**/*.{ts,tsx}` files
+- Subscriber rules: `src/subscribers/**/*.{ts,js}` files
 
 ### Manual Configuration
 
@@ -8688,6 +8691,14 @@ export default [
     rules: {
       "@medusajs/admin-env-vars-import-meta": "warn",
       "@medusajs/admin-component-must-be-arrow-function": "error",
+    },
+  },
+  {
+    files: ["src/subscribers/**/*.{ts,js}"],
+    rules: {
+      "@medusajs/subscriber-config-export-required": "error",
+      "@medusajs/subscriber-default-export-must-be-async": "error",
+      "@medusajs/subscriber-default-export-required": "error",
     },
   },
   // Additional configurations for widgets and UI routes...
@@ -8863,6 +8874,72 @@ export const config = defineRouteConfig({
 })
 
 export default BrandDetailsPage
+```
+
+***
+
+## Subscriber Development Rules
+
+### Default Export
+
+**Rule: `subscriber-default-export-required`**
+
+Subscriber files must export a handler function as the default export.
+
+```ts title="src/subscribers/order-placed.ts"
+import type { SubscriberConfig, SubscriberArgs } from "@medusajs/framework"
+
+// ✅ Required default export
+export default async function orderPlacedHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  // Handle the event...
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+### Async Function Requirement
+
+**Rule: `subscriber-default-export-must-be-async`**
+
+The default-exported subscriber handler function must be async. Subscribers receive events and are always awaited by the framework.
+
+```ts
+// ❌ Incorrect - not async
+export default function orderPlacedHandler() {
+  // Handle the event...
+}
+
+// ✅ Correct - async function
+export default async function orderPlacedHandler() {
+  // Handle the event...
+}
+```
+
+### Config Export
+
+**Rule: `subscriber-config-export-required`**
+
+Subscriber files must export a `config` object with at least an `event` property to specify which event(s) to listen for.
+
+```ts title="src/subscribers/order-placed.ts"
+export default async function orderPlacedHandler() {
+  // Handle the event...
+}
+
+// ✅ Required config export
+export const config: SubscriberConfig = {
+  event: "order.placed", // Single event
+}
+
+// ✅ Multiple events
+export const config: SubscriberConfig = {
+  event: ["order.placed", "order.updated"], // Array of events
+}
 ```
 
 ***
