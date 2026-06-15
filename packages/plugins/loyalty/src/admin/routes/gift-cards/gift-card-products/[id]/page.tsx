@@ -1,47 +1,48 @@
-import { Outlet, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../../components/json-view-section";
-import { TwoColumnLayout } from "../../../../components/layouts/two-column";
-import { useProduct } from "../../../../hooks/api/products";
-import { ProductGeneralSection } from "./components/product-general-section";
-import { ProductMediaSection } from "./components/product-media-section";
-import { ProductSalesChannelSection } from "./components/product-sales-channel-section";
-import { ProductVariantSection } from "./components/product-variant-section";
+import { LayoutComposer } from "@medusajs/dashboard/components"
+import { JsonViewSection } from "../../../../components/json-view-section"
+import { useProduct } from "../../../../hooks/api/products"
+import { ProductGeneralSection } from "./components/product-general-section"
+import { ProductMediaSection } from "./components/product-media-section"
+import { ProductSalesChannelSection } from "./components/product-sales-channel-section"
+import { ProductVariantSection } from "./components/product-variant-section"
 
 export const ProductDetail = () => {
-  const { id } = useParams();
-  const { product, isLoading, isError, error } = useProduct(id!);
+  const { id } = useParams()
+  const { product, isLoading, isError, error } = useProduct(id!)
 
   if (isLoading || !product) {
-    return;
+    return
   }
 
   if (isError) {
-    throw error;
+    throw error
   }
 
   return (
-    <>
-      <TwoColumnLayout
-        firstCol={
+    <LayoutComposer
+      widgetsZonePrefix="gift_card_product.details"
+      preferredLayoutId="core:two-column"
+      data={product}
+      sections={{
+        main: (
           <>
             <ProductGeneralSection product={product} />
             <ProductVariantSection product={product} />
 
             <JsonViewSection data={product} />
           </>
-        }
-        secondCol={
+        ),
+        side: (
           <>
             <ProductSalesChannelSection product={product} />
             <ProductMediaSection product={product} />
           </>
-        }
-      />
+        ),
+      }}
+    />
+  )
+}
 
-      <Outlet />
-    </>
-  );
-};
-
-export default ProductDetail;
+export default ProductDetail

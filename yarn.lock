@@ -3690,6 +3690,7 @@ __metadata:
     "@hookform/resolvers": 3.4.2
     "@medusajs/admin-sdk": 2.15.5
     "@medusajs/cli": 2.15.5
+    "@medusajs/dashboard": 2.15.5
     "@medusajs/framework": 2.15.5
     "@medusajs/icons": 2.15.5
     "@medusajs/js-sdk": 2.15.5
@@ -3708,6 +3709,7 @@ __metadata:
   peerDependencies:
     "@medusajs/admin-sdk": 2.15.5
     "@medusajs/cli": 2.15.5
+    "@medusajs/dashboard": 2.15.5
     "@medusajs/framework": 2.15.5
     "@medusajs/icons": 2.15.5
     "@medusajs/test-utils": 2.15.5
@@ -3719,6 +3721,8 @@ __metadata:
     "@medusajs/admin-sdk":
       optional: true
     "@medusajs/cli":
+      optional: true
+    "@medusajs/dashboard":
       optional: true
     "@medusajs/icons":
       optional: true
@@ -3984,6 +3988,7 @@ __metadata:
   dependencies:
     "@medusajs/admin-sdk": 2.15.5
     "@medusajs/cli": 2.15.5
+    "@medusajs/dashboard": 2.15.5
     "@medusajs/framework": 2.15.5
     "@medusajs/icons": 2.15.5
     "@medusajs/test-utils": 2.15.5
@@ -3998,6 +4003,7 @@ __metadata:
   peerDependencies:
     "@medusajs/admin-sdk": 2.15.5
     "@medusajs/cli": 2.15.5
+    "@medusajs/dashboard": 2.15.5
     "@medusajs/framework": 2.15.5
     "@medusajs/icons": 2.15.5
     "@medusajs/test-utils": 2.15.5
@@ -4009,6 +4015,8 @@ __metadata:
     "@medusajs/admin-sdk":
       optional: true
     "@medusajs/cli":
+      optional: true
+    "@medusajs/dashboard":
       optional: true
     "@medusajs/icons":
       optional: true
