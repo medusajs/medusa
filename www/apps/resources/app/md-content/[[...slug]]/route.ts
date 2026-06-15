@@ -89,6 +89,10 @@ export async function GET(req: NextRequest, { params }: Params) {
       properties: {
         $current_url: url,
         $raw_user_agent: req.headers.get("user-agent") || undefined,
+        $ip:
+          req.headers.get("cf-connecting-ip") ||
+          req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+          undefined,
       },
     })
 
