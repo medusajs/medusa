@@ -186,5 +186,16 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("read-only-link-requires-field")]: "error",
       },
     },
+    {
+      files: [
+        "src/subscribers/**/*.{ts,js}",
+        "**/src/subscribers/**/*.{ts,js}",
+      ],
+      rules: {
+        [ruleId("subscriber-config-export-required")]: "error",
+        [ruleId("subscriber-default-export-must-be-async")]: "error",
+        [ruleId("subscriber-default-export-required")]: "error",
+      },
+    },
   ]
 }
