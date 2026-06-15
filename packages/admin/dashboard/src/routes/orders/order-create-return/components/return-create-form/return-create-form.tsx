@@ -187,6 +187,7 @@ export const ReturnCreateForm = ({
         option_id: method ? method.shipping_option_id! : "",
         location_id: activeReturn?.location_id,
         send_notification: false,
+        receive_now: false,
       })
     },
     resolver: zodResolver(ReturnCreateSchema),
@@ -275,7 +276,10 @@ export const ReturnCreateForm = ({
         return
       }
 
-      await confirmReturnRequest({ no_notification: !data.send_notification })
+      await confirmReturnRequest({ 
+        no_notification: !data.send_notification,
+        receive_now: data.receive_now,
+      })
 
       handleSuccess()
     } catch (e) {
@@ -761,6 +765,40 @@ export const ReturnCreateForm = ({
                           </Form.Label>
                           <Form.Hint className="!mt-1">
                             {t("orders.returns.sendNotificationHint")}
+                          </Form.Hint>
+                        </div>
+                      </div>
+                      <Form.ErrorMessage />
+                    </Form.Item>
+                  )
+                }}
+              />
+            </div>
+
+            {/* RECEIVE NOW*/}
+            <div className="bg-ui-bg-field mt-4 rounded-lg border py-2 pl-2 pr-4">
+              <Form.Field
+                control={form.control}
+                name="receive_now"
+                render={({ field: { onChange, value, ...field } }) => {
+                  return (
+                    <Form.Item>
+                      <div className="flex items-center">
+                        <Form.Control className="mr-4 self-start">
+                          <Switch
+                            dir="ltr"
+                            className="mt-[2px] rtl:rotate-180"
+                            checked={!!value}
+                            onCheckedChange={onChange}
+                            {...field}
+                          />
+                        </Form.Control>
+                        <div className="block">
+                          <Form.Label>
+                            {t("orders.returns.receiveNow")}
+                          </Form.Label>
+                          <Form.Hint className="!mt-1">
+                            {t("orders.returns.receiveNowHint")}
                           </Form.Hint>
                         </div>
                       </div>

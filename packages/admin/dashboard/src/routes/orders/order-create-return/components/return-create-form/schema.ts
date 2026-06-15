@@ -12,7 +12,6 @@ export const ReturnCreateSchema = z.object({
   location_id: z.string().optional(),
   option_id: z.string(),
   send_notification: z.boolean().optional(),
-  // TODO: implement this
   receive_now: z.boolean().optional(),
 })
 
