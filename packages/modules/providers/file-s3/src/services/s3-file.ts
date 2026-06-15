@@ -103,6 +103,14 @@ export class S3FileService extends AbstractFileProviderService {
     return new S3Client(config)
   }
 
+  private buildFileUrl_(fileKey: string): string {
+    const encoded = fileKey
+      .split("/")
+      .map((segment) => encodeURIComponent(segment))
+      .join("/")
+    return `${this.config_.fileUrl}/${encoded}`
+  }
+
   async upload(
     file: FileTypes.ProviderUploadFileDTO
   ): Promise<FileTypes.ProviderFileResultDTO> {
@@ -162,13 +170,8 @@ export class S3FileService extends AbstractFileProviderService {
       throw e
     }
 
-    const encodedKey = fileKey
-      .split("/")
-      .map(encodeURIComponent)
-      .join("/")
-
     return {
-      url: `${this.config_.fileUrl}/${encodedKey}`,
+      url: this.buildFileUrl_(fileKey),
       key: fileKey,
     }
   }
@@ -206,20 +209,15 @@ export class S3FileService extends AbstractFileProviderService {
       },
     })
 
-    const encodedKey = fileKey
-      .split("/")
-      .map(encodeURIComponent)
-      .join("/")
-
     const promise = upload.done().then(() => ({
-      url: `${this.config_.fileUrl}/${encodedKey}`,
+      url: this.buildFileUrl_(fileKey),
       key: fileKey,
     }))
 
     return {
       writeStream: pass,
       promise,
-      url: `${this.config_.fileUrl}/${encodedKey}`,
+      url: this.buildFileUrl_(fileKey),
       fileKey,
     }
   }
@@ -276,75 +274,4 @@ export class S3FileService extends AbstractFileProviderService {
     fileData: FileTypes.ProviderGetPresignedUploadUrlDTO
   ): Promise<FileTypes.ProviderFileResultDTO> {
     if (!fileData?.filename) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `No filename provided`
-      )
-    }
-
-    const fileKey = `${this.config_.prefix}${fileData.filename}`
-
-    let acl: ObjectCannedACL | undefined
-    if (fileData.access) {
-      acl = fileData.access === "public" ? "public-read" : "private"
-    }
-
-    // Using content-type, acl, etc. doesn't work with all providers, and some simply ignore it.
-    const command = new PutObjectCommand({
-      Bucket: this.config_.bucket,
-      ContentType: fileData.mimeType,
-      ACL: acl,
-      Key: fileKey,
-    })
-
-    const signedUrl = await getSignedUrl(this.client_ as any, command as any, {
-      expiresIn:
-        fileData.expiresIn ?? DEFAULT_UPLOAD_EXPIRATION_DURATION_SECONDS,
-    })
-
-    return {
-      url: signedUrl,
-      key: fileKey,
-    }
-  }
-
-  async getDownloadStream(
-    file: FileTypes.ProviderGetFileDTO
-  ): Promise<Readable> {
-    if (!file?.fileKey) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `No fileKey provided`
-      )
-    }
-
-    const fileKey = file.fileKey
-    const response = await this.client_.send(
-      new GetObjectCommand({
-        Key: fileKey,
-        Bucket: this.config_.bucket,
-      })
-    )
-
-    return response.Body! as Readable
-  }
-
-  async getAsBuffer(file: FileTypes.ProviderGetFileDTO): Promise<Buffer> {
-    if (!file?.fileKey) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `No fileKey provided`
-      )
-    }
-
-    const fileKey = file.fileKey
-    const response = await this.client_.send(
-      new GetObjectCommand({
-        Key: fileKey,
-        Bucket: this.config_.bucket,
-      })
-    )
-
-    return Buffer.from(await response.Body!.transformToByteArray())
-  }
-}
+      thr
