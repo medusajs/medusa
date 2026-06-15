@@ -1125,6 +1125,45 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should confirm return request and receive immediately when receive_now is true", async () => {
+          const item = order.items[0]
+          let result = (
+            await api.post(
+              `/admin/returns/${returnId}/request-items`,
+              {
+                items: [
+                  {
+                    id: item.id,
+                    quantity: 2,
+                    reason_id: returnReason.id,
+                    internal_note: "Test note",
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.order_preview
+
+          result = (
+            await api.post(
+              `/admin/returns/${returnId}/request`,
+              {
+                receive_now: true,
+              },
+              adminHeaders
+            )
+          ).data.return
+
+          expect(result).toEqual(
+            expect.objectContaining({
+              id: returnId,
+              status: "received",
+              requested_at: expect.any(String),
+              received_at: expect.any(String),
+            })
+          )
+        })
+
         it("should confirm return request with shipping", async () => {
           const item = order.items[0]
           let result = (
