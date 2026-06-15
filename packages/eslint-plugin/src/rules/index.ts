@@ -36,6 +36,7 @@ import { rule as routeParamsMustBeDefined } from "./route-params-must-be-defined
 import { rule as scheduledJobConfigRequired } from "./scheduled-job-config-required"
 import { rule as scheduledJobDefaultExportAsync } from "./scheduled-job-default-export-async"
 import { rule as scheduledJobDefaultExportRequired } from "./scheduled-job-default-export-required"
+import { rule as scheduledJobNameUnique } from "./scheduled-job-name-unique"
 import { rule as scheduledJobScheduleValidCron } from "./scheduled-job-schedule-valid-cron"
 import { rule as serviceConstructorMustCallSuper } from "./service-constructor-must-call-super"
 import { rule as serviceMethodsMustBeAsync } from "./service-methods-must-be-async"
@@ -100,6 +101,7 @@ export const rules = {
   "scheduled-job-config-required": scheduledJobConfigRequired,
   "scheduled-job-default-export-async": scheduledJobDefaultExportAsync,
   "scheduled-job-default-export-required": scheduledJobDefaultExportRequired,
+  "scheduled-job-name-unique": scheduledJobNameUnique,
   "scheduled-job-schedule-valid-cron": scheduledJobScheduleValidCron,
   "service-constructor-must-call-super": serviceConstructorMustCallSuper,
   "service-methods-must-be-async": serviceMethodsMustBeAsync,
