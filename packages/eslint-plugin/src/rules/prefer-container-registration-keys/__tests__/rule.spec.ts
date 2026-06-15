@@ -3,7 +3,7 @@ import { rule } from "../rule"
 
 const ruleTester = createRuleTester()
 
-ruleTester.run("prefer-container-registration-keys-query", rule, {
+ruleTester.run("prefer-container-registration-keys", rule, {
   valid: [
     // Canonical: ContainerRegistrationKeys.QUERY.
     {

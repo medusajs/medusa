@@ -2,6 +2,7 @@ import type { TSESTree, TSESLint } from "@typescript-eslint/utils"
 import { AST_NODE_TYPES } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
 import { FRAMEWORK_UTILS_SOURCE } from "../../constants"
+import { isResolveCallee } from "../../util/container"
 
 type MessageIds = "preferRegistrationKey"
 
@@ -24,26 +25,8 @@ const KEYS_BY_VALUE: Record<string, string> = {
   featureFlagRouter: "FEATURE_FLAG_ROUTER",
 }
 
-function isResolveCallee(callee: TSESTree.Expression): boolean {
-  if (
-    callee.type === AST_NODE_TYPES.Identifier &&
-    callee.name === "resolve"
-  ) {
-    return true
-  }
-  if (
-    callee.type === AST_NODE_TYPES.MemberExpression &&
-    !callee.computed &&
-    callee.property.type === AST_NODE_TYPES.Identifier &&
-    callee.property.name === "resolve"
-  ) {
-    return true
-  }
-  return false
-}
-
 export const rule = createRule<[], MessageIds>({
-  name: "prefer-container-registration-keys-query",
+  name: "prefer-container-registration-keys",
   meta: {
     type: "suggestion",
     docs: {
