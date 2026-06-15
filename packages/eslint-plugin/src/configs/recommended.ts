@@ -123,6 +123,60 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       },
     },
     {
+      // Whole admin-dashboard tree. Requires the `src/admin` segment pair so it
+      // does not match API admin routes (`src/api/admin/**`), which are server
+      // code where `process.env` is legitimate.
+      files: [
+        "src/admin/**/*.{ts,tsx,js,jsx}",
+        "**/src/admin/**/*.{ts,tsx,js,jsx}",
+      ],
+      rules: {
+        [ruleId("admin-env-vars-import-meta")]: "warn",
+      },
+    },
+    {
+      files: [
+        "src/admin/widgets/**/*.{tsx,jsx}",
+        "**/admin/widgets/**/*.{tsx,jsx}",
+        "src/admin/routes/**/page.{tsx,jsx}",
+        "**/admin/routes/**/page.{tsx,jsx}",
+      ],
+      rules: {
+        [ruleId("admin-component-must-be-arrow-function")]: "error",
+        [ruleId("widget-zone-must-be-string-literal")]: "error",
+      },
+    },
+    {
+      files: [
+        "src/admin/widgets/**/*.{tsx,jsx}",
+        "**/admin/widgets/**/*.{tsx,jsx}",
+      ],
+      rules: {
+        [ruleId("widget-must-export-config")]: "error",
+        [ruleId("widget-must-have-default-export")]: "error",
+      },
+    },
+    {
+      files: [
+        "src/admin/routes/**/*.{tsx,jsx}",
+        "**/admin/routes/**/*.{tsx,jsx}",
+      ],
+      rules: {
+        [ruleId("ui-route-file-name-page-tsx")]: "error",
+      },
+    },
+    {
+      files: [
+        "src/admin/routes/**/page.{tsx,jsx}",
+        "**/admin/routes/**/page.{tsx,jsx}",
+      ],
+      rules: {
+        [ruleId("no-config-on-dynamic-ui-route")]: "warn",
+        [ruleId("ui-route-config-via-define-route-config")]: "warn",
+        [ruleId("ui-route-must-have-default-export")]: "error",
+      },
+    },
+    {
       files: [
         "src/links/**/*.{ts,tsx,js,mjs,cjs}",
         "**/src/links/**/*.{ts,tsx,js,mjs,cjs}",

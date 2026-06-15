@@ -1,4 +1,6 @@
 import type { ESLint } from "eslint"
+import { rule as adminComponentMustBeArrowFunction } from "./admin-component-must-be-arrow-function"
+import { rule as adminEnvVarsImportMeta } from "./admin-env-vars-import-meta"
 import { rule as authenticateFlagNameAndType } from "./authenticate-flag-name-and-type"
 import { rule as dataModelTableNameSnakeCase } from "./data-model-table-name-snake-case"
 import { rule as linkCreateKeysModulesEnum } from "./link-create-keys-modules-enum"
@@ -8,6 +10,7 @@ import { rule as loaderMustBeExportedInModuleDefinition } from "./loader-must-be
 import { rule as moduleNameSnakeCase } from "./module-name-snake-case"
 import { rule as noAsyncWorkflowConstructor } from "./no-async-workflow-constructor"
 import { rule as noConditionalExpressionsInWorkflow } from "./no-conditional-expressions-in-workflow"
+import { rule as noConfigOnDynamicUiRoute } from "./no-config-on-dynamic-ui-route"
 import { rule as noConsoleLogInWorkflow } from "./no-console-log-in-workflow"
 import { rule as noDeprecatedRemoteQueryConfig } from "./no-deprecated-remote-query-config"
 import { rule as noDirectVariableMutationInWorkflow } from "./no-direct-variable-mutation-in-workflow"
@@ -41,11 +44,19 @@ import { rule as preferLinkOverRemoteLink } from "./prefer-link-over-remote-link
 import { rule as pricesInMajorUnits } from "./prices-in-major-units"
 import { rule as stepIdKebabCase } from "./step-id-kebab-case"
 import { rule as stepMustReturnStepResponse } from "./step-must-return-step-response"
+import { rule as uiRouteConfigViaDefineRouteConfig } from "./ui-route-config-via-define-route-config"
+import { rule as uiRouteFileNamePageTsx } from "./ui-route-file-name-page-tsx"
+import { rule as uiRouteMustHaveDefaultExport } from "./ui-route-must-have-default-export"
 import { rule as workflowIdMatchesExportOrFilename } from "./workflow-id-matches-export-or-filename"
 import { rule as workflowMustReturnWorkflowResponse } from "./workflow-must-return-workflow-response"
+import { rule as widgetMustExportConfig } from "./widget-must-export-config"
+import { rule as widgetMustHaveDefaultExport } from "./widget-must-have-default-export"
+import { rule as widgetZoneMustBeStringLiteral } from "./widget-zone-must-be-string-literal"
 import { rule as zodImportSource } from "./zod-import-source"
 
 export const rules = {
+  "admin-component-must-be-arrow-function": adminComponentMustBeArrowFunction,
+  "admin-env-vars-import-meta": adminEnvVarsImportMeta,
   "authenticate-flag-name-and-type": authenticateFlagNameAndType,
   "data-model-table-name-snake-case": dataModelTableNameSnakeCase,
   "link-create-keys-modules-enum": linkCreateKeysModulesEnum,
@@ -56,6 +67,7 @@ export const rules = {
   "module-name-snake-case": moduleNameSnakeCase,
   "no-async-workflow-constructor": noAsyncWorkflowConstructor,
   "no-conditional-expressions-in-workflow": noConditionalExpressionsInWorkflow,
+  "no-config-on-dynamic-ui-route": noConfigOnDynamicUiRoute,
   "no-console-log-in-workflow": noConsoleLogInWorkflow,
   "no-deprecated-remote-query-config": noDeprecatedRemoteQueryConfig,
   "no-direct-variable-mutation-in-workflow": noDirectVariableMutationInWorkflow,
@@ -90,7 +102,13 @@ export const rules = {
   "prices-in-major-units": pricesInMajorUnits,
   "step-id-kebab-case": stepIdKebabCase,
   "step-must-return-step-response": stepMustReturnStepResponse,
+  "ui-route-config-via-define-route-config": uiRouteConfigViaDefineRouteConfig,
+  "ui-route-file-name-page-tsx": uiRouteFileNamePageTsx,
+  "ui-route-must-have-default-export": uiRouteMustHaveDefaultExport,
   "workflow-id-matches-export-or-filename": workflowIdMatchesExportOrFilename,
   "workflow-must-return-workflow-response": workflowMustReturnWorkflowResponse,
+  "widget-must-export-config": widgetMustExportConfig,
+  "widget-must-have-default-export": widgetMustHaveDefaultExport,
+  "widget-zone-must-be-string-literal": widgetZoneMustBeStringLiteral,
   "zod-import-source": zodImportSource,
 } as unknown as NonNullable<ESLint.Plugin["rules"]>
