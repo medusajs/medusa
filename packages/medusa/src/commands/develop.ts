@@ -25,11 +25,13 @@ export default async function ({ types, directory, lint, fix }) {
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
   // Lint once at startup, before the dev server is forked. On lint errors this
-  // exits 1 and the child server process is never spawned.
+  // exits 1 and the child server process is never spawned. Always quiet during
+  // develop — only errors are surfaced, warnings are suppressed.
   await runLintStep({
     directory,
     lint,
     fix,
+    quiet: true,
     logger,
     failureSuffix: "Dev server not started.",
   })

@@ -27,10 +27,20 @@ function addLintOptions(builder, commandLabel: string) {
   return builder
     .option("lint", {
       type: "string",
-      choices: ["true", "false"],
       describe: `Run the Medusa linter before ${commandLabel}. Accepts \`--lint true\` or \`--lint false\`.`,
       coerce: (v?: string) => {
-        return v === undefined ? undefined : v === "true"
+        if (v === undefined) {
+          return undefined
+        }
+        if (v === "true") {
+          return true
+        }
+        if (v === "false") {
+          return false
+        }
+        throw new Error(
+          `Invalid value for --lint: "${v}". Use \`--lint true\` or \`--lint false\`.`
+        )
       },
     })
     .option("fix", {
