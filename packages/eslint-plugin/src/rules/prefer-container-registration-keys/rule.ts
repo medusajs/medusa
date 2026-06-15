@@ -43,7 +43,7 @@ function isResolveCallee(callee: TSESTree.Expression): boolean {
 }
 
 export const rule = createRule<[], MessageIds>({
-  name: "prefer-container-registration-keys-query",
+  name: "prefer-container-registration-keys",
   meta: {
     type: "suggestion",
     docs: {

@@ -40,7 +40,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("no-throw-in-transform")]: "error",
         [ruleId("no-try-catch-in-workflow")]: "error",
         [ruleId("link-create-keys-modules-enum")]: "warn",
-        [ruleId("prefer-container-registration-keys-query")]: "warn",
+        [ruleId("prefer-container-registration-keys")]: "warn",
         [ruleId("prefer-link-over-remote-link")]: "warn",
         [ruleId("prices-in-major-units")]: "warn",
         [ruleId("step-id-kebab-case")]: "warn",
