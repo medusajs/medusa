@@ -120,6 +120,10 @@ export interface AdminUpdateReturnShipping {
 
 export interface AdminConfirmReturnRequest {
   /**
+   * Whether to receive the return immediately
+   */
+  receive_now?: boolean
+  /**
    * Whether to send a notification to the customer
    * for return updates.
    */

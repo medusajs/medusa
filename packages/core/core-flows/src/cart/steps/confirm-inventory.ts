@@ -71,29 +71,49 @@ export const confirmInventoryStep = createStep(
       Modules.INVENTORY
     )
 
-    // TODO: Should be bulk
-    const promises = data.items.map(async (item) => {
-      if (item.allow_backorder) {
-        return true
+    const itemsToConfirm = data.items.filter((item) => !item.allow_backorder)
+
+    if (itemsToConfirm.length) {
+      const itemIds = itemsToConfirm.map((i) => i.inventory_item_id)
+
+      const inventoryLevels = await inventoryService.listInventoryLevels(
+        {
+          inventory_item_id: itemIds,
+        },
+        {
+          take: null,
+        }
+      )
+
+      const levelMap = new Map<string, any[]>()
+      inventoryLevels.forEach((level) => {
+        const levels = levelMap.get(level.inventory_item_id) || []
+        levels.push(level)
+        levelMap.set(level.inventory_item_id, levels)
+      })
+
+      const hasCoverage = itemsToConfirm.every((item) => {
+        const levels = levelMap.get(item.inventory_item_id) || []
+        const availableQuantity = levels
+          .filter((level) => item.location_ids.includes(level.location_id))
+          .reduce((acc, level) => {
+            return MathBN.add(
+              acc,
+              MathBN.sub(level.stocked_quantity, level.reserved_quantity)
+            )
+          }, MathBN.convert(0))
+
+        const itemQuantity = MathBN.mult(item.quantity, item.required_quantity)
+        return MathBN.gte(availableQuantity, itemQuantity)
+      })
+
+      if (!hasCoverage) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Some variant does not have the required inventory`,
+          MedusaError.Codes.INSUFFICIENT_INVENTORY
+        )
       }
-
-      const itemQuantity = MathBN.mult(item.quantity, item.required_quantity)
-
-      return await inventoryService.confirmInventory(
-        item.inventory_item_id,
-        item.location_ids,
-        itemQuantity
-      )
-    })
-
-    const inventoryCoverage = await promiseAll(promises)
-
-    if (inventoryCoverage.some((hasCoverage) => !hasCoverage)) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        `Some variant does not have the required inventory`,
-        MedusaError.Codes.INSUFFICIENT_INVENTORY
-      )
     }
 
     return new StepResponse(null)

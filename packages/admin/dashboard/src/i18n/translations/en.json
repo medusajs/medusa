@@ -1221,6 +1221,8 @@
       "outbound": "Outbound",
       "sendNotification": "Send notification",
       "sendNotificationHint": "Notify customer about return.",
+      "receiveNow": "Receive now",
+      "receiveNowHint": "Immediately mark return as received.",
       "returnTotal": "Return total",
       "inboundTotal": "Inbound total",
       "estDifference": "Estimated difference",
