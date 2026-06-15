@@ -19,6 +19,10 @@ export type AuthRedirectResponse = {
  */
 export type AuthMfaRequiredResponse = {
   /**
+   * A token without an actor type (permissions) attached to it. Used to request and confirm verifications.
+   */
+  token: string
+  /**
    * Indicates that the client must complete the returned MFA challenge.
    */
   mfa_required: true
@@ -36,6 +40,10 @@ export type AuthMfaRequiredResponse = {
  */
 export type AuthVerificationRequiredResponse = {
   /**
+   * A token without an actor type (permissions) attached to it. Used to request and confirm verifications.
+   */
+  token: string
+  /**
    * Indicates that the client must complete verification.
    */
   verification_required: true
@@ -43,11 +51,6 @@ export type AuthVerificationRequiredResponse = {
    * The verification state to show to the caller.
    */
   verification?: AuthTypes.AuthVerificationDTO
-
-  /**
-   * A token without an actor type (permissions) attached to it. Used to request and confirm verifications.
-   */
-  token?: string
 }
 
 /**
@@ -69,7 +72,10 @@ export type AuthLoginResponse =
 /**
  * Response returned from an authentication callback.
  */
-export type AuthCallbackResponse = string | AuthMfaRequiredResponse
+export type AuthCallbackResponse =
+  | string
+  | AuthMfaRequiredResponse
+  | AuthVerificationRequiredResponse
 
 /**
  * Response containing the authenticated identity's MFA factors.
@@ -670,6 +676,18 @@ export class Auth {
       }
     )
 
+    // In the case of an oauth login, we return the redirect location to the caller.
+    // They can decide if they do an immediate redirect or put it in an <a> tag.
+    if (location) {
+      return { location }
+    }
+
+    if (!token) {
+      throw new Error("Unexpected authentication response")
+    }
+
+    await this.setToken_(token)
+
     if (verification_required) {
       return {
         verification_required: true,
@@ -682,20 +700,10 @@ export class Auth {
       return {
         mfa_required: true,
         mfa_challenge,
+        token,
       }
     }
 
-    // In the case of an oauth login, we return the redirect location to the caller.
-    // They can decide if they do an immediate redirect or put it in an <a> tag.
-    if (location) {
-      return { location }
-    }
-
-    if (!token) {
-      throw new Error("Unexpected authentication response")
-    }
-
-    await this.setToken_(token)
     return token
   }
 
@@ -742,7 +750,7 @@ export class Auth {
     method: string,
     query?: Record<string, unknown>
   ): Promise<AuthCallbackResponse> => {
-    const { token, mfa_challenge } =
+    const { token, mfa_challenge, verification_required, verification } =
       await this.client.fetch<AuthProviderResponse>(
         `/auth/${actor}/${method}/callback`,
         {
@@ -751,18 +759,28 @@ export class Auth {
         }
       )
 
-    if (mfa_challenge) {
-      return {
-        mfa_required: true,
-        mfa_challenge,
-      }
-    }
-
     if (!token) {
       throw new Error("Unexpected authentication callback response")
     }
 
     await this.setToken_(token)
+
+    if (verification_required) {
+      return {
+        verification_required: true,
+        verification,
+        token,
+      }
+    }
+
+    if (mfa_challenge && token) {
+      return {
+        mfa_required: true,
+        mfa_challenge,
+        token,
+      }
+    }
+
     return token
   }
 

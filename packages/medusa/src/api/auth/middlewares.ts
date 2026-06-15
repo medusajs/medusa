@@ -25,7 +25,9 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["DELETE"],
     matcher: "/auth/session",
-    middlewares: [authenticate("*", ["session"])],
+    middlewares: [
+      authenticate("*", ["session"], { allowUnauthenticated: true }),
+    ],
   },
   {
     method: ["POST"],
@@ -35,18 +37,23 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/auth/mfa/challenges/:id/verify",
-    middlewares: [validateAndTransformBody(AuthMfaVerifyChallengeRequest)],
+    middlewares: [
+      authenticate("*", "bearer", { allowUnregistered: true }),
+      validateAndTransformBody(AuthMfaVerifyChallengeRequest),
+    ],
   },
   {
     method: ["GET"],
     matcher: "/auth/mfa/factors",
-    middlewares: [authenticate("*", ["session", "bearer"])],
+    middlewares: [
+      authenticate("*", ["session", "bearer"], { allowUnauthenticated: true }),
+    ],
   },
   {
     method: ["POST"],
     matcher: "/auth/mfa/factors",
     middlewares: [
-      authenticate("*", ["session", "bearer"]),
+      authenticate("*", ["session", "bearer"], { allowUnauthenticated: true }),
       validateAndTransformBody(AuthMfaCreateFactorRequest),
     ],
   },
@@ -54,7 +61,7 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/auth/mfa/factors/:id/verify",
     middlewares: [
-      authenticate("*", ["session", "bearer"]),
+      authenticate("*", ["session", "bearer"], { allowUnauthenticated: true }),
       validateAndTransformBody(AuthMfaVerifyFactorRequest),
     ],
   },
@@ -62,7 +69,7 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["DELETE"],
     matcher: "/auth/mfa/factors/:id",
     middlewares: [
-      authenticate("*", ["session", "bearer"]),
+      authenticate("*", ["session", "bearer"], { allowUnauthenticated: true }),
       validateAndTransformBody(AuthMfaDisableFactorRequest),
     ],
   },
@@ -70,7 +77,7 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/auth/mfa/recovery-codes",
     middlewares: [
-      authenticate("*", ["session", "bearer"]),
+      authenticate("*", ["session", "bearer"], { allowUnauthenticated: true }),
       validateAndTransformBody(AuthMfaGenerateRecoveryCodesRequest),
     ],
   },

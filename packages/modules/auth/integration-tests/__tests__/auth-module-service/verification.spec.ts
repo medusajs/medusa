@@ -131,14 +131,15 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         )
         expect(result.provider_metadata?.token_hash).not.toEqual(result.code)
 
-        const [storedVerification] = await MikroOrmWrapper.forkManager().execute(
-          "select * from auth_verification where auth_identity_id = ?",
-          ["auth-id"]
-        )
+        const [storedVerification] =
+          await MikroOrmWrapper.forkManager().execute(
+            "select * from auth_verification where auth_identity_id = ?",
+            ["auth-id"]
+          )
 
-        expect(parseJson(storedVerification.provider_metadata).token_hash).toEqual(
-          result.provider_metadata?.token_hash
-        )
+        expect(
+          parseJson(storedVerification.provider_metadata).token_hash
+        ).toEqual(result.provider_metadata?.token_hash)
         expect(storedVerification).not.toHaveProperty("token_hash")
       })
 
@@ -343,9 +344,14 @@ moduleIntegrationTestRunner<IAuthModuleService>({
               actor_type: "user",
               auth_provider: "emailpass",
             }),
+            authIdentity: expect.objectContaining({
+              id: "auth-id",
+              provider_identities: [
+                expect.objectContaining({ entity_id: "verify@test.com" }),
+              ],
+            }),
           })
         )
-        expect(result.authIdentity).toBeUndefined()
         expect(result.verification).toBeUndefined()
       })
     })

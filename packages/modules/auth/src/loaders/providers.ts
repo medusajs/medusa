@@ -219,10 +219,7 @@ export default async ({
   ) as TokenVerificationProviderOptions | undefined
 
   await verificationRegistrationFn(TokenVerificationProvider, container, {
-    options: {
-      ttl_seconds: options?.verification?.ttl_seconds,
-      ...(tokenOptions ?? {}),
-    },
+    options: tokenOptions ?? {},
     id: TokenVerificationProvider.identifier,
   })
 

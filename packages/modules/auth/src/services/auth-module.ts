@@ -658,14 +658,6 @@ export default class AuthModuleService
     data: AuthTypes.RequestAuthVerificationDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthTypes.RequestAuthVerificationResponse> {
-    return await this.requestAuthVerification_(data, sharedContext)
-  }
-
-  @InjectTransactionManager()
-  protected async requestAuthVerification_(
-    data: AuthTypes.RequestAuthVerificationDTO,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<AuthTypes.RequestAuthVerificationResponse> {
     if (!data.provider) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -682,14 +674,6 @@ export default class AuthModuleService
 
   @InjectManager()
   async confirmAuthVerification(
-    data: AuthTypes.ConfirmAuthVerificationDTO,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<AuthTypes.ConfirmAuthVerificationResponse> {
-    return await this.confirmAuthVerification_(data, sharedContext)
-  }
-
-  @InjectTransactionManager()
-  protected async confirmAuthVerification_(
     data: AuthTypes.ConfirmAuthVerificationDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthTypes.ConfirmAuthVerificationResponse> {
@@ -730,6 +714,7 @@ export default class AuthModuleService
     return {
       success: true,
       mfa_challenge: mfaChallenge,
+      authIdentity: response.authIdentity,
     }
   }
 

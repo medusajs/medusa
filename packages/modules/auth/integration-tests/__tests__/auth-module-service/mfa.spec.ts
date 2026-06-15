@@ -706,7 +706,6 @@ moduleIntegrationTestRunner<IAuthModuleService>({
             }),
           })
         )
-        expect(result.authIdentity).toBeUndefined()
       })
     })
   },

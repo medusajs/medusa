@@ -3,7 +3,6 @@ import { AuthTypes, Context } from ".."
 /**
  * The base interface that all auth verification providers must implement.
  *
- * @ignore
  *
  * @since 2.16.0
  */
@@ -14,7 +13,7 @@ export interface IAuthVerificationProvider {
   readonly identifier: string
 
   /**
-   * This method requests a verification for an entity.
+   * This method requests a verification for an entity. If the entity is already verified, it returns the auth verification record.
    *
    * @param data - The data required to request a verification.
    * @param sharedContext - A context used to share resources between the application and the module.

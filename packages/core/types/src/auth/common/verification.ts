@@ -24,8 +24,8 @@ export type RequestAuthVerificationDTO = {
 }
 
 export type RequestAuthVerificationResponse = AuthVerificationDTO & {
-  code: string
-  expires_at: Date
+  code?: string
+  expires_at?: Date
 }
 
 export type ConfirmAuthVerificationDTO = {

@@ -36,7 +36,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   if (success && authIdentity) {
     const { http } = config.projectConfig
 
-    const token = await generateJwtTokenForAuthIdentity(
+    const actorlessToken = await generateJwtTokenForAuthIdentity(
       {
         authIdentity,
         actorType: actor_type,
@@ -50,7 +50,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
       }
     )
 
-    return res.status(200).json({ token })
+    return res.status(200).json({ token: actorlessToken })
   }
 
   throw new MedusaError(

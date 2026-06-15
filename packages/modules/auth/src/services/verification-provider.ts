@@ -8,7 +8,9 @@ import { AuthVerificationProviderRegistrationPrefix } from "@types"
 
 type InjectedDependencies = {
   logger?: Logger
-  [key: `${typeof AuthVerificationProviderRegistrationPrefix}${string}`]: IAuthVerificationProvider
+  [
+    key: `${typeof AuthVerificationProviderRegistrationPrefix}${string}`
+  ]: IAuthVerificationProvider
 }
 
 export default class AuthVerificationProviderService {

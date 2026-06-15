@@ -26,18 +26,20 @@ export async function generateJwtTokenForAuthIdentity(
   {
     secret,
     expiresIn,
+    skipActorType,
     options,
   }: {
     secret: Secret
     expiresIn: string | undefined
+    skipActorType?: boolean
     options?: ProjectConfigOptions["http"]["jwtOptions"]
   }
 ) {
   const expiresIn_ = expiresIn ?? options?.expiresIn
   const entityIdKey = `${actorType}_id`
-  const entityId = authIdentity?.app_metadata?.[entityIdKey] as
-    | string
-    | undefined
+  const entityId = skipActorType
+    ? undefined
+    : (authIdentity?.app_metadata?.[entityIdKey] as string | undefined)
 
   const providerIdentity = !authProvider
     ? undefined

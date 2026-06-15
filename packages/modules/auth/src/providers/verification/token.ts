@@ -51,12 +51,14 @@ export class TokenVerificationProvider implements IAuthVerificationProvider {
       sharedContext
     )
 
+    if (existingVerifications.length && existingVerifications[0].verified_at) {
+      return existingVerifications[0]
+    }
+
     const token = generateVerificationToken()
     const tokenHash = hashVerificationToken(token)
     const requestedAt = new Date(Date.now())
-    const expiresAt = new Date(
-      requestedAt.getTime() + this.getTokenTtlMs_()
-    )
+    const expiresAt = new Date(requestedAt.getTime() + this.getTokenTtlMs_())
 
     let verification
     if (existingVerifications.length) {

@@ -94,10 +94,6 @@ export type AuthModuleOptions = Partial<ModuleServiceInitializeOptions> & {
    */
   verification?: {
     /**
-     * Default TTL in seconds for token-based verifications.
-     */
-    ttl_seconds?: number
-    /**
      * Additional verification providers to register.
      */
     providers?: {
@@ -126,6 +122,9 @@ export type TotpMfaProviderOptions = {
 }
 
 export type TokenVerificationProviderOptions = {
+  /**
+   * TTL in seconds for token-based verifications. Defaults to `900` seconds (15 minutes).
+   */
   ttl_seconds?: number
 }
 
