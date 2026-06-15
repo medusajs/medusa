@@ -39,6 +39,15 @@ export const isUndefinedExpression = (node: TSESTree.Node): boolean => {
   return false
 }
 
+/**
+ * The three AST node types that represent a function value:
+ * `ArrowFunctionExpression`, `FunctionExpression`, and `FunctionDeclaration`.
+ */
+export type FunctionNode =
+  | TSESTree.ArrowFunctionExpression
+  | TSESTree.FunctionExpression
+  | TSESTree.FunctionDeclaration
+
 const FUNCTION_NODE_TYPES = new Set<string>([
   AST_NODE_TYPES.ArrowFunctionExpression,
   AST_NODE_TYPES.FunctionExpression,
@@ -79,10 +88,12 @@ export const walkAst = (
 
 /**
  * True for `ArrowFunctionExpression`, `FunctionExpression`, and
- * `FunctionDeclaration`.
+ * `FunctionDeclaration`. Narrows to `FunctionNode`; accepts nullable input so
+ * it can guard optional fields like a declarator's `init`.
  */
-export const isFunctionNode = (node: TSESTree.Node): boolean =>
-  FUNCTION_NODE_TYPES.has(node.type)
+export const isFunctionNode = (
+  node: TSESTree.Node | null | undefined
+): node is FunctionNode => !!node && FUNCTION_NODE_TYPES.has(node.type)
 
 /**
  * Returns the static key name of an object-literal property when it can be

@@ -192,6 +192,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         "**/src/subscribers/**/*.{ts,js}",
       ],
       rules: {
+        [ruleId("subscriber-default-export-must-be-async")]: "error",
         [ruleId("subscriber-default-export-required")]: "error",
       },
     },
