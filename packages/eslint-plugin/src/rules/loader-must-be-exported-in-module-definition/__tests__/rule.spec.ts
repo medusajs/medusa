@@ -1,44 +1,16 @@
-import * as fs from "fs"
-import * as os from "os"
-import * as path from "path"
-import { RuleTester } from "@typescript-eslint/rule-tester"
 import { rule } from "../rule"
+import {
+  cleanupFixtureWorkspaces,
+  createFixtureWorkspace,
+  createRuleTester,
+  type FixtureFile,
+} from "../../../test-utils"
 
-RuleTester.afterAll = afterAll
-RuleTester.describe = describe
-RuleTester.it = it
-RuleTester.itOnly = it.only
+afterAll(cleanupFixtureWorkspaces)
 
-const tmpRoots: string[] = []
-
-afterAll(() => {
-  for (const dir of tmpRoots) {
-    try {
-      fs.rmSync(dir, { recursive: true, force: true })
-    } catch {
-      // ignore
-    }
-  }
-})
-
-type ModuleFile = { rel: string; content: string }
-
-function makeModule(files: ModuleFile[]): { dir: string; resolve: (rel: string) => string } {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), "medusa-eslint-loader-"))
-  tmpRoots.push(root)
-  // Place files under <root>/src/modules/hello/
-  const moduleDir = path.join(root, "src", "modules", "hello")
-  fs.mkdirSync(moduleDir, { recursive: true })
-  for (const f of files) {
-    const abs = path.join(moduleDir, f.rel)
-    fs.mkdirSync(path.dirname(abs), { recursive: true })
-    fs.writeFileSync(abs, f.content, "utf8")
-  }
-  return {
-    dir: moduleDir,
-    resolve: (rel: string) => path.join(moduleDir, rel),
-  }
-}
+// Place files under <tmp>/src/modules/hello/
+const makeModule = (files: FixtureFile[]) =>
+  createFixtureWorkspace("src/modules/hello", files)
 
 const LOADER_CODE = `
 import { LoaderOptions } from "@medusajs/framework/types"
@@ -113,7 +85,7 @@ export default Module("hello", {
 })
 `
 
-const ruleTester = new RuleTester()
+const ruleTester = createRuleTester()
 
 // Build fixtures and reuse them across cases.
 const validRegistered = makeModule([

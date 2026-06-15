@@ -33,6 +33,11 @@ import { rule as routeDynamicFolderSyntax } from "./route-dynamic-folder-syntax"
 import { rule as routeFileNaming } from "./route-file-naming"
 import { rule as routeHandlerExportsUppercase } from "./route-handler-exports-uppercase"
 import { rule as routeParamsMustBeDefined } from "./route-params-must-be-defined"
+import { rule as scheduledJobConfigRequired } from "./scheduled-job-config-required"
+import { rule as scheduledJobDefaultExportAsync } from "./scheduled-job-default-export-async"
+import { rule as scheduledJobDefaultExportRequired } from "./scheduled-job-default-export-required"
+import { rule as scheduledJobNameUnique } from "./scheduled-job-name-unique"
+import { rule as scheduledJobScheduleValidCron } from "./scheduled-job-schedule-valid-cron"
 import { rule as serviceConstructorMustCallSuper } from "./service-constructor-must-call-super"
 import { rule as serviceMethodsMustBeAsync } from "./service-methods-must-be-async"
 import { rule as useInjectManagerOnPublicMethods } from "./use-inject-manager-on-public-methods"
@@ -42,6 +47,7 @@ import { rule as noWorkflowCallWithoutContainer } from "./no-workflow-call-witho
 import { rule as preferContainerRegistrationKeysQuery } from "./prefer-container-registration-keys-query"
 import { rule as preferLinkOverRemoteLink } from "./prefer-link-over-remote-link"
 import { rule as pricesInMajorUnits } from "./prices-in-major-units"
+import { rule as primaryKeyRequired } from "./primary-key-required"
 import { rule as stepIdKebabCase } from "./step-id-kebab-case"
 import { rule as stepMustReturnStepResponse } from "./step-must-return-step-response"
 import { rule as subscriberConfigExportRequired } from "./subscriber-config-export-required"
@@ -93,6 +99,11 @@ export const rules = {
   "route-file-naming": routeFileNaming,
   "route-handler-exports-uppercase": routeHandlerExportsUppercase,
   "route-params-must-be-defined": routeParamsMustBeDefined,
+  "scheduled-job-config-required": scheduledJobConfigRequired,
+  "scheduled-job-default-export-async": scheduledJobDefaultExportAsync,
+  "scheduled-job-default-export-required": scheduledJobDefaultExportRequired,
+  "scheduled-job-name-unique": scheduledJobNameUnique,
+  "scheduled-job-schedule-valid-cron": scheduledJobScheduleValidCron,
   "service-constructor-must-call-super": serviceConstructorMustCallSuper,
   "service-methods-must-be-async": serviceMethodsMustBeAsync,
   "use-inject-manager-on-public-methods": useInjectManagerOnPublicMethods,
@@ -103,6 +114,7 @@ export const rules = {
     preferContainerRegistrationKeysQuery,
   "prefer-link-over-remote-link": preferLinkOverRemoteLink,
   "prices-in-major-units": pricesInMajorUnits,
+  "primary-key-required": primaryKeyRequired,
   "step-id-kebab-case": stepIdKebabCase,
   "step-must-return-step-response": stepMustReturnStepResponse,
   "subscriber-config-export-required": subscriberConfigExportRequired,

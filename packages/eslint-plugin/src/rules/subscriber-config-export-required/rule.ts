@@ -1,63 +1,8 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from "@typescript-eslint/utils"
+import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
-import { findProperty, findVariableInScope } from "../../util/ast"
+import { objectHasProperty, resolveObjectExpression } from "../../util/ast"
 
 type MessageIds = "missingConfigExport" | "missingEventProperty"
-
-/**
- * Resolves an expression to the object literal it denotes, when that can be
- * determined without type information:
- * - An `ObjectExpression` is returned as-is.
- * - An `Identifier` is resolved through scope to a `const x = { ... }` binding.
- *
- * Returns `null` when the value can't be statically resolved to an object
- * literal (call expressions, spreads of unknown bindings, re-exports, etc.) —
- * in which case the `event` check is skipped to avoid false positives.
- */
-function resolveObjectExpression(
-  node: TSESTree.Node | null | undefined,
-  scope: TSESLint.Scope.Scope | null
-): TSESTree.ObjectExpression | null {
-  if (!node) {
-    return null
-  }
-  if (node.type === AST_NODE_TYPES.ObjectExpression) {
-    return node
-  }
-  if (node.type === AST_NODE_TYPES.Identifier) {
-    const variable = findVariableInScope(scope, node.name)
-    if (variable) {
-      for (const def of variable.defs) {
-        if (
-          def.node.type === AST_NODE_TYPES.VariableDeclarator &&
-          def.node.init?.type === AST_NODE_TYPES.ObjectExpression
-        ) {
-          return def.node.init
-        }
-      }
-    }
-  }
-  return null
-}
-
-/**
- * Whether a resolved config object is known to carry an `event` property.
- * Returns `"unknown"` when the object spreads another value — `event` could be
- * supplied by the spread, so the rule must not flag it.
- */
-function objectHasEvent(
-  obj: TSESTree.ObjectExpression
-): boolean | "unknown" {
-  if (findProperty(obj, "event")) {
-    return true
-  }
-  if (
-    obj.properties.some((p) => p.type === AST_NODE_TYPES.SpreadElement)
-  ) {
-    return "unknown"
-  }
-  return false
-}
 
 export const rule = createRule<[], MessageIds>({
   name: "subscriber-config-export-required",
@@ -140,7 +85,7 @@ export const rule = createRule<[], MessageIds>({
           return
         }
 
-        if (configObject && objectHasEvent(configObject) === false) {
+        if (configObject && objectHasProperty(configObject, "event") === false) {
           context.report({
             node: configObject,
             messageId: "missingEventProperty",

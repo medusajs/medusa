@@ -120,6 +120,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("data-model-table-name-snake-case")]: "warn",
         [ruleId("link-no-cross-module-relationship")]: "error",
         [ruleId("no-reserved-default-properties-in-model")]: "error",
+        [ruleId("primary-key-required")]: "warn",
       },
     },
     {
@@ -195,6 +196,18 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("subscriber-config-export-required")]: "error",
         [ruleId("subscriber-default-export-must-be-async")]: "error",
         [ruleId("subscriber-default-export-required")]: "error",
+      },
+    },
+    {
+      files: [
+        "src/jobs/**/*.{ts,js}",
+        "**/src/jobs/**/*.{ts,js}",
+      ],
+      rules: {
+        [ruleId("scheduled-job-config-required")]: "error",
+        [ruleId("scheduled-job-default-export-async")]: "error",
+        [ruleId("scheduled-job-default-export-required")]: "error",
+        [ruleId("scheduled-job-schedule-valid-cron")]: "error",
       },
     },
   ]

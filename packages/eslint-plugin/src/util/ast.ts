@@ -130,6 +130,63 @@ export const findProperty = (
 }
 
 /**
+ * Resolves an expression to the object literal it denotes, when that can be
+ * determined without type information:
+ * - An `ObjectExpression` is returned as-is.
+ * - An `Identifier` is resolved through scope to a `const x = { ... }` binding.
+ *
+ * Returns `null` when the value can't be statically resolved to an object
+ * literal (call expressions, spreads of unknown bindings, re-exports, etc.).
+ * Callers that need to assert something about the object's shape should treat a
+ * `null` result as "can't tell" and skip the check to avoid false positives.
+ */
+export const resolveObjectExpression = (
+  node: TSESTree.Node | null | undefined,
+  scope: TSESLint.Scope.Scope | null
+): TSESTree.ObjectExpression | null => {
+  if (!node) {
+    return null
+  }
+  if (node.type === AST_NODE_TYPES.ObjectExpression) {
+    return node
+  }
+  if (node.type === AST_NODE_TYPES.Identifier) {
+    const variable = findVariableInScope(scope, node.name)
+    if (variable) {
+      for (const def of variable.defs) {
+        if (
+          def.node.type === AST_NODE_TYPES.VariableDeclarator &&
+          def.node.init?.type === AST_NODE_TYPES.ObjectExpression
+        ) {
+          return def.node.init
+        }
+      }
+    }
+  }
+  return null
+}
+
+/**
+ * Whether an object literal is known to carry a property named `name`.
+ *
+ * Returns `true`/`false` when it can be determined statically, and `"unknown"`
+ * when the object contains a `SpreadElement` — the property could be supplied
+ * by the spread, so a rule must not flag its absence.
+ */
+export const objectHasProperty = (
+  obj: TSESTree.ObjectExpression,
+  name: string
+): boolean | "unknown" => {
+  if (findProperty(obj, name)) {
+    return true
+  }
+  if (obj.properties.some((p) => p.type === AST_NODE_TYPES.SpreadElement)) {
+    return "unknown"
+  }
+  return false
+}
+
+/**
  * Returns the name of the `VariableDeclarator` that directly initializes
  * `call`, e.g. `export const myWorkflow = createWorkflow(...)` → `"myWorkflow"`.
  *
@@ -166,6 +223,40 @@ export const findVariableInScope = (
     if (found) return found
     current = current.upper
   }
+  return null
+}
+
+/**
+ * Resolves an identifier to the function it refers to — either a `function`
+ * declaration or a `const x = () => …` / `const x = function () {}`
+ * initializer. Walks the scope chain from `scope` to find the binding.
+ *
+ * Returns `null` when the binding isn't a project-local function (e.g. a
+ * re-export from another module, or a non-function value). Useful for
+ * resolving the function behind a default-export identifier
+ * (`export default handler`, `export { handler as default }`).
+ */
+export const resolveFunctionFromIdentifier = (
+  scope: TSESLint.Scope.Scope | null,
+  identifier: TSESTree.Identifier
+): FunctionNode | null => {
+  const variable = findVariableInScope(scope, identifier.name)
+  if (!variable) {
+    return null
+  }
+
+  for (const def of variable.defs) {
+    if (def.node.type === AST_NODE_TYPES.FunctionDeclaration) {
+      return def.node
+    }
+    if (
+      def.node.type === AST_NODE_TYPES.VariableDeclarator &&
+      isFunctionNode(def.node.init)
+    ) {
+      return def.node.init
+    }
+  }
+
   return null
 }
 

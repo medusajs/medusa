@@ -1,42 +1,12 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from "@typescript-eslint/utils"
+import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
 import {
   FunctionNode,
-  findVariableInScope,
   isFunctionNode,
+  resolveFunctionFromIdentifier,
 } from "../../util/ast"
 
 type MessageIds = "mustBeAsync"
-
-/**
- * Resolves an identifier (the local binding of a default export) to the
- * function it refers to — either a `function` declaration or a `const x = () =>`
- * / `const x = function () {}` initializer. Returns `null` when the binding
- * isn't a project-local function (e.g. a re-export from another module).
- */
-function resolveFunctionFromIdentifier(
-  scope: TSESLint.Scope.Scope | null,
-  identifier: TSESTree.Identifier
-): FunctionNode | null {
-  const variable = findVariableInScope(scope, identifier.name)
-  if (!variable) {
-    return null
-  }
-
-  for (const def of variable.defs) {
-    if (def.node.type === AST_NODE_TYPES.FunctionDeclaration) {
-      return def.node
-    }
-    if (
-      def.node.type === AST_NODE_TYPES.VariableDeclarator &&
-      isFunctionNode(def.node.init)
-    ) {
-      return def.node.init
-    }
-  }
-
-  return null
-}
 
 export const rule = createRule<[], MessageIds>({
   name: "subscriber-default-export-must-be-async",

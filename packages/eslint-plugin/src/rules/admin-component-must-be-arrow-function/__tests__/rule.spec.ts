@@ -1,12 +1,7 @@
-import { RuleTester } from "@typescript-eslint/rule-tester"
+import { createRuleTester } from "../../../test-utils"
 import { rule } from "../rule"
 
-RuleTester.afterAll = afterAll
-RuleTester.describe = describe
-RuleTester.it = it
-RuleTester.itOnly = it.only
-
-const ruleTester = new RuleTester()
+const ruleTester = createRuleTester()
 
 const WIDGET = "src/admin/widgets/my-widget.tsx"
 const UI_ROUTE = "src/admin/routes/custom/page.tsx"
