@@ -197,5 +197,15 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("subscriber-default-export-required")]: "error",
       },
     },
+    {
+      files: [
+        "src/jobs/**/*.{ts,js}",
+        "**/src/jobs/**/*.{ts,js}",
+      ],
+      rules: {
+        [ruleId("scheduled-job-default-export-async")]: "error",
+        [ruleId("scheduled-job-default-export-required")]: "error",
+      },
+    },
   ]
 }

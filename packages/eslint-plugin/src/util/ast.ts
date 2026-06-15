@@ -170,6 +170,40 @@ export const findVariableInScope = (
 }
 
 /**
+ * Resolves an identifier to the function it refers to — either a `function`
+ * declaration or a `const x = () => …` / `const x = function () {}`
+ * initializer. Walks the scope chain from `scope` to find the binding.
+ *
+ * Returns `null` when the binding isn't a project-local function (e.g. a
+ * re-export from another module, or a non-function value). Useful for
+ * resolving the function behind a default-export identifier
+ * (`export default handler`, `export { handler as default }`).
+ */
+export const resolveFunctionFromIdentifier = (
+  scope: TSESLint.Scope.Scope | null,
+  identifier: TSESTree.Identifier
+): FunctionNode | null => {
+  const variable = findVariableInScope(scope, identifier.name)
+  if (!variable) {
+    return null
+  }
+
+  for (const def of variable.defs) {
+    if (def.node.type === AST_NODE_TYPES.FunctionDeclaration) {
+      return def.node
+    }
+    if (
+      def.node.type === AST_NODE_TYPES.VariableDeclarator &&
+      isFunctionNode(def.node.init)
+    ) {
+      return def.node.init
+    }
+  }
+
+  return null
+}
+
+/**
  * If `variable` has exactly one definition and that definition is a `const`
  * declaration initialized with a string literal, returns the literal's value.
  * Returns `null` otherwise — including for `let`/`var`, non-literal initializers,

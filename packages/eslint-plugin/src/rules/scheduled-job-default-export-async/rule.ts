@@ -9,17 +9,17 @@ import {
 type MessageIds = "mustBeAsync"
 
 export const rule = createRule<[], MessageIds>({
-  name: "subscriber-default-export-must-be-async",
+  name: "scheduled-job-default-export-async",
   meta: {
     type: "problem",
     docs: {
       description:
-        "The default-exported subscriber handler function must be async.",
+        "The default-exported scheduled job function must be async.",
     },
     fixable: "code",
     messages: {
       mustBeAsync:
-        "The default-exported subscriber handler must be an async function. Subscribers receive an event and are always awaited by the framework.",
+        "The default-exported scheduled job must be an async function. Scheduled jobs receive the Medusa container and are always awaited by the framework.",
     },
     schema: [],
   },
@@ -50,7 +50,7 @@ export const rule = createRule<[], MessageIds>({
           return
         }
 
-        // export default handler — resolve the binding to its function.
+        // export default jobFn — resolve the binding to its function.
         if (decl.type === AST_NODE_TYPES.Identifier) {
           const fn = resolveFunctionFromIdentifier(
             sourceCode.getScope(node),
@@ -76,7 +76,7 @@ export const rule = createRule<[], MessageIds>({
             continue
           }
 
-          // `export { handler as default }` — resolve `handler`.
+          // `export { job as default }` — resolve `job`.
           const fn = resolveFunctionFromIdentifier(
             sourceCode.getScope(node),
             spec.local
