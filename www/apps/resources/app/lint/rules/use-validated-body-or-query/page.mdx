@@ -1,0 +1,74 @@
+---
+sidebar_label: "use-validated-body-or-query"
+---
+
+import { Note } from "docs-ui"
+
+export const metadata = {
+  title: `use-validated-body-or-query - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires using `req.validatedBody` or `req.validatedQuery` when a validation middleware is applied to the route.
+
+## Severity
+
+`warn`. This rule is enabled in the [strict](../../page.mdx#strict) preset.
+
+By default, Medusa projects use the [recommended](../../page.mdx#recommended) preset, which doesn't enable this rule. To use it, switch to the [strict](../../page.mdx#strict) preset.
+
+## What it Targets
+
+This rule targets `route.ts` and `route.js` files in your project's `src/api` directory. It reports access to `req.body` or `req.query` in a handler when a `validateAndTransformBody` or `validateAndTransformQuery` middleware is applied to the route.
+
+The following code is reported by the rule when body validation is applied to the route:
+
+```ts title="src/api/admin/customers/route.ts"
+export const POST = async (req, res) => {
+  res.json(req.body)
+}
+```
+
+Instead, use the validated property:
+
+```ts title="src/api/admin/customers/route.ts"
+export const POST = async (req, res) => {
+  res.json(req.validatedBody)
+}
+```
+
+## Why it's Important
+
+A validation middleware populates `req.validatedBody` and `req.validatedQuery` with the parsed and transformed data. Reading the raw `req.body` or `req.query` skips that validation and transformation.
+
+Learn more in the [Validation documentation](!docs!/learn/fundamentals/api-routes/validation).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.strict,
+  {
+    rules: {
+      "@medusajs/use-validated-body-or-query": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/use-validated-body-or-query
+  res.json(req.body)
+```

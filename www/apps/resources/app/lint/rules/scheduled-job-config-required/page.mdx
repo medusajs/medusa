@@ -1,0 +1,48 @@
+---
+sidebar_label: "scheduled-job-config-required"
+---
+
+export const metadata = {
+  title: `scheduled-job-config-required - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires scheduled job files to export a `config` object with `name` and `schedule` properties.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/jobs` directory. It reports a scheduled job file that's missing the named `config` export, or whose `config` object doesn't declare both a `name` and a `schedule` property.
+
+The following code is reported by the rule:
+
+```ts title="src/jobs/sync-products.ts"
+export default async function () {}
+
+export const config = {}
+```
+
+Instead, export a `config` object with `name` and `schedule`:
+
+```ts title="src/jobs/sync-products.ts"
+export default async function () {}
+
+export const config = {
+  name: "sync-products",
+  schedule: "0 0 * * *",
+}
+```
+
+## Why it's Important
+
+The `name` uniquely identifies the job, and the `schedule` tells Medusa when to run it. Without both, Medusa can't register the job.
+
+Learn more in the [Scheduled Jobs documentation](!docs!/learn/fundamentals/scheduled-jobs).
+
+## Fixable
+
+This rule isn't auto-fixable.

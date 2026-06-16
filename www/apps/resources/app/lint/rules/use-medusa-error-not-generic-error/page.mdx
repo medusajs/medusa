@@ -1,0 +1,75 @@
+---
+sidebar_label: "use-medusa-error-not-generic-error"
+---
+
+export const metadata = {
+  title: `use-medusa-error-not-generic-error - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires throwing `MedusaError` rather than a generic `Error`. `MedusaError` carries a `type` that Medusa maps to the right HTTP status and a consistent client response.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets all files in your project. It reports `throw` statements that throw a built-in error constructor, such as `Error` or `TypeError`.
+
+The following code is reported by the rule:
+
+```ts title="src/api/example.ts"
+// non-compliant
+throw new Error("Something went wrong")
+```
+
+Instead, throw a `MedusaError` with an appropriate type:
+
+```ts title="src/api/example.ts"
+// compliant
+import { MedusaError } from "@medusajs/framework/utils"
+
+throw new MedusaError(
+  MedusaError.Types.NOT_FOUND,
+  "Something went wrong"
+)
+```
+
+## Why it's Important
+
+`MedusaError` carries a `type` that Medusa maps to the correct HTTP status and a consistent client response. Throwing a generic error loses that structured information.
+
+Learn more in the [API route errors documentation](!docs!/learn/fundamentals/api-routes/errors).
+
+## Fixable
+
+This rule isn't auto-fixable with the `--fix` option, since you must choose the appropriate error type. However, it provides an editor suggestion that you can apply manually from your editor's quick-fix menu.
+
+The suggestion rewrites the generic error to `new MedusaError(MedusaError.Types.UNEXPECTED_STATE, ...)`, adds the `MedusaError` import if needed, and expects you to replace `UNEXPECTED_STATE` with a more specific [error type](!docs!/learn/fundamentals/api-routes/errors), such as `NOT_FOUND` or `INVALID_DATA`.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/use-medusa-error-not-generic-error": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/use-medusa-error-not-generic-error
+throw new Error("Something went wrong")
+```

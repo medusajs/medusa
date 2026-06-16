@@ -1,0 +1,78 @@
+---
+sidebar_label: "no-workflow-call-without-container"
+---
+
+import { Note } from "docs-ui"
+
+export const metadata = {
+  title: `no-workflow-call-without-container - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires a workflow to be invoked with the Medusa container, as in `workflow(container).run({ input })`.
+
+## Severity
+
+`warn`. This rule is enabled in the [strict](../../page.mdx#strict) preset.
+
+By default, Medusa projects use the [recommended](../../page.mdx#recommended) preset, which doesn't enable this rule. To use it, switch to the [strict](../../page.mdx#strict) preset.
+
+## What it Targets
+
+This rule targets workflow execution calls anywhere in your project. It reports invoking a workflow with no arguments or accessing its `.run` method directly, without passing the container.
+
+The following code is reported by the rule:
+
+```ts title="src/api/store/custom/route.ts"
+import { myWorkflow } from "../../../workflows/my-workflow"
+
+async function handler() {
+  await myWorkflow().run({ input: {} })
+}
+```
+
+Instead, pass the container when invoking the workflow:
+
+```ts title="src/api/store/custom/route.ts"
+import { myWorkflow } from "../../../workflows/my-workflow"
+
+async function handler(container) {
+  await myWorkflow(container).run({ input: {} })
+}
+```
+
+## Why it's Important
+
+A workflow resolves its steps' dependencies from the Medusa container. Invoking the workflow without the container, or calling `.run` directly, bypasses container resolution and the workflow fails to execute correctly.
+
+Learn more in the [Workflows documentation](!docs!/learn/fundamentals/workflows).
+
+## Fixable
+
+This rule isn't auto-fixable.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.strict,
+  {
+    rules: {
+      "@medusajs/no-workflow-call-without-container": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/no-workflow-call-without-container
+await myWorkflow().run({ input: {} })
+```

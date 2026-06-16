@@ -1,0 +1,72 @@
+---
+sidebar_label: "prefer-container-registration-keys"
+---
+
+export const metadata = {
+  title: `prefer-container-registration-keys - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule prefers `ContainerRegistrationKeys.*` members over magic strings in `resolve(...)` calls.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets all files in your project. It reports calls to `resolve(...)` that pass a known registration-key string, such as `"query"` or `"logger"`, instead of the matching `ContainerRegistrationKeys` member.
+
+The following code is reported by the rule:
+
+```ts title="src/api/example.ts"
+// non-compliant
+const query = req.scope.resolve("query")
+```
+
+Instead, use the `ContainerRegistrationKeys` enum:
+
+```ts title="src/api/example.ts"
+// compliant
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+
+const query = req.scope.resolve(
+  ContainerRegistrationKeys.QUERY
+)
+```
+
+## Why it's Important
+
+The `ContainerRegistrationKeys` enum gives you a single, type-safe source for registration keys. Using it avoids typos in magic strings and makes resolved dependencies easier to find and refactor.
+
+Learn more in the [Medusa Container documentation](!docs!/learn/fundamentals/medusa-container).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/prefer-container-registration-keys": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/prefer-container-registration-keys
+const query = req.scope.resolve("query")
+```

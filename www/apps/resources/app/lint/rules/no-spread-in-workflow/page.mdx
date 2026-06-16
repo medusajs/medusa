@@ -1,0 +1,61 @@
+---
+sidebar_label: "no-spread-in-workflow"
+---
+
+export const metadata = {
+  title: `no-spread-in-workflow - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule disallows spread (`...`) and rest (`...`) elements directly inside a `createWorkflow` constructor or a `when().then()` callback.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/workflows` directory. It reports spread and rest elements placed directly in a workflow's constructor or in a `when().then()` callback.
+
+The following code is reported by the rule:
+
+```ts title="src/workflows/example.ts"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", (input) => {
+  const merged = { ...input, extra: 1 }
+  return new WorkflowResponse(merged)
+})
+```
+
+Instead, wrap object or array manipulation in `transform`:
+
+```ts title="src/workflows/example.ts"
+import {
+  createWorkflow,
+  transform,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", (input) => {
+  const merged = transform({ input }, (data) => {
+    return { ...data.input, extra: 1 }
+  })
+
+  return new WorkflowResponse(merged)
+})
+```
+
+## Why it's Important
+
+A workflow's constructor and `when().then()` callbacks run at definition time, not execution time. So, the spread or rest evaluates against placeholder values rather than the real data. Move the operation into `transform` or a `createStep` callback so it runs at execution time.
+
+Learn more in the [Workflows documentation](!docs!/learn/fundamentals/workflows).
+
+## Fixable
+
+This rule isn't auto-fixable.

@@ -1,0 +1,45 @@
+---
+sidebar_label: "route-params-must-be-defined"
+---
+
+export const metadata = {
+  title: `route-params-must-be-defined - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires properties accessed on `req.params` in an API route handler to correspond to a `[param]` folder in the route path.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets `route.ts` and `route.js` files in your project's `src/api` directory. It reports access to a `req.params` property that has no matching `[param]` folder in the route path.
+
+The following code is reported by the rule, since the route has no `foo` parameter:
+
+```ts title="src/api/admin/products/[id]/route.ts"
+export const GET = (req, res) => {
+  const x = req.params.foo
+}
+```
+
+Instead, access a parameter defined by a `[param]` folder:
+
+```ts title="src/api/admin/products/[id]/route.ts"
+export const GET = (req, res) => {
+  const x = req.params.id
+}
+```
+
+## Why it's Important
+
+A route parameter is only available on `req.params` when a `[param]` folder defines it in the route path. Accessing an undefined parameter returns `undefined`, which often points to a typo or a missing folder.
+
+Learn more in the [Route Parameters documentation](!docs!/learn/fundamentals/api-routes/parameters).
+
+## Fixable
+
+This rule isn't auto-fixable.

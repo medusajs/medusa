@@ -1,0 +1,57 @@
+---
+sidebar_label: "ui-route-file-name-page-tsx"
+---
+
+export const metadata = {
+  title: `ui-route-file-name-page-tsx - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires UI route files under `src/admin/routes` to be named `page.tsx`.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/admin/routes` directory. It reports a file that uses `defineRouteConfig` but isn't named `page.tsx`.
+
+The following code is reported by the rule:
+
+```tsx title="src/admin/routes/custom/custom.tsx"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+
+const CustomPage = () => <div />
+
+export const config = defineRouteConfig({
+  label: "Custom",
+})
+
+export default CustomPage
+```
+
+Instead, rename the file to `page.tsx`:
+
+```tsx title="src/admin/routes/custom/page.tsx"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+
+const CustomPage = () => <div />
+
+export const config = defineRouteConfig({
+  label: "Custom",
+})
+
+export default CustomPage
+```
+
+## Why it's Important
+
+Medusa only registers UI routes from files named `page.tsx`. A route defined in a differently named file won't be added to the admin dashboard.
+
+Learn more in the [UI Routes documentation](!docs!/learn/fundamentals/admin/ui-routes).
+
+## Fixable
+
+This rule isn't auto-fixable.

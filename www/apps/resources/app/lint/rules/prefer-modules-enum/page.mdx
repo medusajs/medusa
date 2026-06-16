@@ -1,0 +1,70 @@
+---
+sidebar_label: "prefer-modules-enum"
+---
+
+export const metadata = {
+  title: `prefer-modules-enum - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule prefers `Modules.*` enum members over magic module-name strings in `resolve(...)` calls.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets all files in your project. It reports calls to `resolve(...)` that pass a known module-name string, such as `"product"` or `"sales_channel"`, instead of the matching `Modules` member.
+
+The following code is reported by the rule:
+
+```ts title="src/api/example.ts"
+// non-compliant
+const productModule = req.scope.resolve("product")
+```
+
+Instead, use the `Modules` enum:
+
+```ts title="src/api/example.ts"
+// compliant
+import { Modules } from "@medusajs/framework/utils"
+
+const productModule = req.scope.resolve(
+  Modules.PRODUCT
+)
+```
+
+## Why it's Important
+
+The `Modules` enum gives you a single, type-safe source for module names. Using it avoids typos in magic strings and makes module dependencies easier to find and refactor.
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/prefer-modules-enum": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/prefer-modules-enum
+const productModule = req.scope.resolve("product")
+```

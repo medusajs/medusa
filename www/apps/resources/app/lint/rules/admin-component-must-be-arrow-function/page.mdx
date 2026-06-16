@@ -1,0 +1,47 @@
+---
+sidebar_label: "admin-component-must-be-arrow-function"
+---
+
+export const metadata = {
+  title: `admin-component-must-be-arrow-function - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires admin widget and UI route components to be arrow functions, not function declarations.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/admin/widgets` directory and `page.tsx` files in your project's `src/admin/routes` directory. It reports a default-exported component that's declared as a function declaration.
+
+The following code is reported by the rule:
+
+```tsx title="src/admin/widgets/product-widget.tsx"
+export default function MyWidget() {
+  return null
+}
+```
+
+Instead, declare the component as an arrow function:
+
+```tsx title="src/admin/widgets/product-widget.tsx"
+const MyWidget = () => {
+  return null
+}
+
+export default MyWidget
+```
+
+## Why it's Important
+
+Medusa only picks up admin widget and UI route components declared as arrow functions. Declaring them as function declarations causes them not to be registered, which can lead to runtime errors.
+
+Learn more in the [Admin Development Constraints documentation](!docs!/learn/fundamentals/admin/constraints).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.

@@ -1,0 +1,76 @@
+---
+sidebar_label: "step-id-kebab-case"
+---
+
+export const metadata = {
+  title: `step-id-kebab-case - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires a step's ID, the first argument of `createStep`, to be a kebab-case string that matches the enclosing variable name or filename.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/workflows` directory. It reports a `createStep` ID that isn't kebab-case or doesn't match the enclosing variable name or filename, with a trailing `Step` segment stripped.
+
+The following code is reported by the rule:
+
+```ts title="src/workflows/example.ts"
+import { createStep } from "@medusajs/framework/workflows-sdk"
+
+export const fetchCustomersStep = createStep(
+  "fetchCustomers",
+  () => {}
+)
+```
+
+Instead, use a kebab-case ID that matches the variable name:
+
+```ts title="src/workflows/example.ts"
+import { createStep } from "@medusajs/framework/workflows-sdk"
+
+export const fetchCustomersStep = createStep(
+  "fetch-customers",
+  () => {}
+)
+```
+
+## Why it's Important
+
+Using a consistent, kebab-case ID that matches the step's variable name or filename makes steps easier to identify in logs and traces.
+
+Learn more in the [Workflows documentation](!docs!/learn/fundamentals/workflows).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/step-id-kebab-case": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/step-id-kebab-case
+export const fetchCustomersStep = createStep()
+```

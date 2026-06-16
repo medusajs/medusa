@@ -1,0 +1,55 @@
+---
+sidebar_label: "no-async-workflow-constructor"
+---
+
+export const metadata = {
+  title: `no-async-workflow-constructor - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule disallows passing an `async` function to `createWorkflow`, since workflow constructors run at definition time and can't await.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/workflows` directory. It reports an `async` function passed as the second argument to `createWorkflow`.
+
+The following code is reported by the rule:
+
+```ts title="src/workflows/example.ts"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", async (input) => {
+  return new WorkflowResponse(input)
+})
+```
+
+Instead, use a synchronous constructor and move asynchronous work into steps:
+
+```ts title="src/workflows/example.ts"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", (input) => {
+  return new WorkflowResponse(input)
+})
+```
+
+## Why it's Important
+
+A workflow's constructor only defines the workflow's steps. It runs once at definition time, not on each execution, so it can't await asynchronous work. Use steps for asynchronous operations instead.
+
+Learn more in the [Workflow Constraints documentation](!docs!/learn/fundamentals/workflows/constructor-constraints).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.

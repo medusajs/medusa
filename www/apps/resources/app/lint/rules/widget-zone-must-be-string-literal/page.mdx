@@ -1,0 +1,51 @@
+---
+sidebar_label: "widget-zone-must-be-string-literal"
+---
+
+export const metadata = {
+  title: `widget-zone-must-be-string-literal - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires the `zone` property in `defineWidgetConfig` to be a string literal or an array of string literals.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/admin/widgets` directory. It reports a `zone` property whose value isn't a string literal, an array of string literals, or a template literal without expressions.
+
+The following code is reported by the rule:
+
+```tsx title="src/admin/widgets/product-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+
+const ZONE = "product.details.before"
+
+export const config = defineWidgetConfig({
+  zone: ZONE,
+})
+```
+
+Instead, use a string literal:
+
+```tsx title="src/admin/widgets/product-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+```
+
+## Why it's Important
+
+Medusa statically analyzes widget files to determine the zones a widget is injected into. A dynamic `zone` value can't be resolved at build time, so the widget may not render in the expected location.
+
+Learn more in the [Admin Development Constraints documentation](!docs!/learn/fundamentals/admin/constraints).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.

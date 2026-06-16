@@ -1,0 +1,63 @@
+---
+sidebar_label: "no-try-catch-in-workflow"
+---
+
+export const metadata = {
+  title: `no-try-catch-in-workflow - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule disallows `try/catch` statements directly inside a `createWorkflow` constructor or a `when().then()` callback.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/workflows` directory. It reports `try/catch` statements placed directly in a workflow's constructor or in a `when().then()` callback.
+
+The following code is reported by the rule:
+
+```ts title="src/workflows/example.ts"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", (input) => {
+  try {
+    return new WorkflowResponse(doSomething(input))
+  } catch (e) {
+    return new WorkflowResponse(null)
+  }
+})
+```
+
+Instead, use a step's compensation function or its error-handling options:
+
+```ts title="src/workflows/example.ts"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", (input) => {
+  const result = doSomethingStep(input).config({
+    continueOnPermanentFailure: true,
+  })
+
+  return new WorkflowResponse(result)
+})
+```
+
+## Why it's Important
+
+A workflow's constructor and `when().then()` callbacks run at definition time, not execution time. So, a `try/catch` there doesn't catch step errors. Use steps with compensation functions, `throwOnError: false`, or `skipOnPermanentFailure` / `continueOnPermanentFailure` instead.
+
+Learn more in the [Error Handling in Workflows documentation](!docs!/learn/fundamentals/workflows/errors).
+
+## Fixable
+
+This rule isn't auto-fixable.

@@ -1,0 +1,66 @@
+---
+sidebar_label: "no-if-in-workflow-constructor"
+---
+
+export const metadata = {
+  title: `no-if-in-workflow-constructor - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule disallows `if` and `else` statements directly inside a `createWorkflow` constructor or a `when().then()` callback.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/workflows` directory. It reports `if` statements placed directly in a workflow's constructor or in a `when().then()` callback.
+
+The following code is reported by the rule:
+
+```ts title="src/workflows/example.ts"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", (input) => {
+  if (input) {
+    return new WorkflowResponse(1)
+  }
+  return new WorkflowResponse(2)
+})
+```
+
+Instead, use `when(...).then(...)` to conditionally execute steps:
+
+```ts title="src/workflows/example.ts"
+import {
+  createWorkflow,
+  when,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", (input) => {
+  const result = when(
+    { input },
+    (data) => !!data.input
+  ).then(() => {
+    return doSomethingStep()
+  })
+
+  return new WorkflowResponse(result)
+})
+```
+
+## Why it's Important
+
+A workflow's constructor and `when().then()` callbacks run at definition time, not execution time. So, an `if` statement evaluates against placeholder values and doesn't behave as you might expect. Use `when(...).then(...)` to conditionally execute steps.
+
+Learn more in the [Conditions in Workflows documentation](!docs!/learn/fundamentals/workflows/conditions).
+
+## Fixable
+
+This rule isn't auto-fixable.

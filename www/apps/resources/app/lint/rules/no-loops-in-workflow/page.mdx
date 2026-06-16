@@ -1,0 +1,64 @@
+---
+sidebar_label: "no-loops-in-workflow"
+---
+
+export const metadata = {
+  title: `no-loops-in-workflow - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule disallows `for`, `for-in`, `for-of`, `while`, and `do-while` loops directly inside a `createWorkflow` constructor or a `when().then()` callback.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/workflows` directory. It reports loops placed directly in a workflow's constructor function or in a `when().then()` callback.
+
+The following code is reported by the rule:
+
+```ts title="src/workflows/example.ts"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", (input) => {
+  for (const item of input.items) {
+    // ...
+  }
+
+  return new WorkflowResponse(input)
+})
+```
+
+Instead, use `transform` to prepare input data, or loop outside the workflow around the `.run()` call:
+
+```ts title="src/workflows/example.ts"
+import {
+  createWorkflow,
+  transform,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", (input) => {
+  const items = transform({ input }, (data) => {
+    return data.input.items.map((item) => item)
+  })
+
+  return new WorkflowResponse(items)
+})
+```
+
+## Why it's Important
+
+A workflow's constructor only defines the workflow's steps. It runs once when the workflow is created, not every time the workflow executes. So, a loop in the constructor runs at definition time and doesn't behave as you might expect at runtime.
+
+Learn more in the [Workflow Constraints documentation](!docs!/learn/fundamentals/workflows/constructor-constraints).
+
+## Fixable
+
+This rule isn't auto-fixable.

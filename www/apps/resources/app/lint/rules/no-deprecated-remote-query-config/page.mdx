@@ -1,0 +1,72 @@
+---
+sidebar_label: "no-deprecated-remote-query-config"
+---
+
+export const metadata = {
+  title: `no-deprecated-remote-query-config - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule disallows `req.remoteQueryConfig` in an API route handler, since it's deprecated in favor of `req.queryConfig`.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/api` directory. It reports access to `remoteQueryConfig` on a request object, which is deprecated since Medusa v2.2.0.
+
+The following code is reported by the rule:
+
+```ts title="src/api/store/products/route.ts"
+import { MedusaRequest } from "@medusajs/framework/http"
+
+export const GET = async (req: MedusaRequest, res) => {
+  const { fields } = req.remoteQueryConfig
+}
+```
+
+Instead, use `queryConfig`:
+
+```ts title="src/api/store/products/route.ts"
+import { MedusaRequest } from "@medusajs/framework/http"
+
+export const GET = async (req: MedusaRequest, res) => {
+  const { fields } = req.queryConfig
+}
+```
+
+## Why it's Important
+
+The `remoteQueryConfig` property is deprecated and may be removed in a future release. Using `queryConfig` keeps your routes compatible with current and upcoming Medusa versions.
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/no-deprecated-remote-query-config": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/no-deprecated-remote-query-config
+const { fields } = req.remoteQueryConfig
+```

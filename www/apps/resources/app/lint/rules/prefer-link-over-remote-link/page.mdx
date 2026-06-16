@@ -1,0 +1,86 @@
+---
+sidebar_label: "prefer-link-over-remote-link"
+---
+
+export const metadata = {
+  title: `prefer-link-over-remote-link - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires you to use `Link` instead of `RemoteLink`, which is deprecated since Medusa v2.2.0.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files anywhere in your project. It reports usages of the deprecated remote link, including:
+
+- Resolving the `"remoteLink"` registration key.
+- Using `ContainerRegistrationKeys.REMOTE_LINK`.
+- Importing the `RemoteLink` or `IRemoteLink` types.
+
+The following code is reported by the rule:
+
+```ts title="src/workflows/steps/create-link.ts"
+import { RemoteLink } from "@medusajs/framework/types"
+
+const link = container.resolve("remoteLink")
+```
+
+Instead, use the `"link"` registration key and the `Link` type:
+
+```ts title="src/workflows/steps/create-link.ts"
+import { Link } from "@medusajs/framework/types"
+
+const link = container.resolve("link")
+```
+
+You can also resolve the link using `ContainerRegistrationKeys.LINK`:
+
+```ts title="src/workflows/steps/create-link.ts"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+
+const link = container.resolve(
+  ContainerRegistrationKeys.LINK
+)
+```
+
+## Why it's Important
+
+`RemoteLink` is deprecated since Medusa v2.2.0 and may be removed in a future version. Using `Link` keeps your code aligned with the supported API.
+
+Learn more in the [Module Links documentation](!docs!/learn/fundamentals/module-links).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/prefer-link-over-remote-link": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/prefer-link-over-remote-link
+const link = container.resolve("remoteLink")
+```

@@ -1,0 +1,78 @@
+---
+sidebar_label: "use-query-context-utility"
+---
+
+export const metadata = {
+  title: `use-query-context-utility - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires wrapping `context` arguments to `query.graph` or `query.index` with `QueryContext(...)` from `@medusajs/framework/utils`.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets all files in your project. It reports a `context` property passed to `query.graph` or `query.index` whose value is a plain object literal instead of a `QueryContext(...)` call.
+
+The following code is reported by the rule:
+
+```ts title="src/api/example.ts"
+// non-compliant
+query.graph({
+  entity: "product",
+  fields: ["*"],
+  context: { region_id: "us" },
+})
+```
+
+Instead, wrap the value with `QueryContext`:
+
+```ts title="src/api/example.ts"
+// compliant
+import { QueryContext } from "@medusajs/framework/utils"
+
+query.graph({
+  entity: "product",
+  fields: ["*"],
+  context: QueryContext({ region_id: "us" }),
+})
+```
+
+## Why it's Important
+
+`QueryContext` marks values as context passed to relation resolvers, ensuring Query interprets them correctly. Passing a plain object can lead to context values being treated as regular filters.
+
+Learn more in the [Query Context documentation](!docs!/learn/fundamentals/module-links/query-context).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/use-query-context-utility": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/use-query-context-utility
+  context: { region_id: "us" },
+```

@@ -1,0 +1,74 @@
+---
+sidebar_label: "no-trailing-slash-in-route-matcher"
+---
+
+export const metadata = {
+  title: `no-trailing-slash-in-route-matcher - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule disallows route matchers passed to `defineMiddlewares` from ending with a trailing slash.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets the `src/api/middlewares.ts` file. It reports a `matcher` string that ends with a trailing slash.
+
+The following code is reported by the rule:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    { matcher: "/store/custom/", middlewares: [] },
+  ],
+})
+```
+
+Instead, remove the trailing slash:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    { matcher: "/store/custom", middlewares: [] },
+  ],
+})
+```
+
+## Why it's Important
+
+A matcher with a trailing slash doesn't match the same URLs as one without it, so the middleware may not run on the routes you expect. Removing the trailing slash keeps the matcher consistent with route paths.
+
+Learn more in the [Middlewares documentation](!docs!/learn/fundamentals/api-routes/middlewares).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/no-trailing-slash-in-route-matcher": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/no-trailing-slash-in-route-matcher
+{ matcher: "/store/custom/", middlewares: [] },
+```

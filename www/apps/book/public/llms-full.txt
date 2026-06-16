@@ -45416,7 +45416,7 @@ All store credit activity is tracked through transactions, which are stored in t
 Each transaction includes:
 
 - `type`: `credit` (adding funds) or `debit` (spending funds)
-- `amount`: The transaction amount in the smallest currency unit.
+- `amount`: The transaction amount in the major currency unit (decimal).
   - If `type` is `credit`, the amount is added to the balance.
   - If `type` is `debit`, the amount is subtracted from the balance
 - `reference`: The name of the table that triggered the transaction (for example, `order`, `refund`, `promotion`, etc...)
@@ -58422,7 +58422,7 @@ import {
   createWorkflow,
   transform,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { CreateOrderLineItemDTO } from "@medusajs/framework/types"
 import { createQuotesStep } from "./steps/create-quotes"
 
@@ -60265,7 +60265,7 @@ You can now implement the merchant-rejection workflow. Create the file `src/work
 
 ```ts title="src/workflows/merchant-reject-quote.ts" highlights={merchantRejectionWorkflowHighlights}
 import { useQueryGraphStep } from "@medusajs/core-flows"
-import { createWorkflow } from "@medusajs/workflows-sdk"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
 import { QuoteStatus } from "../modules/quote/models/quote"
 import { validateQuoteNotAccepted } from "./steps/validate-quote-not-accepted"
 import { updateQuotesStep } from "./steps/update-quotes"
@@ -60536,7 +60536,7 @@ Create the file `src/workflows/merchant-send-quote.ts` with the following conten
 
 ```ts title="src/workflows/merchant-send-quote.ts" highlights={sendQuoteHighlights}
 import { useQueryGraphStep } from "@medusajs/core-flows"
-import { createWorkflow } from "@medusajs/workflows-sdk"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
 import { QuoteStatus } from "../modules/quote/models/quote"
 import { updateQuotesStep } from "./steps/update-quotes"
 import { validateQuoteNotAccepted } from "./steps/validate-quote-not-accepted"
@@ -60897,7 +60897,7 @@ Create the file `src/workflows/customer-reject-quote.ts` with the following cont
 
 ```ts title="src/workflows/customer-reject-quote.ts" highlights={customerRejectQuoteHighlights}
 import { useQueryGraphStep } from "@medusajs/core-flows"
-import { createWorkflow } from "@medusajs/workflows-sdk"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
 import { QuoteStatus } from "../modules/quote/models/quote"
 import { updateQuotesStep } from "./steps/update-quotes"
 import { validateQuoteNotAccepted } from "./steps/validate-quote-not-accepted"
@@ -61088,7 +61088,7 @@ import {
   useQueryGraphStep,
 } from "@medusajs/core-flows"
 import { OrderStatus } from "@medusajs/framework/utils"
-import { createWorkflow } from "@medusajs/workflows-sdk"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
 import { validateQuoteCanAcceptStep } from "./steps/validate-quote-can-accept"
 import { QuoteStatus } from "../modules/quote/models/quote"
 import { updateQuotesStep } from "./steps/update-quotes"

@@ -1,0 +1,81 @@
+---
+sidebar_label: "medusa-context-on-context-param"
+---
+
+export const metadata = {
+  title: `medusa-context-on-context-param - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires that service method parameters typed `Context` are decorated with `@MedusaContext()`.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets service files in your project's `src/modules` directory. It reports a method parameter typed `Context` on a service class when the parameter isn't decorated with `@MedusaContext()`.
+
+The following code is reported by the rule:
+
+```ts title="src/modules/blog/service.ts"
+import { MedusaService } from "@medusajs/framework/utils"
+import { Context } from "@medusajs/framework/types"
+
+class BlogModuleService extends MedusaService({}) {
+  async list(sharedContext: Context = {}) {}
+}
+```
+
+Instead, decorate the parameter with `@MedusaContext()`:
+
+```ts title="src/modules/blog/service.ts"
+import {
+  MedusaService,
+  MedusaContext,
+} from "@medusajs/framework/utils"
+import { Context } from "@medusajs/framework/types"
+
+class BlogModuleService extends MedusaService({}) {
+  async list(
+    @MedusaContext() sharedContext: Context = {}
+  ) {}
+}
+```
+
+## Why it's Important
+
+The `@MedusaContext()` decorator injects the shared context, which carries the transaction and entity manager. Without it, the context isn't propagated and operations may run outside the intended transaction.
+
+Learn more in the [Database Operations in Service documentation](!docs!/learn/fundamentals/modules/db-operations).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/medusa-context-on-context-param": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/medusa-context-on-context-param
+async list(sharedContext: Context = {}) {}
+```

@@ -1,0 +1,72 @@
+---
+sidebar_label: "no-throw-in-transform"
+---
+
+export const metadata = {
+  title: `no-throw-in-transform - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule disallows `throw` statements inside a `transform()` callback.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/workflows` directory. It reports `throw` statements placed directly inside a `transform()` callback.
+
+The following code is reported by the rule:
+
+```ts title="src/workflows/example.ts"
+import {
+  createWorkflow,
+  transform,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", (input) => {
+  const value = transform({ input }, (data) => {
+    if (!data.input.foo) {
+      throw new Error("invalid")
+    }
+    return data.input.foo
+  })
+
+  return new WorkflowResponse(value)
+})
+```
+
+Instead, use a validation step or `when-then` to gate the work:
+
+```ts title="src/workflows/example.ts"
+import {
+  createWorkflow,
+  createStep,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+const validateStep = createStep("validate", (input) => {
+  if (!input.foo) {
+    throw new Error("invalid")
+  }
+})
+
+createWorkflow("my-workflow", (input) => {
+  validateStep(input)
+
+  return new WorkflowResponse(input)
+})
+```
+
+## Why it's Important
+
+`transform` is only meant for data transformation. Use a validation step or `when-then` to gate the work instead.
+
+Learn more in the [Workflows documentation](!docs!/learn/fundamentals/workflows).
+
+## Fixable
+
+This rule isn't auto-fixable.
