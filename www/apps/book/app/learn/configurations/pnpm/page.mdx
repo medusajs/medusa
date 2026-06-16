@@ -14,7 +14,7 @@ In this chapter, you'll learn how to use `pnpm` as the package manager for your 
 
 Medusa supports `pnpm`, `yarn`, and `npm` as package managers. Our team recommends using either `yarn` or `pnpm` for better performance and faster installations.
 
-To use `pnpm` with Medusa, you need to add some configuration to your project. This guide walks you through the necessary steps.
+To use `pnpm` with Medusa, you need to add some configuration to your project. This guide walks you through the necessary steps for both standalone projects and monorepos.
 
 ### Who is This Guide For?
 
@@ -24,13 +24,16 @@ As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0),
 pnpm dlx create-medusa-app@latest
 ```
 
-This guide is intended for developers who want to switch an existing Medusa project from `npm` or `yarn` to `pnpm`.
+This guide is intended for developers who want to switch an existing Medusa project from `npm` or `yarn` to `pnpm`. Choose the section that matches your project's setup:
 
-### Monorepo Support
-
-At the moment, `pnpm` is only supported in single-package Medusa projects. If you're using a monorepo setup, these steps may not work as expected. We recommend using `yarn` or `npm` for monorepo setups until we add support for `pnpm` in monorepos.
+- [Standalone Project](#standalone-project): Your Medusa application is a single package in its own directory.
+- [Monorepo](#monorepo): Your Medusa application is one of multiple packages managed in a workspace.
 
 ---
+
+## Standalone Project
+
+Follow the steps in this section if your Medusa application is a standalone, single-package project.
 
 <Prerequisites
   items={[
@@ -41,7 +44,7 @@ At the moment, `pnpm` is only supported in single-package Medusa projects. If yo
   ]}
 />
 
-## Step 0: Update Medusa to the Latest Version
+### Step 0: Update Medusa to the Latest Version
 
 If you're using a Medusa version prior to v2.13.0, you should update to the latest version to ensure compatibility with `pnpm`.
 
@@ -49,17 +52,13 @@ Refer to the [Update Medusa](../../update/page.mdx) guide to learn how to update
 
 If you're updating to v2.13.0, you also need to run the [replace-zod-imports codemod](../../codemods/replace-zod-imports/page.mdx).
 
----
+### Step 1: Remove Existing Lock File
 
-## Step 1: Remove Existing Lock File
-
-The first step is to delete the existing lock file in your project directory. Depending on your current package manager, this will be either `package-lock.json` for `npm` or `yarn.lock` for `yarn`.
+Delete the existing lock file in your project directory. Depending on your current package manager, this will be either `package-lock.json` for `npm` or `yarn.lock` for `yarn`.
 
 When you install dependencies with `pnpm` later, a new `pnpm-lock.yaml` file will be created automatically.
 
----
-
-## Step 2: Add .npmrc File
+### Step 2: Add .npmrc File
 
 Medusa requires some packages to be installed in the top-level `node_modules` directory. To ensure this works correctly with `pnpm`, you need to create a `.npmrc` file that specifies the `public-hoist-pattern` configuration.
 
@@ -79,9 +78,7 @@ This configuration tells `pnpm` to hoist the following packages to the top-level
 3. `react-i18next`: Used for [internationalization in Medusa Admin customizations](../../fundamentals/admin/translations/page.mdx). It's hoisted to ensure compatibility with the Medusa Admin.
 4. `react-router-dom`: Used for [routing customizations in the Medusa Admin](../../fundamentals/admin/routing/page.mdx). It's hoisted to avoid version and instance conflicts with the Medusa Admin.
 
----
-
-## Step 3: Install Dependencies with pnpm
+### Step 3: Install Dependencies with pnpm
 
 Finally, install your project dependencies using `pnpm`. Run the following command in your project directory:
 
@@ -93,6 +90,80 @@ This will install all your dependencies in `node_modules` and create a `pnpm-loc
 
 ---
 
+## Monorepo
+
+Follow the steps in this section if your Medusa application is part of a monorepo, where it's one of multiple packages managed in a workspace.
+
+<Prerequisites
+  items={[
+    {
+      text: "pnpm Installed",
+      link: "https://pnpm.io/installation",
+    }
+  ]}
+/>
+
+### Step 1: Set pnpm as the Package Manager
+
+In the root `package.json` file of your monorepo, set the `packageManager` field to the `pnpm` version you have installed:
+
+```json title="package.json"
+{
+  "packageManager": "pnpm@10.11.1"
+}
+```
+
+If your `package.json` has a `workspaces` field, remove it. With `pnpm`, you define the workspace packages in a `pnpm-workspace.yaml` file instead, as explained in the next step.
+
+### Step 2: Define Workspace Packages
+
+Create a `pnpm-workspace.yaml` file at the root of your monorepo to define the packages in your workspace.
+
+For example, if your packages are under an `apps` directory:
+
+```yaml title="pnpm-workspace.yaml"
+packages:
+  - "apps/*"
+```
+
+Adjust the patterns to match the directories where your packages are located.
+
+### Step 3: Add .npmrc File
+
+Medusa requires some packages to be installed in the top-level `node_modules` directory. To ensure this works correctly with `pnpm`, create a `.npmrc` file at the root of your monorepo with the following content:
+
+```ini title=".npmrc"
+public-hoist-pattern[]=*@medusajs/*
+public-hoist-pattern[]=@tanstack/react-query
+public-hoist-pattern[]=react-i18next
+public-hoist-pattern[]=react-router-dom
+```
+
+This configuration tells `pnpm` to hoist the following packages to the top-level `node_modules` directory:
+
+1. All packages under the `@medusajs` scope.
+2. `@tanstack/react-query`: Tanstack Query, used in [Medusa Admin customizations](../../fundamentals/admin/tips/page.mdx#send-requests-to-api-routes). It's hoisted to avoid version and instance conflicts with the Medusa Admin.
+3. `react-i18next`: Used for [internationalization in Medusa Admin customizations](../../fundamentals/admin/translations/page.mdx). It's hoisted to ensure compatibility with the Medusa Admin.
+4. `react-router-dom`: Used for [routing customizations in the Medusa Admin](../../fundamentals/admin/routing/page.mdx). It's hoisted to avoid version and instance conflicts with the Medusa Admin.
+
+### Step 4: Remove Existing Lock Files
+
+Delete the existing lock file and the `node_modules` directory in your monorepo. Depending on your previous package manager, the lock file is either `package-lock.json` for `npm` or `yarn.lock` for `yarn`.
+
+When you install dependencies with `pnpm` in the next step, a new `pnpm-lock.yaml` file will be created automatically.
+
+### Step 5: Install Dependencies with pnpm
+
+Finally, install your monorepo's dependencies using `pnpm`. Run the following command in the root of your monorepo:
+
+```bash
+pnpm install
+```
+
+This will install the dependencies of all packages in your workspace and create a `pnpm-lock.yaml` file to lock the versions of your installed packages.
+
+---
+
 ## Test Your Setup
 
 You can now use `pnpm` for your Medusa development. For example, you can start the Medusa server in development with the following command:
@@ -100,6 +171,8 @@ You can now use `pnpm` for your Medusa development. For example, you can start t
 ```bash
 pnpm dev
 ```
+
+In a monorepo, run this command from your Medusa application's package directory, such as `apps/backend`.
 
 You can also run commands from the Medusa CLI tool with `pnpm`. For example, to run migrations:
 
