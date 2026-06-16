@@ -12,10 +12,14 @@ import {
   AuthMfaProviderRegistrationPrefix,
   AuthModuleOptions,
   AuthProviderRegistrationPrefix,
+  AuthVerificationIdentifiersRegistrationName,
+  AuthVerificationProviderRegistrationPrefix,
   TotpMfaProviderOptions,
+  TokenVerificationProviderOptions,
 } from "@types"
 import { RecoveryCodeMfaProvider } from "../providers/mfa/recovery-code"
 import { TotpMfaProvider } from "../providers/mfa/totp"
+import { TokenVerificationProvider } from "../providers/verification/token"
 import { MedusaCloudAuthService } from "../providers/medusa-cloud-auth"
 
 const validateCloudOptions = (options: AuthModuleOptions["cloud"]) => {
@@ -85,6 +89,29 @@ const mfaRegistrationFn = async (klass, container, pluginOptions) => {
   container.registerAdd(AuthMfaIdentifiersRegistrationName, asValue(id))
 }
 
+const verificationRegistrationFn = async (klass, container, pluginOptions) => {
+  if (!klass?.identifier) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_ARGUMENT,
+      `Trying to register a verification provider without a provider identifier.`
+    )
+  }
+
+  const id = pluginOptions.id ?? klass.identifier
+  const key = AuthVerificationProviderRegistrationPrefix + id
+
+  container.register({
+    [key]: asFunction(
+      (cradle) => new klass(cradle, pluginOptions.options ?? {}),
+      {
+        lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
+      }
+    ),
+  })
+
+  container.registerAdd(AuthVerificationIdentifiersRegistrationName, asValue(id))
+}
+
 const getMfaProviderOptions = (
   options: AuthModuleOptions | undefined,
   id: string
@@ -93,13 +120,25 @@ const getMfaProviderOptions = (
     ?.options
 }
 
+const getVerificationProviderOptions = (
+  options: AuthModuleOptions | undefined,
+  id: string
+): Record<string, unknown> | undefined => {
+  return options?.verification?.providers?.find((provider) => provider.id === id)
+    ?.options
+}
+
 type MfaProviderConfig = NonNullable<
   NonNullable<AuthModuleOptions["mfa"]>["providers"]
 >[number]
 
-const hasProviderResolver = (
-  provider: MfaProviderConfig
-): provider is MfaProviderConfig & {
+type VerificationProviderConfig = NonNullable<
+  NonNullable<AuthModuleOptions["verification"]>["providers"]
+>[number]
+
+const hasProviderResolver = <T extends { resolve?: unknown }>(
+  provider: T
+): provider is T & {
   resolve: string | ModuleProviderExports
 } => {
   return !!provider.resolve
@@ -121,6 +160,23 @@ const validateMfaProviderConfigs = (
   }
 }
 
+const validateVerificationProviderConfigs = (
+  providers: VerificationProviderConfig[] = []
+): void => {
+  const configurableProviderIds = new Set([TokenVerificationProvider.identifier])
+  const invalidProvider = providers.find(
+    (provider) =>
+      !provider.resolve && !configurableProviderIds.has(provider.id)
+  )
+
+  if (invalidProvider) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_ARGUMENT,
+      `Verification provider "${invalidProvider.id}" must include a provider resolver.`
+    )
+  }
+}
+
 export default async ({
   container,
   options,
@@ -132,6 +188,7 @@ export default async ({
     AuthModuleOptions
 >): Promise<void> => {
   validateMfaProviderConfigs(options?.mfa?.providers)
+  validateVerificationProviderConfigs(options?.verification?.providers)
 
   const totpOptions = getMfaProviderOptions(
     options,
@@ -154,6 +211,24 @@ export default async ({
     container,
     providers: (options?.mfa?.providers || []).filter(hasProviderResolver),
     registerServiceFn: mfaRegistrationFn,
+  })
+
+  const tokenOptions = getVerificationProviderOptions(
+    options,
+    TokenVerificationProvider.identifier
+  ) as TokenVerificationProviderOptions | undefined
+
+  await verificationRegistrationFn(TokenVerificationProvider, container, {
+    options: tokenOptions ?? {},
+    id: TokenVerificationProvider.identifier,
+  })
+
+  await moduleProviderLoader({
+    container,
+    providers: (options?.verification?.providers || []).filter(
+      hasProviderResolver
+    ),
+    registerServiceFn: verificationRegistrationFn,
   })
 
   if (validateCloudOptions(options?.cloud) && !options?.cloud?.disabled) {
