@@ -8,7 +8,10 @@ import {
 } from "../../../../../components/common/action-menu"
 import { useDeleteProductTagAction } from "../../../common/hooks/use-delete-product-tag-action"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import {
+  useProductTagPermissions,
+  useTranslationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type ProductTagGeneralSectionProps = {
   productTag: HttpTypes.AdminProductTag
@@ -20,12 +23,11 @@ export const ProductTagGeneralSection = ({
   const { t } = useTranslation()
   const handleDelete = useDeleteProductTagAction({ productTag })
   const isTranslationsEnabled = useFeatureFlag("translation")
-  const { hasPermission } = usePermissions()
+  const { canUpdate, canDelete } = useProductTagPermissions()
+  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
 
-  const canUpdate = hasPermission("product_tag:update")
-  const canDelete = hasPermission("product_tag:delete")
   const canManageTranslations =
-    isTranslationsEnabled && hasPermission("translation:update")
+    isTranslationsEnabled && canUpdateTranslations
 
   const groups: ActionGroup[] = []
 

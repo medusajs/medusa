@@ -7,7 +7,10 @@ import {
 } from "../../../../../components/common/action-menu"
 import { useDeleteProductTypeAction } from "../../../common/hooks/use-delete-product-type-action"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import {
+  useProductTypePermissions,
+  useTranslationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type ProductTypeRowActionsProps = {
   productType: HttpTypes.AdminProductType
@@ -22,12 +25,11 @@ export const ProductTypeRowActions = ({
     productType.value
   )
   const isTranslationsEnabled = useFeatureFlag("translation")
-  const { hasPermission } = usePermissions()
+  const { canUpdate, canDelete } = useProductTypePermissions()
+  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
 
-  const canUpdate = hasPermission("product_type:update")
-  const canDelete = hasPermission("product_type:delete")
   const canManageTranslations =
-    isTranslationsEnabled && hasPermission("translation:update")
+    isTranslationsEnabled && canUpdateTranslations
 
   const groups: ActionGroup[] = []
 

@@ -8,8 +8,11 @@ import {
 } from "../../../../../components/common/action-menu"
 import { useDeleteProductCategoryAction } from "../../../common/hooks/use-delete-product-category-action"
 import { getIsActiveProps, getIsInternalProps } from "../../../common/utils"
+import {
+  useProductCategoryPermissions,
+  useTranslationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
-import { usePermissions } from "../../../../../providers/permissions-provider"
 
 type CategoryGeneralSectionProps = {
   category: HttpTypes.AdminProductCategory
@@ -20,12 +23,10 @@ export const CategoryGeneralSection = ({
 }: CategoryGeneralSectionProps) => {
   const { t } = useTranslation()
   const isTranslationsEnabled = useFeatureFlag("translation")
-  const { hasPermission } = usePermissions()
+  const { canUpdate, canDelete } = useProductCategoryPermissions()
+  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
 
-  const canUpdate = hasPermission("product_category:update")
-  const canDelete = hasPermission("product_category:delete")
-  const canManageTranslations =
-    isTranslationsEnabled && hasPermission("translation:update")
+  const canManageTranslations = isTranslationsEnabled && canUpdateTranslations
 
   const activeProps = getIsActiveProps(category.is_active, t)
   const internalProps = getIsInternalProps(category.is_internal, t)

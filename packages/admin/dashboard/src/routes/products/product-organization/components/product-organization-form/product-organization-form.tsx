@@ -16,7 +16,12 @@ import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { sdk } from "../../../../../lib/client"
 import { useExtension } from "../../../../../providers/extension-provider"
 import { CategoryCombobox } from "../../../common/components/category-combobox"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import {
+  useProductCategoryPermissions,
+  useProductCollectionPermissions,
+  useProductTagPermissions,
+  useProductTypePermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { PermissionGuard } from "../../../../../components/common/permission-guard"
 import { collectionsQueryKeys } from "../../../../../hooks/api/collections"
 import { productTypesQueryKeys } from "../../../../../hooks/api/product-types"
@@ -40,12 +45,10 @@ export const ProductOrganizationForm = ({
   const { handleSuccess } = useRouteModal()
   const { getFormConfigs, getFormFields } = useExtension()
 
-  const { hasPermission } = usePermissions()
-
-  const canUpdateTypes = hasPermission("product_type:update")
-  const canUpdateCollections = hasPermission("product_collection:update")
-  const canUpdateTags = hasPermission("product_tag:update")
-  const canUpdateCategories = hasPermission("product_category:update")
+  const { canUpdate: canUpdateTypes } = useProductTypePermissions()
+  const { canUpdate: canUpdateCollections } = useProductCollectionPermissions()
+  const { canUpdate: canUpdateTags } = useProductTagPermissions()
+  const { canUpdate: canUpdateCategories } = useProductCategoryPermissions()
 
   const configs = getFormConfigs("product", "organize")
   const fields = getFormFields("product", "organize")

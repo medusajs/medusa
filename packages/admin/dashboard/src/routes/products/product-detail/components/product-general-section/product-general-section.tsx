@@ -12,7 +12,10 @@ import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteProduct } from "../../../../../hooks/api/products"
 import { useExtension } from "../../../../../providers/extension-provider"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import {
+  useProductPermissions,
+  useTranslationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 const productStatusColor = (status: string) => {
   switch (status) {
@@ -41,7 +44,8 @@ export const ProductGeneralSection = ({
   const navigate = useNavigate()
   const { getDisplays } = useExtension()
   const isTranslationsEnabled = useFeatureFlag("translation")
-  const { hasPermission } = usePermissions()
+  const { canUpdate, canDelete } = useProductPermissions()
+  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
 
   const displays = getDisplays("product", "general")
 
@@ -73,10 +77,8 @@ export const ProductGeneralSection = ({
     })
   }
 
-  const canUpdate = hasPermission("product:update")
-  const canDelete = hasPermission("product:delete")
   const canManageTranslations =
-    isTranslationsEnabled && hasPermission("translation:update")
+    isTranslationsEnabled && canUpdateTranslations
 
   const groups: ActionGroup[] = []
 

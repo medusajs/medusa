@@ -20,14 +20,16 @@ import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useDeleteProductTagAction } from "../../../common/hooks/use-delete-product-tag-action"
 import { productTagListLoader } from "../../loader"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import {
+  useProductTagPermissions,
+  useTranslationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 20
 
 export const ProductTagListTable = () => {
   const { t } = useTranslation()
-  const { hasPermission } = usePermissions()
-  const canCreate = hasPermission("product_tag:create")
+  const { canCreate } = useProductTagPermissions()
   const { searchParams, raw } = useProductTagTableQuery({
     pageSize: PAGE_SIZE,
   })
@@ -98,12 +100,11 @@ const ProductTagRowActions = ({
   const { t } = useTranslation()
   const handleDelete = useDeleteProductTagAction({ productTag })
   const isTranslationsEnabled = useFeatureFlag("translation")
-  const { hasPermission } = usePermissions()
+  const { canUpdate, canDelete } = useProductTagPermissions()
+  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
 
-  const canUpdate = hasPermission("product_tag:update")
-  const canDelete = hasPermission("product_tag:delete")
   const canManageTranslations =
-    isTranslationsEnabled && hasPermission("translation:update")
+    isTranslationsEnabled && canUpdateTranslations
 
   const groups: ActionGroup[] = []
 

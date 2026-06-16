@@ -8,8 +8,11 @@ import {
   ActionMenu,
 } from "../../../../../components/common/action-menu"
 import { useDeleteCollection } from "../../../../../hooks/api/collections"
+import {
+  useProductCollectionPermissions,
+  useTranslationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
-import { usePermissions } from "../../../../../providers/permissions-provider"
 
 export const CollectionRowActions = ({
   collection,
@@ -19,12 +22,10 @@ export const CollectionRowActions = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const isTranslationsEnabled = useFeatureFlag("translation")
-  const { hasPermission } = usePermissions()
+  const { canUpdate, canDelete } = useProductCollectionPermissions()
+  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
 
-  const canUpdate = hasPermission("product_collection:update")
-  const canDelete = hasPermission("product_collection:delete")
-  const canManageTranslations =
-    isTranslationsEnabled && hasPermission("translation:update")
+  const canManageTranslations = isTranslationsEnabled && canUpdateTranslations
 
   const { mutateAsync } = useDeleteCollection(collection.id!)
 

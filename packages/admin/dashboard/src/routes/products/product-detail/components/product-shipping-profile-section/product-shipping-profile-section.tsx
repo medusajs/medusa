@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"
 import { SidebarLink } from "../../../../../components/common/sidebar-link/sidebar-link"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { ExtendedProduct } from "../../constants"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import { useProductPermissions } from "../../../../../hooks/use-resource-permissions"
 
 type ProductShippingProfileSectionProps = {
   product: ExtendedProduct
@@ -15,9 +15,8 @@ export const ProductShippingProfileSection = ({
   product,
 }: ProductShippingProfileSectionProps) => {
   const { t } = useTranslation()
-  const { hasPermission } = usePermissions()
 
-  const canUpdate = hasPermission("product:update")
+  const { canUpdate } = useProductPermissions()
   const shippingProfile = product.shipping_profile
 
   return (

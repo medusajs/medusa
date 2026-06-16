@@ -22,14 +22,17 @@ import { useProductTableQuery } from "../../../../../hooks/table/query/use-produ
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { productsLoader } from "../../loader"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import {
+  useProductPermissions,
+  useTranslationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 20
 
 export const ProductListTable = () => {
   const { t } = useTranslation()
   const location = useLocation()
-  const { hasPermission } = usePermissions()
+  const { canCreate } = useProductPermissions()
 
   const initialData = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof productsLoader>>
@@ -62,8 +65,6 @@ export const ProductListTable = () => {
   if (isError) {
     throw error
   }
-
-  const canCreate = hasPermission("product:create")
 
   return (
     <Container className="divide-y p-0">
@@ -117,7 +118,8 @@ const ProductActions = ({ product }: { product: HttpTypes.AdminProduct }) => {
   const prompt = usePrompt()
   const { mutateAsync } = useDeleteProduct(product.id)
   const isTranslationsEnabled = useFeatureFlag("translation")
-  const { hasPermission } = usePermissions()
+  const { canUpdate, canDelete } = useProductPermissions()
+  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
 
   const handleDelete = async () => {
     const res = await prompt({
@@ -149,10 +151,8 @@ const ProductActions = ({ product }: { product: HttpTypes.AdminProduct }) => {
     })
   }
 
-  const canUpdate = hasPermission("product:update")
-  const canDelete = hasPermission("product:delete")
   const canManageTranslations =
-    isTranslationsEnabled && hasPermission("translation:update")
+    isTranslationsEnabled && canUpdateTranslations
 
   const groups: ActionGroup[] = []
 

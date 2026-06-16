@@ -10,7 +10,23 @@ import { INavItem, NavItem } from "../nav-item"
 import { Shell } from "../shell"
 import { UserMenu } from "../user-menu"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
-import { usePermissions } from "../../../providers/permissions-provider"
+import {
+  useApiKeyPermissions,
+  useProductTagPermissions,
+  useProductTypePermissions,
+  useRbacPolicyPermissions,
+  useRbacRolePermissions,
+  useRefundReasonPermissions,
+  useRegionPermissions,
+  useReturnReasonPermissions,
+  useSalesChannelPermissions,
+  useStockLocationPermissions,
+  useStorePermissions,
+  useTaxRegionPermissions,
+  useTranslationPermissions,
+  useUserPermissions,
+  useWorkflowExecutionPermissions,
+} from "../../../hooks/use-resource-permissions"
 
 export const SettingsLayout = () => {
   return (
@@ -23,22 +39,24 @@ export const SettingsLayout = () => {
 const useSettingRoutes = (): INavItem[] => {
   const isTranslationsEnabled = useFeatureFlag("translation")
   const isRbacEnabled = useFeatureFlag("rbac")
-  const { hasPermission } = usePermissions()
   const { t } = useTranslation()
 
-  const canReadRoles = isRbacEnabled && hasPermission("rbac_role:read")
-  const canReadPolicies = isRbacEnabled && hasPermission("rbac_policy:read")
-  const canReadProductTags = hasPermission("product_tag:read")
-  const canReadProductTypes = hasPermission("product_type:read")
-  const canReadRegions = hasPermission("region:read")
-  const canReadReturnReasons = hasPermission("return_reason:read")
-  const canReadRefundReasons = hasPermission("refund_reason:read")
-  const canReadSalesChannels = hasPermission("sales_channel:read")
-  const canReadTaxRegions = hasPermission("tax_region:read")
-  const canReadStockLocations = hasPermission("stock_location:read")
-  const canReadStore = hasPermission("store:read")
-  const canReadUsers = hasPermission("user:read")
-  const canReadTranslations = hasPermission("translation:read")
+  const { canRead: canReadRbacRoles } = useRbacRolePermissions()
+  const { canRead: canReadRbacPolicies } = useRbacPolicyPermissions()
+  const { canRead: canReadProductTags } = useProductTagPermissions()
+  const { canRead: canReadProductTypes } = useProductTypePermissions()
+  const { canRead: canReadRegions } = useRegionPermissions()
+  const { canRead: canReadReturnReasons } = useReturnReasonPermissions()
+  const { canRead: canReadRefundReasons } = useRefundReasonPermissions()
+  const { canRead: canReadSalesChannels } = useSalesChannelPermissions()
+  const { canRead: canReadTaxRegions } = useTaxRegionPermissions()
+  const { canRead: canReadStockLocations } = useStockLocationPermissions()
+  const { canRead: canReadStore } = useStorePermissions()
+  const { canRead: canReadUsers } = useUserPermissions()
+  const { canRead: canReadTranslations } = useTranslationPermissions()
+
+  const canReadRoles = isRbacEnabled && canReadRbacRoles
+  const canReadPolicies = isRbacEnabled && canReadRbacPolicies
 
   return useMemo(
     () => [
@@ -169,10 +187,9 @@ const useSettingRoutes = (): INavItem[] => {
 
 const useDeveloperRoutes = (): INavItem[] => {
   const { t } = useTranslation()
-  const { hasPermission } = usePermissions()
 
-  const canReadApiKeys = hasPermission("api_key:read")
-  const canReadWorkflows = hasPermission("workflow_execution:read")
+  const { canRead: canReadApiKeys } = useApiKeyPermissions()
+  const { canRead: canReadWorkflows } = useWorkflowExecutionPermissions()
 
   return useMemo(
     () => [

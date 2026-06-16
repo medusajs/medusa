@@ -34,6 +34,10 @@ import { PRODUCT_VARIANT_IDS_KEY } from "../../../common/constants"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import { usePermissions } from "../../../../../providers/permissions-provider"
+import {
+  useInventoryLevelPermissions,
+  useTranslationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type ProductVariantSectionProps = {
   product: HttpTypes.AdminProduct
@@ -47,7 +51,9 @@ export const ProductVariantSection = ({
 }: ProductVariantSectionProps) => {
   const { t } = useTranslation()
   const isTranslationsEnabled = useFeatureFlag("translation")
-  const { hasPermission, hasAllPermissions } = usePermissions()
+  const { hasAllPermissions } = usePermissions()
+  const { canRead: canReadInventory } = useInventoryLevelPermissions()
+  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
 
   const canUpdateVariant = hasAllPermissions([
     "product:update",
@@ -57,7 +63,6 @@ export const ProductVariantSection = ({
     "product:update",
     "product_variant:create",
   ])
-  const canReadInventory = hasPermission("inventory_level:read")
   const canDelete = hasAllPermissions([
     "product_variant:delete",
     "product:update",
@@ -73,7 +78,7 @@ export const ProductVariantSection = ({
     "inventory_level:update",
   ])
   const canManageTranslations =
-    isTranslationsEnabled && hasPermission("translation:update")
+    isTranslationsEnabled && canUpdateTranslations
 
   const { q, order, offset, allow_backorder, manage_inventory } =
     useQueryParams(

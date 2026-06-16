@@ -168,6 +168,30 @@ export const useProductVariantPermissions = () =>
   useResourcePermissions("product_variant")
 
 /**
+ * Hook for checking product collection-specific permissions.
+ */
+export const useProductCollectionPermissions = () =>
+  useResourcePermissions("product_collection")
+
+/**
+ * Hook for checking product category-specific permissions.
+ */
+export const useProductCategoryPermissions = () =>
+  useResourcePermissions("product_category")
+
+/**
+ * Hook for checking product tag-specific permissions.
+ */
+export const useProductTagPermissions = () =>
+  useResourcePermissions("product_tag")
+
+/**
+ * Hook for checking product type-specific permissions.
+ */
+export const useProductTypePermissions = () =>
+  useResourcePermissions("product_type")
+
+/**
  * Hook for checking inventory-specific permissions.
  */
 export const useInventoryPermissions = () => useResourcePermissions("inventory")
@@ -187,6 +211,17 @@ export const useUserPermissions = () => useResourcePermissions("user")
  * Hook for checking invite-specific permissions.
  */
 export const useInvitePermissions = () => useResourcePermissions("invite")
+
+/**
+ * Hook for checking RBAC role-specific permissions.
+ */
+export const useRbacRolePermissions = () => useResourcePermissions("rbac_role")
+
+/**
+ * Hook for checking RBAC policy-specific permissions.
+ */
+export const useRbacPolicyPermissions = () =>
+  useResourcePermissions("rbac_policy")
 
 /**
  * Hook for checking API key-specific permissions.

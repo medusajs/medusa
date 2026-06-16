@@ -5,7 +5,7 @@ import { SingleColumnPage } from "../../../components/layout/pages"
 import { useRbacPolicy } from "../../../hooks/api/rbac-policies"
 import { useRequireRbacFeature } from "../../../hooks/use-require-rbac-feature"
 import { useExtension } from "../../../providers/extension-provider"
-import { usePermissions } from "../../../providers/permissions-provider"
+import { useRbacRolePermissions } from "../../../hooks/use-resource-permissions"
 import { PolicyGeneralSection } from "./components/policy-general-section"
 import { PolicyRolesSection } from "./components/policy-roles-section"
 import { POLICY_DETAIL_FIELDS } from "./constants"
@@ -18,7 +18,7 @@ export const PolicyDetail = () => {
   const { id } = useParams()
   const { getWidgets } = useExtension()
   const isRbacEnabled = useRequireRbacFeature()
-  const { hasPermission } = usePermissions()
+  const { canRead: canReadRoles } = useRbacRolePermissions()
 
   const {
     policy,
@@ -53,9 +53,7 @@ export const PolicyDetail = () => {
       }}
     >
       <PolicyGeneralSection policy={policy} />
-      {hasPermission("rbac_role:read") && (
-        <PolicyRolesSection policy={policy} />
-      )}
+      {canReadRoles && <PolicyRolesSection policy={policy} />}
     </SingleColumnPage>
   )
 }

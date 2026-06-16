@@ -6,7 +6,13 @@ import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { useExtension } from "../../../../../providers/extension-provider"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import {
+  useProductCategoryPermissions,
+  useProductCollectionPermissions,
+  useProductPermissions,
+  useProductTagPermissions,
+  useProductTypePermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type ProductOrganizationSectionProps = {
   product: HttpTypes.AdminProduct
@@ -17,13 +23,12 @@ export const ProductOrganizationSection = ({
 }: ProductOrganizationSectionProps) => {
   const { t } = useTranslation()
   const { getDisplays } = useExtension()
-  const { hasPermission } = usePermissions()
 
-  const canUpdate = hasPermission("product:update")
-  const canReadTags = hasPermission("product_tag:read")
-  const canReadTypes = hasPermission("product_type:read")
-  const canReadCollections = hasPermission("product_collection:read")
-  const canReadCategories = hasPermission("product_category:read")
+  const { canUpdate } = useProductPermissions()
+  const { canRead: canReadTags } = useProductTagPermissions()
+  const { canRead: canReadTypes } = useProductTypePermissions()
+  const { canRead: canReadCollections } = useProductCollectionPermissions()
+  const { canRead: canReadCategories } = useProductCategoryPermissions()
 
   return (
     <Container className="divide-y p-0">

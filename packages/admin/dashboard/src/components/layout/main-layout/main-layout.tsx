@@ -20,7 +20,6 @@ import { useTranslation } from "react-i18next"
 
 import { useStore } from "../../../hooks/api/store"
 import { PermissionGuard } from "../../common/permission-guard"
-import { usePermissions } from "../../../providers/permissions-provider"
 import { Skeleton } from "../../common/skeleton"
 import { INavItem, NavItem } from "../../layout/nav-item"
 import { Shell } from "../../layout/shell"
@@ -39,6 +38,9 @@ import {
   useInventoryItemPermissions,
   useOrderPermissions,
   usePriceListPermissions,
+  useProductCategoryPermissions,
+  useProductCollectionPermissions,
+  useProductPermissions,
   usePromotionPermissions,
   useReservationItemPermissions,
 } from "../../../hooks/use-resource-permissions"
@@ -192,8 +194,6 @@ const Header = () => {
 
 const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
   const { t } = useTranslation()
-  const { hasPermission } = usePermissions()
-
   const { canRead: canReadCustomers } = useCustomerPermissions()
   const { canRead: canReadCustomerGroups } = useCustomerGroupPermissions()
   const { canRead: canReadOrders } = useOrderPermissions()
@@ -202,10 +202,10 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
   const { canRead: canReadPromotions } = usePromotionPermissions()
   const { canRead: canReadCampaigns } = useCampaignPermissions()
   const { canRead: canReadPriceLists } = usePriceListPermissions()
-
-  const canReadProducts = hasPermission("product:read")
-  const canReadProductCollections = hasPermission("product_collection:read")
-  const canReadProductCategories = hasPermission("product_category:read")
+  const { canRead: canReadProducts } = useProductPermissions()
+  const { canRead: canReadProductCollections } =
+    useProductCollectionPermissions()
+  const { canRead: canReadProductCategories } = useProductCategoryPermissions()
 
   return [
     ...(canReadOrders

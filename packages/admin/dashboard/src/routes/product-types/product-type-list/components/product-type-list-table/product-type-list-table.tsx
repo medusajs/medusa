@@ -12,15 +12,14 @@ import { useProductTypeTableColumns } from "../../../../../hooks/table/columns/u
 import { useProductTypeTableFilters } from "../../../../../hooks/table/filters/use-product-type-table-filters"
 import { useProductTypeTableQuery } from "../../../../../hooks/table/query/use-product-type-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import { useProductTypePermissions } from "../../../../../hooks/use-resource-permissions"
 import { ProductTypeRowActions } from "./product-table-row-actions"
 
 const PAGE_SIZE = 20
 
 export const ProductTypeListTable = () => {
   const { t } = useTranslation()
-  const { hasPermission } = usePermissions()
-  const canCreate = hasPermission("product_type:create")
+  const { canCreate } = useProductTypePermissions()
 
   const { searchParams, raw } = useProductTypeTableQuery({
     pageSize: PAGE_SIZE,

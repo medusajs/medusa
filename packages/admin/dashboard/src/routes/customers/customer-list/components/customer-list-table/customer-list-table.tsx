@@ -18,7 +18,7 @@ import { useCustomerTableColumns } from "../../../../../hooks/table/columns/use-
 import { useCustomerTableFilters } from "../../../../../hooks/table/filters/use-customer-table-filters"
 import { useCustomerTableQuery } from "../../../../../hooks/table/query/use-customer-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import { useCustomerPermissions } from "../../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 20
 
@@ -95,11 +95,11 @@ const CustomerActions = ({
   customer: HttpTypes.AdminCustomer
 }) => {
   const { t } = useTranslation()
-  const { hasPermission } = usePermissions()
+  const { canUpdate } = useCustomerPermissions()
 
   const actions: Action[] = []
 
-  if (hasPermission("customer:update")) {
+  if (canUpdate) {
     actions.push({
       icon: <PencilSquare />,
       label: t("actions.edit"),

@@ -16,7 +16,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { HttpTypes } from "@medusajs/types"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import { useProductPermissions } from "../../../../../hooks/use-resource-permissions"
 
 type ProductMedisaSectionProps = {
   product: HttpTypes.AdminProduct
@@ -26,9 +26,8 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
-  const { hasPermission } = usePermissions()
 
-  const canUpdate = hasPermission("product:update")
+  const { canUpdate } = useProductPermissions()
 
   const [selection, setSelection] = useState<Record<string, boolean>>({})
 

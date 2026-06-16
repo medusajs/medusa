@@ -11,6 +11,7 @@ import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteVariant } from "../../../../../hooks/api/products"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import { usePermissions } from "../../../../../providers/permissions-provider"
+import { useTranslationPermissions } from "../../../../../hooks/use-resource-permissions"
 import { ExtendedVariant } from "../../constants"
 
 type VariantGeneralSectionProps = {
@@ -22,7 +23,8 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
   const prompt = usePrompt()
   const navigate = useNavigate()
   const isTranslationsEnabled = useFeatureFlag("translation")
-  const { hasPermission, hasAllPermissions } = usePermissions()
+  const { hasAllPermissions } = usePermissions()
+  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
 
   const canUpdate = hasAllPermissions([
     "product:update",
@@ -33,7 +35,7 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
     "product_variant:delete",
   ])
   const canManageTranslations =
-    isTranslationsEnabled && hasPermission("translation:update")
+    isTranslationsEnabled && canUpdateTranslations
 
   const hasInventoryKit = (variant.inventory?.length ?? 0) > 1
 

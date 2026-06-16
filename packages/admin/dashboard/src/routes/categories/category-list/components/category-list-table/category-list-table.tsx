@@ -17,17 +17,17 @@ import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useDeleteProductCategoryAction } from "../../../common/hooks/use-delete-product-category-action"
 import { useCategoryTableColumns } from "./use-category-table-columns"
 import { useCategoryTableQuery } from "./use-category-table-query"
+import {
+  useProductCategoryPermissions,
+  useTranslationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
-import { usePermissions } from "../../../../../providers/permissions-provider"
 
 const PAGE_SIZE = 20
 
 export const CategoryListTable = () => {
   const { t } = useTranslation()
-  const { hasPermission } = usePermissions()
-
-  const canCreate = hasPermission("product_category:create")
-  const canUpdate = hasPermission("product_category:update")
+  const { canCreate, canUpdate } = useProductCategoryPermissions()
 
   const { raw, searchParams } = useCategoryTableQuery({ pageSize: PAGE_SIZE })
 
@@ -117,13 +117,11 @@ const CategoryRowActions = ({
 }) => {
   const { t } = useTranslation()
   const isTranslationsEnabled = useFeatureFlag("translation")
-  const { hasPermission } = usePermissions()
+  const { canUpdate, canDelete } = useProductCategoryPermissions()
+  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
   const handleDelete = useDeleteProductCategoryAction(category)
 
-  const canUpdate = hasPermission("product_category:update")
-  const canDelete = hasPermission("product_category:delete")
-  const canManageTranslations =
-    isTranslationsEnabled && hasPermission("translation:update")
+  const canManageTranslations = isTranslationsEnabled && canUpdateTranslations
 
   const groups: ActionGroup[] = []
 

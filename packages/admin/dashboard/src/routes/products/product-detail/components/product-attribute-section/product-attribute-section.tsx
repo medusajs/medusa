@@ -6,7 +6,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { getFormattedCountry } from "../../../../../lib/addresses"
 import { useExtension } from "../../../../../providers/extension-provider"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import { useProductPermissions } from "../../../../../hooks/use-resource-permissions"
 
 type ProductAttributeSectionProps = {
   product: HttpTypes.AdminProduct
@@ -17,9 +17,8 @@ export const ProductAttributeSection = ({
 }: ProductAttributeSectionProps) => {
   const { t } = useTranslation()
   const { getDisplays } = useExtension()
-  const { hasPermission } = usePermissions()
 
-  const canUpdate = hasPermission("product:update")
+  const { canUpdate } = useProductPermissions()
 
   return (
     <Container className="divide-y p-0">

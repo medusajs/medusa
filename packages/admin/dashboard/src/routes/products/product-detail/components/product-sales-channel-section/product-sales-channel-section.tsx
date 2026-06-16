@@ -4,7 +4,7 @@ import { Trans, useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
 import { HttpTypes } from "@medusajs/types"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import { useProductPermissions } from "../../../../../hooks/use-resource-permissions"
 
 type ProductSalesChannelSectionProps = {
   product: HttpTypes.AdminProduct
@@ -17,8 +17,7 @@ export const ProductSalesChannelSection = ({
   const { count } = useSalesChannels()
   const { t } = useTranslation()
 
-  const { hasPermission } = usePermissions()
-  const canUpdate = hasPermission("product:update")
+  const { canUpdate } = useProductPermissions()
 
   // Filter out null/undefined entries that can occur when a sales channel
   // is deleted but the product association is not cleaned up

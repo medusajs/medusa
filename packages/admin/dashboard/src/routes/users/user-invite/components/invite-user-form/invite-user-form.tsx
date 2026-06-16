@@ -40,8 +40,10 @@ import { useUserInviteTableQuery } from "../../../../../hooks/table/query/use-us
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { isFetchError } from "../../../../../lib/is-fetch-error"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
-import { usePermissions } from "../../../../../providers/permissions-provider"
-import { useInvitePermissions } from "../../../../../hooks/use-resource-permissions"
+import {
+  useInvitePermissions,
+  useRbacRolePermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 const InviteUserSchema = zod.object({
   email: zod.string().email(),
@@ -57,8 +59,7 @@ const INVITE_URL = `${window.location.origin}${
 export const InviteUserForm = () => {
   const { t } = useTranslation()
   const isRbacEnabled = useFeatureFlag("rbac")
-  const { hasPermission } = usePermissions()
-  const canReadRbacRoles = hasPermission("rbac_role:read")
+  const { canRead: canReadRbacRoles } = useRbacRolePermissions()
   const showRbacRolesField = isRbacEnabled && canReadRbacRoles
 
   const form = useForm<zod.infer<typeof InviteUserSchema>>({

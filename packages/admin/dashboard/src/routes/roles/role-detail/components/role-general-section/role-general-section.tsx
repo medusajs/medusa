@@ -12,7 +12,11 @@ import {
 import { ListSummary } from "../../../../../components/common/list-summary"
 import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteRbacRole } from "../../../../../hooks/api/rbac-roles"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import {
+  useRbacPolicyPermissions,
+  useRbacRolePermissions,
+  useUserPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type RoleWithUsers = HttpTypes.AdminRbacRole & {
   users_link?: { user?: HttpTypes.AdminUser | null }[]
@@ -24,7 +28,9 @@ type RoleGeneralSectionProps = {
 
 export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
   const { t } = useTranslation()
-  const { hasPermission } = usePermissions()
+  const { canUpdate, canDelete } = useRbacRolePermissions()
+  const { canRead: canReadUsers } = useUserPermissions()
+  const { canRead: canReadPolicies } = useRbacPolicyPermissions()
   const prompt = usePrompt()
   const navigate = useNavigate()
 
@@ -87,9 +93,6 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
     )
   }, [role.policies])
 
-  const canUpdate = hasPermission("rbac_role:update")
-  const canDelete = hasPermission("rbac_role:delete")
-
   const groups: ActionGroup[] = []
 
   if (canUpdate) {
@@ -129,7 +132,7 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
         {groups.length && <ActionMenu groups={groups} />}
       </div>
       <SectionRow title={t("fields.description")} value={role.description} />
-      {hasPermission("user:read") && (
+      {canReadUsers && (
         <SectionRow
           title={t("users.domain")}
           value={
@@ -143,7 +146,7 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
           }
         />
       )}
-      {hasPermission("rbac_policy:read") && (
+      {canReadPolicies && (
         <SectionRow
           title={t("roles.fields.permissions")}
           value={

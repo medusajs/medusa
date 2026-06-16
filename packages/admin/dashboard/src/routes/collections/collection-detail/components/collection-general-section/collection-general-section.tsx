@@ -8,8 +8,11 @@ import {
 } from "../../../../../components/common/action-menu"
 import { useDeleteCollection } from "../../../../../hooks/api/collections"
 import { useNavigate } from "react-router-dom"
+import {
+  useProductCollectionPermissions,
+  useTranslationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
-import { usePermissions } from "../../../../../providers/permissions-provider"
 
 type CollectionGeneralSectionProps = {
   collection: HttpTypes.AdminCollection
@@ -22,12 +25,10 @@ export const CollectionGeneralSection = ({
   const prompt = usePrompt()
   const navigate = useNavigate()
   const isTranslationsEnabled = useFeatureFlag("translation")
-  const { hasPermission } = usePermissions()
+  const { canUpdate, canDelete } = useProductCollectionPermissions()
+  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
 
-  const canUpdate = hasPermission("product_collection:update")
-  const canDelete = hasPermission("product_collection:delete")
-  const canManageTranslations =
-    isTranslationsEnabled && hasPermission("translation:update")
+  const canManageTranslations = isTranslationsEnabled && canUpdateTranslations
 
   const { mutateAsync } = useDeleteCollection(collection.id!)
 

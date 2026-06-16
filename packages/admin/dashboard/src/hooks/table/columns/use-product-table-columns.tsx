@@ -22,16 +22,18 @@ import {
   VariantHeader,
 } from "../../../components/table/table-cells/product/variant-cell"
 import { HttpTypes } from "@medusajs/types"
-import { usePermissions } from "../../../providers/permissions-provider"
+import {
+  useProductCollectionPermissions,
+  useProductVariantPermissions,
+  useSalesChannelPermissions,
+} from "../../use-resource-permissions"
 
 const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
 
 export const useProductTableColumns = () => {
-  const { hasPermission } = usePermissions()
-
-  const canReadSalesChannels = hasPermission("sales_channel:read")
-  const canReadVariants = hasPermission("product_variant:read")
-  const canReadCollections = hasPermission("product_collection:read")
+  const { canRead: canReadSalesChannels } = useSalesChannelPermissions()
+  const { canRead: canReadVariants } = useProductVariantPermissions()
+  const { canRead: canReadCollections } = useProductCollectionPermissions()
 
   return useMemo(
     () => [

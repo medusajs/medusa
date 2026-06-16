@@ -16,6 +16,7 @@ import { useProductTableColumns } from "../../../../../hooks/table/columns/use-p
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useProductPermissions } from "../../../../../hooks/use-resource-permissions"
 import { usePermissions } from "../../../../../providers/permissions-provider"
 
 type CollectionProductSectionProps = {
@@ -28,9 +29,9 @@ export const CollectionProductSection = ({
   collection,
 }: CollectionProductSectionProps) => {
   const { t } = useTranslation()
-  const { hasPermission, hasAllPermissions } = usePermissions()
+  const { hasAllPermissions } = usePermissions()
+  const { canUpdate: canUpdateProducts } = useProductPermissions()
 
-  const canUpdateProducts = hasPermission("product:update")
   const canManageCollectionProducts = hasAllPermissions([
     "product:update",
     "product_collection:update",
@@ -171,10 +172,10 @@ const ProductActions = ({
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
-  const { hasPermission, hasAllPermissions } = usePermissions()
+  const { hasAllPermissions } = usePermissions()
+  const { canUpdate: canEditProduct } = useProductPermissions()
   const { mutateAsync } = useUpdateCollectionProducts(collectionId)
 
-  const canEditProduct = hasPermission("product:update")
   const canManageCollectionProducts = hasAllPermissions([
     "product:update",
     "product_collection:update",

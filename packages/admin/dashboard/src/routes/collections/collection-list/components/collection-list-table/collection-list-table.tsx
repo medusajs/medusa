@@ -12,15 +12,14 @@ import { useCollectionTableColumns } from "../../../../../hooks/table/columns/us
 import { useCollectionTableFilters } from "../../../../../hooks/table/filters"
 import { useCollectionTableQuery } from "../../../../../hooks/table/query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import { useProductCollectionPermissions } from "../../../../../hooks/use-resource-permissions"
 import { CollectionRowActions } from "./collection-row-actions"
 
 const PAGE_SIZE = 20
 
 export const CollectionListTable = () => {
   const { t } = useTranslation()
-  const { hasPermission } = usePermissions()
-  const canCreate = hasPermission("product_collection:create")
+  const { canCreate } = useProductCollectionPermissions()
   const { searchParams, raw } = useCollectionTableQuery({ pageSize: PAGE_SIZE })
   const { collections, count, isError, error, isLoading } = useCollections(
     {
