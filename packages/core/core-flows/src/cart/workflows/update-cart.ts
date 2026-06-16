@@ -346,7 +346,7 @@ export const updateCartWorkflow = createWorkflow(
         return {
           cart_id: cartInput.id,
           promo_codes: input.promo_codes,
-          force_refresh: !!newRegion,
+          force_refresh: !!newRegion || !!newLocaleCode,
           locale: newLocaleCode || undefined,
           additional_data: input.additional_data,
         }

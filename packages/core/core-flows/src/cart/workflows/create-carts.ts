@@ -215,33 +215,36 @@ export const createCartWorkflow = createWorkflow(
     )
     const setPricingContextResult = setPricingContext.getResult()
 
-    const getVariantsAndItemsWithPricesInput = transform({
-      input,
-      region,
-      customerData,
-      setPricingContextResult,
-      variantIds,
-      productVariantsFields,
-      requiredVariantFieldsForInventoryConfirmation,
-    }, (data) => {
-      return {
-        cart: {
-          currency_code: data.input.currency_code,
-          region: data.region,
-          region_id: data.region.id,
-          customer_id: data.customerData.customer?.id,
-        },
-        items: data.input.items,
-        setPricingContextResult: data.setPricingContextResult!,
-        variants: {
-          id: data.variantIds,
-          fields: deduplicate([
-            ...data.productVariantsFields,
-            ...data.requiredVariantFieldsForInventoryConfirmation,
-          ]),
-        },
+    const getVariantsAndItemsWithPricesInput = transform(
+      {
+        input,
+        region,
+        customerData,
+        setPricingContextResult,
+        variantIds,
+        productVariantsFields,
+        requiredVariantFieldsForInventoryConfirmation,
+      },
+      (data) => {
+        return {
+          cart: {
+            currency_code: data.input.currency_code,
+            region: data.region,
+            region_id: data.region?.id,
+            customer_id: data.customerData.customer?.id,
+          },
+          items: data.input.items,
+          setPricingContextResult: data.setPricingContextResult!,
+          variants: {
+            id: data.variantIds,
+            fields: deduplicate([
+              ...data.productVariantsFields,
+              ...data.requiredVariantFieldsForInventoryConfirmation,
+            ]),
+          },
+        }
       }
-    })
+    )
 
     const { variants, lineItems } = getVariantsAndItemsWithPrices.runAsStep({
       input: getVariantsAndItemsWithPricesInput,
