@@ -4,7 +4,8 @@ import { createRule } from "../../create-rule"
 import { returnTypeIsPromise } from "../../util/ast"
 import {
   createMedusaServiceBindings,
-  isServiceClass,
+  isMedusaServiceSuper,
+  isServiceFileLocation,
   trackMedusaServiceImports,
 } from "../../util/service-scope"
 
@@ -16,7 +17,7 @@ export const rule = createRule<[], MessageIds>({
     type: "problem",
     docs: {
       description:
-        "All public methods on a service class (extends `MedusaService(...)` or class name ends with `Service`) must be `async` (or return a `Promise`). Medusa always awaits service method calls.",
+        "All public methods on a service class (one that extends `MedusaService(...)`, or any class in a module's `service.ts` / `services/**`) must be `async` (or return a `Promise`). Medusa always awaits service method calls.",
     },
     fixable: "code",
     messages: {
@@ -28,11 +29,16 @@ export const rule = createRule<[], MessageIds>({
   defaultOptions: [],
   create(context) {
     const bindings = createMedusaServiceBindings()
+    const inServiceLocation = isServiceFileLocation(context.filename)
 
     function checkClass(
       node: TSESTree.ClassDeclaration | TSESTree.ClassExpression
     ) {
-      if (!isServiceClass(node, bindings)) {
+      // Only check classes that extend `MedusaService(...)` (anywhere), or any
+      // class living in a module's service location (`service.ts` /
+      // `services/**`). Avoids false positives on unrelated `*Service`-named
+      // helpers outside a module's service code.
+      if (!isMedusaServiceSuper(node.superClass, bindings) && !inServiceLocation) {
         return
       }
 

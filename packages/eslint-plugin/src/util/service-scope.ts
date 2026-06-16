@@ -86,6 +86,26 @@ export function isServiceClass(
   return node.id?.name.endsWith("Service") ?? false
 }
 
+/** A module's main service file (`.../service.ts`). */
+const SERVICE_FILE_RE = /\/service\.(?:ts|tsx|js|mjs|cjs)$/
+/** A file under a module's `services/` directory. */
+const SERVICES_DIR_RE = /\/services\//
+
+/**
+ * True when `filename` is a Medusa module service location: a module's main
+ * `service.ts` file, or any file under a module's `services/` directory. Used
+ * to scope service rules to where services actually live, instead of relying on
+ * the `Service` name suffix alone (which false-positives on unrelated helper
+ * classes such as a `FooService` util outside a module's service code).
+ */
+export function isServiceFileLocation(filename: string): boolean {
+  const norm = filename.replace(/\\/g, "/")
+  if (!norm.includes("/modules/")) {
+    return false
+  }
+  return SERVICE_FILE_RE.test(norm) || SERVICES_DIR_RE.test(norm)
+}
+
 /**
  * Generic import tracker for named specifiers from
  * `@medusajs/framework/utils`. Given a map of canonical imported names to
