@@ -63,7 +63,9 @@ export function getRouteMap({
                       path: "import",
                       lazy: () =>
                         import("../../routes/products/product-import"),
-                      handle: { permissions: "product:create" },
+                      handle: {
+                        permissions: ["product:create", "product:update"],
+                      },
                     },
                     {
                       path: "export",
