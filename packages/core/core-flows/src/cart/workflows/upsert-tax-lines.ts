@@ -6,6 +6,8 @@ import {
 } from "@medusajs/framework/types"
 import {
   WorkflowData,
+  WorkflowResponse,
+  createHook,
   createWorkflow,
   transform,
   when,
@@ -15,6 +17,7 @@ import { getItemTaxLinesStep } from "../../tax/steps/get-item-tax-lines"
 import { validateCartStep } from "../steps"
 import { upsertTaxLinesForItemsStep } from "../steps/upsert-tax-lines-for-items"
 import { getTranslatedTaxLinesStep } from "../../common/steps/get-translated-tax-lines"
+import { taxLineContextResult } from "../utils/schemas"
 
 const cartFields = [
   "id",
@@ -122,10 +125,12 @@ export const upsertTaxLinesWorkflowId = "upsert-tax-lines"
  * @summary
  *
  * Update a cart's tax lines.
+ *
+ * @property hooks.setTaxLineContext - This hook is executed after the cart is fetched and before tax lines are calculated. You can consume this hook to add custom context to the tax calculation. The returned object is set as the additional_context property in the getItemTaxLinesStep input.
  */
 export const upsertTaxLinesWorkflow = createWorkflow(
   upsertTaxLinesWorkflowId,
-  (input: WorkflowData<UpsertTaxLinesWorkflowInput>): WorkflowData<void> => {
+  (input: WorkflowData<UpsertTaxLinesWorkflowInput>) => {
     const fetchCart = when("should-fetch-cart", { input }, ({ input }) => {
       return !input.cart
     }).then(() => {
@@ -148,12 +153,29 @@ export const upsertTaxLinesWorkflow = createWorkflow(
 
     validateCartStep({ cart })
 
+    const setTaxLineContext = createHook(
+      "setTaxLineContext",
+      {
+        cart,
+        items: input.items,
+        shipping_methods: input.shipping_methods,
+      },
+      {
+        resultValidator: taxLineContextResult,
+      }
+    )
+
+    const setTaxLineContextResult = setTaxLineContext.getResult()
+
     const taxLineItems = getItemTaxLinesStep(
-      transform({ input, cart }, (data) => ({
+      transform({ input, cart, setTaxLineContextResult }, (data) => ({
         orderOrCart: data.cart,
         items: data.input.items ?? [],
         shipping_methods: data.input.shipping_methods ?? [],
         force_tax_calculation: data.input.force_tax_calculation,
+        additional_context: data.setTaxLineContextResult
+          ? data.setTaxLineContextResult
+          : undefined,
       }))
     )
 
@@ -168,6 +190,10 @@ export const upsertTaxLinesWorkflow = createWorkflow(
       item_tax_lines: translatedTaxLines.itemTaxLines as ItemTaxLineDTO[],
       shipping_tax_lines:
         translatedTaxLines.shippingTaxLines as ShippingTaxLineDTO[],
+    })
+
+    return new WorkflowResponse(void 0, {
+      hooks: [setTaxLineContext],
     })
   }
 )

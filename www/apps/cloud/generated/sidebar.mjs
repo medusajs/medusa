@@ -30,6 +30,14 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "path": "/first-project",
+            "title": "Create First Project",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/faq",
             "title": "FAQ",
             "children": []

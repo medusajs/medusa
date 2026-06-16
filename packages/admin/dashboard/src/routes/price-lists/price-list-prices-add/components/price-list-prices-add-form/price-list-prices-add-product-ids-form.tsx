@@ -24,7 +24,7 @@ type PriceListPricesAddProductIdsFormProps = {
 }
 
 const PAGE_SIZE = 50
-const PREFIX = "p"
+const PREFIX = "ap"
 
 function getInitialSelection(products: { id: string }[]) {
   return products.reduce((acc, curr) => {

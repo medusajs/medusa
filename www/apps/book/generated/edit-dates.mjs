@@ -139,12 +139,12 @@ export const generatedEditDates = {
   "app/learn/best-practices/third-party-sync/page.mdx": "2025-12-03T11:48:58.209Z",
   "app/learn/fundamentals/api-routes/localization/page.mdx": "2026-01-06T15:51:48.131Z",
   "app/learn/codemods/replace-zod-imports/page.mdx": "2026-04-17T07:30:28.048Z",
-  "app/learn/configurations/pnpm/page.mdx": "2026-03-16T14:36:36.335Z",
+  "app/learn/configurations/pnpm/page.mdx": "2026-06-16T11:01:54.704Z",
   "app/learn/fundamentals/events-and-subscribers/event-priority/page.mdx": "2026-01-20T08:32:57.574Z",
   "app/learn/fundamentals/data-models/indexes/page.mdx": "2025-04-22T11:23:04.671Z",
   "app/learn/introduction/build-with-llms-ai/agentic-skills/page.mdx": "2026-04-29T13:34:27.727Z",
   "app/learn/introduction/build-with-llms-ai/ai-friendly-docs/page.mdx": "2026-04-29T13:21:17.313Z",
   "app/learn/introduction/build-with-llms-ai/bloom/page.mdx": "2026-04-29T13:20:11.886Z",
-  "app/learn/introduction/build-with-llms-ai/mcp-server/page.mdx": "2026-05-14T10:18:25.649Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/page.mdx": "2026-06-09T08:01:44.517Z",
   "app/learn/introduction/build-with-llms-ai/cloud-cli/page.mdx": "2026-05-05T11:18:36.186Z"
 }

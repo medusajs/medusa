@@ -34,6 +34,7 @@ import { buildQuery } from "../../modules-sdk/build-query"
 import { transactionWrapper } from "../utils"
 import { dbErrorMapper } from "./db-error-mapper"
 import { mikroOrmSerializer } from "./mikro-orm-serializer"
+import { pruneFindOptionsAgainstMetadata } from "./prune-find-options-against-metadata"
 import { mikroOrmUpdateDeletedAtRecursively } from "./utils"
 
 export class MikroOrmBase {
@@ -473,6 +474,11 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
         }
       }
 
+      pruneFindOptionsAgainstMetadata(
+        manager.getDriver().getMetadata().get(this.entity.name),
+        findOptions_.options
+      )
+
       MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
         findOptions: findOptions_,
       })
@@ -501,6 +507,11 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
           })
         }
       }
+
+      pruneFindOptionsAgainstMetadata(
+        manager.getDriver().getMetadata().get(this.entity.name),
+        findOptions_.options
+      )
 
       MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
         findOptions: findOptions_,

@@ -16,6 +16,7 @@ import {
   TEMPORARY_REDIS_MODULE_PACKAGE_NAMES,
 } from "../modules-sdk"
 import { isObject } from "./is-object"
+import { isProduction } from "./is-production"
 import { isString } from "./is-string"
 import { normalizeImportPathWithSource } from "./normalize-import-path-with-source"
 import { resolveExports } from "./resolve-exports"
@@ -23,6 +24,25 @@ import { tryConvertToNumber } from "./try-convert-to-number"
 
 const MEDUSA_CLOUD_EXECUTION_CONTEXT = "medusa-cloud"
 const DEFAULT_SECRET = "supersecret"
+
+/**
+ * Returns the secret to use for signing tokens/cookies. In production
+ * environments we never fall back to the hardcoded `DEFAULT_SECRET` since
+ * it is publicly known and would allow forging tokens. The caller is
+ * expected to surface a proper error downstream when the returned value
+ * is `undefined` in production.
+ */
+function resolveEnvSecret(envValue: string | undefined): string | undefined {
+  if (envValue) {
+    return envValue
+  }
+
+  if (isProduction()) {
+    return undefined
+  }
+
+  return DEFAULT_SECRET
+}
 const DEFAULT_ADMIN_URL = "/"
 const DEFAULT_STORE_CORS = "http://localhost:8000"
 const DEFAULT_DATABASE_URL = "postgres://localhost/medusa-starter-default"
@@ -93,20 +113,10 @@ export function transformModules(
     }
 
     // TODO: handle external modules later
-    let serviceName: string =
-      "key" in moduleConfig && moduleConfig.key ? moduleConfig.key : ""
+    let serviceName: string = getKnownModuleName(moduleConfig) ?? ""
     delete moduleConfig.key
 
     if (!serviceName && "resolve" in moduleConfig) {
-      if (
-        isString(moduleConfig.resolve!) &&
-        REVERSED_MODULE_PACKAGE_NAMES[moduleConfig.resolve!]
-      ) {
-        serviceName = REVERSED_MODULE_PACKAGE_NAMES[moduleConfig.resolve!]
-        acc[serviceName] = moduleConfig
-        return acc
-      }
-
       let resolution = isString(moduleConfig.resolve!)
         ? normalizeImportPathWithSource(moduleConfig.resolve as string)
         : moduleConfig.resolve
@@ -137,6 +147,58 @@ export function transformModules(
   }, {})
 
   return remappedModules as Exclude<ConfigModule["modules"], undefined>
+}
+
+function getKnownModuleName(
+  moduleConfig: InputConfigModules[number]
+): string | undefined {
+  if ("key" in moduleConfig && moduleConfig.key) {
+    return moduleConfig.key
+  }
+
+  if (
+    "resolve" in moduleConfig &&
+    isString(moduleConfig.resolve!) &&
+    REVERSED_MODULE_PACKAGE_NAMES[moduleConfig.resolve!]
+  ) {
+    return REVERSED_MODULE_PACKAGE_NAMES[moduleConfig.resolve!]
+  }
+
+  return undefined
+}
+
+function asRecord(value: unknown): Record<string, unknown> {
+  return isObject(value) ? (value as Record<string, unknown>) : {}
+}
+
+function applyDefaultAuthMfaOptions(
+  modules: InputConfigModules,
+  defaultAuthModuleOptions: Record<string, unknown>
+) {
+  modules.forEach((moduleConfig) => {
+    const moduleName = getKnownModuleName(moduleConfig)
+
+    if (
+      moduleName !== Modules.AUTH ||
+      ("disable" in moduleConfig && moduleConfig.disable)
+    ) {
+      return
+    }
+
+    const options = asRecord(moduleConfig.options)
+    const defaultMfaOptions = asRecord(defaultAuthModuleOptions.mfa)
+    const mfaOptions = asRecord(options.mfa)
+
+    moduleConfig.options = {
+      ...options,
+      mfa: {
+        ...defaultMfaOptions,
+        ...mfaOptions,
+        encryption_key:
+          mfaOptions.encryption_key ?? defaultMfaOptions.encryption_key,
+      },
+    }
+  })
 }
 
 function resolvePlugins(
@@ -177,6 +239,19 @@ function resolveModules(
   { isCloud }: { isCloud: boolean },
   projectConfig: InputConfig["projectConfig"]
 ): Exclude<ConfigModule["modules"], undefined> {
+  const authMfaEncryptionKey = process.env.AUTH_MFA_ENCRYPTION_KEY
+  const authModuleOptions = {
+    mfa: {
+      encryption_key: authMfaEncryptionKey,
+    },
+    providers: [
+      {
+        resolve: "@medusajs/medusa/auth-emailpass",
+        id: "emailpass",
+      },
+    ],
+  }
+
   const sharedModules = [
     { resolve: MODULE_PACKAGE_NAMES[Modules.STOCK_LOCATION] },
     { resolve: MODULE_PACKAGE_NAMES[Modules.INVENTORY] },
@@ -207,22 +282,14 @@ function resolveModules(
 
     {
       resolve: MODULE_PACKAGE_NAMES[Modules.AUTH],
-      options: {
-        mfa: {
-          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
-        },
-        providers: [
-          {
-            resolve: "@medusajs/medusa/auth-emailpass",
-            id: "emailpass",
-          },
-        ],
-      },
+      options: authModuleOptions,
     },
     {
       resolve: MODULE_PACKAGE_NAMES[Modules.USER],
       options: {
-        jwt_secret: projectConfig?.http?.jwtSecret ?? DEFAULT_SECRET,
+        jwt_secret:
+          projectConfig?.http?.jwtSecret ??
+          resolveEnvSecret(process.env.JWT_SECRET),
         jwt_options: projectConfig?.http?.jwtOptions,
         jwt_verify_options: projectConfig?.http?.jwtVerifyOptions,
         jwt_public_key: projectConfig?.http?.jwtPublicKey,
@@ -401,6 +468,8 @@ function resolveModules(
     }
   }
 
+  applyDefaultAuthMfaOptions(modules, authModuleOptions)
+
   return transformModules(modules)
 }
 
@@ -423,6 +492,8 @@ function normalizeProjectConfig(
     oauthCallbackUrl: process.env.MEDUSA_CLOUD_OAUTH_CALLBACK_URL,
     oauthDisabled:
       process.env.MEDUSA_CLOUD_OAUTH_DISABLED === "true" ? true : undefined,
+    oauthJwksUri: process.env.MEDUSA_CLOUD_OAUTH_JWKS_ENDPOINT,
+    oauthAudience: process.env.MEDUSA_CLOUD_OAUTH_AUDIENCE,
     ...cloud,
   }
   const hasCloudOptions = Object.values(mergedCloudOptions).some(
@@ -440,9 +511,9 @@ function normalizeProjectConfig(
       storeCors: process.env.STORE_CORS || DEFAULT_STORE_CORS,
       adminCors: process.env.ADMIN_CORS || DEFAULT_ADMIN_CORS,
       authCors: process.env.AUTH_CORS || DEFAULT_ADMIN_CORS,
-      jwtSecret: process.env.JWT_SECRET || DEFAULT_SECRET,
+      jwtSecret: resolveEnvSecret(process.env.JWT_SECRET),
       jwtPublicKey: process.env.JWT_PUBLIC_KEY,
-      cookieSecret: process.env.COOKIE_SECRET || DEFAULT_SECRET,
+      cookieSecret: resolveEnvSecret(process.env.COOKIE_SECRET),
       restrictedFields: {
         store: DEFAULT_STORE_RESTRICTED_FIELDS,
       },
@@ -575,6 +646,8 @@ function applyCloudOptionsToModules(
           cloud: {
             oauth_authorize_endpoint: config.oauthAuthorizeEndpoint,
             oauth_token_endpoint: config.oauthTokenEndpoint,
+            oauth_jwks_uri: config.oauthJwksUri,
+            oauth_audience: config.oauthAudience,
             environment_handle: config.environmentHandle,
             sandbox_handle: config.sandboxHandle,
             api_key: config.apiKey,

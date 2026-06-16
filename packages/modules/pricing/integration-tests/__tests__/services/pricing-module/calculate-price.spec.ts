@@ -1307,6 +1307,92 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             ])
           })
 
+          it("should return the override as original_amount when a sale is stacked on an override for the same customer group", async () => {
+            // Customer's real price comes from an OVERRIDE price list (500),
+            // and a SALE price list (300) is stacked on top for the same group.
+            await createPriceLists(
+              service,
+              {
+                title: "Group Override",
+                description: "test description",
+                type: PriceListType.OVERRIDE,
+                status: PriceListStatus.ACTIVE,
+              },
+              defaultRules,
+              [
+                {
+                  amount: 500,
+                  currency_code: "pln",
+                  price_set_id: "price-set-PLN",
+                },
+              ]
+            )
+
+            await createPriceLists(
+              service,
+              {
+                title: "Group Sale",
+                description: "test description",
+                type: PriceListType.SALE,
+                status: PriceListStatus.ACTIVE,
+              },
+              defaultRules,
+              [
+                {
+                  amount: 300,
+                  currency_code: "pln",
+                  price_set_id: "price-set-PLN",
+                },
+              ]
+            )
+
+            const priceSetsResult = await service.calculatePrices(
+              { id: ["price-set-PLN"] },
+              {
+                context: {
+                  currency_code: "pln",
+                  region_id: "DE",
+                  customer_group_id: "vip-customer-group-id",
+                },
+              }
+            )
+
+            expect(priceSetsResult).toEqual([
+              {
+                id: "price-set-PLN",
+                is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
+                calculated_amount: 300,
+                raw_calculated_amount: {
+                  value: "300",
+                  precision: 20,
+                },
+                is_original_price_price_list: true,
+                is_original_price_tax_inclusive: false,
+                original_amount: 500,
+                raw_original_amount: {
+                  value: "500",
+                  precision: 20,
+                },
+                currency_code: "pln",
+                calculated_price: {
+                  id: expect.any(String),
+                  price_list_id: expect.any(String),
+                  price_list_type: "sale",
+                  min_quantity: null,
+                  max_quantity: null,
+                },
+                original_price: {
+                  id: expect.any(String),
+                  price_list_id: expect.any(String),
+                  price_list_type: "override",
+                  min_quantity: null,
+                  max_quantity: null,
+                },
+              },
+            ])
+          })
+
           it("should return price list prices when price list dont have rules, but context is loaded", async () => {
             await createPriceLists(service, {}, {})
 

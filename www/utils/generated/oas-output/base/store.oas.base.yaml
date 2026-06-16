@@ -93,6 +93,14 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/translation/concepts
     x-associatedSchema:
       $ref: "#/components/schemas/StoreLocale"
+  - name: Multi-Factor Authentication (MFA) Factors
+    description: >
+      Multi-factor authentication (MFA) factors are additional ways to verify a customer's identity during login, in addition to their password. Examples of MFA factors include authenticator apps, SMS messages, and email.
+
+      These API routes allow customers to manage their MFA factors, such as enabling an authenticator app or generating recovery codes.
+    externalDocs:
+      description: Learn more about MFA in Medusa
+      url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
   - name: Orders
     description: |
       Guest and registered customers can view orders they placed.

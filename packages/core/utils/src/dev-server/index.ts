@@ -1,3 +1,4 @@
+import { isProduction } from "../common/is-production"
 import { FeatureFlag } from "../feature-flags"
 import { JobHandler } from "./handlers/job-handler"
 import { StepHandler } from "./handlers/step-handler"
@@ -115,11 +116,7 @@ export function registerDevServerResource<T extends BaseResourceData>(
   data: T
 ): void {
   // Skip registration in production or if HMR is disabled
-  const isProduction = ["production", "prod"].includes(
-    process.env.NODE_ENV || ""
-  )
-
-  if (!FeatureFlag.isFeatureEnabled("backend_hmr") || isProduction) {
+  if (!FeatureFlag.isFeatureEnabled("backend_hmr") || isProduction()) {
     return
   }
 

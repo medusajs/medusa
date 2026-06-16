@@ -1,11 +1,6 @@
-import { Fragment } from "react"
-import {
-  LoaderFunctionArgs,
-  Outlet,
-  UIMatch,
-  useParams,
-} from "react-router-dom"
+import { LoaderFunctionArgs, UIMatch, useParams } from "react-router-dom"
 
+import { LayoutComposer } from "@medusajs/dashboard/components"
 import { HttpTypes } from "@medusajs/types"
 import { PageSkeleton } from "../../../components/common/page-skeleton"
 import { ActiveOrderChange } from "../../../components/draft-orders/active-order-changes"
@@ -78,31 +73,29 @@ const ID = () => {
   }
 
   return (
-    <Fragment>
-      <div className="flex w-full flex-col gap-y-3">
-        <div className="flex w-full flex-col items-start gap-x-4 gap-y-3 xl:grid xl:grid-cols-[minmax(0,_1fr)_440px]">
-          <div className="flex w-full min-w-0 flex-col gap-y-3">
+    <LayoutComposer
+      widgetsZonePrefix="draft_order.details"
+      preferredLayoutId="core:two-column"
+      data={order}
+      sections={{
+        main: (
+          <>
             <ActiveOrderChange orderId={order.id} />
             <GeneralSection order={order} />
             <SummarySection order={order as AdminDraftOrderSummary} />
             <ShippingSection order={order} />
-            <div className="hidden flex-col gap-y-3 xl:flex">
-              <MetadataSection order={order} />
-              <JsonViewSection data={order} />
-            </div>
-          </div>
-          <div className="flex w-full flex-col gap-y-3 xl:mt-0">
+            <MetadataSection order={order} />
+            <JsonViewSection data={order} />
+          </>
+        ),
+        side: (
+          <>
             <CustomerSection order={order} />
             <ActivitySection order={order} changes={order_changes} />
-            <div className="flex flex-col gap-y-3 xl:hidden">
-              <MetadataSection order={order} />
-              <JsonViewSection data={order} />
-            </div>
-          </div>
-        </div>
-      </div>
-      <Outlet />
-    </Fragment>
+          </>
+        ),
+      }}
+    />
   )
 }
 

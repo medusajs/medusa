@@ -47,7 +47,8 @@ class EventsKindGenerator extends DefaultKindGenerator<ts.VariableDeclaration> {
           eventVariableName,
           eventPropertyName,
         })
-        if (!workflows.length) {
+        const isWorkflowEvent = property.getSourceFile().fileName.includes("core-flows")
+        if (isWorkflowEvent && !workflows.length) {
           return null
         }
 
