@@ -25,7 +25,7 @@ The following code is reported by the rule:
 import { z } from "zod"
 ```
 
-Instead, import from the framework entry point:
+Instead, import from the Medusa Framework entry point:
 
 ```ts title="src/api/example.ts"
 // compliant
@@ -34,7 +34,7 @@ import { z } from "@medusajs/framework/zod"
 
 ## Why it's Important
 
-Importing Zod from `@medusajs/framework/zod` ensures you use the same Zod version the framework relies on, avoiding version mismatches and duplicate copies in your project.
+Importing Zod from `@medusajs/framework/zod` ensures you use the same Zod version Medusa relies on, avoiding version mismatches and duplicate copies in your project.
 
 Learn more in the [API route validation documentation](!docs!/learn/fundamentals/api-routes/validation).
 

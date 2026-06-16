@@ -23,6 +23,7 @@ export default [
       "**/references/**/*",
       // TODO remove this once we support v1 comments
       "**/nextjs-starter/guides/customize-stripe/**",
+      "**/lint/**",
     ],
   },
   {

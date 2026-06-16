@@ -24,7 +24,7 @@ The following code is reported by the rule:
 import {
   createWorkflow,
   createStep,
-  WorkflowResponse
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 
 createWorkflow("my-workflow", (input) => {
@@ -47,7 +47,7 @@ createWorkflow("my-workflow", (input) => {
   const message1 = step1(input)
   const message2 = step2(input)
   const combined = transform({
-    message1, message2
+    message1, message2,
   }, ({ message1, message2 }) => {
     return `${message1} ${message2}`
   })

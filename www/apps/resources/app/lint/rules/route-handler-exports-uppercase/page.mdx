@@ -16,7 +16,7 @@ This rule requires API route handler exports to use uppercase HTTP method names,
 
 ## What it Targets
 
-This rule targets `route.ts` and `route.js` files in your project's `src/api` directory. It reports handler exports that use a lowercase HTTP method name, which the framework ignores.
+This rule targets `route.ts` and `route.js` files in your project's `src/api` directory. It reports handler exports that use a lowercase HTTP method name, which Medusa ignores.
 
 The following code is reported by the rule:
 
@@ -36,7 +36,7 @@ export const GET = async (req, res) => {
 
 ## Why it's Important
 
-The framework only registers handlers exported with uppercase HTTP method names. A lowercase export is ignored, so the route's handler is never reached.
+Medusa only registers handlers exported with uppercase HTTP method names. A lowercase export is ignored, so the route's handler is never reached.
 
 Learn more in the [HTTP Methods documentation](!docs!/learn/fundamentals/api-routes/http-methods).
 

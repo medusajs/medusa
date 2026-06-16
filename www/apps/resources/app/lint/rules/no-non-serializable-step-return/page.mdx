@@ -27,7 +27,7 @@ The following code is reported by the rule:
 ```ts title="src/workflows/example.ts"
 import { 
   createStep,
-  StepResponse
+  StepResponse,
 } from "@medusajs/framework/workflows-sdk"
 
 const step1 = createStep(
@@ -49,14 +49,14 @@ Instead, return a plain object or array:
 ```ts title="src/workflows/example.ts"
 import { 
   createStep,
-  StepResponse
+  StepResponse,
 } from "@medusajs/framework/workflows-sdk"
 
 const step1 = createStep(
   "step-1",
   (input, { container }) => {
     const myMap = {
-      key: "value"
+      key: "value",
     }
 
     // ...

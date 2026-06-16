@@ -25,7 +25,7 @@ The following code is reported by the rule:
 import { EntityManager } from "@mikro-orm/core"
 ```
 
-Instead, import from the framework re-export:
+Instead, import from the Medusa Framework re-export:
 
 ```ts title="src/modules/example.ts"
 // compliant
@@ -34,7 +34,7 @@ import { EntityManager } from "@medusajs/framework/mikro-orm/core"
 
 ## Why it's Important
 
-Using the framework re-exports ensures you depend on the same MikroORM and awilix versions the framework uses, avoiding version mismatches and duplicate copies in your project.
+Using the Medusa Framework re-exports ensures you depend on the same MikroORM and awilix versions Medusa uses, avoiding version mismatches and duplicate copies in your project.
 
 ## Fixable
 

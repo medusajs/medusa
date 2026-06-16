@@ -8,7 +8,7 @@ export const metadata = {
 
 # {metadata.title}
 
-This rule disallows importing Node-only framework modules (`@medusajs/framework/utils`, `@medusajs/framework/http`, and `@medusajs/framework/workflows-sdk`) in admin code, since they break the browser bundle.
+This rule disallows importing Node-only modules from the Medusa Framework (`@medusajs/framework/utils`, `@medusajs/framework/http`, and `@medusajs/framework/workflows-sdk`) in admin code, since they break the browser bundle.
 
 ## Severity
 
@@ -16,7 +16,7 @@ This rule disallows importing Node-only framework modules (`@medusajs/framework/
 
 ## What it Targets
 
-This rule targets files in your project's `src/admin` directory. It reports an import or re-export of a Node-only framework module.
+This rule targets files in your project's `src/admin` directory. It reports an import or re-export of a Node-only module from the Medusa Framework.
 
 The following code is reported by the rule:
 
