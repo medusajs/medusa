@@ -31,8 +31,8 @@ export const requestVerificationWorkflow = createWorkflow(
     const eventData = transform({ input, result }, ({ input, result }) => {
       return {
         entity_id: result.entity_id,
-        type: result.type,
-        provider: result.provider,
+        entity_type: result.entity_type,
+        code_provider: result.code_provider,
         auth_identity_id: result.auth_identity_id,
         code: result.code,
         expires_at: result.expires_at,

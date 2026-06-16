@@ -8,15 +8,15 @@ export type ResetPasswordRequestType = z.infer<typeof ResetPasswordRequest>
 
 export const VerificationRequest = z.object({
   entity_id: z.string().min(1),
-  type: z.string().min(1),
-  provider: z.string().min(1).default("token"),
+  entity_type: z.string().min(1),
+  code_provider: z.string().min(1).default("token"),
   metadata: z.record(z.string(), z.unknown()).optional().default({}),
 })
 export type VerificationRequestType = z.infer<typeof VerificationRequest>
 
 export const VerificationConfirmRequest = z.object({
   code: z.string().min(1),
-  provider: z.string().min(1).optional(),
+  code_provider: z.string().min(1).optional(),
 })
 export type VerificationConfirmRequestType = z.infer<
   typeof VerificationConfirmRequest

@@ -528,8 +528,8 @@
           "enumItems": [],
           "mappedType": "text"
         },
-        "type": {
-          "name": "type",
+        "entity_type": {
+          "name": "entity_type",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -544,8 +544,8 @@
           "enumItems": [],
           "mappedType": "text"
         },
-        "provider": {
-          "name": "provider",
+        "code_provider": {
+          "name": "code_provider",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -695,13 +695,13 @@
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_auth_verification_deleted_at\" ON \"auth_verification\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
-          "keyName": "IDX_auth_verification_unique_auth_identity_entity_id_type",
+          "keyName": "IDX_auth_verification_unique_auth_identity_entity_id_entity_type",
           "columnNames": [],
           "composite": false,
           "constraint": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_auth_verification_unique_auth_identity_entity_id_type\" ON \"auth_verification\" (\"auth_identity_id\", \"entity_id\", \"type\") WHERE deleted_at IS NULL"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_auth_verification_unique_auth_identity_entity_id_entity_type\" ON \"auth_verification\" (\"auth_identity_id\", \"entity_id\", \"entity_type\") WHERE deleted_at IS NULL"
         },
         {
           "keyName": "auth_verification_pkey",

@@ -128,8 +128,8 @@ describe("providers loader - verification", () => {
       service.request("unknown", {
         auth_identity_id: "auth-id",
         entity_id: "verify@test.com",
-        type: "email",
-        provider: "unknown",
+        entity_type: "email",
+        code_provider: "unknown",
       })
     ).rejects.toThrow(
       "Unable to retrieve the verification provider with id: unknown"

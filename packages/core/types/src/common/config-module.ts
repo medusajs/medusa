@@ -945,7 +945,7 @@ export type ProjectConfigOptions = {
      * For example, you only want to require email verification for `customers` when authenticating with emailpass, or phone number verification for `users` when authenticating with phone-auth.
      *
      * `authVerificationsPerActor` is a map where the actor type (eg. 'user') is the key, and the value is an array of objects with the following properties:
-     * - `type`: The type of verification. For example, `email` or `phone_number`.
+     * - `entity_type`: The type of entity being verified. For example, `email` or `phone_number`.
      * - `auth_provider`: The provider that requires the verification. For example, `emailpass` or `phone-auth`.
      *
      * @example
@@ -959,7 +959,7 @@ export type ProjectConfigOptions = {
      *         user: [],
      *         // Email verification required for customers using emailpass, but if they use google auth no need to verify
      *         customer: [
-     *           { type: "email", auth_provider: "emailpass" },
+     *           { entity_type: "email", auth_provider: "emailpass" },
      *         ],
      *       },
      *     }
@@ -970,7 +970,7 @@ export type ProjectConfigOptions = {
      */
     authVerificationsPerActor?: Record<
       string,
-      { type: string; auth_provider: string }[]
+      { entity_type: string; auth_provider: string }[]
     >
     /**
      * Specifies the fields that can't be selected in the response unless specified in the allowed query config.

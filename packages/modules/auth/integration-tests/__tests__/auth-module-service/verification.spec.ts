@@ -103,8 +103,8 @@ moduleIntegrationTestRunner<IAuthModuleService>({
 
       it("generates an opaque token and stores only its hash in provider_metadata", async () => {
         const result = await service.requestAuthVerification({
-          type: "email",
-          provider: "token",
+          entity_type: "email",
+          code_provider: "token",
           auth_identity_id: "auth-id",
           entity_id: "verify@test.com",
           metadata: {
@@ -118,8 +118,8 @@ moduleIntegrationTestRunner<IAuthModuleService>({
             expires_at: new Date(1_710_000_900_000),
             entity_id: "verify@test.com",
             auth_identity_id: "auth-id",
-            type: "email",
-            provider: "token",
+            entity_type: "email",
+            code_provider: "token",
             metadata: {
               source: "test",
             },
@@ -145,14 +145,14 @@ moduleIntegrationTestRunner<IAuthModuleService>({
 
       it("reuses the same verification record when requesting again", async () => {
         const first = await service.requestAuthVerification({
-          type: "email",
-          provider: "token",
+          entity_type: "email",
+          code_provider: "token",
           auth_identity_id: "auth-id",
           entity_id: "verify@test.com",
         })
         const second = await service.requestAuthVerification({
-          type: "email",
-          provider: "token",
+          entity_type: "email",
+          code_provider: "token",
           auth_identity_id: "auth-id",
           entity_id: "verify@test.com",
         })
@@ -173,8 +173,8 @@ moduleIntegrationTestRunner<IAuthModuleService>({
 
       it("confirms a token without requiring auth identity context", async () => {
         const { code } = await service.requestAuthVerification({
-          type: "email",
-          provider: "token",
+          entity_type: "email",
+          code_provider: "token",
           auth_identity_id: "auth-id",
           entity_id: "verify@test.com",
         })
@@ -185,8 +185,8 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           expect.objectContaining({
             auth_identity_id: "auth-id",
             entity_id: "verify@test.com",
-            type: "email",
-            provider: "token",
+            entity_type: "email",
+            code_provider: "token",
             verified_at: new Date(1_710_000_000_000),
           })
         )
@@ -194,8 +194,8 @@ moduleIntegrationTestRunner<IAuthModuleService>({
 
       it("rejects an unregistered verification provider", async () => {
         const { code } = await service.requestAuthVerification({
-          type: "email",
-          provider: "token",
+          entity_type: "email",
+          code_provider: "token",
           auth_identity_id: "auth-id",
           entity_id: "verify@test.com",
         })
@@ -203,7 +203,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         await expect(
           service.confirmAuthVerification({
             code,
-            provider: "unknown",
+            code_provider: "unknown",
           })
         ).rejects.toThrow(
           "Unable to retrieve the verification provider with id: unknown"
@@ -212,14 +212,14 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         await expect(
           service.confirmAuthVerification({
             code,
-            provider: "token",
+            code_provider: "token",
           })
         ).resolves.toEqual(
           expect.objectContaining({
             auth_identity_id: "auth-id",
             entity_id: "verify@test.com",
-            type: "email",
-            provider: "token",
+            entity_type: "email",
+            code_provider: "token",
             verified_at: new Date(1_710_000_000_000),
           })
         )
@@ -227,8 +227,8 @@ moduleIntegrationTestRunner<IAuthModuleService>({
 
       it("rejects expired, used, and unknown tokens", async () => {
         const { code: expiredCode } = await service.requestAuthVerification({
-          type: "email",
-          provider: "token",
+          entity_type: "email",
+          code_provider: "token",
           auth_identity_id: "auth-id",
           entity_id: "verify@test.com",
         })
@@ -243,8 +243,8 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         ).rejects.toThrow("Verification code has expired")
 
         const active = await service.requestAuthVerification({
-          type: "email",
-          provider: "token",
+          entity_type: "email",
+          code_provider: "token",
           auth_identity_id: "auth-id",
           entity_id: "verify@test.com",
         })
@@ -314,8 +314,8 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           timestamp: Date.now(),
         })
         const verification = await service.requestAuthVerification({
-          type: "email",
-          provider: "token",
+          entity_type: "email",
+          code_provider: "token",
           auth_identity_id: "auth-id",
           entity_id: "verify@test.com",
         })

@@ -685,7 +685,7 @@ export default class AuthModuleService
     data: AuthTypes.RequestAuthVerificationDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthTypes.RequestAuthVerificationResponse> {
-    if (!data.provider) {
+    if (!data.code_provider) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Verification provider is required"
@@ -693,7 +693,7 @@ export default class AuthModuleService
     }
 
     return await this.authVerificationProviderService_.request(
-      data.provider,
+      data.code_provider,
       data,
       sharedContext
     )
@@ -704,11 +704,11 @@ export default class AuthModuleService
     data: AuthTypes.ConfirmAuthVerificationDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthTypes.ConfirmAuthVerificationResponse> {
-    const provider = data.provider ?? "token"
+    const codeProvider = data.code_provider ?? "token"
 
     return await this.authVerificationProviderService_.confirm(
-      provider,
-      { ...data, provider },
+      codeProvider,
+      { ...data, code_provider: codeProvider },
       sharedContext
     )
   }

@@ -77,6 +77,11 @@ export type AuthCallbackResponse =
   | AuthMfaRequiredResponse
   | AuthVerificationRequiredResponse
 
+export type AuthRefreshResponse =
+  | { token: string }
+  | AuthMfaRequiredResponse
+  | AuthVerificationRequiredResponse
+
 /**
  * Response containing the authenticated identity's MFA factors.
  */
@@ -211,11 +216,11 @@ export type AuthVerificationRequestPayload = {
   /**
    * The kind of entity being verified, such as `email` or `phone_number`.
    */
-  type: string
+  entity_type: string
   /**
    * The verification provider to use. Defaults to `token`.
    */
-  provider?: string
+  code_provider?: string
   /**
    * Optional metadata to include in the verification request event.
    */
@@ -235,7 +240,7 @@ export type AuthVerificationConfirmPayload = {
   /**
    * The verification provider to use. Defaults to `token`.
    */
-  provider?: string
+  code_provider?: string
 }
 
 /**
@@ -263,11 +268,11 @@ export type AuthVerificationConfirmResponse = {
   /**
    * The kind of entity that was verified.
    */
-  type: string
+  entity_type: string
   /**
    * The verification provider that confirmed the verification.
    */
-  provider: string
+  code_provider: string
   /**
    * When the verification was confirmed.
    */
@@ -798,7 +803,7 @@ export class Auth {
    *
    * @param headers - Headers to pass in the request
    *
-   * @returns The refreshed JWT authentication token.
+   * @returns The refreshed JWT authentication token, or any requirements such as MFA or verification.
    *
    * @tags auth
    *
@@ -809,7 +814,7 @@ export class Auth {
    * const { customer } = await sdk.store.customer.retrieve()
    */
   refresh = async (headers?: ClientHeaders) => {
-    const { token } = await this.client.fetch<{ token: string }>(
+    const response = await this.client.fetch<AuthRefreshResponse>(
       "/auth/token/refresh",
       {
         method: "POST",
@@ -819,8 +824,8 @@ export class Auth {
 
     // Putting the token in session after refreshing is only useful when the new token has updated info (eg. actor_id).
     // Ideally we don't use the full JWT in session as key, but just store a pseudorandom key that keeps the rest of the auth context as value.
-    await this.setToken_(token)
-    return token
+    await this.setToken_(response.token)
+    return response
   }
 
   /**

@@ -35,9 +35,15 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
       ContainerRegistrationKeys.CONFIG_MODULE
     ).projectConfig
 
-    // At registration there is no actor created, so we just return the actorless token.
-    // Other verifications will happen at login/callback time.
-    const result = await generateJwtTokenForAuthIdentity(
+    /*
+      At registration time the auth identity doesn't have an actor attached to it, so we return the actorless token.
+      The token can be used for few, auth-related operations, such as creating an actor, completing MFA,
+      and completing other verifications.
+
+      Once those are done the user either needs to use the returned token with an actor attached (eg. after verifying an MFA challenge)
+      Or request a token refresh (such as after passing a verification)
+     */
+    const token = await generateJwtTokenForAuthIdentity(
       {
         authIdentity,
         actorType: actor_type,
@@ -50,7 +56,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
         options: http.jwtOptions,
       }
     )
-    return res.status(200).json(result)
+    return res.status(200).json({ token })
   }
 
   throw new MedusaError(

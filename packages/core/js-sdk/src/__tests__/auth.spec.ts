@@ -22,8 +22,8 @@ const mfaChallenge = {
 const verification = {
   entity_id: "test@example.com",
   auth_identity_id: "authid_123",
-  type: "email",
-  provider: "token",
+  entity_type: "email",
+  code_provider: "token",
   requested_at: "2026-05-20T10:00:00.000Z",
 }
 
@@ -322,8 +322,8 @@ describe("Auth", () => {
       http.post(`${baseUrl}/auth/verification/request`, async ({ request }) => {
         expect(await request.json()).toEqual({
           entity_id: "test@example.com",
-          type: "email",
-          provider: "token",
+          entity_type: "email",
+          code_provider: "token",
           metadata: {
             source: "dashboard",
           },
@@ -343,8 +343,8 @@ describe("Auth", () => {
 
         return HttpResponse.json({
           entity_id: "test@example.com",
-          type: "email",
-          provider: "token",
+          entity_type: "email",
+          code_provider: "token",
           verified_at: "2026-05-20T10:00:00.000Z",
         })
       })
@@ -355,8 +355,8 @@ describe("Auth", () => {
     await expect(
       auth.verification.request({
         entity_id: "test@example.com",
-        type: "email",
-        provider: "token",
+        entity_type: "email",
+        code_provider: "token",
         metadata: {
           source: "dashboard",
         },
@@ -371,8 +371,8 @@ describe("Auth", () => {
       })
     ).resolves.toEqual({
       entity_id: "test@example.com",
-      type: "email",
-      provider: "token",
+      entity_type: "email",
+      code_provider: "token",
       verified_at: "2026-05-20T10:00:00.000Z",
     })
     expect(storage.setItem).not.toHaveBeenCalled()

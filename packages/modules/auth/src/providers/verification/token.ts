@@ -45,7 +45,7 @@ export class TokenVerificationProvider implements IAuthVerificationProvider {
       {
         auth_identity_id: data.auth_identity_id,
         entity_id: data.entity_id,
-        type: data.type,
+        entity_type: data.entity_type,
       },
       { take: 1, skip: 0 },
       sharedContext
@@ -65,7 +65,7 @@ export class TokenVerificationProvider implements IAuthVerificationProvider {
       verification = await this.authVerificationService_.update(
         {
           id: existingVerifications[0].id,
-          provider: data.provider,
+          code_provider: data.code_provider,
           provider_metadata: { token_hash: tokenHash },
           requested_at: requestedAt,
           verified_at: null,
@@ -77,8 +77,8 @@ export class TokenVerificationProvider implements IAuthVerificationProvider {
         {
           auth_identity_id: data.auth_identity_id,
           entity_id: data.entity_id,
-          type: data.type,
-          provider: data.provider,
+          entity_type: data.entity_type,
+          code_provider: data.code_provider,
           provider_metadata: { token_hash: tokenHash },
           requested_at: requestedAt,
           metadata: data.metadata ?? null,
@@ -122,10 +122,13 @@ export class TokenVerificationProvider implements IAuthVerificationProvider {
       )
     }
 
-    if (data.provider && data.provider !== verification.provider) {
+    if (
+      data.code_provider &&
+      data.code_provider !== verification.code_provider
+    ) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
-        `Verification code does not belong to provider "${data.provider}"`
+        `Verification code does not belong to provider "${data.code_provider}"`
       )
     }
 

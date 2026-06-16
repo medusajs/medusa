@@ -28,8 +28,15 @@ export const POST = async (
     )
   }
 
-  // If the token is already with an actor attached to it, it means it passed all checks, so we can just regenerate the token.
-  // Otherwise we want to validate they passed mfa before proceeding.
+  /* A request would have the actor ID set on it only after it:
+    - Creates an actor after registration
+    - Passes MFA and other verifications
+  Once that is done we can safely just regenerate a token without performing any additional checks.
+
+  However, if the actor is not set we have to perform the MFA and verification checks - for the refresh
+  call we don't return verification/mfa required, but instead throw as the call to refresh the token is
+  not expected until mfa/verifications are completed.
+  */
   if (req.auth_context.actor_id) {
     const { http } = req.scope.resolve<ConfigModule>(
       ContainerRegistrationKeys.CONFIG_MODULE
@@ -47,7 +54,6 @@ export const POST = async (
       )
     }
 
-    // We don't do additinal checks here as initial authentication has to be done before doing the MFA challenge.
     const token = await generateJwtTokenForAuthIdentity(
       {
         authIdentity,

@@ -63,7 +63,7 @@ export const validateVerification = async (
   const verification = await service.listAuthVerifications({
     auth_identity_id: auth_identity.id,
     entity_id: providerIdentity.entity_id,
-    type: verificationForAuthProvider.type,
+    entity_type: verificationForAuthProvider.entity_type,
   })
 
   // We return whether the verification even configured/required, and the verification itself and its status.

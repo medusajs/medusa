@@ -6,9 +6,9 @@ export type AuthVerificationDTO = {
   entity_id: string
   auth_identity_id: string
   // The kind of entity being verified, such as `email` or `phone_number`.
-  type: string
+  entity_type: string
   // The verification provider that handles requesting and confirming the verification, such as `token`.
-  provider: string
+  code_provider: string
   provider_metadata?: Record<string, unknown> | null
   metadata?: Record<string, unknown> | null
   verified_at?: Date | null
@@ -18,8 +18,8 @@ export type AuthVerificationDTO = {
 export type RequestAuthVerificationDTO = {
   entity_id: string
   auth_identity_id: string
-  type: string
-  provider: string
+  entity_type: string
+  code_provider: string
   metadata?: Record<string, unknown> | null
 }
 
@@ -32,7 +32,7 @@ export type ConfirmAuthVerificationDTO = {
   // The verification provider can decide if the auth identity is required to confirm the verification.
   auth_identity_id?: string
   code: string
-  provider?: string
+  code_provider?: string
 }
 
 export type ConfirmAuthVerificationResponse = AuthVerificationDTO
@@ -42,6 +42,6 @@ export interface FilterableAuthVerificationProps
   id?: string[]
   auth_identity_id?: string
   entity_id?: string
-  type?: string
-  provider?: string
+  entity_type?: string
+  code_provider?: string
 }

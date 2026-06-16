@@ -8,8 +8,8 @@ export const AuthVerification = model
       mappedBy: "verifications",
     }),
     entity_id: model.text(),
-    type: model.text(),
-    provider: model.text(),
+    entity_type: model.text(),
+    code_provider: model.text(),
     verified_at: model.dateTime().nullable(),
     requested_at: model.dateTime(),
     provider_metadata: model.json().nullable(),
@@ -17,8 +17,8 @@ export const AuthVerification = model
   })
   .indexes([
     {
-      name: "IDX_auth_verification_unique_auth_identity_entity_id_type",
-      on: ["auth_identity_id", "entity_id", "type"],
+      name: "IDX_auth_verification_unique_auth_identity_entity_id_entity_type",
+      on: ["auth_identity_id", "entity_id", "entity_type"],
       unique: true,
       where: "deleted_at IS NULL",
     },
