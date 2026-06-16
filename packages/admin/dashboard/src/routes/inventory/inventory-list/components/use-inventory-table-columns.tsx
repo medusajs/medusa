@@ -106,10 +106,6 @@ export const useInventoryTableColumns = ({
                 )
               },
             }),
-          ]
-        : []),
-      ...(showStockLevels
-        ? [
             columnHelper.accessor("stocked_quantity", {
               header: t("fields.inStock"),
               cell: ({ getValue }) => {
