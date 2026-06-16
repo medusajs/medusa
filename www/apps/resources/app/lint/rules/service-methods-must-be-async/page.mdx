@@ -16,7 +16,13 @@ This rule requires that all public methods on a service class are `async` or ret
 
 ## What it Targets
 
-This rule targets service files in your project's `src/modules` directory. It reports public methods on a class that extends `MedusaService(...)`, or whose name ends with `Service`, when the method isn't `async` and doesn't return a `Promise`.
+This rule targets service files in your project's `src/modules` directory. It only reports public methods on a class that is recognized as a module service, which is a class that either:
+
+- Extends `MedusaService`.
+- Is defined in a module's `service.ts` file (`src/modules/*/service.ts`).
+- Is defined under a module's `services` directory (`src/modules/*/services/**`).
+
+A class isn't considered a service just because its name ends with `Service`. The rule reports a service class's public method when it isn't `async` and doesn't return a `Promise`.
 
 The following code is reported by the rule:
 

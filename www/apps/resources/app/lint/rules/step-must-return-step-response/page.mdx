@@ -41,6 +41,19 @@ createStep("s", (input) => {
 })
 ```
 
+The rule also allows returning `StepResponse.skip()`, which skips the step's execution:
+
+```ts title="src/workflows/example.ts"
+import {
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createStep("s", (input) => {
+  return StepResponse.skip()
+})
+```
+
 ## Why it's Important
 
 A step's return value must be a `StepResponse` so the workflow engine can pass it to the next step and store the compensation data. Returning a plain value breaks this contract.
