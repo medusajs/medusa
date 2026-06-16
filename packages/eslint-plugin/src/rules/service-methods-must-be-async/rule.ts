@@ -29,19 +29,29 @@ export const rule = createRule<[], MessageIds>({
   create(context) {
     const bindings = createMedusaServiceBindings()
 
-    function checkClass(node: TSESTree.ClassDeclaration | TSESTree.ClassExpression) {
-      if (!isServiceClass(node, bindings)) return
+    function checkClass(
+      node: TSESTree.ClassDeclaration | TSESTree.ClassExpression
+    ) {
+      if (!isServiceClass(node, bindings)) {
+        return
+      }
 
       for (const member of node.body.body) {
-        if (member.type !== AST_NODE_TYPES.MethodDefinition) continue
-        if (member.kind === "constructor") continue
+        if (member.type !== AST_NODE_TYPES.MethodDefinition) {
+          continue
+        }
+        if (member.kind === "constructor") {
+          continue
+        }
         if (
           member.accessibility === "private" ||
           member.accessibility === "protected"
         ) {
           continue
         }
-        if (member.computed) continue
+        if (member.computed) {
+          continue
+        }
 
         const value = member.value
         if (
@@ -51,8 +61,12 @@ export const rule = createRule<[], MessageIds>({
           continue
         }
 
-        if ((value as TSESTree.FunctionExpression).async) continue
-        if (returnTypeIsPromise(value)) continue
+        if ((value as TSESTree.FunctionExpression).async) {
+          continue
+        }
+        if (returnTypeIsPromise(value)) {
+          continue
+        }
 
         const canAutofix = member.kind === "method"
 

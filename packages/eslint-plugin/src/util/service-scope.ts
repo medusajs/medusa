@@ -25,11 +25,19 @@ export function trackMedusaServiceImports(
   node: TSESTree.ImportDeclaration,
   bindings: MedusaServiceBindings
 ): void {
-  if (node.source.value !== FRAMEWORK_UTILS_SOURCE) return
+  if (node.source.value !== FRAMEWORK_UTILS_SOURCE) {
+    return
+  }
   for (const specifier of node.specifiers) {
-    if (specifier.type !== AST_NODE_TYPES.ImportSpecifier) continue
-    if (specifier.imported.type !== AST_NODE_TYPES.Identifier) continue
-    if (specifier.imported.name !== MEDUSA_SERVICE) continue
+    if (specifier.type !== AST_NODE_TYPES.ImportSpecifier) {
+      continue
+    }
+    if (specifier.imported.type !== AST_NODE_TYPES.Identifier) {
+      continue
+    }
+    if (specifier.imported.name !== MEDUSA_SERVICE) {
+      continue
+    }
     bindings.medusaService.add(specifier.local.name)
   }
 }
@@ -42,10 +50,16 @@ export function isMedusaServiceSuper(
   superClass: TSESTree.LeftHandSideExpression | null,
   bindings: MedusaServiceBindings
 ): boolean {
-  if (!superClass) return false
-  if (superClass.type !== AST_NODE_TYPES.CallExpression) return false
+  if (!superClass) {
+    return false
+  }
+  if (superClass.type !== AST_NODE_TYPES.CallExpression) {
+    return false
+  }
   const callee = superClass.callee
-  if (callee.type !== AST_NODE_TYPES.Identifier) return false
+  if (callee.type !== AST_NODE_TYPES.Identifier) {
+    return false
+  }
   return bindings.medusaService.has(callee.name)
 }
 
@@ -66,7 +80,9 @@ export function isServiceClass(
   node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
   bindings: MedusaServiceBindings
 ): boolean {
-  if (isMedusaServiceSuper(node.superClass, bindings)) return true
+  if (isMedusaServiceSuper(node.superClass, bindings)) {
+    return true
+  }
   return node.id?.name.endsWith("Service") ?? false
 }
 
@@ -83,12 +99,20 @@ export function trackFrameworkUtilsImports(
   node: TSESTree.ImportDeclaration,
   buckets: Record<string, Set<string>>
 ): void {
-  if (node.source.value !== FRAMEWORK_UTILS_SOURCE) return
+  if (node.source.value !== FRAMEWORK_UTILS_SOURCE) {
+    return
+  }
   for (const specifier of node.specifiers) {
-    if (specifier.type !== AST_NODE_TYPES.ImportSpecifier) continue
-    if (specifier.imported.type !== AST_NODE_TYPES.Identifier) continue
+    if (specifier.type !== AST_NODE_TYPES.ImportSpecifier) {
+      continue
+    }
+    if (specifier.imported.type !== AST_NODE_TYPES.Identifier) {
+      continue
+    }
     const bucket = buckets[specifier.imported.name]
-    if (!bucket) continue
+    if (!bucket) {
+      continue
+    }
     bucket.add(specifier.local.name)
   }
 }
@@ -102,7 +126,9 @@ export function trackFrameworkUtilsImports(
 export function getParamIdentifier(
   param: TSESTree.Parameter
 ): TSESTree.Identifier | null {
-  if (param.type === AST_NODE_TYPES.Identifier) return param
+  if (param.type === AST_NODE_TYPES.Identifier) {
+    return param
+  }
   if (
     param.type === AST_NODE_TYPES.AssignmentPattern &&
     param.left.type === AST_NODE_TYPES.Identifier
@@ -122,9 +148,15 @@ export function getParamIdentifier(
  */
 export function isContextTypedIdentifier(id: TSESTree.Identifier): boolean {
   const annotation = id.typeAnnotation?.typeAnnotation
-  if (!annotation) return false
-  if (annotation.type !== AST_NODE_TYPES.TSTypeReference) return false
-  if (annotation.typeName.type !== AST_NODE_TYPES.Identifier) return false
+  if (!annotation) {
+    return false
+  }
+  if (annotation.type !== AST_NODE_TYPES.TSTypeReference) {
+    return false
+  }
+  if (annotation.typeName.type !== AST_NODE_TYPES.Identifier) {
+    return false
+  }
   return annotation.typeName.name === CONTEXT_TYPE
 }
 
@@ -134,7 +166,9 @@ export function hasContextParam(
 ): boolean {
   for (const param of fn.params) {
     const id = getParamIdentifier(param)
-    if (id && isContextTypedIdentifier(id)) return true
+    if (id && isContextTypedIdentifier(id)) {
+      return true
+    }
   }
   return false
 }
@@ -149,11 +183,15 @@ export function getParamDecorators(
   param: TSESTree.Parameter
 ): TSESTree.Decorator[] {
   const outer = (param as { decorators?: TSESTree.Decorator[] }).decorators
-  if (outer && outer.length) return outer
+  if (outer && outer.length) {
+    return outer
+  }
   if (param.type === AST_NODE_TYPES.AssignmentPattern) {
     const inner = (param.left as { decorators?: TSESTree.Decorator[] })
       .decorators
-    if (inner && inner.length) return inner
+    if (inner && inner.length) {
+      return inner
+    }
   }
   return []
 }
@@ -167,7 +205,9 @@ export function hasDecoratorWithLocalName(
   decorators: TSESTree.Decorator[] | undefined,
   localNames: Set<string>
 ): boolean {
-  if (!decorators?.length) return false
+  if (!decorators?.length) {
+    return false
+  }
   for (const decorator of decorators) {
     const expr = decorator.expression
     let calleeName: string | null = null
@@ -178,7 +218,9 @@ export function hasDecoratorWithLocalName(
     } else if (expr.type === AST_NODE_TYPES.Identifier) {
       calleeName = expr.name
     }
-    if (calleeName && localNames.has(calleeName)) return true
+    if (calleeName && localNames.has(calleeName)) {
+      return true
+    }
   }
   return false
 }

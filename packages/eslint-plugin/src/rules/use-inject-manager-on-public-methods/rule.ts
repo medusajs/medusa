@@ -41,13 +41,23 @@ export const rule = createRule<[], MessageIds>({
     function checkClass(
       node: TSESTree.ClassDeclaration | TSESTree.ClassExpression
     ) {
-      if (!isServiceClass(node, serviceBindings)) return
+      if (!isServiceClass(node, serviceBindings)) {
+        return
+      }
 
       for (const member of node.body.body) {
-        if (member.type !== AST_NODE_TYPES.MethodDefinition) continue
-        if (member.kind === "constructor") continue
-        if (member.kind !== "method") continue
-        if (member.computed) continue
+        if (member.type !== AST_NODE_TYPES.MethodDefinition) {
+          continue
+        }
+        if (member.kind === "constructor") {
+          continue
+        }
+        if (member.kind !== "method") {
+          continue
+        }
+        if (member.computed) {
+          continue
+        }
         const value = member.value
         if (
           value.type !== AST_NODE_TYPES.FunctionExpression &&
@@ -56,7 +66,9 @@ export const rule = createRule<[], MessageIds>({
           continue
         }
 
-        if (!hasContextParam(value)) continue
+        if (!hasContextParam(value)) {
+          continue
+        }
 
         const isInternal =
           member.accessibility === "protected" ||

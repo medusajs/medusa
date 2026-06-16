@@ -51,8 +51,12 @@ function findConfigObject(
   const resolve = (
     node: TSESTree.Node | null | undefined
   ): TSESTree.ObjectExpression | null => {
-    if (!node) return null
-    if (node.type === AST_NODE_TYPES.ObjectExpression) return node
+    if (!node) {
+      return null
+    }
+    if (node.type === AST_NODE_TYPES.ObjectExpression) {
+      return node
+    }
     if (node.type === AST_NODE_TYPES.Identifier) {
       return localObjects.get(node.name) ?? null
     }
@@ -68,7 +72,9 @@ function findConfigObject(
       for (const d of stmt.declaration.declarations) {
         if (d.id.type === AST_NODE_TYPES.Identifier && d.id.name === "config") {
           const resolved = resolve(d.init)
-          if (resolved) return resolved
+          if (resolved) {
+            return resolved
+          }
         }
       }
     }
@@ -85,7 +91,9 @@ function findConfigObject(
         spec.local.type === AST_NODE_TYPES.Identifier
       ) {
         const resolved = resolve(spec.local)
-        if (resolved) return resolved
+        if (resolved) {
+          return resolved
+        }
       }
     }
   }
@@ -102,10 +110,14 @@ function getConfigName(
   program: TSESTree.Program
 ): { value: string; node: TSESTree.Node } | null {
   const config = findConfigObject(program.body)
-  if (!config) return null
+  if (!config) {
+    return null
+  }
 
   const prop = findProperty(config, "name")
-  if (!prop) return null
+  if (!prop) {
+    return null
+  }
 
   if (
     prop.value.type === AST_NODE_TYPES.Literal &&
@@ -123,7 +135,9 @@ function getConfigName(
 function locateJobsRoot(filename: string): string | null {
   const posix = toPosix(filename)
   const idx = posix.lastIndexOf("/jobs/")
-  if (idx === -1) return null
+  if (idx === -1) {
+    return null
+  }
   return posix.slice(0, idx + "/jobs".length)
 }
 
@@ -140,7 +154,9 @@ function collectJobFiles(root: string): string[] {
     for (const entry of entries) {
       const abs = path.join(dir, entry.name)
       if (entry.isDirectory()) {
-        if (entry.name === "node_modules") continue
+        if (entry.name === "node_modules") {
+          continue
+        }
         walk(abs)
       } else if (
         entry.isFile() &&

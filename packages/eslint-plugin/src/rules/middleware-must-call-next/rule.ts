@@ -18,32 +18,34 @@ function isMiddlewareFunctionNode(node: TSESTree.Node): node is MiddlewareFn {
 
 function getNextParamName(fn: MiddlewareFn): string | null {
   const third = fn.params[2]
-  if (!third) return null
-  if (third.type === AST_NODE_TYPES.Identifier) return third.name
+  if (!third) {
+    return null
+  }
+  if (third.type === AST_NODE_TYPES.Identifier) {
+    return third.name
+  }
   // Destructured / rest / assignment patterns aren't the canonical signature —
   // skip them so we don't false-positive on unusual middleware shapes.
   return null
 }
 
-function bodyReferencesIdentifier(
-  body: TSESTree.Node,
-  name: string
-): boolean {
+function bodyReferencesIdentifier(body: TSESTree.Node, name: string): boolean {
   let found = false
   const stack: TSESTree.Node[] = [body]
   while (stack.length) {
     const node = stack.pop()!
-    if (
-      node.type === AST_NODE_TYPES.Identifier &&
-      node.name === name
-    ) {
+    if (node.type === AST_NODE_TYPES.Identifier && node.name === name) {
       found = true
       break
     }
     for (const key of Object.keys(node) as Array<keyof typeof node>) {
-      if (key === "parent") continue
+      if (key === "parent") {
+        continue
+      }
       const value = (node as unknown as Record<string, unknown>)[key as string]
-      if (!value) continue
+      if (!value) {
+        continue
+      }
       if (Array.isArray(value)) {
         for (const child of value) {
           if (child && typeof child === "object" && "type" in child) {
@@ -68,22 +70,29 @@ function collectMiddlewareFunctions(
     if (node.type === AST_NODE_TYPES.Property) {
       const key = node.key
       const isMiddlewaresKey =
-        (key.type === AST_NODE_TYPES.Identifier && key.name === "middlewares") ||
+        (key.type === AST_NODE_TYPES.Identifier &&
+          key.name === "middlewares") ||
         (key.type === AST_NODE_TYPES.Literal && key.value === "middlewares")
       if (
         isMiddlewaresKey &&
         node.value.type === AST_NODE_TYPES.ArrayExpression
       ) {
         for (const el of node.value.elements) {
-          if (el && isMiddlewareFunctionNode(el)) out.push(el)
+          if (el && isMiddlewareFunctionNode(el)) {
+            out.push(el)
+          }
         }
         continue
       }
     }
     for (const key of Object.keys(node) as Array<keyof typeof node>) {
-      if (key === "parent") continue
+      if (key === "parent") {
+        continue
+      }
       const value = (node as unknown as Record<string, unknown>)[key as string]
-      if (!value) continue
+      if (!value) {
+        continue
+      }
       if (Array.isArray(value)) {
         for (const child of value) {
           if (child && typeof child === "object" && "type" in child) {
@@ -122,14 +131,18 @@ export const rule = createRule<[], MessageIds>({
           return
         }
         const arg = node.arguments[0]
-        if (!arg || arg.type !== AST_NODE_TYPES.ObjectExpression) return
+        if (!arg || arg.type !== AST_NODE_TYPES.ObjectExpression) {
+          return
+        }
 
         const fns: MiddlewareFn[] = []
         collectMiddlewareFunctions(arg, fns)
 
         for (const fn of fns) {
           const name = getNextParamName(fn)
-          if (!name) continue
+          if (!name) {
+            continue
+          }
           if (!bodyReferencesIdentifier(fn.body, name)) {
             context.report({
               node: fn,

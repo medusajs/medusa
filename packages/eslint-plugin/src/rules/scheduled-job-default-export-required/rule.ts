@@ -8,8 +8,7 @@ export const rule = createRule<[], MessageIds>({
   meta: {
     type: "problem",
     docs: {
-      description:
-        "Scheduled job files must default-export the job function.",
+      description: "Scheduled job files must default-export the job function.",
     },
     messages: {
       missingDefaultExport:
@@ -37,7 +36,9 @@ export const rule = createRule<[], MessageIds>({
         }
       },
       "Program:exit"(node: TSESTree.Program) {
-        if (hasDefaultExport) return
+        if (hasDefaultExport) {
+          return
+        }
         context.report({
           node,
           messageId: "missingDefaultExport",

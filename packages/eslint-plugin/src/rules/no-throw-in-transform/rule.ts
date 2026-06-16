@@ -31,8 +31,12 @@ export const rule = createRule<[], MessageIds>({
       },
 
       ThrowStatement(node) {
-        if (bindings.transform.size === 0) return
-        if (!isInTransformCallback(node, bindings)) return
+        if (bindings.transform.size === 0) {
+          return
+        }
+        if (!isInTransformCallback(node, bindings)) {
+          return
+        }
         context.report({
           node,
           messageId: "throwInTransform",

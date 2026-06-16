@@ -13,8 +13,7 @@ export const rule = createRule<[], MessageIds>({
   meta: {
     type: "problem",
     docs: {
-      description:
-        "The default-exported scheduled job function must be async.",
+      description: "The default-exported scheduled job function must be async.",
     },
     fixable: "code",
     messages: {

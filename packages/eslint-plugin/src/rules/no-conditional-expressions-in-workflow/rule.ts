@@ -47,8 +47,12 @@ export const rule = createRule<[], MessageIds>({
       },
 
       LogicalExpression(node) {
-        if (bindings.createWorkflow.size === 0) return
-        if (!isInWorkflowDefinitionScope(node, bindings)) return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
+        if (!isInWorkflowDefinitionScope(node, bindings)) {
+          return
+        }
         context.report({
           node,
           messageId: "logicalExpression",
@@ -57,8 +61,12 @@ export const rule = createRule<[], MessageIds>({
       },
 
       ConditionalExpression(node) {
-        if (bindings.createWorkflow.size === 0) return
-        if (!isInWorkflowDefinitionScope(node, bindings)) return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
+        if (!isInWorkflowDefinitionScope(node, bindings)) {
+          return
+        }
         context.report({
           node,
           messageId: "conditionalExpression",
@@ -66,8 +74,12 @@ export const rule = createRule<[], MessageIds>({
       },
 
       UnaryExpression(node) {
-        if (bindings.createWorkflow.size === 0) return
-        if (node.operator !== "!") return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
+        if (node.operator !== "!") {
+          return
+        }
         // Avoid double-reporting on `!!x` / `!!!x` — only the outermost
         // `!` reports (the one whose parent is not also `!`).
         if (
@@ -76,7 +88,9 @@ export const rule = createRule<[], MessageIds>({
         ) {
           return
         }
-        if (!isInWorkflowDefinitionScope(node, bindings)) return
+        if (!isInWorkflowDefinitionScope(node, bindings)) {
+          return
+        }
         context.report({
           node,
           messageId: "negation",
@@ -84,9 +98,15 @@ export const rule = createRule<[], MessageIds>({
       },
 
       BinaryExpression(node) {
-        if (bindings.createWorkflow.size === 0) return
-        if (!EQUALITY_OPERATORS.has(node.operator)) return
-        if (!isInWorkflowDefinitionScope(node, bindings)) return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
+        if (!EQUALITY_OPERATORS.has(node.operator)) {
+          return
+        }
+        if (!isInWorkflowDefinitionScope(node, bindings)) {
+          return
+        }
         context.report({
           node,
           messageId: "equalityExpression",
@@ -95,8 +115,12 @@ export const rule = createRule<[], MessageIds>({
       },
 
       ChainExpression(node) {
-        if (bindings.createWorkflow.size === 0) return
-        if (!isInWorkflowDefinitionScope(node, bindings)) return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
+        if (!isInWorkflowDefinitionScope(node, bindings)) {
+          return
+        }
         context.report({
           node,
           messageId: "optionalChaining",

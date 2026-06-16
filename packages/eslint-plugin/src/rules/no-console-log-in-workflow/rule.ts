@@ -42,20 +42,32 @@ export const rule = createRule<[], MessageIds>({
       },
 
       CallExpression(node) {
-        if (bindings.createWorkflow.size === 0) return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
         const callee = node.callee
-        if (callee.type !== AST_NODE_TYPES.MemberExpression) return
-        if (callee.computed) return
+        if (callee.type !== AST_NODE_TYPES.MemberExpression) {
+          return
+        }
+        if (callee.computed) {
+          return
+        }
         if (
           callee.object.type !== AST_NODE_TYPES.Identifier ||
           callee.object.name !== "console"
         ) {
           return
         }
-        if (callee.property.type !== AST_NODE_TYPES.Identifier) return
+        if (callee.property.type !== AST_NODE_TYPES.Identifier) {
+          return
+        }
         const method = callee.property.name
-        if (!CONSOLE_METHODS.has(method)) return
-        if (!isInWorkflowDefinitionScope(node, bindings)) return
+        if (!CONSOLE_METHODS.has(method)) {
+          return
+        }
+        if (!isInWorkflowDefinitionScope(node, bindings)) {
+          return
+        }
         context.report({
           node,
           messageId: "consoleInWorkflow",

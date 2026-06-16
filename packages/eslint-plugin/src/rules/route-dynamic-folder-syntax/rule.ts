@@ -55,17 +55,23 @@ export const rule = createRule<[], MessageIds>({
   defaultOptions: [],
   create(context) {
     const filename = context.filename
-    if (!filename || filename.startsWith("<")) return {}
+    if (!filename || filename.startsWith("<")) {
+      return {}
+    }
 
     const info = getRouteInfo(filename)
-    if (!info) return {}
+    if (!info) {
+      return {}
+    }
 
     return {
       Program(node) {
         const { segments, routeStartIndex } = info
         for (let i = 0; i < segments.length; i++) {
           const segment = segments[i]
-          if (!BRACKETED_FOLDER.test(segment)) continue
+          if (!BRACKETED_FOLDER.test(segment)) {
+            continue
+          }
 
           if (!VALID_PARAM_FOLDER.test(segment)) {
             context.report({

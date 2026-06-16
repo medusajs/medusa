@@ -31,8 +31,12 @@ export const rule = createRule<[], MessageIds>({
       },
 
       TryStatement(node) {
-        if (bindings.createWorkflow.size === 0) return
-        if (!isInWorkflowDefinitionScope(node, bindings)) return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
+        if (!isInWorkflowDefinitionScope(node, bindings)) {
+          return
+        }
         context.report({
           node,
           messageId: "tryCatchInWorkflow",

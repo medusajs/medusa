@@ -3,7 +3,9 @@ import { PLUGIN_NAMESPACE } from "../constants"
 
 /**
  * The directories every preset ignores: build output, dependency trees, caches,
- * and generated sources.
+ * generated sources, and test scaffolding. Test files and fixtures aren't real
+ * Medusa source — linting them produces false positives (e.g. treating a test
+ * `medusa-config.js` fixture as a project config), so they're excluded here.
  */
 export const ignoresBlock: Linter.Config = {
   ignores: [
@@ -15,6 +17,12 @@ export const ignoresBlock: Linter.Config = {
     "coverage/**",
     ".cache/**",
     "**/*.generated.ts",
+    "**/__tests__/**",
+    "**/__fixtures__/**",
+    "**/__mocks__/**",
+    "**/integration-tests/**",
+    "**/*.spec.*",
+    "**/*.test.*",
   ],
 }
 

@@ -75,9 +75,7 @@ ruleTester.run("route-dynamic-folder-syntax", rule, {
     {
       code: `export const GET = (req, res) => {}`,
       filename: "src/api/store/things/[]/route.ts",
-      errors: [
-        { messageId: "invalidDynamicFolder", data: { segment: "[]" } },
-      ],
+      errors: [{ messageId: "invalidDynamicFolder", data: { segment: "[]" } }],
     },
     // Multiple invalid segments — one error per segment.
     {

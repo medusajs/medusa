@@ -42,13 +42,23 @@ export const rule = createRule<[], MessageIds>({
       },
 
       ReturnStatement(node) {
-        if (bindings.createStep.size === 0) return
-        if (!node.argument) return
-        if (isUndefinedExpression(node.argument)) return
+        if (bindings.createStep.size === 0) {
+          return
+        }
+        if (!node.argument) {
+          return
+        }
+        if (isUndefinedExpression(node.argument)) {
+          return
+        }
 
         const fn = getEnclosingFunction(node)
-        if (!fn) return
-        if (!isStepCallbackFunction(fn, bindings)) return
+        if (!fn) {
+          return
+        }
+        if (!isStepCallbackFunction(fn, bindings)) {
+          return
+        }
 
         const arg = node.argument
         if (
@@ -66,18 +76,21 @@ export const rule = createRule<[], MessageIds>({
             const argText = context.sourceCode.getText(arg)
 
             if (bindings.stepResponse.size > 0) {
-              const name = bindings.stepResponse.values().next()
-                .value as string
+              const name = bindings.stepResponse.values().next().value as string
               return fixer.replaceText(arg, `new ${name}(${argText})`)
             }
 
-            if (!workflowsSdkImportNode) return null
+            if (!workflowsSdkImportNode) {
+              return null
+            }
             const importNode = workflowsSdkImportNode
             const specifiers = importNode.specifiers.filter(
               (s): s is TSESTree.ImportSpecifier =>
                 s.type === AST_NODE_TYPES.ImportSpecifier
             )
-            if (specifiers.length === 0) return null
+            if (specifiers.length === 0) {
+              return null
+            }
 
             const lastSpecifier = specifiers[specifiers.length - 1]
             bindings.stepResponse.add(STEP_RESPONSE)

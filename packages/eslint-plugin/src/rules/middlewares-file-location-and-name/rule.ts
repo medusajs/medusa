@@ -50,13 +50,17 @@ export const rule = createRule<[], MessageIds>({
   defaultOptions: [],
   create(context) {
     const filename = context.filename
-    if (!filename || filename.startsWith("<")) return {}
+    if (!filename || filename.startsWith("<")) {
+      return {}
+    }
 
     const basename = path.basename(filename)
     const isSingular = SINGULAR_BASENAMES.has(basename)
     const isPlural = PLURAL_BASENAMES.has(basename)
 
-    if (!isSingular && !isPlural) return {}
+    if (!isSingular && !isPlural) {
+      return {}
+    }
 
     const canonical = isPlural && isCanonicalLocation(filename)
 

@@ -14,9 +14,15 @@ export const toPosix = (p: string): string => p.replace(/\\/g, "/")
 export const getFilenameStem = (
   filename: string | undefined
 ): string | null => {
-  if (!filename) return null
-  if (filename.startsWith("<")) return null
+  if (!filename) {
+    return null
+  }
+  if (filename.startsWith("<")) {
+    return null
+  }
   const base = path.basename(filename, path.extname(filename))
-  if (!base || base === "index") return null
+  if (!base || base === "index") {
+    return null
+  }
   return base
 }
