@@ -1,4 +1,5 @@
 export type {
+  LandingRoute,
   Permission,
   PermissionOperation,
   PermissionRequirement,
@@ -13,7 +14,6 @@ export {
   NO_PERMISSIONS_ROUTE,
   OPERATION_IMPLICATIONS,
 } from "./constants"
-export type { LandingRoute } from "./constants"
 
 export {
   buildPermission,

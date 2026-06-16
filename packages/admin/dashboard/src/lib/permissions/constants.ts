@@ -1,4 +1,4 @@
-import type { Permission, PermissionOperation } from "./types"
+import type { LandingRoute, PermissionOperation } from "./types"
 
 /**
  * Map of operations to the operations they imply.
@@ -13,11 +13,6 @@ export const OPERATION_IMPLICATIONS: Record<
   update: ["update"],
   delete: ["delete"],
   "*": ["read", "create", "update", "delete", "*"],
-}
-
-export type LandingRoute = {
-  to: string
-  permission: Permission
 }
 
 /**

@@ -85,6 +85,14 @@ export type PermissionOperation = "read" | "create" | "update" | "delete" | "*"
 export type Permission = `${PermissionResource}:${PermissionOperation}`
 
 /**
+ * A destination a user can be routed to, gated by a single permission.
+ */
+export type LandingRoute = {
+  to: string
+  permission: Permission
+}
+
+/**
  * A policy represents the user's set of permissions.
  */
 export interface UserPolicy {
