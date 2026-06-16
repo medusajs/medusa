@@ -120,37 +120,35 @@ export const ProductVariantSection = ({
     throw error
   }
 
-  const sectionActions = true
-    ? [
-        ...(canUpdatePrices
-          ? [
-              {
-                label: t("products.editPrices"),
-                to: `prices`,
-                icon: <PencilSquare />,
-              },
-            ]
-          : []),
-        ...(canUpdateInventory
-          ? [
-              {
-                label: t("inventory.stock.action"),
-                to: `stock`,
-                icon: <Buildings />,
-              },
-            ]
-          : []),
-        ...(canManageTranslations
-          ? [
-              {
-                icon: <GlobeEurope />,
-                label: t("translations.actions.manage"),
-                to: `/settings/translations/edit?reference=product_variant&${translationParams.toString()}`,
-              },
-            ]
-          : []),
-      ]
-    : []
+  const sectionActions = [
+    ...(canUpdatePrices
+      ? [
+          {
+            label: t("products.editPrices"),
+            to: `prices`,
+            icon: <PencilSquare />,
+          },
+        ]
+      : []),
+    ...(canUpdateInventory
+      ? [
+          {
+            label: t("inventory.stock.action"),
+            to: `stock`,
+            icon: <Buildings />,
+          },
+        ]
+      : []),
+    ...(canManageTranslations
+      ? [
+          {
+            icon: <GlobeEurope />,
+            label: t("translations.actions.manage"),
+            to: `/settings/translations/edit?reference=product_variant&${translationParams.toString()}`,
+          },
+        ]
+      : []),
+  ]
 
   return (
     <Container className="divide-y p-0">
