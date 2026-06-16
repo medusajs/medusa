@@ -204,6 +204,59 @@ The rule now also accepts a return whose argument is a call to `<StepResponse>.s
 
 ---
 
+## 8. `service-methods-must-be-async` false-positives on `*Service`-named non-service classes
+
+- **Rule:** `service-methods-must-be-async`
+- **Kind:** False positive
+- **Status:** Fixed
+
+### Symptom
+
+The rule flagged every sync public method on any class whose name merely ends in `Service`, regardless of whether it's an actual Medusa module service.
+
+### Reproduction
+
+`packages/modules/settings/src/utils/entity-discovery.ts`:
+
+```ts
+export class EntityDiscoveryService {
+  discover() {} // flagged: "must be async"
+}
+```
+
+`EntityDiscoveryService` is a utility class, not a module service, but the `Service` name-suffix heuristic matched it and flagged all its synchronous methods.
+
+### Fix (implemented)
+
+The rule no longer relies on the `Service` name suffix. It now runs on a class only when:
+
+- it extends `MedusaService(...)` (anywhere), **or**
+- the file is a module service location — a module's main `service.ts`, or any file under a module's `services/**` directory (`isServiceFileLocation` in `util/service-scope.ts`).
+
+`isServiceClass` (used by other rules) is unchanged; only this rule's gating was narrowed. Util classes like `EntityDiscoveryService` under `modules/**/utils/**` are no longer flagged, while real services (which extend `MedusaService` and/or live in service locations) still are.
+
+---
+
+## 9. Ignore patterns don't match nested build/cache dirs (e.g. `packages/*/dist`)
+
+- **Rule:** Config-level (`ignoresBlock` in `configs/shared.ts`)
+- **Kind:** False positive (wrong files linted)
+- **Status:** Fixed
+
+### Symptom
+
+Compiled output under `packages/*/dist/**` was being linted, producing noise on generated `.js`/`.ts` files.
+
+### Root cause
+
+The ignore entries were root-anchored: `dist/**`, `build/**`, `node_modules/**`, `coverage/**`, `.cache/**`, `.medusa/**`, `.yalc/**`. A relative pattern like `dist/**` only matches a `dist/` directory at the lint root, not nested ones — so in a monorepo `packages/<pkg>/dist/**` was never ignored.
+
+### Fix (implemented)
+
+Prefixed each directory pattern with `**/` (`**/dist/**`, `**/build/**`, `**/node_modules/**`, etc.) so it matches at any depth. The `**/` prefix also still matches the root-level directory, so nothing that was ignored before becomes linted.
+
+---
+
 ## Audit: all orphaned rules
 
 A full audit of `src/rules/*/` against `src/rules/index.ts` and `src/configs/` found exactly **4** rules that are implemented but never imported/registered (and therefore also absent from every config). All other 64 registered rules are referenced by a config. The 4 orphaned rules are documented above:

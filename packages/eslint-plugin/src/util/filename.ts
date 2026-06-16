@@ -26,3 +26,15 @@ export const getFilenameStem = (
   }
   return base
 }
+
+/**
+ * True when `filename` is an `index.<ext>` file — a barrel / re-export module
+ * that aggregates siblings rather than defining anything itself. Returns `false`
+ * for empty or synthetic (`<input>`) filenames.
+ */
+export const isIndexFile = (filename: string | undefined): boolean => {
+  if (!filename || filename.startsWith("<")) {
+    return false
+  }
+  return path.basename(filename, path.extname(filename)) === "index"
+}

@@ -4,7 +4,7 @@ import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/utils"
 import { parse } from "@typescript-eslint/typescript-estree"
 import { createRule } from "../../create-rule"
 import { findProperty } from "../../util/ast"
-import { toPosix } from "../../util/filename"
+import { isIndexFile, toPosix } from "../../util/filename"
 
 type MessageIds = "duplicateName"
 
@@ -215,6 +215,10 @@ export const rule = createRule<[], MessageIds>({
       "Program:exit"(node: TSESTree.Program) {
         const filename = context.filename
         if (!filename || filename.startsWith("<")) {
+          return
+        }
+        // `index.<ext>` barrels in a jobs directory aren't job definitions.
+        if (isIndexFile(filename)) {
           return
         }
 

@@ -5,6 +5,7 @@ import {
   isFunctionNode,
   resolveFunctionFromIdentifier,
 } from "../../util/ast"
+import { isIndexFile } from "../../util/filename"
 
 type MessageIds = "mustBeAsync"
 
@@ -24,6 +25,12 @@ export const rule = createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
+    // `index.<ext>` files in a jobs directory are barrels/re-exports, not job
+    // definitions.
+    if (isIndexFile(context.filename)) {
+      return {}
+    }
+
     const sourceCode = context.sourceCode ?? context.getSourceCode()
 
     function checkFunction(fn: FunctionNode) {

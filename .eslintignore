@@ -39,20 +39,22 @@ packages/*
 !packages/modules/providers/locking-postgres
 !packages/modules/providers/locking-redis
 !packages/modules/index
-!packages/core/framework
 !packages/eslint-plugin
 
 # Linted by @medusajs/eslint-plugin (Medusa convention rules). The root config
 # scopes the google/prettier/type style rules away from these via STYLE_EXCLUDED.
 !packages/plugins
 !packages/modules
-# Re-allow only core-flows under packages/core. The `!packages/core/core-flows`
-# negation above is a no-op (packages/* excludes the packages/core directory, so
-# a grandchild can't be re-included without first re-including the parent), so
-# re-include the parent, re-exclude its children, then re-include core-flows.
+# Re-allow core-flows and framework under packages/core. Grandchild negations
+# can't re-include while the parent dir is excluded (packages/* excludes the
+# packages/core directory), so re-include the parent, re-exclude its children,
+# then re-include the specific packages we lint.
+# Note: framework is linted only for the style/other rules — the Medusa rules
+# are turned off for it in .eslintrc.js (see MEDUSA_EXCLUDED_DIRS).
 !packages/core
 packages/core/*
 !packages/core/core-flows
+!packages/core/framework
 
 
 **/models/*

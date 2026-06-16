@@ -27,7 +27,6 @@ const STYLE_EXCLUDED = [
   "**/models/**",
 ]
 
-// Medusa rules never apply to tests, mocks, or generated migrations.
 const MEDUSA_EXCLUDED = [
   "**/__tests__/**",
   "**/__mocks__/**",
@@ -36,6 +35,9 @@ const MEDUSA_EXCLUDED = [
   "**/*.test.*",
   "**/integration-tests/**",
   "**/migrations/**",
+  "packages/modules/**",
+  "packages/core/framework/**",
+  "packages/admin/**"
 ]
 
 // Turn a flat preset's rule blocks into eslintrc `overrides`, scoping each
@@ -305,13 +307,14 @@ module.exports = {
     },
 
     // --- Medusa convention rules (generated from the plugin presets) ---
-    // `recommended` for the app-like packages; `modules` for module/provider
-    // packages. Applies to all Medusa target packages (allowlisted or not).
+    // `recommended` for the app-like packages. `packages/modules` and
+    // `packages/core/framework` are intentionally excluded from the Medusa rules
+    // here (see MEDUSA_EXCLUDED_DIRS) — they're linted for conventions
+    // separately — so no `modules`-preset override is registered.
     ...medusaOverrides("recommended", [
       "packages/medusa",
       "packages/plugins/*",
       "packages/core/core-flows",
     ]),
-    ...medusaOverrides("modules", ["packages/modules"]),
   ],
 }
