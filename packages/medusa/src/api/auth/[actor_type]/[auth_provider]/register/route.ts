@@ -13,9 +13,6 @@ import { generateJwtTokenForAuthIdentity } from "../../../utils/generate-jwt-tok
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const { actor_type, auth_provider } = req.params
-  const config: ConfigModule = req.scope.resolve(
-    ContainerRegistrationKeys.CONFIG_MODULE
-  )
 
   const service: IAuthModuleService = req.scope.resolve(Modules.AUTH)
 
@@ -34,9 +31,13 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   )
 
   if (success && authIdentity) {
-    const { http } = config.projectConfig
+    const { http } = req.scope.resolve<ConfigModule>(
+      ContainerRegistrationKeys.CONFIG_MODULE
+    ).projectConfig
 
-    const actorlessToken = await generateJwtTokenForAuthIdentity(
+    // At registration there is no actor created, so we just return the actorless token.
+    // Other verifications will happen at login/callback time.
+    const result = await generateJwtTokenForAuthIdentity(
       {
         authIdentity,
         actorType: actor_type,
@@ -49,8 +50,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
         options: http.jwtOptions,
       }
     )
-
-    return res.status(200).json({ token: actorlessToken })
+    return res.status(200).json(result)
   }
 
   throw new MedusaError(

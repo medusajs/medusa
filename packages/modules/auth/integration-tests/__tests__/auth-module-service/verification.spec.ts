@@ -339,7 +339,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         expect(result).toEqual(
           expect.objectContaining({
             success: true,
-            mfa_challenge: expect.objectContaining({
+            mfaChallenge: expect.objectContaining({
               auth_identity_id: "auth-id",
               actor_type: "user",
               auth_provider: "emailpass",

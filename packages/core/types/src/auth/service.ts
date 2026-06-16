@@ -201,6 +201,21 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthenticationResponse>
 
   /**
+   * This method gets an auth identity, and does MFA checks, before returning the auth identity.
+   *
+   * @param {string} id - The ID of the auth identity to validate.
+   * @param {string} provider - The ID of the provider to use to validate the auth identity.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthenticationResponse>} The validation response.
+   */
+  validateAuthIdentity(
+    id: string,
+    provider: string,
+    config?: FindConfig<AuthIdentityDTO>,
+    sharedContext?: Context
+  ): Promise<AuthenticationResponse>
+
+  /**
    * This method starts multi-factor authentication (MFA) setup for an auth identity using the requested provider.
    *
    * @param {AuthMfaStartDTO} data - The data required to start multi-factor authentication (MFA) setup.

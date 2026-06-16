@@ -94,6 +94,7 @@ export const createAdminUser = async (
       actor_id: user.id,
       actor_type: "user",
       auth_identity_id: authIdentity.id,
+      auth_provider: "emailpass",
       app_metadata: {
         user: user.id,
         roles: userRoles,

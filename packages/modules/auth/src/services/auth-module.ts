@@ -321,6 +321,33 @@ export default class AuthModuleService
     }
   }
 
+  async validateAuthIdentity(
+    id: string,
+    provider: string,
+    config?: FindConfig<AuthTypes.AuthIdentityDTO>,
+    sharedContext?: Context
+  ): Promise<AuthenticationResponse> {
+    try {
+      const authIdentity = await this.authIdentityService_.retrieve(
+        id,
+        config,
+        sharedContext
+      )
+
+      return await this.applyMfaRequirement_(
+        {
+          success: true,
+          authIdentity: authIdentity as AuthTypes.AuthIdentityDTO,
+        },
+        {
+          auth_provider: provider,
+        }
+      )
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  }
+
   @InjectManager()
   async startAuthMfa(
     data: AuthTypes.AuthMfaStartDTO,
@@ -713,7 +740,7 @@ export default class AuthModuleService
 
     return {
       success: true,
-      mfa_challenge: mfaChallenge,
+      mfaChallenge: mfaChallenge,
       authIdentity: response.authIdentity,
     }
   }
