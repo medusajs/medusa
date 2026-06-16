@@ -22,11 +22,12 @@ export const SettingsLayout = () => {
 
 const useSettingRoutes = (): INavItem[] => {
   const isTranslationsEnabled = useFeatureFlag("translation")
+  const isRbacEnabled = useFeatureFlag("rbac")
   const { hasPermission } = usePermissions()
   const { t } = useTranslation()
 
-  const canReadRoles = hasPermission("rbac_role:read")
-  const canReadPolicies = hasPermission("rbac_policy:read")
+  const canReadRoles = isRbacEnabled && hasPermission("rbac_role:read")
+  const canReadPolicies = isRbacEnabled && hasPermission("rbac_policy:read")
 
   return useMemo(
     () => [
