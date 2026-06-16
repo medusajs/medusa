@@ -46,45 +46,28 @@ The fulfillment item holds details relevant to fulfilling the item, such as barc
 
 Once a shipment is created for the fulfillment, you can store its tracking number, URL, or other related details as a label, represented by the [FulfillmentLabel data model](/references/fulfillment/models/FulfillmentLabel).
 
-<Note type="warning">
-
-**Important:** Tracking information is not stored directly on the Fulfillment object. Properties like `tracking_links` or `tracking_urls` do not exist on the Fulfillment model. Instead, tracking information is stored in the related FulfillmentLabel models accessed via `fulfillment.labels`.
-
-</Note>
-
 ### Accessing Tracking Information
 
-To access tracking information for a fulfillment, you must retrieve the related labels:
+To access tracking information for a fulfillment, you must retrieve the related labels. For example, to retrieve the tracking data with [Query](!docs!/learn/fundamentals/module-links/query):
 
 ```ts
-// ❌ Incorrect - These properties don't exist
-fulfillment.tracking_links
-fulfillment.tracking_urls
+const { data: fulfillment } = query.graph({
+  entity: "fulfillment",
+  fields: [
+    "labels.tracking_number",
+    "labels.tracking_url",
+    "labels.label_url",
+  ],
+  filters: {
+    id: "fulfillment_123",
+  }
+})
 
-// ✅ Correct - Access through labels relation
 fulfillment.labels.forEach((label) => {
   console.log("Tracking Number:", label.tracking_number)
   console.log("Tracking URL:", label.tracking_url)
   console.log("Label URL:", label.label_url)
 })
-```
-
-### Using Labels in Workflows
-
-When working with fulfillments in workflows, make sure to retrieve the labels relation:
-
-```ts
-const fulfillmentModuleService = container.resolve(Modules.FULFILLMENT)
-
-const fulfillment = await fulfillmentModuleService.retrieveFulfillment(
-  fulfillmentId,
-  {
-    relations: ["labels"]
-  }
-)
-
-// Access tracking information through labels
-const trackingUrls = fulfillment.labels.map(label => label.tracking_url)
 ```
 
 ---

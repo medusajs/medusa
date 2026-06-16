@@ -11,14 +11,6 @@ This documentation provides a reference to the `useQueryGraphStep` step. It belo
 
 This step fetches data across modules using the Query.
 
-<Note type="warning">
-
-**Important Filter Limitation**: Filters don't apply on fields of linked data models from other modules. For example, `filters: { fulfillments: { id: fulfillment_id } }` will produce a TypeScript error and won't work as expected.
-
-**Workaround**: Fetch all records first, then filter in JavaScript, or query the module link's table directly using the link's `entryPoint` property.
-
-</Note>
-
 Learn more in the [Query documentation](https://docs.medusajs.com/learn/fundamentals/module-links/query).
 
 ## Example
