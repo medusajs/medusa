@@ -1,7 +1,11 @@
 import type { TSESTree, TSESLint } from "@typescript-eslint/utils"
 import { AST_NODE_TYPES } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
-import { FRAMEWORK_UTILS_SOURCE } from "../../constants"
+import {
+  FRAMEWORK_UTILS_SOURCE,
+  MODULES_BY_VALUE,
+  MODULES_ENUM as MODULES,
+} from "../../constants"
 
 type MessageIds = "preferEnumKey"
 
@@ -13,46 +17,6 @@ const REMOTE_LINK_STEPS = new Set([
   "removeRemoteLinkStep",
   "updateRemoteLinksStep",
 ])
-
-/**
- * Map of known `Modules.*` string values → enum member name.
- * Sourced from `packages/core/utils/src/modules-sdk/definition.ts`.
- */
-const MODULES_BY_VALUE: Record<string, string> = {
-  analytics: "ANALYTICS",
-  auth: "AUTH",
-  cache: "CACHE",
-  cart: "CART",
-  customer: "CUSTOMER",
-  event_bus: "EVENT_BUS",
-  inventory: "INVENTORY",
-  link_modules: "LINK",
-  payment: "PAYMENT",
-  pricing: "PRICING",
-  product: "PRODUCT",
-  promotion: "PROMOTION",
-  sales_channel: "SALES_CHANNEL",
-  tax: "TAX",
-  fulfillment: "FULFILLMENT",
-  stock_location: "STOCK_LOCATION",
-  user: "USER",
-  workflows: "WORKFLOW_ENGINE",
-  region: "REGION",
-  order: "ORDER",
-  api_key: "API_KEY",
-  store: "STORE",
-  currency: "CURRENCY",
-  file: "FILE",
-  notification: "NOTIFICATION",
-  index: "INDEX",
-  locking: "LOCKING",
-  settings: "SETTINGS",
-  caching: "CACHING",
-  translation: "TRANSLATION",
-  rbac: "RBAC",
-}
-
-const MODULES = "Modules"
 
 function getStaticKey(
   prop: TSESTree.Property

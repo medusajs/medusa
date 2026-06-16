@@ -48,7 +48,7 @@ The rest of the steps are performed inside this directory.
 
 ### Change Package Manager
 
-The project uses pnpm as the package manager, as declared in `package.json`.
+The project uses pnpm as the package manager in a monorepo workspace setup, as declared in `package.json`. This demonstrates a working pnpm monorepo configuration for Medusa.
 
 To use a different package manager:
 
@@ -184,7 +184,7 @@ You define four services in this file:
 
 The `env_file` paths are relative to the project root: `apps/backend/.env` for the backend and `apps/storefront/.env` for the storefront.
 
-The anonymous volumes for `node_modules` directories are required because pnpm workspaces create per-package `node_modules` directories with symlinks. Without these volumes, the Docker bind mount overwrites the installed dependencies.
+The anonymous volumes for `node_modules` directories are required because pnpm workspaces create per-package `node_modules` directories with symlinks. Without these volumes, the Docker bind mount overwrites the installed dependencies. This configuration is essential for pnpm to work correctly in a monorepo Docker setup.
 
 ### Recommendations for Multiple Local Projects
 

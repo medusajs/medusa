@@ -1,14 +1,9 @@
-import { RuleTester } from "@typescript-eslint/rule-tester"
+import { createRuleTester } from "../../../test-utils"
 import { rule } from "../rule"
 
-RuleTester.afterAll = afterAll
-RuleTester.describe = describe
-RuleTester.it = it
-RuleTester.itOnly = it.only
+const ruleTester = createRuleTester()
 
-const ruleTester = new RuleTester()
-
-ruleTester.run("prefer-container-registration-keys-query", rule, {
+ruleTester.run("prefer-container-registration-keys", rule, {
   valid: [
     // Canonical: ContainerRegistrationKeys.QUERY.
     {
