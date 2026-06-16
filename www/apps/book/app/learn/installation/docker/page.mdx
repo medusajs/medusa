@@ -186,6 +186,22 @@ The `env_file` paths are relative to the project root: `apps/backend/.env` for t
 
 The anonymous volumes for `node_modules` directories are required because pnpm workspaces create per-package `node_modules` directories with symlinks. Without these volumes, the Docker bind mount overwrites the installed dependencies. This configuration is essential for pnpm to work correctly in a monorepo Docker setup.
 
+### Port Configuration Explained
+
+The ports configuration maps container ports to host ports using the format `"host_port:container_port"`:
+
+- `"5432:5432"`: PostgreSQL database accessible at `localhost:5432`
+- `"6379:6379"`: Redis accessible at `localhost:6379`  
+- `"9000:9000"`: Medusa backend server accessible at `localhost:9000`
+- `"5173:5173"`: Medusa Admin development server with Hot Module Replacement (HMR)
+- `"8000:8000"`: Storefront accessible at `localhost:8000`
+
+<Note>
+
+If these ports conflict with other services on your host machine, change the host port (left side). For example, use `"9001:9000"` to access the Medusa backend at `localhost:9001` instead.
+
+</Note>
+
 ### Recommendations for Multiple Local Projects
 
 If this isn't the first Medusa project you're setting up with Docker on your machine, make sure to:
@@ -486,6 +502,21 @@ module.exports = defineConfig({
 
 You configure the Vite development server to listen on all network interfaces (`0.0.0.0`) and set up HMR to work correctly within the Docker environment.
 
+### Redis Configuration
+
+If you encounter Redis connection issues, you may need to explicitly configure the Redis URL in your `medusa-config.ts` file:
+
+```ts title="apps/backend/medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    // ...
+    redisUrl: process.env.REDIS_URL,
+  },
+})
+```
+
+This ensures the Redis URL from the environment variable is properly used by Medusa.
+
 ---
 
 ## 8. Add `.dockerignore`
@@ -698,6 +729,18 @@ to
 ```yaml title="docker-compose.yml"
 container_name: medusa_postgres_myproject
 ```
+
+### Medusa Backend Returns "Cannot GET /" Error
+
+If you access `http://localhost:9000` and see a "Cannot GET /" error, this usually means the Medusa backend started successfully but there's no route handler for the root path.
+
+This is expected behavior. The Medusa backend API endpoints are available at paths like `/admin` and `/store`. To verify your installation:
+
+1. Access the Medusa Admin dashboard at `http://localhost:9000/app`
+2. Check the backend health at `http://localhost:9000/health`
+3. Access the storefront at `http://localhost:8000` (if you deployed it)
+
+The "Cannot GET /" message doesn't indicate an error - it just means there's no content at the root URL.
 
 ---
 
