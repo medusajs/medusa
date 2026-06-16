@@ -240,11 +240,6 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
                     },
                   ]
                 : []),
-              // TODO: Enable when domin is introduced
-              // {
-              //   label: t("giftCards.domain"),
-              //   to: "/gift-cards",
-              // },
             ],
           },
         ]
