@@ -1,7 +1,7 @@
 import type { TSESTree } from "@typescript-eslint/utils"
 import { AST_NODE_TYPES } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
-import { isUndefinedExpression } from "../../util/ast"
+import { isUndefinedExpression, unwrapTsExpression } from "../../util/ast"
 import {
   createWorkflowSdkBindings,
   getEnclosingFunction,
@@ -12,6 +12,9 @@ import {
 } from "../../util/workflow-scope"
 
 type MessageIds = "missingStepResponse"
+
+/** Static `StepResponse` factory that returns a valid (skip) step response. */
+const SKIP_METHOD = "skip"
 
 export const rule = createRule<[], MessageIds>({
   name: "step-must-return-step-response",
@@ -61,10 +64,27 @@ export const rule = createRule<[], MessageIds>({
         }
 
         const arg = node.argument
+        // Inspect the underlying expression, ignoring TS-only wrappers like
+        // `as any` — `return StepResponse.skip() as any` is still valid.
+        const value = unwrapTsExpression(arg)
         if (
-          arg.type === AST_NODE_TYPES.NewExpression &&
-          arg.callee.type === AST_NODE_TYPES.Identifier &&
-          bindings.stepResponse.has(arg.callee.name)
+          value.type === AST_NODE_TYPES.NewExpression &&
+          value.callee.type === AST_NODE_TYPES.Identifier &&
+          bindings.stepResponse.has(value.callee.name)
+        ) {
+          return
+        }
+
+        // `StepResponse.skip()` is a static factory that produces a (skip)
+        // StepResponse, used to short-circuit a step — a valid step return.
+        if (
+          value.type === AST_NODE_TYPES.CallExpression &&
+          value.callee.type === AST_NODE_TYPES.MemberExpression &&
+          !value.callee.computed &&
+          value.callee.object.type === AST_NODE_TYPES.Identifier &&
+          bindings.stepResponse.has(value.callee.object.name) &&
+          value.callee.property.type === AST_NODE_TYPES.Identifier &&
+          value.callee.property.name === SKIP_METHOD
         ) {
           return
         }

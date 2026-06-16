@@ -40,6 +40,26 @@ export const isUndefinedExpression = (node: TSESTree.Node): boolean => {
 }
 
 /**
+ * Strips TypeScript-only expression wrappers (`x as T`, `x satisfies T`, `x!`,
+ * `<T>x`) that don't change the runtime value, so the underlying expression can
+ * be inspected — e.g. `StepResponse.skip() as any` unwraps to the call.
+ */
+export const unwrapTsExpression = (
+  node: TSESTree.Expression
+): TSESTree.Expression => {
+  let current = node
+  while (
+    current.type === AST_NODE_TYPES.TSAsExpression ||
+    current.type === AST_NODE_TYPES.TSSatisfiesExpression ||
+    current.type === AST_NODE_TYPES.TSNonNullExpression ||
+    current.type === AST_NODE_TYPES.TSTypeAssertion
+  ) {
+    current = current.expression
+  }
+  return current
+}
+
+/**
  * The three AST node types that represent a function value:
  * `ArrowFunctionExpression`, `FunctionExpression`, and `FunctionDeclaration`.
  */
