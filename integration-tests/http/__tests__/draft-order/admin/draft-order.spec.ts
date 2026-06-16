@@ -1695,5 +1695,105 @@ medusaIntegrationTestRunner({
         )
       })
     })
+
+    describe("POST /draft-orders/:id/edit/items - allow_backorder", () => {
+      let outOfStockProduct
+      let outOfStockInventoryItem
+
+      beforeEach(async () => {
+        outOfStockInventoryItem = (
+          await api.post(
+            `/admin/inventory-items`,
+            { sku: "out-of-stock-sku" },
+            adminHeaders
+          )
+        ).data.inventory_item
+
+        // A location level exists for the sales channel, but with no
+        // available stock, so the variant is out of stock.
+        await api.post(
+          `/admin/inventory-items/${outOfStockInventoryItem.id}/location-levels`,
+          {
+            location_id: stockLocation.id,
+            stocked_quantity: 0,
+          },
+          adminHeaders
+        )
+
+        outOfStockProduct = (
+          await api.post(
+            "/admin/products",
+            {
+              title: "Out of stock product",
+              status: ProductStatus.PUBLISHED,
+              options: [{ title: "size", values: ["large"] }],
+              variants: [
+                {
+                  title: "L shirt",
+                  options: { size: "large" },
+                  manage_inventory: true,
+                  allow_backorder: false,
+                  inventory_items: [
+                    {
+                      inventory_item_id: outOfStockInventoryItem.id,
+                      required_quantity: 1,
+                    },
+                  ],
+                  prices: [{ currency_code: "usd", amount: 10 }],
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.product
+
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit`,
+          {},
+          adminHeaders
+        )
+      })
+
+      it("should not allow adding an out-of-stock variant without allow_backorder", async () => {
+        const variantId = outOfStockProduct.variants[0].id
+
+        const error = await api
+          .post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/items`,
+            { items: [{ variant_id: variantId, quantity: 1 }] },
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(error.response.status).toBe(400)
+        expect(error.response.data.message).toContain(
+          "does not have the required inventory"
+        )
+      })
+
+      it("should allow adding an out-of-stock variant when allow_backorder is true on the item", async () => {
+        const variantId = outOfStockProduct.variants[0].id
+
+        const response = await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit/items`,
+          {
+            items: [
+              { variant_id: variantId, quantity: 1, allow_backorder: true },
+            ],
+          },
+          adminHeaders
+        )
+
+        expect(response.status).toBe(200)
+        expect(response.data.draft_order_preview.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              variant_id: variantId,
+              quantity: 1,
+            }),
+          ])
+        )
+      })
+    })
   },
 })
