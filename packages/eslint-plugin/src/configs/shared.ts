@@ -9,13 +9,13 @@ import { PLUGIN_NAMESPACE } from "../constants"
  */
 export const ignoresBlock: Linter.Config = {
   ignores: [
-    ".medusa/**",
-    ".yalc/**",
-    "dist/**",
-    "build/**",
-    "node_modules/**",
-    "coverage/**",
-    ".cache/**",
+    "**/.medusa/**",
+    "**/.yalc/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/node_modules/**",
+    "**/coverage/**",
+    "**/.cache/**",
     "**/*.generated.ts",
     "**/__tests__/**",
     "**/__fixtures__/**",
