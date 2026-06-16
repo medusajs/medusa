@@ -1,29 +1,15 @@
 import type { Linter } from "eslint"
-import { PLUGIN_NAMESPACE, ruleId } from "../constants"
+import { ruleId } from "../constants"
+import { ignoresBlock, pluginBlock, tsParserBlock } from "./shared"
 
 export function buildRecommended(plugin: unknown): Linter.Config[] {
   return [
-    {
-      ignores: [
-        ".medusa/**",
-        ".yalc/**",
-        "dist/**",
-        "build/**",
-        "node_modules/**",
-        "coverage/**",
-        ".cache/**",
-        "**/*.generated.ts",
-      ],
-    },
-    {
-      files: ["**/*.{ts,tsx}"],
-      plugins: { [PLUGIN_NAMESPACE]: plugin as never },
-      languageOptions: {
-        parser: require("@typescript-eslint/parser"),
-        parserOptions: { project: true, sourceType: "module" },
-      },
-      rules: {},
-    },
+    ignoresBlock,
+    pluginBlock(plugin),
+    // Recommended rules don't need type information, but the parser is set up
+    // with `project` so the type-aware `strict` preset (which extends this one)
+    // has parser services available.
+    tsParserBlock(true),
     {
       files: ["**/*.{ts,js}"],
       ignores: ["src/admin/**", "**/src/admin/**"],

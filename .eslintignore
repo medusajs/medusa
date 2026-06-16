@@ -42,6 +42,18 @@ packages/*
 !packages/core/framework
 !packages/eslint-plugin
 
+# Linted by @medusajs/eslint-plugin (Medusa convention rules). The root config
+# scopes the google/prettier/type style rules away from these via STYLE_EXCLUDED.
+!packages/plugins
+!packages/modules
+# Re-allow only core-flows under packages/core. The `!packages/core/core-flows`
+# negation above is a no-op (packages/* excludes the packages/core directory, so
+# a grandchild can't be re-included without first re-including the parent), so
+# re-include the parent, re-exclude its children, then re-include core-flows.
+!packages/core
+packages/core/*
+!packages/core/core-flows
+
 
 **/models/*
 **/scripts/*
@@ -49,5 +61,9 @@ packages/*
 **/node_modules/*
 **/migrations/*
 **/__mocks__/*
+
+# Re-allow module data models so the Medusa data-model rules can lint them
+# (the style rules still skip them via STYLE_EXCLUDED).
+!packages/modules/**/models/**
 
 .eslintrc.js
