@@ -46,6 +46,6 @@ export const deleteReturnReasonsWorkflow = createWorkflow(
       },
     })
 
-    return deletedReturnReasons
+    deletedReturnReasons
   }
 )

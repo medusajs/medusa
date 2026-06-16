@@ -1,3 +1,5 @@
+/* eslint-disable @medusajs/widget-must-have-default-export */
+/* eslint-disable @medusajs/widget-must-export-config */
 import { HttpTypes } from "@medusajs/types";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useMemo } from "react";

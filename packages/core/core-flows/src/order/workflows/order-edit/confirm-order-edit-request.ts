@@ -72,7 +72,7 @@ export type ConfirmOrderEditRequestValidationStepInput = {
  * })
  */
 export const confirmOrderEditRequestValidationStep = createStep(
-  "validate-confirm-order-edit-request",
+  "confirm-order-edit-request-validation",
   async function ({
     order,
     orderChange,
@@ -95,6 +95,11 @@ export type ConfirmOrderEditRequestWorkflowInput = {
    */
   confirmed_by?: string
 }
+
+const orderFields = deduplicate([
+  ...requiredOrderFieldsForInventoryConfirmation,
+  ...fieldsToRefreshOrderEdit,
+])
 
 export const confirmOrderEditRequestWorkflowId = "confirm-order-edit-request"
 /**
@@ -182,10 +187,7 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
 
     const { data: refreshedOrder } = useQueryGraphStep({
       entity: "order",
-      fields: deduplicate([
-        ...requiredOrderFieldsForInventoryConfirmation,
-        ...fieldsToRefreshOrderEdit,
-      ]),
+      fields: orderFields,
       filters: { id: input.order_id },
       options: {
         throwIfKeyNotFound: true,

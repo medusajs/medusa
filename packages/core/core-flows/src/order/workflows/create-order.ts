@@ -85,6 +85,11 @@ function getOrderInput(data) {
   return data_
 }
 
+const variantFields = deduplicate([
+  ...productVariantsFields,
+  ...requiredVariantFieldsForInventoryConfirmation,
+])
+
 /**
  * The data to create an order, along with custom data that's passed to the workflow's hooks.
  */
@@ -266,10 +271,7 @@ export const createOrderWorkflow = createWorkflow(
      */
     const { data: variantsWithoutCalculatedPrice } = useQueryGraphStep({
       entity: "variants",
-      fields: deduplicate([
-        ...productVariantsFields,
-        ...requiredVariantFieldsForInventoryConfirmation,
-      ]),
+      fields: variantFields,
       filters: {
         id: variantIdsWithoutCalculatedPrice,
       },
@@ -290,23 +292,24 @@ export const createOrderWorkflow = createWorkflow(
         return !!variantIdsForPriceCalculation.length
       }
     ).then(() => {
+      const customerId = transform(
+        { customerData },
+        (data) => data.customerData.customer?.id
+      )
       return getVariantsAndItemsWithPrices.runAsStep({
         input: {
           cart: {
             currency_code: input.currency_code,
             region,
             region_id: region.id,
-            customer_id: customerData.customer?.id,
+            customer_id: customerId,
             customer: customerForPricing,
           },
           items: input.items,
           setPricingContextResult: setPricingContextResult!,
           variants: {
             id: variantIdsForPriceCalculation,
-            fields: deduplicate([
-              ...productVariantsFields,
-              ...requiredVariantFieldsForInventoryConfirmation,
-            ]),
+            fields: variantFields,
           },
         },
       })

@@ -9,6 +9,7 @@ import {
   when,
   WorkflowData,
   WorkflowResponse,
+  transform,
 } from "@medusajs/framework/workflows-sdk"
 import { createInventoryLevelsStep } from "../steps"
 import { deleteInventoryLevelsWorkflow } from "./delete-inventory-levels"
@@ -46,6 +47,10 @@ export const bulkCreateDeleteLevelsWorkflow = createWorkflow(
       return createInventoryLevelsStep(input.creates)
     })
 
-    return new WorkflowResponse(created || [])
+    const createdOutput = transform({
+      created,
+    }, (data) => data.created || [])
+
+    return new WorkflowResponse(createdOutput)
   }
 )

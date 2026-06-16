@@ -138,6 +138,11 @@ export const validateCarryPromotionsFlagStep = createStep(
   }
 )
 
+const orderFields = [
+  ...fieldsToComputeAdjustmentsForPreview,
+  "promotions.application_method.*",
+]
+
 export const onCarryPromotionsFlagSetId = "on-carry-promotions-flag-set"
 
 /**
@@ -198,10 +203,7 @@ export const onCarryPromotionsFlagSet = createWorkflow(
     const order: OrderDTO & { promotions?: PromotionDTO[] } =
       useRemoteQueryStep({
         entry_point: "orders",
-        fields: [
-          ...fieldsToComputeAdjustmentsForPreview,
-          "promotions.application_method.*",
-        ],
+        fields: orderFields,
         variables: {
           id: orderChange.order_id,
         },

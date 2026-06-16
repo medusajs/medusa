@@ -28,6 +28,6 @@ export const batchLinkProductsToCollectionWorkflowId =
 export const batchLinkProductsToCollectionWorkflow = createWorkflow(
   batchLinkProductsToCollectionWorkflowId,
   (input: WorkflowData<LinkWorkflowInput>): WorkflowData<void> => {
-    return batchLinkProductsToCollectionStep(input)
+    batchLinkProductsToCollectionStep(input)
   }
 )

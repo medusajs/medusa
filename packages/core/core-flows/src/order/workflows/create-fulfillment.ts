@@ -535,9 +535,13 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         fulfillment,
         input,
         inputItemsMap,
-        itemsList: input.items ?? input.items_list,
       },
-      prepareRegisterOrderFulfillmentData
+      (data) => {
+        return prepareRegisterOrderFulfillmentData({
+          ...data,
+          itemsList: data.input.items ?? data.input.items_list,
+        })
+      }
     )
 
     const link = transform(

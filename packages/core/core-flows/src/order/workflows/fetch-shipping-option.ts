@@ -194,7 +194,7 @@ export const fetchShippingOptionForOrderWorkflow = createWorkflow(
       const { data: shippingOption } = useQueryGraphStep({
         entity: "shipping_option",
         filters: { id: input.shipping_option_id },
-        fields: [...COMMON_OPTIONS_FIELDS],
+        fields: COMMON_OPTIONS_FIELDS,
         options: { isList: false },
       }).config({ name: "calculated-option" })
 

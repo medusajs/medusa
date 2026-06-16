@@ -82,14 +82,21 @@ export const generateResetPasswordTokenWorkflow = createWorkflow(
       }
     )
 
+    const payload = transform({
+      input,
+      token,
+    }, (data) => {
+      return {
+        entity_id: data.input.entityId,
+        actor_type: data.input.actorType,
+        token: data.token,
+        metadata: data.input.metadata ?? {},
+      }
+    })
+
     emitEventStep({
       eventName: AuthWorkflowEvents.PASSWORD_RESET,
-      data: {
-        entity_id: input.entityId,
-        actor_type: input.actorType,
-        token,
-        metadata: input.metadata ?? {},
-      },
+      data: payload,
     })
 
     return new WorkflowResponse(token)

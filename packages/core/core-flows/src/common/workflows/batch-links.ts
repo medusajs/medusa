@@ -7,6 +7,7 @@ import {
   WorkflowResponse,
   createWorkflow,
   parallelize,
+  transform
 } from "@medusajs/framework/workflows-sdk"
 import { createRemoteLinkStep } from "../steps/create-remote-links"
 import { dismissRemoteLinkStep } from "../steps/dismiss-remote-links"
@@ -74,10 +75,20 @@ export const batchLinksWorkflow = createWorkflow(
       BatchWorkflowInput<LinkDefinition, LinkDefinition, LinkDefinition>
     >
   ) => {
+    const { create, update, delete: deleteLinks } = transform(
+      { input },
+      (data) => {
+        return {
+          create: data.input.create || [],
+          update: data.input.update || [],
+          delete: data.input.delete || [],
+        }
+      }
+    )
     const [created, updated, deleted] = parallelize(
-      createRemoteLinkStep(input.create || []),
-      updateRemoteLinksStep(input.update || []),
-      dismissRemoteLinkStep(input.delete || [])
+      createRemoteLinkStep(create),
+      updateRemoteLinksStep(update),
+      dismissRemoteLinkStep(deleteLinks)
     )
 
     return new WorkflowResponse({

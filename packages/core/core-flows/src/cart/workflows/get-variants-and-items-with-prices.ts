@@ -18,7 +18,9 @@ import {
   simpleHash,
 } from "@medusajs/framework/utils"
 import {
+  createStep,
   createWorkflow,
+  StepResponse,
   transform,
   WorkflowData,
   WorkflowResponse,
@@ -68,6 +70,108 @@ type GetVariantsAndItemsWithPricesWorkflowOutput = {
   lineItems: UpdateLineItemWithSelectorDTO[]
 }
 
+interface PrepareVariantsAndItemsWithPricesStepInput {
+  cart: GetVariantsAndItemsWithPricesWorkflowInput["cart"]
+  items: GetVariantsAndItemsWithPricesWorkflowInput["items"]
+  variantsData: any[]
+  calculatedPriceSets: Record<string, any>
+}
+
+/**
+ * This step builds the line items (with calculated prices) and the variants for
+ * a cart, attaching each variant's calculated price. It throws an error if a
+ * referenced variant doesn't exist / belongs to an unpublished product, or if a
+ * variant has no price.
+ */
+export const prepareVariantsAndItemsWithPricesStep = createStep(
+  "prepare-variants-and-items-with-prices",
+  async ({
+    cart,
+    items: inputItems,
+    variantsData,
+    calculatedPriceSets,
+  }: PrepareVariantsAndItemsWithPricesStepInput) => {
+    const priceNotFound: string[] = []
+    const variantNotFoundOrPublished: string[] = []
+
+    const items = (inputItems ?? cart.items ?? []).map((item) => {
+      const item_ = item as any
+      const idLike =
+        (item as CartLineItemDTO).id ?? simpleHash(JSON.stringify(item))
+      let calculatedPriceSet = calculatedPriceSets[idLike]
+      if (!calculatedPriceSet) {
+        calculatedPriceSet = calculatedPriceSets[item_.variant_id!]
+      }
+
+      const isCustomPrice =
+        item_.is_custom_price ?? isDefined(item?.unit_price)
+
+      if (!calculatedPriceSet && item_.variant_id && !isCustomPrice) {
+        priceNotFound.push(item_.variant_id)
+      }
+
+      const variant = variantsData.find((v) => v.id === item.variant_id)
+      if (
+        (item.variant_id && !variant) || // variant specified but doesn't exist
+        (variant &&
+          (!variant?.product?.status ||
+            variant.product.status !== ProductStatus.PUBLISHED)) // variant exists but product is not published
+      ) {
+        variantNotFoundOrPublished.push(item_.variant_id)
+      }
+
+      if (variant) {
+        variant.calculated_price = calculatedPriceSet
+      }
+
+      const input: PrepareLineItemDataInput = {
+        item: item_,
+        variant: variant,
+        cartId: cart.id,
+        unitPrice: item_.unit_price,
+        isTaxInclusive:
+          item_.is_tax_inclusive ??
+          calculatedPriceSet?.is_calculated_price_tax_inclusive,
+        isCustomPrice: isCustomPrice,
+      }
+
+      if (variant && !isCustomPrice) {
+        input.unitPrice = calculatedPriceSet.calculated_amount
+        input.isTaxInclusive =
+          calculatedPriceSet.is_calculated_price_tax_inclusive
+      }
+
+      const preparedItem = prepareLineItemData(input)
+
+      return {
+        selector: { id: (item_ as CartLineItemDTO).id },
+        data: preparedItem as Partial<UpdateLineItemDTO>,
+      }
+    })
+
+    if (variantNotFoundOrPublished.length > 0) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Variants ${variantNotFoundOrPublished.join(
+          ", "
+        )} do not exist or belong to a product that is not published`
+      )
+    }
+    if (priceNotFound.length > 0) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Variants with IDs ${priceNotFound.join(", ")} do not have a price`
+      )
+    }
+
+    const result: GetVariantsAndItemsWithPricesWorkflowOutput = {
+      variants: variantsData,
+      lineItems: items,
+    }
+    return new StepResponse(result)
+  }
+)
+
 export const getVariantsAndItemsWithPricesId =
   "get-variant-items-with-prices-workflow"
 export const getVariantsAndItemsWithPrices = createWorkflow(
@@ -76,15 +180,15 @@ export const getVariantsAndItemsWithPrices = createWorkflow(
     input: WorkflowData<GetVariantsAndItemsWithPricesWorkflowInput>
   ): WorkflowResponse<GetVariantsAndItemsWithPricesWorkflowOutput> => {
     const variantIds = transform(
-      { cart: input.cart, items: input.items, variantIds: input.variants?.id },
+      { input },
       (data): string[] => {
-        if (data.variantIds) {
-          return data.variantIds
+        if (data.input.variants?.id) {
+          return data.input.variants.id
         }
 
         return Array.from(
           new Set(
-            (data.cart.items ?? data.items ?? []).map((i) => i.variant_id)
+            (data.input.cart.items ?? data.input.items ?? []).map((i) => i.variant_id)
           )
         ).filter((v): v is string => !!v)
       }
@@ -156,95 +260,12 @@ export const getVariantsAndItemsWithPrices = createWorkflow(
       data: cartPricingContext,
     })
 
-    const variantsItemsWithPrices = transform(
-      {
-        cart: input.cart,
-        items: input.items,
-        variantsData,
-        calculatedPriceSets,
-      },
-      ({
-        cart,
-        items: inputItems,
-        variantsData,
-        calculatedPriceSets,
-      }): GetVariantsAndItemsWithPricesWorkflowOutput => {
-        const priceNotFound: string[] = []
-        const variantNotFoundOrPublished: string[] = []
-
-        const items = (inputItems ?? cart.items ?? []).map((item) => {
-          const item_ = item as any
-          const idLike =
-            (item as CartLineItemDTO).id ?? simpleHash(JSON.stringify(item))
-          let calculatedPriceSet = calculatedPriceSets[idLike]
-          if (!calculatedPriceSet) {
-            calculatedPriceSet = calculatedPriceSets[item_.variant_id!]
-          }
-
-          const isCustomPrice =
-            item_.is_custom_price ?? isDefined(item?.unit_price)
-
-          if (!calculatedPriceSet && item_.variant_id && !isCustomPrice) {
-            priceNotFound.push(item_.variant_id)
-          }
-
-          const variant = variantsData.find((v) => v.id === item.variant_id)
-          if (
-            (item.variant_id && !variant) || // variant specified but doesn't exist
-            (variant &&
-              (!variant?.product?.status ||
-                variant.product.status !== ProductStatus.PUBLISHED)) // variant exists but product is not published
-          ) {
-            variantNotFoundOrPublished.push(item_.variant_id)
-          }
-
-          if (variant) {
-            variant.calculated_price = calculatedPriceSet
-          }
-
-          const input: PrepareLineItemDataInput = {
-            item: item_,
-            variant: variant,
-            cartId: cart.id,
-            unitPrice: item_.unit_price,
-            isTaxInclusive:
-              item_.is_tax_inclusive ??
-              calculatedPriceSet?.is_calculated_price_tax_inclusive,
-            isCustomPrice: isCustomPrice,
-          }
-
-          if (variant && !isCustomPrice) {
-            input.unitPrice = calculatedPriceSet.calculated_amount
-            input.isTaxInclusive =
-              calculatedPriceSet.is_calculated_price_tax_inclusive
-          }
-
-          const preparedItem = prepareLineItemData(input)
-
-          return {
-            selector: { id: (item_ as CartLineItemDTO).id },
-            data: preparedItem as Partial<UpdateLineItemDTO>,
-          }
-        })
-
-        if (variantNotFoundOrPublished.length > 0) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Variants ${variantNotFoundOrPublished.join(
-              ", "
-            )} do not exist or belong to a product that is not published`
-          )
-        }
-        if (priceNotFound.length > 0) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Variants with IDs ${priceNotFound.join(", ")} do not have a price`
-          )
-        }
-
-        return { variants: variantsData, lineItems: items }
-      }
-    )
+    const variantsItemsWithPrices = prepareVariantsAndItemsWithPricesStep({
+      cart: input.cart,
+      items: input.items,
+      variantsData,
+      calculatedPriceSets,
+    })
 
     return new WorkflowResponse(variantsItemsWithPrices)
   }

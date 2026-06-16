@@ -10,6 +10,7 @@ import {
   createStep,
   createWorkflow,
   parallelize,
+  StepResponse,
   transform,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk";
@@ -115,6 +116,85 @@ export const validateCartStep = createStep(
 );
 
 /**
+ * Input to compute the credit line actions to apply store credits to a cart.
+ */
+export interface ComputeCreditLineActionsStepInput {
+  /**
+   * The customer's store credit account.
+   */
+  storeCreditAccount: ModuleStoreCreditAccount
+  /**
+   * The cart to apply store credits to.
+   */
+  cart: PluginCartDTO
+  /**
+   * The workflow input containing the amount of store credits to apply.
+   */
+  input: { amount?: number }
+}
+
+/**
+ * This step computes the credit lines to create and delete when applying store
+ * credits to a cart. It collects the existing store-credit lines to delete and
+ * builds a new credit line for the specified amount, or for the full store credit
+ * balance if no amount is specified. It throws an error if the requested amount is
+ * greater than the store credit account balance.
+ *
+ * @example
+ * const data = computeCreditLineActionsStep({
+ *   storeCreditAccount: {
+ *     id: "sca_123",
+ *     balance: 100,
+ *     // other store credit account properties...
+ *   },
+ *   cart: { ...cart, id: "cart_123", total: 50 },
+ *   input: { amount: 50 },
+ * })
+ */
+export const computeCreditLineActionsStep = createStep(
+  "compute-credit-line-actions",
+  async function ({
+    storeCreditAccount,
+    cart,
+    input,
+  }: ComputeCreditLineActionsStepInput) {
+    const creditLinesToCreate: CreateCartCreditLineDTO[] = [];
+    const creditLinesToDelete = (cart.credit_lines ?? [])
+      .filter((creditLine) => creditLine.reference === "store-credit")
+      .map((creditLine) => creditLine.id);
+
+    let amount = input.amount
+      ? MathBN.convert(input.amount)
+      : MathBN.convert(storeCreditAccount.balance);
+
+    if (
+      isDefined(input.amount) &&
+      MathBN.convert(amount).gt(MathBN.convert(storeCreditAccount.balance))
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Amount is greater than the store credit account balance`
+      );
+    }
+
+    if (amount.gt(0)) {
+      creditLinesToCreate.push({
+        cart_id: cart.id,
+        amount: MathBN.min(amount, cart.total).toNumber(),
+        reference: "store-credit",
+        reference_id: storeCreditAccount.id,
+        metadata: {},
+      });
+    }
+
+    return new StepResponse({
+      creditLinesToCreate,
+      creditLinesToDelete,
+    });
+  }
+);
+
+/**
  * Input to apply store credits to a cart.
  */
 export interface AddStoreCreditsToCartWorkflowInput {
@@ -185,44 +265,11 @@ export const addStoreCreditsToCartWorkflow = createWorkflow(
       storeCreditAccount,
     });
 
-    const creditLineActions = transform(
-      { storeCreditAccount, cart, input },
-      ({ storeCreditAccount, cart, input }) => {
-        const creditLinesToCreate: CreateCartCreditLineDTO[] = [];
-        const creditLinesToDelete = (cart.credit_lines ?? [])
-          .filter((creditLine) => creditLine.reference === "store-credit")
-          .map((creditLine) => creditLine.id);
-
-        let amount = input.amount
-          ? MathBN.convert(input.amount)
-          : MathBN.convert(storeCreditAccount.balance);
-
-        if (
-          isDefined(input.amount) &&
-          MathBN.convert(amount).gt(MathBN.convert(storeCreditAccount.balance))
-        ) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Amount is greater than the store credit account balance`
-          );
-        }
-
-        if (amount.gt(0)) {
-          creditLinesToCreate.push({
-            cart_id: cart.id,
-            amount: MathBN.min(amount, cart.total).toNumber(),
-            reference: "store-credit",
-            reference_id: storeCreditAccount.id,
-            metadata: {},
-          });
-        }
-
-        return {
-          creditLinesToCreate,
-          creditLinesToDelete,
-        };
-      }
-    );
+    const creditLineActions = computeCreditLineActionsStep({
+      storeCreditAccount,
+      cart,
+      input,
+    });
 
     const [_deletedCreditLines, createdCreditLines] = parallelize(
       deleteCartCreditLinesWorkflow.runAsStep({

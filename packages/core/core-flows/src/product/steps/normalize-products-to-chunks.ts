@@ -7,7 +7,7 @@ import {
   productValidators,
 } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { MedusaErrorTypes } from "@medusajs/utils"
+import { MedusaErrorTypes } from "@medusajs/framework/utils"
 
 /**
  * The CSV file content to parse.
@@ -197,6 +197,7 @@ async function createChunks(
 export const normalizeCsvToChunksStep = createStep(
   normalizeCsvToChunksStepId,
   async (fileKey: NormalizeProductCsvV1StepInput, { container }) => {
+    // eslint-disable-next-line @medusajs/step-must-return-step-response
     return new Promise<
       StepResponse<{
         chunks: Chunk[]

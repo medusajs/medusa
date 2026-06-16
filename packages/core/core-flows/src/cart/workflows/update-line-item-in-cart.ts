@@ -16,8 +16,10 @@ import {
 } from "@medusajs/framework/utils"
 import {
   createHook,
+  createStep,
   createWorkflow,
   parallelize,
+  StepResponse,
   transform,
   when,
   WorkflowData,
@@ -40,13 +42,92 @@ import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 import { refreshCartItemsWorkflow } from "./refresh-cart-items"
 
 const cartFields = cartFieldsForPricingContext.concat(["items.*"])
-const variantFields = productVariantsFields.concat(["calculated_price.*"])
+const variantFields = deduplicate(
+  productVariantsFields.concat([
+    "calculated_price.*",
+    ...requiredVariantFieldsForInventoryConfirmation
+  ])
+)
 
 interface CartQueryDTO extends Omit<CartDTO, "items"> {
   items: NonNullable<CartDTO["items"]>
   customer: CustomerDTO
   region: RegionDTO
 }
+
+interface FindLineItemToUpdateStepInput {
+  cart: CartQueryDTO
+  input: UpdateLineItemInCartWorkflowInputDTO & AdditionalData
+}
+
+/**
+ * This step finds the line item to update in the cart and collects its variant
+ * id. It throws an error if the line item isn't found in the cart.
+ */
+export const findLineItemToUpdateStep = createStep(
+  "find-line-item-to-update",
+  async ({ cart, input }: FindLineItemToUpdateStepInput) => {
+    const item = cart.items.find((i) => i.id === input.item_id)
+    if (!item) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Line item with id: ${input.item_id} was not found`
+      )
+    }
+
+    const variantIds = [item.variant_id].filter(Boolean)
+    return new StepResponse({ item, variantIds })
+  }
+)
+
+interface PrepareLineItemUpdateStepInput {
+  input: UpdateLineItemInCartWorkflowInputDTO & AdditionalData
+  variants: any
+  item: CartQueryDTO["items"][number]
+}
+
+/**
+ * This step builds the update payload for a cart line item, resolving its unit
+ * price (from the input, the variant's calculated price, or the existing item)
+ * and tax inclusivity. It throws an error if the resulting unit price is unset.
+ */
+export const prepareLineItemUpdateStep = createStep(
+  "prepare-line-item-update",
+  async ({ input, variants, item }: PrepareLineItemUpdateStepInput) => {
+    const variant = variants?.[0] ?? undefined
+
+    const updateData = {
+      ...input.update,
+      unit_price: isDefined(input.update.unit_price)
+        ? input.update.unit_price
+        : item.unit_price,
+      is_custom_price: isDefined(input.update.unit_price)
+        ? true
+        : item.is_custom_price,
+      is_tax_inclusive:
+        item.is_tax_inclusive ||
+        variant?.calculated_price?.is_calculated_price_tax_inclusive,
+    }
+
+    if (variant && !updateData.is_custom_price) {
+      updateData.unit_price = variant.calculated_price.calculated_amount
+    }
+
+    if (!isDefined(updateData.unit_price)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Line item ${item.title} has no unit price`
+      )
+    }
+
+    return new StepResponse({
+      data: updateData,
+      selector: {
+        id: input.item_id,
+      },
+    })
+  }
+)
 
 export const updateLineItemInCartWorkflowId = "update-line-item-in-cart"
 /**
@@ -129,24 +210,7 @@ export const updateLineItemInCartWorkflow = createWorkflow(
       options: { throwIfKeyNotFound: true, isList: false },
     }).config({ name: "get-cart" })
 
-    const { item, variantIds } = transform(
-      { cart, input },
-      (data: {
-        cart: CartQueryDTO
-        input: UpdateLineItemInCartWorkflowInputDTO & AdditionalData
-      }) => {
-        const item = data.cart.items.find((i) => i.id === data.input.item_id)!
-        if (!item) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `Line item with id: ${data.input.item_id} was not found`
-          )
-        }
-
-        const variantIds = [item?.variant_id].filter(Boolean)
-        return { item, variantIds }
-      }
-    )
+    const { item, variantIds } = findLineItemToUpdateStep({ cart, input })
 
     validateCartStep({ cart })
 
@@ -225,10 +289,7 @@ export const updateLineItemInCartWorkflow = createWorkflow(
 
       const { data: variants } = useQueryGraphStep({
         entity: "variants",
-        fields: deduplicate([
-          ...variantFields,
-          ...requiredVariantFieldsForInventoryConfirmation,
-        ]),
+        fields: variantFields,
         filters: {
           id: variantIds,
         },
@@ -261,44 +322,11 @@ export const updateLineItemInCartWorkflow = createWorkflow(
         },
       })
 
-      const lineItemUpdate = transform(
-        { input, variants, item, pricingContext },
-        (data) => {
-          const variant = data.variants?.[0] ?? undefined
-          const item = data.item
-
-          const updateData = {
-            ...data.input.update,
-            unit_price: isDefined(data.input.update.unit_price)
-              ? data.input.update.unit_price
-              : item.unit_price,
-            is_custom_price: isDefined(data.input.update.unit_price)
-              ? true
-              : item.is_custom_price,
-            is_tax_inclusive:
-              item.is_tax_inclusive ||
-              variant?.calculated_price?.is_calculated_price_tax_inclusive,
-          }
-
-          if (variant && !updateData.is_custom_price) {
-            updateData.unit_price = variant.calculated_price.calculated_amount
-          }
-
-          if (!isDefined(updateData.unit_price)) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              `Line item ${item.title} has no unit price`
-            )
-          }
-
-          return {
-            data: updateData,
-            selector: {
-              id: data.input.item_id,
-            },
-          }
-        }
-      )
+      const lineItemUpdate = prepareLineItemUpdateStep({
+        input,
+        variants,
+        item,
+      })
 
       updateLineItemsStepWithSelector(lineItemUpdate)
 

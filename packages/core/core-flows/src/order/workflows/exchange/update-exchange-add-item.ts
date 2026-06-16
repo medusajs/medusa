@@ -7,7 +7,7 @@ import {
   OrderPreviewDTO,
   OrderWorkflow,
 } from "@medusajs/framework/types"
-import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
+import { ChangeActionType, OrderChangeStatus, MedusaError } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -105,14 +105,24 @@ export const updateExchangeAddItemValidationStep = createStep(
     ) as OrderChangeActionDTO
 
     if (!associatedAction) {
-      throw new Error(
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA, 
         `No request to add item for exchange ${input.exchange_id} in order change ${orderChange.id}`
       )
     } else if (associatedAction.action !== ChangeActionType.ITEM_ADD) {
-      throw new Error(`Action ${associatedAction.id} is not adding an item`)
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Action ${associatedAction.id} is not adding an item`
+      )
     }
   }
 )
+
+const orderFields = [
+  ...fieldsToComputeAdjustmentsForPreview,
+  "status",
+  "canceled_at",
+]
 
 export const updateExchangeAddItemWorkflowId = "update-exchange-add-item"
 /**
@@ -153,11 +163,7 @@ export const updateExchangeAddItemWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: [
-        ...fieldsToComputeAdjustmentsForPreview,
-        "status",
-        "canceled_at",
-      ],
+      fields: orderFields,
       variables: { id: orderExchange.order_id },
       list: false,
       throw_if_key_not_found: true,

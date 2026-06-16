@@ -51,6 +51,6 @@ export const deleteStoresWorkflow = createWorkflow(
       },
     })
 
-    return deletedStores
+    deletedStores
   }
 )

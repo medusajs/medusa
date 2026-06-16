@@ -31,6 +31,6 @@ export const deletePromotionRulesWorkflow = createWorkflow(
   (
     input: WorkflowData<RemovePromotionRulesWorkflowDTO>
   ): WorkflowData<void> => {
-    return removeRulesFromPromotionsStep(input)
+    removeRulesFromPromotionsStep(input)
   }
 )

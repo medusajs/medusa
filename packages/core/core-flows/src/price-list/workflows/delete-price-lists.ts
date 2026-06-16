@@ -36,14 +36,12 @@ export const deletePriceListsWorkflowId = "delete-price-lists"
 export const deletePriceListsWorkflow = createWorkflow(
   deletePriceListsWorkflowId,
   (input: WorkflowData<DeletePriceListsWorkflowInput>): WorkflowData<void> => {
-    const deletedPriceLists = deletePriceListsStep(input.ids)
+    deletePriceListsStep(input.ids)
 
     removeRemoteLinkStep({
       [Modules.PRICING]: {
         price_list_id: input.ids,
       },
     })
-
-    return deletedPriceLists
   }
 )

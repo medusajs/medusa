@@ -70,7 +70,7 @@ export type OrderClaimItemValidationStepInput = {
  * })
  */
 export const orderClaimItemValidationStep = createStep(
-  "claim-item-validation",
+  "order-claim-item-validation",
   async function ({
     order,
     orderChange,
@@ -85,6 +85,12 @@ export const orderClaimItemValidationStep = createStep(
     throwIfOrderChangeIsNotActive({ orderChange })
   }
 )
+
+const orderFields = [
+  ...fieldsToComputeAdjustmentsForPreview,
+  "status",
+  "canceled_at",
+]
 
 export const orderClaimItemWorkflowId = "claim-item"
 /**
@@ -127,11 +133,7 @@ export const orderClaimItemWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: [
-        ...fieldsToComputeAdjustmentsForPreview,
-        "status",
-        "canceled_at",
-      ],
+      fields: orderFields,
       variables: { id: orderClaim.order_id },
       list: false,
       throw_if_key_not_found: true,

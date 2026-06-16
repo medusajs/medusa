@@ -114,7 +114,7 @@ export const maybeRefreshShippingMethodsWorkflow = createWorkflow(
 
     const shippingOptionQuery = useQueryGraphStep({
       entity: "shipping_option",
-      fields: [...COMMON_OPTIONS_FIELDS],
+      fields: COMMON_OPTIONS_FIELDS,
       filters: { id: shippingMethod.shipping_option_id },
       options: {
         cache: {
