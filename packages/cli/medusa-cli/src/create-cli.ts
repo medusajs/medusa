@@ -28,6 +28,7 @@ function addLintOptions(builder, commandLabel: string) {
     .option("lint", {
       type: "boolean",
       describe: `Run the Medusa linter before ${commandLabel}. Use --no-lint to skip linting.`,
+      default: true,
     })
     .option("fix", {
       type: "boolean",

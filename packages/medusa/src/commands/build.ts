@@ -34,9 +34,7 @@ export default async function build({
     process.exit(1)
   }
 
-  // Lint after type generation. Like the compiler's treatment of type errors,
-  // this is non-blocking: lint problems are surfaced as warnings but never fail
-  // the build
+  // Lint after type generation.
   await runLintStep({ directory, lint, fix, quiet, logger })
 
   logger.info("Starting build...")
