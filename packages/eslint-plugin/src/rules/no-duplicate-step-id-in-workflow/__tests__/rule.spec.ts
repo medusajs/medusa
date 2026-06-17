@@ -103,6 +103,42 @@ ruleTester.run("no-duplicate-step-id-in-workflow", rule, {
         })
       `,
     },
+    // Both calls renamed via `.config({ name })` with dynamic (non-literal)
+    // values. The developer explicitly set distinct names we can't compare
+    // statically, so neither is flagged.
+    {
+      code: `
+        import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+        createWorkflow("hello", () => {
+          useQueryGraphStep({}).config({ name: serverStepId })
+          useQueryGraphStep({}).config({ name: workerStepId })
+        })
+      `,
+    },
+    // Even the same variable on both calls isn't flagged — once a name is set
+    // explicitly, we don't second-guess it statically.
+    {
+      code: `
+        import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+        createWorkflow("hello", () => {
+          useQueryGraphStep({}).config({ name: dynamicName })
+          useQueryGraphStep({}).config({ name: dynamicName })
+        })
+      `,
+    },
+    // Mirrors the reported false positive: parallelize with two
+    // `.config({ name })` calls using variable names.
+    {
+      code: `
+        import { createWorkflow, parallelize } from "@medusajs/framework/workflows-sdk"
+        createWorkflow("hello", () => {
+          parallelize(
+            waitForResourceStep({}).config({ name: waitForServerStepId, async: true }),
+            waitForResourceStep({}).config({ name: waitForWorkerStepId, async: true })
+          )
+        })
+      `,
+    },
   ],
   invalid: [
     // Two bare calls to the same step factory.
@@ -243,18 +279,26 @@ ruleTester.run("no-duplicate-step-id-in-workflow", rule, {
         })
       `,
     },
-    // Non-literal `.config({ name })` doesn't count as a rename — treated as bare.
+    // A dynamic-named call doesn't shield the remaining bare duplicates: the
+    // two bare calls still collide, while the dynamic one is left alone.
     {
       code: `
         import { createWorkflow } from "@medusajs/framework/workflows-sdk"
         createWorkflow("hello", () => {
-          useQueryGraphStep({}).config({ name: dynamicName })
-          useQueryGraphStep({}).config({ name: dynamicName })
+          fetchStep({})
+          fetchStep({}).config({ name: dynamicName })
+          fetchStep({})
         })
       `,
-      errors: [
-        { messageId: "duplicateStepId", data: { key: "use-query-graph" } },
-      ],
+      errors: [{ messageId: "duplicateStepId", data: { key: "fetch" } }],
+      output: `
+        import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+        createWorkflow("hello", () => {
+          fetchStep({})
+          fetchStep({}).config({ name: dynamicName })
+          fetchStep({}).config({ name: "fetch-2" })
+        })
+      `,
     },
   ],
 })
