@@ -321,18 +321,22 @@ const Fulfillment = ({
       })
     }
   }
-
-  const isValidUrl = (url?: string) => {
+const isValidUrl = (url?: string) => {
   if (!url || url.length === 0 || url === "#") {
-    return false
+    return false;
   }
+
   try {
-    const parsed = new URL(url)
-    return parsed.protocol === "http:" || parsed.protocol === "https:"
+    const parsed = new URL(url);
+
+    return (
+      parsed.protocol === "http:" ||
+      parsed.protocol === "https:"
+    );
   } catch {
-    return false
+    return false;
   }
-}
+};
 
   return (
     <Container className="divide-y p-0">
