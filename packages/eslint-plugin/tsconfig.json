@@ -6,6 +6,7 @@
   "exclude": [
     "dist",
     "src/**/__tests__/**",
+    "src/test-utils.ts",
     "**/*.spec.ts",
     "**/*.test.ts"
   ]

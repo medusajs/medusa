@@ -39,6 +39,35 @@ export const isUndefinedExpression = (node: TSESTree.Node): boolean => {
   return false
 }
 
+/**
+ * Strips TypeScript-only expression wrappers (`x as T`, `x satisfies T`, `x!`,
+ * `<T>x`) that don't change the runtime value, so the underlying expression can
+ * be inspected — e.g. `StepResponse.skip() as any` unwraps to the call.
+ */
+export const unwrapTsExpression = (
+  node: TSESTree.Expression
+): TSESTree.Expression => {
+  let current = node
+  while (
+    current.type === AST_NODE_TYPES.TSAsExpression ||
+    current.type === AST_NODE_TYPES.TSSatisfiesExpression ||
+    current.type === AST_NODE_TYPES.TSNonNullExpression ||
+    current.type === AST_NODE_TYPES.TSTypeAssertion
+  ) {
+    current = current.expression
+  }
+  return current
+}
+
+/**
+ * The three AST node types that represent a function value:
+ * `ArrowFunctionExpression`, `FunctionExpression`, and `FunctionDeclaration`.
+ */
+export type FunctionNode =
+  | TSESTree.ArrowFunctionExpression
+  | TSESTree.FunctionExpression
+  | TSESTree.FunctionDeclaration
+
 const FUNCTION_NODE_TYPES = new Set<string>([
   AST_NODE_TYPES.ArrowFunctionExpression,
   AST_NODE_TYPES.FunctionExpression,
@@ -58,13 +87,21 @@ export const walkAst = (
   node: TSESTree.Node | null | undefined,
   visit: (node: TSESTree.Node) => boolean | void
 ): void => {
-  if (!node) return
-  if (visit(node) === false) return
+  if (!node) {
+    return
+  }
+  if (visit(node) === false) {
+    return
+  }
 
   for (const key of Object.keys(node)) {
-    if (key === "parent") continue
+    if (key === "parent") {
+      continue
+    }
     const value = (node as unknown as Record<string, unknown>)[key]
-    if (!value) continue
+    if (!value) {
+      continue
+    }
     if (Array.isArray(value)) {
       for (const child of value) {
         if (child && typeof child === "object" && "type" in child) {
@@ -79,10 +116,12 @@ export const walkAst = (
 
 /**
  * True for `ArrowFunctionExpression`, `FunctionExpression`, and
- * `FunctionDeclaration`.
+ * `FunctionDeclaration`. Narrows to `FunctionNode`; accepts nullable input so
+ * it can guard optional fields like a declarator's `init`.
  */
-export const isFunctionNode = (node: TSESTree.Node): boolean =>
-  FUNCTION_NODE_TYPES.has(node.type)
+export const isFunctionNode = (
+  node: TSESTree.Node | null | undefined
+): node is FunctionNode => !!node && FUNCTION_NODE_TYPES.has(node.type)
 
 /**
  * Returns the static key name of an object-literal property when it can be
@@ -93,9 +132,13 @@ export const isFunctionNode = (node: TSESTree.Node): boolean =>
 export const getPropertyKeyName = (
   prop: TSESTree.ObjectLiteralElement
 ): string | null => {
-  if (prop.type !== AST_NODE_TYPES.Property || prop.computed) return null
+  if (prop.type !== AST_NODE_TYPES.Property || prop.computed) {
+    return null
+  }
   const key = prop.key
-  if (key.type === AST_NODE_TYPES.Identifier) return key.name
+  if (key.type === AST_NODE_TYPES.Identifier) {
+    return key.name
+  }
   if (key.type === AST_NODE_TYPES.Literal && typeof key.value === "string") {
     return key.value
   }
@@ -112,10 +155,71 @@ export const findProperty = (
   name: string
 ): TSESTree.Property | null => {
   for (const prop of obj.properties) {
-    if (prop.type !== AST_NODE_TYPES.Property) continue
-    if (getPropertyKeyName(prop) === name) return prop
+    if (prop.type !== AST_NODE_TYPES.Property) {
+      continue
+    }
+    if (getPropertyKeyName(prop) === name) {
+      return prop
+    }
   }
   return null
+}
+
+/**
+ * Resolves an expression to the object literal it denotes, when that can be
+ * determined without type information:
+ * - An `ObjectExpression` is returned as-is.
+ * - An `Identifier` is resolved through scope to a `const x = { ... }` binding.
+ *
+ * Returns `null` when the value can't be statically resolved to an object
+ * literal (call expressions, spreads of unknown bindings, re-exports, etc.).
+ * Callers that need to assert something about the object's shape should treat a
+ * `null` result as "can't tell" and skip the check to avoid false positives.
+ */
+export const resolveObjectExpression = (
+  node: TSESTree.Node | null | undefined,
+  scope: TSESLint.Scope.Scope | null
+): TSESTree.ObjectExpression | null => {
+  if (!node) {
+    return null
+  }
+  if (node.type === AST_NODE_TYPES.ObjectExpression) {
+    return node
+  }
+  if (node.type === AST_NODE_TYPES.Identifier) {
+    const variable = findVariableInScope(scope, node.name)
+    if (variable) {
+      for (const def of variable.defs) {
+        if (
+          def.node.type === AST_NODE_TYPES.VariableDeclarator &&
+          def.node.init?.type === AST_NODE_TYPES.ObjectExpression
+        ) {
+          return def.node.init
+        }
+      }
+    }
+  }
+  return null
+}
+
+/**
+ * Whether an object literal is known to carry a property named `name`.
+ *
+ * Returns `true`/`false` when it can be determined statically, and `"unknown"`
+ * when the object contains a `SpreadElement` — the property could be supplied
+ * by the spread, so a rule must not flag its absence.
+ */
+export const objectHasProperty = (
+  obj: TSESTree.ObjectExpression,
+  name: string
+): boolean | "unknown" => {
+  if (findProperty(obj, name)) {
+    return true
+  }
+  if (obj.properties.some((p) => p.type === AST_NODE_TYPES.SpreadElement)) {
+    return "unknown"
+  }
+  return false
 }
 
 /**
@@ -152,9 +256,45 @@ export const findVariableInScope = (
   let current: TSESLint.Scope.Scope | null = scope
   while (current) {
     const found = current.variables.find((v) => v.name === name)
-    if (found) return found
+    if (found) {
+      return found
+    }
     current = current.upper
   }
+  return null
+}
+
+/**
+ * Resolves an identifier to the function it refers to — either a `function`
+ * declaration or a `const x = () => …` / `const x = function () {}`
+ * initializer. Walks the scope chain from `scope` to find the binding.
+ *
+ * Returns `null` when the binding isn't a project-local function (e.g. a
+ * re-export from another module, or a non-function value). Useful for
+ * resolving the function behind a default-export identifier
+ * (`export default handler`, `export { handler as default }`).
+ */
+export const resolveFunctionFromIdentifier = (
+  scope: TSESLint.Scope.Scope | null,
+  identifier: TSESTree.Identifier
+): FunctionNode | null => {
+  const variable = findVariableInScope(scope, identifier.name)
+  if (!variable) {
+    return null
+  }
+
+  for (const def of variable.defs) {
+    if (def.node.type === AST_NODE_TYPES.FunctionDeclaration) {
+      return def.node
+    }
+    if (
+      def.node.type === AST_NODE_TYPES.VariableDeclarator &&
+      isFunctionNode(def.node.init)
+    ) {
+      return def.node.init
+    }
+  }
+
   return null
 }
 
@@ -167,9 +307,13 @@ export const findVariableInScope = (
 export const getConstStringInit = (
   variable: TSESLint.Scope.Variable
 ): string | null => {
-  if (variable.defs.length !== 1) return null
+  if (variable.defs.length !== 1) {
+    return null
+  }
   const def = variable.defs[0]
-  if (def.type !== "Variable") return null
+  if (def.type !== "Variable") {
+    return null
+  }
   if (
     def.parent?.type !== AST_NODE_TYPES.VariableDeclaration ||
     def.parent.kind !== "const"
@@ -232,12 +376,20 @@ export const getReturnedExpression = (
     return fn.body
   }
   const body = fn.body
-  if (body.type !== AST_NODE_TYPES.BlockStatement) return null
+  if (body.type !== AST_NODE_TYPES.BlockStatement) {
+    return null
+  }
   let found: TSESTree.Expression | null = null
   for (const stmt of body.body) {
-    if (stmt.type !== AST_NODE_TYPES.ReturnStatement) continue
-    if (!stmt.argument) return null
-    if (found) return null
+    if (stmt.type !== AST_NODE_TYPES.ReturnStatement) {
+      continue
+    }
+    if (!stmt.argument) {
+      return null
+    }
+    if (found) {
+      return null
+    }
     found = stmt.argument
   }
   return found
@@ -260,10 +412,16 @@ export const returnTypeIsPromise = (
     | TSESTree.TSEmptyBodyFunctionExpression
 ): boolean => {
   const annotation = fn.returnType?.typeAnnotation
-  if (!annotation) return false
-  if (annotation.type !== AST_NODE_TYPES.TSTypeReference) return false
+  if (!annotation) {
+    return false
+  }
+  if (annotation.type !== AST_NODE_TYPES.TSTypeReference) {
+    return false
+  }
   const name = annotation.typeName
-  if (name.type !== AST_NODE_TYPES.Identifier) return false
+  if (name.type !== AST_NODE_TYPES.Identifier) {
+    return false
+  }
   return name.name === "Promise"
 }
 
@@ -275,8 +433,12 @@ export const findConstructor = (
   node: TSESTree.ClassDeclaration | TSESTree.ClassExpression
 ): TSESTree.MethodDefinition | null => {
   for (const member of node.body.body) {
-    if (member.type !== AST_NODE_TYPES.MethodDefinition) continue
-    if (member.kind === "constructor") return member
+    if (member.type !== AST_NODE_TYPES.MethodDefinition) {
+      continue
+    }
+    if (member.kind === "constructor") {
+      return member
+    }
   }
   return null
 }

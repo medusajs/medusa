@@ -10,9 +10,7 @@ const WRONG_CASE_NAMES = new Set(["authenticate", "Authenticate"])
 const ROUTE_FILE_BASENAMES = new Set(["route.ts", "route.js"])
 
 function isBooleanLiteral(node: TSESTree.Node): boolean {
-  return (
-    node.type === AST_NODE_TYPES.Literal && typeof node.value === "boolean"
-  )
+  return node.type === AST_NODE_TYPES.Literal && typeof node.value === "boolean"
 }
 
 export const rule = createRule<[], MessageIds>({
@@ -35,12 +33,20 @@ export const rule = createRule<[], MessageIds>({
   defaultOptions: [],
   create(context) {
     const filename = context.filename
-    if (!filename || filename.startsWith("<")) return {}
-    if (!isUnderApiDir(filename)) return {}
-    if (!ROUTE_FILE_BASENAMES.has(path.basename(filename))) return {}
+    if (!filename || filename.startsWith("<")) {
+      return {}
+    }
+    if (!isUnderApiDir(filename)) {
+      return {}
+    }
+    if (!ROUTE_FILE_BASENAMES.has(path.basename(filename))) {
+      return {}
+    }
 
     function checkVariableDeclarator(d: TSESTree.VariableDeclarator) {
-      if (d.id.type !== AST_NODE_TYPES.Identifier) return
+      if (d.id.type !== AST_NODE_TYPES.Identifier) {
+        return
+      }
       const name = d.id.name
 
       if (WRONG_CASE_NAMES.has(name)) {
@@ -56,8 +62,12 @@ export const rule = createRule<[], MessageIds>({
         return
       }
 
-      if (name !== EXPECTED_NAME) return
-      if (!d.init) return
+      if (name !== EXPECTED_NAME) {
+        return
+      }
+      if (!d.init) {
+        return
+      }
       if (!isBooleanLiteral(d.init)) {
         context.report({
           node: d.init,
@@ -78,7 +88,9 @@ export const rule = createRule<[], MessageIds>({
         }
 
         for (const spec of node.specifiers) {
-          if (spec.type !== AST_NODE_TYPES.ExportSpecifier) continue
+          if (spec.type !== AST_NODE_TYPES.ExportSpecifier) {
+            continue
+          }
           const exported = spec.exported
           let exportedName: string | null = null
           if (exported.type === AST_NODE_TYPES.Identifier) {
@@ -89,8 +101,12 @@ export const rule = createRule<[], MessageIds>({
           ) {
             exportedName = exported.value
           }
-          if (!exportedName) continue
-          if (!WRONG_CASE_NAMES.has(exportedName)) continue
+          if (!exportedName) {
+            continue
+          }
+          if (!WRONG_CASE_NAMES.has(exportedName)) {
+            continue
+          }
 
           const target = exported
           context.report({

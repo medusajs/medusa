@@ -82,6 +82,18 @@ function getLineItemOriginalTotal(lineItem) {
   return MathBN.div(lineItem.original_total, lineItem.quantity)
 }
 
+// Applied amounts are accumulated excl-tax; convert to incl-tax for tax-inclusive promotions before subtracting.
+function getAppliedValueInPromotionBase(promotion, lineItem) {
+  if (!promotion.is_tax_inclusive) {
+    return promotion.applied_value
+  }
+
+  return MathBN.mult(
+    promotion.applied_value,
+    MathBN.div(lineItem.original_total, lineItem.subtotal)
+  )
+}
+
 export function calculateAdjustmentAmountFromPromotion(
   lineItem,
   promotion,
@@ -124,7 +136,10 @@ export function calculateAdjustmentAmountFromPromotion(
         : getLineItemSubtotal(lineItem),
       quantity
     )
-    const applicableAmount = MathBN.sub(lineItemAmount, promotion.applied_value)
+    const applicableAmount = MathBN.sub(
+      lineItemAmount,
+      getAppliedValueInPromotionBase(promotion, lineItem)
+    )
 
     if (MathBN.lte(applicableAmount, MEDUSA_EPSILON)) {
       return MathBN.convert(0)
@@ -166,7 +181,7 @@ export function calculateAdjustmentAmountFromPromotion(
 
   const remainingItemAmount = MathBN.sub(
     promotion.is_tax_inclusive ? lineItem.original_total : lineItem.subtotal,
-    promotion.applied_value
+    getAppliedValueInPromotionBase(promotion, lineItem)
   )
 
   const itemAmount = MathBN.div(

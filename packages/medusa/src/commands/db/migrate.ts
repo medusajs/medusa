@@ -133,10 +133,12 @@ const main = async function ({
   allOrNothing,
 }) {
   process.env.MEDUSA_WORKER_MODE = "server"
-  const container = await initializeContainer(directory)
-  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+  let logger: Logger | undefined
 
   try {
+    const container = await initializeContainer(directory)
+    logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+
     const migrated = await migrate({
       directory,
       skipLinks,
@@ -150,7 +152,11 @@ const main = async function ({
     })
     process.exit(migrated ? 0 : 1)
   } catch (error) {
-    logger.error(error)
+    if (logger) {
+      logger.error(error)
+    } else {
+      console.error(error)
+    }
     process.exit(1)
   }
 }
