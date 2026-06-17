@@ -84,6 +84,11 @@ export const troubleshootingSidebar = [
         title: "Importing from /dist",
       },
       {
+        type: "link",
+        path: "/troubleshooting/modules/resolve-path",
+        title: "Module Provider Resolve Path Error",
+      },
+      {
         type: "sub-category",
         title: "Query",
         children: [

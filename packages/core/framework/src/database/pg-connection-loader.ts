@@ -69,22 +69,47 @@ export async function pgConnectionLoader(): Promise<
     ? parseInt(process.env.__MEDUSA_DB_CONNECTION_RETRY_DELAY)
     : 1000
 
-  await retryExecution(
-    async () => {
-      await pgConnection.raw("SELECT 1")
-    },
-    {
-      maxRetries,
-      retryDelay,
-      onRetry: (error) => {
-        logger.warn(
-          `Pg connection failed to connect to the database. Retrying...\n${stringifyCircular(
-            error
-          )}`
-        )
-      },
+  let lastConnectionError: Error | undefined
+  pgConnection.client?.pool?.on?.(
+    "createFail",
+    (_eventId: unknown, error: Error) => {
+      lastConnectionError = error
     }
   )
+
+  const formatConnectionError = (error: unknown) => {
+    if (lastConnectionError && lastConnectionError !== error) {
+      return `${stringifyCircular(lastConnectionError)}\n(pool reported: ${
+        (error as Error)?.message ?? error
+      })`
+    }
+    return stringifyCircular(lastConnectionError ?? error)
+  }
+
+  try {
+    await retryExecution(
+      async () => {
+        await pgConnection.raw("SELECT 1")
+      },
+      {
+        maxRetries,
+        retryDelay,
+        onRetry: (error) => {
+          logger.warn(
+            `Pg connection failed to connect to the database. Retrying...\n${formatConnectionError(
+              error
+            )}`
+          )
+        },
+      }
+    )
+  } catch (error) {
+    if (lastConnectionError) {
+      lastConnectionError.message = `Failed to connect to the database: ${lastConnectionError.message}`
+      throw lastConnectionError
+    }
+    throw error
+  }
 
   container.register(
     ContainerRegistrationKeys.PG_CONNECTION,
