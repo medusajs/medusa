@@ -26,22 +26,8 @@ const handlerP =
 function addLintOptions(builder, commandLabel: string) {
   return builder
     .option("lint", {
-      type: "string",
-      describe: `Run the Medusa linter before ${commandLabel}. Accepts \`--lint true\` or \`--lint false\`.`,
-      coerce: (v?: string) => {
-        if (v === undefined) {
-          return undefined
-        }
-        if (v === "true") {
-          return true
-        }
-        if (v === "false") {
-          return false
-        }
-        throw new Error(
-          `Invalid value for --lint: "${v}". Use \`--lint true\` or \`--lint false\`.`
-        )
-      },
+      type: "boolean",
+      describe: `Run the Medusa linter before ${commandLabel}. Use --no-lint to skip linting.`,
     })
     .option("fix", {
       type: "boolean",
