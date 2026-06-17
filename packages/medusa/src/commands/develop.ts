@@ -66,8 +66,18 @@ export default async function ({ types, directory, lint, fix }) {
   args.shift()
   args.shift()
 
+  /**
+   * The `--lint` / `--no-lint` / `--fix` flags are consumed by the develop
+   * command itself (see runLintStep above). They are not recognized by the
+   * forked `start` command, which runs in strict mode and would reject them, so
+   * strip them before forwarding the remaining args.
+   */
+  const startArgs = args.filter(
+    (arg) => !/^--(no-)?(lint|fix)(=.*)?$/.test(arg)
+  )
+
   if (types) {
-    args.push("--types")
+    startArgs.push("--types")
   }
 
   /**
@@ -106,7 +116,7 @@ export default async function ({ types, directory, lint, fix }) {
         forkOptions.stdio = ["inherit", "inherit", "inherit", "ipc"]
       }
 
-      this.childProcess = fork(cliPath, ["start", ...args], forkOptions)
+      this.childProcess = fork(cliPath, ["start", ...startArgs], forkOptions)
 
       this.childProcess.on("error", (error) => {
         // @ts-ignore
