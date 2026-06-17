@@ -36,14 +36,28 @@ const findConfigCall = (
   call: TSESTree.CallExpression
 ): TSESTree.CallExpression | null => {
   const parent = call.parent
-  if (!parent || parent.type !== AST_NODE_TYPES.MemberExpression) return null
-  if (parent.object !== call) return null
-  if (parent.computed) return null
-  if (parent.property.type !== AST_NODE_TYPES.Identifier) return null
-  if (parent.property.name !== "config") return null
+  if (!parent || parent.type !== AST_NODE_TYPES.MemberExpression) {
+    return null
+  }
+  if (parent.object !== call) {
+    return null
+  }
+  if (parent.computed) {
+    return null
+  }
+  if (parent.property.type !== AST_NODE_TYPES.Identifier) {
+    return null
+  }
+  if (parent.property.name !== "config") {
+    return null
+  }
   const grand = parent.parent
-  if (!grand || grand.type !== AST_NODE_TYPES.CallExpression) return null
-  if (grand.callee !== parent) return null
+  if (!grand || grand.type !== AST_NODE_TYPES.CallExpression) {
+    return null
+  }
+  if (grand.callee !== parent) {
+    return null
+  }
   return grand
 }
 
@@ -51,10 +65,16 @@ const extractConfigName = (
   configCall: TSESTree.CallExpression
 ): string | null => {
   const arg = configCall.arguments[0]
-  if (!arg || arg.type !== AST_NODE_TYPES.ObjectExpression) return null
+  if (!arg || arg.type !== AST_NODE_TYPES.ObjectExpression) {
+    return null
+  }
   for (const prop of arg.properties) {
-    if (prop.type !== AST_NODE_TYPES.Property) continue
-    if (prop.computed) continue
+    if (prop.type !== AST_NODE_TYPES.Property) {
+      continue
+    }
+    if (prop.computed) {
+      continue
+    }
     const keyName =
       prop.key.type === AST_NODE_TYPES.Identifier
         ? prop.key.name
@@ -62,7 +82,9 @@ const extractConfigName = (
           typeof prop.key.value === "string"
         ? prop.key.value
         : null
-    if (keyName !== "name") continue
+    if (keyName !== "name") {
+      continue
+    }
     if (
       prop.value.type === AST_NODE_TYPES.Literal &&
       typeof prop.value.value === "string"
@@ -95,13 +117,25 @@ export const rule = createRule<[], MessageIds>({
     const callsByWorkflow = new Map<TSESTree.Node, StepCall[]>()
 
     const isStepInvocation = (node: TSESTree.CallExpression): boolean => {
-      if (node.callee.type !== AST_NODE_TYPES.Identifier) return false
+      if (node.callee.type !== AST_NODE_TYPES.Identifier) {
+        return false
+      }
       const name = node.callee.name
-      if (SDK_HELPER_NAMES.has(name)) return false
-      if (bindings.transform.has(name)) return false
-      if (bindings.when.has(name)) return false
-      if (bindings.createStep.has(name)) return false
-      if (bindings.createWorkflow.has(name)) return false
+      if (SDK_HELPER_NAMES.has(name)) {
+        return false
+      }
+      if (bindings.transform.has(name)) {
+        return false
+      }
+      if (bindings.when.has(name)) {
+        return false
+      }
+      if (bindings.createStep.has(name)) {
+        return false
+      }
+      if (bindings.createWorkflow.has(name)) {
+        return false
+      }
       return true
     }
 
@@ -110,9 +144,15 @@ export const rule = createRule<[], MessageIds>({
         trackWorkflowSdkImports(node, bindings)
       },
       CallExpression(node) {
-        if (bindings.createWorkflow.size === 0) return
-        if (!isStepInvocation(node)) return
-        if (!isInWorkflowConstructor(node, bindings)) return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
+        if (!isStepInvocation(node)) {
+          return
+        }
+        if (!isInWorkflowConstructor(node, bindings)) {
+          return
+        }
 
         // Identify the enclosing workflow constructor to scope the bucket.
         let fn: TSESTree.Node | undefined = node.parent
@@ -126,15 +166,17 @@ export const rule = createRule<[], MessageIds>({
           }
           fn = fn.parent
         }
-        if (!fn) return
+        if (!fn) {
+          return
+        }
 
-        if (node.callee.type !== AST_NODE_TYPES.Identifier) return
+        if (node.callee.type !== AST_NODE_TYPES.Identifier) {
+          return
+        }
         const calleeName = node.callee.name
 
         const configCall = findConfigCall(node)
-        const configuredName = configCall
-          ? extractConfigName(configCall)
-          : null
+        const configuredName = configCall ? extractConfigName(configCall) : null
 
         const effectiveKey =
           configuredName !== null
@@ -160,16 +202,17 @@ export const rule = createRule<[], MessageIds>({
           }
 
           for (const group of groups.values()) {
-            if (group.length < 2) continue
+            if (group.length < 2) {
+              continue
+            }
             const base = stepBaseName(group[0].calleeName)
             // Leave the first call untouched; flag every subsequent
             // duplicate and offer a deterministic .config rename.
             for (let i = 1; i < group.length; i++) {
               const dup = group[i]
-              const displayKey =
-                dup.effectiveKey.startsWith("NAMED:")
-                  ? dup.effectiveKey.slice("NAMED:".length)
-                  : stepBaseName(dup.calleeName)
+              const displayKey = dup.effectiveKey.startsWith("NAMED:")
+                ? dup.effectiveKey.slice("NAMED:".length)
+                : stepBaseName(dup.calleeName)
 
               const suggestedName = `${base || dup.calleeName}-${i + 1}`
 

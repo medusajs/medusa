@@ -368,8 +368,6 @@ medusaIntegrationTestRunner({
         expect(response.data.product_categories).toHaveLength(7) // created in beforeEach
       })
 
-
-
       it("gets list of product category with immediate children and parents", async () => {
         // BREAKING: To get the children tree, the query param include_descendants_tree must be used
         const path = `/admin/product-categories?limit=7`
@@ -643,17 +641,18 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it('filters based on external id', async () => {  
-
+      it("filters based on external id", async () => {
         const response = await api.get(
           `/admin/product-categories?external_id=${productCategory.external_id}`,
           adminHeaders
-        ) 
+        )
 
         expect(response.status).toEqual(200)
         expect(response.data.product_categories).toHaveLength(1)
-        expect(response.data.product_categories[0].id).toEqual(productCategory.id)
-      });
+        expect(response.data.product_categories[0].id).toEqual(
+          productCategory.id
+        )
+      })
 
       it("filters based on parent category", async () => {
         const response = await api.get(
@@ -768,8 +767,10 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        const names = response.data.product_categories.map(pc => pc.name)
-        const sortedNames = [...names].sort((a: string, b: string) => a.localeCompare(b))
+        const names = response.data.product_categories.map((pc) => pc.name)
+        const sortedNames = [...names].sort((a: string, b: string) =>
+          a.localeCompare(b)
+        )
         expect(names).toEqual(sortedNames)
       })
 
@@ -779,8 +780,10 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        const names = response.data.product_categories.map(pc => pc.name)
-        const sortedNames = [...names].sort((a: string, b: string) => b.localeCompare(a))
+        const names = response.data.product_categories.map((pc) => pc.name)
+        const sortedNames = [...names].sort((a: string, b: string) =>
+          b.localeCompare(a)
+        )
         expect(names).toEqual(sortedNames)
       })
     })
@@ -893,8 +896,6 @@ medusaIntegrationTestRunner({
           })
         )
       })
-
-
 
       it("successfully creates a product category with a rank", async () => {
         const payload = {

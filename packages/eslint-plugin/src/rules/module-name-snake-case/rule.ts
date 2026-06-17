@@ -28,7 +28,9 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) return
+        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) {
+          return
+        }
         for (const specifier of node.specifiers) {
           if (
             specifier.type === "ImportSpecifier" &&
@@ -41,7 +43,9 @@ export const rule = createRule<[], MessageIds>({
       },
 
       CallExpression(node) {
-        if (moduleLocalNames.size === 0) return
+        if (moduleLocalNames.size === 0) {
+          return
+        }
         const callee = node.callee
         if (
           callee.type !== "Identifier" ||
@@ -52,13 +56,19 @@ export const rule = createRule<[], MessageIds>({
         const firstArg = node.arguments[0] as
           | TSESTree.CallExpressionArgument
           | undefined
-        if (!firstArg) return
+        if (!firstArg) {
+          return
+        }
         const resolved = resolveStaticStringValue(
           firstArg,
           context.sourceCode.getScope(firstArg)
         )
-        if (resolved === null) return
-        if (VALID_NAME_RE.test(resolved.value)) return
+        if (resolved === null) {
+          return
+        }
+        if (VALID_NAME_RE.test(resolved.value)) {
+          return
+        }
         context.report({
           node: resolved.reportNode,
           messageId: "invalidModuleName",

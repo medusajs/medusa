@@ -10,9 +10,13 @@ function isLinkableMemberChain(node: TSESTree.Node): boolean {
   // Match `<X>.linkable.<y>` (any depth on `<X>`, e.g. `ProductModule.linkable.product`
   // or `foo.bar.linkable.product`). The outer node is a MemberExpression whose
   // `object` is itself a non-computed MemberExpression with `property.name === "linkable"`.
-  if (node.type !== "MemberExpression" || node.computed) return false
+  if (node.type !== "MemberExpression" || node.computed) {
+    return false
+  }
   const object = node.object
-  if (object.type !== "MemberExpression" || object.computed) return false
+  if (object.type !== "MemberExpression" || object.computed) {
+    return false
+  }
   if (
     object.property.type !== "Identifier" ||
     object.property.name !== "linkable"
@@ -27,14 +31,18 @@ function hasOwnPropertyNamed(
   name: string
 ): boolean {
   for (const prop of node.properties) {
-    if (prop.type !== "Property" || prop.computed) continue
+    if (prop.type !== "Property" || prop.computed) {
+      continue
+    }
     const keyName =
       prop.key.type === "Identifier"
         ? prop.key.name
         : prop.key.type === "Literal" && typeof prop.key.value === "string"
-          ? prop.key.value
-          : null
-    if (keyName === name) return true
+        ? prop.key.value
+        : null
+    if (keyName === name) {
+      return true
+    }
   }
   return false
 }
@@ -59,23 +67,33 @@ function hasLinkableInChain(node: TSESTree.Node): boolean {
 }
 
 function isValidLinkParticipant(node: TSESTree.Node): boolean {
-  if (isLinkableMemberChain(node)) return true
+  if (isLinkableMemberChain(node)) {
+    return true
+  }
   if (node.type === "ObjectExpression") {
     for (const prop of node.properties) {
       if (prop.type === "SpreadElement") {
         // Inverse read-only links spread `<X>.linkable.<y>.id` (or similar).
-        if (hasLinkableInChain(prop.argument)) return true
+        if (hasLinkableInChain(prop.argument)) {
+          return true
+        }
         continue
       }
-      if (prop.type !== "Property" || prop.computed) continue
+      if (prop.type !== "Property" || prop.computed) {
+        continue
+      }
       const keyName =
         prop.key.type === "Identifier"
           ? prop.key.name
           : prop.key.type === "Literal" && typeof prop.key.value === "string"
-            ? prop.key.value
-            : null
-      if (keyName !== "linkable") continue
-      if (isLinkableMemberChain(prop.value)) return true
+          ? prop.key.value
+          : null
+      if (keyName !== "linkable") {
+        continue
+      }
+      if (isLinkableMemberChain(prop.value)) {
+        return true
+      }
       // Read-only link form: `linkable` is an inline object describing the
       // foreign data model via `serviceName` + `alias` + (optional) `primaryKey`.
       if (
@@ -109,7 +127,9 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) return
+        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) {
+          return
+        }
         for (const specifier of node.specifiers) {
           if (
             specifier.type === "ImportSpecifier" &&
@@ -122,7 +142,9 @@ export const rule = createRule<[], MessageIds>({
       },
 
       CallExpression(node) {
-        if (defineLinkLocalNames.size === 0) return
+        if (defineLinkLocalNames.size === 0) {
+          return
+        }
         if (
           node.callee.type !== "Identifier" ||
           !defineLinkLocalNames.has(node.callee.name)
@@ -133,7 +155,9 @@ export const rule = createRule<[], MessageIds>({
         // link participants. Anything beyond index 1 is configuration.
         const participants = node.arguments.slice(0, 2)
         for (const arg of participants) {
-          if (arg.type === "SpreadElement") continue
+          if (arg.type === "SpreadElement") {
+            continue
+          }
           if (!isValidLinkParticipant(arg)) {
             context.report({
               node: arg,

@@ -35,8 +35,12 @@ export const rule = createRule<[], MessageIds>({
     const bindings: WorkflowSdkBindings = createWorkflowSdkBindings()
 
     const check = (node: LoopNode) => {
-      if (bindings.createWorkflow.size === 0) return
-      if (!isInWorkflowDefinitionScope(node, bindings)) return
+      if (bindings.createWorkflow.size === 0) {
+        return
+      }
+      if (!isInWorkflowDefinitionScope(node, bindings)) {
+        return
+      }
       context.report({ node, messageId: "loopInWorkflow" })
     }
 

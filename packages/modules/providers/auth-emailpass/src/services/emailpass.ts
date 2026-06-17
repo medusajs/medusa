@@ -25,11 +25,8 @@ type AuthIdentityParams = {
   authIdentityService: AuthIdentityProviderService
 }
 
-
 type ProviderMetadata = {
   password?: unknown
-  verified_at?: string | null
-  requires_verification?: boolean
 }
 
 interface LocalServiceConfig extends EmailPassAuthProviderOptions {}
@@ -234,14 +231,6 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
 
     providerMetadata.password = passwordHash
 
-    if (
-      this.requiresVerification_(actor_type) &&
-      !providerMetadata.verified_at &&
-      providerMetadata.requires_verification !== false
-    ) {
-      providerMetadata.requires_verification = true
-    }
-
     const authIdentity =
       type === "create"
         ? await authIdentityService.create({
@@ -253,14 +242,6 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
           })
 
     return this.sanitizeAuthIdentity_(authIdentity)
-  }
-
-  private requiresVerification_(actorType?: string): boolean {
-    if (!actorType) {
-      return false
-    }
-
-    return this.config_.require_verification?.includes(actorType) === true
   }
 
   private async getProviderMetadata_(

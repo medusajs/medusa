@@ -45,15 +45,15 @@ export const rule = createRule<[], MessageIds>({
     const keysLocalNames = new Set<string>()
     let frameworkUtilsImportNode: TSESTree.ImportDeclaration | null = null
 
-    function addKeysImport(
-      fixer: TSESLint.RuleFixer
-    ): TSESLint.RuleFix | null {
+    function addKeysImport(fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null {
       if (frameworkUtilsImportNode) {
         const specifiers = frameworkUtilsImportNode.specifiers.filter(
           (s): s is TSESTree.ImportSpecifier =>
             s.type === AST_NODE_TYPES.ImportSpecifier
         )
-        if (specifiers.length === 0) return null
+        if (specifiers.length === 0) {
+          return null
+        }
         const last = specifiers[specifiers.length - 1]
         return fixer.insertTextAfter(last, `, ${CONTAINER_REGISTRATION_KEYS}`)
       }
@@ -68,7 +68,9 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) return
+        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) {
+          return
+        }
         frameworkUtilsImportNode = node
         for (const specifier of node.specifiers) {
           if (
@@ -82,13 +84,23 @@ export const rule = createRule<[], MessageIds>({
       },
 
       CallExpression(node) {
-        if (!isResolveCallee(node.callee)) return
+        if (!isResolveCallee(node.callee)) {
+          return
+        }
         const arg = node.arguments[0]
-        if (!arg) return
-        if (arg.type !== AST_NODE_TYPES.Literal) return
-        if (typeof arg.value !== "string") return
+        if (!arg) {
+          return
+        }
+        if (arg.type !== AST_NODE_TYPES.Literal) {
+          return
+        }
+        if (typeof arg.value !== "string") {
+          return
+        }
         const enumMember = KEYS_BY_VALUE[arg.value]
-        if (!enumMember) return
+        if (!enumMember) {
+          return
+        }
 
         context.report({
           node: arg,
@@ -100,12 +112,12 @@ export const rule = createRule<[], MessageIds>({
               keysLocalNames.size > 0
                 ? (keysLocalNames.values().next().value as string)
                 : CONTAINER_REGISTRATION_KEYS
-            fixes.push(
-              fixer.replaceText(arg, `${localName}.${enumMember}`)
-            )
+            fixes.push(fixer.replaceText(arg, `${localName}.${enumMember}`))
             if (keysLocalNames.size === 0) {
               const importFix = addKeysImport(fixer)
-              if (!importFix) return null
+              if (!importFix) {
+                return null
+              }
               fixes.push(importFix)
               keysLocalNames.add(CONTAINER_REGISTRATION_KEYS)
             }

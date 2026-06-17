@@ -10,7 +10,9 @@ In this chapter, you'll learn about the Index Module and how you can use it.
 
 <Note type="soon" title="Experimental">
 
-The Index Module is experimental and still in development, so it is subject to change. Consider whether your application can tolerate minor issues before using it in production.
+The Index Module is experimental and still in development, so it is subject to change. However, it's being actively used in the Medusa Admin dashboard and is increasingly stable for production use. Consider your application's tolerance for minor issues when deciding to implement it.
+
+For multi-vendor setups with sales channel filtering needs, the Index Module provides the most efficient approach for filtering products by sales channels and other linked data models.
 
 </Note>
 
@@ -841,6 +843,29 @@ export const retrieveBrandsWorkflow = createWorkflow(
 ```
 
 This will retrieve all brands that are linked to at least one product.
+
+### Sales Channel Filtering for Multi-Vendor Setups
+
+For multi-vendor marketplaces where you need to filter products based on sales channels, the Index Module provides the most efficient solution. Unlike Query which has limitations with cross-module filtering, the Index Module enables complex filtering across linked data models.
+
+For example, to filter vendor products by multiple sales channels:
+
+```ts title="src/api/custom/vendor-products/route.ts"
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "sales_channels.*", "vendor.*"],
+  filters: {
+    sales_channels: {
+      id: ["sc_vendor_1", "sc_vendor_2"],
+    },
+    vendor: {
+      id: "vendor_123",
+    },
+  },
+})
+```
+
+This query efficiently filters products by both vendor and sales channels in a single operation.
 
 ### Retrieve Localized Data
 

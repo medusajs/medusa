@@ -1,29 +1,15 @@
 import type { Linter } from "eslint"
-import { PLUGIN_NAMESPACE, ruleId } from "../constants"
+import { ruleId } from "../constants"
+import { ignoresBlock, pluginBlock, tsParserBlock } from "./shared"
 
 export function buildRecommended(plugin: unknown): Linter.Config[] {
   return [
-    {
-      ignores: [
-        ".medusa/**",
-        ".yalc/**",
-        "dist/**",
-        "build/**",
-        "node_modules/**",
-        "coverage/**",
-        ".cache/**",
-        "**/*.generated.ts",
-      ],
-    },
-    {
-      files: ["**/*.{ts,tsx}"],
-      plugins: { [PLUGIN_NAMESPACE]: plugin as never },
-      languageOptions: {
-        parser: require("@typescript-eslint/parser"),
-        parserOptions: { project: true, sourceType: "module" },
-      },
-      rules: {},
-    },
+    ignoresBlock,
+    pluginBlock(plugin),
+    // Recommended rules don't need type information, but the parser is set up
+    // with `project` so the type-aware `strict` preset (which extends this one)
+    // has parser services available.
+    tsParserBlock(true),
     {
       files: ["**/*.{ts,js}"],
       ignores: ["src/admin/**", "**/src/admin/**"],
@@ -39,6 +25,9 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("no-spread-in-workflow")]: "error",
         [ruleId("no-throw-in-transform")]: "error",
         [ruleId("no-try-catch-in-workflow")]: "error",
+        [ruleId("import-from-framework-not-internal")]: "warn",
+        [ruleId("no-mikroorm-direct-import")]: "warn",
+        [ruleId("use-medusa-error-not-generic-error")]: "warn",
         [ruleId("link-create-keys-modules-enum")]: "warn",
         [ruleId("prefer-container-registration-keys")]: "warn",
         [ruleId("prefer-link-over-remote-link")]: "warn",
@@ -75,10 +64,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       },
     },
     {
-      files: [
-        "**/middleware.{ts,js}",
-        "**/middlewares.{ts,js}",
-      ],
+      files: ["**/middleware.{ts,js}", "**/middlewares.{ts,js}"],
       rules: {
         [ruleId("middleware-must-call-next")]: "warn",
         [ruleId("middlewares-file-location-and-name")]: "error",
@@ -92,13 +78,10 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("service-constructor-must-call-super")]: "error",
         [ruleId("service-methods-must-be-async")]: "error",
         [ruleId("use-inject-manager-on-public-methods")]: "warn",
-      }
+      },
     },
     {
-      files: [
-        "src/modules/**/index.{ts,js}",
-        "**/modules/**/index.{ts,js}",
-      ],
+      files: ["src/modules/**/index.{ts,js}", "**/modules/**/index.{ts,js}"],
       rules: {
         [ruleId("module-name-snake-case")]: "error",
       },
@@ -134,6 +117,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       ],
       rules: {
         [ruleId("admin-env-vars-import-meta")]: "warn",
+        [ruleId("admin-no-medusa-utils-import")]: "error",
       },
     },
     {
@@ -200,10 +184,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       },
     },
     {
-      files: [
-        "src/jobs/**/*.{ts,js}",
-        "**/src/jobs/**/*.{ts,js}",
-      ],
+      files: ["src/jobs/**/*.{ts,js}", "**/src/jobs/**/*.{ts,js}"],
       rules: {
         [ruleId("scheduled-job-config-required")]: "error",
         [ruleId("scheduled-job-default-export-async")]: "error",

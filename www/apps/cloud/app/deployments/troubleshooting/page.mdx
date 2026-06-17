@@ -71,6 +71,28 @@ You can replace `npm run postbuild` with the appropriate command for your packag
 
 ---
 
+## Out of Memory (OOM) Build Failures
+
+Exit code 137 indicates that your build process was killed by the system due to memory exhaustion. This commonly occurs with TypeScript-heavy monorepos during compilation.
+
+### Diagnosing Exit Code 137
+
+Check your build logs for these indicators:
+
+- **Exit code 137** at the end of the build process
+- **"Killed"** message during TypeScript compilation
+- Build terminating unexpectedly without clear error messages
+
+### Resolve OOM Build Failures
+
+OOM Build failures typically occur when the TypeScript compiler faces complex types in your project. This commonly happens when there's mismatch between dependencies in your project.
+
+For example, Medusa supports Zod v4.2.0. If you install a different version of Zod in your project, it can lead to complex type issues during compilation, causing OOM failures.
+
+To resolve this, ensure that your project's dependencies are compatible with those used by Medusa or other dependencies.
+
+---
+
 ## Troubleshooting Other Cloud Deployment Issues
 
 To troubleshoot other Cloud deployment issues, you can:

@@ -186,3 +186,142 @@ export default function Products() {
   // ...
 }
 ```
+
+---
+
+## Managing Regions in Server Components
+
+For SEO and performance reasons, many components in your storefront may be server components that don't have access to client-side context. Here are patterns for managing region data in server components:
+
+### URL-Based Region Selection
+
+Store the selected region in the URL path or query parameters to make it available to server components:
+
+```tsx title="app/[countryCode]/products/page.tsx"
+import { sdk } from "@/lib/sdk"
+import { cache } from "react"
+
+// Server-side region retrieval
+const getRegionByCountryCode = cache(async (countryCode: string) => {
+  const { regions } = await sdk.store.region.list({
+    fields: "*countries"
+  })
+  
+  return regions.find(region => 
+    region.countries?.some(country => 
+      country.iso_2.toLowerCase() === countryCode.toLowerCase()
+    )
+  )
+})
+
+type Props = {
+  params: { countryCode: string }
+}
+
+export default async function ProductsPage({ params }: Props) {
+  const region = await getRegionByCountryCode(params.countryCode)
+  
+  if (!region) {
+    // Handle region not found
+    return <div>Region not found</div>
+  }
+  
+  // Use region to fetch region-specific data
+  const { products } = await sdk.store.product.list({
+    region_id: region.id,
+  })
+  
+  return (
+    <div>
+      <h1>Products for {region.name}</h1>
+      {/* Server-rendered product list */}
+    </div>
+  )
+}
+```
+
+### Cookie-Based Region Persistence
+
+Store region preferences in cookies to access them in server components:
+
+```tsx title="lib/region-server.ts"
+import { cookies } from "next/headers"
+import { sdk } from "@/lib/sdk"
+
+export async function getServerRegion() {
+  const cookieStore = cookies()
+  const regionId = cookieStore.get("region_id")?.value
+  
+  if (!regionId) {
+    // Return default region
+    const { regions } = await sdk.store.region.list({
+      limit: 1
+    })
+    return regions[0]
+  }
+  
+  try {
+    const { region } = await sdk.store.region.retrieve(regionId)
+    return region
+  } catch {
+    // Fallback to default if region not found
+    const { regions } = await sdk.store.region.list({
+      limit: 1
+    })
+    return regions[0]
+  }
+}
+```
+
+Then use it in server components:
+
+```tsx title="components/ServerProductList.tsx"
+import { getServerRegion } from "@/lib/region-server"
+import { sdk } from "@/lib/sdk"
+
+export default async function ServerProductList() {
+  const region = await getServerRegion()
+  
+  const { products } = await sdk.store.product.list({
+    region_id: region.id,
+  })
+  
+  return (
+    <div>
+      {/* Server-rendered products with region-specific pricing */}
+      {products.map(product => (
+        <div key={product.id}>
+          <h3>{product.title}</h3>
+          {/* Display prices in region currency */}
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+### Hybrid Approach
+
+Combine server and client components for optimal performance and user experience:
+
+```tsx title="app/products/page.tsx"
+import { Suspense } from "react"
+import ServerProductList from "@/components/ServerProductList"
+import ClientRegionSelector from "@/components/ClientRegionSelector"
+
+export default function ProductsPage() {
+  return (
+    <div>
+      {/* Client component for region selection */}
+      <ClientRegionSelector />
+      
+      {/* Server component for initial product rendering */}
+      <Suspense fallback={<div>Loading products...</div>}>
+        <ServerProductList />
+      </Suspense>
+    </div>
+  )
+}
+```
+
+This approach provides server-side rendering for SEO while maintaining client-side interactivity for region switching.

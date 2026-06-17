@@ -1,5 +1,37 @@
-import { createRuleTester } from "../../../test-utils"
+import {
+  cleanupFixtureWorkspaces,
+  createFixtureWorkspace,
+  createRuleTester,
+} from "../../../test-utils"
 import { rule } from "../rule"
+
+afterAll(cleanupFixtureWorkspaces)
+
+/**
+ * Writes a module on disk with a tsconfig declaring `paths` aliases, so the rule
+ * can resolve aliased imports (e.g. `@models`) the same way TypeScript does.
+ * Returns the absolute path of the model file under test.
+ */
+const moduleWithAlias = (tsconfigPaths: Record<string, string[]>): string => {
+  const ws = createFixtureWorkspace("packages/modules/widget", [
+    {
+      rel: "tsconfig.json",
+      content: JSON.stringify({ compilerOptions: { paths: tsconfigPaths } }),
+    },
+    { rel: "src/models/widget.ts", content: "export default {}" },
+    { rel: "src/models/part.ts", content: "export default {}" },
+  ])
+  return ws.resolve("src/models/widget.ts")
+}
+
+// Alias `@models` resolving inside the module.
+const aliasInModule = moduleWithAlias({ "@models": ["./src/models"] })
+// Wildcard alias `@models/*` resolving inside the module.
+const aliasSubpathInModule = moduleWithAlias({ "@models/*": ["./src/models/*"] })
+// Alias that points OUTSIDE the module — must still be flagged.
+const aliasOutsideModule = moduleWithAlias({
+  "@external": ["../../other-module/src/models"],
+})
 
 const ruleTester = createRuleTester()
 
@@ -105,6 +137,28 @@ ruleTester.run("link-no-cross-module-relationship", rule, {
           sibling: model.belongsTo(() => Sibling, {}),
         })
         export default Parent
+      `,
+    },
+    // Path alias `@models` resolved via tsconfig — inside the same module.
+    {
+      filename: aliasInModule,
+      code: `
+        import { model } from "@medusajs/framework/utils"
+        import { Part } from "@models"
+        export default model.define("widget", {
+          parts: model.hasMany(() => Part, { mappedBy: "widget" }),
+        })
+      `,
+    },
+    // Wildcard alias `@models/*` resolved via tsconfig — inside the module.
+    {
+      filename: aliasSubpathInModule,
+      code: `
+        import { model } from "@medusajs/framework/utils"
+        import Part from "@models/part"
+        export default model.define("widget", {
+          parts: model.hasMany(() => Part, { mappedBy: "widget" }),
+        })
       `,
     },
   ],
@@ -234,7 +288,9 @@ ruleTester.run("link-no-cross-module-relationship", rule, {
           mystery: model.belongsTo(() => Mystery, {}),
         })
       `,
-      errors: [{ messageId: "unresolvableTarget", data: { method: "belongsTo" } }],
+      errors: [
+        { messageId: "unresolvableTarget", data: { method: "belongsTo" } },
+      ],
     },
     // Non-identifier return (member chain) — can't verify same-module.
     {
@@ -245,7 +301,30 @@ ruleTester.run("link-no-cross-module-relationship", rule, {
           ref: model.belongsTo(() => Other.foo, {}),
         })
       `,
-      errors: [{ messageId: "unresolvableTarget", data: { method: "belongsTo" } }],
+      errors: [
+        { messageId: "unresolvableTarget", data: { method: "belongsTo" } },
+      ],
+    },
+    // Path alias resolves to a directory OUTSIDE the module — cross-module.
+    {
+      filename: aliasOutsideModule,
+      code: `
+        import { model } from "@medusajs/framework/utils"
+        import { Post } from "@external"
+        export default model.define("widget", {
+          post: model.belongsTo(() => Post, {}),
+        })
+      `,
+      errors: [
+        {
+          messageId: "crossModuleRelationship",
+          data: {
+            method: "belongsTo",
+            name: "Post",
+            source: "@external",
+          },
+        },
+      ],
     },
     // Multiple relationships, only one is cross-module.
     {

@@ -14,10 +14,16 @@ const MAX_DEPTH = 4
  * `run`, `runAsStep`, and `getName`).
  */
 function isWorkflowType(type: ts.Type, depth = 0): boolean {
-  if (depth > MAX_DEPTH) return false
+  if (depth > MAX_DEPTH) {
+    return false
+  }
 
-  if (type.aliasSymbol?.name === WORKFLOW_ALIAS_NAME) return true
-  if (type.getSymbol()?.name === WORKFLOW_ALIAS_NAME) return true
+  if (type.aliasSymbol?.name === WORKFLOW_ALIAS_NAME) {
+    return true
+  }
+  if (type.getSymbol()?.name === WORKFLOW_ALIAS_NAME) {
+    return true
+  }
 
   if (type.isUnion() || type.isIntersection()) {
     return type.types.some((t) => isWorkflowType(t, depth + 1))
@@ -32,7 +38,9 @@ function isWorkflowType(type: ts.Type, depth = 0): boolean {
 }
 
 function getNameFromExpression(node: TSESTree.Node): string {
-  if (node.type === AST_NODE_TYPES.Identifier) return node.name
+  if (node.type === AST_NODE_TYPES.Identifier) {
+    return node.name
+  }
   if (
     node.type === AST_NODE_TYPES.MemberExpression &&
     node.property.type === AST_NODE_TYPES.Identifier
@@ -70,14 +78,18 @@ export const rule = createRule<[], MessageIds>({
     return {
       // Flag `workflow()` — invoking a workflow value with no container argument.
       CallExpression(node) {
-        if (node.arguments.length > 0) return
+        if (node.arguments.length > 0) {
+          return
+        }
         if (
           node.callee.type !== AST_NODE_TYPES.Identifier &&
           node.callee.type !== AST_NODE_TYPES.MemberExpression
         ) {
           return
         }
-        if (!isWorkflowType(getType(node.callee as TSESTree.Node))) return
+        if (!isWorkflowType(getType(node.callee as TSESTree.Node))) {
+          return
+        }
 
         context.report({
           node,
@@ -89,10 +101,18 @@ export const rule = createRule<[], MessageIds>({
       // Flag `workflow.run` — reaching for `.run` directly on the workflow
       // value without first invoking it with a container.
       MemberExpression(node) {
-        if (node.computed) return
-        if (node.property.type !== AST_NODE_TYPES.Identifier) return
-        if (node.property.name !== "run") return
-        if (!isWorkflowType(getType(node.object as TSESTree.Node))) return
+        if (node.computed) {
+          return
+        }
+        if (node.property.type !== AST_NODE_TYPES.Identifier) {
+          return
+        }
+        if (node.property.name !== "run") {
+          return
+        }
+        if (!isWorkflowType(getType(node.object as TSESTree.Node))) {
+          return
+        }
 
         context.report({
           node,

@@ -1,6 +1,7 @@
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
 import { objectHasProperty, resolveObjectExpression } from "../../util/ast"
+import { isIndexFile } from "../../util/filename"
 
 type MessageIds =
   | "missingConfigExport"
@@ -27,6 +28,12 @@ export const rule = createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
+    // `index.<ext>` files in a jobs directory are barrels/re-exports, not job
+    // definitions — they don't declare a `config`, so skip them.
+    if (isIndexFile(context.filename)) {
+      return {}
+    }
+
     const sourceCode = context.sourceCode ?? context.getSourceCode()
 
     let hasConfigExport = false

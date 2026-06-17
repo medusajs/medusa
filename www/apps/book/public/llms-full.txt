@@ -16639,7 +16639,9 @@ export default defineLink(
 
 In this chapter, you'll learn about the Index Module and how you can use it.
 
-The Index Module is experimental and still in development, so it is subject to change. Consider whether your application can tolerate minor issues before using it in production.
+The Index Module is experimental and still in development, so it is subject to change. However, it's being actively used in the Medusa Admin dashboard and is increasingly stable for production use. Consider your application's tolerance for minor issues when deciding to implement it.
+
+For multi-vendor setups with sales channel filtering needs, the Index Module provides the most efficient approach for filtering products by sales channels and other linked data models.
 
 ## What is the Index Module?
 
@@ -17402,6 +17404,29 @@ export const retrieveBrandsWorkflow = createWorkflow(
 ```
 
 This will retrieve all brands that are linked to at least one product.
+
+### Sales Channel Filtering for Multi-Vendor Setups
+
+For multi-vendor marketplaces where you need to filter products based on sales channels, the Index Module provides the most efficient solution. Unlike Query which has limitations with cross-module filtering, the Index Module enables complex filtering across linked data models.
+
+For example, to filter vendor products by multiple sales channels:
+
+```ts title="src/api/custom/vendor-products/route.ts"
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "sales_channels.*", "vendor.*"],
+  filters: {
+    sales_channels: {
+      id: ["sc_vendor_1", "sc_vendor_2"],
+    },
+    vendor: {
+      id: "vendor_123",
+    },
+  },
+})
+```
+
+This query efficiently filters products by both vendor and sales channels in a single operation.
 
 ### Retrieve Localized Data
 
@@ -26399,6 +26424,18 @@ The `env_file` paths are relative to the project root: `apps/backend/.env` for t
 
 The anonymous volumes for `node_modules` directories are required because pnpm workspaces create per-package `node_modules` directories with symlinks. Without these volumes, the Docker bind mount overwrites the installed dependencies. This configuration is essential for pnpm to work correctly in a monorepo Docker setup.
 
+### Port Configuration Explained
+
+The ports configuration maps container ports to host ports using the format `"host_port:container_port"`:
+
+- `"5432:5432"`: PostgreSQL database accessible at `localhost:5432`
+- `"6379:6379"`: Redis accessible at `localhost:6379`
+- `"9000:9000"`: Medusa backend server accessible at `localhost:9000`
+- `"5173:5173"`: Medusa Admin development server with Hot Module Replacement (HMR)
+- `"8000:8000"`: Storefront accessible at `localhost:8000`
+
+If these ports conflict with other services on your host machine, change the host port (left side). For example, use `"9001:9000"` to access the Medusa backend at `localhost:9001` instead.
+
 ### Recommendations for Multiple Local Projects
 
 If this isn't the first Medusa project you're setting up with Docker on your machine, make sure to:
@@ -26683,6 +26720,21 @@ module.exports = defineConfig({
 
 You configure the Vite development server to listen on all network interfaces (`0.0.0.0`) and set up HMR to work correctly within the Docker environment.
 
+### Redis Configuration
+
+If you encounter Redis connection issues, you may need to explicitly configure the Redis URL in your `medusa-config.ts` file:
+
+```ts title="apps/backend/medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    // ...
+    redisUrl: process.env.REDIS_URL,
+  },
+})
+```
+
+This ensures the Redis URL from the environment variable is properly used by Medusa.
+
 ***
 
 ## 8. Add `.dockerignore`
@@ -26884,6 +26936,18 @@ to
 container_name: medusa_postgres_myproject
 ```
 
+### Medusa Backend Returns "Cannot GET /" Error
+
+If you access `http://localhost:9000` and see a "Cannot GET /" error, this usually means the Medusa backend started successfully but there's no route handler for the root path.
+
+This is expected behavior. The Medusa backend API endpoints are available at paths like `/admin` and `/store`. To verify your installation:
+
+1. Access the Medusa Admin dashboard at `http://localhost:9000/app`
+2. Check the backend health at `http://localhost:9000/health`
+3. Access the storefront at `http://localhost:8000` (if you deployed it)
+
+The "Cannot GET /" message doesn't indicate an error - it just means there's no content at the root URL.
+
 ***
 
 ## Learn More about your Medusa Application
@@ -26936,7 +27000,7 @@ A Medusa application is made up of a Node.js server and a Vite admin dashboard. 
 
 To create a Medusa application, use the `create-medusa-app` command:
 
-Considering using `yarn` or `pnpm` as your package manager for quicker installations and better performance. `npm` installations are generally slower.
+Consider using `yarn` or `pnpm` as your package manager for quicker installations and better performance. `npm` installations are generally slower.
 
 ### yarn
 
@@ -35109,6 +35173,30 @@ The fulfillment item holds details relevant to fulfilling the item, such as barc
 ## Fulfillment Label
 
 Once a shipment is created for the fulfillment, you can store its tracking number, URL, or other related details as a label, represented by the [FulfillmentLabel data model](https://docs.medusajs.com/references/fulfillment/models/FulfillmentLabel/index.html.md).
+
+### Accessing Tracking Information
+
+To access tracking information for a fulfillment, you must retrieve the related labels. For example, to retrieve the tracking data with [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md):
+
+```ts
+const { data: fulfillment } = query.graph({
+  entity: "fulfillment",
+  fields: [
+    "labels.tracking_number",
+    "labels.tracking_url",
+    "labels.label_url",
+  ],
+  filters: {
+    id: "fulfillment_123",
+  }
+})
+
+fulfillment.labels.forEach((label) => {
+  console.log("Tracking Number:", label.tracking_number)
+  console.log("Tracking URL:", label.tracking_url)
+  console.log("Label URL:", label.label_url)
+})
+```
 
 ***
 

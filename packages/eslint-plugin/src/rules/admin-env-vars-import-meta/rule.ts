@@ -9,9 +9,7 @@ type MessageIds = "useImportMetaEnv"
  * `const process = ...`, an import, etc.) rather than the Node.js global.
  * In that case `process.env` isn't the Node env object and must not be flagged.
  */
-function processBindingIsLocal(
-  scope: TSESLint.Scope.Scope | null
-): boolean {
+function processBindingIsLocal(scope: TSESLint.Scope.Scope | null): boolean {
   let current = scope
   while (current) {
     const variable = current.variables.find((v) => v.name === "process")
@@ -44,14 +42,18 @@ export const rule = createRule<[], MessageIds>({
   create(context) {
     // Scope to the admin dashboard tree; `process.env` is fine everywhere else
     // (including API admin routes under `src/api/admin/`).
-    if (!isAdminFile(context.filename)) return {}
+    if (!isAdminFile(context.filename)) {
+      return {}
+    }
 
     return {
       MemberExpression(node: TSESTree.MemberExpression) {
         // Match the `process.env` member expression itself (not `process.env.X`,
         // whose `.object` is this node). Reporting here covers both bare
         // `process.env` access and any `process.env.FOO` lookup in one place.
-        if (node.computed) return
+        if (node.computed) {
+          return
+        }
         if (
           node.object.type !== AST_NODE_TYPES.Identifier ||
           node.object.name !== "process"
@@ -65,7 +67,9 @@ export const rule = createRule<[], MessageIds>({
           return
         }
 
-        if (processBindingIsLocal(context.sourceCode.getScope(node))) return
+        if (processBindingIsLocal(context.sourceCode.getScope(node))) {
+          return
+        }
 
         context.report({
           node,

@@ -39,11 +39,17 @@ function collectNonSerializable(
   depth: number,
   found: Set<string>
 ): void {
-  if (depth > MAX_DEPTH) return
-  if (visited.has(type)) return
+  if (depth > MAX_DEPTH) {
+    return
+  }
+  if (visited.has(type)) {
+    return
+  }
   visited.add(type)
 
-  if (type.flags & PRIMITIVE_FLAGS) return
+  if (type.flags & PRIMITIVE_FLAGS) {
+    return
+  }
 
   const name = getTypeName(type)
   if (name && NON_SERIALIZABLE_CLASSES.has(name)) {
@@ -71,7 +77,9 @@ function collectNonSerializable(
   }
 
   for (const prop of type.getProperties()) {
-    if (prop.flags & ts.SymbolFlags.Method) continue
+    if (prop.flags & ts.SymbolFlags.Method) {
+      continue
+    }
     const propType = checker.getTypeOfSymbolAtLocation(prop, location)
     collectNonSerializable(
       propType,
@@ -117,11 +125,17 @@ export const rule = createRule<[], MessageIds>({
         ) {
           return
         }
-        if (!isResponseConstructor(node, bindings)) return
+        if (!isResponseConstructor(node, bindings)) {
+          return
+        }
 
         for (const arg of node.arguments) {
-          if (arg.type === AST_NODE_TYPES.SpreadElement) continue
-          const tsNode = services.esTreeNodeToTSNodeMap.get(arg as TSESTree.Node)
+          if (arg.type === AST_NODE_TYPES.SpreadElement) {
+            continue
+          }
+          const tsNode = services.esTreeNodeToTSNodeMap.get(
+            arg as TSESTree.Node
+          )
           const type = checker.getTypeAtLocation(tsNode)
           const found = new Set<string>()
           collectNonSerializable(type, checker, tsNode, new Set(), 0, found)
