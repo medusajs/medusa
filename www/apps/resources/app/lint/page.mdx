@@ -14,6 +14,8 @@ In this section of the documentation, you'll learn how to set up and use the Med
 
 The Medusa ESLint plugin (`@medusajs/eslint-plugin`) is the official ESLint plugin for Medusa projects. It codifies Medusa's conventions into static checks that run while you write code in your editor and when you build or develop your application.
 
+The plugin is useful for both developers and AI agents working on your codebase, as it provides immediate feedback on code that violates Medusa's conventions.
+
 The plugin catches mistakes that often lead to runtime errors or unexpected behavior, such as using loops in a workflow's constructor, returning a non-serializable value from a step, or naming an API route file incorrectly. Each [rule](./rules/page.mdx) maps to a Medusa convention.
 
 ---
@@ -190,13 +192,13 @@ The `medusa develop` command lints your project once at startup, before the deve
 
 The command accepts the following lint options:
 
-- `--lint`: Whether to run the linter before starting the development server. Accepts `--lint true` (default) or `--lint false`.
-- `--fix`: Auto-fix lint issues where possible before starting.
+- `--lint` and `--no-lint`: Whether to run the linter before starting the development server. By default, linting is enabled.
+- `--fix` and `--no-fix`: Auto-fix lint issues where possible before starting. By default, auto-fixing is disabled.
 
 For example, to start the development server without linting:
 
 ```bash
-npx medusa develop --lint false
+npx medusa develop --no-lint
 ```
 
 ### Lint while Building
@@ -205,14 +207,14 @@ The `medusa build` command lints your project after generating types and before 
 
 The command accepts the following lint options:
 
-- `--lint`: Whether to run the linter before building. Accepts `--lint true` (default) or `--lint false`.
-- `--fix`: Auto-fix lint issues where possible before building.
+- `--lint` and `--no-lint`: Whether to run the linter before building. By default, linting is enabled.
+- `--fix` and `--no-fix`: Auto-fix lint issues where possible before building. By default, auto-fixing is disabled.
 - `--quiet`: Report lint errors only, suppressing warnings.
 
 For example, to build your project without linting:
 
 ```bash
-npx medusa build --lint false
+npx medusa build --no-lint
 ```
 
 <Note title="Tip">
